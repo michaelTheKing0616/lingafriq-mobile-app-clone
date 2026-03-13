@@ -663,12 +663,12 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       if (take < 4) {
         // Universal safety net phrases for any language
         final universalPhrases = [
-          PhraseCard(cardId: 'uni_hello', language: lang, text: 'Hello', ascii: 'Hello', gloss: 'Greeting', level: 'A1'),
-          PhraseCard(cardId: 'uni_thanks', language: lang, text: 'Thank you', ascii: 'Thank you', gloss: 'Gratitude', level: 'A1'),
-          PhraseCard(cardId: 'uni_yes', language: lang, text: 'Yes', ascii: 'Yes', gloss: 'Affirmative', level: 'A1'),
-          PhraseCard(cardId: 'uni_no', language: lang, text: 'No', ascii: 'No', gloss: 'Negative', level: 'A1'),
-          PhraseCard(cardId: 'uni_please', language: lang, text: 'Please', ascii: 'Please', gloss: 'Polite request', level: 'A1'),
-          PhraseCard(cardId: 'uni_goodbye', language: lang, text: 'Goodbye', ascii: 'Goodbye', gloss: 'Farewell', level: 'A1'),
+          {'text': 'Hello', 'gloss': 'Greeting', 'tags': <String>['universal-fallback']},
+          {'text': 'Thank you', 'gloss': 'Gratitude', 'tags': <String>['universal-fallback']},
+          {'text': 'Yes', 'gloss': 'Affirmative', 'tags': <String>['universal-fallback']},
+          {'text': 'No', 'gloss': 'Negative', 'tags': <String>['universal-fallback']},
+          {'text': 'Please', 'gloss': 'Polite request', 'tags': <String>['universal-fallback']},
+          {'text': 'Goodbye', 'gloss': 'Farewell', 'tags': <String>['universal-fallback']},
         ];
         combined.addAll(universalPhrases);
       }
