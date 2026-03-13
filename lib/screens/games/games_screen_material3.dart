@@ -17,14 +17,42 @@ import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'game_onboarding_overlay.dart';
 
-const _gameRules = <GameType, String>{
-  GameType.wordMatchAudio: 'Match African language words on the left with their English meanings on the right. Tap a word to hear its pronunciation!',
-  GameType.pronunciationDuel: 'Listen to the native pronunciation, then record yourself saying the word. Score 85+ to win each round!',
-  GameType.speedRoundRemix: 'Choose the correct translation as fast as you can! You have 60 seconds.',
-  GameType.scrabbleSprintArena: 'Build valid words using the given letters. Longer words score more points!',
-  GameType.roleplayAdventure: 'Choose the best response in a real-life scenario. Practice natural conversation!',
-  GameType.grammarDetective: 'Find and fix the grammar error in each sentence.',
-  GameType.storyBuilder: 'Continue the story using your target language. Get creative!',
+const _gameRules = <GameType, List<String>>{
+  GameType.wordMatchAudio: [
+    'Match words in your target language with their English meaning.',
+    'Tap a word to hear pronunciation before matching.',
+    'Work quickly to build streak and score.',
+  ],
+  GameType.pronunciationDuel: [
+    'Listen to the native pronunciation first.',
+    'Record your voice clearly in a quiet environment.',
+    'Aim for 85+ to win each round.',
+  ],
+  GameType.speedRoundRemix: [
+    'Choose the correct translation before time runs out.',
+    'Accuracy matters as much as speed.',
+    'You have 60 seconds per run.',
+  ],
+  GameType.scrabbleSprintArena: [
+    'Build valid words using the provided letters.',
+    'Longer words usually score higher.',
+    'Use all tiles if possible for bonus points.',
+  ],
+  GameType.roleplayAdventure: [
+    'Choose the best response for each real-life scenario.',
+    'Prioritize culturally appropriate phrasing.',
+    'Different choices lead to different outcomes.',
+  ],
+  GameType.grammarDetective: [
+    'Find the grammar mistake in each sentence.',
+    'Pick the best correction based on context.',
+    'Focus on tense, agreement, and word order.',
+  ],
+  GameType.storyBuilder: [
+    'Continue the story using your target language.',
+    'Keep your sentence coherent with the prior context.',
+    'Use feedback tips to improve grammar and style.',
+  ],
 };
 
 /// Beautiful Material 3 Games Screen
@@ -298,8 +326,12 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
                                     await showDialog(
                                       context: context,
                                       builder: (ctx) => GameOnboardingOverlay(
-                                        gameName: game['name'] as String,
-                                        rules: _gameRules[gameType] ?? 'Match words and have fun!',
+                                        gameType: gameType.name,
+                                        title: game['name'] as String,
+                                        rules: _gameRules[gameType] ?? const [
+                                          'Learn and have fun with this game mode.',
+                                          'Focus on accuracy first, then speed.',
+                                        ],
                                         onDismiss: () async {
                                           await prefs.setBool('game_onboarding_${gameType.name}_dismissed', true);
                                           Navigator.pop(ctx);
