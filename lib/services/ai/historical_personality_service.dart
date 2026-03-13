@@ -295,7 +295,12 @@ class HistoricalPersonalityService {
         ),
         data: {
           'message': message,
-          'context': context ?? {},
+          'context': {
+            ...(context ?? <String, dynamic>{}),
+            'providerPolicy': 'openai_first',
+            'client': 'mobile',
+            'feature': 'historical_personality_chat',
+          },
         },
       );
 
