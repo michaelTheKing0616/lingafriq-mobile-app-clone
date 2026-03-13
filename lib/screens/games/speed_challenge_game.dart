@@ -547,7 +547,7 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                           _correctAnswers = 0;
                           _selectedAnswer = null;
                           _score = 0;
-                          _timeRemaining = 30;
+                          _timeRemaining = 60;
                         });
                         _initializeGame();
                       },

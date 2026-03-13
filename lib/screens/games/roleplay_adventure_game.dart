@@ -75,15 +75,16 @@ class _RoleplayAdventureGameState extends BaseGameScreenState<RoleplayAdventureG
       });
     } catch (_) {
       if (!mounted) return;
+      final fallback = _getLanguageFallback(widget.language);
       setState(() {
-        _npcMessage = 'Vendor: "Báwo ní? Kí ni ẹ fẹ́ ra?"';
+        _npcMessage = fallback['npc']! as String;
         _options
           ..clear()
-          ..addAll([
-            _DialogueOption('Báwo ni? Mo fẹ́ ra ẹwà.', 'correct'),
-            _DialogueOption('Hello, I want beans.', 'wrong_language'),
-            _DialogueOption('Mo dúpé.', 'wrong_context'),
-          ]);
+          ..addAll(
+            (fallback['options'] as List).map((o) =>
+              _DialogueOption(o['text'] as String, o['result'] as String),
+            ).toList(),
+          );
         _options.shuffle(Random());
         _dialogueHistory.add(_npcMessage);
       });
@@ -169,10 +170,83 @@ class _RoleplayAdventureGameState extends BaseGameScreenState<RoleplayAdventureG
   }
 
   String _fallbackNpcFollowUp(GameResult result) {
+    final lang = widget.language.toLowerCase();
     if (result == GameResult.correct) {
-      return 'NPC: Good response. Let us continue.';
+      switch (lang) {
+        case 'yoruba':
+          return 'NPC: Ó dára! Ẹ jẹ́ ká tẹ̀síwájú.';
+        case 'hausa':
+          return 'NPC: Da kyau! Mu ci gaba.';
+        case 'igbo':
+          return 'NPC: Ọ dị mma! Ka anyị gaa n\'ihu.';
+        case 'swahili':
+          return 'NPC: Vizuri! Tuendelee.';
+        case 'zulu':
+          return 'NPC: Kuhle! Asiqhubeke.';
+        default:
+          return 'NPC: Good response. Let us continue.';
+      }
     }
-    return 'NPC: Try again with a better fit.';
+    switch (lang) {
+      case 'yoruba':
+        return 'NPC: Ẹ gbìyànjú lẹ́ẹ̀kan síi.';
+      case 'hausa':
+        return 'NPC: A sake gwadawa.';
+      case 'igbo':
+        return 'NPC: Gbalịa ọzọ.';
+      case 'swahili':
+        return 'NPC: Jaribu tena.';
+      case 'zulu':
+        return 'NPC: Zama futhi.';
+      default:
+        return 'NPC: Try again with a better fit.';
+    }
+  }
+
+  static Map<String, dynamic> _getLanguageFallback(String language) {
+    final scenarios = {
+      'yoruba': {
+        'npc': 'Vendor: "Báwo ní? Kí ni ẹ fẹ́ ra?"',
+        'options': [
+          {'text': 'Báwo ni? Mo fẹ́ ra ẹwà.', 'result': 'correct'},
+          {'text': 'Hello, I want beans.', 'result': 'wrong_language'},
+          {'text': 'Mo dúpé.', 'result': 'wrong_context'},
+        ],
+      },
+      'hausa': {
+        'npc': 'Mai sayarwa: "Sannu! Mene ne kuke so ku saya?"',
+        'options': [
+          {'text': 'Sannu! Ina son siyan wake.', 'result': 'correct'},
+          {'text': 'Hello, I want beans.', 'result': 'wrong_language'},
+          {'text': 'Na gode.', 'result': 'wrong_context'},
+        ],
+      },
+      'igbo': {
+        'npc': 'Onye ahịa: "Kedu? Gịnị ka ị chọrọ ịzụ?"',
+        'options': [
+          {'text': 'Kedu? Achọrọ m ịzụ agwa.', 'result': 'correct'},
+          {'text': 'Hello, I want beans.', 'result': 'wrong_language'},
+          {'text': 'Daalụ.', 'result': 'wrong_context'},
+        ],
+      },
+      'swahili': {
+        'npc': 'Muuzaji: "Habari! Unataka kununua nini?"',
+        'options': [
+          {'text': 'Habari! Nataka kununua maharagwe.', 'result': 'correct'},
+          {'text': 'Hello, I want beans.', 'result': 'wrong_language'},
+          {'text': 'Asante.', 'result': 'wrong_context'},
+        ],
+      },
+      'zulu': {
+        'npc': 'Umthengisi: "Sawubona! Ufuna ukuthenga ini?"',
+        'options': [
+          {'text': 'Sawubona! Ngifuna ukuthenga ubhontshisi.', 'result': 'correct'},
+          {'text': 'Hello, I want beans.', 'result': 'wrong_language'},
+          {'text': 'Ngiyabonga.', 'result': 'wrong_context'},
+        ],
+      },
+    };
+    return scenarios[language.toLowerCase()] ?? scenarios['yoruba']!;
   }
 
   @override

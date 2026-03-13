@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
+import '../../providers/tts_provider.dart';
 import 'package:lingafriq/utils/transport_error_policy.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
@@ -91,6 +91,16 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
         return;
       }
 
+      if (cards.length < 4) {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+            _loadError = 'Not enough content for ${widget.language}. Try another language.';
+          });
+        }
+        return;
+      }
+
       if (mounted) {
         setState(() {
         _startTime = DateTime.now();
@@ -123,8 +133,6 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
     }
   }
 
-  final FlutterTts _tts = FlutterTts();
-
   Future<void> _playAudio(String? url, {String? fallbackText}) async {
     final resolved = resolveMediaUrl(url);
     if (resolved != null && resolved.isNotEmpty) {
@@ -140,7 +148,7 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
     // TTS fallback when no audio URL or URL playback failed
     if (fallbackText != null && fallbackText.isNotEmpty) {
       try {
-        await _tts.speak(fallbackText);
+        await ref.read(ttsProvider.notifier).speak(fallbackText, languageName: widget.language);
       } catch (e) {
         debugPrint('TTS fallback failed: $e');
       }
@@ -474,7 +482,7 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
                                                 if (tile.audioUrl != null)
                                                   IconButton(
                                                     icon: const Icon(Icons.volume_up),
-                                                    onPressed: () => _playAudio(tile.audioUrl),
+                                                    onPressed: () => _playAudio(tile.audioUrl, fallbackText: tile.label),
                                                   ),
                                                 Expanded(
                                                   child: Column(

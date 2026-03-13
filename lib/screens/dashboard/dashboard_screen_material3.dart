@@ -13,6 +13,7 @@ import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/models/daily_goal_model.dart';
 import 'package:lingafriq/screens/ai_chat/polie_mode_selection_screen.dart';
 import 'package:lingafriq/screens/curriculum/curriculum_screen_material3.dart';
+import 'package:lingafriq/screens/tabs_view/home/language_detail_screen.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen_enhanced.dart';
 import 'package:lingafriq/screens/games/games_screen_material3.dart';
 import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart' show languagesProvider;
@@ -390,7 +391,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                         HapticFeedback.lightImpact();
                         Navigator.push(
                           context,
-                          SmoothPageRoute(child: const CurriculumScreenMaterial3()),
+                          SmoothPageRoute(child: LanguageDetailScreen(language: language)),
                         );
                       },
                       child: Container(
@@ -617,7 +618,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                         HapticFeedback.lightImpact();
                         Navigator.push(
                           context,
-                          SmoothPageRoute(child: const CurriculumScreenMaterial3()),
+                          SmoothPageRoute(child: LanguageDetailScreen(language: language)),
                         );
                       },
                     ),
@@ -713,10 +714,10 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                   ),
                   SizedBox(height: PanAfricanSpacing.md),
                   Semantics(
-                    label: 'Start a lesson button',
+                    label: 'Explore Curriculum button',
                     button: true,
                     child: PanAfricanButton(
-                      label: 'Start a lesson',
+                      label: 'Explore Curriculum',
                       icon: Icons.play_arrow_rounded,
                       onPressed: () {
                         Navigator.push(

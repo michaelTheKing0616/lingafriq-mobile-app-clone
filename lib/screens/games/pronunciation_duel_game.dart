@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
+import '../../providers/tts_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:record/record.dart';
 import 'package:just_audio/just_audio.dart';
@@ -54,8 +54,6 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
     }
   }
 
-  final FlutterTts _tts = FlutterTts();
-
   Future<void> _playNativeAudio() async {
     final audioUrl = resolveMediaUrl(_currentCard?.audioNativeUrl);
     setState(() => _isPlaying = true);
@@ -79,8 +77,8 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
     final text = _currentCard?.text;
     if (text != null && text.isNotEmpty) {
       try {
-        await _tts.speak(text);
-        await Future.delayed(const Duration(seconds: 2));
+        await ref.read(ttsProvider.notifier).speak(text, languageName: widget.language);
+        await Future.delayed(const Duration(seconds: 3));
       } catch (e) {
         debugPrint('TTS fallback failed: $e');
       }
@@ -192,19 +190,13 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
         _pronunciationScore = null;
         _mistakes = ['Unable to analyze pronunciation. Please record and try again.'];
       });
-      
-      final duration = startTime != null
-          ? DateTime.now().difference(startTime!).inMilliseconds
-          : 0;
-      
-      await completeTurn(
-        cardId: _currentCard!.cardId,
-        result: GameResult.incorrect,
-        durationMs: duration,
-        confidence: 0.0,
-        feedback: {'error': e.toString()},
-        userAction: 'pronounced',
-      );
+
+      // Don't penalize user for API/server failures
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Could not analyze pronunciation. Try recording again.'), backgroundColor: Colors.orange),
+        );
+      }
     }
   }
 

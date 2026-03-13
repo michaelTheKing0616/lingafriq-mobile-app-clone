@@ -15,6 +15,7 @@ import 'package:lingafriq/services/translation_history_service.dart';
 import 'package:lingafriq/services/tutor_progress_service.dart';
 import 'package:lingafriq/services/vocabulary/vocabulary_service.dart';
 import 'package:lingafriq/services/vocabulary_progress_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart' as uuid;
 
 class PolieWorkspaceScreen extends HookConsumerWidget {
@@ -74,9 +75,11 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
     final vocabDeckCount = useState<int>(10);
     final vocabSetName = useState<String>('Core Daily Words');
     final vocabSrsChoice = useState<String?>(null);
+    final vocabShownWords = useRef<Set<String>>({});
 
     final reviewPayload = useState<_ReviewPayload?>(null);
     final reviewPeriod = useState<String>('week');
+    final modeIntroDismissed = useState<Set<String>>({});
 
     final chat = ref.read(groqChatProvider.notifier);
     final translationHistoryService = ref.read(translationHistoryServiceProvider);
@@ -128,8 +131,9 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
       if (trimmed.isEmpty) return;
       isBusy.value = true;
       modeError.value = null;
-      final json = await askForJson(
-        '''
+      try {
+        final json = await askForJson(
+          '''
 Return STRICT JSON only.
 {
   "primary":"string",
@@ -142,49 +146,72 @@ Translate from $sourceLanguage to $targetLanguage.
 Tone requested: ${translationTone.value}
 Text: "$trimmed"
 ''',
-      );
-      if (json != null) {
-        translationOutput.value = _TranslationPayload.fromJson(json, rawFallback: modeResponse.value);
-        await translationHistoryService.addTranslation(
-          _toHistoryEntry(
-            input: trimmed,
-            payload: translationOutput.value!,
-            sourceLanguage: sourceLanguage,
-            targetLanguage: targetLanguage,
-          ),
         );
-        await loadTranslationHistory();
+        if (json != null) {
+          translationOutput.value = _TranslationPayload.fromJson(json, rawFallback: modeResponse.value);
+          await translationHistoryService.addTranslation(
+            _toHistoryEntry(
+              input: trimmed,
+              payload: translationOutput.value!,
+              sourceLanguage: sourceLanguage,
+              targetLanguage: targetLanguage,
+            ),
+          );
+          await loadTranslationHistory();
+        }
+      } catch (e) {
+        modeError.value = 'Translation failed: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
+      } finally {
+        isBusy.value = false;
       }
-      isBusy.value = false;
     }
 
     Future<void> loadTutorLesson() async {
       isBusy.value = true;
       tutorFeedback.value = null;
-      final json = await askForJson(
-        '''
+      try {
+        final difficultyGuide = switch (tutorDifficulty.value) {
+          'beginner' => 'Focus on simple vocabulary, basic greetings, common phrases. Include heavy transliteration. Keep explanations simple and encouraging.',
+          'intermediate' => 'Focus on grammar concepts, sentence construction, cultural context. Include moderate transliteration. Introduce idiomatic usage.',
+          'advanced' => 'Focus on idiomatic expressions, literary devices, nuanced usage, proverbs. Minimal transliteration. Challenge the learner.',
+          _ => '',
+        };
+        final json = await askForJson(
+          '''
 Return STRICT JSON only.
 {
- "concept":"title",
- "explanation":"2-3 warm sentences",
- "example":{"target_lang":"...","transliteration":"...","english":"..."},
- "memory_tip":"...",
- "watch_out":"...|null"
+ "concept":"title of the lesson concept",
+ "explanation":"2-3 warm, clear sentences explaining the concept",
+ "example":{"target_lang":"example phrase in $targetLanguage","transliteration":"phonetic guide","english":"English translation"},
+ "memory_tip":"a memorable tip to remember this concept",
+ "watch_out":"common mistake or tricky aspect, or null",
+ "practice_question":"an instructive question for the learner to practice this concept",
+ "practice_hint":"a subtle hint to help answer the practice question"
 }
 
 Generate a tutor card for $targetLanguage at ${tutorDifficulty.value} level.
+$difficultyGuide
+Make the card intelligent, informative, and culturally rich.
 ''',
-      );
-      if (json != null) tutorLesson.value = _TutorLessonPayload.fromJson(json, modeResponse.value);
-      isBusy.value = false;
+        );
+        if (json != null) tutorLesson.value = _TutorLessonPayload.fromJson(json, modeResponse.value);
+      } catch (e) {
+        modeError.value = 'Failed to load tutor card: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
+      } finally {
+        isBusy.value = false;
+      }
     }
 
     Future<void> checkTutorAnswer() async {
       final answer = tutorInput.text.trim();
       if (answer.isEmpty || tutorLesson.value == null) return;
       isBusy.value = true;
-      final json = await askForJson(
-        '''
+      try {
+        final questionCtx = tutorLesson.value!.practiceQuestion != null
+            ? 'Practice question: ${tutorLesson.value!.practiceQuestion}'
+            : 'Expected style example: ${tutorLesson.value!.example.targetLang}';
+        final json = await askForJson(
+          '''
 Return STRICT JSON only.
 {
  "verdict":"correct|close|incorrect",
@@ -197,22 +224,26 @@ Return STRICT JSON only.
 
 Language: $targetLanguage
 Concept: ${tutorLesson.value!.concept}
-Expected style example: ${tutorLesson.value!.example.targetLang}
+$questionCtx
 User answer: "$answer"
 ''',
-      );
-      if (json != null) {
-        tutorFeedback.value = _TutorFeedbackPayload.fromJson(json, modeResponse.value);
-        await tutorProgress.recordSession(
-          _buildTutorSessionResult(
-            language: targetLanguage,
-            answer: answer,
-            verdict: tutorFeedback.value!,
-            concept: tutorLesson.value!.concept,
-          ),
         );
+        if (json != null) {
+          tutorFeedback.value = _TutorFeedbackPayload.fromJson(json, modeResponse.value);
+          await tutorProgress.recordSession(
+            _buildTutorSessionResult(
+              language: targetLanguage,
+              answer: answer,
+              verdict: tutorFeedback.value!,
+              concept: tutorLesson.value!.concept,
+            ),
+          );
+        }
+      } catch (e) {
+        modeError.value = 'Failed to check answer: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
+      } finally {
+        isBusy.value = false;
       }
-      isBusy.value = false;
     }
 
     Future<void> sendRoleplayTurn() async {
@@ -224,22 +255,23 @@ User answer: "$answer"
       ];
       roleplayInput.clear();
       isBusy.value = true;
-      final json = await askForJson(
-        '''
-Return STRICT JSON only.
+      try {
+        final json = await askForJson(
+          '''
+Return STRICT JSON only. Do NOT include any text outside the JSON object.
 {
  "character_response":{
-  "target_lang":"...",
-  "transliteration":"...",
-  "english":"...",
+  "target_lang":"a reply in $targetLanguage",
+  "transliteration":"phonetic guide",
+  "english":"English translation",
   "emotion":"curious|warm|impatient|amused|surprised|neutral",
-  "action":"...|null"
+  "action":"optional physical action or null"
  },
  "coaching":{
-  "user_accuracy":0,
+  "user_accuracy":50,
   "feedback_type":"praise|suggestion|correction|encouragement",
-  "feedback":"1-2 sentences",
-  "better_phrasing":"...|null"
+  "feedback":"1-2 sentences of feedback",
+  "better_phrasing":"improved version or null"
  }
 }
 
@@ -247,75 +279,109 @@ Roleplay scene: ${roleplayScene.value}
 Difficulty: ${roleplayDifficulty.value}
 Target language: $targetLanguage
 User line: "$input"
-Stay in character.
+Stay in character. Respond naturally for the scene.
 ''',
-      );
-      if (json != null) {
-        roleplayMessages.value = [
-          ...roleplayMessages.value,
-          _RoleplayTurn.ai(_RoleplayPayload.fromJson(json, modeResponse.value)),
-        ];
+        );
+        if (json != null) {
+          roleplayMessages.value = [
+            ...roleplayMessages.value,
+            _RoleplayTurn.ai(_RoleplayPayload.fromJson(json, modeResponse.value)),
+          ];
+        } else {
+          roleplayMessages.value = [
+            ...roleplayMessages.value,
+            _RoleplayTurn.ai(_RoleplayPayload(
+              characterResponse: const _RoleplayCharacterResponse(
+                targetLang: '...', transliteration: '-', english: '(Polie could not parse this response. Try again!)',
+                emotion: 'neutral', action: null,
+              ),
+              coaching: const _RoleplayCoaching(
+                userAccuracy: 0, feedbackType: 'encouragement',
+                feedback: 'There was a parsing error. Please try your line again.', betterPhrasing: null,
+              ),
+            )),
+          ];
+        }
+      } catch (e) {
+        modeError.value = 'Roleplay error: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
+      } finally {
+        isBusy.value = false;
       }
-      isBusy.value = false;
     }
 
-    Future<void> sendConversation() async {
-      final text = conversationInput.text.trim();
+    Future<void> sendConversation([String? prefilledText]) async {
+      final text = (prefilledText ?? conversationInput.text).trim();
       if (text.isEmpty) return;
       conversationMessages.value = [...conversationMessages.value, _ConversationTurn.user(text)];
-      conversationInput.clear();
+      if (prefilledText == null) conversationInput.clear();
       isBusy.value = true;
-      final json = await askForJson(
-        '''
-Return STRICT JSON only.
+      try {
+        final json = await askForJson(
+          '''
+Return STRICT JSON only. Do NOT wrap in markdown. Do NOT include text outside the JSON.
 {
- "message":"Natural reply with **bolded vocab**. 2-4 sentences.",
- "correction":{"has_correction":true,"was_correct":false,"correction":"...","note":"..."},
- "suggested_replies":["...", "..."],
- "new_vocab":[{"word":"...","meaning":"..."}]
+ "message":"Your natural reply in a mix of $targetLanguage and English. 2-4 sentences. Use the target language naturally.",
+ "correction":{"has_correction":false,"was_correct":true,"correction":"corrected version or empty","note":"explanation"},
+ "suggested_replies":["reply option 1 in $targetLanguage","reply option 2"],
+ "new_vocab":[{"word":"new word","meaning":"meaning"}]
 }
 
+You are Polie, a friendly language tutor. Have a natural conversation.
 Target language: $targetLanguage
 User message: "$text"
+Respond conversationally. If the user made grammar mistakes in $targetLanguage, set has_correction to true and provide the correction.
 ''',
-      );
-      if (json != null) {
-        final payload = _ConversationPayload.fromJson(json, modeResponse.value);
-        conversationMessages.value = [...conversationMessages.value, _ConversationTurn.ai(payload)];
-        final targetLetters = RegExp(r'[^\x00-\x7F]').hasMatch(text);
-        final oldRatio = languageRatio.value;
-        languageRatio.value = ((oldRatio * (conversationMessages.value.length - 1)) + (targetLetters ? 1 : 0)) /
-            conversationMessages.value.length;
+        );
+        if (json != null) {
+          final payload = _ConversationPayload.fromJson(json, modeResponse.value);
+          conversationMessages.value = [...conversationMessages.value, _ConversationTurn.ai(payload)];
+          final targetLetters = RegExp(r'[^\x00-\x7F]').hasMatch(text);
+          final oldRatio = languageRatio.value;
+          languageRatio.value = ((oldRatio * (conversationMessages.value.length - 1)) + (targetLetters ? 1 : 0)) /
+              conversationMessages.value.length;
+        }
+      } catch (e) {
+        modeError.value = 'Conversation error: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
+      } finally {
+        isBusy.value = false;
       }
-      isBusy.value = false;
     }
 
     Future<void> loadVocabCard() async {
       isBusy.value = true;
-      final json = await askForJson(
-        '''
+      try {
+        final exclusionClause = vocabShownWords.value.isEmpty
+            ? ''
+            : '\nDo NOT repeat these previously shown words: ${vocabShownWords.value.take(30).join(', ')}';
+        final json = await askForJson(
+          '''
 Return STRICT JSON only.
 {
- "word":"...",
- "pronunciation":"...",
- "part_of_speech":"...",
- "english":"...",
- "example":{"target":"...","english":"..."},
- "memory_peg":"...",
- "cultural_note":"...|null",
- "related_words":[{"word":"...","relationship":"synonym|antonym|related|derived"}],
+ "word":"a $targetLanguage word",
+ "pronunciation":"phonetic pronunciation",
+ "part_of_speech":"noun|verb|adjective|adverb|phrase|greeting",
+ "english":"English meaning",
+ "example":{"target":"example sentence in $targetLanguage","english":"English translation"},
+ "memory_peg":"a memorable association to remember this word",
+ "cultural_note":"cultural context or null",
+ "related_words":[{"word":"related word","relationship":"synonym|antonym|related|derived"}],
  "difficulty":"beginner|intermediate|advanced"
 }
 
-Generate one $targetLanguage vocabulary card.
+Generate one unique $targetLanguage vocabulary card.$exclusionClause
 ''',
-      );
-      if (json != null) {
-        vocabCard.value = _VocabPayload.fromJson(json, modeResponse.value);
-        vocabReveal.value = false;
-        vocabDeckCount.value = (vocabDeckCount.value - 1).clamp(0, 999);
+        );
+        if (json != null) {
+          vocabCard.value = _VocabPayload.fromJson(json, modeResponse.value);
+          vocabShownWords.value = {...vocabShownWords.value, vocabCard.value!.word.toLowerCase()};
+          vocabReveal.value = false;
+          vocabDeckCount.value = (vocabDeckCount.value - 1).clamp(0, 999);
+        }
+      } catch (e) {
+        modeError.value = 'Vocab error: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
+      } finally {
+        isBusy.value = false;
       }
-      isBusy.value = false;
     }
 
     Future<void> scoreSrs(String bucket) async {
@@ -346,36 +412,56 @@ Generate one $targetLanguage vocabulary card.
 
     Future<void> loadReview() async {
       isBusy.value = true;
-      final stats = await reviewProgress.loadStatistics(targetLanguage);
-      final json = await askForJson(
-        '''
+      try {
+        final reviewStats = await reviewProgress.loadStatistics(targetLanguage);
+        final vocabProg = await vocabProgress.loadProgress(targetLanguage);
+        final tutorProg = await tutorProgress.loadProgress(targetLanguage);
+
+        final wordsSeen = vocabProg.totalWordsLearned > 0 ? vocabProg.totalWordsLearned : reviewStats.totalItemsReviewed;
+        final totalWords = vocabProg.words.length;
+        final correctWords = vocabProg.words.values.where((w) => w.isMastered).length;
+        final vocabAccuracy = totalWords > 0 ? (correctWords / totalWords) * 100 : 0.0;
+        final overallAccuracy = reviewStats.averageAccuracy > 0
+            ? (reviewStats.averageAccuracy + vocabAccuracy) / 2
+            : vocabAccuracy > 0 ? vocabAccuracy : 0.0;
+        final lessonsDone = tutorProg.totalSessions + reviewStats.totalReviews;
+        final streak = reviewStats.currentStreak;
+
+        final json = await askForJson(
+          '''
 Return STRICT JSON only.
 {
- "headline_insight":"...",
- "strengths":[{"area":"...","note":"..."}],
- "growth_areas":[{"area":"...","note":"...","quick_win":"..."}],
- "coaching_paragraph":"2-3 sentences",
- "next_steps":[{"type":"lesson|scene|vocabulary_review","title":"...","why":"..."}],
- "motivational_close":"..."
+ "headline_insight":"a short motivational headline about the learner progress",
+ "strengths":[{"area":"skill area","note":"what they do well"}],
+ "growth_areas":[{"area":"skill area","note":"what to improve","quick_win":"one quick action"}],
+ "coaching_paragraph":"2-3 sentences of personalized coaching",
+ "next_steps":[{"type":"lesson|scene|vocabulary_review","title":"suggested activity","why":"reason"}],
+ "motivational_close":"an encouraging closing sentence"
 }
 
 Review period: ${reviewPeriod.value}
-Total reviews: ${stats.totalReviews}
-Average accuracy: ${stats.averageAccuracy.toStringAsFixed(1)}
-Current streak: ${stats.currentStreak}
+Words learned: $wordsSeen
+Tutor lessons completed: $lessonsDone
+Average accuracy: ${overallAccuracy.toStringAsFixed(1)}%
+Current streak: $streak days
+Language: $targetLanguage
 ''',
-      );
-      if (json != null) {
-        reviewPayload.value = _ReviewPayload.fromJson(
-          json,
-          modeResponse.value,
-          wordsSeen: stats.totalItemsReviewed,
-          accuracy: stats.averageAccuracy,
-          streak: stats.currentStreak,
-          lessonsDone: stats.totalReviews,
         );
+        if (json != null) {
+          reviewPayload.value = _ReviewPayload.fromJson(
+            json,
+            modeResponse.value,
+            wordsSeen: wordsSeen,
+            accuracy: overallAccuracy,
+            streak: streak,
+            lessonsDone: lessonsDone,
+          );
+        }
+      } catch (e) {
+        modeError.value = 'Review error: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
+      } finally {
+        isBusy.value = false;
       }
-      isBusy.value = false;
     }
 
     useEffect(() {
@@ -384,13 +470,22 @@ Current streak: ${stats.currentStreak}
       if (initialMode == PolieMode.tutor) loadTutorLesson();
       if (initialMode == PolieMode.vocab) loadVocabCard();
       if (initialMode == PolieMode.review) loadReview();
+      SharedPreferences.getInstance().then((prefs) {
+        final dismissed = <String>{};
+        for (final m in PolieMode.values) {
+          if (prefs.getBool('polie_mode_intro_${m.name}_dismissed') ?? false) {
+            dismissed.add(m.name);
+          }
+        }
+        modeIntroDismissed.value = dismissed;
+      });
       return null;
     }, const []);
 
     useEffect(() {
+      translationTimer.value?.cancel();
       if (!autoTranslate.value) return null;
       final text = translationInput.text.trim();
-      translationTimer.value?.cancel();
       if (activeMode.value == PolieMode.translation && text.isNotEmpty) {
         translationTimer.value = Timer(const Duration(milliseconds: 500), () {
           runTranslation(text);
@@ -398,6 +493,17 @@ Current streak: ${stats.currentStreak}
       }
       return () => translationTimer.value?.cancel();
     }, [translationInput.text, autoTranslate.value, activeMode.value, translationTone.value]);
+
+    // Fire translation immediately when auto-translate is toggled ON with existing input
+    useEffect(() {
+      if (autoTranslate.value && activeMode.value == PolieMode.translation) {
+        final text = translationInput.text.trim();
+        if (text.isNotEmpty && !isBusy.value) {
+          Future.microtask(() => runTranslation(text));
+        }
+      }
+      return null;
+    }, [autoTranslate.value]);
 
     final modeTheme = _themeForMode(activeMode.value);
 
@@ -485,6 +591,12 @@ Current streak: ${stats.currentStreak}
                 reviewPayload: reviewPayload.value,
                 reviewPeriod: reviewPeriod,
                 onLoadReview: loadReview,
+                introDismissed: modeIntroDismissed.value,
+                onDismissIntro: (modeName) async {
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.setBool('polie_mode_intro_${modeName}_dismissed', true);
+                  modeIntroDismissed.value = {...modeIntroDismissed.value, modeName};
+                },
               ),
             ),
           ),
@@ -523,7 +635,7 @@ Current streak: ${stats.currentStreak}
     required List<_ConversationTurn> conversationMessages,
     required TextEditingController conversationInput,
     required double languageRatio,
-    required Future<void> Function() onSendConversation,
+    required Future<void> Function([String?]) onSendConversation,
     required _VocabPayload? vocabCard,
     required ValueNotifier<bool> vocabReveal,
     required ValueNotifier<String> vocabSetName,
@@ -534,6 +646,8 @@ Current streak: ${stats.currentStreak}
     required _ReviewPayload? reviewPayload,
     required ValueNotifier<String> reviewPeriod,
     required Future<void> Function() onLoadReview,
+    required Set<String> introDismissed,
+    required void Function(String modeName) onDismissIntro,
   }) {
     final bodyStyle = GoogleFonts.nunito(color: theme.body, fontSize: 14);
     final monoStyle = GoogleFonts.jetBrainsMono(color: theme.title, fontSize: 13.5);
@@ -557,7 +671,74 @@ Current streak: ${stats.currentStreak}
               color: Colors.red.withOpacity(0.12),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Text(modeError, style: bodyStyle),
+            child: Row(
+              children: [
+                Icon(Icons.error_outline_rounded, color: Colors.red.shade300, size: 18),
+                const SizedBox(width: 8),
+                Expanded(child: Text(modeError, style: bodyStyle)),
+              ],
+            ),
+          );
+
+    const modeDescriptions = <PolieMode, String>{
+      PolieMode.translation: 'Translate text between English and your target language with tone options.',
+      PolieMode.tutor: 'Get bite-sized grammar and vocabulary lessons with practice questions.',
+      PolieMode.roleplay: 'Practice real conversations in immersive scenarios with AI characters.',
+      PolieMode.conversation: 'Have a freeform conversation to build fluency naturally.',
+      PolieMode.vocab: 'Learn and review vocabulary with spaced repetition flashcards.',
+      PolieMode.review: 'See your learning stats and get personalized review suggestions.',
+    };
+
+    const modeIcons = <PolieMode, String>{
+      PolieMode.translation: '\u21C4',
+      PolieMode.tutor: '\uD83D\uDCD6',
+      PolieMode.roleplay: '\uD83C\uDFAD',
+      PolieMode.conversation: '\uD83D\uDCAC',
+      PolieMode.vocab: '\u2726',
+      PolieMode.review: '\uD83D\uDCCA',
+    };
+
+    final intro = introDismissed.contains(mode.name)
+        ? const SizedBox.shrink()
+        : Container(
+            margin: const EdgeInsets.fromLTRB(12, 4, 12, 8),
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: theme.accent.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: theme.accent.withOpacity(0.25)),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(modeIcons[mode] ?? '', style: const TextStyle(fontSize: 22)),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        mode.name[0].toUpperCase() + mode.name.substring(1),
+                        style: GoogleFonts.nunito(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14,
+                          color: theme.title,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        modeDescriptions[mode] ?? '',
+                        style: GoogleFonts.nunito(fontSize: 12.5, color: theme.body),
+                      ),
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => onDismissIntro(mode.name),
+                  child: Icon(Icons.close_rounded, size: 18, color: theme.body.withOpacity(0.6)),
+                ),
+              ],
+            ),
           );
 
     if (mode == PolieMode.translation) {
@@ -569,6 +750,7 @@ Current streak: ${stats.currentStreak}
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             error,
+            intro,
             Row(
               children: [
                 Expanded(
@@ -757,6 +939,7 @@ Current streak: ${stats.currentStreak}
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             error,
+            intro,
             Row(
               children: [
                 Expanded(
@@ -804,21 +987,53 @@ Current streak: ${stats.currentStreak}
                     ),
                     const SizedBox(height: 8),
                     Text('Memory tip: ${tutorLesson?.memoryTip ?? '-'}', style: bodyStyle),
-                    if ((tutorLesson?.watchOut ?? '').isNotEmpty) Text('Watch out: ${tutorLesson!.watchOut}', style: bodyStyle),
+                    if ((tutorLesson?.watchOut ?? '').isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.warning_amber_rounded, size: 16, color: Color(0xFFC4663A)),
+                            const SizedBox(width: 4),
+                            Expanded(child: Text('Watch out: ${tutorLesson!.watchOut}', style: bodyStyle.copyWith(color: const Color(0xFFC4663A)))),
+                          ],
+                        ),
+                      ),
                   ],
                 ),
               ),
             ),
+            if (tutorLesson?.practiceQuestion != null) ...[
+              const SizedBox(height: 10),
+              card(
+                color: const Color(0xFFD4822A).withOpacity(0.08),
+                Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Practice Question', style: bodyStyle.copyWith(fontWeight: FontWeight.w800, color: const Color(0xFFD4822A))),
+                      const SizedBox(height: 6),
+                      Text(tutorLesson!.practiceQuestion!, style: bodyStyle.copyWith(fontSize: 15)),
+                      if (tutorLesson.practiceHint != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Text('Hint: ${tutorLesson.practiceHint}', style: bodyStyle.copyWith(fontStyle: FontStyle.italic, color: Colors.grey.shade600)),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
             const SizedBox(height: 10),
             TextField(
               controller: tutorInput,
               minLines: 2,
               maxLines: 4,
-              decoration: _inputDecoration(theme, 'Type your answer'),
+              decoration: _inputDecoration(theme, tutorLesson?.practiceQuestion != null ? 'Type your answer to the practice question' : 'Type your answer'),
             ),
             const SizedBox(height: 8),
             FilledButton(
-              onPressed: isBusy ? null : onCheckTutorAnswer,
+              onPressed: isBusy || tutorLesson == null ? null : onCheckTutorAnswer,
               style: FilledButton.styleFrom(backgroundColor: theme.accent),
               child: Text(isBusy ? 'Checking...' : 'Check Answer'),
             ),
@@ -863,6 +1078,7 @@ Current streak: ${stats.currentStreak}
         child: Column(
           children: [
             error,
+            intro,
             card(
               color: Colors.white.withOpacity(0.06),
               Padding(
@@ -874,9 +1090,11 @@ Current streak: ${stats.currentStreak}
                         Expanded(
                           child: DropdownButtonFormField<String>(
                             value: roleplayScene.value,
+                            dropdownColor: const Color(0xFF2A1F14),
+                            style: const TextStyle(color: Color(0xFFFAF3E0), fontSize: 14),
                             decoration: _inputDecoration(theme, 'Scene'),
                             items: const ['Market', 'Restaurant', 'Meeting Elder', 'Job Interview', 'Family Dinner']
-                                .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                                .map((e) => DropdownMenuItem(value: e, child: Text(e, style: TextStyle(color: Color(0xFFFAF3E0)))))
                                 .toList(),
                             onChanged: (v) => roleplayScene.value = v ?? 'Market',
                           ),
@@ -885,9 +1103,11 @@ Current streak: ${stats.currentStreak}
                         Expanded(
                           child: DropdownButtonFormField<String>(
                             value: roleplayDifficulty.value,
+                            dropdownColor: const Color(0xFF2A1F14),
+                            style: const TextStyle(color: Color(0xFFFAF3E0), fontSize: 14),
                             decoration: _inputDecoration(theme, 'Difficulty'),
                             items: const ['bilingual', 'hint', 'immersion']
-                                .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                                .map((e) => DropdownMenuItem(value: e, child: Text(e, style: TextStyle(color: Color(0xFFFAF3E0)))))
                                 .toList(),
                             onChanged: (v) => roleplayDifficulty.value = v ?? 'bilingual',
                           ),
@@ -972,7 +1192,10 @@ Current streak: ${stats.currentStreak}
                 Expanded(
                   child: TextField(
                     controller: roleplayInput,
-                    decoration: _inputDecoration(theme, 'Speak your line...'),
+                    style: const TextStyle(color: Color(0xFFFAF3E0)),
+                    decoration: _inputDecoration(theme, 'Speak your line...').copyWith(
+                      hintStyle: const TextStyle(color: Color(0xFFD8C9B7)),
+                    ),
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -995,6 +1218,7 @@ Current streak: ${stats.currentStreak}
         child: Column(
           children: [
             error,
+            intro,
             Padding(
               padding: const EdgeInsets.fromLTRB(12, 4, 12, 8),
               child: card(
@@ -1070,7 +1294,7 @@ Current streak: ${stats.currentStreak}
                                   .take(3)
                                   .map((reply) => ActionChip(
                                         label: Text(reply),
-                                        onPressed: () {},
+                                        onPressed: isBusy ? null : () => onSendConversation(reply),
                                       ))
                                   .toList(),
                             ),
@@ -1113,6 +1337,7 @@ Current streak: ${stats.currentStreak}
         child: Column(
           children: [
             error,
+            intro,
             Padding(
               padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
               child: card(
@@ -1181,17 +1406,17 @@ Current streak: ${stats.currentStreak}
                 children: [
                   Row(
                     children: [
-                      Expanded(child: _srsButton('Again (1m)', Colors.red.shade500, () => onScoreSrs('again'))),
+                      Expanded(child: _srsButton('Again (1m)', Colors.red.shade500, isBusy ? null : () => onScoreSrs('again'))),
                       const SizedBox(width: 6),
-                      Expanded(child: _srsButton('Hard (10m)', Colors.orange.shade600, () => onScoreSrs('hard'))),
+                      Expanded(child: _srsButton('Hard (10m)', Colors.orange.shade600, isBusy ? null : () => onScoreSrs('hard'))),
                     ],
                   ),
                   const SizedBox(height: 6),
                   Row(
                     children: [
-                      Expanded(child: _srsButton('Good (1d)', Colors.green.shade600, () => onScoreSrs('good'))),
+                      Expanded(child: _srsButton('Good (1d)', Colors.green.shade600, isBusy ? null : () => onScoreSrs('good'))),
                       const SizedBox(width: 6),
-                      Expanded(child: _srsButton('Easy (4d)', Colors.blue.shade600, () => onScoreSrs('easy'))),
+                      Expanded(child: _srsButton('Easy (4d)', Colors.blue.shade600, isBusy ? null : () => onScoreSrs('easy'))),
                     ],
                   ),
                   const SizedBox(height: 8),
@@ -1217,6 +1442,7 @@ Current streak: ${stats.currentStreak}
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           error,
+          intro,
           Row(
             children: [
               Expanded(
@@ -1337,8 +1563,10 @@ Current streak: ${stats.currentStreak}
   }
 
   InputDecoration _inputDecoration(_ModeTheme theme, String hint) {
+    final isDark = theme.background.computeLuminance() < 0.2;
     return InputDecoration(
       hintText: hint,
+      hintStyle: isDark ? const TextStyle(color: Color(0xFFD8C9B7)) : null,
       filled: true,
       fillColor: theme.card,
       border: OutlineInputBorder(
@@ -1446,18 +1674,22 @@ Current streak: ${stats.currentStreak}
     }
   }
 
-  Widget _srsButton(String label, Color color, VoidCallback onTap) {
+  Widget _srsButton(String label, Color color, VoidCallback? onTap) {
+    final disabled = onTap == null;
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(10),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        decoration: BoxDecoration(
-          color: color.withOpacity(0.9),
-          borderRadius: BorderRadius.circular(10),
+      child: Opacity(
+        opacity: disabled ? 0.45 : 1.0,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.9),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          alignment: Alignment.center,
+          child: Text(label, style: GoogleFonts.nunito(color: Colors.white, fontWeight: FontWeight.w700)),
         ),
-        alignment: Alignment.center,
-        child: Text(label, style: GoogleFonts.nunito(color: Colors.white, fontWeight: FontWeight.w700)),
       ),
     );
   }
@@ -1571,7 +1803,33 @@ Map<String, dynamic>? _tryParseJson(String raw) {
     }
   } catch (_) {}
 
-  // Attempt 3: build minimal JSON from key:value prose (graceful degradation)
+  // Attempt 3: roleplay-aware extraction when nested JSON is broken
+  try {
+    if (cleaned.contains('character_response') || cleaned.contains('target_lang')) {
+      final targetMatch = RegExp(r'"target_lang"\s*:\s*"([^"]*)"').firstMatch(cleaned);
+      final englishMatch = RegExp(r'"english"\s*:\s*"([^"]*)"').firstMatch(cleaned);
+      final feedbackMatch = RegExp(r'"feedback"\s*:\s*"([^"]*)"').firstMatch(cleaned);
+      if (targetMatch != null) {
+        return {
+          'character_response': {
+            'target_lang': targetMatch.group(1) ?? '',
+            'transliteration': '-',
+            'english': englishMatch?.group(1) ?? '-',
+            'emotion': 'neutral',
+            'action': null,
+          },
+          'coaching': {
+            'user_accuracy': 50,
+            'feedback_type': 'suggestion',
+            'feedback': feedbackMatch?.group(1) ?? 'Keep practicing!',
+            'better_phrasing': null,
+          },
+        };
+      }
+    }
+  } catch (_) {}
+
+  // Attempt 4: build minimal JSON from key:value prose (graceful degradation)
   try {
     final lines = cleaned.split('\n').where((l) => l.trim().isNotEmpty);
     final map = <String, dynamic>{};
@@ -1663,18 +1921,31 @@ class _TutorLessonPayload {
   final _TutorExample example;
   final String memoryTip;
   final String? watchOut;
+  final String? practiceQuestion;
+  final String? practiceHint;
   const _TutorLessonPayload({
     required this.concept,
     required this.explanation,
     required this.example,
     required this.memoryTip,
     required this.watchOut,
+    this.practiceQuestion,
+    this.practiceHint,
   });
   factory _TutorLessonPayload.fromJson(Map<String, dynamic> json, String fallback) {
     final ex = (_n(json, 'example', const {}) as Map).cast<String, dynamic>();
+    String concept = (_n(json, 'concept', 'Lesson') as String);
+    // Guard against raw JSON leaking into concept field
+    if (concept.startsWith('{') || concept.startsWith('```')) {
+      concept = 'Lesson';
+    }
+    String explanation = (_n(json, 'explanation', fallback) as String);
+    if (explanation.startsWith('{') || explanation.startsWith('```')) {
+      explanation = fallback;
+    }
     return _TutorLessonPayload(
-      concept: (_n(json, 'concept', 'Lesson') as String),
-      explanation: (_n(json, 'explanation', fallback) as String),
+      concept: concept,
+      explanation: explanation,
       example: _TutorExample(
         targetLang: (_n(ex, 'target_lang', '-') as String),
         transliteration: (_n(ex, 'transliteration', '-') as String),
@@ -1682,6 +1953,12 @@ class _TutorLessonPayload {
       ),
       memoryTip: (_n(json, 'memory_tip', '-') as String),
       watchOut: (_n(json, 'watch_out', '') as String?)?.trim().isEmpty ?? true ? null : (_n(json, 'watch_out', '') as String),
+      practiceQuestion: (_n(json, 'practice_question', '') as String?)?.trim().isEmpty ?? true
+          ? null
+          : (_n(json, 'practice_question', '') as String),
+      practiceHint: (_n(json, 'practice_hint', '') as String?)?.trim().isEmpty ?? true
+          ? null
+          : (_n(json, 'practice_hint', '') as String),
     );
   }
 }
@@ -1806,7 +2083,10 @@ class _ConversationPayload {
         .map((e) => e is Map<String, dynamic> ? e : <String, dynamic>{})
         .toList();
     return _ConversationPayload(
-      message: (_n(json, 'message', fallback) as String),
+      message: (_n(json, 'message', fallback) as String)
+          .replaceAll(RegExp(r'\*\*'), '')
+          .replaceAll(RegExp(r'^```.*$', multiLine: true), '')
+          .trim(),
       correction: _ConversationCorrection(
         hasCorrection: (_n(c, 'has_correction', false) as bool?) ?? false,
         wasCorrect: (_n(c, 'was_correct', true) as bool?) ?? true,

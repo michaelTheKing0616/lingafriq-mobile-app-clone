@@ -12,6 +12,7 @@ import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 import '../../../history/screens/history_list_screen.dart';
 import '../../../mannerisms/screens/mannerism_list_screen.dart';
 import '../../../providers/navigation_provider.dart';
+import '../../../screens/curriculum/curriculum_screen_material3.dart';
 import '../../../screens/learning/learning_path_screen.dart';
 import '../../../widgets/responsive_safe_area.dart';
 
@@ -77,6 +78,30 @@ class LanguageDetailScreen extends ConsumerWidget {
                                   child: Image.asset(Images.map).offset(offset: Offset(0, -12.sp)),
                                 ),
                                 Positioned(
+                                  left: 0,
+                                  right: 0,
+                                  top: 0,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: PanAfricanSpacing.sm,
+                                      vertical: PanAfricanSpacing.xs,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withOpacity(0.35),
+                                      borderRadius: PanAfricanRadius.smBR,
+                                      border: Border.all(color: Colors.white.withOpacity(0.15)),
+                                    ),
+                                    child: Text(
+                                      'Pick where you want to learn',
+                                      textAlign: TextAlign.center,
+                                      style: PanAfricanTypography.bodyMedium(context).copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
                                   left: constraints.maxWidth * 0.12,
                                   top: constraints.maxHeight * 0.075,
                                   child: _LessonTextBuilder(
@@ -100,6 +125,18 @@ class LanguageDetailScreen extends ConsumerWidget {
                                     },
                                   ).animate(effects: kGradientTextEffects),
                                 ),
+                                Positioned(
+                                  left: constraints.maxWidth * 0.08,
+                                  top: constraints.maxHeight * (context.isSmall ? 0.38 : 0.33),
+                                  child: _CurriculumTextBuilder(
+                                    onTap: () {
+                                      HapticFeedback.lightImpact();
+                                      ref
+                                          .read(navigationProvider)
+                                          .navigateTo(const CurriculumScreenMaterial3());
+                                    },
+                                  ),
+                                ).animate(effects: kGradientTextEffects),
                                 Positioned(
                                   left: constraints.maxWidth * (context.isSmall ? 0.45 : 0.425),
                                   top: constraints.maxHeight * (context.isSmall ? 0.6 : 0.475),
@@ -208,25 +245,10 @@ class _LessonTextBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: PanAfricanRadius.smBR,
-        child: Padding(
-          padding: EdgeInsets.all(PanAfricanSpacing.xs),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: ['l', 'e', 's', 's', 'o', 'n', 's'].map((e) {
-              return Image.asset(
-                "assets/alphabets/$e.png",
-                width: 19.sp,
-                height: 19.sp,
-              );
-            }).toList(),
-          ),
-        ),
-      ),
+    return _MapActionChip(
+      label: 'Lessons',
+      icon: Icons.menu_book_rounded,
+      onTap: onTap,
     );
   }
 }
@@ -240,22 +262,50 @@ class _MannerismTextBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return _MapActionChip(
+      label: 'Mannerisms',
+      icon: Icons.record_voice_over_rounded,
+      onTap: onTap,
+    );
+  }
+}
+
+class _CurriculumTextBuilder extends StatelessWidget {
+  final VoidCallback onTap;
+  const _CurriculumTextBuilder({required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
         borderRadius: PanAfricanRadius.smBR,
-        child: Padding(
-          padding: EdgeInsets.all(PanAfricanSpacing.xs),
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: PanAfricanSpacing.sm,
+            vertical: PanAfricanSpacing.xs,
+          ),
+          decoration: BoxDecoration(
+            gradient: PanAfricanGradients.sunset,
+            borderRadius: PanAfricanRadius.smBR,
+            boxShadow: PanAfricanShadows.sm,
+          ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
-            children: ['m', 'a', 'n', 'n', 'e', 'r', 'i', 's', 'm', 's'].map((e) {
-              return Image.asset(
-                "assets/alphabets/$e.png",
-                width: 18.sp,
-                height: 18.sp,
-              );
-            }).toList(),
+            children: [
+              Icon(Icons.auto_stories_rounded, size: 16.sp, color: Colors.white),
+              SizedBox(width: 4.sp),
+              Text(
+                'Curriculum',
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                  letterSpacing: 0.5,
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -274,22 +324,60 @@ class _HistoryTextBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return _MapActionChip(
+      label: 'History',
+      icon: Icons.history_edu_rounded,
+      onTap: onTap,
+      fontSize: size?.width != null ? (size!.width * 0.65) : null,
+    );
+  }
+}
+
+class _MapActionChip extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final VoidCallback onTap;
+  final double? fontSize;
+
+  const _MapActionChip({
+    required this.label,
+    required this.icon,
+    required this.onTap,
+    this.fontSize,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: PanAfricanRadius.smBR,
-        child: Padding(
-          padding: EdgeInsets.all(PanAfricanSpacing.xs),
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: PanAfricanSpacing.sm,
+            vertical: PanAfricanSpacing.xs,
+          ),
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.42),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.white.withOpacity(0.25)),
+          ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
-            children: ['h', 'i', 's', 't', 'o', 'r', 'y'].map((e) {
-              return Image.asset(
-                "assets/alphabets/$e.png",
-                width: size?.width ?? 19.sp,
-                height: size?.height ?? 19.sp,
-              );
-            }).toList(),
+            children: [
+              Icon(icon, size: 14.sp, color: Colors.white),
+              SizedBox(width: 5.sp),
+              Text(
+                label,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0.2,
+                  fontSize: fontSize ?? 12.sp,
+                ),
+              ),
+            ],
           ),
         ),
       ),

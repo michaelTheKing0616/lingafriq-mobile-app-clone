@@ -660,7 +660,22 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       combined.shuffle(rng);
       final take = min(count, combined.length);
 
-      for (var i = 0; i < take; i++) {
+      if (take < 4) {
+        // Universal safety net phrases for any language
+        final universalPhrases = [
+          PhraseCard(cardId: 'uni_hello', language: lang, text: 'Hello', ascii: 'Hello', gloss: 'Greeting', level: 'A1'),
+          PhraseCard(cardId: 'uni_thanks', language: lang, text: 'Thank you', ascii: 'Thank you', gloss: 'Gratitude', level: 'A1'),
+          PhraseCard(cardId: 'uni_yes', language: lang, text: 'Yes', ascii: 'Yes', gloss: 'Affirmative', level: 'A1'),
+          PhraseCard(cardId: 'uni_no', language: lang, text: 'No', ascii: 'No', gloss: 'Negative', level: 'A1'),
+          PhraseCard(cardId: 'uni_please', language: lang, text: 'Please', ascii: 'Please', gloss: 'Polite request', level: 'A1'),
+          PhraseCard(cardId: 'uni_goodbye', language: lang, text: 'Goodbye', ascii: 'Goodbye', gloss: 'Farewell', level: 'A1'),
+        ];
+        combined.addAll(universalPhrases);
+      }
+
+      final actualTake = min(count, combined.length);
+
+      for (var i = 0; i < actualTake; i++) {
         final item = combined[i];
         final cardId = '${lang}_card_$i';
         cards.add(PhraseCard(

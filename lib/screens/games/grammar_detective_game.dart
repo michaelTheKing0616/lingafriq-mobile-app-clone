@@ -33,15 +33,60 @@ class _GrammarDetectiveGameState extends BaseGameScreenState<GrammarDetectiveGam
   Future<void> onGameInitialized() async {
     // Generate grammar questions
     _questions.addAll([
+      // Yoruba
       _GrammarQuestion(
-        text: 'Mo n ko eko', // Missing diacritics
+        text: 'Mo n ko eko',
         correctError: 'Missing diacritics: "Mo ń kọ́ ẹ̀kọ́"',
         errors: ['Missing diacritics: "Mo ń kọ́ ẹ̀kọ́"', 'Wrong word order', 'Missing verb'],
       ),
       _GrammarQuestion(
-        text: 'Bawo ni o?', // Missing diacritics
+        text: 'Bawo ni o?',
         correctError: 'Missing diacritics: "Báwo ní o?"',
         errors: ['Missing diacritics: "Báwo ní o?"', 'Wrong tense', 'Missing subject'],
+      ),
+      _GrammarQuestion(
+        text: 'Ó fẹ́ jẹ oúnjẹ',
+        correctError: 'Wrong tone marker: should be "Ó fẹ́ jẹun oúnjẹ"',
+        errors: ['Wrong tone marker: should be "Ó fẹ́ jẹun oúnjẹ"', 'Missing subject', 'Wrong word order'],
+      ),
+      // Hausa
+      _GrammarQuestion(
+        text: 'Ina zuwa kasuwa jiya',
+        correctError: 'Wrong tense: "Na je kasuwa jiya" (past tense required)',
+        errors: ['Wrong tense: "Na je kasuwa jiya" (past tense required)', 'Missing diacritics', 'Wrong word order'],
+      ),
+      _GrammarQuestion(
+        text: 'Shi yana da kyau',
+        correctError: 'Wrong pronoun gender: "Ita tana da kyau" (feminine subject)',
+        errors: ['Wrong pronoun gender: "Ita tana da kyau" (feminine subject)', 'Missing verb', 'Wrong tense'],
+      ),
+      // Igbo
+      _GrammarQuestion(
+        text: 'Ọ na-aga ahịa echi',
+        correctError: 'Wrong tense: "Ọ ga-aga ahịa echi" (future tense required)',
+        errors: ['Wrong tense: "Ọ ga-aga ahịa echi" (future tense required)', 'Missing subject', 'Wrong word order'],
+      ),
+      _GrammarQuestion(
+        text: 'Anyị nọ na ụlọ akwụkwọ',
+        correctError: 'Missing auxiliary verb: "Anyị nọ n\'ụlọ akwụkwọ"',
+        errors: ['Missing auxiliary verb: "Anyị nọ n\'ụlọ akwụkwọ"', 'Wrong pronoun', 'Wrong tense'],
+      ),
+      // Swahili
+      _GrammarQuestion(
+        text: 'Mimi kupenda chakula',
+        correctError: 'Missing subject prefix: "Mimi napenda chakula"',
+        errors: ['Missing subject prefix: "Mimi napenda chakula"', 'Wrong word order', 'Missing object'],
+      ),
+      _GrammarQuestion(
+        text: 'Watoto wanacheza mpira jana',
+        correctError: 'Wrong tense marker: "Watoto walicheza mpira jana" (past tense)',
+        errors: ['Wrong tense marker: "Watoto walicheza mpira jana" (past tense)', 'Missing subject', 'Wrong noun class'],
+      ),
+      // Zulu
+      _GrammarQuestion(
+        text: 'Ngiya eskoleni kusasa',
+        correctError: 'Wrong tense prefix: "Ngizoya eskoleni kusasa" (future tense)',
+        errors: ['Wrong tense prefix: "Ngizoya eskoleni kusasa" (future tense)', 'Missing object', 'Wrong word order'],
       ),
     ]);
   }

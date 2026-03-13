@@ -80,6 +80,31 @@ class TakeQuizScreen extends ConsumerWidget {
                                       .offset(offset: Offset(0, -12.sp)),
                                 ),
                                 Positioned(
+                                  left: 0,
+                                  right: 0,
+                                  top: 0,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 12.sp,
+                                      vertical: 8.sp,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withOpacity(0.35),
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(color: Colors.white.withOpacity(0.15)),
+                                    ),
+                                    child: Text(
+                                      'Choose a quiz type',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
                                   left: constraints.maxWidth * 0.12,
                                   top: constraints.maxHeight * 0.075,
                                   child: _RandomTextBuilder(
@@ -303,28 +328,10 @@ class _RandomTextBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return _QuizTypeChip(
+      label: 'Random',
+      icon: Icons.shuffle_rounded,
       onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: ['r', 'a', 'n', 'd', 'o', 'm'].map((e) {
-              return Image.asset(
-                "assets/alphabets/$e.png",
-                width: 20.sp,
-                height: 20.sp,
-              );
-            }).toList(),
-          ),
-          // 8.heightBox,
-          // SizedBox(
-          //   width: 20.sp * 5.5,
-          //   child: const LinearProgressIndicator(value: 1).offset(offset: Offset(8.sp, 0)),
-          // ),
-        ],
-      ),
     );
   }
 }
@@ -338,30 +345,10 @@ class _LanguageTextBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return _QuizTypeChip(
+      label: 'Language',
+      icon: Icons.translate_rounded,
       onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: ['l', 'a', 'n', 'g', 'u', 'a', 'g', 'e'].map((e) {
-              return Image.asset(
-                "assets/alphabets/$e.png",
-                width: 18.sp,
-                height: 18.sp,
-              );
-            }).toList(),
-          ),
-          // 8.heightBox,
-          // SizedBox(
-          //   width: 18.sp * 7.5,
-          //   child: const LinearProgressIndicator(value: 1).offset(
-          //     offset: Offset(8.sp, 0),
-          //   ),
-          // ),
-        ],
-      ),
     );
   }
 }
@@ -377,29 +364,59 @@ class _HistoryTextBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return _QuizTypeChip(
+      label: 'History',
+      icon: Icons.history_edu_rounded,
       onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: ['h', 'i', 's', 't', 'o', 'r', 'y'].map((e) {
-              return Image.asset(
-                "assets/alphabets/$e.png",
-                width: size?.width ?? 20.sp,
-                height: size?.height ?? 20.sp,
-              );
-            }).toList(),
+      fontSize: size?.width != null ? (size!.width * 0.65) : null,
+    );
+  }
+}
+
+class _QuizTypeChip extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final VoidCallback onTap;
+  final double? fontSize;
+
+  const _QuizTypeChip({
+    required this.label,
+    required this.icon,
+    required this.onTap,
+    this.fontSize,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 10.sp, vertical: 7.sp),
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.42),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.white.withOpacity(0.25)),
           ),
-          // 8.heightBox,
-          // SizedBox(
-          //   width: (size?.width ?? 20.sp) * 6.3,
-          //   child: const LinearProgressIndicator(value: 1).offset(
-          //     offset: Offset(4.sp, 0),
-          //   ),
-          // ),
-        ],
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, size: 14.sp, color: Colors.white),
+              SizedBox(width: 5.sp),
+              Text(
+                label,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0.2,
+                  fontSize: fontSize ?? 12.sp,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

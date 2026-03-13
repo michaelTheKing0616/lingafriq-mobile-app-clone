@@ -26,9 +26,22 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
     final error = useState<String?>(null);
 
     final languages = ['yoruba', 'hausa', 'igbo', 'swahili', 'zulu'];
-    final levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+    const fallbackLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
     final curriculum = ref.watch(curriculumProvider.notifier).curriculum;
+    final providerState = ref.watch(curriculumProvider);
+
+    final levels = curriculum != null && curriculum.meta.levels.isNotEmpty
+        ? curriculum.meta.levels
+        : fallbackLevels;
+
+    bool levelHasContent(String level) {
+      if (curriculum == null) return true;
+      final langData = curriculum.languages[selectedLanguage.value];
+      if (langData == null) return false;
+      final unitList = langData[level];
+      return unitList != null && unitList.isNotEmpty;
+    }
 
     // Load curriculum bundle on mount (mirrors old CurriculumScreen.initState)
     useEffect(() {
@@ -56,11 +69,23 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
       return null;
     }, [curriculum, selectedLanguage.value, selectedLevel.value]);
 
+    // Ensure selectedLevel is valid for the current level list
+    final effectiveLevel = levels.contains(selectedLevel.value)
+        ? selectedLevel.value
+        : (levels.isNotEmpty ? levels.first : 'A1');
+
+    useEffect(() {
+      if (effectiveLevel != selectedLevel.value) {
+        selectedLevel.value = effectiveLevel;
+      }
+      return null;
+    }, [effectiveLevel]);
+
     // Extract units for selected language + level
     List<CurriculumUnit> units = [];
     if (curriculum != null) {
       final languageData = curriculum.languages[selectedLanguage.value];
-      final levelData = languageData?[selectedLevel.value];
+      final levelData = languageData?[effectiveLevel];
       if (levelData != null) {
         units = levelData;
       }
@@ -130,7 +155,7 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
                     child: Semantics(
                       label: 'Select level',
                       child: DropdownButtonFormField<String>(
-                        value: selectedLevel.value,
+                        value: effectiveLevel,
                         decoration: InputDecoration(
                           labelText: 'Level',
                           border: OutlineInputBorder(
@@ -142,9 +167,29 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
                               : PanAfricanColors.surfaceLight,
                         ),
                         items: levels.map((level) {
+                          final hasContent = levelHasContent(level);
                           return DropdownMenuItem(
                             value: level,
-                            child: Text(level),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(level),
+                                if (!hasContent) ...[
+                                  SizedBox(width: 6),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                                    decoration: BoxDecoration(
+                                      color: Colors.orange.withOpacity(0.15),
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: Text(
+                                      'Soon',
+                                      style: TextStyle(fontSize: 9.sp, color: Colors.orange.shade700),
+                                    ),
+                                  ),
+                                ],
+                              ],
+                            ),
                           );
                         }).toList(),
                         onChanged: (value) {
@@ -159,50 +204,108 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
 
             // Curriculum Content
             Expanded(
-              child: isLoading.value
-                  ? ListView.builder(
-                      padding: EdgeInsets.all(PanAfricanSpacing.lg),
-                      itemCount: 5,
-                      itemBuilder: (context, index) => const SkeletonListCard(),
-                    )
-                  : error.value != null
-                      ? AppErrorState(
-                          message: 'Failed to load curriculum',
-                          onRetry: () {
-                            safeAsync(
-                              context: context,
-                              operation: () async {
-                                isLoading.value = true;
-                                error.value = null;
-                                await ref.read(curriculumProvider.notifier).loadCurriculumFromBundle();
-                                isLoading.value = false;
-                              },
-                            );
-                          },
-                        )
-                      : units.isEmpty
-                          ? AppEmptyState(
-                              icon: Icons.menu_book_rounded,
-                              title: 'No lessons available',
-                              subtitle: 'Select a different language or level',
-                            )
-                          : ListView.builder(
-                              padding: EdgeInsets.all(PanAfricanSpacing.lg),
-                              itemCount: units.length,
-                              itemBuilder: (context, unitIndex) {
-                                final unit = units[unitIndex];
-                                return _UnitCard(
-                                  unit: unit,
-                                  unitIndex: unitIndex,
-                                  isDark: isDark,
-                                  language: selectedLanguage.value,
-                                  level: selectedLevel.value,
-                                  ref: ref,
-                                ).animate(delay: (unitIndex * 60).ms)
-                                    .fadeIn(duration: 300.ms)
-                                    .slideY(begin: 0.15);
-                              },
-                            ),
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  error.value = null;
+                  await ref.read(curriculumProvider.notifier).loadCurriculumFromBundle();
+                },
+                child: isLoading.value
+                    ? ListView.builder(
+                        padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                        itemCount: 5,
+                        itemBuilder: (context, index) => const SkeletonListCard(),
+                      )
+                    : (error.value != null || providerState.hasError)
+                        ? ListView(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            children: [
+                              SizedBox(height: MediaQuery.of(context).size.height * 0.15),
+                              AppErrorState(
+                                message: error.value ??
+                                    providerState.errorMessage ??
+                                    'Failed to load curriculum',
+                                onRetry: () {
+                                  safeAsync(
+                                    context: context,
+                                    operation: () async {
+                                      isLoading.value = true;
+                                      error.value = null;
+                                      await ref
+                                          .read(curriculumProvider.notifier)
+                                          .loadCurriculumFromBundle();
+                                      isLoading.value = false;
+                                    },
+                                  );
+                                },
+                              ),
+                            ],
+                          )
+                        : curriculum == null
+                            ? ListView(
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                children: [
+                                  SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height * 0.15),
+                                  AppErrorState(
+                                    message:
+                                        'Unable to load curriculum data. Please try again.',
+                                    onRetry: () {
+                                      safeAsync(
+                                        context: context,
+                                        operation: () async {
+                                          isLoading.value = true;
+                                          error.value = null;
+                                          await ref
+                                              .read(curriculumProvider.notifier)
+                                              .loadCurriculumFromBundle();
+                                          isLoading.value = false;
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ],
+                              )
+                            : units.isEmpty
+                                ? ListView(
+                                    physics:
+                                        const AlwaysScrollableScrollPhysics(),
+                                    children: [
+                                      SizedBox(
+                                          height:
+                                              MediaQuery.of(context).size.height *
+                                                  0.15),
+                                      AppEmptyState(
+                                        icon: Icons.upcoming_rounded,
+                                        title: 'Coming Soon',
+                                        subtitle:
+                                            'Content for $effectiveLevel is coming soon!\nTry A1 or B1 to get started.',
+                                      ),
+                                    ],
+                                  )
+                                : ListView.builder(
+                                    physics:
+                                        const AlwaysScrollableScrollPhysics(),
+                                    padding:
+                                        EdgeInsets.all(PanAfricanSpacing.lg),
+                                    itemCount: units.length,
+                                    itemBuilder: (context, unitIndex) {
+                                      final unit = units[unitIndex];
+                                      return _UnitCard(
+                                        unit: unit,
+                                        unitIndex: unitIndex,
+                                        isDark: isDark,
+                                        language: selectedLanguage.value,
+                                        level: effectiveLevel,
+                                        ref: ref,
+                                      )
+                                          .animate(
+                                              delay: (unitIndex * 60).ms)
+                                          .fadeIn(duration: 300.ms)
+                                          .slideY(begin: 0.15);
+                                    },
+                                  ),
+              ),
             ),
           ],
         ),

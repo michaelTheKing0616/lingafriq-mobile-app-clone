@@ -27,6 +27,7 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
   int _currentTurn = 0;
   final int _maxTurns = 5;
   String? _prompt;
+  String? _lastFeedback;
 
   @override
   int getCardCount() => 1;
@@ -86,6 +87,22 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
       feedback: feedback,
     );
 
+    setState(() {
+      if (feedback.containsKey('grammar_errors') && (feedback['grammar_errors'] as List).isNotEmpty) {
+        final suggestions = feedback['suggestions'] as List? ?? [];
+        final corrected = feedback['corrected'] as String?;
+        _lastFeedback = corrected != null && corrected.isNotEmpty
+            ? 'Suggestion: $corrected'
+            : suggestions.isNotEmpty
+                ? 'Tip: ${suggestions.first}'
+                : 'Check your grammar and try again.';
+      } else if (feedback.containsKey('grammar_check_error')) {
+        _lastFeedback = null;
+      } else {
+        _lastFeedback = null;
+      }
+    });
+
     if (_currentTurn >= _maxTurns) {
       finishGame();
     }
@@ -131,6 +148,32 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
                 ),
               ),
             ),
+            if (_lastFeedback != null)
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+                padding: EdgeInsets.all(3.w),
+                decoration: BoxDecoration(
+                  color: Colors.amber.withOpacity(0.12),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.amber.withOpacity(0.3)),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.lightbulb_outline, color: Colors.amber.shade700, size: 18),
+                    SizedBox(width: 2.w),
+                    Expanded(
+                      child: Text(
+                        _lastFeedback!,
+                        style: TextStyle(fontSize: 13.sp, color: Colors.amber.shade900),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => setState(() => _lastFeedback = null),
+                      child: Icon(Icons.close, size: 16, color: Colors.amber.shade700),
+                    ),
+                  ],
+                ),
+              ),
             SizedBox(height: 2.h),
             Semantics(
               label: 'Type your sentence to add to the story',

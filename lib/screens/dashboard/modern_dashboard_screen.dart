@@ -295,7 +295,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                     children: [
                       _QuickActionCard(
                         icon: Icons.menu_book_rounded,
-                        label: 'Continue Learning',
+                        label: 'Explore Curriculum',
                         isDark: isDark,
                         onTap: () {
                           HapticFeedback.lightImpact();

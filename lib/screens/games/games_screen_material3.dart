@@ -14,6 +14,18 @@ import 'package:lingafriq/services/lazy_game_loader.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'game_onboarding_overlay.dart';
+
+const _gameRules = <GameType, String>{
+  GameType.wordMatchAudio: 'Match African language words on the left with their English meanings on the right. Tap a word to hear its pronunciation!',
+  GameType.pronunciationDuel: 'Listen to the native pronunciation, then record yourself saying the word. Score 85+ to win each round!',
+  GameType.speedRoundRemix: 'Choose the correct translation as fast as you can! You have 60 seconds.',
+  GameType.scrabbleSprintArena: 'Build valid words using the given letters. Longer words score more points!',
+  GameType.roleplayAdventure: 'Choose the best response in a real-life scenario. Practice natural conversation!',
+  GameType.grammarDetective: 'Find and fix the grammar error in each sentence.',
+  GameType.storyBuilder: 'Continue the story using your target language. Get creative!',
+};
 
 /// Beautiful Material 3 Games Screen
 class GamesScreenMaterial3 extends HookConsumerWidget {
@@ -35,7 +47,6 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
       {'name': 'Word Match Audio', 'description': 'Match words with audio', 'category': 'Vocabulary', 'icon': Icons.headphones, 'type': GameType.wordMatchAudio},
       {'name': 'Pronunciation Duel', 'description': 'Master pronunciation', 'category': 'Pronunciation', 'icon': Icons.record_voice_over, 'type': GameType.pronunciationDuel},
       {'name': 'Speed Round', 'description': 'Fast-paced vocabulary', 'category': 'Vocabulary', 'icon': Icons.speed, 'type': GameType.speedRoundRemix},
-      {'name': 'Tone Trainer', 'description': 'Learn tonal patterns', 'category': 'Pronunciation', 'icon': Icons.graphic_eq, 'type': GameType.toneTrainer},
       {'name': 'Story Builder', 'description': 'Build stories', 'category': 'Grammar', 'icon': Icons.auto_stories, 'type': GameType.storyBuilder},
       {'name': 'Roleplay Adventure', 'description': 'Interactive conversations', 'category': 'Cultural', 'icon': Icons.theater_comedy, 'type': GameType.roleplayAdventure},
       {'name': 'Grammar Detective', 'description': 'Solve grammar mysteries', 'category': 'Grammar', 'icon': Icons.search, 'type': GameType.grammarDetective},
@@ -279,6 +290,24 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
                                     onBack: () => Navigator.of(context).pop(),
                                     ref: ref,
                                   );
+                                  if (!context.mounted) return;
+
+                                  final prefs = await SharedPreferences.getInstance();
+                                  final dismissed = prefs.getBool('game_onboarding_${gameType.name}_dismissed') ?? false;
+                                  if (!dismissed && context.mounted) {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (ctx) => GameOnboardingOverlay(
+                                        gameName: game['name'] as String,
+                                        rules: _gameRules[gameType] ?? 'Match words and have fun!',
+                                        onDismiss: () async {
+                                          await prefs.setBool('game_onboarding_${gameType.name}_dismissed', true);
+                                          Navigator.pop(ctx);
+                                        },
+                                      ),
+                                    );
+                                  }
+
                                   if (!context.mounted) return;
                                   await Navigator.push(
                                     context,

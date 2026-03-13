@@ -86,7 +86,7 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame> {
     _options.shuffle(Random());
   }
 
-  void _selectAnswer(String answer) {
+  Future<void> _selectAnswer(String answer) async {
     if (_selectedAnswer != null || _gameOver) return;
 
     final correct = answer == _currentCard!.gloss;
@@ -104,7 +104,7 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame> {
         ? DateTime.now().difference(startTime!).inMilliseconds
         : 0;
 
-    completeTurn(
+    await completeTurn(
       cardId: _currentCard!.cardId,
       result: correct ? GameResult.correct : GameResult.incorrect,
       durationMs: duration,

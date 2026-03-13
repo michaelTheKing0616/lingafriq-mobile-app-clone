@@ -8,7 +8,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
+import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
+import 'package:lingafriq/screens/auth/world_class_login_screen.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 
 import '../utils/api.dart';
@@ -245,10 +247,10 @@ class _DioLogger extends Interceptor {
           }
 
           // Token refresh returned null — force full logout
-          _forceLogout('Token refresh returned null');
+          await _forceLogout('Token refresh returned null');
         } catch (refreshError) {
           _log('Token refresh failed: $refreshError');
-          _forceLogout('Token refresh threw: $refreshError');
+          await _forceLogout('Token refresh threw: $refreshError');
         }
       }
     }
@@ -259,19 +261,24 @@ class _DioLogger extends Interceptor {
   /// Force full sign-out when token refresh fails irreversibly.
   /// Clears tokens and triggers the auth state notifier so the UI
   /// redirects to the login/session-expired screen.
-  void _forceLogout(String reason) {
+  Future<void> _forceLogout(String reason) async {
     _log('Forcing logout: $reason');
     try {
       // Clear the API token immediately
       ref.read(apiProvider.notifier).clearToken();
       // Trigger full sign-out via auth provider — this clears SharedPreferences,
       // resets user state, and navigates to the login screen.
-      ref.read(authProvider.notifier).signOut();
+      await ref.read(authProvider.notifier).signOut();
+      // Fallback route in case signOut navigation fails in interceptor context.
+      await ref.read(navigationProvider).navigateOffAll(const WorldClassLoginScreen());
     } catch (e) {
       _log('Error during forced logout: $e');
       // Last resort: just clear the token
       try {
         ref.read(apiProvider.notifier).clearToken();
+      } catch (_) {}
+      try {
+        await ref.read(navigationProvider).navigateOffAll(const WorldClassLoginScreen());
       } catch (_) {}
     }
     logger.warn('Session expired — user forcefully logged out', tag: 'auth', context: {'reason': reason});

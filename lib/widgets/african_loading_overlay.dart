@@ -115,8 +115,10 @@ class AfricanLoadingOverlay extends ConsumerStatefulWidget {
 class _AfricanLoadingOverlayState extends ConsumerState<AfricanLoadingOverlay>
     with TickerProviderStateMixin {
   late AnimationController _progressController;
+  late AnimationController _creepController;
   late AnimationController _pulseController;
   late Animation<double> _progressAnimation;
+  late Animation<double> _creepAnimation;
   late Animation<double> _pulseAnimation;
   late Animation<double> _fadeAnimation;
   
@@ -208,14 +210,24 @@ class _AfricanLoadingOverlayState extends ConsumerState<AfricanLoadingOverlay>
     
     _currentFactIndex = Random().nextInt(_africanFacts.length);
     
-    // Progress animation
+    // Phase 1: fast progress to 90% over minDisplayDuration (4s)
     _progressController = AnimationController(
       duration: widget.minDisplayDuration,
       vsync: this,
     );
     
-    _progressAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+    _progressAnimation = Tween<double>(begin: 0.0, end: 0.9).animate(
       CurvedAnimation(parent: _progressController, curve: Curves.easeInOut),
+    );
+    
+    // Phase 2: slow creep from 90% to 95% over 26s (for long API calls)
+    _creepController = AnimationController(
+      duration: const Duration(seconds: 26),
+      vsync: this,
+    );
+    
+    _creepAnimation = Tween<double>(begin: 0.9, end: 0.95).animate(
+      CurvedAnimation(parent: _creepController, curve: Curves.linear),
     );
     
     // Fade in animation
@@ -236,9 +248,12 @@ class _AfricanLoadingOverlayState extends ConsumerState<AfricanLoadingOverlay>
       CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
     );
     
-    // Start progress
+    // Start phase 1, then chain to phase 2
     _progressController.forward().then((_) {
       widget.onComplete?.call();
+      if (mounted) {
+        _creepController.forward();
+      }
     });
     
     // Rotate facts every 5 seconds if loading takes longer
@@ -259,6 +274,7 @@ class _AfricanLoadingOverlayState extends ConsumerState<AfricanLoadingOverlay>
   @override
   void dispose() {
     _progressController.dispose();
+    _creepController.dispose();
     _pulseController.dispose();
     _factRotationTimer?.cancel();
     super.dispose();
@@ -523,10 +539,18 @@ class _AfricanLoadingOverlayState extends ConsumerState<AfricanLoadingOverlay>
     );
   }
 
+  double get _currentProgress {
+    if (_creepController.isAnimating || _creepController.value > 0) {
+      return _creepAnimation.value;
+    }
+    return _progressAnimation.value;
+  }
+
   Widget _buildLoadingIndicator() {
     return AnimatedBuilder(
-      animation: _progressAnimation,
+      animation: Listenable.merge([_progressController, _creepController]),
       builder: (context, child) {
+        final progress = _currentProgress;
         return Column(
           children: [
             Text(
@@ -548,7 +572,7 @@ class _AfricanLoadingOverlayState extends ConsumerState<AfricanLoadingOverlay>
               child: Stack(
                 children: [
                   FractionallySizedBox(
-                    widthFactor: _progressAnimation.value,
+                    widthFactor: progress,
                     child: Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
@@ -574,7 +598,7 @@ class _AfricanLoadingOverlayState extends ConsumerState<AfricanLoadingOverlay>
             ),
             SizedBox(height: 8.h),
             Text(
-              '${(_progressAnimation.value * 100).toInt()}%',
+              '${(progress * 100).toInt()}%',
               style: TextStyle(
                 fontSize: 12.sp,
                 color: PanAfricanColors.secondary.withOpacity(0.8),

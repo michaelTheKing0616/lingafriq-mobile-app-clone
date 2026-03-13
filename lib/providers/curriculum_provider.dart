@@ -42,7 +42,7 @@ class CurriculumProvider extends Notifier<BaseProviderState> with BaseProviderMi
           return;
         } catch (e) {
           logger.error('Error loading cached curriculum', tag: 'curriculum', error: e);
-          // Continue to try loading from bundle
+          await prefs.remove('curriculum_data');
         }
       }
       
@@ -105,14 +105,26 @@ class CurriculumProvider extends Notifier<BaseProviderState> with BaseProviderMi
         languages: languagesMap,
       );
       
+      final totalUnits = languagesMap.values
+          .expand((langMap) => langMap.values)
+          .fold<int>(0, (sum, unitList) => sum + unitList.length);
+      if (totalUnits == 0) {
+        state = state.copyWith(
+          isLoading: false,
+          errorMessage:
+              'Curriculum data appears empty. Please reinstall the app or contact support.',
+        );
+        return;
+      }
+
       await _saveCurriculum();
-      state = state.copyWith(isLoading: false);
-      state = state.copyWith(); // Trigger rebuild
+      state = state.copyWith(isLoading: false, clearError: true);
     } catch (e) {
       logger.error('Error loading curriculum', tag: 'curriculum', error: e);
-      state = state.copyWith(isLoading: false);
-      // Don't rethrow - show user-friendly error in UI
-      // The UI will handle showing the error message
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: 'Failed to load curriculum. Please try again.',
+      );
     }
   }
 
