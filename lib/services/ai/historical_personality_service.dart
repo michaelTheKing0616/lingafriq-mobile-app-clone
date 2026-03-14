@@ -198,6 +198,100 @@ class HistoricalPersonalityService {
 
   HistoricalPersonalityService(this._ref) : _dio = _ref.read(client);
 
+  Future<Response<dynamic>> _getWithFallbackPaths(
+    List<String> paths, {
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    Object? lastError;
+    for (final path in paths) {
+      try {
+        final response = await _dio.get(path, queryParameters: queryParameters);
+        if (response.statusCode != null && response.statusCode! < 500) {
+          return response;
+        }
+      } catch (e) {
+        lastError = e;
+      }
+    }
+    throw lastError ?? Exception('No reachable historical personality endpoint');
+  }
+
+  Future<Response<dynamic>> _postWithFallbackPaths(
+    List<String> paths, {
+    required Map<String, dynamic> data,
+  }) async {
+    Object? lastError;
+    for (final path in paths) {
+      try {
+        final response = await _dio.post(path, data: data);
+        if (response.statusCode != null && response.statusCode! < 500) {
+          return response;
+        }
+      } catch (e) {
+        lastError = e;
+      }
+    }
+    throw lastError ?? Exception('No reachable historical personality endpoint');
+  }
+
+  dynamic _extractPayload(dynamic raw) {
+    if (raw is Map<String, dynamic>) {
+      return raw['data'] ?? raw['result'] ?? raw;
+    }
+    return raw;
+  }
+
+  List<Map<String, dynamic>> _extractPersonalityList(dynamic raw) {
+    final payload = _extractPayload(raw);
+    final dynamic list = payload is Map<String, dynamic>
+        ? (payload['personalities'] ?? payload['items'] ?? payload['results'] ?? payload['data'])
+        : payload;
+    if (list is List) {
+      return list.whereType<Map>().map((e) => Map<String, dynamic>.from(e)).toList();
+    }
+    return const [];
+  }
+
+  PersonalityMessage _parseAssistantMessage(dynamic raw) {
+    final payload = _extractPayload(raw);
+    if (payload is Map<String, dynamic>) {
+      final direct = payload['response'] ?? payload['assistant'] ?? payload['reply'] ?? payload['message'];
+      if (direct is Map<String, dynamic>) {
+        return PersonalityMessage(
+          role: (direct['role']?.toString().isNotEmpty ?? false)
+              ? direct['role'].toString()
+              : 'personality',
+          content: (direct['content'] ?? direct['text'] ?? '').toString(),
+          timestamp: DateTime.tryParse((direct['timestamp'] ?? '').toString()) ?? DateTime.now(),
+          metadata: direct['metadata'] is Map<String, dynamic>
+              ? Map<String, dynamic>.from(direct['metadata'])
+              : null,
+        );
+      }
+      if (direct is String && direct.trim().isNotEmpty) {
+        return PersonalityMessage(
+          role: 'personality',
+          content: direct.trim(),
+          timestamp: DateTime.now(),
+        );
+      }
+
+      final content = (payload['content'] ?? payload['text'] ?? '').toString().trim();
+      if (content.isNotEmpty) {
+        return PersonalityMessage(
+          role: (payload['role'] ?? 'personality').toString(),
+          content: content,
+          timestamp: DateTime.now(),
+          metadata: payload['metadata'] is Map<String, dynamic>
+              ? Map<String, dynamic>.from(payload['metadata'])
+              : null,
+        );
+      }
+    }
+
+    throw Exception('Historical personality API returned an empty assistant response');
+  }
+
   /// Get all available personalities
   Future<List<HistoricalPersonality>> getPersonalities({
     String? country,
@@ -210,17 +304,23 @@ class HistoricalPersonalityService {
       if (language != null) queryParams['language'] = language;
       if (era != null) queryParams['era'] = era;
 
-      final response = await _dio.get(
-        ApiContract.url(ApiContract.personalities.list),
+      final response = await _getWithFallbackPaths(
+        [
+          ApiContract.url(ApiContract.personalities.list),
+          '/api/personalities',
+          '/api/v1/personalities',
+          '/api/v1/historical-personalities',
+          '/api/historical-personalities',
+          '/historical-personalities',
+        ],
         queryParameters: queryParams.isEmpty ? null : queryParams,
       );
 
       if (response.statusCode == 200) {
-        final data = response.data['data'] ?? response.data;
-        final personalities = data['personalities'] as List?;
-        if (personalities != null) {
+        final personalities = _extractPersonalityList(response.data);
+        if (personalities.isNotEmpty) {
           return personalities
-              .map((p) => HistoricalPersonality.fromJson(p as Map<String, dynamic>))
+              .map((p) => HistoricalPersonality.fromJson(p))
               .toList();
         }
       }
@@ -260,10 +360,15 @@ class HistoricalPersonalityService {
     Map<String, dynamic>? initialContext,
   }) async {
     try {
-      final response = await _dio.post(
-        ApiContract.url(
-          ApiContract.personalities.chatStart(personalityId),
-        ),
+      final response = await _postWithFallbackPaths(
+        [
+          ApiContract.url(ApiContract.personalities.chatStart(personalityId)),
+          '/api/personalities/$personalityId/chat/start',
+          '/api/v1/personalities/$personalityId/chat/start',
+          '/api/v1/historical-personalities/$personalityId/chat/start',
+          '/api/historical-personalities/$personalityId/chat/start',
+          '/historical-personalities/$personalityId/chat/start',
+        ],
         data: {
           'user_id': userId,
           'initial_context': initialContext ?? {},
@@ -271,8 +376,15 @@ class HistoricalPersonalityService {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final data = response.data['data'] ?? response.data;
-        return PersonalityChatSession.fromJson(data);
+        final data = _extractPayload(response.data);
+        final sessionPayload =
+            data is Map<String, dynamic> && data['session'] is Map<String, dynamic>
+                ? Map<String, dynamic>.from(data['session'])
+                : data;
+        if (sessionPayload is! Map<String, dynamic>) {
+          throw Exception('Unexpected chat session payload');
+        }
+        return PersonalityChatSession.fromJson(sessionPayload);
       }
 
       throw Exception('Failed to start chat session');
@@ -289,10 +401,15 @@ class HistoricalPersonalityService {
     Map<String, dynamic>? context,
   }) async {
     try {
-      final response = await _dio.post(
-        ApiContract.url(
-          ApiContract.personalities.chatMessage(sessionId),
-        ),
+      final response = await _postWithFallbackPaths(
+        [
+          ApiContract.url(ApiContract.personalities.chatMessage(sessionId)),
+          '/api/personalities/chat/$sessionId/message',
+          '/api/v1/personalities/chat/$sessionId/message',
+          '/api/v1/historical-personalities/chat/$sessionId/message',
+          '/api/historical-personalities/chat/$sessionId/message',
+          '/historical-personalities/chat/$sessionId/message',
+        ],
         data: {
           'message': message,
           'context': {
@@ -305,8 +422,7 @@ class HistoricalPersonalityService {
       );
 
       if (response.statusCode == 200) {
-        final data = response.data['data'] ?? response.data;
-        return PersonalityMessage.fromJson(data['response']);
+        return _parseAssistantMessage(response.data);
       }
 
       throw Exception('Failed to send message');
@@ -326,8 +442,13 @@ class HistoricalPersonalityService {
       );
 
       if (response.statusCode == 200) {
-        final data = response.data['data'] ?? response.data;
-        return PersonalityChatSession.fromJson(data);
+        final data = _extractPayload(response.data);
+        final sessionPayload =
+            data is Map<String, dynamic> && data['session'] is Map<String, dynamic>
+                ? Map<String, dynamic>.from(data['session'])
+                : data;
+        if (sessionPayload is! Map<String, dynamic>) return null;
+        return PersonalityChatSession.fromJson(sessionPayload);
       }
 
       return null;

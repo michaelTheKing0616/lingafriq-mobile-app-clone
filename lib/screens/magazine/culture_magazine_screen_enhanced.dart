@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -37,27 +38,84 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
     Future<void> loadArticles() async {
       isLoading.value = true;
       try {
-        final response = await ApiService.get(
-          Api.cultureArticles(published: true),
-          queryParameters: selectedCategory.value != null
-              ? {'category': selectedCategory.value}
-              : null,
-        );
+        final query = selectedCategory.value != null
+            ? {'category': selectedCategory.value}
+            : null;
+        final primaryPublishedPath = Api.cultureArticles(published: true);
+        final primaryAllPath = Api.cultureArticles();
+        final candidatePublishedPaths = <String>[
+          primaryPublishedPath,
+          '/api$primaryPublishedPath',
+          '/api/v1$primaryPublishedPath',
+        ];
+        final candidateAllPaths = <String>[
+          primaryAllPath,
+          '/api$primaryAllPath',
+          '/api/v1$primaryAllPath',
+        ];
+
+        Future<Response<dynamic>> fetchFirstReachable(List<String> paths) async {
+          Object? lastError;
+          for (final path in paths) {
+            try {
+              final res = await ApiService.get(path, queryParameters: query);
+              if ((res.statusCode ?? 0) < 500) {
+                return res;
+              }
+            } catch (e) {
+              lastError = e;
+            }
+          }
+          throw lastError ?? Exception('No reachable culture magazine endpoint');
+        }
+
+        Response response = await fetchFirstReachable(candidatePublishedPaths);
+
+        List<Map<String, dynamic>> parseArticles(dynamic raw) {
+          if (raw is! Map) return [];
+          final candidates = <dynamic>[
+            raw['articles'],
+            raw['results'],
+            raw['docs'],
+            raw['data'],
+            raw['data'] is Map ? raw['data']['docs'] : null,
+            raw['data'] is Map ? raw['data']['articles'] : null,
+            raw['data'] is Map ? raw['data']['results'] : null,
+            raw['data'] is Map ? raw['data']['items'] : null,
+          ];
+          for (final candidate in candidates) {
+            if (candidate is List) {
+              return candidate
+                  .whereType<Map>()
+                  .map((e) => Map<String, dynamic>.from(e))
+                  .toList();
+            }
+          }
+          return [];
+        }
+
+        Map<String, dynamic> normalizeArticle(Map<String, dynamic> article) {
+          return {
+            ...article,
+            '_id': (article['_id'] ?? article['id'] ?? '').toString(),
+            'title': article['title'] ?? article['headline'] ?? 'Untitled',
+            'excerpt': article['excerpt'] ?? article['summary'] ?? article['description'] ?? '',
+            'content': article['content'] ?? article['body'] ?? article['excerpt'] ?? '',
+            'category': article['category'] ?? article['topic'] ?? 'General',
+            'imageUrl': article['imageUrl'] ?? article['image_url'] ?? article['image'] ?? '',
+          };
+        }
 
         if (response.statusCode == 200) {
-          final raw = response.data;
-          final dynamic listCandidate = raw is Map
-              ? (raw['data'] ?? raw['results'] ?? raw['articles'])
-              : raw;
-
-          if (listCandidate is List) {
-            final list = List<Map<String, dynamic>>.from(listCandidate.whereType<Map>());
-            articles.value = list;
-          } else {
-            articles.value = [];
+          var parsed = parseArticles(response.data);
+          if (parsed.isEmpty) {
+            // Fallback: some environments do not mark seeded records as published.
+            response = await fetchFirstReachable(candidateAllPaths);
+            if (response.statusCode == 200) {
+              parsed = parseArticles(response.data);
+            }
           }
-        } else {
-          articles.value = [];
+          articles.value = parsed.map(normalizeArticle).toList();
         }
       } catch (e) {
         if (context.mounted) {

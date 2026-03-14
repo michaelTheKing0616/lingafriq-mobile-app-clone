@@ -269,8 +269,7 @@ class LessonContent {
     if (source == null) return null;
 
     for (final key in keys) {
-      final value = source[key];
-      final resolved = resolveMediaUrl(value?.toString());
+      final resolved = _resolveMediaFromValue(source[key]);
       if (resolved != null && resolved.isNotEmpty) {
         return resolved;
       }
@@ -279,8 +278,7 @@ class LessonContent {
     final media = source['media'];
     if (media is Map) {
       for (final key in keys) {
-        final value = media[key];
-        final resolved = resolveMediaUrl(value?.toString());
+        final resolved = _resolveMediaFromValue(media[key]);
         if (resolved != null && resolved.isNotEmpty) {
           return resolved;
         }
@@ -288,6 +286,41 @@ class LessonContent {
     }
 
     return null;
+  }
+
+  static String? _resolveMediaFromValue(dynamic value) {
+    if (value == null) return null;
+
+    if (value is String) {
+      return resolveMediaUrl(value);
+    }
+
+    if (value is List) {
+      for (final item in value) {
+        final resolved = _resolveMediaFromValue(item);
+        if (resolved != null && resolved.isNotEmpty) return resolved;
+      }
+      return null;
+    }
+
+    if (value is Map) {
+      final candidates = [
+        value['url'],
+        value['file_url'],
+        value['path'],
+        value['src'],
+        value['audio_url'],
+        value['video_url'],
+        value['image_url'],
+      ];
+      for (final candidate in candidates) {
+        final resolved = _resolveMediaFromValue(candidate);
+        if (resolved != null && resolved.isNotEmpty) return resolved;
+      }
+      return null;
+    }
+
+    return resolveMediaUrl(value.toString());
   }
 
   LessonContent copyWith({

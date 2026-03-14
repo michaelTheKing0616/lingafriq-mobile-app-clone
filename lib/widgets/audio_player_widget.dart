@@ -5,6 +5,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/media_url_resolver.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AudioPlayerWidget extends StatefulWidget {
   final String audioUrl;
@@ -21,6 +22,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindi
   final _player = AudioPlayer();
   String? _resolvedAudioUrl;
   String? _errorMessage;
+  Map<String, String>? _authHeaders;
 
   @override
   void initState() {
@@ -28,7 +30,26 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindi
     ambiguate(WidgetsBinding.instance)!.addObserver(this);
     _resolvedAudioUrl = resolveMediaUrl(widget.audioUrl);
     widget.audioUrl.log("AUDIOSOURCE");
-    _init();
+    _bootstrap();
+  }
+
+  Future<void> _bootstrap() async {
+    await _loadAuthHeaders();
+    await _init();
+  }
+
+  Future<void> _loadAuthHeaders() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('auth_token') ?? prefs.getString('access_token');
+      if (token != null && token.isNotEmpty) {
+        _authHeaders = {'Authorization': 'Bearer $token'};
+      } else {
+        _authHeaders = null;
+      }
+    } catch (_) {
+      _authHeaders = null;
+    }
   }
 
   Future<void> _init() async {
@@ -43,7 +64,12 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindi
         });
         return;
       }
-      await _player.setAudioSource(LockCachingAudioSource(Uri.parse(url)));
+      await _player.setAudioSource(
+        LockCachingAudioSource(
+          Uri.parse(url),
+          headers: _authHeaders,
+        ),
+      );
       if (mounted) {
         setState(() {
           _errorMessage = null;

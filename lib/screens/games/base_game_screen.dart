@@ -895,7 +895,7 @@ class _CompletionOverlayContent extends StatelessWidget {
                 child: OutlinedButton.icon(
                   onPressed: onPlayAgain,
                   icon: Icon(Icons.refresh_rounded, size: 20.sp),
-                  label: Text('Play Again', style: PanAfricanTypography.labelLarge(context)),
+                  label: Text('Try Again', style: PanAfricanTypography.labelLarge(context)),
                   style: OutlinedButton.styleFrom(
                     shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
                   ),
@@ -905,8 +905,8 @@ class _CompletionOverlayContent extends StatelessWidget {
               Expanded(
                 child: FilledButton.icon(
                   onPressed: onDone,
-                  icon: Icon(Icons.check_rounded, size: 20.sp),
-                  label: Text('Done', style: PanAfricanTypography.labelLarge(context, color: Theme.of(context).colorScheme.onPrimary)),
+                  icon: Icon(Icons.exit_to_app_rounded, size: 20.sp),
+                  label: Text('Exit', style: PanAfricanTypography.labelLarge(context, color: Theme.of(context).colorScheme.onPrimary)),
                   style: FilledButton.styleFrom(
                     backgroundColor: PanAfricanColors.primary,
                     shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),

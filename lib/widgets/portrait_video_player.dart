@@ -2,12 +2,22 @@ import 'package:better_player_plus/better_player_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/utils/media_url_resolver.dart';
 
 final betterPlayerController = Provider.family.autoDispose((ref, String url) {
   final resolvedUrl = resolveMediaUrl(url) ?? url;
+  final prefs = ref.read(sharedPreferencesProvider);
+  final token = prefs.getAccessToken();
+  final headers = (token != null && token.isNotEmpty)
+      ? <String, String>{'Authorization': 'Bearer $token'}
+      : <String, String>{};
   BetterPlayerDataSource betterPlayerDataSource =
-      BetterPlayerDataSource(BetterPlayerDataSourceType.network, resolvedUrl);
+      BetterPlayerDataSource(
+        BetterPlayerDataSourceType.network,
+        resolvedUrl,
+        headers: headers,
+      );
   final controller = BetterPlayerController(
     const BetterPlayerConfiguration(
       autoPlay: true,

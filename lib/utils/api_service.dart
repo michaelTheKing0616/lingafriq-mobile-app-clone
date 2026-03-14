@@ -14,6 +14,45 @@ import 'package:lingafriq/utils/transport_error_policy.dart';
 class ApiService {
   static late Dio _dio;
   static bool _initialized = false;
+  static const int _maxRetryAttempts = 3;
+
+  static bool _isRetryableStatus(int? statusCode) {
+    if (statusCode == null) return false;
+    if (statusCode == 429) return true;
+    return statusCode >= 500;
+  }
+
+  static Future<Response> _requestWithRetry(Future<Response> Function() requestFn) async {
+    Exception? lastOtherError;
+    DioException? lastDioError;
+
+    for (var attempt = 1; attempt <= _maxRetryAttempts; attempt++) {
+      try {
+        final response = await requestFn();
+        if (_isRetryableStatus(response.statusCode) && attempt < _maxRetryAttempts) {
+          await Future.delayed(Duration(milliseconds: 250 * attempt));
+          continue;
+        }
+        return response;
+      } on DioException catch (e) {
+        lastDioError = e;
+        if (!TransportErrorPolicy.isRetryable(e) || attempt >= _maxRetryAttempts) {
+          throw _handleError(e);
+        }
+        await Future.delayed(Duration(milliseconds: 250 * attempt));
+      } catch (e) {
+        lastOtherError = Exception(e.toString());
+        if (attempt >= _maxRetryAttempts) {
+          throw lastOtherError!;
+        }
+        await Future.delayed(Duration(milliseconds: 250 * attempt));
+      }
+    }
+
+    if (lastDioError != null) throw _handleError(lastDioError);
+    if (lastOtherError != null) throw lastOtherError;
+    throw Exception('Request failed');
+  }
 
   /// Initialize the API service with base configuration
   static Future<void> initialize() async {
@@ -137,15 +176,13 @@ class ApiService {
     Options? options,
   }) async {
     if (!_initialized) await initialize();
-    try {
-      return await _dio.get(
+    return _requestWithRetry(
+      () => _dio.get(
         path,
         queryParameters: queryParameters,
         options: options,
-      );
-    } on DioException catch (e) {
-      throw _handleError(e);
-    }
+      ),
+    );
   }
 
   /// POST request
@@ -156,16 +193,14 @@ class ApiService {
     Options? options,
   }) async {
     if (!_initialized) await initialize();
-    try {
-      return await _dio.post(
+    return _requestWithRetry(
+      () => _dio.post(
         path,
         data: data,
         queryParameters: queryParameters,
         options: options,
-      );
-    } on DioException catch (e) {
-      throw _handleError(e);
-    }
+      ),
+    );
   }
 
   /// PUT request
@@ -176,16 +211,14 @@ class ApiService {
     Options? options,
   }) async {
     if (!_initialized) await initialize();
-    try {
-      return await _dio.put(
+    return _requestWithRetry(
+      () => _dio.put(
         path,
         data: data,
         queryParameters: queryParameters,
         options: options,
-      );
-    } on DioException catch (e) {
-      throw _handleError(e);
-    }
+      ),
+    );
   }
 
   /// DELETE request
@@ -196,16 +229,14 @@ class ApiService {
     Options? options,
   }) async {
     if (!_initialized) await initialize();
-    try {
-      return await _dio.delete(
+    return _requestWithRetry(
+      () => _dio.delete(
         path,
         data: data,
         queryParameters: queryParameters,
         options: options,
-      );
-    } on DioException catch (e) {
-      throw _handleError(e);
-    }
+      ),
+    );
   }
 
   /// PATCH request
@@ -216,16 +247,14 @@ class ApiService {
     Options? options,
   }) async {
     if (!_initialized) await initialize();
-    try {
-      return await _dio.patch(
+    return _requestWithRetry(
+      () => _dio.patch(
         path,
         data: data,
         queryParameters: queryParameters,
         options: options,
-      );
-    } on DioException catch (e) {
-      throw _handleError(e);
-    }
+      ),
+    );
   }
 
   /// Upload file with multipart/form-data

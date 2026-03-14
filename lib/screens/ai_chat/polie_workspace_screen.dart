@@ -50,6 +50,7 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
     final conversationInput = useTextEditingController();
     final tutorInput = useTextEditingController();
     final roleplayInput = useTextEditingController();
+    useListenable(translationInput);
 
     final autoTranslate = useState<bool>(true);
     final translationTone = useState<String>('formal');
@@ -101,7 +102,9 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
 
     Future<Map<String, dynamic>?> askForJson(String prompt) async {
       try {
-        final raw = await chat.sendMessageForJson(prompt);
+        final raw = await chat
+            .sendMessageForJson(prompt)
+            .timeout(const Duration(seconds: 25));
         modeResponse.value = raw;
         final parsed = _tryParseJson(raw);
         if (parsed == null) {
@@ -853,7 +856,7 @@ Language: $targetLanguage
                 }
                 return Column(
                   children: [
-                    SizedBox(height: 260, child: inputPanel),
+                    inputPanel,
                     const SizedBox(height: 10),
                     outputPanel,
                   ],
@@ -1934,6 +1937,12 @@ class _TutorLessonPayload {
   });
   factory _TutorLessonPayload.fromJson(Map<String, dynamic> json, String fallback) {
     final ex = (_n(json, 'example', const {}) as Map).cast<String, dynamic>();
+    String sanitize(String value, {String fallbackText = '-'}) {
+      final v = value.trim();
+      if (v.isEmpty) return fallbackText;
+      if (v.startsWith('{') || v.startsWith('```') || v.startsWith('[')) return fallbackText;
+      return v;
+    }
     String concept = (_n(json, 'concept', 'Lesson') as String);
     // Guard against raw JSON leaking into concept field
     if (concept.startsWith('{') || concept.startsWith('```')) {
@@ -1941,24 +1950,32 @@ class _TutorLessonPayload {
     }
     String explanation = (_n(json, 'explanation', fallback) as String);
     if (explanation.startsWith('{') || explanation.startsWith('```')) {
-      explanation = fallback;
+      explanation = 'Let us practice this concept step by step with a clear example.';
     }
     return _TutorLessonPayload(
-      concept: concept,
-      explanation: explanation,
+      concept: sanitize(concept, fallbackText: 'Lesson'),
+      explanation: sanitize(explanation, fallbackText: 'Let us practice this concept step by step.'),
       example: _TutorExample(
-        targetLang: (_n(ex, 'target_lang', '-') as String),
-        transliteration: (_n(ex, 'transliteration', '-') as String),
-        english: (_n(ex, 'english', '-') as String),
+        targetLang: sanitize((_n(ex, 'target_lang', '-') as String),
+            fallbackText: 'Example unavailable'),
+        transliteration: sanitize((_n(ex, 'transliteration', '-') as String),
+            fallbackText: '-'),
+        english: sanitize((_n(ex, 'english', '-') as String),
+            fallbackText: 'Meaning unavailable'),
       ),
-      memoryTip: (_n(json, 'memory_tip', '-') as String),
-      watchOut: (_n(json, 'watch_out', '') as String?)?.trim().isEmpty ?? true ? null : (_n(json, 'watch_out', '') as String),
+      memoryTip: sanitize((_n(json, 'memory_tip', '-') as String),
+          fallbackText: 'Repeat the pattern aloud three times.'),
+      watchOut: (_n(json, 'watch_out', '') as String?)?.trim().isEmpty ?? true
+          ? null
+          : sanitize((_n(json, 'watch_out', '') as String), fallbackText: ''),
       practiceQuestion: (_n(json, 'practice_question', '') as String?)?.trim().isEmpty ?? true
           ? null
-          : (_n(json, 'practice_question', '') as String),
+          : sanitize((_n(json, 'practice_question', '') as String),
+              fallbackText: 'Can you write one sentence using this concept?'),
       practiceHint: (_n(json, 'practice_hint', '') as String?)?.trim().isEmpty ?? true
           ? null
-          : (_n(json, 'practice_hint', '') as String),
+          : sanitize((_n(json, 'practice_hint', '') as String),
+              fallbackText: 'Start with a short simple sentence.'),
     );
   }
 }
@@ -1990,15 +2007,24 @@ class _TutorFeedbackPayload {
     required this.nativeSpeakerNote,
   });
   factory _TutorFeedbackPayload.fromJson(Map<String, dynamic> json, String fallback) {
+    String sanitize(String value, {String fallbackText = '-'}) {
+      final v = value.trim();
+      if (v.isEmpty) return fallbackText;
+      if (v.startsWith('{') || v.startsWith('```') || v.startsWith('[')) return fallbackText;
+      return v;
+    }
     return _TutorFeedbackPayload(
       verdict: (_n(json, 'verdict', 'close') as String),
       score: (_n(json, 'score', 50) as num).toInt(),
-      encouragement: (_n(json, 'encouragement', fallback) as String),
-      correction: (_n(json, 'correction', '-') as String),
-      why: (_n(json, 'why', '-') as String),
+      encouragement: sanitize((_n(json, 'encouragement', fallback) as String),
+          fallbackText: 'Good effort. Keep practicing and try again.'),
+      correction: sanitize((_n(json, 'correction', '-') as String),
+          fallbackText: 'Try a simpler sentence pattern.'),
+      why: sanitize((_n(json, 'why', '-') as String),
+          fallbackText: 'Your structure is close; adjust word order and tense.'),
       nativeSpeakerNote: (_n(json, 'native_speaker_note', '') as String?)?.trim().isEmpty ?? true
           ? null
-          : (_n(json, 'native_speaker_note', '') as String),
+          : sanitize((_n(json, 'native_speaker_note', '') as String), fallbackText: ''),
     );
   }
 }

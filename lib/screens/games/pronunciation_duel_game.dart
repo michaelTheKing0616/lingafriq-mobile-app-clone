@@ -5,12 +5,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:record/record.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
 import '../../providers/dio_provider.dart';
 import '../../services/voice/pronunciation_analysis_service.dart';
 import '../../models/lesson_item_model.dart';
+import '../../utils/supported_languages.dart';
 import 'base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/media_url_resolver.dart';
@@ -41,16 +43,35 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
   int? _pronunciationScore;
   List<String> _mistakes = [];
   final List<PhraseCard> _cards = [];
+  Map<String, String>? _authHeaders;
 
   @override
   int getCardCount() => 5;
 
   @override
+  String? get appBarTitle => '${widget.getGameType().displayName} (${_currentCardIndex + 1}/${_cards.length})';
+
+  @override
   Future<void> onGameInitialized() async {
+    await _loadAuthHeaders();
     final gameProv = ref.read(gameProvider.notifier);
     _cards.addAll(gameProv.availableCards);
     if (_cards.isNotEmpty) {
       _currentCard = _cards[0];
+    }
+  }
+
+  Future<void> _loadAuthHeaders() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('auth_token') ?? prefs.getString('access_token');
+      if (token != null && token.isNotEmpty) {
+        _authHeaders = {'Authorization': 'Bearer $token'};
+      } else {
+        _authHeaders = null;
+      }
+    } catch (_) {
+      _authHeaders = null;
     }
   }
 
@@ -61,7 +82,7 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
     // Try URL-based playback first
     if (audioUrl != null && audioUrl.isNotEmpty) {
       try {
-        await _audioPlayer.setUrl(audioUrl);
+        await _audioPlayer.setUrl(audioUrl, headers: _authHeaders);
         await _audioPlayer.play();
         await _audioPlayer.playerStateStream.firstWhere(
           (state) => state.processingState == ProcessingState.completed,
@@ -133,10 +154,13 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
       final audioData = await audioFile.readAsBytes();
       
       // Create a lesson item from the current card for pronunciation analysis
+      final languageKey = SupportedLanguages.getKeyFromDisplayName(widget.language) ??
+          widget.language.toLowerCase();
+      final languageCode = SupportedLanguages.getLanguageCode(languageKey);
       final lessonItem = LessonItem(
         id: _currentCard!.cardId,
         language: widget.language,
-        languageCode: widget.language,
+        languageCode: languageCode,
         level: 'A1',
         category: 'vocabulary',
         type: 'word',
@@ -159,6 +183,26 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
       final mistakes = result.phonemeErrors
           .map((e) => '${e.phoneme}: ${e.expected} → ${e.actual}')
           .toList();
+
+      final looksLikeAnalysisFailure = score <= 0 &&
+          mistakes.isEmpty &&
+          (result.fluencyScore <= 0) &&
+          (result.phonemeAccuracy <= 0);
+      if (looksLikeAnalysisFailure) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Analysis failed for this recording. Please try again.'),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        }
+        setState(() {
+          _pronunciationScore = null;
+          _mistakes = ['Could not score this recording. Please record again.'];
+        });
+        return;
+      }
 
       setState(() {
         _pronunciationScore = score;
@@ -228,18 +272,10 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
 
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('${widget.getGameType().displayName} (${_currentCardIndex + 1}/${_cards.length})'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: widget.onBack ?? () => Navigator.pop(context),
-        ),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(4.w),
-        child: Column(
-          children: [
+    return Padding(
+      padding: EdgeInsets.all(4.w),
+      child: Column(
+        children: [
             // Progress
             LinearProgressIndicator(
               value: (_currentCardIndex + 1) / _cards.length,
@@ -341,8 +377,7 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
                   ),
                 ],
               ),
-          ],
-        ),
+        ],
       ),
     );
   }

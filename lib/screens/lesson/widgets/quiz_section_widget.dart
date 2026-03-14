@@ -13,6 +13,7 @@ class QuizSectionWidget extends StatefulWidget {
   final LessonContent content;
   final Function(int questionId, String answer) onAnswerSelected;
   final Function(int questionId, String answer) onCheckAnswer;
+  final VoidCallback onFinish;
   final bool Function(int questionId)? isAnswerChecked;
   final bool Function(int questionId, String option)? isAnswerCorrect;
 
@@ -21,6 +22,7 @@ class QuizSectionWidget extends StatefulWidget {
     required this.content,
     required this.onAnswerSelected,
     required this.onCheckAnswer,
+    required this.onFinish,
     this.isAnswerChecked,
     this.isAnswerCorrect,
   });
@@ -196,7 +198,13 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
                     enabled: isChecked || selectedAnswer != null,
                     child: PanAfricanButton(
                       onPressed: isChecked
-                          ? () => _goToNextQuestion(questions)
+                          ? () {
+                              if (_currentQuestionIndex == questions.length - 1) {
+                                widget.onFinish();
+                              } else {
+                                _goToNextQuestion(questions);
+                              }
+                            }
                           : (selectedAnswer != null
                               ? () => _checkAnswer(questionId, selectedAnswer)
                               : null),

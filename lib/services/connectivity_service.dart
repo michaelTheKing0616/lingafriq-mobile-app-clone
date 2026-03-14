@@ -73,20 +73,31 @@ class ConnectivityService {
     if (!await hasInternet(dio: dio)) return false;
     final client = dio ?? Dio();
     final baseUrl = EnvConfig.backendBaseUrl.replaceAll(RegExp(r'/$'), '');
-    final path = healthPath ?? '/healthcheck';
+    final candidatePaths = <String>[
+      if (healthPath != null && healthPath.isNotEmpty) healthPath,
+      '/healthcheck',
+      '/api/health',
+      '/health',
+    ];
 
-    try {
-      final response = await client.get(
-        '$baseUrl$path',
-        options: Options(
-          receiveTimeout: const Duration(seconds: 10),
-          sendTimeout: const Duration(seconds: 10),
-          validateStatus: (status) => status != null && status < 500,
-        ),
-      );
-      return response.statusCode == 200;
-    } catch (_) {
-      return false;
+    for (final path in candidatePaths) {
+      try {
+        final response = await client.get(
+          '$baseUrl$path',
+          options: Options(
+            receiveTimeout: const Duration(seconds: 10),
+            sendTimeout: const Duration(seconds: 10),
+            validateStatus: (status) => status != null && status < 500,
+          ),
+        );
+        final status = response.statusCode ?? 0;
+        // Any non-5xx status means backend is reachable, even if this
+        // specific endpoint is protected or not found in this environment.
+        if (status > 0 && status < 500) return true;
+      } catch (_) {
+        // Continue trying other health paths.
+      }
     }
+    return false;
   }
 }

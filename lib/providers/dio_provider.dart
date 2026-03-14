@@ -76,29 +76,34 @@ final client = Provider<Dio>(
   },
 );
 
-/// Retries requests that fail due to DNS resolution (host lookup) errors.
-/// DNS failures are often transient — a single retry after a short delay
-/// frequently succeeds when the first attempt hit a stale cache or
-/// a momentary resolver hiccup.
+/// Retries transient transport failures (DNS, timeout, temporary disconnects).
 class _DnsRetryInterceptor extends Interceptor {
   static const _maxRetries = 2;
   static const _retryDelay = Duration(seconds: 2);
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-    final isDnsFailure = err.type == DioExceptionType.connectionError &&
-        (err.message ?? err.error?.toString() ?? '')
-            .toLowerCase()
-            .contains('failed host lookup');
+    final message = (err.message ?? err.error?.toString() ?? '').toLowerCase();
+    final isDnsFailure =
+        err.type == DioExceptionType.connectionError && message.contains('failed host lookup');
+    final isTransientNetwork = err.type == DioExceptionType.connectionError ||
+        err.type == DioExceptionType.connectionTimeout ||
+        err.type == DioExceptionType.receiveTimeout ||
+        err.type == DioExceptionType.sendTimeout;
+    final isRetryableMessage = message.contains('connection reset') ||
+        message.contains('temporarily unavailable') ||
+        message.contains('network is unreachable');
+    final shouldRetry = isDnsFailure || isTransientNetwork || isRetryableMessage;
 
-    final retryCount = err.requestOptions.extra['_dnsRetry'] as int? ?? 0;
+    final retryCount = err.requestOptions.extra['_transportRetry'] as int? ?? 0;
 
-    if (isDnsFailure && retryCount < _maxRetries) {
-      logger.warn('DNS lookup failed — retrying (${retryCount + 1}/$_maxRetries)', context: {
+    if (shouldRetry && retryCount < _maxRetries) {
+      logger.warn('Transient transport error — retrying (${retryCount + 1}/$_maxRetries)', context: {
         'url': err.requestOptions.uri.toString(),
+        'type': err.type.toString(),
       });
       await Future.delayed(_retryDelay);
-      err.requestOptions.extra['_dnsRetry'] = retryCount + 1;
+      err.requestOptions.extra['_transportRetry'] = retryCount + 1;
       try {
         final dio = Dio(BaseOptions(
           connectTimeout: err.requestOptions.connectTimeout,

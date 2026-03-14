@@ -1682,7 +1682,14 @@ Use structured format: Rule -> Example -> Practice.''';
         'No markdown fences, no explanation, no prose before or after the JSON. '
         'Follow the exact schema provided in the user message.';
 
-    if (_groqApiKey.isEmpty || _groqApiKey == 'YOUR_GROQ_API_KEY') {
+    // For translation mode, force backend orchestration so the app can use
+    // provider routing policy (OpenAI-first with backend fallbacks) instead of
+    // being locked to one direct client model.
+    final useBackendJsonPath = _mode == PolieMode.translation ||
+        _groqApiKey.isEmpty ||
+        _groqApiKey == 'YOUR_GROQ_API_KEY';
+
+    if (useBackendJsonPath) {
       await ApiService.initialize();
       final resp = await ApiService.post(
         '/api/ai/chat/completion',
@@ -1694,7 +1701,15 @@ Use structured format: Rule -> Example -> Practice.''';
           'temperature': 0.3,
           'max_tokens': _maxTokensForMode(),
           'language': _targetLanguage,
+          'languageCode': SupportedLanguages.getLanguageCode(_targetLanguage),
+          'sourceLanguage': SupportedLanguages.getLanguageCode(_sourceLanguage),
+          'targetLanguage': SupportedLanguages.getLanguageCode(_targetLanguage),
           'mode': _mode.name,
+          'context': {
+            'mode': _mode.name,
+            'feature': 'polie_translation_json',
+            'providerPolicy': 'openai_first',
+          },
           'response_format': {'type': 'json_object'},
         },
       );

@@ -238,33 +238,27 @@ class LessonFlowScreen extends HookConsumerWidget {
             lessonFlow.setQuizAnswer(section.sectionId, questionId, answer);
           },
           onCheckAnswer: (questionId, answer) async {
-            final isCorrect = await lessonFlow.checkQuizAnswer(
+            await lessonFlow.checkQuizAnswer(
               section.sectionId,
               questionId,
               answer,
             );
-            if (isCorrect) {
-              // Complete section
-              await lessonFlow.completeSection(section.sectionId);
-              
-              if (lessonState.hasMoreSections) {
-                // Auto-advance after short delay
-                await Future.delayed(const Duration(milliseconds: 1500));
-                if (context.mounted) {
-                  final nextIndex = lessonState.currentSectionIndex + 1;
-                  lessonFlow.nextSection();
-                  if (pageController.hasClients) {
-                    pageController.animateToPage(
-                      nextIndex,
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    );
-                  }
-                }
-              } else {
-                // All sections complete - show completion screen
-                ref.read(lessonFlowProvider(lessonId).notifier).nextSection();
+          },
+          onFinish: () async {
+            final success = await lessonFlow.completeSection(section.sectionId);
+            if (!success) return;
+            if (lessonState.hasMoreSections) {
+              final nextIndex = lessonState.currentSectionIndex + 1;
+              lessonFlow.nextSection();
+              if (pageController.hasClients) {
+                pageController.animateToPage(
+                  nextIndex,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                );
               }
+            } else {
+              ref.read(lessonFlowProvider(lessonId).notifier).nextSection();
             }
           },
           isAnswerChecked: (questionId) {

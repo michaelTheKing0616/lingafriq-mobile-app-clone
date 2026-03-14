@@ -5,6 +5,7 @@ import '../../providers/tts_provider.dart';
 import 'package:lingafriq/utils/transport_error_policy.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
 import '../../providers/user_provider.dart';
@@ -49,13 +50,33 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
   bool _isLoading = true;
   String? _loadError;
   late final ComboTracker _comboTracker;
+  Map<String, String>? _authHeaders;
 
   @override
   void initState() {
     super.initState();
     _comboTracker = ComboTracker();
-    _initializeGame();
+    _bootstrap();
   }
+  Future<void> _bootstrap() async {
+    await _loadAuthHeaders();
+    await _initializeGame();
+  }
+
+  Future<void> _loadAuthHeaders() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('auth_token') ?? prefs.getString('access_token');
+      if (token != null && token.isNotEmpty) {
+        _authHeaders = {'Authorization': 'Bearer $token'};
+      } else {
+        _authHeaders = null;
+      }
+    } catch (_) {
+      _authHeaders = null;
+    }
+  }
+
   
   @override
   void dispose() {
@@ -137,7 +158,7 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
     final resolved = resolveMediaUrl(url);
     if (resolved != null && resolved.isNotEmpty) {
       try {
-        await _audioPlayer.setUrl(resolved);
+        await _audioPlayer.setUrl(resolved, headers: _authHeaders);
         await _audioPlayer.play();
         return;
       } catch (e) {
@@ -249,41 +270,50 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
   }
 
   void _showCompletionDialog(GameSession session) {
-    showDialog(
+    showGeneralDialog(
       context: context,
       barrierDismissible: false,
-      builder: (ctx) {
-        return AlertDialog(
-          title: const Text('Game Complete'),
-          content: Text(
-            'Accuracy: ${(session.accuracy * 100).toStringAsFixed(0)}%\n'
-            'Correct: ${session.correctCount}/${session.totalTurns}',
+      barrierColor: Colors.black54,
+      pageBuilder: (ctx, _, __) => AlertDialog(
+        title: const Text('Game Complete'),
+        content: Text(
+          'Accuracy: ${(session.accuracy * 100).toStringAsFixed(0)}%\n'
+          'Correct: ${session.correctCount}/${session.totalTurns}',
+        ),
+        actions: [
+          OutlinedButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              setState(() {
+                _results.clear();
+                _selectedLeft = null;
+                _selectedRight = null;
+                _leftTiles.clear();
+                _rightTiles.clear();
+                _isLoading = true;
+                _loadError = null;
+              });
+              _initializeGame();
+            },
+            child: const Text('Try Again'),
           ),
-          actions: [
-            OutlinedButton(
-              onPressed: () {
-                Navigator.pop(ctx);
-                setState(() {
-                  _results.clear();
-                  _selectedLeft = null;
-                  _selectedRight = null;
-                  _leftTiles.clear();
-                  _rightTiles.clear();
-                  _isLoading = true;
-                  _loadError = null;
-                });
-                _initializeGame();
-              },
-              child: const Text('Play Again'),
-            ),
-            FilledButton(
-              onPressed: () {
-                Navigator.pop(ctx);
-                (widget.onBack ?? () => Navigator.pop(context))();
-              },
-              child: const Text('Exit'),
-            ),
-          ],
+          FilledButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              (widget.onBack ?? () => Navigator.pop(context))();
+            },
+            child: const Text('Exit'),
+          ),
+        ],
+      ),
+      transitionDuration: const Duration(milliseconds: 260),
+      transitionBuilder: (_, animation, __, child) {
+        return FadeTransition(
+          opacity: animation,
+          child: ScaleTransition(
+            scale: CurvedAnimation(parent: animation, curve: Curves.easeOutBack),
+            child: child,
+          ),
         );
       },
     );

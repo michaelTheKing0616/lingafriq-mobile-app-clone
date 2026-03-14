@@ -28,6 +28,8 @@ class PersonalityChatScreen extends HookConsumerWidget {
     final messages = useState<List<PersonalityMessage>>([]);
     final isLoading = useState(false);
     final session = useState<PersonalityChatSession?>(null);
+    final isInitializingSession = useState(false);
+    final sessionError = useState<String?>(null);
 
     // Initialize chat session
     useEffect(() {
@@ -37,13 +39,33 @@ class PersonalityChatScreen extends HookConsumerWidget {
           personalityService,
           user!.id.toString(),
           session,
+          isInitializingSession,
+          sessionError,
         );
       }
       return null;
     }, [user?.id]);
 
     Future<void> sendMessage() async {
-      if (messageController.text.trim().isEmpty || session.value == null) return;
+      if (messageController.text.trim().isEmpty) return;
+      if (session.value == null) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Chat session is not ready yet. Please wait a moment.')),
+          );
+        }
+        if (user?.id != null && !isInitializingSession.value) {
+          await _initializeSession(
+            context,
+            personalityService,
+            user!.id.toString(),
+            session,
+            isInitializingSession,
+            sessionError,
+          );
+        }
+        return;
+      }
 
       final userMessage = messageController.text.trim();
       messageController.clear();
@@ -110,6 +132,46 @@ class PersonalityChatScreen extends HookConsumerWidget {
       ),
       body: Column(
         children: [
+          if (isInitializingSession.value || sessionError.value != null)
+            Container(
+              width: double.infinity,
+              color: sessionError.value != null
+                  ? Theme.of(context).colorScheme.errorContainer
+                  : Theme.of(context).colorScheme.surfaceContainerHighest,
+              padding: EdgeInsets.all(PanAfricanSpacing.sm),
+              child: Row(
+                children: [
+                  Icon(
+                    sessionError.value != null ? Icons.warning_amber_rounded : Icons.hourglass_top_rounded,
+                    size: 16,
+                  ),
+                  SizedBox(width: PanAfricanSpacing.xs),
+                  Expanded(
+                    child: Text(
+                      sessionError.value ??
+                          'Connecting to ${personality.name}...',
+                      style: PanAfricanTypography.bodySmall(context),
+                    ),
+                  ),
+                  if (sessionError.value != null)
+                    TextButton(
+                      onPressed: () async {
+                        if (user?.id != null) {
+                          await _initializeSession(
+                            context,
+                            personalityService,
+                            user!.id.toString(),
+                            session,
+                            isInitializingSession,
+                            sessionError,
+                          );
+                        }
+                      },
+                      child: const Text('Retry'),
+                    ),
+                ],
+              ),
+            ),
           // Messages
           Expanded(
             child: messages.value.isEmpty
@@ -186,7 +248,7 @@ class PersonalityChatScreen extends HookConsumerWidget {
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
                       : Icon(Icons.send),
-                  onPressed: isLoading.value ? null : sendMessage,
+                  onPressed: (isLoading.value || session.value == null) ? null : sendMessage,
                 ),
               ],
             ),
@@ -201,14 +263,20 @@ class PersonalityChatScreen extends HookConsumerWidget {
     HistoricalPersonalityService service,
     String userId,
     ValueNotifier<PersonalityChatSession?> session,
+    ValueNotifier<bool> isInitializingSession,
+    ValueNotifier<String?> sessionError,
   ) async {
     try {
+      isInitializingSession.value = true;
+      sessionError.value = null;
       final newSession = await service.startChatSession(
         personalityId: personality.id,
         userId: userId,
       );
       session.value = newSession;
     } catch (e) {
+      sessionError.value =
+          'Unable to start a secure chat session right now. Please retry.';
       if (context.mounted) {
         ErrorHandler.showError(context, e);
       }
@@ -220,6 +288,8 @@ class PersonalityChatScreen extends HookConsumerWidget {
           'personality': personality.id,
         },
       );
+    } finally {
+      isInitializingSession.value = false;
     }
   }
 

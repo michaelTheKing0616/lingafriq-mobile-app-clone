@@ -21,6 +21,7 @@ import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/random_quiz/models/random_quiz_lesson_model.dart';
 import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/transport_error_policy.dart';
 import 'package:lingafriq/config/api_contract.dart';
 
 import '../history_quiz/models/history_quiz_response.dart';
@@ -37,6 +38,33 @@ final apiProvider = NotifierProvider<ApiProvider, BaseProviderState>(() {
 });
 
 class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
+  Future<T> _withTransportRetry<T>(
+    Future<T> Function() operation, {
+    int maxAttempts = 3,
+    Duration initialDelay = const Duration(milliseconds: 350),
+  }) async {
+    var attempt = 0;
+    Object? lastError;
+    while (attempt < maxAttempts) {
+      attempt++;
+      try {
+        return await operation();
+      } on DioException catch (e) {
+        lastError = e;
+        if (!TransportErrorPolicy.isRetryable(e) || attempt >= maxAttempts) {
+          rethrow;
+        }
+      } catch (e) {
+        lastError = e;
+        if (attempt >= maxAttempts) rethrow;
+      }
+
+      final wait = Duration(milliseconds: initialDelay.inMilliseconds * attempt);
+      await Future.delayed(wait);
+    }
+    throw lastError ?? Exception('Transport retry failed');
+  }
+
   @override
   BaseProviderState build() {
     // Load tokens from SharedPreferences on initialization
@@ -713,10 +741,12 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     int lessonId,
   ) async {
     try {
-      final res = await ref.read(client).get(
-            Api.sectionLessonsList(lessonId),
-            options: Options(receiveTimeout: _lessonReceiveTimeout),
-          );
+      final res = await _withTransportRetry(
+        () => ref.read(client).get(
+              Api.sectionLessonsList(lessonId),
+              options: Options(receiveTimeout: _lessonReceiveTimeout),
+            ),
+      );
       if (res.statusCode != 200) throw res.data;
       final resList = extractListPayload(res.data);
       final dataList = <Map<String, dynamic>>[];
@@ -927,7 +957,9 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     logger.debug('Marking content as complete', context: {'endpoint': endpointToHit});
     try {
       state = state.copyWith(isLoading: true);
-      final res = await ref.read(client).patch(endpointToHit);
+      final res = await _withTransportRetry(
+        () => ref.read(client).patch(endpointToHit),
+      );
       if (res.statusCode != 200 && res.statusCode != 204) throw res.data;
       
       // CRITICAL FIX: Use async/await instead of chained promises for proper error handling
@@ -970,9 +1002,11 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
   Future<List<RandomQuizLessonModel>> getRandomQuizLessons(int languageId) async {
     try {
-      final res = await ref.read(client).get(
-        Api.randomQuiz(languageId),
-        options: Options(receiveTimeout: _lessonReceiveTimeout),
+      final res = await _withTransportRetry(
+        () => ref.read(client).get(
+          Api.randomQuiz(languageId),
+          options: Options(receiveTimeout: _lessonReceiveTimeout),
+        ),
       );
       if (res.statusCode != 200) throw res.data;
       final resList = extractListPayload(res.data);

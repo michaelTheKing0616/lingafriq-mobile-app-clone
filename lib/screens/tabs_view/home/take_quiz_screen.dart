@@ -187,19 +187,11 @@ class TakeQuizScreen extends ConsumerWidget {
         return;
       }
 
-      // Shuffle and present quizzes
+      // Open one random quiz per tap. This avoids the perceived "restart loop"
+      // where the user keeps getting thrown into another quiz automatically.
       final random = Random();
-      final quizList = List<RandomQuizLessonModel>.from(randomQuizes);
-      
-      do {
-        final indexToOpen = random.nextInt(quizList.length);
-        final quiz = quizList[indexToOpen];
-        final result = await openQuizDetail(quiz, ref);
-        if (result == null) break;
-        if (result == true) {
-          quizList.removeAt(indexToOpen);
-        }
-      } while (quizList.isNotEmpty);
+      final quiz = randomQuizes[random.nextInt(randomQuizes.length)];
+      await openQuizDetail(quiz, ref);
       
     } on TimeoutException catch (e) {
       if (!context.mounted) return;
