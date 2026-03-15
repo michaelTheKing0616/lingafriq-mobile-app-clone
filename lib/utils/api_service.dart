@@ -43,7 +43,7 @@ class ApiService {
       } catch (e) {
         lastOtherError = Exception(e.toString());
         if (attempt >= _maxRetryAttempts) {
-          throw lastOtherError!;
+          throw lastOtherError;
         }
         await Future.delayed(Duration(milliseconds: 250 * attempt));
       }
