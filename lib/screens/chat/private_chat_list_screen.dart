@@ -243,10 +243,30 @@ class _PrivateChatListScreenState
     }
     
     if (contacts.isEmpty) {
-      return LingAfriqEmptyState(
-        icon: Icons.chat_bubble_outline,
-        title: 'No contacts found',
-        subtitle: 'Start a LingAfriq chat from the community or add friends to see conversations here.',
+      return Center(
+        child: Padding(
+          padding: EdgeInsets.all(PanAfricanSpacing.lg),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.chat_bubble_outline, size: 48.w, color: PanAfricanColors.neutralMedium),
+              SizedBox(height: PanAfricanSpacing.sm),
+              Text('No contacts found', style: PanAfricanTypography.titleSmall(context)),
+              SizedBox(height: PanAfricanSpacing.xs),
+              Text(
+                'Start a LingAfriq chat from the community or refresh your contacts.',
+                textAlign: TextAlign.center,
+                style: PanAfricanTypography.bodySmall(context).copyWith(color: PanAfricanColors.neutralMedium),
+              ),
+              SizedBox(height: PanAfricanSpacing.md),
+              FilledButton.icon(
+                onPressed: () => ref.read(privateChatProvider.notifier).loadContacts(forceRefresh: true),
+                icon: const Icon(Icons.refresh_rounded),
+                label: const Text('Refresh'),
+              ),
+            ],
+          ),
+        ),
       );
     }
     

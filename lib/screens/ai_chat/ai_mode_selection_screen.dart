@@ -8,7 +8,8 @@ import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/services/sound_effects_service.dart';
-import 'ai_chat_screen_with_tracking.dart';
+import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
+import 'package:lingafriq/screens/ai_chat/polie_workspace_screen.dart';
 
 /// AI Chat — Screen 2: How would you like to learn?
 /// Radial-style mode selector; modes as journeys with poetic descriptions. "Surprise Me" path.
@@ -222,11 +223,10 @@ class _ModeJourneyCard extends StatelessWidget {
           Navigator.push(
             context,
             SmoothPageRoute(
-              child: AIChatScreenWithTracking(
-                language: language,
-                languageName: languageName,
-                mode: mode['id'] as String,
-                modeName: mode['title'] as String,
+              child: PolieWorkspaceScreen(
+                sourceLanguage: 'English',
+                targetLanguage: languageName,
+                initialMode: _toPolieMode(mode['id'] as String),
               ),
             ),
           );
@@ -314,11 +314,10 @@ class _SurpriseMeButton extends StatelessWidget {
           Navigator.push(
             context,
             SmoothPageRoute(
-              child: AIChatScreenWithTracking(
-                language: language,
-                languageName: languageName,
-                mode: mode['id'] as String,
-                modeName: mode['title'] as String,
+              child: PolieWorkspaceScreen(
+                sourceLanguage: 'English',
+                targetLanguage: languageName,
+                initialMode: _toPolieMode(mode['id'] as String),
               ),
             ),
           );
@@ -345,5 +344,32 @@ class _SurpriseMeButton extends StatelessWidget {
       ),
     ),
     );
+  }
+}
+
+PolieMode _toPolieMode(String mode) {
+  switch (mode.toLowerCase()) {
+    case 'translation':
+      return PolieMode.translation;
+    case 'tutor':
+      return PolieMode.tutor;
+    case 'roleplay':
+    case 'story':
+      return PolieMode.roleplay;
+    case 'conversation':
+    case 'dialogue':
+      return PolieMode.conversation;
+    case 'vocab':
+    case 'vocabulary':
+      return PolieMode.vocab;
+    case 'review':
+    case 'assess':
+      return PolieMode.review;
+    case 'pronunciation':
+      return PolieMode.pronunciation;
+    case 'grammar':
+      return PolieMode.grammar;
+    default:
+      return PolieMode.tutor;
   }
 }

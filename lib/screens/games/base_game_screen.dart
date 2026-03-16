@@ -41,6 +41,8 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
   DateTime? _startTime;
   bool _isLoading = true;
   String? _error;
+  bool _isFinishingGame = false;
+  bool _hasShownCompletionDialog = false;
   late final ComboTracker _comboTracker;
 
   GameSession? get session => _session;
@@ -85,6 +87,8 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
 
   Future<void> _initializeGame() async {
     setState(() => _isLoading = true);
+    _isFinishingGame = false;
+    _hasShownCompletionDialog = false;
     try {
       // Use logged-in user if available; fall back to guest ID so games
       // always work even if userProvider hasn't been populated yet.
@@ -304,6 +308,8 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
 
   /// Finish the game
   Future<void> finishGame() async {
+    if (_isFinishingGame || _hasShownCompletionDialog) return;
+    _isFinishingGame = true;
     try {
       final gameProv = ref.read(gameProvider.notifier);
       final endedSession = await gameProv.endGame();
@@ -329,6 +335,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
       _comboTracker.reset();
 
       if (mounted) {
+        _hasShownCompletionDialog = true;
         _showCompletionDialog(endedSession, xpEarned);
       }
     } catch (e) {
@@ -337,6 +344,8 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
           SnackBar(content: Text('Error finishing game: $e')),
         );
       }
+    } finally {
+      _isFinishingGame = false;
     }
   }
 

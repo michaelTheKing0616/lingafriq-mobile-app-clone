@@ -13,6 +13,7 @@ import 'package:lingafriq/utils/transport_error_policy.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
+import 'package:lingafriq/providers/user_provider.dart';
 
 /// Redesigned Private Chat with Material 3
 class PrivateChatScreenMaterial3 extends HookConsumerWidget {
@@ -32,6 +33,7 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
     final isLoading = useState(false);
     final loadError = useState<String?>(null);
     final scrollController = useScrollController();
+    final currentUser = ref.watch(userProvider);
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final colorScheme = Theme.of(context).colorScheme;
@@ -39,20 +41,36 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
     Future<void> loadMessages() async {
       loadError.value = null;
       try {
-        final response = await ApiService.get(
+        final paths = <String>[
           '/chat/private/$otherUserId',
-        );
+          '/api/chat/private/$otherUserId',
+          '/api/v1/chat/private/$otherUserId',
+          '/chat/conversations/$otherUserId',
+        ];
 
-        if (response.statusCode == 200 && response.data != null) {
-          final data = response.data as Map<String, dynamic>?;
-          final raw = data?['data'];
+        Response<dynamic>? response;
+        for (final path in paths) {
+          try {
+            final res = await ApiService.get(path);
+            if ((res.statusCode ?? 0) < 500) {
+              response = res;
+              break;
+            }
+          } catch (_) {}
+        }
+        if (response != null && response.statusCode == 200 && response.data != null) {
+          final dynamic payload = response.data;
           List<dynamic> list = const [];
-          if (raw is List) {
-            list = raw;
-          } else if (raw is Map && raw['docs'] is List) {
-            list = raw['docs'] as List;
-          } else if (data?['messages'] is List) {
-            list = data!['messages'];
+          if (payload is List) {
+            list = payload;
+          } else if (payload is Map<String, dynamic>) {
+            final data = payload;
+            final raw = data['data'] ?? data['messages'] ?? data['results'] ?? data['items'];
+            if (raw is List) {
+              list = raw;
+            } else if (raw is Map && raw['docs'] is List) {
+              list = raw['docs'] as List;
+            }
           }
           messages.value = list
               .map((e) => e is Map ? Map<String, dynamic>.from(e) : <String, dynamic>{'body': e.toString()})
@@ -183,7 +201,12 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
                       itemCount: messages.value.length,
                       itemBuilder: (context, index) {
                         final message = messages.value[index];
-                        final isMe = message['sender_id'] == 'current_user_id'; // Replace with actual check
+                        final senderId = message['sender_id'] is Map
+                            ? (message['sender_id'] as Map)['id']
+                            : message['sender_id'] ?? message['userId'] ?? message['senderId'];
+                        final isMe = currentUser != null &&
+                            senderId != null &&
+                            senderId.toString() == currentUser.id.toString();
 
                         return _PrivateMessageBubble(
                           message: message,

@@ -14,6 +14,7 @@ import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/services/hybrid_polie/translation_service.dart';
 import 'package:lingafriq/providers/onboarding_provider.dart';
+import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'culture_magazine_enhanced_features.dart';
 
 /// Enhanced Cultural Magazine Screen with Polie Translation, Cultural Context, Vocabulary
@@ -32,6 +33,13 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
     final translationService = useMemoized(() => TranslationService());
     final onboarding = ref.watch(onboardingProvider);
     final userLanguage = (onboarding.selectedLanguage ?? 'english').toLowerCase();
+    final translationTarget = useState<String>(userLanguage);
+    final supportedLanguages = ref.read(groqChatProvider.notifier).supportedLanguageOptions
+        .map((e) => (e['name'] ?? '').toString().toLowerCase())
+        .where((e) => e.isNotEmpty)
+        .toSet()
+        .toList()
+      ..sort();
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -95,14 +103,18 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
         }
 
         Map<String, dynamic> normalizeArticle(Map<String, dynamic> article) {
+          final content = (article['content'] ?? article['body'] ?? article['excerpt'] ?? '').toString();
           return {
             ...article,
             '_id': (article['_id'] ?? article['id'] ?? '').toString(),
             'title': article['title'] ?? article['headline'] ?? 'Untitled',
             'excerpt': article['excerpt'] ?? article['summary'] ?? article['description'] ?? '',
-            'content': article['content'] ?? article['body'] ?? article['excerpt'] ?? '',
+            'content': content,
             'category': article['category'] ?? article['topic'] ?? 'General',
             'imageUrl': article['imageUrl'] ?? article['image_url'] ?? article['image'] ?? '',
+            'audioUrl': article['audioUrl'] ?? article['audio_url'] ?? article['audio'] ?? '',
+            'videoUrl': article['videoUrl'] ?? article['video_url'] ?? article['video'] ?? '',
+            'isLongRead': content.length >= 1200,
           };
         }
 
@@ -142,6 +154,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
             final id = article['_id']?.toString() ?? '';
             final title = article['title']?.toString() ?? '';
             final excerpt = article['excerpt']?.toString() ?? '';
+            final content = article['content']?.toString() ?? '';
             
             if (id.isEmpty) continue;
             
@@ -158,10 +171,16 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
               sourceLang: 'english',
               targetLang: language,
             );
+            final contentResult = await translationService.translate(
+              text: content,
+              sourceLang: 'english',
+              targetLang: language,
+            );
             
             translations[id] = {
               'title': titleResult.translation,
               'excerpt': excerptResult.translation,
+              'content': contentResult.translation,
             };
           }
           
@@ -229,10 +248,23 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
               icon: Icon(showTranslation.value ? Icons.translate : Icons.translate_outlined),
               onPressed: () {
                 HapticFeedback.lightImpact();
-                toggleTranslation('', userLanguage);
+                toggleTranslation('', translationTarget.value);
               },
-              tooltip: showTranslation.value ? 'Show Original' : 'Translate to $userLanguage',
+              tooltip: showTranslation.value ? 'Show Original' : 'Translate to ${translationTarget.value}',
             ),
+          PopupMenuButton<String>(
+            tooltip: 'Translation language',
+            icon: const Icon(Icons.language_rounded),
+            onSelected: (value) => translationTarget.value = value,
+            itemBuilder: (context) {
+              return supportedLanguages
+                  .map((lang) => PopupMenuItem<String>(
+                        value: lang,
+                        child: Text(lang),
+                      ))
+                  .toList();
+            ),
+          ),
         ],
       ),
       body: Container(
@@ -357,8 +389,9 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
                                       article: article,
                                       translatedTitle: translated?['title'],
                                       translatedExcerpt: translated?['excerpt'],
+                                      translatedContent: translated?['content'],
                                       showTranslation: showTranslation.value,
-                                      userLanguage: userLanguage,
+                                      userLanguage: translationTarget.value,
                                     ),
                                   ),
                                 );
@@ -566,6 +599,16 @@ class _ArticleCard extends StatelessWidget {
                           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),
                         Spacer(),
+                        if ((article['audioUrl'] ?? '').toString().isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.only(right: 6),
+                            child: Icon(Icons.audiotrack_rounded, size: 16.sp, color: PanAfricanColors.primary),
+                          ),
+                        if ((article['videoUrl'] ?? '').toString().isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.only(right: 6),
+                            child: Icon(Icons.play_circle_rounded, size: 16.sp, color: PanAfricanColors.primary),
+                          ),
                         if (showTranslation)
                           Icon(
                             Icons.translate,

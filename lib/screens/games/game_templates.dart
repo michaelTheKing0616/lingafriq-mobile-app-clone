@@ -10,6 +10,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:record/record.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/game/game_session_model.dart';
 import '../../models/game/phrase_card_model.dart';
 import '../../providers/game_provider.dart';
@@ -18,6 +19,7 @@ import '../../services/polie_content_generator.dart';
 import '../../services/voice/pronunciation_analysis_service.dart';
 import '../../models/lesson_item_model.dart';
 import '../../utils/pan_african_design_system.dart';
+import '../../utils/media_url_resolver.dart';
 import 'base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/services.dart';
@@ -283,11 +285,12 @@ class _ListenSketchGameState extends BaseGameScreenState<ListenSketchGame> {
   }
 
   Future<void> _playAudio() async {
-    if (_currentCard?.audioNativeUrl == null) return;
+    final resolved = resolveMediaUrl(_currentCard?.audioNativeUrl);
+    if (resolved == null || resolved.isEmpty) return;
     
     setState(() => _isPlaying = true);
     try {
-      await _audioPlayer.setUrl(_currentCard!.audioNativeUrl!);
+      await _audioPlayer.setUrl(resolved);
       await _audioPlayer.play();
       await _audioPlayer.playerStateStream.firstWhere(
         (state) => state.processingState == ProcessingState.completed,
@@ -1585,13 +1588,29 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
   int _currentLineIndex = 0;
   List<String> _lyrics = [];
   String? _loadError;
+  Map<String, String>? _authHeaders;
 
   @override
   int getCardCount() => 3;
 
   @override
   Future<void> onGameInitialized() async {
+    await _loadAuthHeaders();
     await _loadSongs();
+  }
+
+  Future<void> _loadAuthHeaders() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('auth_token') ?? prefs.getString('access_token');
+      if (token != null && token.isNotEmpty) {
+        _authHeaders = {'Authorization': 'Bearer $token'};
+      } else {
+        _authHeaders = null;
+      }
+    } catch (_) {
+      _authHeaders = null;
+    }
   }
 
   Future<void> _loadSongs() async {
@@ -1715,7 +1734,7 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
   }
 
   Future<void> _playSong() async {
-    final audioUrl = _currentSong?['audioUrl']?.toString();
+    final audioUrl = resolveMediaUrl(_currentSong?['audioUrl']?.toString());
     if (audioUrl == null || audioUrl.isEmpty) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -1728,7 +1747,11 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
     }
     setState(() => _isPlaying = true);
     try {
-      await _audioPlayer.setUrl(audioUrl);
+      try {
+        await _audioPlayer.setUrl(audioUrl, headers: _authHeaders);
+      } catch (_) {
+        await _audioPlayer.setUrl(audioUrl);
+      }
       await _audioPlayer.play();
       await _audioPlayer.playerStateStream.firstWhere(
         (state) => state.processingState == ProcessingState.completed,

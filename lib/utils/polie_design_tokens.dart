@@ -9,18 +9,18 @@ import 'package:google_fonts/google_fonts.dart';
 class PolieColors {
   PolieColors._();
 
-  // Primary: Midnight Indigo / Deep Obsidian
-  static const Color primary = Color(0xFF1E1B4B);
-  static const Color primaryDark = Color(0xFF0F0D24);
-  static const Color obsidian = Color(0xFF0D0D0F);
+  // TSX parity palette (earth/amber/cream family)
+  static const Color primary = Color(0xFF2D1B0E);
+  static const Color primaryDark = Color(0xFF0F0A04);
+  static const Color obsidian = Color(0xFF0F0A04);
 
   // Accents
-  static const Color goldEmber = Color(0xFFE8A817);
-  static const Color goldEmberLight = Color(0xFFF7CB46);
-  static const Color electricTeal = Color(0xFF14B8A6);
-  static const Color electricTealLight = Color(0xFF5EEAD4);
-  static const Color royalAmethyst = Color(0xFF7C3AED);
-  static const Color royalAmethystLight = Color(0xFFA78BFA);
+  static const Color goldEmber = Color(0xFFD4822A);
+  static const Color goldEmberLight = Color(0xFFF2C14E);
+  static const Color electricTeal = Color(0xFF4A7C59);
+  static const Color electricTealLight = Color(0xFF5C9070);
+  static const Color royalAmethyst = Color(0xFFC4663A);
+  static const Color royalAmethystLight = Color(0xFFD27A53);
 
   // States
   static const Color success = Color(0xFF22C55E);
@@ -30,17 +30,17 @@ class PolieColors {
   // @deprecated — Glass-era tokens. Use surfaceContainer / surfaceContainerLight instead.
   static const Color surfaceGlass = Color(0x1FFFFFFF);
   static const Color surfaceGlassDark = Color(0x2BFFFFFF);
-  static const Color surfaceContainer = Color(0xFF1E293B);
-  static const Color surfaceContainerLight = Color(0xFFF1F5F9);
+  static const Color surfaceContainer = Color(0xFF1A130C);
+  static const Color surfaceContainerLight = Color(0xFFFAF3E0);
 
   // Surfaces — Light mode
-  static const Color surfaceLight = Color(0xFFF5F7F5);
+  static const Color surfaceLight = Color(0xFFFAF3E0);
 
   // Text
-  static const Color textPrimary = Color(0xFFF8FAFC);
-  static const Color textSecondary = Color(0xFF94A3B8);
-  static const Color textPrimaryLight = Color(0xFF0F172A);
-  static const Color textSecondaryLight = Color(0xFF64748B);
+  static const Color textPrimary = Color(0xFFFAF3E0);
+  static const Color textSecondary = Color(0xFFC4B7A6);
+  static const Color textPrimaryLight = Color(0xFF2D1B0E);
+  static const Color textSecondaryLight = Color(0xFF7A624C);
 }
 
 class PolieSpacing {
@@ -99,7 +99,7 @@ class PolieElevation {
       ];
 }
 
-/// Typography: Manrope for headings, body modern grotesk (Inter-style).
+/// Typography parity with TSX spec: Playfair + Nunito + JetBrains Mono.
 /// When [useSerifForLanguageText] is true, language/learning text uses Noto Serif.
 class PolieTypography {
   PolieTypography._();
@@ -132,73 +132,146 @@ class PolieTypography {
   static TextStyle h1(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
-    return _baseStyle(32.sp, 1.25, FontWeight.w700, color, -0.5);
+    return GoogleFonts.playfairDisplay(
+      fontSize: 32.sp,
+      height: 1.25,
+      fontWeight: FontWeight.w700,
+      color: color,
+      letterSpacing: -0.5,
+    );
   }
 
   static TextStyle h2(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
-    return _baseStyle(24.sp, 1.33, FontWeight.w600, color);
+    return GoogleFonts.playfairDisplay(
+      fontSize: 24.sp,
+      height: 1.33,
+      fontWeight: FontWeight.w600,
+      color: color,
+    );
   }
 
   static TextStyle body(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
-    return _baseStyle(16.sp, 1.5, FontWeight.w400, color);
+    return GoogleFonts.nunito(
+      fontSize: 16.sp,
+      height: 1.5,
+      fontWeight: FontWeight.w400,
+      color: color,
+    );
   }
 
   static TextStyle bodySmall(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final color = isDark ? PolieColors.textSecondary : PolieColors.textSecondaryLight;
-    return _baseStyle(13.sp, 1.38, FontWeight.w400, color);
+    return GoogleFonts.nunito(
+      fontSize: 13.sp,
+      height: 1.38,
+      fontWeight: FontWeight.w400,
+      color: color,
+    );
   }
 
   static TextStyle label(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final color = isDark ? PolieColors.textSecondary : PolieColors.textSecondaryLight;
-    return _baseStyle(14.sp, 1.3, FontWeight.w500, color);
+    return GoogleFonts.nunito(
+      fontSize: 14.sp,
+      height: 1.3,
+      fontWeight: FontWeight.w600,
+      color: color,
+    );
   }
 
   static TextStyle h3(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
-    return _baseStyle(20.sp, 1.35, FontWeight.w600, color);
+    return GoogleFonts.playfairDisplay(
+      fontSize: 20.sp,
+      height: 1.35,
+      fontWeight: FontWeight.w600,
+      color: color,
+    );
   }
 
   static TextStyle titleLarge(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
-    return _baseStyle(22.sp, 1.3, FontWeight.w600, color);
+    return GoogleFonts.playfairDisplay(
+      fontSize: 22.sp,
+      height: 1.3,
+      fontWeight: FontWeight.w600,
+      color: color,
+    );
   }
 
   static TextStyle titleMedium(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
-    return _baseStyle(18.sp, 1.35, FontWeight.w600, color);
+    return GoogleFonts.nunito(
+      fontSize: 18.sp,
+      height: 1.35,
+      fontWeight: FontWeight.w700,
+      color: color,
+    );
   }
 
   static TextStyle titleSmall(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
-    return _baseStyle(16.sp, 1.35, FontWeight.w600, color);
+    return GoogleFonts.nunito(
+      fontSize: 16.sp,
+      height: 1.35,
+      fontWeight: FontWeight.w700,
+      color: color,
+    );
   }
 
   static TextStyle bodyLarge(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
-    return _baseStyle(18.sp, 1.5, FontWeight.w400, color);
+    return GoogleFonts.nunito(
+      fontSize: 18.sp,
+      height: 1.5,
+      fontWeight: FontWeight.w400,
+      color: color,
+    );
   }
 
   static TextStyle labelLarge(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final color = isDark ? PolieColors.textSecondary : PolieColors.textSecondaryLight;
-    return _baseStyle(14.sp, 1.3, FontWeight.w600, color);
+    return GoogleFonts.nunito(
+      fontSize: 14.sp,
+      height: 1.3,
+      fontWeight: FontWeight.w600,
+      color: color,
+    );
   }
 
   static TextStyle button(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
-    return _baseStyle(16.sp, 1.25, FontWeight.w700, color, 0.5);
+    return GoogleFonts.nunito(
+      fontSize: 16.sp,
+      height: 1.25,
+      fontWeight: FontWeight.w700,
+      color: color,
+      letterSpacing: 0.4,
+    );
+  }
+
+  static TextStyle mono(BuildContext context, {double size = 13}) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
+    return GoogleFonts.jetBrainsMono(
+      fontSize: size.sp,
+      height: 1.4,
+      fontWeight: FontWeight.w500,
+      color: color,
+    );
   }
 }
 

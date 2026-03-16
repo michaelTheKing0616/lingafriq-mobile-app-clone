@@ -64,12 +64,22 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindi
         });
         return;
       }
-      await _player.setAudioSource(
-        LockCachingAudioSource(
-          Uri.parse(url),
-          headers: _authHeaders,
-        ),
-      );
+      // Prefer direct network source first for protected URLs; fall back to cache source.
+      try {
+        await _player.setUrl(url, headers: _authHeaders);
+      } catch (_) {
+        try {
+          await _player.setAudioSource(
+            LockCachingAudioSource(
+              Uri.parse(url),
+              headers: _authHeaders,
+            ),
+          );
+        } catch (_) {
+          // Final fallback for public CDN files that reject auth headers.
+          await _player.setUrl(url);
+        }
+      }
       if (mounted) {
         setState(() {
           _errorMessage = null;

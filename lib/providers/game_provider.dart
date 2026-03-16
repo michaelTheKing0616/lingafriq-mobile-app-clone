@@ -481,13 +481,15 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       ipa: (item['ipa'] ?? item['pronunciation'])?.toString(),
       level: parsedLevel,
       tags: (item['tags'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? ['ai-generated'],
-      audioNativeUrl: resolveMediaUrl(
-        (item['audio_native_url'] ??
-                item['audioNativeUrl'] ??
-                item['audio_url'] ??
-                item['audioUrl'] ??
-                item['audio'])?.toString(),
-      ),
+      audioNativeUrl: _extractMediaUrl(item, const [
+        'audio_native_url',
+        'audioNativeUrl',
+        'audio_url',
+        'audioUrl',
+        'audio',
+        'tts_url',
+        'voice_url',
+      ]),
       imageUrl: resolveMediaUrl(
         (item['image_url'] ?? item['imageUrl'] ?? item['image'])?.toString(),
       ),
@@ -496,6 +498,36 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
           const [],
       srs: _userSRS['${userId ?? _currentSession?.userId ?? 'user'}_${cardId}_$lang'] ?? SRSState(),
     ));
+  }
+
+  String? _extractMediaUrl(Map<String, dynamic> map, List<String> keys) {
+    dynamic crawl(dynamic value) {
+      if (value == null) return null;
+      if (value is String) return value;
+      if (value is List) {
+        for (final item in value) {
+          final nested = crawl(item);
+          if (nested != null && nested.toString().trim().isNotEmpty) return nested;
+        }
+        return null;
+      }
+      if (value is Map) {
+        for (final nestedKey in const ['url', 'file_url', 'src', 'path']) {
+          final nested = crawl(value[nestedKey]);
+          if (nested != null && nested.toString().trim().isNotEmpty) return nested;
+        }
+      }
+      return value.toString();
+    }
+
+    for (final key in keys) {
+      final raw = crawl(map[key]);
+      if (raw != null && raw.toString().trim().isNotEmpty) {
+        final resolved = resolveMediaUrl(raw.toString());
+        if (resolved != null && resolved.isNotEmpty) return resolved;
+      }
+    }
+    return null;
   }
 
   /// Generate curated fallback cards (used only when API is unavailable and no cached data exists)

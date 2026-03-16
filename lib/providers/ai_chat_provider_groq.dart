@@ -319,7 +319,8 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
       case PolieMode.tutor:
         return 700;
       case PolieMode.conversation:
-        return 550;
+        // Extra headroom prevents abrupt truncation in multi-sentence replies.
+        return 900;
       case PolieMode.vocab:
       case PolieMode.review:
       case PolieMode.pronunciation:

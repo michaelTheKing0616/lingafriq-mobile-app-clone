@@ -51,6 +51,7 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
   String? _loadError;
   late final ComboTracker _comboTracker;
   Map<String, String>? _authHeaders;
+  bool _hasFinished = false;
 
   @override
   void initState() {
@@ -104,6 +105,7 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
       final cards = gameProv.availableCards;
       if (mounted) {
         setState(() {
+          _hasFinished = false;
           _isLoading = false;
           _loadError = null;
         });
@@ -241,6 +243,12 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
           duration: const Duration(seconds: 1),
         ),
       );
+    }
+
+    final correctUniqueMatches = _results.where((r) => r.correct).map((r) => r.leftId).toSet();
+    if (!_hasFinished && _leftTiles.isNotEmpty && correctUniqueMatches.length >= _leftTiles.length) {
+      _hasFinished = true;
+      await _finishGame();
     }
   }
 
@@ -396,6 +404,7 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
             setState(() {
               _isLoading = true;
               _loadError = null;
+              _hasFinished = false;
             });
             _initializeGame();
           },
@@ -509,11 +518,10 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
                                             ),
                                             child: Row(
                                               children: [
-                                                if (tile.audioUrl != null)
-                                                  IconButton(
-                                                    icon: const Icon(Icons.volume_up),
-                                                    onPressed: () => _playAudio(tile.audioUrl, fallbackText: tile.label),
-                                                  ),
+                                                IconButton(
+                                                  icon: const Icon(Icons.volume_up),
+                                                  onPressed: () => _playAudio(tile.audioUrl, fallbackText: tile.label),
+                                                ),
                                                 Expanded(
                                                   child: Column(
                                                     crossAxisAlignment:

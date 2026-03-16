@@ -224,6 +224,7 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
   final Map<String, dynamic> article;
   final String? translatedTitle;
   final String? translatedExcerpt;
+  final String? translatedContent;
   final bool showTranslation;
   final String userLanguage;
 
@@ -232,6 +233,7 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
     required this.article,
     this.translatedTitle,
     this.translatedExcerpt,
+    this.translatedContent,
     this.showTranslation = false,
     this.userLanguage = 'english',
   });
@@ -327,12 +329,32 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
             children: [
               // Article Content
               Text(
-                showTranslationState.value && contentTranslation.value != null
-                    ? contentTranslation.value!
-                    : article['content'] ?? article['excerpt'] ?? '',
+                showTranslationState.value
+                    ? (contentTranslation.value ?? translatedContent ?? article['content'] ?? article['excerpt'] ?? '')
+                    : (article['content'] ?? article['excerpt'] ?? ''),
                 style: PanAfricanTypography.bodyLarge(context),
               ),
               SizedBox(height: PanAfricanSpacing.lg),
+              if ((article['audioUrl'] ?? '').toString().trim().isNotEmpty ||
+                  (article['videoUrl'] ?? '').toString().trim().isNotEmpty ||
+                  ((article['content'] ?? '').toString().length > 1200))
+                Card(
+                  child: Padding(
+                    padding: EdgeInsets.all(PanAfricanSpacing.md),
+                    child: Wrap(
+                      spacing: PanAfricanSpacing.sm,
+                      runSpacing: PanAfricanSpacing.xs,
+                      children: [
+                        if ((article['audioUrl'] ?? '').toString().trim().isNotEmpty)
+                          const Chip(label: Text('Audio available'), avatar: Icon(Icons.audiotrack_rounded, size: 18)),
+                        if ((article['videoUrl'] ?? '').toString().trim().isNotEmpty)
+                          const Chip(label: Text('Video available'), avatar: Icon(Icons.play_circle_fill_rounded, size: 18)),
+                        if (((article['content'] ?? '').toString().length > 1200))
+                          const Chip(label: Text('Long read'), avatar: Icon(Icons.menu_book_rounded, size: 18)),
+                      ],
+                    ),
+                  ),
+                ),
 
               // Translation Toggle
               Row(

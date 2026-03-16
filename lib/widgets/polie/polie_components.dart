@@ -432,3 +432,84 @@ class PolieFloatingLanguagePill extends StatelessWidget {
     );
   }
 }
+
+class PolieModeSwitcherItem<T> {
+  final T value;
+  final String icon;
+  final String label;
+  const PolieModeSwitcherItem({
+    required this.value,
+    required this.icon,
+    required this.label,
+  });
+}
+
+class PolieModeSwitcherRail<T> extends StatelessWidget {
+  final T selected;
+  final List<PolieModeSwitcherItem<T>> items;
+  final ValueChanged<T> onChanged;
+  final Color accent;
+  final Color activeTextColor;
+
+  const PolieModeSwitcherRail({
+    super.key,
+    required this.selected,
+    required this.items,
+    required this.onChanged,
+    this.accent = const Color(0xFFD4822A),
+    this.activeTextColor = const Color(0xFFFAF3E0),
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 44,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: items.length,
+        separatorBuilder: (_, __) => const SizedBox(width: 8),
+        itemBuilder: (context, index) {
+          final item = items[index];
+          final active = item.value == selected;
+          return Tooltip(
+            message: item.label,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(100),
+              onTap: () {
+                HapticFeedback.selectionClick();
+                onChanged(item.value);
+              },
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 220),
+                curve: Curves.easeOutCubic,
+                padding: EdgeInsets.symmetric(horizontal: active ? 14 : 10, vertical: 8),
+                decoration: BoxDecoration(
+                  color: active ? accent.withOpacity(0.16) : Colors.transparent,
+                  borderRadius: BorderRadius.circular(100),
+                  border: Border.all(
+                    color: active ? accent : accent.withOpacity(0.35),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Text(item.icon, style: const TextStyle(fontSize: 16)),
+                    if (active) ...[
+                      const SizedBox(width: 6),
+                      Text(
+                        item.label,
+                        style: PolieTypography.label(context).copyWith(
+                          fontWeight: FontWeight.w800,
+                          color: activeTextColor,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}

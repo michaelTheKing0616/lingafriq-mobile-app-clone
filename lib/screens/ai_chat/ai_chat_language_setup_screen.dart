@@ -30,6 +30,7 @@ class AiChatLanguageSetupScreen extends ConsumerStatefulWidget {
 class _AiChatLanguageSetupScreenState
     extends ConsumerState<AiChatLanguageSetupScreen> {
   late PolieMode _mode;
+  String _searchQuery = '';
 
   @override
   void initState() {
@@ -84,6 +85,12 @@ class _AiChatLanguageSetupScreenState
     final textSecondary =
         isDark ? PolieColors.textSecondary : PolieColors.textSecondaryLight;
     final languages = ref.read(groqChatProvider.notifier).supportedLanguageOptions;
+    final filteredLanguages = languages.where((lang) {
+      final name = (lang['name'] ?? '').toString().toLowerCase();
+      final query = _searchQuery.trim().toLowerCase();
+      if (query.isEmpty) return true;
+      return name.contains(query);
+    }).toList();
 
     return ErrorBoundary(
       errorMessage: 'Unable to load AI Chat setup. Please check your connection and try again.',
@@ -176,8 +183,47 @@ class _AiChatLanguageSetupScreenState
                 ),
               ),
               // Language grid
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                  PolieSpacing.md,
+                  PolieSpacing.xs,
+                  PolieSpacing.md,
+                  PolieSpacing.xs,
+                ),
+                child: TextField(
+                  onChanged: (value) => setState(() => _searchQuery = value),
+                  style: PolieTypography.body(context).copyWith(color: textPrimary),
+                  decoration: InputDecoration(
+                    hintText: 'Search language...',
+                    prefixIcon: const Icon(Icons.search_rounded),
+                    filled: true,
+                    fillColor: isDark
+                        ? PolieColors.surfaceContainer
+                        : PolieColors.surfaceContainerLight,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(PolieRadius.lg),
+                      borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.outline.withOpacity(0.15),
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(PolieRadius.lg),
+                      borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.outline.withOpacity(0.15),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               Expanded(
-                child: GridView.builder(
+                child: filteredLanguages.isEmpty
+                    ? Center(
+                        child: Text(
+                          'No language matches "$_searchQuery"',
+                          style: PolieTypography.body(context).copyWith(color: textSecondary),
+                        ),
+                      )
+                    : GridView.builder(
                   padding: EdgeInsets.all(PolieSpacing.md),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount:
@@ -186,9 +232,9 @@ class _AiChatLanguageSetupScreenState
                     crossAxisSpacing: PolieSpacing.sm,
                     childAspectRatio: 1.2,
                   ),
-                  itemCount: languages.length,
+                  itemCount: filteredLanguages.length,
                   itemBuilder: (context, index) {
-                    final lang = languages[index];
+                    final lang = filteredLanguages[index];
                     final name = lang['name'] ?? '';
                     final flag = lang['flag'] ?? '🌍';
                     final accent = polieAccentForLanguage(name);

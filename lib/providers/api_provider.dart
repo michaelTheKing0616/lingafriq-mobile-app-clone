@@ -957,10 +957,56 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     logger.debug('Marking content as complete', context: {'endpoint': endpointToHit});
     try {
       state = state.copyWith(isLoading: true);
-      final res = await _withTransportRetry(
-        () => ref.read(client).patch(endpointToHit),
-      );
-      if (res.statusCode != 200 && res.statusCode != 204) throw res.data;
+      final raw = endpointToHit.trim();
+      final isAbsolute = raw.startsWith('http://') || raw.startsWith('https://');
+      final normalized = raw.startsWith('/') ? raw : '/$raw';
+      final noLeading = normalized.replaceFirst(RegExp(r'^/+'), '');
+      final candidates = <String>{
+        if (isAbsolute) raw,
+        if (!isAbsolute) ...{
+          normalized,
+          noLeading,
+          '$normalized/',
+          '$noLeading/',
+          '/api$normalized',
+          '/api/v1$normalized',
+          '/v1$normalized',
+        },
+      }.where((e) => e.isNotEmpty).toList();
+
+      if (isAbsolute) {
+        final uri = Uri.tryParse(raw);
+        final path = uri?.path;
+        if (path != null && path.isNotEmpty) {
+          final pathNormalized = path.startsWith('/') ? path : '/$path';
+          candidates.addAll([
+            pathNormalized,
+            pathNormalized.replaceFirst(RegExp(r'^/+'), ''),
+            '/api$pathNormalized',
+            '/api/v1$pathNormalized',
+            '/v1$pathNormalized',
+          ]);
+        }
+      }
+
+      dynamic res;
+      Object? lastError;
+      for (final candidate in candidates) {
+        try {
+          final response = await _withTransportRetry(
+            () => ref.read(client).patch(candidate),
+          );
+          final code = response.statusCode ?? 0;
+          if (code == 200 || code == 204) {
+            res = response;
+            break;
+          }
+          lastError = response.data;
+        } catch (e) {
+          lastError = e;
+        }
+      }
+      if (res == null) throw lastError ?? 'Failed to mark completion';
       
       // CRITICAL FIX: Use async/await instead of chained promises for proper error handling
       try {

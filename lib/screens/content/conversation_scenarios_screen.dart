@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
-import 'package:lingafriq/screens/ai_chat/ai_chat_screen_with_tracking.dart';
+import 'package:lingafriq/screens/ai_chat/polie_workspace_screen.dart';
 import 'package:lingafriq/data/roleplay_dataset.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -337,15 +337,11 @@ class _ConversationScenariosScreenState extends ConsumerState<ConversationScenar
               'scenarioContext': scenarioContext,
             },
           ),
-          builder: (context) => AIChatScreenWithTracking(
-            language: widget.language ?? 'sw',
-            languageName: widget.languageName ?? 'Swahili',
-            mode: runtimeMode.name,
-            modeName: runtimeModeName,
-            initialScenario: isRoleplay ? roleplayEntry : null,
-            scenarioType: 'conversation_scenario',
-            practiceType: practiceType,
-            scenarioContext: scenarioContext,
+          builder: (context) => PolieWorkspaceScreen(
+            sourceLanguage: 'English',
+            targetLanguage: widget.languageName ?? 'Swahili',
+            initialMode: runtimeMode,
+            initialRoleplayScene: isRoleplay ? _sceneFromPracticeType(practiceType) : null,
           ),
         ),
       ).then((_) {
@@ -371,6 +367,19 @@ class _ConversationScenariosScreenState extends ConsumerState<ConversationScenar
     );
     
     _saveProgress(scenarioId, _progressMap[scenarioId]!);
+  }
+
+  String _sceneFromPracticeType(String practiceType) {
+    switch (practiceType) {
+      case 'debate':
+        return 'Job Interview';
+      case 'photo':
+        return 'Meeting Elder';
+      case 'roleplay':
+      case 'conversation':
+      default:
+        return 'Market';
+    }
   }
 
   @override

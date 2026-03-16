@@ -6,7 +6,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/data/roleplay_dataset.dart';
-import 'package:lingafriq/screens/ai_chat/ai_chat_screen_with_tracking.dart';
+import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
+import 'package:lingafriq/screens/ai_chat/polie_workspace_screen.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 /// Roleplay Scenario Selection Screen - Polie Dark Theme
@@ -103,17 +104,16 @@ class RoleplayScenarioSelectionScreen extends HookConsumerWidget {
 
     Future<void> startScenario(CuratedScenario curated) async {
       HapticFeedback.mediumImpact();
-      final entry = _resolveRoleplayEntry(curated);
+      final initialScene = _sceneForCurated(curated);
       if (context.mounted) {
         Navigator.push(
           context,
           SmoothPageRoute(
-            child: AIChatScreenWithTracking(
-              language: language,
-              languageName: languageName,
-              mode: 'roleplay',
-              modeName: 'Roleplay',
-              initialScenario: entry,
+            child: PolieWorkspaceScreen(
+              sourceLanguage: 'English',
+              targetLanguage: languageName,
+              initialMode: PolieMode.roleplay,
+              initialRoleplayScene: initialScene,
             ),
           ),
         );
@@ -309,6 +309,26 @@ class RoleplayScenarioSelectionScreen extends HookConsumerWidget {
         ],
       ),
     );
+  }
+
+  String _sceneForCurated(CuratedScenario curated) {
+    switch (curated.categoryId) {
+      case 'shopping':
+        return 'Market';
+      case 'food':
+        return 'Restaurant';
+      case 'social':
+      case 'greetings':
+      case 'family':
+        return 'Family Dinner';
+      case 'business':
+        return 'Job Interview';
+      case 'health':
+      case 'emergency':
+      case 'travel':
+      default:
+        return 'Meeting Elder';
+    }
   }
 
   RoleplayEntry _resolveRoleplayEntry(CuratedScenario curated) {

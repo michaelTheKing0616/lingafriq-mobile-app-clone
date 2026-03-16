@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/utils/transport_error_policy.dart';
@@ -19,6 +20,7 @@ import 'package:lingafriq/providers/chat_socket_provider.dart';
 import 'package:lingafriq/widgets/empty_state_widget.dart';
 import 'package:lingafriq/widgets/error_state_widget.dart';
 import 'package:lingafriq/widgets/skeleton_loader.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Redesigned Global Chat with Material 3 and Language-Specific Channels
 class GlobalChatScreenMaterial3 extends HookConsumerWidget {
@@ -37,6 +39,37 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
     final showChannels = useState(false);
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    const cachePrefix = 'global_chat_cache_';
+
+    Future<void> loadCachedMessages() async {
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        final savedChannel = prefs.getString('${cachePrefix}last_channel');
+        if (savedChannel != null && channels.value.contains(savedChannel)) {
+          selectedChannel.value = savedChannel;
+        }
+        final raw = prefs.getString('$cachePrefix${selectedChannel.value}');
+        if (raw == null || raw.isEmpty) return;
+        final decoded = jsonDecode(raw);
+        if (decoded is List) {
+          messages.value = decoded
+              .whereType<Map>()
+              .map((e) => Map<String, dynamic>.from(e))
+              .toList();
+        }
+      } catch (_) {}
+    }
+
+    Future<void> persistMessages() async {
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('${cachePrefix}last_channel', selectedChannel.value);
+        await prefs.setString(
+          '$cachePrefix${selectedChannel.value}',
+          jsonEncode(messages.value.take(120).toList()),
+        );
+      } catch (_) {}
+    }
 
     List<Map<String, dynamic>> parseMessageList(dynamic raw) {
       if (raw == null) return [];
@@ -68,6 +101,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
             list = parseMessageList(data['data'] ?? data['messages'] ?? data['results'] ?? data['leaderboard']);
           }
           messages.value = list;
+          await persistMessages();
         }
       } catch (e) {
         loadError.value = e is DioException
@@ -105,6 +139,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
         'clientMessageId': 'local_${DateTime.now().millisecondsSinceEpoch}',
       };
       messages.value = [...messages.value, localMsg];
+      await persistMessages();
 
       // Try socket first for real-time, with REST as reliable fallback
       bool sent = false;
@@ -163,8 +198,59 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
     final socketState = ref.watch(chatSocketProvider);
     final socketNotifier = ref.read(chatSocketProvider.notifier);
 
+    Future<void> showChannelPicker() async {
+      await showModalBottomSheet<void>(
+        context: context,
+        backgroundColor: isDark
+            ? PanAfricanColors.surfaceContainerDark
+            : PanAfricanColors.surfaceContainerLight,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
+        ),
+        builder: (_) => SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: PanAfricanSpacing.sm, bottom: PanAfricanSpacing.xs),
+                child: Container(
+                  width: 44,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: PanAfricanColors.neutralMedium.withOpacity(0.45),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(PanAfricanSpacing.md),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('Switch Channel', style: PanAfricanTypography.titleMedium(context)),
+                ),
+              ),
+              ...channels.value.map((channel) {
+                final selected = selectedChannel.value == channel;
+                return ListTile(
+                  leading: Icon(Icons.tag_rounded, color: selected ? PanAfricanColors.primary : PanAfricanColors.neutralMedium),
+                  title: Text('#$channel'),
+                  trailing: selected ? const Icon(Icons.check_circle_rounded, color: PanAfricanColors.primary) : null,
+                  onTap: () {
+                    selectedChannel.value = channel;
+                    Navigator.of(context).pop();
+                  },
+                );
+              }),
+              SizedBox(height: PanAfricanSpacing.md),
+            ],
+          ),
+        ),
+      );
+    }
+
     // Connect socket and join the channel room on mount / channel change
     useEffect(() {
+      loadCachedMessages();
       final user = ref.read(userProvider);
       if (user != null) {
         socketNotifier.connect(
@@ -208,6 +294,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
       }
       if (newMessages.isNotEmpty) {
         messages.value = [...messages.value, ...newMessages];
+        persistMessages();
       }
       return null;
     }, [socketState.messages.length]);
@@ -217,7 +304,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Global Chat'),
+              Text('LingAfriq Live'),
               Text(
                 '#${selectedChannel.value}',
                 style: PanAfricanTypography.bodySmall(context),
@@ -250,13 +337,13 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
           ),
           ),
           Semantics(
-            label: showChannels.value ? 'Hide channels' : 'Show channels',
+            label: 'Show channels',
             button: true,
             child: IconButton(
             icon: Icon(Icons.tag, semanticLabel: 'Channels'),
             onPressed: () {
               HapticFeedback.selectionClick();
-              showChannels.value = !showChannels.value;
+              showChannelPicker();
             },
             tooltip: 'Channels',
           ),
@@ -358,6 +445,25 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
             Expanded(
               child: Column(
                 children: [
+                  Container(
+                    height: 48,
+                    padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.sm),
+                    alignment: Alignment.centerLeft,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: channels.value.length,
+                      separatorBuilder: (_, __) => SizedBox(width: PanAfricanSpacing.xs),
+                      itemBuilder: (context, index) {
+                        final channel = channels.value[index];
+                        final selected = selectedChannel.value == channel;
+                        return ChoiceChip(
+                          selected: selected,
+                          onSelected: (_) => selectedChannel.value = channel,
+                          label: Text('#$channel'),
+                        );
+                      },
+                    ),
+                  ),
                   // Messages List
                   Expanded(
                     child: isLoadingMessages.value
@@ -575,38 +681,44 @@ class _GlobalMessageBubble extends StatelessWidget {
     final messageText = message['message'] ?? message['body'] ?? message['text'] ?? '';
     final bubbleColor = isToxic
         ? PanAfricanColors.error.withOpacity(0.08)
-        : (isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight);
+        : isFromCurrentUser
+            ? PanAfricanColors.primary.withOpacity(isDark ? 0.45 : 0.18)
+            : (isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight);
 
     return Container(
       margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
       child: Row(
+        mainAxisAlignment: isFromCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Semantics(
-            label: 'Avatar for $senderName',
-            excludeSemantics: true,
-            child: PanAfricanAvatar(
-            imageUrl: avatarUrl is String ? avatarUrl : null,
-            initials: senderName.isNotEmpty ? senderName[0].toUpperCase() : '?',
-            size: 40.w,
-            backgroundColor: isToxic ? PanAfricanColors.error : PanAfricanColors.primary,
-            borderColor: isToxic ? PanAfricanColors.error : PanAfricanColors.primary,
-            showBadge: isToxic,
-            badgeColor: PanAfricanColors.error,
-          ),
-          ),
-          SizedBox(width: PanAfricanSpacing.sm),
+          if (!isFromCurrentUser) ...[
+            Semantics(
+              label: 'Avatar for $senderName',
+              excludeSemantics: true,
+              child: PanAfricanAvatar(
+                imageUrl: avatarUrl is String ? avatarUrl : null,
+                initials: senderName.isNotEmpty ? senderName[0].toUpperCase() : '?',
+                size: 40.w,
+                backgroundColor: isToxic ? PanAfricanColors.error : PanAfricanColors.primary,
+                borderColor: isToxic ? PanAfricanColors.error : PanAfricanColors.primary,
+                showBadge: isToxic,
+                badgeColor: PanAfricanColors.error,
+              ),
+            ),
+            SizedBox(width: PanAfricanSpacing.sm),
+          ],
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: isFromCurrentUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
                     Expanded(
                       child: Row(
+                        mainAxisAlignment: isFromCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
                         children: [
                           Text(
-                            senderName,
+                            isFromCurrentUser ? 'You' : senderName,
                             style: PanAfricanTypography.labelMedium(context)
                                 .copyWith(color: PanAfricanColors.primary),
                           ),
@@ -655,11 +767,26 @@ class _GlobalMessageBubble extends StatelessWidget {
                   child: Text(
                     messageText,
                     style: PanAfricanTypography.bodyMedium(context),
+                    textAlign: isFromCurrentUser ? TextAlign.right : TextAlign.left,
                   ),
                 ),
               ],
             ),
           ),
+          if (isFromCurrentUser) ...[
+            SizedBox(width: PanAfricanSpacing.sm),
+            Semantics(
+              label: 'Your avatar',
+              excludeSemantics: true,
+              child: PanAfricanAvatar(
+                imageUrl: avatarUrl is String ? avatarUrl : null,
+                initials: senderName.isNotEmpty ? senderName[0].toUpperCase() : 'Y',
+                size: 40.w,
+                backgroundColor: PanAfricanColors.primary,
+                borderColor: PanAfricanColors.primary,
+              ),
+            ),
+          ],
         ],
       ),
     );

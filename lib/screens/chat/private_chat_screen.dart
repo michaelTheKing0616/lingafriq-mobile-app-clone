@@ -149,13 +149,6 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
           ],
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              HapticFeedback.selectionClick();
-              Scaffold.of(context).openDrawer();
-            },
-          ),
           Padding(
             padding: EdgeInsets.only(right: PanAfricanSpacing.sm),
             child: Icon(Icons.lock_outline, size: 20, color: PanAfricanColors.neutralMedium),

@@ -44,6 +44,7 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
   List<String> _mistakes = [];
   final List<PhraseCard> _cards = [];
   Map<String, String>? _authHeaders;
+  DateTime? _recordingStartedAt;
 
   @override
   int getCardCount() => 5;
@@ -119,6 +120,7 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
         ),
         path: path,
       );
+      _recordingStartedAt = DateTime.now();
       return;
     }
     if (mounted) {
@@ -131,7 +133,16 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
   Future<void> _stopRecording() async {
     final path = await _recorder.stop();
     setState(() => _isRecording = false);
-    
+    final startedAt = _recordingStartedAt;
+    _recordingStartedAt = null;
+    if (startedAt != null && DateTime.now().difference(startedAt).inMilliseconds < 700) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Recording is too short. Please speak for at least 1 second.')),
+        );
+      }
+      return;
+    }
     if (path != null && _currentCard != null) {
       await _scorePronunciation(path);
     }
@@ -273,7 +284,7 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
     final colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: EdgeInsets.all(4.w),
+      padding: EdgeInsets.fromLTRB(4.w, 7.h, 4.w, 4.w),
       child: Column(
         children: [
             // Progress

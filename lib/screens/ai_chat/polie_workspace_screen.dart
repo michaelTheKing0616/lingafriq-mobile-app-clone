@@ -15,6 +15,8 @@ import 'package:lingafriq/services/translation_history_service.dart';
 import 'package:lingafriq/services/tutor_progress_service.dart';
 import 'package:lingafriq/services/vocabulary/vocabulary_service.dart';
 import 'package:lingafriq/services/vocabulary_progress_service.dart';
+import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
+import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart' as uuid;
 
@@ -22,21 +24,23 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
   final String sourceLanguage;
   final String targetLanguage;
   final PolieMode initialMode;
+  final String? initialRoleplayScene;
 
   const PolieWorkspaceScreen({
     super.key,
     required this.sourceLanguage,
     required this.targetLanguage,
     required this.initialMode,
+    this.initialRoleplayScene,
   });
 
-  static const _modeItems = <_ModeChipItem>[
-    _ModeChipItem(mode: PolieMode.translation, icon: '⇄', label: 'Translation'),
-    _ModeChipItem(mode: PolieMode.tutor, icon: '📖', label: 'Tutor'),
-    _ModeChipItem(mode: PolieMode.roleplay, icon: '🎭', label: 'Roleplay'),
-    _ModeChipItem(mode: PolieMode.conversation, icon: '💬', label: 'Conversation'),
-    _ModeChipItem(mode: PolieMode.vocab, icon: '✦', label: 'Vocabulary'),
-    _ModeChipItem(mode: PolieMode.review, icon: '📊', label: 'Review'),
+  static const _modeItems = <ModeChipItem>[
+    ModeChipItem(mode: PolieMode.translation, icon: '⇄', label: 'Translation'),
+    ModeChipItem(mode: PolieMode.tutor, icon: '📖', label: 'Tutor'),
+    ModeChipItem(mode: PolieMode.roleplay, icon: '🎭', label: 'Roleplay'),
+    ModeChipItem(mode: PolieMode.conversation, icon: '💬', label: 'Conversation'),
+    ModeChipItem(mode: PolieMode.vocab, icon: '✦', label: 'Vocabulary'),
+    ModeChipItem(mode: PolieMode.review, icon: '📊', label: 'Review'),
   ];
 
   @override
@@ -65,7 +69,7 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
     final tutorDifficulty = useState<String>('beginner');
 
     final roleplayDifficulty = useState<String>('bilingual');
-    final roleplayScene = useState<String>('Market');
+    final roleplayScene = useState<String>(normalizeInitialRoleplayScene(initialRoleplayScene));
     final roleplayMessages = useState<List<_RoleplayTurn>>([]);
 
     final conversationMessages = useState<List<_ConversationTurn>>([]);
@@ -222,13 +226,19 @@ Return STRICT JSON only.
  "encouragement":"...",
  "correction":"...",
  "why":"...",
- "native_speaker_note":"...|null"
+ "native_speaker_note":"...|null",
+ "next_step":"one concrete next exercise the learner should do now",
+ "drill":"short micro-drill question to practice immediately"
 }
 
 Language: $targetLanguage
 Concept: ${tutorLesson.value!.concept}
 $questionCtx
 User answer: "$answer"
+Evaluate pedagogically:
+- Give complete correction, not partial
+- Explain why in plain learner-friendly language
+- Give one next action and one micro drill
 ''',
         );
         if (json != null) {
@@ -319,7 +329,7 @@ Stay in character. Respond naturally for the scene.
       if (prefilledText == null) conversationInput.clear();
       isBusy.value = true;
       try {
-        final json = await askForJson(
+        Map<String, dynamic>? json = await askForJson(
           '''
 Return STRICT JSON only. Do NOT wrap in markdown. Do NOT include text outside the JSON.
 {
@@ -335,6 +345,23 @@ User message: "$text"
 Respond conversationally. If the user made grammar mistakes in $targetLanguage, set has_correction to true and provide the correction.
 ''',
         );
+        if (json != null) {
+          final msg = _cleanAiText((json['message'] ?? '').toString());
+          if (_looksTruncated(msg)) {
+            final continuation = await askForJson(
+              '''
+Return STRICT JSON only:
+{"message":"single completed conversational message","correction":{"has_correction":false,"was_correct":true,"correction":"","note":"short note"},"suggested_replies":["reply 1","reply 2"],"new_vocab":[]}
+
+Continue and COMPLETE the previous response in natural style for $targetLanguage.
+User message: "$text"
+''',
+            );
+            if (continuation != null && !_looksTruncated(_cleanAiText((continuation['message'] ?? '').toString()))) {
+              json = continuation;
+            }
+          }
+        }
         if (json != null) {
           final payload = _ConversationPayload.fromJson(json, modeResponse.value);
           conversationMessages.value = [...conversationMessages.value, _ConversationTurn.ai(payload)];
@@ -531,9 +558,15 @@ Language: $targetLanguage
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
-            child: _ModeSwitcher(
-              mode: activeMode.value,
-              items: _modeItems,
+            child: PolieModeSwitcherRail<PolieMode>(
+              selected: activeMode.value,
+              items: _modeItems
+                  .map((e) => PolieModeSwitcherItem<PolieMode>(
+                        value: e.mode,
+                        icon: e.icon,
+                        label: e.label,
+                      ))
+                  .toList(),
               onChanged: (mode) async {
                 await setMode(mode);
                 if (mode == PolieMode.tutor && tutorLesson.value == null) await loadTutorLesson();
@@ -547,6 +580,23 @@ Language: $targetLanguage
               duration: const Duration(milliseconds: 260),
               switchInCurve: Curves.easeOutCubic,
               switchOutCurve: Curves.easeInCubic,
+              transitionBuilder: (child, animation) {
+                final slide = Tween<Offset>(
+                  begin: const Offset(0.02, 0),
+                  end: Offset.zero,
+                ).animate(animation);
+                final fade = CurvedAnimation(parent: animation, curve: Curves.easeOutCubic);
+                return FadeTransition(
+                  opacity: fade,
+                  child: SlideTransition(
+                    position: slide,
+                    child: ScaleTransition(
+                      scale: Tween<double>(begin: 0.992, end: 1).animate(animation),
+                      child: child,
+                    ),
+                  ),
+                );
+              },
               child: _buildModeSurface(
                 key: ValueKey(activeMode.value),
                 context: context,
@@ -612,7 +662,7 @@ Language: $targetLanguage
     required Key key,
     required BuildContext context,
     required PolieMode mode,
-    required _ModeTheme theme,
+    required ModeTheme theme,
     required bool isBusy,
     required String? modeError,
     required TextEditingController translationInput,
@@ -745,7 +795,7 @@ Language: $targetLanguage
           );
 
     if (mode == PolieMode.translation) {
-      final alternatives = translationOutput?.alternatives ?? const <_AltItem>[];
+      final alternatives = translationOutput?.alternatives ?? const <AltItem>[];
       return SingleChildScrollView(
         key: key,
         padding: const EdgeInsets.fromLTRB(12, 6, 12, 16),
@@ -795,19 +845,53 @@ Language: $targetLanguage
                           decoration: _inputDecoration(theme, 'Type text to translate'),
                         ),
                         const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            Text('${translationInput.text.length} chars', style: bodyStyle),
-                            const SizedBox(width: 10),
-                            Text('${translationInput.text.trim().split(RegExp(r'\s+')).where((e) => e.isNotEmpty).length} words',
-                                style: bodyStyle),
-                            const Spacer(),
-                            FilledButton(
-                              onPressed: isBusy ? null : () => onRunTranslation(translationInput.text),
-                              style: FilledButton.styleFrom(backgroundColor: theme.accent),
-                              child: Text(isBusy ? 'Translating...' : 'Translate'),
-                            ),
-                          ],
+                        LayoutBuilder(
+                          builder: (context, rowConstraints) {
+                            final compact = rowConstraints.maxWidth < 390;
+                            final wordCount = translationInput.text
+                                .trim()
+                                .split(RegExp(r'\s+'))
+                                .where((e) => e.isNotEmpty)
+                                .length;
+                            final counter = compact
+                                ? Text(
+                                    '${translationInput.text.length} chars • $wordCount words',
+                                    style: bodyStyle,
+                                  )
+                                : Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text('${translationInput.text.length} chars', style: bodyStyle),
+                                      const SizedBox(width: 10),
+                                      Text('$wordCount words', style: bodyStyle),
+                                    ],
+                                  );
+                            if (compact) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  counter,
+                                  const SizedBox(height: 8),
+                                  FilledButton(
+                                    onPressed: isBusy ? null : () => onRunTranslation(translationInput.text),
+                                    style: FilledButton.styleFrom(backgroundColor: theme.accent),
+                                    child: Text(isBusy ? 'Translating...' : 'Translate'),
+                                  ),
+                                ],
+                              );
+                            }
+                            return Row(
+                              children: [
+                                counter,
+                                const Spacer(),
+                                FilledButton(
+                                  onPressed: isBusy ? null : () => onRunTranslation(translationInput.text),
+                                  style: FilledButton.styleFrom(backgroundColor: theme.accent),
+                                  child: Text(isBusy ? 'Translating...' : 'Translate'),
+                                ),
+                              ],
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -1056,6 +1140,9 @@ Language: $targetLanguage
                       Text(tutorFeedback.encouragement, style: bodyStyle),
                       Text('Correction: ${tutorFeedback.correction}', style: bodyStyle),
                       Text('Why: ${tutorFeedback.why}', style: bodyStyle),
+                      const SizedBox(height: 8),
+                      Text('Next step: ${tutorFeedback.nextStep}', style: bodyStyle.copyWith(fontWeight: FontWeight.w700)),
+                      Text('Drill: ${tutorFeedback.drill}', style: bodyStyle),
                       if ((tutorFeedback.nativeSpeakerNote ?? '').isNotEmpty) Text('Native note: ${tutorFeedback.nativeSpeakerNote}', style: bodyStyle),
                     ],
                   ),
@@ -1172,8 +1259,8 @@ Language: $targetLanguage
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(ai.characterResponse.targetLang, style: bodyStyle.copyWith(color: const Color(0xFFFAF3E0))),
-                          if (roleplayDifficulty.value != 'immersion')
-                            Text(ai.characterResponse.english, style: bodyStyle.copyWith(color: const Color(0xFFD8C9B7))),
+                          const SizedBox(height: 4),
+                          Text('English: ${ai.characterResponse.english}', style: bodyStyle.copyWith(color: const Color(0xFFD8C9B7))),
                           const SizedBox(height: 6),
                           Text(
                             '${ai.coaching.feedbackType.toUpperCase()} • ${ai.coaching.userAccuracy}',
@@ -1565,7 +1652,7 @@ Language: $targetLanguage
     );
   }
 
-  InputDecoration _inputDecoration(_ModeTheme theme, String hint) {
+  InputDecoration _inputDecoration(ModeTheme theme, String hint) {
     final isDark = theme.background.computeLuminance() < 0.2;
     return InputDecoration(
       hintText: hint,
@@ -1616,10 +1703,10 @@ Language: $targetLanguage
     );
   }
 
-  _ModeTheme _themeForMode(PolieMode mode) {
+  ModeTheme _themeForMode(PolieMode mode) {
     switch (mode) {
       case PolieMode.translation:
-        return const _ModeTheme(
+        return const ModeTheme(
           background: Color(0xFFFAF3E0),
           card: Colors.white,
           title: Color(0xFF2D1B0E),
@@ -1628,7 +1715,7 @@ Language: $targetLanguage
           accent: Color(0xFFD4822A),
         );
       case PolieMode.tutor:
-        return const _ModeTheme(
+        return const ModeTheme(
           background: Color(0xFFFAF3E0),
           card: Colors.white,
           title: Color(0xFF2D1B0E),
@@ -1637,7 +1724,7 @@ Language: $targetLanguage
           accent: Color(0xFFD4822A),
         );
       case PolieMode.roleplay:
-        return const _ModeTheme(
+        return const ModeTheme(
           background: Color(0xFF0F0A04),
           card: Color(0xFF1A130C),
           title: Color(0xFFFAF3E0),
@@ -1646,7 +1733,7 @@ Language: $targetLanguage
           accent: Color(0xFFC4663A),
         );
       case PolieMode.conversation:
-        return const _ModeTheme(
+        return const ModeTheme(
           background: Color(0xFFF5F0E8),
           card: Colors.white,
           title: Color(0xFF2D1B0E),
@@ -1655,7 +1742,7 @@ Language: $targetLanguage
           accent: Color(0xFFD4822A),
         );
       case PolieMode.vocab:
-        return const _ModeTheme(
+        return const ModeTheme(
           background: Color(0xFF0F0A04),
           card: Color(0xFF1A130C),
           title: Color(0xFFFAF3E0),
@@ -1666,7 +1753,7 @@ Language: $targetLanguage
       case PolieMode.review:
       case PolieMode.pronunciation:
       case PolieMode.grammar:
-        return const _ModeTheme(
+        return const ModeTheme(
           background: Color(0xFFFAF3E0),
           card: Colors.white,
           title: Color(0xFF2D1B0E),
@@ -1712,70 +1799,6 @@ Language: $targetLanguage
           Text(label, style: GoogleFonts.nunito(fontSize: 12)),
           Text(value, style: GoogleFonts.playfairDisplay(fontSize: 20, fontWeight: FontWeight.w700)),
         ],
-      ),
-    );
-  }
-}
-
-class _ModeSwitcher extends StatelessWidget {
-  final PolieMode mode;
-  final List<_ModeChipItem> items;
-  final ValueChanged<PolieMode> onChanged;
-
-  const _ModeSwitcher({
-    required this.mode,
-    required this.items,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 44,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: items.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 8),
-        itemBuilder: (context, index) {
-          final item = items[index];
-          final active = item.mode == mode;
-          return Tooltip(
-            message: item.label,
-            child: InkWell(
-              borderRadius: BorderRadius.circular(100),
-              onTap: () {
-                HapticFeedback.selectionClick();
-                onChanged(item.mode);
-              },
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 220),
-                padding: EdgeInsets.symmetric(horizontal: active ? 14 : 10, vertical: 8),
-                decoration: BoxDecoration(
-                  color: active ? const Color(0xFFD4822A).withOpacity(0.16) : Colors.transparent,
-                  borderRadius: BorderRadius.circular(100),
-                  border: Border.all(
-                    color: active ? const Color(0xFFD4822A) : const Color(0xFFD4822A).withOpacity(0.35),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Text(item.icon, style: const TextStyle(fontSize: 16)),
-                    if (active) ...[
-                      const SizedBox(width: 6),
-                      Text(
-                        item.label,
-                        style: GoogleFonts.nunito(
-                          fontWeight: FontWeight.w800,
-                          color: const Color(0xFFF7E5CD),
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
       ),
     );
   }
@@ -1860,39 +1883,32 @@ Map<String, dynamic>? _tryParseJson(String raw) {
 
 dynamic _n(Map<String, dynamic>? map, String key, dynamic fallback) => map?[key] ?? fallback;
 
-class _ModeChipItem {
-  final PolieMode mode;
-  final String icon;
-  final String label;
-  const _ModeChipItem({required this.mode, required this.icon, required this.label});
+String _cleanAiText(String input, {String fallback = '-'}) {
+  var out = input.trim();
+  if (out.isEmpty) return fallback;
+  out = out
+      .replaceAll(RegExp(r'^```json\s*', multiLine: true), '')
+      .replaceAll(RegExp(r'^```\s*', multiLine: true), '')
+      .replaceAll(RegExp(r'```'), '')
+      .replaceAll(RegExp(r'^\{\s*"message"\s*:\s*"', multiLine: true), '')
+      .replaceAll(RegExp(r'"\s*\}\s*$', multiLine: true), '')
+      .replaceAll(RegExp(r'\s+'), ' ')
+      .trim();
+  if (out.startsWith('{') || out.startsWith('[')) return fallback;
+  return out;
 }
 
-class _ModeTheme {
-  final Color background;
-  final Color card;
-  final Color title;
-  final Color body;
-  final Color border;
-  final Color accent;
-  const _ModeTheme({
-    required this.background,
-    required this.card,
-    required this.title,
-    required this.body,
-    required this.border,
-    required this.accent,
-  });
-}
-
-class _AltItem {
-  final String text;
-  final String note;
-  const _AltItem({required this.text, required this.note});
+bool _looksTruncated(String message) {
+  final m = message.trim();
+  if (m.isEmpty) return true;
+  if (m.length < 8) return true;
+  if (RegExp(r'[\.\!\?]["”\']?$').hasMatch(m)) return false;
+  return true;
 }
 
 class _TranslationPayload {
   final String primary;
-  final List<_AltItem> alternatives;
+  final List<AltItem> alternatives;
   final String culturalNote;
   final String toneAchieved;
   const _TranslationPayload({
@@ -1907,13 +1923,16 @@ class _TranslationPayload {
         .map((e) => e is Map<String, dynamic> ? e : <String, dynamic>{})
         .toList();
     return _TranslationPayload(
-      primary: (_n(json, 'primary', '') as String).trim().isNotEmpty ? (_n(json, 'primary', '') as String) : rawFallback,
+      primary: _cleanAiText(
+        (_n(json, 'primary', '') as String).trim().isNotEmpty ? (_n(json, 'primary', '') as String) : rawFallback,
+        fallback: _cleanAiText(rawFallback, fallback: '-'),
+      ),
       alternatives: alternativesRaw
-          .map((e) => _AltItem(text: (_n(e, 'text', '') as String), note: (_n(e, 'note', '') as String)))
+          .map((e) => AltItem(text: (_n(e, 'text', '') as String), note: (_n(e, 'note', '') as String)))
           .where((e) => e.text.trim().isNotEmpty)
           .toList(),
-      culturalNote: (_n(json, 'cultural_note', '') ?? '').toString(),
-      toneAchieved: (_n(json, 'tone_achieved', '-') ?? '-').toString(),
+      culturalNote: _cleanAiText((_n(json, 'cultural_note', '') ?? '').toString(), fallback: ''),
+      toneAchieved: _cleanAiText((_n(json, 'tone_achieved', '-') ?? '-').toString(), fallback: '-'),
     );
   }
 }
@@ -1941,7 +1960,7 @@ class _TutorLessonPayload {
       final v = value.trim();
       if (v.isEmpty) return fallbackText;
       if (v.startsWith('{') || v.startsWith('```') || v.startsWith('[')) return fallbackText;
-      return v;
+      return _cleanAiText(v, fallback: fallbackText);
     }
     String concept = (_n(json, 'concept', 'Lesson') as String);
     // Guard against raw JSON leaking into concept field
@@ -1998,6 +2017,8 @@ class _TutorFeedbackPayload {
   final String correction;
   final String why;
   final String? nativeSpeakerNote;
+  final String nextStep;
+  final String drill;
   const _TutorFeedbackPayload({
     required this.verdict,
     required this.score,
@@ -2005,13 +2026,15 @@ class _TutorFeedbackPayload {
     required this.correction,
     required this.why,
     required this.nativeSpeakerNote,
+    required this.nextStep,
+    required this.drill,
   });
   factory _TutorFeedbackPayload.fromJson(Map<String, dynamic> json, String fallback) {
     String sanitize(String value, {String fallbackText = '-'}) {
       final v = value.trim();
       if (v.isEmpty) return fallbackText;
       if (v.startsWith('{') || v.startsWith('```') || v.startsWith('[')) return fallbackText;
-      return v;
+      return _cleanAiText(v, fallback: fallbackText);
     }
     return _TutorFeedbackPayload(
       verdict: (_n(json, 'verdict', 'close') as String),
@@ -2025,6 +2048,10 @@ class _TutorFeedbackPayload {
       nativeSpeakerNote: (_n(json, 'native_speaker_note', '') as String?)?.trim().isEmpty ?? true
           ? null
           : sanitize((_n(json, 'native_speaker_note', '') as String), fallbackText: ''),
+      nextStep: sanitize((_n(json, 'next_step', '') as String),
+          fallbackText: 'Write one new sentence using this pattern and read it aloud.'),
+      drill: sanitize((_n(json, 'drill', '') as String),
+          fallbackText: 'Mini drill: rewrite your answer in a shorter sentence.'),
     );
   }
 }
@@ -2038,16 +2065,16 @@ class _RoleplayPayload {
     final coaching = (_n(json, 'coaching', const {}) as Map).cast<String, dynamic>();
     return _RoleplayPayload(
       characterResponse: _RoleplayCharacterResponse(
-        targetLang: (_n(c, 'target_lang', fallback) as String),
-        transliteration: (_n(c, 'transliteration', '-') as String),
-        english: (_n(c, 'english', '-') as String),
+        targetLang: _cleanAiText((_n(c, 'target_lang', fallback) as String), fallback: _cleanAiText(fallback)),
+        transliteration: _cleanAiText((_n(c, 'transliteration', '-') as String), fallback: '-'),
+        english: _cleanAiText((_n(c, 'english', '-') as String), fallback: 'English translation unavailable.'),
         emotion: (_n(c, 'emotion', 'neutral') as String),
         action: (_n(c, 'action', '') as String?)?.trim().isEmpty ?? true ? null : (_n(c, 'action', '') as String),
       ),
       coaching: _RoleplayCoaching(
         userAccuracy: (_n(coaching, 'user_accuracy', 50) as num).toInt(),
         feedbackType: (_n(coaching, 'feedback_type', 'suggestion') as String),
-        feedback: (_n(coaching, 'feedback', '-') as String),
+        feedback: _cleanAiText((_n(coaching, 'feedback', '-') as String)),
         betterPhrasing:
             (_n(coaching, 'better_phrasing', '') as String?)?.trim().isEmpty ?? true ? null : (_n(coaching, 'better_phrasing', '') as String),
       ),
@@ -2109,17 +2136,14 @@ class _ConversationPayload {
         .map((e) => e is Map<String, dynamic> ? e : <String, dynamic>{})
         .toList();
     return _ConversationPayload(
-      message: (_n(json, 'message', fallback) as String)
-          .replaceAll(RegExp(r'\*\*'), '')
-          .replaceAll(RegExp(r'^```.*$', multiLine: true), '')
-          .trim(),
+      message: _cleanAiText((_n(json, 'message', fallback) as String), fallback: _cleanAiText(fallback)),
       correction: _ConversationCorrection(
         hasCorrection: (_n(c, 'has_correction', false) as bool?) ?? false,
         wasCorrect: (_n(c, 'was_correct', true) as bool?) ?? true,
         correction: (_n(c, 'correction', '') as String?)?.trim().isEmpty ?? true ? null : (_n(c, 'correction', '') as String),
-        note: (_n(c, 'note', '-') as String),
+        note: _cleanAiText((_n(c, 'note', '-') as String)),
       ),
-      suggestedReplies: replies,
+      suggestedReplies: replies.map((e) => _cleanAiText(e, fallback: '')).where((e) => e.isNotEmpty).toList(),
       newVocab: vocabRaw
           .map((e) => _ConversationVocab(word: (_n(e, 'word', '') as String), meaning: (_n(e, 'meaning', '') as String)))
           .where((e) => e.word.trim().isNotEmpty)
@@ -2182,21 +2206,21 @@ class _VocabPayload {
         .map((e) => e is Map<String, dynamic> ? e : <String, dynamic>{})
         .toList();
     return _VocabPayload(
-      word: (_n(json, 'word', fallback) as String),
-      pronunciation: (_n(json, 'pronunciation', '-') as String),
-      partOfSpeech: (_n(json, 'part_of_speech', 'word') as String),
-      english: (_n(json, 'english', '-') as String),
+      word: _cleanAiText((_n(json, 'word', fallback) as String), fallback: 'Word unavailable'),
+      pronunciation: _cleanAiText((_n(json, 'pronunciation', '-') as String)),
+      partOfSpeech: _cleanAiText((_n(json, 'part_of_speech', 'word') as String), fallback: 'word'),
+      english: _cleanAiText((_n(json, 'english', '-') as String)),
       example: _VocabExample(
-        target: (_n(ex, 'target', '-') as String),
-        english: (_n(ex, 'english', '-') as String),
+        target: _cleanAiText((_n(ex, 'target', '-') as String)),
+        english: _cleanAiText((_n(ex, 'english', '-') as String)),
       ),
-      memoryPeg: (_n(json, 'memory_peg', '-') as String),
+      memoryPeg: _cleanAiText((_n(json, 'memory_peg', '-') as String)),
       culturalNote: (_n(json, 'cultural_note', '') as String?)?.trim().isEmpty ?? true ? null : (_n(json, 'cultural_note', '') as String),
       relatedWords: relatedRaw
           .map((e) => _VocabRelatedWord(word: (_n(e, 'word', '') as String), relationship: (_n(e, 'relationship', '') as String)))
           .where((e) => e.word.trim().isNotEmpty)
           .toList(),
-      difficulty: (_n(json, 'difficulty', 'beginner') as String),
+      difficulty: _cleanAiText((_n(json, 'difficulty', 'beginner') as String), fallback: 'beginner'),
     );
   }
 }
