@@ -4,7 +4,6 @@ import '../../models/game/game_session_model.dart';
 import '../../providers/user_provider.dart';
 import 'word_match_audio_game.dart';
 import 'pronunciation_duel_game.dart';
-import 'tone_trainer_game.dart';
 import 'speed_round_game.dart';
 import 'story_builder_game.dart';
 import 'roleplay_adventure_game.dart';
@@ -13,6 +12,7 @@ import 'game_templates.dart';
 import 'cultural_games.dart';
 import 'board_word_games.dart';
 import '../../games/drum_rhythm/drum_rhythm_screen.dart';
+import '../../games/tone_forge/tone_forge_screen.dart';
 
 /// Game Router - Routes to appropriate game screen based on GameType
 Widget buildGameScreen({
@@ -39,7 +39,7 @@ Widget buildGameScreen({
         onBack: onBack,
       );
     case GameType.toneTrainer:
-      return ToneTrainerGame(
+      return ToneForgeScreen(
         language: language,
         level: userLevel,
         onBack: onBack,

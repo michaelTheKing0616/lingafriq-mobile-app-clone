@@ -333,16 +333,22 @@ Stay in character. Respond naturally for the scene.
           '''
 Return STRICT JSON only. Do NOT wrap in markdown. Do NOT include text outside the JSON.
 {
- "message":"Your natural reply in a mix of $targetLanguage and English. 2-4 sentences. Use the target language naturally.",
+ "message":"A rich, complete reply in a mix of $targetLanguage and English. 4-8 sentences that may include translation, explanation, and short examples when helpful.",
  "correction":{"has_correction":false,"was_correct":true,"correction":"corrected version or empty","note":"explanation"},
- "suggested_replies":["reply option 1 in $targetLanguage","reply option 2"],
+ "suggested_replies":["reply option 1 in $targetLanguage","reply option 2","reply option 3"],
  "new_vocab":[{"word":"new word","meaning":"meaning"}]
 }
 
-You are Polie, a friendly language tutor. Have a natural conversation.
+You are Polie, a friendly language coach focused on expressive, free-form help.
+Treat Conversation mode as a hybrid of translation + tutoring, but keep a conversational tone.
 Target language: $targetLanguage
 User message: "$text"
-Respond conversationally. If the user made grammar mistakes in $targetLanguage, set has_correction to true and provide the correction.
+Respond with depth and clarity:
+- If user asks for translation, provide natural translation and explain word choice.
+- If user asks for meaning/grammar/proverb/slang/culture, explain clearly and include 1-2 examples.
+- If user asks open-ended topic questions, still weave in useful language learning guidance.
+- Keep answers complete and not cut off.
+If the user made grammar mistakes in $targetLanguage, set has_correction to true and provide the correction.
 ''',
         );
         if (json != null) {
@@ -354,6 +360,7 @@ Return STRICT JSON only:
 {"message":"single completed conversational message","correction":{"has_correction":false,"was_correct":true,"correction":"","note":"short note"},"suggested_replies":["reply 1","reply 2"],"new_vocab":[]}
 
 Continue and COMPLETE the previous response in natural style for $targetLanguage.
+Ensure the response is fully complete, coherent, and can include explanation/examples if relevant.
 User message: "$text"
 ''',
             );
@@ -737,7 +744,7 @@ Language: $targetLanguage
       PolieMode.translation: 'Translate text between English and your target language with tone options.',
       PolieMode.tutor: 'Get bite-sized grammar and vocabulary lessons with practice questions.',
       PolieMode.roleplay: 'Practice real conversations in immersive scenarios with AI characters.',
-      PolieMode.conversation: 'Have a freeform conversation to build fluency naturally.',
+      PolieMode.conversation: 'Ask anything: translations, explanations, examples, proverbs, and culture in one expressive chat.',
       PolieMode.vocab: 'Learn and review vocabulary with spaced repetition flashcards.',
       PolieMode.review: 'See your learning stats and get personalized review suggestions.',
     };

@@ -115,14 +115,14 @@ class _DrumWordGameState extends BaseGameScreenState<DrumWordGame> {
     return {
       'rhythm': rhythm ?? 'DUM da-da DUM',
       'word': word ?? words.first,
-      'words': words.take(4).toList()..shuffle(Random()),
+      'words': words.take(4).toList(),
     };
   }
 
   void _selectWord(String word) {
     if (_showResult) return;
 
-    final isCorrect = word == _correctWord || word == _wordOptions.first;
+    final isCorrect = word == _correctWord;
 
     setState(() {
       _selectedWord = word;
@@ -270,7 +270,7 @@ class _DrumWordGameState extends BaseGameScreenState<DrumWordGame> {
             SizedBox(height: 2.h),
             ..._wordOptions.map((word) {
               final isSelected = _selectedWord == word;
-              final isCorrect = word == _correctWord || word == _wordOptions.first;
+              final isCorrect = word == _correctWord;
 
               Color? backgroundColor;
               if (_showResult) {

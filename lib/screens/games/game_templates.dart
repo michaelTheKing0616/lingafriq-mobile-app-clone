@@ -10,11 +10,11 @@ import 'package:just_audio/just_audio.dart';
 import 'package:record/record.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/game/game_session_model.dart';
 import '../../models/game/phrase_card_model.dart';
 import '../../providers/game_provider.dart';
 import '../../providers/dio_provider.dart';
+import '../../providers/api_provider.dart';
 import '../../services/polie_content_generator.dart';
 import '../../services/voice/pronunciation_analysis_service.dart';
 import '../../models/lesson_item_model.dart';
@@ -1601,8 +1601,8 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
 
   Future<void> _loadAuthHeaders() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('auth_token') ?? prefs.getString('access_token');
+      var token = ref.read(apiProvider.notifier).token;
+      token ??= await ref.read(apiProvider.notifier).refreshAccessToken();
       if (token != null && token.isNotEmpty) {
         _authHeaders = {'Authorization': 'Bearer $token'};
       } else {

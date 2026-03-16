@@ -49,6 +49,7 @@ class _FoodQuestGameState extends BaseGameScreenState<FoodQuestGame> {
   final int _maxRounds = 5;
   bool _isLoadingFood = false;
   String _foodDescription = '';
+  String? _correctFood;
 
   @override
   Future<void> onGameInitialized() async {
@@ -82,7 +83,8 @@ class _FoodQuestGameState extends BaseGameScreenState<FoodQuestGame> {
         _currentFood = gameContent;
         _round++;
         _foodDescription = _extractDescription(content);
-        _foodOptions = foods;
+        _correctFood = foods.isNotEmpty ? foods.first : null;
+        _foodOptions = List<String>.from(foods)..shuffle(Random());
         _isLoadingFood = false;
       });
     } catch (e) {
@@ -93,7 +95,8 @@ class _FoodQuestGameState extends BaseGameScreenState<FoodQuestGame> {
         _currentFood = {'content': 'Traditional African food'};
         _round++;
         _foodDescription = 'Traditional African food';
-        _foodOptions = fallbackFoods;
+        _correctFood = fallbackFoods.first;
+        _foodOptions = List<String>.from(fallbackFoods)..shuffle(Random());
         _isLoadingFood = false;
       });
     }
@@ -117,7 +120,7 @@ class _FoodQuestGameState extends BaseGameScreenState<FoodQuestGame> {
       foods.addAll(_getFallbackFoods());
     }
     
-    return foods.take(4).toList()..shuffle(Random());
+    return foods.take(4).toList();
   }
 
   List<String> _getFallbackFoods() {
@@ -141,7 +144,7 @@ class _FoodQuestGameState extends BaseGameScreenState<FoodQuestGame> {
   void _selectFood(String food) {
     if (_showResult) return;
     
-    final isCorrect = food == _foodOptions.first;
+    final isCorrect = food == _correctFood;
     
     setState(() {
       _selectedFood = food;
@@ -281,7 +284,7 @@ class _FoodQuestGameState extends BaseGameScreenState<FoodQuestGame> {
             SizedBox(height: 2.h),
             ..._foodOptions.map((food) {
               final isSelected = _selectedFood == food;
-              final isCorrectOption = food == _foodOptions.first;
+              final isCorrectOption = food == _correctFood;
               
               Color? backgroundColor;
               if (_showResult) {

@@ -47,6 +47,7 @@ class _PhraseSniperGameState extends BaseGameScreenState<PhraseSniperGame> {
   final int _maxRounds = 5;
   
   String _targetPhrase = '';
+  String? _correctTranslation;
 
   @override
   Future<void> onGameInitialized() async {
@@ -79,7 +80,8 @@ class _PhraseSniperGameState extends BaseGameScreenState<PhraseSniperGame> {
         _currentPhrase = gameContent;
         _round++;
         _targetPhrase = _extractPhrase(content);
-        _translationOptions = translations;
+        _correctTranslation = translations.isNotEmpty ? translations.first : null;
+        _translationOptions = List<String>.from(translations)..shuffle(Random());
         setLoading(false);
       });
     } catch (e) {
@@ -90,7 +92,8 @@ class _PhraseSniperGameState extends BaseGameScreenState<PhraseSniperGame> {
         _currentPhrase = {'content': _getFallbackPhrase()};
         _round++;
         _targetPhrase = _getFallbackPhrase();
-        _translationOptions = fallbackTranslations;
+        _correctTranslation = fallbackTranslations.first;
+        _translationOptions = List<String>.from(fallbackTranslations)..shuffle(Random());
         setLoading(false);
       });
     }
@@ -113,7 +116,7 @@ class _PhraseSniperGameState extends BaseGameScreenState<PhraseSniperGame> {
       translations.addAll(_getFallbackTranslations());
     }
     
-    return translations.take(4).toList()..shuffle(Random());
+    return translations.take(4).toList();
   }
 
   List<String> _getFallbackTranslations() {
@@ -144,7 +147,7 @@ class _PhraseSniperGameState extends BaseGameScreenState<PhraseSniperGame> {
   void _selectTranslation(String translation) {
     if (_showResult) return;
     
-    final isCorrect = translation == _translationOptions.first;
+    final isCorrect = translation == _correctTranslation;
     
     setState(() {
       _selectedTranslation = translation;
@@ -281,7 +284,7 @@ class _PhraseSniperGameState extends BaseGameScreenState<PhraseSniperGame> {
             SizedBox(height: 2.h),
             ..._translationOptions.map((translation) {
               final isSelected = _selectedTranslation == translation;
-              final isCorrectOption = translation == _translationOptions.first;
+              final isCorrectOption = translation == _correctTranslation;
               
               Color? backgroundColor;
               if (_showResult) {

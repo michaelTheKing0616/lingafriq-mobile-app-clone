@@ -47,6 +47,7 @@ class _CulturalEtiquetteGameState extends BaseGameScreenState<CulturalEtiquetteG
   final int _maxRounds = 5;
   
   String _scenarioDescription = '';
+  String? _correctResponse;
 
   @override
   Future<void> onGameInitialized() async {
@@ -76,7 +77,9 @@ class _CulturalEtiquetteGameState extends BaseGameScreenState<CulturalEtiquetteG
         _currentScenario = gameContent;
         _round++;
         _scenarioDescription = parsed['scenario'];
-        _responseOptions = parsed['options'];
+        final options = List<String>.from(parsed['options'] as List<String>);
+        _correctResponse = options.isNotEmpty ? options.first : null;
+        _responseOptions = List<String>.from(options)..shuffle(Random());
         setLoading(false);
       });
     } catch (e) {
@@ -84,8 +87,9 @@ class _CulturalEtiquetteGameState extends BaseGameScreenState<CulturalEtiquetteG
       setState(() {
         setLoading(false);
         _scenarioDescription = 'You meet an elder in the village. How do you greet them?';
-        _responseOptions = ['Greet with respect using formal language', 'Say hello casually', 'Wave from a distance', 'Ignore them'];
-        _responseOptions.shuffle(Random());
+        final fallback = ['Greet with respect using formal language', 'Say hello casually', 'Wave from a distance', 'Ignore them'];
+        _correctResponse = fallback.first;
+        _responseOptions = List<String>.from(fallback)..shuffle(Random());
       });
     }
   }
@@ -110,14 +114,14 @@ class _CulturalEtiquetteGameState extends BaseGameScreenState<CulturalEtiquetteG
 
     return {
       'scenario': scenario ?? 'You meet an elder in the village. How do you greet them?',
-      'options': options.take(4).toList()..shuffle(Random()),
+      'options': options.take(4).toList(),
     };
   }
 
   void _selectResponse(String response) {
     if (_showResult) return;
 
-    final isCorrect = response == _responseOptions.first;
+    final isCorrect = response == _correctResponse;
 
     setState(() {
       _selectedResponse = response;
@@ -259,7 +263,7 @@ class _CulturalEtiquetteGameState extends BaseGameScreenState<CulturalEtiquetteG
             SizedBox(height: 2.h),
             ..._responseOptions.map((response) {
               final isSelected = _selectedResponse == response;
-              final isCorrect = response == _responseOptions.first;
+              final isCorrect = response == _correctResponse;
 
               Color? backgroundColor;
               if (_showResult) {

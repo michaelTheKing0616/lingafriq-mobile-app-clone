@@ -46,9 +46,9 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
     // Load curriculum bundle on mount (mirrors old CurriculumScreen.initState)
     useEffect(() {
       Future<void> doLoad() async {
-        isLoading.value = true;
-        error.value = null;
-        try {
+          isLoading.value = true;
+          error.value = null;
+          try {
           await ref.read(curriculumProvider.notifier).loadCurriculumFromBundle();
         } catch (e) {
           error.value = ErrorHandler.getUserFriendlyError(e);
@@ -209,12 +209,12 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
                   error.value = null;
                   await ref.read(curriculumProvider.notifier).loadCurriculumFromBundle();
                 },
-                child: isLoading.value
-                    ? ListView.builder(
-                        padding: EdgeInsets.all(PanAfricanSpacing.lg),
-                        itemCount: 5,
-                        itemBuilder: (context, index) => const SkeletonListCard(),
-                      )
+              child: isLoading.value
+                  ? ListView.builder(
+                      padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                      itemCount: 5,
+                      itemBuilder: (context, index) => const SkeletonListCard(),
+                    )
                     : (error.value != null || providerState.hasError)
                         ? ListView(
                             physics: const AlwaysScrollableScrollPhysics(),
@@ -224,19 +224,19 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
                                 message: error.value ??
                                     providerState.errorMessage ??
                                     'Failed to load curriculum',
-                                onRetry: () {
-                                  safeAsync(
-                                    context: context,
-                                    operation: () async {
-                                      isLoading.value = true;
-                                      error.value = null;
+                          onRetry: () {
+                            safeAsync(
+                              context: context,
+                              operation: () async {
+                                isLoading.value = true;
+                                error.value = null;
                                       await ref
                                           .read(curriculumProvider.notifier)
                                           .loadCurriculumFromBundle();
-                                      isLoading.value = false;
-                                    },
-                                  );
-                                },
+                                isLoading.value = false;
+                              },
+                            );
+                          },
                               ),
                             ],
                           )
@@ -301,11 +301,11 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
                                       )
                                           .animate(
                                               delay: (unitIndex * 60).ms)
-                                          .fadeIn(duration: 300.ms)
+                                    .fadeIn(duration: 300.ms)
                                           .slideY(begin: 0.15);
-                                    },
+                              },
                                   ),
-              ),
+                            ),
             ),
           ],
         ),
@@ -342,13 +342,13 @@ class _UnitCard extends StatelessWidget {
       margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
       color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(PanAfricanRadius.lg)),
-      child: Padding(
-        padding: EdgeInsets.all(PanAfricanSpacing.lg),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
+          child: Padding(
+          padding: EdgeInsets.all(PanAfricanSpacing.lg),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
                 Container(
                   width: 36.sp,
                   height: 36.sp,
@@ -380,16 +380,16 @@ class _UnitCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: PanAfricanSpacing.sm),
+                  ),
+                ],
+              ),
+              SizedBox(height: PanAfricanSpacing.sm),
             ClipRRect(
               borderRadius: BorderRadius.circular(4),
-              child: LinearProgressIndicator(
-                value: progress,
+                child: LinearProgressIndicator(
+                  value: progress,
                 backgroundColor: isDark ? Colors.grey[800] : Colors.grey[300],
-                valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
+                  valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
                 minHeight: 6.h,
               ),
             ),
@@ -476,8 +476,8 @@ class _LessonTile extends StatelessWidget {
                 size: 20.sp,
               ),
             ],
-          ),
         ),
+      ),
       ),
     );
   }

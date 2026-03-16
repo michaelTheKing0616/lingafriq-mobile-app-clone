@@ -64,6 +64,7 @@ class CulturalGameHelper {
 mixin StandardGameState<T extends BaseGameScreen> on BaseGameScreenState<T> {
   Map<String, dynamic>? _currentContent;
   List<String> _options = [];
+  String? _correctOption;
   String? _selectedOption;
   bool _showResult = false;
   bool _isCorrect = false;
@@ -120,6 +121,7 @@ mixin StandardGameState<T extends BaseGameScreen> on BaseGameScreenState<T> {
         _round++;
         _description = description;
         _options = options;
+        _correctOption = options.isNotEmpty ? options.first : null;
         _isLoading = false;
       });
     } catch (e) {
@@ -127,6 +129,7 @@ mixin StandardGameState<T extends BaseGameScreen> on BaseGameScreenState<T> {
       setState(() {
         _isLoading = false;
         _options = _getFallbackOptions();
+        _correctOption = _options.isNotEmpty ? _options.first : null;
         _description = _getFallbackDescription();
       });
     }
@@ -135,7 +138,7 @@ mixin StandardGameState<T extends BaseGameScreen> on BaseGameScreenState<T> {
   void selectOption(String option) {
     if (_showResult) return;
     
-    final isCorrect = option == _options.first;
+    final isCorrect = option == _correctOption;
     
     setState(() {
       _selectedOption = option;
@@ -281,7 +284,7 @@ mixin StandardGameState<T extends BaseGameScreen> on BaseGameScreenState<T> {
             SizedBox(height: 2.h),
             ...displayOptions.map((option) {
               final isSelected = _selectedOption == option;
-              final isCorrectOption = option == displayOptions.first;
+              final isCorrectOption = option == _correctOption;
               
               Color? backgroundColor;
               if (_showResult) {

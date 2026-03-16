@@ -47,6 +47,7 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
   final int _maxRounds = 5;
   
   String _storyTitle = '';
+  String? _correctStoryPart;
 
   @override
   Future<void> onGameInitialized() async {
@@ -79,14 +80,17 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
         _currentStory = storyData;
         _round++;
         _storyTitle = storyData['title']?.toString() ?? 'Folktale';
-        _storyParts = parts;
+        _correctStoryPart = parts.isNotEmpty ? parts.first : null;
+        _storyParts = List<String>.from(parts)..shuffle(Random());
         setLoading(false);
       });
     } catch (e) {
       debugPrint('Error loading folktale: $e');
       setState(() {
         setLoading(false);
-        _storyParts = _getFallbackParts();
+        final fallback = _getFallbackParts();
+        _correctStoryPart = fallback.first;
+        _storyParts = List<String>.from(fallback)..shuffle(Random());
         _storyTitle = 'Traditional Folktale';
       });
     }
@@ -98,7 +102,7 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
     while (parts.length < 4) {
       parts.add('Story part ${parts.length + 1}');
     }
-    return parts..shuffle(Random());
+    return parts;
   }
 
   List<String> _getFallbackParts() {
@@ -113,7 +117,7 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
   void _selectPart(String part) {
     if (_showResult) return;
     
-    final isCorrect = part == _storyParts.first;
+    final isCorrect = part == _correctStoryPart;
     
     setState(() {
       _selectedPart = part;
@@ -251,7 +255,7 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
             SizedBox(height: 2.h),
             ..._storyParts.map((part) {
               final isSelected = _selectedPart == part;
-              final isCorrectOption = part == _storyParts.first;
+              final isCorrectOption = part == _correctStoryPart;
               
               Color? backgroundColor;
               if (_showResult) {

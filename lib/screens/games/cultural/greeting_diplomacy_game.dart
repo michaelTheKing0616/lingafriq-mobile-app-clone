@@ -49,6 +49,7 @@ class _GreetingDiplomacyGameState extends BaseGameScreenState<GreetingDiplomacyG
   final int _maxRounds = 5;
   bool _isLoadingScenario = false;
   String _scenarioDescription = '';
+  String? _correctGreeting;
 
   @override
   Future<void> onGameInitialized() async {
@@ -81,7 +82,8 @@ class _GreetingDiplomacyGameState extends BaseGameScreenState<GreetingDiplomacyG
         _currentScenario = gameContent;
         _round++;
         _scenarioDescription = _extractScenario(content);
-        _greetingOptions = greetings;
+        _correctGreeting = greetings.isNotEmpty ? greetings.first : null;
+        _greetingOptions = List<String>.from(greetings)..shuffle(Random());
         _isLoadingScenario = false;
       });
     } catch (e) {
@@ -92,7 +94,8 @@ class _GreetingDiplomacyGameState extends BaseGameScreenState<GreetingDiplomacyG
         _currentScenario = {'content': 'You meet an elder in the village'};
         _round++;
         _scenarioDescription = 'You meet an elder in the village';
-        _greetingOptions = fallbackGreetings;
+        _correctGreeting = fallbackGreetings.first;
+        _greetingOptions = List<String>.from(fallbackGreetings)..shuffle(Random());
         _isLoadingScenario = false;
       });
     }
@@ -115,7 +118,7 @@ class _GreetingDiplomacyGameState extends BaseGameScreenState<GreetingDiplomacyG
       greetings.addAll(_getFallbackGreetings());
     }
     
-    return greetings.take(4).toList()..shuffle(Random());
+    return greetings.take(4).toList();
   }
 
   List<String> _getFallbackGreetings() {
@@ -139,7 +142,7 @@ class _GreetingDiplomacyGameState extends BaseGameScreenState<GreetingDiplomacyG
   void _selectGreeting(String greeting) {
     if (_showResult) return;
     
-    final isCorrect = greeting == _greetingOptions.first;
+    final isCorrect = greeting == _correctGreeting;
     
     setState(() {
       _selectedGreeting = greeting;
@@ -279,7 +282,7 @@ class _GreetingDiplomacyGameState extends BaseGameScreenState<GreetingDiplomacyG
             SizedBox(height: 2.h),
             ..._greetingOptions.map((greeting) {
               final isSelected = _selectedGreeting == greeting;
-              final isCorrectOption = greeting == _greetingOptions.first;
+              final isCorrectOption = greeting == _correctGreeting;
               
               Color? backgroundColor;
               if (_showResult) {

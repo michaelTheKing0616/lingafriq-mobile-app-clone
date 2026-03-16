@@ -1,9 +1,28 @@
 import 'generic_game_template.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../../models/game/game_session_model.dart' show GameTypeExtension, GameType;
 
 /// Registry of all 37+ games with their configurations
 /// This centralizes game definitions for easy migration
 class AllGamesRegistry {
+  static const Map<String, String> _canonicalAliases = {
+    'speed_round_remix': 'speed_round',
+    'listen_and_sketch': 'listen_sketch',
+    'picture_word_association': 'picture_word',
+    'clan_lineage_story_builder': 'clan_story',
+    'market_bargaining_simulator': 'market_bargaining',
+    'taxi_bus_stop_survival': 'taxi_survival',
+    'call_and_response': 'call_response',
+    'greeting_diplomacy_challenge': 'greeting_diplomacy',
+    'folktale_reconstruction': 'folktale',
+    'accent_decoding_puzzle': 'accent_puzzle',
+    'rapid_tongue_twister_race': 'tongue_twister',
+    'elders_blessings_challenge': 'elders_blessings',
+    'multilingual_relay_race': 'multilingual_relay',
+    'cultural_etiquette_scenarios': 'cultural_etiquette',
+    'drum_to_word_matching': 'drum_word',
+  };
+
   /// All game definitions
   static final Map<String, GameDefinition> games = {
     // Already migrated games
@@ -204,12 +223,20 @@ class AllGamesRegistry {
 
   /// Get game definition by ID
   static GameDefinition? getGame(String gameId) {
-    return games[gameId];
+    final direct = games[gameId];
+    if (direct != null) return direct;
+    final alias = _canonicalAliases[gameId];
+    if (alias != null) return games[alias];
+    return null;
   }
 
   /// Get all game IDs
   static List<String> getAllGameIds() {
-    return games.keys.toList();
+    final ids = <String>{...games.keys, ..._canonicalAliases.keys};
+    for (final type in GameType.values) {
+      ids.add(type.name);
+    }
+    return ids.toList();
   }
 
   /// Create a generic game instance

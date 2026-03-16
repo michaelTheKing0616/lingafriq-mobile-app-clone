@@ -78,7 +78,7 @@ class _EldersBlessingsGameState extends BaseGameScreenState<EldersBlessingsGame>
         _round++;
         _blessingText = parsed['blessing'];
         _correctMeaning = parsed['meaning'];
-        _meaningOptions = parsed['options'];
+        _meaningOptions = List<String>.from(parsed['options'] as List<String>)..shuffle(Random());
         setLoading(false);
       });
     } catch (e) {
@@ -121,7 +121,7 @@ class _EldersBlessingsGameState extends BaseGameScreenState<EldersBlessingsGame>
     return {
       'blessing': blessing ?? _getFallbackBlessing(),
       'meaning': meaning ?? options.first,
-      'options': options.take(4).toList()..shuffle(Random()),
+      'options': options.take(4).toList(),
     };
   }
 
@@ -138,7 +138,7 @@ class _EldersBlessingsGameState extends BaseGameScreenState<EldersBlessingsGame>
   void _selectMeaning(String meaning) {
     if (_showResult) return;
 
-    final isCorrect = meaning == _correctMeaning || meaning == _meaningOptions.first;
+    final isCorrect = meaning == _correctMeaning;
 
     setState(() {
       _selectedMeaning = meaning;
@@ -280,7 +280,7 @@ class _EldersBlessingsGameState extends BaseGameScreenState<EldersBlessingsGame>
             SizedBox(height: 2.h),
             ..._meaningOptions.map((meaning) {
               final isSelected = _selectedMeaning == meaning;
-              final isCorrect = meaning == _correctMeaning || meaning == _meaningOptions.first;
+              final isCorrect = meaning == _correctMeaning;
 
               Color? backgroundColor;
               if (_showResult) {

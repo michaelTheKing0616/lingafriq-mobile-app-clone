@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/config/api_contract.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/game/phrase_card_model.dart';
 import '../models/game/game_session_model.dart';
+import '../models/game/game_content_failure.dart';
 import '../providers/gamification_provider.dart';
 import '../providers/backend_sync_provider.dart';
 import '../providers/user_provider.dart';
@@ -31,11 +34,13 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   final List<PhraseCard> _availableCards = [];
   final Map<String, SRSState> _userSRS = {}; // user_id + card_id -> SRSState
   final Map<String, GameModeCertification> _modeCertifications = {};
+  GameContentFailure _lastContentFailure = GameContentFailure.none();
 
   GameSession? get currentSession => _currentSession;
   List<PhraseCard> get availableCards => List.unmodifiable(_availableCards);
   Map<String, GameModeCertification> get modeCertifications =>
       Map.unmodifiable(_modeCertifications);
+  GameContentFailure get lastContentFailure => _lastContentFailure;
 
   @override
   BaseProviderState build() {
@@ -74,6 +79,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       // Expose loaded cards to game screens (they read gameProv.availableCards)
       _availableCards.clear();
       _availableCards.addAll(cards);
+      _lastContentFailure = GameContentFailure.none();
 
       // Create session
       _currentSession = GameSession(
@@ -322,6 +328,12 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
             level: level,
             userId: resolvedUserId,
           );
+        } else {
+          _lastContentFailure = GameContentFailure(
+            type: GameContentFailureType.parseFailure,
+            message: 'Primary game content payload format is invalid.',
+            timestamp: DateTime.now(),
+          );
         }
 
         if (cards.isNotEmpty) {
@@ -360,6 +372,11 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         tag: 'game-provider',
         error: e,
       );
+      _lastContentFailure = classifyGameContentFailure(
+        e,
+        defaultType: GameContentFailureType.serviceUnavailable,
+        defaultMessage: 'Primary game content service is unavailable. Retrying with fallback.',
+      );
     }
 
     // 2) Legacy route: GET /api/games/cards (for backward compatibility)
@@ -377,6 +394,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
       if (response.statusCode == 200 && response.data is List) {
         final dataList = response.data as List;
+        var parseErrors = 0;
         for (var item in dataList) {
           if (item is Map<String, dynamic>) {
             try {
@@ -394,8 +412,11 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
               ));
             } catch (e) {
               logger.error('Error parsing card from API', tag: 'game-provider', error: e);
+              parseErrors++;
               continue;
             }
+          } else {
+            parseErrors++;
           }
         }
 
@@ -424,15 +445,34 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
           _cardCache[cacheKey] = List.from(cards);
           return cards;
         }
+        if (parseErrors > 0) {
+          _lastContentFailure = GameContentFailure(
+            type: GameContentFailureType.parseFailure,
+            message: 'Legacy game card payload could not be parsed.',
+            timestamp: DateTime.now(),
+          );
+        }
       }
     } catch (e) {
       logger.error('Error loading cards from API, using fallback', tag: 'game-provider', error: e);
+      _lastContentFailure = classifyGameContentFailure(
+        e,
+        defaultType: GameContentFailureType.serviceUnavailable,
+        defaultMessage: 'Game card API is unavailable. Using curated fallback content.',
+      );
       // Continue to fallback
     }
 
     // Fallback to curated local data
     final fallbackCards = _generateFallbackCards(language, level, count, resolvedUserId);
     cards.addAll(fallbackCards);
+    if (fallbackCards.isEmpty) {
+      _lastContentFailure = GameContentFailure(
+        type: GameContentFailureType.noContent,
+        message: 'No game content is available right now.',
+        timestamp: DateTime.now(),
+      );
+    }
 
     // Apply diacritics enforcement to all cards (non-fatal — cards work without it)
     try {
@@ -455,6 +495,37 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
     _cardCache[cacheKey] = List.from(cards);
     return cards;
+  }
+
+  @visibleForTesting
+  static GameContentFailure classifyGameContentFailure(
+    Object error, {
+    required GameContentFailureType defaultType,
+    required String defaultMessage,
+  }) {
+    if (error is DioException) {
+      final status = error.response?.statusCode;
+      if (status == 401 || status == 403) {
+        return GameContentFailure(
+          type: GameContentFailureType.authFailure,
+          message: 'Authentication failed while loading game content.',
+          timestamp: DateTime.now(),
+        );
+      }
+      if (status == 422) {
+        return GameContentFailure(
+          type: GameContentFailureType.parseFailure,
+          message: 'Game content response validation failed.',
+          timestamp: DateTime.now(),
+        );
+      }
+    }
+
+    return GameContentFailure(
+      type: defaultType,
+      message: defaultMessage,
+      timestamp: DateTime.now(),
+    );
   }
 
   void _appendCardFromMap({

@@ -45,6 +45,7 @@ class _MultilingualRelayGameState extends BaseGameScreenState<MultilingualRelayG
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
+  String? _correctTarget;
   
 
   @override
@@ -70,23 +71,26 @@ class _MultilingualRelayGameState extends BaseGameScreenState<MultilingualRelayG
 
       final content = gameContent['content']?.toString() ?? '';
       final parsed = _parseRelay(content);
+      final targets = List<String>.from(parsed['targets'] as List<String>);
 
       setState(() {
         _round++;
         _sourcePhrase = parsed['source'];
         _intermediatePhrase = parsed['intermediate'];
-        _targetOptions = parsed['targets'];
+        _correctTarget = targets.isNotEmpty ? targets.first : null;
+        _targetOptions = List<String>.from(targets)..shuffle(Random());
         setLoading(false);
       });
     } catch (e) {
       debugPrint('Error loading relay: $e');
       // Use fallback content so game is still playable
-      final options = ['Sannu', 'Habari', 'Bawo', 'Kedu']..shuffle(Random());
+      final options = ['Sannu', 'Habari', 'Bawo', 'Kedu'];
       setState(() {
         _round++;
         _sourcePhrase = 'Hello';
         _intermediatePhrase = 'Hola';
-        _targetOptions = options;
+        _correctTarget = options.first;
+        _targetOptions = List<String>.from(options)..shuffle(Random());
         setLoading(false);
       });
     }
@@ -117,14 +121,14 @@ class _MultilingualRelayGameState extends BaseGameScreenState<MultilingualRelayG
     return {
       'source': source ?? 'Hello',
       'intermediate': intermediate ?? 'Hola',
-      'targets': targets.take(4).toList()..shuffle(Random()),
+      'targets': targets.take(4).toList(),
     };
   }
 
   void _selectTarget(String target) {
     if (_showResult) return;
 
-    final isCorrect = target == _targetOptions.first;
+    final isCorrect = target == _correctTarget;
 
     setState(() {
       _selectedTarget = target;
@@ -305,7 +309,7 @@ class _MultilingualRelayGameState extends BaseGameScreenState<MultilingualRelayG
             SizedBox(height: 2.h),
             ..._targetOptions.map((target) {
               final isSelected = _selectedTarget == target;
-              final isCorrect = target == _targetOptions.first;
+              final isCorrect = target == _correctTarget;
 
               Color? backgroundColor;
               if (_showResult) {

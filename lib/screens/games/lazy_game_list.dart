@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/models/game/game_session_model.dart';
 import 'package:lingafriq/services/lazy_game_loader.dart';
 import 'language_games_screen_components.dart';
+import 'game_catalog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Lazy-loaded game list with pagination
@@ -26,48 +27,8 @@ class LazyGameList extends HookConsumerWidget {
     
     const gamesPerPage = 6;
     
-    final allCoreGames = [
-      GameType.wordMatchAudio,
-      GameType.pronunciationDuel,
-      GameType.speedRoundRemix,
-      GameType.toneTrainer,
-      GameType.storyBuilder,
-      GameType.roleplayAdventure,
-      GameType.grammarDetective,
-      GameType.listenAndSketch,
-      GameType.pictureWordAssociation,
-      GameType.memoryMap,
-      GameType.conversationRelay,
-      GameType.grammarJam,
-      GameType.pronunciationKaraoke,
-      GameType.quizChef,
-      GameType.scrabbleSprintArena,
-    ];
-    
-    final allCulturalGames = [
-      GameType.proverbUnlocker,
-      GameType.drumRhythmShadowing,
-      GameType.clanLineageStoryBuilder,
-      GameType.marketBargainingSimulator,
-      GameType.taxiBusStopSurvival,
-      GameType.foodQuest,
-      GameType.callAndResponse,
-      GameType.greetingDiplomacyChallenge,
-      GameType.folktaleReconstruction,
-      GameType.phraseSniper,
-      GameType.liarLiar,
-      GameType.villageQuest,
-      GameType.accentDecodingPuzzle,
-      GameType.flashcardSafari,
-      GameType.rapidTongueTwisterRace,
-      GameType.emojiTranslator,
-      GameType.rhythmTyping,
-      GameType.eldersBlessingsChallenge,
-      GameType.multilingualRelayRace,
-      GameType.culturalEtiquetteScenarios,
-      GameType.drumToWordMatching,
-      GameType.marketMonopolyChallenge,
-    ];
+    final allCoreGames = GameCatalog.bySection(GameCatalogSection.core).map((e) => e.type).toList();
+    final allCulturalGames = GameCatalog.bySection(GameCatalogSection.cultural).map((e) => e.type).toList();
     
     final visibleCoreGames = allCoreGames.take((coreGamesPage.value + 1) * gamesPerPage).toList();
     final visibleCulturalGames = allCulturalGames.take((culturalGamesPage.value + 1) * gamesPerPage).toList();

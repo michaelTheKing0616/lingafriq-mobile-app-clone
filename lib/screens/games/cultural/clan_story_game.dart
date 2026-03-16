@@ -36,6 +36,7 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
   // ignore: unused_field
   final bool _isLoading = false;
   String _storyPrompt = '';
+  String? _correctPart;
 
   @override
   Future<void> onGameInitialized() async {
@@ -68,14 +69,17 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
         _currentStory = storyData;
         _round++;
         _storyPrompt = storyData['title']?.toString() ?? 'Build the story';
-        _storyParts = parts;
+        _correctPart = parts.isNotEmpty ? parts.first : null;
+        _storyParts = List<String>.from(parts)..shuffle(Random());
         setLoading(false);
       });
     } catch (e) {
       debugPrint('Error loading story: $e');
       setState(() {
         setLoading(false);
-        _storyParts = _getFallbackParts();
+        final fallback = _getFallbackParts();
+        _correctPart = fallback.first;
+        _storyParts = List<String>.from(fallback)..shuffle(Random());
         _storyPrompt = 'Build a clan story';
       });
     }
@@ -87,7 +91,7 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
     while (parts.length < 4) {
       parts.add('Story part ${parts.length + 1}');
     }
-    return parts..shuffle(Random());
+    return parts;
   }
 
   List<String> _getFallbackParts() {
@@ -102,7 +106,7 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
   void _selectPart(String part) {
     if (_showResult) return;
     
-    final isCorrect = part == _storyParts.first;
+    final isCorrect = part == _correctPart;
     
     setState(() {
       _selectedPart = part;
@@ -257,7 +261,7 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
             SizedBox(height: 2.h),
             ..._storyParts.map((part) {
               final isSelected = _selectedPart == part;
-              final isCorrectOption = part == _storyParts.first;
+              final isCorrectOption = part == _correctPart;
               
               Color? backgroundColor;
               if (_showResult) {

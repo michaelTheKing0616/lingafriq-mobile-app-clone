@@ -48,6 +48,7 @@ class _FlashcardSafariGameState extends BaseGameScreenState<FlashcardSafariGame>
   
   String _word = '';
   bool _showWord = true;
+  String? _correctTranslation;
 
   @override
   Future<void> onGameInitialized() async {
@@ -81,7 +82,9 @@ class _FlashcardSafariGameState extends BaseGameScreenState<FlashcardSafariGame>
         _currentCard = gameContent;
         _round++;
         _word = parsed['word'];
-        _translationOptions = parsed['options'];
+        final options = List<String>.from(parsed['options'] as List<String>);
+        _correctTranslation = options.isNotEmpty ? options.first : null;
+        _translationOptions = List<String>.from(options)..shuffle(Random());
         setLoading(false);
       });
     } catch (e) {
@@ -89,7 +92,9 @@ class _FlashcardSafariGameState extends BaseGameScreenState<FlashcardSafariGame>
       setState(() {
         setLoading(false);
         _word = _getFallbackWord();
-        _translationOptions = _getFallbackTranslations();
+        final fallback = _getFallbackTranslations();
+        _correctTranslation = fallback.first;
+        _translationOptions = List<String>.from(fallback)..shuffle(Random());
       });
     }
   }
@@ -114,7 +119,7 @@ class _FlashcardSafariGameState extends BaseGameScreenState<FlashcardSafariGame>
 
     return {
       'word': word ?? _getFallbackWord(),
-      'options': options.take(4).toList()..shuffle(Random()),
+      'options': options.take(4).toList(),
     };
   }
 
@@ -135,7 +140,7 @@ class _FlashcardSafariGameState extends BaseGameScreenState<FlashcardSafariGame>
   void _selectTranslation(String translation) {
     if (_showResult) return;
 
-    final isCorrect = translation == _translationOptions.first;
+    final isCorrect = translation == _correctTranslation;
 
     setState(() {
       _selectedTranslation = translation;
@@ -293,7 +298,7 @@ class _FlashcardSafariGameState extends BaseGameScreenState<FlashcardSafariGame>
             SizedBox(height: 2.h),
             ..._translationOptions.map((translation) {
               final isSelected = _selectedTranslation == translation;
-              final isCorrect = translation == _translationOptions.first;
+              final isCorrect = translation == _correctTranslation;
 
               Color? backgroundColor;
               if (_showResult) {

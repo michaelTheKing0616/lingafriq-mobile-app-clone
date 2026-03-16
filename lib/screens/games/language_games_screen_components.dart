@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../models/game/game_session_model.dart';
 import '../../utils/pan_african_design_system.dart';
 import '../../widgets/pan_african_components.dart';
+import 'game_catalog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Language Selector Widget
@@ -112,161 +113,11 @@ class GameSection extends StatelessWidget {
   }
 
   String _getGameDescription(GameType game) {
-    switch (game) {
-      case GameType.wordMatchAudio:
-        return 'Match words with translations + audio playback';
-      case GameType.pronunciationDuel:
-        return 'Head-to-head pronunciation scoring';
-      case GameType.speedRoundRemix:
-        return 'Adaptive rapid-fire questions';
-      case GameType.toneTrainer:
-        return 'Master tonal languages with pitch visualization';
-      case GameType.storyBuilder:
-        return 'Build stories collaboratively';
-      case GameType.roleplayAdventure:
-        return 'Branching dialogue scenarios';
-      case GameType.grammarDetective:
-        return 'Find and fix grammar errors';
-      case GameType.listenAndSketch:
-        return 'Listen and draw/select pictures';
-      case GameType.pictureWordAssociation:
-        return 'Map cultural images to vocabulary';
-      case GameType.memoryMap:
-        return 'SRS with spatial memory';
-      case GameType.conversationRelay:
-        return 'Asynchronous tandem practice';
-      case GameType.grammarJam:
-        return 'Cooperative grammar fluency';
-      case GameType.pronunciationKaraoke:
-        return 'Sing songs with pronunciation scoring';
-      case GameType.quizChef:
-        return 'Cook recipes in target language';
-      case GameType.proverbUnlocker:
-        return 'Decode African proverbs';
-      case GameType.drumRhythmShadowing:
-        return 'Match tone patterns with drums';
-      case GameType.clanLineageStoryBuilder:
-        return 'Journey through African villages';
-      case GameType.marketBargainingSimulator:
-        return 'Negotiate in African markets';
-      case GameType.taxiBusStopSurvival:
-        return 'Navigate transport hubs';
-      case GameType.foodQuest:
-        return 'Learn food vocabulary by cooking';
-      case GameType.callAndResponse:
-        return 'Music-based pronunciation practice';
-      case GameType.greetingDiplomacyChallenge:
-        return 'Master cultural greeting rituals';
-      case GameType.folktaleReconstruction:
-        return 'Arrange folktale parts correctly';
-      case GameType.phraseSniper:
-        return 'Fast-paced reaction game';
-      case GameType.liarLiar:
-        return 'Detect grammatical errors';
-      case GameType.villageQuest:
-        return 'NPC conversation game';
-      case GameType.accentDecodingPuzzle:
-        return 'Match accents to regions';
-      case GameType.flashcardSafari:
-        return 'AR vocabulary scanning';
-      case GameType.rapidTongueTwisterRace:
-        return 'Repeat tongue twisters fast';
-      case GameType.emojiTranslator:
-        return 'Translate emoji sentences';
-      case GameType.rhythmTyping:
-        return 'Type with drum sounds';
-      case GameType.eldersBlessingsChallenge:
-        return 'Learn blessing phrases';
-      case GameType.multilingualRelayRace:
-        return 'Switch between languages';
-      case GameType.culturalEtiquetteScenarios:
-        return 'Interactive cultural situations';
-      case GameType.drumToWordMatching:
-        return 'Decode drum patterns to words';
-      case GameType.marketMonopolyChallenge:
-        return 'Trade smart in a language-rich market simulation';
-      case GameType.scrabbleSprintArena:
-        return 'Build words fast from a live letter board';
-    }
+    return GameCatalog.byType[game]?.description ?? 'Language game mode';
   }
 
   IconData _getGameIcon(GameType game) {
-    switch (game) {
-      case GameType.wordMatchAudio:
-        return Icons.track_changes_rounded;
-      case GameType.pronunciationDuel:
-        return Icons.volume_up_rounded;
-      case GameType.speedRoundRemix:
-        return Icons.bolt_rounded;
-      case GameType.toneTrainer:
-        return Icons.graphic_eq_rounded;
-      case GameType.storyBuilder:
-        return Icons.auto_stories_rounded;
-      case GameType.roleplayAdventure:
-        return Icons.theater_comedy_rounded;
-      case GameType.grammarDetective:
-        return Icons.search_rounded;
-      case GameType.listenAndSketch:
-        return Icons.draw_rounded;
-      case GameType.pictureWordAssociation:
-        return Icons.image_rounded;
-      case GameType.memoryMap:
-        return Icons.map_rounded;
-      case GameType.conversationRelay:
-        return Icons.forum_rounded;
-      case GameType.grammarJam:
-        return Icons.music_note_rounded;
-      case GameType.pronunciationKaraoke:
-        return Icons.mic_rounded;
-      case GameType.quizChef:
-        return Icons.restaurant_rounded;
-      case GameType.proverbUnlocker:
-        return Icons.lightbulb_rounded;
-      case GameType.drumRhythmShadowing:
-        return Icons.music_note;
-      case GameType.clanLineageStoryBuilder:
-        return Icons.account_tree_rounded;
-      case GameType.marketBargainingSimulator:
-        return Icons.shopping_cart_rounded;
-      case GameType.taxiBusStopSurvival:
-        return Icons.directions_bus_rounded;
-      case GameType.foodQuest:
-        return Icons.restaurant_menu_rounded;
-      case GameType.callAndResponse:
-        return Icons.queue_music_rounded;
-      case GameType.greetingDiplomacyChallenge:
-        return Icons.handshake_rounded;
-      case GameType.folktaleReconstruction:
-        return Icons.book_rounded;
-      case GameType.phraseSniper:
-        return Icons.speed_rounded;
-      case GameType.liarLiar:
-        return Icons.psychology_rounded;
-      case GameType.villageQuest:
-        return Icons.location_city;
-      case GameType.accentDecodingPuzzle:
-        return Icons.language_rounded;
-      case GameType.flashcardSafari:
-        return Icons.camera_alt_rounded;
-      case GameType.rapidTongueTwisterRace:
-        return Icons.speed_rounded;
-      case GameType.emojiTranslator:
-        return Icons.emoji_emotions_rounded;
-      case GameType.rhythmTyping:
-        return Icons.keyboard_rounded;
-      case GameType.eldersBlessingsChallenge:
-        return Icons.favorite_rounded;
-      case GameType.multilingualRelayRace:
-        return Icons.swap_horiz_rounded;
-      case GameType.culturalEtiquetteScenarios:
-        return Icons.people_rounded;
-      case GameType.drumToWordMatching:
-        return Icons.music_note_rounded;
-      case GameType.marketMonopolyChallenge:
-        return Icons.storefront_rounded;
-      case GameType.scrabbleSprintArena:
-        return Icons.spellcheck_rounded;
-    }
+    return GameCatalog.byType[game]?.icon ?? Icons.sports_esports_rounded;
   }
 
   LinearGradient _getGameGradient(GameType game) {

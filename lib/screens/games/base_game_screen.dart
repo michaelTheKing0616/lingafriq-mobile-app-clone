@@ -19,6 +19,7 @@ import '../../widgets/pan_african_components.dart';
 import '../../widgets/rive_global_guide.dart';
 import '../../widgets/error_state_widget.dart';
 import '../../widgets/skeleton_loader.dart';
+import 'templates/game_template_shell.dart';
 
 /// Base class for all game screens - handles common functionality
 abstract class BaseGameScreen extends ConsumerStatefulWidget {
@@ -466,29 +467,13 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
     final heartsState = ref.watch(heartsProvider);
     
     if (_isLoading) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            widget.getGameType().displayName,
-            style: PanAfricanTypography.titleMedium(context, color: Theme.of(context).colorScheme.onPrimary),
-          ),
-          leading: Semantics(
-            label: 'Go back',
-            button: true,
-            child: IconButton(
-              icon: Icon(Icons.arrow_back_rounded, size: 24.sp),
-              onPressed: () {
-                HapticFeedback.lightImpact();
-                (widget.onBack ?? () => Navigator.pop(context))();
-              },
-            ),
-          ),
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(gradient: PanAfricanGradients.forest),
-          ),
-          elevation: 0,
-        ),
-        body: Container(
+      return GameTemplateShell(
+        title: widget.getGameType().displayName,
+        onBack: () {
+          HapticFeedback.lightImpact();
+          (widget.onBack ?? () => Navigator.pop(context))();
+        },
+        playArea: Container(
           decoration: BoxDecoration(
             gradient: isDark ? PanAfricanGradients.darkSurface : null,
             color: isDark ? null : PanAfricanColors.surfaceLight,
@@ -534,29 +519,13 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
     }
 
     if (_error != null) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            widget.getGameType().displayName,
-            style: PanAfricanTypography.titleMedium(context, color: Theme.of(context).colorScheme.onPrimary),
-          ),
-          leading: Semantics(
-            label: 'Go back',
-            button: true,
-            child: IconButton(
-              icon: Icon(Icons.arrow_back_rounded, size: 24.sp),
-              onPressed: () {
-                HapticFeedback.lightImpact();
-                (widget.onBack ?? () => Navigator.pop(context))();
-              },
-            ),
-          ),
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(gradient: PanAfricanGradients.forest),
-          ),
-          elevation: 0,
-        ),
-        body: Container(
+      return GameTemplateShell(
+        title: widget.getGameType().displayName,
+        onBack: () {
+          HapticFeedback.lightImpact();
+          (widget.onBack ?? () => Navigator.pop(context))();
+        },
+        playArea: Container(
           decoration: BoxDecoration(
             gradient: isDark ? PanAfricanGradients.darkSurface : null,
             color: isDark ? null : PanAfricanColors.surfaceLight,
@@ -593,30 +562,14 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
       bodyContent = _buildGameLoadError(context, e);
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          appBarTitle ?? widget.getGameType().displayName,
-          style: PanAfricanTypography.titleMedium(context, color: Theme.of(context).colorScheme.onPrimary),
-        ),
-        leading: Semantics(
-          label: 'Go back',
-          button: true,
-          child: IconButton(
-            icon: Icon(Icons.arrow_back_rounded, size: 24.sp),
-            onPressed: () {
-              HapticFeedback.lightImpact();
-              (widget.onBack ?? () => Navigator.pop(context))();
-            },
-          ),
-        ),
-        actions: appBarActions ?? const [],
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(gradient: PanAfricanGradients.forest),
-        ),
-        elevation: 0,
-      ),
-      body: Container(
+    return GameTemplateShell(
+      title: appBarTitle ?? widget.getGameType().displayName,
+      onBack: () {
+        HapticFeedback.lightImpact();
+        (widget.onBack ?? () => Navigator.pop(context))();
+      },
+      appBarActions: appBarActions ?? const [],
+      playArea: Container(
         decoration: BoxDecoration(
           gradient: isDark ? PanAfricanGradients.darkSurface : null,
           color: isDark ? null : PanAfricanColors.surfaceLight,

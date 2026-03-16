@@ -44,6 +44,7 @@ class _EmojiTranslatorGameState extends BaseGameScreenState<EmojiTranslatorGame>
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
+  String? _correctTranslation;
   
 
   @override
@@ -73,7 +74,9 @@ class _EmojiTranslatorGameState extends BaseGameScreenState<EmojiTranslatorGame>
       setState(() {
         _round++;
         _emojiSequence = parsed['emojis'];
-        _translationOptions = parsed['options'];
+        final options = List<String>.from(parsed['options'] as List<String>);
+        _correctTranslation = options.isNotEmpty ? options.first : null;
+        _translationOptions = List<String>.from(options)..shuffle(Random());
         setLoading(false);
       });
     } catch (e) {
@@ -81,8 +84,9 @@ class _EmojiTranslatorGameState extends BaseGameScreenState<EmojiTranslatorGame>
       setState(() {
         setLoading(false);
         _emojiSequence = '👋 😊 🌍';
-        _translationOptions = ['Hello, happy world', 'Good morning', 'Nice to meet you', 'How are you'];
-        _translationOptions.shuffle(Random());
+        final fallback = ['Hello, happy world', 'Good morning', 'Nice to meet you', 'How are you'];
+        _correctTranslation = fallback.first;
+        _translationOptions = List<String>.from(fallback)..shuffle(Random());
       });
     }
   }
@@ -107,14 +111,14 @@ class _EmojiTranslatorGameState extends BaseGameScreenState<EmojiTranslatorGame>
 
     return {
       'emojis': emojis ?? '👋 😊 🌍',
-      'options': options.take(4).toList()..shuffle(Random()),
+      'options': options.take(4).toList(),
     };
   }
 
   void _selectTranslation(String translation) {
     if (_showResult) return;
 
-    final isCorrect = translation == _translationOptions.first;
+    final isCorrect = translation == _correctTranslation;
 
     setState(() {
       _selectedTranslation = translation;
@@ -256,7 +260,7 @@ class _EmojiTranslatorGameState extends BaseGameScreenState<EmojiTranslatorGame>
             SizedBox(height: 2.h),
             ..._translationOptions.map((translation) {
               final isSelected = _selectedTranslation == translation;
-              final isCorrect = translation == _translationOptions.first;
+              final isCorrect = translation == _correctTranslation;
 
               Color? backgroundColor;
               if (_showResult) {

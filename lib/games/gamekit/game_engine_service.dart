@@ -106,8 +106,8 @@ class GameEngineService {
       case GameType.drumRhythmShadowing:
         return 'drum_rhythm_shadowing';
       default:
-        // Fallback to lowercase enum name for GenericGame games
-        return gameType.name.toLowerCase();
+        // Extension-provided canonical snake_case contract.
+        return gameType.name;
     }
   }
 

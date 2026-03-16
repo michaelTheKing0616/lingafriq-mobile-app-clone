@@ -114,6 +114,7 @@ class _DynamicLoadingScreenState
   double _progress = 0.0;
   int _factIndex = 0;
   Timer? _factTimer;
+  bool _showChild = false;
   
   // Fallback facts if backend is slow
   static const List<String> _fallbackFacts = [
@@ -169,6 +170,10 @@ class _DynamicLoadingScreenState
     );
 
     _progressController.forward().then((_) {
+      if (!mounted) return;
+      if (widget.child != null) {
+        setState(() => _showChild = true);
+      }
       if (widget.waitForDuration) {
         widget.onLoadingComplete?.call();
       }
@@ -194,6 +199,9 @@ class _DynamicLoadingScreenState
 
   @override
   Widget build(BuildContext context) {
+    if (_showChild && widget.child != null) {
+      return widget.child!;
+    }
     final content = ref.watch(loadingScreenProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -597,7 +605,6 @@ class ToneTrainerGame extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return DynamicLoadingScreen(
       loadingDuration: kMinLoadingDisplayTime,
-      onLoadingComplete: () => onBack?.call(),
       child: _ToneTrainerPlaceholder(
         language: language,
         level: level,
@@ -630,7 +637,7 @@ class _ToneTrainerPlaceholder extends StatelessWidget {
           button: true,
           child: IconButton(
             icon: const Icon(Icons.arrow_back_rounded, semanticLabel: 'Back'),
-            onPressed: () => onBack?.call(),
+            onPressed: onBack ?? () => Navigator.pop(context),
           ),
         ),
         title: Text('Tone Trainer', style: PanAfricanTypography.titleMedium(context)),

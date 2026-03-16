@@ -16,44 +16,7 @@ import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'game_onboarding_overlay.dart';
-
-const _gameRules = <GameType, List<String>>{
-  GameType.wordMatchAudio: [
-    'Match words in your target language with their English meaning.',
-    'Tap a word to hear pronunciation before matching.',
-    'Work quickly to build streak and score.',
-  ],
-  GameType.pronunciationDuel: [
-    'Listen to the native pronunciation first.',
-    'Record your voice clearly in a quiet environment.',
-    'Aim for 85+ to win each round.',
-  ],
-  GameType.speedRoundRemix: [
-    'Choose the correct translation before time runs out.',
-    'Accuracy matters as much as speed.',
-    'You have 60 seconds per run.',
-  ],
-  GameType.scrabbleSprintArena: [
-    'Build valid words using the provided letters.',
-    'Longer words usually score higher.',
-    'Use all tiles if possible for bonus points.',
-  ],
-  GameType.roleplayAdventure: [
-    'Choose the best response for each real-life scenario.',
-    'Prioritize culturally appropriate phrasing.',
-    'Different choices lead to different outcomes.',
-  ],
-  GameType.grammarDetective: [
-    'Find the grammar mistake in each sentence.',
-    'Pick the best correction based on context.',
-    'Focus on tense, agreement, and word order.',
-  ],
-  GameType.storyBuilder: [
-    'Continue the story using your target language.',
-    'Keep your sentence coherent with the prior context.',
-    'Use feedback tips to improve grammar and style.',
-  ],
-};
+import 'game_catalog.dart';
 
 /// Beautiful Material 3 Games Screen
 class GamesScreenMaterial3 extends HookConsumerWidget {
@@ -70,55 +33,14 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
     final selectedSection = useState('core');
     final isLoading = useState(false);
 
-    // ALL 35+ GAMES PROPERLY CATEGORIZED
-    final coreGames = [
-      {'name': 'Word Match Audio', 'description': 'Match words with audio', 'category': 'Vocabulary', 'icon': Icons.headphones, 'type': GameType.wordMatchAudio},
-      {'name': 'Pronunciation Duel', 'description': 'Master pronunciation', 'category': 'Pronunciation', 'icon': Icons.record_voice_over, 'type': GameType.pronunciationDuel},
-      {'name': 'Speed Round', 'description': 'Fast-paced vocabulary', 'category': 'Vocabulary', 'icon': Icons.speed, 'type': GameType.speedRoundRemix},
-      {'name': 'Story Builder', 'description': 'Build stories', 'category': 'Grammar', 'icon': Icons.auto_stories, 'type': GameType.storyBuilder},
-      {'name': 'Roleplay Adventure', 'description': 'Interactive conversations', 'category': 'Cultural', 'icon': Icons.theater_comedy, 'type': GameType.roleplayAdventure},
-      {'name': 'Grammar Detective', 'description': 'Solve grammar mysteries', 'category': 'Grammar', 'icon': Icons.search, 'type': GameType.grammarDetective},
-      {'name': 'Listen & Sketch', 'description': 'Draw what you hear', 'category': 'Vocabulary', 'icon': Icons.draw, 'type': GameType.listenAndSketch},
-      {'name': 'Picture Word Match', 'description': 'Match words with images', 'category': 'Vocabulary', 'icon': Icons.image, 'type': GameType.pictureWordAssociation},
-      {'name': 'Memory Map', 'description': 'Memory challenge', 'category': 'Vocabulary', 'icon': Icons.map, 'type': GameType.memoryMap},
-      {'name': 'Conversation Relay', 'description': 'Chain conversations', 'category': 'Cultural', 'icon': Icons.chat, 'type': GameType.conversationRelay},
-      {'name': 'Grammar Jam', 'description': 'Grammar rhythm game', 'category': 'Grammar', 'icon': Icons.music_note, 'type': GameType.grammarJam},
-      {'name': 'Pronunciation Karaoke', 'description': 'Sing and pronounce', 'category': 'Pronunciation', 'icon': Icons.mic, 'type': GameType.pronunciationKaraoke},
-      {'name': 'Quiz Chef', 'description': 'Cook up answers', 'category': 'Vocabulary', 'icon': Icons.restaurant, 'type': GameType.quizChef},
-      {'name': 'Scrabble Sprint', 'description': 'Build words under pressure', 'category': 'Vocabulary', 'icon': Icons.spellcheck, 'type': GameType.scrabbleSprintArena},
-    ];
-
-    final culturalGames = [
-      {'name': 'Proverb Unlocker', 'description': 'Unlock wisdom', 'category': 'Cultural', 'icon': Icons.auto_awesome, 'type': GameType.proverbUnlocker},
-      {'name': 'Drum Rhythm', 'description': 'Follow the rhythm', 'category': 'Pronunciation', 'icon': Icons.music_note, 'type': GameType.drumRhythmShadowing},
-      {'name': 'Clan Story Builder', 'description': 'Build clan stories', 'category': 'Cultural', 'icon': Icons.account_tree, 'type': GameType.clanLineageStoryBuilder},
-      {'name': 'Market Bargaining', 'description': 'Practice bargaining', 'category': 'Cultural', 'icon': Icons.store, 'type': GameType.marketBargainingSimulator},
-      {'name': 'Taxi Survival', 'description': 'Navigate transportation', 'category': 'Cultural', 'icon': Icons.directions_transit, 'type': GameType.taxiBusStopSurvival},
-      {'name': 'Food Quest', 'description': 'Explore cuisine', 'category': 'Cultural', 'icon': Icons.restaurant_menu, 'type': GameType.foodQuest},
-      {'name': 'Call & Response', 'description': 'Traditional patterns', 'category': 'Cultural', 'icon': Icons.call, 'type': GameType.callAndResponse},
-      {'name': 'Greeting Diplomacy', 'description': 'Master greetings', 'category': 'Cultural', 'icon': Icons.waving_hand, 'type': GameType.greetingDiplomacyChallenge},
-      {'name': 'Folktale Builder', 'description': 'Rebuild stories', 'category': 'Cultural', 'icon': Icons.book, 'type': GameType.folktaleReconstruction},
-      {'name': 'Phrase Sniper', 'description': 'Target phrases', 'category': 'Vocabulary', 'icon': Icons.center_focus_strong, 'type': GameType.phraseSniper},
-      {'name': 'Liar Liar', 'description': 'Detect truth', 'category': 'Grammar', 'icon': Icons.psychology, 'type': GameType.liarLiar},
-      {'name': 'Village Quest', 'description': 'Adventure quest', 'category': 'Cultural', 'icon': Icons.explore, 'type': GameType.villageQuest},
-      {'name': 'Accent Puzzle', 'description': 'Decode accents', 'category': 'Pronunciation', 'icon': Icons.extension, 'type': GameType.accentDecodingPuzzle},
-      {'name': 'Flashcard Safari', 'description': 'Safari vocabulary', 'category': 'Vocabulary', 'icon': Icons.flash_on, 'type': GameType.flashcardSafari},
-      {'name': 'Tongue Twister', 'description': 'Master twisters', 'category': 'Pronunciation', 'icon': Icons.speed, 'type': GameType.rapidTongueTwisterRace},
-      {'name': 'Emoji Translator', 'description': 'Translate emojis', 'category': 'Vocabulary', 'icon': Icons.emoji_emotions, 'type': GameType.emojiTranslator},
-      {'name': 'Rhythm Typing', 'description': 'Type to rhythm', 'category': 'Vocabulary', 'icon': Icons.keyboard, 'type': GameType.rhythmTyping},
-      {'name': 'Elders Blessings', 'description': 'Learn blessings', 'category': 'Cultural', 'icon': Icons.favorite, 'type': GameType.eldersBlessingsChallenge},
-      {'name': 'Multilingual Relay', 'description': 'Language relay', 'category': 'Cultural', 'icon': Icons.swap_horiz, 'type': GameType.multilingualRelayRace},
-      {'name': 'Cultural Etiquette', 'description': 'Learn etiquette', 'category': 'Cultural', 'icon': Icons.groups, 'type': GameType.culturalEtiquetteScenarios},
-      {'name': 'Drum Word Match', 'description': 'Match drum patterns', 'category': 'Cultural', 'icon': Icons.music_note, 'type': GameType.drumToWordMatching},
-      {'name': 'Market Monopoly', 'description': 'Strategic market negotiations', 'category': 'Cultural', 'icon': Icons.storefront, 'type': GameType.marketMonopolyChallenge},
-    ];
-
+    final coreGames = GameCatalog.bySection(GameCatalogSection.core);
+    final culturalGames = GameCatalog.bySection(GameCatalogSection.cultural);
     final allGames = [...coreGames, ...culturalGames];
     
     // Filter games by section and category
     var filteredGames = selectedSection.value == 'core' ? coreGames : culturalGames;
     if (selectedCategory.value != null && selectedCategory.value != 'All') {
-      filteredGames = filteredGames.where((g) => g['category'] == selectedCategory.value).toList();
+      filteredGames = filteredGames.where((g) => g.category == selectedCategory.value).toList();
     }
 
     return LoadingOverlay(
@@ -298,7 +220,7 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
                           game: game,
                           isDark: isDark,
                           onTap: () {
-                            final gameType = game['type'] as GameType;
+                            final gameType = game.type;
                             final loader = ref.read(lazyGameLoaderProvider);
 
                             safeAsync(
@@ -327,8 +249,8 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
                                       context: context,
                                       builder: (ctx) => GameOnboardingOverlay(
                                         gameType: gameType.name,
-                                        title: game['name'] as String,
-                                        rules: _gameRules[gameType] ?? const [
+                                        title: game.name,
+                                        rules: game.rules.isNotEmpty ? game.rules : const [
                                           'Learn and have fun with this game mode.',
                                           'Focus on accuracy first, then speed.',
                                         ],
@@ -379,7 +301,7 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
 }
 
 class _GameCard extends StatelessWidget {
-  final Map<String, dynamic> game;
+  final GameCatalogEntry game;
   final bool isDark;
   final VoidCallback onTap;
 
@@ -391,12 +313,12 @@ class _GameCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final category = game['category'] ?? 'game';
-    final icon = game['icon'] as IconData? ?? Icons.sports_esports_rounded;
+    final category = game.category;
+    final icon = game.icon;
     final colorScheme = Theme.of(context).colorScheme;
 
     return Semantics(
-      label: '${game['name'] ?? 'Game'}, ${game['description'] ?? ''}, $category category',
+      label: '${game.name}, ${game.description}, $category category',
       button: true,
       child: PanAfricanCard(
         hasHoverEffect: true,
@@ -418,14 +340,14 @@ class _GameCard extends StatelessWidget {
                 icon,
                 size: 24.sp,
                 color: colorScheme.onPrimary,
-                semanticLabel: '${game['name']} game icon',
+                              semanticLabel: '${game.name} game icon',
               ),
             ),
             SizedBox(height: PanAfricanSpacing.sm),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xs),
               child: Text(
-                game['name'] ?? 'Game',
+                game.name,
                 style: PanAfricanTypography.titleSmall(context),
                 textAlign: TextAlign.center,
                 maxLines: 2,
@@ -436,7 +358,7 @@ class _GameCard extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xs),
               child: Text(
-                game['description'] ?? '',
+                game.description,
                 style: PanAfricanTypography.bodySmall(context),
                 textAlign: TextAlign.center,
                 maxLines: 2,

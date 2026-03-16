@@ -47,6 +47,7 @@ class _TaxiSurvivalGameState extends BaseGameScreenState<TaxiSurvivalGame> {
   final int _maxRounds = 5;
   
   String _scenarioText = '';
+  String? _correctPhrase;
 
   @override
   Future<void> onGameInitialized() async {
@@ -74,23 +75,27 @@ class _TaxiSurvivalGameState extends BaseGameScreenState<TaxiSurvivalGame> {
 
       final content = gameContent['content']?.toString() ?? '';
       final phrases = _extractPhrases(content);
+      final shuffled = List<String>.from(phrases)..shuffle(Random());
 
       setState(() {
         _currentScenario = gameContent;
         _round++;
         _scenarioText = _extractScenario(content);
-        _phraseOptions = phrases;
+        _correctPhrase = phrases.isNotEmpty ? phrases.first : null;
+        _phraseOptions = shuffled;
         setLoading(false);
       });
     } catch (e) {
       debugPrint('Error loading scenario: $e');
       // Use fallback content so game is still playable
       final fallbackPhrases = _getFallbackPhrases();
+      final shuffled = List<String>.from(fallbackPhrases)..shuffle(Random());
       setState(() {
         _currentScenario = {'content': 'You need to take a taxi to the market'};
         _round++;
         _scenarioText = 'You need to take a taxi to the market';
-        _phraseOptions = fallbackPhrases;
+        _correctPhrase = fallbackPhrases.first;
+        _phraseOptions = shuffled;
         setLoading(false);
       });
     }
@@ -113,7 +118,7 @@ class _TaxiSurvivalGameState extends BaseGameScreenState<TaxiSurvivalGame> {
       phrases.addAll(_getFallbackPhrases());
     }
     
-    return phrases.take(4).toList()..shuffle(Random());
+    return phrases.take(4).toList();
   }
 
   List<String> _getFallbackPhrases() {
@@ -137,7 +142,7 @@ class _TaxiSurvivalGameState extends BaseGameScreenState<TaxiSurvivalGame> {
   void _selectPhrase(String phrase) {
     if (_showResult) return;
     
-    final isCorrect = phrase == _phraseOptions.first;
+    final isCorrect = phrase == _correctPhrase;
     
     setState(() {
       _selectedPhrase = phrase;
@@ -269,7 +274,7 @@ class _TaxiSurvivalGameState extends BaseGameScreenState<TaxiSurvivalGame> {
             SizedBox(height: 2.h),
             ..._phraseOptions.map((phrase) {
               final isSelected = _selectedPhrase == phrase;
-              final isCorrectOption = phrase == _phraseOptions.first;
+              final isCorrectOption = phrase == _correctPhrase;
               
               Color? backgroundColor;
               if (_showResult) {

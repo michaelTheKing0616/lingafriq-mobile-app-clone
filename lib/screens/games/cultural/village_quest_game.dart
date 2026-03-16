@@ -48,6 +48,7 @@ class _VillageQuestGameState extends BaseGameScreenState<VillageQuestGame> {
   String _npcName = '';
   String _npcMessage = '';
   String _scenarioDescription = '';
+  String? _correctResponse;
 
   @override
   Future<void> onGameInitialized() async {
@@ -78,7 +79,9 @@ class _VillageQuestGameState extends BaseGameScreenState<VillageQuestGame> {
         _npcName = gameContent['npcName']?.toString() ?? 'Village Elder';
         _npcMessage = gameContent['message']?.toString() ?? gameContent['content']?.toString() ?? '';
         _scenarioDescription = gameContent['scenario']?.toString() ?? '';
-        _responseOptions = _extractResponses(gameContent);
+        final options = _extractResponses(gameContent);
+        _correctResponse = options.isNotEmpty ? options.first : null;
+        _responseOptions = List<String>.from(options)..shuffle(Random());
         setLoading(false);
       });
     } catch (e) {
@@ -91,7 +94,8 @@ class _VillageQuestGameState extends BaseGameScreenState<VillageQuestGame> {
         _npcName = 'Village Elder';
         _npcMessage = 'Welcome to our village! How can I help you?';
         _scenarioDescription = 'A village elder greets you.';
-        _responseOptions = fallbackResponses;
+        _correctResponse = fallbackResponses.first;
+        _responseOptions = List<String>.from(fallbackResponses)..shuffle(Random());
         setLoading(false);
       });
     }
@@ -118,7 +122,7 @@ class _VillageQuestGameState extends BaseGameScreenState<VillageQuestGame> {
       responses.addAll(_getFallbackResponses());
     }
     
-    return responses.take(4).toList()..shuffle(Random());
+    return responses.take(4).toList();
   }
 
   List<String> _getFallbackResponses() {
@@ -133,8 +137,7 @@ class _VillageQuestGameState extends BaseGameScreenState<VillageQuestGame> {
   void _selectResponse(String response) {
     if (_showResult) return;
     
-    // First response is typically correct (cultural appropriateness)
-    final isCorrect = response == _responseOptions.first;
+    final isCorrect = response == _correctResponse;
     
     setState(() {
       _selectedResponse = response;
@@ -282,7 +285,7 @@ class _VillageQuestGameState extends BaseGameScreenState<VillageQuestGame> {
             SizedBox(height: 2.h),
             ..._responseOptions.map((response) {
               final isSelected = _selectedResponse == response;
-              final isCorrect = response == _responseOptions.first;
+              final isCorrect = response == _correctResponse;
               
               Color? backgroundColor;
               if (_showResult) {
@@ -315,7 +318,7 @@ class _VillageQuestGameState extends BaseGameScreenState<VillageQuestGame> {
             if (_showResult) ...[
               SizedBox(height: 2.h),
               Card(
-                color: (_selectedResponse == _responseOptions.first)
+                color: (_selectedResponse == _correctResponse)
                     ? Colors.green.withOpacity(0.2)
                     : Colors.red.withOpacity(0.2),
                 child: Padding(
@@ -323,23 +326,23 @@ class _VillageQuestGameState extends BaseGameScreenState<VillageQuestGame> {
                   child: Column(
                     children: [
                       Icon(
-                        (_selectedResponse == _responseOptions.first)
+                        (_selectedResponse == _correctResponse)
                             ? Icons.check_circle
                             : Icons.cancel,
-                        color: (_selectedResponse == _responseOptions.first)
+                        color: (_selectedResponse == _correctResponse)
                             ? Colors.green
                             : Colors.red,
                         size: 32.sp,
                       ),
                       SizedBox(height: 1.h),
                       Text(
-                        (_selectedResponse == _responseOptions.first)
+                        (_selectedResponse == _correctResponse)
                             ? 'Great response!'
                             : 'Try a more culturally appropriate response.',
                         style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
-                          color: (_selectedResponse == _responseOptions.first)
+                          color: (_selectedResponse == _correctResponse)
                               ? Colors.green
                               : Colors.red,
                         ),

@@ -277,110 +277,101 @@ class _ToneForgeScreenState extends BaseGameScreenState<ToneForgeScreen> {
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tone Forge'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: widget.onBack ?? () => Navigator.pop(context),
-        ),
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(4.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(height: 4.h),
-            // Rive Guide Character
-            Center(
-              child: RiveGameGuide(
-                controller: _guideController,
-                width: 150.w,
-                height: 150.h,
+    return SingleChildScrollView(
+      padding: EdgeInsets.all(4.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(height: 4.h),
+          // Rive Guide Character
+          Center(
+            child: RiveGameGuide(
+              controller: _guideController,
+              width: 150.w,
+              height: 150.h,
+            ),
+          ),
+          SizedBox(height: 4.h),
+          // Content Display
+          Card(
+            elevation: 4,
+            child: Padding(
+              padding: EdgeInsets.all(4.w),
+              child: Column(
+                children: [
+                  Text(
+                    _currentContent!.text,
+                    style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                  if (_currentContent!.ipa != null) ...[
+                    SizedBox(height: 1.h),
+                    Text(
+                      _currentContent!.ipa!,
+                      style: TextStyle(fontSize: 16.sp, fontStyle: FontStyle.italic),
+                    ),
+                  ],
+                  if (_currentContent!.culturalContext != null) ...[
+                    SizedBox(height: 2.h),
+                    Text(
+                      _currentContent!.culturalContext!,
+                      style: TextStyle(fontSize: 14.sp),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ],
               ),
             ),
+          ),
+          SizedBox(height: 4.h),
+          // Audio Playback Button
+          FilledButton.icon(
+            onPressed: _isPlaying ? null : _playAudio,
+            icon: Icon(_isPlaying ? Icons.volume_up : Icons.play_arrow),
+            label: Text(_isPlaying ? 'Playing...' : 'Play Audio'),
+          ),
+          SizedBox(height: 2.h),
+          // Recording Button
+          FilledButton.icon(
+            onPressed: _isRecording ? _stopRecording : _startRecording,
+            icon: Icon(_isRecording ? Icons.stop : Icons.mic),
+            label: Text(_isRecording ? 'Stop Recording' : 'Start Recording'),
+            style: FilledButton.styleFrom(
+              backgroundColor: _isRecording ? Colors.red : Colors.blue,
+            ),
+          ),
+          if (_showResult && _lastResult != null) ...[
             SizedBox(height: 4.h),
-            // Content Display
             Card(
-              elevation: 4,
+              color: _lastResult!.score.isCorrect
+                  ? Colors.green.withOpacity(0.2)
+                  : Colors.red.withOpacity(0.2),
               child: Padding(
                 padding: EdgeInsets.all(4.w),
                 child: Column(
                   children: [
+                    Icon(
+                      _lastResult!.score.isCorrect ? Icons.check_circle : Icons.cancel,
+                      color: _lastResult!.score.isCorrect ? Colors.green : Colors.red,
+                      size: 48.sp,
+                    ),
+                    SizedBox(height: 1.h),
                     Text(
-                      _currentContent!.text,
-                      style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
+                      _lastResult!.feedback.message,
+                      style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
-                    if (_currentContent!.ipa != null) ...[
-                      SizedBox(height: 1.h),
-                      Text(
-                        _currentContent!.ipa!,
-                        style: TextStyle(fontSize: 16.sp, fontStyle: FontStyle.italic),
-                      ),
-                    ],
-                    if (_currentContent!.culturalContext != null) ...[
-                      SizedBox(height: 2.h),
-                      Text(
-                        _currentContent!.culturalContext!,
-                        style: TextStyle(fontSize: 14.sp),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+                    SizedBox(height: 1.h),
+                    Text(
+                      'Accuracy: ${(_lastResult!.score.accuracy * 100).toStringAsFixed(0)}%',
+                      style: TextStyle(fontSize: 16.sp),
+                    ),
                   ],
                 ),
               ),
             ),
-            SizedBox(height: 4.h),
-            // Audio Playback Button
-            FilledButton.icon(
-              onPressed: _isPlaying ? null : _playAudio,
-              icon: Icon(_isPlaying ? Icons.volume_up : Icons.play_arrow),
-              label: Text(_isPlaying ? 'Playing...' : 'Play Audio'),
-            ),
-            SizedBox(height: 2.h),
-            // Recording Button
-            FilledButton.icon(
-              onPressed: _isRecording ? _stopRecording : _startRecording,
-              icon: Icon(_isRecording ? Icons.stop : Icons.mic),
-              label: Text(_isRecording ? 'Stop Recording' : 'Start Recording'),
-              style: FilledButton.styleFrom(
-                backgroundColor: _isRecording ? Colors.red : Colors.blue,
-              ),
-            ),
-            if (_showResult && _lastResult != null) ...[
-              SizedBox(height: 4.h),
-              Card(
-                color: _lastResult!.score.isCorrect
-                    ? Colors.green.withOpacity(0.2)
-                    : Colors.red.withOpacity(0.2),
-                child: Padding(
-                  padding: EdgeInsets.all(4.w),
-                  child: Column(
-                    children: [
-                      Icon(
-                        _lastResult!.score.isCorrect ? Icons.check_circle : Icons.cancel,
-                        color: _lastResult!.score.isCorrect ? Colors.green : Colors.red,
-                        size: 48.sp,
-                      ),
-                      SizedBox(height: 1.h),
-                      Text(
-                        _lastResult!.feedback.message,
-                        style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 1.h),
-                      Text(
-                        'Accuracy: ${(_lastResult!.score.accuracy * 100).toStringAsFixed(0)}%',
-                        style: TextStyle(fontSize: 16.sp),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
           ],
-        ),
+        ],
       ),
     );
   }

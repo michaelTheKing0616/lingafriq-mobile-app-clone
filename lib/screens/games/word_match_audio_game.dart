@@ -5,10 +5,10 @@ import '../../providers/tts_provider.dart';
 import 'package:lingafriq/utils/transport_error_policy.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
 import '../../providers/user_provider.dart';
+import '../../providers/api_provider.dart';
 import '../../widgets/empty_state_widget.dart';
 import '../../widgets/error_state_widget.dart';
 import '../../widgets/skeleton_loader.dart';
@@ -19,6 +19,7 @@ import '../../services/sound_effects_service.dart';
 import '../../providers/gamification_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/media_url_resolver.dart';
+import 'templates/template_match_board.dart';
 
 /// WordMatch+Audio Game - Upgraded version with TTS, pronunciation, diacritics
 class WordMatchAudioGame extends ConsumerStatefulWidget {
@@ -66,8 +67,8 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
 
   Future<void> _loadAuthHeaders() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('auth_token') ?? prefs.getString('access_token');
+      var token = ref.read(apiProvider.notifier).token;
+      token ??= await ref.read(apiProvider.notifier).refreshAccessToken();
       if (token != null && token.isNotEmpty) {
         _authHeaders = {'Authorization': 'Bearer $token'};
       } else {
@@ -331,19 +332,10 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text('Word Match + Audio'),
-          leading: Semantics(
-            label: 'Go back',
-            button: true,
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: widget.onBack ?? () => Navigator.pop(context),
-            ),
-          ),
-        ),
-        body: Center(
+      return TemplateMatchBoard(
+        title: 'Word Match + Audio',
+        loading: true,
+        board: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -386,19 +378,9 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
     }
 
     if (_loadError != null) {
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text('Word Match + Audio'),
-          leading: Semantics(
-            label: 'Go back',
-            button: true,
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: widget.onBack ?? () => Navigator.pop(context),
-            ),
-          ),
-        ),
-        body: AppErrorState(
+      return TemplateMatchBoard(
+        title: 'Word Match + Audio',
+        board: AppErrorState(
           message: _loadError!,
           onRetry: () {
             setState(() {
@@ -413,19 +395,9 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
     }
 
     if (_leftTiles.isEmpty) {
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text('Word Match + Audio'),
-          leading: Semantics(
-            label: 'Go back',
-            button: true,
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: widget.onBack ?? () => Navigator.pop(context),
-            ),
-          ),
-        ),
-        body: AppEmptyState(
+      return TemplateMatchBoard(
+        title: 'Word Match + Audio',
+        board: AppEmptyState(
           icon: Icons.sports_esports_outlined,
           title: 'No content yet',
           subtitle: 'No content available for this language. Try selecting another language or topic.',
@@ -435,19 +407,11 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Word Match + Audio'),
-        leading: Semantics(
-          label: 'Go back',
-          button: true,
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: widget.onBack ?? () => Navigator.pop(context),
-          ),
-        ),
-      ),
-      body: Stack(
+    return TemplateMatchBoard(
+      title: 'Word Match + Audio',
+      progressLabel: _results.isNotEmpty ? '${_results.length}/${_leftTiles.length}' : null,
+      scoreLabel: '${_results.where((e) => e.correct).length}',
+      board: Stack(
         children: [
           Padding(
             padding: EdgeInsets.all(4.w),

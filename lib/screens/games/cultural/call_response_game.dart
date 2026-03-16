@@ -47,6 +47,7 @@ class _CallResponseGameState extends BaseGameScreenState<CallResponseGame> {
   final int _maxRounds = 5;
   
   String _callPhrase = '';
+  String? _correctResponse;
 
   @override
   Future<void> onGameInitialized() async {
@@ -79,14 +80,17 @@ class _CallResponseGameState extends BaseGameScreenState<CallResponseGame> {
         _currentPattern = gameContent;
         _round++;
         _callPhrase = _extractCall(content);
-        _responseOptions = responses;
+        _correctResponse = responses.isNotEmpty ? responses.first : null;
+        _responseOptions = List<String>.from(responses)..shuffle(Random());
         setLoading(false);
       });
     } catch (e) {
       debugPrint('Error loading pattern: $e');
       setState(() {
         setLoading(false);
-        _responseOptions = _getFallbackResponses();
+        final fallback = _getFallbackResponses();
+        _correctResponse = fallback.first;
+        _responseOptions = List<String>.from(fallback)..shuffle(Random());
         _callPhrase = _getFallbackCall();
       });
     }
@@ -109,7 +113,7 @@ class _CallResponseGameState extends BaseGameScreenState<CallResponseGame> {
       responses.addAll(_getFallbackResponses());
     }
     
-    return responses.take(4).toList()..shuffle(Random());
+    return responses.take(4).toList();
   }
 
   List<String> _getFallbackResponses() {
@@ -146,7 +150,7 @@ class _CallResponseGameState extends BaseGameScreenState<CallResponseGame> {
   void _selectResponse(String response) {
     if (_showResult) return;
     
-    final isCorrect = response == _responseOptions.first;
+    final isCorrect = response == _correctResponse;
     
     setState(() {
       _selectedResponse = response;
@@ -283,7 +287,7 @@ class _CallResponseGameState extends BaseGameScreenState<CallResponseGame> {
             SizedBox(height: 4.h),
             ..._responseOptions.map((response) {
               final isSelected = _selectedResponse == response;
-              final isCorrectOption = response == _responseOptions.first;
+              final isCorrectOption = response == _correctResponse;
               
               Color? backgroundColor;
               if (_showResult) {
