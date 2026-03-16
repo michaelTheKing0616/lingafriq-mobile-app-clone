@@ -1902,7 +1902,12 @@ bool _looksTruncated(String message) {
   final m = message.trim();
   if (m.isEmpty) return true;
   if (m.length < 8) return true;
-  if (RegExp(r"[.!?]['\"]?$").hasMatch(m)) return false;
+  final last = m.codeUnitAt(m.length - 1);
+  if (last == 46 || last == 33 || last == 63) return false; // . ! ?
+  if ((last == 34 || last == 39) && m.length > 1) {
+    final prev = m.codeUnitAt(m.length - 2);
+    if (prev == 46 || prev == 33 || prev == 63) return false; // . ! ? before quote
+  }
   return true;
 }
 

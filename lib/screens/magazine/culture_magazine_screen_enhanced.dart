@@ -240,7 +240,10 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
               child: SizedBox(
                 width: 24.w,
                 height: 24.w,
-                child: CircularProgressIndicator(strokeWidth: 2, color: PanAfricanColors.primary),
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: PanAfricanColors.primary,
+                ),
               ),
             )
           else
@@ -256,14 +259,14 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
             tooltip: 'Translation language',
             icon: const Icon(Icons.language_rounded),
             onSelected: (value) => translationTarget.value = value,
-            itemBuilder: (context) {
-              return supportedLanguages
-                  .map((lang) => PopupMenuItem<String>(
-                        value: lang,
-                        child: Text(lang),
-                      ))
-                  .toList();
-            ),
+            itemBuilder: (context) => supportedLanguages
+                .map<PopupMenuEntry<String>>(
+                  (lang) => PopupMenuItem<String>(
+                    value: lang,
+                    child: Text(lang),
+                  ),
+                )
+                .toList(),
           ),
         ],
       ),
@@ -274,7 +277,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
               : LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [
+                  colors: const [
                     PanAfricanColors.surfaceLight,
                     PanAfricanColors.surfaceContainerLight,
                   ],
@@ -282,24 +285,19 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
         ),
         child: Column(
           children: [
-            // Category Filter
             _buildCategoryFilter(
               context,
               selectedCategory.value,
               (category) => selectedCategory.value = category,
               isDark,
             ),
-
-            // Articles Grid
             Expanded(
               child: isLoading.value
                   ? Center(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          CircularProgressIndicator(
-                            color: PanAfricanColors.primary,
-                          ),
+                          CircularProgressIndicator(color: PanAfricanColors.primary),
                           SizedBox(height: PanAfricanSpacing.md),
                           Text(
                             'Loading articles...',
@@ -334,13 +332,19 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
                                   'Check back soon for cultural content.',
                                   textAlign: TextAlign.center,
                                   style: PanAfricanTypography.bodyMedium(context).copyWith(
-                                    color: isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.54) : Theme.of(context).colorScheme.onSurface.withOpacity(0.45),
+                                    color: isDark
+                                        ? Theme.of(context).colorScheme.onSurface.withOpacity(0.54)
+                                        : Theme.of(context).colorScheme.onSurface.withOpacity(0.45),
                                   ),
                                 ),
                                 SizedBox(height: PanAfricanSpacing.lg),
                                 TextButton.icon(
-                                  onPressed: () => loadArticles(),
-                                  icon: Icon(Icons.refresh_rounded, size: 20, color: PanAfricanColors.primary),
+                                  onPressed: loadArticles,
+                                  icon: Icon(
+                                    Icons.refresh_rounded,
+                                    size: 20,
+                                    color: PanAfricanColors.primary,
+                                  ),
                                   label: Text(
                                     'Retry',
                                     style: PanAfricanTypography.labelLarge(context).copyWith(
@@ -365,8 +369,6 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
                             final article = articles.value[index];
                             final articleId = article['_id']?.toString() ?? '';
                             final translated = translatedArticles.value[articleId];
-                            
-                            // Create display article with translations if available
                             final displayArticle = showTranslation.value && translated != null
                                 ? {
                                     ...article,
@@ -374,7 +376,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
                                     'excerpt': translated['excerpt'] ?? article['excerpt'],
                                   }
                                 : article;
-                            
+
                             return _ArticleCard(
                               article: displayArticle,
                               showTranslation: showTranslation.value,
@@ -400,7 +402,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
                             )
                                 .animate(delay: (index * 50).ms)
                                 .fadeIn(duration: 300.ms)
-                                .scale(begin: Offset(0.9, 0.9), end: Offset(1, 1));
+                                .scale(begin: const Offset(0.9, 0.9), end: const Offset(1, 1));
                           },
                         ),
             ),
