@@ -1902,7 +1902,7 @@ bool _looksTruncated(String message) {
   final m = message.trim();
   if (m.isEmpty) return true;
   if (m.length < 8) return true;
-  if (RegExp(r'[\.\!\?]["”\']?$').hasMatch(m)) return false;
+  if (RegExp(r"[.!?][\"”']?$").hasMatch(m)) return false;
   return true;
 }
 

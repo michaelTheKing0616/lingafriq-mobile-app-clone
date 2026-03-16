@@ -10,7 +10,6 @@ import 'package:lingafriq/screens/chat/private_chat_screen.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
-import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'package:lingafriq/widgets/skeleton_loader.dart';
 import 'package:lingafriq/widgets/error_state_widget.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';

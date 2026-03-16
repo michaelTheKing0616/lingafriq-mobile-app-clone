@@ -288,7 +288,6 @@ class _ConversationScenariosScreenState extends ConsumerState<ConversationScenar
     final practiceType = _normalizePracticeType(scenario.practiceType);
     final isRoleplay = practiceType == 'roleplay';
     final runtimeMode = isRoleplay ? PolieMode.roleplay : PolieMode.conversation;
-    final runtimeModeName = isRoleplay ? 'Roleplay' : 'Conversation';
     final scenarioContext = <String, dynamic>{
       'isDebateContext': practiceType == 'debate',
       'isPhotoContext': practiceType == 'photo',

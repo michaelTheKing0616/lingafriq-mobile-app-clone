@@ -125,7 +125,7 @@ class _PortraitPlayerPageState extends ConsumerState<PortraitPlayerPage> {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     if (_error != null) {
       return AspectRatio(
         aspectRatio: 16 / 9,

@@ -100,10 +100,6 @@ class TutorialDetailScreen extends ConsumerWidget {
             PrimaryButton(
               width: 0.6.sw,
               onTap: () async {
-                if (video != null && video!.isNotEmpty) {
-                  ref.read(betterPlayerController(video!)).pause();
-                }
-
                 bool result = true;
                 if (!isCompleted) {
                   result = await ref.read(apiProvider.notifier).markAsComplete(endpointToHit);
