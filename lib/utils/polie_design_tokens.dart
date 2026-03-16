@@ -110,25 +110,6 @@ class PolieTypography {
     useSerifForLanguageText = value;
   }
 
-  static TextStyle _baseStyle(double fontSize, double height, FontWeight weight, Color color, [double letterSpacing = 0]) {
-    if (useSerifForLanguageText) {
-      return GoogleFonts.notoSerif(
-        fontSize: fontSize,
-        height: height,
-        fontWeight: weight,
-        color: color,
-        letterSpacing: letterSpacing,
-      );
-    }
-    return TextStyle(
-      fontSize: fontSize,
-      height: height,
-      fontWeight: weight,
-      color: color,
-      letterSpacing: letterSpacing,
-    );
-  }
-
   static TextStyle h1(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;

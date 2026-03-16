@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
-import 'package:lingafriq/data/roleplay_dataset.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/screens/ai_chat/polie_workspace_screen.dart';
 import 'package:flutter_animate/flutter_animate.dart';
