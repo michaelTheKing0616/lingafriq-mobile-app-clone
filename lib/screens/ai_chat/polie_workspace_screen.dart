@@ -1135,7 +1135,7 @@ Language: $targetLanguage
                       const SizedBox(height: 8),
                       FilledButton(
                         onPressed: isBusy || tutorLesson == null ? null : onCheckTutorAnswer,
-                        style: FilledButton.styleFrom(backgroundColor: theme.sage),
+                        style: FilledButton.styleFrom(backgroundColor: theme.accent),
                         child: Text(isBusy ? 'Checking...' : 'Check Answer'),
                       ),
                       if (tutorFeedback != null) ...[
