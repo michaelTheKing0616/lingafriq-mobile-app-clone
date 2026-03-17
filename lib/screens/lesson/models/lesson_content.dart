@@ -11,16 +11,30 @@ enum LessonSectionType {
   /// Parse from backend string format
   static LessonSectionType fromString(String? type) {
     if (type == null) return tutorial;
-    switch (type.toLowerCase().trim()) {
+    final normalized = type.toLowerCase().trim();
+    switch (normalized) {
       case 'tutorial':
+      case 'lesson':
+      case 'lesson_lesson':
         return tutorial;
       case 'instant quiz':
+      case 'instant_quiz':
+      case 'instant':
         return instantQuiz;
       case 'word quiz':
+      case 'word_quiz':
+      case 'word':
         return wordQuiz;
       case 'long quiz':
+      case 'long_quiz':
         return longQuiz;
       default:
+        // Be defensive with unknown server labels to avoid routing quiz sections
+        // to tutorial completion endpoints.
+        if (normalized.contains('word')) return wordQuiz;
+        if (normalized.contains('quiz') || normalized.contains('question')) {
+          return instantQuiz;
+        }
         return tutorial;
     }
   }

@@ -300,9 +300,7 @@ class LessonFlowNotifier extends StateNotifier<LessonFlowState> {
       state = state.copyWith(isLoading: true);
 
       final section = state.sections.firstWhere((s) => s.sectionId == sectionId);
-      final endpoint = section.type.isTutorial
-          ? Api.completeLessonTutorial(lessonId, sectionId)
-          : Api.completeLessonQuiz(lessonId, sectionId);
+      final endpoint = _resolveCompletionEndpoint(section);
 
       final success = await ref.read(apiProvider.notifier).markAsComplete(endpoint);
 
@@ -344,6 +342,24 @@ class LessonFlowNotifier extends StateNotifier<LessonFlowState> {
       );
       return false;
     }
+  }
+
+  String _resolveCompletionEndpoint(LessonContent section) {
+    if (section.type.isTutorial) {
+      return Api.completeLessonTutorial(lessonId, section.sectionId);
+    }
+
+    // Any quiz-like type must use quiz completion endpoint.
+    final quizType = section.quizType?.toLowerCase().trim() ?? '';
+    if (section.type.isQuiz ||
+        section.type.isWordQuiz ||
+        quizType.contains('quiz') ||
+        quizType.contains('word')) {
+      return Api.completeLessonQuiz(lessonId, section.sectionId);
+    }
+
+    // Safe fallback: do not risk sending quiz sections to tutorial endpoint.
+    return Api.completeLessonQuiz(lessonId, section.sectionId);
   }
 
   /// Move to next section

@@ -14,6 +14,49 @@ import 'board_word_games.dart';
 import '../../games/drum_rhythm/drum_rhythm_screen.dart';
 import '../../games/tone_forge/tone_forge_screen.dart';
 
+/// Canonical list of routed game types.
+///
+/// Keep this list in sync with [buildGameScreen] switch cases.
+const Set<GameType> kRoutedGameTypes = {
+  GameType.wordMatchAudio,
+  GameType.pronunciationDuel,
+  GameType.toneTrainer,
+  GameType.speedRoundRemix,
+  GameType.storyBuilder,
+  GameType.roleplayAdventure,
+  GameType.grammarDetective,
+  GameType.listenAndSketch,
+  GameType.pictureWordAssociation,
+  GameType.memoryMap,
+  GameType.conversationRelay,
+  GameType.grammarJam,
+  GameType.pronunciationKaraoke,
+  GameType.quizChef,
+  GameType.proverbUnlocker,
+  GameType.drumRhythmShadowing,
+  GameType.clanLineageStoryBuilder,
+  GameType.marketBargainingSimulator,
+  GameType.taxiBusStopSurvival,
+  GameType.foodQuest,
+  GameType.callAndResponse,
+  GameType.greetingDiplomacyChallenge,
+  GameType.folktaleReconstruction,
+  GameType.phraseSniper,
+  GameType.liarLiar,
+  GameType.villageQuest,
+  GameType.accentDecodingPuzzle,
+  GameType.flashcardSafari,
+  GameType.rapidTongueTwisterRace,
+  GameType.emojiTranslator,
+  GameType.rhythmTyping,
+  GameType.eldersBlessingsChallenge,
+  GameType.multilingualRelayRace,
+  GameType.culturalEtiquetteScenarios,
+  GameType.drumToWordMatching,
+  GameType.marketMonopolyChallenge,
+  GameType.scrabbleSprintArena,
+};
+
 /// Game Router - Routes to appropriate game screen based on GameType
 Widget buildGameScreen({
   required GameType gameType,

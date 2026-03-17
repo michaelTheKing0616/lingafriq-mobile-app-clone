@@ -2,6 +2,7 @@ export 'audio_control_cluster.dart';
 export 'completion_modal.dart';
 export 'game_card.dart';
 export 'game_loading_overlay.dart';
+export 'game_play_frame.dart';
 export 'game_top_bar.dart';
 export 'game_ui_tokens.dart';
 export 'hint_button.dart';

@@ -551,10 +551,14 @@ class _AfricanLoadingOverlayState extends ConsumerState<AfricanLoadingOverlay>
       animation: Listenable.merge([_progressController, _creepController]),
       builder: (context, child) {
         final progress = _currentProgress;
+        final waitingBeyondInitialWindow =
+            _progressController.status == AnimationStatus.completed;
         return Column(
           children: [
             Text(
-              widget.message ?? 'Loading your experience...',
+              waitingBeyondInitialWindow
+                  ? 'Still loading... this can take a little longer on weak networks.'
+                  : (widget.message ?? 'Loading your experience...'),
               style: TextStyle(
                 fontSize: 13.sp,
                 color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
@@ -562,49 +566,69 @@ class _AfricanLoadingOverlayState extends ConsumerState<AfricanLoadingOverlay>
               ),
             ),
             SizedBox(height: 16.h),
-            Container(
-              width: 200.w,
-              height: 4.h,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Stack(
-                children: [
-                  FractionallySizedBox(
-                    widthFactor: progress,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            PanAfricanColors.secondary,
-                            PanAfricanColors.tertiary,
-                            PanAfricanColors.primary,
+            if (!waitingBeyondInitialWindow)
+              Container(
+                width: 200.w,
+                height: 4.h,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Stack(
+                  children: [
+                    FractionallySizedBox(
+                      widthFactor: progress,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              PanAfricanColors.secondary,
+                              PanAfricanColors.tertiary,
+                              PanAfricanColors.primary,
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: PanAfricanColors.secondary.withOpacity(0.5),
+                              blurRadius: 8,
+                              spreadRadius: 1,
+                            ),
                           ],
                         ),
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: PanAfricanColors.secondary.withOpacity(0.5),
-                            blurRadius: 8,
-                            spreadRadius: 1,
-                          ),
-                        ],
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+              )
+            else
+              SizedBox(
+                width: 200.w,
+                child: LinearProgressIndicator(
+                  minHeight: 4.h,
+                  color: PanAfricanColors.secondary,
+                  backgroundColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
+                ),
               ),
-            ),
             SizedBox(height: 8.h),
-            Text(
-              '${(progress * 100).toInt()}%',
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: PanAfricanColors.secondary.withOpacity(0.8),
-                fontWeight: FontWeight.w600,
+            if (!waitingBeyondInitialWindow)
+              Text(
+                '${(progress * 100).toInt()}%',
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: PanAfricanColors.secondary.withOpacity(0.8),
+                  fontWeight: FontWeight.w600,
+                ),
+              )
+            else
+              Text(
+                'Finishing up...',
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: PanAfricanColors.secondary.withOpacity(0.8),
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-            ),
           ],
         );
       },

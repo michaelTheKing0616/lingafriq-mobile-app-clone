@@ -15,6 +15,7 @@ import 'package:lingafriq/services/tutor_progress_service.dart';
 import 'package:lingafriq/services/vocabulary/vocabulary_service.dart';
 import 'package:lingafriq/services/vocabulary_progress_service.dart';
 import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
+import 'package:lingafriq/utils/diacritics_enforcer.dart';
 import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart' as uuid;
@@ -66,6 +67,7 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
     final tutorLesson = useState<_TutorLessonPayload?>(null);
     final tutorFeedback = useState<_TutorFeedbackPayload?>(null);
     final tutorDifficulty = useState<String>('beginner');
+    final tutorFlipped = useState<bool>(false);
 
     final roleplayDifficulty = useState<String>('bilingual');
     final roleplayScene = useState<String>(normalizeInitialRoleplayScene(initialRoleplayScene));
@@ -175,6 +177,7 @@ Text: "$trimmed"
     Future<void> loadTutorLesson() async {
       isBusy.value = true;
       tutorFeedback.value = null;
+      tutorFlipped.value = false;
       try {
         final difficultyGuide = switch (tutorDifficulty.value) {
           'beginner' => 'Focus on simple vocabulary, basic greetings, common phrases. Include heavy transliteration. Keep explanations simple and encouraging.',
@@ -369,7 +372,8 @@ User message: "$text"
           }
         }
         if (json != null) {
-          final payload = _ConversationPayload.fromJson(json, modeResponse.value);
+          final rawPayload = _ConversationPayload.fromJson(json, modeResponse.value);
+          final payload = _enforceConversationDiacritics(rawPayload, targetLanguage);
           conversationMessages.value = [...conversationMessages.value, _ConversationTurn.ai(payload)];
           final targetLetters = RegExp(r'[^\x00-\x7F]').hasMatch(text);
           final oldRatio = languageRatio.value;
@@ -624,6 +628,7 @@ Language: $targetLanguage
                 tutorLesson: tutorLesson.value,
                 tutorFeedback: tutorFeedback.value,
                 tutorDifficulty: tutorDifficulty,
+                tutorFlipped: tutorFlipped,
                 tutorInput: tutorInput,
                 onLoadTutorLesson: loadTutorLesson,
                 onCheckTutorAnswer: checkTutorAnswer,
@@ -683,6 +688,7 @@ Language: $targetLanguage
     required _TutorLessonPayload? tutorLesson,
     required _TutorFeedbackPayload? tutorFeedback,
     required ValueNotifier<String> tutorDifficulty,
+    required ValueNotifier<bool> tutorFlipped,
     required TextEditingController tutorInput,
     required Future<void> Function() onLoadTutorLesson,
     required Future<void> Function() onCheckTutorAnswer,
@@ -740,12 +746,12 @@ Language: $targetLanguage
           );
 
     const modeDescriptions = <PolieMode, String>{
-      PolieMode.translation: 'Translate text between English and your target language with tone options.',
-      PolieMode.tutor: 'Get bite-sized grammar and vocabulary lessons with practice questions.',
-      PolieMode.roleplay: 'Practice real conversations in immersive scenarios with AI characters.',
-      PolieMode.conversation: 'Ask anything: translations, explanations, examples, proverbs, and culture in one expressive chat.',
-      PolieMode.vocab: 'Learn and review vocabulary with spaced repetition flashcards.',
-      PolieMode.review: 'See your learning stats and get personalized review suggestions.',
+      PolieMode.translation: 'Precision tool. Split-panel translation with dynamic output updates.',
+      PolieMode.tutor: 'Interactive classroom notebook with flip cards and inline feedback.',
+      PolieMode.roleplay: 'Dark cinematic stage with scene-first character cards and live coaching.',
+      PolieMode.conversation: 'WhatsApp-style chat with a patient friend. The only bubble-chat mode.',
+      PolieMode.vocab: 'Museum word theater: one dramatic word, dark focus, SRS actions.',
+      PolieMode.review: 'Personal coach dashboard with animated bars and clear next steps.',
     };
 
     const modeIcons = <PolieMode, String>{
@@ -757,7 +763,7 @@ Language: $targetLanguage
       PolieMode.review: '\uD83D\uDCCA',
     };
 
-    final intro = introDismissed.contains(mode.name)
+    final intro = (mode == PolieMode.conversation || introDismissed.contains(mode.name))
         ? const SizedBox.shrink()
         : Container(
             margin: const EdgeInsets.fromLTRB(12, 4, 12, 8),
@@ -911,9 +917,9 @@ Language: $targetLanguage
                       children: [
                         Text('Output ($targetLanguage)', style: bodyStyle.copyWith(fontWeight: FontWeight.w700)),
                         const SizedBox(height: 10),
-                        Text(
+                        _buildAnimatedWordFlow(
                           translationOutput?.primary ?? 'Translation appears here...',
-                          style: GoogleFonts.jetBrainsMono(
+                          GoogleFonts.jetBrainsMono(
                             color: theme.title,
                             fontSize: 18,
                             height: 1.4,
@@ -1054,107 +1060,109 @@ Language: $targetLanguage
               ],
             ),
             const SizedBox(height: 10),
-            card(
-              Padding(
-                padding: const EdgeInsets.all(14),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(tutorLesson?.concept ?? 'Tutor card is loading...', style: GoogleFonts.playfairDisplay(color: theme.title, fontSize: 24)),
-                    const SizedBox(height: 8),
-                    Text(tutorLesson?.explanation ?? '', style: bodyStyle),
-                    const SizedBox(height: 12),
-                    card(
-                      color: theme.background.withOpacity(0.45),
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(tutorLesson?.example.targetLang ?? '-', style: bodyStyle.copyWith(fontWeight: FontWeight.w700)),
-                            Text(tutorLesson?.example.transliteration ?? '-', style: monoStyle),
-                            Text(tutorLesson?.example.english ?? '-', style: bodyStyle),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text('Memory tip: ${tutorLesson?.memoryTip ?? '-'}', style: bodyStyle),
-                    if ((tutorLesson?.watchOut ?? '').isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.warning_amber_rounded, size: 16, color: Color(0xFFC4663A)),
-                            const SizedBox(width: 4),
-                            Expanded(child: Text('Watch out: ${tutorLesson!.watchOut}', style: bodyStyle.copyWith(color: const Color(0xFFC4663A)))),
-                          ],
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-            ),
-            if (tutorLesson?.practiceQuestion != null) ...[
-              const SizedBox(height: 10),
-              card(
-                color: const Color(0xFFD4822A).withOpacity(0.08),
+            AnimatedCrossFade(
+              firstChild: card(
                 Padding(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(14),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Practice Question', style: bodyStyle.copyWith(fontWeight: FontWeight.w800, color: const Color(0xFFD4822A))),
-                      const SizedBox(height: 6),
-                      Text(tutorLesson!.practiceQuestion!, style: bodyStyle.copyWith(fontSize: 15)),
-                      if (tutorLesson.practiceHint != null)
+                      Text(tutorLesson?.concept ?? 'Tutor card is loading...', style: GoogleFonts.playfairDisplay(color: theme.title, fontSize: 24)),
+                      const SizedBox(height: 8),
+                      Text(tutorLesson?.explanation ?? '', style: bodyStyle),
+                      const SizedBox(height: 12),
+                      card(
+                        color: theme.background.withOpacity(0.45),
+                        Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(tutorLesson?.example.targetLang ?? '-', style: bodyStyle.copyWith(fontWeight: FontWeight.w700)),
+                              Text(tutorLesson?.example.transliteration ?? '-', style: monoStyle),
+                              Text(tutorLesson?.example.english ?? '-', style: bodyStyle),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text('Memory tip: ${tutorLesson?.memoryTip ?? '-'}', style: bodyStyle),
+                      if ((tutorLesson?.watchOut ?? '').isNotEmpty)
                         Padding(
                           padding: const EdgeInsets.only(top: 4),
-                          child: Text('Hint: ${tutorLesson.practiceHint}', style: bodyStyle.copyWith(fontStyle: FontStyle.italic, color: Colors.grey.shade600)),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.warning_amber_rounded, size: 16, color: Color(0xFFC4663A)),
+                              const SizedBox(width: 4),
+                              Expanded(child: Text('Watch out: ${tutorLesson!.watchOut}', style: bodyStyle.copyWith(color: const Color(0xFFC4663A)))),
+                            ],
+                          ),
                         ),
+                      const SizedBox(height: 10),
+                      FilledButton(
+                        onPressed: tutorLesson == null ? null : () => tutorFlipped.value = true,
+                        style: FilledButton.styleFrom(backgroundColor: theme.accent),
+                        child: const Text('Practice This Lesson'),
+                      ),
                     ],
                   ),
                 ),
               ),
-            ],
-            const SizedBox(height: 10),
-            TextField(
-              controller: tutorInput,
-              minLines: 2,
-              maxLines: 4,
-              decoration: _inputDecoration(theme, tutorLesson?.practiceQuestion != null ? 'Type your answer to the practice question' : 'Type your answer'),
-            ),
-            const SizedBox(height: 8),
-            FilledButton(
-              onPressed: isBusy || tutorLesson == null ? null : onCheckTutorAnswer,
-              style: FilledButton.styleFrom(backgroundColor: theme.accent),
-              child: Text(isBusy ? 'Checking...' : 'Check Answer'),
-            ),
-            if (tutorFeedback != null) ...[
-              const SizedBox(height: 10),
-              card(
+              secondChild: card(
                 Padding(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(14),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        '${tutorFeedback.verdict.toUpperCase()} • ${tutorFeedback.score}',
-                        style: bodyStyle.copyWith(fontWeight: FontWeight.w800),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(tutorFeedback.encouragement, style: bodyStyle),
-                      Text('Correction: ${tutorFeedback.correction}', style: bodyStyle),
-                      Text('Why: ${tutorFeedback.why}', style: bodyStyle),
+                      Text('Try it yourself!', style: GoogleFonts.playfairDisplay(color: theme.title, fontSize: 24)),
                       const SizedBox(height: 8),
-                      Text('Next step: ${tutorFeedback.nextStep}', style: bodyStyle.copyWith(fontWeight: FontWeight.w700)),
-                      Text('Drill: ${tutorFeedback.drill}', style: bodyStyle),
-                      if ((tutorFeedback.nativeSpeakerNote ?? '').isNotEmpty) Text('Native note: ${tutorFeedback.nativeSpeakerNote}', style: bodyStyle),
+                      Text(
+                        tutorLesson?.practiceQuestion ?? 'How would you apply this concept?',
+                        style: bodyStyle.copyWith(fontWeight: FontWeight.w700),
+                      ),
+                      if ((tutorLesson?.practiceHint ?? '').isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Text('Hint: ${tutorLesson!.practiceHint}', style: bodyStyle.copyWith(fontStyle: FontStyle.italic)),
+                        ),
+                      const SizedBox(height: 10),
+                      TextField(
+                        controller: tutorInput,
+                        minLines: 2,
+                        maxLines: 4,
+                        decoration: _inputDecoration(theme, 'Type your answer here...'),
+                      ),
+                      const SizedBox(height: 8),
+                      FilledButton(
+                        onPressed: isBusy || tutorLesson == null ? null : onCheckTutorAnswer,
+                        style: FilledButton.styleFrom(backgroundColor: theme.sage),
+                        child: Text(isBusy ? 'Checking...' : 'Check Answer'),
+                      ),
+                      if (tutorFeedback != null) ...[
+                        const SizedBox(height: 10),
+                        Text(
+                          '${tutorFeedback.verdict.toUpperCase()} • ${tutorFeedback.score}',
+                          style: bodyStyle.copyWith(fontWeight: FontWeight.w800),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(tutorFeedback.encouragement, style: bodyStyle),
+                        Text('Correction: ${tutorFeedback.correction}', style: bodyStyle),
+                        Text('Why: ${tutorFeedback.why}', style: bodyStyle),
+                        const SizedBox(height: 8),
+                        Text('Next step: ${tutorFeedback.nextStep}', style: bodyStyle.copyWith(fontWeight: FontWeight.w700)),
+                      ],
+                      const SizedBox(height: 10),
+                      OutlinedButton(
+                        onPressed: () => tutorFlipped.value = false,
+                        child: const Text('Back to Lesson'),
+                      ),
                     ],
                   ),
                 ),
               ),
-            ],
+              crossFadeState: tutorFlipped.value ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+              duration: const Duration(milliseconds: 300),
+            ),
           ],
         ),
       );
@@ -1211,18 +1219,31 @@ Language: $targetLanguage
                       ],
                     ),
                     const SizedBox(height: 10),
-                    Container(
-                      width: double.infinity,
-                      height: 96,
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(colors: [Color(0xFF2D1B0E), Color(0xFFC4663A)]),
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                      padding: const EdgeInsets.all(12),
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        '${roleplayScene.value} • Curtain rise',
-                        style: GoogleFonts.playfairDisplay(color: const Color(0xFFFAF3E0), fontSize: 22, fontWeight: FontWeight.w700),
+                    TweenAnimationBuilder<double>(
+                      tween: Tween(begin: 24, end: 0),
+                      duration: const Duration(milliseconds: 520),
+                      builder: (context, value, child) {
+                        return Transform.translate(
+                          offset: Offset(0, value),
+                          child: Opacity(
+                            opacity: (1 - (value / 24)).clamp(0, 1),
+                            child: child,
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        height: 96,
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(colors: [Color(0xFF2D1B0E), Color(0xFFC4663A)]),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        padding: const EdgeInsets.all(12),
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          '${roleplayScene.value} • Curtain rise',
+                          style: GoogleFonts.playfairDisplay(color: const Color(0xFFFAF3E0), fontSize: 22, fontWeight: FontWeight.w700),
+                        ),
                       ),
                     ),
                   ],
@@ -1474,7 +1495,7 @@ Language: $targetLanguage
                                 vocabCard.word,
                                 style: GoogleFonts.jetBrainsMono(
                                   color: const Color(0xFFFAF3E0),
-                                  fontSize: 42,
+                                  fontSize: 56,
                                   letterSpacing: 1.5,
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -1655,6 +1676,24 @@ Language: $targetLanguage
           ],
         ],
       ),
+    );
+  }
+
+  Widget _buildAnimatedWordFlow(String text, TextStyle style) {
+    final words = text.split(RegExp(r'\s+')).where((w) => w.trim().isNotEmpty).toList();
+    return Wrap(
+      spacing: 4,
+      runSpacing: 2,
+      children: [
+        for (var i = 0; i < words.length; i++)
+          TweenAnimationBuilder<double>(
+            key: ValueKey('${words[i]}-$i-$text'),
+            tween: Tween(begin: 0, end: 1),
+            duration: Duration(milliseconds: 120 + (i * 20).clamp(0, 500)),
+            builder: (context, value, child) => Opacity(opacity: value, child: child),
+            child: Text(words[i], style: style),
+          ),
+      ],
     );
   }
 
@@ -1915,6 +1954,39 @@ bool _looksTruncated(String message) {
     if (prev == 46 || prev == 33 || prev == 63) return false; // . ! ? before quote
   }
   return true;
+}
+
+_ConversationPayload _enforceConversationDiacritics(
+  _ConversationPayload payload,
+  String language,
+) {
+  String enforce(String value) {
+    if (value.trim().isEmpty) return value;
+    final result = DiacriticsEnforcer.enforceWithMetadata(
+      value,
+      language,
+      enableFuzzy: true,
+      fuzzyThreshold: 0.7,
+    );
+    return (result['text'] as String?) ?? value;
+  }
+
+  return _ConversationPayload(
+    message: enforce(payload.message),
+    correction: _ConversationCorrection(
+      hasCorrection: payload.correction.hasCorrection,
+      wasCorrect: payload.correction.wasCorrect,
+      correction: payload.correction.correction == null ? null : enforce(payload.correction.correction!),
+      note: enforce(payload.correction.note),
+    ),
+    suggestedReplies: payload.suggestedReplies.map(enforce).toList(),
+    newVocab: payload.newVocab
+        .map((v) => _ConversationVocab(
+              word: enforce(v.word),
+              meaning: v.meaning,
+            ))
+        .toList(),
+  );
 }
 
 class _TranslationPayload {

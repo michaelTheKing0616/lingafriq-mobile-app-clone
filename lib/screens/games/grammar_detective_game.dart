@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../models/game/game_session_model.dart';
 import 'base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../widgets/game_ui/index.dart';
 
 /// Grammar Detective - Find and fix grammar errors
 class GrammarDetectiveGame extends BaseGameScreen {
@@ -140,7 +141,7 @@ class _GrammarDetectiveGameState extends BaseGameScreenState<GrammarDetectiveGam
       final question = _questions[_currentIndex];
 
       return Padding(
-        padding: EdgeInsets.all(4.w),
+        padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 16.h),
         child: Column(
           children: [
             Semantics(
@@ -150,33 +151,30 @@ class _GrammarDetectiveGameState extends BaseGameScreenState<GrammarDetectiveGam
                 value: (_currentIndex + 1) / _questions.length,
               ),
             ),
-            SizedBox(height: 4.h),
+            SizedBox(height: 12.h),
             Semantics(
               label: 'Sentence to check: ${question.text}',
-              child: Card(
-                child: Padding(
-                  padding: EdgeInsets.all(4.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Find the grammar error:',
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
+              child: GameCard(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Find the grammar error:',
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
                       ),
-                      SizedBox(height: 2.h),
-                      Text(
-                        question.text,
-                        style: TextStyle(fontSize: 24.sp),
-                      ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 8.h),
+                    Text(
+                      question.text,
+                      style: TextStyle(fontSize: 24.sp),
+                    ),
+                  ],
                 ),
               ),
             ),
-            SizedBox(height: 4.h),
+            SizedBox(height: 14.h),
             Expanded(
               child: ListView.builder(
                 itemCount: question.errors.length,
@@ -185,48 +183,39 @@ class _GrammarDetectiveGameState extends BaseGameScreenState<GrammarDetectiveGam
                   final isSelected = _selectedError == error;
                   final isCorrect = error == question.correctError;
 
+                  final GameCardState cardState;
+                  if (_showResult) {
+                    if (isCorrect) {
+                      cardState = GameCardState.correct;
+                    } else if (isSelected) {
+                      cardState = GameCardState.incorrect;
+                    } else {
+                      cardState = GameCardState.disabled;
+                    }
+                  } else if (isSelected) {
+                    cardState = GameCardState.selected;
+                  } else {
+                    cardState = GameCardState.normal;
+                  }
+
                   return Padding(
-                    padding: EdgeInsets.only(bottom: 2.h),
+                    padding: EdgeInsets.only(bottom: 10.h),
                     child: Semantics(
                       label: 'Error option: $error',
                       button: true,
                       selected: isSelected,
                       enabled: !_showResult,
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: _showResult ? null : () => _selectError(error),
-                          borderRadius: BorderRadius.circular(12),
-                          child: Container(
-                            padding: EdgeInsets.all(3.w),
-                            decoration: BoxDecoration(
-                              color: _showResult
-                                  ? (isCorrect
-                                      ? Colors.green.withOpacity(0.3)
-                                      : isSelected
-                                          ? Colors.red.withOpacity(0.3)
-                                          : Colors.grey[200])
-                                  : (isSelected
-                                      ? Theme.of(context).colorScheme.primaryContainer
-                                      : Colors.grey[200]),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: isSelected
-                                    ? Theme.of(context).colorScheme.primary
-                                    : Colors.transparent,
-                                width: 2,
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                Expanded(child: Text(error, style: TextStyle(fontSize: 16.sp))),
-                                if (_showResult && isCorrect)
-                                  const Icon(Icons.check_circle, color: Colors.green, semanticLabel: 'Correct'),
-                                if (_showResult && isSelected && !isCorrect)
-                                  const Icon(Icons.cancel, color: Colors.red, semanticLabel: 'Incorrect'),
-                              ],
-                            ),
-                          ),
+                      child: GameCard(
+                        state: cardState,
+                        onTap: _showResult ? null : () => _selectError(error),
+                        child: Row(
+                          children: [
+                            Expanded(child: Text(error, style: TextStyle(fontSize: 16.sp))),
+                            if (_showResult && isCorrect)
+                              const Icon(Icons.check_circle, color: Colors.green, semanticLabel: 'Correct'),
+                            if (_showResult && isSelected && !isCorrect)
+                              const Icon(Icons.cancel, color: Colors.red, semanticLabel: 'Incorrect'),
+                          ],
                         ),
                       ),
                     ),
@@ -239,9 +228,10 @@ class _GrammarDetectiveGameState extends BaseGameScreenState<GrammarDetectiveGam
                 label: 'Check answer button',
                 button: true,
                 enabled: _selectedError != null,
-                child: FilledButton(
+                child: PrimaryActionButton(
                   onPressed: _selectedError == null ? null : _checkAnswer,
-                  child: const Text('Check Answer'),
+                  label: 'Check Answer',
+                  icon: Icons.verified_rounded,
                 ),
               )
             else
@@ -259,15 +249,16 @@ class _GrammarDetectiveGameState extends BaseGameScreenState<GrammarDetectiveGam
                           : Colors.red,
                     ),
                   ),
-                  SizedBox(height: 2.h),
+                  SizedBox(height: 12.h),
                   Semantics(
                     label: _currentIndex < _questions.length - 1 ? 'Next question' : 'Finish game',
                     button: true,
-                    child: FilledButton(
+                    child: PrimaryActionButton(
                       onPressed: _nextQuestion,
-                      child: Text(_currentIndex < _questions.length - 1
-                          ? 'Next Question'
-                          : 'Finish'),
+                      label: _currentIndex < _questions.length - 1 ? 'Next Question' : 'Finish',
+                      icon: _currentIndex < _questions.length - 1
+                          ? Icons.navigate_next_rounded
+                          : Icons.flag_rounded,
                     ),
                   ),
                 ],

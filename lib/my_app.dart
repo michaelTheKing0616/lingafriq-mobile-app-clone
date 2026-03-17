@@ -11,7 +11,6 @@ import 'providers/theme_mode_provider.dart';
 import 'screens/splash/splash_screen.dart';
 
 // Route screen imports
-import 'screens/ai_chat/ai_mode_selection_screen.dart';
 import 'screens/ai_chat/polie_mode_selection_screen.dart';
 import 'screens/curriculum/curriculum_screen_material3.dart';
 import 'screens/games/games_screen_material3.dart';
@@ -161,7 +160,7 @@ class _MyAppState extends ConsumerState<MyApp> {
 Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
   final normalizedRoute = _normalizeRouteName(settings.name);
   final routes = <String, WidgetBuilder>{
-    'ai_chat_select': (_) => const AIModeSelectionScreen(),
+    'ai_chat_select': (_) => const PolieModeSelectionScreen(),
     'polie_mode_selection': (_) => const PolieModeSelectionScreen(),
     'curriculum': (_) => const CurriculumScreenMaterial3(),
     'games': (_) => const GamesScreenMaterial3(),

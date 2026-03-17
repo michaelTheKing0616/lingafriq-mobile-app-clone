@@ -276,10 +276,14 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     String? gameId,
   }) async {
     final cacheKey = '${gameId ?? 'default'}_${language}_${level ?? 'A0'}';
+    final minRequired = count < 4 ? count : 4;
     if (_cardCache.containsKey(cacheKey)) {
       final cached = List<PhraseCard>.from(_cardCache[cacheKey]!);
-      cached.shuffle(Random());
-      return cached.take(count).toList();
+      if (cached.length >= minRequired) {
+        cached.shuffle(Random());
+        return cached.take(count).toList();
+      }
+      _cardCache.remove(cacheKey);
     }
 
     final cards = <PhraseCard>[];
@@ -293,6 +297,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         'game_id': gameId ?? _currentSession?.gameType ?? 'phrase_cards',
         'language': language,
         'difficulty': level ?? 'A1',
+        'count': count,
       };
       if (resolvedUserId != null && resolvedUserId.trim().isNotEmpty) {
         requestData['user_id'] = resolvedUserId;
@@ -336,7 +341,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
           );
         }
 
-        if (cards.isNotEmpty) {
+        if (cards.length >= minRequired) {
           if (cards.length > count) {
             cards.removeRange(count, cards.length);
           }
@@ -420,8 +425,8 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
           }
         }
 
-        // If we got cards from API, apply diacritics enforcement and return
-        if (cards.isNotEmpty) {
+        // If we got enough cards from API sources, normalize and return.
+        if (cards.length >= minRequired) {
           if (cards.length > count) {
             cards.removeRange(count, cards.length);
           }
@@ -463,10 +468,16 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       // Continue to fallback
     }
 
-    // Fallback to curated local data
-    final fallbackCards = _generateFallbackCards(language, level, count, resolvedUserId);
-    cards.addAll(fallbackCards);
-    if (fallbackCards.isEmpty) {
+    // Fallback to curated local data and top-up card count when APIs under-deliver.
+    final neededForTarget = max(count - cards.length, minRequired - cards.length);
+    if (neededForTarget > 0) {
+      final fallbackCards = _generateFallbackCards(language, level, neededForTarget, resolvedUserId);
+      cards.addAll(fallbackCards);
+    }
+    if (cards.length > count) {
+      cards.removeRange(count, cards.length);
+    }
+    if (cards.isEmpty) {
       _lastContentFailure = GameContentFailure(
         type: GameContentFailureType.noContent,
         message: 'No game content is available right now.',
@@ -493,7 +504,9 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       logger.error('Diacritics enforcement failed (cards still usable)', tag: 'game-provider', error: e);
     }
 
-    _cardCache[cacheKey] = List.from(cards);
+    if (cards.length >= minRequired) {
+      _cardCache[cacheKey] = List.from(cards);
+    }
     return cards;
   }
 

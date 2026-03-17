@@ -12,7 +12,6 @@ import '../../models/quiz_model.dart';
 import '../../models/word_correction_model.dart';
 import '../../providers/api_provider.dart';
 import '../../providers/navigation_provider.dart';
-import '../../screens/lesson/lesson_flow_screen.dart';
 import '../../utils/api.dart';
 import '../../widgets/error_widet.dart';
 import '../../widgets/info_widget.dart';
@@ -153,22 +152,16 @@ class _SectionLessonsList extends ConsumerWidget {
             sectionLesson: sectionLesson,
             enabled: sectionLesson.completed_by != null || isEnabled,
             onOpen: () async {
-              // Navigate to new unified lesson flow screen
-              final result = await ref.read(navigationProvider).navigateTo(
-                LessonFlowScreen(
-                  lessonId: lesson.id,
-                  sectionLessons: sectionLessons,
-                  lessonTitle: lesson.name,
-                ),
-              );
-              
-              // Refresh section lessons list after returning
+              // Classic lesson/quiz flow is the default path.
+              // Expanded Curriculum remains available via dedicated entry points.
+              final result = await openQuizDetail(sectionLesson, ref);
+
+              // Refresh section lessons list after returning.
               ref.invalidate(sectionLessonsProvider(lesson.id));
-              
-              // If lesson was completed, pop back to lesson list
+
+              // If lesson was completed, parent flow can decide next navigation.
               if (result == true) {
-                // Optionally pop if all sections are complete
-                // This is handled by the LessonFlowScreen itself
+                // no-op: list refresh already reflects completion state
               }
             },
           );

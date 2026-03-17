@@ -43,7 +43,11 @@ class GameTemplateShell extends StatelessWidget {
         ),
         body: Column(
           children: [
-            Expanded(child: playArea),
+            Expanded(
+              child: GamePlayFrame(
+                child: playArea,
+              ),
+            ),
             if (actionBar != null)
               Padding(
                 padding: const EdgeInsets.all(12),

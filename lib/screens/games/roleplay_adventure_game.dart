@@ -4,6 +4,7 @@ import '../../models/game/game_session_model.dart';
 import '../../services/polie_content_generator.dart';
 import 'base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../widgets/game_ui/index.dart';
 import 'dart:math';
 
 /// Roleplay Adventure - Branching dialogue scenarios
@@ -253,86 +254,72 @@ class _RoleplayAdventureGameState extends BaseGameScreenState<RoleplayAdventureG
   Widget buildGameContent(BuildContext context) {
     try {
       return Padding(
-        padding: EdgeInsets.all(4.w),
+        padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 16.h),
         child: Column(
           children: [
             Semantics(
               label: 'Scenario: ${_scenario.toUpperCase()}',
-              child: Card(
-                child: Padding(
-                  padding: EdgeInsets.all(3.w),
-                  child: Row(
-                    children: [
-                      Icon(Icons.store, size: 32, semanticLabel: 'Scenario'),
-                      SizedBox(width: 2.w),
-                      Text(
-                        'Scenario: ${_scenario.toUpperCase()}',
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
+              child: GameCard(
+                child: Row(
+                  children: [
+                    const Icon(Icons.store, size: 24, semanticLabel: 'Scenario'),
+                    SizedBox(width: 8.w),
+                    Text(
+                      'Scenario: ${_scenario.toUpperCase()}',
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
-            SizedBox(height: 2.h),
+            SizedBox(height: 12.h),
             Expanded(
-              child: Card(
-                child: Padding(
-                  padding: EdgeInsets.all(3.w),
-                  child: ListView.builder(
-                    itemCount: _dialogueHistory.length,
-                    itemBuilder: (context, index) {
-                      final message = _dialogueHistory[index];
-                      final isNPC = message.startsWith('Vendor:') ||
-                          message.startsWith('Doctor:') ||
-                          message.startsWith('NPC:');
-                      return Padding(
-                        padding: EdgeInsets.only(bottom: 1.h),
-                        child: Align(
-                          alignment: isNPC ? Alignment.centerLeft : Alignment.centerRight,
-                          child: Container(
-                            padding: EdgeInsets.all(2.w),
-                            decoration: BoxDecoration(
-                              color: isNPC ? Colors.blue[100] : Colors.green[100],
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(
-                              message,
-                              style: TextStyle(fontSize: 14.sp),
-                            ),
+              child: GameCard(
+                child: ListView.builder(
+                  itemCount: _dialogueHistory.length,
+                  itemBuilder: (context, index) {
+                    final message = _dialogueHistory[index];
+                    final isNPC = message.startsWith('Vendor:') ||
+                        message.startsWith('Doctor:') ||
+                        message.startsWith('NPC:');
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 6.h),
+                      child: Align(
+                        alignment: isNPC ? Alignment.centerLeft : Alignment.centerRight,
+                        child: Container(
+                          padding: EdgeInsets.all(10.w),
+                          decoration: BoxDecoration(
+                            color: isNPC ? Colors.blue[100] : Colors.green[100],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            message,
+                            style: TextStyle(fontSize: 14.sp),
                           ),
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
-            SizedBox(height: 2.h),
+            SizedBox(height: 12.h),
             ..._options.map((option) => Padding(
-                  padding: EdgeInsets.only(bottom: 1.h),
+                  padding: EdgeInsets.only(bottom: 10.h),
                   child: Semantics(
                     label: 'Dialogue option: ${option.text}',
                     button: true,
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: FilledButton(
-                        onPressed: () => _selectOption(option),
-                        style: FilledButton.styleFrom(
-                          padding: EdgeInsets.symmetric(vertical: 2.h),
-                        ),
-                        child: Text(
-                          option.text,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 16.sp),
-                        ),
-                      ),
+                    child: PrimaryActionButton(
+                      onPressed: () => _selectOption(option),
+                      label: option.text,
+                      icon: Icons.chat_bubble_outline_rounded,
                     ),
                   ),
-                )),
+                ),
+              ),
           ],
         ),
       );

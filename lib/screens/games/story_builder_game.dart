@@ -4,6 +4,7 @@ import '../../models/game/game_session_model.dart';
 import '../../providers/ai_chat_provider_groq.dart';
 import 'base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../widgets/game_ui/index.dart';
 
 /// Story Builder - Collaborative story construction
 class StoryBuilderGame extends BaseGameScreen {
@@ -118,7 +119,7 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
   Widget buildGameContent(BuildContext context) {
     try {
       return Padding(
-        padding: EdgeInsets.all(4.w),
+        padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 16.h),
         child: Column(
           children: [
             Semantics(
@@ -128,23 +129,20 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
                 style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
               ),
             ),
-            SizedBox(height: 2.h),
+            SizedBox(height: 12.h),
             Expanded(
-              child: Card(
-                child: Padding(
-                  padding: EdgeInsets.all(4.w),
-                  child: ListView.builder(
-                    itemCount: _story.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.only(bottom: 1.h),
-                        child: Text(
-                          _story[index],
-                          style: TextStyle(fontSize: 16.sp),
-                        ),
-                      );
-                    },
-                  ),
+              child: GameCard(
+                child: ListView.builder(
+                  itemCount: _story.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 6.h),
+                      child: Text(
+                        _story[index],
+                        style: TextStyle(fontSize: 16.sp),
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
@@ -174,7 +172,7 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
                   ],
                 ),
               ),
-            SizedBox(height: 2.h),
+            SizedBox(height: 12.h),
             Semantics(
               label: 'Type your sentence to add to the story',
               textField: true,
@@ -188,14 +186,15 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
                 onSubmitted: (_) => _addSentence(),
               ),
             ),
-            SizedBox(height: 2.h),
+            SizedBox(height: 12.h),
             Semantics(
               label: _currentTurn >= _maxTurns ? 'Story complete' : 'Add sentence to story',
               button: true,
               enabled: _currentTurn < _maxTurns,
-              child: FilledButton(
+              child: PrimaryActionButton(
                 onPressed: _currentTurn >= _maxTurns ? null : _addSentence,
-                child: Text(_currentTurn >= _maxTurns ? 'Story Complete!' : 'Add Sentence'),
+                label: _currentTurn >= _maxTurns ? 'Story Complete!' : 'Add Sentence',
+                icon: Icons.auto_stories_rounded,
               ),
             ),
           ],

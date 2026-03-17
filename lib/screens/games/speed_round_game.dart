@@ -7,6 +7,7 @@ import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
 import 'base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../widgets/game_ui/index.dart';
 
 /// Speed Round Remix - Adaptive rapid-fire questions
 class SpeedRoundGame extends BaseGameScreen {
@@ -199,48 +200,31 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame> {
       }
 
       return Padding(
-        padding: EdgeInsets.all(4.w),
+        padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 16.h),
         child: Column(
           children: [
             if (_streak > 0)
-              Container(
-                padding: EdgeInsets.all(2.w),
-                decoration: BoxDecoration(
-                  color: Colors.orange,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  '🔥 Streak: $_streak',
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.onPrimary,
+              StreakBadge(streak: _streak),
+            SizedBox(height: 12.h),
+            GameCard(
+              child: Column(
+                children: [
+                  Text(
+                    'What does this mean?',
+                    style: TextStyle(fontSize: 18.sp),
                   ),
-                ),
-              ),
-            SizedBox(height: 4.h),
-            Card(
-              child: Padding(
-                padding: EdgeInsets.all(4.w),
-                child: Column(
-                  children: [
-                    Text(
-                      'What does this mean?',
-                      style: TextStyle(fontSize: 18.sp),
+                  SizedBox(height: 8.h),
+                  Text(
+                    _currentCard!.text,
+                    style: TextStyle(
+                      fontSize: 32.sp,
+                      fontWeight: FontWeight.bold,
                     ),
-                    SizedBox(height: 2.h),
-                    Text(
-                      _currentCard!.text,
-                      style: TextStyle(
-                        fontSize: 32.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 4.h),
+            SizedBox(height: 14.h),
             Expanded(
               child: ListView.builder(
                 itemCount: _options.length,
@@ -250,56 +234,44 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame> {
                   final isCorrect = option == _currentCard!.gloss;
                   final showResult = _selectedAnswer != null;
 
-                  Color? backgroundColor;
+                  GameCardState cardState = GameCardState.normal;
                   if (showResult) {
                     if (isCorrect) {
-                      backgroundColor = Colors.green.withOpacity(0.3);
+                      cardState = GameCardState.correct;
                     } else if (isSelected) {
-                      backgroundColor = Colors.red.withOpacity(0.3);
+                      cardState = GameCardState.incorrect;
+                    } else {
+                      cardState = GameCardState.disabled;
                     }
+                  } else if (isSelected) {
+                    cardState = GameCardState.selected;
                   }
 
                   return Padding(
-                    padding: EdgeInsets.only(bottom: 2.h),
+                    padding: EdgeInsets.only(bottom: 10.h),
                     child: Semantics(
                       label: 'Answer option: $option',
                       button: true,
                       selected: isSelected,
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () => _selectAnswer(option),
-                          borderRadius: BorderRadius.circular(12),
-                          child: Container(
-                            padding: EdgeInsets.all(4.w),
-                            decoration: BoxDecoration(
-                              color: backgroundColor ?? Colors.grey[200],
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: isSelected
-                                    ? Theme.of(context).colorScheme.primary
-                                    : Colors.transparent,
-                                width: 2,
+                      child: GameCard(
+                        state: cardState,
+                        onTap: () => _selectAnswer(option),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                option,
+                                style: TextStyle(
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    option,
-                                    style: TextStyle(
-                                      fontSize: 18.sp,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                if (showResult && isCorrect)
-                                  const Icon(Icons.check_circle, color: Colors.green, semanticLabel: 'Correct'),
-                                if (showResult && isSelected && !isCorrect)
-                                  const Icon(Icons.cancel, color: Colors.red, semanticLabel: 'Incorrect'),
-                              ],
-                            ),
-                          ),
+                            if (showResult && isCorrect)
+                              const Icon(Icons.check_circle, color: Colors.green, semanticLabel: 'Correct'),
+                            if (showResult && isSelected && !isCorrect)
+                              const Icon(Icons.cancel, color: Colors.red, semanticLabel: 'Incorrect'),
+                          ],
                         ),
                       ),
                     ),

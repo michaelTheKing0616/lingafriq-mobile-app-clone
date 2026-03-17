@@ -16,6 +16,7 @@ import '../../utils/supported_languages.dart';
 import 'base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/media_url_resolver.dart';
+import '../../widgets/game_ui/index.dart';
 
 /// Pronunciation Duel - Head-to-head pronunciation scoring
 class PronunciationDuelGame extends BaseGameScreen {
@@ -283,112 +284,107 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
 
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Padding(
-      padding: EdgeInsets.fromLTRB(4.w, 7.h, 4.w, 4.w),
+    return GamePlayFrame(
       child: Column(
-        children: [
-            // Progress
-            LinearProgressIndicator(
-              value: (_currentCardIndex + 1) / _cards.length,
-            ),
-            SizedBox(height: 4.h),
-            // Card display
-            Card(
-              child: Padding(
-                padding: EdgeInsets.all(4.w),
-                child: Column(
-                  children: [
-                    Text(
-                      _currentCard!.text,
-                      style: TextStyle(
-                        fontSize: 32.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    if (_currentCard!.ascii != _currentCard!.text)
+            children: [
+              // Progress
+              LinearProgressIndicator(
+                value: (_currentCardIndex + 1) / _cards.length,
+              ),
+              SizedBox(height: 12.h),
+              // Card display
+              Card(
+                child: Padding(
+                  padding: EdgeInsets.all(16.w),
+                  child: Column(
+                    children: [
                       Text(
-                        _currentCard!.ascii,
+                        _currentCard!.text,
                         style: TextStyle(
-                          fontSize: 20.sp,
-                          color: Colors.grey,
+                          fontSize: 32.sp,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    SizedBox(height: 2.h),
-                    Text(
-                      _currentCard!.gloss,
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        color: Colors.grey[600],
+                      if (_currentCard!.ascii != _currentCard!.text)
+                        Text(
+                          _currentCard!.ascii,
+                          style: TextStyle(
+                            fontSize: 20.sp,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      SizedBox(height: 8.h),
+                      Text(
+                        _currentCard!.gloss,
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          color: Colors.grey[600],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 4.h),
-            // Audio controls
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                FilledButton.icon(
-                  onPressed: _isPlaying ? null : _playNativeAudio,
-                  icon: Icon(_isPlaying ? Icons.volume_up : Icons.play_arrow),
-                  label: Text(_isPlaying ? 'Playing...' : 'Play Native'),
-                ),
-              ],
-            ),
-            SizedBox(height: 4.h),
-            // Recording controls
-            if (_pronunciationScore == null)
-              Column(
+              SizedBox(height: 14.h),
+              // Audio controls
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   FilledButton.icon(
-                    onPressed: _isRecording ? _stopRecording : _startRecording,
-                    icon: Icon(_isRecording ? Icons.stop : Icons.mic),
-                    label: Text(_isRecording ? 'Stop Recording' : 'Record'),
-                    style: FilledButton.styleFrom(
-                      backgroundColor: _isRecording ? Colors.red : Colors.blue,
-                      foregroundColor: colorScheme.onPrimary,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 6.w,
-                        vertical: 3.h,
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            else
-              // Score display
-              Column(
-                children: [
-                  Text(
-                    'Score: $_pronunciationScore/100',
-                    style: TextStyle(
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.bold,
-                      color: _pronunciationScore! >= 85
-                          ? Colors.green
-                          : Colors.orange,
-                    ),
-                  ),
-                  if (_mistakes.isNotEmpty) ...[
-                    SizedBox(height: 2.h),
-                    Text(
-                      'Mistakes:',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    ..._mistakes.map((m) => Text('- $m')),
-                  ],
-                  SizedBox(height: 2.h),
-                  FilledButton(
-                    onPressed: _nextCard,
-                    child: Text(_currentCardIndex < _cards.length - 1
-                        ? 'Next Card'
-                        : 'Finish'),
+                    onPressed: _isPlaying ? null : _playNativeAudio,
+                    icon: Icon(_isPlaying ? Icons.volume_up : Icons.play_arrow),
+                    label: Text(_isPlaying ? 'Playing...' : 'Play Native'),
                   ),
                 ],
               ),
-        ],
+              SizedBox(height: 12.h),
+              // Recording controls
+              if (_pronunciationScore == null)
+                Column(
+                  children: [
+                    FilledButton.icon(
+                      onPressed: _isRecording ? _stopRecording : _startRecording,
+                      icon: Icon(_isRecording ? Icons.stop : Icons.mic),
+                      label: Text(_isRecording ? 'Stop Recording' : 'Record'),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: _isRecording ? Colors.red : Colors.blue,
+                        foregroundColor: colorScheme.onPrimary,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 18.w,
+                          vertical: 12.h,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              else
+                // Score display
+                Column(
+                  children: [
+                    Text(
+                      'Score: $_pronunciationScore/100',
+                      style: TextStyle(
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.bold,
+                        color: _pronunciationScore! >= 85 ? Colors.green : Colors.orange,
+                      ),
+                    ),
+                    if (_mistakes.isNotEmpty) ...[
+                      SizedBox(height: 10.h),
+                      const Text(
+                        'Mistakes:',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      ..._mistakes.map((m) => Text('- $m')),
+                    ],
+                    SizedBox(height: 10.h),
+                    FilledButton(
+                      onPressed: _nextCard,
+                      child: Text(_currentCardIndex < _cards.length - 1 ? 'Next Card' : 'Finish'),
+                    ),
+                  ],
+                ),
+            ],
       ),
     );
   }

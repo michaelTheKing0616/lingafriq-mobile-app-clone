@@ -1,4 +1,5 @@
 import 'package:lingafriq/config/api_contract.dart';
+import 'package:lingafriq/services/env_config.dart';
 
 /// Resolves relative media paths to absolute URLs.
 String? resolveMediaUrl(String? rawUrl) {
@@ -19,7 +20,15 @@ String? resolveMediaUrl(String? rawUrl) {
     return 'https:$value';
   }
 
+  final normalizedPath = value.startsWith('/') ? value : '/$value';
+
+  // Media files are served by nginx at CDN/base host and should not depend
+  // on API proxy path assumptions.
+  if (normalizedPath.startsWith('/media/')) {
+    final cdnBase = EnvConfig.cdnUrl.trim().replaceAll(RegExp(r'/+$'), '');
+    return '$cdnBase$normalizedPath';
+  }
+
   final base = ApiContract.baseUrl.trim().replaceAll(RegExp(r'/+$'), '');
-  final path = value.startsWith('/') ? value : '/$value';
-  return '$base$path';
+  return '$base$normalizedPath';
 }
