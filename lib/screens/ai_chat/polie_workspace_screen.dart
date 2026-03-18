@@ -850,7 +850,6 @@ Language: $targetLanguage
               ],
             ),
           );
-
     const modeDescriptions = <PolieMode, String>{
       PolieMode.translation: 'Precision tool. Split-panel translation with dynamic output updates.',
       PolieMode.tutor: 'Interactive classroom notebook with flip cards and inline feedback.',
@@ -859,7 +858,6 @@ Language: $targetLanguage
       PolieMode.vocab: 'Museum word theater: one dramatic word, dark focus, SRS actions.',
       PolieMode.review: 'Personal coach dashboard with animated bars and clear next steps.',
     };
-
     const modeIcons = <PolieMode, String>{
       PolieMode.translation: '\u21C4',
       PolieMode.tutor: '\uD83D\uDCD6',
@@ -868,7 +866,6 @@ Language: $targetLanguage
       PolieMode.vocab: '\u2726',
       PolieMode.review: '\uD83D\uDCCA',
     };
-
     final intro = (mode == PolieMode.conversation || introDismissed.contains(mode.name))
         ? const SizedBox.shrink()
         : Container(
@@ -922,6 +919,7 @@ Language: $targetLanguage
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            intro,
             error,
             Wrap(
               spacing: 8,
@@ -1184,6 +1182,7 @@ Language: $targetLanguage
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    intro,
                     error,
                     if (!showSidebar)
                       Container(
@@ -1441,6 +1440,7 @@ Language: $targetLanguage
         ),
         child: Column(
           children: [
+            intro,
             error,
             Container(
               width: double.infinity,
@@ -1491,69 +1491,66 @@ Language: $targetLanguage
             ),
             const SizedBox(height: 8),
             TweenAnimationBuilder<double>(
-                      tween: Tween(begin: 24, end: 0),
-                      duration: const Duration(milliseconds: 520),
-                      builder: (context, value, child) {
-                        return Transform.translate(
-                          offset: Offset(0, value),
-                          child: Opacity(
-                            opacity: (1 - (value / 24)).clamp(0, 1),
-                            child: child,
-                          ),
-                        );
-                      },
-                      child: card(
-                        width: double.infinity,
-                        color: Colors.black.withOpacity(0.35),
-                        Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: Row(
-                            children: [
-                              const CircleAvatar(
-                                radius: 18,
-                                backgroundColor: Color(0xFFD4822A),
-                                child: Text('MB', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
-                              ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Mama Bisi', style: GoogleFonts.nunito(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 18)),
-                                    Text('Friendly, patient vendor', style: GoogleFonts.nunito(color: Colors.white70)),
-                                  ],
-                                ),
-                              ),
-                              Wrap(
-                                spacing: 6,
-                                runSpacing: 6,
-                                children: [
-                                  Chip(
-                                    label: Text('Bilingual', style: TextStyle(fontSize: isTinyPhone ? 11 : 12)),
-                                    backgroundColor: const Color(0xFF2BDB8C),
-                                    visualDensity: isTinyPhone ? const VisualDensity(horizontal: -2, vertical: -2) : null,
-                                  ),
-                                  Chip(
-                                    label: Text('Hints', style: TextStyle(fontSize: isTinyPhone ? 11 : 12)),
-                                    visualDensity: isTinyPhone ? const VisualDensity(horizontal: -2, vertical: -2) : null,
-                                  ),
-                                  Chip(
-                                    label: Text('Immersion', style: TextStyle(fontSize: isTinyPhone ? 11 : 12)),
-                                    visualDensity: isTinyPhone ? const VisualDensity(horizontal: -2, vertical: -2) : null,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+              tween: Tween(begin: 24, end: 0),
+              duration: const Duration(milliseconds: 520),
+              builder: (context, value, child) {
+                return Transform.translate(
+                  offset: Offset(0, value),
+                  child: Opacity(
+                    opacity: (1 - (value / 24)).clamp(0, 1),
+                    child: child,
+                  ),
+                );
+              },
+              child: card(
+                Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Row(
+                    children: [
+                      const CircleAvatar(
+                        radius: 18,
+                        backgroundColor: Color(0xFFD4822A),
+                        child: Text('MB', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Mama Bisi', style: GoogleFonts.nunito(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 18)),
+                            Text('Friendly, patient vendor', style: GoogleFonts.nunito(color: Colors.white70)),
+                          ],
                         ),
                       ),
-                  ],
+                      Wrap(
+                        spacing: 6,
+                        runSpacing: 6,
+                        children: [
+                          Chip(
+                            label: Text('Bilingual', style: TextStyle(fontSize: isTinyPhone ? 11 : 12)),
+                            backgroundColor: const Color(0xFF2BDB8C),
+                            visualDensity: isTinyPhone ? const VisualDensity(horizontal: -2, vertical: -2) : null,
+                          ),
+                          Chip(
+                            label: Text('Hints', style: TextStyle(fontSize: isTinyPhone ? 11 : 12)),
+                            visualDensity: isTinyPhone ? const VisualDensity(horizontal: -2, vertical: -2) : null,
+                          ),
+                          Chip(
+                            label: Text('Immersion', style: TextStyle(fontSize: isTinyPhone ? 11 : 12)),
+                            visualDensity: isTinyPhone ? const VisualDensity(horizontal: -2, vertical: -2) : null,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
+                width: double.infinity,
+                color: Colors.black.withOpacity(0.35),
               ),
+            ),
             const SizedBox(height: 10),
             Expanded(
               child: card(
-                color: Colors.black.withOpacity(0.28),
                 ListView.builder(
                   padding: const EdgeInsets.all(12),
                   itemCount: roleplayMessages.length,
@@ -1601,6 +1598,7 @@ Language: $targetLanguage
                     );
                   },
                 ),
+                color: Colors.black.withOpacity(0.28),
               ),
             ),
             const SizedBox(height: 8),
@@ -1650,6 +1648,7 @@ Language: $targetLanguage
         color: const Color(0xFFF5F0E8),
         child: Column(
           children: [
+            intro,
             error,
             Padding(
               padding: const EdgeInsets.fromLTRB(12, 4, 12, 8),
@@ -1818,6 +1817,7 @@ Language: $targetLanguage
         color: const Color(0xFF0F0A04),
         child: Column(
           children: [
+            intro,
             error,
             Padding(
               padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
@@ -1987,6 +1987,7 @@ Language: $targetLanguage
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          intro,
           error,
           Text(
             'Your Progress Report',

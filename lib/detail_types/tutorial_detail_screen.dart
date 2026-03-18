@@ -78,7 +78,7 @@ class TutorialDetailScreen extends ConsumerWidget {
                     elevation: 12,
                     shadowColor: Colors.black38,
                     child: CachedNetworkImage(
-                      imageUrl: resolvedImage!,
+                      imageUrl: resolvedImage,
                       placeholder: kImagePlaceHolder,
                       errorWidget: kErrorWidget,
                     ).cornerRadius(kBorderRadius),
