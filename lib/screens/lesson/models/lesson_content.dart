@@ -116,6 +116,10 @@ class LessonContent {
       'audio_url',
       'audioUrl',
       'audio',
+      'audio_native_url',
+      'audioNativeUrl',
+      'audio_urls',
+      'audioUrls',
       'lesson_audio_url',
       'lessonAudioUrl',
       'media_audio_url',
@@ -127,6 +131,10 @@ class LessonContent {
       'video_url',
       'videoUrl',
       'video',
+      'video_native_url',
+      'videoNativeUrl',
+      'video_urls',
+      'videoUrls',
       'lesson_video_url',
       'lessonVideoUrl',
       'media_video_url',
@@ -195,6 +203,10 @@ class LessonContent {
                 'audio_url',
                 'audioUrl',
                 'audio',
+                'audio_native_url',
+                'audioNativeUrl',
+                'audio_urls',
+                'audioUrls',
                 'media_audio_url',
                 'mediaAudioUrl',
                 'file_url',
@@ -204,6 +216,10 @@ class LessonContent {
                 'video_url',
                 'videoUrl',
                 'video',
+                'video_native_url',
+                'videoNativeUrl',
+                'video_urls',
+                'videoUrls',
                 'media_video_url',
                 'mediaVideoUrl',
               ]),
@@ -299,6 +315,22 @@ class LessonContent {
       }
     }
 
+    // Fallback for alternate payload shapes where media is grouped under
+    // language-specific maps (e.g. audio_by_language / media_by_language).
+    for (final entry in source.entries) {
+      final rawKey = entry.key?.toString().toLowerCase() ?? '';
+      final relatesToMedia = keys.any((k) => rawKey.contains(k.toLowerCase())) ||
+          rawKey.contains('media') ||
+          rawKey.contains('audio') ||
+          rawKey.contains('video') ||
+          rawKey.contains('image');
+      if (!relatesToMedia) continue;
+      final resolved = _resolveMediaFromValue(entry.value);
+      if (resolved != null && resolved.isNotEmpty) {
+        return resolved;
+      }
+    }
+
     return null;
   }
 
@@ -324,11 +356,23 @@ class LessonContent {
         value['path'],
         value['src'],
         value['audio_url'],
+        value['audio_native_url'],
+        value['audio_urls'],
         value['video_url'],
+        value['video_native_url'],
+        value['video_urls'],
         value['image_url'],
       ];
       for (final candidate in candidates) {
         final resolved = _resolveMediaFromValue(candidate);
+        if (resolved != null && resolved.isNotEmpty) return resolved;
+      }
+
+      // Some backends provide language-keyed media maps such as:
+      // { "yo": "/media/yo/lesson.mp4", "ig": "/media/ig/lesson.mp4" }.
+      // Traverse nested values so all languages can resolve resources.
+      for (final nested in value.values) {
+        final resolved = _resolveMediaFromValue(nested);
         if (resolved != null && resolved.isNotEmpty) return resolved;
       }
       return null;

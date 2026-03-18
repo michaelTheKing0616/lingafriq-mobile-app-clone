@@ -462,12 +462,14 @@ class PolieModeSwitcherRail<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    final compact = width < 360;
     return SizedBox(
-      height: 44,
+      height: compact ? 44 : 48,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: items.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 8),
+        separatorBuilder: (_, __) => SizedBox(width: compact ? 8 : 10),
         itemBuilder: (context, index) {
           final item = items[index];
           final active = item.value == selected;
@@ -482,24 +484,35 @@ class PolieModeSwitcherRail<T> extends StatelessWidget {
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 220),
                 curve: Curves.easeOutCubic,
-                padding: EdgeInsets.symmetric(horizontal: active ? 14 : 10, vertical: 8),
+                padding: EdgeInsets.symmetric(
+                  horizontal: compact ? (active ? 12 : 8) : (active ? 16 : 10),
+                  vertical: compact ? 7 : 8,
+                ),
                 decoration: BoxDecoration(
-                  color: active ? accent.withOpacity(0.16) : Colors.transparent,
+                  color: active ? accent : Colors.white,
                   borderRadius: BorderRadius.circular(100),
                   border: Border.all(
-                    color: active ? accent : accent.withOpacity(0.35),
+                    color: active ? accent : const Color(0xFFD8D4CC),
                   ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.06),
+                      blurRadius: 8,
+                      offset: const Offset(0, 1),
+                    ),
+                  ],
                 ),
                 child: Row(
                   children: [
-                    Text(item.icon, style: const TextStyle(fontSize: 16)),
+                    Text(item.icon, style: TextStyle(fontSize: compact ? 14 : (active ? 16 : 15))),
                     if (active) ...[
-                      const SizedBox(width: 6),
+                      SizedBox(width: compact ? 4 : 6),
                       Text(
                         item.label,
                         style: PolieTypography.label(context).copyWith(
                           fontWeight: FontWeight.w800,
-                          color: activeTextColor,
+                          color: activeTextColor.withOpacity(0.98),
+                          fontSize: compact ? 12 : null,
                         ),
                       ),
                     ],

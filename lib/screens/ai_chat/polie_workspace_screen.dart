@@ -45,6 +45,8 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final viewportWidth = MediaQuery.sizeOf(context).width;
+    final isCompactTopBar = viewportWidth < 420;
     final activeMode = useState<PolieMode>(initialMode);
     final isBusy = useState<bool>(false);
     final modeResponse = useState<String>('');
@@ -68,6 +70,7 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
     final tutorFeedback = useState<_TutorFeedbackPayload?>(null);
     final tutorDifficulty = useState<String>('beginner');
     final tutorFlipped = useState<bool>(false);
+    final tutorAutoLoadInFlight = useRef<bool>(false);
 
     final roleplayDifficulty = useState<String>('bilingual');
     final roleplayScene = useState<String>(normalizeInitialRoleplayScene(initialRoleplayScene));
@@ -175,6 +178,8 @@ Text: "$trimmed"
     }
 
     Future<void> loadTutorLesson() async {
+      if (tutorAutoLoadInFlight.value) return;
+      tutorAutoLoadInFlight.value = true;
       isBusy.value = true;
       tutorFeedback.value = null;
       tutorFlipped.value = false;
@@ -203,11 +208,39 @@ $difficultyGuide
 Make the card intelligent, informative, and culturally rich.
 ''',
         );
-        if (json != null) tutorLesson.value = _TutorLessonPayload.fromJson(json, modeResponse.value);
+        if (json != null) {
+          final parsed = _TutorLessonPayload.fromJson(json, modeResponse.value);
+          final hasCoreFields = parsed.concept.trim().isNotEmpty && parsed.explanation.trim().isNotEmpty;
+          if (hasCoreFields) {
+            tutorLesson.value = parsed;
+          } else {
+            // Retry once with stricter completeness constraints.
+            final retryJson = await askForJson(
+              '''
+Return STRICT JSON only with all fields populated.
+{
+ "concept":"title of the lesson concept",
+ "explanation":"2-3 warm, clear sentences explaining the concept",
+ "example":{"target_lang":"example phrase in $targetLanguage","transliteration":"phonetic guide","english":"English translation"},
+ "memory_tip":"a memorable tip to remember this concept",
+ "watch_out":"common mistake or tricky aspect, or null",
+ "practice_question":"an instructive question for the learner to practice this concept",
+ "practice_hint":"a subtle hint to help answer the practice question"
+}
+Do not leave concept or explanation empty.
+Generate a complete tutor card for $targetLanguage at ${tutorDifficulty.value} level.
+''',
+            );
+            if (retryJson != null) {
+              tutorLesson.value = _TutorLessonPayload.fromJson(retryJson, modeResponse.value);
+            }
+          }
+        }
       } catch (e) {
         modeError.value = 'Failed to load tutor card: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
       } finally {
         isBusy.value = false;
+        tutorAutoLoadInFlight.value = false;
       }
     }
 
@@ -412,7 +445,34 @@ Generate one unique $targetLanguage vocabulary card.$exclusionClause
 ''',
         );
         if (json != null) {
-          vocabCard.value = _VocabPayload.fromJson(json, modeResponse.value);
+          var parsed = _VocabPayload.fromJson(json, modeResponse.value);
+          if (_isUnavailableWord(parsed.word)) {
+            // Retry once if payload word is missing/placeholder.
+            final retryJson = await askForJson(
+              '''
+Return STRICT JSON only with a valid non-empty "word" in $targetLanguage.
+{
+ "word":"a real $targetLanguage word (never 'Word unavailable')",
+ "pronunciation":"phonetic pronunciation",
+ "part_of_speech":"noun|verb|adjective|adverb|phrase|greeting",
+ "english":"English meaning",
+ "example":{"target":"example sentence in $targetLanguage","english":"English translation"},
+ "memory_peg":"a memorable association to remember this word",
+ "cultural_note":"cultural context or null",
+ "related_words":[{"word":"related word","relationship":"synonym|antonym|related|derived"}],
+ "difficulty":"beginner|intermediate|advanced"
+}
+$exclusionClause
+''',
+            );
+            if (retryJson != null) {
+              parsed = _VocabPayload.fromJson(retryJson, modeResponse.value);
+            }
+          }
+          if (_isUnavailableWord(parsed.word)) {
+            parsed = _fallbackVocabPayload(targetLanguage);
+          }
+          vocabCard.value = parsed;
           vocabShownWords.value = {...vocabShownWords.value, vocabCard.value!.word.toLowerCase()};
           vocabReveal.value = false;
           vocabDeckCount.value = (vocabDeckCount.value - 1).clamp(0, 999);
@@ -523,6 +583,16 @@ Language: $targetLanguage
     }, const []);
 
     useEffect(() {
+      if (activeMode.value == PolieMode.tutor && tutorLesson.value == null && !isBusy.value) {
+        Future.microtask(loadTutorLesson);
+      }
+      if (activeMode.value == PolieMode.vocab && vocabCard.value == null && !isBusy.value) {
+        Future.microtask(loadVocabCard);
+      }
+      return null;
+    }, [activeMode.value]);
+
+    useEffect(() {
       translationTimer.value?.cancel();
       if (!autoTranslate.value) return null;
       final text = translationInput.text.trim();
@@ -557,17 +627,49 @@ Language: $targetLanguage
           icon: const Icon(Icons.arrow_back_rounded),
         ),
         title: Text(
-          'Polie • $targetLanguage',
+          'Polie',
           style: GoogleFonts.playfairDisplay(
             fontWeight: FontWeight.w700,
             color: modeTheme.title,
+            fontSize: isCompactTopBar ? 24 : 28,
           ),
         ),
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 8),
+            padding: EdgeInsets.symmetric(horizontal: isCompactTopBar ? 8 : 12, vertical: 8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: modeTheme.border),
+              color: modeTheme.card,
+            ),
+            child: Row(
+              children: [
+                if (!isCompactTopBar) const Text('NG'),
+                if (!isCompactTopBar) const SizedBox(width: 6),
+                Text(targetLanguage),
+                const SizedBox(width: 4),
+                const Icon(Icons.keyboard_arrow_down_rounded, size: 18),
+              ],
+            ),
+          ),
+          if (!isCompactTopBar) IconButton(onPressed: () {}, icon: const Icon(Icons.settings_outlined)),
+          if (!isCompactTopBar) IconButton(onPressed: () {}, icon: const Icon(Icons.person_outline_rounded)),
+          if (isCompactTopBar)
+            PopupMenuButton<String>(
+              icon: const Icon(Icons.more_vert_rounded),
+              itemBuilder: (context) => const [
+                PopupMenuItem(value: 'settings', child: Text('Settings')),
+                PopupMenuItem(value: 'profile', child: Text('Profile')),
+              ],
+            ),
+          const SizedBox(width: 4),
+        ],
       ),
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+            padding: EdgeInsets.fromLTRB(isCompactTopBar ? 8 : 12, 0, isCompactTopBar ? 8 : 12, 8),
             child: PolieModeSwitcherRail<PolieMode>(
               selected: activeMode.value,
               items: _modeItems
@@ -714,6 +816,10 @@ Language: $targetLanguage
     required Set<String> introDismissed,
     required void Function(String modeName) onDismissIntro,
   }) {
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final isPhone = screenWidth < 700;
+    final isTinyPhone = screenWidth < 390;
+    final basePad = isTinyPhone ? 8.0 : 12.0;
     final bodyStyle = GoogleFonts.nunito(color: theme.body, fontSize: 14);
     final monoStyle = GoogleFonts.jetBrainsMono(color: theme.title, fontSize: 13.5);
     Widget card(Widget child, {Color? color}) {
@@ -731,7 +837,7 @@ Language: $targetLanguage
         ? const SizedBox.shrink()
         : Container(
             margin: const EdgeInsets.fromLTRB(12, 8, 12, 0),
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: Colors.red.withOpacity(0.12),
               borderRadius: BorderRadius.circular(12),
@@ -770,7 +876,7 @@ Language: $targetLanguage
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: theme.accent.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(12),
               border: Border.all(color: theme.accent.withOpacity(0.25)),
             ),
             child: Row(
@@ -808,221 +914,204 @@ Language: $targetLanguage
 
     if (mode == PolieMode.translation) {
       final alternatives = translationOutput?.alternatives ?? const <AltItem>[];
-      return SingleChildScrollView(
+      final tones = const ['formal', 'casual', 'poetic', 'literal'];
+      final wordCount = translationInput.text.trim().split(RegExp(r'\s+')).where((e) => e.isNotEmpty).length;
+      return Container(
         key: key,
-        padding: const EdgeInsets.fromLTRB(12, 6, 12, 16),
+        padding: EdgeInsets.fromLTRB(basePad, basePad, basePad, basePad),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             error,
-            intro,
-            Row(
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                Expanded(
-                  child: _chipToggle(
-                    label: 'Auto Translate',
-                    selected: autoTranslate.value,
-                    onTap: () => autoTranslate.value = !autoTranslate.value,
-                    color: theme.accent,
+                SizedBox(
+                  width: isPhone ? 170 : 160,
+                  child: CheckboxListTile(
+                    value: autoTranslate.value,
+                    dense: true,
+                    contentPadding: EdgeInsets.zero,
+                    title: const Text('Auto-translate'),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    onChanged: (_) => autoTranslate.value = !autoTranslate.value,
                   ),
                 ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: DropdownButtonFormField<String>(
-                    value: translationTone.value,
-                    decoration: _inputDecoration(theme, 'Tone'),
-                    items: const ['formal', 'casual', 'poetic', 'literal']
-                        .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                        .toList(),
-                    onChanged: (v) => translationTone.value = v ?? 'formal',
-                  ),
-                ),
+                Text('Tone:', style: bodyStyle.copyWith(fontWeight: FontWeight.w700)),
+                ...tones.map((tone) => ChoiceChip(
+                      label: Text(tone[0].toUpperCase() + tone.substring(1)),
+                      selected: translationTone.value == tone,
+                      selectedColor: theme.accent.withOpacity(0.2),
+                      onSelected: (_) => translationTone.value = tone,
+                    )),
+                if (!isPhone) Text('${translationInput.text.length} chars · $wordCount words', style: bodyStyle),
               ],
             ),
-            const SizedBox(height: 10),
-            LayoutBuilder(
-              builder: (context, constraints) {
-                final split = constraints.maxWidth > 820;
-                final inputPanel = card(
-                  Padding(
-                    padding: const EdgeInsets.all(12),
+            if (isPhone) ...[
+              const SizedBox(height: 4),
+              Text('${translationInput.text.length} chars · $wordCount words', style: bodyStyle),
+            ],
+            const SizedBox(height: 8),
+            Expanded(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final panelWidth = isPhone
+                      ? constraints.maxWidth
+                      : (constraints.maxWidth < 860 ? 420.0 : (constraints.maxWidth - 8) / 2);
+                  final leftPanel = Container(
+                    width: panelWidth,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: theme.border),
+                    ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Source ($sourceLanguage)', style: bodyStyle.copyWith(fontWeight: FontWeight.w700)),
-                        const SizedBox(height: 8),
-                        TextField(
-                          controller: translationInput,
-                          maxLines: 8,
-                          decoration: _inputDecoration(theme, 'Type text to translate'),
-                        ),
-                        const SizedBox(height: 8),
-                        LayoutBuilder(
-                          builder: (context, rowConstraints) {
-                            final compact = rowConstraints.maxWidth < 390;
-                            final wordCount = translationInput.text
-                                .trim()
-                                .split(RegExp(r'\s+'))
-                                .where((e) => e.isNotEmpty)
-                                .length;
-                            final counter = compact
-                                ? Text(
-                                    '${translationInput.text.length} chars • $wordCount words',
-                                    style: bodyStyle,
-                                  )
-                                : Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text('${translationInput.text.length} chars', style: bodyStyle),
-                                      const SizedBox(width: 10),
-                                      Text('$wordCount words', style: bodyStyle),
-                                    ],
-                                  );
-                            if (compact) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  counter,
-                                  const SizedBox(height: 8),
-                                  FilledButton(
-                                    onPressed: isBusy ? null : () => onRunTranslation(translationInput.text),
-                                    style: FilledButton.styleFrom(backgroundColor: theme.accent),
-                                    child: Text(isBusy ? 'Translating...' : 'Translate'),
-                                  ),
-                                ],
-                              );
-                            }
-                            return Row(
-                              children: [
-                                counter,
-                                const Spacer(),
-                                FilledButton(
-                                  onPressed: isBusy ? null : () => onRunTranslation(translationInput.text),
-                                  style: FilledButton.styleFrom(backgroundColor: theme.accent),
-                                  child: Text(isBusy ? 'Translating...' : 'Translate'),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-                final outputPanel = card(
-                  Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Output ($targetLanguage)', style: bodyStyle.copyWith(fontWeight: FontWeight.w700)),
-                        const SizedBox(height: 10),
-                        _buildAnimatedWordFlow(
-                          translationOutput?.primary ?? 'Translation appears here...',
-                          GoogleFonts.jetBrainsMono(
-                            color: theme.title,
-                            fontSize: 18,
-                            height: 1.4,
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Row(
+                            children: [
+                              DropdownButton<String>(
+                                value: sourceLanguage,
+                                items: [sourceLanguage]
+                                    .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                                    .toList(),
+                                onChanged: (_) {},
+                              ),
+                              const Spacer(),
+                              IconButton(
+                                onPressed: isBusy ? null : () => onRunTranslation(translationInput.text),
+                                icon: const Icon(Icons.sync_alt_rounded),
+                              ),
+                            ],
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        if ((translationOutput?.culturalNote ?? '').isNotEmpty)
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFD4822A).withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Text('Cultural Context • ${translationOutput!.culturalNote}', style: bodyStyle),
-                          ),
-                        const SizedBox(height: 10),
-                        Text('Tone achieved: ${translationOutput?.toneAchieved ?? '-'}', style: bodyStyle),
-                      ],
-                    ),
-                  ),
-                );
-                if (split) {
-                  return Row(
-                    children: [
-                      Expanded(child: inputPanel),
-                      const SizedBox(width: 10),
-                      Expanded(child: outputPanel),
-                    ],
-                  );
-                }
-                return Column(
-                  children: [
-                    inputPanel,
-                    const SizedBox(height: 10),
-                    outputPanel,
-                  ],
-                );
-              },
-            ),
-            const SizedBox(height: 10),
-            card(
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    InkWell(
-                      onTap: () => translationTrayOpen.value = !translationTrayOpen.value,
-                      child: Row(
-                        children: [
-                          Text('Alternatives & Notes', style: bodyStyle.copyWith(fontWeight: FontWeight.w700)),
-                          const Spacer(),
-                          Icon(translationTrayOpen.value ? Icons.expand_less : Icons.expand_more, color: theme.title),
-                        ],
-                      ),
-                    ),
-                    if (translationTrayOpen.value) ...[
-                      const SizedBox(height: 8),
-                      ...alternatives.take(3).map(
-                            (alt) => Padding(
-                              padding: const EdgeInsets.only(bottom: 6),
-                              child: Text('• ${alt.text} — ${alt.note}', style: bodyStyle),
-                            ),
-                          ),
-                      if (alternatives.isEmpty) Text('No alternatives yet.', style: bodyStyle),
-                    ],
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            card(
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('History (last 20)', style: bodyStyle.copyWith(fontWeight: FontWeight.w700)),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
+                        const Divider(height: 1),
                         Expanded(
                           child: TextField(
-                            decoration: _inputDecoration(theme, 'Search history'),
-                            onChanged: (v) => translationHistoryQuery.value = v,
+                            controller: translationInput,
+                            maxLines: null,
+                            expands: true,
+                            style: GoogleFonts.nunito(fontSize: isPhone ? 18 : 20),
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.all(16),
+                              hintText: 'Type text here',
+                            ),
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        IconButton(onPressed: onSearchHistory, icon: const Icon(Icons.search_rounded)),
                       ],
                     ),
-                    const SizedBox(height: 8),
-                    ...translationHistory.take(5).map((item) {
-                      final source = item.sourceText?.toString() ?? '';
-                      final translated = item.primaryTranslation?.toString() ?? '';
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 6),
-                        child: Text('$source  →  $translated', style: monoStyle),
-                      );
-                    }),
-                    if (translationHistory.isEmpty) Text('No translation history yet.', style: bodyStyle),
-                  ],
-                ),
+                  );
+                  final rightPanel = Container(
+                    width: panelWidth,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: theme.border),
+                    ),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Row(
+                            children: [
+                              DropdownButton<String>(
+                                value: targetLanguage,
+                                items: [targetLanguage]
+                                    .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                                    .toList(),
+                                onChanged: (_) {},
+                              ),
+                              const Spacer(),
+                              const Icon(Icons.volume_up_outlined, size: 20),
+                              const SizedBox(width: 10),
+                              const Icon(Icons.copy_outlined, size: 20),
+                              const SizedBox(width: 10),
+                              const Icon(Icons.save_alt_outlined, size: 20),
+                            ],
+                          ),
+                        ),
+                        const Divider(height: 1),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _buildAnimatedWordFlow(
+                                  translationOutput?.primary ?? '',
+                                  GoogleFonts.nunito(fontSize: isPhone ? 20 : 24, color: theme.title),
+                                ),
+                                if ((translationOutput?.culturalNote ?? '').isNotEmpty) ...[
+                                  const SizedBox(height: 12),
+                                  Text(
+                                    translationOutput!.culturalNote,
+                                    style: bodyStyle.copyWith(color: theme.body.withOpacity(0.9)),
+                                  ),
+                                ],
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                  if (isPhone) {
+                    return Column(
+                      children: [
+                        Expanded(child: leftPanel),
+                        const SizedBox(height: 8),
+                        Expanded(child: rightPanel),
+                      ],
+                    );
+                  }
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        leftPanel,
+                        const SizedBox(width: 8),
+                        rightPanel,
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: theme.border),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      alternatives.isEmpty
+                          ? 'Alternatives'
+                          : '${alternatives.first.text}\n${alternatives.first.note}',
+                      style: bodyStyle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  OutlinedButton(
+                    onPressed: alternatives.isEmpty
+                        ? null
+                        : () {
+                            translationInput.text = alternatives.first.text;
+                            onRunTranslation(translationInput.text);
+                          },
+                    child: const Text('Use this'),
+                  ),
+                ],
               ),
             ),
           ],
@@ -1031,137 +1120,301 @@ Language: $targetLanguage
     }
 
     if (mode == PolieMode.tutor) {
-      return SingleChildScrollView(
+      const lessonTopics = ['Greetings', 'Pronouns', 'Tones', 'Family Terms'];
+      final showSidebar = !isPhone;
+      return Container(
         key: key,
-        padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: Row(
           children: [
-            error,
-            intro,
-            Row(
-              children: [
-                Expanded(
-                  child: DropdownButtonFormField<String>(
-                    value: tutorDifficulty.value,
-                    decoration: _inputDecoration(theme, 'Difficulty'),
-                    items: const ['beginner', 'intermediate', 'advanced']
-                        .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                        .toList(),
-                    onChanged: (v) => tutorDifficulty.value = v ?? 'beginner',
-                  ),
+            if (showSidebar)
+              Container(
+                width: 230,
+                padding: const EdgeInsets.fromLTRB(16, 16, 12, 12),
+                color: const Color(0xFF2A170B),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Your Lessons', style: GoogleFonts.playfairDisplay(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w700)),
+                    const SizedBox(height: 8),
+                    Text('🔥 7 day streak!', style: GoogleFonts.nunito(color: const Color(0xFFE8DAC5), fontWeight: FontWeight.w700)),
+                    const SizedBox(height: 16),
+                    Text('Difficulty', style: GoogleFonts.nunito(color: const Color(0xFFE8DAC5))),
+                    const SizedBox(height: 8),
+                    DropdownButtonFormField<String>(
+                      value: tutorDifficulty.value,
+                      dropdownColor: const Color(0xFF2A1F14),
+                      style: const TextStyle(color: Color(0xFFFAF3E0)),
+                      decoration: _inputDecoration(theme, 'Difficulty').copyWith(fillColor: const Color(0xFF3A2A1C)),
+                      items: const ['beginner', 'intermediate', 'advanced']
+                          .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                          .toList(),
+                      onChanged: (v) => tutorDifficulty.value = v ?? 'beginner',
+                    ),
+                    const SizedBox(height: 12),
+                    ...lessonTopics.map((topic) => Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                            decoration: BoxDecoration(
+                              color: topic == 'Greetings' ? const Color(0xFFD4822A) : const Color(0xFF3A2A1C),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(topic, style: GoogleFonts.nunito(color: Colors.white, fontWeight: FontWeight.w700)),
+                          ),
+                        )),
+                    const Spacer(),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF3A2A1C),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        '💡 Quick Fact\nYoruba has 3 tones: high (á), mid (a), and low (à).',
+                        style: GoogleFonts.nunito(color: const Color(0xFFE8DAC5)),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 8),
-                FilledButton(
-                  onPressed: isBusy ? null : onLoadTutorLesson,
-                  style: FilledButton.styleFrom(backgroundColor: theme.accent),
-                  child: Text(isBusy ? 'Loading...' : 'New Card'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            AnimatedCrossFade(
-              firstChild: card(
-                Padding(
-                  padding: const EdgeInsets.all(14),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(tutorLesson?.concept ?? 'Tutor card is loading...', style: GoogleFonts.playfairDisplay(color: theme.title, fontSize: 24)),
-                      const SizedBox(height: 8),
-                      Text(tutorLesson?.explanation ?? '', style: bodyStyle),
-                      const SizedBox(height: 12),
-                      card(
-                        color: theme.background.withOpacity(0.45),
+              ),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    error,
+                    if (!showSidebar)
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        margin: const EdgeInsets.only(bottom: 12),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF2A170B),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('🔥 7 day streak!', style: GoogleFonts.nunito(color: const Color(0xFFE8DAC5), fontWeight: FontWeight.w700)),
+                            const SizedBox(height: 8),
+                            DropdownButtonFormField<String>(
+                              value: tutorDifficulty.value,
+                              dropdownColor: const Color(0xFF2A1F14),
+                              style: const TextStyle(color: Color(0xFFFAF3E0)),
+                              decoration: _inputDecoration(theme, 'Difficulty').copyWith(fillColor: const Color(0xFF3A2A1C)),
+                              items: const ['beginner', 'intermediate', 'advanced']
+                                  .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                                  .toList(),
+                              onChanged: (v) => tutorDifficulty.value = v ?? 'beginner',
+                            ),
+                            const SizedBox(height: 8),
+                            Wrap(
+                              spacing: 8,
+                              runSpacing: 8,
+                              children: lessonTopics
+                                  .map((topic) => Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                        decoration: BoxDecoration(
+                                          color: topic == 'Greetings' ? const Color(0xFFD4822A) : const Color(0xFF3A2A1C),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: Text(topic, style: GoogleFonts.nunito(color: Colors.white, fontWeight: FontWeight.w700)),
+                                      ))
+                                  .toList(),
+                            ),
+                          ],
+                        ),
+                      ),
+                    isTinyPhone
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                'Lesson 1: ${tutorLesson?.concept ?? 'Greetings by Time of Day'}',
+                                style: GoogleFonts.playfairDisplay(
+                                  color: theme.title,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              FilledButton(
+                                onPressed: isBusy ? null : onLoadTutorLesson,
+                                style: FilledButton.styleFrom(backgroundColor: theme.accent),
+                                child: Text(isBusy ? 'Loading...' : 'New Card'),
+                              ),
+                            ],
+                          )
+                        : Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  'Lesson 1: ${tutorLesson?.concept ?? 'Greetings by Time of Day'}',
+                                  style: GoogleFonts.playfairDisplay(
+                                    color: theme.title,
+                                    fontSize: isPhone ? 22 : 28,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              FilledButton(
+                                onPressed: isBusy ? null : onLoadTutorLesson,
+                                style: FilledButton.styleFrom(backgroundColor: theme.accent),
+                                child: Text(isBusy ? 'Loading...' : 'New Card'),
+                              ),
+                            ],
+                          ),
+                    const SizedBox(height: 8),
+                    LinearProgressIndicator(
+                      value: 0.33,
+                      minHeight: 8,
+                      backgroundColor: Colors.grey.shade300,
+                      valueColor: AlwaysStoppedAnimation<Color>(theme.accent),
+                    ),
+                    const SizedBox(height: 16),
+                    AnimatedCrossFade(
+                      firstChild: card(
                         Padding(
-                          padding: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(16),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(tutorLesson?.example.targetLang ?? '-', style: bodyStyle.copyWith(fontWeight: FontWeight.w700)),
-                              Text(tutorLesson?.example.transliteration ?? '-', style: monoStyle),
-                              Text(tutorLesson?.example.english ?? '-', style: bodyStyle),
+                              Text(
+                                tutorLesson?.concept ?? 'Greetings by Time of Day',
+                                style: GoogleFonts.playfairDisplay(
+                                  color: theme.title,
+                                  fontSize: isTinyPhone ? 20 : 24,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Text(tutorLesson?.explanation ?? '', style: bodyStyle.copyWith(fontSize: isTinyPhone ? 15 : 18)),
+                              const SizedBox(height: 14),
+                              card(
+                                color: const Color(0xFFF6EED8),
+                                Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        tutorLesson?.example.targetLang ?? '-',
+                                        style: GoogleFonts.nunito(
+                                          fontSize: isTinyPhone ? 26 : 34,
+                                          fontWeight: FontWeight.w700,
+                                          color: theme.title,
+                                        ),
+                                      ),
+                                      Text(tutorLesson?.example.transliteration ?? '-', style: monoStyle),
+                                      Text(tutorLesson?.example.english ?? '-', style: bodyStyle.copyWith(fontSize: isTinyPhone ? 18 : 24)),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              card(
+                                color: const Color(0xFFF8F3E6),
+                                Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Text(
+                                    '💡 Memory Tip\n${tutorLesson?.memoryTip ?? '-'}',
+                                    style: bodyStyle.copyWith(fontSize: isTinyPhone ? 17 : 22),
+                                  ),
+                                ),
+                              ),
+                              if ((tutorLesson?.watchOut ?? '').isNotEmpty) ...[
+                                const SizedBox(height: 8),
+                                card(
+                                  color: const Color(0xFFFBEAEC),
+                                  Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Text(
+                                      '⚠️ Watch Out\n${tutorLesson!.watchOut}',
+                                      style: bodyStyle.copyWith(fontSize: isTinyPhone ? 17 : 22),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                              const SizedBox(height: 12),
+                              FilledButton(
+                                onPressed: tutorLesson == null ? null : () => tutorFlipped.value = true,
+                                style: FilledButton.styleFrom(
+                                  backgroundColor: theme.accent,
+                                  minimumSize: const Size(double.infinity, 52),
+                                ),
+                                child: const Text('Practice This Lesson'),
+                              ),
                             ],
                           ),
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      Text('Memory tip: ${tutorLesson?.memoryTip ?? '-'}', style: bodyStyle),
-                      if ((tutorLesson?.watchOut ?? '').isNotEmpty)
+                      secondChild: card(
                         Padding(
-                          padding: const EdgeInsets.only(top: 4),
-                          child: Row(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Icon(Icons.warning_amber_rounded, size: 16, color: Color(0xFFC4663A)),
-                              const SizedBox(width: 4),
-                              Expanded(child: Text('Watch out: ${tutorLesson!.watchOut}', style: bodyStyle.copyWith(color: const Color(0xFFC4663A)))),
+                              Text(
+                                'Practice',
+                                style: GoogleFonts.playfairDisplay(
+                                  color: theme.title,
+                                  fontSize: isTinyPhone ? 20 : 24,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                tutorLesson?.practiceQuestion ?? 'How would you apply this concept?',
+                                style: bodyStyle.copyWith(fontWeight: FontWeight.w700, fontSize: isTinyPhone ? 18 : 23),
+                              ),
+                              if ((tutorLesson?.practiceHint ?? '').isNotEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 4),
+                                  child: Text(
+                                    'Hint: ${tutorLesson!.practiceHint}',
+                                    style: bodyStyle.copyWith(fontStyle: FontStyle.italic, fontSize: isTinyPhone ? 16 : 20),
+                                  ),
+                                ),
+                              const SizedBox(height: 10),
+                              TextField(
+                                controller: tutorInput,
+                                minLines: 2,
+                                maxLines: 4,
+                                decoration: _inputDecoration(theme, 'Type your answer here...'),
+                              ),
+                              const SizedBox(height: 8),
+                              FilledButton(
+                                onPressed: isBusy || tutorLesson == null ? null : onCheckTutorAnswer,
+                                style: FilledButton.styleFrom(backgroundColor: theme.accent),
+                                child: Text(isBusy ? 'Checking...' : 'Check Answer'),
+                              ),
+                              if (tutorFeedback != null) ...[
+                                const SizedBox(height: 10),
+                                Text('${tutorFeedback.verdict.toUpperCase()} • ${tutorFeedback.score}', style: bodyStyle.copyWith(fontWeight: FontWeight.w800)),
+                                const SizedBox(height: 6),
+                                Text(tutorFeedback.encouragement, style: bodyStyle),
+                                Text('Correction: ${tutorFeedback.correction}', style: bodyStyle),
+                                Text('Why: ${tutorFeedback.why}', style: bodyStyle),
+                                const SizedBox(height: 8),
+                                Text('Next step: ${tutorFeedback.nextStep}', style: bodyStyle.copyWith(fontWeight: FontWeight.w700)),
+                              ],
+                              const SizedBox(height: 10),
+                              OutlinedButton(
+                                onPressed: () => tutorFlipped.value = false,
+                                child: const Text('Back to Lesson'),
+                              ),
                             ],
                           ),
                         ),
-                      const SizedBox(height: 10),
-                      FilledButton(
-                        onPressed: tutorLesson == null ? null : () => tutorFlipped.value = true,
-                        style: FilledButton.styleFrom(backgroundColor: theme.accent),
-                        child: const Text('Practice This Lesson'),
                       ),
-                    ],
-                  ),
+                      crossFadeState: tutorFlipped.value ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                      duration: const Duration(milliseconds: 300),
+                    ),
+                  ],
                 ),
               ),
-              secondChild: card(
-                Padding(
-                  padding: const EdgeInsets.all(14),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Try it yourself!', style: GoogleFonts.playfairDisplay(color: theme.title, fontSize: 24)),
-                      const SizedBox(height: 8),
-                      Text(
-                        tutorLesson?.practiceQuestion ?? 'How would you apply this concept?',
-                        style: bodyStyle.copyWith(fontWeight: FontWeight.w700),
-                      ),
-                      if ((tutorLesson?.practiceHint ?? '').isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4),
-                          child: Text('Hint: ${tutorLesson!.practiceHint}', style: bodyStyle.copyWith(fontStyle: FontStyle.italic)),
-                        ),
-                      const SizedBox(height: 10),
-                      TextField(
-                        controller: tutorInput,
-                        minLines: 2,
-                        maxLines: 4,
-                        decoration: _inputDecoration(theme, 'Type your answer here...'),
-                      ),
-                      const SizedBox(height: 8),
-                      FilledButton(
-                        onPressed: isBusy || tutorLesson == null ? null : onCheckTutorAnswer,
-                        style: FilledButton.styleFrom(backgroundColor: theme.accent),
-                        child: Text(isBusy ? 'Checking...' : 'Check Answer'),
-                      ),
-                      if (tutorFeedback != null) ...[
-                        const SizedBox(height: 10),
-                        Text(
-                          '${tutorFeedback.verdict.toUpperCase()} • ${tutorFeedback.score}',
-                          style: bodyStyle.copyWith(fontWeight: FontWeight.w800),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(tutorFeedback.encouragement, style: bodyStyle),
-                        Text('Correction: ${tutorFeedback.correction}', style: bodyStyle),
-                        Text('Why: ${tutorFeedback.why}', style: bodyStyle),
-                        const SizedBox(height: 8),
-                        Text('Next step: ${tutorFeedback.nextStep}', style: bodyStyle.copyWith(fontWeight: FontWeight.w700)),
-                      ],
-                      const SizedBox(height: 10),
-                      OutlinedButton(
-                        onPressed: () => tutorFlipped.value = false,
-                        child: const Text('Back to Lesson'),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              crossFadeState: tutorFlipped.value ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-              duration: const Duration(milliseconds: 300),
             ),
           ],
         ),
@@ -1169,9 +1422,16 @@ Language: $targetLanguage
     }
 
     if (mode == PolieMode.roleplay) {
+      final sceneSubtitle = <String, String>{
+        'Market': 'Bargain for goods with a friendly vendor',
+        'Restaurant': 'Order naturally and ask follow-up questions',
+        'Meeting Elder': 'Use respectful phrases and proper tone',
+        'Job Interview': 'Answer clearly and confidently',
+        'Family Dinner': 'Keep the tone warm and social',
+      };
       return Container(
         key: key,
-        padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
+        padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -1182,44 +1442,55 @@ Language: $targetLanguage
         child: Column(
           children: [
             error,
-            intro,
-            card(
-              color: Colors.white.withOpacity(0.06),
+            Container(
+              width: double.infinity,
+              height: isPhone ? 124 : 140,
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [Color(0xFF8E2E09), Color(0xFFE09A18)],
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
               Padding(
                 padding: const EdgeInsets.all(12),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
                         Expanded(
-                          child: DropdownButtonFormField<String>(
-                            value: roleplayScene.value,
-                            dropdownColor: const Color(0xFF2A1F14),
-                            style: const TextStyle(color: Color(0xFFFAF3E0), fontSize: 14),
-                            decoration: _inputDecoration(theme, 'Scene'),
-                            items: const ['Market', 'Restaurant', 'Meeting Elder', 'Job Interview', 'Family Dinner']
-                                .map((e) => DropdownMenuItem(value: e, child: Text(e, style: TextStyle(color: Color(0xFFFAF3E0)))))
-                                .toList(),
-                            onChanged: (v) => roleplayScene.value = v ?? 'Market',
+                          child: Text(
+                            'At the ${roleplayScene.value}',
+                            style: GoogleFonts.playfairDisplay(
+                              color: Colors.white,
+                              fontSize: isPhone ? 26 : 34,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: DropdownButtonFormField<String>(
-                            value: roleplayDifficulty.value,
-                            dropdownColor: const Color(0xFF2A1F14),
-                            style: const TextStyle(color: Color(0xFFFAF3E0), fontSize: 14),
-                            decoration: _inputDecoration(theme, 'Difficulty'),
-                            items: const ['bilingual', 'hint', 'immersion']
-                                .map((e) => DropdownMenuItem(value: e, child: Text(e, style: TextStyle(color: Color(0xFFFAF3E0)))))
-                                .toList(),
-                            onChanged: (v) => roleplayDifficulty.value = v ?? 'bilingual',
+                        FilledButton(
+                          onPressed: () {},
+                          style: FilledButton.styleFrom(
+                            backgroundColor: Colors.white.withOpacity(0.2),
+                            foregroundColor: Colors.white,
                           ),
+                          child: const Text('Change Scene'),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
-                    TweenAnimationBuilder<double>(
+                    const SizedBox(height: 8),
+                    Text(
+                      sceneSubtitle[roleplayScene.value] ?? 'Practice natural conversation in context',
+                      style: GoogleFonts.nunito(color: Colors.white.withOpacity(0.9), fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            TweenAnimationBuilder<double>(
                       tween: Tween(begin: 24, end: 0),
                       duration: const Duration(milliseconds: 520),
                       builder: (context, value, child) {
@@ -1231,31 +1502,60 @@ Language: $targetLanguage
                           ),
                         );
                       },
-                      child: Container(
+                      child: card(
                         width: double.infinity,
-                        height: 96,
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(colors: [Color(0xFF2D1B0E), Color(0xFFC4663A)]),
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        padding: const EdgeInsets.all(12),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          '${roleplayScene.value} • Curtain rise',
-                          style: GoogleFonts.playfairDisplay(color: const Color(0xFFFAF3E0), fontSize: 22, fontWeight: FontWeight.w700),
+                        color: Colors.black.withOpacity(0.35),
+                        Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Row(
+                            children: [
+                              const CircleAvatar(
+                                radius: 18,
+                                backgroundColor: Color(0xFFD4822A),
+                                child: Text('MB', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Mama Bisi', style: GoogleFonts.nunito(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 18)),
+                                    Text('Friendly, patient vendor', style: GoogleFonts.nunito(color: Colors.white70)),
+                                  ],
+                                ),
+                              ),
+                              Wrap(
+                                spacing: 6,
+                                runSpacing: 6,
+                                children: [
+                                  Chip(
+                                    label: Text('Bilingual', style: TextStyle(fontSize: isTinyPhone ? 11 : 12)),
+                                    backgroundColor: const Color(0xFF2BDB8C),
+                                    visualDensity: isTinyPhone ? const VisualDensity(horizontal: -2, vertical: -2) : null,
+                                  ),
+                                  Chip(
+                                    label: Text('Hints', style: TextStyle(fontSize: isTinyPhone ? 11 : 12)),
+                                    visualDensity: isTinyPhone ? const VisualDensity(horizontal: -2, vertical: -2) : null,
+                                  ),
+                                  Chip(
+                                    label: Text('Immersion', style: TextStyle(fontSize: isTinyPhone ? 11 : 12)),
+                                    visualDensity: isTinyPhone ? const VisualDensity(horizontal: -2, vertical: -2) : null,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
                   ],
                 ),
               ),
-            ),
             const SizedBox(height: 10),
             Expanded(
               child: card(
-                color: Colors.white.withOpacity(0.06),
+                color: Colors.black.withOpacity(0.28),
                 ListView.builder(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(12),
                   itemCount: roleplayMessages.length,
                   itemBuilder: (context, index) {
                     final item = roleplayMessages[index];
@@ -1264,7 +1564,7 @@ Language: $targetLanguage
                         alignment: Alignment.centerRight,
                         child: Container(
                           margin: const EdgeInsets.only(bottom: 8),
-                          padding: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
                             color: const Color(0xFFC4663A),
                             borderRadius: BorderRadius.circular(12),
@@ -1276,9 +1576,9 @@ Language: $targetLanguage
                     final ai = item.ai!;
                     return Container(
                       margin: const EdgeInsets.only(bottom: 8),
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF20160E),
+                        color: const Color(0xFF15110D),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(color: const Color(0xFFD4822A).withOpacity(0.4)),
                       ),
@@ -1306,6 +1606,12 @@ Language: $targetLanguage
             const SizedBox(height: 8),
             Row(
               children: [
+                IconButton(
+                  onPressed: () {},
+                  style: IconButton.styleFrom(backgroundColor: Colors.white10),
+                  icon: const Icon(Icons.help_outline_rounded, color: Colors.white70),
+                ),
+                const SizedBox(width: 8),
                 Expanded(
                   child: TextField(
                     controller: roleplayInput,
@@ -1316,10 +1622,20 @@ Language: $targetLanguage
                   ),
                 ),
                 const SizedBox(width: 8),
+                IconButton(
+                  onPressed: () {},
+                  style: IconButton.styleFrom(backgroundColor: Colors.white10),
+                  icon: const Icon(Icons.mic_none_rounded, color: Colors.white),
+                ),
+                const SizedBox(width: 8),
                 FilledButton(
                   onPressed: isBusy ? null : onSendRoleplay,
-                  style: FilledButton.styleFrom(backgroundColor: theme.accent),
-                  child: Text(isBusy ? '...' : 'Send'),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: theme.accent,
+                    shape: const CircleBorder(),
+                    padding: const EdgeInsets.all(12),
+                  ),
+                  child: Text(isBusy ? '...' : '🌐'),
                 ),
               ],
             ),
@@ -1335,36 +1651,47 @@ Language: $targetLanguage
         child: Column(
           children: [
             error,
-            intro,
             Padding(
               padding: const EdgeInsets.fromLTRB(12, 4, 12, 8),
-              child: card(
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Row(
+              child: Row(
+                children: [
+                  const CircleAvatar(
+                    backgroundColor: Color(0xFFD4822A),
+                    child: Icon(Icons.smart_toy_rounded, color: Colors.white),
+                  ),
+                  const SizedBox(width: 8),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CircleAvatar(backgroundColor: Color(0xFFD4822A), child: Icon(Icons.smart_toy_rounded, color: Colors.white)),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text('Polie • online', style: bodyStyle.copyWith(fontWeight: FontWeight.w700)),
-                      ),
-                      SizedBox(
-                        width: 130,
-                        child: LinearProgressIndicator(
-                          value: languageRatio,
-                          minHeight: 8,
-                          backgroundColor: Colors.grey.shade300,
-                          valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF4A7C59)),
-                        ),
-                      ),
+                      Text('Polie', style: bodyStyle.copyWith(fontWeight: FontWeight.w800)),
+                      Text('Online', style: bodyStyle.copyWith(color: const Color(0xFF4A7C59), fontSize: 12)),
                     ],
                   ),
-                ),
+                  const Spacer(),
+                  Container(
+                    width: isTinyPhone ? 88 : 120,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: FractionallySizedBox(
+                      alignment: Alignment.centerLeft,
+                      widthFactor: languageRatio.clamp(0, 1),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF4A7C59),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             Expanded(
               child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 itemCount: conversationMessages.length,
                 itemBuilder: (context, index) {
                   final item = conversationMessages[index];
@@ -1373,7 +1700,7 @@ Language: $targetLanguage
                       alignment: Alignment.centerRight,
                       child: Container(
                         margin: const EdgeInsets.only(bottom: 8),
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
                           color: const Color(0xFFD4822A),
                           borderRadius: BorderRadius.circular(14),
@@ -1387,10 +1714,11 @@ Language: $targetLanguage
                     alignment: Alignment.centerLeft,
                     child: Container(
                       margin: const EdgeInsets.only(bottom: 8),
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(14),
+                        border: Border.all(color: theme.border.withOpacity(0.6)),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1410,7 +1738,15 @@ Language: $targetLanguage
                               children: ai.suggestedReplies
                                   .take(3)
                                   .map((reply) => ActionChip(
-                                        label: Text(reply),
+                                        label: SizedBox(
+                                          width: isTinyPhone ? 140 : null,
+                                          child: Text(
+                                            reply,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(fontSize: isTinyPhone ? 12 : 14),
+                                          ),
+                                        ),
+                                        visualDensity: isTinyPhone ? const VisualDensity(horizontal: -2, vertical: -2) : null,
                                         onPressed: isBusy ? null : () => onSendConversation(reply),
                                       ))
                                   .toList(),
@@ -1427,17 +1763,46 @@ Language: $targetLanguage
               padding: const EdgeInsets.fromLTRB(12, 6, 12, 12),
               child: Row(
                 children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.sentiment_satisfied_alt_rounded),
+                  ),
+                  const SizedBox(width: 8),
                   Expanded(
                     child: TextField(
                       controller: conversationInput,
-                      decoration: _inputDecoration(theme, 'Message'),
+                      decoration: _inputDecoration(theme, 'Type a message...').copyWith(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(28),
+                          borderSide: BorderSide(color: theme.border),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(28),
+                          borderSide: BorderSide(color: theme.border),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(28),
+                          borderSide: BorderSide(color: theme.accent, width: 1.3),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 8),
+                  IconButton(
+                    onPressed: () {},
+                    style: IconButton.styleFrom(backgroundColor: Colors.white),
+                    icon: const Icon(Icons.mic_none_rounded, size: 20),
+                  ),
+                  const SizedBox(width: 6),
                   FilledButton(
                     onPressed: isBusy ? null : onSendConversation,
-                    style: FilledButton.styleFrom(backgroundColor: theme.accent),
-                    child: Text(isBusy ? '...' : 'Send'),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: theme.accent,
+                      shape: const CircleBorder(),
+                      padding: const EdgeInsets.all(12),
+                    ),
+                    child: Text(isBusy ? '...' : '➤'),
                   ),
                 ],
               ),
@@ -1454,17 +1819,36 @@ Language: $targetLanguage
         child: Column(
           children: [
             error,
-            intro,
             Padding(
               padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
               child: card(
-                color: Colors.white.withOpacity(0.06),
+                color: Colors.white.withOpacity(0.02),
                 Padding(
                   padding: const EdgeInsets.all(10),
-                  child: Row(
+                  child: Column(
                     children: [
-                      Expanded(child: Text(vocabSetName.value, style: bodyStyle.copyWith(color: const Color(0xFFFAF3E0)))),
-                      Text('Remaining: $vocabDeckCount', style: bodyStyle.copyWith(color: const Color(0xFFFAF3E0))),
+                      Wrap(
+                        alignment: WrapAlignment.spaceBetween,
+                        runSpacing: 6,
+                        spacing: 10,
+                        children: [
+                          Text(
+                            'Daily Vocabulary',
+                            style: bodyStyle.copyWith(color: const Color(0xFFFAF3E0), fontWeight: FontWeight.w700),
+                          ),
+                          Text(
+                            '${(10 - vocabDeckCount).clamp(0, 10)}/10 • $vocabDeckCount remaining',
+                            style: bodyStyle.copyWith(color: const Color(0xFFFAF3E0), fontSize: isTinyPhone ? 12 : 14),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      LinearProgressIndicator(
+                        value: ((10 - vocabDeckCount).clamp(0, 10)) / 10,
+                        minHeight: 6,
+                        backgroundColor: Colors.white12,
+                        valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFD4822A)),
+                      ),
                     ],
                   ),
                 ),
@@ -1477,7 +1861,7 @@ Language: $targetLanguage
                   onTap: () => vocabReveal.value = !vocabReveal.value,
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 260),
-                    width: 330,
+                    width: isTinyPhone ? (screenWidth - 24).clamp(260, 330).toDouble() : 330,
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: const Color(0xFF1A130C),
@@ -1490,26 +1874,71 @@ Language: $targetLanguage
                         ? Text('Tap "Next Word"', style: bodyStyle.copyWith(color: const Color(0xFFFAF3E0)))
                         : Column(
                             mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              if (vocabReveal.value)
+                                Text(
+                                  '${vocabCard.partOfSpeech.toUpperCase()} · ${vocabCard.difficulty.toUpperCase()}',
+                                  style: bodyStyle.copyWith(color: const Color(0xFFF2C14E), fontWeight: FontWeight.w800),
+                                )
+                              else
+                                const Center(child: Icon(Icons.auto_awesome_rounded, color: Color(0xFFF2C14E), size: 26)),
+                              const SizedBox(height: 8),
                               Text(
                                 vocabCard.word,
                                 style: GoogleFonts.jetBrainsMono(
                                   color: const Color(0xFFFAF3E0),
-                                  fontSize: 56,
-                                  letterSpacing: 1.5,
+                                  fontSize: isTinyPhone ? 44 : 56,
+                                  letterSpacing: isTinyPhone ? 1.0 : 1.5,
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
                               const SizedBox(height: 8),
                               Text(vocabCard.pronunciation, style: bodyStyle.copyWith(color: const Color(0xFFF2C14E))),
+                              const SizedBox(height: 6),
+                              if (!vocabReveal.value)
+                                Text('Tap to reveal', style: bodyStyle.copyWith(color: const Color(0xFFD8C9B7))),
                               if (vocabReveal.value) ...[
                                 const SizedBox(height: 10),
-                                Text(vocabCard.english, style: bodyStyle.copyWith(color: const Color(0xFFFAF3E0))),
-                                Text(vocabCard.example.target, style: bodyStyle.copyWith(color: const Color(0xFFFAF3E0))),
-                                Text(vocabCard.example.english, style: bodyStyle.copyWith(color: const Color(0xFFD8C9B7))),
+                                card(
+                                  color: Colors.white.withOpacity(0.06),
+                                  Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(vocabCard.english, style: bodyStyle.copyWith(color: const Color(0xFFFAF3E0), fontWeight: FontWeight.w700)),
+                                        const SizedBox(height: 4),
+                                        Text(vocabCard.example.target, style: bodyStyle.copyWith(color: const Color(0xFFFAF3E0))),
+                                        Text(vocabCard.example.english, style: bodyStyle.copyWith(color: const Color(0xFFD8C9B7))),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                                 const SizedBox(height: 8),
-                                Text('Memory peg: ${vocabCard.memoryPeg}',
-                                    style: bodyStyle.copyWith(color: const Color(0xFFF2C14E))),
+                                card(
+                                  color: Colors.white.withOpacity(0.06),
+                                  Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Text(
+                                      '💡 Memory Peg\n${vocabCard.memoryPeg}',
+                                      style: bodyStyle.copyWith(color: const Color(0xFFF2C14E)),
+                                    ),
+                                  ),
+                                ),
+                                if ((vocabCard.culturalNote ?? '').isNotEmpty) ...[
+                                  const SizedBox(height: 8),
+                                  card(
+                                    color: Colors.white.withOpacity(0.06),
+                                    Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: Text(
+                                        '🟢 Cultural Note\n${vocabCard.culturalNote}',
+                                        style: bodyStyle.copyWith(color: const Color(0xFFFAF3E0)),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ],
                             ],
                           ),
@@ -1523,17 +1952,17 @@ Language: $targetLanguage
                 children: [
                   Row(
                     children: [
-                      Expanded(child: _srsButton('Again (1m)', Colors.red.shade500, isBusy ? null : () => onScoreSrs('again'))),
+                      Expanded(child: _srsButton(context, 'Again (1m)', Colors.red.shade500, isBusy ? null : () => onScoreSrs('again'))),
                       const SizedBox(width: 6),
-                      Expanded(child: _srsButton('Hard (10m)', Colors.orange.shade600, isBusy ? null : () => onScoreSrs('hard'))),
+                      Expanded(child: _srsButton(context, 'Hard (10m)', Colors.orange.shade600, isBusy ? null : () => onScoreSrs('hard'))),
                     ],
                   ),
                   const SizedBox(height: 6),
                   Row(
                     children: [
-                      Expanded(child: _srsButton('Good (1d)', Colors.green.shade600, isBusy ? null : () => onScoreSrs('good'))),
+                      Expanded(child: _srsButton(context, 'Good (1d)', Colors.green.shade600, isBusy ? null : () => onScoreSrs('good'))),
                       const SizedBox(width: 6),
-                      Expanded(child: _srsButton('Easy (4d)', Colors.blue.shade600, isBusy ? null : () => onScoreSrs('easy'))),
+                      Expanded(child: _srsButton(context, 'Easy (4d)', Colors.blue.shade600, isBusy ? null : () => onScoreSrs('easy'))),
                     ],
                   ),
                   const SizedBox(height: 8),
@@ -1554,29 +1983,48 @@ Language: $targetLanguage
 
     return SingleChildScrollView(
       key: key,
-      padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
+      padding: EdgeInsets.fromLTRB(basePad, basePad, basePad, 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           error,
-          intro,
-          Row(
+          Text(
+            'Your Progress Report',
+            style: GoogleFonts.playfairDisplay(
+              fontSize: isTinyPhone ? 20 : 24,
+              fontWeight: FontWeight.w700,
+              color: theme.title,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text("Let's see how you're doing! 📊", style: bodyStyle.copyWith(fontSize: 14)),
+          const SizedBox(height: 10),
+          Wrap(
+            alignment: WrapAlignment.end,
+            spacing: 8,
+            runSpacing: 8,
             children: [
-              Expanded(
-                child: DropdownButtonFormField<String>(
-                  value: reviewPeriod.value,
-                  decoration: _inputDecoration(theme, 'Period'),
-                  items: const ['week', 'month', 'all']
-                      .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                      .toList(),
-                  onChanged: (v) => reviewPeriod.value = v ?? 'week',
-                ),
+              _periodChip(
+                context: context,
+                label: 'This Week',
+                selected: reviewPeriod.value == 'week',
+                onTap: () => reviewPeriod.value = 'week',
               ),
-              const SizedBox(width: 8),
-              FilledButton(
+              _periodChip(
+                context: context,
+                label: 'This Month',
+                selected: reviewPeriod.value == 'month',
+                onTap: () => reviewPeriod.value = 'month',
+              ),
+              _periodChip(
+                context: context,
+                label: 'All Time',
+                selected: reviewPeriod.value == 'all',
+                onTap: () => reviewPeriod.value = 'all',
+              ),
+              IconButton(
                 onPressed: isBusy ? null : onLoadReview,
-                style: FilledButton.styleFrom(backgroundColor: theme.accent),
-                child: Text(isBusy ? 'Refreshing...' : 'Refresh'),
+                icon: const Icon(Icons.refresh_rounded),
               ),
             ],
           ),
@@ -1589,36 +2037,31 @@ Language: $targetLanguage
               ),
             )
           else ...[
-            Row(
-              children: [
-                Expanded(child: _statCard('Words Seen', '${reviewPayload.wordsSeen}', const Color(0xFFD4822A))),
-                const SizedBox(width: 8),
-                Expanded(child: _statCard('Accuracy', '${reviewPayload.accuracy.toStringAsFixed(1)}%', const Color(0xFF4A7C59))),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Expanded(child: _statCard('Streak', '${reviewPayload.streak}', const Color(0xFFC4663A))),
-                const SizedBox(width: 8),
-                Expanded(child: _statCard('Lessons', '${reviewPayload.lessonsDone}', const Color(0xFF2D1B0E))),
-              ],
-            ),
-            const SizedBox(height: 10),
-            card(
-              Padding(
-                padding: const EdgeInsets.all(12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(reviewPayload.headlineInsight,
-                        style: GoogleFonts.playfairDisplay(fontSize: 22, fontWeight: FontWeight.w700, color: theme.title)),
-                    const SizedBox(height: 8),
-                    Text(reviewPayload.coachingParagraph, style: bodyStyle),
-                  ],
-                ),
+            if (isTinyPhone) ...[
+              _statCard(context, 'Words Learned', '${reviewPayload.wordsSeen}', const Color(0xFFD4822A)),
+              const SizedBox(height: 8),
+              _statCard(context, 'Accuracy', '${reviewPayload.accuracy.toStringAsFixed(1)}%', const Color(0xFF4A7C59)),
+              const SizedBox(height: 8),
+              _statCard(context, 'Day Streak', '${reviewPayload.streak}', const Color(0xFFE2B93B)),
+              const SizedBox(height: 8),
+              _statCard(context, 'Lessons Done', '${reviewPayload.lessonsDone}', const Color(0xFFC4663A)),
+            ] else ...[
+              Row(
+                children: [
+                  Expanded(child: _statCard(context, 'Words Learned', '${reviewPayload.wordsSeen}', const Color(0xFFD4822A))),
+                  const SizedBox(width: 8),
+                  Expanded(child: _statCard(context, 'Accuracy', '${reviewPayload.accuracy.toStringAsFixed(1)}%', const Color(0xFF4A7C59))),
+                ],
               ),
-            ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(child: _statCard(context, 'Day Streak', '${reviewPayload.streak}', const Color(0xFFE2B93B))),
+                  const SizedBox(width: 8),
+                  Expanded(child: _statCard(context, 'Lessons Done', '${reviewPayload.lessonsDone}', const Color(0xFFC4663A))),
+                ],
+              ),
+            ],
             const SizedBox(height: 10),
             card(
               Padding(
@@ -1626,7 +2069,7 @@ Language: $targetLanguage
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Skills', style: bodyStyle.copyWith(fontWeight: FontWeight.w800)),
+                    Text('Skills Breakdown', style: GoogleFonts.playfairDisplay(fontSize: 22, fontWeight: FontWeight.w700)),
                     const SizedBox(height: 8),
                     ...reviewPayload.skillBars.entries.map((e) {
                       return Padding(
@@ -1643,7 +2086,7 @@ Language: $targetLanguage
                                 value: value,
                                 minHeight: 10,
                                 backgroundColor: Colors.grey.shade300,
-                                valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFD4822A)),
+                                valueColor: AlwaysStoppedAnimation<Color>(_skillColor(e.key)),
                               ),
                             ),
                           ],
@@ -1656,19 +2099,88 @@ Language: $targetLanguage
             ),
             const SizedBox(height: 10),
             card(
+              color: const Color(0xFFD4822A),
               Padding(
                 padding: const EdgeInsets.all(12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Next Steps', style: bodyStyle.copyWith(fontWeight: FontWeight.w800)),
-                    const SizedBox(height: 8),
-                    ...reviewPayload.nextSteps.map((s) => Padding(
-                          padding: const EdgeInsets.only(bottom: 6),
-                          child: Text('• ${s.title} (${s.type}) — ${s.why}', style: bodyStyle),
-                        )),
+                    Text("Polie's Insights", style: GoogleFonts.playfairDisplay(fontSize: 22, fontWeight: FontWeight.w700, color: Colors.white)),
                     const SizedBox(height: 6),
-                    Text(reviewPayload.motivationalClose, style: bodyStyle.copyWith(fontWeight: FontWeight.w700)),
+                    Text(
+                      reviewPayload.headlineInsight,
+                      style: GoogleFonts.nunito(fontSize: 19, color: Colors.white, fontWeight: FontWeight.w800),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(reviewPayload.coachingParagraph, style: GoogleFonts.nunito(fontSize: 14, color: Colors.white.withOpacity(0.95))),
+                    const SizedBox(height: 10),
+                    Text('💪 Your Strengths', style: GoogleFonts.nunito(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w700)),
+                    const SizedBox(height: 8),
+                    ...reviewPayload.strengths.map((s) => Container(
+                          margin: const EdgeInsets.only(bottom: 8),
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text('${s.area}\n${s.note}', style: GoogleFonts.nunito(color: Colors.white, fontSize: 13)),
+                        )),
+                    Text('🎯 Areas to Focus On', style: GoogleFonts.nunito(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w700)),
+                    const SizedBox(height: 8),
+                    ...reviewPayload.growthAreas.map((g) => Container(
+                          margin: const EdgeInsets.only(bottom: 8),
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            '${g.area}\n${g.note}\n💡 Quick win: ${g.quickWin}',
+                            style: GoogleFonts.nunito(color: Colors.white, fontSize: 13),
+                          ),
+                        )),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            card(
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Recommended Next Steps', style: GoogleFonts.playfairDisplay(fontSize: 22, fontWeight: FontWeight.w700)),
+                    const SizedBox(height: 8),
+                    Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: reviewPayload.nextSteps
+                          .map(
+                            (s) => SizedBox(
+                              width: isPhone ? (screenWidth - (basePad * 2) - 8).clamp(220, 340).toDouble() : 260,
+                              child: Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(color: theme.border),
+                                ),
+                                child: Text('${s.title}\n${s.why}\nStart now →', style: bodyStyle.copyWith(fontSize: 13)),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                    const SizedBox(height: 6),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFEFC64F),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(reviewPayload.motivationalClose, style: bodyStyle.copyWith(fontWeight: FontWeight.w700, fontSize: 14)),
+                    ),
                   ],
                 ),
               ),
@@ -1737,12 +2249,42 @@ Language: $targetLanguage
           border: Border.all(color: selected ? color : color.withOpacity(0.3)),
         ),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(selected ? Icons.toggle_on_rounded : Icons.toggle_off_rounded, color: color),
             const SizedBox(width: 6),
-            Text(label),
+            Flexible(child: Text(label, overflow: TextOverflow.ellipsis)),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _periodChip({
+    required BuildContext context,
+    required String label,
+    required bool selected,
+    required VoidCallback onTap,
+  }) {
+    final compact = MediaQuery.sizeOf(context).width < 360;
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: compact ? 10 : 14, vertical: compact ? 8 : 10),
+        decoration: BoxDecoration(
+          color: selected ? const Color(0xFFD4822A) : Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: const Color(0xFFD9CBB6)),
+        ),
+        child: Text(
+          label,
+          style: GoogleFonts.nunito(
+            color: selected ? Colors.white : const Color(0xFF2D1B0E),
+            fontWeight: FontWeight.w700,
+            fontSize: compact ? 12 : 14,
+          ),
         ),
       ),
     );
@@ -1809,7 +2351,8 @@ Language: $targetLanguage
     }
   }
 
-  Widget _srsButton(String label, Color color, VoidCallback? onTap) {
+  Widget _srsButton(BuildContext context, String label, Color color, VoidCallback? onTap) {
+    final compact = MediaQuery.sizeOf(context).width < 360;
     final disabled = onTap == null;
     return InkWell(
       onTap: onTap,
@@ -1817,35 +2360,74 @@ Language: $targetLanguage
       child: Opacity(
         opacity: disabled ? 0.45 : 1.0,
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 10),
+          padding: EdgeInsets.symmetric(vertical: compact ? 9 : 10),
           decoration: BoxDecoration(
             color: color.withOpacity(0.9),
             borderRadius: BorderRadius.circular(10),
           ),
           alignment: Alignment.center,
-          child: Text(label, style: GoogleFonts.nunito(color: Colors.white, fontWeight: FontWeight.w700)),
+          child: Text(
+            label,
+            style: GoogleFonts.nunito(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+              fontSize: compact ? 12 : 14,
+            ),
+          ),
         ),
       ),
     );
   }
 
-  Widget _statCard(String label, String value, Color stripe) {
+  Widget _statCard(BuildContext context, String label, String value, Color stripe) {
+    final compact = MediaQuery.sizeOf(context).width < 360;
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFD9CBB6)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(height: 4, decoration: BoxDecoration(color: stripe, borderRadius: BorderRadius.circular(2))),
           const SizedBox(height: 6),
-          Text(label, style: GoogleFonts.nunito(fontSize: 12)),
-          Text(value, style: GoogleFonts.playfairDisplay(fontSize: 20, fontWeight: FontWeight.w700)),
+          Text(label, style: GoogleFonts.nunito(fontSize: compact ? 11 : 12)),
+          Row(
+            children: [
+              Icon(_statIcon(label), size: 16, color: stripe),
+              const SizedBox(width: 6),
+              Flexible(
+                child: Text(
+                  value,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.playfairDisplay(fontSize: compact ? 17 : 20, fontWeight: FontWeight.w700),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
+  }
+
+  IconData _statIcon(String label) {
+    final normalized = label.toLowerCase();
+    if (normalized.contains('word')) return Icons.menu_book_rounded;
+    if (normalized.contains('accuracy')) return Icons.trending_up_rounded;
+    if (normalized.contains('streak')) return Icons.local_fire_department_rounded;
+    if (normalized.contains('lesson')) return Icons.chat_bubble_outline_rounded;
+    return Icons.insights_rounded;
+  }
+
+  Color _skillColor(String skill) {
+    final s = skill.toLowerCase();
+    if (s.contains('vocab')) return const Color(0xFFD4822A);
+    if (s.contains('grammar')) return const Color(0xFF4A7C59);
+    if (s.contains('pronunciation')) return const Color(0xFFE2B93B);
+    if (s.contains('conversation')) return const Color(0xFFC4663A);
+    return const Color(0xFFD4822A);
   }
 }
 
@@ -2289,7 +2871,7 @@ class _VocabPayload {
         .map((e) => e is Map<String, dynamic> ? e : <String, dynamic>{})
         .toList();
     return _VocabPayload(
-      word: _cleanAiText((_n(json, 'word', fallback) as String), fallback: 'Word unavailable'),
+      word: _cleanAiText((_n(json, 'word', fallback) as String), fallback: 'New word'),
       pronunciation: _cleanAiText((_n(json, 'pronunciation', '-') as String)),
       partOfSpeech: _cleanAiText((_n(json, 'part_of_speech', 'word') as String), fallback: 'word'),
       english: _cleanAiText((_n(json, 'english', '-') as String)),
@@ -2492,5 +3074,72 @@ dynamic _buildVocabularyWord(_VocabPayload card, String language) {
       'difficulty': card.difficulty,
       if (card.culturalNote != null) 'cultural_note': card.culturalNote,
     },
+  );
+}
+
+bool _isUnavailableWord(String word) {
+  final w = word.trim().toLowerCase();
+  return w.isEmpty || w == 'word unavailable' || w == 'unavailable' || w == 'n/a' || w == '-';
+}
+
+_VocabPayload _fallbackVocabPayload(String language) {
+  final lang = language.trim().toLowerCase();
+  if (lang.contains('yoruba')) {
+    return const _VocabPayload(
+      word: 'ẹ̀kọ́',
+      pronunciation: '/ɛ̀.kɔ́/',
+      partOfSpeech: 'noun',
+      english: 'lesson',
+      example: _VocabExample(target: 'Ẹ̀kọ́ yìí dára.', english: 'This lesson is good.'),
+      memoryPeg: 'Think of EKO as learning in action.',
+      culturalNote: null,
+      relatedWords: [
+        _VocabRelatedWord(word: 'kọ́', relationship: 'related'),
+      ],
+      difficulty: 'beginner',
+    );
+  }
+  if (lang.contains('igbo')) {
+    return const _VocabPayload(
+      word: 'mmụta',
+      pronunciation: '/m.mu.ta/',
+      partOfSpeech: 'noun',
+      english: 'learning',
+      example: _VocabExample(target: 'Mmụ̀ta dị mkpa.', english: 'Learning is important.'),
+      memoryPeg: 'Learning grows step by step.',
+      culturalNote: null,
+      relatedWords: [
+        _VocabRelatedWord(word: 'mụ', relationship: 'related'),
+      ],
+      difficulty: 'beginner',
+    );
+  }
+  if (lang.contains('swahili')) {
+    return const _VocabPayload(
+      word: 'kujifunza',
+      pronunciation: '/ku.dʒi.fun.za/',
+      partOfSpeech: 'verb',
+      english: 'to learn',
+      example: _VocabExample(target: 'Ninapenda kujifunza.', english: 'I like to learn.'),
+      memoryPeg: 'Learning is a daily journey.',
+      culturalNote: null,
+      relatedWords: [
+        _VocabRelatedWord(word: 'soma', relationship: 'related'),
+      ],
+      difficulty: 'beginner',
+    );
+  }
+  return const _VocabPayload(
+    word: 'learning',
+    pronunciation: '/lɜːrnɪŋ/',
+    partOfSpeech: 'noun',
+    english: 'learning',
+    example: _VocabExample(target: 'Learning opens opportunities.', english: 'Learning opens opportunities.'),
+    memoryPeg: 'Keep one new word every day.',
+    culturalNote: null,
+    relatedWords: [
+      _VocabRelatedWord(word: 'study', relationship: 'related'),
+    ],
+    difficulty: 'beginner',
   );
 }

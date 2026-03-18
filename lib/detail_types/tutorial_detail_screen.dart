@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/utils/constants.dart';
+import 'package:lingafriq/utils/media_url_resolver.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
@@ -34,6 +35,7 @@ class TutorialDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoading = ref.watch(apiProvider.select((value) => value.isLoading));
+    final resolvedImage = resolveMediaUrl(image);
     return LoadingOverlayPro(
       isLoading: isLoading,
       child: Scaffold(
@@ -70,13 +72,13 @@ class TutorialDetailScreen extends ConsumerWidget {
                     shadowColor: Colors.black38,
                     child: PortraitPlayerPage(videoUrl: video!),
                   ).px16().py8(),
-                if ((image != null && image!.isNotEmpty))
+                if ((resolvedImage != null && resolvedImage.isNotEmpty))
                   Card(
                     color: context.isDarkMode ? context.cardColor : Theme.of(context).colorScheme.surface,
                     elevation: 12,
                     shadowColor: Colors.black38,
                     child: CachedNetworkImage(
-                      imageUrl: image!,
+                      imageUrl: resolvedImage!,
                       placeholder: kImagePlaceHolder,
                       errorWidget: kErrorWidget,
                     ).cornerRadius(kBorderRadius),

@@ -13,6 +13,7 @@ import '../../models/word_correction_model.dart';
 import '../../providers/api_provider.dart';
 import '../../providers/navigation_provider.dart';
 import '../../utils/api.dart';
+import '../../utils/media_url_resolver.dart';
 import '../../widgets/error_widet.dart';
 import '../../widgets/info_widget.dart';
 import '../../widgets/language_type_header_builder.dart';
@@ -187,16 +188,113 @@ class _SectionLessonsList extends ConsumerWidget {
   }
 
   Future<bool?> openTutorialScreen(SectionLessonModel sectionLesson, WidgetRef ref) async {
+    final payload = sectionLesson.otherData is Map
+        ? Map<String, dynamic>.from(sectionLesson.otherData as Map)
+        : <String, dynamic>{};
     final tutorialScreen = TutorialDetailScreen(
       title: sectionLesson.title,
-      text: sectionLesson.otherData?['text'] ?? sectionLesson.otherData?['title'],
-      audio: sectionLesson.otherData['audio'],
-      video: sectionLesson.otherData['video'],
-      image: sectionLesson.otherData['image'],
+      text: _resolveText(payload),
+      audio: _resolveMedia(payload, const [
+        'audio',
+        'audio_url',
+        'audioUrl',
+        'lesson_audio_url',
+        'lessonAudioUrl',
+        'media_audio_url',
+        'mediaAudioUrl',
+        'file_url',
+        'url',
+      ]),
+      video: _resolveMedia(payload, const [
+        'video',
+        'video_url',
+        'videoUrl',
+        'lesson_video_url',
+        'lessonVideoUrl',
+        'media_video_url',
+        'mediaVideoUrl',
+      ]),
+      image: _resolveMedia(payload, const [
+        'image',
+        'image_url',
+        'imageUrl',
+        'thumbnail',
+        'thumbnail_url',
+        'thumbnailUrl',
+        'poster_url',
+        'posterUrl',
+      ]),
       endpointToHit: Api.completeLessonTutorial(lesson.id, sectionLesson.id),
       isCompleted: sectionLesson.isCompleted(ref),
     );
     return await ref.read(navigationProvider).navigateTo(tutorialScreen);
+  }
+
+  String? _resolveText(Map<String, dynamic> payload) {
+    final direct = (payload['text'] ?? payload['title'])?.toString().trim();
+    if (direct != null && direct.isNotEmpty) return direct;
+    final localized = payload['localized_text'];
+    if (localized is Map) {
+      for (final value in localized.values) {
+        final text = value?.toString().trim();
+        if (text != null && text.isNotEmpty) return text;
+      }
+    }
+    return null;
+  }
+
+  String? _resolveMedia(Map<String, dynamic> payload, List<String> keys) {
+    for (final key in keys) {
+      final resolved = _resolveMediaValue(payload[key]);
+      if (resolved != null && resolved.isNotEmpty) return resolved;
+    }
+    final media = payload['media'];
+    if (media is Map) {
+      final mediaMap = Map<String, dynamic>.from(media);
+      for (final key in keys) {
+        final resolved = _resolveMediaValue(mediaMap[key]);
+        if (resolved != null && resolved.isNotEmpty) return resolved;
+      }
+    }
+    return null;
+  }
+
+  String? _resolveMediaValue(dynamic value) {
+    if (value == null) return null;
+    if (value is String) {
+      final out = resolveMediaUrl(value) ?? value;
+      return out.trim().isEmpty ? null : out;
+    }
+    if (value is List) {
+      for (final item in value) {
+        final resolved = _resolveMediaValue(item);
+        if (resolved != null && resolved.isNotEmpty) return resolved;
+      }
+      return null;
+    }
+    if (value is Map) {
+      final map = Map<String, dynamic>.from(value);
+      const candidateKeys = [
+        'url',
+        'path',
+        'src',
+        'file_url',
+        'audio_url',
+        'video_url',
+        'image_url',
+      ];
+      for (final key in candidateKeys) {
+        final resolved = _resolveMediaValue(map[key]);
+        if (resolved != null && resolved.isNotEmpty) return resolved;
+      }
+      // Support language-keyed media maps: { "yoruba": "...", "igbo": "..." }
+      for (final entry in map.entries) {
+        final resolved = _resolveMediaValue(entry.value);
+        if (resolved != null && resolved.isNotEmpty) return resolved;
+      }
+      return null;
+    }
+    return resolveMediaUrl(value.toString());
   }
 
   Future<bool?> openChoiceQuizScreen(SectionLessonModel sectionLesson, WidgetRef ref) async {

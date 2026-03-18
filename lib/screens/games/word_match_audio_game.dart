@@ -136,7 +136,7 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
             )).toList();
         _rightTiles = cards.map((c) => _GameTile(
               id: c.cardId,
-              label: c.gloss,
+              label: _resolveGlossLabel(c),
             )).toList();
 
         // Shuffle both lists
@@ -162,10 +162,19 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
     if (resolved != null && resolved.isNotEmpty) {
       try {
         await _audioPlayer.setUrl(resolved, headers: _authHeaders);
+        await _audioPlayer.setVolume(1.0);
         await _audioPlayer.play();
         return;
       } catch (e) {
-        debugPrint('Audio URL playback failed, trying TTS: $e');
+        debugPrint('Audio URL playback failed with auth headers, retrying public URL: $e');
+        try {
+          await _audioPlayer.setUrl(resolved);
+          await _audioPlayer.setVolume(1.0);
+          await _audioPlayer.play();
+          return;
+        } catch (e2) {
+          debugPrint('Audio URL playback failed, trying TTS: $e2');
+        }
       }
     }
 
@@ -175,8 +184,23 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
         await ref.read(ttsProvider.notifier).speak(fallbackText, languageName: widget.language);
       } catch (e) {
         debugPrint('TTS fallback failed: $e');
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Audio unavailable for this card right now.')),
+          );
+        }
       }
     }
+  }
+
+  String _resolveGlossLabel(dynamic card) {
+    final gloss = card.gloss?.toString().trim() ?? '';
+    if (gloss.isNotEmpty) return gloss;
+    final ascii = card.ascii?.toString().trim() ?? '';
+    if (ascii.isNotEmpty) return ascii;
+    final text = card.text?.toString().trim() ?? '';
+    if (text.isNotEmpty) return text;
+    return 'Translation pending';
   }
 
   void _selectTile(String side, String id) {
