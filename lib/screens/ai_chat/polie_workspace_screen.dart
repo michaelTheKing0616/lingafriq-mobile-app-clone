@@ -1453,7 +1453,7 @@ Language: $targetLanguage
                 ),
                 borderRadius: BorderRadius.circular(12),
               ),
-              Padding(
+              child: Padding(
                 padding: const EdgeInsets.all(12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1544,7 +1544,6 @@ Language: $targetLanguage
                     ],
                   ),
                 ),
-                width: double.infinity,
                 color: Colors.black.withOpacity(0.35),
               ),
             ),
@@ -2228,36 +2227,6 @@ Language: $targetLanguage
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide(color: theme.accent, width: 1.3),
-      ),
-    );
-  }
-
-  Widget _chipToggle({
-    required String label,
-    required bool selected,
-    required VoidCallback onTap,
-    required Color color,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(100),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 220),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
-          color: selected ? color.withOpacity(0.18) : Colors.transparent,
-          border: Border.all(color: selected ? color : color.withOpacity(0.3)),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(selected ? Icons.toggle_on_rounded : Icons.toggle_off_rounded, color: color),
-            const SizedBox(width: 6),
-            Flexible(child: Text(label, overflow: TextOverflow.ellipsis)),
-          ],
-        ),
       ),
     );
   }
