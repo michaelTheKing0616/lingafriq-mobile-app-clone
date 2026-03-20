@@ -904,6 +904,7 @@ Language: $targetLanguage
                 translationHistory: translationHistory.value,
                 onRunTranslation: runTranslation,
                 onSearchHistory: () async => loadTranslationHistory(),
+                onOpenTranslationHistory: openTranslationHistorySheet,
                 // tutor
                 tutorLesson: tutorLesson.value,
                 tutorFeedback: tutorFeedback.value,
@@ -928,6 +929,7 @@ Language: $targetLanguage
                 vocabCard: vocabCard.value,
                 vocabReveal: vocabReveal,
                 vocabSetName: vocabSetName,
+                vocabDifficultyTarget: vocabDifficultyTarget,
                 vocabDeckCount: vocabDeckCount.value,
                 vocabSrsChoice: vocabSrsChoice.value,
                 onLoadVocabCard: loadVocabCard,
@@ -966,6 +968,7 @@ Language: $targetLanguage
     required List<dynamic> translationHistory,
     required Future<void> Function(String) onRunTranslation,
     required Future<void> Function() onSearchHistory,
+    required Future<void> Function() onOpenTranslationHistory,
     required _TutorLessonPayload? tutorLesson,
     required _TutorFeedbackPayload? tutorFeedback,
     required ValueNotifier<String> tutorDifficulty,
@@ -986,6 +989,7 @@ Language: $targetLanguage
     required _VocabPayload? vocabCard,
     required ValueNotifier<bool> vocabReveal,
     required ValueNotifier<String> vocabSetName,
+    required ValueNotifier<String> vocabDifficultyTarget,
     required int vocabDeckCount,
     required String? vocabSrsChoice,
     required Future<void> Function() onLoadVocabCard,
@@ -1133,7 +1137,7 @@ Language: $targetLanguage
                 if (!isPhone) Text('${translationInput.text.length} chars · $wordCount words', style: bodyStyle),
                 IconButton(
                   tooltip: 'History',
-                  onPressed: openTranslationHistorySheet,
+                  onPressed: onOpenTranslationHistory,
                   icon: const Icon(Icons.history_rounded),
                 ),
                 IconButton(
@@ -1224,7 +1228,7 @@ Language: $targetLanguage
                               const Spacer(),
                               IconButton(
                                 visualDensity: VisualDensity.compact,
-                                onPressed: () => speakText(translationOutput?.primary ?? ''),
+                                onPressed: () => onSpeakText(translationOutput?.primary ?? ''),
                                 icon: const Icon(Icons.volume_up_outlined, size: 20),
                               ),
                               IconButton(
@@ -1238,7 +1242,7 @@ Language: $targetLanguage
                               ),
                               IconButton(
                                 visualDensity: VisualDensity.compact,
-                                onPressed: openTranslationHistorySheet,
+                                onPressed: onOpenTranslationHistory,
                                 icon: const Icon(Icons.history_toggle_off_rounded, size: 20),
                               ),
                             ],
