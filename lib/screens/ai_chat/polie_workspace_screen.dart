@@ -40,7 +40,11 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
     ModeChipItem(mode: PolieMode.translation, icon: '⇄', label: 'Translation'),
     ModeChipItem(mode: PolieMode.tutor, icon: '📖', label: 'Tutor'),
     ModeChipItem(mode: PolieMode.roleplay, icon: '🎭', label: 'Roleplay'),
-    ModeChipItem(mode: PolieMode.conversation, icon: '💬', label: 'Conversation'),
+    ModeChipItem(
+      mode: PolieMode.conversation,
+      icon: '💬',
+      label: 'Conversation',
+    ),
     ModeChipItem(mode: PolieMode.vocab, icon: '✦', label: 'Vocabulary'),
     ModeChipItem(mode: PolieMode.review, icon: '📊', label: 'Review'),
   ];
@@ -76,7 +80,9 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
     final tutorSeenConcepts = useRef<Set<String>>({});
 
     final roleplayDifficulty = useState<String>('bilingual');
-    final roleplayScene = useState<String>(normalizeInitialRoleplayScene(initialRoleplayScene));
+    final roleplayScene = useState<String>(
+      normalizeInitialRoleplayScene(initialRoleplayScene),
+    );
     final roleplayMessages = useState<List<_RoleplayTurn>>([]);
 
     final conversationMessages = useState<List<_ConversationTurn>>([]);
@@ -95,7 +101,9 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
     final modeIntroDismissed = useState<Set<String>>({});
 
     final chat = ref.read(groqChatProvider.notifier);
-    final translationHistoryService = ref.read(translationHistoryServiceProvider);
+    final translationHistoryService = ref.read(
+      translationHistoryServiceProvider,
+    );
     final tutorProgress = ref.read(tutorProgressServiceProvider);
     final vocabProgress = ref.read(vocabularyProgressServiceProvider);
     final vocabularyService = ref.read(vocabularyServiceProvider);
@@ -120,7 +128,8 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
         modeResponse.value = raw;
         final parsed = _tryParseJson(raw);
         if (parsed == null) {
-          modeError.value = 'Polie returned an unreadable response. Please try again.';
+          modeError.value =
+              'Polie returned an unreadable response. Please try again.';
           return null;
         }
         return parsed;
@@ -133,11 +142,14 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
     Future<void> loadTranslationHistory() async {
       final history = await translationHistoryService.loadHistory();
       final query = translationHistoryQuery.value.trim().toLowerCase();
-      final filtered = history.entries.where((entry) {
-        if (query.isEmpty) return true;
-        return entry.sourceText.toLowerCase().contains(query) ||
-            entry.primaryTranslation.toLowerCase().contains(query);
-      }).take(20).toList();
+      final filtered = history.entries
+          .where((entry) {
+            if (query.isEmpty) return true;
+            return entry.sourceText.toLowerCase().contains(query) ||
+                entry.primaryTranslation.toLowerCase().contains(query);
+          })
+          .take(20)
+          .toList();
       translationHistory.value = filtered;
     }
 
@@ -147,8 +159,7 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
       isBusy.value = true;
       modeError.value = null;
       try {
-        final json = await askForJson(
-          '''
+        final json = await askForJson('''
 Return STRICT JSON only.
 {
   "primary":"string",
@@ -160,10 +171,12 @@ Return STRICT JSON only.
 Translate from $sourceLanguage to $targetLanguage.
 Tone requested: ${translationTone.value}
 Text: "$trimmed"
-''',
-        );
+''');
         if (json != null) {
-          final parsed = _TranslationPayload.fromJson(json, rawFallback: modeResponse.value);
+          final parsed = _TranslationPayload.fromJson(
+            json,
+            rawFallback: modeResponse.value,
+          );
           translationOutput.value = _normalizeTranslationPayload(
             payload: parsed,
             targetLanguage: targetLanguage,
@@ -180,7 +193,8 @@ Text: "$trimmed"
           await loadTranslationHistory();
         }
       } catch (e) {
-        modeError.value = 'Translation failed: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
+        modeError.value =
+            'Translation failed: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
       } finally {
         isBusy.value = false;
       }
@@ -189,10 +203,9 @@ Text: "$trimmed"
     Future<void> speakText(String text) async {
       final normalized = text.trim();
       if (normalized.isEmpty || normalized == '-') return;
-      await ref.read(ttsProvider.notifier).speak(
-            normalized,
-            languageName: targetLanguage,
-          );
+      await ref
+          .read(ttsProvider.notifier)
+          .speak(normalized, languageName: targetLanguage);
     }
 
     Future<void> openTranslationHistorySheet() async {
@@ -204,7 +217,9 @@ Text: "$trimmed"
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (sheetContext) {
-          final localSearch = TextEditingController(text: translationHistoryQuery.value);
+          final localSearch = TextEditingController(
+            text: translationHistoryQuery.value,
+          );
           return DraggableScrollableSheet(
             expand: false,
             initialChildSize: 0.68,
@@ -212,12 +227,15 @@ Text: "$trimmed"
             maxChildSize: 0.9,
             builder: (context, scrollController) {
               final query = localSearch.text.trim().toLowerCase();
-              final filtered = translationHistory.value.where((entry) {
-                if (entry is! TranslationEntry) return false;
-                if (query.isEmpty) return true;
-                return entry.sourceText.toLowerCase().contains(query) ||
-                    entry.primaryTranslation.toLowerCase().contains(query);
-              }).cast<TranslationEntry>().toList();
+              final filtered = translationHistory.value
+                  .where((entry) {
+                    if (entry is! TranslationEntry) return false;
+                    if (query.isEmpty) return true;
+                    return entry.sourceText.toLowerCase().contains(query) ||
+                        entry.primaryTranslation.toLowerCase().contains(query);
+                  })
+                  .cast<TranslationEntry>()
+                  .toList();
               return Container(
                 decoration: const BoxDecoration(
                   color: Colors.white,
@@ -238,7 +256,13 @@ Text: "$trimmed"
                       padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
                       child: Row(
                         children: [
-                          Text('Translation History', style: GoogleFonts.nunito(fontSize: 18, fontWeight: FontWeight.w800)),
+                          Text(
+                            'Translation History',
+                            style: GoogleFonts.nunito(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
                           const Spacer(),
                           IconButton(
                             onPressed: () => Navigator.of(sheetContext).pop(),
@@ -258,7 +282,9 @@ Text: "$trimmed"
                         decoration: InputDecoration(
                           hintText: 'Search source or translation',
                           prefixIcon: const Icon(Icons.search_rounded),
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                         ),
                       ),
                     ),
@@ -267,23 +293,33 @@ Text: "$trimmed"
                           ? Center(
                               child: Text(
                                 'No matching history entries.',
-                                style: GoogleFonts.nunito(color: Colors.grey.shade600),
+                                style: GoogleFonts.nunito(
+                                  color: Colors.grey.shade600,
+                                ),
                               ),
                             )
                           : ListView.separated(
                               controller: scrollController,
                               itemCount: filtered.length,
-                              separatorBuilder: (_, __) => const Divider(height: 1),
+                              separatorBuilder: (_, __) =>
+                                  const Divider(height: 1),
                               itemBuilder: (context, index) {
                                 final entry = filtered[index];
                                 return ListTile(
-                                  title: Text(entry.sourceText, maxLines: 1, overflow: TextOverflow.ellipsis),
+                                  title: Text(
+                                    entry.sourceText,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                   subtitle: Text(
                                     entry.primaryTranslation,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
-                                  trailing: const Icon(Icons.north_west_rounded, size: 18),
+                                  trailing: const Icon(
+                                    Icons.north_west_rounded,
+                                    size: 18,
+                                  ),
                                   onTap: () async {
                                     Navigator.of(sheetContext).pop();
                                     translationInput.text = entry.sourceText;
@@ -311,9 +347,12 @@ Text: "$trimmed"
       tutorFlipped.value = false;
       try {
         final difficultyGuide = switch (tutorDifficulty.value) {
-          'beginner' => 'Focus on simple vocabulary, basic greetings, common phrases. Include heavy transliteration. Keep explanations simple and encouraging.',
-          'intermediate' => 'Focus on grammar concepts, sentence construction, cultural context. Include moderate transliteration. Introduce idiomatic usage.',
-          'advanced' => 'Focus on idiomatic expressions, literary devices, nuanced usage, proverbs. Minimal transliteration. Challenge the learner.',
+          'beginner' =>
+            'Focus on simple vocabulary, basic greetings, common phrases. Include heavy transliteration. Keep explanations simple and encouraging.',
+          'intermediate' =>
+            'Focus on grammar concepts, sentence construction, cultural context. Include moderate transliteration. Introduce idiomatic usage.',
+          'advanced' =>
+            'Focus on idiomatic expressions, literary devices, nuanced usage, proverbs. Minimal transliteration. Challenge the learner.',
           _ => '',
         };
         final seenConceptList = tutorSeenConcepts.value.take(20).join(', ');
@@ -321,8 +360,7 @@ Text: "$trimmed"
             ? ''
             : 'Do NOT repeat previously used concepts: $seenConceptList';
         final nonce = DateTime.now().microsecondsSinceEpoch;
-        final json = await askForJson(
-          '''
+        final json = await askForJson('''
 Return STRICT JSON only.
 {
  "concept":"title of the lesson concept",
@@ -339,16 +377,16 @@ $difficultyGuide
 $noveltyConstraint
 Use a fresh concept each time. Nonce: $nonce
 Make the card intelligent, informative, and culturally rich.
-''',
-        );
+''');
         if (json != null) {
           final parsed = _TutorLessonPayload.fromJson(json, modeResponse.value);
-          final hasCoreFields = parsed.concept.trim().isNotEmpty && parsed.explanation.trim().isNotEmpty;
+          final hasCoreFields =
+              parsed.concept.trim().isNotEmpty &&
+              parsed.explanation.trim().isNotEmpty;
           if (hasCoreFields) {
             final conceptKey = parsed.concept.trim().toLowerCase();
             if (tutorSeenConcepts.value.contains(conceptKey)) {
-              final retryJson = await askForJson(
-                '''
+              final retryJson = await askForJson('''
 Return STRICT JSON only with all fields populated.
 {
  "concept":"title of the lesson concept",
@@ -363,10 +401,12 @@ Generate a COMPLETE and DIFFERENT tutor card concept for $targetLanguage at ${tu
 Do not use this concept again: ${parsed.concept}
 Do not use any of these prior concepts: ${tutorSeenConcepts.value.take(20).join(', ')}
 Nonce: ${DateTime.now().microsecondsSinceEpoch}
-''',
-              );
+''');
               if (retryJson != null) {
-                final retryParsed = _TutorLessonPayload.fromJson(retryJson, modeResponse.value);
+                final retryParsed = _TutorLessonPayload.fromJson(
+                  retryJson,
+                  modeResponse.value,
+                );
                 tutorSeenConcepts.value = {
                   ...tutorSeenConcepts.value,
                   retryParsed.concept.trim().toLowerCase(),
@@ -377,15 +417,11 @@ Nonce: ${DateTime.now().microsecondsSinceEpoch}
               }
               return;
             }
-            tutorSeenConcepts.value = {
-              ...tutorSeenConcepts.value,
-              conceptKey,
-            };
+            tutorSeenConcepts.value = {...tutorSeenConcepts.value, conceptKey};
             tutorLesson.value = parsed;
           } else {
             // Retry once with stricter completeness constraints.
-            final retryJson = await askForJson(
-              '''
+            final retryJson = await askForJson('''
 Return STRICT JSON only with all fields populated.
 {
  "concept":"title of the lesson concept",
@@ -398,15 +434,18 @@ Return STRICT JSON only with all fields populated.
 }
 Do not leave concept or explanation empty.
 Generate a complete tutor card for $targetLanguage at ${tutorDifficulty.value} level.
-''',
-            );
+''');
             if (retryJson != null) {
-              tutorLesson.value = _TutorLessonPayload.fromJson(retryJson, modeResponse.value);
+              tutorLesson.value = _TutorLessonPayload.fromJson(
+                retryJson,
+                modeResponse.value,
+              );
             }
           }
         }
       } catch (e) {
-        modeError.value = 'Failed to load tutor card: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
+        modeError.value =
+            'Failed to load tutor card: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
       } finally {
         isBusy.value = false;
         tutorAutoLoadInFlight.value = false;
@@ -421,8 +460,7 @@ Generate a complete tutor card for $targetLanguage at ${tutorDifficulty.value} l
         final questionCtx = tutorLesson.value!.practiceQuestion != null
             ? 'Practice question: ${tutorLesson.value!.practiceQuestion}'
             : 'Expected style example: ${tutorLesson.value!.example.targetLang}';
-        final json = await askForJson(
-          '''
+        final json = await askForJson('''
 Return STRICT JSON only.
 {
  "verdict":"correct|close|incorrect",
@@ -443,10 +481,12 @@ Evaluate pedagogically:
 - Give complete correction, not partial
 - Explain why in plain learner-friendly language
 - Give one next action and one micro drill
-''',
-        );
+''');
         if (json != null) {
-          tutorFeedback.value = _TutorFeedbackPayload.fromJson(json, modeResponse.value);
+          tutorFeedback.value = _TutorFeedbackPayload.fromJson(
+            json,
+            modeResponse.value,
+          );
           await tutorProgress.recordSession(
             _buildTutorSessionResult(
               language: targetLanguage,
@@ -457,7 +497,8 @@ Evaluate pedagogically:
           );
         }
       } catch (e) {
-        modeError.value = 'Failed to check answer: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
+        modeError.value =
+            'Failed to check answer: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
       } finally {
         isBusy.value = false;
       }
@@ -473,8 +514,7 @@ Evaluate pedagogically:
       roleplayInput.clear();
       isBusy.value = true;
       try {
-        final json = await askForJson(
-          '''
+        final json = await askForJson('''
 Return STRICT JSON only. Do NOT include any text outside the JSON object.
 {
  "character_response":{
@@ -497,30 +537,40 @@ Difficulty: ${roleplayDifficulty.value}
 Target language: $targetLanguage
 User line: "$input"
 Stay in character. Respond naturally for the scene.
-''',
-        );
+''');
         if (json != null) {
           roleplayMessages.value = [
             ...roleplayMessages.value,
-            _RoleplayTurn.ai(_RoleplayPayload.fromJson(json, modeResponse.value)),
+            _RoleplayTurn.ai(
+              _RoleplayPayload.fromJson(json, modeResponse.value),
+            ),
           ];
         } else {
           roleplayMessages.value = [
             ...roleplayMessages.value,
-            _RoleplayTurn.ai(_RoleplayPayload(
-              characterResponse: const _RoleplayCharacterResponse(
-                targetLang: '...', transliteration: '-', english: '(Polie could not parse this response. Try again!)',
-                emotion: 'neutral', action: null,
+            _RoleplayTurn.ai(
+              _RoleplayPayload(
+                characterResponse: const _RoleplayCharacterResponse(
+                  targetLang: '...',
+                  transliteration: '-',
+                  english: '(Polie could not parse this response. Try again!)',
+                  emotion: 'neutral',
+                  action: null,
+                ),
+                coaching: const _RoleplayCoaching(
+                  userAccuracy: 0,
+                  feedbackType: 'encouragement',
+                  feedback:
+                      'There was a parsing error. Please try your line again.',
+                  betterPhrasing: null,
+                ),
               ),
-              coaching: const _RoleplayCoaching(
-                userAccuracy: 0, feedbackType: 'encouragement',
-                feedback: 'There was a parsing error. Please try your line again.', betterPhrasing: null,
-              ),
-            )),
+            ),
           ];
         }
       } catch (e) {
-        modeError.value = 'Roleplay error: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
+        modeError.value =
+            'Roleplay error: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
       } finally {
         isBusy.value = false;
       }
@@ -529,14 +579,18 @@ Stay in character. Respond naturally for the scene.
     Future<void> sendConversation([String? prefilledText]) async {
       final text = (prefilledText ?? conversationInput.text).trim();
       if (text.isEmpty) return;
-      final wantsInlineEnglish = RegExp(r'english translation|with english|translate to english|english in', caseSensitive: false)
-          .hasMatch(text);
-      conversationMessages.value = [...conversationMessages.value, _ConversationTurn.user(text)];
+      final wantsInlineEnglish = RegExp(
+        r'english translation|with english|translate to english|english in',
+        caseSensitive: false,
+      ).hasMatch(text);
+      conversationMessages.value = [
+        ...conversationMessages.value,
+        _ConversationTurn.user(text),
+      ];
       if (prefilledText == null) conversationInput.clear();
       isBusy.value = true;
       try {
-        Map<String, dynamic>? json = await askForJson(
-          '''
+        Map<String, dynamic>? json = await askForJson('''
 Return STRICT JSON only. Do NOT wrap in markdown. Do NOT include text outside the JSON.
 {
  "message":"A rich, complete reply in a mix of $targetLanguage and English. 4-8 sentences that may include translation, explanation, and short examples when helpful.",
@@ -556,13 +610,11 @@ Respond with depth and clarity:
 - Keep answers complete and not cut off.
 ${wantsInlineEnglish ? '- User requested English translations: for each target-language sentence, include immediate English translation in parentheses.' : ''}
 If the user made grammar mistakes in $targetLanguage, set has_correction to true and provide the correction.
-''',
-        );
+''');
         if (json != null) {
           final msg = _cleanAiText((json['message'] ?? '').toString());
           if (_looksTruncated(msg) || !_isConversationResponseRich(msg)) {
-            final continuation = await askForJson(
-              '''
+            final continuation = await askForJson('''
 Return STRICT JSON only:
 {"message":"single completed conversational message","correction":{"has_correction":false,"was_correct":true,"correction":"","note":"short note"},"suggested_replies":["reply 1","reply 2"],"new_vocab":[]}
 
@@ -570,26 +622,41 @@ Continue and COMPLETE the previous response in natural style for $targetLanguage
 Ensure the response is fully complete, coherent, and can include explanation/examples if relevant.
 The response MUST be at least 3 full sentences and directly follow user's instruction constraints.
 User message: "$text"
-''',
-            );
+''');
             if (continuation != null &&
-                !_looksTruncated(_cleanAiText((continuation['message'] ?? '').toString())) &&
-                _isConversationResponseRich(_cleanAiText((continuation['message'] ?? '').toString()))) {
+                !_looksTruncated(
+                  _cleanAiText((continuation['message'] ?? '').toString()),
+                ) &&
+                _isConversationResponseRich(
+                  _cleanAiText((continuation['message'] ?? '').toString()),
+                )) {
               json = continuation;
             }
           }
         }
         if (json != null) {
-          final rawPayload = _ConversationPayload.fromJson(json, modeResponse.value);
-          final payload = _enforceConversationDiacritics(rawPayload, targetLanguage);
-          conversationMessages.value = [...conversationMessages.value, _ConversationTurn.ai(payload)];
+          final rawPayload = _ConversationPayload.fromJson(
+            json,
+            modeResponse.value,
+          );
+          final payload = _enforceConversationDiacritics(
+            rawPayload,
+            targetLanguage,
+          );
+          conversationMessages.value = [
+            ...conversationMessages.value,
+            _ConversationTurn.ai(payload),
+          ];
           final targetLetters = RegExp(r'[^\x00-\x7F]').hasMatch(text);
           final oldRatio = languageRatio.value;
-          languageRatio.value = ((oldRatio * (conversationMessages.value.length - 1)) + (targetLetters ? 1 : 0)) /
+          languageRatio.value =
+              ((oldRatio * (conversationMessages.value.length - 1)) +
+                  (targetLetters ? 1 : 0)) /
               conversationMessages.value.length;
         }
       } catch (e) {
-        modeError.value = 'Conversation error: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
+        modeError.value =
+            'Conversation error: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
       } finally {
         isBusy.value = false;
       }
@@ -601,8 +668,7 @@ User message: "$text"
         final exclusionClause = vocabShownWords.value.isEmpty
             ? ''
             : '\nDo NOT repeat these previously shown words: ${vocabShownWords.value.take(30).join(', ')}';
-        final json = await askForJson(
-          '''
+        final json = await askForJson('''
 Return STRICT JSON only.
 {
  "word":"a $targetLanguage word",
@@ -620,14 +686,12 @@ Generate one unique $targetLanguage vocabulary card.$exclusionClause
 Category focus: ${vocabSetName.value}
 Difficulty preference: ${vocabDifficultyTarget.value}
 If difficulty preference is "mixed", rotate levels naturally over successive cards.
-''',
-        );
+''');
         if (json != null) {
           var parsed = _VocabPayload.fromJson(json, modeResponse.value);
           if (_isUnavailableWord(parsed.word)) {
             // Retry once if payload word is missing/placeholder.
-            final retryJson = await askForJson(
-              '''
+            final retryJson = await askForJson('''
 Return STRICT JSON only with a valid non-empty "word" in $targetLanguage.
 {
  "word":"a real $targetLanguage word (never 'Word unavailable')",
@@ -641,8 +705,7 @@ Return STRICT JSON only with a valid non-empty "word" in $targetLanguage.
  "difficulty":"beginner|intermediate|advanced"
 }
 $exclusionClause
-''',
-            );
+''');
             if (retryJson != null) {
               parsed = _VocabPayload.fromJson(retryJson, modeResponse.value);
             }
@@ -651,12 +714,16 @@ $exclusionClause
             parsed = _fallbackVocabPayload(targetLanguage);
           }
           vocabCard.value = parsed;
-          vocabShownWords.value = {...vocabShownWords.value, vocabCard.value!.word.toLowerCase()};
+          vocabShownWords.value = {
+            ...vocabShownWords.value,
+            vocabCard.value!.word.toLowerCase(),
+          };
           vocabReveal.value = false;
           vocabDeckCount.value = (vocabDeckCount.value - 1).clamp(0, 999);
         }
       } catch (e) {
-        modeError.value = 'Vocab error: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
+        modeError.value =
+            'Vocab error: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
       } finally {
         isBusy.value = false;
       }
@@ -676,9 +743,7 @@ $exclusionClause
         language: targetLanguage,
         translation: card.english,
         pronunciation: card.pronunciation,
-        exampleSentences: [
-          '${card.example.target} - ${card.example.english}',
-        ],
+        exampleSentences: ['${card.example.target} - ${card.example.english}'],
         culturalNote: card.culturalNote,
         partOfSpeech: card.partOfSpeech,
         tags: [vocabSetName.value, 'polie_vocab_mode'],
@@ -695,18 +760,25 @@ $exclusionClause
         final vocabProg = await vocabProgress.loadProgress(targetLanguage);
         final tutorProg = await tutorProgress.loadProgress(targetLanguage);
 
-        final wordsSeen = vocabProg.totalWordsLearned > 0 ? vocabProg.totalWordsLearned : reviewStats.totalItemsReviewed;
+        final wordsSeen = vocabProg.totalWordsLearned > 0
+            ? vocabProg.totalWordsLearned
+            : reviewStats.totalItemsReviewed;
         final totalWords = vocabProg.words.length;
-        final correctWords = vocabProg.words.values.where((w) => w.isMastered).length;
-        final vocabAccuracy = totalWords > 0 ? (correctWords / totalWords) * 100 : 0.0;
+        final correctWords = vocabProg.words.values
+            .where((w) => w.isMastered)
+            .length;
+        final vocabAccuracy = totalWords > 0
+            ? (correctWords / totalWords) * 100
+            : 0.0;
         final overallAccuracy = reviewStats.averageAccuracy > 0
             ? (reviewStats.averageAccuracy + vocabAccuracy) / 2
-            : vocabAccuracy > 0 ? vocabAccuracy : 0.0;
+            : vocabAccuracy > 0
+            ? vocabAccuracy
+            : 0.0;
         final lessonsDone = tutorProg.totalSessions + reviewStats.totalReviews;
         final streak = reviewStats.currentStreak;
 
-        final json = await askForJson(
-          '''
+        final json = await askForJson('''
 Return STRICT JSON only.
 {
  "headline_insight":"a short motivational headline about the learner progress",
@@ -723,8 +795,7 @@ Tutor lessons completed: $lessonsDone
 Average accuracy: ${overallAccuracy.toStringAsFixed(1)}%
 Current streak: $streak days
 Language: $targetLanguage
-''',
-        );
+''');
         if (json != null) {
           reviewPayload.value = _ReviewPayload.fromJson(
             json,
@@ -736,7 +807,8 @@ Language: $targetLanguage
           );
         }
       } catch (e) {
-        modeError.value = 'Review error: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
+        modeError.value =
+            'Review error: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
       } finally {
         isBusy.value = false;
       }
@@ -761,26 +833,38 @@ Language: $targetLanguage
     }, const []);
 
     useEffect(() {
-      if (activeMode.value == PolieMode.tutor && tutorLesson.value == null && !isBusy.value) {
+      if (activeMode.value == PolieMode.tutor &&
+          tutorLesson.value == null &&
+          !isBusy.value) {
         Future.microtask(loadTutorLesson);
       }
-      if (activeMode.value == PolieMode.vocab && vocabCard.value == null && !isBusy.value) {
+      if (activeMode.value == PolieMode.vocab &&
+          vocabCard.value == null &&
+          !isBusy.value) {
         Future.microtask(loadVocabCard);
       }
       return null;
     }, [activeMode.value]);
 
-    useEffect(() {
-      translationTimer.value?.cancel();
-      if (!autoTranslate.value) return null;
-      final text = translationInput.text.trim();
-      if (activeMode.value == PolieMode.translation && text.isNotEmpty) {
-        translationTimer.value = Timer(const Duration(milliseconds: 500), () {
-          runTranslation(text);
-        });
-      }
-      return () => translationTimer.value?.cancel();
-    }, [translationInput.text, autoTranslate.value, activeMode.value, translationTone.value]);
+    useEffect(
+      () {
+        translationTimer.value?.cancel();
+        if (!autoTranslate.value) return null;
+        final text = translationInput.text.trim();
+        if (activeMode.value == PolieMode.translation && text.isNotEmpty) {
+          translationTimer.value = Timer(const Duration(milliseconds: 500), () {
+            runTranslation(text);
+          });
+        }
+        return () => translationTimer.value?.cancel();
+      },
+      [
+        translationInput.text,
+        autoTranslate.value,
+        activeMode.value,
+        translationTone.value,
+      ],
+    );
 
     // Fire translation immediately when auto-translate is toggled ON with existing input
     useEffect(() {
@@ -815,7 +899,10 @@ Language: $targetLanguage
         actions: [
           Container(
             margin: const EdgeInsets.only(right: 8),
-            padding: EdgeInsets.symmetric(horizontal: isCompactTopBar ? 8 : 12, vertical: 8),
+            padding: EdgeInsets.symmetric(
+              horizontal: isCompactTopBar ? 8 : 12,
+              vertical: 8,
+            ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: modeTheme.border),
@@ -831,8 +918,16 @@ Language: $targetLanguage
               ],
             ),
           ),
-          if (!isCompactTopBar) IconButton(onPressed: () {}, icon: const Icon(Icons.settings_outlined)),
-          if (!isCompactTopBar) IconButton(onPressed: () {}, icon: const Icon(Icons.person_outline_rounded)),
+          if (!isCompactTopBar)
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.settings_outlined),
+            ),
+          if (!isCompactTopBar)
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.person_outline_rounded),
+            ),
           if (isCompactTopBar)
             PopupMenuButton<String>(
               icon: const Icon(Icons.more_vert_rounded),
@@ -847,21 +942,31 @@ Language: $targetLanguage
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(isCompactTopBar ? 8 : 12, 0, isCompactTopBar ? 8 : 12, 8),
+            padding: EdgeInsets.fromLTRB(
+              isCompactTopBar ? 8 : 12,
+              0,
+              isCompactTopBar ? 8 : 12,
+              8,
+            ),
             child: PolieModeSwitcherRail<PolieMode>(
               selected: activeMode.value,
               items: _modeItems
-                  .map((e) => PolieModeSwitcherItem<PolieMode>(
-                        value: e.mode,
-                        icon: e.icon,
-                        label: e.label,
-                      ))
+                  .map(
+                    (e) => PolieModeSwitcherItem<PolieMode>(
+                      value: e.mode,
+                      icon: e.icon,
+                      label: e.label,
+                    ),
+                  )
                   .toList(),
               onChanged: (mode) async {
                 await setMode(mode);
-                if (mode == PolieMode.tutor && tutorLesson.value == null) await loadTutorLesson();
-                if (mode == PolieMode.vocab && vocabCard.value == null) await loadVocabCard();
-                if (mode == PolieMode.review && reviewPayload.value == null) await loadReview();
+                if (mode == PolieMode.tutor && tutorLesson.value == null)
+                  await loadTutorLesson();
+                if (mode == PolieMode.vocab && vocabCard.value == null)
+                  await loadVocabCard();
+                if (mode == PolieMode.review && reviewPayload.value == null)
+                  await loadReview();
               },
             ),
           ),
@@ -875,13 +980,19 @@ Language: $targetLanguage
                   begin: const Offset(0.02, 0),
                   end: Offset.zero,
                 ).animate(animation);
-                final fade = CurvedAnimation(parent: animation, curve: Curves.easeOutCubic);
+                final fade = CurvedAnimation(
+                  parent: animation,
+                  curve: Curves.easeOutCubic,
+                );
                 return FadeTransition(
                   opacity: fade,
                   child: SlideTransition(
                     position: slide,
                     child: ScaleTransition(
-                      scale: Tween<double>(begin: 0.992, end: 1).animate(animation),
+                      scale: Tween<double>(
+                        begin: 0.992,
+                        end: 1,
+                      ).animate(animation),
                       child: child,
                     ),
                   ),
@@ -941,8 +1052,14 @@ Language: $targetLanguage
                 introDismissed: modeIntroDismissed.value,
                 onDismissIntro: (modeName) async {
                   final prefs = await SharedPreferences.getInstance();
-                  await prefs.setBool('polie_mode_intro_${modeName}_dismissed', true);
-                  modeIntroDismissed.value = {...modeIntroDismissed.value, modeName};
+                  await prefs.setBool(
+                    'polie_mode_intro_${modeName}_dismissed',
+                    true,
+                  );
+                  modeIntroDismissed.value = {
+                    ...modeIntroDismissed.value,
+                    modeName,
+                  };
                 },
               ),
             ),
@@ -1005,7 +1122,10 @@ Language: $targetLanguage
     final isTinyPhone = screenWidth < 390;
     final basePad = isTinyPhone ? 8.0 : 12.0;
     final bodyStyle = GoogleFonts.nunito(color: theme.body, fontSize: 14);
-    final monoStyle = GoogleFonts.jetBrainsMono(color: theme.title, fontSize: 13.5);
+    final monoStyle = GoogleFonts.jetBrainsMono(
+      color: theme.title,
+      fontSize: 13.5,
+    );
     Widget card(Widget child, {Color? color}) {
       return Container(
         decoration: BoxDecoration(
@@ -1028,19 +1148,29 @@ Language: $targetLanguage
             ),
             child: Row(
               children: [
-                Icon(Icons.error_outline_rounded, color: Colors.red.shade300, size: 18),
+                Icon(
+                  Icons.error_outline_rounded,
+                  color: Colors.red.shade300,
+                  size: 18,
+                ),
                 const SizedBox(width: 8),
                 Expanded(child: Text(modeError, style: bodyStyle)),
               ],
             ),
           );
     const modeDescriptions = <PolieMode, String>{
-      PolieMode.translation: 'Precision tool. Split-panel translation with dynamic output updates.',
-      PolieMode.tutor: 'Interactive classroom notebook with flip cards and inline feedback.',
-      PolieMode.roleplay: 'Dark cinematic stage with scene-first character cards and live coaching.',
-      PolieMode.conversation: 'WhatsApp-style chat with a patient friend. The only bubble-chat mode.',
-      PolieMode.vocab: 'Museum word theater: one dramatic word, dark focus, SRS actions.',
-      PolieMode.review: 'Personal coach dashboard with animated bars and clear next steps.',
+      PolieMode.translation:
+          'Precision tool. Split-panel translation with dynamic output updates.',
+      PolieMode.tutor:
+          'Interactive classroom notebook with flip cards and inline feedback.',
+      PolieMode.roleplay:
+          'Dark cinematic stage with scene-first character cards and live coaching.',
+      PolieMode.conversation:
+          'WhatsApp-style chat with a patient friend. The only bubble-chat mode.',
+      PolieMode.vocab:
+          'Museum word theater: one dramatic word, dark focus, SRS actions.',
+      PolieMode.review:
+          'Personal coach dashboard with animated bars and clear next steps.',
     };
     const modeIcons = <PolieMode, String>{
       PolieMode.translation: '\u21C4',
@@ -1050,7 +1180,8 @@ Language: $targetLanguage
       PolieMode.vocab: '\u2726',
       PolieMode.review: '\uD83D\uDCCA',
     };
-    final intro = (mode == PolieMode.conversation || introDismissed.contains(mode.name))
+    final intro =
+        (mode == PolieMode.conversation || introDismissed.contains(mode.name))
         ? const SizedBox.shrink()
         : Container(
             margin: const EdgeInsets.fromLTRB(12, 4, 12, 8),
@@ -1063,7 +1194,10 @@ Language: $targetLanguage
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(modeIcons[mode] ?? '', style: const TextStyle(fontSize: 22)),
+                Text(
+                  modeIcons[mode] ?? '',
+                  style: const TextStyle(fontSize: 22),
+                ),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(
@@ -1080,14 +1214,21 @@ Language: $targetLanguage
                       const SizedBox(height: 2),
                       Text(
                         modeDescriptions[mode] ?? '',
-                        style: GoogleFonts.nunito(fontSize: 12.5, color: theme.body),
+                        style: GoogleFonts.nunito(
+                          fontSize: 12.5,
+                          color: theme.body,
+                        ),
                       ),
                     ],
                   ),
                 ),
                 GestureDetector(
                   onTap: () => onDismissIntro(mode.name),
-                  child: Icon(Icons.close_rounded, size: 18, color: theme.body.withOpacity(0.6)),
+                  child: Icon(
+                    Icons.close_rounded,
+                    size: 18,
+                    color: theme.body.withOpacity(0.6),
+                  ),
                 ),
               ],
             ),
@@ -1102,7 +1243,11 @@ Language: $targetLanguage
               translationTone.value,
             );
       final tones = const ['formal', 'casual', 'poetic', 'literal'];
-      final wordCount = translationInput.text.trim().split(RegExp(r'\s+')).where((e) => e.isNotEmpty).length;
+      final wordCount = translationInput.text
+          .trim()
+          .split(RegExp(r'\s+'))
+          .where((e) => e.isNotEmpty)
+          .length;
       return Container(
         key: key,
         padding: EdgeInsets.fromLTRB(basePad, basePad, basePad, basePad),
@@ -1124,34 +1269,52 @@ Language: $targetLanguage
                     contentPadding: EdgeInsets.zero,
                     title: const Text('Auto-translate'),
                     controlAffinity: ListTileControlAffinity.leading,
-                    onChanged: (_) => autoTranslate.value = !autoTranslate.value,
+                    onChanged: (_) =>
+                        autoTranslate.value = !autoTranslate.value,
                   ),
                 ),
-                Text('Tone:', style: bodyStyle.copyWith(fontWeight: FontWeight.w700)),
-                ...tones.map((tone) => ChoiceChip(
-                      label: Text(tone[0].toUpperCase() + tone.substring(1)),
-                      selected: translationTone.value == tone,
-                      selectedColor: theme.accent.withOpacity(0.2),
-                      onSelected: (_) => translationTone.value = tone,
-                    )),
-                if (!isPhone) Text('${translationInput.text.length} chars · $wordCount words', style: bodyStyle),
+                Text(
+                  'Tone:',
+                  style: bodyStyle.copyWith(fontWeight: FontWeight.w700),
+                ),
+                ...tones.map(
+                  (tone) => ChoiceChip(
+                    label: Text(tone[0].toUpperCase() + tone.substring(1)),
+                    selected: translationTone.value == tone,
+                    selectedColor: theme.accent.withOpacity(0.2),
+                    onSelected: (_) => translationTone.value = tone,
+                  ),
+                ),
+                if (!isPhone)
+                  Text(
+                    '${translationInput.text.length} chars · $wordCount words',
+                    style: bodyStyle,
+                  ),
                 IconButton(
                   tooltip: 'History',
                   onPressed: onOpenTranslationHistory,
                   icon: const Icon(Icons.history_rounded),
                 ),
                 IconButton(
-                  tooltip: translationTrayOpen.value ? 'Hide alternatives' : 'Show alternatives',
-                  onPressed: () => translationTrayOpen.value = !translationTrayOpen.value,
+                  tooltip: translationTrayOpen.value
+                      ? 'Hide alternatives'
+                      : 'Show alternatives',
+                  onPressed: () =>
+                      translationTrayOpen.value = !translationTrayOpen.value,
                   icon: Icon(
-                    translationTrayOpen.value ? Icons.expand_more_rounded : Icons.expand_less_rounded,
+                    translationTrayOpen.value
+                        ? Icons.expand_more_rounded
+                        : Icons.expand_less_rounded,
                   ),
                 ),
               ],
             ),
             if (isPhone) ...[
               const SizedBox(height: 4),
-              Text('${translationInput.text.length} chars · $wordCount words', style: bodyStyle),
+              Text(
+                '${translationInput.text.length} chars · $wordCount words',
+                style: bodyStyle,
+              ),
             ],
             const SizedBox(height: 8),
             Expanded(
@@ -1159,7 +1322,9 @@ Language: $targetLanguage
                 builder: (context, constraints) {
                   final panelGap = 8.0;
                   final idealPanelWidth = (constraints.maxWidth - panelGap) / 2;
-                  final panelWidth = isPhone ? idealPanelWidth : idealPanelWidth.clamp(260.0, 460.0);
+                  final panelWidth = isPhone
+                      ? idealPanelWidth
+                      : idealPanelWidth.clamp(260.0, 460.0);
                   final leftPanel = Container(
                     width: panelWidth,
                     decoration: BoxDecoration(
@@ -1176,13 +1341,22 @@ Language: $targetLanguage
                               DropdownButton<String>(
                                 value: sourceLanguage,
                                 items: [sourceLanguage]
-                                    .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                                    .map(
+                                      (e) => DropdownMenuItem(
+                                        value: e,
+                                        child: Text(e),
+                                      ),
+                                    )
                                     .toList(),
                                 onChanged: (_) {},
                               ),
                               const Spacer(),
                               IconButton(
-                                onPressed: isBusy ? null : () => onRunTranslation(translationInput.text),
+                                onPressed: isBusy
+                                    ? null
+                                    : () => onRunTranslation(
+                                        translationInput.text,
+                                      ),
                                 icon: const Icon(Icons.sync_alt_rounded),
                               ),
                             ],
@@ -1194,7 +1368,9 @@ Language: $targetLanguage
                             controller: translationInput,
                             maxLines: null,
                             expands: true,
-                            style: GoogleFonts.nunito(fontSize: isPhone ? 18 : 20),
+                            style: GoogleFonts.nunito(
+                              fontSize: isPhone ? 18 : 20,
+                            ),
                             decoration: const InputDecoration(
                               border: InputBorder.none,
                               contentPadding: EdgeInsets.all(16),
@@ -1221,29 +1397,45 @@ Language: $targetLanguage
                               DropdownButton<String>(
                                 value: targetLanguage,
                                 items: [targetLanguage]
-                                    .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                                    .map(
+                                      (e) => DropdownMenuItem(
+                                        value: e,
+                                        child: Text(e),
+                                      ),
+                                    )
                                     .toList(),
                                 onChanged: (_) {},
                               ),
                               const Spacer(),
                               IconButton(
                                 visualDensity: VisualDensity.compact,
-                                onPressed: () => onSpeakText(translationOutput?.primary ?? ''),
-                                icon: const Icon(Icons.volume_up_outlined, size: 20),
+                                onPressed: () => onSpeakText(
+                                  translationOutput?.primary ?? '',
+                                ),
+                                icon: const Icon(
+                                  Icons.volume_up_outlined,
+                                  size: 20,
+                                ),
                               ),
                               IconButton(
                                 visualDensity: VisualDensity.compact,
                                 onPressed: () async {
-                                  final text = (translationOutput?.primary ?? '').trim();
+                                  final text =
+                                      (translationOutput?.primary ?? '').trim();
                                   if (text.isEmpty) return;
-                                  await Clipboard.setData(ClipboardData(text: text));
+                                  await Clipboard.setData(
+                                    ClipboardData(text: text),
+                                  );
                                 },
                                 icon: const Icon(Icons.copy_outlined, size: 20),
                               ),
                               IconButton(
                                 visualDensity: VisualDensity.compact,
                                 onPressed: onOpenTranslationHistory,
-                                icon: const Icon(Icons.history_toggle_off_rounded, size: 20),
+                                icon: const Icon(
+                                  Icons.history_toggle_off_rounded,
+                                  size: 20,
+                                ),
                               ),
                             ],
                           ),
@@ -1257,13 +1449,19 @@ Language: $targetLanguage
                               children: [
                                 _buildAnimatedWordFlow(
                                   translationOutput?.primary ?? '',
-                                  GoogleFonts.nunito(fontSize: isPhone ? 20 : 24, color: theme.title),
+                                  GoogleFonts.nunito(
+                                    fontSize: isPhone ? 20 : 24,
+                                    color: theme.title,
+                                  ),
                                 ),
-                                if ((translationOutput?.culturalNote ?? '').isNotEmpty) ...[
+                                if ((translationOutput?.culturalNote ?? '')
+                                    .isNotEmpty) ...[
                                   const SizedBox(height: 12),
                                   Text(
                                     translationOutput!.culturalNote,
-                                    style: bodyStyle.copyWith(color: theme.body.withOpacity(0.9)),
+                                    style: bodyStyle.copyWith(
+                                      color: theme.body.withOpacity(0.9),
+                                    ),
                                   ),
                                 ],
                               ],
@@ -1297,7 +1495,8 @@ Language: $targetLanguage
                 },
               ),
             ),
-            if (translationTrayOpen.value && MediaQuery.viewInsetsOf(context).bottom <= 0) ...[
+            if (translationTrayOpen.value &&
+                MediaQuery.viewInsetsOf(context).bottom <= 0) ...[
               const SizedBox(height: 8),
               Container(
                 padding: const EdgeInsets.all(12),
@@ -1321,7 +1520,9 @@ Language: $targetLanguage
                         height: 44,
                         child: ListView.separated(
                           scrollDirection: Axis.horizontal,
-                          itemCount: effectiveAlternatives.length > 6 ? 6 : effectiveAlternatives.length,
+                          itemCount: effectiveAlternatives.length > 6
+                              ? 6
+                              : effectiveAlternatives.length,
                           separatorBuilder: (_, __) => const SizedBox(width: 8),
                           itemBuilder: (_, i) {
                             final alt = effectiveAlternatives[i];
@@ -1345,7 +1546,10 @@ Language: $targetLanguage
                       const SizedBox(height: 8),
                       Text(
                         effectiveAlternatives.first.note,
-                        style: bodyStyle.copyWith(color: theme.body.withOpacity(0.8), fontSize: 12),
+                        style: bodyStyle.copyWith(
+                          color: theme.body.withOpacity(0.8),
+                          fontSize: 12,
+                        ),
                       ),
                     ],
                   ],
@@ -1372,35 +1576,69 @@ Language: $targetLanguage
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Your Lessons', style: GoogleFonts.playfairDisplay(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w700)),
+                    Text(
+                      'Your Lessons',
+                      style: GoogleFonts.playfairDisplay(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                     const SizedBox(height: 8),
-                    Text('🔥 7 day streak!', style: GoogleFonts.nunito(color: const Color(0xFFE8DAC5), fontWeight: FontWeight.w700)),
+                    Text(
+                      '🔥 7 day streak!',
+                      style: GoogleFonts.nunito(
+                        color: const Color(0xFFE8DAC5),
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                     const SizedBox(height: 16),
-                    Text('Difficulty', style: GoogleFonts.nunito(color: const Color(0xFFE8DAC5))),
+                    Text(
+                      'Difficulty',
+                      style: GoogleFonts.nunito(color: const Color(0xFFE8DAC5)),
+                    ),
                     const SizedBox(height: 8),
                     DropdownButtonFormField<String>(
                       value: tutorDifficulty.value,
                       dropdownColor: const Color(0xFF2A1F14),
                       style: const TextStyle(color: Color(0xFFFAF3E0)),
-                      decoration: _inputDecoration(theme, 'Difficulty').copyWith(fillColor: const Color(0xFF3A2A1C)),
+                      decoration: _inputDecoration(
+                        theme,
+                        'Difficulty',
+                      ).copyWith(fillColor: const Color(0xFF3A2A1C)),
                       items: const ['beginner', 'intermediate', 'advanced']
-                          .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                          .map(
+                            (e) => DropdownMenuItem(value: e, child: Text(e)),
+                          )
                           .toList(),
                       onChanged: (v) => tutorDifficulty.value = v ?? 'beginner',
                     ),
                     const SizedBox(height: 12),
-                    ...lessonTopics.map((topic) => Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
-                          child: Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                            decoration: BoxDecoration(
-                              color: topic == 'Greetings' ? const Color(0xFFD4822A) : const Color(0xFF3A2A1C),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Text(topic, style: GoogleFonts.nunito(color: Colors.white, fontWeight: FontWeight.w700)),
+                    ...lessonTopics.map(
+                      (topic) => Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 12,
                           ),
-                        )),
+                          decoration: BoxDecoration(
+                            color: topic == 'Greetings'
+                                ? const Color(0xFFD4822A)
+                                : const Color(0xFF3A2A1C),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            topic,
+                            style: GoogleFonts.nunito(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                     const Spacer(),
                     Container(
                       padding: const EdgeInsets.all(12),
@@ -1410,7 +1648,9 @@ Language: $targetLanguage
                       ),
                       child: Text(
                         '💡 Quick Fact\nYoruba has 3 tones: high (á), mid (a), and low (à).',
-                        style: GoogleFonts.nunito(color: const Color(0xFFE8DAC5)),
+                        style: GoogleFonts.nunito(
+                          color: const Color(0xFFE8DAC5),
+                        ),
                       ),
                     ),
                   ],
@@ -1435,31 +1675,60 @@ Language: $targetLanguage
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('🔥 7 day streak!', style: GoogleFonts.nunito(color: const Color(0xFFE8DAC5), fontWeight: FontWeight.w700)),
+                            Text(
+                              '🔥 7 day streak!',
+                              style: GoogleFonts.nunito(
+                                color: const Color(0xFFE8DAC5),
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
                             const SizedBox(height: 8),
                             DropdownButtonFormField<String>(
                               value: tutorDifficulty.value,
                               dropdownColor: const Color(0xFF2A1F14),
                               style: const TextStyle(color: Color(0xFFFAF3E0)),
-                              decoration: _inputDecoration(theme, 'Difficulty').copyWith(fillColor: const Color(0xFF3A2A1C)),
-                              items: const ['beginner', 'intermediate', 'advanced']
-                                  .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                                  .toList(),
-                              onChanged: (v) => tutorDifficulty.value = v ?? 'beginner',
+                              decoration: _inputDecoration(
+                                theme,
+                                'Difficulty',
+                              ).copyWith(fillColor: const Color(0xFF3A2A1C)),
+                              items:
+                                  const ['beginner', 'intermediate', 'advanced']
+                                      .map(
+                                        (e) => DropdownMenuItem(
+                                          value: e,
+                                          child: Text(e),
+                                        ),
+                                      )
+                                      .toList(),
+                              onChanged: (v) =>
+                                  tutorDifficulty.value = v ?? 'beginner',
                             ),
                             const SizedBox(height: 8),
                             Wrap(
                               spacing: 8,
                               runSpacing: 8,
                               children: lessonTopics
-                                  .map((topic) => Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                                        decoration: BoxDecoration(
-                                          color: topic == 'Greetings' ? const Color(0xFFD4822A) : const Color(0xFF3A2A1C),
-                                          borderRadius: BorderRadius.circular(10),
+                                  .map(
+                                    (topic) => Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 10,
+                                        vertical: 8,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: topic == 'Greetings'
+                                            ? const Color(0xFFD4822A)
+                                            : const Color(0xFF3A2A1C),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Text(
+                                        topic,
+                                        style: GoogleFonts.nunito(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w700,
                                         ),
-                                        child: Text(topic, style: GoogleFonts.nunito(color: Colors.white, fontWeight: FontWeight.w700)),
-                                      ))
+                                      ),
+                                    ),
+                                  )
                                   .toList(),
                             ),
                           ],
@@ -1480,7 +1749,9 @@ Language: $targetLanguage
                               const SizedBox(height: 8),
                               FilledButton(
                                 onPressed: isBusy ? null : onLoadTutorLesson,
-                                style: FilledButton.styleFrom(backgroundColor: theme.accent),
+                                style: FilledButton.styleFrom(
+                                  backgroundColor: theme.accent,
+                                ),
                                 child: Text(isBusy ? 'Loading...' : 'New Card'),
                               ),
                             ],
@@ -1500,7 +1771,9 @@ Language: $targetLanguage
                               const SizedBox(width: 8),
                               FilledButton(
                                 onPressed: isBusy ? null : onLoadTutorLesson,
-                                style: FilledButton.styleFrom(backgroundColor: theme.accent),
+                                style: FilledButton.styleFrom(
+                                  backgroundColor: theme.accent,
+                                ),
                                 child: Text(isBusy ? 'Loading...' : 'New Card'),
                               ),
                             ],
@@ -1521,7 +1794,8 @@ Language: $targetLanguage
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                tutorLesson?.concept ?? 'Greetings by Time of Day',
+                                tutorLesson?.concept ??
+                                    'Greetings by Time of Day',
                                 style: GoogleFonts.playfairDisplay(
                                   color: theme.title,
                                   fontSize: isTinyPhone ? 20 : 24,
@@ -1529,14 +1803,20 @@ Language: $targetLanguage
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              Text(tutorLesson?.explanation ?? '', style: bodyStyle.copyWith(fontSize: isTinyPhone ? 15 : 18)),
+                              Text(
+                                tutorLesson?.explanation ?? '',
+                                style: bodyStyle.copyWith(
+                                  fontSize: isTinyPhone ? 15 : 18,
+                                ),
+                              ),
                               const SizedBox(height: 14),
                               card(
                                 color: const Color(0xFFF6EED8),
                                 Padding(
                                   padding: const EdgeInsets.all(12),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         tutorLesson?.example.targetLang ?? '-',
@@ -1546,8 +1826,17 @@ Language: $targetLanguage
                                           color: theme.title,
                                         ),
                                       ),
-                                      Text(tutorLesson?.example.transliteration ?? '-', style: monoStyle),
-                                      Text(tutorLesson?.example.english ?? '-', style: bodyStyle.copyWith(fontSize: isTinyPhone ? 18 : 24)),
+                                      Text(
+                                        tutorLesson?.example.transliteration ??
+                                            '-',
+                                        style: monoStyle,
+                                      ),
+                                      Text(
+                                        tutorLesson?.example.english ?? '-',
+                                        style: bodyStyle.copyWith(
+                                          fontSize: isTinyPhone ? 18 : 24,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -1559,7 +1848,9 @@ Language: $targetLanguage
                                   padding: const EdgeInsets.all(10),
                                   child: Text(
                                     '💡 Memory Tip\n${tutorLesson?.memoryTip ?? '-'}',
-                                    style: bodyStyle.copyWith(fontSize: isTinyPhone ? 17 : 22),
+                                    style: bodyStyle.copyWith(
+                                      fontSize: isTinyPhone ? 17 : 22,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -1571,14 +1862,18 @@ Language: $targetLanguage
                                     padding: const EdgeInsets.all(10),
                                     child: Text(
                                       '⚠️ Watch Out\n${tutorLesson!.watchOut}',
-                                      style: bodyStyle.copyWith(fontSize: isTinyPhone ? 17 : 22),
+                                      style: bodyStyle.copyWith(
+                                        fontSize: isTinyPhone ? 17 : 22,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ],
                               const SizedBox(height: 12),
                               FilledButton(
-                                onPressed: tutorLesson == null ? null : () => tutorFlipped.value = true,
+                                onPressed: tutorLesson == null
+                                    ? null
+                                    : () => tutorFlipped.value = true,
                                 style: FilledButton.styleFrom(
                                   backgroundColor: theme.accent,
                                   minimumSize: const Size(double.infinity, 52),
@@ -1605,15 +1900,22 @@ Language: $targetLanguage
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                tutorLesson?.practiceQuestion ?? 'How would you apply this concept?',
-                                style: bodyStyle.copyWith(fontWeight: FontWeight.w700, fontSize: isTinyPhone ? 18 : 23),
+                                tutorLesson?.practiceQuestion ??
+                                    'How would you apply this concept?',
+                                style: bodyStyle.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: isTinyPhone ? 18 : 23,
+                                ),
                               ),
                               if ((tutorLesson?.practiceHint ?? '').isNotEmpty)
                                 Padding(
                                   padding: const EdgeInsets.only(top: 4),
                                   child: Text(
                                     'Hint: ${tutorLesson!.practiceHint}',
-                                    style: bodyStyle.copyWith(fontStyle: FontStyle.italic, fontSize: isTinyPhone ? 16 : 20),
+                                    style: bodyStyle.copyWith(
+                                      fontStyle: FontStyle.italic,
+                                      fontSize: isTinyPhone ? 16 : 20,
+                                    ),
                                   ),
                                 ),
                               const SizedBox(height: 10),
@@ -1621,23 +1923,51 @@ Language: $targetLanguage
                                 controller: tutorInput,
                                 minLines: 2,
                                 maxLines: 4,
-                                decoration: _inputDecoration(theme, 'Type your answer here...'),
+                                decoration: _inputDecoration(
+                                  theme,
+                                  'Type your answer here...',
+                                ),
                               ),
                               const SizedBox(height: 8),
                               FilledButton(
-                                onPressed: isBusy || tutorLesson == null ? null : onCheckTutorAnswer,
-                                style: FilledButton.styleFrom(backgroundColor: theme.accent),
-                                child: Text(isBusy ? 'Checking...' : 'Check Answer'),
+                                onPressed: isBusy || tutorLesson == null
+                                    ? null
+                                    : onCheckTutorAnswer,
+                                style: FilledButton.styleFrom(
+                                  backgroundColor: theme.accent,
+                                ),
+                                child: Text(
+                                  isBusy ? 'Checking...' : 'Check Answer',
+                                ),
                               ),
                               if (tutorFeedback != null) ...[
                                 const SizedBox(height: 10),
-                                Text('${tutorFeedback.verdict.toUpperCase()} • ${tutorFeedback.score}', style: bodyStyle.copyWith(fontWeight: FontWeight.w800)),
+                                Text(
+                                  '${tutorFeedback.verdict.toUpperCase()} • ${tutorFeedback.score}',
+                                  style: bodyStyle.copyWith(
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
                                 const SizedBox(height: 6),
-                                Text(tutorFeedback.encouragement, style: bodyStyle),
-                                Text('Correction: ${tutorFeedback.correction}', style: bodyStyle),
-                                Text('Why: ${tutorFeedback.why}', style: bodyStyle),
+                                Text(
+                                  tutorFeedback.encouragement,
+                                  style: bodyStyle,
+                                ),
+                                Text(
+                                  'Correction: ${tutorFeedback.correction}',
+                                  style: bodyStyle,
+                                ),
+                                Text(
+                                  'Why: ${tutorFeedback.why}',
+                                  style: bodyStyle,
+                                ),
                                 const SizedBox(height: 8),
-                                Text('Next step: ${tutorFeedback.nextStep}', style: bodyStyle.copyWith(fontWeight: FontWeight.w700)),
+                                Text(
+                                  'Next step: ${tutorFeedback.nextStep}',
+                                  style: bodyStyle.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
                               ],
                               const SizedBox(height: 10),
                               OutlinedButton(
@@ -1648,7 +1978,9 @@ Language: $targetLanguage
                           ),
                         ),
                       ),
-                      crossFadeState: tutorFlipped.value ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                      crossFadeState: tutorFlipped.value
+                          ? CrossFadeState.showSecond
+                          : CrossFadeState.showFirst,
                       duration: const Duration(milliseconds: 300),
                     ),
                   ],
@@ -1722,8 +2054,12 @@ Language: $targetLanguage
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      sceneSubtitle[roleplayScene.value] ?? 'Practice natural conversation in context',
-                      style: GoogleFonts.nunito(color: Colors.white.withOpacity(0.9), fontSize: 18),
+                      sceneSubtitle[roleplayScene.value] ??
+                          'Practice natural conversation in context',
+                      style: GoogleFonts.nunito(
+                        color: Colors.white.withOpacity(0.9),
+                        fontSize: 18,
+                      ),
                     ),
                   ],
                 ),
@@ -1750,15 +2086,31 @@ Language: $targetLanguage
                       const CircleAvatar(
                         radius: 18,
                         backgroundColor: Color(0xFFD4822A),
-                        child: Text('MB', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
+                        child: Text(
+                          'MB',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
                       ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Mama Bisi', style: GoogleFonts.nunito(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 18)),
-                            Text('Friendly, patient vendor', style: GoogleFonts.nunito(color: Colors.white70)),
+                            Text(
+                              'Mama Bisi',
+                              style: GoogleFonts.nunito(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 18,
+                              ),
+                            ),
+                            Text(
+                              'Friendly, patient vendor',
+                              style: GoogleFonts.nunito(color: Colors.white70),
+                            ),
                           ],
                         ),
                       ),
@@ -1767,17 +2119,41 @@ Language: $targetLanguage
                         runSpacing: 6,
                         children: [
                           Chip(
-                            label: Text('Bilingual', style: TextStyle(fontSize: isTinyPhone ? 11 : 12)),
+                            label: Text(
+                              'Bilingual',
+                              style: TextStyle(fontSize: isTinyPhone ? 11 : 12),
+                            ),
                             backgroundColor: const Color(0xFF2BDB8C),
-                            visualDensity: isTinyPhone ? const VisualDensity(horizontal: -2, vertical: -2) : null,
+                            visualDensity: isTinyPhone
+                                ? const VisualDensity(
+                                    horizontal: -2,
+                                    vertical: -2,
+                                  )
+                                : null,
                           ),
                           Chip(
-                            label: Text('Hints', style: TextStyle(fontSize: isTinyPhone ? 11 : 12)),
-                            visualDensity: isTinyPhone ? const VisualDensity(horizontal: -2, vertical: -2) : null,
+                            label: Text(
+                              'Hints',
+                              style: TextStyle(fontSize: isTinyPhone ? 11 : 12),
+                            ),
+                            visualDensity: isTinyPhone
+                                ? const VisualDensity(
+                                    horizontal: -2,
+                                    vertical: -2,
+                                  )
+                                : null,
                           ),
                           Chip(
-                            label: Text('Immersion', style: TextStyle(fontSize: isTinyPhone ? 11 : 12)),
-                            visualDensity: isTinyPhone ? const VisualDensity(horizontal: -2, vertical: -2) : null,
+                            label: Text(
+                              'Immersion',
+                              style: TextStyle(fontSize: isTinyPhone ? 11 : 12),
+                            ),
+                            visualDensity: isTinyPhone
+                                ? const VisualDensity(
+                                    horizontal: -2,
+                                    vertical: -2,
+                                  )
+                                : null,
                           ),
                         ],
                       ),
@@ -1805,7 +2181,10 @@ Language: $targetLanguage
                             color: const Color(0xFFC4663A),
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: Text(item.userText!, style: bodyStyle.copyWith(color: Colors.white)),
+                          child: Text(
+                            item.userText!,
+                            style: bodyStyle.copyWith(color: Colors.white),
+                          ),
                         ),
                       );
                     }
@@ -1816,22 +2195,47 @@ Language: $targetLanguage
                       decoration: BoxDecoration(
                         color: const Color(0xFF15110D),
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: const Color(0xFFD4822A).withOpacity(0.4)),
+                        border: Border.all(
+                          color: const Color(0xFFD4822A).withOpacity(0.4),
+                        ),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(ai.characterResponse.targetLang, style: bodyStyle.copyWith(color: const Color(0xFFFAF3E0))),
+                          Text(
+                            ai.characterResponse.targetLang,
+                            style: bodyStyle.copyWith(
+                              color: const Color(0xFFFAF3E0),
+                            ),
+                          ),
                           const SizedBox(height: 4),
-                          Text('English: ${ai.characterResponse.english}', style: bodyStyle.copyWith(color: const Color(0xFFD8C9B7))),
+                          Text(
+                            'English: ${ai.characterResponse.english}',
+                            style: bodyStyle.copyWith(
+                              color: const Color(0xFFD8C9B7),
+                            ),
+                          ),
                           const SizedBox(height: 6),
                           Text(
                             '${ai.coaching.feedbackType.toUpperCase()} • ${ai.coaching.userAccuracy}',
-                            style: bodyStyle.copyWith(color: const Color(0xFFF2C14E), fontWeight: FontWeight.w700),
+                            style: bodyStyle.copyWith(
+                              color: const Color(0xFFF2C14E),
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
-                          Text(ai.coaching.feedback, style: bodyStyle.copyWith(color: const Color(0xFFF2E6D7))),
+                          Text(
+                            ai.coaching.feedback,
+                            style: bodyStyle.copyWith(
+                              color: const Color(0xFFF2E6D7),
+                            ),
+                          ),
                           if ((ai.coaching.betterPhrasing ?? '').isNotEmpty)
-                            Text('Try: ${ai.coaching.betterPhrasing}', style: monoStyle.copyWith(color: const Color(0xFFFAF3E0))),
+                            Text(
+                              'Try: ${ai.coaching.betterPhrasing}',
+                              style: monoStyle.copyWith(
+                                color: const Color(0xFFFAF3E0),
+                              ),
+                            ),
                         ],
                       ),
                     );
@@ -1846,16 +2250,20 @@ Language: $targetLanguage
                 IconButton(
                   onPressed: () {},
                   style: IconButton.styleFrom(backgroundColor: Colors.white10),
-                  icon: const Icon(Icons.help_outline_rounded, color: Colors.white70),
+                  icon: const Icon(
+                    Icons.help_outline_rounded,
+                    color: Colors.white70,
+                  ),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: TextField(
                     controller: roleplayInput,
                     style: const TextStyle(color: Color(0xFFFAF3E0)),
-                    decoration: _inputDecoration(theme, 'Speak your line...').copyWith(
-                      hintStyle: const TextStyle(color: Color(0xFFD8C9B7)),
-                    ),
+                    decoration: _inputDecoration(theme, 'Speak your line...')
+                        .copyWith(
+                          hintStyle: const TextStyle(color: Color(0xFFD8C9B7)),
+                        ),
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -1901,8 +2309,17 @@ Language: $targetLanguage
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Polie', style: bodyStyle.copyWith(fontWeight: FontWeight.w800)),
-                      Text('Online', style: bodyStyle.copyWith(color: const Color(0xFF4A7C59), fontSize: 12)),
+                      Text(
+                        'Polie',
+                        style: bodyStyle.copyWith(fontWeight: FontWeight.w800),
+                      ),
+                      Text(
+                        'Online',
+                        style: bodyStyle.copyWith(
+                          color: const Color(0xFF4A7C59),
+                          fontSize: 12,
+                        ),
+                      ),
                     ],
                   ),
                   const Spacer(),
@@ -1929,7 +2346,10 @@ Language: $targetLanguage
             ),
             Expanded(
               child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
                 itemCount: conversationMessages.length,
                 itemBuilder: (context, index) {
                   final item = conversationMessages[index];
@@ -1943,7 +2363,10 @@ Language: $targetLanguage
                           color: const Color(0xFFD4822A),
                           borderRadius: BorderRadius.circular(14),
                         ),
-                        child: Text(item.userText!, style: bodyStyle.copyWith(color: Colors.white)),
+                        child: Text(
+                          item.userText!,
+                          style: bodyStyle.copyWith(color: Colors.white),
+                        ),
                       ),
                     );
                   }
@@ -1956,7 +2379,9 @@ Language: $targetLanguage
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(14),
-                        border: Border.all(color: theme.border.withOpacity(0.6)),
+                        border: Border.all(
+                          color: theme.border.withOpacity(0.6),
+                        ),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1967,23 +2392,35 @@ Language: $targetLanguage
                               Expanded(
                                 child: Text(
                                   ai.message,
-                                  style: bodyStyle.copyWith(color: const Color(0xFF2D1B0E)),
+                                  style: bodyStyle.copyWith(
+                                    color: const Color(0xFF2D1B0E),
+                                  ),
                                 ),
                               ),
                               IconButton(
                                 visualDensity: VisualDensity.compact,
                                 padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
+                                constraints: const BoxConstraints(
+                                  minWidth: 28,
+                                  minHeight: 28,
+                                ),
                                 onPressed: () => onSpeakText(ai.message),
-                                icon: const Icon(Icons.volume_up_outlined, size: 18),
+                                icon: const Icon(
+                                  Icons.volume_up_outlined,
+                                  size: 18,
+                                ),
                               ),
                             ],
                           ),
                           if (ai.correction.hasCorrection)
                             Padding(
                               padding: const EdgeInsets.only(top: 6),
-                              child: Text('Correction: ${ai.correction.correction ?? ai.correction.note}',
-                                  style: bodyStyle.copyWith(color: Colors.orange.shade800)),
+                              child: Text(
+                                'Correction: ${ai.correction.correction ?? ai.correction.note}',
+                                style: bodyStyle.copyWith(
+                                  color: Colors.orange.shade800,
+                                ),
+                              ),
                             ),
                           if (ai.suggestedReplies.isNotEmpty) ...[
                             const SizedBox(height: 6),
@@ -1992,18 +2429,29 @@ Language: $targetLanguage
                               runSpacing: 6,
                               children: ai.suggestedReplies
                                   .take(3)
-                                  .map((reply) => ActionChip(
-                                        label: SizedBox(
-                                          width: isTinyPhone ? 140 : null,
-                                          child: Text(
-                                            reply,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(fontSize: isTinyPhone ? 12 : 14),
+                                  .map(
+                                    (reply) => ActionChip(
+                                      label: SizedBox(
+                                        width: isTinyPhone ? 140 : null,
+                                        child: Text(
+                                          reply,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: isTinyPhone ? 12 : 14,
                                           ),
                                         ),
-                                        visualDensity: isTinyPhone ? const VisualDensity(horizontal: -2, vertical: -2) : null,
-                                        onPressed: isBusy ? null : () => onSendConversation(reply),
-                                      ))
+                                      ),
+                                      visualDensity: isTinyPhone
+                                          ? const VisualDensity(
+                                              horizontal: -2,
+                                              vertical: -2,
+                                            )
+                                          : null,
+                                      onPressed: isBusy
+                                          ? null
+                                          : () => onSendConversation(reply),
+                                    ),
+                                  )
                                   .toList(),
                             ),
                           ],
@@ -2026,21 +2474,28 @@ Language: $targetLanguage
                   Expanded(
                     child: TextField(
                       controller: conversationInput,
-                      decoration: _inputDecoration(theme, 'Type a message...').copyWith(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(28),
-                          borderSide: BorderSide(color: theme.border),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(28),
-                          borderSide: BorderSide(color: theme.border),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(28),
-                          borderSide: BorderSide(color: theme.accent, width: 1.3),
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                      ),
+                      decoration: _inputDecoration(theme, 'Type a message...')
+                          .copyWith(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(28),
+                              borderSide: BorderSide(color: theme.border),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(28),
+                              borderSide: BorderSide(color: theme.border),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(28),
+                              borderSide: BorderSide(
+                                color: theme.accent,
+                                width: 1.3,
+                              ),
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 14,
+                            ),
+                          ),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -2071,213 +2526,336 @@ Language: $targetLanguage
       return Container(
         key: key,
         color: const Color(0xFF0F0A04),
-        child: Column(
-          children: [
-            intro,
-            error,
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-              child: card(
-                color: Colors.white.withOpacity(0.02),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: Column(
+              children: [
+                intro,
+                error,
                 Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+                  child: card(
+                    color: Colors.white.withOpacity(0.02),
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        children: [
+                          Wrap(
+                            alignment: WrapAlignment.spaceBetween,
+                            runSpacing: 6,
+                            spacing: 10,
+                            children: [
+                              Text(
+                                vocabSetName.value,
+                                style: bodyStyle.copyWith(
+                                  color: const Color(0xFFFAF3E0),
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              Text(
+                                '${(10 - vocabDeckCount).clamp(0, 10)}/10 • $vocabDeckCount remaining',
+                                style: bodyStyle.copyWith(
+                                  color: const Color(0xFFFAF3E0),
+                                  fontSize: isTinyPhone ? 12 : 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          LinearProgressIndicator(
+                            value: ((10 - vocabDeckCount).clamp(0, 10)) / 10,
+                            minHeight: 6,
+                            backgroundColor: Colors.white12,
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                              Color(0xFFD4822A),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Wrap(
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: [
+                              for (final category in const [
+                                'Core Daily Words',
+                                'Travel',
+                                'Food',
+                                'Greetings',
+                                'Business',
+                                'Culture',
+                              ])
+                                ChoiceChip(
+                                  label: Text(
+                                    category,
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
+                                  selected: vocabSetName.value == category,
+                                  selectedColor: const Color(
+                                    0xFFD4822A,
+                                  ).withOpacity(0.25),
+                                  onSelected: (_) =>
+                                      vocabSetName.value = category,
+                                ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.06),
+                                  borderRadius: BorderRadius.circular(999),
+                                  border: Border.all(color: Colors.white24),
+                                ),
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<String>(
+                                    value: vocabDifficultyTarget.value,
+                                    dropdownColor: const Color(0xFF1A130C),
+                                    style: bodyStyle.copyWith(
+                                      color: const Color(0xFFFAF3E0),
+                                    ),
+                                    items: const [
+                                      DropdownMenuItem(
+                                        value: 'mixed',
+                                        child: Text('Difficulty: Mixed'),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: 'beginner',
+                                        child: Text('Difficulty: Beginner'),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: 'intermediate',
+                                        child: Text('Difficulty: Intermediate'),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: 'advanced',
+                                        child: Text('Difficulty: Advanced'),
+                                      ),
+                                    ],
+                                    onChanged: (v) {
+                                      if (v != null)
+                                        vocabDifficultyTarget.value = v;
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Center(
+                    child: GestureDetector(
+                      onTap: () => vocabReveal.value = !vocabReveal.value,
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 260),
+                        width: isTinyPhone
+                            ? (screenWidth - 24).clamp(260, 330).toDouble()
+                            : 330,
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1A130C),
+                          borderRadius: BorderRadius.circular(18),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFFD4822A).withOpacity(0.35),
+                              blurRadius: 24,
+                            ),
+                          ],
+                        ),
+                        child: vocabCard == null
+                            ? Text(
+                                'Tap "Next Word"',
+                                style: bodyStyle.copyWith(
+                                  color: const Color(0xFFFAF3E0),
+                                ),
+                              )
+                            : Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  if (vocabReveal.value)
+                                    Text(
+                                      '${vocabCard.partOfSpeech.toUpperCase()} · ${vocabCard.difficulty.toUpperCase()}',
+                                      style: bodyStyle.copyWith(
+                                        color: const Color(0xFFF2C14E),
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                    )
+                                  else
+                                    const Center(
+                                      child: Icon(
+                                        Icons.auto_awesome_rounded,
+                                        color: Color(0xFFF2C14E),
+                                        size: 26,
+                                      ),
+                                    ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    vocabCard.word,
+                                    style: GoogleFonts.jetBrainsMono(
+                                      color: const Color(0xFFFAF3E0),
+                                      fontSize: isTinyPhone ? 44 : 56,
+                                      letterSpacing: isTinyPhone ? 1.0 : 1.5,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    vocabCard.pronunciation,
+                                    style: bodyStyle.copyWith(
+                                      color: const Color(0xFFF2C14E),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  if (!vocabReveal.value)
+                                    Text(
+                                      'Tap to reveal',
+                                      style: bodyStyle.copyWith(
+                                        color: const Color(0xFFD8C9B7),
+                                      ),
+                                    ),
+                                  if (vocabReveal.value) ...[
+                                    const SizedBox(height: 10),
+                                    card(
+                                      color: Colors.white.withOpacity(0.06),
+                                      Padding(
+                                        padding: const EdgeInsets.all(10),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              vocabCard.english,
+                                              style: bodyStyle.copyWith(
+                                                color: const Color(0xFFFAF3E0),
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 4),
+                                            Text(
+                                              vocabCard.example.target,
+                                              style: bodyStyle.copyWith(
+                                                color: const Color(0xFFFAF3E0),
+                                              ),
+                                            ),
+                                            Text(
+                                              vocabCard.example.english,
+                                              style: bodyStyle.copyWith(
+                                                color: const Color(0xFFD8C9B7),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    card(
+                                      color: Colors.white.withOpacity(0.06),
+                                      Padding(
+                                        padding: const EdgeInsets.all(10),
+                                        child: Text(
+                                          '💡 Memory Peg\n${vocabCard.memoryPeg}',
+                                          style: bodyStyle.copyWith(
+                                            color: const Color(0xFFF2C14E),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    if ((vocabCard.culturalNote ?? '')
+                                        .isNotEmpty) ...[
+                                      const SizedBox(height: 8),
+                                      card(
+                                        color: Colors.white.withOpacity(0.06),
+                                        Padding(
+                                          padding: const EdgeInsets.all(10),
+                                          child: Text(
+                                            '🟢 Cultural Note\n${vocabCard.culturalNote}',
+                                            style: bodyStyle.copyWith(
+                                              color: const Color(0xFFFAF3E0),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ],
+                                ],
+                              ),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
                   child: Column(
                     children: [
-                      Wrap(
-                        alignment: WrapAlignment.spaceBetween,
-                        runSpacing: 6,
-                        spacing: 10,
+                      Row(
                         children: [
-                          Text(
-                            vocabSetName.value,
-                            style: bodyStyle.copyWith(color: const Color(0xFFFAF3E0), fontWeight: FontWeight.w700),
+                          Expanded(
+                            child: _srsButton(
+                              context,
+                              'Again (1m)',
+                              Colors.red.shade500,
+                              isBusy ? null : () => onScoreSrs('again'),
+                            ),
                           ),
-                          Text(
-                            '${(10 - vocabDeckCount).clamp(0, 10)}/10 • $vocabDeckCount remaining',
-                            style: bodyStyle.copyWith(color: const Color(0xFFFAF3E0), fontSize: isTinyPhone ? 12 : 14),
+                          const SizedBox(width: 6),
+                          Expanded(
+                            child: _srsButton(
+                              context,
+                              'Hard (10m)',
+                              Colors.orange.shade600,
+                              isBusy ? null : () => onScoreSrs('hard'),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _srsButton(
+                              context,
+                              'Good (1d)',
+                              Colors.green.shade600,
+                              isBusy ? null : () => onScoreSrs('good'),
+                            ),
+                          ),
+                          const SizedBox(width: 6),
+                          Expanded(
+                            child: _srsButton(
+                              context,
+                              'Easy (4d)',
+                              Colors.blue.shade600,
+                              isBusy ? null : () => onScoreSrs('easy'),
+                            ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 8),
-                      LinearProgressIndicator(
-                        value: ((10 - vocabDeckCount).clamp(0, 10)) / 10,
-                        minHeight: 6,
-                        backgroundColor: Colors.white12,
-                        valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFD4822A)),
+                      Text(
+                        'Last SRS choice: ${vocabSrsChoice ?? '-'}',
+                        style: bodyStyle.copyWith(
+                          color: const Color(0xFFFAF3E0),
+                        ),
                       ),
-                      const SizedBox(height: 10),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: [
-                          for (final category in const [
-                            'Core Daily Words',
-                            'Travel',
-                            'Food',
-                            'Greetings',
-                            'Business',
-                            'Culture',
-                          ])
-                            ChoiceChip(
-                              label: Text(category, style: const TextStyle(fontSize: 12)),
-                              selected: vocabSetName.value == category,
-                              selectedColor: const Color(0xFFD4822A).withOpacity(0.25),
-                              onSelected: (_) => vocabSetName.value = category,
-                            ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.06),
-                              borderRadius: BorderRadius.circular(999),
-                              border: Border.all(color: Colors.white24),
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<String>(
-                                value: vocabDifficultyTarget.value,
-                                dropdownColor: const Color(0xFF1A130C),
-                                style: bodyStyle.copyWith(color: const Color(0xFFFAF3E0)),
-                                items: const [
-                                  DropdownMenuItem(value: 'mixed', child: Text('Difficulty: Mixed')),
-                                  DropdownMenuItem(value: 'beginner', child: Text('Difficulty: Beginner')),
-                                  DropdownMenuItem(value: 'intermediate', child: Text('Difficulty: Intermediate')),
-                                  DropdownMenuItem(value: 'advanced', child: Text('Difficulty: Advanced')),
-                                ],
-                                onChanged: (v) {
-                                  if (v != null) vocabDifficultyTarget.value = v;
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
+                      const SizedBox(height: 8),
+                      FilledButton(
+                        onPressed: isBusy ? null : onLoadVocabCard,
+                        style: FilledButton.styleFrom(
+                          backgroundColor: theme.accent,
+                        ),
+                        child: Text(isBusy ? '...' : 'Next Word'),
                       ),
                     ],
                   ),
                 ),
-              ),
+              ],
             ),
-            const SizedBox(height: 6),
-            Expanded(
-              child: Center(
-                child: GestureDetector(
-                  onTap: () => vocabReveal.value = !vocabReveal.value,
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 260),
-                    width: isTinyPhone ? (screenWidth - 24).clamp(260, 330).toDouble() : 330,
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF1A130C),
-                      borderRadius: BorderRadius.circular(18),
-                      boxShadow: [
-                        BoxShadow(color: const Color(0xFFD4822A).withOpacity(0.35), blurRadius: 24),
-                      ],
-                    ),
-                    child: vocabCard == null
-                        ? Text('Tap "Next Word"', style: bodyStyle.copyWith(color: const Color(0xFFFAF3E0)))
-                        : Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (vocabReveal.value)
-                                Text(
-                                  '${vocabCard.partOfSpeech.toUpperCase()} · ${vocabCard.difficulty.toUpperCase()}',
-                                  style: bodyStyle.copyWith(color: const Color(0xFFF2C14E), fontWeight: FontWeight.w800),
-                                )
-                              else
-                                const Center(child: Icon(Icons.auto_awesome_rounded, color: Color(0xFFF2C14E), size: 26)),
-                              const SizedBox(height: 8),
-                              Text(
-                                vocabCard.word,
-                                style: GoogleFonts.jetBrainsMono(
-                                  color: const Color(0xFFFAF3E0),
-                                  fontSize: isTinyPhone ? 44 : 56,
-                                  letterSpacing: isTinyPhone ? 1.0 : 1.5,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(vocabCard.pronunciation, style: bodyStyle.copyWith(color: const Color(0xFFF2C14E))),
-                              const SizedBox(height: 6),
-                              if (!vocabReveal.value)
-                                Text('Tap to reveal', style: bodyStyle.copyWith(color: const Color(0xFFD8C9B7))),
-                              if (vocabReveal.value) ...[
-                                const SizedBox(height: 10),
-                                card(
-                                  color: Colors.white.withOpacity(0.06),
-                                  Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(vocabCard.english, style: bodyStyle.copyWith(color: const Color(0xFFFAF3E0), fontWeight: FontWeight.w700)),
-                                        const SizedBox(height: 4),
-                                        Text(vocabCard.example.target, style: bodyStyle.copyWith(color: const Color(0xFFFAF3E0))),
-                                        Text(vocabCard.example.english, style: bodyStyle.copyWith(color: const Color(0xFFD8C9B7))),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                card(
-                                  color: Colors.white.withOpacity(0.06),
-                                  Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Text(
-                                      '💡 Memory Peg\n${vocabCard.memoryPeg}',
-                                      style: bodyStyle.copyWith(color: const Color(0xFFF2C14E)),
-                                    ),
-                                  ),
-                                ),
-                                if ((vocabCard.culturalNote ?? '').isNotEmpty) ...[
-                                  const SizedBox(height: 8),
-                                  card(
-                                    color: Colors.white.withOpacity(0.06),
-                                    Padding(
-                                      padding: const EdgeInsets.all(10),
-                                      child: Text(
-                                        '🟢 Cultural Note\n${vocabCard.culturalNote}',
-                                        style: bodyStyle.copyWith(color: const Color(0xFFFAF3E0)),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ],
-                            ],
-                          ),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(child: _srsButton(context, 'Again (1m)', Colors.red.shade500, isBusy ? null : () => onScoreSrs('again'))),
-                      const SizedBox(width: 6),
-                      Expanded(child: _srsButton(context, 'Hard (10m)', Colors.orange.shade600, isBusy ? null : () => onScoreSrs('hard'))),
-                    ],
-                  ),
-                  const SizedBox(height: 6),
-                  Row(
-                    children: [
-                      Expanded(child: _srsButton(context, 'Good (1d)', Colors.green.shade600, isBusy ? null : () => onScoreSrs('good'))),
-                      const SizedBox(width: 6),
-                      Expanded(child: _srsButton(context, 'Easy (4d)', Colors.blue.shade600, isBusy ? null : () => onScoreSrs('easy'))),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text('Last SRS choice: ${vocabSrsChoice ?? '-'}', style: bodyStyle.copyWith(color: const Color(0xFFFAF3E0))),
-                  const SizedBox(height: 8),
-                  FilledButton(
-                    onPressed: isBusy ? null : onLoadVocabCard,
-                    style: FilledButton.styleFrom(backgroundColor: theme.accent),
-                    child: Text(isBusy ? '...' : 'Next Word'),
-                  ),
-                ],
-              ),
-            ),
-          ],
+          ),
         ),
       );
     }
@@ -2299,7 +2877,10 @@ Language: $targetLanguage
             ),
           ),
           const SizedBox(height: 4),
-          Text("Let's see how you're doing! 📊", style: bodyStyle.copyWith(fontSize: 14)),
+          Text(
+            "Let's see how you're doing! 📊",
+            style: bodyStyle.copyWith(fontSize: 14),
+          ),
           const SizedBox(height: 10),
           Wrap(
             alignment: WrapAlignment.end,
@@ -2335,32 +2916,83 @@ Language: $targetLanguage
             card(
               Padding(
                 padding: const EdgeInsets.all(12),
-                child: Text('No review data yet. Tap Refresh.', style: bodyStyle),
+                child: Text(
+                  'No review data yet. Tap Refresh.',
+                  style: bodyStyle,
+                ),
               ),
             )
           else ...[
             if (isTinyPhone) ...[
-              _statCard(context, 'Words Learned', '${reviewPayload.wordsSeen}', const Color(0xFFD4822A)),
+              _statCard(
+                context,
+                'Words Learned',
+                '${reviewPayload.wordsSeen}',
+                const Color(0xFFD4822A),
+              ),
               const SizedBox(height: 8),
-              _statCard(context, 'Accuracy', '${reviewPayload.accuracy.toStringAsFixed(1)}%', const Color(0xFF4A7C59)),
+              _statCard(
+                context,
+                'Accuracy',
+                '${reviewPayload.accuracy.toStringAsFixed(1)}%',
+                const Color(0xFF4A7C59),
+              ),
               const SizedBox(height: 8),
-              _statCard(context, 'Day Streak', '${reviewPayload.streak}', const Color(0xFFE2B93B)),
+              _statCard(
+                context,
+                'Day Streak',
+                '${reviewPayload.streak}',
+                const Color(0xFFE2B93B),
+              ),
               const SizedBox(height: 8),
-              _statCard(context, 'Lessons Done', '${reviewPayload.lessonsDone}', const Color(0xFFC4663A)),
+              _statCard(
+                context,
+                'Lessons Done',
+                '${reviewPayload.lessonsDone}',
+                const Color(0xFFC4663A),
+              ),
             ] else ...[
               Row(
                 children: [
-                  Expanded(child: _statCard(context, 'Words Learned', '${reviewPayload.wordsSeen}', const Color(0xFFD4822A))),
+                  Expanded(
+                    child: _statCard(
+                      context,
+                      'Words Learned',
+                      '${reviewPayload.wordsSeen}',
+                      const Color(0xFFD4822A),
+                    ),
+                  ),
                   const SizedBox(width: 8),
-                  Expanded(child: _statCard(context, 'Accuracy', '${reviewPayload.accuracy.toStringAsFixed(1)}%', const Color(0xFF4A7C59))),
+                  Expanded(
+                    child: _statCard(
+                      context,
+                      'Accuracy',
+                      '${reviewPayload.accuracy.toStringAsFixed(1)}%',
+                      const Color(0xFF4A7C59),
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: 8),
               Row(
                 children: [
-                  Expanded(child: _statCard(context, 'Day Streak', '${reviewPayload.streak}', const Color(0xFFE2B93B))),
+                  Expanded(
+                    child: _statCard(
+                      context,
+                      'Day Streak',
+                      '${reviewPayload.streak}',
+                      const Color(0xFFE2B93B),
+                    ),
+                  ),
                   const SizedBox(width: 8),
-                  Expanded(child: _statCard(context, 'Lessons Done', '${reviewPayload.lessonsDone}', const Color(0xFFC4663A))),
+                  Expanded(
+                    child: _statCard(
+                      context,
+                      'Lessons Done',
+                      '${reviewPayload.lessonsDone}',
+                      const Color(0xFFC4663A),
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -2371,7 +3003,13 @@ Language: $targetLanguage
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Skills Breakdown', style: GoogleFonts.playfairDisplay(fontSize: 22, fontWeight: FontWeight.w700)),
+                    Text(
+                      'Skills Breakdown',
+                      style: GoogleFonts.playfairDisplay(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                     const SizedBox(height: 8),
                     ...reviewPayload.skillBars.entries.map((e) {
                       return Padding(
@@ -2384,12 +3022,15 @@ Language: $targetLanguage
                             TweenAnimationBuilder<double>(
                               tween: Tween(begin: 0, end: e.value),
                               duration: const Duration(milliseconds: 520),
-                              builder: (context, value, _) => LinearProgressIndicator(
-                                value: value,
-                                minHeight: 10,
-                                backgroundColor: Colors.grey.shade300,
-                                valueColor: AlwaysStoppedAnimation<Color>(_skillColor(e.key)),
-                              ),
+                              builder: (context, value, _) =>
+                                  LinearProgressIndicator(
+                                    value: value,
+                                    minHeight: 10,
+                                    backgroundColor: Colors.grey.shade300,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      _skillColor(e.key),
+                                    ),
+                                  ),
                             ),
                           ],
                         ),
@@ -2407,40 +3048,84 @@ Language: $targetLanguage
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Polie's Insights", style: GoogleFonts.playfairDisplay(fontSize: 22, fontWeight: FontWeight.w700, color: Colors.white)),
+                    Text(
+                      "Polie's Insights",
+                      style: GoogleFonts.playfairDisplay(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
                     const SizedBox(height: 6),
                     Text(
                       reviewPayload.headlineInsight,
-                      style: GoogleFonts.nunito(fontSize: 19, color: Colors.white, fontWeight: FontWeight.w800),
+                      style: GoogleFonts.nunito(
+                        fontSize: 19,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                     const SizedBox(height: 8),
-                    Text(reviewPayload.coachingParagraph, style: GoogleFonts.nunito(fontSize: 14, color: Colors.white.withOpacity(0.95))),
+                    Text(
+                      reviewPayload.coachingParagraph,
+                      style: GoogleFonts.nunito(
+                        fontSize: 14,
+                        color: Colors.white.withOpacity(0.95),
+                      ),
+                    ),
                     const SizedBox(height: 10),
-                    Text('💪 Your Strengths', style: GoogleFonts.nunito(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w700)),
+                    Text(
+                      '💪 Your Strengths',
+                      style: GoogleFonts.nunito(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                     const SizedBox(height: 8),
-                    ...reviewPayload.strengths.map((s) => Container(
-                          margin: const EdgeInsets.only(bottom: 8),
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(10),
+                    ...reviewPayload.strengths.map(
+                      (s) => Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          '${s.area}\n${s.note}',
+                          style: GoogleFonts.nunito(
+                            color: Colors.white,
+                            fontSize: 13,
                           ),
-                          child: Text('${s.area}\n${s.note}', style: GoogleFonts.nunito(color: Colors.white, fontSize: 13)),
-                        )),
-                    Text('🎯 Areas to Focus On', style: GoogleFonts.nunito(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w700)),
+                        ),
+                      ),
+                    ),
+                    Text(
+                      '🎯 Areas to Focus On',
+                      style: GoogleFonts.nunito(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                     const SizedBox(height: 8),
-                    ...reviewPayload.growthAreas.map((g) => Container(
-                          margin: const EdgeInsets.only(bottom: 8),
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(10),
+                    ...reviewPayload.growthAreas.map(
+                      (g) => Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          '${g.area}\n${g.note}\n💡 Quick win: ${g.quickWin}',
+                          style: GoogleFonts.nunito(
+                            color: Colors.white,
+                            fontSize: 13,
                           ),
-                          child: Text(
-                            '${g.area}\n${g.note}\n💡 Quick win: ${g.quickWin}',
-                            style: GoogleFonts.nunito(color: Colors.white, fontSize: 13),
-                          ),
-                        )),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -2452,7 +3137,13 @@ Language: $targetLanguage
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Recommended Next Steps', style: GoogleFonts.playfairDisplay(fontSize: 22, fontWeight: FontWeight.w700)),
+                    Text(
+                      'Recommended Next Steps',
+                      style: GoogleFonts.playfairDisplay(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                     const SizedBox(height: 8),
                     Wrap(
                       spacing: 10,
@@ -2460,14 +3151,21 @@ Language: $targetLanguage
                       children: reviewPayload.nextSteps
                           .map(
                             (s) => SizedBox(
-                              width: isPhone ? (screenWidth - (basePad * 2) - 8).clamp(220, 340).toDouble() : 260,
+                              width: isPhone
+                                  ? (screenWidth - (basePad * 2) - 8)
+                                        .clamp(220, 340)
+                                        .toDouble()
+                                  : 260,
                               child: Container(
                                 padding: const EdgeInsets.all(12),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(color: theme.border),
                                 ),
-                                child: Text('${s.title}\n${s.why}\nStart now →', style: bodyStyle.copyWith(fontSize: 13)),
+                                child: Text(
+                                  '${s.title}\n${s.why}\nStart now →',
+                                  style: bodyStyle.copyWith(fontSize: 13),
+                                ),
                               ),
                             ),
                           )
@@ -2481,7 +3179,13 @@ Language: $targetLanguage
                         color: const Color(0xFFEFC64F),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Text(reviewPayload.motivationalClose, style: bodyStyle.copyWith(fontWeight: FontWeight.w700, fontSize: 14)),
+                      child: Text(
+                        reviewPayload.motivationalClose,
+                        style: bodyStyle.copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -2494,7 +3198,10 @@ Language: $targetLanguage
   }
 
   Widget _buildAnimatedWordFlow(String text, TextStyle style) {
-    final words = text.split(RegExp(r'\s+')).where((w) => w.trim().isNotEmpty).toList();
+    final words = text
+        .split(RegExp(r'\s+'))
+        .where((w) => w.trim().isNotEmpty)
+        .toList();
     return Wrap(
       spacing: 4,
       runSpacing: 2,
@@ -2504,7 +3211,8 @@ Language: $targetLanguage
             key: ValueKey('${words[i]}-$i-$text'),
             tween: Tween(begin: 0, end: 1),
             duration: Duration(milliseconds: 120 + (i * 20).clamp(0, 500)),
-            builder: (context, value, child) => Opacity(opacity: value, child: child),
+            builder: (context, value, child) =>
+                Opacity(opacity: value, child: child),
             child: Text(words[i], style: style),
           ),
       ],
@@ -2544,7 +3252,10 @@ Language: $targetLanguage
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: compact ? 10 : 14, vertical: compact ? 8 : 10),
+        padding: EdgeInsets.symmetric(
+          horizontal: compact ? 10 : 14,
+          vertical: compact ? 8 : 10,
+        ),
         decoration: BoxDecoration(
           color: selected ? const Color(0xFFD4822A) : Colors.white,
           borderRadius: BorderRadius.circular(12),
@@ -2623,7 +3334,12 @@ Language: $targetLanguage
     }
   }
 
-  Widget _srsButton(BuildContext context, String label, Color color, VoidCallback? onTap) {
+  Widget _srsButton(
+    BuildContext context,
+    String label,
+    Color color,
+    VoidCallback? onTap,
+  ) {
     final compact = MediaQuery.sizeOf(context).width < 360;
     final disabled = onTap == null;
     return InkWell(
@@ -2651,7 +3367,12 @@ Language: $targetLanguage
     );
   }
 
-  Widget _statCard(BuildContext context, String label, String value, Color stripe) {
+  Widget _statCard(
+    BuildContext context,
+    String label,
+    String value,
+    Color stripe,
+  ) {
     final compact = MediaQuery.sizeOf(context).width < 360;
     return Container(
       padding: const EdgeInsets.all(10),
@@ -2663,7 +3384,13 @@ Language: $targetLanguage
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(height: 4, decoration: BoxDecoration(color: stripe, borderRadius: BorderRadius.circular(2))),
+          Container(
+            height: 4,
+            decoration: BoxDecoration(
+              color: stripe,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
           const SizedBox(height: 6),
           Text(label, style: GoogleFonts.nunito(fontSize: compact ? 11 : 12)),
           Row(
@@ -2674,7 +3401,10 @@ Language: $targetLanguage
                 child: Text(
                   value,
                   overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.playfairDisplay(fontSize: compact ? 17 : 20, fontWeight: FontWeight.w700),
+                  style: GoogleFonts.playfairDisplay(
+                    fontSize: compact ? 17 : 20,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             ],
@@ -2688,7 +3418,8 @@ Language: $targetLanguage
     final normalized = label.toLowerCase();
     if (normalized.contains('word')) return Icons.menu_book_rounded;
     if (normalized.contains('accuracy')) return Icons.trending_up_rounded;
-    if (normalized.contains('streak')) return Icons.local_fire_department_rounded;
+    if (normalized.contains('streak'))
+      return Icons.local_fire_department_rounded;
     if (normalized.contains('lesson')) return Icons.chat_bubble_outline_rounded;
     return Icons.insights_rounded;
   }
@@ -2730,10 +3461,17 @@ Map<String, dynamic>? _tryParseJson(String raw) {
 
   // Attempt 3: roleplay-aware extraction when nested JSON is broken
   try {
-    if (cleaned.contains('character_response') || cleaned.contains('target_lang')) {
-      final targetMatch = RegExp(r'"target_lang"\s*:\s*"([^"]*)"').firstMatch(cleaned);
-      final englishMatch = RegExp(r'"english"\s*:\s*"([^"]*)"').firstMatch(cleaned);
-      final feedbackMatch = RegExp(r'"feedback"\s*:\s*"([^"]*)"').firstMatch(cleaned);
+    if (cleaned.contains('character_response') ||
+        cleaned.contains('target_lang')) {
+      final targetMatch = RegExp(
+        r'"target_lang"\s*:\s*"([^"]*)"',
+      ).firstMatch(cleaned);
+      final englishMatch = RegExp(
+        r'"english"\s*:\s*"([^"]*)"',
+      ).firstMatch(cleaned);
+      final feedbackMatch = RegExp(
+        r'"feedback"\s*:\s*"([^"]*)"',
+      ).firstMatch(cleaned);
       if (targetMatch != null) {
         return {
           'character_response': {
@@ -2761,7 +3499,11 @@ Map<String, dynamic>? _tryParseJson(String raw) {
     for (final line in lines) {
       final colonIdx = line.indexOf(':');
       if (colonIdx > 0) {
-        final key = line.substring(0, colonIdx).trim().toLowerCase().replaceAll(RegExp(r'[^a-z0-9_]'), '_');
+        final key = line
+            .substring(0, colonIdx)
+            .trim()
+            .toLowerCase()
+            .replaceAll(RegExp(r'[^a-z0-9_]'), '_');
         final value = line.substring(colonIdx + 1).trim();
         if (key.isNotEmpty && value.isNotEmpty) {
           map[key] = value;
@@ -2776,11 +3518,14 @@ Map<String, dynamic>? _tryParseJson(String raw) {
     }
   } catch (_) {}
 
-  debugPrint('[Polie] _tryParseJson failed on: ${raw.length > 200 ? raw.substring(0, 200) : raw}');
+  debugPrint(
+    '[Polie] _tryParseJson failed on: ${raw.length > 200 ? raw.substring(0, 200) : raw}',
+  );
   return null;
 }
 
-dynamic _n(Map<String, dynamic>? map, String key, dynamic fallback) => map?[key] ?? fallback;
+dynamic _n(Map<String, dynamic>? map, String key, dynamic fallback) =>
+    map?[key] ?? fallback;
 
 String _cleanAiText(String input, {String fallback = '-'}) {
   var out = input.trim();
@@ -2805,7 +3550,8 @@ bool _looksTruncated(String message) {
   if (last == 46 || last == 33 || last == 63) return false; // . ! ?
   if ((last == 34 || last == 39) && m.length > 1) {
     final prev = m.codeUnitAt(m.length - 2);
-    if (prev == 46 || prev == 33 || prev == 63) return false; // . ! ? before quote
+    if (prev == 46 || prev == 33 || prev == 63)
+      return false; // . ! ? before quote
   }
   return true;
 }
@@ -2815,7 +3561,8 @@ bool _isConversationResponseRich(String message) {
   if (normalized.length < 45) return false;
   final sentenceCount = RegExp(r'[.!?]+').allMatches(normalized).length;
   if (sentenceCount >= 3) return true;
-  return normalized.split(RegExp(r'\s+')).where((e) => e.isNotEmpty).length >= 16;
+  return normalized.split(RegExp(r'\s+')).where((e) => e.isNotEmpty).length >=
+      16;
 }
 
 List<AltItem> _buildFallbackAlternatives(String primary, String tone) {
@@ -2828,9 +3575,7 @@ List<AltItem> _buildFallbackAlternatives(String primary, String tone) {
     'literal' => 'Primary literal rendering',
     _ => 'Primary rendering',
   };
-  return <AltItem>[
-    AltItem(text: clean, note: note),
-  ];
+  return <AltItem>[AltItem(text: clean, note: note)];
 }
 
 _TranslationPayload _normalizeTranslationPayload({
@@ -2850,11 +3595,20 @@ _TranslationPayload _normalizeTranslationPayload({
     out = (enforced['text'] as String?) ?? out;
 
     // High-impact correction for a common greeting regression.
-    final asksGoodMorning = RegExp(r'\bgood\s+morning\b', caseSensitive: false).hasMatch(sourceText);
+    final asksGoodMorning = RegExp(
+      r'\bgood\s+morning\b',
+      caseSensitive: false,
+    ).hasMatch(sourceText);
     final isYoruba = targetLanguage.toLowerCase().contains('yor');
     if (isYoruba && asksGoodMorning) {
-      final normalized = out.toLowerCase().replaceAll(RegExp(r'[\s\-\.\,]'), '');
-      if (normalized == 'eka' || normalized == 'ẹká' || normalized == 'ekaaro' || normalized == 'ẹkáárọ̀') {
+      final normalized = out.toLowerCase().replaceAll(
+        RegExp(r'[\s\-\.\,]'),
+        '',
+      );
+      if (normalized == 'eka' ||
+          normalized == 'ẹká' ||
+          normalized == 'ekaaro' ||
+          normalized == 'ẹkáárọ̀') {
         out = 'Ẹ káàárọ̀';
       }
     }
@@ -2895,15 +3649,16 @@ _ConversationPayload _enforceConversationDiacritics(
     correction: _ConversationCorrection(
       hasCorrection: payload.correction.hasCorrection,
       wasCorrect: payload.correction.wasCorrect,
-      correction: payload.correction.correction == null ? null : enforce(payload.correction.correction!),
+      correction: payload.correction.correction == null
+          ? null
+          : enforce(payload.correction.correction!),
       note: enforce(payload.correction.note),
     ),
     suggestedReplies: payload.suggestedReplies.map(enforce).toList(),
     newVocab: payload.newVocab
-        .map((v) => _ConversationVocab(
-              word: enforce(v.word),
-              meaning: v.meaning,
-            ))
+        .map(
+          (v) => _ConversationVocab(word: enforce(v.word), meaning: v.meaning),
+        )
         .toList(),
   );
 }
@@ -2920,21 +3675,37 @@ class _TranslationPayload {
     required this.toneAchieved,
   });
 
-  factory _TranslationPayload.fromJson(Map<String, dynamic> json, {required String rawFallback}) {
+  factory _TranslationPayload.fromJson(
+    Map<String, dynamic> json, {
+    required String rawFallback,
+  }) {
     final alternativesRaw = (_n(json, 'alternatives', const []) as List)
         .map((e) => e is Map<String, dynamic> ? e : <String, dynamic>{})
         .toList();
     return _TranslationPayload(
       primary: _cleanAiText(
-        (_n(json, 'primary', '') as String).trim().isNotEmpty ? (_n(json, 'primary', '') as String) : rawFallback,
+        (_n(json, 'primary', '') as String).trim().isNotEmpty
+            ? (_n(json, 'primary', '') as String)
+            : rawFallback,
         fallback: _cleanAiText(rawFallback, fallback: '-'),
       ),
       alternatives: alternativesRaw
-          .map((e) => AltItem(text: (_n(e, 'text', '') as String), note: (_n(e, 'note', '') as String)))
+          .map(
+            (e) => AltItem(
+              text: (_n(e, 'text', '') as String),
+              note: (_n(e, 'note', '') as String),
+            ),
+          )
           .where((e) => e.text.trim().isNotEmpty)
           .toList(),
-      culturalNote: _cleanAiText((_n(json, 'cultural_note', '') ?? '').toString(), fallback: ''),
-      toneAchieved: _cleanAiText((_n(json, 'tone_achieved', '-') ?? '-').toString(), fallback: '-'),
+      culturalNote: _cleanAiText(
+        (_n(json, 'cultural_note', '') ?? '').toString(),
+        fallback: '',
+      ),
+      toneAchieved: _cleanAiText(
+        (_n(json, 'tone_achieved', '-') ?? '-').toString(),
+        fallback: '-',
+      ),
     );
   }
 }
@@ -2956,14 +3727,19 @@ class _TutorLessonPayload {
     this.practiceQuestion,
     this.practiceHint,
   });
-  factory _TutorLessonPayload.fromJson(Map<String, dynamic> json, String fallback) {
+  factory _TutorLessonPayload.fromJson(
+    Map<String, dynamic> json,
+    String fallback,
+  ) {
     final ex = (_n(json, 'example', const {}) as Map).cast<String, dynamic>();
     String sanitize(String value, {String fallbackText = '-'}) {
       final v = value.trim();
       if (v.isEmpty) return fallbackText;
-      if (v.startsWith('{') || v.startsWith('```') || v.startsWith('[')) return fallbackText;
+      if (v.startsWith('{') || v.startsWith('```') || v.startsWith('['))
+        return fallbackText;
       return _cleanAiText(v, fallback: fallbackText);
     }
+
     String concept = (_n(json, 'concept', 'Lesson') as String);
     // Guard against raw JSON leaking into concept field
     if (concept.startsWith('{') || concept.startsWith('```')) {
@@ -2971,32 +3747,50 @@ class _TutorLessonPayload {
     }
     String explanation = (_n(json, 'explanation', fallback) as String);
     if (explanation.startsWith('{') || explanation.startsWith('```')) {
-      explanation = 'Let us practice this concept step by step with a clear example.';
+      explanation =
+          'Let us practice this concept step by step with a clear example.';
     }
     return _TutorLessonPayload(
       concept: sanitize(concept, fallbackText: 'Lesson'),
-      explanation: sanitize(explanation, fallbackText: 'Let us practice this concept step by step.'),
-      example: _TutorExample(
-        targetLang: sanitize((_n(ex, 'target_lang', '-') as String),
-            fallbackText: 'Example unavailable'),
-        transliteration: sanitize((_n(ex, 'transliteration', '-') as String),
-            fallbackText: '-'),
-        english: sanitize((_n(ex, 'english', '-') as String),
-            fallbackText: 'Meaning unavailable'),
+      explanation: sanitize(
+        explanation,
+        fallbackText: 'Let us practice this concept step by step.',
       ),
-      memoryTip: sanitize((_n(json, 'memory_tip', '-') as String),
-          fallbackText: 'Repeat the pattern aloud three times.'),
+      example: _TutorExample(
+        targetLang: sanitize(
+          (_n(ex, 'target_lang', '-') as String),
+          fallbackText: 'Example unavailable',
+        ),
+        transliteration: sanitize(
+          (_n(ex, 'transliteration', '-') as String),
+          fallbackText: '-',
+        ),
+        english: sanitize(
+          (_n(ex, 'english', '-') as String),
+          fallbackText: 'Meaning unavailable',
+        ),
+      ),
+      memoryTip: sanitize(
+        (_n(json, 'memory_tip', '-') as String),
+        fallbackText: 'Repeat the pattern aloud three times.',
+      ),
       watchOut: (_n(json, 'watch_out', '') as String?)?.trim().isEmpty ?? true
           ? null
           : sanitize((_n(json, 'watch_out', '') as String), fallbackText: ''),
-      practiceQuestion: (_n(json, 'practice_question', '') as String?)?.trim().isEmpty ?? true
+      practiceQuestion:
+          (_n(json, 'practice_question', '') as String?)?.trim().isEmpty ?? true
           ? null
-          : sanitize((_n(json, 'practice_question', '') as String),
-              fallbackText: 'Can you write one sentence using this concept?'),
-      practiceHint: (_n(json, 'practice_hint', '') as String?)?.trim().isEmpty ?? true
+          : sanitize(
+              (_n(json, 'practice_question', '') as String),
+              fallbackText: 'Can you write one sentence using this concept?',
+            ),
+      practiceHint:
+          (_n(json, 'practice_hint', '') as String?)?.trim().isEmpty ?? true
           ? null
-          : sanitize((_n(json, 'practice_hint', '') as String),
-              fallbackText: 'Start with a short simple sentence.'),
+          : sanitize(
+              (_n(json, 'practice_hint', '') as String),
+              fallbackText: 'Start with a short simple sentence.',
+            ),
     );
   }
 }
@@ -3031,29 +3825,50 @@ class _TutorFeedbackPayload {
     required this.nextStep,
     required this.drill,
   });
-  factory _TutorFeedbackPayload.fromJson(Map<String, dynamic> json, String fallback) {
+  factory _TutorFeedbackPayload.fromJson(
+    Map<String, dynamic> json,
+    String fallback,
+  ) {
     String sanitize(String value, {String fallbackText = '-'}) {
       final v = value.trim();
       if (v.isEmpty) return fallbackText;
-      if (v.startsWith('{') || v.startsWith('```') || v.startsWith('[')) return fallbackText;
+      if (v.startsWith('{') || v.startsWith('```') || v.startsWith('['))
+        return fallbackText;
       return _cleanAiText(v, fallback: fallbackText);
     }
+
     return _TutorFeedbackPayload(
       verdict: (_n(json, 'verdict', 'close') as String),
       score: (_n(json, 'score', 50) as num).toInt(),
-      encouragement: sanitize((_n(json, 'encouragement', fallback) as String),
-          fallbackText: 'Good effort. Keep practicing and try again.'),
-      correction: sanitize((_n(json, 'correction', '-') as String),
-          fallbackText: 'Try a simpler sentence pattern.'),
-      why: sanitize((_n(json, 'why', '-') as String),
-          fallbackText: 'Your structure is close; adjust word order and tense.'),
-      nativeSpeakerNote: (_n(json, 'native_speaker_note', '') as String?)?.trim().isEmpty ?? true
+      encouragement: sanitize(
+        (_n(json, 'encouragement', fallback) as String),
+        fallbackText: 'Good effort. Keep practicing and try again.',
+      ),
+      correction: sanitize(
+        (_n(json, 'correction', '-') as String),
+        fallbackText: 'Try a simpler sentence pattern.',
+      ),
+      why: sanitize(
+        (_n(json, 'why', '-') as String),
+        fallbackText: 'Your structure is close; adjust word order and tense.',
+      ),
+      nativeSpeakerNote:
+          (_n(json, 'native_speaker_note', '') as String?)?.trim().isEmpty ??
+              true
           ? null
-          : sanitize((_n(json, 'native_speaker_note', '') as String), fallbackText: ''),
-      nextStep: sanitize((_n(json, 'next_step', '') as String),
-          fallbackText: 'Write one new sentence using this pattern and read it aloud.'),
-      drill: sanitize((_n(json, 'drill', '') as String),
-          fallbackText: 'Mini drill: rewrite your answer in a shorter sentence.'),
+          : sanitize(
+              (_n(json, 'native_speaker_note', '') as String),
+              fallbackText: '',
+            ),
+      nextStep: sanitize(
+        (_n(json, 'next_step', '') as String),
+        fallbackText:
+            'Write one new sentence using this pattern and read it aloud.',
+      ),
+      drill: sanitize(
+        (_n(json, 'drill', '') as String),
+        fallbackText: 'Mini drill: rewrite your answer in a shorter sentence.',
+      ),
     );
   }
 }
@@ -3061,24 +3876,46 @@ class _TutorFeedbackPayload {
 class _RoleplayPayload {
   final _RoleplayCharacterResponse characterResponse;
   final _RoleplayCoaching coaching;
-  const _RoleplayPayload({required this.characterResponse, required this.coaching});
-  factory _RoleplayPayload.fromJson(Map<String, dynamic> json, String fallback) {
-    final c = (_n(json, 'character_response', const {}) as Map).cast<String, dynamic>();
-    final coaching = (_n(json, 'coaching', const {}) as Map).cast<String, dynamic>();
+  const _RoleplayPayload({
+    required this.characterResponse,
+    required this.coaching,
+  });
+  factory _RoleplayPayload.fromJson(
+    Map<String, dynamic> json,
+    String fallback,
+  ) {
+    final c = (_n(json, 'character_response', const {}) as Map)
+        .cast<String, dynamic>();
+    final coaching = (_n(json, 'coaching', const {}) as Map)
+        .cast<String, dynamic>();
     return _RoleplayPayload(
       characterResponse: _RoleplayCharacterResponse(
-        targetLang: _cleanAiText((_n(c, 'target_lang', fallback) as String), fallback: _cleanAiText(fallback)),
-        transliteration: _cleanAiText((_n(c, 'transliteration', '-') as String), fallback: '-'),
-        english: _cleanAiText((_n(c, 'english', '-') as String), fallback: 'English translation unavailable.'),
+        targetLang: _cleanAiText(
+          (_n(c, 'target_lang', fallback) as String),
+          fallback: _cleanAiText(fallback),
+        ),
+        transliteration: _cleanAiText(
+          (_n(c, 'transliteration', '-') as String),
+          fallback: '-',
+        ),
+        english: _cleanAiText(
+          (_n(c, 'english', '-') as String),
+          fallback: 'English translation unavailable.',
+        ),
         emotion: (_n(c, 'emotion', 'neutral') as String),
-        action: (_n(c, 'action', '') as String?)?.trim().isEmpty ?? true ? null : (_n(c, 'action', '') as String),
+        action: (_n(c, 'action', '') as String?)?.trim().isEmpty ?? true
+            ? null
+            : (_n(c, 'action', '') as String),
       ),
       coaching: _RoleplayCoaching(
         userAccuracy: (_n(coaching, 'user_accuracy', 50) as num).toInt(),
         feedbackType: (_n(coaching, 'feedback_type', 'suggestion') as String),
         feedback: _cleanAiText((_n(coaching, 'feedback', '-') as String)),
         betterPhrasing:
-            (_n(coaching, 'better_phrasing', '') as String?)?.trim().isEmpty ?? true ? null : (_n(coaching, 'better_phrasing', '') as String),
+            (_n(coaching, 'better_phrasing', '') as String?)?.trim().isEmpty ??
+                true
+            ? null
+            : (_n(coaching, 'better_phrasing', '') as String),
       ),
     );
   }
@@ -3131,23 +3968,41 @@ class _ConversationPayload {
     required this.suggestedReplies,
     required this.newVocab,
   });
-  factory _ConversationPayload.fromJson(Map<String, dynamic> json, String fallback) {
+  factory _ConversationPayload.fromJson(
+    Map<String, dynamic> json,
+    String fallback,
+  ) {
     final c = (_n(json, 'correction', const {}) as Map).cast<String, dynamic>();
-    final replies = (_n(json, 'suggested_replies', const []) as List).map((e) => e.toString()).toList();
+    final replies = (_n(json, 'suggested_replies', const []) as List)
+        .map((e) => e.toString())
+        .toList();
     final vocabRaw = (_n(json, 'new_vocab', const []) as List)
         .map((e) => e is Map<String, dynamic> ? e : <String, dynamic>{})
         .toList();
     return _ConversationPayload(
-      message: _cleanAiText((_n(json, 'message', fallback) as String), fallback: _cleanAiText(fallback)),
+      message: _cleanAiText(
+        (_n(json, 'message', fallback) as String),
+        fallback: _cleanAiText(fallback),
+      ),
       correction: _ConversationCorrection(
         hasCorrection: (_n(c, 'has_correction', false) as bool?) ?? false,
         wasCorrect: (_n(c, 'was_correct', true) as bool?) ?? true,
-        correction: (_n(c, 'correction', '') as String?)?.trim().isEmpty ?? true ? null : (_n(c, 'correction', '') as String),
+        correction: (_n(c, 'correction', '') as String?)?.trim().isEmpty ?? true
+            ? null
+            : (_n(c, 'correction', '') as String),
         note: _cleanAiText((_n(c, 'note', '-') as String)),
       ),
-      suggestedReplies: replies.map((e) => _cleanAiText(e, fallback: '')).where((e) => e.isNotEmpty).toList(),
+      suggestedReplies: replies
+          .map((e) => _cleanAiText(e, fallback: ''))
+          .where((e) => e.isNotEmpty)
+          .toList(),
       newVocab: vocabRaw
-          .map((e) => _ConversationVocab(word: (_n(e, 'word', '') as String), meaning: (_n(e, 'meaning', '') as String)))
+          .map(
+            (e) => _ConversationVocab(
+              word: (_n(e, 'word', '') as String),
+              meaning: (_n(e, 'meaning', '') as String),
+            ),
+          )
           .where((e) => e.word.trim().isNotEmpty)
           .toList(),
     );
@@ -3177,8 +4032,10 @@ class _ConversationTurn {
   final String? userText;
   final _ConversationPayload? ai;
   const _ConversationTurn._({this.userText, this.ai});
-  factory _ConversationTurn.user(String text) => _ConversationTurn._(userText: text);
-  factory _ConversationTurn.ai(_ConversationPayload ai) => _ConversationTurn._(ai: ai);
+  factory _ConversationTurn.user(String text) =>
+      _ConversationTurn._(userText: text);
+  factory _ConversationTurn.ai(_ConversationPayload ai) =>
+      _ConversationTurn._(ai: ai);
 }
 
 class _VocabPayload {
@@ -3208,21 +4065,38 @@ class _VocabPayload {
         .map((e) => e is Map<String, dynamic> ? e : <String, dynamic>{})
         .toList();
     return _VocabPayload(
-      word: _cleanAiText((_n(json, 'word', fallback) as String), fallback: 'New word'),
+      word: _cleanAiText(
+        (_n(json, 'word', fallback) as String),
+        fallback: 'New word',
+      ),
       pronunciation: _cleanAiText((_n(json, 'pronunciation', '-') as String)),
-      partOfSpeech: _cleanAiText((_n(json, 'part_of_speech', 'word') as String), fallback: 'word'),
+      partOfSpeech: _cleanAiText(
+        (_n(json, 'part_of_speech', 'word') as String),
+        fallback: 'word',
+      ),
       english: _cleanAiText((_n(json, 'english', '-') as String)),
       example: _VocabExample(
         target: _cleanAiText((_n(ex, 'target', '-') as String)),
         english: _cleanAiText((_n(ex, 'english', '-') as String)),
       ),
       memoryPeg: _cleanAiText((_n(json, 'memory_peg', '-') as String)),
-      culturalNote: (_n(json, 'cultural_note', '') as String?)?.trim().isEmpty ?? true ? null : (_n(json, 'cultural_note', '') as String),
+      culturalNote:
+          (_n(json, 'cultural_note', '') as String?)?.trim().isEmpty ?? true
+          ? null
+          : (_n(json, 'cultural_note', '') as String),
       relatedWords: relatedRaw
-          .map((e) => _VocabRelatedWord(word: (_n(e, 'word', '') as String), relationship: (_n(e, 'relationship', '') as String)))
+          .map(
+            (e) => _VocabRelatedWord(
+              word: (_n(e, 'word', '') as String),
+              relationship: (_n(e, 'relationship', '') as String),
+            ),
+          )
           .where((e) => e.word.trim().isNotEmpty)
           .toList(),
-      difficulty: _cleanAiText((_n(json, 'difficulty', 'beginner') as String), fallback: 'beginner'),
+      difficulty: _cleanAiText(
+        (_n(json, 'difficulty', 'beginner') as String),
+        fallback: 'beginner',
+      ),
     );
   }
 }
@@ -3284,7 +4158,12 @@ class _ReviewPayload {
     return _ReviewPayload(
       headlineInsight: (_n(json, 'headline_insight', fallback) as String),
       strengths: strengthsRaw
-          .map((e) => _ReviewArea(area: (_n(e, 'area', '') as String), note: (_n(e, 'note', '') as String)))
+          .map(
+            (e) => _ReviewArea(
+              area: (_n(e, 'area', '') as String),
+              note: (_n(e, 'note', '') as String),
+            ),
+          )
           .where((e) => e.area.isNotEmpty)
           .toList(),
       growthAreas: growthRaw
@@ -3333,14 +4212,22 @@ class _ReviewGrowthArea {
   final String area;
   final String note;
   final String quickWin;
-  const _ReviewGrowthArea({required this.area, required this.note, required this.quickWin});
+  const _ReviewGrowthArea({
+    required this.area,
+    required this.note,
+    required this.quickWin,
+  });
 }
 
 class _ReviewNextStep {
   final String type;
   final String title;
   final String why;
-  const _ReviewNextStep({required this.type, required this.title, required this.why});
+  const _ReviewNextStep({
+    required this.type,
+    required this.title,
+    required this.why,
+  });
 }
 
 TranslationEntry _toHistoryEntry({
@@ -3356,7 +4243,12 @@ TranslationEntry _toHistoryEntry({
     targetLanguage: targetLanguage,
     primaryTranslation: payload.primary,
     alternatives: payload.alternatives
-        .map((a) => TranslationAlternative(translation: a.text, context: a.note.isEmpty ? null : a.note))
+        .map(
+          (a) => TranslationAlternative(
+            translation: a.text,
+            context: a.note.isEmpty ? null : a.note,
+          ),
+        )
         .toList(),
     timestamp: DateTime.now(),
   );
@@ -3390,7 +4282,11 @@ dynamic _buildTutorSessionResult({
       'pronunciation': verdict.score.toDouble(),
     },
     topicsCovered: [concept],
-    vocabularyLearned: answer.split(RegExp(r'\s+')).where((w) => w.length > 2).take(8).toList(),
+    vocabularyLearned: answer
+        .split(RegExp(r'\s+'))
+        .where((w) => w.length > 2)
+        .take(8)
+        .toList(),
     grammarPoints: [concept],
     timeSpent: 1,
     completedAt: DateTime.now(),
@@ -3404,9 +4300,7 @@ dynamic _buildVocabularyWord(_VocabPayload card, String language) {
     language: language,
     pronunciation: card.pronunciation,
     partOfSpeech: card.partOfSpeech,
-    examples: [
-      '${card.example.target} - ${card.example.english}',
-    ],
+    examples: ['${card.example.target} - ${card.example.english}'],
     metadata: {
       'difficulty': card.difficulty,
       if (card.culturalNote != null) 'cultural_note': card.culturalNote,
@@ -3416,7 +4310,11 @@ dynamic _buildVocabularyWord(_VocabPayload card, String language) {
 
 bool _isUnavailableWord(String word) {
   final w = word.trim().toLowerCase();
-  return w.isEmpty || w == 'word unavailable' || w == 'unavailable' || w == 'n/a' || w == '-';
+  return w.isEmpty ||
+      w == 'word unavailable' ||
+      w == 'unavailable' ||
+      w == 'n/a' ||
+      w == '-';
 }
 
 _VocabPayload _fallbackVocabPayload(String language) {
@@ -3427,12 +4325,13 @@ _VocabPayload _fallbackVocabPayload(String language) {
       pronunciation: '/ɛ̀.kɔ́/',
       partOfSpeech: 'noun',
       english: 'lesson',
-      example: _VocabExample(target: 'Ẹ̀kọ́ yìí dára.', english: 'This lesson is good.'),
+      example: _VocabExample(
+        target: 'Ẹ̀kọ́ yìí dára.',
+        english: 'This lesson is good.',
+      ),
       memoryPeg: 'Think of EKO as learning in action.',
       culturalNote: null,
-      relatedWords: [
-        _VocabRelatedWord(word: 'kọ́', relationship: 'related'),
-      ],
+      relatedWords: [_VocabRelatedWord(word: 'kọ́', relationship: 'related')],
       difficulty: 'beginner',
     );
   }
@@ -3442,12 +4341,13 @@ _VocabPayload _fallbackVocabPayload(String language) {
       pronunciation: '/m.mu.ta/',
       partOfSpeech: 'noun',
       english: 'learning',
-      example: _VocabExample(target: 'Mmụ̀ta dị mkpa.', english: 'Learning is important.'),
+      example: _VocabExample(
+        target: 'Mmụ̀ta dị mkpa.',
+        english: 'Learning is important.',
+      ),
       memoryPeg: 'Learning grows step by step.',
       culturalNote: null,
-      relatedWords: [
-        _VocabRelatedWord(word: 'mụ', relationship: 'related'),
-      ],
+      relatedWords: [_VocabRelatedWord(word: 'mụ', relationship: 'related')],
       difficulty: 'beginner',
     );
   }
@@ -3457,12 +4357,13 @@ _VocabPayload _fallbackVocabPayload(String language) {
       pronunciation: '/ku.dʒi.fun.za/',
       partOfSpeech: 'verb',
       english: 'to learn',
-      example: _VocabExample(target: 'Ninapenda kujifunza.', english: 'I like to learn.'),
+      example: _VocabExample(
+        target: 'Ninapenda kujifunza.',
+        english: 'I like to learn.',
+      ),
       memoryPeg: 'Learning is a daily journey.',
       culturalNote: null,
-      relatedWords: [
-        _VocabRelatedWord(word: 'soma', relationship: 'related'),
-      ],
+      relatedWords: [_VocabRelatedWord(word: 'soma', relationship: 'related')],
       difficulty: 'beginner',
     );
   }
@@ -3471,12 +4372,13 @@ _VocabPayload _fallbackVocabPayload(String language) {
     pronunciation: '/lɜːrnɪŋ/',
     partOfSpeech: 'noun',
     english: 'learning',
-    example: _VocabExample(target: 'Learning opens opportunities.', english: 'Learning opens opportunities.'),
+    example: _VocabExample(
+      target: 'Learning opens opportunities.',
+      english: 'Learning opens opportunities.',
+    ),
     memoryPeg: 'Keep one new word every day.',
     culturalNote: null,
-    relatedWords: [
-      _VocabRelatedWord(word: 'study', relationship: 'related'),
-    ],
+    relatedWords: [_VocabRelatedWord(word: 'study', relationship: 'related')],
     difficulty: 'beginner',
   );
 }

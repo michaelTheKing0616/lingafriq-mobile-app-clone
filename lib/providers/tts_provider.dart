@@ -99,8 +99,41 @@ class _BytesAudioSource extends StreamAudioSource {
   final Uint8List _data;
   final String _contentType;
 
-  _BytesAudioSource(this._data, {String contentType = 'audio/wav'})
-      : _contentType = contentType;
+  _BytesAudioSource(this._data, {String? contentType})
+      : _contentType = contentType ?? _detectContentType(_data);
+
+  static String _detectContentType(Uint8List data) {
+    if (data.length >= 3 &&
+        data[0] == 0x49 &&
+        data[1] == 0x44 &&
+        data[2] == 0x33) {
+      return 'audio/mpeg';
+    }
+    if (data.length >= 4 &&
+        data[0] == 0xFF &&
+        (data[1] & 0xE0) == 0xE0) {
+      return 'audio/mpeg';
+    }
+    if (data.length >= 12 &&
+        data[0] == 0x52 &&
+        data[1] == 0x49 &&
+        data[2] == 0x46 &&
+        data[3] == 0x46 &&
+        data[8] == 0x57 &&
+        data[9] == 0x41 &&
+        data[10] == 0x56 &&
+        data[11] == 0x45) {
+      return 'audio/wav';
+    }
+    if (data.length >= 4 &&
+        data[0] == 0x4F &&
+        data[1] == 0x67 &&
+        data[2] == 0x67 &&
+        data[3] == 0x53) {
+      return 'audio/ogg';
+    }
+    return 'audio/wav';
+  }
 
   @override
   Future<StreamAudioResponse> request([int? start, int? end]) async {

@@ -36,12 +36,14 @@ class PronunciationScore {
       confidence: (json['confidence'] as num?)?.toDouble() ?? 0.0,
       feedbackText: json['feedback_text'] as String? ?? '',
       improvementTips: List<String>.from(json['improvement_tips'] ?? []),
-      problemSegments: List<Map<String, dynamic>>.from(json['problem_segments'] ?? []),
+      problemSegments: List<Map<String, dynamic>>.from(
+        json['problem_segments'] ?? [],
+      ),
     );
   }
 
   bool get passed => overall >= 0.6;
-  
+
   String get grade {
     if (overall >= 0.9) return 'A+';
     if (overall >= 0.8) return 'A';
@@ -134,7 +136,7 @@ final voiceApiServiceProvider = Provider<VoiceApiService>((ref) {
 });
 
 /// Voice API Service
-/// 
+///
 /// Handles all voice-related API calls:
 /// - Speech-to-Text transcription
 /// - Text-to-Speech synthesis
@@ -165,16 +167,13 @@ class VoiceApiService {
       }
 
       final formData = FormData.fromMap({
-        'audio': await MultipartFile.fromFile(
-          audioPath,
-          filename: 'audio.wav',
-        ),
+        'audio': await MultipartFile.fromFile(audioPath, filename: 'audio.wav'),
         if (language != null) 'language': language,
         'task': task,
       });
 
-    final response = await _dio.post(
-      ApiContract.url(ApiContract.voice.sttTranscribe),
+      final response = await _dio.post(
+        ApiContract.url(ApiContract.voice.sttTranscribe),
         data: formData,
         options: Options(
           contentType: 'multipart/form-data',
@@ -199,10 +198,7 @@ class VoiceApiService {
   }) async {
     try {
       final formData = FormData.fromMap({
-        'audio': MultipartFile.fromBytes(
-          audioBytes,
-          filename: 'audio.wav',
-        ),
+        'audio': MultipartFile.fromBytes(audioBytes, filename: 'audio.wav'),
         if (language != null) 'language': language,
         'task': task,
       });
@@ -228,8 +224,9 @@ class VoiceApiService {
   /// Get supported STT languages
   Future<List<String>> getSupportedSTTLanguages() async {
     try {
-      final response =
-          await _dio.get(ApiContract.url(ApiContract.voice.sttLanguages));
+      final response = await _dio.get(
+        ApiContract.url(ApiContract.voice.sttLanguages),
+      );
       if (response.statusCode == 200) {
         return List<String>.from(response.data['languages'] ?? []);
       }
@@ -270,7 +267,14 @@ class VoiceApiService {
       );
 
       if (response.statusCode == 200) {
-        return Uint8List.fromList(response.data);
+        final payload = response.data;
+        if (payload is Uint8List) return payload;
+        if (payload is List<int>) return Uint8List.fromList(payload);
+        if (payload is List) {
+          return Uint8List.fromList(
+            payload.whereType<num>().map((e) => e.toInt()).toList(),
+          );
+        }
       }
     } catch (e) {
       debugPrint('TTS error: $e');
@@ -281,8 +285,9 @@ class VoiceApiService {
   /// Get supported TTS languages
   Future<List<String>> getSupportedTTSLanguages() async {
     try {
-      final response =
-          await _dio.get(ApiContract.url(ApiContract.voice.ttsLanguages));
+      final response = await _dio.get(
+        ApiContract.url(ApiContract.voice.ttsLanguages),
+      );
       if (response.statusCode == 200) {
         return List<String>.from(response.data['languages'] ?? []);
       }
@@ -322,13 +327,15 @@ class VoiceApiService {
       if (referenceAudioPath != null) {
         final refFile = File(referenceAudioPath);
         if (await refFile.exists()) {
-          formData.files.add(MapEntry(
-            'reference_audio',
-            await MultipartFile.fromFile(
-              referenceAudioPath,
-              filename: 'reference.wav',
+          formData.files.add(
+            MapEntry(
+              'reference_audio',
+              await MultipartFile.fromFile(
+                referenceAudioPath,
+                filename: 'reference.wav',
+              ),
             ),
-          ));
+          );
         }
       }
 
@@ -398,10 +405,7 @@ class VoiceApiService {
       if (!await file.exists()) return null;
 
       final formData = FormData.fromMap({
-        'audio': await MultipartFile.fromFile(
-          audioPath,
-          filename: 'audio.wav',
-        ),
+        'audio': await MultipartFile.fromFile(audioPath, filename: 'audio.wav'),
         'expected_text': expectedText,
         'language': language,
       });
@@ -431,9 +435,7 @@ class VoiceApiService {
   }) async {
     try {
       final response = await _dio.get(
-        ApiContract.url(
-          ApiContract.pronunciation.difficulty(userId, language),
-        ),
+        ApiContract.url(ApiContract.pronunciation.difficulty(userId, language)),
       );
 
       if (response.statusCode == 200) {
@@ -452,9 +454,7 @@ class VoiceApiService {
   }) async {
     try {
       final response = await _dio.get(
-        ApiContract.url(
-          ApiContract.pronunciation.profile(userId, language),
-        ),
+        ApiContract.url(ApiContract.pronunciation.profile(userId, language)),
       );
 
       if (response.statusCode == 200) {
@@ -527,9 +527,7 @@ class VoiceApiService {
   }) async {
     try {
       final response = await _dio.get(
-        ApiContract.url(
-          ApiContract.voice.lessonsProgress(userId, language),
-        ),
+        ApiContract.url(ApiContract.voice.lessonsProgress(userId, language)),
       );
 
       if (response.statusCode == 200) {
@@ -579,8 +577,7 @@ class VoiceApiService {
         ApiContract.url(ApiContract.voice.health),
         options: Options(receiveTimeout: const Duration(seconds: 5)),
       );
-      return response.statusCode == 200 && 
-             response.data['status'] == 'healthy';
+      return response.statusCode == 200 && response.data['status'] == 'healthy';
     } catch (e) {
       debugPrint('Voice service health check failed: $e');
     }
@@ -588,12 +585,53 @@ class VoiceApiService {
   }
 
   String _normalizeLanguage(String language) {
-    final key = language.trim().toLowerCase().replaceAll('-', '_');
+    var key = language.trim().toLowerCase();
+    key = key.replaceAll(RegExp(r'\(.*?\)'), '').trim();
+    key = key
+        .replaceAll('’', "'")
+        .replaceAll('á', 'a')
+        .replaceAll('à', 'a')
+        .replaceAll('â', 'a')
+        .replaceAll('ä', 'a')
+        .replaceAll('ã', 'a')
+        .replaceAll('é', 'e')
+        .replaceAll('è', 'e')
+        .replaceAll('ê', 'e')
+        .replaceAll('ë', 'e')
+        .replaceAll('í', 'i')
+        .replaceAll('ì', 'i')
+        .replaceAll('î', 'i')
+        .replaceAll('ï', 'i')
+        .replaceAll('ó', 'o')
+        .replaceAll('ò', 'o')
+        .replaceAll('ô', 'o')
+        .replaceAll('ö', 'o')
+        .replaceAll('õ', 'o')
+        .replaceAll('ú', 'u')
+        .replaceAll('ù', 'u')
+        .replaceAll('û', 'u')
+        .replaceAll('ü', 'u')
+        .replaceAll('ọ', 'o')
+        .replaceAll('ṣ', 's')
+        .replaceAll('ṅ', 'n')
+        .replaceAll('ñ', 'n');
+    key = key.replaceAll(RegExp(r'\s+'), ' ');
+    final compact = key.replaceAll('-', '_').replaceAll(' ', '_');
     const aliases = {
       'yo': 'yoruba',
+      'yoruba_language': 'yoruba',
+      'yoruba_ng': 'yoruba',
+      'yoruba_nigeria': 'yoruba',
+      'yoruba_nigerian': 'yoruba',
       'ha': 'hausa',
+      'hausa_language': 'hausa',
+      'hausa_ng': 'hausa',
       'ig': 'igbo',
+      'igbo_language': 'igbo',
+      'igbo_ng': 'igbo',
       'sw': 'swahili',
+      'kiswahili': 'swahili',
+      'swahili_language': 'swahili',
       'zu': 'zulu',
       'xh': 'xhosa',
       'am': 'amharic',
@@ -601,12 +639,16 @@ class VoiceApiService {
       'af': 'afrikaans',
       'wo': 'wolof',
       'tw': 'twi',
+      'akan': 'twi',
       'pcm': 'pidgin',
+      'pidgin_english': 'pidgin',
+      'nigerian_pidgin': 'pidgin',
+      'nigerian_pidgin_english': 'pidgin',
       'en': 'english',
       'en_us': 'english',
       'en_gb': 'english',
     };
-    return aliases[key] ?? key;
+    return aliases[compact] ?? compact;
   }
 
   List<String> _providerPriorityFor(String language) {
@@ -635,4 +677,3 @@ class VoiceApiService {
     return accents[language] ?? language;
   }
 }
-

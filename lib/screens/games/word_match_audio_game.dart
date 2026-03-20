@@ -60,6 +60,7 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
     _comboTracker = ComboTracker();
     _bootstrap();
   }
+
   Future<void> _bootstrap() async {
     await _loadAuthHeaders();
     await _initializeGame();
@@ -79,7 +80,6 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
     }
   }
 
-  
   @override
   void dispose() {
     _comboTracker.dispose();
@@ -92,7 +92,9 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
       // Use logged-in user if available; fall back to guest ID so games
       // always work even if userProvider hasn't been populated yet.
       final user = ref.read(userProvider);
-      final userId = user?.id.toString() ?? 'guest_${DateTime.now().millisecondsSinceEpoch}';
+      final userId =
+          user?.id.toString() ??
+          'guest_${DateTime.now().millisecondsSinceEpoch}';
 
       final gameProv = ref.read(gameProvider.notifier);
       _session = await gameProv.startGame(
@@ -119,7 +121,8 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
         if (mounted) {
           setState(() {
             _isLoading = false;
-            _loadError = 'Not enough content for ${widget.language}. Try another language.';
+            _loadError =
+                'Not enough content for ${widget.language}. Try another language.';
           });
         }
         return;
@@ -127,21 +130,24 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
 
       if (mounted) {
         setState(() {
-        _startTime = DateTime.now();
-        _leftTiles = cards.map((c) => _GameTile(
-              id: c.cardId,
-              label: _resolveTargetLabel(c),
-              audioUrl: c.audioNativeUrl,
-              ascii: c.ascii,
-            )).toList();
-        _rightTiles = cards.map((c) => _GameTile(
-              id: c.cardId,
-              label: _resolveGlossLabel(c),
-            )).toList();
+          _startTime = DateTime.now();
+          _leftTiles = cards
+              .map(
+                (c) => _GameTile(
+                  id: c.cardId,
+                  label: _resolveTargetLabel(c),
+                  audioUrl: c.audioNativeUrl,
+                  ascii: c.ascii,
+                ),
+              )
+              .toList();
+          _rightTiles = cards
+              .map((c) => _GameTile(id: c.cardId, label: _resolveGlossLabel(c)))
+              .toList();
 
-        // Shuffle both lists
-        _leftTiles.shuffle(Random());
-        _rightTiles.shuffle(Random());
+          // Shuffle both lists
+          _leftTiles.shuffle(Random());
+          _rightTiles.shuffle(Random());
         });
       }
     } catch (e) {
@@ -166,7 +172,9 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
         await _audioPlayer.play();
         return;
       } catch (e) {
-        debugPrint('Audio URL playback failed with auth headers, retrying public URL: $e');
+        debugPrint(
+          'Audio URL playback failed with auth headers, retrying public URL: $e',
+        );
         try {
           await _audioPlayer.setUrl(resolved);
           await _audioPlayer.setVolume(1.0);
@@ -185,13 +193,19 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
         await tts.speak(fallbackText, languageName: widget.language);
         await Future<void>.delayed(const Duration(milliseconds: 250));
         if (!tts.isSpeaking) {
-          await tts.speak(fallbackText, languageName: 'english');
+          // Retry once using normalized language label before giving up.
+          await tts.speak(
+            fallbackText,
+            languageName: widget.language.trim().toLowerCase(),
+          );
         }
       } catch (e) {
         debugPrint('TTS fallback failed: $e');
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Audio unavailable for this card right now.')),
+            const SnackBar(
+              content: Text('Audio unavailable for this card right now.'),
+            ),
           );
         }
       }
@@ -201,10 +215,14 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
   String _resolveGlossLabel(dynamic card) {
     final text = card.text?.toString().trim() ?? '';
     final gloss = card.gloss?.toString().trim() ?? '';
-    if (gloss.isNotEmpty && gloss.toLowerCase() != text.toLowerCase()) return gloss;
+    if (gloss.isNotEmpty && gloss.toLowerCase() != text.toLowerCase())
+      return gloss;
     final ascii = card.ascii?.toString().trim() ?? '';
-    if (ascii.isNotEmpty && ascii.toLowerCase() != text.toLowerCase()) return ascii;
-    return 'Meaning unavailable';
+    if (ascii.isNotEmpty &&
+        _looksLikelyEnglish(ascii) &&
+        ascii.toLowerCase() != text.toLowerCase())
+      return ascii;
+    return 'No translation yet';
   }
 
   String _resolveTargetLabel(dynamic card) {
@@ -223,10 +241,28 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
     final s = value.toLowerCase();
     if (s.isEmpty) return false;
     const commonEnglishWords = {
-      'the', 'and', 'is', 'are', 'you', 'hello', 'good', 'morning', 'thank', 'please', 'how',
-      'where', 'want', 'learn', 'welcome', 'food', 'love'
+      'the',
+      'and',
+      'is',
+      'are',
+      'you',
+      'hello',
+      'good',
+      'morning',
+      'thank',
+      'please',
+      'how',
+      'where',
+      'want',
+      'learn',
+      'welcome',
+      'food',
+      'love',
     };
-    final tokens = s.split(RegExp(r'[^a-z]+')).where((t) => t.isNotEmpty).toList();
+    final tokens = s
+        .split(RegExp(r'[^a-z]+'))
+        .where((t) => t.isNotEmpty)
+        .toList();
     if (tokens.isEmpty) return false;
     final englishHits = tokens.where(commonEnglishWords.contains).length;
     return englishHits >= (tokens.length / 2).ceil();
@@ -270,12 +306,14 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
     }
 
     setState(() {
-      _results.add(_MatchResult(
-        leftId: leftId,
-        rightId: rightId,
-        correct: correct,
-        timestamp: DateTime.now(),
-      ));
+      _results.add(
+        _MatchResult(
+          leftId: leftId,
+          rightId: rightId,
+          correct: correct,
+          timestamp: DateTime.now(),
+        ),
+      );
     });
 
     // Update game provider
@@ -299,8 +337,13 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
       );
     }
 
-    final correctUniqueMatches = _results.where((r) => r.correct).map((r) => r.leftId).toSet();
-    if (!_hasFinished && _leftTiles.isNotEmpty && correctUniqueMatches.length >= _leftTiles.length) {
+    final correctUniqueMatches = _results
+        .where((r) => r.correct)
+        .map((r) => r.leftId)
+        .toSet();
+    if (!_hasFinished &&
+        _leftTiles.isNotEmpty &&
+        correctUniqueMatches.length >= _leftTiles.length) {
       _hasFinished = true;
       await _finishGame();
     }
@@ -310,15 +353,18 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
     try {
       final gameProv = ref.read(gameProvider.notifier);
       final session = await gameProv.endGame();
-      
+
       // Award XP with combo multiplier
       final multiplier = _comboTracker.currentMultiplier;
-      await ref.read(gamificationProvider.notifier).awardXP(
-        'game_complete',
-        multiplier: multiplier,
-        sourceId: 'word_match_audio_${widget.language}_${DateTime.now().millisecondsSinceEpoch}',
-      );
-      
+      await ref
+          .read(gamificationProvider.notifier)
+          .awardXP(
+            'game_complete',
+            multiplier: multiplier,
+            sourceId:
+                'word_match_audio_${widget.language}_${DateTime.now().millisecondsSinceEpoch}',
+          );
+
       final soundEffects = ref.read(soundEffectsProvider);
       soundEffects.playCelebration();
       _comboTracker.reset();
@@ -373,14 +419,16 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
         return FadeTransition(
           opacity: animation,
           child: ScaleTransition(
-            scale: CurvedAnimation(parent: animation, curve: Curves.easeOutBack),
+            scale: CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeOutBack,
+            ),
             child: child,
           ),
         );
       },
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -453,7 +501,8 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
         board: AppEmptyState(
           icon: Icons.sports_esports_outlined,
           title: 'No content yet',
-          subtitle: 'No content available for this language. Try selecting another language or topic.',
+          subtitle:
+              'No content available for this language. Try selecting another language or topic.',
           actionLabel: 'Go back',
           onAction: widget.onBack ?? () => Navigator.pop(context),
         ),
@@ -462,7 +511,9 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
 
     return TemplateMatchBoard(
       title: 'Word Match + Audio',
-      progressLabel: _results.isNotEmpty ? '${_results.length}/${_leftTiles.length}' : null,
+      progressLabel: _results.isNotEmpty
+          ? '${_results.length}/${_leftTiles.length}'
+          : null,
       scoreLabel: '${_results.where((e) => e.correct).length}',
       board: Stack(
         children: [
@@ -470,229 +521,248 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
             padding: EdgeInsets.all(4.w),
             child: Column(
               children: [
-                  // Progress indicator
-                  if (_results.isNotEmpty)
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 2.h),
-                      child: LinearProgressIndicator(
-                        value: _results.length / _leftTiles.length,
-                        minHeight: 8,
-                      ),
+                // Progress indicator
+                if (_results.isNotEmpty)
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 2.h),
+                    child: LinearProgressIndicator(
+                      value: _results.length / _leftTiles.length,
+                      minHeight: 8,
                     ),
-                  Expanded(
-                    child: Row(
-                      children: [
-                        // Left column (native text with audio)
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(bottom: 1.h),
-                                child: Text(
-                                  'Tap a word (audio)',
-                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                ),
+                  ),
+                Expanded(
+                  child: Row(
+                    children: [
+                      // Left column (native text with audio)
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 1.h),
+                              child: Text(
+                                'Tap a word (audio)',
+                                style: Theme.of(context).textTheme.titleMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
                               ),
-                              Expanded(
-                                child: ListView.builder(
-                                  itemCount: _leftTiles.length,
-                                  itemBuilder: (context, index) {
-                                    final tile = _leftTiles[index];
-                                    final isSelected = _selectedLeft == tile.id;
-                                    final isMatched = _results.any(
-                                      (r) => r.leftId == tile.id && r.correct,
-                                    );
+                            ),
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount: _leftTiles.length,
+                                itemBuilder: (context, index) {
+                                  final tile = _leftTiles[index];
+                                  final isSelected = _selectedLeft == tile.id;
+                                  final isMatched = _results.any(
+                                    (r) => r.leftId == tile.id && r.correct,
+                                  );
 
-                                    return Padding(
-                                      padding: EdgeInsets.only(bottom: 1.h),
-                                      child: Material(
-                                        color: Colors.transparent,
-                                        child: InkWell(
-                                          onTap: isMatched
-                                              ? null
-                                              : () => _selectTile('left', tile.id),
-                                          borderRadius: BorderRadius.circular(12),
-                                          child: Container(
-                                            padding: EdgeInsets.all(3.w),
-                                            decoration: BoxDecoration(
-                                              color: isMatched
-                                                  ? Colors.green.withOpacity(0.2)
-                                                  : isSelected
-                                                      ? Theme.of(context)
-                                                          .colorScheme
-                                                          .primaryContainer
-                                                      : Colors.grey[200],
-                                              borderRadius: BorderRadius.circular(12),
-                                              border: Border.all(
-                                                color: isSelected
-                                                    ? Theme.of(context).colorScheme.primary
-                                                    : Colors.transparent,
-                                                width: 2,
-                                              ),
+                                  return Padding(
+                                    padding: EdgeInsets.only(bottom: 1.h),
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: InkWell(
+                                        onTap: isMatched
+                                            ? null
+                                            : () =>
+                                                  _selectTile('left', tile.id),
+                                        borderRadius: BorderRadius.circular(12),
+                                        child: Container(
+                                          padding: EdgeInsets.all(3.w),
+                                          decoration: BoxDecoration(
+                                            color: isMatched
+                                                ? Colors.green.withOpacity(0.2)
+                                                : isSelected
+                                                ? Theme.of(
+                                                    context,
+                                                  ).colorScheme.primaryContainer
+                                                : Colors.grey[200],
+                                            borderRadius: BorderRadius.circular(
+                                              12,
                                             ),
-                                            child: Row(
-                                              children: [
-                                                IconButton(
-                                                  icon: const Icon(Icons.volume_up),
-                                                  onPressed: () => _playAudio(tile.audioUrl, fallbackText: tile.label),
+                                            border: Border.all(
+                                              color: isSelected
+                                                  ? Theme.of(
+                                                      context,
+                                                    ).colorScheme.primary
+                                                  : Colors.transparent,
+                                              width: 2,
+                                            ),
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              IconButton(
+                                                icon: const Icon(
+                                                  Icons.volume_up,
                                                 ),
-                                                Expanded(
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
-                                                    children: [
+                                                onPressed: () => _playAudio(
+                                                  tile.audioUrl,
+                                                  fallbackText: tile.label,
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      tile.label,
+                                                      style: TextStyle(
+                                                        fontSize: 16.sp,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        decoration: isMatched
+                                                            ? TextDecoration
+                                                                  .lineThrough
+                                                            : TextDecoration
+                                                                  .none,
+                                                      ),
+                                                    ),
+                                                    if (tile.ascii != null &&
+                                                        tile.ascii !=
+                                                            tile.label)
                                                       Text(
-                                                        tile.label,
+                                                        tile.ascii!,
                                                         style: TextStyle(
-                                                          fontSize: 16.sp,
-                                                          fontWeight: FontWeight.bold,
-                                                          decoration: isMatched
-                                                              ? TextDecoration.lineThrough
-                                                              : TextDecoration.none,
+                                                          fontSize: 12.sp,
+                                                          color:
+                                                              Colors.grey[600],
                                                         ),
                                                       ),
-                                                      if (tile.ascii != null &&
-                                                          tile.ascii != tile.label)
-                                                        Text(
-                                                          tile.ascii!,
-                                                          style: TextStyle(
-                                                            fontSize: 12.sp,
-                                                            color: Colors.grey[600],
-                                                          ),
-                                                        ),
-                                                    ],
-                                                  ),
+                                                  ],
                                                 ),
-                                                if (isMatched)
-                                                  const Icon(
-                                                    Icons.check_circle,
-                                                    color: Colors.green,
-                                                  ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(width: 2.w),
-                        // Right column (meanings)
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(bottom: 1.h),
-                                child: Text(
-                                  'Tap the meaning',
-                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                ),
-                              ),
-                              Expanded(
-                                child: ListView.builder(
-                                  itemCount: _rightTiles.length,
-                                  itemBuilder: (context, index) {
-                                    final tile = _rightTiles[index];
-                                    final isSelected = _selectedRight == tile.id;
-                                    final isMatched = _results.any(
-                                      (r) => r.rightId == tile.id && r.correct,
-                                    );
-
-                                    return Padding(
-                                      padding: EdgeInsets.only(bottom: 1.h),
-                                      child: Material(
-                                        color: Colors.transparent,
-                                        child: InkWell(
-                                          onTap: isMatched
-                                              ? null
-                                              : () => _selectTile('right', tile.id),
-                                          borderRadius: BorderRadius.circular(12),
-                                          child: Container(
-                                            padding: EdgeInsets.all(3.w),
-                                            decoration: BoxDecoration(
-                                              color: isMatched
-                                                  ? Colors.green.withOpacity(0.2)
-                                                  : isSelected
-                                                      ? Theme.of(context)
-                                                          .colorScheme
-                                                          .primaryContainer
-                                                      : Colors.grey[200],
-                                              borderRadius: BorderRadius.circular(12),
-                                              border: Border.all(
-                                                color: isSelected
-                                                    ? Theme.of(context).colorScheme.primary
-                                                    : Colors.transparent,
-                                                width: 2,
                                               ),
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Text(
-                                                    tile.label,
-                                                    style: TextStyle(
-                                                      fontSize: 16.sp,
-                                                      fontWeight: FontWeight.bold,
-                                                      decoration: isMatched
-                                                          ? TextDecoration.lineThrough
-                                                          : TextDecoration.none,
-                                                    ),
-                                                  ),
+                                              if (isMatched)
+                                                const Icon(
+                                                  Icons.check_circle,
+                                                  color: Colors.green,
                                                 ),
-                                                if (isMatched)
-                                                  const Icon(
-                                                    Icons.check_circle,
-                                                    color: Colors.green,
-                                                  ),
-                                              ],
-                                            ),
+                                            ],
                                           ),
                                         ),
                                       ),
-                                    );
-                                  },
-                                ),
+                                    ),
+                                  );
+                                },
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(width: 2.w),
+                      // Right column (meanings)
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 1.h),
+                              child: Text(
+                                'Tap the meaning',
+                                style: Theme.of(context).textTheme.titleMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount: _rightTiles.length,
+                                itemBuilder: (context, index) {
+                                  final tile = _rightTiles[index];
+                                  final isSelected = _selectedRight == tile.id;
+                                  final isMatched = _results.any(
+                                    (r) => r.rightId == tile.id && r.correct,
+                                  );
+
+                                  return Padding(
+                                    padding: EdgeInsets.only(bottom: 1.h),
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: InkWell(
+                                        onTap: isMatched
+                                            ? null
+                                            : () =>
+                                                  _selectTile('right', tile.id),
+                                        borderRadius: BorderRadius.circular(12),
+                                        child: Container(
+                                          padding: EdgeInsets.all(3.w),
+                                          decoration: BoxDecoration(
+                                            color: isMatched
+                                                ? Colors.green.withOpacity(0.2)
+                                                : isSelected
+                                                ? Theme.of(
+                                                    context,
+                                                  ).colorScheme.primaryContainer
+                                                : Colors.grey[200],
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            ),
+                                            border: Border.all(
+                                              color: isSelected
+                                                  ? Theme.of(
+                                                      context,
+                                                    ).colorScheme.primary
+                                                  : Colors.transparent,
+                                              width: 2,
+                                            ),
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  tile.label,
+                                                  style: TextStyle(
+                                                    fontSize: 16.sp,
+                                                    fontWeight: FontWeight.bold,
+                                                    decoration: isMatched
+                                                        ? TextDecoration
+                                                              .lineThrough
+                                                        : TextDecoration.none,
+                                                  ),
+                                                ),
+                                              ),
+                                              if (isMatched)
+                                                const Icon(
+                                                  Icons.check_circle,
+                                                  color: Colors.green,
+                                                ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  // Finish button
-                  Padding(
-                    padding: EdgeInsets.only(top: 2.h),
-                    child: Semantics(
-                      label: 'Finish game',
-                      button: true,
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: FilledButton(
-                          onPressed: _finishGame,
-                          style: FilledButton.styleFrom(
-                            padding: EdgeInsets.symmetric(vertical: 3.h),
-                          ),
-                          child: Text(
-                            'Finish Game',
-                            style: TextStyle(fontSize: 18.sp),
-                          ),
+                ),
+                // Finish button
+                Padding(
+                  padding: EdgeInsets.only(top: 2.h),
+                  child: Semantics(
+                    label: 'Finish game',
+                    button: true,
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: FilledButton(
+                        onPressed: _finishGame,
+                        style: FilledButton.styleFrom(
+                          padding: EdgeInsets.symmetric(vertical: 3.h),
+                        ),
+                        child: Text(
+                          'Finish Game',
+                          style: TextStyle(fontSize: 18.sp),
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
+          ),
           // Combo display widget
           ComboDisplayWidget(comboTracker: _comboTracker),
         ],
@@ -707,12 +777,7 @@ class _GameTile {
   final String? audioUrl;
   final String? ascii;
 
-  _GameTile({
-    required this.id,
-    required this.label,
-    this.audioUrl,
-    this.ascii,
-  });
+  _GameTile({required this.id, required this.label, this.audioUrl, this.ascii});
 }
 
 class _MatchResult {
@@ -728,4 +793,3 @@ class _MatchResult {
     required this.timestamp,
   });
 }
-
