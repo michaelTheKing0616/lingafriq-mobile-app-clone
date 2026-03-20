@@ -112,7 +112,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
             'launch_telemetry_sent': true,
           },
         );
-        
+
         final telemetry = ref.read(telemetryServiceProvider);
         await telemetry.trackFeatureUsage(
           featureName: 'games',
@@ -127,14 +127,23 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         final gamification = ref.read(gamificationProvider.notifier);
         await gamification.awardXP('game_start');
       } catch (e) {
-        logger.error('Non-critical telemetry/gamification error (game continues)', tag: 'game-provider', error: e);
+        logger.error(
+          'Non-critical telemetry/gamification error (game continues)',
+          tag: 'game-provider',
+          error: e,
+        );
       }
 
       state = state.copyWith(isLoading: false);
       if (!completer.isCompleted) completer.complete(_currentSession!);
       return _currentSession!;
     } catch (e) {
-      logger.error('Error starting game', tag: 'game-provider', error: e, context: {'gameType': gameType});
+      logger.error(
+        'Error starting game',
+        tag: 'game-provider',
+        error: e,
+        context: {'gameType': gameType},
+      );
       state = state.copyWith(isLoading: false);
       if (!completer.isCompleted) completer.completeError(e);
       rethrow;
@@ -169,9 +178,14 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
       // Map result to SRS quality (0-5)
       final quality = _mapResultToQuality(result, confidence);
-      
+
       // Update SRS (include language for backend sync key)
-      await _updateSRS(_currentSession!.userId, cardId, _currentSession!.language, quality);
+      await _updateSRS(
+        _currentSession!.userId,
+        cardId,
+        _currentSession!.language,
+        quality,
+      );
 
       // Send telemetry
       await _sendTelemetry('game_turn', {
@@ -184,10 +198,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         'quality': quality,
       });
       _currentSession = _currentSession!.copyWith(
-        metadata: {
-          ..._currentSession!.metadata,
-          'turn_telemetry_sent': true,
-        },
+        metadata: {..._currentSession!.metadata, 'turn_telemetry_sent': true},
       );
 
       // Award XP based on result
@@ -223,12 +234,9 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         'total_turns': endedSession.totalTurns,
       });
       final withCompletionMetadata = endedSession.copyWith(
-        metadata: {
-          ...endedSession.metadata,
-          'completion_telemetry_sent': true,
-        },
+        metadata: {...endedSession.metadata, 'completion_telemetry_sent': true},
       );
-      
+
       // Enhanced telemetry tracking
       final telemetry = ref.read(telemetryServiceProvider);
       await telemetry.trackGameSession(
@@ -279,6 +287,9 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     String? gameId,
   }) async {
     final cacheKey = '${gameId ?? 'default'}_${language}_${level ?? 'A0'}';
+    final isWordMatchGame = (gameId ?? '').toLowerCase().contains(
+      'wordmatch_audio',
+    );
     final minRequired = count < 4 ? count : 4;
     if (_cardCache.containsKey(cacheKey)) {
       final cached = List<PhraseCard>.from(_cardCache[cacheKey]!);
@@ -310,10 +321,12 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         requestData['session_id'] = resolvedSessionId;
       }
 
-      final response = await ref.read(client).post(
-        ApiContract.url(ApiContract.ai.polieGameContent),
-        data: requestData,
-      );
+      final response = await ref
+          .read(client)
+          .post(
+            ApiContract.url(ApiContract.ai.polieGameContent),
+            data: requestData,
+          );
 
       if (response.statusCode == 200 && response.data != null) {
         final payload = response.data;
@@ -347,6 +360,9 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
         if (cards.length >= minRequired) {
           _repairCardsWithAssetLexicon(cards, language);
+          if (isWordMatchGame) {
+            _sanitizeWordMatchCards(cards, language);
+          }
           if (cards.length > count) {
             cards.removeRange(count, cards.length);
           }
@@ -385,7 +401,8 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       _lastContentFailure = classifyGameContentFailure(
         e,
         defaultType: GameContentFailureType.serviceUnavailable,
-        defaultMessage: 'Primary game content service is unavailable. Retrying with fallback.',
+        defaultMessage:
+            'Primary game content service is unavailable. Retrying with fallback.',
       );
     }
 
@@ -397,10 +414,12 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       };
       if (level != null) queryParams['level'] = level;
 
-      final response = await ref.read(client).get(
-        ApiContract.url(ApiContract.games.cards),
-        queryParameters: queryParams,
-      );
+      final response = await ref
+          .read(client)
+          .get(
+            ApiContract.url(ApiContract.games.cards),
+            queryParameters: queryParams,
+          );
 
       if (response.statusCode == 200 && response.data is List) {
         final dataList = response.data as List;
@@ -408,20 +427,37 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         for (var item in dataList) {
           if (item is Map<String, dynamic>) {
             try {
-              final cId = item['id'] ?? item['card_id'] ?? 'card_${cards.length}';
+              final cId =
+                  item['id'] ?? item['card_id'] ?? 'card_${cards.length}';
               final lang = item['language'] ?? language;
-              cards.add(PhraseCard(
-                cardId: cId.toString(),
-                language: lang.toString(),
-                text: item['text'] ?? item['phrase'] ?? '',
-                ascii: item['ascii'] ?? item['text'] ?? '',
-                gloss: item['gloss'] ?? item['translation'] ?? item['meaning'] ?? '',
-                level: item['level'] ?? level ?? 'A0',
-                tags: (item['tags'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
-                srs: _userSRS['${resolvedUserId ?? 'user'}_${cId}_$lang'] ?? SRSState(),
-              ));
+              cards.add(
+                PhraseCard(
+                  cardId: cId.toString(),
+                  language: lang.toString(),
+                  text: item['text'] ?? item['phrase'] ?? '',
+                  ascii: item['ascii'] ?? item['text'] ?? '',
+                  gloss:
+                      item['gloss'] ??
+                      item['translation'] ??
+                      item['meaning'] ??
+                      '',
+                  level: item['level'] ?? level ?? 'A0',
+                  tags:
+                      (item['tags'] as List<dynamic>?)
+                          ?.map((e) => e.toString())
+                          .toList() ??
+                      [],
+                  srs:
+                      _userSRS['${resolvedUserId ?? 'user'}_${cId}_$lang'] ??
+                      SRSState(),
+                ),
+              );
             } catch (e) {
-              logger.error('Error parsing card from API', tag: 'game-provider', error: e);
+              logger.error(
+                'Error parsing card from API',
+                tag: 'game-provider',
+                error: e,
+              );
               parseErrors++;
               continue;
             }
@@ -433,6 +469,9 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         // If we got enough cards from API sources, normalize and return.
         if (cards.length >= minRequired) {
           _repairCardsWithAssetLexicon(cards, language);
+          if (isWordMatchGame) {
+            _sanitizeWordMatchCards(cards, language);
+          }
           if (cards.length > count) {
             cards.removeRange(count, cards.length);
           }
@@ -451,7 +490,11 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
               }
             }
           } catch (e) {
-            logger.error('Diacritics enforcement failed for API cards (cards still usable)', tag: 'game-provider', error: e);
+            logger.error(
+              'Diacritics enforcement failed for API cards (cards still usable)',
+              tag: 'game-provider',
+              error: e,
+            );
           }
           _cardCache[cacheKey] = List.from(cards);
           return cards;
@@ -465,11 +508,16 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         }
       }
     } catch (e) {
-      logger.error('Error loading cards from API, using fallback', tag: 'game-provider', error: e);
+      logger.error(
+        'Error loading cards from API, using fallback',
+        tag: 'game-provider',
+        error: e,
+      );
       _lastContentFailure = classifyGameContentFailure(
         e,
         defaultType: GameContentFailureType.serviceUnavailable,
-        defaultMessage: 'Game card API is unavailable. Using curated fallback content.',
+        defaultMessage:
+            'Game card API is unavailable. Using curated fallback content.',
       );
       // Continue to fallback
     }
@@ -477,16 +525,45 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     // Fallback to curated local data and top-up card count when APIs under-deliver.
     var neededForTarget = max(count - cards.length, minRequired - cards.length);
     if (neededForTarget > 0) {
-      final assetRepoCards = _buildCardsFromAssetWordRepo(language, level, neededForTarget, resolvedUserId);
+      final assetRepoCards = _buildCardsFromAssetWordRepo(
+        language,
+        level,
+        neededForTarget,
+        resolvedUserId,
+      );
       cards.addAll(assetRepoCards);
       neededForTarget = max(count - cards.length, minRequired - cards.length);
     }
     if (neededForTarget > 0) {
-      final fallbackCards = _generateFallbackCards(language, level, neededForTarget, resolvedUserId);
+      final fallbackCards = _generateFallbackCards(
+        language,
+        level,
+        neededForTarget,
+        resolvedUserId,
+      );
       cards.addAll(fallbackCards);
     }
 
     _repairCardsWithAssetLexicon(cards, language);
+    if (isWordMatchGame) {
+      _sanitizeWordMatchCards(cards, language);
+      final neededForWordMatch = max(
+        count - cards.length,
+        minRequired - cards.length,
+      );
+      if (neededForWordMatch > 0) {
+        cards.addAll(
+          _buildCardsFromAssetWordRepo(
+            language,
+            level,
+            neededForWordMatch,
+            resolvedUserId,
+          ),
+        );
+        _repairCardsWithAssetLexicon(cards, language);
+        _sanitizeWordMatchCards(cards, language);
+      }
+    }
     if (cards.length > count) {
       cards.removeRange(count, cards.length);
     }
@@ -514,7 +591,11 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         }
       }
     } catch (e) {
-      logger.error('Diacritics enforcement failed (cards still usable)', tag: 'game-provider', error: e);
+      logger.error(
+        'Diacritics enforcement failed (cards still usable)',
+        tag: 'game-provider',
+        error: e,
+      );
     }
 
     if (cards.length >= minRequired) {
@@ -561,40 +642,61 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     required String? level,
     String? userId,
   }) {
-    final cardId = (item['id'] ?? item['card_id'] ?? item['content_id'] ?? 'card_${cards.length}').toString();
+    final cardId =
+        (item['id'] ??
+                item['card_id'] ??
+                item['content_id'] ??
+                'card_${cards.length}')
+            .toString();
     final lang = (item['language'] ?? language).toString();
-    final text = (item['text'] ?? item['phrase'] ?? item['content'] ?? '').toString();
-    final gloss = (item['gloss'] ?? item['translation'] ?? item['meaning'] ?? '').toString();
+    final text = (item['text'] ?? item['phrase'] ?? item['content'] ?? '')
+        .toString();
+    final gloss =
+        (item['gloss'] ?? item['translation'] ?? item['meaning'] ?? '')
+            .toString();
     final parsedLevel = (item['level'] ?? level ?? 'A0').toString();
 
     if (text.trim().isEmpty) return;
 
-    cards.add(PhraseCard(
-      cardId: cardId,
-      language: lang,
-      text: text,
-      ascii: (item['ascii'] ?? text).toString(),
-      gloss: gloss,
-      ipa: (item['ipa'] ?? item['pronunciation'])?.toString(),
-      level: parsedLevel,
-      tags: (item['tags'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? ['ai-generated'],
-      audioNativeUrl: _extractMediaUrl(item, const [
-        'audio_native_url',
-        'audioNativeUrl',
-        'audio_url',
-        'audioUrl',
-        'audio',
-        'tts_url',
-        'voice_url',
-      ]),
-      imageUrl: resolveMediaUrl(
-        (item['image_url'] ?? item['imageUrl'] ?? item['image'])?.toString(),
+    cards.add(
+      PhraseCard(
+        cardId: cardId,
+        language: lang,
+        text: text,
+        ascii: (item['ascii'] ?? text).toString(),
+        gloss: gloss,
+        ipa: (item['ipa'] ?? item['pronunciation'])?.toString(),
+        level: parsedLevel,
+        tags:
+            (item['tags'] as List<dynamic>?)
+                ?.map((e) => e.toString())
+                .toList() ??
+            ['ai-generated'],
+        audioNativeUrl: _extractMediaUrl(item, const [
+          'audio_native_url',
+          'audioNativeUrl',
+          'audio_url',
+          'audioUrl',
+          'audio',
+          'tts_url',
+          'voice_url',
+        ]),
+        imageUrl: resolveMediaUrl(
+          (item['image_url'] ?? item['imageUrl'] ?? item['image'])?.toString(),
+        ),
+        contextExamples:
+            (item['context_examples'] as List<dynamic>?)
+                ?.map((e) => e.toString())
+                .toList() ??
+            (item['examples'] as List<dynamic>?)
+                ?.map((e) => e.toString())
+                .toList() ??
+            const [],
+        srs:
+            _userSRS['${userId ?? _currentSession?.userId ?? 'user'}_${cardId}_$lang'] ??
+            SRSState(),
       ),
-      contextExamples: (item['context_examples'] as List<dynamic>?)?.map((e) => e.toString()).toList() ??
-          (item['examples'] as List<dynamic>?)?.map((e) => e.toString()).toList() ??
-          const [],
-      srs: _userSRS['${userId ?? _currentSession?.userId ?? 'user'}_${cardId}_$lang'] ?? SRSState(),
-    ));
+    );
   }
 
   String? _extractMediaUrl(Map<String, dynamic> map, List<String> keys) {
@@ -604,14 +706,16 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       if (value is List) {
         for (final item in value) {
           final nested = crawl(item);
-          if (nested != null && nested.toString().trim().isNotEmpty) return nested;
+          if (nested != null && nested.toString().trim().isNotEmpty)
+            return nested;
         }
         return null;
       }
       if (value is Map) {
         for (final nestedKey in const ['url', 'file_url', 'src', 'path']) {
           final nested = crawl(value[nestedKey]);
-          if (nested != null && nested.toString().trim().isNotEmpty) return nested;
+          if (nested != null && nested.toString().trim().isNotEmpty)
+            return nested;
         }
       }
       return value.toString();
@@ -628,9 +732,13 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }
 
   Future<void> _ensureAssetWordRepoLoaded() async {
-    if (_assetWordRepoByLanguage != null && _assetEnglishToTargetByLanguage != null) return;
+    if (_assetWordRepoByLanguage != null &&
+        _assetEnglishToTargetByLanguage != null)
+      return;
     try {
-      final raw = await rootBundle.loadString('assets/data/word_repo_game_seed.json');
+      final raw = await rootBundle.loadString(
+        'assets/data/word_repo_game_seed.json',
+      );
       final decoded = jsonDecode(raw);
       if (decoded is! Map<String, dynamic>) return;
       final languages = decoded['languages'];
@@ -663,7 +771,11 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       _assetWordRepoByLanguage = repo;
       _assetEnglishToTargetByLanguage = lexicon;
     } catch (e) {
-      logger.warn('Failed to load asset word repository; using existing fallback bank', tag: 'game-provider', context: {'error': e.toString()});
+      logger.warn(
+        'Failed to load asset word repository; using existing fallback bank',
+        tag: 'game-provider',
+        context: {'error': e.toString()},
+      );
     }
   }
 
@@ -674,7 +786,9 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     String? userId,
   ) {
     final normalizedLang = _normalizeLanguageKey(language);
-    final entries = _assetWordRepoByLanguage?[normalizedLang] ?? const <Map<String, dynamic>>[];
+    final entries =
+        _assetWordRepoByLanguage?[normalizedLang] ??
+        const <Map<String, dynamic>>[];
     if (entries.isEmpty || count <= 0) return const <PhraseCard>[];
 
     final rng = Random();
@@ -687,21 +801,27 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       if (text.isEmpty || gloss.isEmpty) continue;
       final cardId = 'asset_${normalizedLang}_${i}_${text.hashCode.abs()}';
       final tagList = <String>[
-        ...(item['game_tags'] is List ? (item['game_tags'] as List).map((e) => e.toString()) : const <String>[]),
+        ...(item['game_tags'] is List
+            ? (item['game_tags'] as List).map((e) => e.toString())
+            : const <String>[]),
         (item['topic'] ?? '').toString(),
         (item['cefr'] ?? '').toString(),
       ].where((e) => e.trim().isNotEmpty).toList();
 
-      cards.add(PhraseCard(
-        cardId: cardId,
-        language: language,
-        text: text,
-        ascii: (item['ascii'] ?? text).toString(),
-        gloss: gloss,
-        level: ((item['cefr'] ?? level ?? 'A1').toString()),
-        tags: tagList,
-        srs: _userSRS['${userId ?? _currentSession?.userId ?? 'user'}_${cardId}_$language'] ?? SRSState(),
-      ));
+      cards.add(
+        PhraseCard(
+          cardId: cardId,
+          language: language,
+          text: text,
+          ascii: (item['ascii'] ?? text).toString(),
+          gloss: gloss,
+          level: ((item['cefr'] ?? level ?? 'A1').toString()),
+          tags: tagList,
+          srs:
+              _userSRS['${userId ?? _currentSession?.userId ?? 'user'}_${cardId}_$language'] ??
+              SRSState(),
+        ),
+      );
     }
     return cards;
   }
@@ -718,7 +838,8 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       final gloss = card.gloss.trim();
 
       if (_looksLikelyEnglish(text)) {
-        final candidate = lexicon[text.toLowerCase()] ?? lexicon[gloss.toLowerCase()];
+        final candidate =
+            lexicon[text.toLowerCase()] ?? lexicon[gloss.toLowerCase()];
         if (candidate != null && candidate.trim().isNotEmpty) {
           text = candidate.trim();
           cards[i] = card.copyWith(
@@ -744,6 +865,68 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
+  void _sanitizeWordMatchCards(List<PhraseCard> cards, String language) {
+    if (cards.isEmpty) return;
+    final deduped = <PhraseCard>[];
+    final seenTargets = <String>{};
+    final seenGlosses = <String>{};
+
+    for (final card in cards) {
+      final text = card.text.trim();
+      if (text.isEmpty || _looksLikeSentence(text)) continue;
+      var gloss = card.gloss.trim();
+      if (gloss.isEmpty ||
+          !_looksLikelyEnglish(gloss) ||
+          _looksLikeSentence(gloss)) {
+        final recovered = _lookupEnglishGlossForTarget(
+          language: language,
+          target: text,
+          ascii: card.ascii,
+        );
+        if (recovered != null && recovered.isNotEmpty) {
+          gloss = recovered;
+        }
+      }
+      if (gloss.isEmpty ||
+          !_looksLikelyEnglish(gloss) ||
+          _looksLikeSentence(gloss)) {
+        continue;
+      }
+
+      final targetKey = text.toLowerCase();
+      final glossKey = gloss.toLowerCase();
+      if (seenTargets.contains(targetKey) || seenGlosses.contains(glossKey))
+        continue;
+      seenTargets.add(targetKey);
+      seenGlosses.add(glossKey);
+      deduped.add(card.copyWith(gloss: gloss));
+    }
+
+    cards
+      ..clear()
+      ..addAll(deduped);
+  }
+
+  String? _lookupEnglishGlossForTarget({
+    required String language,
+    required String target,
+    String? ascii,
+  }) {
+    final normalizedLang = _normalizeLanguageKey(language);
+    final lexicon = _assetEnglishToTargetByLanguage?[normalizedLang];
+    if (lexicon == null || lexicon.isEmpty) return null;
+    final targetLower = target.trim().toLowerCase();
+    final asciiLower = (ascii ?? '').trim().toLowerCase();
+    for (final entry in lexicon.entries) {
+      final candidateTarget = entry.value.trim().toLowerCase();
+      if (candidateTarget == targetLower ||
+          (asciiLower.isNotEmpty && candidateTarget == asciiLower)) {
+        return entry.key;
+      }
+    }
+    return null;
+  }
+
   String _normalizeLanguageKey(String language) {
     var s = language.trim().toLowerCase();
     if (s == 'nigerian pidgin' || s == 'pidgin english') return 'pidgin';
@@ -756,13 +939,45 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     final s = value.trim().toLowerCase();
     if (s.isEmpty) return false;
     const common = {
-      'the', 'and', 'is', 'are', 'you', 'hello', 'good', 'morning', 'thank', 'please', 'how', 'where', 'food',
-      'water', 'friend', 'school', 'teacher', 'student', 'house', 'book', 'day', 'night'
+      'the',
+      'and',
+      'is',
+      'are',
+      'you',
+      'hello',
+      'good',
+      'morning',
+      'thank',
+      'please',
+      'how',
+      'where',
+      'food',
+      'water',
+      'friend',
+      'school',
+      'teacher',
+      'student',
+      'house',
+      'book',
+      'day',
+      'night',
     };
-    final tokens = s.split(RegExp(r'[^a-z]+')).where((e) => e.isNotEmpty).toList();
+    final tokens = s
+        .split(RegExp(r'[^a-z]+'))
+        .where((e) => e.isNotEmpty)
+        .toList();
     if (tokens.isEmpty) return false;
     final hits = tokens.where(common.contains).length;
     return hits >= (tokens.length / 2).ceil();
+  }
+
+  bool _looksLikeSentence(String value) {
+    final tokens = value
+        .trim()
+        .split(RegExp(r'\s+'))
+        .where((e) => e.isNotEmpty)
+        .toList();
+    return tokens.length > 3;
   }
 
   /// Generate curated fallback cards (used only when API is unavailable and no cached data exists)
@@ -778,184 +993,603 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     // Curated fallback phrase bank (offline-first; used only when backend is unreachable).
     final fallbackData = <String, List<Map<String, dynamic>>>{
       'yoruba': [
-        {'text': 'Báwo ní?', 'gloss': 'How are you?', 'tags': ['greeting']},
-        {'text': 'Ẹ káàrọ̀', 'gloss': 'Good morning', 'tags': ['greeting', 'morning']},
-        {'text': 'Mo dúpé', 'gloss': 'Thank you', 'tags': ['gratitude']},
-        {'text': 'Ẹ ṣéun', 'gloss': 'Thank you (polite)', 'tags': ['gratitude', 'polite']},
-        {'text': 'Báwo ni o?', 'gloss': 'How are you? (informal)', 'tags': ['greeting', 'informal']},
-        {'text': 'Mo fẹ́ kọ́ Yorùbá', 'gloss': 'I want to learn Yoruba', 'tags': ['learning']},
-        {'text': 'Nibo ni ilé-ìtajà wà?', 'gloss': 'Where is the market?', 'tags': ['travel']},
-        {'text': 'Ẹ jọ̀ọ́, ẹ ran mi lọ́wọ́', 'gloss': 'Please, help me', 'tags': ['polite']},
+        {
+          'text': 'Báwo ní?',
+          'gloss': 'How are you?',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'Ẹ káàrọ̀',
+          'gloss': 'Good morning',
+          'tags': ['greeting', 'morning'],
+        },
+        {
+          'text': 'Mo dúpé',
+          'gloss': 'Thank you',
+          'tags': ['gratitude'],
+        },
+        {
+          'text': 'Ẹ ṣéun',
+          'gloss': 'Thank you (polite)',
+          'tags': ['gratitude', 'polite'],
+        },
+        {
+          'text': 'Báwo ni o?',
+          'gloss': 'How are you? (informal)',
+          'tags': ['greeting', 'informal'],
+        },
+        {
+          'text': 'Mo fẹ́ kọ́ Yorùbá',
+          'gloss': 'I want to learn Yoruba',
+          'tags': ['learning'],
+        },
+        {
+          'text': 'Nibo ni ilé-ìtajà wà?',
+          'gloss': 'Where is the market?',
+          'tags': ['travel'],
+        },
+        {
+          'text': 'Ẹ jọ̀ọ́, ẹ ran mi lọ́wọ́',
+          'gloss': 'Please, help me',
+          'tags': ['polite'],
+        },
       ],
       'swahili': [
-        {'text': 'Hujambo', 'gloss': 'Hello', 'tags': ['greeting']},
-        {'text': 'Asante', 'gloss': 'Thank you', 'tags': ['gratitude']},
-        {'text': 'Karibu', 'gloss': 'Welcome', 'tags': ['greeting']},
-        {'text': 'Habari yako?', 'gloss': 'How are you?', 'tags': ['greeting']},
-        {'text': 'Nzuri', 'gloss': 'Good', 'tags': ['response']},
-        {'text': 'Tafadhali', 'gloss': 'Please', 'tags': ['polite']},
-        {'text': 'Ninakupenda', 'gloss': 'I love you', 'tags': ['social']},
-        {'text': 'Chakula ni kitamu', 'gloss': 'The food is delicious', 'tags': ['food']},
+        {
+          'text': 'Hujambo',
+          'gloss': 'Hello',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'Asante',
+          'gloss': 'Thank you',
+          'tags': ['gratitude'],
+        },
+        {
+          'text': 'Karibu',
+          'gloss': 'Welcome',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'Habari yako?',
+          'gloss': 'How are you?',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'Nzuri',
+          'gloss': 'Good',
+          'tags': ['response'],
+        },
+        {
+          'text': 'Tafadhali',
+          'gloss': 'Please',
+          'tags': ['polite'],
+        },
+        {
+          'text': 'Ninakupenda',
+          'gloss': 'I love you',
+          'tags': ['social'],
+        },
+        {
+          'text': 'Chakula ni kitamu',
+          'gloss': 'The food is delicious',
+          'tags': ['food'],
+        },
       ],
       'hausa': [
-        {'text': 'Sannu', 'gloss': 'Hello', 'tags': ['greeting']},
-        {'text': 'Ina kwana', 'gloss': 'How are you?', 'tags': ['greeting']},
-        {'text': 'Na gode', 'gloss': 'Thank you', 'tags': ['gratitude']},
-        {'text': 'Barka da zuwa', 'gloss': 'Welcome', 'tags': ['greeting']},
-        {'text': 'Lafiya lau?', 'gloss': 'Are you well?', 'tags': ['greeting']},
-        {'text': 'Don Allah', 'gloss': 'Please', 'tags': ['polite']},
-        {'text': 'Ina so in koya Hausa', 'gloss': 'I want to learn Hausa', 'tags': ['learning']},
-        {'text': 'Ina kasuwa?', 'gloss': 'Where is the market?', 'tags': ['travel']},
+        {
+          'text': 'Sannu',
+          'gloss': 'Hello',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'Ina kwana',
+          'gloss': 'How are you?',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'Na gode',
+          'gloss': 'Thank you',
+          'tags': ['gratitude'],
+        },
+        {
+          'text': 'Barka da zuwa',
+          'gloss': 'Welcome',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'Lafiya lau?',
+          'gloss': 'Are you well?',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'Don Allah',
+          'gloss': 'Please',
+          'tags': ['polite'],
+        },
+        {
+          'text': 'Ina so in koya Hausa',
+          'gloss': 'I want to learn Hausa',
+          'tags': ['learning'],
+        },
+        {
+          'text': 'Ina kasuwa?',
+          'gloss': 'Where is the market?',
+          'tags': ['travel'],
+        },
       ],
       'igbo': [
-        {'text': 'Ndewo', 'gloss': 'Hello', 'tags': ['greeting']},
-        {'text': 'Kedu?', 'gloss': 'How are you?', 'tags': ['greeting']},
-        {'text': 'Daalụ', 'gloss': 'Thank you', 'tags': ['gratitude']},
-        {'text': 'Biko', 'gloss': 'Please', 'tags': ['polite']},
-        {'text': 'Aha m bụ...', 'gloss': 'My name is...', 'tags': ['intro']},
-        {'text': 'Ebee ka ahịa dị?', 'gloss': 'Where is the market?', 'tags': ['travel']},
-        {'text': 'Achọrọ m ịmụ Igbo', 'gloss': 'I want to learn Igbo', 'tags': ['learning']},
-        {'text': 'Ọ dị mma', 'gloss': 'It is good / okay', 'tags': ['response']},
+        {
+          'text': 'Ndewo',
+          'gloss': 'Hello',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'Kedu?',
+          'gloss': 'How are you?',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'Daalụ',
+          'gloss': 'Thank you',
+          'tags': ['gratitude'],
+        },
+        {
+          'text': 'Biko',
+          'gloss': 'Please',
+          'tags': ['polite'],
+        },
+        {
+          'text': 'Aha m bụ...',
+          'gloss': 'My name is...',
+          'tags': ['intro'],
+        },
+        {
+          'text': 'Ebee ka ahịa dị?',
+          'gloss': 'Where is the market?',
+          'tags': ['travel'],
+        },
+        {
+          'text': 'Achọrọ m ịmụ Igbo',
+          'gloss': 'I want to learn Igbo',
+          'tags': ['learning'],
+        },
+        {
+          'text': 'Ọ dị mma',
+          'gloss': 'It is good / okay',
+          'tags': ['response'],
+        },
       ],
       'zulu': [
-        {'text': 'Sawubona', 'gloss': 'Hello', 'tags': ['greeting']},
-        {'text': 'Unjani?', 'gloss': 'How are you?', 'tags': ['greeting']},
-        {'text': 'Ngiyabonga', 'gloss': 'Thank you', 'tags': ['gratitude']},
-        {'text': 'Ngiyacela', 'gloss': 'Please', 'tags': ['polite']},
-        {'text': 'Igama lami ngu...', 'gloss': 'My name is...', 'tags': ['intro']},
-        {'text': 'Uphi umakethe?', 'gloss': 'Where is the market?', 'tags': ['travel']},
-        {'text': 'Ngifuna ukufunda isiZulu', 'gloss': 'I want to learn Zulu', 'tags': ['learning']},
-        {'text': 'Kulungile', 'gloss': 'Okay', 'tags': ['response']},
+        {
+          'text': 'Sawubona',
+          'gloss': 'Hello',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'Unjani?',
+          'gloss': 'How are you?',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'Ngiyabonga',
+          'gloss': 'Thank you',
+          'tags': ['gratitude'],
+        },
+        {
+          'text': 'Ngiyacela',
+          'gloss': 'Please',
+          'tags': ['polite'],
+        },
+        {
+          'text': 'Igama lami ngu...',
+          'gloss': 'My name is...',
+          'tags': ['intro'],
+        },
+        {
+          'text': 'Uphi umakethe?',
+          'gloss': 'Where is the market?',
+          'tags': ['travel'],
+        },
+        {
+          'text': 'Ngifuna ukufunda isiZulu',
+          'gloss': 'I want to learn Zulu',
+          'tags': ['learning'],
+        },
+        {
+          'text': 'Kulungile',
+          'gloss': 'Okay',
+          'tags': ['response'],
+        },
       ],
       'xhosa': [
-        {'text': 'Molo', 'gloss': 'Hello', 'tags': ['greeting']},
-        {'text': 'Unjani?', 'gloss': 'How are you?', 'tags': ['greeting']},
-        {'text': 'Enkosi', 'gloss': 'Thank you', 'tags': ['gratitude']},
-        {'text': 'Nceda', 'gloss': 'Please / Help', 'tags': ['polite']},
-        {'text': 'Igama lam ngu...', 'gloss': 'My name is...', 'tags': ['intro']},
-        {'text': 'Iphi imarike?', 'gloss': 'Where is the market?', 'tags': ['travel']},
-        {'text': 'Ndifuna ukufunda isiXhosa', 'gloss': 'I want to learn Xhosa', 'tags': ['learning']},
-        {'text': 'Kulungile', 'gloss': 'Okay', 'tags': ['response']},
+        {
+          'text': 'Molo',
+          'gloss': 'Hello',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'Unjani?',
+          'gloss': 'How are you?',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'Enkosi',
+          'gloss': 'Thank you',
+          'tags': ['gratitude'],
+        },
+        {
+          'text': 'Nceda',
+          'gloss': 'Please / Help',
+          'tags': ['polite'],
+        },
+        {
+          'text': 'Igama lam ngu...',
+          'gloss': 'My name is...',
+          'tags': ['intro'],
+        },
+        {
+          'text': 'Iphi imarike?',
+          'gloss': 'Where is the market?',
+          'tags': ['travel'],
+        },
+        {
+          'text': 'Ndifuna ukufunda isiXhosa',
+          'gloss': 'I want to learn Xhosa',
+          'tags': ['learning'],
+        },
+        {
+          'text': 'Kulungile',
+          'gloss': 'Okay',
+          'tags': ['response'],
+        },
       ],
       'amharic': [
-        {'text': 'ሰላም', 'gloss': 'Hello', 'tags': ['greeting']},
-        {'text': 'እንዴት ነህ?', 'gloss': 'How are you? (m)', 'tags': ['greeting']},
-        {'text': 'እንዴት ነሽ?', 'gloss': 'How are you? (f)', 'tags': ['greeting']},
-        {'text': 'አመሰግናለሁ', 'gloss': 'Thank you', 'tags': ['gratitude']},
-        {'text': 'እባክህ', 'gloss': 'Please (m)', 'tags': ['polite']},
-        {'text': 'እባክሽ', 'gloss': 'Please (f)', 'tags': ['polite']},
-        {'text': 'ስሜ ... ነው', 'gloss': 'My name is ...', 'tags': ['intro']},
-        {'text': 'ገበያ የት ነው?', 'gloss': 'Where is the market?', 'tags': ['travel']},
+        {
+          'text': 'ሰላም',
+          'gloss': 'Hello',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'እንዴት ነህ?',
+          'gloss': 'How are you? (m)',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'እንዴት ነሽ?',
+          'gloss': 'How are you? (f)',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'አመሰግናለሁ',
+          'gloss': 'Thank you',
+          'tags': ['gratitude'],
+        },
+        {
+          'text': 'እባክህ',
+          'gloss': 'Please (m)',
+          'tags': ['polite'],
+        },
+        {
+          'text': 'እባክሽ',
+          'gloss': 'Please (f)',
+          'tags': ['polite'],
+        },
+        {
+          'text': 'ስሜ ... ነው',
+          'gloss': 'My name is ...',
+          'tags': ['intro'],
+        },
+        {
+          'text': 'ገበያ የት ነው?',
+          'gloss': 'Where is the market?',
+          'tags': ['travel'],
+        },
       ],
       'twi': [
-        {'text': 'Maakye', 'gloss': 'Good morning', 'tags': ['greeting', 'morning']},
-        {'text': 'Maaha', 'gloss': 'Good afternoon', 'tags': ['greeting']},
-        {'text': 'Maadwo', 'gloss': 'Good evening', 'tags': ['greeting']},
-        {'text': 'Medaase', 'gloss': 'Thank you', 'tags': ['gratitude']},
-        {'text': 'Mepa wo kyɛw', 'gloss': 'Please', 'tags': ['polite']},
-        {'text': 'Wo ho te sɛn?', 'gloss': 'How are you?', 'tags': ['greeting']},
-        {'text': 'Mepɛ sɛ me sua Twi', 'gloss': 'I want to learn Twi', 'tags': ['learning']},
-        {'text': 'Daben na ɛhe?', 'gloss': 'Where is the market?', 'tags': ['travel']},
+        {
+          'text': 'Maakye',
+          'gloss': 'Good morning',
+          'tags': ['greeting', 'morning'],
+        },
+        {
+          'text': 'Maaha',
+          'gloss': 'Good afternoon',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'Maadwo',
+          'gloss': 'Good evening',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'Medaase',
+          'gloss': 'Thank you',
+          'tags': ['gratitude'],
+        },
+        {
+          'text': 'Mepa wo kyɛw',
+          'gloss': 'Please',
+          'tags': ['polite'],
+        },
+        {
+          'text': 'Wo ho te sɛn?',
+          'gloss': 'How are you?',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'Mepɛ sɛ me sua Twi',
+          'gloss': 'I want to learn Twi',
+          'tags': ['learning'],
+        },
+        {
+          'text': 'Daben na ɛhe?',
+          'gloss': 'Where is the market?',
+          'tags': ['travel'],
+        },
       ],
       'afrikaans': [
-        {'text': 'Hallo', 'gloss': 'Hello', 'tags': ['greeting']},
-        {'text': 'Hoe gaan dit?', 'gloss': 'How are you?', 'tags': ['greeting']},
-        {'text': 'Dankie', 'gloss': 'Thank you', 'tags': ['gratitude']},
-        {'text': 'Asseblief', 'gloss': 'Please', 'tags': ['polite']},
-        {'text': 'My naam is ...', 'gloss': 'My name is ...', 'tags': ['intro']},
-        {'text': 'Waar is die mark?', 'gloss': 'Where is the market?', 'tags': ['travel']},
-        {'text': 'Ek wil Afrikaans leer', 'gloss': 'I want to learn Afrikaans', 'tags': ['learning']},
-        {'text': 'Dit is lekker', 'gloss': 'This is nice/delicious', 'tags': ['social']},
+        {
+          'text': 'Hallo',
+          'gloss': 'Hello',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'Hoe gaan dit?',
+          'gloss': 'How are you?',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'Dankie',
+          'gloss': 'Thank you',
+          'tags': ['gratitude'],
+        },
+        {
+          'text': 'Asseblief',
+          'gloss': 'Please',
+          'tags': ['polite'],
+        },
+        {
+          'text': 'My naam is ...',
+          'gloss': 'My name is ...',
+          'tags': ['intro'],
+        },
+        {
+          'text': 'Waar is die mark?',
+          'gloss': 'Where is the market?',
+          'tags': ['travel'],
+        },
+        {
+          'text': 'Ek wil Afrikaans leer',
+          'gloss': 'I want to learn Afrikaans',
+          'tags': ['learning'],
+        },
+        {
+          'text': 'Dit is lekker',
+          'gloss': 'This is nice/delicious',
+          'tags': ['social'],
+        },
       ],
       'pidgin': [
-        {'text': 'How you dey?', 'gloss': 'How are you?', 'tags': ['greeting']},
-        {'text': 'I dey fine', 'gloss': 'I am fine', 'tags': ['response']},
-        {'text': 'Abeg', 'gloss': 'Please', 'tags': ['polite']},
-        {'text': 'Thanks', 'gloss': 'Thank you', 'tags': ['gratitude']},
-        {'text': 'My name na ...', 'gloss': 'My name is ...', 'tags': ['intro']},
-        {'text': 'Where market dey?', 'gloss': 'Where is the market?', 'tags': ['travel']},
-        {'text': 'I wan learn Pidgin', 'gloss': 'I want to learn Pidgin', 'tags': ['learning']},
-        {'text': 'No wahala', 'gloss': 'No problem', 'tags': ['social']},
+        {
+          'text': 'How you dey?',
+          'gloss': 'How are you?',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'I dey fine',
+          'gloss': 'I am fine',
+          'tags': ['response'],
+        },
+        {
+          'text': 'Abeg',
+          'gloss': 'Please',
+          'tags': ['polite'],
+        },
+        {
+          'text': 'Thanks',
+          'gloss': 'Thank you',
+          'tags': ['gratitude'],
+        },
+        {
+          'text': 'My name na ...',
+          'gloss': 'My name is ...',
+          'tags': ['intro'],
+        },
+        {
+          'text': 'Where market dey?',
+          'gloss': 'Where is the market?',
+          'tags': ['travel'],
+        },
+        {
+          'text': 'I wan learn Pidgin',
+          'gloss': 'I want to learn Pidgin',
+          'tags': ['learning'],
+        },
+        {
+          'text': 'No wahala',
+          'gloss': 'No problem',
+          'tags': ['social'],
+        },
       ],
       'wolof': [
-        {'text': 'Salaam aleekum', 'gloss': 'Peace be upon you', 'tags': ['greeting']},
-        {'text': 'Maalekum salaam', 'gloss': 'And peace be upon you', 'tags': ['response']},
-        {'text': 'Nanga def?', 'gloss': 'How are you?', 'tags': ['greeting']},
-        {'text': 'Jërëjëf', 'gloss': 'Thank you', 'tags': ['gratitude']},
-        {'text': 'Ba beneen yoon', 'gloss': 'See you later', 'tags': ['farewell']},
-        {'text': 'Tudd naa ...', 'gloss': 'My name is ...', 'tags': ['intro']},
-        {'text': 'Ana marché bi?', 'gloss': 'Where is the market?', 'tags': ['travel']},
-        {'text': 'Dama bëgg jàng Wolof', 'gloss': 'I want to learn Wolof', 'tags': ['learning']},
+        {
+          'text': 'Salaam aleekum',
+          'gloss': 'Peace be upon you',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'Maalekum salaam',
+          'gloss': 'And peace be upon you',
+          'tags': ['response'],
+        },
+        {
+          'text': 'Nanga def?',
+          'gloss': 'How are you?',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'Jërëjëf',
+          'gloss': 'Thank you',
+          'tags': ['gratitude'],
+        },
+        {
+          'text': 'Ba beneen yoon',
+          'gloss': 'See you later',
+          'tags': ['farewell'],
+        },
+        {
+          'text': 'Tudd naa ...',
+          'gloss': 'My name is ...',
+          'tags': ['intro'],
+        },
+        {
+          'text': 'Ana marché bi?',
+          'gloss': 'Where is the market?',
+          'tags': ['travel'],
+        },
+        {
+          'text': 'Dama bëgg jàng Wolof',
+          'gloss': 'I want to learn Wolof',
+          'tags': ['learning'],
+        },
       ],
       'somali': [
-        {'text': 'Salaan', 'gloss': 'Hello', 'tags': ['greeting']},
-        {'text': 'Sidee tahay?', 'gloss': 'How are you?', 'tags': ['greeting']},
-        {'text': 'Mahadsanid', 'gloss': 'Thank you', 'tags': ['gratitude']},
-        {'text': 'Fadlan', 'gloss': 'Please', 'tags': ['polite']},
-        {'text': 'Magacaygu waa ...', 'gloss': 'My name is ...', 'tags': ['intro']},
-        {'text': 'Suuqa xaggee buu yahay?', 'gloss': 'Where is the market?', 'tags': ['travel']},
-        {'text': 'Waxaan rabaa inaan barto Soomaali', 'gloss': 'I want to learn Somali', 'tags': ['learning']},
-        {'text': 'Waa hagaag', 'gloss': 'Okay', 'tags': ['response']},
+        {
+          'text': 'Salaan',
+          'gloss': 'Hello',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'Sidee tahay?',
+          'gloss': 'How are you?',
+          'tags': ['greeting'],
+        },
+        {
+          'text': 'Mahadsanid',
+          'gloss': 'Thank you',
+          'tags': ['gratitude'],
+        },
+        {
+          'text': 'Fadlan',
+          'gloss': 'Please',
+          'tags': ['polite'],
+        },
+        {
+          'text': 'Magacaygu waa ...',
+          'gloss': 'My name is ...',
+          'tags': ['intro'],
+        },
+        {
+          'text': 'Suuqa xaggee buu yahay?',
+          'gloss': 'Where is the market?',
+          'tags': ['travel'],
+        },
+        {
+          'text': 'Waxaan rabaa inaan barto Soomaali',
+          'gloss': 'I want to learn Somali',
+          'tags': ['learning'],
+        },
+        {
+          'text': 'Waa hagaag',
+          'gloss': 'Okay',
+          'tags': ['response'],
+        },
       ],
     };
 
-      // Merge LanguageWords (richer, 30-90 per language) with inline fallback
-      final langWordsAll = LanguageWords.getWordsByLanguage();
-      final capitalizedLang = lang.isNotEmpty ? lang[0].toUpperCase() + lang.substring(1) : lang;
-      final richWords = langWordsAll[capitalizedLang] ?? langWordsAll['Yoruba'] ?? [];
+    // Merge LanguageWords (richer, 30-90 per language) with inline fallback
+    final langWordsAll = LanguageWords.getWordsByLanguage();
+    final capitalizedLang = lang.isNotEmpty
+        ? lang[0].toUpperCase() + lang.substring(1)
+        : lang;
+    final richWords =
+        langWordsAll[capitalizedLang] ?? langWordsAll['Yoruba'] ?? [];
 
-      // Build a combined list: LanguageWords first (richer), then inline fallback
-      final combined = <Map<String, dynamic>>[];
-      for (final w in richWords) {
-        combined.add({
-          'text': w['translation'] ?? '',
-          'gloss': w['english'] ?? '',
-          'tags': <String>['language-words'],
-        });
+    // Build a combined list: LanguageWords first (richer), then inline fallback
+    final combined = <Map<String, dynamic>>[];
+    for (final w in richWords) {
+      combined.add({
+        'text': w['translation'] ?? '',
+        'gloss': w['english'] ?? '',
+        'tags': <String>['language-words'],
+      });
+    }
+
+    final inlineData = fallbackData[lang] ?? fallbackData['yoruba']!;
+    for (final item in inlineData) {
+      final text = item['text'] as String;
+      if (!combined.any((c) => c['text'] == text)) {
+        combined.add(item);
       }
+    }
 
-      final inlineData = fallbackData[lang] ?? fallbackData['yoruba']!;
-      for (final item in inlineData) {
-        final text = item['text'] as String;
-        if (!combined.any((c) => c['text'] == text)) {
-          combined.add(item);
-        }
-      }
+    // Shuffle and take unique subset
+    final rng = Random();
+    combined.shuffle(rng);
+    final take = min(count, combined.length);
 
-      // Shuffle and take unique subset
-      final rng = Random();
-      combined.shuffle(rng);
-      final take = min(count, combined.length);
+    if (take < 4) {
+      // Universal safety net phrases for any language
+      final universalPhrases = [
+        {
+          'text': 'Hello',
+          'gloss': 'Greeting',
+          'tags': <String>['universal-fallback'],
+        },
+        {
+          'text': 'Thank you',
+          'gloss': 'Gratitude',
+          'tags': <String>['universal-fallback'],
+        },
+        {
+          'text': 'Yes',
+          'gloss': 'Affirmative',
+          'tags': <String>['universal-fallback'],
+        },
+        {
+          'text': 'No',
+          'gloss': 'Negative',
+          'tags': <String>['universal-fallback'],
+        },
+        {
+          'text': 'Please',
+          'gloss': 'Polite request',
+          'tags': <String>['universal-fallback'],
+        },
+        {
+          'text': 'Goodbye',
+          'gloss': 'Farewell',
+          'tags': <String>['universal-fallback'],
+        },
+      ];
+      combined.addAll(universalPhrases);
+    }
 
-      if (take < 4) {
-        // Universal safety net phrases for any language
-        final universalPhrases = [
-          {'text': 'Hello', 'gloss': 'Greeting', 'tags': <String>['universal-fallback']},
-          {'text': 'Thank you', 'gloss': 'Gratitude', 'tags': <String>['universal-fallback']},
-          {'text': 'Yes', 'gloss': 'Affirmative', 'tags': <String>['universal-fallback']},
-          {'text': 'No', 'gloss': 'Negative', 'tags': <String>['universal-fallback']},
-          {'text': 'Please', 'gloss': 'Polite request', 'tags': <String>['universal-fallback']},
-          {'text': 'Goodbye', 'gloss': 'Farewell', 'tags': <String>['universal-fallback']},
-        ];
-        combined.addAll(universalPhrases);
-      }
+    final actualTake = min(count, combined.length);
 
-      final actualTake = min(count, combined.length);
-
-      for (var i = 0; i < actualTake; i++) {
-        final item = combined[i];
-        final cardId = '${lang}_card_$i';
-        cards.add(PhraseCard(
+    for (var i = 0; i < actualTake; i++) {
+      final item = combined[i];
+      final cardId = '${lang}_card_$i';
+      cards.add(
+        PhraseCard(
           cardId: cardId,
           language: language,
           text: (item['text'] as String?) ?? '',
           ascii: (item['text'] as String?) ?? '',
           gloss: (item['gloss'] as String?) ?? '',
           level: level ?? 'A0',
-          tags: (item['tags'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
-          srs: _userSRS['${userId ?? _currentSession?.userId ?? 'user'}_${cardId}_$language'] ?? SRSState(),
-        ));
-      }
+          tags:
+              (item['tags'] as List<dynamic>?)
+                  ?.map((e) => e.toString())
+                  .toList() ??
+              [],
+          srs:
+              _userSRS['${userId ?? _currentSession?.userId ?? 'user'}_${cardId}_$language'] ??
+              SRSState(),
+        ),
+      );
+    }
 
     return cards;
   }
@@ -982,7 +1616,12 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }
 
   /// Update SRS state for a card. Key includes language for backend sync (cardId_language).
-  Future<void> _updateSRS(String userId, String cardId, String language, int quality) async {
+  Future<void> _updateSRS(
+    String userId,
+    String cardId,
+    String language,
+    int quality,
+  ) async {
     final key = '${userId}_${cardId}_$language';
     final current = _userSRS[key] ?? SRSState();
 
@@ -1019,7 +1658,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     );
 
     await _saveUserSRS();
-    
+
     // Sync SRS to backend
     await _syncSRSToBackend();
   }
@@ -1036,16 +1675,22 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       sessionJson['correct_count'] = session.correctCount;
       sessionJson['total_turns'] = session.totalTurns;
       final syncProvider = ref.read(backendSyncProvider.notifier);
-      await syncProvider.queueSync(SyncTask(
-        type: SyncType.gameSession,
-        data: {
-          'user_id': user.id.toString(),
-          'session': sessionJson,
-          'timestamp': DateTime.now().toIso8601String(),
-        },
-      ));
+      await syncProvider.queueSync(
+        SyncTask(
+          type: SyncType.gameSession,
+          data: {
+            'user_id': user.id.toString(),
+            'session': sessionJson,
+            'timestamp': DateTime.now().toIso8601String(),
+          },
+        ),
+      );
     } catch (e) {
-      logger.error('Error queuing session sync', tag: 'game-provider', error: e);
+      logger.error(
+        'Error queuing session sync',
+        tag: 'game-provider',
+        error: e,
+      );
     }
   }
 
@@ -1071,14 +1716,16 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
       if (srsData.isEmpty) return;
 
-      await syncProvider.queueSync(SyncTask(
-        type: SyncType.gameSRS,
-        data: {
-          'user_id': user.id.toString(),
-          'srs': srsData,
-          'timestamp': DateTime.now().toIso8601String(),
-        },
-      ));
+      await syncProvider.queueSync(
+        SyncTask(
+          type: SyncType.gameSRS,
+          data: {
+            'user_id': user.id.toString(),
+            'srs': srsData,
+            'timestamp': DateTime.now().toIso8601String(),
+          },
+        ),
+      );
     } catch (e) {
       logger.error('Error queuing SRS sync', tag: 'game-provider', error: e);
     }
@@ -1091,24 +1738,28 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       if (user == null) return;
 
       final syncProvider = ref.read(backendSyncProvider.notifier);
-      await syncProvider.queueSync(SyncTask(
-        type: SyncType.telemetry,
-        data: {
-          'user_id': user.id.toString(),
-          'event': event,
-          'timestamp': DateTime.now().toIso8601String(),
-          ...data,
-        },
-      ));
-      
+      await syncProvider.queueSync(
+        SyncTask(
+          type: SyncType.telemetry,
+          data: {
+            'user_id': user.id.toString(),
+            'event': event,
+            'timestamp': DateTime.now().toIso8601String(),
+            ...data,
+          },
+        ),
+      );
+
       // Also log locally for offline access
       final prefs = await SharedPreferences.getInstance();
       final existing = prefs.getStringList('telemetry_log') ?? [];
-      existing.add(jsonEncode({
-        'event': event,
-        'timestamp': DateTime.now().toIso8601String(),
-        ...data,
-      }));
+      existing.add(
+        jsonEncode({
+          'event': event,
+          'timestamp': DateTime.now().toIso8601String(),
+          ...data,
+        }),
+      );
       await prefs.setStringList('telemetry_log', existing);
     } catch (e) {
       logger.error('Error sending telemetry', tag: 'game-provider', error: e);
@@ -1134,7 +1785,8 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         sessionId: session.sessionId,
         launchTelemetrySent: session.metadata['launch_telemetry_sent'] == true,
         turnTelemetrySent: session.metadata['turn_telemetry_sent'] == true,
-        completionTelemetrySent: session.metadata['completion_telemetry_sent'] == true,
+        completionTelemetrySent:
+            session.metadata['completion_telemetry_sent'] == true,
         hasTurns: session.totalTurns > 0,
         completed: session.endTime != null,
         updatedAt: DateTime.now(),
@@ -1142,7 +1794,11 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       _modeCertifications[session.gameType] = report;
       await _saveModeCertifications();
     } catch (e) {
-      logger.error('Error recording game certification', tag: 'game-provider', error: e);
+      logger.error(
+        'Error recording game certification',
+        tag: 'game-provider',
+        error: e,
+      );
     }
   }
 
@@ -1159,7 +1815,9 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       parsed.forEach((gameType, value) {
         if (value is! Map<String, dynamic>) return;
         final updatedAtRaw = value['updated_at']?.toString();
-        final updatedAt = DateTime.tryParse(updatedAtRaw ?? '') ?? DateTime.fromMillisecondsSinceEpoch(0);
+        final updatedAt =
+            DateTime.tryParse(updatedAtRaw ?? '') ??
+            DateTime.fromMillisecondsSinceEpoch(0);
 
         _modeCertifications[gameType] = GameModeCertification(
           gameType: (value['game_type'] ?? gameType).toString(),
@@ -1173,7 +1831,11 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         );
       });
     } catch (e) {
-      logger.error('Error loading game certifications', tag: 'game-provider', error: e);
+      logger.error(
+        'Error loading game certifications',
+        tag: 'game-provider',
+        error: e,
+      );
     }
   }
 
@@ -1186,7 +1848,11 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       });
       await prefs.setString('game_mode_certifications', jsonEncode(json));
     } catch (e) {
-      logger.error('Error saving game certifications', tag: 'game-provider', error: e);
+      logger.error(
+        'Error saving game certifications',
+        tag: 'game-provider',
+        error: e,
+      );
     }
   }
 
@@ -1229,11 +1895,15 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     String? difficulty,
   }) async {
     try {
-      logger.info('Warming up game content', tag: 'game-provider', context: {
-        'gameType': gameType,
-        'language': language,
-        'difficulty': difficulty,
-      });
+      logger.info(
+        'Warming up game content',
+        tag: 'game-provider',
+        context: {
+          'gameType': gameType,
+          'language': language,
+          'difficulty': difficulty,
+        },
+      );
 
       // Preload cards for the game type
       if (language != null) {
@@ -1245,11 +1915,18 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
 
       // Additional warmup logic can be added here (e.g., preload audio, images, etc.)
-      logger.info('Game content warmed up', tag: 'game-provider', context: {'gameType': gameType});
+      logger.info(
+        'Game content warmed up',
+        tag: 'game-provider',
+        context: {'gameType': gameType},
+      );
     } catch (e) {
-      logger.error('Error warming up game content', tag: 'game-provider', error: e, context: {
-        'gameType': gameType,
-      });
+      logger.error(
+        'Error warming up game content',
+        tag: 'game-provider',
+        error: e,
+        context: {'gameType': gameType},
+      );
       // Don't throw - warmup is optional
     }
   }
@@ -1284,15 +1961,14 @@ class GameModeCertification {
       completed;
 
   Map<String, dynamic> toJson() => {
-        'game_type': gameType,
-        'session_id': sessionId,
-        'launch_telemetry_sent': launchTelemetrySent,
-        'turn_telemetry_sent': turnTelemetrySent,
-        'completion_telemetry_sent': completionTelemetrySent,
-        'has_turns': hasTurns,
-        'completed': completed,
-        'passed': passed,
-        'updated_at': updatedAt.toIso8601String(),
-      };
+    'game_type': gameType,
+    'session_id': sessionId,
+    'launch_telemetry_sent': launchTelemetrySent,
+    'turn_telemetry_sent': turnTelemetrySent,
+    'completion_telemetry_sent': completionTelemetrySent,
+    'has_turns': hasTurns,
+    'completed': completed,
+    'passed': passed,
+    'updated_at': updatedAt.toIso8601String(),
+  };
 }
-
