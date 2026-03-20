@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/config/api_contract.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,6 +29,8 @@ final gameProvider = NotifierProvider<GameProvider, BaseProviderState>(() {
 /// Game Provider - Manages all game sessions, SRS integration, and telemetry
 class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   static final Map<String, List<PhraseCard>> _cardCache = {};
+  static Map<String, List<Map<String, dynamic>>>? _assetWordRepoByLanguage;
+  static Map<String, Map<String, String>>? _assetEnglishToTargetByLanguage;
 
   GameSession? _currentSession;
   Completer<GameSession>? _startGameLock;
@@ -289,6 +292,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     final cards = <PhraseCard>[];
     final resolvedUserId = userId ?? _currentSession?.userId;
     final resolvedSessionId = sessionId ?? _currentSession?.sessionId;
+    await _ensureAssetWordRepoLoaded();
 
     // 1) Canonical route: POST /api/games/game-content
     // Backend mounts Polie game content under /api/games/*.
@@ -342,6 +346,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         }
 
         if (cards.length >= minRequired) {
+          _repairCardsWithAssetLexicon(cards, language);
           if (cards.length > count) {
             cards.removeRange(count, cards.length);
           }
@@ -427,6 +432,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
         // If we got enough cards from API sources, normalize and return.
         if (cards.length >= minRequired) {
+          _repairCardsWithAssetLexicon(cards, language);
           if (cards.length > count) {
             cards.removeRange(count, cards.length);
           }
@@ -469,11 +475,18 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
 
     // Fallback to curated local data and top-up card count when APIs under-deliver.
-    final neededForTarget = max(count - cards.length, minRequired - cards.length);
+    var neededForTarget = max(count - cards.length, minRequired - cards.length);
+    if (neededForTarget > 0) {
+      final assetRepoCards = _buildCardsFromAssetWordRepo(language, level, neededForTarget, resolvedUserId);
+      cards.addAll(assetRepoCards);
+      neededForTarget = max(count - cards.length, minRequired - cards.length);
+    }
     if (neededForTarget > 0) {
       final fallbackCards = _generateFallbackCards(language, level, neededForTarget, resolvedUserId);
       cards.addAll(fallbackCards);
     }
+
+    _repairCardsWithAssetLexicon(cards, language);
     if (cards.length > count) {
       cards.removeRange(count, cards.length);
     }
@@ -612,6 +625,144 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
     }
     return null;
+  }
+
+  Future<void> _ensureAssetWordRepoLoaded() async {
+    if (_assetWordRepoByLanguage != null && _assetEnglishToTargetByLanguage != null) return;
+    try {
+      final raw = await rootBundle.loadString('assets/data/word_repo_game_seed.json');
+      final decoded = jsonDecode(raw);
+      if (decoded is! Map<String, dynamic>) return;
+      final languages = decoded['languages'];
+      if (languages is! Map<String, dynamic>) return;
+
+      final repo = <String, List<Map<String, dynamic>>>{};
+      final lexicon = <String, Map<String, String>>{};
+
+      languages.forEach((key, value) {
+        if (value is! List) return;
+        final normalizedKey = _normalizeLanguageKey(key);
+        final entries = <Map<String, dynamic>>[];
+        final map = <String, String>{};
+
+        for (final item in value) {
+          if (item is! Map<String, dynamic>) continue;
+          final text = (item['text'] ?? '').toString().trim();
+          final gloss = (item['gloss'] ?? '').toString().trim();
+          if (text.isEmpty || gloss.isEmpty) continue;
+          entries.add(item);
+          map[gloss.toLowerCase()] = text;
+        }
+
+        if (entries.isNotEmpty) {
+          repo[normalizedKey] = entries;
+          lexicon[normalizedKey] = map;
+        }
+      });
+
+      _assetWordRepoByLanguage = repo;
+      _assetEnglishToTargetByLanguage = lexicon;
+    } catch (e) {
+      logger.warn('Failed to load asset word repository; using existing fallback bank', tag: 'game-provider', context: {'error': e.toString()});
+    }
+  }
+
+  List<PhraseCard> _buildCardsFromAssetWordRepo(
+    String language,
+    String? level,
+    int count,
+    String? userId,
+  ) {
+    final normalizedLang = _normalizeLanguageKey(language);
+    final entries = _assetWordRepoByLanguage?[normalizedLang] ?? const <Map<String, dynamic>>[];
+    if (entries.isEmpty || count <= 0) return const <PhraseCard>[];
+
+    final rng = Random();
+    final shuffled = List<Map<String, dynamic>>.from(entries)..shuffle(rng);
+    final cards = <PhraseCard>[];
+    for (var i = 0; i < min(count, shuffled.length); i++) {
+      final item = shuffled[i];
+      final text = (item['text'] ?? '').toString().trim();
+      final gloss = (item['gloss'] ?? '').toString().trim();
+      if (text.isEmpty || gloss.isEmpty) continue;
+      final cardId = 'asset_${normalizedLang}_${i}_${text.hashCode.abs()}';
+      final tagList = <String>[
+        ...(item['game_tags'] is List ? (item['game_tags'] as List).map((e) => e.toString()) : const <String>[]),
+        (item['topic'] ?? '').toString(),
+        (item['cefr'] ?? '').toString(),
+      ].where((e) => e.trim().isNotEmpty).toList();
+
+      cards.add(PhraseCard(
+        cardId: cardId,
+        language: language,
+        text: text,
+        ascii: (item['ascii'] ?? text).toString(),
+        gloss: gloss,
+        level: ((item['cefr'] ?? level ?? 'A1').toString()),
+        tags: tagList,
+        srs: _userSRS['${userId ?? _currentSession?.userId ?? 'user'}_${cardId}_$language'] ?? SRSState(),
+      ));
+    }
+    return cards;
+  }
+
+  void _repairCardsWithAssetLexicon(List<PhraseCard> cards, String language) {
+    if (cards.isEmpty) return;
+    final normalizedLang = _normalizeLanguageKey(language);
+    final lexicon = _assetEnglishToTargetByLanguage?[normalizedLang];
+    if (lexicon == null || lexicon.isEmpty) return;
+
+    for (var i = 0; i < cards.length; i++) {
+      final card = cards[i];
+      var text = card.text.trim();
+      final gloss = card.gloss.trim();
+
+      if (_looksLikelyEnglish(text)) {
+        final candidate = lexicon[text.toLowerCase()] ?? lexicon[gloss.toLowerCase()];
+        if (candidate != null && candidate.trim().isNotEmpty) {
+          text = candidate.trim();
+          cards[i] = card.copyWith(
+            text: text,
+            ascii: card.ascii.trim().isEmpty ? text : card.ascii,
+            gloss: gloss.isEmpty ? card.text : gloss,
+          );
+          continue;
+        }
+      }
+
+      if (gloss.isEmpty && lexicon.isNotEmpty) {
+        final backfillGloss = lexicon.entries
+            .firstWhere(
+              (e) => e.value.toLowerCase() == text.toLowerCase(),
+              orElse: () => const MapEntry('', ''),
+            )
+            .key;
+        if (backfillGloss.isNotEmpty) {
+          cards[i] = card.copyWith(gloss: backfillGloss);
+        }
+      }
+    }
+  }
+
+  String _normalizeLanguageKey(String language) {
+    var s = language.trim().toLowerCase();
+    if (s == 'nigerian pidgin' || s == 'pidgin english') return 'pidgin';
+    if (s.startsWith('yor') || s == 'yorùbá') return 'yoruba';
+    if (s == 'kiswahili') return 'swahili';
+    return s;
+  }
+
+  bool _looksLikelyEnglish(String value) {
+    final s = value.trim().toLowerCase();
+    if (s.isEmpty) return false;
+    const common = {
+      'the', 'and', 'is', 'are', 'you', 'hello', 'good', 'morning', 'thank', 'please', 'how', 'where', 'food',
+      'water', 'friend', 'school', 'teacher', 'student', 'house', 'book', 'day', 'night'
+    };
+    final tokens = s.split(RegExp(r'[^a-z]+')).where((e) => e.isNotEmpty).toList();
+    if (tokens.isEmpty) return false;
+    final hits = tokens.where(common.contains).length;
+    return hits >= (tokens.length / 2).ceil();
   }
 
   /// Generate curated fallback cards (used only when API is unavailable and no cached data exists)

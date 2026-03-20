@@ -1,0 +1,4730 @@
+{
+  "languages": {
+    "swahili": [
+      {
+        "id": "1",
+        "language": "Swahili",
+        "text": "habari",
+        "gloss": "news/how are you",
+        "ascii": "ha-BA-ri",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "",
+        "cultural_note": "Common casual greeting",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound",
+          "Roleplay",
+          "GreetingDiplomacy",
+          "FlashcardSafari"
+        ]
+      },
+      {
+        "id": "2",
+        "language": "Swahili",
+        "text": "jambo",
+        "gloss": "hello",
+        "ascii": "JAM-bo",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "",
+        "cultural_note": "Tourist-friendly greeting",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy",
+          "Roleplay"
+        ]
+      },
+      {
+        "id": "3",
+        "language": "Swahili",
+        "text": "asante",
+        "gloss": "thank you",
+        "ascii": "a-SAN-te",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Courtesy",
+        "tonal_note": "",
+        "cultural_note": "Essential politeness",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "4",
+        "language": "Swahili",
+        "text": "tafadhali",
+        "gloss": "please",
+        "ascii": "ta-fa-DHA-li",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Courtesy",
+        "tonal_note": "",
+        "cultural_note": "Formal request marker",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "5",
+        "language": "Swahili",
+        "text": "chakula",
+        "gloss": "food",
+        "ascii": "cha-KU-la",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "General food term",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "6",
+        "language": "Swahili",
+        "text": "maji",
+        "gloss": "water",
+        "ascii": "MA-ji",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "Essential survival word",
+        "game_tags": [
+          "TaxiBus",
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "7",
+        "language": "Swahili",
+        "text": "nyumba",
+        "gloss": "house/home",
+        "ascii": "NYUM-ba",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Home",
+        "tonal_note": "",
+        "cultural_note": "Dwelling place",
+        "game_tags": [
+          "WordMatch",
+          "PictureWord",
+          "FlashcardSafari"
+        ]
+      },
+      {
+        "id": "8",
+        "language": "Swahili",
+        "text": "mtu",
+        "gloss": "person",
+        "ascii": "M-tu",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "People",
+        "tonal_note": "",
+        "cultural_note": "Singular of watu",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "9",
+        "language": "Swahili",
+        "text": "mtoto",
+        "gloss": "child",
+        "ascii": "m-TO-to",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "Young person",
+        "game_tags": [
+          "WordMatch",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "10",
+        "language": "Swahili",
+        "text": "mama",
+        "gloss": "mother",
+        "ascii": "MA-ma",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "Respectful address for older women too",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "11",
+        "language": "Swahili",
+        "text": "baba",
+        "gloss": "father",
+        "ascii": "BA-ba",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "Respectful address for older men too",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "12",
+        "language": "Swahili",
+        "text": "mwalimu",
+        "gloss": "teacher",
+        "ascii": "mwa-LI-mu",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "School",
+        "tonal_note": "",
+        "cultural_note": "Title of respect (Nyerere's title)",
+        "game_tags": [
+          "WordMatch",
+          "ClanLineage"
+        ]
+      },
+      {
+        "id": "13",
+        "language": "Swahili",
+        "text": "shule",
+        "gloss": "school",
+        "ascii": "SHU-le",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "School",
+        "tonal_note": "",
+        "cultural_note": "From German 'Schule'",
+        "game_tags": [
+          "WordMatch",
+          "FlashcardSafari"
+        ]
+      },
+      {
+        "id": "14",
+        "language": "Swahili",
+        "text": "kitabu",
+        "gloss": "book",
+        "ascii": "ki-TA-bu",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "School",
+        "tonal_note": "",
+        "cultural_note": "Ki- class noun",
+        "game_tags": [
+          "WordMatch",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "15",
+        "language": "Swahili",
+        "text": "pesa",
+        "gloss": "money",
+        "ascii": "PE-sa",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Market",
+        "tonal_note": "",
+        "cultural_note": "From Portuguese",
+        "game_tags": [
+          "MarketBargaining",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "17",
+        "language": "Swahili",
+        "text": "gari",
+        "gloss": "car/vehicle",
+        "ascii": "GA-ri",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Transport",
+        "tonal_note": "",
+        "cultural_note": "General vehicle term",
+        "game_tags": [
+          "TaxiBus",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "18",
+        "language": "Swahili",
+        "text": "njia",
+        "gloss": "road/way",
+        "ascii": "N-jia",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Transport",
+        "tonal_note": "",
+        "cultural_note": "Path or direction",
+        "game_tags": [
+          "TaxiBus",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "19",
+        "language": "Swahili",
+        "text": "moja",
+        "gloss": "one",
+        "ascii": "MO-ja",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "20",
+        "language": "Swahili",
+        "text": "mbili",
+        "gloss": "two",
+        "ascii": "M-bi-li",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "21",
+        "language": "Swahili",
+        "text": "tatu",
+        "gloss": "three",
+        "ascii": "TA-tu",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "22",
+        "language": "Swahili",
+        "text": "nne",
+        "gloss": "four",
+        "ascii": "N-ne",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "23",
+        "language": "Swahili",
+        "text": "tano",
+        "gloss": "five",
+        "ascii": "TA-no",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "24",
+        "language": "Swahili",
+        "text": "leo",
+        "gloss": "today",
+        "ascii": "LE-o",
+        "part_of_speech": "adverb",
+        "cefr": "A1",
+        "topic": "Time",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "25",
+        "language": "Swahili",
+        "text": "kesho",
+        "gloss": "tomorrow",
+        "ascii": "KE-sho",
+        "part_of_speech": "adverb",
+        "cefr": "A1",
+        "topic": "Time",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "26",
+        "language": "Swahili",
+        "text": "jana",
+        "gloss": "yesterday",
+        "ascii": "JA-na",
+        "part_of_speech": "adverb",
+        "cefr": "A1",
+        "topic": "Time",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "27",
+        "language": "Swahili",
+        "text": "ndiyo",
+        "gloss": "yes",
+        "ascii": "ndi-YO",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "28",
+        "language": "Swahili",
+        "text": "hapana",
+        "gloss": "no",
+        "ascii": "ha-PA-na",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "29",
+        "language": "Swahili",
+        "text": "samahani",
+        "gloss": "sorry/excuse me",
+        "ascii": "sa-ma-HA-ni",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Courtesy",
+        "tonal_note": "",
+        "cultural_note": "Apology and excuse",
+        "game_tags": [
+          "GreetingDiplomacy",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "30",
+        "language": "Swahili",
+        "text": "pole",
+        "gloss": "sorry (sympathy)",
+        "ascii": "PO-le",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Courtesy",
+        "tonal_note": "",
+        "cultural_note": "Sympathy expression; 'pole pole' means slowly",
+        "game_tags": [
+          "GreetingDiplomacy",
+          "WordMatch",
+          "ProverbUnlocker"
+        ]
+      },
+      {
+        "id": "31",
+        "language": "Swahili",
+        "text": "ndizi",
+        "gloss": "banana",
+        "ascii": "n-DI-zi",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "Staple fruit",
+        "game_tags": [
+          "FoodQuest",
+          "PictureWord",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "34",
+        "language": "Swahili",
+        "text": "duka",
+        "gloss": "shop",
+        "ascii": "DU-ka",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Market",
+        "tonal_note": "",
+        "cultural_note": "Small shop/stall",
+        "game_tags": [
+          "MarketBargaining",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "36",
+        "language": "Swahili",
+        "text": "kupika",
+        "gloss": "to cook",
+        "ascii": "ku-PI-ka",
+        "part_of_speech": "verb",
+        "cefr": "A2",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "Infinitive with ku-",
+        "game_tags": [
+          "GrammarDetective",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "37",
+        "language": "Swahili",
+        "text": "kununua",
+        "gloss": "to buy",
+        "ascii": "ku-nu-NU-a",
+        "part_of_speech": "verb",
+        "cefr": "A2",
+        "topic": "Market",
+        "tonal_note": "",
+        "cultural_note": "Common market verb",
+        "game_tags": [
+          "MarketBargaining",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "38",
+        "language": "Swahili",
+        "text": "kuuza",
+        "gloss": "to sell",
+        "ascii": "ku-U-za",
+        "part_of_speech": "verb",
+        "cefr": "A2",
+        "topic": "Market",
+        "tonal_note": "",
+        "cultural_note": "Complement of kununua",
+        "game_tags": [
+          "MarketBargaining",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "39",
+        "language": "Swahili",
+        "text": "ganda",
+        "gloss": "to climb",
+        "ascii": "GAN-da",
+        "part_of_speech": "verb",
+        "cefr": "A2",
+        "topic": "Action",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "GrammarJam"
+        ]
+      },
+      {
+        "id": "40",
+        "language": "Swahili",
+        "text": "haraka",
+        "gloss": "quickly/hurry",
+        "ascii": "ha-RA-ka",
+        "part_of_speech": "adverb",
+        "cefr": "A2",
+        "topic": "Action",
+        "tonal_note": "",
+        "cultural_note": "'Haraka haraka haina baraka' - proverb",
+        "game_tags": [
+          "SpeedRound",
+          "ProverbUnlocker",
+          "TongueTwister"
+        ]
+      },
+      {
+        "id": "41",
+        "language": "Swahili",
+        "text": "rafiki",
+        "gloss": "friend",
+        "ascii": "ra-FI-ki",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Relationships",
+        "tonal_note": "",
+        "cultural_note": "Informal close friend",
+        "game_tags": [
+          "WordMatch",
+          "RoleplayAdventure"
+        ]
+      },
+      {
+        "id": "42",
+        "language": "Swahili",
+        "text": "familia",
+        "gloss": "family",
+        "ascii": "fa-MI-lia",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "From Arabic via Swahili",
+        "game_tags": [
+          "WordMatch",
+          "ClanLineage"
+        ]
+      },
+      {
+        "id": "43",
+        "language": "Swahili",
+        "text": "hospitali",
+        "gloss": "hospital",
+        "ascii": "hos-pi-TA-li",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Health",
+        "tonal_note": "",
+        "cultural_note": "TaxiBus,WordMatch",
+        "game_tags": [
+          "TaxiBus",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "44",
+        "language": "Swahili",
+        "text": "madaktari",
+        "gloss": "doctors",
+        "ascii": "ma-dak-TA-ri",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Health",
+        "tonal_note": "",
+        "cultural_note": "Ma- plural class",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "45",
+        "language": "Swahili",
+        "text": "baridi",
+        "gloss": "cold",
+        "ascii": "ba-RI-di",
+        "part_of_speech": "adjective",
+        "cefr": "A2",
+        "topic": "Weather",
+        "tonal_note": "",
+        "cultural_note": "Also 'cool/refreshing'",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "46",
+        "language": "Swahili",
+        "text": "joto",
+        "gloss": "hot",
+        "ascii": "JO-to",
+        "part_of_speech": "adjective",
+        "cefr": "A2",
+        "topic": "Weather",
+        "tonal_note": "",
+        "cultural_note": "Heat",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "47",
+        "language": "Swahili",
+        "text": "mvua",
+        "gloss": "rain",
+        "ascii": "M-vua",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Weather",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "48",
+        "language": "Swahili",
+        "text": "pwani",
+        "gloss": "coast",
+        "ascii": "PWA-ni",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Geography",
+        "tonal_note": "",
+        "cultural_note": "Coastal region",
+        "game_tags": [
+          "WordMatch",
+          "VillageQuest"
+        ]
+      },
+      {
+        "id": "49",
+        "language": "Swahili",
+        "text": "milima",
+        "gloss": "mountains",
+        "ascii": "mi-LI-ma",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Geography",
+        "tonal_note": "",
+        "cultural_note": "Mi- plural of mlima",
+        "game_tags": [
+          "WordMatch",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "51",
+        "language": "Swahili",
+        "text": "elimu",
+        "gloss": "education",
+        "ascii": "e-LI-mu",
+        "part_of_speech": "noun",
+        "cefr": "B1",
+        "topic": "Education",
+        "tonal_note": "",
+        "cultural_note": "Core value concept",
+        "game_tags": [
+          "StoryBuilder",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "52",
+        "language": "Swahili",
+        "text": "serikali",
+        "gloss": "government",
+        "ascii": "se-ri-KA-li",
+        "part_of_speech": "noun",
+        "cefr": "B1",
+        "topic": "Civics",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "StoryBuilder"
+        ]
+      },
+      {
+        "id": "54",
+        "language": "Swahili",
+        "text": "amani",
+        "gloss": "peace",
+        "ascii": "a-MA-ni",
+        "part_of_speech": "noun",
+        "cefr": "B1",
+        "topic": "Values",
+        "tonal_note": "",
+        "cultural_note": "Core African value",
+        "game_tags": [
+          "WordMatch",
+          "EmojiTranslator"
+        ]
+      },
+      {
+        "id": "56",
+        "language": "Swahili",
+        "text": "nguvu",
+        "gloss": "strength/power",
+        "ascii": "NGU-vu",
+        "part_of_speech": "noun",
+        "cefr": "B1",
+        "topic": "Values",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "RoleplayAdventure"
+        ]
+      }
+    ],
+    "yoruba": [
+      {
+        "id": "84",
+        "language": "Yoruba",
+        "text": "ẹ káàárọ̀",
+        "gloss": "good morning",
+        "ascii": "eh KAA-roh",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "Tonal: kàá=falling",
+        "cultural_note": "Dawn greeting",
+        "game_tags": [
+          "GreetingDiplomacy",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "87",
+        "language": "Yoruba",
+        "text": "ẹ jẹ́ kí",
+        "gloss": "let us",
+        "ascii": "eh JEH ki",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "Tonal: jẹ́=high",
+        "cultural_note": "Invitation phrase",
+        "game_tags": [
+          "ConvRelay",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "88",
+        "language": "Yoruba",
+        "text": "odabo",
+        "gloss": "goodbye",
+        "ascii": "o-DA-bo",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "Mid tone",
+        "cultural_note": "Parting phrase",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "89",
+        "language": "Yoruba",
+        "text": "bẹ̃ẹ̃ni",
+        "gloss": "yes",
+        "ascii": "beh-eh-NI",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "Nasalized",
+        "cultural_note": "Affirmation",
+        "game_tags": [
+          "WordMatch",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "90",
+        "language": "Yoruba",
+        "text": "rárá",
+        "gloss": "no/never",
+        "ascii": "RA-ra",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "High-high tone",
+        "cultural_note": "Strong negation",
+        "game_tags": [
+          "WordMatch",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "91",
+        "language": "Yoruba",
+        "text": "omi",
+        "gloss": "water",
+        "ascii": "O-mi",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "Mid tone",
+        "cultural_note": "Essential",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "92",
+        "language": "Yoruba",
+        "text": "oúnjẹ",
+        "gloss": "food",
+        "ascii": "OUN-jeh",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "High-mid",
+        "cultural_note": "General food",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "93",
+        "language": "Yoruba",
+        "text": "ilé",
+        "gloss": "house",
+        "ascii": "i-LEH",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Home",
+        "tonal_note": "Low-high",
+        "cultural_note": "Home/house",
+        "game_tags": [
+          "WordMatch",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "94",
+        "language": "Yoruba",
+        "text": "ìdílé",
+        "gloss": "family",
+        "ascii": "i-di-LEH",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "Low-low-high",
+        "cultural_note": "Family unit",
+        "game_tags": [
+          "WordMatch",
+          "ClanLineage"
+        ]
+      },
+      {
+        "id": "95",
+        "language": "Yoruba",
+        "text": "ìyá",
+        "gloss": "mother",
+        "ascii": "i-YA",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "Low-high",
+        "cultural_note": "Maternal address",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "96",
+        "language": "Yoruba",
+        "text": "bàbá",
+        "gloss": "father",
+        "ascii": "ba-BA",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "Low-high",
+        "cultural_note": "Paternal/elder address",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "97",
+        "language": "Yoruba",
+        "text": "ọmọ",
+        "gloss": "child",
+        "ascii": "oh-MOH",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "Low-mid",
+        "cultural_note": "Child/offspring",
+        "game_tags": [
+          "WordMatch",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "98",
+        "language": "Yoruba",
+        "text": "ọwọ́",
+        "gloss": "money",
+        "ascii": "oh-WOH",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Market",
+        "tonal_note": "Low-high",
+        "cultural_note": "Also means 'hand'",
+        "game_tags": [
+          "MarketBargaining",
+          "WordMatch",
+          "ToneTrainer"
+        ]
+      },
+      {
+        "id": "99",
+        "language": "Yoruba",
+        "text": "ọjà",
+        "gloss": "market",
+        "ascii": "oh-JAH",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Market",
+        "tonal_note": "Low-falling",
+        "cultural_note": "Marketplace",
+        "game_tags": [
+          "MarketBargaining",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "100",
+        "language": "Yoruba",
+        "text": "ọkọ̀",
+        "gloss": "vehicle",
+        "ascii": "oh-KOH",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Transport",
+        "tonal_note": "Low-falling",
+        "cultural_note": "Vehicle/spouse (tonal!)",
+        "game_tags": [
+          "TaxiBus",
+          "ToneTrainer",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "101",
+        "language": "Yoruba",
+        "text": "ọ̀nà",
+        "gloss": "road/path",
+        "ascii": "oh-NAH",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Transport",
+        "tonal_note": "Low-low",
+        "cultural_note": "Path or art",
+        "game_tags": [
+          "TaxiBus",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "102",
+        "language": "Yoruba",
+        "text": "ọ̀kan",
+        "gloss": "one",
+        "ascii": "oh-KAN",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "Low-mid",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "103",
+        "language": "Yoruba",
+        "text": "èjì",
+        "gloss": "two",
+        "ascii": "EH-ji",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "Low-low",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "104",
+        "language": "Yoruba",
+        "text": "ẹta",
+        "gloss": "three",
+        "ascii": "EH-ta",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "Mid-mid",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "105",
+        "language": "Yoruba",
+        "text": "ẹrin",
+        "gloss": "four",
+        "ascii": "EH-rin",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "Mid-mid",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "106",
+        "language": "Yoruba",
+        "text": "àrún",
+        "gloss": "five",
+        "ascii": "a-RUN",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "Low-high",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "107",
+        "language": "Yoruba",
+        "text": "ọjọ́",
+        "gloss": "day",
+        "ascii": "oh-JOH",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Time",
+        "tonal_note": "Low-high",
+        "cultural_note": "Day/date",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "108",
+        "language": "Yoruba",
+        "text": "òru",
+        "gloss": "night",
+        "ascii": "O-ru",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Time",
+        "tonal_note": "Low-mid",
+        "cultural_note": "Night time",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "109",
+        "language": "Yoruba",
+        "text": "ẹ̀jẹ̀",
+        "gloss": "blood",
+        "ascii": "EH-jeh",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Body",
+        "tonal_note": "Low-low",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "ToneTrainer"
+        ]
+      },
+      {
+        "id": "110",
+        "language": "Yoruba",
+        "text": "orí",
+        "gloss": "head",
+        "ascii": "o-RI",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Body",
+        "tonal_note": "Low-high",
+        "cultural_note": "Also spirit/fate",
+        "game_tags": [
+          "WordMatch",
+          "ToneTrainer",
+          "ProverbUnlocker"
+        ]
+      },
+      {
+        "id": "111",
+        "language": "Yoruba",
+        "text": "àgbàdo",
+        "gloss": "corn/maize",
+        "ascii": "ahg-ba-DO",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Food",
+        "tonal_note": "Low-low-mid",
+        "cultural_note": "Staple grain",
+        "game_tags": [
+          "FoodQuest",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "112",
+        "language": "Yoruba",
+        "text": "ẹran",
+        "gloss": "meat",
+        "ascii": "EH-ran",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Food",
+        "tonal_note": "Mid-mid",
+        "cultural_note": "",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "114",
+        "language": "Yoruba",
+        "text": "egúsí",
+        "gloss": "melon seeds",
+        "ascii": "e-GU-si",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Food",
+        "tonal_note": "Mid-high-mid",
+        "cultural_note": "Egusi soup ingredient",
+        "game_tags": [
+          "FoodQuest",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "115",
+        "language": "Yoruba",
+        "text": "ta",
+        "gloss": "to sell",
+        "ascii": "TA",
+        "part_of_speech": "verb",
+        "cefr": "A2",
+        "topic": "Market",
+        "tonal_note": "Mid tone",
+        "cultural_note": "Common commerce verb",
+        "game_tags": [
+          "MarketBargaining",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "116",
+        "language": "Yoruba",
+        "text": "ra",
+        "gloss": "to buy",
+        "ascii": "RA",
+        "part_of_speech": "verb",
+        "cefr": "A2",
+        "topic": "Market",
+        "tonal_note": "Mid tone",
+        "cultural_note": "",
+        "game_tags": [
+          "MarketBargaining",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "117",
+        "language": "Yoruba",
+        "text": "dáná",
+        "gloss": "to start a fire",
+        "ascii": "DA-na",
+        "part_of_speech": "verb",
+        "cefr": "A2",
+        "topic": "Action",
+        "tonal_note": "High-high",
+        "cultural_note": "",
+        "game_tags": [
+          "VillageQuest",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "118",
+        "language": "Yoruba",
+        "text": "ẹlẹ́dẹ̀",
+        "gloss": "pig",
+        "ascii": "EH-leh-DEH",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Animals",
+        "tonal_note": "Mid-high-falling",
+        "cultural_note": "Tonal practice word",
+        "game_tags": [
+          "ToneTrainer",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "119",
+        "language": "Yoruba",
+        "text": "adiye",
+        "gloss": "chicken",
+        "ascii": "a-di-YE",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Animals",
+        "tonal_note": "Mid-low-mid",
+        "cultural_note": "Common animal",
+        "game_tags": [
+          "PictureWord",
+          "FoodQuest"
+        ]
+      },
+      {
+        "id": "120",
+        "language": "Yoruba",
+        "text": "ojú",
+        "gloss": "face/eye",
+        "ascii": "o-JU",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Body",
+        "tonal_note": "Low-high",
+        "cultural_note": "Face or eye (context)",
+        "game_tags": [
+          "WordMatch",
+          "ToneTrainer"
+        ]
+      },
+      {
+        "id": "121",
+        "language": "Yoruba",
+        "text": "aṣọ",
+        "gloss": "clothing",
+        "ascii": "a-SHOH",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Clothing",
+        "tonal_note": "Low-mid",
+        "cultural_note": "Fabric/dress",
+        "game_tags": [
+          "PictureWord",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "122",
+        "language": "Yoruba",
+        "text": "àárọ̀",
+        "gloss": "morning",
+        "ascii": "AAR-oh",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Time",
+        "tonal_note": "Low-low-falling",
+        "cultural_note": "Morning time",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "123",
+        "language": "Yoruba",
+        "text": "ìgbà",
+        "gloss": "time/period",
+        "ascii": "ig-BAH",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Time",
+        "tonal_note": "Low-low",
+        "cultural_note": "Season or time",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "125",
+        "language": "Yoruba",
+        "text": "ẹ̀kọ́",
+        "gloss": "lesson/learning",
+        "ascii": "EH-koh",
+        "part_of_speech": "noun",
+        "cefr": "B1",
+        "topic": "Education",
+        "tonal_note": "Low-high",
+        "cultural_note": "Education",
+        "game_tags": [
+          "StoryBuilder",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "131",
+        "language": "Yoruba",
+        "text": "ọ̀pọ̀lọpọ̀",
+        "gloss": "many/plenty",
+        "ascii": "oh-poh-loh-POH",
+        "part_of_speech": "adjective",
+        "cefr": "B1",
+        "topic": "Quantity",
+        "tonal_note": "All low",
+        "cultural_note": "Reduplication for emphasis",
+        "game_tags": [
+          "GrammarDetective",
+          "SpeedRound"
+        ]
+      }
+    ],
+    "igbo": [
+      {
+        "id": "147",
+        "language": "Igbo",
+        "text": "ị bọọla",
+        "gloss": "you've arrived/welcome",
+        "ascii": "i-BOH-la",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "Mid tones",
+        "cultural_note": "Welcoming",
+        "game_tags": [
+          "GreetingDiplomacy",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "148",
+        "language": "Igbo",
+        "text": "ndewo",
+        "gloss": "hello/greetings",
+        "ascii": "n-DE-wo",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "Low tone",
+        "cultural_note": "General greeting",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "149",
+        "language": "Igbo",
+        "text": "daalụ",
+        "gloss": "thank you",
+        "ascii": "DA-lu",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Courtesy",
+        "tonal_note": "High-low",
+        "cultural_note": "Gratitude",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "150",
+        "language": "Igbo",
+        "text": "mba",
+        "gloss": "no",
+        "ascii": "MBA",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "High",
+        "cultural_note": "Strong no",
+        "game_tags": [
+          "WordMatch",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "151",
+        "language": "Igbo",
+        "text": "ee",
+        "gloss": "yes",
+        "ascii": "EE",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "Mid",
+        "cultural_note": "Yes",
+        "game_tags": [
+          "WordMatch",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "152",
+        "language": "Igbo",
+        "text": "mmiri",
+        "gloss": "water",
+        "ascii": "m-MI-ri",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "Mid tones",
+        "cultural_note": "Essential",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "153",
+        "language": "Igbo",
+        "text": "nri",
+        "gloss": "food",
+        "ascii": "N-ri",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "Low-mid",
+        "cultural_note": "",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "154",
+        "language": "Igbo",
+        "text": "ulo",
+        "gloss": "house",
+        "ascii": "U-lo",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Home",
+        "tonal_note": "High-mid",
+        "cultural_note": "Home",
+        "game_tags": [
+          "WordMatch",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "155",
+        "language": "Igbo",
+        "text": "nne",
+        "gloss": "mother",
+        "ascii": "N-ne",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "Low-low",
+        "cultural_note": "Mother/elder women",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "156",
+        "language": "Igbo",
+        "text": "nna",
+        "gloss": "father",
+        "ascii": "N-na",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "Low-low",
+        "cultural_note": "Father/elder men",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "157",
+        "language": "Igbo",
+        "text": "nwatakịrị",
+        "gloss": "child",
+        "ascii": "nwa-ta-KI-ri",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "Young child",
+        "game_tags": [
+          "WordMatch",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "158",
+        "language": "Igbo",
+        "text": "ego",
+        "gloss": "money",
+        "ascii": "E-go",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Market",
+        "tonal_note": "High-mid",
+        "cultural_note": "Also means 'copper'",
+        "game_tags": [
+          "MarketBargaining",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "159",
+        "language": "Igbo",
+        "text": "ahia",
+        "gloss": "market/trade",
+        "ascii": "a-HI-a",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Market",
+        "tonal_note": "Mid tones",
+        "cultural_note": "Market or business",
+        "game_tags": [
+          "MarketBargaining",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "160",
+        "language": "Igbo",
+        "text": "otu",
+        "gloss": "one",
+        "ascii": "O-tu",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "High-mid",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "161",
+        "language": "Igbo",
+        "text": "abụọ",
+        "gloss": "two",
+        "ascii": "a-BUH-oh",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "Low-mid-low",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "162",
+        "language": "Igbo",
+        "text": "atọ",
+        "gloss": "three",
+        "ascii": "a-TOH",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "Low-mid",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "163",
+        "language": "Igbo",
+        "text": "anọ",
+        "gloss": "four",
+        "ascii": "a-NOH",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "Low-mid",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "164",
+        "language": "Igbo",
+        "text": "ise",
+        "gloss": "five",
+        "ascii": "i-SE",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "Low-high",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "165",
+        "language": "Igbo",
+        "text": "ụbọchị",
+        "gloss": "day",
+        "ascii": "u-BOH-chi",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Time",
+        "tonal_note": "Low tones",
+        "cultural_note": "Day time",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "166",
+        "language": "Igbo",
+        "text": "abalị",
+        "gloss": "night",
+        "ascii": "a-BA-li",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Time",
+        "tonal_note": "Low tones",
+        "cultural_note": "Night time",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "167",
+        "language": "Igbo",
+        "text": "ọ bụ",
+        "gloss": "it is",
+        "ascii": "oh-BUH",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "Low-mid",
+        "cultural_note": "Copula",
+        "game_tags": [
+          "GrammarDetective",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "168",
+        "language": "Igbo",
+        "text": "ọ dị mma",
+        "gloss": "it is good/fine",
+        "ascii": "oh-di-MA",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Courtesy",
+        "tonal_note": "",
+        "cultural_note": "Response to greeting",
+        "game_tags": [
+          "GreetingDiplomacy",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "170",
+        "language": "Igbo",
+        "text": "ofe",
+        "gloss": "soup/stew",
+        "ascii": "O-fe",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Food",
+        "tonal_note": "High-mid",
+        "cultural_note": "",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      }
+    ],
+    "hausa": [
+      {
+        "id": "181",
+        "language": "Hausa",
+        "text": "sannu",
+        "gloss": "hello/greetings",
+        "ascii": "SAN-nu",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "",
+        "cultural_note": "General greeting",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "182",
+        "language": "Hausa",
+        "text": "ina kwana",
+        "gloss": "good morning",
+        "ascii": "I-na KWA-na",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "",
+        "cultural_note": "Literally 'how did you sleep'",
+        "game_tags": [
+          "GreetingDiplomacy",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "183",
+        "language": "Hausa",
+        "text": "na gode",
+        "gloss": "thank you",
+        "ascii": "na-GO-de",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Courtesy",
+        "tonal_note": "",
+        "cultural_note": "Gratitude",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "184",
+        "language": "Hausa",
+        "text": "yawwa",
+        "gloss": "yes",
+        "ascii": "YAW-wa",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "",
+        "cultural_note": "Affirmation",
+        "game_tags": [
+          "WordMatch",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "185",
+        "language": "Hausa",
+        "text": "a'a",
+        "gloss": "no",
+        "ascii": "a-a",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "",
+        "cultural_note": "Negation",
+        "game_tags": [
+          "WordMatch",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "186",
+        "language": "Hausa",
+        "text": "ruwa",
+        "gloss": "water",
+        "ascii": "RU-wa",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "Essential",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "187",
+        "language": "Hausa",
+        "text": "abinci",
+        "gloss": "food",
+        "ascii": "a-BIN-chi",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "General food",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "188",
+        "language": "Hausa",
+        "text": "gida",
+        "gloss": "house/home",
+        "ascii": "GI-da",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Home",
+        "tonal_note": "",
+        "cultural_note": "Home",
+        "game_tags": [
+          "WordMatch",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "189",
+        "language": "Hausa",
+        "text": "uwa",
+        "gloss": "mother",
+        "ascii": "U-wa",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "Mother",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "190",
+        "language": "Hausa",
+        "text": "uba",
+        "gloss": "father",
+        "ascii": "U-ba",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "Father",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "191",
+        "language": "Hausa",
+        "text": "yaro",
+        "gloss": "boy/young man",
+        "ascii": "YA-ro",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "People",
+        "tonal_note": "",
+        "cultural_note": "Young male",
+        "game_tags": [
+          "WordMatch",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "192",
+        "language": "Hausa",
+        "text": "yarinya",
+        "gloss": "girl/young woman",
+        "ascii": "ya-RIN-ya",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "People",
+        "tonal_note": "",
+        "cultural_note": "Young female",
+        "game_tags": [
+          "WordMatch",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "193",
+        "language": "Hausa",
+        "text": "kuɗi",
+        "gloss": "money",
+        "ascii": "KU-di",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Market",
+        "tonal_note": "",
+        "cultural_note": "Currency",
+        "game_tags": [
+          "MarketBargaining",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "194",
+        "language": "Hausa",
+        "text": "kaso",
+        "gloss": "price/value",
+        "ascii": "KA-so",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Market",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "MarketBargaining",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "195",
+        "language": "Hausa",
+        "text": "mota",
+        "gloss": "car",
+        "ascii": "MO-ta",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Transport",
+        "tonal_note": "",
+        "cultural_note": "Vehicle",
+        "game_tags": [
+          "TaxiBus",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "196",
+        "language": "Hausa",
+        "text": "hanya",
+        "gloss": "road/path",
+        "ascii": "HA-nya",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Transport",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "TaxiBus",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "197",
+        "language": "Hausa",
+        "text": "ɗaya",
+        "gloss": "one",
+        "ascii": "DA-ya",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "198",
+        "language": "Hausa",
+        "text": "biyu",
+        "gloss": "two",
+        "ascii": "BI-yu",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "199",
+        "language": "Hausa",
+        "text": "uku",
+        "gloss": "three",
+        "ascii": "U-ku",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "200",
+        "language": "Hausa",
+        "text": "huɗu",
+        "gloss": "four",
+        "ascii": "HU-du",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "201",
+        "language": "Hausa",
+        "text": "biyar",
+        "gloss": "five",
+        "ascii": "bi-YAR",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "202",
+        "language": "Hausa",
+        "text": "yau",
+        "gloss": "today",
+        "ascii": "YAU",
+        "part_of_speech": "adverb",
+        "cefr": "A1",
+        "topic": "Time",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "203",
+        "language": "Hausa",
+        "text": "gobe",
+        "gloss": "tomorrow",
+        "ascii": "GO-be",
+        "part_of_speech": "adverb",
+        "cefr": "A1",
+        "topic": "Time",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "204",
+        "language": "Hausa",
+        "text": "jiya",
+        "gloss": "yesterday",
+        "ascii": "JI-ya",
+        "part_of_speech": "adverb",
+        "cefr": "A1",
+        "topic": "Time",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "205",
+        "language": "Hausa",
+        "text": "asuba",
+        "gloss": "morning",
+        "ascii": "a-SU-ba",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Time",
+        "tonal_note": "",
+        "cultural_note": "Morning prayer time",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "207",
+        "language": "Hausa",
+        "text": "suya",
+        "gloss": "grilled meat",
+        "ascii": "SU-ya",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "Spiced street food",
+        "game_tags": [
+          "FoodQuest",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "210",
+        "language": "Hausa",
+        "text": "saya",
+        "gloss": "to buy",
+        "ascii": "SA-ya",
+        "part_of_speech": "verb",
+        "cefr": "A2",
+        "topic": "Market",
+        "tonal_note": "",
+        "cultural_note": "Commerce verb",
+        "game_tags": [
+          "MarketBargaining",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "211",
+        "language": "Hausa",
+        "text": "sayarwa",
+        "gloss": "to sell",
+        "ascii": "sa-YAR-wa",
+        "part_of_speech": "verb",
+        "cefr": "A2",
+        "topic": "Market",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "MarketBargaining",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "212",
+        "language": "Hausa",
+        "text": "noma",
+        "gloss": "farming",
+        "ascii": "NO-ma",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Work",
+        "tonal_note": "",
+        "cultural_note": "Traditional occupation",
+        "game_tags": [
+          "VillageQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "218",
+        "language": "Hausa",
+        "text": "ilimi",
+        "gloss": "education/knowledge",
+        "ascii": "i-LI-mi",
+        "part_of_speech": "noun",
+        "cefr": "B1",
+        "topic": "Education",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "StoryBuilder",
+          "WordMatch"
+        ]
+      }
+    ],
+    "zulu": [
+      {
+        "id": "226",
+        "language": "Zulu",
+        "text": "sawubona",
+        "gloss": "I see you (sing.)",
+        "ascii": "sa-wu-BO-na",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "",
+        "cultural_note": "Deep human recognition",
+        "game_tags": [
+          "GreetingDiplomacy",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "227",
+        "language": "Zulu",
+        "text": "sanibonani",
+        "gloss": "I see you all (pl.)",
+        "ascii": "sa-ni-bo-NA-ni",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "",
+        "cultural_note": "Plural greeting",
+        "game_tags": [
+          "GreetingDiplomacy",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "228",
+        "language": "Zulu",
+        "text": "ngiyabonga",
+        "gloss": "thank you",
+        "ascii": "ngi-ya-BO-nga",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Courtesy",
+        "tonal_note": "",
+        "cultural_note": "Gratitude",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "229",
+        "language": "Zulu",
+        "text": "yebo",
+        "gloss": "yes",
+        "ascii": "YE-bo",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "",
+        "cultural_note": "Affirmation (also greeting)",
+        "game_tags": [
+          "WordMatch",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "230",
+        "language": "Zulu",
+        "text": "cha",
+        "gloss": "no",
+        "ascii": "CHA",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "",
+        "cultural_note": "Negation",
+        "game_tags": [
+          "WordMatch",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "231",
+        "language": "Zulu",
+        "text": "amanzi",
+        "gloss": "water",
+        "ascii": "a-MA-nzi",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "232",
+        "language": "Zulu",
+        "text": "ukudla",
+        "gloss": "food",
+        "ascii": "u-KU-dla",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "233",
+        "language": "Zulu",
+        "text": "ikhaya",
+        "gloss": "home",
+        "ascii": "i-KHA-ya",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Home",
+        "tonal_note": "",
+        "cultural_note": "Home/family home",
+        "game_tags": [
+          "WordMatch",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "234",
+        "language": "Zulu",
+        "text": "umama",
+        "gloss": "mother",
+        "ascii": "u-MA-ma",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "235",
+        "language": "Zulu",
+        "text": "ubaba",
+        "gloss": "father",
+        "ascii": "u-BA-ba",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "236",
+        "language": "Zulu",
+        "text": "ingane",
+        "gloss": "child",
+        "ascii": "i-NGA-ne",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "237",
+        "language": "Zulu",
+        "text": "imali",
+        "gloss": "money",
+        "ascii": "i-MA-li",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Market",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "MarketBargaining",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "238",
+        "language": "Zulu",
+        "text": "imoto",
+        "gloss": "car",
+        "ascii": "i-MO-to",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Transport",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "TaxiBus",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "239",
+        "language": "Zulu",
+        "text": "indlela",
+        "gloss": "road/way",
+        "ascii": "in-DLE-la",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Transport",
+        "tonal_note": "",
+        "cultural_note": "Path/method",
+        "game_tags": [
+          "TaxiBus",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "240",
+        "language": "Zulu",
+        "text": "kunye",
+        "gloss": "one",
+        "ascii": "KU-nye",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "241",
+        "language": "Zulu",
+        "text": "kubili",
+        "gloss": "two",
+        "ascii": "ku-BI-li",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "242",
+        "language": "Zulu",
+        "text": "kuthathu",
+        "gloss": "three",
+        "ascii": "ku-THA-thu",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "247",
+        "language": "Zulu",
+        "text": "umuntu",
+        "gloss": "person (with humanity)",
+        "ascii": "u-MUN-tu",
+        "part_of_speech": "noun",
+        "cefr": "B1",
+        "topic": "Values",
+        "tonal_note": "",
+        "cultural_note": "Root of ubuntu",
+        "game_tags": [
+          "ProverbUnlocker",
+          "WordMatch"
+        ]
+      }
+    ],
+    "amharic": [
+      {
+        "id": "254",
+        "language": "Amharic",
+        "text": "ሰላም",
+        "gloss": "salam/hello",
+        "ascii": "se-LAM",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "",
+        "cultural_note": "Peace greeting",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "255",
+        "language": "Amharic",
+        "text": "ጤና ይስጥልኝ",
+        "gloss": "good health to you",
+        "ascii": "tena-yis-ti-li-GN",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "",
+        "cultural_note": "Formal greeting",
+        "game_tags": [
+          "GreetingDiplomacy",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "256",
+        "language": "Amharic",
+        "text": "አመሰግናለሁ",
+        "gloss": "thank you",
+        "ascii": "a-me-seg-na-le-HU",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Courtesy",
+        "tonal_note": "",
+        "cultural_note": "Formal gratitude",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "257",
+        "language": "Amharic",
+        "text": "አዎ",
+        "gloss": "yes",
+        "ascii": "a-WO",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "",
+        "cultural_note": "Affirmation",
+        "game_tags": [
+          "WordMatch",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "258",
+        "language": "Amharic",
+        "text": "አይ",
+        "gloss": "no",
+        "ascii": "AY",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "",
+        "cultural_note": "Negation",
+        "game_tags": [
+          "WordMatch",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "259",
+        "language": "Amharic",
+        "text": "ውሃ",
+        "gloss": "water",
+        "ascii": "wi-HA",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "260",
+        "language": "Amharic",
+        "text": "ምግብ",
+        "gloss": "food",
+        "ascii": "mi-GIB",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "261",
+        "language": "Amharic",
+        "text": "ቤት",
+        "gloss": "house",
+        "ascii": "BET",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Home",
+        "tonal_note": "",
+        "cultural_note": "Home",
+        "game_tags": [
+          "WordMatch",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "262",
+        "language": "Amharic",
+        "text": "እናት",
+        "gloss": "mother",
+        "ascii": "in-NAT",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "263",
+        "language": "Amharic",
+        "text": "አባት",
+        "gloss": "father",
+        "ascii": "a-BAT",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "264",
+        "language": "Amharic",
+        "text": "ልጅ",
+        "gloss": "child",
+        "ascii": "LIJI",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "265",
+        "language": "Amharic",
+        "text": "ብር",
+        "gloss": "birr/money",
+        "ascii": "BIR",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Market",
+        "tonal_note": "",
+        "cultural_note": "Ethiopian currency",
+        "game_tags": [
+          "MarketBargaining",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "266",
+        "language": "Amharic",
+        "text": "ገበያ",
+        "gloss": "market",
+        "ascii": "ge-BE-ya",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Market",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "MarketBargaining",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "267",
+        "language": "Amharic",
+        "text": "መኪና",
+        "gloss": "car",
+        "ascii": "me-KI-na",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Transport",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "TaxiBus",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "268",
+        "language": "Amharic",
+        "text": "መንገድ",
+        "gloss": "road",
+        "ascii": "men-GED",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Transport",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "TaxiBus",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "269",
+        "language": "Amharic",
+        "text": "አንድ",
+        "gloss": "one",
+        "ascii": "AND",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "270",
+        "language": "Amharic",
+        "text": "ሁለት",
+        "gloss": "two",
+        "ascii": "HU-let",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "271",
+        "language": "Amharic",
+        "text": "ሶስት",
+        "gloss": "three",
+        "ascii": "SOST",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "272",
+        "language": "Amharic",
+        "text": "ዛሬ",
+        "gloss": "today",
+        "ascii": "za-RE",
+        "part_of_speech": "adverb",
+        "cefr": "A1",
+        "topic": "Time",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "273",
+        "language": "Amharic",
+        "text": "ነገ",
+        "gloss": "tomorrow",
+        "ascii": "NE-ge",
+        "part_of_speech": "adverb",
+        "cefr": "A1",
+        "topic": "Time",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "274",
+        "language": "Amharic",
+        "text": "ትናንት",
+        "gloss": "yesterday",
+        "ascii": "ti-NANT",
+        "part_of_speech": "adverb",
+        "cefr": "A1",
+        "topic": "Time",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "275",
+        "language": "Amharic",
+        "text": "ቡና",
+        "gloss": "coffee",
+        "ascii": "BU-na",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "Ethiopia = birthplace of coffee",
+        "game_tags": [
+          "FoodQuest",
+          "CulturalEtiquette",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "276",
+        "language": "Amharic",
+        "text": "እንጀራ",
+        "gloss": "injera (flatbread)",
+        "ascii": "in-je-RA",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "Iconic Ethiopian bread",
+        "game_tags": [
+          "FoodQuest",
+          "PictureWord",
+          "CulturalEtiquette"
+        ]
+      },
+      {
+        "id": "277",
+        "language": "Amharic",
+        "text": "ወጥ",
+        "gloss": "stew/wat",
+        "ascii": "WET",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "Ethiopian stew",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "278",
+        "language": "Amharic",
+        "text": "ሱቅ",
+        "gloss": "shop",
+        "ascii": "SUUK",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Market",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "MarketBargaining",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "280",
+        "language": "Amharic",
+        "text": "ቋንቋ",
+        "gloss": "language",
+        "ascii": "kwan-KWA",
+        "part_of_speech": "noun",
+        "cefr": "B1",
+        "topic": "Language",
+        "tonal_note": "",
+        "cultural_note": "Language itself",
+        "game_tags": [
+          "StoryBuilder",
+          "WordMatch"
+        ]
+      }
+    ],
+    "twi (akan)": [
+      {
+        "id": "288",
+        "language": "Twi (Akan)",
+        "text": "maakye",
+        "gloss": "good morning",
+        "ascii": "ma-a-CHE",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "",
+        "cultural_note": "Morning greeting",
+        "game_tags": [
+          "GreetingDiplomacy",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "289",
+        "language": "Twi (Akan)",
+        "text": "maaha",
+        "gloss": "good afternoon",
+        "ascii": "ma-a-HA",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "",
+        "cultural_note": "Afternoon greeting",
+        "game_tags": [
+          "GreetingDiplomacy",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "290",
+        "language": "Twi (Akan)",
+        "text": "maadwo",
+        "gloss": "good evening",
+        "ascii": "ma-a-JWO",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "",
+        "cultural_note": "Evening greeting",
+        "game_tags": [
+          "GreetingDiplomacy",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "291",
+        "language": "Twi (Akan)",
+        "text": "meda wo ase",
+        "gloss": "thank you",
+        "ascii": "me-da-wo-A-se",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Courtesy",
+        "tonal_note": "",
+        "cultural_note": "Deep gratitude",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "292",
+        "language": "Twi (Akan)",
+        "text": "yoo",
+        "gloss": "yes/okay",
+        "ascii": "YOO",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "",
+        "cultural_note": "Affirmation",
+        "game_tags": [
+          "WordMatch",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "293",
+        "language": "Twi (Akan)",
+        "text": "daabi",
+        "gloss": "no",
+        "ascii": "da-a-BI",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "",
+        "cultural_note": "Negation",
+        "game_tags": [
+          "WordMatch",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "294",
+        "language": "Twi (Akan)",
+        "text": "nsuo",
+        "gloss": "water",
+        "ascii": "n-SU-o",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "295",
+        "language": "Twi (Akan)",
+        "text": "aduane",
+        "gloss": "food",
+        "ascii": "a-JWA-ne",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "296",
+        "language": "Twi (Akan)",
+        "text": "ofi",
+        "gloss": "house",
+        "ascii": "O-fi",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Home",
+        "tonal_note": "",
+        "cultural_note": "Home/source",
+        "game_tags": [
+          "WordMatch",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "297",
+        "language": "Twi (Akan)",
+        "text": "maame",
+        "gloss": "mother",
+        "ascii": "MA-me",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "298",
+        "language": "Twi (Akan)",
+        "text": "papa/agya",
+        "gloss": "father",
+        "ascii": "PA-pa/A-jya",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "Regional variants",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "299",
+        "language": "Twi (Akan)",
+        "text": "onipa",
+        "gloss": "person",
+        "ascii": "o-NI-pa",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "People",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "300",
+        "language": "Twi (Akan)",
+        "text": "sika",
+        "gloss": "money/gold",
+        "ascii": "SI-ka",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Market",
+        "tonal_note": "",
+        "cultural_note": "Gold and money same word",
+        "game_tags": [
+          "MarketBargaining",
+          "WordMatch",
+          "ProverbUnlocker"
+        ]
+      },
+      {
+        "id": "301",
+        "language": "Twi (Akan)",
+        "text": "dwam",
+        "gloss": "market",
+        "ascii": "JWAM",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Market",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "MarketBargaining",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "302",
+        "language": "Twi (Akan)",
+        "text": "kaa",
+        "gloss": "car",
+        "ascii": "KAA",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Transport",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "TaxiBus",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "303",
+        "language": "Twi (Akan)",
+        "text": "kwan",
+        "gloss": "road/way",
+        "ascii": "KWAN",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Transport",
+        "tonal_note": "",
+        "cultural_note": "Path/permission",
+        "game_tags": [
+          "TaxiBus",
+          "WordMatch",
+          "ProverbUnlocker"
+        ]
+      },
+      {
+        "id": "304",
+        "language": "Twi (Akan)",
+        "text": "baako",
+        "gloss": "one",
+        "ascii": "ba-a-KO",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "305",
+        "language": "Twi (Akan)",
+        "text": "mmienu",
+        "gloss": "two",
+        "ascii": "m-mi-E-nu",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "306",
+        "language": "Twi (Akan)",
+        "text": "mmiensa",
+        "gloss": "three",
+        "ascii": "m-mi-EN-sa",
+        "part_of_speech": "number",
+        "cefr": "A1",
+        "topic": "Numbers",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "SpeedRound",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "307",
+        "language": "Twi (Akan)",
+        "text": "fufu",
+        "gloss": "pounded food",
+        "ascii": "FU-fu",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "West African staple",
+        "game_tags": [
+          "FoodQuest",
+          "PictureWord",
+          "CulturalEtiquette"
+        ]
+      },
+      {
+        "id": "308",
+        "language": "Twi (Akan)",
+        "text": "kontomire",
+        "gloss": "cocoyam leaves",
+        "ascii": "kon-to-MI-re",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "Local vegetable",
+        "game_tags": [
+          "FoodQuest",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "309",
+        "language": "Twi (Akan)",
+        "text": "kente",
+        "gloss": "traditional cloth",
+        "ascii": "KEN-te",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Culture",
+        "tonal_note": "",
+        "cultural_note": "Iconic Ghanaian fabric",
+        "game_tags": [
+          "CulturalEtiquette",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "310",
+        "language": "Twi (Akan)",
+        "text": "adinkra",
+        "gloss": "symbolic icons",
+        "ascii": "a-DIN-kra",
+        "part_of_speech": "noun",
+        "cefr": "B1",
+        "topic": "Culture",
+        "tonal_note": "",
+        "cultural_note": "Akan symbols system",
+        "game_tags": [
+          "CulturalEtiquette",
+          "ProverbUnlocker",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "312",
+        "language": "Twi (Akan)",
+        "text": "mmofra",
+        "gloss": "children",
+        "ascii": "m-MO-fra",
+        "part_of_speech": "noun",
+        "cefr": "B1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "ClanLineage"
+        ]
+      }
+    ],
+    "wolof": [
+      {
+        "id": "320",
+        "language": "Wolof",
+        "text": "salaam aleekum",
+        "gloss": "peace be upon you",
+        "ascii": "sa-LAM-a-LEY-kum",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "",
+        "cultural_note": "Islamic greeting",
+        "game_tags": [
+          "GreetingDiplomacy",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "321",
+        "language": "Wolof",
+        "text": "nanga def",
+        "gloss": "how are you",
+        "ascii": "NAN-ga-DEF",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "",
+        "cultural_note": "Common greeting",
+        "game_tags": [
+          "GreetingDiplomacy",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "322",
+        "language": "Wolof",
+        "text": "jërejëf",
+        "gloss": "thank you",
+        "ascii": "JEH-reh-JEF",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Courtesy",
+        "tonal_note": "",
+        "cultural_note": "Gratitude",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "323",
+        "language": "Wolof",
+        "text": "waaw",
+        "gloss": "yes",
+        "ascii": "WAW",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "324",
+        "language": "Wolof",
+        "text": "déedéet",
+        "gloss": "no",
+        "ascii": "DEH-deht",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "325",
+        "language": "Wolof",
+        "text": "ndox",
+        "gloss": "water",
+        "ascii": "n-DOKH",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "326",
+        "language": "Wolof",
+        "text": "lekk",
+        "gloss": "to eat",
+        "ascii": "LEK",
+        "part_of_speech": "verb",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "FoodQuest",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "327",
+        "language": "Wolof",
+        "text": "kër",
+        "gloss": "house",
+        "ascii": "KEHR",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Home",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "328",
+        "language": "Wolof",
+        "text": "yaay",
+        "gloss": "mother",
+        "ascii": "YAY",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "329",
+        "language": "Wolof",
+        "text": "baay",
+        "gloss": "father",
+        "ascii": "BAY",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "330",
+        "language": "Wolof",
+        "text": "xarit",
+        "gloss": "friend",
+        "ascii": "KHA-rit",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Relationships",
+        "tonal_note": "",
+        "cultural_note": "Close friend",
+        "game_tags": [
+          "WordMatch",
+          "RoleplayAdventure"
+        ]
+      },
+      {
+        "id": "331",
+        "language": "Wolof",
+        "text": "thiéboudienne",
+        "gloss": "rice and fish",
+        "ascii": "cheh-bu-JEN",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "National dish of Senegal",
+        "game_tags": [
+          "FoodQuest",
+          "CulturalEtiquette",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "332",
+        "language": "Wolof",
+        "text": "marché",
+        "gloss": "market",
+        "ascii": "mar-SHEH",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Market",
+        "tonal_note": "",
+        "cultural_note": "From French",
+        "game_tags": [
+          "MarketBargaining",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "337",
+        "language": "Wolof",
+        "text": "jamm",
+        "gloss": "peace",
+        "ascii": "JAM",
+        "part_of_speech": "noun",
+        "cefr": "B1",
+        "topic": "Values",
+        "tonal_note": "",
+        "cultural_note": "Core value",
+        "game_tags": [
+          "WordMatch",
+          "EldersBlessing"
+        ]
+      }
+    ],
+    "fula (fulfulde)": [
+      {
+        "id": "340",
+        "language": "Fula (Fulfulde)",
+        "text": "jam",
+        "gloss": "peace/hello",
+        "ascii": "JAM",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "",
+        "cultural_note": "Greeting and peace",
+        "game_tags": [
+          "GreetingDiplomacy",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "342",
+        "language": "Fula (Fulfulde)",
+        "text": "a jaaraama",
+        "gloss": "thank you",
+        "ascii": "a-ja-RA-ma",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Courtesy",
+        "tonal_note": "",
+        "cultural_note": "Gratitude",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "343",
+        "language": "Fula (Fulfulde)",
+        "text": "eey",
+        "gloss": "yes",
+        "ascii": "EY",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "344",
+        "language": "Fula (Fulfulde)",
+        "text": "alaa",
+        "gloss": "no",
+        "ascii": "a-LA",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "",
+        "cultural_note": "Negation",
+        "game_tags": [
+          "WordMatch",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "345",
+        "language": "Fula (Fulfulde)",
+        "text": "ndiyam",
+        "gloss": "water",
+        "ascii": "n-di-YAM",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "346",
+        "language": "Fula (Fulfulde)",
+        "text": "nyaamu",
+        "gloss": "food",
+        "ascii": "NYA-mu",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "347",
+        "language": "Fula (Fulfulde)",
+        "text": "suudu",
+        "gloss": "house",
+        "ascii": "SU-du",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Home",
+        "tonal_note": "",
+        "cultural_note": "Room/house",
+        "game_tags": [
+          "WordMatch",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "348",
+        "language": "Fula (Fulfulde)",
+        "text": "yumma",
+        "gloss": "mother",
+        "ascii": "YUM-ma",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "349",
+        "language": "Fula (Fulfulde)",
+        "text": "baaba",
+        "gloss": "father",
+        "ascii": "BA-ba",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      }
+    ],
+    "lingala": [
+      {
+        "id": "355",
+        "language": "Lingala",
+        "text": "mbote",
+        "gloss": "hello",
+        "ascii": "m-BO-te",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "",
+        "cultural_note": "Congo greeting",
+        "game_tags": [
+          "GreetingDiplomacy",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "356",
+        "language": "Lingala",
+        "text": "bonjour",
+        "gloss": "good day",
+        "ascii": "bon-JOOR",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "",
+        "cultural_note": "French influence",
+        "game_tags": [
+          "GreetingDiplomacy",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "357",
+        "language": "Lingala",
+        "text": "merci",
+        "gloss": "thank you",
+        "ascii": "mer-SI",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Courtesy",
+        "tonal_note": "",
+        "cultural_note": "French loanword",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "358",
+        "language": "Lingala",
+        "text": "iyo",
+        "gloss": "yes",
+        "ascii": "I-yo",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "359",
+        "language": "Lingala",
+        "text": "te",
+        "gloss": "no",
+        "ascii": "TE",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "",
+        "cultural_note": "Negation",
+        "game_tags": [
+          "WordMatch",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "360",
+        "language": "Lingala",
+        "text": "mai",
+        "gloss": "water",
+        "ascii": "MAI",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "361",
+        "language": "Lingala",
+        "text": "biloko ya kolya",
+        "gloss": "food items",
+        "ascii": "bi-LO-ko-ya-ko-LYA",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "362",
+        "language": "Lingala",
+        "text": "ndako",
+        "gloss": "house",
+        "ascii": "n-DA-ko",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Home",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "363",
+        "language": "Lingala",
+        "text": "mama",
+        "gloss": "mother",
+        "ascii": "MA-ma",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "364",
+        "language": "Lingala",
+        "text": "tata",
+        "gloss": "father",
+        "ascii": "TA-ta",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "365",
+        "language": "Lingala",
+        "text": "mbongo",
+        "gloss": "money",
+        "ascii": "m-BON-go",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Market",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "MarketBargaining",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "366",
+        "language": "Lingala",
+        "text": "ndenge nini",
+        "gloss": "how?",
+        "ascii": "n-DENG-ge-NI-ni",
+        "part_of_speech": "question",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "367",
+        "language": "Lingala",
+        "text": "mabele",
+        "gloss": "breasts/chest; grain",
+        "ascii": "ma-BE-le",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Body/Food",
+        "tonal_note": "",
+        "cultural_note": "Context-sensitive",
+        "game_tags": [
+          "ToneTrainer",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "368",
+        "language": "Lingala",
+        "text": "liboso",
+        "gloss": "front/forward",
+        "ascii": "li-BO-so",
+        "part_of_speech": "adverb",
+        "cefr": "A2",
+        "topic": "Direction",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "TaxiBus",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "371",
+        "language": "Lingala",
+        "text": "motema",
+        "gloss": "heart",
+        "ascii": "mo-TE-ma",
+        "part_of_speech": "noun",
+        "cefr": "B1",
+        "topic": "Emotion",
+        "tonal_note": "",
+        "cultural_note": "Emotional center",
+        "game_tags": [
+          "StoryBuilder",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "373",
+        "language": "Lingala",
+        "text": "boboto",
+        "gloss": "peace",
+        "ascii": "bo-BO-to",
+        "part_of_speech": "noun",
+        "cefr": "B2",
+        "topic": "Values",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "EldersBlessing"
+        ]
+      }
+    ],
+    "xhosa": [
+      {
+        "id": "375",
+        "language": "Xhosa",
+        "text": "molo",
+        "gloss": "hello (to one)",
+        "ascii": "MO-lo",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "GreetingDiplomacy",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "376",
+        "language": "Xhosa",
+        "text": "molweni",
+        "gloss": "hello (to many)",
+        "ascii": "mol-WE-ni",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "",
+        "cultural_note": "Plural greeting",
+        "game_tags": [
+          "GreetingDiplomacy",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "377",
+        "language": "Xhosa",
+        "text": "enkosi",
+        "gloss": "thank you",
+        "ascii": "en-KO-si",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Courtesy",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "378",
+        "language": "Xhosa",
+        "text": "ewe",
+        "gloss": "yes",
+        "ascii": "E-we",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "379",
+        "language": "Xhosa",
+        "text": "hayi",
+        "gloss": "no",
+        "ascii": "HA-yi",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "380",
+        "language": "Xhosa",
+        "text": "amanzi",
+        "gloss": "water",
+        "ascii": "a-MA-nzi",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "Same as Zulu",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "381",
+        "language": "Xhosa",
+        "text": "ukutya",
+        "gloss": "food",
+        "ascii": "u-ku-TYA",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "382",
+        "language": "Xhosa",
+        "text": "ikhaya",
+        "gloss": "home",
+        "ascii": "i-KHA-ya",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Home",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "383",
+        "language": "Xhosa",
+        "text": "umama",
+        "gloss": "mother",
+        "ascii": "u-MA-ma",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "384",
+        "language": "Xhosa",
+        "text": "utata",
+        "gloss": "father",
+        "ascii": "u-TA-ta",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "Xhosa-specific (cf. Zulu ubaba)",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "385",
+        "language": "Xhosa",
+        "text": "umzi",
+        "gloss": "homestead/clan home",
+        "ascii": "UM-zi",
+        "part_of_speech": "noun",
+        "cefr": "B1",
+        "topic": "Culture",
+        "tonal_note": "",
+        "cultural_note": "Extended family compound",
+        "game_tags": [
+          "ClanLineage",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "389",
+        "language": "Xhosa",
+        "text": "imvula",
+        "gloss": "rain",
+        "ascii": "im-VU-la",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Nature",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "390",
+        "language": "Xhosa",
+        "text": "intliziyo",
+        "gloss": "heart",
+        "ascii": "in-tli-ZI-yo",
+        "part_of_speech": "noun",
+        "cefr": "B1",
+        "topic": "Emotion",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "StoryBuilder",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "394",
+        "language": "Xhosa",
+        "text": "isixeko",
+        "gloss": "city",
+        "ascii": "i-si-KHE-ko",
+        "part_of_speech": "noun",
+        "cefr": "B1",
+        "topic": "Place",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "TaxiBus",
+          "WordMatch"
+        ]
+      }
+    ],
+    "shona": [
+      {
+        "id": "395",
+        "language": "Shona",
+        "text": "mhoro",
+        "gloss": "hello",
+        "ascii": "m-HO-ro",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "GreetingDiplomacy",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "396",
+        "language": "Shona",
+        "text": "mangwanani",
+        "gloss": "good morning",
+        "ascii": "man-gwa-NA-ni",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "",
+        "cultural_note": "Morning greeting",
+        "game_tags": [
+          "GreetingDiplomacy",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "397",
+        "language": "Shona",
+        "text": "maswera sei",
+        "gloss": "how has the day been",
+        "ascii": "mas-WE-ra-SEI",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "",
+        "cultural_note": "Afternoon inquiry",
+        "game_tags": [
+          "GreetingDiplomacy",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "398",
+        "language": "Shona",
+        "text": "ndinokutendai",
+        "gloss": "thank you",
+        "ascii": "n-di-no-ku-TEN-dai",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Courtesy",
+        "tonal_note": "",
+        "cultural_note": "Formal gratitude",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "399",
+        "language": "Shona",
+        "text": "hongu",
+        "gloss": "yes",
+        "ascii": "HON-gu",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "400",
+        "language": "Shona",
+        "text": "kwete",
+        "gloss": "no",
+        "ascii": "KWE-te",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "401",
+        "language": "Shona",
+        "text": "mvura",
+        "gloss": "water",
+        "ascii": "m-VU-ra",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "402",
+        "language": "Shona",
+        "text": "chikafu",
+        "gloss": "food",
+        "ascii": "chi-KA-fu",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "403",
+        "language": "Shona",
+        "text": "imba",
+        "gloss": "house",
+        "ascii": "IM-ba",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Home",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "404",
+        "language": "Shona",
+        "text": "amai",
+        "gloss": "mother",
+        "ascii": "a-MAI",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "405",
+        "language": "Shona",
+        "text": "baba",
+        "gloss": "father",
+        "ascii": "BA-ba",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "406",
+        "language": "Shona",
+        "text": "mwana",
+        "gloss": "child",
+        "ascii": "MWA-na",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "407",
+        "language": "Shona",
+        "text": "sadza",
+        "gloss": "thick porridge",
+        "ascii": "SA-dza",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "Zimbabwean staple",
+        "game_tags": [
+          "FoodQuest",
+          "CulturalEtiquette",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "408",
+        "language": "Shona",
+        "text": "nyama",
+        "gloss": "meat",
+        "ascii": "NYA-ma",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "409",
+        "language": "Shona",
+        "text": "muriwo",
+        "gloss": "vegetables",
+        "ascii": "mu-RI-wo",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "416",
+        "language": "Shona",
+        "text": "rudo",
+        "gloss": "love",
+        "ascii": "RU-do",
+        "part_of_speech": "noun",
+        "cefr": "B2",
+        "topic": "Emotion",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "StoryBuilder",
+          "WordMatch"
+        ]
+      }
+    ],
+    "somali": [
+      {
+        "id": "418",
+        "language": "Somali",
+        "text": "salaan",
+        "gloss": "greetings",
+        "ascii": "sa-LAAN",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "",
+        "cultural_note": "General greeting",
+        "game_tags": [
+          "GreetingDiplomacy",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "419",
+        "language": "Somali",
+        "text": "nabad",
+        "gloss": "peace/hello",
+        "ascii": "NA-bad",
+        "part_of_speech": "greeting",
+        "cefr": "A1",
+        "topic": "Greetings",
+        "tonal_note": "",
+        "cultural_note": "Common greeting",
+        "game_tags": [
+          "GreetingDiplomacy",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "420",
+        "language": "Somali",
+        "text": "mahadsanid",
+        "gloss": "thank you",
+        "ascii": "ma-had-sa-NID",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Courtesy",
+        "tonal_note": "",
+        "cultural_note": "Gratitude",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound"
+        ]
+      },
+      {
+        "id": "421",
+        "language": "Somali",
+        "text": "haa",
+        "gloss": "yes",
+        "ascii": "HAA",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "422",
+        "language": "Somali",
+        "text": "maya",
+        "gloss": "no",
+        "ascii": "MA-ya",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Basic",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "LiarLiar"
+        ]
+      },
+      {
+        "id": "423",
+        "language": "Somali",
+        "text": "biyo",
+        "gloss": "water",
+        "ascii": "BI-yo",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "424",
+        "language": "Somali",
+        "text": "cunto",
+        "gloss": "food",
+        "ascii": "CUN-to",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "425",
+        "language": "Somali",
+        "text": "guri",
+        "gloss": "house",
+        "ascii": "GU-ri",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Home",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "PictureWord"
+        ]
+      },
+      {
+        "id": "426",
+        "language": "Somali",
+        "text": "hooyo",
+        "gloss": "mother",
+        "ascii": "HOO-yo",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "427",
+        "language": "Somali",
+        "text": "aabe",
+        "gloss": "father",
+        "ascii": "AA-be",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Family",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "GreetingDiplomacy"
+        ]
+      },
+      {
+        "id": "428",
+        "language": "Somali",
+        "text": "baabuur",
+        "gloss": "car",
+        "ascii": "ba-a-BUUR",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Transport",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "TaxiBus",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "429",
+        "language": "Somali",
+        "text": "jid",
+        "gloss": "road",
+        "ascii": "JID",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Transport",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "TaxiBus",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "430",
+        "language": "Somali",
+        "text": "hilib",
+        "gloss": "meat",
+        "ascii": "HI-lib",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Food",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "FoodQuest",
+          "WordMatch"
+        ]
+      },
+      {
+        "id": "431",
+        "language": "Somali",
+        "text": "suuq",
+        "gloss": "market",
+        "ascii": "SUUK",
+        "part_of_speech": "noun",
+        "cefr": "A2",
+        "topic": "Market",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "MarketBargaining",
+          "WordMatch"
+        ]
+      }
+    ]
+  },
+  "meta": {
+    "source": "C:\\Users\\HP\\Desktop\\LingAfriqMobile\\mobile-app-main\\Repository for language words\\african_language_game_database.xlsx",
+    "languages": 13
+  }
+}

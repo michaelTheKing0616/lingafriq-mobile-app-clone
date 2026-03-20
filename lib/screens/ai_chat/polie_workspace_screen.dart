@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -15,6 +16,7 @@ import 'package:lingafriq/services/tutor_progress_service.dart';
 import 'package:lingafriq/services/vocabulary/vocabulary_service.dart';
 import 'package:lingafriq/services/vocabulary_progress_service.dart';
 import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
+import 'package:lingafriq/providers/tts_provider.dart';
 import 'package:lingafriq/utils/diacritics_enforcer.dart';
 import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -71,6 +73,7 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
     final tutorDifficulty = useState<String>('beginner');
     final tutorFlipped = useState<bool>(false);
     final tutorAutoLoadInFlight = useRef<bool>(false);
+    final tutorSeenConcepts = useRef<Set<String>>({});
 
     final roleplayDifficulty = useState<String>('bilingual');
     final roleplayScene = useState<String>(normalizeInitialRoleplayScene(initialRoleplayScene));
@@ -83,6 +86,7 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
     final vocabReveal = useState<bool>(false);
     final vocabDeckCount = useState<int>(10);
     final vocabSetName = useState<String>('Core Daily Words');
+    final vocabDifficultyTarget = useState<String>('mixed');
     final vocabSrsChoice = useState<String?>(null);
     final vocabShownWords = useRef<Set<String>>({});
 
@@ -159,7 +163,12 @@ Text: "$trimmed"
 ''',
         );
         if (json != null) {
-          translationOutput.value = _TranslationPayload.fromJson(json, rawFallback: modeResponse.value);
+          final parsed = _TranslationPayload.fromJson(json, rawFallback: modeResponse.value);
+          translationOutput.value = _normalizeTranslationPayload(
+            payload: parsed,
+            targetLanguage: targetLanguage,
+            sourceText: trimmed,
+          );
           await translationHistoryService.addTranslation(
             _toHistoryEntry(
               input: trimmed,
@@ -177,6 +186,123 @@ Text: "$trimmed"
       }
     }
 
+    Future<void> speakText(String text) async {
+      final normalized = text.trim();
+      if (normalized.isEmpty || normalized == '-') return;
+      await ref.read(ttsProvider.notifier).speak(
+            normalized,
+            languageName: targetLanguage,
+          );
+    }
+
+    Future<void> openTranslationHistorySheet() async {
+      translationTrayOpen.value = true;
+      await loadTranslationHistory();
+      if (!context.mounted) return;
+      await showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (sheetContext) {
+          final localSearch = TextEditingController(text: translationHistoryQuery.value);
+          return DraggableScrollableSheet(
+            expand: false,
+            initialChildSize: 0.68,
+            minChildSize: 0.4,
+            maxChildSize: 0.9,
+            builder: (context, scrollController) {
+              final query = localSearch.text.trim().toLowerCase();
+              final filtered = translationHistory.value.where((entry) {
+                if (entry is! TranslationEntry) return false;
+                if (query.isEmpty) return true;
+                return entry.sourceText.toLowerCase().contains(query) ||
+                    entry.primaryTranslation.toLowerCase().contains(query);
+              }).cast<TranslationEntry>().toList();
+              return Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                ),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 10),
+                    Container(
+                      width: 40,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade400,
+                        borderRadius: BorderRadius.circular(99),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+                      child: Row(
+                        children: [
+                          Text('Translation History', style: GoogleFonts.nunito(fontSize: 18, fontWeight: FontWeight.w800)),
+                          const Spacer(),
+                          IconButton(
+                            onPressed: () => Navigator.of(sheetContext).pop(),
+                            icon: const Icon(Icons.close_rounded),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                      child: TextField(
+                        controller: localSearch,
+                        onChanged: (v) {
+                          translationHistoryQuery.value = v;
+                          (sheetContext as Element).markNeedsBuild();
+                        },
+                        decoration: InputDecoration(
+                          hintText: 'Search source or translation',
+                          prefixIcon: const Icon(Icons.search_rounded),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: filtered.isEmpty
+                          ? Center(
+                              child: Text(
+                                'No matching history entries.',
+                                style: GoogleFonts.nunito(color: Colors.grey.shade600),
+                              ),
+                            )
+                          : ListView.separated(
+                              controller: scrollController,
+                              itemCount: filtered.length,
+                              separatorBuilder: (_, __) => const Divider(height: 1),
+                              itemBuilder: (context, index) {
+                                final entry = filtered[index];
+                                return ListTile(
+                                  title: Text(entry.sourceText, maxLines: 1, overflow: TextOverflow.ellipsis),
+                                  subtitle: Text(
+                                    entry.primaryTranslation,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  trailing: const Icon(Icons.north_west_rounded, size: 18),
+                                  onTap: () async {
+                                    Navigator.of(sheetContext).pop();
+                                    translationInput.text = entry.sourceText;
+                                    await runTranslation(entry.sourceText);
+                                  },
+                                );
+                              },
+                            ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        },
+      );
+      translationTrayOpen.value = false;
+    }
+
     Future<void> loadTutorLesson() async {
       if (tutorAutoLoadInFlight.value) return;
       tutorAutoLoadInFlight.value = true;
@@ -190,6 +316,11 @@ Text: "$trimmed"
           'advanced' => 'Focus on idiomatic expressions, literary devices, nuanced usage, proverbs. Minimal transliteration. Challenge the learner.',
           _ => '',
         };
+        final seenConceptList = tutorSeenConcepts.value.take(20).join(', ');
+        final noveltyConstraint = seenConceptList.isEmpty
+            ? ''
+            : 'Do NOT repeat previously used concepts: $seenConceptList';
+        final nonce = DateTime.now().microsecondsSinceEpoch;
         final json = await askForJson(
           '''
 Return STRICT JSON only.
@@ -205,6 +336,8 @@ Return STRICT JSON only.
 
 Generate a tutor card for $targetLanguage at ${tutorDifficulty.value} level.
 $difficultyGuide
+$noveltyConstraint
+Use a fresh concept each time. Nonce: $nonce
 Make the card intelligent, informative, and culturally rich.
 ''',
         );
@@ -212,6 +345,42 @@ Make the card intelligent, informative, and culturally rich.
           final parsed = _TutorLessonPayload.fromJson(json, modeResponse.value);
           final hasCoreFields = parsed.concept.trim().isNotEmpty && parsed.explanation.trim().isNotEmpty;
           if (hasCoreFields) {
+            final conceptKey = parsed.concept.trim().toLowerCase();
+            if (tutorSeenConcepts.value.contains(conceptKey)) {
+              final retryJson = await askForJson(
+                '''
+Return STRICT JSON only with all fields populated.
+{
+ "concept":"title of the lesson concept",
+ "explanation":"2-3 warm, clear sentences explaining the concept",
+ "example":{"target_lang":"example phrase in $targetLanguage","transliteration":"phonetic guide","english":"English translation"},
+ "memory_tip":"a memorable tip to remember this concept",
+ "watch_out":"common mistake or tricky aspect, or null",
+ "practice_question":"an instructive question for the learner to practice this concept",
+ "practice_hint":"a subtle hint to help answer the practice question"
+}
+Generate a COMPLETE and DIFFERENT tutor card concept for $targetLanguage at ${tutorDifficulty.value} level.
+Do not use this concept again: ${parsed.concept}
+Do not use any of these prior concepts: ${tutorSeenConcepts.value.take(20).join(', ')}
+Nonce: ${DateTime.now().microsecondsSinceEpoch}
+''',
+              );
+              if (retryJson != null) {
+                final retryParsed = _TutorLessonPayload.fromJson(retryJson, modeResponse.value);
+                tutorSeenConcepts.value = {
+                  ...tutorSeenConcepts.value,
+                  retryParsed.concept.trim().toLowerCase(),
+                };
+                tutorLesson.value = retryParsed;
+              } else {
+                tutorLesson.value = parsed;
+              }
+              return;
+            }
+            tutorSeenConcepts.value = {
+              ...tutorSeenConcepts.value,
+              conceptKey,
+            };
             tutorLesson.value = parsed;
           } else {
             // Retry once with stricter completeness constraints.
@@ -360,6 +529,8 @@ Stay in character. Respond naturally for the scene.
     Future<void> sendConversation([String? prefilledText]) async {
       final text = (prefilledText ?? conversationInput.text).trim();
       if (text.isEmpty) return;
+      final wantsInlineEnglish = RegExp(r'english translation|with english|translate to english|english in', caseSensitive: false)
+          .hasMatch(text);
       conversationMessages.value = [...conversationMessages.value, _ConversationTurn.user(text)];
       if (prefilledText == null) conversationInput.clear();
       isBusy.value = true;
@@ -383,12 +554,13 @@ Respond with depth and clarity:
 - If user asks for meaning/grammar/proverb/slang/culture, explain clearly and include 1-2 examples.
 - If user asks open-ended topic questions, still weave in useful language learning guidance.
 - Keep answers complete and not cut off.
+${wantsInlineEnglish ? '- User requested English translations: for each target-language sentence, include immediate English translation in parentheses.' : ''}
 If the user made grammar mistakes in $targetLanguage, set has_correction to true and provide the correction.
 ''',
         );
         if (json != null) {
           final msg = _cleanAiText((json['message'] ?? '').toString());
-          if (_looksTruncated(msg)) {
+          if (_looksTruncated(msg) || !_isConversationResponseRich(msg)) {
             final continuation = await askForJson(
               '''
 Return STRICT JSON only:
@@ -396,10 +568,13 @@ Return STRICT JSON only:
 
 Continue and COMPLETE the previous response in natural style for $targetLanguage.
 Ensure the response is fully complete, coherent, and can include explanation/examples if relevant.
+The response MUST be at least 3 full sentences and directly follow user's instruction constraints.
 User message: "$text"
 ''',
             );
-            if (continuation != null && !_looksTruncated(_cleanAiText((continuation['message'] ?? '').toString()))) {
+            if (continuation != null &&
+                !_looksTruncated(_cleanAiText((continuation['message'] ?? '').toString())) &&
+                _isConversationResponseRich(_cleanAiText((continuation['message'] ?? '').toString()))) {
               json = continuation;
             }
           }
@@ -442,6 +617,9 @@ Return STRICT JSON only.
 }
 
 Generate one unique $targetLanguage vocabulary card.$exclusionClause
+Category focus: ${vocabSetName.value}
+Difficulty preference: ${vocabDifficultyTarget.value}
+If difficulty preference is "mixed", rotate levels naturally over successive cards.
 ''',
         );
         if (json != null) {
@@ -745,6 +923,7 @@ Language: $targetLanguage
                 conversationInput: conversationInput,
                 languageRatio: languageRatio.value,
                 onSendConversation: sendConversation,
+                onSpeakText: speakText,
                 // vocab
                 vocabCard: vocabCard.value,
                 vocabReveal: vocabReveal,
@@ -803,6 +982,7 @@ Language: $targetLanguage
     required TextEditingController conversationInput,
     required double languageRatio,
     required Future<void> Function([String?]) onSendConversation,
+    required Future<void> Function(String) onSpeakText,
     required _VocabPayload? vocabCard,
     required ValueNotifier<bool> vocabReveal,
     required ValueNotifier<String> vocabSetName,
@@ -911,6 +1091,12 @@ Language: $targetLanguage
 
     if (mode == PolieMode.translation) {
       final alternatives = translationOutput?.alternatives ?? const <AltItem>[];
+      final effectiveAlternatives = alternatives.isNotEmpty
+          ? alternatives
+          : _buildFallbackAlternatives(
+              translationOutput?.primary ?? '',
+              translationTone.value,
+            );
       final tones = const ['formal', 'casual', 'poetic', 'literal'];
       final wordCount = translationInput.text.trim().split(RegExp(r'\s+')).where((e) => e.isNotEmpty).length;
       return Container(
@@ -945,6 +1131,18 @@ Language: $targetLanguage
                       onSelected: (_) => translationTone.value = tone,
                     )),
                 if (!isPhone) Text('${translationInput.text.length} chars · $wordCount words', style: bodyStyle),
+                IconButton(
+                  tooltip: 'History',
+                  onPressed: openTranslationHistorySheet,
+                  icon: const Icon(Icons.history_rounded),
+                ),
+                IconButton(
+                  tooltip: translationTrayOpen.value ? 'Hide alternatives' : 'Show alternatives',
+                  onPressed: () => translationTrayOpen.value = !translationTrayOpen.value,
+                  icon: Icon(
+                    translationTrayOpen.value ? Icons.expand_more_rounded : Icons.expand_less_rounded,
+                  ),
+                ),
               ],
             ),
             if (isPhone) ...[
@@ -955,9 +1153,9 @@ Language: $targetLanguage
             Expanded(
               child: LayoutBuilder(
                 builder: (context, constraints) {
-                  final panelWidth = isPhone
-                      ? constraints.maxWidth
-                      : (constraints.maxWidth < 860 ? 420.0 : (constraints.maxWidth - 8) / 2);
+                  final panelGap = 8.0;
+                  final idealPanelWidth = (constraints.maxWidth - panelGap) / 2;
+                  final panelWidth = isPhone ? idealPanelWidth : idealPanelWidth.clamp(260.0, 460.0);
                   final leftPanel = Container(
                     width: panelWidth,
                     decoration: BoxDecoration(
@@ -1024,11 +1222,25 @@ Language: $targetLanguage
                                 onChanged: (_) {},
                               ),
                               const Spacer(),
-                              const Icon(Icons.volume_up_outlined, size: 20),
-                              const SizedBox(width: 10),
-                              const Icon(Icons.copy_outlined, size: 20),
-                              const SizedBox(width: 10),
-                              const Icon(Icons.save_alt_outlined, size: 20),
+                              IconButton(
+                                visualDensity: VisualDensity.compact,
+                                onPressed: () => speakText(translationOutput?.primary ?? ''),
+                                icon: const Icon(Icons.volume_up_outlined, size: 20),
+                              ),
+                              IconButton(
+                                visualDensity: VisualDensity.compact,
+                                onPressed: () async {
+                                  final text = (translationOutput?.primary ?? '').trim();
+                                  if (text.isEmpty) return;
+                                  await Clipboard.setData(ClipboardData(text: text));
+                                },
+                                icon: const Icon(Icons.copy_outlined, size: 20),
+                              ),
+                              IconButton(
+                                visualDensity: VisualDensity.compact,
+                                onPressed: openTranslationHistorySheet,
+                                icon: const Icon(Icons.history_toggle_off_rounded, size: 20),
+                              ),
                             ],
                           ),
                         ),
@@ -1058,20 +1270,22 @@ Language: $targetLanguage
                     ),
                   );
                   if (isPhone) {
-                    return Column(
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Expanded(child: leftPanel),
-                        const SizedBox(height: 8),
-                        Expanded(child: rightPanel),
+                        leftPanel,
+                        SizedBox(width: panelGap),
+                        rightPanel,
                       ],
                     );
                   }
                   return SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         leftPanel,
-                        const SizedBox(width: 8),
+                        SizedBox(width: panelGap),
                         rightPanel,
                       ],
                     ),
@@ -1079,39 +1293,61 @@ Language: $targetLanguage
                 },
               ),
             ),
-            const SizedBox(height: 8),
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: theme.border),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      alternatives.isEmpty
-                          ? 'Alternatives'
-                          : '${alternatives.first.text}\n${alternatives.first.note}',
-                      style: bodyStyle,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+            if (translationTrayOpen.value && MediaQuery.viewInsetsOf(context).bottom <= 0) ...[
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: theme.border),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Alternatives',
+                      style: bodyStyle.copyWith(fontWeight: FontWeight.w800),
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  OutlinedButton(
-                    onPressed: alternatives.isEmpty
-                        ? null
-                        : () {
-                            translationInput.text = alternatives.first.text;
-                            onRunTranslation(translationInput.text);
+                    const SizedBox(height: 8),
+                    if (effectiveAlternatives.isEmpty)
+                      Text('No alternatives available yet.', style: bodyStyle)
+                    else
+                      SizedBox(
+                        height: 44,
+                        child: ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: effectiveAlternatives.length > 6 ? 6 : effectiveAlternatives.length,
+                          separatorBuilder: (_, __) => const SizedBox(width: 8),
+                          itemBuilder: (_, i) {
+                            final alt = effectiveAlternatives[i];
+                            return ActionChip(
+                              label: Text(
+                                alt.text,
+                                overflow: TextOverflow.ellipsis,
+                                style: bodyStyle.copyWith(fontSize: 13),
+                              ),
+                              onPressed: isBusy
+                                  ? null
+                                  : () {
+                                      translationInput.text = alt.text;
+                                      onRunTranslation(alt.text);
+                                    },
+                            );
                           },
-                    child: const Text('Use this'),
-                  ),
-                ],
+                        ),
+                      ),
+                    if (effectiveAlternatives.isNotEmpty) ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        effectiveAlternatives.first.note,
+                        style: bodyStyle.copyWith(color: theme.body.withOpacity(0.8), fontSize: 12),
+                      ),
+                    ],
+                  ],
+                ),
               ),
-            ),
+            ],
           ],
         ),
       );
@@ -1721,7 +1957,24 @@ Language: $targetLanguage
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(ai.message, style: bodyStyle.copyWith(color: const Color(0xFF2D1B0E))),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  ai.message,
+                                  style: bodyStyle.copyWith(color: const Color(0xFF2D1B0E)),
+                                ),
+                              ),
+                              IconButton(
+                                visualDensity: VisualDensity.compact,
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
+                                onPressed: () => onSpeakText(ai.message),
+                                icon: const Icon(Icons.volume_up_outlined, size: 18),
+                              ),
+                            ],
+                          ),
                           if (ai.correction.hasCorrection)
                             Padding(
                               padding: const EdgeInsets.only(top: 6),
@@ -1832,7 +2085,7 @@ Language: $targetLanguage
                         spacing: 10,
                         children: [
                           Text(
-                            'Daily Vocabulary',
+                            vocabSetName.value,
                             style: bodyStyle.copyWith(color: const Color(0xFFFAF3E0), fontWeight: FontWeight.w700),
                           ),
                           Text(
@@ -1847,6 +2100,51 @@ Language: $targetLanguage
                         minHeight: 6,
                         backgroundColor: Colors.white12,
                         valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFD4822A)),
+                      ),
+                      const SizedBox(height: 10),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: [
+                          for (final category in const [
+                            'Core Daily Words',
+                            'Travel',
+                            'Food',
+                            'Greetings',
+                            'Business',
+                            'Culture',
+                          ])
+                            ChoiceChip(
+                              label: Text(category, style: const TextStyle(fontSize: 12)),
+                              selected: vocabSetName.value == category,
+                              selectedColor: const Color(0xFFD4822A).withOpacity(0.25),
+                              onSelected: (_) => vocabSetName.value = category,
+                            ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.06),
+                              borderRadius: BorderRadius.circular(999),
+                              border: Border.all(color: Colors.white24),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                value: vocabDifficultyTarget.value,
+                                dropdownColor: const Color(0xFF1A130C),
+                                style: bodyStyle.copyWith(color: const Color(0xFFFAF3E0)),
+                                items: const [
+                                  DropdownMenuItem(value: 'mixed', child: Text('Difficulty: Mixed')),
+                                  DropdownMenuItem(value: 'beginner', child: Text('Difficulty: Beginner')),
+                                  DropdownMenuItem(value: 'intermediate', child: Text('Difficulty: Intermediate')),
+                                  DropdownMenuItem(value: 'advanced', child: Text('Difficulty: Advanced')),
+                                ],
+                                onChanged: (v) {
+                                  if (v != null) vocabDifficultyTarget.value = v;
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -2506,6 +2804,71 @@ bool _looksTruncated(String message) {
     if (prev == 46 || prev == 33 || prev == 63) return false; // . ! ? before quote
   }
   return true;
+}
+
+bool _isConversationResponseRich(String message) {
+  final normalized = message.trim();
+  if (normalized.length < 45) return false;
+  final sentenceCount = RegExp(r'[.!?]+').allMatches(normalized).length;
+  if (sentenceCount >= 3) return true;
+  return normalized.split(RegExp(r'\s+')).where((e) => e.isNotEmpty).length >= 16;
+}
+
+List<AltItem> _buildFallbackAlternatives(String primary, String tone) {
+  final clean = primary.trim();
+  if (clean.isEmpty || clean == '-') return const <AltItem>[];
+  final note = switch (tone.toLowerCase()) {
+    'formal' => 'Primary formal rendering',
+    'casual' => 'Primary casual rendering',
+    'poetic' => 'Primary poetic rendering',
+    'literal' => 'Primary literal rendering',
+    _ => 'Primary rendering',
+  };
+  return <AltItem>[
+    AltItem(text: clean, note: note),
+  ];
+}
+
+_TranslationPayload _normalizeTranslationPayload({
+  required _TranslationPayload payload,
+  required String targetLanguage,
+  required String sourceText,
+}) {
+  String fixText(String value) {
+    var out = value.trim();
+    if (out.isEmpty) return out;
+    final enforced = DiacriticsEnforcer.enforceWithMetadata(
+      out,
+      targetLanguage,
+      enableFuzzy: true,
+      fuzzyThreshold: 0.7,
+    );
+    out = (enforced['text'] as String?) ?? out;
+
+    // High-impact correction for a common greeting regression.
+    final asksGoodMorning = RegExp(r'\bgood\s+morning\b', caseSensitive: false).hasMatch(sourceText);
+    final isYoruba = targetLanguage.toLowerCase().contains('yor');
+    if (isYoruba && asksGoodMorning) {
+      final normalized = out.toLowerCase().replaceAll(RegExp(r'[\s\-\.\,]'), '');
+      if (normalized == 'eka' || normalized == 'ẹká' || normalized == 'ekaaro' || normalized == 'ẹkáárọ̀') {
+        out = 'Ẹ káàárọ̀';
+      }
+    }
+    return out;
+  }
+
+  final primary = fixText(payload.primary);
+  final alternatives = payload.alternatives
+      .map((alt) => AltItem(text: fixText(alt.text), note: alt.note))
+      .where((alt) => alt.text.trim().isNotEmpty)
+      .toList();
+
+  return _TranslationPayload(
+    primary: primary,
+    alternatives: alternatives,
+    culturalNote: payload.culturalNote,
+    toneAchieved: payload.toneAchieved,
+  );
 }
 
 _ConversationPayload _enforceConversationDiacritics(

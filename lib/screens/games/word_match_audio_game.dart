@@ -130,7 +130,7 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
         _startTime = DateTime.now();
         _leftTiles = cards.map((c) => _GameTile(
               id: c.cardId,
-              label: c.text,
+              label: _resolveTargetLabel(c),
               audioUrl: c.audioNativeUrl,
               ascii: c.ascii,
             )).toList();
@@ -181,7 +181,12 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
     // TTS fallback when no audio URL or URL playback failed
     if (fallbackText != null && fallbackText.isNotEmpty) {
       try {
-        await ref.read(ttsProvider.notifier).speak(fallbackText, languageName: widget.language);
+        final tts = ref.read(ttsProvider.notifier);
+        await tts.speak(fallbackText, languageName: widget.language);
+        await Future<void>.delayed(const Duration(milliseconds: 250));
+        if (!tts.isSpeaking) {
+          await tts.speak(fallbackText, languageName: 'english');
+        }
       } catch (e) {
         debugPrint('TTS fallback failed: $e');
         if (mounted) {
@@ -194,13 +199,37 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
   }
 
   String _resolveGlossLabel(dynamic card) {
-    final gloss = card.gloss?.toString().trim() ?? '';
-    if (gloss.isNotEmpty) return gloss;
-    final ascii = card.ascii?.toString().trim() ?? '';
-    if (ascii.isNotEmpty) return ascii;
     final text = card.text?.toString().trim() ?? '';
+    final gloss = card.gloss?.toString().trim() ?? '';
+    if (gloss.isNotEmpty && gloss.toLowerCase() != text.toLowerCase()) return gloss;
+    final ascii = card.ascii?.toString().trim() ?? '';
+    if (ascii.isNotEmpty && ascii.toLowerCase() != text.toLowerCase()) return ascii;
+    return 'Meaning unavailable';
+  }
+
+  String _resolveTargetLabel(dynamic card) {
+    final text = card.text?.toString().trim() ?? '';
+    final ascii = card.ascii?.toString().trim() ?? '';
+    final gloss = card.gloss?.toString().trim() ?? '';
+    if (text.isNotEmpty && !_looksLikelyEnglish(text)) return text;
+    if (ascii.isNotEmpty && !_looksLikelyEnglish(ascii)) return ascii;
     if (text.isNotEmpty) return text;
-    return 'Translation pending';
+    if (ascii.isNotEmpty) return ascii;
+    if (gloss.isNotEmpty) return gloss;
+    return 'Word unavailable';
+  }
+
+  bool _looksLikelyEnglish(String value) {
+    final s = value.toLowerCase();
+    if (s.isEmpty) return false;
+    const commonEnglishWords = {
+      'the', 'and', 'is', 'are', 'you', 'hello', 'good', 'morning', 'thank', 'please', 'how',
+      'where', 'want', 'learn', 'welcome', 'food', 'love'
+    };
+    final tokens = s.split(RegExp(r'[^a-z]+')).where((t) => t.isNotEmpty).toList();
+    if (tokens.isEmpty) return false;
+    final englishHits = tokens.where(commonEnglishWords.contains).length;
+    return englishHits >= (tokens.length / 2).ceil();
   }
 
   void _selectTile(String side, String id) {
