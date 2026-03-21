@@ -961,12 +961,15 @@ Language: $targetLanguage
                   .toList(),
               onChanged: (mode) async {
                 await setMode(mode);
-                if (mode == PolieMode.tutor && tutorLesson.value == null)
+                if (mode == PolieMode.tutor && tutorLesson.value == null) {
                   await loadTutorLesson();
-                if (mode == PolieMode.vocab && vocabCard.value == null)
+                }
+                if (mode == PolieMode.vocab && vocabCard.value == null) {
                   await loadVocabCard();
-                if (mode == PolieMode.review && reviewPayload.value == null)
+                }
+                if (mode == PolieMode.review && reviewPayload.value == null) {
                   await loadReview();
+                }
               },
             ),
           ),
@@ -2631,8 +2634,9 @@ Language: $targetLanguage
                                       ),
                                     ],
                                     onChanged: (v) {
-                                      if (v != null)
+                                      if (v != null) {
                                         vocabDifficultyTarget.value = v;
+                                      }
                                     },
                                   ),
                                 ),
@@ -3418,8 +3422,9 @@ Language: $targetLanguage
     final normalized = label.toLowerCase();
     if (normalized.contains('word')) return Icons.menu_book_rounded;
     if (normalized.contains('accuracy')) return Icons.trending_up_rounded;
-    if (normalized.contains('streak'))
+    if (normalized.contains('streak')) {
       return Icons.local_fire_department_rounded;
+    }
     if (normalized.contains('lesson')) return Icons.chat_bubble_outline_rounded;
     return Icons.insights_rounded;
   }
@@ -3550,8 +3555,9 @@ bool _looksTruncated(String message) {
   if (last == 46 || last == 33 || last == 63) return false; // . ! ?
   if ((last == 34 || last == 39) && m.length > 1) {
     final prev = m.codeUnitAt(m.length - 2);
-    if (prev == 46 || prev == 33 || prev == 63)
+    if (prev == 46 || prev == 33 || prev == 63) {
       return false; // . ! ? before quote
+    }
   }
   return true;
 }
@@ -3735,8 +3741,9 @@ class _TutorLessonPayload {
     String sanitize(String value, {String fallbackText = '-'}) {
       final v = value.trim();
       if (v.isEmpty) return fallbackText;
-      if (v.startsWith('{') || v.startsWith('```') || v.startsWith('['))
+      if (v.startsWith('{') || v.startsWith('```') || v.startsWith('[')) {
         return fallbackText;
+      }
       return _cleanAiText(v, fallback: fallbackText);
     }
 
@@ -3832,8 +3839,9 @@ class _TutorFeedbackPayload {
     String sanitize(String value, {String fallbackText = '-'}) {
       final v = value.trim();
       if (v.isEmpty) return fallbackText;
-      if (v.startsWith('{') || v.startsWith('```') || v.startsWith('['))
+      if (v.startsWith('{') || v.startsWith('```') || v.startsWith('[')) {
         return fallbackText;
+      }
       return _cleanAiText(v, fallback: fallbackText);
     }
 

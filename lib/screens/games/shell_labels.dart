@@ -1,4 +1,4 @@
-/// Pure helpers for [GameTemplateShell] chips — unit-tested, no Flutter imports.
+// Pure helpers for GameTemplateShell chips — unit-tested, no Flutter imports.
 
 /// Progress chip for discrete rounds (1-based or current index after increment).
 String? roundProgressLabelForRound({

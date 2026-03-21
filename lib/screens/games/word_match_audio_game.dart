@@ -215,13 +215,15 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
   String _resolveGlossLabel(dynamic card) {
     final text = card.text?.toString().trim() ?? '';
     final gloss = card.gloss?.toString().trim() ?? '';
-    if (gloss.isNotEmpty && gloss.toLowerCase() != text.toLowerCase())
+    if (gloss.isNotEmpty && gloss.toLowerCase() != text.toLowerCase()) {
       return gloss;
+    }
     final ascii = card.ascii?.toString().trim() ?? '';
     if (ascii.isNotEmpty &&
         _looksLikelyEnglish(ascii) &&
-        ascii.toLowerCase() != text.toLowerCase())
+        ascii.toLowerCase() != text.toLowerCase()) {
       return ascii;
+    }
     return 'No translation yet';
   }
 

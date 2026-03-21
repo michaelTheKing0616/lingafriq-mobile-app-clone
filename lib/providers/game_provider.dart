@@ -706,16 +706,18 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       if (value is List) {
         for (final item in value) {
           final nested = crawl(item);
-          if (nested != null && nested.toString().trim().isNotEmpty)
+          if (nested != null && nested.toString().trim().isNotEmpty) {
             return nested;
+          }
         }
         return null;
       }
       if (value is Map) {
         for (final nestedKey in const ['url', 'file_url', 'src', 'path']) {
           final nested = crawl(value[nestedKey]);
-          if (nested != null && nested.toString().trim().isNotEmpty)
+          if (nested != null && nested.toString().trim().isNotEmpty) {
             return nested;
+          }
         }
       }
       return value.toString();
@@ -733,8 +735,9 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
   Future<void> _ensureAssetWordRepoLoaded() async {
     if (_assetWordRepoByLanguage != null &&
-        _assetEnglishToTargetByLanguage != null)
+        _assetEnglishToTargetByLanguage != null) {
       return;
+    }
     try {
       final raw = await rootBundle.loadString(
         'assets/data/word_repo_game_seed.json',
@@ -895,8 +898,9 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
       final targetKey = text.toLowerCase();
       final glossKey = gloss.toLowerCase();
-      if (seenTargets.contains(targetKey) || seenGlosses.contains(glossKey))
+      if (seenTargets.contains(targetKey) || seenGlosses.contains(glossKey)) {
         continue;
+      }
       seenTargets.add(targetKey);
       seenGlosses.add(glossKey);
       deduped.add(card.copyWith(gloss: gloss));
