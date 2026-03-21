@@ -134,37 +134,13 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame> {
   }
 
   @override
-  List<Widget>? get appBarActions {
-    if (_gameOver || _currentCard == null) return null;
-    return [
-      Padding(
-        padding: EdgeInsets.all(2.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Semantics(
-              label: 'Time remaining: $_timeLeft seconds',
-              child: Text(
-                '$_timeLeft',
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
-                  color: _timeLeft < 10 ? Colors.red : Theme.of(context).colorScheme.onPrimary,
-                ),
-              ),
-            ),
-            Semantics(
-              label: 'Score: $_score',
-              child: Text(
-                'Score: $_score',
-                style: TextStyle(fontSize: 12.sp),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ];
+  String? get shellProgressLabel {
+    if (_gameOver || _cards.isEmpty) return null;
+    return '${_currentCardIndex + 1}/${_cards.length} · ${_timeLeft}s';
   }
+
+  @override
+  String? get shellScoreLabel => _gameOver ? null : '$_score pts';
 
   @override
   Widget buildGameContent(BuildContext context) {

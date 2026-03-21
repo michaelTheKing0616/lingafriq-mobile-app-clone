@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:io';
 import 'dart:typed_data';
 import '../../screens/games/base_game_screen.dart';
+import '../../screens/games/shell_labels.dart';
 import '../../models/game/game_session_model.dart';
 import '../../services/polie_game_client.dart';
 import '../gamekit/game_session.dart' as gamekit_session;
@@ -66,6 +67,25 @@ class _ToneForgeScreenState extends BaseGameScreenState<ToneForgeScreen> {
     _recorder.dispose();
     _player.dispose();
     super.dispose();
+  }
+
+  @override
+  String? get shellProgressLabel {
+    if (isLoading) return null;
+    final s = session;
+    if (s == null) return null;
+    return sessionTurnProgressLabel(
+      completedTurns: s.totalTurns,
+      maxTurns: getCardCount(),
+    );
+  }
+
+  @override
+  String? get shellScoreLabel {
+    if (isLoading) return null;
+    final s = session;
+    if (s == null) return null;
+    return shellScorePointsLabel(s.correctCount);
   }
 
   @override

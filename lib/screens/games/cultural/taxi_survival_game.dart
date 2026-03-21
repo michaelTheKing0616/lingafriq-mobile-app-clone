@@ -5,6 +5,7 @@ import '../../../services/polie_content_generator.dart';
 import '../../../widgets/error_boundary.dart';
 import '../../loading/dynamic_loading_screen.dart';
 import '../base_game_screen.dart';
+import '../mixins/round_progress_shell_mixin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:math';
 
@@ -24,7 +25,8 @@ class TaxiSurvivalGame extends BaseGameScreen {
   ConsumerState<TaxiSurvivalGame> createState() => _TaxiSurvivalGameState();
 }
 
-class _TaxiSurvivalGameState extends BaseGameScreenState<TaxiSurvivalGame> {
+class _TaxiSurvivalGameState extends BaseGameScreenState<TaxiSurvivalGame>
+    with RoundProgressGameShellMixin<TaxiSurvivalGame> {
 
   Future<void> _initializeGame() async {
     setLoading(true); setError(null);
@@ -45,6 +47,15 @@ class _TaxiSurvivalGameState extends BaseGameScreenState<TaxiSurvivalGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
+
+  @override
+  int get gameRound => _round;
+
+  @override
+  int get gameMaxRounds => _maxRounds;
+
+  @override
+  int get gameScore => _score;
   
   String _scenarioText = '';
   String? _correctPhrase;
@@ -188,23 +199,6 @@ class _TaxiSurvivalGameState extends BaseGameScreenState<TaxiSurvivalGame> {
         ),
       );
     }
-  }
-
-  @override
-  List<Widget>? get appBarActions {
-    if (isLoading || _round > _maxRounds) return null;
-    return [
-      Padding(
-        padding: EdgeInsets.all(8.sp),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Score: $_score/$_maxRounds', style: TextStyle(fontSize: 12.sp)),
-            Text('Round: $_round/$_maxRounds', style: TextStyle(fontSize: 10.sp)),
-          ],
-        ),
-      ),
-    ];
   }
 
   @override

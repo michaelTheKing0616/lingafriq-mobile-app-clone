@@ -119,8 +119,13 @@ class _MarketMonopolyChallengeGameState
   }
 
   @override
-  String? get appBarTitle =>
-      '${widget.getGameType().displayName} ($_round/$_maxRounds)';
+  String? get appBarTitle => widget.getGameType().displayName;
+
+  @override
+  String? get shellProgressLabel => '$_round/$_maxRounds';
+
+  @override
+  String? get shellScoreLabel => '$_bank cowries';
 
   @override
   Widget buildGameContent(BuildContext context) {
@@ -402,8 +407,10 @@ class _ScrabbleSprintArenaGameState
   }
 
   @override
-  String? get appBarTitle =>
-      '${widget.getGameType().displayName} ($_round/$_maxRounds)';
+  String? get appBarTitle => widget.getGameType().displayName;
+
+  @override
+  String? get shellProgressLabel => '$_round/$_maxRounds · ${_secondsLeft}s';
 
   Color _timerColor(BuildContext context) {
     if (_secondsLeft <= 10) return PanAfricanColors.error;

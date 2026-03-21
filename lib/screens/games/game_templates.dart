@@ -341,7 +341,11 @@ class _ListenSketchGameState extends BaseGameScreenState<ListenSketchGame> {
 
   @override
   String? get appBarTitle =>
-      _currentCard == null ? null : '${widget.getGameType().displayName} (${_currentIndex + 1}/${_cards.length})';
+      _currentCard == null ? null : widget.getGameType().displayName;
+
+  @override
+  String? get shellProgressLabel =>
+      _cards.isEmpty ? null : '${_currentIndex + 1}/${_cards.length}';
 
   @override
   Widget buildGameContent(BuildContext context) {
@@ -554,7 +558,11 @@ class _PictureWordGameState extends BaseGameScreenState<PictureWordGame> {
 
   @override
   String? get appBarTitle =>
-      (isLoading || _currentCard == null) ? null : '${widget.getGameType().displayName} (${_currentIndex + 1}/${_cards.length})';
+      (isLoading || _currentCard == null) ? null : widget.getGameType().displayName;
+
+  @override
+  String? get shellProgressLabel =>
+      _cards.isEmpty ? null : '${_currentIndex + 1}/${_cards.length}';
 
   @override
   Widget buildGameContent(BuildContext context) {
@@ -759,7 +767,11 @@ class _MemoryMapGameState extends BaseGameScreenState<MemoryMapGame> {
 
   @override
   String? get appBarTitle =>
-      (isLoading || _wordPositions.isEmpty) ? null : '${widget.getGameType().displayName} (Round $_currentRound/$_maxRounds)';
+      (isLoading || _wordPositions.isEmpty) ? null : widget.getGameType().displayName;
+
+  @override
+  String? get shellProgressLabel =>
+      _wordPositions.isEmpty ? null : '$_currentRound/$_maxRounds';
 
   @override
   Widget buildGameContent(BuildContext context) {
@@ -1121,7 +1133,10 @@ $userMessage
 
   @override
   String? get appBarTitle =>
-      isLoading ? null : '${widget.getGameType().displayName} (Turn $_turnCount/$_maxTurns)';
+      isLoading ? null : widget.getGameType().displayName;
+
+  @override
+  String? get shellProgressLabel => '$_turnCount/$_maxTurns';
 
   @override
   Widget buildGameContent(BuildContext context) {
@@ -1411,8 +1426,15 @@ class _GrammarJamGameState extends BaseGameScreenState<GrammarJamGame> {
   String? get appBarTitle {
     if (isLoading || _sentences.isEmpty) return null;
     if (!_gameActive) return null;
-    return '${widget.getGameType().displayName} - Score: $_score';
+    return widget.getGameType().displayName;
   }
+
+  @override
+  String? get shellProgressLabel =>
+      _gameActive ? '${_timeRemaining}s' : null;
+
+  @override
+  String? get shellScoreLabel => _gameActive ? '$_score pts' : null;
 
   @override
   Widget buildGameContent(BuildContext context) {
@@ -1900,7 +1922,12 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
 
   @override
   String? get appBarTitle =>
-      (isLoading || _currentSong == null) ? null : '${widget.getGameType().displayName} - ${_currentSong!['title']}';
+      (isLoading || _currentSong == null) ? null : widget.getGameType().displayName;
+
+  @override
+  String? get shellProgressLabel => (_lyrics.isEmpty || _currentSong == null)
+      ? null
+      : 'Song ${_currentSongIndex + 1}/${_songs.length} · Line ${_currentLineIndex + 1}/${_lyrics.length}';
 
   @override
   Widget buildGameContent(BuildContext context) {
@@ -2289,7 +2316,11 @@ class _QuizChefGameState extends BaseGameScreenState<QuizChefGame> {
   String? get appBarTitle =>
       (isLoading || _currentRecipe == null || _recipeSteps.isEmpty)
           ? null
-          : '${widget.getGameType().displayName} - Step ${_currentStepIndex + 1}/${_recipeSteps.length}';
+          : widget.getGameType().displayName;
+
+  @override
+  String? get shellProgressLabel =>
+      _recipeSteps.isEmpty ? null : '${_currentStepIndex + 1}/${_recipeSteps.length}';
 
   @override
   Widget buildGameContent(BuildContext context) {

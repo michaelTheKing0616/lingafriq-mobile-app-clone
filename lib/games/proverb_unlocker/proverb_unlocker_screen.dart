@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../screens/games/base_game_screen.dart';
+import '../../screens/games/mixins/round_progress_shell_mixin.dart';
 import '../../models/game/game_session_model.dart';
 import '../../services/polie_game_client.dart';
 import '../gamekit/game_session.dart' as gamekit_session;
@@ -28,7 +29,8 @@ class ProverbUnlockerScreen extends BaseGameScreen {
   ConsumerState<ProverbUnlockerScreen> createState() => _ProverbUnlockerScreenState();
 }
 
-class _ProverbUnlockerScreenState extends BaseGameScreenState<ProverbUnlockerScreen> {
+class _ProverbUnlockerScreenState extends BaseGameScreenState<ProverbUnlockerScreen>
+    with RoundProgressGameShellMixin<ProverbUnlockerScreen> {
   late ProverbUnlockerGame _game;
   late PolieGameClient _polieClient;
   late GameAnimationBridge _animationBridge;
@@ -43,18 +45,13 @@ class _ProverbUnlockerScreenState extends BaseGameScreenState<ProverbUnlockerScr
   final int _maxRounds = 5;
 
   @override
-  List<Widget>? get appBarActions => [
-    Padding(
-      padding: EdgeInsets.all(8.sp),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text('Score: $_score/$_maxRounds', style: TextStyle(fontSize: 12.sp)),
-          Text('Round: $_round/$_maxRounds', style: TextStyle(fontSize: 10.sp)),
-        ],
-      ),
-    ),
-  ];
+  int get gameRound => _round;
+
+  @override
+  int get gameMaxRounds => _maxRounds;
+
+  @override
+  int get gameScore => _score;
 
   @override
   void initState() {

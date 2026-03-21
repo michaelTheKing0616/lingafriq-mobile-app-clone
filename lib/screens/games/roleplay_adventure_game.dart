@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../models/game/game_session_model.dart';
 import '../../services/polie_content_generator.dart';
 import 'base_game_screen.dart';
+import 'mixins/round_progress_shell_mixin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../widgets/game_ui/index.dart';
 import 'dart:math';
@@ -23,12 +24,24 @@ class RoleplayAdventureGame extends BaseGameScreen {
   ConsumerState<RoleplayAdventureGame> createState() => _RoleplayAdventureGameState();
 }
 
-class _RoleplayAdventureGameState extends BaseGameScreenState<RoleplayAdventureGame> {
+class _RoleplayAdventureGameState extends BaseGameScreenState<RoleplayAdventureGame>
+    with RoundProgressGameShellMixin<RoleplayAdventureGame> {
+  static const int _maxDialogueTurns = 5;
+
   String _scenario = 'market';
   String _npcMessage = '';
   final List<String> _dialogueHistory = [];
   final List<_DialogueOption> _options = [];
   int _turnCount = 0;
+
+  @override
+  int get gameRound => _turnCount;
+
+  @override
+  int get gameMaxRounds => _maxDialogueTurns;
+
+  @override
+  int get gameScore => session?.correctCount ?? 0;
 
   @override
   int getCardCount() => 1;
@@ -129,7 +142,7 @@ class _RoleplayAdventureGameState extends BaseGameScreenState<RoleplayAdventureG
         });
         await _loadScenario();
 
-        if (_turnCount >= 5) {
+        if (_turnCount >= _maxDialogueTurns) {
           finishGame();
         }
       }

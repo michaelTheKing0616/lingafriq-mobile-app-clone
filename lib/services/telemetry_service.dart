@@ -114,6 +114,31 @@ class TelemetryService {
     }
   }
 
+  /// Session/cards/network prevented the game from starting ([BaseGameScreen] load path).
+  Future<void> trackGameLoadFailed({
+    required String gameType,
+    required String language,
+    required String reason,
+  }) async {
+    try {
+      const maxLen = 500;
+      final safe =
+          reason.length > maxLen ? '${reason.substring(0, maxLen)}…' : reason;
+      await trackEngagement(
+        eventType: 'error',
+        feature: 'games',
+        metadata: {
+          'subtype': 'game_load_failed',
+          'game_type': gameType,
+          'language': language,
+          'reason': safe,
+        },
+      );
+    } catch (e) {
+      debugPrint('Error tracking game load failure: $e');
+    }
+  }
+
   /// Track feature usage
   Future<void> trackFeatureUsage({
     required String featureName,

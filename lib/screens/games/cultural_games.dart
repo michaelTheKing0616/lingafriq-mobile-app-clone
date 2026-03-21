@@ -5,6 +5,7 @@ import '../../services/polie_content_generator.dart';
 import '../../widgets/error_boundary.dart';
 import '../../screens/loading/dynamic_loading_screen.dart';
 import 'base_game_screen.dart';
+import 'mixins/round_progress_shell_mixin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:math';
 import '../../games/drum_rhythm/drum_rhythm_screen.dart';
@@ -45,7 +46,8 @@ class ProverbUnlockerGame extends BaseGameScreen {
   ConsumerState<ProverbUnlockerGame> createState() => _ProverbUnlockerGameState();
 }
 
-class _ProverbUnlockerGameState extends BaseGameScreenState<ProverbUnlockerGame> {
+class _ProverbUnlockerGameState extends BaseGameScreenState<ProverbUnlockerGame>
+    with RoundProgressGameShellMixin<ProverbUnlockerGame> {
   Map<String, dynamic>? _currentProverb;
   List<String> _shuffledOptions = [];
   String? _selectedAnswer;
@@ -54,6 +56,16 @@ class _ProverbUnlockerGameState extends BaseGameScreenState<ProverbUnlockerGame>
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
+
+  @override
+  int get gameRound => _round;
+
+  @override
+  int get gameMaxRounds => _maxRounds;
+
+  @override
+  int get gameScore => _score;
+
   bool _isLoadingProverb = false;
 
   Future<void> _initializeGame() async {
@@ -189,23 +201,6 @@ class _ProverbUnlockerGameState extends BaseGameScreenState<ProverbUnlockerGame>
         ),
       );
     }
-  }
-
-  @override
-  List<Widget>? get appBarActions {
-    if (isLoading || _isLoadingProverb || _round > _maxRounds) return null;
-    return [
-      Padding(
-        padding: EdgeInsets.all(8.sp),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Score: $_score/$_maxRounds', style: TextStyle(fontSize: 12.sp)),
-            Text('Round: $_round/$_maxRounds', style: TextStyle(fontSize: 10.sp)),
-          ],
-        ),
-      ),
-    ];
   }
 
   @override
@@ -408,7 +403,8 @@ class MarketBargainingGame extends BaseGameScreen {
   ConsumerState<MarketBargainingGame> createState() => _MarketBargainingGameState();
 }
 
-class _MarketBargainingGameState extends BaseGameScreenState<MarketBargainingGame> {
+class _MarketBargainingGameState extends BaseGameScreenState<MarketBargainingGame>
+    with RoundProgressGameShellMixin<MarketBargainingGame> {
   Map<String, dynamic>? _currentScenario;
   String? _sellerPrice;
   String? _userOffer;
@@ -418,6 +414,16 @@ class _MarketBargainingGameState extends BaseGameScreenState<MarketBargainingGam
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
+
+  @override
+  int get gameRound => _round;
+
+  @override
+  int get gameMaxRounds => _maxRounds;
+
+  @override
+  int get gameScore => _score;
+
   bool _isLoadingScenario = false;
   List<String> _bargainingPhrases = [];
 
@@ -531,23 +537,6 @@ class _MarketBargainingGameState extends BaseGameScreenState<MarketBargainingGam
         ),
       );
     }
-  }
-
-  @override
-  List<Widget>? get appBarActions {
-    if (isLoading || _isLoadingScenario || _round > _maxRounds) return null;
-    return [
-      Padding(
-        padding: EdgeInsets.all(8.sp),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Score: $_score/$_maxRounds', style: TextStyle(fontSize: 12.sp)),
-            Text('Round: $_round/$_maxRounds', style: TextStyle(fontSize: 10.sp)),
-          ],
-        ),
-      ),
-    ];
   }
 
   @override

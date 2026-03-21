@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -9,6 +11,7 @@ import '../../providers/user_provider.dart';
 import '../../providers/gamification_provider.dart';
 import '../../providers/hearts_provider.dart';
 import '../../services/lazy_game_loader.dart';
+import '../../services/telemetry_service.dart';
 import '../../utils/gamification_integration.dart';
 import '../../utils/pan_african_design_system.dart';
 import '../../widgets/gamification/gamification_widgets.dart';
@@ -37,6 +40,21 @@ abstract class BaseGameScreen extends ConsumerStatefulWidget {
   GameType getGameType();
 }
 
+/// Formats a language code/name for the compact GameTopBar chip.
+String? formatGameLanguageLabel(String language) {
+  final raw = language.trim();
+  if (raw.isEmpty) return null;
+  return raw
+      .replaceAll('_', ' ')
+      .split(RegExp(r'\s+'))
+      .where((w) => w.isNotEmpty)
+      .map(
+        (w) =>
+            '${w[0].toUpperCase()}${w.length > 1 ? w.substring(1).toLowerCase() : ''}',
+      )
+      .join(' ');
+}
+
 abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerState<T> {
   GameSession? _session;
   DateTime? _startTime;
@@ -51,7 +69,16 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
   bool get isLoading => _isLoading;
   String? get error => _error;
   ComboTracker get comboTracker => _comboTracker;
-  
+
+  /// Shown in [GameTemplateShell] / [GameTopBar] when not null.
+  String? get shellLanguageLabel => formatGameLanguageLabel(widget.language);
+
+  /// e.g. "3/5" — override in games with clear round progress.
+  String? get shellProgressLabel => null;
+
+  /// e.g. "12 pts" — override when the game tracks a numeric score.
+  String? get shellScoreLabel => null;
+
   // Protected setter for error - allows subclasses to set error
   void setError(String? error) {
     setState(() {
@@ -119,6 +146,11 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
               'Try selecting a different language (e.g. Yoruba, Swahili).';
           _isLoading = false;
         });
+        unawaited(
+          _emitGameLoadFailureTelemetry(
+            'no_cards_available:${widget.language}',
+          ),
+        );
         return;
       }
 
@@ -140,6 +172,19 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
         _error = 'Could not start game: $e';
         _isLoading = false;
       });
+      unawaited(_emitGameLoadFailureTelemetry(e));
+    }
+  }
+
+  Future<void> _emitGameLoadFailureTelemetry(Object error) async {
+    try {
+      await ref.read(telemetryServiceProvider).trackGameLoadFailed(
+            gameType: widget.getGameType().name,
+            language: widget.language,
+            reason: error.toString(),
+          );
+    } catch (_) {
+      // Telemetry must never affect gameplay
     }
   }
 
@@ -469,6 +514,9 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
     if (_isLoading) {
       return GameTemplateShell(
         title: widget.getGameType().displayName,
+        languageLabel: shellLanguageLabel,
+        progressLabel: shellProgressLabel,
+        scoreLabel: shellScoreLabel,
         onBack: () {
           HapticFeedback.lightImpact();
           (widget.onBack ?? () => Navigator.pop(context))();
@@ -521,6 +569,9 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
     if (_error != null) {
       return GameTemplateShell(
         title: widget.getGameType().displayName,
+        languageLabel: shellLanguageLabel,
+        progressLabel: shellProgressLabel,
+        scoreLabel: shellScoreLabel,
         onBack: () {
           HapticFeedback.lightImpact();
           (widget.onBack ?? () => Navigator.pop(context))();
@@ -564,6 +615,9 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
 
     return GameTemplateShell(
       title: appBarTitle ?? widget.getGameType().displayName,
+      languageLabel: shellLanguageLabel,
+      progressLabel: shellProgressLabel,
+      scoreLabel: shellScoreLabel,
       onBack: () {
         HapticFeedback.lightImpact();
         (widget.onBack ?? () => Navigator.pop(context))();

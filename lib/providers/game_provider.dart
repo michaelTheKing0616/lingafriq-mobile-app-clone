@@ -112,7 +112,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
             'launch_telemetry_sent': true,
           },
         );
-
+        
         final telemetry = ref.read(telemetryServiceProvider);
         await telemetry.trackFeatureUsage(
           featureName: 'games',
@@ -178,7 +178,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
       // Map result to SRS quality (0-5)
       final quality = _mapResultToQuality(result, confidence);
-
+      
       // Update SRS (include language for backend sync key)
       await _updateSRS(
         _currentSession!.userId,
@@ -236,7 +236,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       final withCompletionMetadata = endedSession.copyWith(
         metadata: {...endedSession.metadata, 'completion_telemetry_sent': true},
       );
-
+      
       // Enhanced telemetry tracking
       final telemetry = ref.read(telemetryServiceProvider);
       await telemetry.trackGameSession(
@@ -324,9 +324,9 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       final response = await ref
           .read(client)
           .post(
-            ApiContract.url(ApiContract.ai.polieGameContent),
-            data: requestData,
-          );
+        ApiContract.url(ApiContract.ai.polieGameContent),
+        data: requestData,
+      );
 
       if (response.statusCode == 200 && response.data != null) {
         final payload = response.data;
@@ -417,9 +417,9 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       final response = await ref
           .read(client)
           .get(
-            ApiContract.url(ApiContract.games.cards),
-            queryParameters: queryParams,
-          );
+        ApiContract.url(ApiContract.games.cards),
+        queryParameters: queryParams,
+      );
 
       if (response.statusCode == 200 && response.data is List) {
         final dataList = response.data as List;
@@ -432,16 +432,16 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
               final lang = item['language'] ?? language;
               cards.add(
                 PhraseCard(
-                  cardId: cId.toString(),
-                  language: lang.toString(),
-                  text: item['text'] ?? item['phrase'] ?? '',
-                  ascii: item['ascii'] ?? item['text'] ?? '',
+                cardId: cId.toString(),
+                language: lang.toString(),
+                text: item['text'] ?? item['phrase'] ?? '',
+                ascii: item['ascii'] ?? item['text'] ?? '',
                   gloss:
                       item['gloss'] ??
                       item['translation'] ??
                       item['meaning'] ??
                       '',
-                  level: item['level'] ?? level ?? 'A0',
+                level: item['level'] ?? level ?? 'A0',
                   tags:
                       (item['tags'] as List<dynamic>?)
                           ?.map((e) => e.toString())
@@ -541,7 +541,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         neededForTarget,
         resolvedUserId,
       );
-      cards.addAll(fallbackCards);
+    cards.addAll(fallbackCards);
     }
 
     _repairCardsWithAssetLexicon(cards, language);
@@ -660,13 +660,13 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
     cards.add(
       PhraseCard(
-        cardId: cardId,
-        language: lang,
-        text: text,
-        ascii: (item['ascii'] ?? text).toString(),
-        gloss: gloss,
+      cardId: cardId,
+      language: lang,
+      text: text,
+      ascii: (item['ascii'] ?? text).toString(),
+      gloss: gloss,
         ipa: (item['ipa'] ?? item['pronunciation'])?.toString(),
-        level: parsedLevel,
+      level: parsedLevel,
         tags:
             (item['tags'] as List<dynamic>?)
                 ?.map((e) => e.toString())
@@ -1573,12 +1573,12 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       final cardId = '${lang}_card_$i';
       cards.add(
         PhraseCard(
-          cardId: cardId,
-          language: language,
+        cardId: cardId,
+        language: language,
           text: (item['text'] as String?) ?? '',
           ascii: (item['text'] as String?) ?? '',
           gloss: (item['gloss'] as String?) ?? '',
-          level: level ?? 'A0',
+        level: level ?? 'A0',
           tags:
               (item['tags'] as List<dynamic>?)
                   ?.map((e) => e.toString())
@@ -1658,7 +1658,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     );
 
     await _saveUserSRS();
-
+    
     // Sync SRS to backend
     await _syncSRSToBackend();
   }
@@ -1677,12 +1677,12 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       final syncProvider = ref.read(backendSyncProvider.notifier);
       await syncProvider.queueSync(
         SyncTask(
-          type: SyncType.gameSession,
-          data: {
-            'user_id': user.id.toString(),
-            'session': sessionJson,
-            'timestamp': DateTime.now().toIso8601String(),
-          },
+        type: SyncType.gameSession,
+        data: {
+          'user_id': user.id.toString(),
+          'session': sessionJson,
+          'timestamp': DateTime.now().toIso8601String(),
+        },
         ),
       );
     } catch (e) {
@@ -1718,12 +1718,12 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
       await syncProvider.queueSync(
         SyncTask(
-          type: SyncType.gameSRS,
-          data: {
-            'user_id': user.id.toString(),
-            'srs': srsData,
-            'timestamp': DateTime.now().toIso8601String(),
-          },
+        type: SyncType.gameSRS,
+        data: {
+          'user_id': user.id.toString(),
+          'srs': srsData,
+          'timestamp': DateTime.now().toIso8601String(),
+        },
         ),
       );
     } catch (e) {
@@ -1740,24 +1740,24 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       final syncProvider = ref.read(backendSyncProvider.notifier);
       await syncProvider.queueSync(
         SyncTask(
-          type: SyncType.telemetry,
-          data: {
-            'user_id': user.id.toString(),
-            'event': event,
-            'timestamp': DateTime.now().toIso8601String(),
-            ...data,
-          },
+        type: SyncType.telemetry,
+        data: {
+          'user_id': user.id.toString(),
+          'event': event,
+          'timestamp': DateTime.now().toIso8601String(),
+          ...data,
+        },
         ),
       );
-
+      
       // Also log locally for offline access
       final prefs = await SharedPreferences.getInstance();
       final existing = prefs.getStringList('telemetry_log') ?? [];
       existing.add(
         jsonEncode({
-          'event': event,
-          'timestamp': DateTime.now().toIso8601String(),
-          ...data,
+        'event': event,
+        'timestamp': DateTime.now().toIso8601String(),
+        ...data,
         }),
       );
       await prefs.setStringList('telemetry_log', existing);
@@ -1899,9 +1899,9 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         'Warming up game content',
         tag: 'game-provider',
         context: {
-          'gameType': gameType,
-          'language': language,
-          'difficulty': difficulty,
+        'gameType': gameType,
+        'language': language,
+        'difficulty': difficulty,
         },
       );
 
@@ -1961,14 +1961,14 @@ class GameModeCertification {
       completed;
 
   Map<String, dynamic> toJson() => {
-    'game_type': gameType,
-    'session_id': sessionId,
-    'launch_telemetry_sent': launchTelemetrySent,
-    'turn_telemetry_sent': turnTelemetrySent,
-    'completion_telemetry_sent': completionTelemetrySent,
-    'has_turns': hasTurns,
-    'completed': completed,
-    'passed': passed,
-    'updated_at': updatedAt.toIso8601String(),
-  };
+        'game_type': gameType,
+        'session_id': sessionId,
+        'launch_telemetry_sent': launchTelemetrySent,
+        'turn_telemetry_sent': turnTelemetrySent,
+        'completion_telemetry_sent': completionTelemetrySent,
+        'has_turns': hasTurns,
+        'completed': completed,
+        'passed': passed,
+        'updated_at': updatedAt.toIso8601String(),
+      };
 }

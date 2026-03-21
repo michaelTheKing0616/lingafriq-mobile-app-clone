@@ -129,7 +129,11 @@ class _GrammarDetectiveGameState extends BaseGameScreenState<GrammarDetectiveGam
 
   @override
   String? get appBarTitle =>
-      _questions.isEmpty ? null : '${widget.getGameType().displayName} (${_currentIndex + 1}/${_questions.length})';
+      _questions.isEmpty ? null : widget.getGameType().displayName;
+
+  @override
+  String? get shellProgressLabel =>
+      _questions.isEmpty ? null : '${_currentIndex + 1}/${_questions.length}';
 
   @override
   Widget buildGameContent(BuildContext context) {

@@ -5,6 +5,7 @@ import '../../../services/polie_content_generator.dart';
 import '../../../widgets/error_boundary.dart';
 import '../../loading/dynamic_loading_screen.dart';
 import '../base_game_screen.dart';
+import '../mixins/round_progress_shell_mixin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:math';
 
@@ -24,7 +25,8 @@ class ClanStoryGame extends BaseGameScreen {
   ConsumerState<ClanStoryGame> createState() => _ClanStoryGameState();
 }
 
-class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
+class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame>
+    with RoundProgressGameShellMixin<ClanStoryGame> {
   Map<String, dynamic>? _currentStory;
   List<String> _storyParts = [];
   String? _selectedPart;
@@ -33,6 +35,15 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
+
+  @override
+  int get gameRound => _round;
+
+  @override
+  int get gameMaxRounds => _maxRounds;
+
+  @override
+  int get gameScore => _score;
   // ignore: unused_field
   final bool _isLoading = false;
   String _storyPrompt = '';
@@ -169,23 +180,6 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
     } catch (e) {
       setLoading(false); setError(e.toString());
     }
-  }
-
-  @override
-  List<Widget>? get appBarActions {
-    if (isLoading || _round > _maxRounds) return null;
-    return [
-      Padding(
-        padding: EdgeInsets.all(8.sp),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Score: $_score/$_maxRounds', style: TextStyle(fontSize: 12.sp)),
-            Text('Round: $_round/$_maxRounds', style: TextStyle(fontSize: 10.sp)),
-          ],
-        ),
-      ),
-    ];
   }
 
   @override

@@ -51,7 +51,11 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
   int getCardCount() => 5;
 
   @override
-  String? get appBarTitle => '${widget.getGameType().displayName} (${_currentCardIndex + 1}/${_cards.length})';
+  String? get appBarTitle => widget.getGameType().displayName;
+
+  @override
+  String? get shellProgressLabel =>
+      _cards.isEmpty ? null : '${_currentCardIndex + 1}/${_cards.length}';
 
   @override
   Future<void> onGameInitialized() async {

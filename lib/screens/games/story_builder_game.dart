@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../models/game/game_session_model.dart';
 import '../../providers/ai_chat_provider_groq.dart';
 import 'base_game_screen.dart';
+import 'mixins/round_progress_shell_mixin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../widgets/game_ui/index.dart';
 
@@ -22,13 +23,23 @@ class StoryBuilderGame extends BaseGameScreen {
   ConsumerState<StoryBuilderGame> createState() => _StoryBuilderGameState();
 }
 
-class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
+class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame>
+    with RoundProgressGameShellMixin<StoryBuilderGame> {
   final List<String> _story = [];
   final TextEditingController _sentenceController = TextEditingController();
   int _currentTurn = 0;
   final int _maxTurns = 5;
   String? _prompt;
   String? _lastFeedback;
+
+  @override
+  int get gameRound => _currentTurn;
+
+  @override
+  int get gameMaxRounds => _maxTurns;
+
+  @override
+  int get gameScore => session?.correctCount ?? 0;
 
   @override
   int getCardCount() => 1;
