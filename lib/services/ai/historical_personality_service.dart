@@ -414,7 +414,7 @@ class HistoricalPersonalityService {
           'message': message,
           'context': {
             ...(context ?? <String, dynamic>{}),
-            'providerPolicy': 'openai_first',
+            'providerPolicy': 'gemini_first',
             'client': 'mobile',
             'feature': 'historical_personality_chat',
           },

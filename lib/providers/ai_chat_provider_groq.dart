@@ -313,19 +313,19 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   int _maxTokensForMode() {
     switch (_mode) {
       case PolieMode.translation:
-        return 350;
+        // Headroom for diacritics + multi-line Translation / Notes blocks (avoid cut-off).
+        return 1024;
       case PolieMode.roleplay:
-        return 700;
+        return 1200;
       case PolieMode.tutor:
-        return 700;
+        return 1200;
       case PolieMode.conversation:
-        // Extra headroom prevents abrupt truncation in multi-sentence replies.
-        return 900;
+        return 1200;
       case PolieMode.vocab:
       case PolieMode.review:
       case PolieMode.pronunciation:
       case PolieMode.grammar:
-        return 500;
+        return 900;
     }
   }
 
@@ -1077,17 +1077,23 @@ Use structured format: Rule -> Example -> Practice.''';
             hfToken: null, // Can be set via environment
           );
           
-          // Stream the response word by word for natural feel
-          final words = hybridResponse.output.split(' ');
-          for (int i = 0; i < words.length; i++) {
-            if (_userInterrupt) {
-              state = state.copyWith(isLoading: false);
-              return;
+          // Translation: emit full string once (NLLB/GTranslate output must not look "chopped" in UI).
+          if (_mode == PolieMode.translation) {
+            if (!_userInterrupt) {
+              yield hybridResponse.output;
             }
-            
-            final chunk = i == 0 ? words[i] : ' ${words[i]}';
-            yield chunk;
-            await Future.delayed(const Duration(milliseconds: 30)); // Natural typing speed
+          } else {
+            final words = hybridResponse.output.split(' ');
+            for (int i = 0; i < words.length; i++) {
+              if (_userInterrupt) {
+                state = state.copyWith(isLoading: false);
+                return;
+              }
+
+              final chunk = i == 0 ? words[i] : ' ${words[i]}';
+              yield chunk;
+              await Future.delayed(const Duration(milliseconds: 30));
+            }
           }
           
           // Log telemetry if diacritics were corrected
@@ -1483,25 +1489,26 @@ Use structured format: Rule -> Example -> Practice.''';
                     ? buffer.trim()[buffer.trim().length - 1]
                     : '';
 
-                // Language-aware sentence segmentation
-                // Support for African language punctuation patterns
+                // Language-aware sentence segmentation.
+                // Do NOT flush on ":" / ";" — Polie translation/vocab use "Translation:", "Notes:", etc.
+                // and Yoruba text can contain colons; that used to yield only the first fragment (e.g. "E").
                 final isSentenceEnd = [".", "!", "?", "…", "\n"].contains(last);
-                
-                // Check for language-specific patterns (Yoruba, Swahili, etc.)
-                final hasLanguagePause = buffer.contains(":") || 
-                    buffer.contains(";") ||
-                    (buffer.length > 3 && buffer.substring(buffer.length - 3).contains(" "));
 
-                final isTurnHandOff = buffer.toLowerCase().contains("your turn") ||
-                    buffer.toLowerCase().contains("now you try") ||
-                    buffer.toLowerCase().contains("ask me") ||
-                    buffer.trim().endsWith("?");
+                final hasLongChunk = buffer.length > 220;
 
-                // Smart buffering: emit on sentence boundaries or long pauses
-                if (isSentenceEnd || hasLanguagePause || buffer.length > 60) {
+                // Never use endsWith('?') here — normal questions mid-reply would truncate the stream.
+                final isTurnHandOff = (_mode == PolieMode.conversation ||
+                        _mode == PolieMode.roleplay ||
+                        _mode == PolieMode.tutor) &&
+                    (buffer.toLowerCase().contains('your turn') ||
+                        buffer.toLowerCase().contains('now you try') ||
+                        buffer.toLowerCase().contains('ask me'));
+
+                // Emit on sentence end or large chunk so stream stays responsive without truncating labels.
+                if (isSentenceEnd || hasLongChunk) {
                   output += buffer;
                   yield buffer;
-                  buffer = "";
+                  buffer = '';
 
                   if (isTurnHandOff) {
                     _turn = ConversationTurn.user;
@@ -1709,7 +1716,7 @@ Use structured format: Rule -> Example -> Practice.''';
           'context': {
             'mode': _mode.name,
             'feature': 'polie_translation_json',
-            'providerPolicy': 'openai_first',
+            'providerPolicy': 'gemini_first',
           },
           'response_format': {'type': 'json_object'},
         },

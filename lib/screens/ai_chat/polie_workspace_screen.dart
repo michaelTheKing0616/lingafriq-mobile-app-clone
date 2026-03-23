@@ -15,6 +15,7 @@ import 'package:lingafriq/services/translation_history_service.dart';
 import 'package:lingafriq/services/tutor_progress_service.dart';
 import 'package:lingafriq/services/vocabulary/vocabulary_service.dart';
 import 'package:lingafriq/services/vocabulary_progress_service.dart';
+import 'package:lingafriq/services/hybrid_polie/translation_service.dart';
 import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
 import 'package:lingafriq/providers/tts_provider.dart';
 import 'package:lingafriq/utils/diacritics_enforcer.dart';
@@ -159,7 +160,7 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
       isBusy.value = true;
       modeError.value = null;
       try {
-        final json = await askForJson('''
+        Map<String, dynamic>? json = await askForJson('''
 Return STRICT JSON only.
 {
   "primary":"string",
@@ -172,6 +173,26 @@ Translate from $sourceLanguage to $targetLanguage.
 Tone requested: ${translationTone.value}
 Text: "$trimmed"
 ''');
+        // If backend/LLM returns non-JSON prose, use the same translation stack as Hybrid Polie.
+        if (json == null) {
+          modeError.value = null;
+          final tr = await TranslationService().translate(
+            text: trimmed,
+            sourceLang: sourceLanguage,
+            targetLang: targetLanguage,
+            includePhraseBreakdown: false,
+          );
+          final primary = tr.translation.trim();
+          if (primary.isNotEmpty) {
+            json = <String, dynamic>{
+              'primary': primary,
+              'alternatives': <dynamic>[],
+              'cultural_note': null,
+              'tone_achieved': translationTone.value,
+            };
+            modeResponse.value = jsonEncode(json);
+          }
+        }
         if (json != null) {
           final parsed = _TranslationPayload.fromJson(
             json,
@@ -3453,6 +3474,28 @@ Map<String, dynamic>? _tryParseJson(String raw) {
     if (decoded is Map<String, dynamic>) return decoded;
   } catch (_) {}
 
+  // Attempt 1b: truncated / invalid JSON but a complete "primary" string is present
+  try {
+    final primaryMatch = RegExp(
+      r'"primary"\s*:\s*"((?:\\.|[^"\\])*)"',
+    ).firstMatch(cleaned);
+    if (primaryMatch != null) {
+      final raw = primaryMatch.group(1) ?? '';
+      final unescaped = raw
+          .replaceAll(r'\n', '\n')
+          .replaceAll(r'\"', '"')
+          .replaceAll(r'\\', '\\');
+      if (unescaped.trim().isNotEmpty) {
+        return {
+          'primary': unescaped,
+          'alternatives': <dynamic>[],
+          'cultural_note': null,
+          'tone_achieved': 'literal',
+        };
+      }
+    }
+  } catch (_) {}
+
   // Attempt 2: extract JSON object between first { and last }
   try {
     final first = cleaned.indexOf('{');
@@ -3461,6 +3504,25 @@ Map<String, dynamic>? _tryParseJson(String raw) {
       final jsonBody = cleaned.substring(first, last + 1);
       final decoded = jsonDecode(jsonBody);
       if (decoded is Map<String, dynamic>) return decoded;
+    }
+  } catch (_) {}
+
+  // Attempt 2b: prose Polie format "Translation: …" through following lines until ASCII/Usage/Notes
+  try {
+    final trMatch = RegExp(
+      r'Translation:\s*([\s\S]*?)(?=\n\s*(?:ASCII|Usage|Notes):|\Z)',
+      caseSensitive: false,
+    ).firstMatch(cleaned);
+    if (trMatch != null) {
+      final body = trMatch.group(1)?.replaceAll(RegExp(r'\s+'), ' ').trim() ?? '';
+      if (body.isNotEmpty) {
+        return {
+          'primary': body,
+          'alternatives': <dynamic>[],
+          'cultural_note': null,
+          'tone_achieved': 'literal',
+        };
+      }
     }
   } catch (_) {}
 
@@ -3616,6 +3678,29 @@ _TranslationPayload _normalizeTranslationPayload({
           normalized == 'ekaaro' ||
           normalized == 'ẹkáárọ̀') {
         out = 'Ẹ káàárọ̀';
+      }
+    }
+
+    // "Good evening" — repair over-truncated outputs (e.g. "E", "E ku") from bad parses/streams.
+    final asksGoodEvening = RegExp(
+      r'\bgood\s+evening\b',
+      caseSensitive: false,
+    ).hasMatch(sourceText);
+    if (isYoruba && asksGoodEvening) {
+      final collapsed = out.toLowerCase().replaceAll(
+        RegExp(r'[\s\-\.\,]'),
+        '',
+      );
+      final tooShort = out.runes.length <= 4;
+      final looksBroken = collapsed == 'e' ||
+          collapsed == 'ẹ' ||
+          collapsed == 'eku' ||
+          collapsed == 'ẹku' ||
+          collapsed == 'ekú' ||
+          collapsed == 'ẹkú' ||
+          collapsed.startsWith('eku') && collapsed.length <= 5;
+      if (tooShort || looksBroken) {
+        out = 'Ẹ kúalẹ́';
       }
     }
     return out;
