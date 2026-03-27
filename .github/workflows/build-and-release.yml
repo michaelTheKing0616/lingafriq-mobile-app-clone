@@ -258,35 +258,38 @@ jobs:
 
       - name: 🔐 Setup iOS Code Signing
         env:
-          BUILD_CERTIFICATE_BASE64: ${{ secrets.IOS_BUILD_CERTIFICATE_BASE64 }}
-          P12_PASSWORD: ${{ secrets.IOS_P12_PASSWORD }}
-          KEYCHAIN_PASSWORD: ${{ secrets.IOS_KEYCHAIN_PASSWORD }}
-          PROVISIONING_PROFILE_BASE64: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
+          IOS_P12: ${{ secrets.IOS_P12 }}
+          IOS_P12_PASSWORD: ${{ secrets.IOS_P12_PASSWORD }}
+          IOS_PROFILE: ${{ secrets.IOS_PROFILE }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
         run: |
           # Create variables
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
           PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+          EFFECTIVE_KEYCHAIN_PASSWORD=${KEYCHAIN_PASSWORD:-temp_keychain_password}
           
           # Decode certificate and provisioning profile from secrets
-          if [ -n "$BUILD_CERTIFICATE_BASE64" ]; then
-            echo "$BUILD_CERTIFICATE_BASE64" | base64 --decode > $CERTIFICATE_PATH
-            echo "$PROVISIONING_PROFILE_BASE64" | base64 --decode > $PP_PATH
+          if [ -n "$IOS_P12" ] && [ -n "$IOS_P12_PASSWORD" ] && [ -n "$IOS_PROFILE" ]; then
+            echo "$IOS_P12" | base64 --decode > $CERTIFICATE_PATH
+            echo "$IOS_PROFILE" | base64 --decode > $PP_PATH
             
             # Create temporary keychain
-            security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+            security create-keychain -p "$EFFECTIVE_KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
             security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
-            security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+            security unlock-keychain -p "$EFFECTIVE_KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
             
             # Import certificate to keychain
-            security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+            security import $CERTIFICATE_PATH -P "$IOS_P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
             security list-keychain -d user -s $KEYCHAIN_PATH
             
             # Apply provisioning profile
             mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
             cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+            echo "IOS_SIGNING_READY=true" >> $GITHUB_ENV
           else
             echo "⚠️ No iOS signing credentials found. Building without signing (will need manual signing for App Store)"
+            echo "IOS_SIGNING_READY=false" >> $GITHUB_ENV
           fi
 
       - name: 🔢 Update iOS version info
@@ -325,11 +328,11 @@ jobs:
       # Logs: full output to build-ios.log. On failure, only grep'd errors + last 80 lines.
       - name: 🏗️ Build iOS Archive (Release)
         env:
-          BUILD_CERTIFICATE_BASE64: ${{ secrets.IOS_BUILD_CERTIFICATE_BASE64 }}
+          IOS_P12: ${{ secrets.IOS_P12 }}
         run: |
           set +e
-          if [ -n "$BUILD_CERTIFICATE_BASE64" ]; then
-            flutter build ipa --release --split-debug-info=build/symbols 2>&1 | tee build-ios.log
+          if [ "$IOS_SIGNING_READY" = "true" ] && [ -n "$IOS_P12" ]; then
+            flutter build ipa --release --split-debug-info=build/symbols --export-options-plist=ios/ExportOptions.plist 2>&1 | tee build-ios.log
           else
             flutter build ios --release --no-codesign --split-debug-info=build/symbols 2>&1 | tee build-ios.log
           fi
@@ -343,11 +346,11 @@ jobs:
 
       - name: 🚚 Package iOS build with version
         env:
-          BUILD_CERTIFICATE_BASE64: ${{ secrets.IOS_BUILD_CERTIFICATE_BASE64 }}
+          IOS_P12: ${{ secrets.IOS_P12 }}
         run: |
           version="${{ needs.increment-version.outputs.version }}"
           mkdir -p build/release/ios
-          if [ -n "$BUILD_CERTIFICATE_BASE64" ]; then
+          if [ "$IOS_SIGNING_READY" = "true" ] && [ -n "$IOS_P12" ]; then
             ipa_file=$(ls build/ios/ipa/*.ipa 2>/dev/null | head -n 1)
             if [ -n "$ipa_file" ] && [ -f "$ipa_file" ]; then
               cp "$ipa_file" "build/release/ios/LingAfriq-$version.ipa"
