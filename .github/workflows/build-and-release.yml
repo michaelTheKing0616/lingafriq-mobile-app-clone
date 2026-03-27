@@ -452,6 +452,47 @@ jobs:
           if-no-files-found: warn
           retention-days: 30
 
+      # App Store Connect API (p8 + Key ID + Issuer ID). Secrets: APP_STORE_CONNECT_API_KEY, APP_STORE_CONNECT_KEY_ID, APP_STORE_CONNECT_ISSUER_ID
+      - name: 🚀 Upload IPA to TestFlight (App Store Connect API)
+        if: >
+          github.ref == 'refs/heads/main' &&
+          (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+        env:
+          APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+        run: |
+          set -euo pipefail
+          if [ "${IOS_SIGNING_READY:-false}" != "true" ]; then
+            echo "Skipping TestFlight: iOS signing credentials not available (IOS_SIGNING_READY=false)."
+            exit 0
+          fi
+          version="${{ needs.increment-version.outputs.version }}"
+          IPA="build/release/ios/LingAfriq-${version}.ipa"
+          if [ ! -f "$IPA" ]; then
+            echo "::error::Expected signed IPA at $IPA but file is missing. Fix archive/export before TestFlight upload."
+            exit 1
+          fi
+          if [ -z "${APP_STORE_CONNECT_API_KEY:-}" ] || [ -z "${APP_STORE_CONNECT_KEY_ID:-}" ] || [ -z "${APP_STORE_CONNECT_ISSUER_ID:-}" ]; then
+            echo "::error::TestFlight upload skipped: set secrets APP_STORE_CONNECT_API_KEY, APP_STORE_CONNECT_KEY_ID, and APP_STORE_CONNECT_ISSUER_ID in repo Settings → Secrets."
+            exit 1
+          fi
+          export LC_ALL=en_US.UTF-8
+          export LANG=en_US.UTF-8
+          sudo gem install fastlane --no-document
+          KEY_PATH="$RUNNER_TEMP/AuthKey.p8"
+          printf '%s\n' "$APP_STORE_CONNECT_API_KEY" | tr -d '\r' > "$KEY_PATH"
+          chmod 600 "$KEY_PATH"
+          fastlane pilot upload \
+            --ipa "$IPA" \
+            --api_key_path "$KEY_PATH" \
+            --api_key_id "$APP_STORE_CONNECT_KEY_ID" \
+            --api_issuer_id "$APP_STORE_CONNECT_ISSUER_ID" \
+            --skip_waiting_for_build_processing true \
+            --skip_submission true
+          rm -f "$KEY_PATH"
+          echo "✅ IPA submitted to App Store Connect; processing continues in App Store Connect → TestFlight."
+
   create-release:
     name: Create GitHub Release
     needs: [increment-version, build-android, build-ios]
