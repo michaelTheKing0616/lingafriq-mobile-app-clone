@@ -35,18 +35,46 @@ target 'Runner' do
 end
 
 post_install do |installer|
-  # Fix flutter_vibrate: replace C-style TARGET_OS_SIMULATOR with Swift-native targetEnvironment(simulator)
-  # This is required for Xcode 15+ / Swift 5.9+ where the C macro is no longer auto-bridged
-  pub_cache = ENV['PUB_CACHE'] || File.join(Dir.home, '.pub-cache')
-  Dir.glob("#{pub_cache}/hosted/pub.dev/flutter_vibrate-*/ios/Classes/*.swift").each do |swift_file|
-    content = File.read(swift_file)
-    if content.include?('TARGET_OS_SIMULATOR')
-      content.gsub!('#if TARGET_OS_SIMULATOR', '#if targetEnvironment(simulator)')
-      content.gsub!('#if !TARGET_OS_SIMULATOR', '#if !targetEnvironment(simulator)')
-      File.write(swift_file, content)
-      Pod::UI.puts "Patched #{swift_file} for TARGET_OS_SIMULATOR compatibility"
+  # flutter_vibrate 1.3.0 uses TARGET_OS_SIMULATOR as a Swift expression (line: `private let isDevice = TARGET_OS_SIMULATOR == 0`).
+  # Newer Swift/Xcode no longer exposes that C macro in Swift source, so compile fails. Patch all known locations.
+  patch_flutter_vibrate = lambda do |ios_root|
+    pub_cache = ENV['PUB_CACHE'] || File.join(Dir.home, '.pub-cache')
+    globs = [
+      "#{pub_cache}/hosted/pub.dev/flutter_vibrate-*/ios/Classes/*.swift",
+      File.join(ios_root, '.symlinks', 'plugins', 'flutter_vibrate', 'ios', 'Classes', '*.swift'),
+      File.join(ios_root, 'Flutter', 'ephemeral', '.plugin_symlinks', 'flutter_vibrate', 'ios', 'Classes', '*.swift'),
+    ]
+    seen = {}
+    globs.each do |pattern|
+      Dir.glob(pattern).each do |swift_file|
+        next if seen[swift_file]
+        seen[swift_file] = true
+        next unless File.file?(swift_file)
+
+        content = File.read(swift_file)
+        next unless content.include?('TARGET_OS_SIMULATOR')
+
+        original = content.dup
+        content.gsub!('#if TARGET_OS_SIMULATOR', '#if targetEnvironment(simulator)')
+        content.gsub!('#if !TARGET_OS_SIMULATOR', '#if !targetEnvironment(simulator)')
+        content.gsub!(
+          /private let isDevice = TARGET_OS_SIMULATOR == 0/,
+          <<~SWIFT.strip
+            #if targetEnvironment(simulator)
+            private let isDevice = false
+            #else
+            private let isDevice = true
+            #endif
+          SWIFT
+        )
+        next if content == original
+
+        File.write(swift_file, content)
+        Pod::UI.puts "Patched flutter_vibrate: #{swift_file}"
+      end
     end
   end
+  patch_flutter_vibrate.call(File.dirname(File.realpath(__FILE__)))
 
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
