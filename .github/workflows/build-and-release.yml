@@ -356,13 +356,19 @@ jobs:
               cp "$ipa_file" "build/release/ios/LingAfriq-$version.ipa"
             else
               ipa_found=$(find build -name "*.ipa" -type f 2>/dev/null | head -n 1)
-              [ -n "$ipa_found" ] && [ -f "$ipa_found" ] && cp "$ipa_found" "build/release/ios/LingAfriq-$version.ipa"
+              if [ -n "$ipa_found" ] && [ -f "$ipa_found" ]; then
+                cp "$ipa_found" "build/release/ios/LingAfriq-$version.ipa"
+              else
+                echo "⚠️ Signed build path enabled, but no IPA was found under build/. Skipping IPA copy."
+              fi
             fi
           else
             if [ -d build/ios/archive/Runner.xcarchive ]; then
               (cd build/ios/archive && zip -r "../../../release/ios/LingAfriq-$version-unsigned.xcarchive.zip" Runner.xcarchive)
             elif [ -d build/ios/archive ]; then
               (cd build/ios/archive && zip -r "../../../release/ios/LingAfriq-$version-unsigned.zip" .)
+            else
+              echo "⚠️ No unsigned iOS archive directory found. Nothing to package."
             fi
           fi
 
