@@ -266,6 +266,7 @@ jobs:
           # Create variables
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
           PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+          PROFILE_PLIST_PATH=$RUNNER_TEMP/profile.plist
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
           EFFECTIVE_KEYCHAIN_PASSWORD=${KEYCHAIN_PASSWORD:-temp_keychain_password}
           
@@ -281,11 +282,25 @@ jobs:
             
             # Import certificate to keychain
             security import $CERTIFICATE_PATH -P "$IOS_P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-            security list-keychain -d user -s $KEYCHAIN_PATH
+            security set-key-partition-list -S apple-tool:,apple: -s -k "$EFFECTIVE_KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+            security list-keychain -d user -s $KEYCHAIN_PATH login.keychain-db
+            security default-keychain -s $KEYCHAIN_PATH
             
             # Apply provisioning profile
             mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
             cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+            security cms -D -i $PP_PATH > $PROFILE_PLIST_PATH
+
+            IOS_PROFILE_NAME=$(/usr/libexec/PlistBuddy -c "Print :Name" $PROFILE_PLIST_PATH)
+            IOS_PROFILE_UUID=$(/usr/libexec/PlistBuddy -c "Print :UUID" $PROFILE_PLIST_PATH)
+            IOS_TEAM_ID=$(/usr/libexec/PlistBuddy -c "Print :TeamIdentifier:0" $PROFILE_PLIST_PATH)
+
+            cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/$IOS_PROFILE_UUID.mobileprovision
+
+            echo "KEYCHAIN_PATH=$KEYCHAIN_PATH" >> $GITHUB_ENV
+            echo "IOS_PROFILE_NAME=$IOS_PROFILE_NAME" >> $GITHUB_ENV
+            echo "IOS_PROFILE_UUID=$IOS_PROFILE_UUID" >> $GITHUB_ENV
+            echo "IOS_TEAM_ID=$IOS_TEAM_ID" >> $GITHUB_ENV
             echo "IOS_SIGNING_READY=true" >> $GITHUB_ENV
           else
             echo "⚠️ No iOS signing credentials found. Building without signing (will need manual signing for App Store)"
@@ -313,6 +328,35 @@ jobs:
           
           echo "📦 Updated iOS version: $version (build number: $build_number)"
 
+      - name: 🧾 Generate ExportOptions.plist for manual signing
+        if: env.IOS_SIGNING_READY == 'true'
+        run: |
+          IOS_BUNDLE_ID=$(xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release -showBuildSettings | awk '/PRODUCT_BUNDLE_IDENTIFIER/ {print $3}' | tail -n 1)
+          if [ -z "$IOS_BUNDLE_ID" ]; then
+            IOS_BUNDLE_ID="com.owlab.lingafriq"
+          fi
+          echo "IOS_BUNDLE_ID=$IOS_BUNDLE_ID" >> $GITHUB_ENV
+
+          cat > ios/ExportOptions.plist <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+              <key>method</key>
+              <string>app-store</string>
+              <key>signingStyle</key>
+              <string>manual</string>
+              <key>teamID</key>
+              <string>$IOS_TEAM_ID</string>
+              <key>provisioningProfiles</key>
+              <dict>
+                  <key>$IOS_BUNDLE_ID</key>
+                  <string>$IOS_PROFILE_NAME</string>
+              </dict>
+          </dict>
+          </plist>
+          EOF
+
       - name: 🍎 Install CocoaPods dependencies
         run: |
           cd ios
@@ -330,13 +374,40 @@ jobs:
         env:
           IOS_P12: ${{ secrets.IOS_P12 }}
         run: |
+          set -o pipefail
           set +e
           if [ "$IOS_SIGNING_READY" = "true" ] && [ -n "$IOS_P12" ]; then
-            flutter build ipa --release --split-debug-info=build/symbols --export-options-plist=ios/ExportOptions.plist 2>&1 | tee build-ios.log
+            flutter build ios --release --no-codesign --split-debug-info=build/symbols 2>&1 | tee build-ios.log
+            build_code=${PIPESTATUS[0]}
+            if [ $build_code -eq 0 ]; then
+              xcodebuild -workspace ios/Runner.xcworkspace \
+                -scheme Runner \
+                -configuration Release \
+                -archivePath $PWD/build/ios/archive/Runner.xcarchive \
+                CODE_SIGN_STYLE=Manual \
+                DEVELOPMENT_TEAM="$IOS_TEAM_ID" \
+                PROVISIONING_PROFILE_SPECIFIER="$IOS_PROFILE_NAME" \
+                CODE_SIGN_IDENTITY="Apple Distribution" \
+                OTHER_CODE_SIGN_FLAGS="--keychain $KEYCHAIN_PATH" \
+                archive 2>&1 | tee -a build-ios.log
+              archive_code=${PIPESTATUS[0]}
+              if [ $archive_code -eq 0 ]; then
+                xcodebuild -exportArchive \
+                  -archivePath $PWD/build/ios/archive/Runner.xcarchive \
+                  -exportOptionsPlist ios/ExportOptions.plist \
+                  -exportPath $PWD/build/ios/ipa \
+                  OTHER_CODE_SIGN_FLAGS="--keychain $KEYCHAIN_PATH" 2>&1 | tee -a build-ios.log
+                code=${PIPESTATUS[0]}
+              else
+                code=$archive_code
+              fi
+            else
+              code=$build_code
+            fi
           else
             flutter build ios --release --no-codesign --split-debug-info=build/symbols 2>&1 | tee build-ios.log
+            code=${PIPESTATUS[0]}
           fi
-          code=$?
           if [ $code -eq 0 ]; then echo "Build succeeded"; exit 0; fi
           echo "=== Build failed: compile/build errors (grep) ==="
           grep -E "Error|error:|FAILURE|BUILD FAILED|Exception|fatal:|\.dart:[0-9]+|Not found|Couldn't resolve" build-ios.log || true
