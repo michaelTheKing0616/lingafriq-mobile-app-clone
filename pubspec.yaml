@@ -78,7 +78,7 @@ dependencies:
   flutter_secure_storage: ^9.2.2
   local_auth: ^2.3.0
   # Error Tracking & Monitoring
-  sentry_flutter: ^7.0.0
+  sentry_flutter: ^9.16.0
   package_info_plus: ^9.0.0
   # Audio & Media
   record: ^6.1.2  # Updated to latest version to fix record_linux compatibility

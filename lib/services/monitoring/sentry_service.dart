@@ -66,15 +66,14 @@ class SentryService {
           options.attachScreenshot = true;
           options.attachViewHierarchy = true;
           
-          // Set user context
-          options.beforeSend = (event, {hint}) {
-            // Add custom context
-            event.contexts['app'] = {
-              'name': 'LingAfriq',
-              'version': packageInfo.version,
-              'build': packageInfo.buildNumber,
-            };
-            
+          options.beforeSend = (event, hint) {
+            final app = event.contexts.app;
+            event.contexts.app = SentryApp(
+              name: 'LingAfriq',
+              version: packageInfo.version,
+              build: packageInfo.buildNumber,
+              identifier: app?.identifier,
+            );
             return event;
           };
         },
@@ -307,7 +306,7 @@ class SentryService {
     if (!_initialized) return null;
 
     try {
-      // In Sentry 7.20.2, startTransaction returns an ITransaction
+      // startTransaction returns ISentrySpan (transaction)
       // Using dynamic to avoid type issues - transaction will have finish() method
       final transaction = Sentry.startTransaction(name, operation);
       // Note: setTransaction method removed in Sentry 7.x
@@ -329,14 +328,14 @@ class SentryService {
     if (!_initialized) return;
 
     try {
-      // Create user feedback with proper eventId handling
-      final feedback = SentryUserFeedback(
-        eventId: eventId != null ? SentryId.fromId(eventId) : const SentryId.empty(),
+      final feedback = SentryFeedback(
+        message: comments,
         name: name,
-        email: email,
-        comments: comments,
+        contactEmail: email,
+        associatedEventId:
+            eventId != null && eventId.isNotEmpty ? SentryId.fromId(eventId) : null,
       );
-      await Sentry.captureUserFeedback(feedback);
+      await Sentry.captureFeedback(feedback);
     } catch (e) {
       debugPrint('Failed to capture user feedback in Sentry: $e');
     }
@@ -347,7 +346,7 @@ class SentryService {
     if (!_initialized) return;
 
     try {
-      // In Sentry 7.20.2, close() doesn't accept timeout parameter
+      // Sentry.close() flushes pending events
       await Sentry.close();
     } catch (e) {
       debugPrint('Failed to flush Sentry: $e');
