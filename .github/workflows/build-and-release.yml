@@ -26,6 +26,9 @@ jobs:
         id: increment
         run: |
           # Extract current version from pubspec.yaml
+          # The part before + (marketing / CFBundleShortVersionString) must stay STRICTLY above the latest
+          # version ever approved on the App Store, or TestFlight upload fails with 409 (train closed / invalid version).
+          # This job only bumps the build number after +; raise the marketing version in pubspec when Apple approves a release.
           current_version=$(grep '^version:' pubspec.yaml | sed 's/version: //')
           version_name=$(echo $current_version | cut -d'+' -f1)
           build_number=$(echo $current_version | cut -d'+' -f2)
