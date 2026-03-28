@@ -82,6 +82,10 @@ post_install do |installer|
       config.build_settings['DEVELOPMENT_TEAM'] = 'Z5YSG5V5DV'
       # Set minimum iOS deployment target to 16.0 (google_mlkit_commons requires ≥15.5; 16.0 for headroom)
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '16.0'
+      # Pods are not signed with the app provisioning profile; avoid inheriting manual profile from xcodebuild CLI.
+      config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
+      config.build_settings['CODE_SIGNING_REQUIRED'] = 'NO'
+      config.build_settings['PROVISIONING_PROFILE_SPECIFIER'] = ''
     end
   end
 end

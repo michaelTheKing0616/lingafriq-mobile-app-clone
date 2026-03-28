@@ -369,6 +369,56 @@ jobs:
           pod install --repo-update --silent
           cd ..
 
+      # Do NOT pass PROVISIONING_PROFILE_SPECIFIER / CODE_SIGN_STYLE on xcodebuild CLI — it applies to every Pod
+      # target and breaks archive ("does not support provisioning profiles"). Only Runner must be manual-signed.
+      - name: 🔏 Apply manual signing to Runner Release only
+        if: env.IOS_SIGNING_READY == 'true'
+        env:
+          IOS_TEAM_ID: ${{ env.IOS_TEAM_ID }}
+          IOS_PROFILE_NAME: ${{ env.IOS_PROFILE_NAME }}
+        run: |
+          python3 << 'PY'
+          import os
+          import re
+
+          path = "ios/Runner.xcodeproj/project.pbxproj"
+          team = os.environ["IOS_TEAM_ID"].strip()
+          profile = os.environ["IOS_PROFILE_NAME"].strip().replace("\\", "\\\\").replace('"', '\\"')
+
+          text = open(path, encoding="utf-8").read()
+          marker = "97C147071CF9000F007C117D /* Release */ = {"
+          start = text.find(marker)
+          if start < 0:
+              raise SystemExit("Runner Release configuration block not found in project.pbxproj")
+
+          name_idx = text.find("name = Release;", start)
+          if name_idx < 0:
+              raise SystemExit("Could not find end of Runner Release block")
+
+          chunk = text[start:name_idx]
+          chunk = chunk.replace(
+              'CODE_SIGN_IDENTITY = "Apple Development";',
+              'CODE_SIGN_IDENTITY = "Apple Distribution";\n\t\t\t\t"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution";',
+              1,
+          )
+          chunk = chunk.replace("CODE_SIGN_STYLE = Automatic;", "CODE_SIGN_STYLE = Manual;", 1)
+          chunk = chunk.replace(
+              'PROVISIONING_PROFILE_SPECIFIER = "";',
+              f'PROVISIONING_PROFILE_SPECIFIER = "{profile}";',
+              1,
+          )
+          chunk = re.sub(
+              r"DEVELOPMENT_TEAM = [^;]+;",
+              f"DEVELOPMENT_TEAM = {team};",
+              chunk,
+              count=1,
+          )
+
+          new_text = text[:start] + chunk + text[name_idx:]
+          open(path, "w", encoding="utf-8", newline="\n").write(new_text)
+          print("Patched Runner Release for manual signing (profile + team in pbxproj only).")
+          PY
+
       # Logs: full output to build-ios.log. On failure, only grep'd errors + last 80 lines.
       - name: 🏗️ Build iOS Archive (Release)
         env:
@@ -383,11 +433,8 @@ jobs:
               xcodebuild -workspace ios/Runner.xcworkspace \
                 -scheme Runner \
                 -configuration Release \
+                -destination 'generic/platform=iOS' \
                 -archivePath $PWD/build/ios/archive/Runner.xcarchive \
-                CODE_SIGN_STYLE=Manual \
-                DEVELOPMENT_TEAM="$IOS_TEAM_ID" \
-                PROVISIONING_PROFILE_SPECIFIER="$IOS_PROFILE_NAME" \
-                CODE_SIGN_IDENTITY="Apple Distribution" \
                 OTHER_CODE_SIGN_FLAGS="--keychain $KEYCHAIN_PATH" \
                 archive 2>&1 | tee -a build-ios.log
               archive_code=${PIPESTATUS[0]}
