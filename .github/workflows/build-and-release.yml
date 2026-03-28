@@ -500,12 +500,13 @@ jobs:
           retention-days: 30
 
       # App Store Connect API (p8 + Key ID + Issuer ID). Secrets: APP_STORE_CONNECT_API_KEY, APP_STORE_CONNECT_KEY_ID, APP_STORE_CONNECT_ISSUER_ID
+      # Note: pilot only accepts --api_key_path (JSON) or --api-key (JSON). PEM must not be passed as APP_STORE_CONNECT_API_KEY env while running fastlane (Pilot maps that env to api_key hash).
       - name: 🚀 Upload IPA to TestFlight (App Store Connect API)
         if: >
           github.ref == 'refs/heads/main' &&
           (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
         env:
-          APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+          ASC_API_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
           APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
         run: |
@@ -520,7 +521,7 @@ jobs:
             echo "::error::Expected signed IPA at $IPA but file is missing. Fix archive/export before TestFlight upload."
             exit 1
           fi
-          if [ -z "${APP_STORE_CONNECT_API_KEY:-}" ] || [ -z "${APP_STORE_CONNECT_KEY_ID:-}" ] || [ -z "${APP_STORE_CONNECT_ISSUER_ID:-}" ]; then
+          if [ -z "${ASC_API_PRIVATE_KEY:-}" ] || [ -z "${APP_STORE_CONNECT_KEY_ID:-}" ] || [ -z "${APP_STORE_CONNECT_ISSUER_ID:-}" ]; then
             echo "::error::TestFlight upload skipped: set secrets APP_STORE_CONNECT_API_KEY, APP_STORE_CONNECT_KEY_ID, and APP_STORE_CONNECT_ISSUER_ID in repo Settings → Secrets."
             exit 1
           fi
@@ -528,16 +529,20 @@ jobs:
           export LANG=en_US.UTF-8
           sudo gem install fastlane --no-document
           KEY_PATH="$RUNNER_TEMP/AuthKey.p8"
-          printf '%s\n' "$APP_STORE_CONNECT_API_KEY" | tr -d '\r' > "$KEY_PATH"
+          JSON_PATH="$RUNNER_TEMP/api_key_info.json"
+          printf '%s\n' "$ASC_API_PRIVATE_KEY" | tr -d '\r' > "$KEY_PATH"
           chmod 600 "$KEY_PATH"
+          jq -n \
+            --arg key_id "$APP_STORE_CONNECT_KEY_ID" \
+            --arg issuer_id "$APP_STORE_CONNECT_ISSUER_ID" \
+            --rawfile key "$KEY_PATH" \
+            '{key_id: $key_id, issuer_id: $issuer_id, key: $key}' > "$JSON_PATH"
           fastlane pilot upload \
             --ipa "$IPA" \
-            --api_key_path "$KEY_PATH" \
-            --api_key_id "$APP_STORE_CONNECT_KEY_ID" \
-            --api_issuer_id "$APP_STORE_CONNECT_ISSUER_ID" \
-            --skip_waiting_for_build_processing true \
-            --skip_submission true
-          rm -f "$KEY_PATH"
+            --api_key_path "$JSON_PATH" \
+            --skip_waiting_for_build_processing \
+            --skip_submission
+          rm -f "$KEY_PATH" "$JSON_PATH"
           echo "✅ IPA submitted to App Store Connect; processing continues in App Store Connect → TestFlight."
 
   create-release:
