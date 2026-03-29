@@ -1,6 +1,5 @@
-/// Shared normalization and device-TTS locale mapping for the voice pipeline.
-/// Keeps backend TTS requests and on-device fallback aligned on language labels.
-library voice_language_utils;
+// Shared normalization and device-TTS locale mapping for the voice pipeline.
+// Keeps backend TTS requests and on-device fallback aligned on language labels.
 
 String normalizeVoiceLanguage(String language) {
   var key = language.trim().toLowerCase();
