@@ -1882,7 +1882,7 @@ Language: $targetLanguage
                                         onPressed: tutorLesson == null
                                             ? null
                                             : () => onSpeakText(
-                                                  tutorLesson!
+                                                  tutorLesson
                                                       .example.targetLang,
                                                 ),
                                         icon: Icon(
