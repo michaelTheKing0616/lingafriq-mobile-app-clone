@@ -62,7 +62,8 @@ jobs:
           git config --local user.name "GitHub Action"
           git add pubspec.yaml
           git commit -m "chore: auto-increment build number to ${{ steps.increment.outputs.version }}" || echo "No changes to commit"
-          git push || echo "Push failed or no changes"
+          # Downstream jobs checkout main; if push fails they would build the old marketing version and TestFlight rejects (409).
+          git push
 
   build-android:
     name: Build Android App Bundle
@@ -78,6 +79,9 @@ jobs:
     steps:
       - name: 🛎️ Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 20
 
       - name: 🔧 Ensure Gradle wrapper is executable
         run: |
@@ -169,10 +173,13 @@ jobs:
       - name: 🏗️ Build AAB (Release)
         env:
           GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.caching=false -Dorg.gradle.console=plain"
+          VERSION_NAME: ${{ needs.increment-version.outputs.version_name }}
+          BUILD_NUMBER: ${{ needs.increment-version.outputs.build_number }}
         run: |
           set +e
           chmod +x android/gradlew || true
-          flutter build appbundle --release --split-debug-info=build/symbols 2>&1 | tee build.log
+          flutter build appbundle --release --split-debug-info=build/symbols \
+            --build-name="$VERSION_NAME" --build-number="$BUILD_NUMBER" 2>&1 | tee build.log
           BUILD_EXIT_CODE=${PIPESTATUS[0]}
           if [ $BUILD_EXIT_CODE -eq 0 ]; then echo "Build succeeded"; exit 0; fi
 
@@ -188,7 +195,8 @@ jobs:
           (cd android && ./gradlew clean --refresh-dependencies --stacktrace 2>&1 | tail -20) || true
           flutter pub get
 
-          flutter build appbundle --release --split-debug-info=build/symbols 2>&1 | tee build-retry.log
+          flutter build appbundle --release --split-debug-info=build/symbols \
+            --build-name="$VERSION_NAME" --build-number="$BUILD_NUMBER" 2>&1 | tee build-retry.log
           BUILD_EXIT_CODE=${PIPESTATUS[0]}
           if [ $BUILD_EXIT_CODE -eq 0 ]; then echo "Build succeeded on retry"; exit 0; fi
 
@@ -238,6 +246,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: main
+          fetch-depth: 20
 
       - name: 🐦 Setup Flutter
         uses: subosito/flutter-action@v2
@@ -426,11 +435,14 @@ jobs:
       - name: 🏗️ Build iOS Archive (Release)
         env:
           IOS_P12: ${{ secrets.IOS_P12 }}
+          VERSION_NAME: ${{ needs.increment-version.outputs.version_name }}
+          BUILD_NUMBER: ${{ needs.increment-version.outputs.build_number }}
         run: |
           set -o pipefail
           set +e
           if [ "$IOS_SIGNING_READY" = "true" ] && [ -n "$IOS_P12" ]; then
-            flutter build ios --release --no-codesign --split-debug-info=build/symbols 2>&1 | tee build-ios.log
+            flutter build ios --release --no-codesign --split-debug-info=build/symbols \
+              --build-name="$VERSION_NAME" --build-number="$BUILD_NUMBER" 2>&1 | tee build-ios.log
             build_code=${PIPESTATUS[0]}
             if [ $build_code -eq 0 ]; then
               xcodebuild -workspace ios/Runner.xcworkspace \
@@ -455,7 +467,8 @@ jobs:
               code=$build_code
             fi
           else
-            flutter build ios --release --no-codesign --split-debug-info=build/symbols 2>&1 | tee build-ios.log
+            flutter build ios --release --no-codesign --split-debug-info=build/symbols \
+              --build-name="$VERSION_NAME" --build-number="$BUILD_NUMBER" 2>&1 | tee build-ios.log
             code=${PIPESTATUS[0]}
           fi
           if [ $code -eq 0 ]; then echo "Build succeeded"; exit 0; fi
