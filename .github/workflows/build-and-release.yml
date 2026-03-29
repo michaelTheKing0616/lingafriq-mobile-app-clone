@@ -233,7 +233,8 @@ jobs:
   build-ios:
     name: Build iOS IPA
     needs: increment-version
-    runs-on: macos-latest
+    # iOS 26 SDK (Xcode 26+) required for App Store uploads after 2026-04-28; macos-26 images include it.
+    runs-on: macos-26
     permissions:
       contents: write
     outputs:

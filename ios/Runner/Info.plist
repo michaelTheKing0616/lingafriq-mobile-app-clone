@@ -81,6 +81,8 @@
 	<string>This app will use your location to show cool stuffs near you.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Need microphone access for uploading videos</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>LingAfriq uses speech recognition to turn your voice into text for language practice and lessons.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Need photo library access for uploading images</string>
 	<key>NSFaceIDUsageDescription</key>
