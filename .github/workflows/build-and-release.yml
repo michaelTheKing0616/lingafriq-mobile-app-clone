@@ -370,17 +370,35 @@ jobs:
           </plist>
           EOF
 
+      # WebRTC-SDK (flutter_webrtc / LiveKit) downloads a large zip from GitHub Releases.
+      # Transient 502s from GitHub are common; retry + keep Podfile.lock for reproducible resolves.
       - name: 🍎 Install CocoaPods dependencies
         run: |
+          set -e
           cd ios
-          # Remove Podfile.lock to force regeneration with correct Firebase versions
-          rm -f Podfile.lock
-          # Update CocoaPods repo and install dependencies (reduced verbosity)
-          echo "📦 Updating CocoaPods repo..."
-          pod repo update --silent
-          echo "📦 Installing pods..."
-          pod install --repo-update --silent
-          cd ..
+          max=5
+          attempt=1
+          while [ "$attempt" -le "$max" ]; do
+            echo "📦 pod install attempt $attempt/$max"
+            if [ "$attempt" -eq 1 ]; then
+              echo "📦 Updating CocoaPods repo..."
+              pod repo update --silent || true
+            fi
+            if pod install --repo-update --silent; then
+              echo "✅ CocoaPods install succeeded"
+              cd ..
+              exit 0
+            fi
+            if [ "$attempt" -eq "$max" ]; then
+              echo "❌ pod install failed after $max attempts (e.g. GitHub 502 on WebRTC.xcframework.zip)"
+              cd ..
+              exit 1
+            fi
+            wait=$((attempt * 40))
+            echo "⏳ Network/CDN flake (curl 502, etc.). Sleeping ${wait}s before retry..."
+            sleep "$wait"
+            attempt=$((attempt + 1))
+          done
 
       # Do NOT pass PROVISIONING_PROFILE_SPECIFIER / CODE_SIGN_STYLE on xcodebuild CLI — it applies to every Pod
       # target and breaks archive ("does not support provisioning profiles"). Only Runner must be manual-signed.

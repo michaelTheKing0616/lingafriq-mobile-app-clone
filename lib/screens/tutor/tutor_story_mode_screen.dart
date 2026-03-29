@@ -14,7 +14,7 @@ import 'package:lingafriq/config/url_constants.dart';
 import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_tts/flutter_tts.dart';
+import 'package:lingafriq/providers/tts_provider.dart';
 
 /// Story Mode — cultural banner, paragraph reveal, tap-for-translation, TTS narration, moral card, save to library, alternate endings.
 class TutorStoryModeScreen extends HookConsumerWidget {
@@ -33,7 +33,6 @@ class TutorStoryModeScreen extends HookConsumerWidget {
     final showVocabulary = useState(false);
     final currentQuizIndex = useState<int?>(null);
     final availableLanguages = AppLanguage.values;
-    final flutterTts = useMemoized(() => FlutterTts());
     final revealedParagraphs = useState(1);
     final savedToLibrary = useState(false);
     final alternateEnding = useState<String?>(null);
@@ -41,30 +40,13 @@ class TutorStoryModeScreen extends HookConsumerWidget {
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    String ttsLocaleForLanguage(String code) {
-      const localeMap = {
-        'yo': 'yo-NG',
-        'ig': 'ig-NG',
-        'ha': 'ha-NG',
-        'sw': 'sw-KE',
-        'zu': 'zu-ZA',
-        'xh': 'xh-ZA',
-        'af': 'af-ZA',
-        'am': 'am-ET',
-        'en': 'en-US',
-        'fr': 'fr-FR',
-      };
-      return localeMap[code] ?? code;
-    }
-
     Future<void> speakParagraph(String text, String languageCode) async {
-      try {
-        await flutterTts.stop();
-        await flutterTts.setLanguage(ttsLocaleForLanguage(languageCode));
-        await flutterTts.setVolume(1.0);
-        await flutterTts.setSpeechRate(0.45);
-        await flutterTts.speak(text);
-      } catch (_) {}
+      final trimmed = text.trim();
+      if (trimmed.isEmpty) return;
+      await ref.read(ttsProvider.notifier).speak(
+            trimmed,
+            languageName: languageCode,
+          );
     }
 
     Future<Map<String, dynamic>> generateStoryWithGroq({

@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 
 import '../services/voice/voice_api_service.dart';
+import '../services/voice/voice_language_utils.dart';
 import 'base_provider.dart';
 import '../utils/structured_logger.dart';
 
@@ -16,6 +18,7 @@ final ttsProvider = NotifierProvider<TTSProvider, BaseProviderState>(() {
 class TTSProvider extends BaseProvider {
   final AudioPlayer _player = AudioPlayer();
   StreamSubscription<PlayerState>? _playerSub;
+  FlutterTts? _flutterTts;
   bool _isSpeaking = false;
 
   bool get isSpeaking => _isSpeaking;
@@ -56,29 +59,69 @@ class TTSProvider extends BaseProvider {
     try {
       await stop();
 
-      final bytes = await ref.read(voiceApiServiceProvider).synthesizeSpeech(
-            text: normalizedText,
-            language: languageName.trim().toLowerCase(),
-            voice: voice,
-            speed: speed,
-          );
+      Uint8List? bytes;
+      try {
+        bytes = await ref.read(voiceApiServiceProvider).synthesizeSpeech(
+              text: normalizedText,
+              language: languageName.trim().toLowerCase(),
+              voice: voice,
+              speed: speed,
+            );
+      } catch (e) {
+        logger.error('TTS API error', tag: 'tts', error: e);
+      }
 
-      if (bytes == null || bytes.isEmpty) {
-        logger.warn('TTS: empty audio', tag: 'tts', context: {'language': languageName});
+      if (bytes != null && bytes.isNotEmpty) {
+        await _player.setAudioSource(_BytesAudioSource(bytes));
+        await _player.play();
+        _isSpeaking = true;
         return;
       }
 
-      await _player.setAudioSource(_BytesAudioSource(bytes));
-      await _player.play();
-      _isSpeaking = true;
+      logger.warn(
+        'TTS: empty or missing audio, using device TTS',
+        tag: 'tts',
+        context: {'language': languageName},
+      );
+      await _speakWithDeviceTts(normalizedText, languageName);
     } catch (e) {
       logger.error('TTS speak error', tag: 'tts', error: e);
+      await _speakWithDeviceTts(normalizedText, languageName);
+    }
+  }
+
+  Future<void> _ensureFlutterTts() async {
+    if (_flutterTts != null) return;
+    final tts = FlutterTts();
+    tts.setCompletionHandler(() {
+      _isSpeaking = false;
+    });
+    _flutterTts = tts;
+  }
+
+  Future<void> _speakWithDeviceTts(String text, String languageHint) async {
+    try {
+      await _ensureFlutterTts();
+      final normalized = normalizeVoiceLanguage(languageHint);
+      final locale = systemTtsLocaleForNormalized(normalized);
+      await _flutterTts!.stop();
+      await _flutterTts!.setLanguage(locale);
+      await _flutterTts!.setVolume(1.0);
+      await _flutterTts!.setSpeechRate(0.45);
+      _isSpeaking = true;
+      await _flutterTts!.speak(text);
+    } catch (e) {
+      _isSpeaking = false;
+      logger.error('Device TTS failed', tag: 'tts', error: e);
     }
   }
 
   Future<void> stop() async {
     try {
       await _player.stop();
+      if (_flutterTts != null) {
+        await _flutterTts!.stop();
+      }
       _isSpeaking = false;
     } catch (_) {
       // ignore
@@ -91,7 +134,12 @@ class TTSProvider extends BaseProvider {
   /// This method can be called manually if needed
   Future<void> cleanup() async {
     await _playerSub?.cancel();
+    _playerSub = null;
     await _player.dispose();
+    if (_flutterTts != null) {
+      await _flutterTts!.stop();
+      _flutterTts = null;
+    }
   }
 }
 

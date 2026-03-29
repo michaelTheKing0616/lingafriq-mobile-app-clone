@@ -221,12 +221,11 @@ Text: "$trimmed"
       }
     }
 
-    Future<void> speakText(String text) async {
+    Future<void> speakText(String text, {String? languageName}) async {
       final normalized = text.trim();
       if (normalized.isEmpty || normalized == '-') return;
-      await ref
-          .read(ttsProvider.notifier)
-          .speak(normalized, languageName: targetLanguage);
+      final lang = (languageName ?? targetLanguage).trim();
+      await ref.read(ttsProvider.notifier).speak(normalized, languageName: lang);
     }
 
     Future<void> openTranslationHistorySheet() async {
@@ -1126,7 +1125,8 @@ Language: $targetLanguage
     required TextEditingController conversationInput,
     required double languageRatio,
     required Future<void> Function([String?]) onSendConversation,
-    required Future<void> Function(String) onSpeakText,
+    required Future<void> Function(String text, {String? languageName})
+        onSpeakText,
     required _VocabPayload? vocabCard,
     required ValueNotifier<bool> vocabReveal,
     required ValueNotifier<String> vocabSetName,
@@ -1838,27 +1838,56 @@ Language: $targetLanguage
                                 color: const Color(0xFFF6EED8),
                                 Padding(
                                   padding: const EdgeInsets.all(12),
-                                  child: Column(
+                                  child: Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        tutorLesson?.example.targetLang ?? '-',
-                                        style: GoogleFonts.nunito(
-                                          fontSize: isTinyPhone ? 26 : 34,
-                                          fontWeight: FontWeight.w700,
-                                          color: theme.title,
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              tutorLesson
+                                                      ?.example.targetLang ??
+                                                  '-',
+                                              style: GoogleFonts.nunito(
+                                                fontSize:
+                                                    isTinyPhone ? 26 : 34,
+                                                fontWeight: FontWeight.w700,
+                                                color: theme.title,
+                                              ),
+                                            ),
+                                            Text(
+                                              tutorLesson?.example
+                                                      .transliteration ??
+                                                  '-',
+                                              style: monoStyle,
+                                            ),
+                                            Text(
+                                              tutorLesson
+                                                      ?.example.english ??
+                                                  '-',
+                                              style: bodyStyle.copyWith(
+                                                fontSize:
+                                                    isTinyPhone ? 18 : 24,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      Text(
-                                        tutorLesson?.example.transliteration ??
-                                            '-',
-                                        style: monoStyle,
-                                      ),
-                                      Text(
-                                        tutorLesson?.example.english ?? '-',
-                                        style: bodyStyle.copyWith(
-                                          fontSize: isTinyPhone ? 18 : 24,
+                                      IconButton(
+                                        visualDensity: VisualDensity.compact,
+                                        tooltip: 'Listen',
+                                        onPressed: tutorLesson == null
+                                            ? null
+                                            : () => onSpeakText(
+                                                  tutorLesson!
+                                                      .example.targetLang,
+                                                ),
+                                        icon: Icon(
+                                          Icons.volume_up_outlined,
+                                          color: theme.title,
                                         ),
                                       ),
                                     ],
@@ -2226,11 +2255,35 @@ Language: $targetLanguage
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            ai.characterResponse.targetLang,
-                            style: bodyStyle.copyWith(
-                              color: const Color(0xFFFAF3E0),
-                            ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  ai.characterResponse.targetLang,
+                                  style: bodyStyle.copyWith(
+                                    color: const Color(0xFFFAF3E0),
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                visualDensity: VisualDensity.compact,
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(
+                                  minWidth: 28,
+                                  minHeight: 28,
+                                ),
+                                tooltip: 'Listen',
+                                onPressed: () => onSpeakText(
+                                  ai.characterResponse.targetLang,
+                                ),
+                                icon: const Icon(
+                                  Icons.volume_up_outlined,
+                                  color: Color(0xFFF2C14E),
+                                  size: 20,
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 4),
                           Text(
@@ -2719,14 +2772,33 @@ Language: $targetLanguage
                                       ),
                                     ),
                                   const SizedBox(height: 8),
-                                  Text(
-                                    vocabCard.word,
-                                    style: GoogleFonts.jetBrainsMono(
-                                      color: const Color(0xFFFAF3E0),
-                                      fontSize: isTinyPhone ? 44 : 56,
-                                      letterSpacing: isTinyPhone ? 1.0 : 1.5,
-                                      fontWeight: FontWeight.w700,
-                                    ),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          vocabCard.word,
+                                          style: GoogleFonts.jetBrainsMono(
+                                            color: const Color(0xFFFAF3E0),
+                                            fontSize: isTinyPhone ? 44 : 56,
+                                            letterSpacing:
+                                                isTinyPhone ? 1.0 : 1.5,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      ),
+                                      IconButton(
+                                        visualDensity: VisualDensity.compact,
+                                        tooltip: 'Listen to word',
+                                        onPressed: () =>
+                                            onSpeakText(vocabCard.word),
+                                        icon: const Icon(
+                                          Icons.volume_up_outlined,
+                                          color: Color(0xFFF2C14E),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
@@ -2749,28 +2821,55 @@ Language: $targetLanguage
                                       color: Colors.white.withOpacity(0.06),
                                       Padding(
                                         padding: const EdgeInsets.all(10),
-                                        child: Column(
+                                        child: Row(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              vocabCard.english,
-                                              style: bodyStyle.copyWith(
-                                                color: const Color(0xFFFAF3E0),
-                                                fontWeight: FontWeight.w700,
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    vocabCard.english,
+                                                    style: bodyStyle.copyWith(
+                                                      color: const Color(
+                                                        0xFFFAF3E0,
+                                                      ),
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 4),
+                                                  Text(
+                                                    vocabCard.example.target,
+                                                    style: bodyStyle.copyWith(
+                                                      color: const Color(
+                                                        0xFFFAF3E0,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    vocabCard.example.english,
+                                                    style: bodyStyle.copyWith(
+                                                      color: const Color(
+                                                        0xFFD8C9B7,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                            const SizedBox(height: 4),
-                                            Text(
-                                              vocabCard.example.target,
-                                              style: bodyStyle.copyWith(
-                                                color: const Color(0xFFFAF3E0),
+                                            IconButton(
+                                              visualDensity:
+                                                  VisualDensity.compact,
+                                              tooltip: 'Listen to example',
+                                              onPressed: () => onSpeakText(
+                                                vocabCard.example.target,
                                               ),
-                                            ),
-                                            Text(
-                                              vocabCard.example.english,
-                                              style: bodyStyle.copyWith(
-                                                color: const Color(0xFFD8C9B7),
+                                              icon: const Icon(
+                                                Icons.volume_up_outlined,
+                                                color: Color(0xFFF2C14E),
                                               ),
                                             ),
                                           ],

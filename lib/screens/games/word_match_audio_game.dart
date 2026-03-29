@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../../providers/tts_provider.dart';
+import '../../services/voice/voice_language_utils.dart';
 import 'package:lingafriq/utils/transport_error_policy.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
@@ -189,16 +190,11 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
     // TTS fallback when no audio URL or URL playback failed
     if (fallbackText != null && fallbackText.isNotEmpty) {
       try {
-        final tts = ref.read(ttsProvider.notifier);
-        await tts.speak(fallbackText, languageName: widget.language);
-        await Future<void>.delayed(const Duration(milliseconds: 250));
-        if (!tts.isSpeaking) {
-          // Retry once using normalized language label before giving up.
-          await tts.speak(
-            fallbackText,
-            languageName: widget.language.trim().toLowerCase(),
-          );
-        }
+        final lang = normalizeVoiceLanguage(widget.language);
+        await ref.read(ttsProvider.notifier).speak(
+              fallbackText,
+              languageName: lang,
+            );
       } catch (e) {
         debugPrint('TTS fallback failed: $e');
         if (mounted) {

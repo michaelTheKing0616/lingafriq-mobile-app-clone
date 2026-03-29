@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/dio_provider.dart';
 import 'package:lingafriq/config/api_contract.dart';
+import 'voice_language_utils.dart';
 
 /// Pronunciation Score from voice analysis
 class PronunciationScore {
@@ -248,7 +249,7 @@ class VoiceApiService {
     double speed = 1.0,
   }) async {
     try {
-      final normalizedLanguage = _normalizeLanguage(language);
+      final normalizedLanguage = normalizeVoiceLanguage(language);
       final response = await _dio.post(
         ApiContract.url(ApiContract.voice.ttsSynthesize),
         data: {
@@ -257,7 +258,7 @@ class VoiceApiService {
           if (voice != null) 'voice': voice,
           'speed': speed,
           'provider_priority': _providerPriorityFor(normalizedLanguage),
-          'accent_profile': _accentProfileFor(normalizedLanguage),
+          'accent_profile': accentProfileForNormalized(normalizedLanguage),
           'model_tier': 'free_best',
         },
         options: Options(
@@ -584,73 +585,6 @@ class VoiceApiService {
     return false;
   }
 
-  String _normalizeLanguage(String language) {
-    var key = language.trim().toLowerCase();
-    key = key.replaceAll(RegExp(r'\(.*?\)'), '').trim();
-    key = key
-        .replaceAll('’', "'")
-        .replaceAll('á', 'a')
-        .replaceAll('à', 'a')
-        .replaceAll('â', 'a')
-        .replaceAll('ä', 'a')
-        .replaceAll('ã', 'a')
-        .replaceAll('é', 'e')
-        .replaceAll('è', 'e')
-        .replaceAll('ê', 'e')
-        .replaceAll('ë', 'e')
-        .replaceAll('í', 'i')
-        .replaceAll('ì', 'i')
-        .replaceAll('î', 'i')
-        .replaceAll('ï', 'i')
-        .replaceAll('ó', 'o')
-        .replaceAll('ò', 'o')
-        .replaceAll('ô', 'o')
-        .replaceAll('ö', 'o')
-        .replaceAll('õ', 'o')
-        .replaceAll('ú', 'u')
-        .replaceAll('ù', 'u')
-        .replaceAll('û', 'u')
-        .replaceAll('ü', 'u')
-        .replaceAll('ọ', 'o')
-        .replaceAll('ṣ', 's')
-        .replaceAll('ṅ', 'n')
-        .replaceAll('ñ', 'n');
-    key = key.replaceAll(RegExp(r'\s+'), ' ');
-    final compact = key.replaceAll('-', '_').replaceAll(' ', '_');
-    const aliases = {
-      'yo': 'yoruba',
-      'yoruba_language': 'yoruba',
-      'yoruba_ng': 'yoruba',
-      'yoruba_nigeria': 'yoruba',
-      'yoruba_nigerian': 'yoruba',
-      'ha': 'hausa',
-      'hausa_language': 'hausa',
-      'hausa_ng': 'hausa',
-      'ig': 'igbo',
-      'igbo_language': 'igbo',
-      'igbo_ng': 'igbo',
-      'sw': 'swahili',
-      'kiswahili': 'swahili',
-      'swahili_language': 'swahili',
-      'zu': 'zulu',
-      'xh': 'xhosa',
-      'am': 'amharic',
-      'so': 'somali',
-      'af': 'afrikaans',
-      'wo': 'wolof',
-      'tw': 'twi',
-      'akan': 'twi',
-      'pcm': 'pidgin',
-      'pidgin_english': 'pidgin',
-      'nigerian_pidgin': 'pidgin',
-      'nigerian_pidgin_english': 'pidgin',
-      'en': 'english',
-      'en_us': 'english',
-      'en_gb': 'english',
-    };
-    return aliases[compact] ?? compact;
-  }
-
   List<String> _providerPriorityFor(String language) {
     if (language == 'english') {
       return const ['xtts_v2', 'piper', 'mms_tts'];
@@ -658,22 +592,4 @@ class VoiceApiService {
     return const ['xtts_v2', 'mms_tts', 'piper'];
   }
 
-  String _accentProfileFor(String language) {
-    const accents = {
-      'yoruba': 'yo-NG',
-      'hausa': 'ha-NG',
-      'igbo': 'ig-NG',
-      'swahili': 'sw-KE',
-      'zulu': 'zu-ZA',
-      'xhosa': 'xh-ZA',
-      'amharic': 'am-ET',
-      'somali': 'so-SO',
-      'afrikaans': 'af-ZA',
-      'wolof': 'wo-SN',
-      'twi': 'tw-GH',
-      'pidgin': 'pcm-NG',
-      'english': 'en-AF',
-    };
-    return accents[language] ?? language;
-  }
 }
