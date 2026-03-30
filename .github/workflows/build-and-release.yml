@@ -378,22 +378,41 @@ jobs:
           cd ios
           max=5
           attempt=1
+          did_firebase_coreonly_update=0
           while [ "$attempt" -le "$max" ]; do
             echo "📦 pod install attempt $attempt/$max"
             if [ "$attempt" -eq 1 ]; then
               echo "📦 Updating CocoaPods repo..."
               pod repo update --silent || true
             fi
-            if pod install --repo-update --silent; then
+            set +e
+            POD_OUTPUT="$(pod install --repo-update --silent 2>&1)"
+            POD_EXIT_CODE=$?
+            set -e
+            if [ "$POD_EXIT_CODE" -eq 0 ]; then
               echo "✅ CocoaPods install succeeded"
               cd ..
               exit 0
             fi
+
+            # If firebase_core plugin updated its Firebase iOS SDK constraints, Podfile.lock can pin an older Firebase/CoreOnly.
+            # Heal by updating that pod once, then retry install.
+            if [ "$did_firebase_coreonly_update" -eq 0 ] && echo "$POD_OUTPUT" | grep -q "Firebase/CoreOnly" && echo "$POD_OUTPUT" | grep -q "In snapshot (Podfile.lock)"; then
+              echo "🧯 Detected Firebase/CoreOnly lock mismatch. Running: pod update Firebase/CoreOnly"
+              did_firebase_coreonly_update=1
+              pod update Firebase/CoreOnly --silent || true
+              # Retry immediately (no sleep)
+              attempt=$((attempt + 1))
+              continue
+            fi
+
             if [ "$attempt" -eq "$max" ]; then
+              echo "$POD_OUTPUT"
               echo "❌ pod install failed after $max attempts (e.g. GitHub 502 on WebRTC.xcframework.zip)"
               cd ..
               exit 1
             fi
+            echo "$POD_OUTPUT"
             wait=$((attempt * 40))
             echo "⏳ Network/CDN flake (curl 502, etc.). Sleeping ${wait}s before retry..."
             sleep "$wait"
