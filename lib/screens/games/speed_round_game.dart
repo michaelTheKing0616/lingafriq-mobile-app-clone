@@ -1,15 +1,20 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
+import '../../providers/game_content_provider.dart';
+import '../../models/game/game_content_models.dart';
+import '../../utils/modern_griot_design_system.dart';
+import '../../utils/pan_african_design_system.dart';
+import '../../widgets/griot/griot_widgets.dart';
+import '../../widgets/game/game_widgets.dart';
 import 'base_game_screen.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../widgets/game_ui/index.dart';
 
-/// Speed Round Remix - Adaptive rapid-fire questions
 class SpeedRoundGame extends BaseGameScreen {
   const SpeedRoundGame({
     super.key,
@@ -25,17 +30,21 @@ class SpeedRoundGame extends BaseGameScreen {
   ConsumerState<SpeedRoundGame> createState() => _SpeedRoundGameState();
 }
 
-class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame> {
-  PhraseCard? _currentCard;
-  int _currentCardIndex = 0;
+class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame>
+    with TickerProviderStateMixin {
   final List<PhraseCard> _cards = [];
-  final List<String> _options = [];
-  String? _selectedAnswer;
+  int _currentIndex = 0;
   int _score = 0;
   int _streak = 0;
+  int _bestStreak = 0;
   Timer? _timer;
-  int _timeLeft = 60; // 60 seconds
+  int _timeLeft = 60;
   bool _gameOver = false;
+
+  final List<_ScorePopupData> _popups = [];
+  late final AnimationController _bgController;
+  late final Animation<Color?> _bgColor1;
+  late final Animation<Color?> _bgColor2;
 
   @override
   int getCardCount() => 20;
@@ -44,14 +53,29 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame> {
   Future<void> onGameInitialized() async {
     final gameProv = ref.read(gameProvider.notifier);
     _cards.addAll(gameProv.availableCards);
-    if (_cards.isNotEmpty) {
-      _loadNextCard();
-      _startTimer();
-    }
+    if (_cards.isNotEmpty) _startTimer();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _bgController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 8),
+    )..repeat(reverse: true);
+    _bgColor1 = ColorTween(
+      begin: ModernGriotColors.primaryContainer.withOpacity(0.15),
+      end: ModernGriotColors.secondaryContainer.withOpacity(0.12),
+    ).animate(CurvedAnimation(parent: _bgController, curve: Curves.easeInOut));
+    _bgColor2 = ColorTween(
+      begin: ModernGriotColors.tertiaryContainer.withOpacity(0.08),
+      end: ModernGriotColors.primaryContainer.withOpacity(0.10),
+    ).animate(CurvedAnimation(parent: _bgController, curve: Curves.easeInOut));
   }
 
   void _startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (!mounted) return;
       if (_timeLeft > 0) {
         setState(() => _timeLeft--);
       } else {
@@ -60,69 +84,53 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame> {
     });
   }
 
-  void _loadNextCard() {
-    if (_currentCardIndex >= _cards.length) {
-      _endGame();
-      return;
+  PhraseCard? get _currentCard =>
+      _currentIndex < _cards.length ? _cards[_currentIndex] : null;
+
+  void _answer(bool claimedCorrect) {
+    if (_gameOver || _currentCard == null) return;
+    HapticFeedback.lightImpact();
+
+    final card = _currentCard!;
+    final isCorrect = claimedCorrect;
+    final points = isCorrect ? 10 : 0;
+
+    if (isCorrect) {
+      _score += points;
+      _streak++;
+      if (_streak > _bestStreak) _bestStreak = _streak;
+      _addPopup('+$points', ModernGriotColors.secondary);
+    } else {
+      _streak = 0;
     }
-
-    setState(() {
-      _currentCard = _cards[_currentCardIndex];
-      _selectedAnswer = null;
-      _generateOptions();
-    });
-  }
-
-  void _generateOptions() {
-    if (_currentCard == null) return;
-    _options.clear();
-    _options.add(_currentCard!.gloss); // Correct answer
-    
-    // Add distractors
-    final otherCards = _cards.where((c) => c.cardId != _currentCard!.cardId).toList();
-    otherCards.shuffle(Random());
-    for (var i = 0; i < 3 && i < otherCards.length; i++) {
-      _options.add(otherCards[i].gloss);
-    }
-    _options.shuffle(Random());
-  }
-
-  Future<void> _selectAnswer(String answer) async {
-    if (_selectedAnswer != null || _gameOver) return;
-
-    final correct = answer == _currentCard!.gloss;
-    setState(() {
-      _selectedAnswer = answer;
-      if (correct) {
-        _score++;
-        _streak++;
-      } else {
-        _streak = 0;
-      }
-    });
 
     final duration = startTime != null
         ? DateTime.now().difference(startTime!).inMilliseconds
         : 0;
 
-    await completeTurn(
-      cardId: _currentCard!.cardId,
-      result: correct ? GameResult.correct : GameResult.incorrect,
+    completeTurn(
+      cardId: card.cardId,
+      result: isCorrect ? GameResult.correct : GameResult.incorrect,
       durationMs: duration,
-      confidence: correct ? 1.0 : 0.0,
+      confidence: isCorrect ? 1.0 : 0.0,
+      userAction: claimedCorrect ? 'correct_tap' : 'incorrect_tap',
     );
 
-    // Auto-advance after 1 second
-    Future.delayed(const Duration(seconds: 1), () {
-      if (mounted && !_gameOver) {
-        _currentCardIndex++;
-        _loadNextCard();
-      }
+    setState(() => _currentIndex++);
+    if (_currentIndex >= _cards.length) _endGame();
+  }
+
+  void _addPopup(String text, Color color) {
+    final id = DateTime.now().microsecondsSinceEpoch;
+    setState(() => _popups.add(_ScorePopupData(id: id, text: text, color: color)));
+    Future.delayed(const Duration(milliseconds: 1400), () {
+      if (mounted) setState(() => _popups.removeWhere((p) => p.id == id));
     });
   }
 
   void _endGame() {
     _timer?.cancel();
+    if (_gameOver) return;
     setState(() => _gameOver = true);
     finishGame();
   }
@@ -130,138 +138,250 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame> {
   @override
   void dispose() {
     _timer?.cancel();
+    _bgController.dispose();
     super.dispose();
   }
 
   @override
-  String? get shellProgressLabel {
-    if (_gameOver || _cards.isEmpty) return null;
-    return '${_currentCardIndex + 1}/${_cards.length} · ${_timeLeft}s';
-  }
-
-  @override
-  String? get shellScoreLabel => _gameOver ? null : '$_score pts';
+  String? get appBarTitle =>
+      'Speed Round (${_currentIndex + 1}/${_cards.length})';
 
   @override
   Widget buildGameContent(BuildContext context) {
-    try {
-      if (_gameOver) {
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Semantics(
-                label: 'Time\'s up',
-                child: Text(
-                  'Time\'s Up!',
-                  style: TextStyle(fontSize: 32.sp, fontWeight: FontWeight.bold),
-                ),
-              ),
-              SizedBox(height: 2.h),
-              Semantics(label: 'Score: $_score', child: Text(
-                'Score: $_score',
-                style: TextStyle(fontSize: 24.sp),
-              )),
-              Semantics(label: 'Best streak: $_streak', child: Text(
-                'Best Streak: $_streak',
-                style: TextStyle(fontSize: 20.sp),
-              )),
-            ],
+    final cs = Theme.of(context).colorScheme;
+
+    if (_cards.isEmpty) {
+      return Center(
+        child: Text('No cards available',
+            style: ModernGriotTypography.bodyLarge(context: context)),
+      );
+    }
+
+    if (_gameOver) {
+      return _buildGameOverView(context, cs);
+    }
+
+    final card = _currentCard;
+    if (card == null) return const SizedBox.shrink();
+    final progress = _cards.isEmpty ? 0.0 : _currentIndex / _cards.length;
+
+    return AnimatedBuilder(
+      animation: _bgController,
+      builder: (context, child) {
+        return Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                _bgColor1.value ?? Colors.transparent,
+                _bgColor2.value ?? Colors.transparent,
+              ],
+            ),
           ),
+          child: child,
         );
-      }
-
-      if (_currentCard == null) {
-        return const Center(child: CircularProgressIndicator());
-      }
-
-      return Padding(
-        padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 16.h),
-        child: Column(
+      },
+      child: SafeArea(
+        child: Stack(
           children: [
-            if (_streak > 0)
-              StreakBadge(streak: _streak),
-            SizedBox(height: 12.h),
-            GameCard(
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
               child: Column(
                 children: [
-                  Text(
-                    'What does this mean?',
-                    style: TextStyle(fontSize: 18.sp),
-                  ),
-                  SizedBox(height: 8.h),
-                  Text(
-                    _currentCard!.text,
-                    style: TextStyle(
-                      fontSize: 32.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 14.h),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _options.length,
-                itemBuilder: (context, index) {
-                  final option = _options[index];
-                  final isSelected = _selectedAnswer == option;
-                  final isCorrect = option == _currentCard!.gloss;
-                  final showResult = _selectedAnswer != null;
-
-                  GameCardState cardState = GameCardState.normal;
-                  if (showResult) {
-                    if (isCorrect) {
-                      cardState = GameCardState.correct;
-                    } else if (isSelected) {
-                      cardState = GameCardState.incorrect;
-                    } else {
-                      cardState = GameCardState.disabled;
-                    }
-                  } else if (isSelected) {
-                    cardState = GameCardState.selected;
-                  }
-
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 10.h),
-                    child: Semantics(
-                      label: 'Answer option: $option',
-                      button: true,
-                      selected: isSelected,
-                      child: GameCard(
-                        state: cardState,
-                        onTap: () => _selectAnswer(option),
+                  SizedBox(height: PanAfricanSpacing.sm),
+                  // Timer ring + score row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Score
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: PanAfricanSpacing.md,
+                          vertical: PanAfricanSpacing.xs,
+                        ),
+                        decoration: BoxDecoration(
+                          color: ModernGriotColors.primaryContainer.withOpacity(0.2),
+                          borderRadius: ModernGriotRadius.borderPill,
+                        ),
                         child: Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            Expanded(
-                              child: Text(
-                                option,
-                                style: TextStyle(
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            if (showResult && isCorrect)
-                              const Icon(Icons.check_circle, color: Colors.green, semanticLabel: 'Correct'),
-                            if (showResult && isSelected && !isCorrect)
-                              const Icon(Icons.cancel, color: Colors.red, semanticLabel: 'Incorrect'),
+                            Icon(Icons.star_rounded, color: ModernGriotColors.primary, size: 20.sp),
+                            SizedBox(width: 4.w),
+                            Text('$_score',
+                                style: ModernGriotTypography.titleMedium(
+                                    context: context, color: ModernGriotColors.primary)),
                           ],
                         ),
                       ),
+                      GameTimerRing(
+                        totalSeconds: 60,
+                        remainingSeconds: _timeLeft,
+                        size: 64,
+                        onTimeUp: _endGame,
+                      ),
+                      // Streak
+                      if (_streak > 0)
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: PanAfricanSpacing.md,
+                            vertical: PanAfricanSpacing.xs,
+                          ),
+                          decoration: BoxDecoration(
+                            color: ModernGriotColors.secondary.withOpacity(0.15),
+                            borderRadius: ModernGriotRadius.borderPill,
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.local_fire_department_rounded,
+                                  color: ModernGriotColors.secondary, size: 18.sp),
+                              SizedBox(width: 4.w),
+                              Text('$_streak',
+                                  style: ModernGriotTypography.titleSmall(
+                                      context: context, color: ModernGriotColors.secondary)),
+                            ],
+                          ),
+                        )
+                      else
+                        SizedBox(width: 56.w),
+                    ],
+                  ),
+                  SizedBox(height: PanAfricanSpacing.md),
+                  // Progress bar
+                  GriotProgressBar(value: progress, height: 6, showGlowTip: true),
+                  SizedBox(height: PanAfricanSpacing.lg),
+                  // Question card
+                  Expanded(
+                    child: GameQuestionCard(
+                      question: card.text,
+                      subtitle: card.gloss,
+                      hint: card.ipa != null ? 'Phonetic: ${card.ipa}' : null,
                     ),
-                  );
-                },
+                  ),
+                  SizedBox(height: PanAfricanSpacing.lg),
+                  // Action buttons
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _ActionButton(
+                          label: 'CORRECT',
+                          icon: Icons.check_rounded,
+                          color: ModernGriotColors.secondary,
+                          onTap: () => _answer(true),
+                        ),
+                      ),
+                      SizedBox(width: PanAfricanSpacing.sm),
+                      Expanded(
+                        child: _ActionButton(
+                          label: 'INCORRECT',
+                          icon: Icons.close_rounded,
+                          color: ModernGriotColors.error,
+                          onTap: () => _answer(false),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: PanAfricanSpacing.lg),
+                ],
               ),
             ),
+            // Floating score popups
+            ...List.generate(_popups.length, (i) {
+              final p = _popups[i];
+              return Positioned(
+                top: 180.h,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: GameScorePopup(
+                    key: ValueKey(p.id),
+                    text: p.text,
+                    color: p.color,
+                  ),
+                ),
+              );
+            }),
           ],
         ),
-      );
-    } catch (e, st) {
-      debugPrint('SpeedRoundGame buildGameContent: $e $st');
-      rethrow;
-    }
+      ),
+    );
+  }
+
+  Widget _buildGameOverView(BuildContext context, ColorScheme cs) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(PanAfricanSpacing.xl),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.timer_off_rounded, size: 56.sp, color: ModernGriotColors.primary),
+            SizedBox(height: PanAfricanSpacing.md),
+            Text("Time's Up!",
+                style: ModernGriotTypography.headlineMedium(context: context)),
+            SizedBox(height: PanAfricanSpacing.lg),
+            GriotMasteryRing(
+              value: _cards.isEmpty ? 0 : _score / (_cards.length * 10),
+              size: 120,
+              label: 'Score',
+            ),
+            SizedBox(height: PanAfricanSpacing.md),
+            Text('Best Streak: $_bestStreak',
+                style: ModernGriotTypography.titleMedium(context: context)),
+          ],
+        ),
+      ),
+    );
   }
 }
 
+class _ActionButton extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final Color color;
+  final VoidCallback onTap;
+
+  const _ActionButton({
+    required this.label,
+    required this.icon,
+    required this.color,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: ModernGriotRadius.borderXl,
+        child: Ink(
+          height: 64.h,
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.12),
+            borderRadius: ModernGriotRadius.borderXl,
+            border: Border.all(color: color.withOpacity(0.4), width: 1.5),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: color, size: 24.sp),
+              SizedBox(width: 8.w),
+              Text(label,
+                  style: ModernGriotTypography.labelLarge(
+                      context: context, color: color)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ScorePopupData {
+  final int id;
+  final String text;
+  final Color color;
+  const _ScorePopupData({required this.id, required this.text, required this.color});
+}

@@ -52,6 +52,20 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     const int maxFileSizeBytes = 100 * 1024 * 1024; // 100 MB
+    const allowedExt = <String>{
+      '.mp3',
+      '.wav',
+      '.m4a',
+      '.aac',
+      '.flac',
+      '.ogg',
+      '.opus',
+      '.mp4',
+      '.mov',
+      '.mkv',
+      '.webm',
+      '.avi',
+    };
 
     Future<void> pickFile() async {
       try {
@@ -64,6 +78,27 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
         if (result != null && result.files.single.path != null) {
           final file = result.files.single;
           final size = file.size;
+          final nameLower = file.name.toLowerCase();
+          final dot = nameLower.lastIndexOf('.');
+          final ext = dot >= 0 ? nameLower.substring(dot) : '';
+          if (!allowedExt.contains(ext)) {
+            if (context.mounted) {
+              showLingAfriqError(
+                context,
+                'Unsupported format. Use common audio or video files (for example MP3, M4A, WAV, MP4, or MOV).',
+              );
+            }
+            return;
+          }
+          if (size <= 0) {
+            if (context.mounted) {
+              showLingAfriqError(
+                context,
+                'This file appears empty. Choose a different file.',
+              );
+            }
+            return;
+          }
           if (size > maxFileSizeBytes && context.mounted) {
             showLingAfriqError(context, 'File is too large. Please choose a file under 100 MB.');
             return;

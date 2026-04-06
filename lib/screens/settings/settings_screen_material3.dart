@@ -32,6 +32,7 @@ import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/services/auth/biometric_preference_service.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 
 /// Beautiful Material 3 Settings Screen with Pan-African Design
 class SettingsScreenMaterial3 extends HookConsumerWidget {
@@ -80,7 +81,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
           ),
         ),
         title: Text(
-          'Settings',
+          AppLocalizations.of(context)!.settings,
           style: PanAfricanTypography.titleLarge(context),
         ),
         backgroundColor: Colors.transparent,

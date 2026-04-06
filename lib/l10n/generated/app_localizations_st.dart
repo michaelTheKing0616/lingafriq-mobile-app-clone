@@ -1,0 +1,202 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for Southern Sotho (`st`).
+class AppLocalizationsSt extends AppLocalizations {
+  AppLocalizationsSt([String locale = 'st']) : super(locale);
+
+  @override
+  String get appTitle => 'LingAfriq';
+
+  @override
+  String get welcomeMessage => 'Rea amohela LingAfriq';
+
+  @override
+  String get continueButton => 'Tsoela pele';
+
+  @override
+  String get startLearning => 'Qala ho Ithuta';
+
+  @override
+  String get loading => 'Ho kenya...';
+
+  @override
+  String get errorOccurred => 'Phoso e etsahetse';
+
+  @override
+  String get tryAgain => 'Leka hape';
+
+  @override
+  String get home => 'Lehae';
+
+  @override
+  String get learn => 'Ithuta';
+
+  @override
+  String get games => 'Lipapali';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get settings => 'Litlhophiso';
+
+  @override
+  String get language => 'Puo';
+
+  @override
+  String get selectLanguage => 'Khetha Puo';
+
+  @override
+  String get lessons => 'Lithuto';
+
+  @override
+  String get quizzes => 'Lipotso';
+
+  @override
+  String get takeQuiz => 'Nka Lipotso';
+
+  @override
+  String get takeLesson => 'Nka Lithuto';
+
+  @override
+  String get dailyStreak => 'Letsatsi ka Letsatsi';
+
+  @override
+  String daysStreak(int count) {
+    return 'Matsatsi $count';
+  }
+
+  @override
+  String xpEarned(int count) {
+    return '$count XP';
+  }
+
+  @override
+  String get level => 'Sebaka';
+
+  @override
+  String get beginner => 'Qalo';
+
+  @override
+  String get intermediate => 'Bohareng';
+
+  @override
+  String get advanced => 'E Phahameng';
+
+  @override
+  String get correct => 'Nete!';
+
+  @override
+  String get incorrect => 'Ha e ne';
+
+  @override
+  String get next => 'E latelang';
+
+  @override
+  String get back => 'Morao';
+
+  @override
+  String get skip => 'Skippa';
+
+  @override
+  String get cancel => 'Hlakola';
+
+  @override
+  String get save => 'Boloka';
+
+  @override
+  String get done => 'E felile';
+
+  @override
+  String get submit => 'Romella';
+
+  @override
+  String get logout => 'Tsoa';
+
+  @override
+  String get login => 'Kena';
+
+  @override
+  String get signup => 'Ingodisa';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get forgotPassword => 'U lebetse Password?';
+
+  @override
+  String get noAccount => 'Ha u na Account?';
+
+  @override
+  String get haveAccount => 'U na le Account?';
+
+  @override
+  String get congratulations => 'Rea u lebohela!';
+
+  @override
+  String get lessonComplete => 'Lithuto Li Felile!';
+
+  @override
+  String get quizComplete => 'Lipotso Li Felile!';
+
+  @override
+  String get accuracy => 'Nnete';
+
+  @override
+  String get score => 'Lintlha';
+
+  @override
+  String get aiTutor => 'Moruti wa AI';
+
+  @override
+  String get cultureMagazine => 'Magazine ya Setso';
+
+  @override
+  String get tribes => 'Metse';
+
+  @override
+  String get leaderboard => 'Tafole ya Balebeli';
+
+  @override
+  String get flbHeritageTitle => 'FLB Heritage';
+
+  @override
+  String get flbHeritageSearchHint => 'Search title, country, or tags';
+
+  @override
+  String get flbHeritageEmptyMessage =>
+      'No entries match your search. Try another keyword or pull to refresh.';
+
+  @override
+  String get flbHeritageLoadError =>
+      'Could not load heritage archive. Pull to retry.';
+
+  @override
+  String get flbHeritageRefresh => 'Refresh';
+
+  @override
+  String get flbHeritageDetailTitle => 'Heritage';
+
+  @override
+  String get flbHeritageMissingContent => 'Missing heritage content';
+
+  @override
+  String get tooltipFlbHeritageArchive => 'FLB Heritage archive';
+
+  @override
+  String get tooltipTribeDiscovery => 'Tribe discovery';
+
+  @override
+  String get drawerFlbHeritageArchive => 'FLB Heritage Archive';
+
+  @override
+  String get tooltipTribes => 'Tribes';
+}

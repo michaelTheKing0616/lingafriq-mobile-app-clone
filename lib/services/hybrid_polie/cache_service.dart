@@ -15,9 +15,10 @@ class HybridPolieCache {
     required String text,
     required String sourceLang,
     required String targetLang,
+    String? modelTag,
   }) async {
     try {
-      final key = _generateCacheKey('translation', text, sourceLang, targetLang);
+      final key = _generateCacheKey('translation', text, sourceLang, targetLang, modelTag);
       final prefs = await SharedPreferences.getInstance();
       final cached = prefs.getString(key);
       
@@ -46,9 +47,10 @@ class HybridPolieCache {
     required String targetLang,
     required String result,
     Duration? ttl,
+    String? modelTag,
   }) async {
     try {
-      final key = _generateCacheKey('translation', text, sourceLang, targetLang);
+      final key = _generateCacheKey('translation', text, sourceLang, targetLang, modelTag);
       final prefs = await SharedPreferences.getInstance();
       
       final data = {
@@ -247,11 +249,14 @@ class HybridPolieCache {
   }
 
   /// Generate cache key
-  static String _generateCacheKey(String type, String text, [String? lang1, String? lang2]) {
+  static String _generateCacheKey(String type, String text, [String? lang1, String? lang2, String? modelTag]) {
     final normalized = text.toLowerCase().trim();
     final parts = [type, normalized];
     if (lang1 != null) parts.add(lang1.toLowerCase());
     if (lang2 != null) parts.add(lang2.toLowerCase());
+    if (modelTag != null && modelTag.isNotEmpty) {
+      parts.add('model:${modelTag.toLowerCase()}');
+    }
     
     final keyString = parts.join('|');
     final bytes = utf8.encode(keyString);

@@ -1,463 +1,202 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lingafriq/models/private_chat_contact.dart';
-import 'package:lingafriq/models/profile_model.dart';
-import 'package:lingafriq/providers/chat_socket_provider.dart';
-import 'package:lingafriq/providers/user_provider.dart';
-import 'package:lingafriq/providers/onboarding_provider.dart';
-import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/services/polie_mention_handler.dart';
-import 'package:lingafriq/avatars/avatars.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../models/profile_model.dart';
+import '../../providers/user_provider.dart';
+import '../../services/chat/wa_private_chat_service.dart';
+import '../../utils/modern_griot_design_system.dart';
+import '../../utils/pan_african_design_system.dart' show PanAfricanSpacing;
+import '../../utils/transport_error_policy.dart';
+import '../../widgets/griot/griot_widgets.dart';
+import 'package:dio/dio.dart';
+
+/// Private DM thread — loads history from `GET /chat/private/:otherUserId` and
+/// sends via `POST /api/wa/messages`.
 class PrivateChatScreen extends ConsumerStatefulWidget {
-  final PrivateChatContact contact;
+  const PrivateChatScreen({
+    super.key,
+    this.otherUserId,
+    this.otherDisplayName,
+    this.contact,
+  }) : assert(
+          otherUserId != null || contact != null,
+          'Provide otherUserId or contact map with id/userId/otherUserId',
+        );
 
-  const PrivateChatScreen({super.key, required this.contact});
+  final int? otherUserId;
+  final String? otherDisplayName;
+  final dynamic contact;
 
   @override
   ConsumerState<PrivateChatScreen> createState() => _PrivateChatScreenState();
 }
 
-class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
+class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
+    with TickerProviderStateMixin {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  late final String _roomId;
-  bool _socketInitialized = false;
+  late final AnimationController _typingController;
+  final List<_ChatMessage> _messages = [];
+  bool _loading = true;
+  bool _sending = false;
+  String? _loadError;
+
+  int? get _peerNumericId {
+    if (widget.otherUserId != null) return widget.otherUserId;
+    final c = widget.contact;
+    if (c is Map) {
+      final v = c['otherUserId'] ?? c['userId'] ?? c['id'];
+      return int.tryParse(v?.toString() ?? '');
+    }
+    return null;
+  }
+
+  String get _contactName {
+    if (widget.otherDisplayName != null &&
+        widget.otherDisplayName!.trim().isNotEmpty) {
+      return widget.otherDisplayName!.trim();
+    }
+    final c = widget.contact;
+    if (c is Map) return c['name']?.toString() ?? 'Contact';
+    if (c is String) return c;
+    try {
+      return (c as dynamic).username?.toString() ?? 'Contact';
+    } catch (_) {
+      return 'Contact';
+    }
+  }
+
+  String get _contactInitial {
+    final c = widget.contact;
+    if (c is Map && c['initial'] != null) {
+      return c['initial'].toString();
+    }
+    return _contactName.isNotEmpty ? _contactName[0].toUpperCase() : '?';
+  }
+
+  bool get _contactOnline {
+    final c = widget.contact;
+    if (c is Map) return c['isOnline'] == true;
+    return false;
+  }
 
   @override
   void initState() {
     super.initState();
-    final currentUser = ref.read(userProvider);
-    _roomId = currentUser == null
-        ? ''
-        : _buildRoomId(currentUser.id, widget.contact.id);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _initializeSocket();
+    _typingController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    )..repeat();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadMessages());
+  }
+
+  Future<void> _loadMessages() async {
+    final peer = _peerNumericId;
+    if (peer == null) {
+      setState(() {
+        _loading = false;
+        _loadError = 'Missing peer user id for this chat.';
+      });
+      return;
+    }
+    setState(() {
+      _loading = true;
+      _loadError = null;
     });
+    try {
+      final raw = await WaPrivateChatService.fetchPrivateMessages(
+        otherUserId: peer.toString(),
+      );
+      final me = ref.read(userProvider);
+      final list = <_ChatMessage>[];
+      for (final m in raw) {
+        list.add(_messageFromApi(m, me));
+      }
+      if (mounted) {
+        setState(() {
+          _messages
+            ..clear()
+            ..addAll(list);
+          _loading = false;
+        });
+        _scrollToBottom();
+      }
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _loading = false;
+        _loadError = e is DioException
+            ? TransportErrorPolicy.toUserMessage(e)
+            : 'Could not load messages.';
+      });
+    }
+  }
+
+  _ChatMessage _messageFromApi(Map<String, dynamic> m, ProfileModel? me) {
+    final text = (m['message'] ?? '').toString();
+    final ts = m['timestamp'] ?? m['createdAt'];
+    DateTime? dt;
+    if (ts != null) dt = DateTime.tryParse(ts.toString());
+    final timeStr = dt != null ? TimeOfDay.fromDateTime(dt.toLocal()).format(context) : '';
+
+    var isMe = false;
+    final sender = m['sender_id'];
+    if (sender is Map && me != null) {
+      final id = sender['id'];
+      if (id is int) isMe = id == me.id;
+    }
+    if (!isMe && me != null) {
+      isMe = (m['sender_username']?.toString() ?? '') == me.username;
+    }
+
+    final read = m['read'] == true;
+    return _ChatMessage(
+      text: text,
+      isMe: isMe,
+      time: timeStr,
+      isRead: read,
+    );
   }
 
   @override
   void dispose() {
-    final socket = ref.read(socketProvider.notifier);
-    if (_roomId.isNotEmpty) {
-      socket.leaveRoom(_roomId);
-      socket.setActiveRoom('general');
-    }
     _messageController.dispose();
     _scrollController.dispose();
+    _typingController.dispose();
     super.dispose();
   }
 
-  void _initializeSocket() {
-    if (_socketInitialized || _roomId.isEmpty) return;
-    final currentUser = ref.read(userProvider);
-    if (currentUser == null) return;
-    final socket = ref.read(socketProvider.notifier);
-    if (!socket.isConnected) {
-      socket.connect(
-        currentUser.id.toString(),
-        currentUser.username,
-        globalId: currentUser.global_id,
-      );
-    }
-    socket.joinRoom(_roomId);
-    socket.setActiveRoom(_roomId);
-    _socketInitialized = true;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final currentUser = ref.watch(userProvider);
-    if (currentUser == null) {
-      return Scaffold(
-        appBar: AppBar(title: const Text('Private Chat')),
-        body: const Center(
-          child: Text('Please sign in to chat with other learners.'),
-        ),
-      );
-    }
-
-    ref.watch(socketProvider);
-    final socket = ref.read(socketProvider.notifier);
-    final messages = _roomId.isEmpty
-        ? const <Map<String, dynamic>>[]
-        : socket.messagesForRoom(_roomId);
-    final isConnected = socket.isConnected;
-    final isPartnerOnline = socket.onlineUsers.any(
-      (user) => user['userId']?.toString() == widget.contact.id.toString(),
-    );
-
-    final isDark = context.isDarkMode;
-    
-    return Scaffold(
-      backgroundColor: isDark 
-          ? PanAfricanColors.surfaceDark 
-          : PanAfricanColors.surfaceLight,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            HapticFeedback.lightImpact();
-            Navigator.pop(context);
-          },
-        ),
-        titleSpacing: 0,
-        title: Row(
-          children: [
-            LingAfriqAvatar.fromInitials(
-              username: widget.contact.username.isNotEmpty 
-                  ? widget.contact.username 
-                  : '?',
-              size: 40.w,
-            ),
-            SizedBox(width: PanAfricanSpacing.sm),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.contact.username,
-                  style: PanAfricanTypography.titleSmall(context),
-                ),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.circle,
-                      size: 10,
-                      color: isPartnerOnline 
-                          ? PanAfricanColors.success 
-                          : PanAfricanColors.neutralMedium,
-                    ),
-                    SizedBox(width: PanAfricanSpacing.xxs),
-                    Text(
-                      isPartnerOnline ? 'Online' : 'Offline',
-                      style: PanAfricanTypography.labelSmall(context).copyWith(
-                        color: isPartnerOnline 
-                            ? PanAfricanColors.success 
-                            : PanAfricanColors.neutralMedium,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: PanAfricanSpacing.sm),
-            child: Icon(Icons.lock_outline, size: 20, color: PanAfricanColors.neutralMedium),
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          // Encryption notice
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(
-              horizontal: PanAfricanSpacing.md,
-              vertical: PanAfricanSpacing.sm,
-            ),
-            decoration: BoxDecoration(
-              color: PanAfricanColors.primary.withOpacity(0.08),
-              border: Border(
-                bottom: BorderSide(
-                  color: PanAfricanColors.primary.withOpacity(0.3),
-                ),
-              ),
-            ),
-            child: Row(
-              children: [
-                Icon(Icons.shield, color: PanAfricanColors.primary, size: 20),
-                SizedBox(width: PanAfricanSpacing.sm),
-                Expanded(
-                  child: Text(
-                    'Messages are end-to-end encrypted. Only you and ${widget.contact.username} can read them.',
-                    style: PanAfricanTypography.labelSmall(context).copyWith(
-                      color: PanAfricanColors.primary.withOpacity(0.9),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          // Messages
-          Expanded(
-            child: messages.isEmpty
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.chat_bubble_outline,
-                          size: 64.w,
-                          color: PanAfricanColors.neutralMedium,
-                        ),
-                        SizedBox(height: PanAfricanSpacing.md),
-                        Text(
-                          'No messages yet',
-                          style: PanAfricanTypography.bodyLarge(context),
-                        ),
-                        SizedBox(height: PanAfricanSpacing.xs),
-                        Text(
-                          'Say hello to ${widget.contact.username} 👋',
-                          style: PanAfricanTypography.bodySmall(context)
-                              .copyWith(color: PanAfricanColors.neutralMedium),
-                        ),
-                      ],
-                    ),
-                  )
-                : OptimizedListView.builder(
-                    controller: _scrollController,
-                    padding: EdgeInsets.all(PanAfricanSpacing.md),
-                    itemCount: messages.length,
-                    itemBuilder: (context, index) {
-                      final message = messages[index];
-                      final isMe =
-                          message['userId'] == currentUser.id.toString();
-                      return _buildMessageBubble(message, isMe, isDark);
-                    },
-                  ),
-          ),
-          _buildInput(isConnected && _roomId.isNotEmpty, currentUser, isDark),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInput(bool canSend, ProfileModel currentUser, bool isDark) {
-    final colorScheme = Theme.of(context).colorScheme;
-    return Container(
-      padding: EdgeInsets.all(PanAfricanSpacing.md),
-      decoration: BoxDecoration(
-        color: isDark
-            ? PanAfricanColors.surfaceContainerDark
-            : PanAfricanColors.surfaceContainerLight,
-        boxShadow: PanAfricanShadows.md,
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: _messageController,
-              enabled: canSend,
-              minLines: 1,
-              maxLines: 4,
-              maxLength: 2000,
-              decoration: InputDecoration(
-                hintText: canSend
-                    ? 'Message ${widget.contact.username}...'
-                    : 'Connecting...',
-                border: OutlineInputBorder(
-                  borderRadius: PanAfricanRadius.lgBR,
-                  borderSide: BorderSide(
-                    color: isDark
-                        ? PanAfricanColors.borderDark
-                        : PanAfricanColors.borderLight,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: PanAfricanRadius.lgBR,
-                  borderSide: BorderSide(
-                    color: isDark
-                        ? PanAfricanColors.borderDark
-                        : PanAfricanColors.borderLight,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: PanAfricanRadius.lgBR,
-                  borderSide: BorderSide(
-                    color: PanAfricanColors.primary,
-                    width: 2,
-                  ),
-                ),
-                filled: true,
-                fillColor: isDark
-                    ? PanAfricanColors.surfaceDark
-                    : PanAfricanColors.surfaceLight,
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: PanAfricanSpacing.md,
-                  vertical: PanAfricanSpacing.sm,
-                ),
-              ),
-              style: PanAfricanTypography.bodyMedium(context),
-              onSubmitted: canSend ? (_) {
-                HapticFeedback.lightImpact();
-                _sendMessage(currentUser);
-              } : null,
-            ),
-          ),
-          SizedBox(width: PanAfricanSpacing.sm),
-          IconButton.filled(
-            onPressed: canSend
-                ? () {
-                    HapticFeedback.lightImpact();
-                    _sendMessage(currentUser);
-                  }
-                : null,
-            style: IconButton.styleFrom(
-              backgroundColor: PanAfricanColors.primary,
-              foregroundColor: colorScheme.onPrimary,
-            ),
-            icon: const Icon(Icons.send_rounded),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMessageBubble(
-      Map<String, dynamic> message, bool isMe, bool isDark) {
-    final timestamp = message['timestamp']?.toString();
-    final username = message['username'] as String? ?? widget.contact.username;
-    final colorScheme = Theme.of(context).colorScheme;
-    
-    return Padding(
-      padding: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
-      child: Row(
-        mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          if (!isMe) ...[
-            LingAfriqAvatar.fromInitials(username: username, size: 26),
-            SizedBox(width: PanAfricanSpacing.xs),
-          ],
-          Flexible(
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: PanAfricanSpacing.md,
-                vertical: PanAfricanSpacing.sm,
-              ),
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.75,
-              ),
-              decoration: BoxDecoration(
-                color: isMe
-                    ? PanAfricanColors.primary
-                    : (isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight),
-                borderRadius: PanAfricanRadius.lgBR.copyWith(
-                  bottomRight: isMe ? const Radius.circular(4) : null,
-                  bottomLeft: !isMe ? const Radius.circular(4) : null,
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment:
-                    isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    message['message'] ?? '',
-                    style: PanAfricanTypography.bodyMedium(context).copyWith(
-                      color: isMe ? colorScheme.onPrimary : null,
-                    ),
-                  ),
-                  SizedBox(height: PanAfricanSpacing.xxs),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        _formatTime(timestamp),
-                        style: PanAfricanTypography.labelSmall(context).copyWith(
-                          color: isMe
-                              ? colorScheme.onPrimary.withOpacity(0.7)
-                              : PanAfricanColors.neutralMedium,
-                        ),
-                      ),
-                      if (isMe) ...[
-                        SizedBox(width: PanAfricanSpacing.xxs),
-                        Icon(
-                          message['failed'] == true
-                              ? Icons.error_outline
-                              : (message['read'] == true
-                                  ? Icons.done_all
-                                  : Icons.done),
-                          size: 14,
-                          color: message['failed'] == true
-                              ? PanAfricanColors.error
-                              : colorScheme.onPrimary.withOpacity(0.7),
-                        ),
-                      ],
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          if (isMe) ...[
-            SizedBox(width: PanAfricanSpacing.xs),
-            const LingAfriqAvatar(size: 26, showBorder: false),
-          ],
-        ],
-      ),
-    );
-  }
-
-  void _sendMessage(ProfileModel currentUser) async {
+  Future<void> _sendMessage() async {
     final text = _messageController.text.trim();
-    if (text.isEmpty || _roomId.isEmpty) return;
-    
-    final socket = ref.read(socketProvider.notifier);
-    final polieHandler = ref.read(polieMentionHandlerProvider);
-    
+    final peer = _peerNumericId;
+    if (text.isEmpty || _sending || peer == null) return;
+    HapticFeedback.lightImpact();
+    setState(() => _sending = true);
+    _messageController.clear();
     try {
-      // Send the user's message first
-      socket.sendMessage(
-        _roomId,
-        text,
-        currentUser.id.toString(),
-        currentUser.username,
-        null,
-        currentUser.global_id,
+      await WaPrivateChatService.sendTextMessage(
+        recipientId: peer.toString(),
+        message: text,
       );
-      _messageController.clear();
-      _scrollToBottom();
-      
-      // Check for @Polie mention and process
-      if (polieHandler.hasMention(text)) {
-        // Get user's learning language
-        final onboarding = ref.read(onboardingProvider);
-        final userLanguage = onboarding.selectedLanguage ?? 'english';
-        
-        // Show typing indicator
-        socket.sendMessage(
-          _roomId,
-          '🤖 Polie is thinking...',
-          'polie_bot',
-          'Polie',
-            null,
-            'polie_bot',
-        );
-        
-        // Process the mention
-        final result = await polieHandler.processMessage(
-          message: text,
-          userLanguage: userLanguage,
-        );
-        
-        // Send Polie's response
-        final formattedResponse = polieHandler.formatResponseForChat(result);
-        if (formattedResponse.isNotEmpty) {
-          socket.sendMessage(
-            _roomId,
-            formattedResponse,
-            'polie_bot',
-            'Polie',
-            null,
-            'polie_bot',
-          );
-        }
-        _scrollToBottom();
-      }
+      await _loadMessages();
     } catch (e) {
       if (mounted) {
-        ErrorHandler.showError(context, e);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              e is DioException
+                  ? TransportErrorPolicy.toUserMessage(e)
+                  : 'Message could not be sent.',
+            ),
+          ),
+        );
       }
+    } finally {
+      if (mounted) setState(() => _sending = false);
     }
   }
 
@@ -473,24 +212,546 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
     });
   }
 
-  String _formatTime(String? timestamp) {
-    if (timestamp == null) return '';
-    try {
-      final date = DateTime.parse(timestamp);
-      final now = DateTime.now();
-      final diff = now.difference(date);
-      if (diff.inMinutes < 1) return 'just now';
-      if (diff.inHours < 1) return '${diff.inMinutes}m ago';
-      if (diff.inDays < 1) return '${diff.inHours}h ago';
-      return '${date.day}/${date.month}/${date.year}';
-    } catch (_) {
-      return '';
-    }
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final peer = _peerNumericId;
+
+    return Scaffold(
+      backgroundColor: ModernGriotColors.surface,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: _buildChatAppBar(cs),
+      ),
+      body: GriotSvgPatternBackground(
+        pattern: GriotPattern.triangles,
+        opacity: 0.02,
+        child: peer == null
+            ? Center(
+                child: Padding(
+                  padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                  child: Text(
+                    'This conversation is missing a valid user id. Go back and open the chat from search or your inbox.',
+                    style: ModernGriotTypography.bodyMedium(),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              )
+            : Column(
+                children: [
+                  if (_loadError != null)
+                    Material(
+                      color: cs.errorContainer,
+                      child: ListTile(
+                        leading: Icon(Icons.warning_amber_rounded, color: cs.onErrorContainer),
+                        title: Text(
+                          _loadError!,
+                          style: TextStyle(color: cs.onErrorContainer, fontSize: 13.sp),
+                        ),
+                        trailing: TextButton(
+                          onPressed: _loadMessages,
+                          child: const Text('Retry'),
+                        ),
+                      ),
+                    ),
+                  Expanded(
+                    child: _loading
+                        ? const Center(child: CircularProgressIndicator())
+                        : ListView.builder(
+                            controller: _scrollController,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: PanAfricanSpacing.sm,
+                              vertical: PanAfricanSpacing.md,
+                            ),
+                            itemCount: _messages.length + 1,
+                            itemBuilder: (context, index) {
+                              if (index == _messages.length) {
+                                return _buildTypingIndicator(cs);
+                              }
+                              return _buildMessageBubble(_messages[index], cs);
+                            },
+                          ),
+                  ),
+                  _buildInputBar(cs),
+                ],
+              ),
+      ),
+    );
   }
 
-  String _buildRoomId(int a, int b) {
-    final ids = [a, b]..sort();
-    return 'private_${ids[0]}_${ids[1]}';
+  Widget _buildChatAppBar(ColorScheme cs) {
+    return AppBar(
+      backgroundColor: cs.surfaceContainerLow,
+      elevation: 0,
+      scrolledUnderElevation: 0,
+      systemOverlayStyle: SystemUiOverlayStyle.dark,
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back_rounded, color: cs.onSurface),
+        onPressed: () {
+          HapticFeedback.lightImpact();
+          Navigator.pop(context);
+        },
+      ),
+      titleSpacing: 0,
+      title: Row(
+        children: [
+          GriotAvatar(
+            size: 36,
+            status: _contactOnline
+                ? GriotAvatarStatus.online
+                : GriotAvatarStatus.offline,
+            placeholder: CircleAvatar(
+              radius: 18.r,
+              backgroundColor: ModernGriotColors.primaryContainer.withAlpha(80),
+              child: Text(
+                _contactInitial,
+                style: ModernGriotTypography.titleSmall(
+                  color: ModernGriotColors.primary,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(width: PanAfricanSpacing.xs),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  _contactName,
+                  style: ModernGriotTypography.titleSmall(color: cs.onSurface),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Row(
+                  children: [
+                    Container(
+                      width: 8.r,
+                      height: 8.r,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: _contactOnline
+                            ? ModernGriotColors.secondary
+                            : cs.outlineVariant,
+                      ),
+                    ),
+                    SizedBox(width: 4.w),
+                    Text(
+                      _contactOnline ? 'Online' : 'Offline',
+                      style: ModernGriotTypography.labelSmall(
+                        color: _contactOnline
+                            ? ModernGriotColors.secondary
+                            : cs.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.videocam_outlined, color: cs.onSurface),
+          tooltip: 'Live classes',
+          onPressed: () {
+            HapticFeedback.selectionClick();
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  'Group video and voice sessions are in Live Classroom (app drawer → Live Classroom).',
+                ),
+              ),
+            );
+          },
+        ),
+        IconButton(
+          icon: Icon(Icons.call_outlined, color: cs.onSurface),
+          tooltip: 'Voice info',
+          onPressed: () {
+            HapticFeedback.selectionClick();
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  '1:1 calls are not enabled here yet. Use text chat or join a live class.',
+                ),
+              ),
+            );
+          },
+        ),
+        IconButton(
+          icon: Icon(Icons.more_vert_rounded, color: cs.onSurface),
+          onPressed: () => HapticFeedback.selectionClick(),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMessageBubble(_ChatMessage msg, ColorScheme cs) {
+    final bubbleColor = msg.isMe
+        ? ModernGriotColors.secondary
+        : ModernGriotColors.surfaceContainerLow;
+    final textColor = msg.isMe
+        ? ModernGriotColors.onSecondary
+        : ModernGriotColors.onSurface;
+    final timeColor = msg.isMe
+        ? ModernGriotColors.onSecondary.withAlpha(179)
+        : ModernGriotColors.onSurfaceVariant;
+
+    return Padding(
+      padding: EdgeInsets.only(bottom: PanAfricanSpacing.xs),
+      child: Column(
+        crossAxisAlignment:
+            msg.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment:
+                msg.isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              if (!msg.isMe) SizedBox(width: PanAfricanSpacing.xxl),
+              Flexible(
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PanAfricanSpacing.md,
+                    vertical: PanAfricanSpacing.sm,
+                  ),
+                  constraints: BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.width * 0.75,
+                  ),
+                  decoration: BoxDecoration(
+                    color: bubbleColor,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(ModernGriotRadius.lg),
+                      topRight: Radius.circular(ModernGriotRadius.lg),
+                      bottomLeft: Radius.circular(
+                        msg.isMe ? ModernGriotRadius.lg : ModernGriotRadius.xs,
+                      ),
+                      bottomRight: Radius.circular(
+                        msg.isMe ? ModernGriotRadius.xs : ModernGriotRadius.lg,
+                      ),
+                    ),
+                    boxShadow: ModernGriotShadows.sm,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: msg.isMe
+                        ? CrossAxisAlignment.end
+                        : CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        msg.text,
+                        style: ModernGriotTypography.bodyMedium(color: textColor),
+                      ),
+                      SizedBox(height: 4.h),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            msg.time,
+                            style: TextStyle(
+                              fontSize: 10.sp,
+                              color: timeColor,
+                            ),
+                          ),
+                          if (msg.isMe) ...[
+                            SizedBox(width: 4.w),
+                            Icon(
+                              msg.isRead
+                                  ? Icons.done_all_rounded
+                                  : Icons.done_rounded,
+                              size: 14.sp,
+                              color: msg.isRead
+                                  ? ModernGriotColors.onSecondary
+                                  : timeColor,
+                            ),
+                          ],
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              if (msg.isMe) SizedBox(width: PanAfricanSpacing.xxl),
+            ],
+          ),
+          if (msg.translation != null) _buildTranslationBlock(msg, cs),
+          if (msg.vocabWord != null) _buildVocabCard(msg, cs),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTranslationBlock(_ChatMessage msg, ColorScheme cs) {
+    return Container(
+      margin: EdgeInsets.only(
+        top: 4.h,
+        left: msg.isMe ? 0 : PanAfricanSpacing.xxl,
+        right: msg.isMe ? PanAfricanSpacing.xxl : 0,
+      ),
+      padding: EdgeInsets.symmetric(
+        horizontal: PanAfricanSpacing.sm,
+        vertical: PanAfricanSpacing.xs,
+      ),
+      decoration: BoxDecoration(
+        color: cs.surfaceContainerHighest.withAlpha(180),
+        borderRadius: ModernGriotRadius.borderMd,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.translate_rounded,
+            size: 14.sp,
+            color: ModernGriotColors.primary,
+          ),
+          SizedBox(width: 6.w),
+          Flexible(
+            child: Text(
+              msg.translation!,
+              style: ModernGriotTypography.labelSmall(
+                color: cs.onSurfaceVariant,
+              ).copyWith(fontStyle: FontStyle.italic),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildVocabCard(_ChatMessage msg, ColorScheme cs) {
+    return Container(
+      margin: EdgeInsets.only(
+        top: 6.h,
+        left: msg.isMe ? PanAfricanSpacing.xxl : PanAfricanSpacing.xxl,
+        right: msg.isMe ? PanAfricanSpacing.xxl : 0,
+      ),
+      constraints: BoxConstraints(maxWidth: 260.w),
+      decoration: BoxDecoration(
+        color: cs.surfaceContainerLowest,
+        borderRadius: ModernGriotRadius.borderXl,
+        border: Border.all(
+          color: ModernGriotColors.primary.withAlpha(50),
+          width: 1.5,
+        ),
+        boxShadow: ModernGriotShadows.sm,
+      ),
+      padding: EdgeInsets.all(PanAfricanSpacing.md),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              GriotBadgePill(
+                label: 'Vocabulary',
+                color: ModernGriotColors.primaryContainer.withAlpha(60),
+                textColor: ModernGriotColors.primary,
+                icon: Icons.menu_book_rounded,
+              ),
+              const Spacer(),
+              GestureDetector(
+                onTap: () => HapticFeedback.selectionClick(),
+                child: Container(
+                  width: 32.r,
+                  height: 32.r,
+                  decoration: BoxDecoration(
+                    gradient: ModernGriotGradients.signatureGradient,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.play_arrow_rounded,
+                    size: 18.sp,
+                    color: ModernGriotColors.onPrimary,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: PanAfricanSpacing.sm),
+          Text(
+            msg.vocabWord!,
+            style: ModernGriotTypography.titleLarge(color: cs.onSurface),
+          ),
+          SizedBox(height: 2.h),
+          Text(
+            msg.vocabPronunciation ?? '',
+            style: ModernGriotTypography.bodySmall(
+              color: ModernGriotColors.primary,
+            ),
+          ),
+          SizedBox(height: PanAfricanSpacing.xs),
+          Text(
+            msg.vocabMeaning ?? '',
+            style: ModernGriotTypography.bodyMedium(color: cs.onSurfaceVariant),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTypingIndicator(ColorScheme cs) {
+    return AnimatedBuilder(
+      animation: _typingController,
+      builder: (context, child) {
+        return Padding(
+          padding: EdgeInsets.only(
+            left: PanAfricanSpacing.xxl,
+            bottom: PanAfricanSpacing.sm,
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: PanAfricanSpacing.md,
+                  vertical: PanAfricanSpacing.sm,
+                ),
+                decoration: BoxDecoration(
+                  color: ModernGriotColors.surfaceContainerLow,
+                  borderRadius: ModernGriotRadius.borderLg,
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: List.generate(3, (i) {
+                    final delay = i * 0.33;
+                    final t = (_typingController.value + delay) % 1.0;
+                    final y = -4.0 * (t < 0.5 ? t * 2 : (1.0 - t) * 2);
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 2.w),
+                      child: Transform.translate(
+                        offset: Offset(0, y),
+                        child: Container(
+                          width: 7.r,
+                          height: 7.r,
+                          decoration: BoxDecoration(
+                            color: cs.onSurfaceVariant.withAlpha(130),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildInputBar(ColorScheme cs) {
+    return Container(
+      padding: EdgeInsets.only(
+        left: PanAfricanSpacing.sm,
+        right: PanAfricanSpacing.sm,
+        top: PanAfricanSpacing.xs,
+        bottom: MediaQuery.of(context).padding.bottom + PanAfricanSpacing.xs,
+      ),
+      decoration: BoxDecoration(
+        color: cs.surfaceContainerLow,
+        boxShadow: [
+          BoxShadow(
+            color: ModernGriotColors.onSurface.withAlpha(10),
+            blurRadius: 8,
+            offset: const Offset(0, -2),
+          ),
+        ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          IconButton(
+            icon: Icon(Icons.attach_file_rounded, color: cs.onSurfaceVariant),
+            onPressed: () => HapticFeedback.selectionClick(),
+          ),
+          IconButton(
+            icon: Icon(Icons.camera_alt_outlined, color: cs.onSurfaceVariant),
+            onPressed: () => HapticFeedback.selectionClick(),
+          ),
+          Expanded(
+            child: Container(
+              constraints: BoxConstraints(maxHeight: 120.h),
+              decoration: BoxDecoration(
+                color: cs.surfaceContainerHighest,
+                borderRadius: ModernGriotRadius.borderXl,
+                border: Border.all(
+                  color: cs.outlineVariant.withAlpha(38),
+                  width: 1,
+                ),
+              ),
+              child: TextField(
+                controller: _messageController,
+                minLines: 1,
+                maxLines: 5,
+                style: ModernGriotTypography.bodyMedium(color: cs.onSurface),
+                decoration: InputDecoration(
+                  hintText: 'Type a message...',
+                  hintStyle: ModernGriotTypography.bodyMedium(
+                    color: cs.onSurfaceVariant.withAlpha(153),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: PanAfricanSpacing.md,
+                    vertical: PanAfricanSpacing.sm,
+                  ),
+                  border: InputBorder.none,
+                ),
+                onSubmitted: (_) => _sendMessage(),
+              ),
+            ),
+          ),
+          SizedBox(width: PanAfricanSpacing.xs),
+          GestureDetector(
+            onTap: _sending ? null : _sendMessage,
+            child: Opacity(
+              opacity: _sending ? 0.5 : 1,
+              child: Container(
+                width: 44.r,
+                height: 44.r,
+                decoration: BoxDecoration(
+                  gradient: ModernGriotGradients.signatureGradient,
+                  shape: BoxShape.circle,
+                  boxShadow: ModernGriotShadows.fab,
+                ),
+                child: _sending
+                    ? Padding(
+                        padding: EdgeInsets.all(10.r),
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: ModernGriotColors.onPrimary,
+                        ),
+                      )
+                    : Icon(
+                        Icons.send_rounded,
+                        size: 20.sp,
+                        color: ModernGriotColors.onPrimary,
+                      ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
+class _ChatMessage {
+  final String text;
+  final bool isMe;
+  final String time;
+  final bool isRead;
+  final String? translation;
+  final String? vocabWord;
+  final String? vocabPronunciation;
+  final String? vocabMeaning;
+
+  const _ChatMessage({
+    required this.text,
+    required this.isMe,
+    required this.time,
+    required this.isRead,
+    this.translation,
+    this.vocabWord,
+    this.vocabPronunciation,
+    this.vocabMeaning,
+  });
+}

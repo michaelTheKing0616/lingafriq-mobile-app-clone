@@ -50,5 +50,16 @@
   "aiTutor": "AI መምህር",
   "cultureMagazine": "ዓውደ ባህሊ",
   "tribes": "ዓሌታት",
-  "leaderboard": "ዝለዓለ ዝርዝር"
+  "leaderboard": "ዝለዓለ ዝርዝር",
+  "flbHeritageTitle": "FLB Heritage",
+  "flbHeritageSearchHint": "Search title, country, or tags",
+  "flbHeritageEmptyMessage": "No entries match your search. Try another keyword or pull to refresh.",
+  "flbHeritageLoadError": "Could not load heritage archive. Pull to retry.",
+  "flbHeritageRefresh": "Refresh",
+  "flbHeritageDetailTitle": "Heritage",
+  "flbHeritageMissingContent": "Missing heritage content",
+  "tooltipFlbHeritageArchive": "FLB Heritage archive",
+  "tooltipTribeDiscovery": "Tribe discovery",
+  "drawerFlbHeritageArchive": "FLB Heritage Archive",
+  "tooltipTribes": "Tribes"
 }

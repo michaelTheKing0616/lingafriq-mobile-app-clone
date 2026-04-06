@@ -112,15 +112,26 @@ void main() async {
   // Initialize Localization & Features
   try {
     await DynamicLocalizationService.initialize();
-    
-    // Detect device language and set as default
-    final deviceLocale = Platform.localeName.split('_').first.toLowerCase();
-    final detectedLanguage = _detectLanguageFromLocale(deviceLocale);
-    if (detectedLanguage != null) {
-      await DynamicLocalizationService.setLanguage(detectedLanguage.code);
-      logger.info('Detected device language: ${detectedLanguage.code}');
+
+    // Priority: saved `app_language` (settings / prior session) → onboarding
+    // `proficiency_language` → first-launch device locale. Never clobber an
+    // explicit `app_language` with device locale.
+    final savedAppLang = prefs.getString('app_language');
+    if (savedAppLang == null || savedAppLang.isEmpty) {
+      final profLang = prefs.getString('proficiency_language');
+      if (profLang != null && profLang.isNotEmpty) {
+        await DynamicLocalizationService.setLanguage(profLang);
+        logger.info('Applied onboarding UI language: $profLang');
+      } else {
+        final deviceLocale = Platform.localeName.split('_').first.toLowerCase();
+        final detectedLanguage = _detectLanguageFromLocale(deviceLocale);
+        if (detectedLanguage != null) {
+          await DynamicLocalizationService.setLanguage(detectedLanguage.code);
+          logger.info('First launch: device UI language ${detectedLanguage.code}');
+        }
+      }
     }
-    
+
     await SmartRecommendationsService().initialize();
     logger.info('Localization and features initialized successfully');
   } catch (e) {

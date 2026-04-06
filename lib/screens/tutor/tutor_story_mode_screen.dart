@@ -41,12 +41,11 @@ class TutorStoryModeScreen extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     Future<void> speakParagraph(String text, String languageCode) async {
-      final trimmed = text.trim();
-      if (trimmed.isEmpty) return;
-      await ref.read(ttsProvider.notifier).speak(
-            trimmed,
-            languageName: languageCode,
-          );
+      try {
+        await ref
+            .read(ttsProvider.notifier)
+            .speak(text, languageName: languageCode, speed: 0.45);
+      } catch (_) {}
     }
 
     Future<Map<String, dynamic>> generateStoryWithGroq({

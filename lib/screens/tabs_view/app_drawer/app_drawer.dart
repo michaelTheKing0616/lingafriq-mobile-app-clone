@@ -21,10 +21,12 @@ import 'package:lingafriq/screens/gamification/badge_collection_screen_material3
 import 'package:lingafriq/screens/tutor/tutor_dashboard_screen.dart';
 import 'package:lingafriq/screens/ai_chat/ai_language_selection_screen.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen_enhanced.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
+import 'package:lingafriq/screens/heritage/flb_heritage_archive_screen.dart';
 import 'package:lingafriq/screens/media/import_media_screen_enhanced.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen_material3.dart';
 import 'package:lingafriq/screens/chat/private_chat_list_screen.dart';
-import 'package:lingafriq/screens/social/language_villages_screen.dart';
+import 'package:lingafriq/screens/village/villages_hub_screen.dart';
 import 'package:lingafriq/screens/ugc/create_lesson_screen_enhanced.dart';
 import 'package:lingafriq/screens/gamification/tribe_selection_screen.dart';
 import 'package:lingafriq/screens/gamification/leaderboard_screen.dart';
@@ -38,7 +40,7 @@ import 'package:lingafriq/screens/content/cultural_hub_screen.dart';
 import 'package:lingafriq/screens/social/social_hub_screen.dart';
 import 'package:lingafriq/screens/social/friend_quests_screen.dart';
 import 'package:lingafriq/screens/personalities/personality_selection_screen.dart';
-import 'package:lingafriq/models/offline/local_vocabulary.dart';
+import 'package:lingafriq/services/offline/vocabulary_store.dart';
 
 /// Enhanced Modern Pan-African App Drawer with Future-Forward Styling
 class AppDrawer extends HookConsumerWidget {
@@ -46,6 +48,7 @@ class AppDrawer extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final isDark = useState(Theme.of(context).brightness == Brightness.dark);
     final currentUser = ref.watch(userProvider);
 
@@ -299,18 +302,35 @@ class AppDrawer extends HookConsumerWidget {
                         onTap: () {
                           Navigator.pop(context);
                           final user = ref.read(userProvider);
-                          if (user?.learningLanguage != null) {
-                            Navigator.pushNamed(
-                              context,
-                              '/flashcard-review',
-                              arguments: {
-                                'words': <LocalVocabulary>[],
-                                'language': user!.learningLanguage!,
-                              },
-                            );
-                          } else {
+                          final lang = user?.learningLanguage;
+                          if (lang == null || lang.isEmpty) {
                             showLingAfriqInfo(context, 'Please select a language first');
+                            return;
                           }
+                          final store = VocabularyStore();
+                          final due = store.getWordsDueForReview(lang);
+                          if (due.isEmpty) {
+                            final total = store.getMasteryStats(lang)['total'] as int? ?? 0;
+                            if (total == 0) {
+                              Navigator.push(
+                                context,
+                                SmoothPageRoute(child: const VocabularyBuilderScreen()),
+                              );
+                              showLingAfriqInfo(
+                                context,
+                                'Add words in Vocabulary Builder to start flashcard review.',
+                              );
+                              return;
+                            }
+                          }
+                          Navigator.pushNamed(
+                            context,
+                            '/flashcard-review',
+                            arguments: {
+                              'words': due,
+                              'language': lang,
+                            },
+                          );
                         },
                         isDark: isDark.value,
                       ),
@@ -353,6 +373,20 @@ class AppDrawer extends HookConsumerWidget {
                           Navigator.push(
                             context,
                             SmoothPageRoute(child: CultureMagazineScreenEnhanced()),
+                          );
+                        },
+                        isDark: isDark.value,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.account_balance_rounded,
+                        label: l10n.drawerFlbHeritageArchive,
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(
+                              child: const FlbHeritageArchiveScreen(),
+                            ),
                           );
                         },
                         isDark: isDark.value,
@@ -419,7 +453,7 @@ class AppDrawer extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: const LanguageVillagesScreen()),
+                            SmoothPageRoute(child: const VillagesHubScreen()),
                           );
                         },
                         isDark: isDark.value,

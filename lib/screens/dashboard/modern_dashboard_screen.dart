@@ -1,633 +1,456 @@
+import 'dart:math';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lingafriq/providers/user_provider.dart';
-import 'package:lingafriq/providers/daily_goals_provider.dart';
-import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/screens/goals/daily_challenges_screen.dart';
-import 'package:lingafriq/screens/games/games_screen_material3.dart';
-import 'package:lingafriq/screens/ai_chat/ai_chat_language_setup_screen.dart';
-import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
-import 'package:lingafriq/screens/global/global_progress_screen.dart';
-import 'package:lingafriq/screens/progress/progress_dashboard_screen.dart';
-import 'package:lingafriq/screens/magazine/culture_magazine_screen.dart';
-import 'package:lingafriq/screens/chat/global_chat_screen_material3.dart';
-import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
-import 'package:lingafriq/screens/settings/settings_screen_material3.dart';
-import 'package:lingafriq/screens/curriculum/curriculum_screen_material3.dart';
-import 'package:lingafriq/utils/performance_utils.dart';
-import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
-import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_animate/flutter_animate.dart';
+import '../../utils/modern_griot_design_system.dart';
+import '../../widgets/griot/griot_widgets.dart';
 
-/// Modern Dashboard Screen - Based on Figma Make Dashboard Design
 class ModernDashboardScreen extends HookConsumerWidget {
   const ModernDashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userProvider);
-    final dailyGoalsNotifier = ref.read(dailyGoalsProvider.notifier);
-    final dailyGoals = dailyGoalsNotifier.goals;
-    final currentStreak = dailyGoalsNotifier.currentStreak;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    
-    // Calculate today's goal progress
-    final completedGoals = dailyGoals.where((g) => g.completed).length;
-    final totalGoals = dailyGoals.length;
-    final todayGoal = totalGoals > 0 ? (completedGoals / totalGoals * 100).round() : 0;
-    
-    return Scaffold(
-      backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
-      drawer: const AppDrawer(),
-      body: Stack(
-        children: [
-          // Solid header
-          Container(
-            height: 35.h,
-            decoration: BoxDecoration(
-              color: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(PanAfricanRadius.xxl),
-                bottomRight: Radius.circular(PanAfricanRadius.xxl),
-              ),
-              boxShadow: PanAfricanShadows.sm,
+    return GriotScaffold(
+      body: SafeArea(
+        child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+          children: [
+            _GreetingHeader(),
+            SizedBox(height: 20.h),
+            _ProgressHeroCard(),
+            SizedBox(height: 24.h),
+            _DailyRitualsCard(),
+            SizedBox(height: 24.h),
+            _ContinueLearningCard(),
+            SizedBox(height: 24.h),
+            Row(
+              children: [
+                Expanded(child: _VillageStatusCard()),
+                SizedBox(width: 12.w),
+                Expanded(child: _TribeActivityCard()),
+              ],
             ),
-            child: ResponsiveSafeArea(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
-                    child: Column(
-                      children: [
-                        // Top Bar
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                user?.avatar != null && user!.avatar!.isNotEmpty
-                                    ? ClipOval(
-                                        child: LazyImage(
-                                          imageUrl: user.avatar!,
-                                          width: 48,
-                                          height: 48,
-                                          placeholder: CircleAvatar(
-                                            radius: 24,
-                                            backgroundColor: Theme.of(context).colorScheme.surface,
-                                            child: Text(
-                                              (user.username)[0].toUpperCase(),
-                                              style: TextStyle(
-                                                color: const Color(0xFFCE1126),
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    : CircleAvatar(
-                                        radius: 24,
-                                        backgroundColor: Theme.of(context).colorScheme.surface,
-                                        child: user?.avatar == null
-                                            ? Text(
-                                                (user?.username ?? 'U')[0].toUpperCase(),
-                                                style: TextStyle(
-                                                  color: const Color(0xFFCE1126),
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              )
-                                            : null,
-                                      ),
-                                SizedBox(width: PanAfricanSpacing.sm),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Hello,',
-                                      style: PanAfricanTypography.bodyMedium(context)
-                                          .copyWith(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9)),
-                                    ),
-                                    Text(
-                                      '${user?.username ?? 'User'}!',
-                                      style: PanAfricanTypography.titleLarge(context)
-                                          .copyWith(color: Theme.of(context).colorScheme.onPrimary),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.settings_rounded, color: Theme.of(context).colorScheme.onPrimary, size: 24.sp),
-                              onPressed: () {
-                                HapticFeedback.lightImpact();
-                                Navigator.push(
-                                  context,
-                                  SmoothPageRoute(
-                                    child: const SettingsScreenMaterial3(),
-                                  ),
-                                );
-                              },
-                              style: IconButton.styleFrom(
-                                backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
-                                shape: const CircleBorder(),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: PanAfricanSpacing.md),
-                        // Stats Cards
-                        Row(
-                          children: [
-                            Expanded(
-                              child: _StatCard(
-                                icon: Icons.local_fire_department_rounded,
-                                value: '$currentStreak',
-                                label: 'Day Streak',
-                                color: PanAfricanColors.tertiary,
-                                isDark: isDark,
-                              ),
-                            ),
-                            SizedBox(width: PanAfricanSpacing.sm),
-                            Expanded(
-                              child: _StatCard(
-                                icon: Icons.bolt_rounded,
-                                value: '${user?.completed_point ?? 0}',
-                                label: 'Total XP',
-                                color: PanAfricanColors.kenteRed,
-                                isDark: isDark,
-                              ),
-                            ),
-                            SizedBox(width: PanAfricanSpacing.sm),
-                            Expanded(
-                              child: _StatCard(
-                                icon: Icons.star_rounded,
-                                value: 'Lvl ${user?.level ?? 1}',
-                                label: 'Current',
-                                color: PanAfricanColors.primary,
-                                isDark: isDark,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-          // Main Content (second Stack child)
-          Positioned(
-            top: 32.h,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: PanAfricanSpacing.lg),
-                  // Today's Goal Card
-                  Container(
-                    padding: EdgeInsets.all(PanAfricanSpacing.md),
-                    decoration: BoxDecoration(
-                      color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-                      borderRadius: PanAfricanRadius.lgBR,
-                      boxShadow: PanAfricanShadows.sm,
-                      border: Border.all(
-                        color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
-                        width: 1,
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.track_changes_rounded,
-                                  color: PanAfricanColors.primary,
-                                  size: 20.sp,
-                                ),
-                                SizedBox(width: PanAfricanSpacing.xs),
-                                Text(
-                                  'Today\'s Goal',
-                                  style: PanAfricanTypography.titleMedium(context),
-                                ),
-                              ],
-                            ),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: PanAfricanSpacing.sm,
-                                vertical: PanAfricanSpacing.xxs,
-                              ),
-                              decoration: BoxDecoration(
-                                color: PanAfricanColors.primary.withOpacity(0.1),
-                                borderRadius: PanAfricanRadius.roundBR,
-                              ),
-                              child: Text(
-                                '$todayGoal%',
-                                style: PanAfricanTypography.labelMedium(context)
-                                    .copyWith(color: PanAfricanColors.primary),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: PanAfricanSpacing.md),
-                        ClipRRect(
-                          borderRadius: PanAfricanRadius.smBR,
-                          child: LinearProgressIndicator(
-                            value: (todayGoal / 100).clamp(0.0, 1.0),
-                            backgroundColor: isDark ? PanAfricanColors.neutralMedium : PanAfricanColors.neutralLight,
-                            valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
-                            minHeight: 8,
-                          ),
-                        ),
-                        SizedBox(height: PanAfricanSpacing.md),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: _ProgressItem(
-                                label: 'Vocabulary',
-                                completed: 15,
-                                total: 20,
-                                color: PanAfricanColors.kenteRed,
-                              ),
-                            ),
-                            SizedBox(width: PanAfricanSpacing.sm),
-                            Expanded(
-                              child: _ProgressItem(
-                                label: 'Grammar',
-                                completed: 8,
-                                total: 10,
-                                color: PanAfricanColors.primary,
-                              ),
-                            ),
-                            SizedBox(width: PanAfricanSpacing.sm),
-                            Expanded(
-                              child: _ProgressItem(
-                                label: 'Speaking',
-                                completed: 5,
-                                total: 5,
-                                color: PanAfricanColors.secondary,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ).animate().fadeIn(delay: 100.ms).slideY(begin: 0.1, end: 0),
-                  SizedBox(height: PanAfricanSpacing.xl),
-                  // Quick Actions
-                  Text(
-                    'Quick Actions',
-                    style: PanAfricanTypography.titleLarge(context),
-                  ),
-                  SizedBox(height: PanAfricanSpacing.md),
-                  GridView.count(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    crossAxisCount: 2,
-                    crossAxisSpacing: PanAfricanSpacing.md,
-                    mainAxisSpacing: PanAfricanSpacing.md,
-                    childAspectRatio: 1.5,
-                    children: [
-                      _QuickActionCard(
-                        icon: Icons.menu_book_rounded,
-                        label: 'Explore Curriculum',
-                        isDark: isDark,
-                        onTap: () {
-                          HapticFeedback.lightImpact();
-                          Navigator.push(
-                            context,
-                            SmoothPageRoute(
-                              child: const CurriculumScreenMaterial3(),
-                            ),
-                          );
-                        },
-                      ),
-                      _QuickActionCard(
-                        icon: Icons.chat_bubble_rounded,
-                        label: 'AI Tutor',
-                        isDark: isDark,
-                        onTap: () {
-                          HapticFeedback.lightImpact();
-                          Navigator.push(
-                            context,
-                            SmoothPageRoute(
-                              child: const AiChatLanguageSetupScreen(
-                                initialMode: PolieMode.translation,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                      _QuickActionCard(
-                        icon: Icons.track_changes_rounded,
-                        label: 'Daily Challenge',
-                        isDark: isDark,
-                        onTap: () {
-                          HapticFeedback.lightImpact();
-                          Navigator.push(
-                            context,
-                            SmoothPageRoute(child: const DailyChallengesScreen()),
-                          );
-                        },
-                      ),
-                      _QuickActionCard(
-                        icon: Icons.emoji_events_rounded,
-                        label: 'Games',
-                        isDark: isDark,
-                        onTap: () {
-                          HapticFeedback.lightImpact();
-                          Navigator.push(
-                            context,
-                            SmoothPageRoute(child: const GamesScreenMaterial3()),
-                          );
-                        },
-                      ),
-                    ],
-                  ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.1, end: 0),
-                  SizedBox(height: PanAfricanSpacing.xl),
-                  // Explore More Section
-                  Text(
-                    'Explore More',
-                    style: PanAfricanTypography.titleLarge(context),
-                  ),
-                  SizedBox(height: PanAfricanSpacing.md),
-                  GridView.count(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    crossAxisCount: 2,
-                    crossAxisSpacing: PanAfricanSpacing.md,
-                    mainAxisSpacing: PanAfricanSpacing.md,
-                    childAspectRatio: 1.5,
-                    children: [
-                      _ExploreCard(
-                        icon: Icons.people_rounded,
-                        title: 'Community Chat',
-                        subtitle: 'Join the conversation',
-                        onTap: () {
-                          HapticFeedback.lightImpact();
-                          Navigator.push(
-                            context,
-                            SmoothPageRoute(child: const GlobalChatScreenMaterial3()),
-                          );
-                        },
-                      ),
-                      _ExploreCard(
-                        icon: Icons.newspaper_rounded,
-                        title: 'Magazines',
-                        subtitle: 'Culture & stories',
-                        onTap: () {
-                          HapticFeedback.lightImpact();
-                          Navigator.push(
-                            context,
-                            SmoothPageRoute(child: const CultureMagazineScreen()),
-                          );
-                        },
-                      ),
-                      _ExploreCard(
-                        icon: Icons.trending_up_rounded,
-                        title: 'Global Ranking',
-                        subtitle: 'See your position',
-                        onTap: () {
-                          HapticFeedback.lightImpact();
-                          Navigator.push(
-                            context,
-                            SmoothPageRoute(child: const GlobalProgressScreen()),
-                          );
-                        },
-                      ),
-                      _ExploreCard(
-                        icon: Icons.access_time_rounded,
-                        title: 'Progress',
-                        subtitle: 'Track your journey',
-                        onTap: () {
-                          HapticFeedback.lightImpact();
-                          Navigator.push(
-                            context,
-                            SmoothPageRoute(child: const ProgressDashboardScreen()),
-                          );
-                        },
-                      ),
-                    ],
-                  ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.1, end: 0),
-                  SizedBox(height: PanAfricanSpacing.xl),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _StatCard extends StatelessWidget {
-  final IconData icon;
-  final String value;
-  final String label;
-  final Color color;
-  final bool isDark;
-  
-  const _StatCard({
-    required this.icon,
-    required this.value,
-    required this.label,
-    required this.color,
-    required this.isDark,
-  });
-  
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(PanAfricanSpacing.sm),
-      decoration: BoxDecoration(
-        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-        borderRadius: PanAfricanRadius.lgBR,
-        boxShadow: PanAfricanShadows.sm,
-        border: Border.all(
-          color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
-          width: 1,
+            SizedBox(height: 32.h),
+          ],
         ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: EdgeInsets.all(PanAfricanSpacing.xxs),
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
-              borderRadius: PanAfricanRadius.mdBR,
-            ),
-            child: Icon(icon, color: color, size: 20.sp),
-          ),
-          SizedBox(height: PanAfricanSpacing.xs),
-          Text(
-            value,
-            style: PanAfricanTypography.headlineMedium(context),
-          ),
-          Text(
-            label,
-            style: PanAfricanTypography.bodySmall(context)
-                .copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
-          ),
-        ],
-      ),
     );
   }
 }
 
-class _ProgressItem extends StatelessWidget {
-  final String label;
-  final int completed;
-  final int total;
-  final Color color;
-  
-  const _ProgressItem({
-    required this.label,
-    required this.completed,
-    required this.total,
-    required this.color,
-  });
-  
+class _GreetingHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
+    final hour = DateTime.now().hour;
+    final greeting =
+        hour < 12 ? 'Good Morning' : (hour < 17 ? 'Good Afternoon' : 'Good Evening');
+    return Row(
       children: [
-        Container(
-          height: 4,
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: PanAfricanRadius.xsBR,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(greeting,
+                  style: ModernGriotTypography.bodyMedium()),
+              SizedBox(height: 2.h),
+              Text('Continue your journey',
+                  style: ModernGriotTypography.headlineSmall()),
+            ],
           ),
         ),
-        SizedBox(height: PanAfricanSpacing.xxs),
-        Text(
-          label,
-          style: PanAfricanTypography.bodySmall(context),
-        ),
-        Text(
-          '$completed/$total',
-          style: PanAfricanTypography.labelMedium(context),
-        ),
+        GriotAvatar(initials: 'KA', size: 42),
       ],
     );
   }
 }
 
-class _QuickActionCard extends StatelessWidget {
+class _ProgressHeroCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(20.r),
+      decoration: BoxDecoration(
+        gradient: ModernGriotGradients.signatureGradient,
+        borderRadius: ModernGriotRadius.borderXl,
+        boxShadow: ModernGriotShadows.lg,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Griot Apprentice',
+                    style: ModernGriotTypography.headlineSmall(
+                      color: ModernGriotColors.onPrimary,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    'Rank 2 · Yoruba Path',
+                    style: ModernGriotTypography.bodySmall(
+                      color: ModernGriotColors.onPrimary.withAlpha(180),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  _BadgeIcon(Icons.auto_awesome_rounded),
+                  SizedBox(width: 6.w),
+                  _BadgeIcon(Icons.local_fire_department_rounded),
+                  SizedBox(width: 6.w),
+                  _BadgeIcon(Icons.star_rounded),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 20.h),
+          GriotProgressBar(
+            value: 0.42,
+            height: 10,
+            showGlowTip: true,
+            backgroundColor: ModernGriotColors.onPrimary.withAlpha(40),
+          ),
+          SizedBox(height: 10.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '420 / 1,000 XP to Pathfinder',
+                style: ModernGriotTypography.bodySmall(
+                  color: ModernGriotColors.onPrimary.withAlpha(200),
+                ),
+              ),
+              Text(
+                '42%',
+                style: ModernGriotTypography.labelMedium(
+                  color: ModernGriotColors.onPrimary,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 16.h),
+          Row(
+            children: [
+              GriotBadgePill(
+                icon: Icons.local_fire_department_rounded,
+                label: '12 Day Streak',
+                color: ModernGriotColors.onPrimary.withAlpha(40),
+                textColor: ModernGriotColors.onPrimary,
+              ),
+              SizedBox(width: 8.w),
+              GriotBadgePill(
+                icon: Icons.bolt_rounded,
+                label: '2,450 XP',
+                color: ModernGriotColors.onPrimary.withAlpha(40),
+                textColor: ModernGriotColors.onPrimary,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BadgeIcon extends StatelessWidget {
+  const _BadgeIcon(this.icon);
   final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 34.r,
+      height: 34.r,
+      decoration: BoxDecoration(
+        color: ModernGriotColors.onPrimary.withAlpha(30),
+        shape: BoxShape.circle,
+      ),
+      child: Icon(icon, size: 16.sp, color: ModernGriotColors.onPrimary),
+    );
+  }
+}
+
+class _DailyRitualsCard extends StatelessWidget {
+  static const _rituals = [
+    _Ritual('Practice Vocabulary', true, Icons.translate_rounded),
+    _Ritual('Listen to Lesson', false, Icons.headphones_rounded),
+    _Ritual('Complete Quiz', false, Icons.quiz_rounded),
+    _Ritual('Chat in Yoruba', false, Icons.chat_rounded),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final completed = _rituals.where((r) => r.completed).length;
+
+    return GriotCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.wb_sunny_rounded, size: 20.sp, color: cs.primary),
+              SizedBox(width: 8.w),
+              Text('Daily Rituals',
+                  style: ModernGriotTypography.titleMedium()),
+              const Spacer(),
+              GriotBadgePill(
+                label: '$completed / ${_rituals.length}',
+                color: cs.secondaryContainer,
+                textColor: cs.onSecondaryContainer,
+              ),
+            ],
+          ),
+          SizedBox(height: 6.h),
+          ClipRRect(
+            borderRadius: ModernGriotRadius.borderPill,
+            child: LinearProgressIndicator(
+              value: completed / _rituals.length,
+              minHeight: 3.h,
+              backgroundColor: cs.surfaceContainerHighest,
+              valueColor: AlwaysStoppedAnimation(cs.secondary),
+            ),
+          ),
+          SizedBox(height: 14.h),
+          ...List.generate(_rituals.length, (i) {
+            final r = _rituals[i];
+            return Padding(
+              padding:
+                  EdgeInsets.only(bottom: i < _rituals.length - 1 ? 10.h : 0),
+              child: _RitualRow(ritual: r),
+            );
+          }),
+        ],
+      ),
+    );
+  }
+}
+
+class _Ritual {
+  const _Ritual(this.label, this.completed, this.icon);
   final String label;
-  final bool isDark;
-  final VoidCallback onTap;
-
-  const _QuickActionCard({
-    required this.icon,
-    required this.label,
-    required this.isDark,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final bgColor = Theme.of(context).colorScheme.surfaceContainerHighest;
-    final textColor = Theme.of(context).colorScheme.onSurface;
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: PanAfricanRadius.lgBR,
-        child: Container(
-          decoration: BoxDecoration(
-            color: bgColor,
-            borderRadius: PanAfricanRadius.lgBR,
-            boxShadow: PanAfricanShadows.sm,
-            border: Border.all(
-              color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
-              width: 1,
-            ),
-          ),
-          padding: EdgeInsets.all(PanAfricanSpacing.md),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, color: PanAfricanColors.primary, size: 24.sp),
-              SizedBox(height: PanAfricanSpacing.sm),
-              Text(
-                label,
-                style: PanAfricanTypography.titleMedium(context)
-                    .copyWith(color: textColor),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ExploreCard extends StatelessWidget {
+  final bool completed;
   final IconData icon;
-  final String title;
-  final String subtitle;
-  final VoidCallback onTap;
-  
-  const _ExploreCard({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-    required this.onTap,
-  });
-  
+}
+
+class _RitualRow extends StatelessWidget {
+  const _RitualRow({required this.ritual});
+  final _Ritual ritual;
+
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: PanAfricanRadius.lgBR,
-        child: Container(
-          padding: EdgeInsets.all(PanAfricanSpacing.md),
+    final cs = Theme.of(context).colorScheme;
+    return Row(
+      children: [
+        Container(
+          width: 28.r,
+          height: 28.r,
           decoration: BoxDecoration(
-            color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-            borderRadius: PanAfricanRadius.lgBR,
-            boxShadow: PanAfricanShadows.sm,
-            border: Border.all(
-              color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
-              width: 1,
-            ),
+            color: ritual.completed
+                ? ModernGriotColors.secondary
+                : cs.surfaceContainerHighest,
+            shape: BoxShape.circle,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                icon,
-                color: PanAfricanColors.primary,
-                size: 24.sp,
-              ),
-              SizedBox(height: PanAfricanSpacing.xs),
-              Text(
-                title,
-                style: PanAfricanTypography.titleSmall(context),
-              ),
-              SizedBox(height: PanAfricanSpacing.xxs),
-              Text(
-                subtitle,
-                style: PanAfricanTypography.bodySmall(context),
-              ),
-            ],
+          child: Icon(
+            ritual.completed ? Icons.check_rounded : ritual.icon,
+            size: 14.sp,
+            color: ritual.completed
+                ? ModernGriotColors.onSecondary
+                : cs.onSurfaceVariant,
           ),
         ),
+        SizedBox(width: 12.w),
+        Expanded(
+          child: Text(
+            ritual.label,
+            style: ModernGriotTypography.bodyMedium(
+              color: ritual.completed ? cs.onSurfaceVariant : cs.onSurface,
+            ).copyWith(
+              decoration:
+                  ritual.completed ? TextDecoration.lineThrough : null,
+            ),
+          ),
+        ),
+        if (ritual.completed)
+          Icon(Icons.check_circle_rounded,
+              size: 18.sp, color: ModernGriotColors.secondary)
+        else
+          Icon(Icons.radio_button_unchecked_rounded,
+              size: 18.sp, color: cs.outlineVariant),
+      ],
+    );
+  }
+}
+
+class _ContinueLearningCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return GriotCard(
+      onTap: () => HapticFeedback.lightImpact(),
+      child: Row(
+        children: [
+          Container(
+            width: 56.r,
+            height: 56.r,
+            decoration: BoxDecoration(
+              gradient: ModernGriotGradients.signatureGradient,
+              borderRadius: ModernGriotRadius.borderLg,
+            ),
+            child: Icon(Icons.play_arrow_rounded,
+                size: 28.sp, color: cs.onPrimary),
+          ),
+          SizedBox(width: 16.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Greetings & Introductions',
+                    style: ModernGriotTypography.titleMedium()),
+                SizedBox(height: 4.h),
+                Text('Lesson 3 of 8 · Yoruba Basics',
+                    style: ModernGriotTypography.bodySmall()),
+                SizedBox(height: 8.h),
+                GriotProgressBar(value: 0.375, height: 6),
+              ],
+            ),
+          ),
+          SizedBox(width: 12.w),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  cs.primary.withAlpha(20),
+                  cs.primary.withAlpha(10),
+                ],
+              ),
+              borderRadius: ModernGriotRadius.borderPill,
+            ),
+            child: Column(
+              children: [
+                Icon(Icons.arrow_forward_rounded,
+                    size: 16.sp, color: cs.primary),
+                SizedBox(height: 2.h),
+                Text(
+                  'Continue\nJourney',
+                  textAlign: TextAlign.center,
+                  style: ModernGriotTypography.labelSmall(color: cs.primary),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
 }
 
+class _VillageStatusCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return GriotCard(
+      surfaceLevel: 1,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.location_city_rounded,
+                  size: 18.sp, color: ModernGriotColors.secondary),
+              SizedBox(width: 6.w),
+              Expanded(
+                child: Text('Village Status',
+                    style: ModernGriotTypography.labelLarge(),
+                    overflow: TextOverflow.ellipsis),
+              ),
+            ],
+          ),
+          SizedBox(height: 12.h),
+          Text('24',
+              style: ModernGriotTypography.headlineMedium(
+                  color: cs.onSurface)),
+          SizedBox(height: 2.h),
+          Text('Active Learners',
+              style: ModernGriotTypography.bodySmall()),
+          SizedBox(height: 8.h),
+          GriotBadgePill(
+            label: 'Yoruba Village',
+            icon: Icons.public_rounded,
+            color: ModernGriotColors.secondaryContainer,
+            textColor: ModernGriotColors.onSecondaryContainer,
+          ),
+        ],
+      ),
+    );
+  }
+}
 
+class _TribeActivityCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return GriotCard(
+      surfaceLevel: 1,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.groups_rounded,
+                  size: 18.sp, color: ModernGriotColors.primaryContainer),
+              SizedBox(width: 6.w),
+              Expanded(
+                child: Text('Tribe Activity',
+                    style: ModernGriotTypography.labelLarge(),
+                    overflow: TextOverflow.ellipsis),
+              ),
+            ],
+          ),
+          SizedBox(height: 12.h),
+          Text('8',
+              style: ModernGriotTypography.headlineMedium(
+                  color: cs.onSurface)),
+          SizedBox(height: 2.h),
+          Text('Sessions Today',
+              style: ModernGriotTypography.bodySmall()),
+          SizedBox(height: 8.h),
+          Row(
+            children: List.generate(
+              4,
+              (i) => Container(
+                margin: EdgeInsets.only(right: 4.w),
+                width: 22.r,
+                height: 22.r,
+                decoration: BoxDecoration(
+                  color: ModernGriotColors.primaryContainer
+                      .withAlpha(40 + i * 30),
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: Text(
+                    ['A', 'K', 'O', 'T'][i],
+                    style: TextStyle(
+                      fontSize: 9.sp,
+                      fontWeight: FontWeight.w700,
+                      color: cs.onSurface,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

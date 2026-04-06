@@ -22,6 +22,37 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
   static String _displayName(AppLanguage lang) => lang.name;
   static String? _regionTag(AppLanguage lang) => SupportedLanguages.getCountry(lang.code);
 
+  static String _sttLocaleFor(String code) {
+    const map = {
+      'en': 'en-US',
+      'yo': 'yo-NG',
+      'ha': 'ha-NG',
+      'ig': 'ig-NG',
+      'sw': 'sw-KE',
+      'zu': 'zu-ZA',
+      'xh': 'xh-ZA',
+      'am': 'am-ET',
+      'af': 'af-ZA',
+      'so': 'so-SO',
+      'wo': 'wo-SN',
+      'tw': 'tw-GH',
+      'pcm': 'en-NG',
+      'fr': 'fr-FR',
+      'es': 'es-ES',
+      'pt': 'pt-BR',
+      'ar': 'ar-SA',
+      'de': 'de-DE',
+      'ti': 'ti-ET',
+      'sn': 'sn-ZW',
+      'ln': 'ln-CD',
+      'rw': 'rw-RW',
+      'st': 'st-ZA',
+      'tn': 'tn-ZA',
+      'mg': 'mg-MG',
+    };
+    return map[code.toLowerCase()] ?? code;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textController = useTextEditingController();
@@ -152,7 +183,7 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
         listenFor: const Duration(seconds: 30),
         pauseFor: const Duration(seconds: 3),
         partialResults: true,
-        localeId: sourceLanguage.value.code,
+        localeId: _sttLocaleFor(sourceLanguage.value.code),
       );
       isListening.value = true;
     }

@@ -16,7 +16,12 @@ import '../translation/offline_translation_service.dart';
 import 'cache_service.dart';
 
 class TranslationService {
-  final Dio _dio = Dio();
+  final Dio _dio = Dio(BaseOptions(
+    connectTimeout: const Duration(seconds: 15),
+    receiveTimeout: const Duration(seconds: 30),
+    sendTimeout: const Duration(seconds: 15),
+    headers: {'Accept': 'application/json'},
+  ));
   final ApiRateLimiter _rateLimiter = ApiRateLimiter();
   final OfflineTranslationService _offlineService = OfflineTranslationService();
   bool _initialized = false;
@@ -44,6 +49,8 @@ class TranslationService {
     bool useCache = true,
     bool includePhraseBreakdown = true,
     bool allowOffline = true,
+    /// Passed to backend when supported; included in cache key when set.
+    String? llmModel,
   }) async {
     await _ensureInitialized();
     
@@ -62,12 +69,16 @@ class TranslationService {
     // Truncate excessively long text
     final truncatedText = text.length > 5000 ? text.substring(0, 5000) : text;
     
+    final cacheModelTag =
+        llmModel == null || llmModel.isEmpty ? null : llmModel;
+
     // Check cache first
     if (useCache) {
       final cached = await HybridPolieCache.getCachedTranslation(
         text: truncatedText,
         sourceLang: sourceLang,
         targetLang: targetLang,
+        modelTag: cacheModelTag,
       );
       if (cached != null) {
         return TranslationResult(
@@ -90,6 +101,7 @@ class TranslationService {
         sourceLang: sourceLang,
         targetLang: targetLang,
         includePhraseBreakdown: includePhraseBreakdown,
+        llmModel: llmModel,
       ),
     );
     
@@ -101,6 +113,7 @@ class TranslationService {
           sourceLang: sourceLang,
           targetLang: targetLang,
           result: backendResult.data!.translation,
+          modelTag: cacheModelTag,
         );
       }
       return backendResult.data!;
@@ -130,6 +143,7 @@ class TranslationService {
           sourceLang: sourceLang,
           targetLang: targetLang,
           result: hfResult.data!.translation,
+          modelTag: cacheModelTag,
         );
       }
       return hfResult.data!;
@@ -148,6 +162,7 @@ class TranslationService {
           sourceLang: sourceLang,
           targetLang: targetLang,
           result: myMemoryTranslation,
+          modelTag: cacheModelTag,
         );
       }
       return TranslationResult(
@@ -194,55 +209,60 @@ class TranslationService {
     required String targetLang,
     String? hfToken,
   }) async {
-    final effectiveToken = hfToken ?? EnvConfig.huggingFaceToken;
-    
-    if (effectiveToken.isEmpty) {
-      debugPrint('⚠️ HuggingFace token not configured');
-      return _fallbackResult(text, sourceLang, targetLang);
-    }
-    
-    final srcCode = _getLanguageCode(sourceLang);
-    final tgtCode = _getLanguageCode(targetLang);
-    
-    final response = await _dio.post(
-      _hfNllbUrl,
-      data: jsonEncode({
-        'inputs': text,
-        'parameters': {
-          'src_lang': srcCode,
-          'tgt_lang': tgtCode,
-        },
-      }),
-      options: Options(
-        headers: {
-          'Authorization': 'Bearer $effectiveToken',
-          'Content-Type': 'application/json',
-        },
-        receiveTimeout: const Duration(seconds: 30),
-      ),
-    );
-    
-    if (response.statusCode == 200) {
-      final data = response.data;
-      String translation = '';
+    try {
+      final effectiveToken = hfToken ?? EnvConfig.huggingFaceToken;
       
-      if (data is List && data.isNotEmpty) {
-        translation = data[0]['translation_text'] ?? '';
-      } else if (data is Map && data.containsKey('translation_text')) {
-        translation = data['translation_text'];
+      if (effectiveToken.isEmpty) {
+        debugPrint('⚠️ HuggingFace token not configured');
+        return _fallbackResult(text, sourceLang, targetLang);
       }
       
-      return TranslationResult(
-        translation: translation.isNotEmpty ? translation : text,
-        sourceText: text,
-        sourceLang: sourceLang,
-        targetLang: targetLang,
-        model: 'NLLB-200-HF',
-        confidence: 0.9,
+      final srcCode = _getLanguageCode(sourceLang);
+      final tgtCode = _getLanguageCode(targetLang);
+      
+      final response = await _dio.post(
+        _hfNllbUrl,
+        data: jsonEncode({
+          'inputs': text,
+          'parameters': {
+            'src_lang': srcCode,
+            'tgt_lang': tgtCode,
+          },
+        }),
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $effectiveToken',
+            'Content-Type': 'application/json',
+          },
+          receiveTimeout: const Duration(seconds: 30),
+        ),
       );
+      
+      if (response.statusCode == 200) {
+        final data = response.data;
+        String translation = '';
+        
+        if (data is List && data.isNotEmpty) {
+          translation = data[0]['translation_text'] ?? '';
+        } else if (data is Map && data.containsKey('translation_text')) {
+          translation = data['translation_text'];
+        }
+        
+        return TranslationResult(
+          translation: translation.isNotEmpty ? translation : text,
+          sourceText: text,
+          sourceLang: sourceLang,
+          targetLang: targetLang,
+          model: 'NLLB-200-HF',
+          confidence: 0.9,
+        );
+      }
+      
+      return _fallbackResult(text, sourceLang, targetLang);
+    } catch (e) {
+      logger.error('HuggingFace translation error', tag: 'translation', error: e);
+      return _fallbackResult(text, sourceLang, targetLang);
     }
-    
-    return _fallbackResult(text, sourceLang, targetLang);
   }
   
   /// Translate using MyMemory API (free, no key).
@@ -302,6 +322,9 @@ class TranslationService {
       'fr': 'fr', 'french': 'fr',
       'pt': 'pt', 'portuguese': 'pt',
       'ar': 'ar', 'arabic': 'ar',
+      'es': 'es', 'spanish': 'es',
+      'de': 'de', 'german': 'de',
+      'zh': 'zh', 'chinese': 'zh',
     };
     if (codeMap.containsKey(lower)) return codeMap[lower];
     if (lower.length == 2) return lower;
@@ -329,6 +352,7 @@ class TranslationService {
           text: text,
           sourceLang: sourceLang,
           targetLang: targetLang,
+          modelTag: null,
         );
         if (cached != null) {
           results.add(TranslationResult(
@@ -389,6 +413,7 @@ class TranslationService {
     required String sourceLang,
     required String targetLang,
     bool includePhraseBreakdown = false,
+    String? llmModel,
   }) async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -400,6 +425,7 @@ class TranslationService {
           'sourceLang': sourceLang,
           'targetLang': targetLang,
           if (includePhraseBreakdown) 'includePhraseBreakdown': true,
+          if (llmModel != null && llmModel.isNotEmpty) 'llmModel': llmModel,
         },
         options: Options(
           contentType: 'application/json',
@@ -466,8 +492,14 @@ class TranslationService {
       'wolof': 'wol_Latn',
       'somali': 'som_Latn',
       'english': 'eng_Latn',
+      'french': 'fra_Latn',
+      'spanish': 'spa_Latn',
+      'portuguese': 'por_Latn',
+      'arabic': 'arb_Arab',
+      'german': 'deu_Latn',
+      'chinese': 'zho_Hans',
     };
-    
+
     return codeMap[language.toLowerCase()] ?? 'eng_Latn';
   }
 }

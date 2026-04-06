@@ -1,13 +1,18 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../models/game/game_session_model.dart';
-import '../../providers/ai_chat_provider_groq.dart';
-import 'base_game_screen.dart';
-import 'mixins/round_progress_shell_mixin.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../widgets/game_ui/index.dart';
+import '../../models/game/phrase_card_model.dart';
+import '../../models/game/game_session_model.dart';
+import '../../providers/game_provider.dart';
+import '../../providers/game_content_provider.dart';
+import '../../models/game/game_content_models.dart';
+import '../../utils/modern_griot_design_system.dart';
+import '../../widgets/griot/griot_widgets.dart';
+import '../../widgets/game/game_widgets.dart';
+import 'base_game_screen.dart';
 
-/// Story Builder - Collaborative story construction
 class StoryBuilderGame extends BaseGameScreen {
   const StoryBuilderGame({
     super.key,
@@ -23,198 +28,361 @@ class StoryBuilderGame extends BaseGameScreen {
   ConsumerState<StoryBuilderGame> createState() => _StoryBuilderGameState();
 }
 
-class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame>
-    with RoundProgressGameShellMixin<StoryBuilderGame> {
-  final List<String> _story = [];
-  final TextEditingController _sentenceController = TextEditingController();
-  int _currentTurn = 0;
-  final int _maxTurns = 5;
-  String? _prompt;
-  String? _lastFeedback;
+class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
+  int _currentChapter = 0;
+  int _selectedChoice = -1;
+  final List<String> _storySegments = [];
+  final List<String> _translationSegments = [];
+  String _culturalNote = '';
+  String _locationName = '';
+  late List<PhraseCard> _cards;
+  List<_StoryChoice> _choices = [];
+
+  static const _locations = [
+    'Xhosa Village',
+    'Yoruba Kingdom',
+    'Swahili Coast',
+    'Zulu Kraal',
+    'Igbo Compound',
+  ];
+
+  static const _sceneColors = [
+    Color(0xFFD4A574),
+    Color(0xFFC48B5C),
+    Color(0xFFB87A4B),
+    Color(0xFFAA6939),
+    Color(0xFF9C5828),
+  ];
 
   @override
-  int get gameRound => _currentTurn;
-
-  @override
-  int get gameMaxRounds => _maxTurns;
-
-  @override
-  int get gameScore => session?.correctCount ?? 0;
-
-  @override
-  int getCardCount() => 1;
+  int getCardCount() => 5;
 
   @override
   Future<void> onGameInitialized() async {
+    _cards = ref.read(gameProvider.notifier).availableCards;
+    _locationName = _locations[Random().nextInt(_locations.length)];
+    _prepareChapter();
+  }
+
+  void _prepareChapter() {
+    if (_currentChapter >= _cards.length) {
+      finishGame();
+      return;
+    }
+    final card = _cards[_currentChapter];
+    final rng = Random();
+
+    _storySegments.add(card.text);
+    _translationSegments.add(card.gloss);
+    _culturalNote = card.contextExamples.isNotEmpty
+        ? card.contextExamples.first
+        : 'This phrase reflects the cultural values of '
+            '${widget.language}-speaking communities.';
+
+    final correct = _StoryChoice(
+      letter: 'A',
+      text: card.text,
+      isCorrect: true,
+    );
+    final distractors = <_StoryChoice>[];
+    final usedIndices = <int>{_currentChapter};
+    for (var i = 0; i < 3; i++) {
+      int idx;
+      do {
+        idx = rng.nextInt(_cards.length);
+      } while (usedIndices.contains(idx) && usedIndices.length < _cards.length);
+      usedIndices.add(idx);
+      distractors.add(_StoryChoice(
+        letter: String.fromCharCode(66 + i),
+        text: _cards[idx].text,
+        isCorrect: false,
+      ));
+    }
+
+    final all = [correct, ...distractors]..shuffle(rng);
+    for (var i = 0; i < all.length; i++) {
+      all[i] = _StoryChoice(
+        letter: String.fromCharCode(65 + i),
+        text: all[i].text,
+        isCorrect: all[i].isCorrect,
+      );
+    }
+
     setState(() {
-      _prompt = 'Once upon a time, in a village...';
-      _story.add(_prompt!);
+      _selectedChoice = -1;
+      _choices = all;
     });
   }
 
-  Future<void> _addSentence() async {
-    final sentence = _sentenceController.text.trim();
-    if (sentence.isEmpty) return;
+  void _onChoiceTap(int index) {
+    if (_selectedChoice >= 0) return;
+    HapticFeedback.lightImpact();
+    final choice = _choices[index];
 
-    setState(() {
-      _story.add(sentence);
-      _sentenceController.clear();
-      _currentTurn++;
-    });
-
-    // Evaluate grammar using AI chat provider
-    GameResult result = GameResult.correct;
-    Map<String, dynamic> feedback = {'sentence': sentence, 'turn': _currentTurn};
-    
-    try {
-      final aiChatProvider = ref.read(groqChatProvider.notifier);
-      final grammarCheck = await aiChatProvider.grammarCheck(widget.language, sentence);
-      
-      if (grammarCheck.score < 0.8 || grammarCheck.errors.isNotEmpty) {
-        result = grammarCheck.errors.isEmpty 
-            ? GameResult.partial 
-            : GameResult.incorrect;
-        feedback['grammar_errors'] = grammarCheck.errors;
-        feedback['grammar_score'] = grammarCheck.score;
-        feedback['corrected'] = grammarCheck.corrected;
-        feedback['suggestions'] = grammarCheck.errors.map((e) => e['suggestion'] ?? e['message'] ?? '').where((s) => s.isNotEmpty).toList();
-      } else {
-        feedback['grammar_score'] = grammarCheck.score;
-      }
-    } catch (e) {
-      debugPrint('Grammar check error: $e');
-      // If grammar check fails, accept the sentence but note the error
-      result = GameResult.partial;
-      feedback['grammar_check_error'] = 'Unable to verify grammar';
-    }
+    setState(() => _selectedChoice = index);
 
     final duration = startTime != null
         ? DateTime.now().difference(startTime!).inMilliseconds
-        : 0;
+        : 3000;
 
     completeTurn(
-      cardId: 'story_turn_$_currentTurn',
-      result: result,
+      cardId: _cards[_currentChapter].cardId,
+      result: choice.isCorrect ? GameResult.correct : GameResult.incorrect,
       durationMs: duration,
-      feedback: feedback,
+      feedback: {'chapter': _currentChapter, 'selected': choice.letter},
     );
 
-    setState(() {
-      if (feedback.containsKey('grammar_errors') && (feedback['grammar_errors'] as List).isNotEmpty) {
-        final suggestions = feedback['suggestions'] as List? ?? [];
-        final corrected = feedback['corrected'] as String?;
-        _lastFeedback = corrected != null && corrected.isNotEmpty
-            ? 'Suggestion: $corrected'
-            : suggestions.isNotEmpty
-                ? 'Tip: ${suggestions.first}'
-                : 'Check your grammar and try again.';
-      } else if (feedback.containsKey('grammar_check_error')) {
-        _lastFeedback = null;
-      } else {
-        _lastFeedback = null;
-      }
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      if (!mounted) return;
+      _currentChapter++;
+      _prepareChapter();
     });
-
-    if (_currentTurn >= _maxTurns) {
-      finishGame();
-    }
   }
 
   @override
-  void dispose() {
-    _sentenceController.dispose();
-    super.dispose();
-  }
+  String? get appBarTitle => 'Story Builder';
 
   @override
   Widget buildGameContent(BuildContext context) {
-    try {
-      return Padding(
-        padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 16.h),
-        child: Column(
+    final cs = Theme.of(context).colorScheme;
+    return Stack(
+      children: [
+        ListView(
+          padding: EdgeInsets.fromLTRB(16.w, 72.h, 16.w, 100.h),
           children: [
-            Semantics(
-              label: 'Continue the story, ${_maxTurns - _currentTurn} sentences remaining',
-              child: Text(
-                'Continue the story (${_maxTurns - _currentTurn} sentences left)',
-                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+            _heroSceneCard(cs),
+            SizedBox(height: 16.h),
+            _storyCanvas(cs),
+            SizedBox(height: 20.h),
+            ..._choiceCards(cs),
+            SizedBox(height: 16.h),
+            GameCulturalNoteCard(
+              title: "Griot's Insight",
+              body: _culturalNote,
+            ),
+          ],
+        ),
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: GameTopBar(
+            onClose: () => (widget.onBack ?? () => Navigator.pop(context))(),
+            currentStep: _currentChapter + 1,
+            totalSteps: _cards.length,
+          ),
+        ),
+        Positioned(
+          bottom: 24.h,
+          right: 20.w,
+          child: _readAloudFab(),
+        ),
+      ],
+    );
+  }
+
+  Widget _heroSceneCard(ColorScheme cs) {
+    final bgColor = _sceneColors[_currentChapter % _sceneColors.length];
+    return AspectRatio(
+      aspectRatio: 4 / 5,
+      child: Container(
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: ModernGriotRadius.borderXl,
+          boxShadow: ModernGriotShadows.md,
+        ),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: ClipRRect(
+                borderRadius: ModernGriotRadius.borderXl,
+                child: CustomPaint(painter: _TrianglePatternPainter(bgColor)),
               ),
             ),
-            SizedBox(height: 12.h),
-            Expanded(
-              child: GameCard(
-                child: ListView.builder(
-                  itemCount: _story.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 6.h),
-                      child: Text(
-                        _story[index],
-                        style: TextStyle(fontSize: 16.sp),
-                      ),
-                    );
-                  },
-                ),
-              ),
+            Center(
+              child: Icon(Icons.landscape_rounded,
+                  size: 80.sp, color: Colors.white.withOpacity(0.2)),
             ),
-            if (_lastFeedback != null)
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-                padding: EdgeInsets.all(3.w),
+            Positioned(
+              bottom: 20.h,
+              left: 20.w,
+              right: 20.w,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                 decoration: BoxDecoration(
-                  color: Colors.amber.withOpacity(0.12),
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.amber.withOpacity(0.3)),
+                  color: Colors.black.withOpacity(0.35),
+                  borderRadius: ModernGriotRadius.borderLg,
                 ),
-                child: Row(
-                  children: [
-                    Icon(Icons.lightbulb_outline, color: Colors.amber.shade700, size: 18),
-                    SizedBox(width: 2.w),
-                    Expanded(
-                      child: Text(
-                        _lastFeedback!,
-                        style: TextStyle(fontSize: 13.sp, color: Colors.amber.shade900),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () => setState(() => _lastFeedback = null),
-                      child: Icon(Icons.close, size: 16, color: Colors.amber.shade700),
-                    ),
-                  ],
+                child: Text(
+                  _locationName,
+                  style: ModernGriotTypography.headlineSmall(
+                      context: context, color: Colors.white),
+                  textAlign: TextAlign.center,
                 ),
-              ),
-            SizedBox(height: 12.h),
-            Semantics(
-              label: 'Type your sentence to add to the story',
-              textField: true,
-              child: TextField(
-                controller: _sentenceController,
-                decoration: const InputDecoration(
-                  hintText: 'Type your sentence...',
-                  border: OutlineInputBorder(),
-                ),
-                maxLines: 2,
-                onSubmitted: (_) => _addSentence(),
-              ),
-            ),
-            SizedBox(height: 12.h),
-            Semantics(
-              label: _currentTurn >= _maxTurns ? 'Story complete' : 'Add sentence to story',
-              button: true,
-              enabled: _currentTurn < _maxTurns,
-              child: PrimaryActionButton(
-                onPressed: _currentTurn >= _maxTurns ? null : _addSentence,
-                label: _currentTurn >= _maxTurns ? 'Story Complete!' : 'Add Sentence',
-                icon: Icons.auto_stories_rounded,
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _storyCanvas(ColorScheme cs) {
+    return GriotCard(
+      surfaceLevel: 1,
+      padding: EdgeInsets.all(20.r),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.auto_stories_rounded,
+                  size: 20.sp, color: ModernGriotColors.primary),
+              SizedBox(width: 8.w),
+              Text('Story Canvas',
+                  style: ModernGriotTypography.titleSmall(context: context)),
+            ],
+          ),
+          SizedBox(height: 12.h),
+          Text(
+            _storySegments.join(' '),
+            style: ModernGriotTypography.bodyLarge(context: context),
+          ),
+          SizedBox(height: 8.h),
+          Text(
+            _translationSegments.join(' '),
+            style: ModernGriotTypography.bodyMedium(context: context).copyWith(
+              color: ModernGriotColors.onSurfaceVariant.withOpacity(0.7),
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _choiceCards(ColorScheme cs) {
+    return List.generate(_choices.length, (i) {
+      final choice = _choices[i];
+      final isSelected = _selectedChoice == i;
+      final revealed = _selectedChoice >= 0;
+
+      Color? borderColor;
+      if (revealed && choice.isCorrect) {
+        borderColor = ModernGriotColors.secondary;
+      } else if (revealed && isSelected && !choice.isCorrect) {
+        borderColor = ModernGriotColors.error;
+      } else if (isSelected) {
+        borderColor = ModernGriotColors.primary;
+      }
+
+      return Padding(
+        padding: EdgeInsets.only(bottom: 10.h),
+        child: GestureDetector(
+          onTap: _selectedChoice < 0 ? () => _onChoiceTap(i) : null,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 250),
+            padding: EdgeInsets.all(16.r),
+            decoration: BoxDecoration(
+              color: cs.surfaceContainerLow,
+              borderRadius: ModernGriotRadius.borderXl,
+              border: borderColor != null
+                  ? Border.all(color: borderColor, width: 2)
+                  : Border.all(
+                      color: cs.outlineVariant.withOpacity(0.15), width: 1),
+              boxShadow: ModernGriotShadows.sm,
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 36.r,
+                  height: 36.r,
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? ModernGriotColors.primary
+                        : ModernGriotColors.surfaceContainerHigh,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                    child: Text(
+                      choice.letter,
+                      style: ModernGriotTypography.labelLarge(
+                        context: context,
+                        color: isSelected
+                            ? ModernGriotColors.onPrimary
+                            : ModernGriotColors.onSurface,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: Text(choice.text,
+                      style:
+                          ModernGriotTypography.bodyMedium(context: context)),
+                ),
+                if (revealed && choice.isCorrect)
+                  Icon(Icons.check_circle_rounded,
+                      color: ModernGriotColors.secondary, size: 22.sp),
+                if (revealed && isSelected && !choice.isCorrect)
+                  Icon(Icons.cancel_rounded,
+                      color: ModernGriotColors.error, size: 22.sp),
+              ],
+            ),
+          ),
+        ),
       );
-    } catch (e, st) {
-      debugPrint('StoryBuilderGame buildGameContent: $e $st');
-      rethrow;
-    }
+    });
+  }
+
+  Widget _readAloudFab() {
+    return GestureDetector(
+      onTap: () => HapticFeedback.mediumImpact(),
+      child: Container(
+        width: 56.r,
+        height: 56.r,
+        decoration: BoxDecoration(
+          gradient: ModernGriotGradients.signatureGradient,
+          shape: BoxShape.circle,
+          boxShadow: ModernGriotShadows.fab,
+        ),
+        child: Icon(Icons.volume_up_rounded,
+            color: ModernGriotColors.onPrimary, size: 26.sp),
+      ),
+    );
   }
 }
 
+class _StoryChoice {
+  final String letter;
+  final String text;
+  final bool isCorrect;
+  const _StoryChoice(
+      {required this.letter, required this.text, required this.isCorrect});
+}
+
+class _TrianglePatternPainter extends CustomPainter {
+  final Color baseColor;
+  _TrianglePatternPainter(this.baseColor);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.white.withOpacity(0.06)
+      ..style = PaintingStyle.fill;
+    const step = 40.0;
+    for (double y = 0; y < size.height; y += step) {
+      for (double x = 0; x < size.width; x += step) {
+        final path = Path()
+          ..moveTo(x, y + step)
+          ..lineTo(x + step / 2, y)
+          ..lineTo(x + step, y + step)
+          ..close();
+        canvas.drawPath(path, paint);
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}

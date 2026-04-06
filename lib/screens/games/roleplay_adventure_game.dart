@@ -1,14 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../models/game/game_session_model.dart';
-import '../../services/polie_content_generator.dart';
-import 'base_game_screen.dart';
-import 'mixins/round_progress_shell_mixin.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../widgets/game_ui/index.dart';
 import 'dart:math';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../models/game/phrase_card_model.dart';
+import '../../models/game/game_session_model.dart';
+import '../../providers/game_provider.dart';
+import '../../providers/game_content_provider.dart';
+import '../../models/game/game_content_models.dart';
+import '../../utils/modern_griot_design_system.dart';
+import '../../widgets/griot/griot_widgets.dart';
+import '../../widgets/game/game_widgets.dart';
+import 'base_game_screen.dart';
 
-/// Roleplay Adventure - Branching dialogue scenarios
 class RoleplayAdventureGame extends BaseGameScreen {
   const RoleplayAdventureGame({
     super.key,
@@ -21,332 +25,382 @@ class RoleplayAdventureGame extends BaseGameScreen {
   GameType getGameType() => GameType.roleplayAdventure;
 
   @override
-  ConsumerState<RoleplayAdventureGame> createState() => _RoleplayAdventureGameState();
+  ConsumerState<RoleplayAdventureGame> createState() =>
+      _RoleplayAdventureGameState();
 }
 
-class _RoleplayAdventureGameState extends BaseGameScreenState<RoleplayAdventureGame>
-    with RoundProgressGameShellMixin<RoleplayAdventureGame> {
-  static const int _maxDialogueTurns = 5;
-
-  String _scenario = 'market';
-  String _npcMessage = '';
+class _RoleplayAdventureGameState
+    extends BaseGameScreenState<RoleplayAdventureGame> {
+  List<GameScenario> _scenarios = [];
+  int _currentIndex = 0;
+  int _respectPoints = 75;
+  String _npcDialogue = '';
+  String _npcTranslation = '';
+  List<_DecisionOption> _options = [];
+  int? _selectedIndex;
+  bool _showResult = false;
   final List<String> _dialogueHistory = [];
-  final List<_DialogueOption> _options = [];
-  int _turnCount = 0;
+
+  static const _scenarioIcons = [
+    Icons.store_rounded,
+    Icons.local_hospital_rounded,
+    Icons.directions_bus_rounded,
+    Icons.family_restroom_rounded,
+    Icons.school_rounded,
+  ];
 
   @override
-  int get gameRound => _turnCount;
-
-  @override
-  int get gameMaxRounds => _maxDialogueTurns;
-
-  @override
-  int get gameScore => session?.correctCount ?? 0;
-
-  @override
-  int getCardCount() => 1;
+  int getCardCount() => 5;
 
   @override
   Future<void> onGameInitialized() async {
-    await _loadScenario();
-  }
-
-  Future<void> _loadScenario() async {
-    final scenarios = ['market', 'clinic', 'transport', 'family'];
-    _scenario = scenarios[Random().nextInt(scenarios.length)];
-    try {
-      final generator = ref.read(polieContentGeneratorProvider);
-      final generated = await generator.generateGameContent(
-        gameType: 'roleplay_adventure',
+    final loaded = ref.read(
+      gameScenariosProvider(GameContentFilter(
         language: widget.language,
-        difficulty: widget.level,
-        additionalContext:
-            'Return exactly one NPC message and three learner reply options. '
-            'Format:\nNPC: <message>\nCORRECT: <text>\nWRONG_LANGUAGE: <text>\nWRONG_CONTEXT: <text>',
-      );
-      final content = (generated['content']?.toString() ?? '').trim();
-      final npc = _extractLabeledLine(content, 'NPC') ??
-          'NPC: "Kí ni o fẹ́ ṣe lónìí?" (What would you like to do today?)';
-      final correct =
-          _extractLabeledLine(content, 'CORRECT') ?? 'Mo fẹ́ bá ọ sọ̀rọ̀ ní èdè wa.';
-      final wrongLanguage =
-          _extractLabeledLine(content, 'WRONG_LANGUAGE') ?? 'Hello, can we speak in English?';
-      final wrongContext =
-          _extractLabeledLine(content, 'WRONG_CONTEXT') ?? 'Mo dúpé gan-an.';
-
-      if (!mounted) return;
-      setState(() {
-        _npcMessage = npc;
-        _options
-          ..clear()
-          ..addAll([
-            _DialogueOption(correct, 'correct'),
-            _DialogueOption(wrongLanguage, 'wrong_language'),
-            _DialogueOption(wrongContext, 'wrong_context'),
-          ]);
-        _options.shuffle(Random());
-        _dialogueHistory.add(_npcMessage);
-      });
-    } catch (_) {
-      if (!mounted) return;
-      final fallback = _getLanguageFallback(widget.language);
-      setState(() {
-        _npcMessage = fallback['npc']! as String;
-        _options
-          ..clear()
-          ..addAll(
-            (fallback['options'] as List).map((o) =>
-              _DialogueOption(o['text'] as String, o['result'] as String),
-            ).toList(),
-          );
-        _options.shuffle(Random());
-        _dialogueHistory.add(_npcMessage);
-      });
+        game: 'RoleplayAdventure',
+      )),
+    );
+    if (loaded.isNotEmpty) {
+      _scenarios = List.of(loaded)..shuffle(Random());
+      if (_scenarios.length > 5) _scenarios = _scenarios.sublist(0, 5);
+    } else {
+      _scenarios = _fallbackScenarios();
     }
+    _prepareRound();
   }
 
-  String? _extractLabeledLine(String source, String label) {
-    final match =
-        RegExp('^\\s*$label\\s*:\\s*(.+)\$', multiLine: true, caseSensitive: false)
-            .firstMatch(source);
-    return match?.group(1)?.trim();
-  }
+  List<GameScenario> _fallbackScenarios() => [
+        GameScenario(id: 1, game: 'RoleplayAdventure', language: widget.language, cefr: 'A1', title: 'Market Greeting', prompt: 'A vendor greets you warmly at the stall.', expectedResponse: 'Respond with a culturally appropriate greeting.', culturalNote: 'Always greet elders before conducting business.'),
+        GameScenario(id: 2, game: 'RoleplayAdventure', language: widget.language, cefr: 'A1', title: 'Family Visit', prompt: 'You arrive at a family compound for the first time.', expectedResponse: 'Show respect with a formal greeting.', culturalNote: 'Prostration or kneeling shows deep respect.'),
+        GameScenario(id: 3, game: 'RoleplayAdventure', language: widget.language, cefr: 'A1', title: 'Transport Hub', prompt: 'A conductor calls out destinations loudly.', expectedResponse: 'State your destination clearly.', culturalNote: 'Negotiating fare before boarding is expected.'),
+        GameScenario(id: 4, game: 'RoleplayAdventure', language: widget.language, cefr: 'A1', title: 'Elder Council', prompt: 'The village elder asks for your opinion.', expectedResponse: 'Offer a humble, respectful response.', culturalNote: 'Wisdom is valued over haste in council.'),
+        GameScenario(id: 5, game: 'RoleplayAdventure', language: widget.language, cefr: 'A1', title: 'Festive Gathering', prompt: 'You are invited to share a meal at a ceremony.', expectedResponse: 'Accept graciously using proper etiquette.', culturalNote: 'Using the right hand is customary for eating.'),
+      ];
 
-  void _selectOption(_DialogueOption option) {
+  void _prepareRound() {
+    if (_currentIndex >= _scenarios.length) {
+      finishGame();
+      return;
+    }
+    final scenario = _scenarios[_currentIndex];
+    final rng = Random();
+    final options = [
+      _DecisionOption(
+        text: scenario.expectedResponse ?? 'Respond respectfully',
+        icon: Icons.handshake_rounded,
+        color: ModernGriotColors.secondary,
+        isCorrect: true,
+      ),
+      _DecisionOption(
+        text: 'Switch to English casually',
+        icon: Icons.language_rounded,
+        color: ModernGriotColors.tertiary,
+        isCorrect: false,
+      ),
+      _DecisionOption(
+        text: 'Stay silent and walk away',
+        icon: Icons.directions_walk_rounded,
+        color: ModernGriotColors.error,
+        isCorrect: false,
+      ),
+    ]..shuffle(rng);
+
     setState(() {
-      _dialogueHistory.add('You: ${option.text}');
-      _turnCount++;
+      _npcDialogue = scenario.prompt;
+      _npcTranslation = scenario.title;
+      _options = options;
+      _selectedIndex = null;
+      _showResult = false;
     });
+  }
 
-    final result = option.result == 'correct'
-        ? GameResult.correct
-        : GameResult.incorrect;
+  void _selectOption(int index) {
+    if (_showResult) return;
+    HapticFeedback.mediumImpact();
+    final option = _options[index];
+    final isCorrect = option.isCorrect;
+    final delta = isCorrect ? 10 : -15;
 
-    final duration = startTime != null
-        ? DateTime.now().difference(startTime!).inMilliseconds
-        : 0;
+    setState(() {
+      _selectedIndex = index;
+      _showResult = true;
+      _respectPoints = (_respectPoints + delta).clamp(0, 100);
+      _dialogueHistory.add(option.text);
+    });
 
     completeTurn(
-      cardId: 'roleplay_turn_$_turnCount',
-      result: result,
-      durationMs: duration,
-      feedback: {'option': option.text, 'scenario': _scenario},
+      cardId: 'roleplay_$_currentIndex',
+      result: isCorrect ? GameResult.correct : GameResult.incorrect,
+      durationMs: startTime != null
+          ? DateTime.now().difference(startTime!).inMilliseconds
+          : 5000,
+      feedback: {'option': option.text, 'respect': _respectPoints},
     );
 
-    // NPC response
-    Future.delayed(const Duration(seconds: 1), () async {
-      if (mounted) {
-        final npcFollowUp = await _generateNpcFollowUp(option, result);
-        setState(() {
-          _dialogueHistory.add(npcFollowUp);
-        });
-        await _loadScenario();
-
-        if (_turnCount >= _maxDialogueTurns) {
-          finishGame();
-        }
-      }
+    Future.delayed(const Duration(seconds: 2), () {
+      if (!mounted) return;
+      _currentIndex++;
+      _prepareRound();
     });
-  }
-
-  Future<String> _generateNpcFollowUp(_DialogueOption option, GameResult result) async {
-    try {
-      final generator = ref.read(polieContentGeneratorProvider);
-      final generated = await generator.generateGameContent(
-        gameType: 'roleplay_adventure_followup',
-        language: widget.language,
-        difficulty: widget.level,
-        additionalContext:
-            'Return exactly one concise NPC follow-up line for this roleplay turn. '
-            'Prefix with NPC:. Keep it under 20 words.\n'
-            'Scenario: $_scenario\n'
-            'Learner option: ${option.text}\n'
-            'Result: ${result.name}',
-      );
-
-      final content = (generated['content']?.toString() ?? '').trim();
-      if (content.isEmpty) {
-        return _fallbackNpcFollowUp(result);
-      }
-
-      final firstLine = content
-          .split('\n')
-          .map((line) => line.trim())
-          .firstWhere((line) => line.isNotEmpty, orElse: () => content);
-
-      if (firstLine.startsWith('NPC:')) {
-        return firstLine;
-      }
-      return 'NPC: $firstLine';
-    } catch (_) {
-      return _fallbackNpcFollowUp(result);
-    }
-  }
-
-  String _fallbackNpcFollowUp(GameResult result) {
-    final lang = widget.language.toLowerCase();
-    if (result == GameResult.correct) {
-      switch (lang) {
-        case 'yoruba':
-          return 'NPC: Ó dára! Ẹ jẹ́ ká tẹ̀síwájú.';
-        case 'hausa':
-          return 'NPC: Da kyau! Mu ci gaba.';
-        case 'igbo':
-          return 'NPC: Ọ dị mma! Ka anyị gaa n\'ihu.';
-        case 'swahili':
-          return 'NPC: Vizuri! Tuendelee.';
-        case 'zulu':
-          return 'NPC: Kuhle! Asiqhubeke.';
-        default:
-          return 'NPC: Good response. Let us continue.';
-      }
-    }
-    switch (lang) {
-      case 'yoruba':
-        return 'NPC: Ẹ gbìyànjú lẹ́ẹ̀kan síi.';
-      case 'hausa':
-        return 'NPC: A sake gwadawa.';
-      case 'igbo':
-        return 'NPC: Gbalịa ọzọ.';
-      case 'swahili':
-        return 'NPC: Jaribu tena.';
-      case 'zulu':
-        return 'NPC: Zama futhi.';
-      default:
-        return 'NPC: Try again with a better fit.';
-    }
-  }
-
-  static Map<String, dynamic> _getLanguageFallback(String language) {
-    final scenarios = {
-      'yoruba': {
-        'npc': 'Vendor: "Báwo ní? Kí ni ẹ fẹ́ ra?"',
-        'options': [
-          {'text': 'Báwo ni? Mo fẹ́ ra ẹwà.', 'result': 'correct'},
-          {'text': 'Hello, I want beans.', 'result': 'wrong_language'},
-          {'text': 'Mo dúpé.', 'result': 'wrong_context'},
-        ],
-      },
-      'hausa': {
-        'npc': 'Mai sayarwa: "Sannu! Mene ne kuke so ku saya?"',
-        'options': [
-          {'text': 'Sannu! Ina son siyan wake.', 'result': 'correct'},
-          {'text': 'Hello, I want beans.', 'result': 'wrong_language'},
-          {'text': 'Na gode.', 'result': 'wrong_context'},
-        ],
-      },
-      'igbo': {
-        'npc': 'Onye ahịa: "Kedu? Gịnị ka ị chọrọ ịzụ?"',
-        'options': [
-          {'text': 'Kedu? Achọrọ m ịzụ agwa.', 'result': 'correct'},
-          {'text': 'Hello, I want beans.', 'result': 'wrong_language'},
-          {'text': 'Daalụ.', 'result': 'wrong_context'},
-        ],
-      },
-      'swahili': {
-        'npc': 'Muuzaji: "Habari! Unataka kununua nini?"',
-        'options': [
-          {'text': 'Habari! Nataka kununua maharagwe.', 'result': 'correct'},
-          {'text': 'Hello, I want beans.', 'result': 'wrong_language'},
-          {'text': 'Asante.', 'result': 'wrong_context'},
-        ],
-      },
-      'zulu': {
-        'npc': 'Umthengisi: "Sawubona! Ufuna ukuthenga ini?"',
-        'options': [
-          {'text': 'Sawubona! Ngifuna ukuthenga ubhontshisi.', 'result': 'correct'},
-          {'text': 'Hello, I want beans.', 'result': 'wrong_language'},
-          {'text': 'Ngiyabonga.', 'result': 'wrong_context'},
-        ],
-      },
-    };
-    return scenarios[language.toLowerCase()] ?? scenarios['yoruba']!;
   }
 
   @override
   Widget buildGameContent(BuildContext context) {
-    try {
-      return Padding(
-        padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 16.h),
-        child: Column(
+    if (_scenarios.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    final cs = Theme.of(context).colorScheme;
+    final scenario = _currentIndex < _scenarios.length
+        ? _scenarios[_currentIndex]
+        : _scenarios.last;
+
+    return Stack(
+      children: [
+        ListView(
+          padding: EdgeInsets.fromLTRB(16.w, 72.h, 16.w, 24.h),
           children: [
-            Semantics(
-              label: 'Scenario: ${_scenario.toUpperCase()}',
-              child: GameCard(
-                child: Row(
-                  children: [
-                    const Icon(Icons.store, size: 24, semanticLabel: 'Scenario'),
-                    SizedBox(width: 8.w),
-                    Text(
-                      'Scenario: ${_scenario.toUpperCase()}',
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 12.h),
-            Expanded(
-              child: GameCard(
-                child: ListView.builder(
-                  itemCount: _dialogueHistory.length,
-                  itemBuilder: (context, index) {
-                    final message = _dialogueHistory[index];
-                    final isNPC = message.startsWith('Vendor:') ||
-                        message.startsWith('Doctor:') ||
-                        message.startsWith('NPC:');
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 6.h),
-                      child: Align(
-                        alignment: isNPC ? Alignment.centerLeft : Alignment.centerRight,
-                        child: Container(
-                          padding: EdgeInsets.all(10.w),
-                          decoration: BoxDecoration(
-                            color: isNPC ? Colors.blue[100] : Colors.green[100],
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text(
-                            message,
-                            style: TextStyle(fontSize: 14.sp),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-            SizedBox(height: 12.h),
-            ..._options.map((option) => Padding(
-                  padding: EdgeInsets.only(bottom: 10.h),
-                  child: Semantics(
-                    label: 'Dialogue option: ${option.text}',
-                    button: true,
-                    child: PrimaryActionButton(
-                      onPressed: () => _selectOption(option),
-                      label: option.text,
-                      icon: Icons.chat_bubble_outline_rounded,
-                    ),
-                  ),
-                ),
+            _buildHeroScene(cs, scenario),
+            SizedBox(height: 20.h),
+            _buildDialogueBubble(cs),
+            SizedBox(height: 20.h),
+            ...List.generate(_options.length, (i) => Padding(
+              padding: EdgeInsets.only(bottom: 12.h),
+              child: _buildDecisionCard(cs, i),
+            )),
+            SizedBox(height: 16.h),
+            if (scenario.culturalNote != null)
+              GameCulturalNoteCard(
+                title: "Griot's Wisdom",
+                body: scenario.culturalNote!,
               ),
           ],
         ),
-      );
-    } catch (e, st) {
-      debugPrint('RoleplayAdventureGame buildGameContent: $e $st');
-      rethrow;
+        Positioned(
+          top: 0, left: 0, right: 0,
+          child: GameTopBar(
+            onClose: () => (widget.onBack ?? () => Navigator.pop(context))(),
+            currentStep: _currentIndex + 1,
+            totalSteps: _scenarios.length,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHeroScene(ColorScheme cs, GameScenario scenario) {
+    final iconData = _scenarioIcons[_currentIndex % _scenarioIcons.length];
+    return Container(
+      height: 530.h,
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFF9E3D00), Color(0xFFFF7A35), Color(0xFFFDE8D0)],
+        ),
+        borderRadius: ModernGriotRadius.borderXl,
+        boxShadow: ModernGriotShadows.lg,
+      ),
+      child: Stack(
+        children: [
+          Positioned(
+            top: 40.h, left: 0, right: 0,
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 56.r,
+                  backgroundColor: Colors.white.withOpacity(0.25),
+                  child: Icon(iconData, size: 48.sp, color: Colors.white),
+                ),
+                SizedBox(height: 16.h),
+                Text(
+                  scenario.title,
+                  style: ModernGriotTypography.headlineSmall(
+                    context: context, color: Colors.white,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 8.h),
+                Text(
+                  'Chapter ${_currentIndex + 1}',
+                  style: ModernGriotTypography.labelLarge(
+                    context: context,
+                    color: Colors.white.withOpacity(0.8),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 24.h, left: 24.w, right: 24.w,
+            child: _buildRespectMeter(cs),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRespectMeter(ColorScheme cs) {
+    final fraction = _respectPoints / 100.0;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Respect', style: ModernGriotTypography.labelLarge(
+              context: context, color: Colors.white,
+            )),
+            Text('$_respectPoints%', style: ModernGriotTypography.titleSmall(
+              context: context, color: Colors.white,
+            )),
+          ],
+        ),
+        SizedBox(height: 8.h),
+        Container(
+          height: 12.h,
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.2),
+            borderRadius: ModernGriotRadius.borderPill,
+          ),
+          child: FractionallySizedBox(
+            alignment: Alignment.centerLeft,
+            widthFactor: fraction,
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFFE8FBAC), Color(0xFF526124)],
+                ),
+                borderRadius: ModernGriotRadius.borderPill,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDialogueBubble(ColorScheme cs) {
+    return GriotCard(
+      surfaceLevel: 1,
+      padding: EdgeInsets.all(20.r),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 18.r,
+                backgroundColor: ModernGriotColors.primaryContainer.withOpacity(0.3),
+                child: Icon(Icons.person_rounded, size: 20.sp,
+                    color: ModernGriotColors.primary),
+              ),
+              SizedBox(width: 12.w),
+              Text('NPC', style: ModernGriotTypography.labelLarge(
+                context: context, color: ModernGriotColors.primary,
+              )),
+            ],
+          ),
+          SizedBox(height: 12.h),
+          Container(
+            padding: EdgeInsets.all(16.r),
+            decoration: BoxDecoration(
+              color: cs.surfaceContainerLow,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(ModernGriotRadius.xl.r),
+                bottomLeft: Radius.circular(ModernGriotRadius.xl.r),
+                bottomRight: Radius.circular(ModernGriotRadius.xl.r),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(_npcDialogue, style: ModernGriotTypography.bodyLarge(
+                  context: context,
+                )),
+                SizedBox(height: 6.h),
+                Text(_npcTranslation, style: ModernGriotTypography.bodySmall(
+                  context: context,
+                  color: ModernGriotColors.onSurfaceVariant,
+                ).copyWith(fontStyle: FontStyle.italic)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDecisionCard(ColorScheme cs, int index) {
+    final option = _options[index];
+    final isSelected = _selectedIndex == index;
+    final showCorrect = _showResult && option.isCorrect;
+    final showWrong = _showResult && isSelected && !option.isCorrect;
+
+    Color bgColor;
+    if (showCorrect) {
+      bgColor = ModernGriotColors.secondary.withOpacity(0.15);
+    } else if (showWrong) {
+      bgColor = ModernGriotColors.error.withOpacity(0.15);
+    } else if (isSelected) {
+      bgColor = option.color.withOpacity(0.12);
+    } else {
+      bgColor = cs.surfaceContainerLow;
     }
+
+    return GestureDetector(
+      onTap: () => _selectOption(index),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: ModernGriotRadius.borderXl,
+          boxShadow: isSelected ? ModernGriotShadows.md : ModernGriotShadows.sm,
+          border: Border.all(
+            color: isSelected
+                ? option.color.withOpacity(0.5)
+                : cs.outlineVariant.withOpacity(0.15),
+            width: isSelected ? 2 : 1,
+          ),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 40.r, height: 40.r,
+              decoration: BoxDecoration(
+                color: option.color.withOpacity(0.15),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(option.icon, size: 20.sp, color: option.color),
+            ),
+            SizedBox(width: 14.w),
+            Expanded(
+              child: Text(option.text, style: ModernGriotTypography.bodyMedium(
+                context: context,
+              )),
+            ),
+            if (showCorrect)
+              Icon(Icons.check_circle_rounded, color: ModernGriotColors.secondary, size: 24.sp),
+            if (showWrong)
+              Icon(Icons.cancel_rounded, color: ModernGriotColors.error, size: 24.sp),
+          ],
+        ),
+      ),
+    );
   }
 }
 
-class _DialogueOption {
+class _DecisionOption {
   final String text;
-  final String result; // 'correct', 'wrong_language', 'wrong_context'
+  final IconData icon;
+  final Color color;
+  final bool isCorrect;
 
-  _DialogueOption(this.text, this.result);
+  const _DecisionOption({
+    required this.text,
+    required this.icon,
+    required this.color,
+    required this.isCorrect,
+  });
 }
-

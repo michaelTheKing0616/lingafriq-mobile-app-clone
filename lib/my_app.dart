@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 
 import 'app_theme.dart';
 import 'providers/navigation_provider.dart';
@@ -11,6 +12,7 @@ import 'providers/theme_mode_provider.dart';
 import 'screens/splash/splash_screen.dart';
 
 // Route screen imports
+import 'screens/ai_chat/ai_mode_selection_screen.dart';
 import 'screens/ai_chat/polie_mode_selection_screen.dart';
 import 'screens/curriculum/curriculum_screen_material3.dart';
 import 'screens/games/games_screen_material3.dart';
@@ -21,13 +23,32 @@ import 'screens/gamification/leaderboard_screen.dart';
 import 'screens/social/tribe_vs_tribe_screen.dart';
 import 'screens/gamification/tribe_selection_screen.dart';
 import 'screens/social/language_villages_screen.dart';
+import 'screens/village/villages_hub_screen.dart';
+import 'screens/village/swahili_village_map_screen.dart';
+import 'screens/village/village_market_screen.dart';
+import 'screens/village/village_cafe_screen.dart';
+import 'screens/village/elder_hut_screen.dart';
+import 'screens/village/practice_room_setup_screen.dart';
+import 'screens/village/practice_session_screen.dart';
+import 'screens/village/practice_room_collaborative_screen.dart';
+import 'screens/village/session_summary_screen.dart';
+import 'screens/village/flashcard_focus_screen.dart';
+import 'screens/village/matching_pairs_screen.dart';
+import 'screens/village/tonal_lesson_screen.dart';
+import 'screens/village/tribe_hub_screen.dart';
+import 'screens/village/tribe_discovery_screen.dart';
+import 'screens/village/my_tribe_screen.dart';
+import 'screens/village/tribal_duel_screen.dart';
+import 'screens/village/inter_tribe_leaderboard_screen.dart';
 import 'screens/chat/global_chat_screen_material3.dart';
 import 'screens/social/user_connections_screen.dart';
 import 'screens/gamification/quest_screen.dart';
 import 'screens/gamification/seasonal_events_screen.dart';
 import 'screens/gamification/magic_items_screen.dart';
 import 'screens/social/ancestral_tree_screen.dart';
-import 'screens/magazine/culture_magazine_screen.dart';
+import 'screens/magazine/culture_magazine_screen_enhanced.dart';
+import 'screens/heritage/flb_heritage_archive_screen.dart';
+import 'screens/heritage/flb_heritage_detail_screen.dart';
 import 'screens/ugc/ugc_hub_screen.dart';
 import 'screens/voice_contribution/voice_contribution_screen.dart';
 import 'screens/media/import_media_screen.dart';
@@ -76,6 +97,19 @@ import 'models/language_response.dart';
 import 'models/offline/local_vocabulary.dart';
 import 'widgets/empty_state_widget.dart';
 
+/// Union of ARB-backed locales and [DynamicLocalizationService] codes so
+/// `locale` and `AppLocalizations` stay consistent.
+List<Locale> _mergedAppLocales() {
+  final byCode = <String, Locale>{};
+  for (final l in AppLocalizations.supportedLocales) {
+    byCode[l.languageCode] = l;
+  }
+  for (final lang in DynamicLocalizationService.getSupportedLanguages()) {
+    byCode.putIfAbsent(lang.code, () => Locale(lang.code));
+  }
+  return byCode.values.toList();
+}
+
 class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
@@ -107,13 +141,9 @@ class _MyAppState extends ConsumerState<MyApp> {
               darkTheme: darkTheme,
               themeMode: themeMode,
               locale: currentLocale,
-              localizationsDelegates: const [
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: DynamicLocalizationService.getSupportedLanguages()
-                  .map((lang) => Locale(lang.code)),
+              // AppLocalizations bundles intl + Material/Cupertino/Widgets delegates.
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: _mergedAppLocales(),
               localeResolutionCallback: (locale, supportedLocales) {
                 // Use DynamicLocalizationService to resolve locale
                 if (locale != null) {
@@ -160,7 +190,7 @@ class _MyAppState extends ConsumerState<MyApp> {
 Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
   final normalizedRoute = _normalizeRouteName(settings.name);
   final routes = <String, WidgetBuilder>{
-    'ai_chat_select': (_) => const PolieModeSelectionScreen(),
+    'ai_chat_select': (_) => const AIModeSelectionScreen(),
     'polie_mode_selection': (_) => const PolieModeSelectionScreen(),
     'curriculum': (_) => const CurriculumScreenMaterial3(),
     'games': (_) => const GamesScreenMaterial3(),
@@ -173,14 +203,45 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'tribe_vs_tribe': (_) => const TribeVsTribeScreen(),
     'tribe-selection': (_) => const TribeSelectionScreen(),
     'tribe_selection': (_) => const TribeSelectionScreen(),
-    'villages': (_) => const LanguageVillagesScreen(),
+    'villages': (_) => const VillagesHubScreen(),
+    'villages-hub': (_) => const VillagesHubScreen(),
+    'language-village': (_) => const LanguageVillagesScreen(),
+    'swahili-village-map': (_) => const SwahiliVillageMapScreen(),
+    'village-market': (_) => const VillageMarketScreen(),
+    'village-cafe': (_) => const VillageCafeScreen(),
+    'elder-hut': (_) => const ElderHutScreen(),
+    'practice-room-setup': (_) => const PracticeRoomSetupScreen(),
+    'practice-session': (_) => const PracticeSessionScreen(),
+    'practice-room-collaborative': (_) =>
+        const PracticeRoomCollaborativeScreen(),
+    'session-summary': (_) => const SessionSummaryScreen(),
+    'flashcard-focus': (_) => const FlashcardFocusScreen(),
+    'matching-pairs': (_) => const MatchingPairsScreen(),
+    'tonal-lesson': (_) => const TonalLessonScreen(),
+    'tribe-hub': (_) => const TribeHubScreen(),
+    'tribe-discovery': (_) => const TribeDiscoveryScreen(),
+    'my-tribe': (_) => const MyTribeScreen(),
+    'tribal-duel': (_) => const TribalDuelScreen(),
+    'inter-tribe-leaderboard': (_) => const InterTribeLeaderboardScreen(),
     'global_chat': (_) => const GlobalChatScreenMaterial3(),
     'connections': (_) => const UserConnectionsScreen(),
     'quest': (_) => const QuestScreen(),
     'events': (_) => const SeasonalEventsScreen(),
     'magic_items': (_) => const MagicItemsScreen(),
     'ancestral_tree': (_) => const AncestralTreeScreen(),
-    'magazine': (_) => const CultureMagazineScreen(),
+    'magazine': (_) => const CultureMagazineScreenEnhanced(),
+    'flb-heritage-archive': (_) => const FlbHeritageArchiveScreen(),
+    'flb-heritage-detail': (ctx) {
+      final content = heritageDetailFromArguments(settings.arguments);
+      if (content == null) {
+        return Scaffold(
+          body: Center(
+            child: Text(AppLocalizations.of(ctx)!.flbHeritageMissingContent),
+          ),
+        );
+      }
+      return FlbHeritageDetailScreen(content: content);
+    },
     'ugc': (_) => const UGCHubScreen(),
     'contribute_voice': (_) => const VoiceContributionScreen(),
     'import_media': (_) => const ImportMediaScreen(),

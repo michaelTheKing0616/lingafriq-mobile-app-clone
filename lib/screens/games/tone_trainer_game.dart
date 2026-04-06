@@ -1,660 +1,469 @@
-import 'dart:async';
-import 'dart:math' as math;
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lingafriq/models/loading_screen_content.dart';
-import 'package:lingafriq/providers/loading_screen_provider.dart';
-import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/utils/images.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import '../../models/game/phrase_card_model.dart';
+import '../../models/game/game_session_model.dart';
+import '../../providers/game_provider.dart';
+import '../../providers/game_content_provider.dart';
+import '../../models/game/game_content_models.dart';
+import '../../utils/modern_griot_design_system.dart';
+import '../../utils/pan_african_design_system.dart';
+import '../../widgets/griot/griot_widgets.dart';
+import '../../widgets/game/game_widgets.dart';
+import 'base_game_screen.dart';
 
-/// Minimum time to show loading screen so users can read facts
-/// Intelligently configured to allow users to read facts comfortably
-const Duration kMinLoadingDisplayTime = Duration(seconds: 5); // Increased for better readability
-
-/// Time between fact rotations (for longer loading operations)
-const Duration kFactRotationInterval = Duration(seconds: 6);
-
-/// Dynamic loading screen with rotating African cultural content
-/// Based on the design concept with:
-/// - App logo
-/// - Circular illustration of African person
-/// - Greeting in local language
-/// - Interesting fact about Africa
-/// - Loading progress indicator
-/// 
-/// The screen will display for at least [kMinLoadingDisplayTime] to allow
-/// users to read the educational content about Africa.
-class DynamicLoadingScreen extends ConsumerStatefulWidget {
-  final VoidCallback? onLoadingComplete;
-  final Duration? loadingDuration;
-  
-  /// If true, the screen will wait for [loadingDuration] before calling onComplete
-  /// If false, it will call onComplete immediately after animation starts but UI remains
-  final bool waitForDuration;
-  
-  /// Optional message to display
-  final String? message;
-
-  /// Optional child to show after loading (e.g. game content from ToneTrainerGame)
-  final Widget? child;
-
-  const DynamicLoadingScreen({
+class ToneTrainerGame extends BaseGameScreen {
+  const ToneTrainerGame({
     super.key,
-    this.onLoadingComplete,
-    this.loadingDuration,
-    this.waitForDuration = true,
-    this.message,
-    this.child,
+    required super.language,
+    super.level,
+    super.onBack,
   });
-  
-  /// Shows a loading screen for an async operation, ensuring minimum display time
-  static Future<T?> showWhileLoading<T>({
-    required BuildContext context,
-    required Future<T> Function() asyncOperation,
-    String? message,
-  }) async {
-    final navigator = Navigator.of(context);
-    final startTime = DateTime.now();
-    
-    // Push loading screen
-    navigator.push(
-      PageRouteBuilder(
-        opaque: false,
-        pageBuilder: (context, animation, secondaryAnimation) {
-          return FadeTransition(
-            opacity: animation,
-            child: DynamicLoadingScreen(
-              message: message,
-              loadingDuration: kMinLoadingDisplayTime,
-            ),
-          );
-        },
-      ),
-    );
-    
-    try {
-      // Execute async operation
-      final result = await asyncOperation();
-      
-      // Ensure minimum display time
-      final elapsed = DateTime.now().difference(startTime);
-      if (elapsed < kMinLoadingDisplayTime) {
-        await Future.delayed(kMinLoadingDisplayTime - elapsed);
-      }
-      
-      // Pop loading screen
-      if (navigator.canPop()) {
-        navigator.pop();
-      }
-      
-      return result;
-    } catch (e) {
-      // Pop loading screen even on error
-      if (navigator.canPop()) {
-        navigator.pop();
-      }
-      rethrow;
-    }
-  }
 
   @override
-  ConsumerState<DynamicLoadingScreen> createState() =>
-      _DynamicLoadingScreenState();
+  GameType getGameType() => GameType.toneTrainer;
+
+  @override
+  ConsumerState<ToneTrainerGame> createState() => _ToneTrainerGameState();
 }
 
-class _DynamicLoadingScreenState
-    extends ConsumerState<DynamicLoadingScreen>
-    with TickerProviderStateMixin {
-  late AnimationController _progressController;
-  late AnimationController _pulseController;
-  late Animation<double> _progressAnimation;
-  late Animation<double> _pulseAnimation;
-  double _progress = 0.0;
-  int _factIndex = 0;
-  Timer? _factTimer;
-  bool _showChild = false;
-  
-  // Fallback facts if backend is slow
-  static const List<String> _fallbackFacts = [
-    'Africa has over 2,000 distinct languages, making it the most linguistically diverse continent.',
-    'The Yoruba language has three tones: high, mid, and low, which change word meanings.',
-    'Swahili is spoken by over 100 million people across East Africa.',
-    'Ethiopia has its own unique alphabet called Ge\'ez with 231 characters.',
-    'The click consonants in Xhosa and Zulu are among the rarest sounds in human language.',
-    'Ancient Egypt developed one of the world\'s first writing systems: hieroglyphics.',
-    'Hausa is one of Africa\'s most widely spoken languages with 70+ million speakers.',
-    'Many African proverbs teach life lessons and are passed down through generations.',
-  ];
+class _ToneTrainerGameState extends BaseGameScreenState<ToneTrainerGame> {
+  final List<PhraseCard> _cards = [];
+  final List<_ToneQuestion> _questions = [];
+  int _currentIndex = 0;
+  int? _selectedTone;
+  bool _answered = false;
+  int _score = 0;
 
   @override
-  void initState() {
-    super.initState();
-    
-    _factIndex = math.Random().nextInt(_fallbackFacts.length);
-    
-    // Refresh content to get a new one
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(loadingScreenProvider.notifier).refreshContent();
-    });
+  int getCardCount() => 8;
 
-    // Setup progress animation - use minimum duration
-    final duration = widget.loadingDuration ?? kMinLoadingDisplayTime;
-    _progressController = AnimationController(
-      duration: duration,
-      vsync: this,
-    );
-
-    _progressAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _progressController,
-        curve: Curves.easeInOut,
-      ),
-    );
-
-    _progressAnimation.addListener(() {
-      setState(() {
-        _progress = _progressAnimation.value;
-      });
-    });
-    
-    // Pulse animation for visual interest
-    _pulseController = AnimationController(
-      duration: const Duration(milliseconds: 1500),
-      vsync: this,
-    )..repeat(reverse: true);
-    
-    _pulseAnimation = Tween<double>(begin: 0.95, end: 1.05).animate(
-      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
-    );
-
-    _progressController.forward().then((_) {
-      if (!mounted) return;
-      if (widget.child != null) {
-        setState(() => _showChild = true);
-      }
-      if (widget.waitForDuration) {
-        widget.onLoadingComplete?.call();
-      }
-    });
-    
-    // Rotate facts for longer loading times
-    _factTimer = Timer.periodic(kFactRotationInterval, (_) {
-      if (mounted) {
-        setState(() {
-          _factIndex = (_factIndex + 1) % _fallbackFacts.length;
-        });
-      }
-    });
+  @override
+  Future<void> onGameInitialized() async {
+    final gameProv = ref.read(gameProvider.notifier);
+    _cards.addAll(gameProv.availableCards);
+    _buildQuestions();
   }
 
-  @override
-  void dispose() {
-    _progressController.dispose();
-    _pulseController.dispose();
-    _factTimer?.cancel();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (_showChild && widget.child != null) {
-      return widget.child!;
+  void _buildQuestions() {
+    final rng = Random(DateTime.now().millisecondsSinceEpoch);
+    for (final card in _cards) {
+      final correctTone = rng.nextInt(3); // 0=high, 1=mid, 2=low
+      _questions.add(_ToneQuestion(
+        card: card,
+        correctToneIndex: correctTone,
+        toneLabels: const ['á (High)', 'ā (Mid)', 'à (Low)'],
+        toneSymbols: const ['á', 'ā', 'à'],
+      ));
     }
-    final content = ref.watch(loadingScreenProvider);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+  }
 
-    return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFF0A0A0A),
-      body: SafeArea(
-        child: Stack(
+  _ToneQuestion? get _currentQuestion =>
+      _currentIndex < _questions.length ? _questions[_currentIndex] : null;
+
+  void _selectTone(int index) {
+    if (_answered) return;
+    HapticFeedback.selectionClick();
+    setState(() => _selectedTone = index);
+  }
+
+  void _checkSelection() {
+    if (_selectedTone == null || _answered) return;
+    HapticFeedback.mediumImpact();
+
+    final q = _currentQuestion!;
+    final correct = _selectedTone == q.correctToneIndex;
+
+    if (correct) _score++;
+
+    final duration = startTime != null
+        ? DateTime.now().difference(startTime!).inMilliseconds
+        : 0;
+    completeTurn(
+      cardId: q.card.cardId,
+      result: correct ? GameResult.correct : GameResult.incorrect,
+      durationMs: duration,
+      confidence: correct ? 1.0 : 0.0,
+      userAction: 'tone_selected_${_selectedTone}',
+    );
+
+    setState(() => _answered = true);
+  }
+
+  void _nextQuestion() {
+    if (_currentIndex < _questions.length - 1) {
+      setState(() {
+        _currentIndex++;
+        _selectedTone = null;
+        _answered = false;
+      });
+    } else {
+      finishGame();
+    }
+  }
+
+  @override
+  String? get appBarTitle =>
+      'Tone Trainer (${_currentIndex + 1}/${_questions.length})';
+
+  @override
+  Widget buildGameContent(BuildContext context) {
+    if (_questions.isEmpty) {
+      return Center(
+        child: Text('No tonal words available',
+            style: ModernGriotTypography.bodyLarge(context: context)),
+      );
+    }
+
+    final q = _currentQuestion;
+    if (q == null) return const SizedBox.shrink();
+    final cs = Theme.of(context).colorScheme;
+    final progress = _questions.isEmpty
+        ? 0.0
+        : (_currentIndex + 1) / _questions.length;
+
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
+        child: Column(
           children: [
-            // Background gradient
+            SizedBox(height: PanAfricanSpacing.sm),
+            GriotProgressBar(value: progress, height: 6, showGlowTip: true),
+            SizedBox(height: PanAfricanSpacing.lg),
+            // Word display
+            Text(q.card.text,
+                style: ModernGriotTypography.displaySmall(context: context),
+                textAlign: TextAlign.center),
+            if (q.card.ipa != null) ...[
+              SizedBox(height: PanAfricanSpacing.xxs),
+              Text('/${q.card.ipa}/',
+                  style: ModernGriotTypography.bodyMedium(
+                      context: context,
+                      color: ModernGriotColors.onSurfaceVariant)),
+            ],
+            SizedBox(height: PanAfricanSpacing.xs),
+            Text(q.card.gloss,
+                style: ModernGriotTypography.bodyLarge(
+                    context: context,
+                    color: ModernGriotColors.onSurfaceVariant),
+                textAlign: TextAlign.center),
+            SizedBox(height: PanAfricanSpacing.lg),
+            // Tone height visualization
             Container(
+              width: double.infinity,
+              height: 120.h,
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: isDark
-                      ? [
-                          const Color(0xFF102216),
-                          const Color(0xFF0A0A0A),
-                        ]
-                      : [
-                          const Color(0xFF1A1A1A),
-                          const Color(0xFF0A0A0A),
-                        ],
-                ),
+                color: cs.surfaceContainerLow,
+                borderRadius: ModernGriotRadius.borderXl,
+                border: Border.all(
+                    color: ModernGriotColors.outlineVariant.withOpacity(0.3)),
               ),
-            ),
-
-            // Main content
-            Center(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.all(24.sp),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 4.h),
-
-                    // App Logo
-                    _buildLogo(),
-
-                    SizedBox(height: 6.h),
-
-                    // Circular illustration of African person
-                    _buildPersonIllustration(content, isDark),
-
-                    SizedBox(height: 4.h),
-
-                    // Greeting
-                    _buildGreeting(content, isDark),
-
-                    SizedBox(height: 2.h),
-
-                    // Interesting fact
-                    _buildFact(content, isDark),
-
-                    SizedBox(height: 6.h),
-
-                    // Loading indicator
-                    _buildLoadingIndicator(isDark),
-                  ],
+              child: CustomPaint(
+                painter: _ToneArcPainter(
+                  highlightedIndex: _selectedTone,
+                  correctIndex: _answered ? q.correctToneIndex : null,
+                  primaryColor: ModernGriotColors.primary,
+                  secondaryColor: ModernGriotColors.secondary,
+                  errorColor: ModernGriotColors.error,
+                  surfaceColor: ModernGriotColors.outlineVariant,
                 ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLogo() {
-    return Image.asset(
-      Images.logo,
-      width: 200.sp,
-      height: 80.sp,
-      fit: BoxFit.contain,
-    );
-  }
-
-  Widget _buildPersonIllustration(
-      LoadingScreenContent content, bool isDark) {
-    return AnimatedBuilder(
-      animation: _pulseAnimation,
-      builder: (context, child) {
-        return Transform.scale(
-          scale: _pulseAnimation.value,
-          child: Container(
-            width: 180.sp,
-            height: 180.sp,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  PanAfricanColors.secondary.withOpacity(0.8),
-                  PanAfricanColors.tertiary.withOpacity(0.6),
-                  PanAfricanColors.primary.withOpacity(0.4),
-                ],
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: PanAfricanColors.secondary.withOpacity(0.4),
-                  blurRadius: 30,
-                  spreadRadius: 5,
-                ),
-                BoxShadow(
-                  color: PanAfricanColors.primary.withOpacity(0.2),
-                  blurRadius: 50,
-                  spreadRadius: 10,
-                ),
-              ],
-            ),
-            child: Container(
-              margin: EdgeInsets.all(4.sp),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: isDark ? const Color(0xFF102216) : const Color(0xFF0A0A0A),
-              ),
-              child: ClipOval(
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    // Background pattern (stripes)
-                    Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            const Color(0xFFD4A574).withOpacity(0.3),
-                            const Color(0xFF8B6F47).withOpacity(0.3),
-                            const Color(0xFFD4A574).withOpacity(0.3),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xl),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: List.generate(3, (i) {
+                      final heights = [0.15, 0.45, 0.75];
+                      return Padding(
+                        padding: EdgeInsets.only(top: heights[i] * 80.h),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: 36.w,
+                              height: 36.w,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: _selectedTone == i
+                                    ? ModernGriotColors.primaryContainer
+                                    : cs.surfaceContainerHighest,
+                                border: Border.all(
+                                  color: _selectedTone == i
+                                      ? ModernGriotColors.primary
+                                      : ModernGriotColors.outlineVariant,
+                                  width: _selectedTone == i ? 2 : 1,
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  q.toneSymbols[i],
+                                  style: ModernGriotTypography.titleMedium(
+                                    context: context,
+                                    color: _selectedTone == i
+                                        ? ModernGriotColors.primary
+                                        : ModernGriotColors.onSurface,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 2.h),
+                            Text(
+                              ['High', 'Mid', 'Low'][i],
+                              style: ModernGriotTypography.labelSmall(
+                                  context: context),
+                            ),
                           ],
                         ),
-                      ),
-                      child: CustomPaint(
-                        painter: _StripePainter(stripeColor: Theme.of(context).colorScheme.onSurface),
-                      ),
-                    ),
-
-                    // Person image or placeholder
-                    content.imageUrl.startsWith('http')
-                        ? CachedNetworkImage(
-                            imageUrl: content.imageUrl,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) => _buildPlaceholder(content),
-                            errorWidget: (context, url, error) =>
-                                _buildPlaceholder(content),
-                          )
-                        : _buildPlaceholder(content),
-                  ],
+                      );
+                    }),
+                  ),
                 ),
               ),
             ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildPlaceholder(LoadingScreenContent content) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            PanAfricanColors.primary.withOpacity(0.3),
-            PanAfricanColors.secondary.withOpacity(0.2),
-          ],
-        ),
-      ),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              content.countryFlag,
-              style: TextStyle(fontSize: 64.sp),
-            ),
-            SizedBox(height: 8.sp),
-            Text(
-              content.country,
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildGreeting(LoadingScreenContent content, bool isDark) {
-    return Column(
-      children: [
-        Text(
-          content.greeting,
-          style: TextStyle(
-            fontSize: 36.sp,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.onSurface,
-            letterSpacing: 1.5,
-          ),
-        ),
-        SizedBox(height: 4.sp),
-        Text(
-          content.greetingTranslation,
-          style: TextStyle(
-            fontSize: 14.sp,
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-            fontStyle: FontStyle.italic,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildFact(LoadingScreenContent content, bool isDark) {
-    // Use backend fact if available, otherwise use fallback
-    final fact = content.fact.isNotEmpty 
-        ? content.fact 
-        : _fallbackFacts[_factIndex];
-    
-    return Semantics(
-      label: 'Did you know? $fact',
-      child: AnimatedSwitcher(
-      duration: const Duration(milliseconds: 500),
-      child: Container(
-        key: ValueKey(fact),
-        margin: EdgeInsets.symmetric(horizontal: 16.sp),
-        padding: EdgeInsets.symmetric(horizontal: 20.sp, vertical: 16.sp),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
-              Theme.of(context).colorScheme.onSurface.withOpacity(0.06),
-            ],
-          ),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: PanAfricanColors.secondary.withOpacity(0.3),
-            width: 1,
-          ),
-        ),
-        child: Column(
-          children: [
+            SizedBox(height: PanAfricanSpacing.lg),
+            // Semantic shift sidebar
+            _SemanticShiftCard(language: widget.language, word: q.card.text),
+            SizedBox(height: PanAfricanSpacing.md),
+            // Tone selectors
+            Text('Select the correct tone pattern:',
+                style: ModernGriotTypography.titleSmall(context: context)),
+            SizedBox(height: PanAfricanSpacing.sm),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(6.sp),
-                  decoration: BoxDecoration(
-                    color: PanAfricanColors.secondary.withOpacity(0.2),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.auto_awesome,
-                    color: PanAfricanColors.secondary,
-                    size: 16.sp,
-                  ),
-                ),
-                SizedBox(width: 10.sp),
-                Text(
-                  'Did you know?',
-                  style: TextStyle(
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.bold,
-                    color: PanAfricanColors.secondary,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 12.sp),
-            Text(
-              fact,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.9),
-                height: 1.6,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-    );
-  }
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: List.generate(3, (i) {
+                final isCorrect = _answered && i == q.correctToneIndex;
+                final isWrong = _answered && _selectedTone == i && !isCorrect;
+                final isActive = _selectedTone == i && !_answered;
 
-  Widget _buildLoadingIndicator(bool isDark) {
-    return Semantics(
-      label: 'Loading: ${(_progress * 100).toInt()}%. ${widget.message ?? 'Getting things ready...'}',
-      value: '${(_progress * 100).toInt()}%',
-      child: Column(
-      children: [
-        Text(
-          widget.message ?? 'Getting things ready...',
-          style: TextStyle(
-            fontSize: 13.sp,
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-            letterSpacing: 0.5,
-          ),
-        ),
-        SizedBox(height: 16.sp),
-        Container(
-          width: 200.sp,
-          height: 4.sp,
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Stack(
-            children: [
-              FractionallySizedBox(
-                widthFactor: _progress,
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        PanAfricanColors.secondary,
-                        PanAfricanColors.tertiary,
-                        PanAfricanColors.primary,
+                Color bg;
+                Color border;
+                if (isCorrect) {
+                  bg = ModernGriotColors.secondary.withOpacity(0.15);
+                  border = ModernGriotColors.secondary;
+                } else if (isWrong) {
+                  bg = ModernGriotColors.error.withOpacity(0.12);
+                  border = ModernGriotColors.error;
+                } else if (isActive) {
+                  bg = ModernGriotColors.primaryContainer.withOpacity(0.3);
+                  border = ModernGriotColors.primary;
+                } else {
+                  bg = cs.surfaceContainerLowest;
+                  border = ModernGriotColors.outlineVariant;
+                }
+
+                return GestureDetector(
+                  onTap: () => _selectTone(i),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    width: 90.w,
+                    height: 90.w,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: bg,
+                      border: Border.all(color: border, width: isActive ? 2.5 : 1.5),
+                      boxShadow: isActive ? ModernGriotShadows.sm : null,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(q.toneSymbols[i],
+                            style: ModernGriotTypography.headlineSmall(
+                                context: context)),
+                        SizedBox(height: 2.h),
+                        Text(q.toneLabels[i],
+                            style: ModernGriotTypography.labelSmall(
+                                context: context),
+                            textAlign: TextAlign.center),
                       ],
                     ),
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: PanAfricanColors.secondary.withOpacity(0.5),
-                        blurRadius: 8,
-                        spreadRadius: 1,
-                      ),
-                    ],
                   ),
-                ),
+                );
+              }),
+            ),
+            SizedBox(height: PanAfricanSpacing.lg),
+            // CTA button
+            if (!_answered)
+              GriotGradientButton(
+                label: 'Check Selection',
+                icon: Icons.check_rounded,
+                onPressed: _selectedTone != null ? _checkSelection : null,
+              )
+            else
+              GriotGradientButton(
+                label: _currentIndex < _questions.length - 1
+                    ? 'Next Word'
+                    : 'Finish Game',
+                icon: Icons.arrow_forward_rounded,
+                onPressed: _nextQuestion,
               ),
-            ],
-          ),
+            SizedBox(height: PanAfricanSpacing.md),
+            // Cultural note
+            GameCulturalNoteCard(
+              title: 'Did you know?',
+              body: _getTonalFact(widget.language),
+              icon: Icons.lightbulb_rounded,
+            ),
+            SizedBox(height: PanAfricanSpacing.xl),
+          ],
         ),
-        SizedBox(height: 8.sp),
-        Text(
-          '${(_progress * 100).toInt()}%',
-          style: TextStyle(
-            fontSize: 11.sp,
-            color: PanAfricanColors.secondary.withOpacity(0.8),
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ],
-    ),
+      ),
     );
   }
 }
 
-/// Custom painter for stripe pattern background
-class _StripePainter extends CustomPainter {
-  final Color stripeColor;
-  
-  _StripePainter({required this.stripeColor});
-  
+String _getTonalFact(String language) {
+  final lang = language.toLowerCase();
+  final facts = <String, String>{
+    'yoruba':
+        'Yoruba has 3 tones — high (´), mid (unmarked), and low (`). Changing the tone changes the meaning entirely: "ọkọ" can mean husband, hoe, or vehicle.',
+    'igbo':
+        'Igbo is a tonal language with two main tones: high and low. The word "akụ" (wealth) vs "àkụ̀" (termite) differs only in tone.',
+    'hausa':
+        'Hausa uses two tones — high and low — to distinguish words. Tone interacts with vowel length to create meaning.',
+    'twi':
+        'Twi (Akan) uses two level tones and one falling tone. Tone is crucial for distinguishing homophones.',
+  };
+  return facts[lang] ??
+      'Many African languages are tonal, meaning pitch changes the meaning of words. Mastering tones is key to being understood.';
+}
+
+class _ToneArcPainter extends CustomPainter {
+  final int? highlightedIndex;
+  final int? correctIndex;
+  final Color primaryColor;
+  final Color secondaryColor;
+  final Color errorColor;
+  final Color surfaceColor;
+
+  _ToneArcPainter({
+    this.highlightedIndex,
+    this.correctIndex,
+    required this.primaryColor,
+    required this.secondaryColor,
+    required this.errorColor,
+    required this.surfaceColor,
+  });
+
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = stripeColor.withOpacity(0.1)
-      ..strokeWidth = 2;
+      ..color = surfaceColor.withOpacity(0.4)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.0
+      ..strokeCap = StrokeCap.round;
 
-    const spacing = 20.0;
-    for (double i = -size.height; i < size.width + size.height; i += spacing) {
-      canvas.drawLine(
-        Offset(i, 0),
-        Offset(i + size.height, size.height),
-        paint,
-      );
-    }
+    final dashPaint = Paint()
+      ..color = primaryColor.withOpacity(0.5)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.0
+      ..strokeCap = StrokeCap.round;
+
+    final x1 = size.width * 0.15;
+    final x2 = size.width * 0.50;
+    final x3 = size.width * 0.85;
+    final y1 = size.height * 0.25;
+    final y2 = size.height * 0.50;
+    final y3 = size.height * 0.75;
+
+    // Draw dashed arcs connecting the tone positions
+    final path1 = Path()
+      ..moveTo(x1, y1)
+      ..quadraticBezierTo((x1 + x2) / 2, y1 - 10, x2, y2);
+    canvas.drawPath(path1, highlightedIndex == 0 ? dashPaint : paint);
+
+    final path2 = Path()
+      ..moveTo(x2, y2)
+      ..quadraticBezierTo((x2 + x3) / 2, y2 + 10, x3, y3);
+    canvas.drawPath(path2, highlightedIndex == 2 ? dashPaint : paint);
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(_ToneArcPainter old) =>
+      old.highlightedIndex != highlightedIndex ||
+      old.correctIndex != correctIndex;
 }
 
-/// Tone Trainer game screen. Shown from game_router for GameType.toneTrainer.
-/// Uses dynamic loading then a placeholder; full game UI can be added later.
-class ToneTrainerGame extends ConsumerWidget {
+class _SemanticShiftCard extends StatelessWidget {
   final String language;
-  final String level;
-  final VoidCallback? onBack;
+  final String word;
 
-  const ToneTrainerGame({
-    super.key,
-    required this.language,
-    required this.level,
-    this.onBack,
-  });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return DynamicLoadingScreen(
-      loadingDuration: kMinLoadingDisplayTime,
-      child: _ToneTrainerPlaceholder(
-        language: language,
-        level: level,
-        onBack: onBack,
-      ),
-    );
-  }
-}
-
-/// Placeholder body for Tone Trainer until full game is implemented.
-class _ToneTrainerPlaceholder extends StatelessWidget {
-  final String language;
-  final String level;
-  final VoidCallback? onBack;
-
-  const _ToneTrainerPlaceholder({
-    required this.language,
-    required this.level,
-    this.onBack,
-  });
+  const _SemanticShiftCard({required this.language, required this.word});
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFF0A0A0A),
-      appBar: AppBar(
-        leading: Semantics(
-          label: 'Back',
-          button: true,
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back_rounded, semanticLabel: 'Back'),
-            onPressed: onBack ?? () => Navigator.pop(context),
-          ),
-        ),
-        title: Text('Tone Trainer', style: PanAfricanTypography.titleMedium(context)),
+    final lang = language.toLowerCase();
+    final pairs = <String, List<List<String>>>{
+      'yoruba': [
+        ['ọkọ́', 'husband'],
+        ['ọkọ', 'vehicle'],
+        ['ọ̀kọ̀', 'hoe'],
+      ],
+      'igbo': [
+        ['ákụ́', 'wealth'],
+        ['àkụ̀', 'termite'],
+        ['ákụ̀', 'parrot'],
+      ],
+    };
+
+    final examples = pairs[lang] ?? pairs['yoruba']!;
+
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(PanAfricanSpacing.md),
+      decoration: BoxDecoration(
+        color: ModernGriotColors.surfaceContainerLow,
+        borderRadius: ModernGriotRadius.borderLg,
+        border: Border.all(
+            color: ModernGriotColors.tertiary.withOpacity(0.3)),
       ),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(24.sp),
-          child: Semantics(
-            label: 'Tone Trainer for $language, level $level',
-            child: Text(
-              'Tone Trainer for $language (level $level)',
-              style: PanAfricanTypography.bodyLarge(context),
-              textAlign: TextAlign.center,
-            ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.compare_arrows_rounded,
+                  size: 16.sp, color: ModernGriotColors.tertiary),
+              SizedBox(width: 6.w),
+              Text('Minimal Pairs',
+                  style: ModernGriotTypography.labelLarge(
+                      context: context, color: ModernGriotColors.tertiary)),
+            ],
           ),
-        ),
+          SizedBox(height: PanAfricanSpacing.xs),
+          ...examples.map((pair) => Padding(
+                padding: EdgeInsets.only(bottom: 4.h),
+                child: Row(
+                  children: [
+                    Text(pair[0],
+                        style: ModernGriotTypography.titleSmall(context: context)),
+                    SizedBox(width: 8.w),
+                    Text('→',
+                        style: ModernGriotTypography.bodySmall(context: context)),
+                    SizedBox(width: 8.w),
+                    Text(pair[1],
+                        style: ModernGriotTypography.bodyMedium(
+                            context: context,
+                            color: ModernGriotColors.onSurfaceVariant)),
+                  ],
+                ),
+              )),
+        ],
       ),
     );
   }
+}
+
+class _ToneQuestion {
+  final PhraseCard card;
+  final int correctToneIndex;
+  final List<String> toneLabels;
+  final List<String> toneSymbols;
+
+  const _ToneQuestion({
+    required this.card,
+    required this.correctToneIndex,
+    required this.toneLabels,
+    required this.toneSymbols,
+  });
 }

@@ -1,6 +1,5 @@
 {
   "@@locale": "ha",
-  
   "appTitle": "LingAfriq",
   "welcomeMessage": "Barka da zuwa LingAfriq",
   "continueButton": "Ci gaba",
@@ -51,5 +50,16 @@
   "aiTutor": "Malamin AI",
   "cultureMagazine": "Mujallar Al'ada",
   "tribes": "Kabilu",
-  "leaderboard": "Jadawali na Jagora"
+  "leaderboard": "Jadawali na Jagora",
+  "flbHeritageTitle": "FLB Heritage",
+  "flbHeritageSearchHint": "Search title, country, or tags",
+  "flbHeritageEmptyMessage": "No entries match your search. Try another keyword or pull to refresh.",
+  "flbHeritageLoadError": "Could not load heritage archive. Pull to retry.",
+  "flbHeritageRefresh": "Refresh",
+  "flbHeritageDetailTitle": "Heritage",
+  "flbHeritageMissingContent": "Missing heritage content",
+  "tooltipFlbHeritageArchive": "FLB Heritage archive",
+  "tooltipTribeDiscovery": "Tribe discovery",
+  "drawerFlbHeritageArchive": "FLB Heritage Archive",
+  "tooltipTribes": "Tribes"
 }

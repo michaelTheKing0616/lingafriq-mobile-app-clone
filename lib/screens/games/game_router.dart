@@ -4,58 +4,27 @@ import '../../models/game/game_session_model.dart';
 import '../../providers/user_provider.dart';
 import 'word_match_audio_game.dart';
 import 'pronunciation_duel_game.dart';
+import 'tone_trainer_game.dart';
 import 'speed_round_game.dart';
 import 'story_builder_game.dart';
 import 'roleplay_adventure_game.dart';
 import 'grammar_detective_game.dart';
-import 'game_templates.dart';
-import 'cultural_games.dart';
+import 'game_templates.dart' hide PictureWordGame, MemoryMapGame, PronunciationKaraokeGame, GrammarJamGame, QuizChefGame;
+import 'picture_word_association_screen.dart';
+import 'memory_map_screen.dart';
+import 'pronunciation_karaoke_screen.dart';
+import 'cultural_games.dart' hide ClanStoryGame, FolktaleGame, MarketBargainingGame, TaxiSurvivalGame, GreetingDiplomacyGame, EmojiTranslatorGame, EldersBlessingsGame;
+import 'market_bargaining_screen.dart';
+import 'taxi_survival_screen.dart';
+import 'greeting_diplomacy_screen.dart';
+import 'emoji_translator_screen.dart';
+import 'elders_blessings_screen.dart';
+import 'folktale_reconstruction_screen.dart';
 import 'board_word_games.dart';
 import '../../games/drum_rhythm/drum_rhythm_screen.dart';
-import '../../games/tone_forge/tone_forge_screen.dart';
-
-/// Canonical list of routed game types.
-///
-/// Keep this list in sync with [buildGameScreen] switch cases.
-const Set<GameType> kRoutedGameTypes = {
-  GameType.wordMatchAudio,
-  GameType.pronunciationDuel,
-  GameType.toneTrainer,
-  GameType.speedRoundRemix,
-  GameType.storyBuilder,
-  GameType.roleplayAdventure,
-  GameType.grammarDetective,
-  GameType.listenAndSketch,
-  GameType.pictureWordAssociation,
-  GameType.memoryMap,
-  GameType.conversationRelay,
-  GameType.grammarJam,
-  GameType.pronunciationKaraoke,
-  GameType.quizChef,
-  GameType.proverbUnlocker,
-  GameType.drumRhythmShadowing,
-  GameType.clanLineageStoryBuilder,
-  GameType.marketBargainingSimulator,
-  GameType.taxiBusStopSurvival,
-  GameType.foodQuest,
-  GameType.callAndResponse,
-  GameType.greetingDiplomacyChallenge,
-  GameType.folktaleReconstruction,
-  GameType.phraseSniper,
-  GameType.liarLiar,
-  GameType.villageQuest,
-  GameType.accentDecodingPuzzle,
-  GameType.flashcardSafari,
-  GameType.rapidTongueTwisterRace,
-  GameType.emojiTranslator,
-  GameType.rhythmTyping,
-  GameType.eldersBlessingsChallenge,
-  GameType.multilingualRelayRace,
-  GameType.culturalEtiquetteScenarios,
-  GameType.drumToWordMatching,
-  GameType.marketMonopolyChallenge,
-  GameType.scrabbleSprintArena,
-};
+import 'clan_lineage_story_builder_screen.dart';
+import 'grammar_jam_screen.dart';
+import 'quiz_chef_screen.dart';
 
 /// Game Router - Routes to appropriate game screen based on GameType
 Widget buildGameScreen({
@@ -82,7 +51,7 @@ Widget buildGameScreen({
         onBack: onBack,
       );
     case GameType.toneTrainer:
-      return ToneForgeScreen(
+      return ToneTrainerGame(
         language: language,
         level: userLevel,
         onBack: onBack,

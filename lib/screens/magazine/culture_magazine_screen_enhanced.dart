@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:share_plus/share_plus.dart';
@@ -14,7 +14,6 @@ import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/services/hybrid_polie/translation_service.dart';
 import 'package:lingafriq/providers/onboarding_provider.dart';
-import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'culture_magazine_enhanced_features.dart';
 
 /// Enhanced Cultural Magazine Screen with Polie Translation, Cultural Context, Vocabulary
@@ -33,101 +32,34 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
     final translationService = useMemoized(() => TranslationService());
     final onboarding = ref.watch(onboardingProvider);
     final userLanguage = (onboarding.selectedLanguage ?? 'english').toLowerCase();
-    final translationTarget = useState<String>(userLanguage);
-    final supportedLanguages = ref.read(groqChatProvider.notifier).supportedLanguageOptions
-        .map((e) => (e['name'] ?? '').toString().toLowerCase())
-        .where((e) => e.isNotEmpty)
-        .toSet()
-        .toList()
-      ..sort();
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
 
     Future<void> loadArticles() async {
       isLoading.value = true;
       try {
-        final query = selectedCategory.value != null
-            ? {'category': selectedCategory.value}
-            : null;
-        final primaryPublishedPath = Api.cultureArticles(published: true);
-        final primaryAllPath = Api.cultureArticles();
-        final candidatePublishedPaths = <String>[
-          primaryPublishedPath,
-          '/api$primaryPublishedPath',
-          '/api/v1$primaryPublishedPath',
-        ];
-        final candidateAllPaths = <String>[
-          primaryAllPath,
-          '/api$primaryAllPath',
-          '/api/v1$primaryAllPath',
-        ];
-
-        Future<Response<dynamic>> fetchFirstReachable(List<String> paths) async {
-          Object? lastError;
-          for (final path in paths) {
-            try {
-              final res = await ApiService.get(path, queryParameters: query);
-              if ((res.statusCode ?? 0) < 500) {
-                return res;
-              }
-            } catch (e) {
-              lastError = e;
-            }
-          }
-          throw lastError ?? Exception('No reachable culture magazine endpoint');
-        }
-
-        Response response = await fetchFirstReachable(candidatePublishedPaths);
-
-        List<Map<String, dynamic>> parseArticles(dynamic raw) {
-          if (raw is! Map) return [];
-          final candidates = <dynamic>[
-            raw['articles'],
-            raw['results'],
-            raw['docs'],
-            raw['data'],
-            raw['data'] is Map ? raw['data']['docs'] : null,
-            raw['data'] is Map ? raw['data']['articles'] : null,
-            raw['data'] is Map ? raw['data']['results'] : null,
-            raw['data'] is Map ? raw['data']['items'] : null,
-          ];
-          for (final candidate in candidates) {
-            if (candidate is List) {
-              return candidate
-                  .whereType<Map>()
-                  .map((e) => Map<String, dynamic>.from(e))
-                  .toList();
-            }
-          }
-          return [];
-        }
-
-        Map<String, dynamic> normalizeArticle(Map<String, dynamic> article) {
-          final content = (article['content'] ?? article['body'] ?? article['excerpt'] ?? '').toString();
-          return {
-            ...article,
-            '_id': (article['_id'] ?? article['id'] ?? '').toString(),
-            'title': article['title'] ?? article['headline'] ?? 'Untitled',
-            'excerpt': article['excerpt'] ?? article['summary'] ?? article['description'] ?? '',
-            'content': content,
-            'category': article['category'] ?? article['topic'] ?? 'General',
-            'imageUrl': article['imageUrl'] ?? article['image_url'] ?? article['image'] ?? '',
-            'audioUrl': article['audioUrl'] ?? article['audio_url'] ?? article['audio'] ?? '',
-            'videoUrl': article['videoUrl'] ?? article['video_url'] ?? article['video'] ?? '',
-            'isLongRead': content.length >= 1200,
-          };
-        }
+        final response = await ApiService.get(
+          Api.cultureArticles(published: true),
+          queryParameters: selectedCategory.value != null
+              ? {'category': selectedCategory.value}
+              : null,
+        );
 
         if (response.statusCode == 200) {
-          var parsed = parseArticles(response.data);
-          if (parsed.isEmpty) {
-            // Fallback: some environments do not mark seeded records as published.
-            response = await fetchFirstReachable(candidateAllPaths);
-            if (response.statusCode == 200) {
-              parsed = parseArticles(response.data);
-            }
+          final raw = response.data;
+          final dynamic listCandidate = raw is Map
+              ? (raw['data'] ?? raw['results'] ?? raw['articles'])
+              : raw;
+
+          if (listCandidate is List) {
+            final list = List<Map<String, dynamic>>.from(listCandidate.whereType<Map>());
+            articles.value = list;
+          } else {
+            articles.value = [];
           }
-          articles.value = parsed.map(normalizeArticle).toList();
+        } else {
+          articles.value = [];
         }
       } catch (e) {
         if (context.mounted) {
@@ -149,46 +81,49 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
         
         try {
           final translations = <String, Map<String, String>>{};
+          bool anyRealTranslation = false;
           
           for (final article in articles.value) {
             final id = article['_id']?.toString() ?? '';
             final title = article['title']?.toString() ?? '';
             final excerpt = article['excerpt']?.toString() ?? '';
-            final content = article['content']?.toString() ?? '';
             
             if (id.isEmpty) continue;
             
-            // Translate title
             final titleResult = await translationService.translate(
               text: title,
               sourceLang: 'english',
               targetLang: language,
             );
             
-            // Translate excerpt
             final excerptResult = await translationService.translate(
               text: excerpt,
               sourceLang: 'english',
               targetLang: language,
             );
-            final contentResult = await translationService.translate(
-              text: content,
-              sourceLang: 'english',
-              targetLang: language,
-            );
+            
+            if (titleResult.model != 'fallback') anyRealTranslation = true;
             
             translations[id] = {
               'title': titleResult.translation,
               'excerpt': excerptResult.translation,
-              'content': contentResult.translation,
             };
           }
           
           translatedArticles.value = translations;
+          
+          if (!anyRealTranslation && context.mounted) {
+            ErrorHandler.showError(
+              context,
+              'Translation services are unavailable. Showing original text.',
+            );
+            showTranslation.value = false;
+          }
         } catch (e) {
           if (context.mounted) {
             ErrorHandler.showError(context, e);
           }
+          showTranslation.value = false;
         } finally {
           isTranslating.value = false;
         }
@@ -234,16 +169,29 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
           },
         ),
         actions: [
+          IconButton(
+            tooltip: l10n.tooltipFlbHeritageArchive,
+            icon: const Icon(Icons.account_balance_rounded),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.of(context).pushNamed('/flb-heritage-archive');
+            },
+          ),
+          IconButton(
+            tooltip: l10n.tooltipTribeDiscovery,
+            icon: const Icon(Icons.groups_rounded),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.of(context).pushNamed('/tribe-discovery');
+            },
+          ),
           if (isTranslating.value)
             Padding(
               padding: EdgeInsets.all(PanAfricanSpacing.sm),
               child: SizedBox(
                 width: 24.w,
                 height: 24.w,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: PanAfricanColors.primary,
-                ),
+                child: CircularProgressIndicator(strokeWidth: 2, color: PanAfricanColors.primary),
               ),
             )
           else
@@ -251,23 +199,10 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
               icon: Icon(showTranslation.value ? Icons.translate : Icons.translate_outlined),
               onPressed: () {
                 HapticFeedback.lightImpact();
-                toggleTranslation('', translationTarget.value);
+                toggleTranslation('', userLanguage);
               },
-              tooltip: showTranslation.value ? 'Show Original' : 'Translate to ${translationTarget.value}',
+              tooltip: showTranslation.value ? 'Show Original' : 'Translate to $userLanguage',
             ),
-          PopupMenuButton<String>(
-            tooltip: 'Translation language',
-            icon: const Icon(Icons.language_rounded),
-            onSelected: (value) => translationTarget.value = value,
-            itemBuilder: (context) => supportedLanguages
-                .map<PopupMenuEntry<String>>(
-                  (lang) => PopupMenuItem<String>(
-                    value: lang,
-                    child: Text(lang),
-                  ),
-                )
-                .toList(),
-          ),
         ],
       ),
       body: Container(
@@ -277,7 +212,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
               : LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: const [
+                  colors: [
                     PanAfricanColors.surfaceLight,
                     PanAfricanColors.surfaceContainerLight,
                   ],
@@ -285,19 +220,24 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
         ),
         child: Column(
           children: [
+            // Category Filter
             _buildCategoryFilter(
               context,
               selectedCategory.value,
               (category) => selectedCategory.value = category,
               isDark,
             ),
+
+            // Articles Grid
             Expanded(
               child: isLoading.value
                   ? Center(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          CircularProgressIndicator(color: PanAfricanColors.primary),
+                          CircularProgressIndicator(
+                            color: PanAfricanColors.primary,
+                          ),
                           SizedBox(height: PanAfricanSpacing.md),
                           Text(
                             'Loading articles...',
@@ -332,19 +272,13 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
                                   'Check back soon for cultural content.',
                                   textAlign: TextAlign.center,
                                   style: PanAfricanTypography.bodyMedium(context).copyWith(
-                                    color: isDark
-                                        ? Theme.of(context).colorScheme.onSurface.withOpacity(0.54)
-                                        : Theme.of(context).colorScheme.onSurface.withOpacity(0.45),
+                                    color: isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.54) : Theme.of(context).colorScheme.onSurface.withOpacity(0.45),
                                   ),
                                 ),
                                 SizedBox(height: PanAfricanSpacing.lg),
                                 TextButton.icon(
-                                  onPressed: loadArticles,
-                                  icon: Icon(
-                                    Icons.refresh_rounded,
-                                    size: 20,
-                                    color: PanAfricanColors.primary,
-                                  ),
+                                  onPressed: () => loadArticles(),
+                                  icon: Icon(Icons.refresh_rounded, size: 20, color: PanAfricanColors.primary),
                                   label: Text(
                                     'Retry',
                                     style: PanAfricanTypography.labelLarge(context).copyWith(
@@ -369,6 +303,8 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
                             final article = articles.value[index];
                             final articleId = article['_id']?.toString() ?? '';
                             final translated = translatedArticles.value[articleId];
+                            
+                            // Create display article with translations if available
                             final displayArticle = showTranslation.value && translated != null
                                 ? {
                                     ...article,
@@ -376,7 +312,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
                                     'excerpt': translated['excerpt'] ?? article['excerpt'],
                                   }
                                 : article;
-
+                            
                             return _ArticleCard(
                               article: displayArticle,
                               showTranslation: showTranslation.value,
@@ -391,9 +327,8 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
                                       article: article,
                                       translatedTitle: translated?['title'],
                                       translatedExcerpt: translated?['excerpt'],
-                                      translatedContent: translated?['content'],
                                       showTranslation: showTranslation.value,
-                                      userLanguage: translationTarget.value,
+                                      userLanguage: userLanguage,
                                     ),
                                   ),
                                 );
@@ -402,7 +337,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
                             )
                                 .animate(delay: (index * 50).ms)
                                 .fadeIn(duration: 300.ms)
-                                .scale(begin: const Offset(0.9, 0.9), end: const Offset(1, 1));
+                                .scale(begin: Offset(0.9, 0.9), end: Offset(1, 1));
                           },
                         ),
             ),
@@ -601,16 +536,6 @@ class _ArticleCard extends StatelessWidget {
                           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),
                         Spacer(),
-                        if ((article['audioUrl'] ?? '').toString().isNotEmpty)
-                          Padding(
-                            padding: const EdgeInsets.only(right: 6),
-                            child: Icon(Icons.audiotrack_rounded, size: 16.sp, color: PanAfricanColors.primary),
-                          ),
-                        if ((article['videoUrl'] ?? '').toString().isNotEmpty)
-                          Padding(
-                            padding: const EdgeInsets.only(right: 6),
-                            child: Icon(Icons.play_circle_rounded, size: 16.sp, color: PanAfricanColors.primary),
-                          ),
                         if (showTranslation)
                           Icon(
                             Icons.translate,

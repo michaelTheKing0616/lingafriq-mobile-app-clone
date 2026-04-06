@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/utils/constants.dart';
-import 'package:lingafriq/utils/media_url_resolver.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
@@ -35,7 +34,6 @@ class TutorialDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoading = ref.watch(apiProvider.select((value) => value.isLoading));
-    final resolvedImage = resolveMediaUrl(image);
     return LoadingOverlayPro(
       isLoading: isLoading,
       child: Scaffold(
@@ -49,7 +47,15 @@ class TutorialDetailScreen extends ConsumerWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      BackButton(color: Theme.of(context).colorScheme.onPrimary),
+                      BackButton(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        onPressed: () {
+                          if (video != null && video!.isNotEmpty) {
+                            ref.read(betterPlayerController(video!)).pause();
+                          }
+                          Navigator.of(context).pop();
+                        },
+                      ),
                       title.text.xl2.semiBold.maxLines(2).ellipsis.color(Theme.of(context).colorScheme.onPrimary).make().p16(),
                     ],
                   ).expand(),
@@ -72,13 +78,13 @@ class TutorialDetailScreen extends ConsumerWidget {
                     shadowColor: Colors.black38,
                     child: PortraitPlayerPage(videoUrl: video!),
                   ).px16().py8(),
-                if ((resolvedImage != null && resolvedImage.isNotEmpty))
+                if ((image != null && image!.isNotEmpty))
                   Card(
                     color: context.isDarkMode ? context.cardColor : Theme.of(context).colorScheme.surface,
                     elevation: 12,
                     shadowColor: Colors.black38,
                     child: CachedNetworkImage(
-                      imageUrl: resolvedImage,
+                      imageUrl: image!,
                       placeholder: kImagePlaceHolder,
                       errorWidget: kErrorWidget,
                     ).cornerRadius(kBorderRadius),
@@ -102,6 +108,10 @@ class TutorialDetailScreen extends ConsumerWidget {
             PrimaryButton(
               width: 0.6.sw,
               onTap: () async {
+                if (video != null && video!.isNotEmpty) {
+                  ref.read(betterPlayerController(video!)).pause();
+                }
+
                 bool result = true;
                 if (!isCompleted) {
                   result = await ref.read(apiProvider.notifier).markAsComplete(endpointToHit);

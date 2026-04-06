@@ -62,7 +62,7 @@ class _XExploreScreenState extends ConsumerState<XExploreScreen> {
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: Text(
-                  state.loading ? 'Loading trends...' : 'No trends yet.',
+                  state.trendingLoading ? 'Loading trends...' : 'No trends yet.',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               )

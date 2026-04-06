@@ -53,31 +53,45 @@ class _XPostDetailScreenState extends ConsumerState<XPostDetailScreen> {
               border: Border.all(color: XUi.divider(isDark)),
             ),
             child: post == null
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Post unavailable', style: TextStyle(fontWeight: FontWeight.w700)),
-                      const SizedBox(height: 8),
-                      Text('ID: ${widget.postId}', style: TextStyle(color: XUi.secondaryText(isDark))),
-                    ],
-                  )
+                ? state.timelineLoading
+                    ? const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 24),
+                        child: Center(child: CircularProgressIndicator()),
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Post unavailable', style: TextStyle(fontWeight: FontWeight.w700)),
+                          const SizedBox(height: 8),
+                          Text('ID: ${widget.postId}', style: TextStyle(color: XUi.secondaryText(isDark))),
+                        ],
+                      )
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Row(
+                      Row(
                         children: [
-                          CircleAvatar(child: Icon(Icons.person_outline)),
-                          SizedBox(width: 8),
-                          Text('Learner', style: TextStyle(fontWeight: FontWeight.w700)),
-                          SizedBox(width: 6),
-                          Text('@lingafriq', style: TextStyle(color: Colors.grey)),
+                          const CircleAvatar(child: Icon(Icons.person_outline)),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              post.displayName,
+                              style: const TextStyle(fontWeight: FontWeight.w700),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            post.handle,
+                            style: TextStyle(color: XUi.secondaryText(isDark)),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 12),
                       Text(post.content.isEmpty ? '(empty post)' : post.content, style: Theme.of(context).textTheme.titleMedium),
                       const SizedBox(height: 12),
                       Text(
-                        '${post.likeCount} likes ? ${post.replyCount} replies ? ${post.viewCount} views',
+                        '${post.likeCount} likes · ${post.replyCount} replies · ${post.viewCount} views',
                         style: TextStyle(color: XUi.secondaryText(isDark)),
                       ),
                       const SizedBox(height: 12),

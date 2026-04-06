@@ -49,11 +49,22 @@ class DynamicLocalizationService {
   static final ValueNotifier<Locale> _localeNotifier = ValueNotifier<Locale>(const Locale('en'));
   static ValueNotifier<Locale> get localeNotifier => _localeNotifier;
 
-  /// Initialize localization service (static)
+  /// Initialize localization service (static).
+  ///
+  /// If the user has never saved a preference, we keep in-memory English but do
+  /// **not** write `app_language` yet so [main] can apply device locale or
+  /// onboarding can apply `proficiency_language` first.
   static Future<void> initialize() async {
     final prefs = await SharedPreferences.getInstance();
-    final languageCode = prefs.getString(_prefKey) ?? 'en';
-    await setLanguage(languageCode);
+    final languageCode = prefs.getString(_prefKey);
+    if (languageCode != null && languageCode.isNotEmpty) {
+      await setLanguage(languageCode);
+    } else {
+      _currentLanguage = AppLanguage.english;
+      _currentLocale = const Locale('en');
+      Intl.defaultLocale = 'en';
+      _localeNotifier.value = _currentLocale;
+    }
   }
 
   /// Get current language

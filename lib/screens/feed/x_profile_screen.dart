@@ -25,15 +25,9 @@ class _XProfileScreenState extends ConsumerState<XProfileScreen> {
     final state = ref.watch(xFeedProvider);
     final profile = state.profile;
 
-    return Scaffold(
-      backgroundColor: XUi.scaffoldBg(isDark),
-      appBar: AppBar(
-        backgroundColor: XUi.scaffoldBg(isDark),
-        title: const Text('Profile'),
-      ),
-      body: profile == null
-          ? const Center(child: CircularProgressIndicator())
-          : ListView(
+    Widget body;
+    if (profile != null) {
+      body = ListView(
               padding: const EdgeInsets.all(16),
               children: [
                 Container(
@@ -74,7 +68,37 @@ class _XProfileScreenState extends ConsumerState<XProfileScreen> {
                   ],
                 ),
               ],
-            ),
+            );
+    } else if (state.profileLoading) {
+      body = const Center(child: CircularProgressIndicator());
+    } else if (state.profileError != null) {
+      body = Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(state.profileError!, textAlign: TextAlign.center),
+              const SizedBox(height: 12),
+              FilledButton(
+                onPressed: () => ref.read(xFeedProvider.notifier).loadProfile(),
+                child: const Text('Retry'),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      body = const Center(child: CircularProgressIndicator());
+    }
+
+    return Scaffold(
+      backgroundColor: XUi.scaffoldBg(isDark),
+      appBar: AppBar(
+        backgroundColor: XUi.scaffoldBg(isDark),
+        title: const Text('Profile'),
+      ),
+      body: body,
     );
   }
 }

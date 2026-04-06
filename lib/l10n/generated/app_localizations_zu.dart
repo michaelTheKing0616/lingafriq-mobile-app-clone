@@ -164,4 +164,39 @@ class AppLocalizationsZu extends AppLocalizations {
 
   @override
   String get leaderboard => 'Uhlu Lwabaholi';
+
+  @override
+  String get flbHeritageTitle => 'FLB Heritage';
+
+  @override
+  String get flbHeritageSearchHint => 'Search title, country, or tags';
+
+  @override
+  String get flbHeritageEmptyMessage =>
+      'No entries match your search. Try another keyword or pull to refresh.';
+
+  @override
+  String get flbHeritageLoadError =>
+      'Could not load heritage archive. Pull to retry.';
+
+  @override
+  String get flbHeritageRefresh => 'Refresh';
+
+  @override
+  String get flbHeritageDetailTitle => 'Heritage';
+
+  @override
+  String get flbHeritageMissingContent => 'Missing heritage content';
+
+  @override
+  String get tooltipFlbHeritageArchive => 'FLB Heritage archive';
+
+  @override
+  String get tooltipTribeDiscovery => 'Tribe discovery';
+
+  @override
+  String get drawerFlbHeritageArchive => 'FLB Heritage Archive';
+
+  @override
+  String get tooltipTribes => 'Tribes';
 }

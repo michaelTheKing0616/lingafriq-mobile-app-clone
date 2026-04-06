@@ -7,6 +7,8 @@ import '../providers/user_provider.dart';
 import '../providers/gamification_provider.dart';
 import '../providers/navigation_provider.dart';
 import '../providers/auth_provider.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
+
 import '../screens/tabs_view/tabs_view.dart';
 
 /// Beautiful Pan-African themed navigation drawer
@@ -21,6 +23,7 @@ class PanAfricanDrawer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final user = ref.watch(userProvider);
     final gamification = ref.watch(gamificationProvider.notifier).gamification;
     final isDark = context.isDark;
@@ -176,6 +179,12 @@ class PanAfricanDrawer extends ConsumerWidget {
                           icon: Icons.menu_book_rounded,
                           title: 'Culture Magazine',
                           onTap: () => _navigateTo(context, ref, 'magazine'),
+                        ),
+                        _DrawerItem(
+                          icon: Icons.account_balance_rounded,
+                          title: l10n.drawerFlbHeritageArchive,
+                          onTap: () =>
+                              _navigateTo(context, ref, 'flb-heritage-archive'),
                         ),
                         _DrawerItem(
                           icon: Icons.create_rounded,

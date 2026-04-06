@@ -265,5 +265,60 @@
   "leaderboard": "Leaderboard",
   "@leaderboard": {
     "description": "Leaderboard feature name"
+  },
+
+  "flbHeritageTitle": "FLB Heritage",
+  "@flbHeritageTitle": {
+    "description": "FLB Heritage archive screen title"
+  },
+
+  "flbHeritageSearchHint": "Search title, country, or tags",
+  "@flbHeritageSearchHint": {
+    "description": "Search field hint on FLB Heritage archive"
+  },
+
+  "flbHeritageEmptyMessage": "No entries match your search. Try another keyword or pull to refresh.",
+  "@flbHeritageEmptyMessage": {
+    "description": "Empty state when no heritage items match"
+  },
+
+  "flbHeritageLoadError": "Could not load heritage archive. Pull to retry.",
+  "@flbHeritageLoadError": {
+    "description": "Error when heritage API and bundle fail"
+  },
+
+  "flbHeritageRefresh": "Refresh",
+  "@flbHeritageRefresh": {
+    "description": "Refresh heritage list button"
+  },
+
+  "flbHeritageDetailTitle": "Heritage",
+  "@flbHeritageDetailTitle": {
+    "description": "Heritage detail screen short title"
+  },
+
+  "flbHeritageMissingContent": "Missing heritage content",
+  "@flbHeritageMissingContent": {
+    "description": "Route error when heritage detail has no arguments"
+  },
+
+  "tooltipFlbHeritageArchive": "FLB Heritage archive",
+  "@tooltipFlbHeritageArchive": {
+    "description": "Tooltip for opening heritage from magazine"
+  },
+
+  "tooltipTribeDiscovery": "Tribe discovery",
+  "@tooltipTribeDiscovery": {
+    "description": "Tooltip for tribe discovery from magazine"
+  },
+
+  "drawerFlbHeritageArchive": "FLB Heritage Archive",
+  "@drawerFlbHeritageArchive": {
+    "description": "Drawer item label for heritage archive"
+  },
+
+  "tooltipTribes": "Tribes",
+  "@tooltipTribes": {
+    "description": "Tooltip for tribes action on heritage detail"
   }
 }

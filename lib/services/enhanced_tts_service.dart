@@ -18,14 +18,12 @@
 // Production-ready with user language preference integration
 
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:lingafriq/config/secrets_manager.dart';
 import 'package:lingafriq/config/api_contract.dart';
-import 'package:lingafriq/services/voice/voice_language_utils.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -104,9 +102,7 @@ class EnhancedTTSService {
       await _flutterTts.awaitSpeakCompletion(true);
 
       if (_userLanguage != null) {
-        final langCode = systemTtsLocaleForNormalized(
-          normalizeVoiceLanguage(_userLanguage!),
-        );
+        final langCode = _mapLanguageCode(_userLanguage!);
         await _flutterTts.setLanguage(langCode);
       }
 
@@ -123,11 +119,9 @@ class EnhancedTTSService {
   Future<void> speak(String text, [TTSConfig? config]) async {
     await initialize();
 
-    // Use user's language if not specified in config (normalized for API + cache).
-    final rawLanguage = config?.language ?? _userLanguage ?? 'english';
-    final effectiveLanguage = normalizeVoiceLanguage(rawLanguage);
-    final effectiveConfig =
-        config ?? TTSConfig(language: effectiveLanguage);
+    // Use user's language if not specified in config
+    final effectiveLanguage = config?.language ?? _userLanguage ?? 'english';
+    final effectiveConfig = config ?? TTSConfig(language: effectiveLanguage);
 
     try {
       // Check cache first
@@ -241,62 +235,56 @@ class EnhancedTTSService {
     required String modelTier,
     bool enableCache = true,
   }) async {
-    final normalized = normalizeVoiceLanguage(language);
     final response = await _dio.post(
       ApiContract.url(ApiContract.voice.ttsSynthesize),
       data: {
         'text': text,
-        'language': normalized,
+        'language': language,
         'speed': speed,
         'pitch': pitch,
         'provider_priority': providerPriority,
-        'accent_profile': accentProfileForNormalized(normalized),
+        'accent_profile': _defaultAccentProfile(language),
         'model_tier': modelTier,
       },
       options: Options(
         responseType: ResponseType.bytes,
         receiveTimeout: const Duration(seconds: 30),
-        validateStatus: (code) => code != null && code < 500,
       ),
     );
 
-    if (response.statusCode != 200 || response.data == null) {
-      throw DioException(
-        requestOptions: response.requestOptions,
-        response: response,
-        type: DioExceptionType.badResponse,
-        message: 'TTS failed: HTTP ${response.statusCode}',
-      );
-    }
-
-    final payload = response.data;
-    final List<int>? bytes = payload is Uint8List
-        ? payload
-        : (payload is List<int> ? payload : null);
-    if (bytes == null || bytes.isEmpty) {
-      throw DioException(
-        requestOptions: response.requestOptions,
-        response: response,
-        type: DioExceptionType.badResponse,
-        message: 'TTS returned empty body',
-      );
-    }
-
     final tempDir = await getTemporaryDirectory();
-    final audioPath =
-        '${tempDir.path}/tts_${DateTime.now().millisecondsSinceEpoch}.wav';
-    await File(audioPath).writeAsBytes(bytes);
+    final audioPath = '${tempDir.path}/tts_${DateTime.now().millisecondsSinceEpoch}.wav';
+    await File(audioPath).writeAsBytes(response.data as List<int>);
     if (enableCache) {
-      _audioCache['${text}_$normalized'] = audioPath;
+      _audioCache['${text}_$language'] = audioPath;
     }
     await _playAudioFile(audioPath);
+  }
+
+  String _defaultAccentProfile(String language) {
+    const accents = {
+      'yoruba': 'yo-NG',
+      'hausa': 'ha-NG',
+      'igbo': 'ig-NG',
+      'swahili': 'sw-KE',
+      'zulu': 'zu-ZA',
+      'xhosa': 'xh-ZA',
+      'amharic': 'am-ET',
+      'somali': 'so-SO',
+      'afrikaans': 'af-ZA',
+      'wolof': 'wo-SN',
+      'twi': 'tw-GH',
+      'pidgin': 'pcm-NG',
+      'english': 'en-NG',
+    };
+    return accents[language.toLowerCase()] ?? language;
   }
 
   /// Speak with system TTS (last resort fallback)
   Future<void> _speakWithSystemTTS(String text, TTSConfig config, String language) async {
     try {
-      final langCode =
-          systemTtsLocaleForNormalized(normalizeVoiceLanguage(language));
+      // Set language
+      final langCode = _mapLanguageCode(language);
       await _flutterTts.setLanguage(langCode);
 
       // Set voice if specified
@@ -336,8 +324,7 @@ class EnhancedTTSService {
     await initialize();
 
     try {
-      final langCode =
-          systemTtsLocaleForNormalized(normalizeVoiceLanguage(language));
+      final langCode = _mapLanguageCode(language);
       final voices = await _flutterTts.getVoices;
       
       if (voices == null) return [];
@@ -360,7 +347,6 @@ class EnhancedTTSService {
   /// Stop speaking
   Future<void> stop() async {
     try {
-      await _audioPlayer.stop();
       await _flutterTts.stop();
     } catch (e) {
       logger.error('Failed to stop TTS', error: e);
@@ -400,6 +386,26 @@ class EnhancedTTSService {
     } catch (e) {
       logger.error('Failed to clear TTS cache', error: e);
     }
+  }
+
+  /// Map language codes
+  String _mapLanguageCode(String language) {
+    final mapping = {
+      'yoruba': 'yo-NG',
+      'swahili': 'sw-KE',
+      'zulu': 'zu-ZA',
+      'hausa': 'ha-NG',
+      'igbo': 'ig-NG',
+      'amharic': 'am-ET',
+      'somali': 'so-SO',
+      'afrikaans': 'af-ZA',
+      'xhosa': 'xh-ZA',
+      'english': 'en-US',
+      'french': 'fr-FR',
+      'arabic': 'ar-SA',
+    };
+
+    return mapping[language.toLowerCase()] ?? 'en-US';
   }
 
   /// Get supported languages

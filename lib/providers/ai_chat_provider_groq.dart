@@ -191,7 +191,11 @@ enum PolieMode { translation, tutor, roleplay, conversation, vocab, review, pron
 
 class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   final List<ChatMessage> _messages = [];
-  final Dio _dio = Dio();
+  final Dio _dio = Dio(BaseOptions(
+    connectTimeout: const Duration(seconds: 15),
+    receiveTimeout: const Duration(seconds: 60),
+    sendTimeout: const Duration(seconds: 30),
+  ));
 
   // API Configuration - uses centralized EnvConfig
   static String get _groqApiKey => EnvConfig.groqApiKey;
@@ -207,6 +211,9 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
     'llama-3.1-8b-instant',      // Faster fallback (~560 tok/s)
   ];
   static String _modelName = _modelNames[0];
+
+  /// Groq model ids users can pick for JSON / structured Polie calls.
+  static List<String> get polieGroqModelIds => List<String>.unmodifiable(_modelNames);
 
   // Supported African languages list (text + speech-friendly where possible)
   static const List<Map<String, String>> _supportedLanguageOptions = [
@@ -313,19 +320,18 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   int _maxTokensForMode() {
     switch (_mode) {
       case PolieMode.translation:
-        // Headroom for diacritics + multi-line Translation / Notes blocks (avoid cut-off).
-        return 1024;
+        return 350;
       case PolieMode.roleplay:
-        return 1200;
+        return 700;
       case PolieMode.tutor:
-        return 1200;
+        return 700;
       case PolieMode.conversation:
-        return 1200;
+        return 550;
       case PolieMode.vocab:
       case PolieMode.review:
       case PolieMode.pronunciation:
       case PolieMode.grammar:
-        return 900;
+        return 500;
     }
   }
 
@@ -1077,23 +1083,17 @@ Use structured format: Rule -> Example -> Practice.''';
             hfToken: null, // Can be set via environment
           );
           
-          // Translation: emit full string once (NLLB/GTranslate output must not look "chopped" in UI).
-          if (_mode == PolieMode.translation) {
-            if (!_userInterrupt) {
-              yield hybridResponse.output;
+          // Stream the response word by word for natural feel
+          final words = hybridResponse.output.split(' ');
+          for (int i = 0; i < words.length; i++) {
+            if (_userInterrupt) {
+              state = state.copyWith(isLoading: false);
+              return;
             }
-          } else {
-            final words = hybridResponse.output.split(' ');
-            for (int i = 0; i < words.length; i++) {
-              if (_userInterrupt) {
-                state = state.copyWith(isLoading: false);
-                return;
-              }
-
-              final chunk = i == 0 ? words[i] : ' ${words[i]}';
-              yield chunk;
-              await Future.delayed(const Duration(milliseconds: 30));
-            }
+            
+            final chunk = i == 0 ? words[i] : ' ${words[i]}';
+            yield chunk;
+            await Future.delayed(const Duration(milliseconds: 30)); // Natural typing speed
           }
           
           // Log telemetry if diacritics were corrected
@@ -1489,26 +1489,25 @@ Use structured format: Rule -> Example -> Practice.''';
                     ? buffer.trim()[buffer.trim().length - 1]
                     : '';
 
-                // Language-aware sentence segmentation.
-                // Do NOT flush on ":" / ";" — Polie translation/vocab use "Translation:", "Notes:", etc.
-                // and Yoruba text can contain colons; that used to yield only the first fragment (e.g. "E").
+                // Language-aware sentence segmentation
+                // Support for African language punctuation patterns
                 final isSentenceEnd = [".", "!", "?", "…", "\n"].contains(last);
+                
+                // Check for language-specific patterns (Yoruba, Swahili, etc.)
+                final hasLanguagePause = buffer.contains(":") || 
+                    buffer.contains(";") ||
+                    (buffer.length > 3 && buffer.substring(buffer.length - 3).contains(" "));
 
-                final hasLongChunk = buffer.length > 220;
+                final isTurnHandOff = buffer.toLowerCase().contains("your turn") ||
+                    buffer.toLowerCase().contains("now you try") ||
+                    buffer.toLowerCase().contains("ask me") ||
+                    buffer.trim().endsWith("?");
 
-                // Never use endsWith('?') here — normal questions mid-reply would truncate the stream.
-                final isTurnHandOff = (_mode == PolieMode.conversation ||
-                        _mode == PolieMode.roleplay ||
-                        _mode == PolieMode.tutor) &&
-                    (buffer.toLowerCase().contains('your turn') ||
-                        buffer.toLowerCase().contains('now you try') ||
-                        buffer.toLowerCase().contains('ask me'));
-
-                // Emit on sentence end or large chunk so stream stays responsive without truncating labels.
-                if (isSentenceEnd || hasLongChunk) {
+                // Smart buffering: emit on sentence boundaries or long pauses
+                if (isSentenceEnd || hasLanguagePause || buffer.length > 60) {
                   output += buffer;
                   yield buffer;
-                  buffer = '';
+                  buffer = "";
 
                   if (isTurnHandOff) {
                     _turn = ConversationTurn.user;
@@ -1684,20 +1683,22 @@ Use structured format: Rule -> Example -> Practice.''';
 
   /// JSON-only completion: bypasses chat history, hybrid routing, and diacritics
   /// enforcement to return raw JSON from the LLM for structured mode UIs.
-  Future<String> sendMessageForJson(String userMessage) async {
+  Future<String> sendMessageForJson(
+    String userMessage, {
+    String? groqModelOverride,
+  }) async {
     const jsonSystemPrompt =
         'You are a JSON API. You MUST respond with ONLY valid JSON. '
         'No markdown fences, no explanation, no prose before or after the JSON. '
         'Follow the exact schema provided in the user message.';
 
-    // For translation mode, force backend orchestration so the app can use
-    // provider routing policy (OpenAI-first with backend fallbacks) instead of
-    // being locked to one direct client model.
-    final useBackendJsonPath = _mode == PolieMode.translation ||
-        _groqApiKey.isEmpty ||
-        _groqApiKey == 'YOUR_GROQ_API_KEY';
+    final jsonModel = (groqModelOverride != null &&
+            groqModelOverride.isNotEmpty &&
+            _modelNames.contains(groqModelOverride))
+        ? groqModelOverride
+        : _modelName;
 
-    if (useBackendJsonPath) {
+    if (_groqApiKey.isEmpty || _groqApiKey == 'YOUR_GROQ_API_KEY') {
       await ApiService.initialize();
       final resp = await ApiService.post(
         '/api/ai/chat/completion',
@@ -1709,15 +1710,8 @@ Use structured format: Rule -> Example -> Practice.''';
           'temperature': 0.3,
           'max_tokens': _maxTokensForMode(),
           'language': _targetLanguage,
-          'languageCode': SupportedLanguages.getLanguageCode(_targetLanguage),
-          'sourceLanguage': SupportedLanguages.getLanguageCode(_sourceLanguage),
-          'targetLanguage': SupportedLanguages.getLanguageCode(_targetLanguage),
           'mode': _mode.name,
-          'context': {
-            'mode': _mode.name,
-            'feature': 'polie_translation_json',
-            'providerPolicy': 'gemini_first',
-          },
+          'model': jsonModel,
           'response_format': {'type': 'json_object'},
         },
       );
@@ -1741,7 +1735,7 @@ Use structured format: Rule -> Example -> Practice.''';
         sendTimeout: const Duration(seconds: 30),
       ),
       data: {
-        'model': _modelName,
+        'model': jsonModel,
         'messages': [
           {'role': 'system', 'content': jsonSystemPrompt},
           {'role': 'user', 'content': userMessage},

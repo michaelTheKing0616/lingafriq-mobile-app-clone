@@ -78,18 +78,22 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
     
     try {
       final question = _questions[_currentIndex];
-      // Pass language name for proper TTS language selection
-      await ref.read(ttsProvider.notifier).speak(
+      final ok = await ref.read(ttsProvider.notifier).speak(
         question.wordToPronounce,
         languageName: widget.language.name,
       );
-      
-      // Wait a bit before allowing replay
       await Future.delayed(const Duration(milliseconds: 500));
-      
       setState(() {
         _isPlaying = false;
       });
+      if (!ok && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Could not play pronunciation. Try again.'),
+            backgroundColor: PanAfricanColors.error,
+          ),
+        );
+      }
     } catch (e) {
       setState(() {
         _isPlaying = false;

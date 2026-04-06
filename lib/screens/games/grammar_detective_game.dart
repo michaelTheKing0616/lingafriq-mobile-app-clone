@@ -1,11 +1,18 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../models/game/game_session_model.dart';
-import 'base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../widgets/game_ui/index.dart';
+import '../../models/game/phrase_card_model.dart';
+import '../../models/game/game_session_model.dart';
+import '../../providers/game_provider.dart';
+import '../../providers/game_content_provider.dart';
+import '../../models/game/game_content_models.dart';
+import '../../utils/modern_griot_design_system.dart';
+import '../../widgets/griot/griot_widgets.dart';
+import '../../widgets/game/game_widgets.dart';
+import 'base_game_screen.dart';
 
-/// Grammar Detective - Find and fix grammar errors
 class GrammarDetectiveGame extends BaseGameScreen {
   const GrammarDetectiveGame({
     super.key,
@@ -18,274 +25,447 @@ class GrammarDetectiveGame extends BaseGameScreen {
   GameType getGameType() => GameType.grammarDetective;
 
   @override
-  ConsumerState<GrammarDetectiveGame> createState() => _GrammarDetectiveGameState();
+  ConsumerState<GrammarDetectiveGame> createState() =>
+      _GrammarDetectiveGameState();
 }
 
-class _GrammarDetectiveGameState extends BaseGameScreenState<GrammarDetectiveGame> {
-  final List<_GrammarQuestion> _questions = [];
+class _GrammarDetectiveGameState
+    extends BaseGameScreenState<GrammarDetectiveGame> {
+  late List<_GrammarSentence> _sentences;
   int _currentIndex = 0;
-  String? _selectedError;
-  bool _showResult = false;
+  final Set<int> _markedWords = {};
+  bool _submitted = false;
+  int _totalCorrect = 0;
 
   @override
-  int getCardCount() => 5;
+  int getCardCount() => 8;
 
   @override
   Future<void> onGameInitialized() async {
-    // Generate grammar questions
-    _questions.addAll([
-      // Yoruba
-      _GrammarQuestion(
-        text: 'Mo n ko eko',
-        correctError: 'Missing diacritics: "Mo ń kọ́ ẹ̀kọ́"',
-        errors: ['Missing diacritics: "Mo ń kọ́ ẹ̀kọ́"', 'Wrong word order', 'Missing verb'],
-      ),
-      _GrammarQuestion(
-        text: 'Bawo ni o?',
-        correctError: 'Missing diacritics: "Báwo ní o?"',
-        errors: ['Missing diacritics: "Báwo ní o?"', 'Wrong tense', 'Missing subject'],
-      ),
-      _GrammarQuestion(
-        text: 'Ó fẹ́ jẹ oúnjẹ',
-        correctError: 'Wrong tone marker: should be "Ó fẹ́ jẹun oúnjẹ"',
-        errors: ['Wrong tone marker: should be "Ó fẹ́ jẹun oúnjẹ"', 'Missing subject', 'Wrong word order'],
-      ),
-      // Hausa
-      _GrammarQuestion(
-        text: 'Ina zuwa kasuwa jiya',
-        correctError: 'Wrong tense: "Na je kasuwa jiya" (past tense required)',
-        errors: ['Wrong tense: "Na je kasuwa jiya" (past tense required)', 'Missing diacritics', 'Wrong word order'],
-      ),
-      _GrammarQuestion(
-        text: 'Shi yana da kyau',
-        correctError: 'Wrong pronoun gender: "Ita tana da kyau" (feminine subject)',
-        errors: ['Wrong pronoun gender: "Ita tana da kyau" (feminine subject)', 'Missing verb', 'Wrong tense'],
-      ),
-      // Igbo
-      _GrammarQuestion(
-        text: 'Ọ na-aga ahịa echi',
-        correctError: 'Wrong tense: "Ọ ga-aga ahịa echi" (future tense required)',
-        errors: ['Wrong tense: "Ọ ga-aga ahịa echi" (future tense required)', 'Missing subject', 'Wrong word order'],
-      ),
-      _GrammarQuestion(
-        text: 'Anyị nọ na ụlọ akwụkwọ',
-        correctError: 'Missing auxiliary verb: "Anyị nọ n\'ụlọ akwụkwọ"',
-        errors: ['Missing auxiliary verb: "Anyị nọ n\'ụlọ akwụkwọ"', 'Wrong pronoun', 'Wrong tense'],
-      ),
-      // Swahili
-      _GrammarQuestion(
-        text: 'Mimi kupenda chakula',
-        correctError: 'Missing subject prefix: "Mimi napenda chakula"',
-        errors: ['Missing subject prefix: "Mimi napenda chakula"', 'Wrong word order', 'Missing object'],
-      ),
-      _GrammarQuestion(
-        text: 'Watoto wanacheza mpira jana',
-        correctError: 'Wrong tense marker: "Watoto walicheza mpira jana" (past tense)',
-        errors: ['Wrong tense marker: "Watoto walicheza mpira jana" (past tense)', 'Missing subject', 'Wrong noun class'],
-      ),
-      // Zulu
-      _GrammarQuestion(
-        text: 'Ngiya eskoleni kusasa',
-        correctError: 'Wrong tense prefix: "Ngizoya eskoleni kusasa" (future tense)',
-        errors: ['Wrong tense prefix: "Ngizoya eskoleni kusasa" (future tense)', 'Missing object', 'Wrong word order'],
-      ),
-    ]);
+    final cards = ref.read(gameProvider.notifier).availableCards;
+    final rng = Random();
+
+    _sentences = cards.map((card) {
+      final words = card.text.split(' ');
+      final errorCount = (words.length > 4) ? rng.nextInt(2) + 1 : 1;
+      final errorIndices = <int>{};
+      while (errorIndices.length < errorCount &&
+          errorIndices.length < words.length) {
+        errorIndices.add(rng.nextInt(words.length));
+      }
+
+      final corrupted = List<String>.from(words);
+      final corrections = <int, _ErrorCorrection>{};
+      for (final idx in errorIndices) {
+        final original = corrupted[idx];
+        final mangled = _corruptWord(original, rng);
+        corrections[idx] = _ErrorCorrection(
+          errorWord: mangled,
+          correctWord: original,
+        );
+        corrupted[idx] = mangled;
+      }
+
+      return _GrammarSentence(
+        words: corrupted,
+        errorIndices: errorIndices,
+        corrections: corrections,
+        translation: card.gloss,
+        culturalNote: card.contextExamples.isNotEmpty
+            ? card.contextExamples.first
+            : 'Practice makes perfect in ${widget.language}.',
+      );
+    }).toList();
+
+    setState(() {});
   }
 
-  void _selectError(String error) {
+  String _corruptWord(String word, Random rng) {
+    if (word.length <= 2) return '${word}a';
+    final i = rng.nextInt(word.length - 1) + 1;
+    final chars = word.split('');
+    final tmp = chars[i];
+    chars[i] = chars[i - 1];
+    chars[i - 1] = tmp;
+    return chars.join();
+  }
+
+  void _toggleWord(int index) {
+    if (_submitted) return;
+    HapticFeedback.selectionClick();
     setState(() {
-      _selectedError = error;
-      _showResult = false;
+      if (_markedWords.contains(index)) {
+        _markedWords.remove(index);
+      } else {
+        _markedWords.add(index);
+      }
     });
   }
 
-  void _checkAnswer() {
-    final question = _questions[_currentIndex];
-    final correct = _selectedError == question.correctError;
+  void _submitCorrections() {
+    if (_submitted) return;
+    HapticFeedback.mediumImpact();
+    final sentence = _sentences[_currentIndex];
+    final correctHits =
+        _markedWords.intersection(sentence.errorIndices).length;
+    final falseAlarms =
+        _markedWords.difference(sentence.errorIndices).length;
+    final isGood =
+        correctHits == sentence.errorIndices.length && falseAlarms == 0;
+
+    if (isGood) _totalCorrect++;
+
+    setState(() => _submitted = true);
 
     completeTurn(
       cardId: 'grammar_$_currentIndex',
-      result: correct ? GameResult.correct : GameResult.incorrect,
+      result: isGood ? GameResult.correct : GameResult.incorrect,
       durationMs: startTime != null
           ? DateTime.now().difference(startTime!).inMilliseconds
-          : 0,
-      feedback: {'selected': _selectedError, 'correct': question.correctError},
+          : 5000,
+      feedback: {
+        'marked': _markedWords.toList(),
+        'errors': sentence.errorIndices.toList(),
+      },
     );
-
-    setState(() => _showResult = true);
   }
 
-  void _nextQuestion() {
-    if (_currentIndex < _questions.length - 1) {
+  void _nextSentence() {
+    if (_currentIndex < _sentences.length - 1) {
       setState(() {
         _currentIndex++;
-        _selectedError = null;
-        _showResult = false;
+        _markedWords.clear();
+        _submitted = false;
       });
     } else {
       finishGame();
     }
   }
 
-  @override
-  String? get appBarTitle =>
-      _questions.isEmpty ? null : widget.getGameType().displayName;
+  double get _accuracy =>
+      _sentences.isEmpty ? 0 : _totalCorrect / (_currentIndex + 1);
 
   @override
-  String? get shellProgressLabel =>
-      _questions.isEmpty ? null : '${_currentIndex + 1}/${_questions.length}';
+  String? get appBarTitle => 'Grammar Detective';
 
   @override
   Widget buildGameContent(BuildContext context) {
-    try {
-      if (_questions.isEmpty) {
-        return const Center(child: CircularProgressIndicator());
-      }
+    if (_sentences.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    final cs = Theme.of(context).colorScheme;
+    final sentence = _sentences[_currentIndex];
 
-      final question = _questions[_currentIndex];
-
-      return Padding(
-        padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 16.h),
-        child: Column(
+    return Stack(
+      children: [
+        ListView(
+          padding: EdgeInsets.fromLTRB(16.w, 72.h, 16.w, 100.h),
           children: [
-            Semantics(
-              label: 'Progress: question ${_currentIndex + 1} of ${_questions.length}',
-              value: '${_currentIndex + 1} of ${_questions.length}',
-              child: LinearProgressIndicator(
-                value: (_currentIndex + 1) / _questions.length,
-              ),
-            ),
-            SizedBox(height: 12.h),
-            Semantics(
-              label: 'Sentence to check: ${question.text}',
-              child: GameCard(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Find the grammar error:',
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      question.text,
-                      style: TextStyle(fontSize: 24.sp),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 14.h),
-            Expanded(
-              child: ListView.builder(
-                itemCount: question.errors.length,
-                itemBuilder: (context, index) {
-                  final error = question.errors[index];
-                  final isSelected = _selectedError == error;
-                  final isCorrect = error == question.correctError;
-
-                  final GameCardState cardState;
-                  if (_showResult) {
-                    if (isCorrect) {
-                      cardState = GameCardState.correct;
-                    } else if (isSelected) {
-                      cardState = GameCardState.incorrect;
-                    } else {
-                      cardState = GameCardState.disabled;
-                    }
-                  } else if (isSelected) {
-                    cardState = GameCardState.selected;
-                  } else {
-                    cardState = GameCardState.normal;
-                  }
-
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 10.h),
-                    child: Semantics(
-                      label: 'Error option: $error',
-                      button: true,
-                      selected: isSelected,
-                      enabled: !_showResult,
-                      child: GameCard(
-                        state: cardState,
-                        onTap: _showResult ? null : () => _selectError(error),
-                        child: Row(
-                          children: [
-                            Expanded(child: Text(error, style: TextStyle(fontSize: 16.sp))),
-                            if (_showResult && isCorrect)
-                              const Icon(Icons.check_circle, color: Colors.green, semanticLabel: 'Correct'),
-                            if (_showResult && isSelected && !isCorrect)
-                              const Icon(Icons.cancel, color: Colors.red, semanticLabel: 'Incorrect'),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            if (!_showResult)
-              Semantics(
-                label: 'Check answer button',
-                button: true,
-                enabled: _selectedError != null,
-                child: PrimaryActionButton(
-                  onPressed: _selectedError == null ? null : _checkAnswer,
-                  label: 'Check Answer',
-                  icon: Icons.verified_rounded,
-                ),
+            _parchmentBlock(cs, sentence),
+            SizedBox(height: 16.h),
+            if (_submitted) _correctionGuide(cs, sentence),
+            if (_submitted) SizedBox(height: 16.h),
+            _heritageInsight(cs, sentence),
+            SizedBox(height: 16.h),
+            _scoreDisplay(cs),
+            SizedBox(height: 24.h),
+            if (!_submitted)
+              GriotGradientButton(
+                label: 'Submit Corrections',
+                icon: Icons.search_rounded,
+                onPressed: _markedWords.isNotEmpty ? _submitCorrections : null,
               )
             else
-              Column(
-                children: [
-                  Text(
-                    _selectedError == question.correctError
-                        ? 'Correct! 🎉'
-                        : 'Try again!',
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      color: _selectedError == question.correctError
-                          ? Colors.green
-                          : Colors.red,
-                    ),
-                  ),
-                  SizedBox(height: 12.h),
-                  Semantics(
-                    label: _currentIndex < _questions.length - 1 ? 'Next question' : 'Finish game',
-                    button: true,
-                    child: PrimaryActionButton(
-                      onPressed: _nextQuestion,
-                      label: _currentIndex < _questions.length - 1 ? 'Next Question' : 'Finish',
-                      icon: _currentIndex < _questions.length - 1
-                          ? Icons.navigate_next_rounded
-                          : Icons.flag_rounded,
-                    ),
-                  ),
-                ],
+              GriotGradientButton(
+                label: _currentIndex < _sentences.length - 1
+                    ? 'Next Sentence'
+                    : 'Finish',
+                icon: Icons.arrow_forward_rounded,
+                onPressed: _nextSentence,
               ),
           ],
         ),
-      );
-    } catch (e, st) {
-      debugPrint('GrammarDetectiveGame buildGameContent: $e $st');
-      rethrow;
-    }
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: GameTopBar(
+            onClose: () => (widget.onBack ?? () => Navigator.pop(context))(),
+            currentStep: _currentIndex + 1,
+            totalSteps: _sentences.length,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _parchmentBlock(ColorScheme cs, _GrammarSentence sentence) {
+    return Container(
+      padding: EdgeInsets.all(20.r),
+      decoration: BoxDecoration(
+        color: ModernGriotColors.surfaceContainerLow,
+        borderRadius: ModernGriotRadius.borderXl,
+        boxShadow: ModernGriotShadows.md,
+        image: DecorationImage(
+          image: const AssetImage('assets/images/parchment_texture.png'),
+          fit: BoxFit.cover,
+          opacity: 0.05,
+          onError: (_, __) {},
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.policy_rounded,
+                  size: 20.sp, color: ModernGriotColors.primary),
+              SizedBox(width: 8.w),
+              Text('Find the errors',
+                  style: ModernGriotTypography.titleSmall(context: context)),
+            ],
+          ),
+          SizedBox(height: 16.h),
+          Wrap(
+            spacing: 6.w,
+            runSpacing: 8.h,
+            children: List.generate(sentence.words.length, (i) {
+              final isMarked = _markedWords.contains(i);
+              final isError = sentence.errorIndices.contains(i);
+              final showCorrect = _submitted && isError && isMarked;
+              final showMissed = _submitted && isError && !isMarked;
+              final showFalse = _submitted && !isError && isMarked;
+
+              Color chipBg;
+              Color chipText;
+              if (showCorrect) {
+                chipBg = ModernGriotColors.error.withOpacity(0.15);
+                chipText = ModernGriotColors.error;
+              } else if (showMissed) {
+                chipBg = Colors.orange.withOpacity(0.15);
+                chipText = Colors.orange.shade800;
+              } else if (showFalse) {
+                chipBg = ModernGriotColors.onSurfaceVariant.withOpacity(0.1);
+                chipText = ModernGriotColors.onSurfaceVariant;
+              } else if (isMarked) {
+                chipBg = ModernGriotColors.error.withOpacity(0.12);
+                chipText = ModernGriotColors.error;
+              } else {
+                chipBg = Colors.transparent;
+                chipText = ModernGriotColors.onSurface;
+              }
+
+              return GestureDetector(
+                onTap: () => _toggleWord(i),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                  decoration: BoxDecoration(
+                    color: chipBg,
+                    borderRadius: ModernGriotRadius.borderSm,
+                    border: isMarked && !_submitted
+                        ? Border.all(
+                            color: ModernGriotColors.error, width: 1.5)
+                        : null,
+                  ),
+                  child: Text(
+                    sentence.words[i],
+                    style: ModernGriotTypography.bodyLarge(
+                      context: context,
+                      color: chipText,
+                    ).copyWith(
+                      decoration:
+                          isMarked ? TextDecoration.underline : null,
+                      decorationColor: ModernGriotColors.error,
+                      decorationThickness: 2,
+                    ),
+                  ),
+                ),
+              );
+            }),
+          ),
+          SizedBox(height: 12.h),
+          Text(
+            sentence.translation,
+            style: ModernGriotTypography.bodySmall(context: context).copyWith(
+              fontStyle: FontStyle.italic,
+              color: ModernGriotColors.onSurfaceVariant.withOpacity(0.7),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _correctionGuide(ColorScheme cs, _GrammarSentence sentence) {
+    final entries = sentence.corrections.entries.toList()
+      ..sort((a, b) => a.key.compareTo(b.key));
+
+    return GriotCard(
+      surfaceLevel: 1,
+      padding: EdgeInsets.all(16.r),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.menu_book_rounded,
+                  size: 20.sp, color: ModernGriotColors.secondary),
+              SizedBox(width: 8.w),
+              Text("Griot's Guide",
+                  style: ModernGriotTypography.titleSmall(context: context)),
+            ],
+          ),
+          SizedBox(height: 12.h),
+          Row(
+            children: [
+              Expanded(
+                child: Text('Error',
+                    style: ModernGriotTypography.labelMedium(
+                        context: context, color: ModernGriotColors.error)),
+              ),
+              Expanded(
+                child: Text('Correction',
+                    style: ModernGriotTypography.labelMedium(
+                        context: context,
+                        color: ModernGriotColors.secondary)),
+              ),
+            ],
+          ),
+          Divider(color: cs.outlineVariant.withOpacity(0.2), height: 16.h),
+          ...entries.map((e) => Padding(
+                padding: EdgeInsets.only(bottom: 8.h),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10.w, vertical: 6.h),
+                        decoration: BoxDecoration(
+                          color: ModernGriotColors.error.withOpacity(0.08),
+                          borderRadius: ModernGriotRadius.borderSm,
+                        ),
+                        child: Text(
+                          e.value.errorWord,
+                          style: ModernGriotTypography.bodyMedium(
+                            context: context,
+                            color: ModernGriotColors.error,
+                          ).copyWith(decoration: TextDecoration.lineThrough),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 8.w),
+                    Icon(Icons.arrow_forward_rounded,
+                        size: 16.sp,
+                        color: ModernGriotColors.onSurfaceVariant),
+                    SizedBox(width: 8.w),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10.w, vertical: 6.h),
+                        decoration: BoxDecoration(
+                          color:
+                              ModernGriotColors.secondary.withOpacity(0.08),
+                          borderRadius: ModernGriotRadius.borderSm,
+                        ),
+                        child: Text(
+                          e.value.correctWord,
+                          style: ModernGriotTypography.bodyMedium(
+                            context: context,
+                            color: ModernGriotColors.secondary,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )),
+        ],
+      ),
+    );
+  }
+
+  Widget _heritageInsight(ColorScheme cs, _GrammarSentence sentence) {
+    return GriotCard(
+      surfaceLevel: 0,
+      padding: EdgeInsets.all(16.r),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 64.r,
+            height: 64.r,
+            decoration: BoxDecoration(
+              color: ModernGriotColors.primaryContainer.withOpacity(0.3),
+              borderRadius: ModernGriotRadius.borderLg,
+            ),
+            child: Icon(Icons.temple_hindu_rounded,
+                size: 32.sp,
+                color: ModernGriotColors.primary.withOpacity(0.6)),
+          ),
+          SizedBox(width: 12.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Heritage Insight',
+                    style:
+                        ModernGriotTypography.labelLarge(context: context)),
+                SizedBox(height: 4.h),
+                Text(
+                  sentence.culturalNote,
+                  style: ModernGriotTypography.bodySmall(context: context),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _scoreDisplay(ColorScheme cs) {
+    final pct = (_accuracy * 100).toStringAsFixed(0);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(Icons.analytics_rounded,
+            size: 20.sp, color: ModernGriotColors.primary),
+        SizedBox(width: 8.w),
+        Text(
+          'Accuracy: $pct%',
+          style: ModernGriotTypography.titleSmall(
+              context: context, color: ModernGriotColors.primary),
+        ),
+        SizedBox(width: 16.w),
+        Text(
+          '$_totalCorrect / ${_currentIndex + 1}',
+          style: ModernGriotTypography.bodyMedium(context: context),
+        ),
+      ],
+    );
   }
 }
 
-class _GrammarQuestion {
-  final String text;
-  final String correctError;
-  final List<String> errors;
+class _GrammarSentence {
+  final List<String> words;
+  final Set<int> errorIndices;
+  final Map<int, _ErrorCorrection> corrections;
+  final String translation;
+  final String culturalNote;
 
-  _GrammarQuestion({
-    required this.text,
-    required this.correctError,
-    required this.errors,
+  const _GrammarSentence({
+    required this.words,
+    required this.errorIndices,
+    required this.corrections,
+    required this.translation,
+    required this.culturalNote,
   });
 }
 
+class _ErrorCorrection {
+  final String errorWord;
+  final String correctWord;
+  const _ErrorCorrection({required this.errorWord, required this.correctWord});
+}

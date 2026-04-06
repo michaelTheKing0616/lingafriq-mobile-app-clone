@@ -57,7 +57,16 @@ class ApiContract {
   static const wa = _Wa();
   static const snap = _Snap();
   static const feed = _Feed();
+  static const calls = _Calls();
   static const misc = _Misc();
+  static const gameContent = _GameContent();
+  static const archive = _Archive();
+  static const lexicon = _Lexicon();
+  static const languageMap = _LanguageMap();
+  static const transcript = _Transcript();
+  static const batchProcessing = _BatchProcessing();
+  static const communityHub = _CommunityHub();
+  static const tribeDuels = _TribeDuels();
 }
 
 // =============================================================================
@@ -205,6 +214,15 @@ class _Feed {
   String get lists => '/api/feed/lists';
   String get profile => '/api/feed/profile';
   String profileByUser(String userId) => '/api/feed/profile/$userId';
+}
+
+// =============================================================================
+// Voice / video call history (dedicated module)
+// =============================================================================
+class _Calls {
+  const _Calls();
+  String get history => '/api/calls/history';
+  String get log => '/api/calls/log';
 }
 
 // =============================================================================
@@ -480,6 +498,8 @@ class _Voice {
       '/api/voice/stt/dialects/$languageCode';
   String get sttLanguages => '/api/voice/stt/languages';
   String get ttsSynthesize => '/api/voice/tts/synthesize';
+  /// Device-independent MMS-TTS (Node → Python sidecar). GET with `language` + `text` query params.
+  String get mmsTts => '/api/tts';
   String get ttsLanguages => '/api/voice/tts/languages';
   String get lessons => '/api/voice/lessons';
   String lesson(String lessonId) => '/api/voice/lessons/$lessonId';
@@ -690,4 +710,86 @@ class _Competitions {
 class _Misc {
   const _Misc();
   String get healthcheck => '/healthcheck';
+}
+
+// =============================================================================
+// Game Content (structured word/proverb/scenario database)
+// =============================================================================
+class _GameContent {
+  const _GameContent();
+  String get words => '/api/games/content/words';
+  String get proverbs => '/api/games/content/proverbs';
+  String get scenarios => '/api/games/content/scenarios';
+  String get seed => '/api/games/content/seed';
+}
+
+// =============================================================================
+// Archive Submissions
+// =============================================================================
+class _Archive {
+  const _Archive();
+  String get submissions => '/api/archive/submissions';
+  String submission(String id) => '/api/archive/submissions/$id';
+  String get collections => '/api/archive/collections';
+}
+
+// =============================================================================
+// Lexicon / Glossary
+// =============================================================================
+class _Lexicon {
+  const _Lexicon();
+  String entry(String word) => '/api/lexicon/$word';
+  String get search => '/api/lexicon/search';
+  String get create => '/api/lexicon';
+}
+
+// =============================================================================
+// Language Map (geospatial)
+// =============================================================================
+class _LanguageMap {
+  const _LanguageMap();
+  String get all => '/api/language-map';
+  String byLanguage(String language) => '/api/language-map/$language';
+}
+
+// =============================================================================
+// Transcript Segments
+// =============================================================================
+class _Transcript {
+  const _Transcript();
+  String segments(String mediaId) => '/api/media/$mediaId/transcript';
+  String segment(String mediaId, String segId) =>
+      '/api/media/$mediaId/transcript/$segId';
+}
+
+// =============================================================================
+// Batch Processing
+// =============================================================================
+class _BatchProcessing {
+  const _BatchProcessing();
+  String get start => '/api/media/batch';
+  String job(String jobId) => '/api/media/batch/$jobId';
+}
+
+// =============================================================================
+// Community Hub (Word of the Day, discussions)
+// =============================================================================
+class _CommunityHub {
+  const _CommunityHub();
+  String get wordOfTheDay => '/api/community/word-of-the-day';
+  String comments(String id) => '/api/community/word-of-the-day/$id/comments';
+}
+
+// =============================================================================
+// Tribe Duels
+// =============================================================================
+class _TribeDuels {
+  const _TribeDuels();
+  String duels(String tribeId) => '/api/tribes/$tribeId/duels';
+  String duel(String tribeId, String duelId) =>
+      '/api/tribes/$tribeId/duels/$duelId';
+  String duelAnswer(String tribeId, String duelId) =>
+      '/api/tribes/$tribeId/duels/$duelId/answer';
+  String duelChat(String tribeId, String duelId) =>
+      '/api/tribes/$tribeId/duels/$duelId/chat';
 }

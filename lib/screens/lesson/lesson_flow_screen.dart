@@ -8,6 +8,7 @@ import 'package:lingafriq/lessons/models/section_lesson_model.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/points_and_profile_image_builder.dart';
+import 'package:lingafriq/widgets/portrait_video_player.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 import 'package:lingafriq/widgets/gamification/combo_display_widget.dart';
@@ -83,6 +84,7 @@ class LessonFlowScreen extends HookConsumerWidget {
           timeTaken: lessonState.timeTaken.inSeconds,
           bestCombo: comboTracker.maxCombo,
           onContinue: () {
+            _pauseAllSectionVideos(ref, lessonState.sections);
             comboTracker.reset();
             ref.read(navigationProvider).pop();
           },
@@ -128,6 +130,7 @@ class LessonFlowScreen extends HookConsumerWidget {
                                 child: BackButton(
                                   color: Theme.of(context).colorScheme.onPrimary,
                                   onPressed: () {
+                                    _pauseAllSectionVideos(ref, lessonState.sections);
                                     comboTracker.reset();
                                     ref.read(navigationProvider).pop();
                                   },
@@ -238,27 +241,33 @@ class LessonFlowScreen extends HookConsumerWidget {
             lessonFlow.setQuizAnswer(section.sectionId, questionId, answer);
           },
           onCheckAnswer: (questionId, answer) async {
-            await lessonFlow.checkQuizAnswer(
+            final isCorrect = await lessonFlow.checkQuizAnswer(
               section.sectionId,
               questionId,
               answer,
             );
-          },
-          onFinish: () async {
-            final success = await lessonFlow.completeSection(section.sectionId);
-            if (!success) return;
-            if (lessonState.hasMoreSections) {
-              final nextIndex = lessonState.currentSectionIndex + 1;
-              lessonFlow.nextSection();
-              if (pageController.hasClients) {
-                pageController.animateToPage(
-                  nextIndex,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                );
+            if (isCorrect) {
+              // Complete section
+              await lessonFlow.completeSection(section.sectionId);
+              
+              if (lessonState.hasMoreSections) {
+                // Auto-advance after short delay
+                await Future.delayed(const Duration(milliseconds: 1500));
+                if (context.mounted) {
+                  final nextIndex = lessonState.currentSectionIndex + 1;
+                  lessonFlow.nextSection();
+                  if (pageController.hasClients) {
+                    pageController.animateToPage(
+                      nextIndex,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    );
+                  }
+                }
+              } else {
+                // All sections complete - show completion screen
+                ref.read(lessonFlowProvider(lessonId).notifier).nextSection();
               }
-            } else {
-              ref.read(lessonFlowProvider(lessonId).notifier).nextSection();
             }
           },
           isAnswerChecked: (questionId) {
@@ -304,6 +313,28 @@ class LessonFlowScreen extends HookConsumerWidget {
             }
           },
         );
+    }
+  }
+
+  /// Pause all video players across all lesson sections before navigating away.
+  static void _pauseAllSectionVideos(WidgetRef ref, List<LessonContent> sections) {
+    for (final section in sections) {
+      final videoUrl = section.videoUrl;
+      if (videoUrl != null && videoUrl.isNotEmpty) {
+        try {
+          ref.read(betterPlayerController(videoUrl)).pause();
+        } catch (_) {}
+      }
+      if (section.questions != null) {
+        for (final q in section.questions!) {
+          final qVideo = q.videoUrl;
+          if (qVideo != null && qVideo.isNotEmpty) {
+            try {
+              ref.read(betterPlayerController(qVideo)).pause();
+            } catch (_) {}
+          }
+        }
+      }
     }
   }
 }

@@ -1,10 +1,10 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/dio_provider.dart';
 import 'package:lingafriq/config/api_contract.dart';
-import 'voice_language_utils.dart';
 
 /// Pronunciation Score from voice analysis
 class PronunciationScore {
@@ -37,14 +37,12 @@ class PronunciationScore {
       confidence: (json['confidence'] as num?)?.toDouble() ?? 0.0,
       feedbackText: json['feedback_text'] as String? ?? '',
       improvementTips: List<String>.from(json['improvement_tips'] ?? []),
-      problemSegments: List<Map<String, dynamic>>.from(
-        json['problem_segments'] ?? [],
-      ),
+      problemSegments: List<Map<String, dynamic>>.from(json['problem_segments'] ?? []),
     );
   }
 
   bool get passed => overall >= 0.6;
-
+  
   String get grade {
     if (overall >= 0.9) return 'A+';
     if (overall >= 0.8) return 'A';
@@ -137,7 +135,7 @@ final voiceApiServiceProvider = Provider<VoiceApiService>((ref) {
 });
 
 /// Voice API Service
-///
+/// 
 /// Handles all voice-related API calls:
 /// - Speech-to-Text transcription
 /// - Text-to-Speech synthesis
@@ -168,13 +166,16 @@ class VoiceApiService {
       }
 
       final formData = FormData.fromMap({
-        'audio': await MultipartFile.fromFile(audioPath, filename: 'audio.wav'),
+        'audio': await MultipartFile.fromFile(
+          audioPath,
+          filename: 'audio.wav',
+        ),
         if (language != null) 'language': language,
         'task': task,
       });
 
-      final response = await _dio.post(
-        ApiContract.url(ApiContract.voice.sttTranscribe),
+    final response = await _dio.post(
+      ApiContract.url(ApiContract.voice.sttTranscribe),
         data: formData,
         options: Options(
           contentType: 'multipart/form-data',
@@ -199,7 +200,10 @@ class VoiceApiService {
   }) async {
     try {
       final formData = FormData.fromMap({
-        'audio': MultipartFile.fromBytes(audioBytes, filename: 'audio.wav'),
+        'audio': MultipartFile.fromBytes(
+          audioBytes,
+          filename: 'audio.wav',
+        ),
         if (language != null) 'language': language,
         'task': task,
       });
@@ -225,9 +229,8 @@ class VoiceApiService {
   /// Get supported STT languages
   Future<List<String>> getSupportedSTTLanguages() async {
     try {
-      final response = await _dio.get(
-        ApiContract.url(ApiContract.voice.sttLanguages),
-      );
+      final response =
+          await _dio.get(ApiContract.url(ApiContract.voice.sttLanguages));
       if (response.statusCode == 200) {
         return List<String>.from(response.data['languages'] ?? []);
       }
@@ -241,7 +244,9 @@ class VoiceApiService {
   // TEXT-TO-SPEECH
   // ============================================
 
-  /// Synthesize text to speech
+  /// Synthesize text to speech via **server-only** MMS-TTS (`GET /api/tts`).
+  /// No device TTS; audio is always generated on the backend Python sidecar.
+  /// [speed] and [voice] are ignored (MMS checkpoint is fixed per language).
   Future<Uint8List?> synthesizeSpeech({
     required String text,
     required String language,
@@ -249,32 +254,28 @@ class VoiceApiService {
     double speed = 1.0,
   }) async {
     try {
-      final normalizedLanguage = normalizeVoiceLanguage(language);
-      final response = await _dio.post(
-        ApiContract.url(ApiContract.voice.ttsSynthesize),
-        data: {
-          'text': text,
+      final normalizedLanguage = _normalizeLanguage(language);
+      final clipped = text.length > 500 ? text.substring(0, 500) : text;
+      final response = await _dio.get(
+        ApiContract.url(ApiContract.voice.mmsTts),
+        queryParameters: <String, dynamic>{
           'language': normalizedLanguage,
-          if (voice != null) 'voice': voice,
-          'speed': speed,
-          'provider_priority': _providerPriorityFor(normalizedLanguage),
-          'accent_profile': accentProfileForNormalized(normalizedLanguage),
-          'model_tier': 'free_best',
+          'text': clipped,
         },
         options: Options(
           responseType: ResponseType.bytes,
-          receiveTimeout: const Duration(seconds: 30),
+          receiveTimeout: const Duration(seconds: 45),
+          sendTimeout: const Duration(seconds: 30),
         ),
       );
 
-      if (response.statusCode == 200) {
-        final payload = response.data;
-        if (payload is Uint8List) return payload;
-        if (payload is List<int>) return Uint8List.fromList(payload);
-        if (payload is List) {
-          return Uint8List.fromList(
-            payload.whereType<num>().map((e) => e.toInt()).toList(),
-          );
+      if (response.statusCode == 200 && response.data != null) {
+        final data = response.data;
+        if (data is List<int>) {
+          return Uint8List.fromList(data);
+        }
+        if (data is Uint8List) {
+          return data;
         }
       }
     } catch (e) {
@@ -286,9 +287,8 @@ class VoiceApiService {
   /// Get supported TTS languages
   Future<List<String>> getSupportedTTSLanguages() async {
     try {
-      final response = await _dio.get(
-        ApiContract.url(ApiContract.voice.ttsLanguages),
-      );
+      final response =
+          await _dio.get(ApiContract.url(ApiContract.voice.ttsLanguages));
       if (response.statusCode == 200) {
         return List<String>.from(response.data['languages'] ?? []);
       }
@@ -328,15 +328,13 @@ class VoiceApiService {
       if (referenceAudioPath != null) {
         final refFile = File(referenceAudioPath);
         if (await refFile.exists()) {
-          formData.files.add(
-            MapEntry(
-              'reference_audio',
-              await MultipartFile.fromFile(
-                referenceAudioPath,
-                filename: 'reference.wav',
-              ),
+          formData.files.add(MapEntry(
+            'reference_audio',
+            await MultipartFile.fromFile(
+              referenceAudioPath,
+              filename: 'reference.wav',
             ),
-          );
+          ));
         }
       }
 
@@ -406,7 +404,10 @@ class VoiceApiService {
       if (!await file.exists()) return null;
 
       final formData = FormData.fromMap({
-        'audio': await MultipartFile.fromFile(audioPath, filename: 'audio.wav'),
+        'audio': await MultipartFile.fromFile(
+          audioPath,
+          filename: 'audio.wav',
+        ),
         'expected_text': expectedText,
         'language': language,
       });
@@ -436,7 +437,9 @@ class VoiceApiService {
   }) async {
     try {
       final response = await _dio.get(
-        ApiContract.url(ApiContract.pronunciation.difficulty(userId, language)),
+        ApiContract.url(
+          ApiContract.pronunciation.difficulty(userId, language),
+        ),
       );
 
       if (response.statusCode == 200) {
@@ -455,7 +458,9 @@ class VoiceApiService {
   }) async {
     try {
       final response = await _dio.get(
-        ApiContract.url(ApiContract.pronunciation.profile(userId, language)),
+        ApiContract.url(
+          ApiContract.pronunciation.profile(userId, language),
+        ),
       );
 
       if (response.statusCode == 200) {
@@ -528,7 +533,9 @@ class VoiceApiService {
   }) async {
     try {
       final response = await _dio.get(
-        ApiContract.url(ApiContract.voice.lessonsProgress(userId, language)),
+        ApiContract.url(
+          ApiContract.voice.lessonsProgress(userId, language),
+        ),
       );
 
       if (response.statusCode == 200) {
@@ -578,18 +585,35 @@ class VoiceApiService {
         ApiContract.url(ApiContract.voice.health),
         options: Options(receiveTimeout: const Duration(seconds: 5)),
       );
-      return response.statusCode == 200 && response.data['status'] == 'healthy';
+      return response.statusCode == 200 && 
+             response.data['status'] == 'healthy';
     } catch (e) {
       debugPrint('Voice service health check failed: $e');
     }
     return false;
   }
 
-  List<String> _providerPriorityFor(String language) {
-    if (language == 'english') {
-      return const ['xtts_v2', 'piper', 'mms_tts'];
-    }
-    return const ['xtts_v2', 'mms_tts', 'piper'];
+  String _normalizeLanguage(String language) {
+    final key = language.trim().toLowerCase().replaceAll('-', '_');
+    const aliases = {
+      'yo': 'yoruba',
+      'ha': 'hausa',
+      'ig': 'igbo',
+      'sw': 'swahili',
+      'zu': 'zulu',
+      'xh': 'xhosa',
+      'am': 'amharic',
+      'so': 'somali',
+      'af': 'afrikaans',
+      'wo': 'wolof',
+      'tw': 'twi',
+      'pcm': 'pidgin',
+      'en': 'english',
+      'en_us': 'english',
+      'en_gb': 'english',
+    };
+    return aliases[key] ?? key;
   }
 
 }
+

@@ -46,9 +46,29 @@ class _XListsScreenState extends ConsumerState<XListsScreen> {
             style: TextStyle(color: XUi.secondaryText(isDark)),
           ),
           const SizedBox(height: 16),
-          if (state.loading)
+          if (state.listsLoading)
             const Center(child: Padding(padding: EdgeInsets.all(20), child: CircularProgressIndicator())),
-          if (!state.loading && state.lists.isEmpty)
+          if (state.listsError != null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Material(
+                color: Theme.of(context).colorScheme.errorContainer,
+                borderRadius: BorderRadius.circular(12),
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Row(
+                    children: [
+                      Expanded(child: Text(state.listsError!, style: TextStyle(color: Theme.of(context).colorScheme.onErrorContainer))),
+                      TextButton(
+                        onPressed: () => ref.read(xFeedProvider.notifier).loadLists(),
+                        child: const Text('Retry'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          if (!state.listsLoading && state.lists.isEmpty && state.listsError == null)
             Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(color: XUi.cardBg(isDark), borderRadius: BorderRadius.circular(14)),

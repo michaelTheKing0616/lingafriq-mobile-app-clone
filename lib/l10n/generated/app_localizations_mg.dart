@@ -1,0 +1,202 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for Malagasy (`mg`).
+class AppLocalizationsMg extends AppLocalizations {
+  AppLocalizationsMg([String locale = 'mg']) : super(locale);
+
+  @override
+  String get appTitle => 'LingAfriq';
+
+  @override
+  String get welcomeMessage => 'Tongasoa eto amin\'ny LingAfriq';
+
+  @override
+  String get continueButton => 'Manohy';
+
+  @override
+  String get startLearning => 'Manomboka Mianatra';
+
+  @override
+  String get loading => 'Mampiditra...';
+
+  @override
+  String get errorOccurred => 'Nisy olana nitranga';
+
+  @override
+  String get tryAgain => 'Andramo Indray';
+
+  @override
+  String get home => 'Trano';
+
+  @override
+  String get learn => 'Mianatra';
+
+  @override
+  String get games => 'Lalao';
+
+  @override
+  String get profile => 'Tantara';
+
+  @override
+  String get settings => 'Fifanarahana';
+
+  @override
+  String get language => 'Fiteny';
+
+  @override
+  String get selectLanguage => 'Mifidy Fiteny';
+
+  @override
+  String get lessons => 'Lesona';
+
+  @override
+  String get quizzes => 'Fanontaniana';
+
+  @override
+  String get takeQuiz => 'Maka Fanontaniana';
+
+  @override
+  String get takeLesson => 'Maka Lesona';
+
+  @override
+  String get dailyStreak => 'Andro isan\'andro';
+
+  @override
+  String daysStreak(int count) {
+    return 'Andro $count';
+  }
+
+  @override
+  String xpEarned(int count) {
+    return '$count XP';
+  }
+
+  @override
+  String get level => 'Ambaratonga';
+
+  @override
+  String get beginner => 'Mpitomboka';
+
+  @override
+  String get intermediate => 'Antony';
+
+  @override
+  String get advanced => 'Ambony';
+
+  @override
+  String get correct => 'Marina!';
+
+  @override
+  String get incorrect => 'Tsy marina';
+
+  @override
+  String get next => 'Manaraka';
+
+  @override
+  String get back => 'Miverina';
+
+  @override
+  String get skip => 'Mandalo';
+
+  @override
+  String get cancel => 'Avelao';
+
+  @override
+  String get save => 'Tahiry';
+
+  @override
+  String get done => 'Vita';
+
+  @override
+  String get submit => 'Alefa';
+
+  @override
+  String get logout => 'Mivoaka';
+
+  @override
+  String get login => 'Miditra';
+
+  @override
+  String get signup => 'Misoratra anarana';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get password => 'Tenimiafina';
+
+  @override
+  String get forgotPassword => 'Hadino ny Tenimiafina?';
+
+  @override
+  String get noAccount => 'Tsy manana Account?';
+
+  @override
+  String get haveAccount => 'Manana Account?';
+
+  @override
+  String get congratulations => 'Arahabaina!';
+
+  @override
+  String get lessonComplete => 'Lesona Vita!';
+
+  @override
+  String get quizComplete => 'Fanontaniana Vita!';
+
+  @override
+  String get accuracy => 'Marina';
+
+  @override
+  String get score => 'Isan\'ny';
+
+  @override
+  String get aiTutor => 'Mpampianatra AI';
+
+  @override
+  String get cultureMagazine => 'Gazety Kolontsaina';
+
+  @override
+  String get tribes => 'Foko';
+
+  @override
+  String get leaderboard => 'Tabilao Mpitondra';
+
+  @override
+  String get flbHeritageTitle => 'FLB Heritage';
+
+  @override
+  String get flbHeritageSearchHint => 'Search title, country, or tags';
+
+  @override
+  String get flbHeritageEmptyMessage =>
+      'No entries match your search. Try another keyword or pull to refresh.';
+
+  @override
+  String get flbHeritageLoadError =>
+      'Could not load heritage archive. Pull to retry.';
+
+  @override
+  String get flbHeritageRefresh => 'Refresh';
+
+  @override
+  String get flbHeritageDetailTitle => 'Heritage';
+
+  @override
+  String get flbHeritageMissingContent => 'Missing heritage content';
+
+  @override
+  String get tooltipFlbHeritageArchive => 'FLB Heritage archive';
+
+  @override
+  String get tooltipTribeDiscovery => 'Tribe discovery';
+
+  @override
+  String get drawerFlbHeritageArchive => 'FLB Heritage Archive';
+
+  @override
+  String get tooltipTribes => 'Tribes';
+}

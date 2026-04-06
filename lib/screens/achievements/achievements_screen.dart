@@ -1,449 +1,213 @@
+import 'dart:math';
+import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:lingafriq/utils/error_handler.dart' hide ErrorBoundary;
-import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lingafriq/models/achievement_model.dart';
-import 'package:lingafriq/providers/achievements_provider.dart';
-import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/widgets/error_boundary.dart';
-import 'package:lingafriq/widgets/empty_state_widget.dart';
-import 'package:lingafriq/widgets/error_state_widget.dart';
-import 'package:lingafriq/widgets/responsive_safe_area.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:lingafriq/services/deep_link_service.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../utils/modern_griot_design_system.dart';
+import '../../widgets/griot/griot_widgets.dart';
 
 class AchievementsScreen extends ConsumerWidget {
   const AchievementsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ErrorBoundary(
-      errorMessage: 'Unable to load achievements. Please check your connection and try again.',
-      onRetry: () {
-        ref.invalidate(achievementsProvider);
-      },
-      child: _buildContent(context, ref),
+    return GriotScaffold(
+      body: SafeArea(
+        child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+          children: [
+            _buildHeader(context),
+            SizedBox(height: 24.h),
+            _TotalHonorCard(),
+            SizedBox(height: 20.h),
+            _RankCard(),
+            SizedBox(height: 24.h),
+            _TotemGridSection(),
+            SizedBox(height: 24.h),
+            _CertificatePreview(),
+            SizedBox(height: 20.h),
+            _buildCTAs(context),
+            SizedBox(height: 24.h),
+            _PathContinuesBanner(),
+            SizedBox(height: 32.h),
+          ],
+        ),
+      ),
     );
   }
 
-  Widget _buildContent(BuildContext context, WidgetRef ref) {
-    final isDark = context.isDarkMode;
-    
-    // Safely access achievements provider with error handling
-    try {
-      final achievementsNotifier = ref.watch(achievementsProvider.notifier);
-      final achievements = achievementsNotifier.achievements;
-      final totalXP = achievementsNotifier.totalXP;
-      final level = achievementsNotifier.level;
-      final unlockedCount = achievementsNotifier.unlockedCount;
-      
-      return _buildAchievementsContent(
-        context: context,
-        isDark: isDark,
-        achievements: achievements,
-        totalXP: totalXP,
-        level: level,
-        unlockedCount: unlockedCount,
-      );
-    } catch (e) {
-      // Handle errors gracefully
-      if (context.mounted) {
-        ErrorHandler.showError(context, e);
-      }
-      return Scaffold(
-        backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
-        body: AppErrorState(
-          message: 'Failed to load achievements. Please try again.',
-          onRetry: () => ref.invalidate(achievementsProvider),
+  Widget _buildHeader(BuildContext context) {
+    return Row(
+      children: [
+        GestureDetector(
+          onTap: () => Navigator.maybePop(context),
+          child: Container(
+            width: 40.r,
+            height: 40.r,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceContainerLow,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(Icons.arrow_back_rounded, size: 20.sp),
+          ),
         ),
-      );
-    }
+        SizedBox(width: 12.w),
+        Expanded(
+          child: Text('Achievements',
+              style: ModernGriotTypography.headlineSmall()),
+        ),
+        Icon(Icons.share_rounded,
+            size: 22.sp,
+            color: Theme.of(context).colorScheme.onSurfaceVariant),
+      ],
+    );
   }
 
-  Widget _buildAchievementsContent({
-    required BuildContext context,
-    required bool isDark,
-    required List<Achievement> achievements,
-    required int totalXP,
-    required int level,
-    required int unlockedCount,
-  }) {
-
-    return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
-      body: Stack(
-        children: [
-          // Gradient Header
-          Container(
-            height: 25.h,
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFFFCD116), // Gold
-                  Color(0xFFFF6B35), // Orange
+  Widget _buildCTAs(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return Row(
+      children: [
+        Expanded(
+          child: GriotGradientButton(
+            label: 'Download PDF',
+            icon: Icons.download_rounded,
+            onPressed: () => HapticFeedback.mediumImpact(),
+          ),
+        ),
+        SizedBox(width: 12.w),
+        Expanded(
+          child: GestureDetector(
+            onTap: () => HapticFeedback.lightImpact(),
+            child: Container(
+              height: 52.h,
+              decoration: BoxDecoration(
+                color: cs.surfaceContainerLow,
+                borderRadius: ModernGriotRadius.borderPill,
+                border: Border.all(
+                  color: cs.primary.withAlpha(60),
+                  width: 1.5,
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.share_rounded, size: 18.sp, color: cs.primary),
+                  SizedBox(width: 8.w),
+                  Text(
+                    'Share Path',
+                    style: ModernGriotTypography.labelLarge(
+                      color: cs.primary,
+                    ),
+                  ),
                 ],
               ),
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(40),
-                bottomRight: Radius.circular(40),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.2),
-                  blurRadius: 20,
-                  offset: const Offset(0, 10),
-                ),
-              ],
             ),
-            child: SafeArea(
-              child: Padding(
-                padding: EdgeInsets.all(4.w),
-                child: Column(
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _TotalHonorCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(20.r),
+      decoration: BoxDecoration(
+        gradient: ModernGriotGradients.signatureGradient,
+        borderRadius: ModernGriotRadius.borderXl,
+        boxShadow: ModernGriotShadows.lg,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Total Honor',
+            style: ModernGriotTypography.labelLarge(
+              color: ModernGriotColors.onPrimary.withAlpha(180),
+            ),
+          ),
+          SizedBox(height: 8.h),
+          Text(
+            '12,450 XP',
+            style: ModernGriotTypography.displaySmall(
+              color: ModernGriotColors.onPrimary,
+            ),
+          ),
+          SizedBox(height: 12.h),
+          Row(
+            children: [
+              GriotBadgePill(
+                label: 'Today +150',
+                icon: Icons.trending_up_rounded,
+                color: ModernGriotColors.onPrimary.withAlpha(40),
+                textColor: ModernGriotColors.onPrimary,
+              ),
+              SizedBox(width: 8.w),
+              GriotBadgePill(
+                label: 'Top 5%',
+                icon: Icons.star_rounded,
+                color: ModernGriotColors.onPrimary.withAlpha(40),
+                textColor: ModernGriotColors.onPrimary,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RankCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return GriotCard(
+      child: Row(
+        children: [
+          Container(
+            width: 56.r,
+            height: 56.r,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFFFCD116), Color(0xFFFF9800)],
+              ),
+              borderRadius: ModernGriotRadius.borderLg,
+            ),
+            child: Icon(Icons.shield_rounded,
+                size: 28.sp, color: Colors.white),
+          ),
+          SizedBox(width: 16.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onPrimary),
-                          onPressed: () => Navigator.of(context).pop(),
-                          style: IconButton.styleFrom(
-                            backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
-                            shape: const CircleBorder(),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.share, color: Theme.of(context).colorScheme.onPrimary),
-                              onPressed: () {
-                                final link = DeepLinkService.achievementLink('all');
-                                Share.share('Check out my achievements on LingAfriq! $link');
-                              },
-                              style: IconButton.styleFrom(
-                                backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
-                                shape: const CircleBorder(),
-                              ),
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.menu, color: Theme.of(context).colorScheme.onPrimary),
-                              onPressed: () {
-                                Scaffold.of(context).openDrawer();
-                              },
-                              style: IconButton.styleFrom(
-                                backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
-                                shape: const CircleBorder(),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Icon(
-                      Icons.emoji_events_rounded,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      size: 64,
-                    ),
-                    SizedBox(height: 1.h),
-                    Text(
-                      'Achievements',
-                      style: TextStyle(
-                        fontSize: 28.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
-                    ),
-                    SizedBox(height: 0.5.h),
-                    Text(
-                      'Your rewards & badges',
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9),
-                      ),
+                    Text('Griot',
+                        style: ModernGriotTypography.titleLarge()),
+                    SizedBox(width: 8.w),
+                    GriotBadgePill(
+                      label: 'Rank 3',
+                      color: cs.secondaryContainer,
+                      textColor: cs.onSecondaryContainer,
                     ),
                   ],
                 ),
-              ),
-            ),
-          ),
-          // Content
-          Positioned(
-            top: 22.h,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: ResponsiveSafeArea(
-              top: false,
-              child: SingleChildScrollView(
-                padding: EdgeInsets.all(PanAfricanSpacing.lg),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Tabs
-                  DefaultTabController(
-                    length: 3,
-                    child: Column(
-                      children: [
-                        Semantics(
-                          label: 'Achievement tabs: Badges, Streaks, XP',
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: isDark ? const Color(0xFF1F3527) : Theme.of(context).colorScheme.surface,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: TabBar(
-                              tabs: const [
-                                Tab(text: 'Badges'),
-                                Tab(text: 'Streaks'),
-                                Tab(text: 'XP'),
-                              ],
-                            labelColor: isDark ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface,
-                            unselectedLabelColor: isDark ? Colors.grey[400] : Colors.grey[600],
-                            indicatorColor: const Color(0xFFFCD116),
-                            indicatorSize: TabBarIndicatorSize.tab,
-                          ),
-                          ),
-                        ),
-                        SizedBox(height: 2.h),
-                        SizedBox(
-                          height: 50.h,
-                          child: TabBarView(
-                            children: [
-                              // Badges Tab
-                              _buildBadgesTab(context, achievements, isDark),
-                              // Streaks Tab
-                              _buildStreaksTab(context, isDark),
-                              // XP Tab
-                              _buildXPTab(context, totalXP, level, isDark),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Color _getRarityColor(AchievementRarity rarity, bool isDark) {
-    switch (rarity) {
-      case AchievementRarity.common:
-        return isDark ? Colors.grey[400]! : Colors.grey[600]!;
-      case AchievementRarity.uncommon:
-        return Colors.green;
-      case AchievementRarity.rare:
-        return Colors.blue;
-      case AchievementRarity.epic:
-        return Colors.purple;
-      case AchievementRarity.legendary:
-        return PanAfricanColors.tertiary;
-    }
-  }
-
-  Widget _buildBadgesTab(BuildContext context, List achievements, bool isDark) {
-    if (achievements.isEmpty) {
-      return AppEmptyState(
-        icon: Icons.emoji_events_rounded,
-        title: 'No achievements yet',
-        subtitle: 'Complete lessons and challenges to earn badges',
-      );
-    }
-    
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 3.w,
-        mainAxisSpacing: 3.w,
-        childAspectRatio: 0.9,
-      ),
-      itemCount: achievements.length,
-      itemBuilder: (context, index) {
-        final achievement = achievements[index];
-        return Semantics(
-          label: 'Badge: ${achievement.name}. ${achievement.description}. ${achievement.isUnlocked ? "Unlocked" : "Locked"}. ${achievement.xpReward} XP reward',
-          button: true,
-          child: Container(
-            padding: EdgeInsets.all(4.w),
-            decoration: BoxDecoration(
-              color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-              borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
-              boxShadow: achievement.isUnlocked ? PanAfricanShadows.md : [],
-              border: achievement.isUnlocked
-                  ? Border.all(color: _getRarityColor(achievement.rarity, isDark).withValues(alpha: 0.2), width: 2)
-                  : Border.all(
-                      color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
-                      width: 1,
-                    ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Opacity(
-                  opacity: achievement.isUnlocked ? 1.0 : 0.4,
-                  child: Semantics(
-                    excludeSemantics: true,
-                    child: Text(
-                      achievement.icon,
-                      style: TextStyle(fontSize: 32.sp),
-                    ),
-                  ),
+                SizedBox(height: 8.h),
+                GriotProgressBar(
+                  value: 0.72,
+                  height: 8,
+                  showGlowTip: true,
                 ),
-                SizedBox(height: 1.h),
+                SizedBox(height: 4.h),
                 Text(
-                  achievement.name,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 11.sp,
-                    fontWeight: FontWeight.bold,
-                    color: achievement.isUnlocked
-                        ? (isDark ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface)
-                        : (isDark ? Colors.grey[600] : Colors.grey[500]),
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+                  '2,800 XP to Elder',
+                  style: ModernGriotTypography.bodySmall(),
                 ),
-                if (achievement.isUnlocked && achievement.unlockedAt != null)
-                  Text(
-                    '${achievement.unlockedAt!.month}/${achievement.unlockedAt!.day}',
-                    style: TextStyle(
-                      fontSize: 9.sp,
-                      color: isDark ? Colors.grey[400] : Colors.grey[600],
-                    ),
-                  ),
               ],
-            ),
-          ),
-        )
-            .animate(delay: Duration(milliseconds: index * 50))
-            .fadeIn(duration: 300.ms)
-            .slideY(begin: 0.1, end: 0);
-      },
-    );
-  }
-
-  Widget _buildStreaksTab(BuildContext context, bool isDark) {
-    return Container(
-      padding: EdgeInsets.all(5.w),
-      decoration: BoxDecoration(
-        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-        borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
-        boxShadow: PanAfricanShadows.lg,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.local_fire_department_rounded,
-            size: 64,
-            color: const Color(0xFFFF6B35),
-          ),
-          SizedBox(height: 2.h),
-          Text(
-            '12 Days',
-            style: TextStyle(
-              fontSize: 36.sp,
-              fontWeight: FontWeight.bold,
-              color: isDark ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface,
-            ),
-          ),
-          SizedBox(height: 1.h),
-          Text(
-            'Current Streak',
-            style: TextStyle(
-              fontSize: 16.sp,
-              color: isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7) : Theme.of(context).colorScheme.onSurface.withOpacity(0.54),
-            ),
-          ),
-          SizedBox(height: 3.h),
-          Divider(color: isDark ? Colors.grey[800] : Colors.grey[200]),
-          SizedBox(height: 3.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: List.generate(7, (index) {
-              return Container(
-                width: 8.w,
-                height: 8.w,
-                decoration: BoxDecoration(
-                  color: index < 5
-                      ? const Color(0xFFFF6B35)
-                      : (isDark ? Colors.grey[800] : Colors.grey[200]),
-                  borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                ),
-              );
-            }),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildXPTab(BuildContext context, int totalXP, int level, bool isDark) {
-    final progress = (totalXP % 100) / 100.0;
-    final xpToNext = 100 - (totalXP % 100);
-    
-    return Container(
-      padding: EdgeInsets.all(5.w),
-      decoration: BoxDecoration(
-        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-        borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
-        boxShadow: PanAfricanShadows.lg,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.bolt_rounded,
-            size: 64,
-            color: PanAfricanColors.primary,
-          ),
-          SizedBox(height: 2.h),
-          Text(
-            totalXP.toString(),
-            style: TextStyle(
-              fontSize: 36.sp,
-              fontWeight: FontWeight.bold,
-              color: isDark ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface,
-            ),
-          ),
-          SizedBox(height: 1.h),
-          Text(
-            'Total XP',
-            style: TextStyle(
-              fontSize: 16.sp,
-              color: isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7) : Theme.of(context).colorScheme.onSurface.withOpacity(0.54),
-            ),
-          ),
-          SizedBox(height: 3.h),
-          Semantics(
-            label: 'XP progress: $xpToNext XP needed to reach level ${level + 1}',
-            value: '${(progress * 100).toInt()}%',
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(4),
-              child: LinearProgressIndicator(
-                value: progress,
-                backgroundColor: isDark ? Colors.grey[800] : Colors.grey[200],
-                valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
-                minHeight: 12,
-              ),
-            ),
-          ),
-          SizedBox(height: 1.h),
-          Semantics(
-            label: '$xpToNext XP needed to reach level ${level + 1}',
-            child: Text(
-              '$xpToNext XP to Level ${level + 1}',
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7) : Theme.of(context).colorScheme.onSurface.withOpacity(0.54),
-              ),
             ),
           ),
         ],
@@ -452,3 +216,247 @@ class AchievementsScreen extends ConsumerWidget {
   }
 }
 
+class _TotemGridSection extends StatelessWidget {
+  static const _totems = [
+    _Totem('Greetings', Icons.waving_hand_rounded, true),
+    _Totem('Numbers', Icons.tag_rounded, true),
+    _Totem('Family', Icons.family_restroom_rounded, true),
+    _Totem('Market', Icons.storefront_rounded, true),
+    _Totem('Nature', Icons.eco_rounded, false),
+    _Totem('Travel', Icons.flight_rounded, false),
+    _Totem('Culture', Icons.theater_comedy_rounded, false),
+    _Totem('Mastery', Icons.auto_awesome_rounded, false),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text('Totems', style: ModernGriotTypography.titleLarge()),
+            const Spacer(),
+            Text('4 / 8 unlocked',
+                style: ModernGriotTypography.bodySmall()),
+          ],
+        ),
+        SizedBox(height: 12.h),
+        GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 4,
+            mainAxisSpacing: 12.h,
+            crossAxisSpacing: 12.w,
+          ),
+          itemCount: _totems.length,
+          itemBuilder: (context, i) {
+            final t = _totems[i];
+            return _TotemCell(totem: t);
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _Totem {
+  const _Totem(this.label, this.icon, this.unlocked);
+  final String label;
+  final IconData icon;
+  final bool unlocked;
+}
+
+class _TotemCell extends StatelessWidget {
+  const _TotemCell({required this.totem});
+  final _Totem totem;
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return Container(
+      decoration: BoxDecoration(
+        color: totem.unlocked ? cs.surfaceContainerLow : cs.surface,
+        borderRadius: ModernGriotRadius.borderXl,
+        border: totem.unlocked
+            ? null
+            : Border.all(
+                color: cs.outlineVariant.withAlpha(80),
+                width: 1.5,
+                strokeAlign: BorderSide.strokeAlignInside,
+              ),
+        boxShadow: totem.unlocked ? ModernGriotShadows.sm : null,
+      ),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Opacity(
+            opacity: totem.unlocked ? 1.0 : 0.3,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  totem.icon,
+                  size: 24.sp,
+                  color: totem.unlocked ? cs.primary : cs.onSurfaceVariant,
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  totem.label,
+                  style: TextStyle(
+                    fontSize: 9.sp,
+                    fontWeight: FontWeight.w600,
+                    color: cs.onSurface,
+                  ),
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+          if (totem.unlocked)
+            Positioned(
+              top: 6.r,
+              right: 6.r,
+              child: Container(
+                width: 16.r,
+                height: 16.r,
+                decoration: const BoxDecoration(
+                  color: ModernGriotColors.secondary,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(Icons.check_rounded,
+                    size: 10.sp, color: ModernGriotColors.onSecondary),
+              ),
+            ),
+          if (!totem.unlocked)
+            Icon(Icons.lock_rounded,
+                size: 14.sp, color: cs.onSurfaceVariant.withAlpha(100)),
+        ],
+      ),
+    );
+  }
+}
+
+class _CertificatePreview extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return Transform.rotate(
+      angle: -0.035,
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.all(24.r),
+        decoration: BoxDecoration(
+          color: cs.surfaceContainerLowest,
+          borderRadius: ModernGriotRadius.borderXl,
+          border: Border.all(
+            color: ModernGriotColors.primaryContainer.withAlpha(100),
+            width: 2,
+          ),
+          boxShadow: ModernGriotShadows.md,
+        ),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.verified_rounded,
+                    size: 20.sp, color: ModernGriotColors.primaryContainer),
+                SizedBox(width: 8.w),
+                Text('Certificate of Achievement',
+                    style: ModernGriotTypography.labelLarge(
+                      color: ModernGriotColors.primary,
+                    )),
+              ],
+            ),
+            SizedBox(height: 12.h),
+            Container(
+              width: 48.r,
+              height: 48.r,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: ModernGriotColors.primaryContainer.withAlpha(80),
+                  width: 3,
+                ),
+              ),
+              child: Icon(Icons.workspace_premium_rounded,
+                  size: 24.sp, color: ModernGriotColors.primary),
+            ),
+            SizedBox(height: 12.h),
+            Text(
+              'Yoruba Griot — Level 3',
+              style: ModernGriotTypography.titleMedium(),
+            ),
+            SizedBox(height: 4.h),
+            Text(
+              'Awarded for mastering 4 totem collections',
+              style: ModernGriotTypography.bodySmall(),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 8.h),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
+              decoration: BoxDecoration(
+                color: ModernGriotColors.primary.withAlpha(15),
+                borderRadius: ModernGriotRadius.borderPill,
+              ),
+              child: Text(
+                'April 3, 2026',
+                style: ModernGriotTypography.labelSmall(
+                    color: ModernGriotColors.primary),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PathContinuesBanner extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 20.w),
+      decoration: BoxDecoration(
+        gradient: ModernGriotGradients.forestGrowth,
+        borderRadius: ModernGriotRadius.borderXl,
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.route_rounded,
+              size: 24.sp, color: ModernGriotColors.onSecondary),
+          SizedBox(width: 12.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'The Path Continues',
+                  style: ModernGriotTypography.titleSmall(
+                    color: ModernGriotColors.onSecondary,
+                  ),
+                ),
+                SizedBox(height: 2.h),
+                Text(
+                  '4 more totems to collect on your journey',
+                  style: ModernGriotTypography.bodySmall(
+                    color: ModernGriotColors.onSecondary.withAlpha(200),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Icon(Icons.arrow_forward_rounded,
+              size: 20.sp, color: ModernGriotColors.onSecondary),
+        ],
+      ),
+    );
+  }
+}

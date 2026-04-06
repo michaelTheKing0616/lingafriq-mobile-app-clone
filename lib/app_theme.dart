@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/utils/modern_griot_design_system.dart';
 
-// Font fallback to ensure diacritics/emoji render correctly on all devices.
 const _globalFontFallback = <String>[
+  'Plus Jakarta Sans',
   'Noto Sans',
   'NotoSans',
   'Roboto',
   'Segoe UI',
   'Arial Unicode MS',
-  // Emoji fonts (platform-dependent; harmless if missing).
   'Apple Color Emoji',
   'Segoe UI Emoji',
   'Segoe UI Symbol',
@@ -17,77 +16,115 @@ const _globalFontFallback = <String>[
 
 final lightTheme = ThemeData(
   useMaterial3: true,
-  fontFamily: 'Lato',
+  fontFamily: 'Plus Jakarta Sans',
   fontFamilyFallback: _globalFontFallback,
   brightness: Brightness.light,
-  colorScheme: PanAfricanColorScheme.light,
-  canvasColor: PanAfricanColorScheme.light.surface,
-  scaffoldBackgroundColor: PanAfricanColorScheme.light.surface,
-  cardColor: PanAfricanColors.cardLight,
-  dividerColor: Colors.black.withValues(alpha: 0.12),
+  colorScheme: ModernGriotColorScheme.light,
+  canvasColor: ModernGriotColors.surface,
+  scaffoldBackgroundColor: ModernGriotColors.surface,
+  cardColor: ModernGriotColors.surfaceContainerLowest,
+  dividerColor: ModernGriotColors.onSurface.withValues(alpha: 0.08),
   appBarTheme: AppBarTheme(
     backgroundColor: Colors.transparent,
     elevation: 0,
-    iconTheme: const IconThemeData(color: Colors.black),
-    titleTextStyle: TextStyle(
-      color: Colors.black,
+    scrolledUnderElevation: 0,
+    iconTheme: const IconThemeData(color: ModernGriotColors.onSurface),
+    titleTextStyle: const TextStyle(
+      color: ModernGriotColors.onSurface,
       fontSize: 20,
       fontWeight: FontWeight.w600,
-      fontFamily: 'Lato',
+      fontFamily: 'Plus Jakarta Sans',
     ),
     centerTitle: true,
   ),
   cardTheme: CardThemeData(
-    elevation: 2,
-    color: PanAfricanColorScheme.light.surfaceContainerLow,
+    elevation: 0,
+    color: ModernGriotColors.surfaceContainerLow,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
     ),
     clipBehavior: Clip.antiAlias,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      elevation: 2,
-      backgroundColor: PanAfricanColorScheme.light.primary,
-      foregroundColor: PanAfricanColorScheme.light.onPrimary,
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      elevation: 0,
+      backgroundColor: ModernGriotColors.primary,
+      foregroundColor: ModernGriotColors.onPrimary,
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(ModernGriotRadius.full),
+      ),
+      textStyle: const TextStyle(
+        fontFamily: 'Plus Jakarta Sans',
+        fontWeight: FontWeight.w600,
+        fontSize: 16,
+      ),
+    ),
+  ),
+  outlinedButtonTheme: OutlinedButtonThemeData(
+    style: OutlinedButton.styleFrom(
+      foregroundColor: ModernGriotColors.primary,
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(ModernGriotRadius.full),
+      ),
+      side: BorderSide(
+        color: ModernGriotColors.outlineVariant.withValues(alpha: 0.15),
+      ),
+      textStyle: const TextStyle(
+        fontFamily: 'Plus Jakarta Sans',
+        fontWeight: FontWeight.w600,
+        fontSize: 16,
+      ),
+    ),
+  ),
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      foregroundColor: ModernGriotColors.primary,
+      textStyle: const TextStyle(
+        fontFamily: 'Plus Jakarta Sans',
+        fontWeight: FontWeight.w700,
+        fontSize: 16,
       ),
     ),
   ),
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
-    fillColor: PanAfricanColorScheme.light.surfaceContainerHighest,
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
+    fillColor: ModernGriotColors.surfaceContainerHighest,
+    border: UnderlineInputBorder(
+      borderRadius: BorderRadius.circular(ModernGriotRadius.md),
+      borderSide: BorderSide.none,
+    ),
+    enabledBorder: UnderlineInputBorder(
+      borderRadius: BorderRadius.circular(ModernGriotRadius.md),
       borderSide: BorderSide(
-        color: PanAfricanColorScheme.light.outlineVariant,
+        color: ModernGriotColors.outlineVariant.withValues(alpha: 0.15),
         width: 1,
       ),
     ),
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: BorderSide(
-        color: PanAfricanColorScheme.light.outlineVariant,
-        width: 1,
-      ),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: BorderSide(
-        color: PanAfricanColorScheme.light.primary,
+    focusedBorder: UnderlineInputBorder(
+      borderRadius: BorderRadius.circular(ModernGriotRadius.md),
+      borderSide: const BorderSide(
+        color: ModernGriotColors.primary,
         width: 2,
       ),
     ),
-    errorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
+    errorBorder: UnderlineInputBorder(
+      borderRadius: BorderRadius.circular(ModernGriotRadius.md),
       borderSide: BorderSide(
-        color: PanAfricanColorScheme.light.error,
+        color: ModernGriotColorScheme.light.error,
         width: 1,
       ),
     ),
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+    hintStyle: const TextStyle(
+      color: ModernGriotColors.onSurfaceVariant,
+      fontFamily: 'Plus Jakarta Sans',
+    ),
+    labelStyle: const TextStyle(
+      color: ModernGriotColors.onSurfaceVariant,
+      fontFamily: 'Plus Jakarta Sans',
+    ),
   ),
   pageTransitionsTheme: const PageTransitionsTheme(
     builders: {
@@ -96,136 +133,201 @@ final lightTheme = ThemeData(
     },
   ),
   dialogTheme: DialogThemeData(
-    backgroundColor: PanAfricanColorScheme.light.surfaceContainerHigh,
-    elevation: 6,
+    backgroundColor: ModernGriotColors.surfaceContainerLow,
+    elevation: 0,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
     ),
-    titleTextStyle: TextStyle(
-      color: PanAfricanColorScheme.light.onSurface,
+    titleTextStyle: const TextStyle(
+      color: ModernGriotColors.onSurface,
       fontSize: 20,
       fontWeight: FontWeight.w600,
-      fontFamily: 'Lato',
+      fontFamily: 'Plus Jakarta Sans',
     ),
-    contentTextStyle: TextStyle(
-      color: PanAfricanColorScheme.light.onSurfaceVariant,
+    contentTextStyle: const TextStyle(
+      color: ModernGriotColors.onSurfaceVariant,
       fontSize: 16,
-      fontFamily: 'Lato',
+      fontFamily: 'Plus Jakarta Sans',
     ),
   ),
   bottomSheetTheme: BottomSheetThemeData(
-    backgroundColor: PanAfricanColorScheme.light.surfaceContainerHigh,
-    elevation: 8,
+    backgroundColor: ModernGriotColors.surfaceContainerLow,
+    elevation: 0,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(ModernGriotRadius.xl),
+      ),
     ),
-    modalBackgroundColor: PanAfricanColorScheme.light.surfaceContainerHigh,
+    modalBackgroundColor: ModernGriotColors.surfaceContainerLow,
   ),
   chipTheme: ChipThemeData(
-    backgroundColor: PanAfricanColorScheme.light.surfaceContainerHighest,
-    selectedColor: PanAfricanColorScheme.light.primaryContainer,
-    labelStyle: TextStyle(
-      color: PanAfricanColorScheme.light.onSurface,
-      fontSize: 14,
-      fontFamily: 'Lato',
+    backgroundColor: ModernGriotColors.surfaceVariant,
+    selectedColor: ModernGriotColors.primaryContainer,
+    labelStyle: const TextStyle(
+      color: ModernGriotColors.onSurface,
+      fontSize: 12,
+      fontWeight: FontWeight.w600,
+      letterSpacing: 0.5,
+      fontFamily: 'Plus Jakarta Sans',
     ),
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(ModernGriotRadius.full),
     ),
+    side: BorderSide.none,
   ),
   listTileTheme: ListTileThemeData(
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
     ),
-    titleTextStyle: TextStyle(
-      color: PanAfricanColorScheme.light.onSurface,
+    titleTextStyle: const TextStyle(
+      color: ModernGriotColors.onSurface,
       fontSize: 16,
       fontWeight: FontWeight.w500,
-      fontFamily: 'Lato',
+      fontFamily: 'Plus Jakarta Sans',
     ),
-    subtitleTextStyle: TextStyle(
-      color: PanAfricanColorScheme.light.onSurfaceVariant,
+    subtitleTextStyle: const TextStyle(
+      color: ModernGriotColors.onSurfaceVariant,
       fontSize: 14,
-      fontFamily: 'Lato',
+      fontFamily: 'Plus Jakarta Sans',
     ),
   ),
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+    backgroundColor: ModernGriotColors.primary,
+    foregroundColor: ModernGriotColors.onPrimary,
+    elevation: 0,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(ModernGriotRadius.full),
+    ),
+  ),
+  navigationBarTheme: NavigationBarThemeData(
+    backgroundColor: ModernGriotColors.surface.withValues(alpha: 0.8),
+    indicatorColor: ModernGriotColors.primaryContainer.withValues(alpha: 0.2),
+    labelTextStyle: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
+        return const TextStyle(
+          color: ModernGriotColors.primary,
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+          fontFamily: 'Plus Jakarta Sans',
+        );
+      }
+      return const TextStyle(
+        color: ModernGriotColors.onSurfaceVariant,
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        fontFamily: 'Plus Jakarta Sans',
+      );
+    }),
+  ),
+  extensions: <ThemeExtension>[
+    ModernGriotThemeExtension.light,
+  ],
 );
 
 final darkTheme = ThemeData(
   useMaterial3: true,
-  fontFamily: 'Lato',
+  fontFamily: 'Plus Jakarta Sans',
   fontFamilyFallback: _globalFontFallback,
   brightness: Brightness.dark,
-  colorScheme: PanAfricanColorScheme.dark,
-  canvasColor: Colors.black,
-  scaffoldBackgroundColor: Colors.black,
-  cardColor: PanAfricanColors.cardDark,
-  dividerColor: PanAfricanColorScheme.dark.onSurface.withValues(alpha: 0.12),
+  colorScheme: ModernGriotColorScheme.dark,
+  canvasColor: ModernGriotColorsDark.surface,
+  scaffoldBackgroundColor: ModernGriotColorsDark.surface,
+  cardColor: ModernGriotColorsDark.surfaceContainerLowest,
+  dividerColor: ModernGriotColorsDark.onSurface.withValues(alpha: 0.08),
   appBarTheme: AppBarTheme(
     backgroundColor: Colors.transparent,
     elevation: 0,
-    iconTheme: IconThemeData(color: PanAfricanColorScheme.dark.onSurface),
+    scrolledUnderElevation: 0,
+    iconTheme: IconThemeData(color: ModernGriotColorsDark.onSurface),
     titleTextStyle: TextStyle(
-      color: PanAfricanColorScheme.dark.onSurface,
+      color: ModernGriotColorsDark.onSurface,
       fontSize: 20,
       fontWeight: FontWeight.w600,
-      fontFamily: 'Lato',
+      fontFamily: 'Plus Jakarta Sans',
     ),
     centerTitle: true,
   ),
   cardTheme: CardThemeData(
-    elevation: 2,
-    color: PanAfricanColorScheme.dark.surfaceContainerLow,
+    elevation: 0,
+    color: ModernGriotColorsDark.surfaceContainerLow,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
     ),
     clipBehavior: Clip.antiAlias,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      elevation: 2,
-      backgroundColor: PanAfricanColorScheme.dark.primary,
-      foregroundColor: PanAfricanColorScheme.dark.onPrimary,
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      elevation: 0,
+      backgroundColor: ModernGriotColorsDark.primary,
+      foregroundColor: ModernGriotColorsDark.onPrimary,
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(ModernGriotRadius.full),
+      ),
+      textStyle: const TextStyle(
+        fontFamily: 'Plus Jakarta Sans',
+        fontWeight: FontWeight.w600,
+        fontSize: 16,
+      ),
+    ),
+  ),
+  outlinedButtonTheme: OutlinedButtonThemeData(
+    style: OutlinedButton.styleFrom(
+      foregroundColor: ModernGriotColorsDark.primary,
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(ModernGriotRadius.full),
+      ),
+      side: BorderSide(
+        color: ModernGriotColorsDark.outlineVariant.withValues(alpha: 0.15),
+      ),
+    ),
+  ),
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      foregroundColor: ModernGriotColorsDark.primary,
+      textStyle: const TextStyle(
+        fontFamily: 'Plus Jakarta Sans',
+        fontWeight: FontWeight.w700,
+        fontSize: 16,
       ),
     ),
   ),
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
-    fillColor: PanAfricanColorScheme.dark.surfaceContainerHighest,
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
+    fillColor: ModernGriotColorsDark.surfaceContainerHighest,
+    border: UnderlineInputBorder(
+      borderRadius: BorderRadius.circular(ModernGriotRadius.md),
+      borderSide: BorderSide.none,
+    ),
+    enabledBorder: UnderlineInputBorder(
+      borderRadius: BorderRadius.circular(ModernGriotRadius.md),
       borderSide: BorderSide(
-        color: PanAfricanColorScheme.dark.outlineVariant,
+        color: ModernGriotColorsDark.outlineVariant.withValues(alpha: 0.15),
         width: 1,
       ),
     ),
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
+    focusedBorder: UnderlineInputBorder(
+      borderRadius: BorderRadius.circular(ModernGriotRadius.md),
       borderSide: BorderSide(
-        color: PanAfricanColorScheme.dark.outlineVariant,
-        width: 1,
-      ),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: BorderSide(
-        color: PanAfricanColorScheme.dark.primary,
+        color: ModernGriotColorsDark.primary,
         width: 2,
       ),
     ),
-    errorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
+    errorBorder: UnderlineInputBorder(
+      borderRadius: BorderRadius.circular(ModernGriotRadius.md),
       borderSide: BorderSide(
-        color: PanAfricanColorScheme.dark.error,
+        color: ModernGriotColorScheme.dark.error,
         width: 1,
       ),
     ),
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+    hintStyle: TextStyle(
+      color: ModernGriotColorsDark.onSurfaceVariant,
+      fontFamily: 'Plus Jakarta Sans',
+    ),
   ),
   pageTransitionsTheme: const PageTransitionsTheme(
     builders: {
@@ -234,85 +336,95 @@ final darkTheme = ThemeData(
     },
   ),
   dialogTheme: DialogThemeData(
-    backgroundColor: PanAfricanColorScheme.dark.surfaceContainerHigh,
-    elevation: 6,
+    backgroundColor: ModernGriotColorsDark.surfaceContainerLow,
+    elevation: 0,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
     ),
     titleTextStyle: TextStyle(
-      color: PanAfricanColorScheme.dark.onSurface,
+      color: ModernGriotColorsDark.onSurface,
       fontSize: 20,
       fontWeight: FontWeight.w600,
-      fontFamily: 'Lato',
+      fontFamily: 'Plus Jakarta Sans',
     ),
     contentTextStyle: TextStyle(
-      color: PanAfricanColorScheme.dark.onSurfaceVariant,
+      color: ModernGriotColorsDark.onSurfaceVariant,
       fontSize: 16,
-      fontFamily: 'Lato',
+      fontFamily: 'Plus Jakarta Sans',
     ),
   ),
   bottomSheetTheme: BottomSheetThemeData(
-    backgroundColor: PanAfricanColorScheme.dark.surfaceContainerHigh,
-    elevation: 8,
+    backgroundColor: ModernGriotColorsDark.surfaceContainerLow,
+    elevation: 0,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(ModernGriotRadius.xl),
+      ),
     ),
-    modalBackgroundColor: PanAfricanColorScheme.dark.surfaceContainerHigh,
+    modalBackgroundColor: ModernGriotColorsDark.surfaceContainerLow,
   ),
   chipTheme: ChipThemeData(
-    backgroundColor: PanAfricanColorScheme.dark.surfaceContainerHighest,
-    selectedColor: PanAfricanColorScheme.dark.primaryContainer,
+    backgroundColor: ModernGriotColorsDark.surfaceVariant,
+    selectedColor: ModernGriotColorsDark.primaryContainer,
     labelStyle: TextStyle(
-      color: PanAfricanColorScheme.dark.onSurface,
-      fontSize: 14,
-      fontFamily: 'Lato',
+      color: ModernGriotColorsDark.onSurface,
+      fontSize: 12,
+      fontWeight: FontWeight.w600,
+      letterSpacing: 0.5,
+      fontFamily: 'Plus Jakarta Sans',
     ),
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(ModernGriotRadius.full),
     ),
+    side: BorderSide.none,
   ),
   listTileTheme: ListTileThemeData(
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
     ),
     titleTextStyle: TextStyle(
-      color: PanAfricanColorScheme.dark.onSurface,
+      color: ModernGriotColorsDark.onSurface,
       fontSize: 16,
       fontWeight: FontWeight.w500,
-      fontFamily: 'Lato',
+      fontFamily: 'Plus Jakarta Sans',
     ),
     subtitleTextStyle: TextStyle(
-      color: PanAfricanColorScheme.dark.onSurfaceVariant,
+      color: ModernGriotColorsDark.onSurfaceVariant,
       fontSize: 14,
-      fontFamily: 'Lato',
+      fontFamily: 'Plus Jakarta Sans',
     ),
   ),
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+    backgroundColor: ModernGriotColorsDark.primary,
+    foregroundColor: ModernGriotColorsDark.onPrimary,
+    elevation: 0,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(ModernGriotRadius.full),
+    ),
+  ),
+  navigationBarTheme: NavigationBarThemeData(
+    backgroundColor: ModernGriotColorsDark.surface.withValues(alpha: 0.8),
+    indicatorColor: ModernGriotColorsDark.primaryContainer.withValues(alpha: 0.2),
+    labelTextStyle: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
+        return TextStyle(
+          color: ModernGriotColorsDark.primary,
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+          fontFamily: 'Plus Jakarta Sans',
+        );
+      }
+      return TextStyle(
+        color: ModernGriotColorsDark.onSurfaceVariant,
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        fontFamily: 'Plus Jakarta Sans',
+      );
+    }),
+  ),
+  extensions: <ThemeExtension>[
+    ModernGriotThemeExtension.dark,
+  ],
 );
-
-const primarySwatchLight = MaterialColor(0XFF566A29, {
-  50: Color(0xffEBEDE5),
-  100: Color(0xffCCD2BF),
-  200: Color(0xffABB594),
-  300: Color(0xff899769),
-  400: Color(0xff6F8049),
-  500: Color(0xff566A29),
-  600: Color(0xff4F6224),
-  700: Color(0xff45571F),
-  800: Color(0xff3C4D19),
-  900: Color(0xff2B3C0F)
-});
-
-const primarySwatchDark = MaterialColor(0XFFEE9B55, {
-  50: Color(0xffFDF1E7),
-  100: Color(0xffF9DCC3),
-  200: Color(0xffF5C49B),
-  300: Color(0xffF1AC73),
-  400: Color(0xffEE9B55),
-  500: Color(0xffEB8937),
-  600: Color(0xffE98131),
-  700: Color(0xffE5762A),
-  800: Color(0xffE26C23),
-  900: Color(0xffDD5916)
-});

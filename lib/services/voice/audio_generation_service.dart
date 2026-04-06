@@ -231,7 +231,7 @@ class AudioGenerationService {
       'wo': 'wo-SN',
       'tw': 'tw-GH',
       'pcm': 'pcm-NG',
-      'en': 'en-AF',
+      'en': 'en-NG',
     };
     return accents[languageCode.toLowerCase()] ?? languageCode;
   }

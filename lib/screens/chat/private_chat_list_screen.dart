@@ -1,21 +1,25 @@
+import 'dart:ui';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:lingafriq/utils/performance_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lingafriq/models/private_chat_contact.dart';
-import 'package:lingafriq/providers/private_chat_provider.dart';
-import 'package:lingafriq/providers/chat_socket_provider.dart';
-import 'package:lingafriq/providers/user_provider.dart';
-import 'package:lingafriq/screens/chat/private_chat_screen.dart';
-import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/widgets/responsive_safe_area.dart';
-import 'package:lingafriq/widgets/skeleton_loader.dart';
-import 'package:lingafriq/widgets/error_state_widget.dart';
-import 'package:lingafriq/widgets/error_boundary.dart';
-import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
-// pan_african_components removed as unused
+import 'package:intl/intl.dart';
 
+import '../../providers/user_provider.dart';
+import '../../providers/wa_status_provider.dart';
+import '../../services/chat/wa_private_chat_service.dart';
+import '../../utils/modern_griot_design_system.dart';
+import '../../utils/pan_african_design_system.dart' show PanAfricanSpacing;
+import '../../utils/transport_error_policy.dart';
+import '../../widgets/griot/griot_widgets.dart';
+import 'call_history_screen.dart';
+import 'private_chat_screen.dart';
+import 'user_search_global_id_screen.dart';
+
+/// WhatsApp-style inbox: real conversations from `/api/wa/conversations`,
+/// status carousel from `/api/wa/status/*`, calls tab opens dedicated history UI.
 class PrivateChatListScreen extends ConsumerStatefulWidget {
   const PrivateChatListScreen({super.key});
 
@@ -24,401 +28,572 @@ class PrivateChatListScreen extends ConsumerStatefulWidget {
       _PrivateChatListScreenState();
 }
 
-class _PrivateChatListScreenState
-    extends ConsumerState<PrivateChatListScreen> {
+class _PrivateChatListScreenState extends ConsumerState<PrivateChatListScreen>
+    with SingleTickerProviderStateMixin {
+  late final TabController _tabController;
   final TextEditingController _searchController = TextEditingController();
-  late final Debouncer _searchDebouncer;
+  bool _showSearch = false;
+
+  static const _tabs = ['Chats', 'Status', 'Calls'];
+
+  List<WaPrivateConversationRow> _conversations = [];
+  bool _loadingChats = true;
+  String? _chatsError;
+
+  void _onSearchChanged() {
+    if (mounted) setState(() {});
+  }
+
+  static String _formatTime(DateTime? t) {
+    if (t == null) return '';
+    final local = t.toLocal();
+    final now = DateTime.now();
+    if (local.year == now.year &&
+        local.month == now.month &&
+        local.day == now.day) {
+      return DateFormat.jm().format(local);
+    }
+    if (now.difference(local).inDays < 7) {
+      return DateFormat.E().format(local);
+    }
+    return DateFormat.MMMd().format(local);
+  }
 
   @override
   void initState() {
     super.initState();
-    _searchDebouncer = Debouncer(delay: const Duration(milliseconds: 300));
-    // Load contacts will be triggered in build method
+    _searchController.addListener(_onSearchChanged);
+    _tabController = TabController(length: _tabs.length, vsync: this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _refreshChats();
+      ref.read(waStatusProvider.notifier).loadFeed();
+      ref.read(waStatusProvider.notifier).loadMine();
+    });
+  }
+
+  Future<void> _refreshChats() async {
+    final me = ref.read(userProvider);
+    if (me == null || me.id == 0) {
+      setState(() {
+        _loadingChats = false;
+        _chatsError = 'Sign in to see your private messages.';
+        _conversations = [];
+      });
+      return;
+    }
+    setState(() {
+      _loadingChats = true;
+      _chatsError = null;
+    });
+    try {
+      final rows = await WaPrivateChatService.fetchConversations(
+        myNumericUserId: me.id,
+        myUsername: me.username,
+      );
+      if (mounted) {
+        setState(() {
+          _conversations = rows;
+          _loadingChats = false;
+        });
+      }
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _loadingChats = false;
+        _chatsError = e is DioException
+            ? TransportErrorPolicy.toUserMessage(e)
+            : 'Could not load conversations.';
+      });
+    }
+  }
+
+  List<WaPrivateConversationRow> get _filteredConversations {
+    final q = _searchController.text.trim().toLowerCase();
+    if (q.isEmpty) return _conversations;
+    return _conversations
+        .where(
+          (c) =>
+              c.displayName.toLowerCase().contains(q) ||
+              c.lastPreview.toLowerCase().contains(q),
+        )
+        .toList();
   }
 
   @override
   void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _tabController.dispose();
     _searchController.dispose();
-    _searchDebouncer.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ErrorBoundary(
-      errorMessage: 'Unable to load private chats. Please check your connection and try again.',
-      onRetry: () {
-        setState(() {});
-        ref.read(privateChatProvider.notifier).loadContacts();
-      },
-      child: _buildContent(context),
-    );
-  }
-
-  Widget _buildContent(BuildContext context) {
-    final state = ref.watch(privateChatProvider);
-    ref.watch(socketProvider);
-    final socket = ref.read(socketProvider.notifier);
-    final onlineIds = socket.onlineUsers
-        .map((user) => user['userId']?.toString())
-        .whereType<String>()
-        .toSet();
-    final currentUser = ref.watch(userProvider);
-    final isDark = context.isDarkMode;
-    final colorScheme = Theme.of(context).colorScheme;
-
-    // Load contacts if not already loaded
-    if (state.contacts.isEmpty && !state.isLoading) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref.read(privateChatProvider.notifier).loadContacts();
-      });
-    }
-
-    var contacts = state.filteredContacts
-        .where((contact) => contact.id != currentUser?.id)
-        .toList();
-    if (contacts.isEmpty && socket.onlineUsers.isNotEmpty) {
-      contacts = socket.onlineUsers
-          .map((user) => PrivateChatContact.fromOnlineMap(user))
-          .where((contact) => contact.id > 0 && contact.id != currentUser?.id)
-          .toList();
-    }
+    final cs = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor:
-          isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
-      body: ResponsiveSafeArea(
-        child: Stack(
-        children: [
-          // Gradient Header
-          Container(
-            height: 15.h,
-            decoration: BoxDecoration(
-              gradient: PanAfricanGradients.kenteVibrant,
-              boxShadow: PanAfricanShadows.md,
+      backgroundColor: ModernGriotColors.surface,
+      appBar: GriotAppBar(
+        avatar: GriotAvatar(
+          size: 32,
+          status: GriotAvatarStatus.online,
+          placeholder: Icon(Icons.person_rounded, size: 16.sp, color: cs.onSurfaceVariant),
+        ),
+        showBranding: true,
+        actions: [
+          IconButton(
+            icon: Icon(
+              _showSearch ? Icons.close_rounded : Icons.search_rounded,
+              color: cs.onSurface,
             ),
-            child: SafeArea(
-              child: Padding(
-                padding: EdgeInsets.all(PanAfricanSpacing.md),
-                child: Row(
-                  children: [
-                    Semantics(
-                      label: 'Back',
-                      button: true,
-                      child: IconButton(
-                      icon: Icon(Icons.arrow_back, color: colorScheme.onPrimary, semanticLabel: 'Back'),
-                      onPressed: () {
-                        HapticFeedback.lightImpact();
-                        Navigator.of(context).pop();
-                      },
-                      style: IconButton.styleFrom(
-                        backgroundColor: colorScheme.onPrimary.withOpacity(0.2),
-                        shape: const CircleBorder(),
-                      ),
-                    ),
-                    ),
-                    SizedBox(width: PanAfricanSpacing.sm),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Private Chats',
-                            style: PanAfricanTypography.titleMedium(context)
-                                .copyWith(color: colorScheme.onPrimary),
-                          ),
-                          Text(
-                            '${contacts.length} contacts',
-                            style: PanAfricanTypography.labelSmall(context)
-                                .copyWith(
-                                  color: colorScheme.onPrimary.withOpacity(0.8),
-                                ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            onPressed: () {
+              HapticFeedback.selectionClick();
+              setState(() {
+                _showSearch = !_showSearch;
+                if (!_showSearch) _searchController.clear();
+              });
+            },
           ),
-          // Content
-          Positioned(
-            top: 13.h,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Column(
+        ],
+      ),
+      body: Column(
+        children: [
+          _buildSearchBar(cs),
+          _buildTabBar(cs),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
               children: [
-                // Search Bar
-                Padding(
-                  padding: EdgeInsets.all(PanAfricanSpacing.md),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: isDark
-                          ? PanAfricanColors.cardDark
-                          : PanAfricanColors.cardLight,
-                      borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
-                      boxShadow: PanAfricanShadows.md,
-                    ),
-                    child: Semantics(
-                      label: 'Search chats',
-                      hint: 'Search by name, email, or language',
-                      textField: true,
-                      child: TextField(
-                      controller: _searchController,
-                      onChanged: (value) => _searchDebouncer.run(() =>
-                          ref.read(privateChatProvider.notifier).search(value)),
-                      decoration: InputDecoration(
-                        hintText: 'Search by name, email, or language...',
-                        hintStyle: PanAfricanTypography.bodyMedium(context)
-                            .copyWith(color: PanAfricanColors.neutralMedium),
-                        prefixIcon: Icon(Icons.search, color: PanAfricanColors.neutralMedium),
-                        border: OutlineInputBorder(
-                          borderRadius: PanAfricanRadius.lgBR,
-                          borderSide: BorderSide.none,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: PanAfricanRadius.lgBR,
-                          borderSide: BorderSide.none,
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: PanAfricanRadius.lgBR,
-                          borderSide: BorderSide(
-                            color: PanAfricanColors.primary,
-                            width: 2,
-                          ),
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: PanAfricanSpacing.md,
-                          vertical: PanAfricanSpacing.sm,
-                        ),
-                      ),
-                      style: PanAfricanTypography.bodyMedium(context),
-                    ),
-                    ),
-                  ),
-                ),
-                // Contacts List
-                Expanded(
-                  child: Container(
-                    color: isDark
-                        ? PanAfricanColors.surfaceDark
-                        : PanAfricanColors.surfaceLight,
-                    child: _buildContactsList(context, state, contacts, onlineIds, isDark),
-                  ),
-                ),
+                _buildChatsTab(cs),
+                _buildStatusTab(cs),
+                const CallHistoryScreen(embedInTab: true),
               ],
             ),
           ),
         ],
       ),
+      floatingActionButton: GriotFab(
+        icon: Icons.edit_rounded,
+        onPressed: () {
+          HapticFeedback.mediumImpact();
+          Navigator.push<void>(
+            context,
+            MaterialPageRoute(
+              builder: (ctx) => UserSearchGlobalIdScreen(
+                currentChatType: 'private',
+                onUserSelected: (u) {
+                  Navigator.pop(ctx);
+                  final id = u['id'];
+                  final uid = int.tryParse(id?.toString() ?? '');
+                  if (uid == null) return;
+                  final name = u['username']?.toString() ??
+                      u['first_name']?.toString() ??
+                      'User';
+                  Navigator.push<void>(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => PrivateChatScreen(
+                        otherUserId: uid,
+                        otherDisplayName: name,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          );
+        },
       ),
     );
   }
 
-  Widget _buildContactsList(
-    BuildContext context,
-    state,
-    List contacts,
-    Set<String> onlineIds,
-    bool isDark,
-  ) {
-    final colorScheme = Theme.of(context).colorScheme;
-    if (state.isLoading) {
-      return ListView.builder(
-        padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.lg),
-        itemCount: 6,
-        itemBuilder: (_, __) => SkeletonListCard(),
-      );
-    }
+  Widget _buildSearchBar(ColorScheme cs) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.easeInOut,
+      height: _showSearch ? 64.h : 0,
+      child: AnimatedOpacity(
+        duration: const Duration(milliseconds: 200),
+        opacity: _showSearch ? 1.0 : 0.0,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: PanAfricanSpacing.md,
+            vertical: PanAfricanSpacing.xs,
+          ),
+          child: GriotInput(
+            controller: _searchController,
+            hintText: 'Search conversations...',
+            prefixIcon: Icons.search_rounded,
+          ),
+        ),
+      ),
+    );
+  }
 
-    if (state.error != null) {
-      return AppErrorState(
-        message: state.error!,
-        onRetry: () =>
-            ref.read(privateChatProvider.notifier).loadContacts(forceRefresh: true),
-      );
+  Widget _buildTabBar(ColorScheme cs) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
+      decoration: BoxDecoration(
+        color: cs.surfaceContainerHighest,
+        borderRadius: ModernGriotRadius.borderPill,
+      ),
+      child: TabBar(
+        controller: _tabController,
+        indicator: BoxDecoration(
+          color: ModernGriotColors.primary,
+          borderRadius: ModernGriotRadius.borderPill,
+        ),
+        indicatorSize: TabBarIndicatorSize.tab,
+        dividerColor: Colors.transparent,
+        labelColor: ModernGriotColors.onPrimary,
+        unselectedLabelColor: cs.onSurfaceVariant,
+        labelStyle: ModernGriotTypography.labelLarge(),
+        unselectedLabelStyle: ModernGriotTypography.labelMedium(),
+        splashBorderRadius: ModernGriotRadius.borderPill,
+        tabs: _tabs.map((t) => Tab(text: t, height: 40.h)).toList(),
+      ),
+    );
+  }
+
+  Widget _buildChatsTab(ColorScheme cs) {
+    if (_loadingChats) {
+      return const Center(child: CircularProgressIndicator());
     }
-    
-    if (contacts.isEmpty) {
+    if (_chatsError != null) {
       return Center(
         child: Padding(
           padding: EdgeInsets.all(PanAfricanSpacing.lg),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.chat_bubble_outline, size: 48.w, color: PanAfricanColors.neutralMedium),
-              SizedBox(height: PanAfricanSpacing.sm),
-              Text('No contacts found', style: PanAfricanTypography.titleSmall(context)),
-              SizedBox(height: PanAfricanSpacing.xs),
-              Text(
-                'Start a LingAfriq chat from the community or refresh your contacts.',
-                textAlign: TextAlign.center,
-                style: PanAfricanTypography.bodySmall(context).copyWith(color: PanAfricanColors.neutralMedium),
-              ),
+              Text(_chatsError!, textAlign: TextAlign.center),
               SizedBox(height: PanAfricanSpacing.md),
-              FilledButton.icon(
-                onPressed: () => ref.read(privateChatProvider.notifier).loadContacts(forceRefresh: true),
-                icon: const Icon(Icons.refresh_rounded),
-                label: const Text('Refresh'),
-              ),
+              FilledButton(onPressed: _refreshChats, child: const Text('Retry')),
             ],
           ),
         ),
       );
     }
-    
-    return OptimizedListView.builder(
-      padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.lg),
-      itemCount: contacts.length,
-      itemBuilder: (context, index) {
-        final contact = contacts[index];
-        final isOnline = onlineIds.contains(contact.id.toString());
-        final contactName = (contact.username as String?)?.trim().isNotEmpty == true
-            ? contact.username
-            : 'Learner';
-        final contactHandle = (contact.globalId as String?)?.trim();
-        final contactSubtitle = contactHandle != null && contactHandle.isNotEmpty
-            ? '@$contactHandle'
-            : (contact.email ?? 'No messages yet');
-        // Get unread count from chat socket provider for this contact's room
-        final chatSocketNotifier = ref.read(socketProvider.notifier);
-        final roomId = _buildRoomId(ref.read(userProvider)?.id ?? 0, contact.id);
-        final roomMessages = chatSocketNotifier.messagesForRoom(roomId);
-        final currentUserId = ref.read(userProvider)?.id.toString();
-        final unreadCount = roomMessages.where((msg) => 
-          msg['userId'] != currentUserId && 
-          (msg['read'] == null || msg['read'] == false)
-        ).length;
-        
-        return Container(
-          margin: EdgeInsets.only(bottom: 2.h),
-          decoration: BoxDecoration(
-            color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-            borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
-            boxShadow: PanAfricanShadows.md,
-            border: Border.all(
-              color:
-                  isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
-            ),
-          ),
-          child: Semantics(
-            label: 'Chat with $contactName. ${contactSubtitle.isNotEmpty ? contactSubtitle : 'No messages yet'}${unreadCount > 0 ? '. $unreadCount unread' : ''}',
-            button: true,
-            child: ListTile(
-            contentPadding: EdgeInsets.all(PanAfricanSpacing.md),
-            leading: Stack(
-              children: [
-                CircleAvatar(
-                  radius: 24.w,
-                  backgroundColor: PanAfricanColors.primary,
-                  child: Text(
-                    contactName.isNotEmpty ? contactName[0].toUpperCase() : '?',
-                    style: PanAfricanTypography.labelMedium(context)
-                        .copyWith(color: colorScheme.onPrimary),
+
+    final list = _filteredConversations;
+
+    return RefreshIndicator(
+      onRefresh: _refreshChats,
+      child: ListView(
+        padding: EdgeInsets.only(top: PanAfricanSpacing.md),
+        children: [
+          _buildStatusCarousel(cs),
+          SizedBox(height: PanAfricanSpacing.md),
+          if (list.isEmpty)
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.lg, vertical: 24.h),
+              child: Column(
+                children: [
+                  Icon(Icons.chat_bubble_outline_rounded,
+                      size: 48.sp, color: cs.onSurfaceVariant),
+                  SizedBox(height: PanAfricanSpacing.sm),
+                  Text(
+                    'No conversations yet',
+                    style: ModernGriotTypography.titleSmall(color: cs.onSurface),
                   ),
-                ),
-                if (isOnline)
-                  Positioned(
-                    right: 0,
-                    bottom: 0,
-                    child: Container(
-                      width: 12.w,
-                      height: 12.w,
-                      decoration: BoxDecoration(
-                        color: PanAfricanColors.success,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: isDark 
-                              ? PanAfricanColors.surfaceContainerDark 
-                              : PanAfricanColors.surfaceContainerLight,
-                          width: 2,
-                        ),
-                      ),
-                    ),
+                  SizedBox(height: PanAfricanSpacing.xs),
+                  Text(
+                    'Tap + to find someone by handle, or connect in Social Hub.',
+                    style: ModernGriotTypography.bodySmall(color: cs.onSurfaceVariant),
+                    textAlign: TextAlign.center,
                   ),
-              ],
-            ),
-            title: Text(
-              contactName,
-              style: PanAfricanTypography.titleSmall(context),
-            ),
-            subtitle: Text(
-              contactSubtitle,
-              style: PanAfricanTypography.bodySmall(context)
-                  .copyWith(color: PanAfricanColors.neutralMedium),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            trailing: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  _formatTime(_getLastMessageTimestamp(roomMessages)),
-                  style: PanAfricanTypography.labelSmall(context)
-                      .copyWith(color: PanAfricanColors.neutralMedium),
-                ),
-                if (unreadCount > 0)
-                  Container(
-                    margin: EdgeInsets.only(top: PanAfricanSpacing.xxs),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: PanAfricanSpacing.sm,
-                      vertical: PanAfricanSpacing.xxs,
-                    ),
-                    decoration: BoxDecoration(
-                      color: PanAfricanColors.primary,
-                      borderRadius: PanAfricanRadius.roundBR,
-                    ),
-                    child: Text(
-                      unreadCount.toString(),
-                      style: PanAfricanTypography.labelSmall(context)
-                          .copyWith(color: colorScheme.onPrimary),
-                    ),
-                  ),
-              ],
-            ),
-            onTap: () {
-              HapticFeedback.selectionClick();
-              Navigator.push(
-                context,
-                SmoothPageRoute(
-                  child: PrivateChatScreen(contact: contact),
-                ),
-              );
-            },
-          ),
-          ),
-        );
-      },
+                ],
+              ),
+            )
+          else ...[
+            _buildSectionHeader('Messages', Icons.forum_outlined, cs),
+            ...list.map((c) => _buildConversationTile(c, cs)),
+          ],
+          SizedBox(height: 80.h),
+        ],
+      ),
     );
   }
 
-  String _buildRoomId(int userId1, int userId2) {
-    final ids = [userId1, userId2]..sort();
-    return 'private_${ids[0]}_${ids[1]}';
-  }
-
-  String? _getLastMessageTimestamp(List<Map<String, dynamic>> messages) {
-    if (messages.isEmpty) return null;
-    final lastMessage = messages.last;
-    return lastMessage['timestamp']?.toString();
-  }
-
-  String _formatTime(String? timestamp) {
-    if (timestamp == null || timestamp.isEmpty) return '';
-    try {
-      final date = DateTime.parse(timestamp);
-      final now = DateTime.now();
-      final diff = now.difference(date);
-      if (diff.inMinutes < 1) return 'just now';
-      if (diff.inHours < 1) return '${diff.inMinutes}m ago';
-      if (diff.inDays < 1) return '${diff.inHours}h ago';
-      if (diff.inDays < 7) return '${diff.inDays}d ago';
-      return '${date.day}/${date.month}/${date.year}';
-    } catch (_) {
-      return '';
+  Widget _buildStatusCarousel(ColorScheme cs) {
+    final st = ref.watch(waStatusProvider);
+    if (st.loading && st.feed.isEmpty && st.mine.isEmpty) {
+      return SizedBox(
+        height: 96.h,
+        child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+      );
     }
+
+    final items = <_StatusRing>[];
+    items.add(const _StatusRing(isMine: true, label: 'My Status', initial: '+'));
+    for (final s in st.feed.take(12)) {
+      final initial = s.text.isNotEmpty
+          ? s.text.substring(0, 1).toUpperCase()
+          : '?';
+      items.add(
+        _StatusRing(
+          isMine: false,
+          label: s.userId == 'me' ? 'You' : 'Status',
+          initial: initial,
+          viewed: true,
+        ),
+      );
+    }
+
+    return SizedBox(
+      height: 96.h,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
+        itemCount: items.length,
+        separatorBuilder: (_, __) => SizedBox(width: PanAfricanSpacing.sm),
+        itemBuilder: (context, index) {
+          final status = items[index];
+          final ringColor = status.isMine
+              ? cs.outlineVariant
+              : status.viewed
+                  ? ModernGriotColors.secondary
+                  : ModernGriotColors.primary;
+
+          return GestureDetector(
+            onTap: () {
+              if (status.isMine) {
+                Navigator.pushNamed(context, '/wa-status-create');
+              }
+            },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 58.r,
+                  height: 58.r,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: ringColor, width: 2.5.r),
+                  ),
+                  child: Center(
+                    child: CircleAvatar(
+                      radius: 24.r,
+                      backgroundColor: cs.surfaceContainerHigh,
+                      child: status.isMine
+                          ? Icon(Icons.add_rounded, size: 22.sp, color: ModernGriotColors.primary)
+                          : Text(
+                              status.initial,
+                              style: ModernGriotTypography.titleSmall(color: cs.onSurface),
+                            ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: PanAfricanSpacing.xxs),
+                SizedBox(
+                  width: 60.w,
+                  child: Text(
+                    status.label,
+                    style: ModernGriotTypography.labelSmall(color: cs.onSurfaceVariant),
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
   }
+
+  Widget _buildSectionHeader(String title, IconData icon, ColorScheme cs) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: PanAfricanSpacing.lg,
+        vertical: PanAfricanSpacing.xs,
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 14.sp, color: cs.onSurfaceVariant),
+          SizedBox(width: PanAfricanSpacing.xxs),
+          Text(
+            title.toUpperCase(),
+            style: ModernGriotTypography.labelSmall(
+              color: cs.onSurfaceVariant,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildConversationTile(WaPrivateConversationRow chat, ColorScheme cs) {
+    final hasUnread = chat.unreadCount > 0;
+    final initial =
+        chat.displayName.isNotEmpty ? chat.displayName[0].toUpperCase() : '?';
+
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: PanAfricanSpacing.sm,
+        vertical: PanAfricanSpacing.xxxs,
+      ),
+      child: GriotCard(
+        surfaceLevel: 1,
+        padding: EdgeInsets.symmetric(
+          horizontal: PanAfricanSpacing.md,
+          vertical: PanAfricanSpacing.sm,
+        ),
+        onTap: () {
+          Navigator.push<void>(
+            context,
+            MaterialPageRoute(
+              builder: (_) => PrivateChatScreen(
+                otherUserId: chat.otherUserId,
+                otherDisplayName: chat.displayName,
+                contact: {
+                  'isOnline': false,
+                  'initial': initial,
+                },
+              ),
+            ),
+          ).then((_) => _refreshChats());
+        },
+        child: Row(
+          children: [
+            GriotAvatar(
+              size: 48,
+              status: GriotAvatarStatus.offline,
+              placeholder: CircleAvatar(
+                radius: 24.r,
+                backgroundColor: ModernGriotColors.primaryContainer.withAlpha(80),
+                child: Text(
+                  initial,
+                  style: ModernGriotTypography.titleMedium(
+                    color: ModernGriotColors.primary,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(width: PanAfricanSpacing.sm),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    chat.displayName,
+                    style: ModernGriotTypography.titleSmall(
+                      color: cs.onSurface,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: 2.h),
+                  Row(
+                    children: [
+                      if (chat.lastMessageFromMe) ...[
+                        Icon(
+                          chat.lastMessageRead
+                              ? Icons.done_all_rounded
+                              : Icons.done_rounded,
+                          size: 14.sp,
+                          color: ModernGriotColors.secondary,
+                        ),
+                        SizedBox(width: 4.w),
+                      ],
+                      Expanded(
+                        child: Text(
+                          chat.lastPreview,
+                          style: ModernGriotTypography.bodySmall(
+                            color: hasUnread ? cs.onSurface : cs.onSurfaceVariant,
+                          ).copyWith(
+                            fontWeight:
+                                hasUnread ? FontWeight.w600 : FontWeight.w400,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(width: PanAfricanSpacing.xs),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  _formatTime(chat.lastAt),
+                  style: ModernGriotTypography.labelSmall(
+                    color: hasUnread
+                        ? ModernGriotColors.primary
+                        : cs.onSurfaceVariant,
+                  ),
+                ),
+                SizedBox(height: 4.h),
+                if (hasUnread)
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 2.h),
+                    decoration: BoxDecoration(
+                      color: ModernGriotColors.primary,
+                      borderRadius: ModernGriotRadius.borderPill,
+                    ),
+                    child: Text(
+                      chat.unreadCount > 99 ? '99+' : '${chat.unreadCount}',
+                      style: TextStyle(
+                        fontSize: 11.sp,
+                        fontWeight: FontWeight.w700,
+                        color: ModernGriotColors.onPrimary,
+                      ),
+                    ),
+                  )
+                else
+                  SizedBox(height: 18.h),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatusTab(ColorScheme cs) {
+    final st = ref.watch(waStatusProvider);
+    return RefreshIndicator(
+      onRefresh: () async {
+        await ref.read(waStatusProvider.notifier).loadFeed();
+        await ref.read(waStatusProvider.notifier).loadMine();
+      },
+      child: ListView(
+        padding: EdgeInsets.all(PanAfricanSpacing.lg),
+        children: [
+          Text('Your updates', style: ModernGriotTypography.titleSmall(color: cs.onSurface)),
+          SizedBox(height: PanAfricanSpacing.sm),
+          if (st.mine.isEmpty)
+            Text(
+              'You have no active status. Create one from the Chats tab (My Status) or WhatsApp-style status screens.',
+              style: ModernGriotTypography.bodySmall(color: cs.onSurfaceVariant),
+            )
+          else
+            ...st.mine.map(
+              (s) => ListTile(
+                title: Text(s.text.isNotEmpty ? s.text : s.mediaType),
+                subtitle: Text(s.createdAt.toLocal().toString()),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _StatusRing {
+  const _StatusRing({
+    required this.isMine,
+    required this.label,
+    required this.initial,
+    this.viewed = false,
+  });
+
+  final bool isMine;
+  final String label;
+  final String initial;
+  final bool viewed;
 }

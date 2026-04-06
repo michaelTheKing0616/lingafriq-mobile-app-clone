@@ -12,10 +12,11 @@ import 'package:lingafriq/providers/tab_scaffold_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/models/daily_goal_model.dart';
 import 'package:lingafriq/screens/ai_chat/polie_mode_selection_screen.dart';
+import 'package:lingafriq/screens/ai_chat/ai_language_selection_screen.dart';
 import 'package:lingafriq/screens/curriculum/curriculum_screen_material3.dart';
-import 'package:lingafriq/screens/tabs_view/home/language_detail_screen.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen_enhanced.dart';
 import 'package:lingafriq/screens/games/games_screen_material3.dart';
+import 'package:lingafriq/screens/goals/daily_goals_screen.dart';
 import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart' show languagesProvider;
 import 'package:lingafriq/widgets/offline/offline_indicator.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
@@ -161,15 +162,27 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8.w),
                   child: Semantics(
-                    label: '$greetingLine. Ready to learn?',
+                    label: 'The Village. $greetingLine',
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
+                          'The Village',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: PanAfricanTypography.titleLarge(context).copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontWeight: FontWeight.w800,
+                            fontFamily: 'Plus Jakarta Sans',
+                            letterSpacing: -0.5,
+                          ),
+                        ).animate().fadeIn(duration: 280.ms).slideY(begin: -0.15),
+                        SizedBox(height: PanAfricanSpacing.xxs),
+                        Text(
                           greetingLine,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: PanAfricanTypography.headlineMedium(context)
+                          style: PanAfricanTypography.headlineSmall(context)
                               .copyWith(color: onSurface),
                         ).animate().fadeIn(duration: 300.ms).slideY(begin: -0.2),
                         SizedBox(height: PanAfricanSpacing.xs),
@@ -181,6 +194,25 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                       ],
                     ),
                   ),
+                ),
+              ),
+              Semantics(
+                label: 'Streak and daily goals',
+                button: true,
+                child: IconButton(
+                  icon: Icon(
+                    Icons.local_fire_department_rounded,
+                    color: Theme.of(context).colorScheme.primary,
+                    size: 26.sp,
+                  ),
+                  tooltip: 'Daily goals & streak',
+                  onPressed: () {
+                    HapticFeedback.lightImpact();
+                    Navigator.push(
+                      context,
+                      SmoothPageRoute(child: const DailyGoalsScreen()),
+                    );
+                  },
                 ),
               ),
               Semantics(
@@ -301,7 +333,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  SmoothPageRoute(child: const PolieModeSelectionScreen()),
+                  SmoothPageRoute(child: const AILanguageSelectionScreen()),
                 );
               },
               isDark: isDark,
@@ -391,7 +423,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                         HapticFeedback.lightImpact();
                         Navigator.push(
                           context,
-                          SmoothPageRoute(child: LanguageDetailScreen(language: language)),
+                          SmoothPageRoute(child: const CurriculumScreenMaterial3()),
                         );
                       },
                       child: Container(
@@ -618,7 +650,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                         HapticFeedback.lightImpact();
                         Navigator.push(
                           context,
-                          SmoothPageRoute(child: LanguageDetailScreen(language: language)),
+                          SmoothPageRoute(child: const CurriculumScreenMaterial3()),
                         );
                       },
                     ),
@@ -714,10 +746,10 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                   ),
                   SizedBox(height: PanAfricanSpacing.md),
                   Semantics(
-                    label: 'Explore Curriculum button',
+                    label: 'Start a lesson button',
                     button: true,
                     child: PanAfricanButton(
-                      label: 'Explore Curriculum',
+                      label: 'Start a lesson',
                       icon: Icons.play_arrow_rounded,
                       onPressed: () {
                         Navigator.push(

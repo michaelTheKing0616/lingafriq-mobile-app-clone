@@ -146,6 +146,11 @@ class Api {
   static const String chatGlobal = 'chat/global';
   static const String chatPrivate = 'chat/private';
   static const String chatConversations = 'chat/conversations';
+  /// Private DM thread with another user (numeric id or handle-resolved id).
+  static String chatPrivateMessages(String otherUserId) => 'chat/private/$otherUserId';
+  /// WhatsApp-style REST surface (auth required).
+  static const String waConversations = 'api/wa/conversations';
+  static const String waMessages = 'api/wa/messages';
   
   // Media API endpoints  
   static String mediaUpload() => 'media/upload';

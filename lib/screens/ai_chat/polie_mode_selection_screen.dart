@@ -35,42 +35,42 @@ class PolieModeSelectionScreen extends ConsumerWidget {
     final modes = [
       _ModeData(
         title: 'Translation',
-        description: 'Precision tool: mirrored split panel. No chat bubbles.',
+        description: 'Meaning-first, culturally fluent. Or literal word-by-word.',
         icon: Icons.translate_rounded,
         accentColor: PolieColors.electricTeal,
         mode: PolieMode.translation,
       ),
       _ModeData(
         title: 'Tutor',
-        description: 'Interactive notebook: flip cards with inline feedback.',
+        description: 'Adaptive lessons, grammar, and exercises with feedback.',
         icon: Icons.school_rounded,
         accentColor: PolieColors.goldEmber,
         mode: PolieMode.tutor,
       ),
       _ModeData(
         title: 'Roleplay',
-        description: 'Dark cinematic stage. Scene-first character cards.',
+        description: 'Real scenarios: market, taxi, elder. Practice with character.',
         icon: Icons.theater_comedy_rounded,
         accentColor: PolieColors.royalAmethyst,
         mode: PolieMode.roleplay,
       ),
       _ModeData(
         title: 'Conversation',
-        description: 'WhatsApp-style chat with a patient friend.',
+        description: 'Free-flowing dialogue. Natural practice with gentle correction.',
         icon: Icons.chat_bubble_outline_rounded,
         accentColor: PolieColors.electricTealLight,
         mode: PolieMode.conversation,
       ),
       _ModeData(
         title: 'Vocabulary',
-        description: 'Museum word theater. Dramatic focus + SRS actions.',
+        description: 'New words, usage, and spaced repetition.',
         icon: Icons.book_rounded,
         accentColor: PolieColors.goldEmberLight,
         mode: PolieMode.vocab,
       ),
       _ModeData(
         title: 'Review',
-        description: 'Coach dashboard: animated bars + personalized report.',
+        description: 'Strengthen memory. Review learned words and phrases.',
         icon: Icons.refresh_rounded,
         accentColor: PolieColors.success,
         mode: PolieMode.review,
@@ -92,7 +92,7 @@ class PolieModeSelectionScreen extends ConsumerWidget {
                         HapticFeedback.lightImpact();
                         if (onBack != null) {
                           onBack!();
-                        } else {
+                        } else if (Navigator.of(context).canPop()) {
                           Navigator.of(context).pop();
                         }
                       },
