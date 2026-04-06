@@ -38,7 +38,8 @@ class AudioPlayerBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     final totalMs = duration.inMilliseconds.toDouble();
-    final currentMs = position.inMilliseconds.toDouble().clamp(0, totalMs);
+    final currentMs =
+        position.inMilliseconds.toDouble().clamp(0.0, totalMs).toDouble();
 
     return Container(
       padding: EdgeInsets.only(

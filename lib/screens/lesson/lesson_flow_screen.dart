@@ -240,6 +240,29 @@ class LessonFlowScreen extends HookConsumerWidget {
           onAnswerSelected: (questionId, answer) {
             lessonFlow.setQuizAnswer(section.sectionId, questionId, answer);
           },
+          onFinish: () {
+            Future<void> completeAndAdvance() async {
+              await lessonFlow.completeSection(section.sectionId);
+              if (!context.mounted) return;
+              final st = ref.read(lessonFlowProvider(lessonId));
+              if (st.hasMoreSections) {
+                await Future.delayed(const Duration(milliseconds: 500));
+                if (!context.mounted) return;
+                final nextIndex = st.currentSectionIndex + 1;
+                lessonFlow.nextSection();
+                if (pageController.hasClients) {
+                  pageController.animateToPage(
+                    nextIndex,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  );
+                }
+              } else {
+                ref.read(lessonFlowProvider(lessonId).notifier).nextSection();
+              }
+            }
+            completeAndAdvance();
+          },
           onCheckAnswer: (questionId, answer) async {
             final isCorrect = await lessonFlow.checkQuizAnswer(
               section.sectionId,

@@ -117,7 +117,7 @@ class WaPrivateChatService {
     if (!fromMe) {
       final senderMongo = last['sender_id'];
       if (senderMongo is Map) {
-        final sid = _readUserId(senderMongo);
+        final sid = _readUserId(Map<String, dynamic>.from(senderMongo));
         fromMe = sid == myNumericId;
       }
     }
