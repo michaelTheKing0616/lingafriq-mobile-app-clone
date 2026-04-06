@@ -1,11 +1,14 @@
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/widgets/portrait_video_player.dart';
 import 'package:lingafriq/services/hybrid_polie/translation_service.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart' show groqChatProvider, PolieMode;
 import 'package:lingafriq/utils/api_service.dart';
@@ -224,7 +227,6 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
   final Map<String, dynamic> article;
   final String? translatedTitle;
   final String? translatedExcerpt;
-  final String? translatedContent;
   final bool showTranslation;
   final String userLanguage;
 
@@ -233,7 +235,6 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
     required this.article,
     this.translatedTitle,
     this.translatedExcerpt,
-    this.translatedContent,
     this.showTranslation = false,
     this.userLanguage = 'english',
   });
@@ -327,34 +328,16 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              _MagazineArticleRichMedia(article: article),
+              SizedBox(height: PanAfricanSpacing.md),
               // Article Content
               Text(
-                showTranslationState.value
-                    ? (contentTranslation.value ?? translatedContent ?? article['content'] ?? article['excerpt'] ?? '')
-                    : (article['content'] ?? article['excerpt'] ?? ''),
+                showTranslationState.value && contentTranslation.value != null
+                    ? contentTranslation.value!
+                    : article['content'] ?? article['excerpt'] ?? '',
                 style: PanAfricanTypography.bodyLarge(context),
               ),
               SizedBox(height: PanAfricanSpacing.lg),
-              if ((article['audioUrl'] ?? '').toString().trim().isNotEmpty ||
-                  (article['videoUrl'] ?? '').toString().trim().isNotEmpty ||
-                  ((article['content'] ?? '').toString().length > 1200))
-                Card(
-                  child: Padding(
-                    padding: EdgeInsets.all(PanAfricanSpacing.md),
-                    child: Wrap(
-                      spacing: PanAfricanSpacing.sm,
-                      runSpacing: PanAfricanSpacing.xs,
-                      children: [
-                        if ((article['audioUrl'] ?? '').toString().trim().isNotEmpty)
-                          const Chip(label: Text('Audio available'), avatar: Icon(Icons.audiotrack_rounded, size: 18)),
-                        if ((article['videoUrl'] ?? '').toString().trim().isNotEmpty)
-                          const Chip(label: Text('Video available'), avatar: Icon(Icons.play_circle_fill_rounded, size: 18)),
-                        if (((article['content'] ?? '').toString().length > 1200))
-                          const Chip(label: Text('Long read'), avatar: Icon(Icons.menu_book_rounded, size: 18)),
-                      ],
-                    ),
-                  ),
-                ),
 
               // Translation Toggle
               Row(
@@ -585,6 +568,151 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
           );
         }),
       ],
+    );
+  }
+}
+
+/// Featured image, gallery, Wikimedia video, and audio for rich magazine articles.
+class _MagazineArticleRichMedia extends StatelessWidget {
+  const _MagazineArticleRichMedia({required this.article});
+
+  final Map<String, dynamic> article;
+
+  @override
+  Widget build(BuildContext context) {
+    final featured = article['featured_image'] as String?;
+    final rawImages = article['images'];
+    final images = <String>[];
+    if (rawImages is List) {
+      for (final e in rawImages) {
+        final s = e.toString();
+        if (s.startsWith('http')) images.add(s);
+      }
+    }
+    final videoUrl = article['video_url'] ?? article['videoUrl'];
+    final audioUrl = article['audio_url'] ?? article['audioUrl'];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (featured != null && featured.startsWith('http')) ...[
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: CachedNetworkImage(
+              imageUrl: featured,
+              height: 200,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              placeholder: (_, __) => const SizedBox(
+                height: 200,
+                child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+              ),
+              errorWidget: (_, __, ___) => const SizedBox.shrink(),
+            ),
+          ),
+          SizedBox(height: PanAfricanSpacing.md),
+        ],
+        if (images.length > 1) ...[
+          SizedBox(
+            height: 110,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: images.length,
+              separatorBuilder: (_, __) => SizedBox(width: PanAfricanSpacing.sm),
+              itemBuilder: (ctx, i) => ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: CachedNetworkImage(
+                  imageUrl: images[i],
+                  width: 140,
+                  height: 110,
+                  fit: BoxFit.cover,
+                  errorWidget: (_, __, ___) => const SizedBox.shrink(),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: PanAfricanSpacing.md),
+        ],
+        if (videoUrl is String && videoUrl.startsWith('http')) ...[
+          PortraitPlayerPage(videoUrl: videoUrl),
+          SizedBox(height: PanAfricanSpacing.md),
+        ],
+        if (audioUrl is String && audioUrl.startsWith('http')) _ArticleInlineAudio(url: audioUrl),
+      ],
+    );
+  }
+}
+
+class _ArticleInlineAudio extends StatefulWidget {
+  const _ArticleInlineAudio({required this.url});
+
+  final String url;
+
+  @override
+  State<_ArticleInlineAudio> createState() => _ArticleInlineAudioState();
+}
+
+class _ArticleInlineAudioState extends State<_ArticleInlineAudio> {
+  late final AudioPlayer _player = AudioPlayer();
+  bool _loading = false;
+  bool _playing = false;
+
+  @override
+  void dispose() {
+    _player.dispose();
+    super.dispose();
+  }
+
+  Future<void> _toggle() async {
+    if (_loading) return;
+    setState(() => _loading = true);
+    try {
+      if (_playing) {
+        await _player.stop();
+        setState(() => _playing = false);
+      } else {
+        await _player.setUrl(widget.url);
+        await _player.play();
+        setState(() => _playing = true);
+      }
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Could not play this audio clip.')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Row(
+        children: [
+          Icon(Icons.audiotrack_rounded, color: PanAfricanColors.primary),
+          SizedBox(width: PanAfricanSpacing.sm),
+          Expanded(
+            child: Text(
+              'Related audio (open license)',
+              style: PanAfricanTypography.labelLarge(context),
+            ),
+          ),
+          IconButton(
+            tooltip: _playing ? 'Stop' : 'Play',
+            onPressed: _toggle,
+            icon: _loading
+                ? const SizedBox(
+                    width: 22,
+                    height: 22,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : Icon(_playing ? Icons.stop_rounded : Icons.play_arrow_rounded),
+          ),
+        ],
+      ),
     );
   }
 }
