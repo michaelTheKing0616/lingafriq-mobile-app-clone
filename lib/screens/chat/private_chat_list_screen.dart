@@ -575,7 +575,7 @@ class _PrivateChatListScreenState extends ConsumerState<PrivateChatListScreen>
             ...st.mine.map(
               (s) => ListTile(
                 title: Text(s.text.isNotEmpty ? s.text : s.mediaType),
-                subtitle: Text(s.createdAt.toLocal().toString()),
+                subtitle: Text(s.createdAt?.toLocal().toString() ?? ''),
               ),
             ),
         ],

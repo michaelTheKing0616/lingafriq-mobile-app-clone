@@ -174,6 +174,7 @@ class LanguageVillagesScreen extends HookConsumerWidget {
                   return _DetailPanel(
                     location: _locations[sel],
                     onlineLearners: onlineLearners,
+                    languageCodeLabel: languageCodeUpper,
                     onClose: () => selectedIdx.value = -1,
                     onEnter: () {
                       VillageNavigation.enterLanguageVillagePlace(

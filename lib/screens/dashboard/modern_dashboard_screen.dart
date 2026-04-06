@@ -43,6 +43,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
 class _GreetingHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     final hour = DateTime.now().hour;
     final greeting =
         hour < 12 ? 'Good Morning' : (hour < 17 ? 'Good Afternoon' : 'Good Evening');
@@ -60,7 +61,21 @@ class _GreetingHeader extends StatelessWidget {
             ],
           ),
         ),
-        GriotAvatar(initials: 'KA', size: 42),
+        GriotAvatar(
+          size: 42,
+          placeholder: Container(
+            color: cs.surfaceContainerHigh,
+            alignment: Alignment.center,
+            child: Text(
+              'KA',
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 14.sp,
+                color: cs.onSurfaceVariant,
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }

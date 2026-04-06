@@ -56,9 +56,11 @@ final gameContentProvider = FutureProvider<GameContentData>((ref) async {
 /// [GameContentFilter.topic]. [GameContentFilter.game] is ignored.
 final gameWordsProvider =
     Provider.family<List<GameWord>, GameContentFilter>((ref, filter) {
-  final data = ref.watch(gameContentProvider).valueOrNull;
-  if (data == null) return <GameWord>[];
-  return data.words.where((w) => _matchesWord(w, filter)).toList();
+  return ref.watch(gameContentProvider).maybeWhen(
+        data: (data) =>
+            data.words.where((w) => _matchesWord(w, filter)).toList(),
+        orElse: () => <GameWord>[],
+      );
 });
 
 /// Proverbs from [gameContentProvider] matching [GameContentFilter].
@@ -66,9 +68,11 @@ final gameWordsProvider =
 /// Applies: language, cefr, gameTag. Ignores topic and game (no fields on model).
 final gameProverbsProvider =
     Provider.family<List<GameProverb>, GameContentFilter>((ref, filter) {
-  final data = ref.watch(gameContentProvider).valueOrNull;
-  if (data == null) return <GameProverb>[];
-  return data.proverbs.where((p) => _matchesProverb(p, filter)).toList();
+  return ref.watch(gameContentProvider).maybeWhen(
+        data: (data) =>
+            data.proverbs.where((p) => _matchesProverb(p, filter)).toList(),
+        orElse: () => <GameProverb>[],
+      );
 });
 
 /// Scenarios from [gameContentProvider] matching [GameContentFilter].
@@ -76,9 +80,11 @@ final gameProverbsProvider =
 /// Applies: language, cefr, game. Ignores gameTag and topic.
 final gameScenariosProvider =
     Provider.family<List<GameScenario>, GameContentFilter>((ref, filter) {
-  final data = ref.watch(gameContentProvider).valueOrNull;
-  if (data == null) return <GameScenario>[];
-  return data.scenarios.where((s) => _matchesScenario(s, filter)).toList();
+  return ref.watch(gameContentProvider).maybeWhen(
+        data: (data) =>
+            data.scenarios.where((s) => _matchesScenario(s, filter)).toList(),
+        orElse: () => <GameScenario>[],
+      );
 });
 
 bool _matchesWord(GameWord word, GameContentFilter f) {
