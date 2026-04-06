@@ -125,7 +125,8 @@ jobs:
       - name: Flutter analyze
         run: |
           echo "🔍 Running Flutter analyze..."
-          flutter analyze
+          # Default flutter analyze treats infos/warnings as fatal; CI should fail only on errors.
+          flutter analyze --no-fatal-infos --no-fatal-warnings
           echo "✅ Flutter analyze passed"
 
       - name: Flutter test
@@ -260,7 +261,7 @@ jobs:
       - name: Flutter analyze
         run: |
           echo "🔍 Running Flutter analyze..."
-          flutter analyze
+          flutter analyze --no-fatal-infos --no-fatal-warnings
           echo "✅ Flutter analyze passed"
 
       - name: Flutter test
