@@ -125,7 +125,7 @@ jobs:
       - name: Verify X feed route files exist
         run: |
           set -e
-          for f in x_feed_home_screen x_compose_screen x_post_detail_screen x_notifications_screen x_explore_screen x_lists_screen x_profile_screen; do
+          for f in x_feed_home_screen x_compose_screen x_post_detail_screen x_feed_notifications_screen x_explore_screen x_lists_screen x_profile_screen; do
             p="lib/screens/feed/${f}.dart"
             if [ ! -f "$p" ]; then echo "Missing required file: $p (checkout may be stale or PR branch incomplete)"; exit 1; fi
           done
@@ -269,7 +269,7 @@ jobs:
       - name: Verify X feed route files exist
         run: |
           set -e
-          for f in x_feed_home_screen x_compose_screen x_post_detail_screen x_notifications_screen x_explore_screen x_lists_screen x_profile_screen; do
+          for f in x_feed_home_screen x_compose_screen x_post_detail_screen x_feed_notifications_screen x_explore_screen x_lists_screen x_profile_screen; do
             p="lib/screens/feed/${f}.dart"
             if [ ! -f "$p" ]; then echo "Missing required file: $p"; exit 1; fi
           done

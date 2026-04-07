@@ -29,9 +29,10 @@ analyzer:
     unnecessary_brace_in_string_interps: ignore
     unnecessary_library_name: ignore
   exclude:
-    # This folder is a curriculum JSON bundle; it contains one experimental Dart file
-    # (`ai_chat_provider_patched.dart`) that is not imported by the runtime app.
-    - lingafriq_full_curriculum_bundle/**/patched_provider/*.dart
+    # Curriculum JSON bundles: exclude only the known patched provider experiments.
+    # Use explicit paths (not **) so analyzer globs cannot over-match app lib/ files.
+    - lingafriq_full_curriculum_bundle/curriculum_expanded_bundle/curriculum_expanded/patched_provider/ai_chat_provider_patched.dart
+    - curriculum_expanded_bundle/curriculum_expanded/patched_provider/ai_chat_provider_patched.dart
 
 linter:
   # The lint rules applied to this project can be customized in the
