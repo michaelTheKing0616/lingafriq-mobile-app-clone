@@ -81,7 +81,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: main
-          fetch-depth: 20
+          fetch-depth: 0
 
       - name: 🔧 Ensure Gradle wrapper is executable
         run: |
@@ -121,6 +121,14 @@ jobs:
 
       - name: 📦 Get Flutter dependencies
         run: flutter pub get
+
+      - name: Verify X feed route files exist
+        run: |
+          set -e
+          for f in x_feed_home_screen x_compose_screen x_post_detail_screen x_notifications_screen x_explore_screen x_lists_screen x_profile_screen; do
+            p="lib/screens/feed/${f}.dart"
+            if [ ! -f "$p" ]; then echo "Missing required file: $p (checkout may be stale or PR branch incomplete)"; exit 1; fi
+          done
 
       - name: Flutter analyze
         run: |
@@ -248,7 +256,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: main
-          fetch-depth: 20
+          fetch-depth: 0
 
       - name: 🐦 Setup Flutter
         uses: subosito/flutter-action@v2
@@ -257,6 +265,14 @@ jobs:
 
       - name: 📦 Get Flutter dependencies
         run: flutter pub get
+
+      - name: Verify X feed route files exist
+        run: |
+          set -e
+          for f in x_feed_home_screen x_compose_screen x_post_detail_screen x_notifications_screen x_explore_screen x_lists_screen x_profile_screen; do
+            p="lib/screens/feed/${f}.dart"
+            if [ ! -f "$p" ]; then echo "Missing required file: $p"; exit 1; fi
+          done
 
       - name: Flutter analyze
         run: |
