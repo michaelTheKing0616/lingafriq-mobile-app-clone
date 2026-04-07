@@ -5,6 +5,7 @@ import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
+import 'package:lingafriq/screens/feed/x_notifications_screen.dart';
 
 import 'app_theme.dart';
 import 'providers/navigation_provider.dart';
@@ -88,7 +89,6 @@ import 'screens/feed/x_compose_screen.dart';
 import 'screens/feed/x_explore_screen.dart';
 import 'screens/feed/x_feed_home_screen.dart';
 import 'screens/feed/x_lists_screen.dart';
-import 'screens/feed/x_notifications_screen.dart';
 import 'screens/feed/x_post_detail_screen.dart';
 import 'screens/feed/x_profile_screen.dart';
 import 'screens/personalities/personality_selection_screen.dart';
