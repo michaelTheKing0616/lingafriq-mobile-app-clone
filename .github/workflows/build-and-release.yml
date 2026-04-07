@@ -129,7 +129,6 @@ jobs:
             p="lib/screens/feed/${f}.dart"
             if [ ! -f "$p" ]; then echo "Missing required file: $p (checkout may be stale or PR branch incomplete)"; exit 1; fi
           done
-          if [ ! -f lib/x_feed_notifications_screen.dart ]; then echo "Missing required file: lib/x_feed_notifications_screen.dart"; exit 1; fi
 
       - name: Flutter analyze
         run: |
@@ -274,7 +273,6 @@ jobs:
             p="lib/screens/feed/${f}.dart"
             if [ ! -f "$p" ]; then echo "Missing required file: $p"; exit 1; fi
           done
-          if [ ! -f lib/x_feed_notifications_screen.dart ]; then echo "Missing required file: lib/x_feed_notifications_screen.dart"; exit 1; fi
 
       - name: Flutter analyze
         run: |

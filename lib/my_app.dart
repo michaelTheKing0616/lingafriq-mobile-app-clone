@@ -5,7 +5,6 @@ import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
-import 'package:lingafriq/x_feed_notifications_screen.dart';
 
 import 'app_theme.dart';
 import 'providers/navigation_provider.dart';
