@@ -267,7 +267,7 @@ class _NotifCard extends StatelessWidget {
                               TextSpan(text: ' $body'),
                               if (handle.isNotEmpty)
                                 TextSpan(
-                                  text: ' ù $handle',
+                                  text: ' \u00B7 $handle',
                                   style: ModernGriotTypography.bodySmall(
                                     context: context,
                                     color: cs.onSurfaceVariant,
@@ -459,7 +459,7 @@ class _GrowTribeCardState extends State<_GrowTribeCard> {
     final un = (u['username'] ?? '').toString().trim();
     final status = (u['connectionStatus'] ?? u['connection_status'] ?? 'none').toString();
     final h = un.isNotEmpty ? '@$un' : '';
-    return h.isNotEmpty ? '$h ∑ $status' : status;
+    return h.isNotEmpty ? '$h ù $status' : status;
   }
 
   @override
