@@ -1,3 +1,4 @@
+// X-style notifications list (uses x_feed_provider notifications slice).
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
