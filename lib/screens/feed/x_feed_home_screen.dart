@@ -12,8 +12,6 @@ import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import 'feed_post_thread_screen.dart';
 
-export 'x_feed_notifications_screen.dart' show XNotificationsScreen;
-
 /// X-style community feed backed by `/api/feed/posts`.
 class XFeedHomeScreen extends ConsumerStatefulWidget {
   const XFeedHomeScreen({super.key});
