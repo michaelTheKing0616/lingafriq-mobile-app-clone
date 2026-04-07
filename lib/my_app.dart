@@ -88,7 +88,7 @@ import 'screens/feed/x_compose_screen.dart';
 import 'screens/feed/x_explore_screen.dart';
 import 'screens/feed/x_feed_home_screen.dart';
 import 'screens/feed/x_lists_screen.dart';
-import 'screens/feed/x_feed_notifications_screen.dart';
+import 'x_feed_notifications_screen.dart';
 import 'screens/feed/x_post_detail_screen.dart';
 import 'screens/feed/x_profile_screen.dart';
 import 'screens/personalities/personality_selection_screen.dart';

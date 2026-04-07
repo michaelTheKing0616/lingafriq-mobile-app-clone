@@ -1,15 +1,16 @@
 // X-style notifications list (uses x_feed_provider notifications slice).
+// Lib-root file so `my_app.dart` imports match `app_theme.dart` (CI analyzer failed on screens/feed/ path).
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../config/api_contract.dart';
-import '../../providers/x_feed_provider.dart';
-import '../../utils/api_service.dart';
-import '../../utils/modern_griot_design_system.dart';
-import '../../widgets/griot/griot_widgets.dart';
-import 'feed_post_thread_screen.dart';
+import 'config/api_contract.dart';
+import 'providers/x_feed_provider.dart';
+import 'utils/api_service.dart';
+import 'utils/modern_griot_design_system.dart';
+import 'widgets/griot/griot_widgets.dart';
+import 'screens/feed/feed_post_thread_screen.dart';
 
 class XNotificationsScreen extends ConsumerStatefulWidget {
   const XNotificationsScreen({super.key});
