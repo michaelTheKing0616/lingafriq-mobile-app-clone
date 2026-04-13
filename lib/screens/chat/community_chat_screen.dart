@@ -12,6 +12,18 @@ import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/avatars/avatars.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/providers/chat_socket_provider.dart';
+import 'package:lingafriq/services/polie_social_chat_helper.dart';
+import 'package:lingafriq/screens/feed/x_profile_screen.dart';
+
+int? _numericSenderIdFromCommunityMessage(Map<String, dynamic> message) {
+  final s = message['sender_id'];
+  if (s is Map) {
+    final id = s['id'];
+    if (id is int) return id;
+    if (id is String) return int.tryParse(id);
+  }
+  return int.tryParse(message['userId']?.toString() ?? '');
+}
 
 /// Community Chat (Language Villages) with Material 3 Design
 class CommunityChatScreen extends HookConsumerWidget {
@@ -59,20 +71,22 @@ class CommunityChatScreen extends HookConsumerWidget {
     }
 
     Future<void> sendMessage() async {
-      if (messageController.text.isEmpty) return;
+      final text = messageController.text.trim();
+      if (text.isEmpty) return;
 
+      var ok = false;
       isLoading.value = true;
       try {
         final response = await ApiService.post(
           '/chat/community/$villageId',
           data: {
-            'message': messageController.text,
+            'message': text,
           },
         );
 
-        if (response.statusCode == 200) {
+        ok = response.statusCode == 200;
+        if (ok) {
           messageController.clear();
-          // Message will be received via socket, no need to reload
         }
       } catch (e) {
         if (context.mounted) {
@@ -80,6 +94,29 @@ class CommunityChatScreen extends HookConsumerWidget {
         }
       } finally {
         isLoading.value = false;
+      }
+
+      if (ok && context.mounted) {
+        try {
+          final outcome = await deliverPolieAfterSend(
+            ref: ref,
+            userMessage: text,
+            socketRoom: roomId,
+            rateLimitScope: 'v_$villageId',
+            chatContext: 'Language village: $villageName',
+          );
+          if (outcome != null) {
+            if (outcome.rateLimited) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Too many @Polie requests. Try again in about a minute.'),
+                ),
+              );
+            } else if (outcome.localAppend != null && outcome.localAppend!.isNotEmpty) {
+              messages.value = [...messages.value, ...outcome.localAppend!];
+            }
+          }
+        } catch (_) {}
       }
     }
 
@@ -212,6 +249,27 @@ class CommunityChatScreen extends HookConsumerWidget {
                           message: message,
                           isDark: isDark,
                           isFromCurrentUser: isFromCurrentUser,
+                          onOpenSenderProfile: isFromCurrentUser
+                              ? null
+                              : () {
+                                  final uid = _numericSenderIdFromCommunityMessage(message);
+                                  if (uid == null) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Profile unavailable for this message.'),
+                                      ),
+                                    );
+                                    return;
+                                  }
+                                  Navigator.of(context).push<void>(
+                                    MaterialPageRoute<void>(
+                                      builder: (_) => XProfileScreen(
+                                        appBarTitle: 'Profile',
+                                        viewUserId: uid.toString(),
+                                      ),
+                                    ),
+                                  );
+                                },
                         )
                             .animate(delay: (index * 30).ms)
                             .fadeIn(duration: 200.ms);
@@ -239,7 +297,7 @@ class CommunityChatScreen extends HookConsumerWidget {
                       child: TextField(
                         controller: messageController,
                         decoration: InputDecoration(
-                          hintText: 'Type a message...',
+                          hintText: 'Message… (@Polie for help)',
                         border: OutlineInputBorder(
                           borderRadius: PanAfricanRadius.lgBR,
                           borderSide: BorderSide(
@@ -316,11 +374,13 @@ class _CommunityMessageBubble extends StatelessWidget {
   final Map<String, dynamic> message;
   final bool isDark;
   final bool isFromCurrentUser;
+  final VoidCallback? onOpenSenderProfile;
 
   const _CommunityMessageBubble({
     required this.message,
     required this.isDark,
     this.isFromCurrentUser = false,
+    this.onOpenSenderProfile,
   });
 
   @override
@@ -341,10 +401,14 @@ class _CommunityMessageBubble extends StatelessWidget {
           if (!isFromCurrentUser)
             Semantics(
               label: 'Avatar for $senderName',
-              excludeSemantics: true,
-              child: LingAfriqAvatar.fromInitials(
-                username: senderName.isNotEmpty ? senderName : '?',
-                size: 40.w,
+              button: onOpenSenderProfile != null,
+              child: InkWell(
+                onTap: onOpenSenderProfile,
+                borderRadius: BorderRadius.circular(20.w),
+                child: LingAfriqAvatar.fromInitials(
+                  username: senderName.isNotEmpty ? senderName : '?',
+                  size: 40.w,
+                ),
               ),
             ),
           if (!isFromCurrentUser) SizedBox(width: PanAfricanSpacing.sm),
@@ -359,10 +423,14 @@ class _CommunityMessageBubble extends StatelessWidget {
                     mainAxisAlignment:
                         isFromCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
                     children: [
-                      Text(
-                        senderName,
-                        style: PanAfricanTypography.labelMedium(context)
-                            .copyWith(color: PanAfricanColors.primary),
+                      InkWell(
+                        onTap: isFromCurrentUser ? null : onOpenSenderProfile,
+                        borderRadius: BorderRadius.circular(6),
+                        child: Text(
+                          senderName,
+                          style: PanAfricanTypography.labelMedium(context)
+                              .copyWith(color: PanAfricanColors.primary),
+                        ),
                       ),
                     if (timestamp != null) ...[
                       SizedBox(width: PanAfricanSpacing.xs),

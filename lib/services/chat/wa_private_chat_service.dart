@@ -7,6 +7,7 @@ class WaPrivateConversationRow {
     required this.roomId,
     required this.otherUserId,
     required this.displayName,
+    this.otherGlobalId,
     required this.lastPreview,
     required this.lastAt,
     required this.unreadCount,
@@ -17,6 +18,8 @@ class WaPrivateConversationRow {
   final String roomId;
   final int otherUserId;
   final String displayName;
+  /// Public handle from WA API (`global_id` on the other participant), when present.
+  final String? otherGlobalId;
   final String lastPreview;
   final DateTime? lastAt;
   final int unreadCount;
@@ -80,6 +83,7 @@ class WaPrivateChatService {
 
     int? otherId;
     String displayName = 'Learner';
+    String? otherGlobalId;
 
     for (final p in plist) {
       final pid = _readUserId(p);
@@ -90,6 +94,10 @@ class WaPrivateChatService {
         final ln = p['last_name']?.toString().trim() ?? '';
         if (fn.isNotEmpty) {
           displayName = ln.isNotEmpty ? '$fn $ln' : fn;
+        }
+        final gid = p['global_id'] ?? p['globalId'];
+        if (gid != null && gid.toString().trim().isNotEmpty) {
+          otherGlobalId = gid.toString().trim();
         }
         break;
       }
@@ -129,6 +137,7 @@ class WaPrivateChatService {
       roomId: roomId,
       otherUserId: otherId,
       displayName: displayName,
+      otherGlobalId: otherGlobalId,
       lastPreview: preview,
       lastAt: lastAt,
       unreadCount: unreadCount,

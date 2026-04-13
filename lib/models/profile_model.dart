@@ -130,7 +130,7 @@ class ProfileModel {
       nationality: map['nationality'] ?? '',
       agree_to_privacy_terms: map['agree_to_privacy_terms'] ?? false,
       avatar: map['avatar'] ?? map['avater'],
-      global_id: map['global_id'],
+      global_id: map['global_id']?.toString() ?? map['handle']?.toString(),
       level: map['level']?.toString(),
       learningLanguage: map['learning_language']?.toString() ?? map['learningLanguage']?.toString(),
       completed_point: map['completed_point'] is String

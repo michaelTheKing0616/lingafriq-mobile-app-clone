@@ -6,7 +6,10 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 /// Comprehensive Features Guide Screen
 /// Explains all modules, features, and how to use them
 class FeaturesGuideScreen extends StatefulWidget {
-  const FeaturesGuideScreen({super.key});
+  const FeaturesGuideScreen({super.key, this.initialTab = 0});
+
+  /// Tab index 0–5: AI Chat, Games, Gamification, Progress, Social, Basics.
+  final int initialTab;
 
   @override
   State<FeaturesGuideScreen> createState() => _FeaturesGuideScreenState();
@@ -19,7 +22,8 @@ class _FeaturesGuideScreenState extends State<FeaturesGuideScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 6, vsync: this);
+    final idx = widget.initialTab.clamp(0, 5);
+    _tabController = TabController(length: 6, vsync: this, initialIndex: idx);
   }
 
   @override
@@ -106,6 +110,18 @@ class _FeaturesGuideScreenState extends State<FeaturesGuideScreen>
               'Polie remembers context',
               'Conversations adapt to your level',
               'Practice everyday situations',
+            ],
+          ),
+          _buildFeatureCard(
+            title: '@Polie in social chats',
+            icon: Icons.alternate_email_rounded,
+            description:
+                'In Global Chat, village chat, tribe chat, and private messages, type @Polie (case-insensitive) plus your question. Polie replies inline so the group or your contact sees the help too.',
+            tips: [
+              'Example: @Polie how do you say hello in Yoruba?',
+              'Works in DMs after your message is sent; Polie replies are saved on this device for that chat',
+              'About 10 @Polie calls per minute per chat are allowed to protect quality and cost',
+              'Tribe chat uses the live socket when connected so others can see Polie; offline users still see Polie on their own screen',
             ],
           ),
           _buildFeatureCard(
@@ -363,6 +379,17 @@ class _FeaturesGuideScreenState extends State<FeaturesGuideScreen>
               'Gift lessons to friends',
               'Receive gifts from others',
               'Build your learning network',
+            ],
+          ),
+          _buildFeatureCard(
+            title: 'Where to open each space',
+            icon: Icons.map_rounded,
+            description:
+                'Use the app menu (drawer) or these routes: Social Hub (/social-hub) for feed, friends, challenges, and tribe shortcuts. Language Villages: /villages-hub or /language-village. Tribe discovery: /tribe-discovery. Global chat: /global_chat. Private inbox: /private-chat-inbox. Classroom lobby (scheduled tribe rooms): /classroom-lobby. Live video classes: /live-classroom.',
+            tips: [
+              'Stitch hub (/stitch-hub) lists many deep links for QA',
+              'Features Guide (this screen, route /features_guide) is the user-facing map',
+              'Tap someone’s avatar or name in Global / Village / Tribe chat to open their profile when an id is available',
             ],
           ),
         ],

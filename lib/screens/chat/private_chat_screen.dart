@@ -7,7 +7,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../models/profile_model.dart';
 import '../../providers/user_provider.dart';
+import '../../providers/onboarding_provider.dart';
 import '../../services/chat/wa_private_chat_service.dart';
+import '../../services/polie_mention_handler.dart';
+import '../../services/polie_rate_limiter.dart';
+import '../../services/chat/polie_dm_local_store.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../utils/pan_african_design_system.dart' show PanAfricanSpacing;
 import '../../utils/transport_error_policy.dart';
@@ -116,6 +120,22 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
       for (final m in raw) {
         list.add(_messageFromApi(m, me));
       }
+      if (me != null) {
+        final overlays = await PolieDmLocalStore.load(me.id, peer);
+        for (final o in overlays) {
+          list.add(
+            _ChatMessage(
+              text: o.text,
+              isMe: false,
+              time: o.timeLabel,
+              isRead: true,
+              isFromPolie: true,
+              sortMs: o.atMs,
+            ),
+          );
+        }
+      }
+      list.sort((a, b) => a.sortMs.compareTo(b.sortMs));
       if (mounted) {
         setState(() {
           _messages
@@ -154,11 +174,13 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
     }
 
     final read = m['read'] == true;
+    final sortMs = dt?.millisecondsSinceEpoch ?? 0;
     return _ChatMessage(
       text: text,
       isMe: isMe,
       time: timeStr,
       isRead: read,
+      sortMs: sortMs,
     );
   }
 
@@ -183,6 +205,7 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
         message: text,
       );
       await _loadMessages();
+      await _appendPolieIfMentioned(text);
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -198,6 +221,62 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
     } finally {
       if (mounted) setState(() => _sending = false);
     }
+  }
+
+  Future<void> _appendPolieIfMentioned(String userMessage) async {
+    final handler = ref.read(polieMentionHandlerProvider);
+    if (!handler.hasMention(userMessage)) return;
+    final peer = _peerNumericId;
+    final me = ref.read(userProvider);
+    if (peer == null || me == null) return;
+
+    if (!await PolieRateLimiter.allow('dm_${me.id}_$peer')) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Too many @Polie requests. Try again in about a minute.'),
+          ),
+        );
+      }
+      return;
+    }
+
+    final onboarding = ref.read(onboardingProvider);
+    final result = await handler.processMessage(
+      message: userMessage,
+      userLanguage: onboarding.selectedLanguage ?? 'english',
+      chatContext: 'Private chat',
+    );
+    final formatted = handler.formatResponseForChat(result);
+    if (!mounted || formatted.isEmpty) return;
+    final now = DateTime.now();
+    final t = TimeOfDay.fromDateTime(now).format(context);
+    final atMs = now.millisecondsSinceEpoch;
+    final entryId = '${atMs}_polie';
+    setState(() {
+      _messages.add(
+        _ChatMessage(
+          text: formatted,
+          isMe: false,
+          time: t,
+          isRead: true,
+          isFromPolie: true,
+          sortMs: atMs,
+        ),
+      );
+      _messages.sort((a, b) => a.sortMs.compareTo(b.sortMs));
+    });
+    await PolieDmLocalStore.append(
+      me.id,
+      peer,
+      PolieDmStoredBubble(
+        id: entryId,
+        text: formatted,
+        timeLabel: t,
+        atMs: atMs,
+      ),
+    );
+    _scrollToBottom();
   }
 
   void _scrollToBottom() {
@@ -389,9 +468,11 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
   }
 
   Widget _buildMessageBubble(_ChatMessage msg, ColorScheme cs) {
-    final bubbleColor = msg.isMe
-        ? ModernGriotColors.secondary
-        : ModernGriotColors.surfaceContainerLow;
+    final bubbleColor = msg.isFromPolie
+        ? ModernGriotColors.primaryContainer.withAlpha(140)
+        : msg.isMe
+            ? ModernGriotColors.secondary
+            : ModernGriotColors.surfaceContainerLow;
     final textColor = msg.isMe
         ? ModernGriotColors.onSecondary
         : ModernGriotColors.onSurface;
@@ -421,6 +502,12 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
                     maxWidth: MediaQuery.of(context).size.width * 0.75,
                   ),
                   decoration: BoxDecoration(
+                    border: msg.isFromPolie
+                        ? Border.all(
+                            color: ModernGriotColors.primary.withAlpha(100),
+                            width: 1,
+                          )
+                        : null,
                     color: bubbleColor,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(ModernGriotRadius.lg),
@@ -439,6 +526,16 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
                         ? CrossAxisAlignment.end
                         : CrossAxisAlignment.start,
                     children: [
+                      if (msg.isFromPolie)
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 4.h),
+                          child: Text(
+                            'Polie',
+                            style: ModernGriotTypography.labelSmall(
+                              color: ModernGriotColors.primary,
+                            ),
+                          ),
+                        ),
                       Text(
                         msg.text,
                         style: ModernGriotTypography.bodyMedium(color: textColor),
@@ -685,7 +782,7 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
                 maxLines: 5,
                 style: ModernGriotTypography.bodyMedium(color: cs.onSurface),
                 decoration: InputDecoration(
-                  hintText: 'Type a message...',
+                  hintText: 'Message… (use @Polie for AI help)',
                   hintStyle: ModernGriotTypography.bodyMedium(
                     color: cs.onSurfaceVariant.withAlpha(153),
                   ),
@@ -739,6 +836,9 @@ class _ChatMessage {
   final bool isMe;
   final String time;
   final bool isRead;
+  final bool isFromPolie;
+  /// Milliseconds since epoch for ordering with server messages.
+  final int sortMs;
   final String? translation;
   final String? vocabWord;
   final String? vocabPronunciation;
@@ -749,6 +849,8 @@ class _ChatMessage {
     required this.isMe,
     required this.time,
     required this.isRead,
+    this.isFromPolie = false,
+    this.sortMs = 0,
     this.translation,
     this.vocabWord,
     this.vocabPronunciation,

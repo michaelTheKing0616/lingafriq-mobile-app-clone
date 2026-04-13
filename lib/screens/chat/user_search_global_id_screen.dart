@@ -38,7 +38,8 @@ class UserSearchGlobalIdScreen extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     Future<void> searchUsers(String query) async {
-      if (query.trim().isEmpty) {
+      final normalized = query.trim().replaceFirst(RegExp(r'^@+'), '');
+      if (normalized.isEmpty) {
         searchResults.value = [];
         return;
       }
@@ -49,20 +50,29 @@ class UserSearchGlobalIdScreen extends HookConsumerWidget {
         final response = await ApiService.get(
           ApiContract.url(ApiContract.accounts.usersSearch),
           queryParameters: {
-            'handle': query.trim(),
-            'q': query.trim(),
+            'handle': normalized,
+            'q': normalized,
           },
         );
 
         if (response.statusCode == 200) {
-          final users = response.data;
-          if (users is List) {
-            searchResults.value = users.cast<Map<String, dynamic>>();
-            
-            // Add to search history
-            if (!searchHistory.value.contains(query.trim())) {
-              searchHistory.value = [query.trim(), ...searchHistory.value.take(4)];
-            }
+          final raw = response.data;
+          List<Map<String, dynamic>> list = [];
+          if (raw is List) {
+            list = raw
+                .whereType<Map>()
+                .map((e) => Map<String, dynamic>.from(e))
+                .toList();
+          } else if (raw is Map && raw['data'] is List) {
+            list = (raw['data'] as List)
+                .whereType<Map>()
+                .map((e) => Map<String, dynamic>.from(e))
+                .toList();
+          }
+          searchResults.value = list;
+
+          if (list.isNotEmpty && !searchHistory.value.contains(normalized)) {
+            searchHistory.value = [normalized, ...searchHistory.value.take(4)];
           }
         }
       } catch (e) {

@@ -14,6 +14,7 @@ import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/screens/chat/user_search_global_id_screen.dart';
+import 'package:lingafriq/screens/feed/x_profile_screen.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/providers/chat_socket_provider.dart';
@@ -21,6 +22,18 @@ import 'package:lingafriq/widgets/empty_state_widget.dart';
 import 'package:lingafriq/widgets/error_state_widget.dart';
 import 'package:lingafriq/widgets/skeleton_loader.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lingafriq/services/polie_social_chat_helper.dart';
+
+/// Reads numeric app user id from global chat message payloads (REST/socket).
+int? _numericSenderIdFromMessage(Map<String, dynamic> message) {
+  final s = message['sender_id'];
+  if (s is Map) {
+    final id = s['id'];
+    if (id is int) return id;
+    if (id is String) return int.tryParse(id);
+  }
+  return null;
+}
 
 /// Redesigned Global Chat with Material 3 and Language-Specific Channels
 class GlobalChatScreenMaterial3 extends HookConsumerWidget {
@@ -190,8 +203,37 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
           // Remove optimistic message on total failure
           messages.value = messages.value.where((m) => m['clientMessageId'] != localMsg['clientMessageId']).toList();
         }
+      }
+
+      try {
+        if (sent && context.mounted) {
+          final room = 'global_${selectedChannel.value}';
+          final outcome = await deliverPolieAfterSend(
+            ref: ref,
+            userMessage: text,
+            socketRoom: room,
+            rateLimitScope: 'g_${selectedChannel.value}',
+            chatContext: 'Global chat #${selectedChannel.value}',
+          );
+          if (outcome != null) {
+            if (outcome.rateLimited) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Too many @Polie requests. Try again in about a minute.'),
+                ),
+              );
+            } else if (outcome.localAppend != null && outcome.localAppend!.isNotEmpty) {
+              messages.value = [...messages.value, ...outcome.localAppend!];
+              await persistMessages();
+            }
+          }
+        }
+      } catch (e, st) {
+        debugPrint('[GlobalChat] Polie follow-up failed: $e $st');
       } finally {
-        isSending.value = false;
+        if (context.mounted) {
+          isSending.value = false;
+        }
       }
     }
 
@@ -518,6 +560,29 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                                   message: message,
                                   isDark: isDark,
                                   isFromCurrentUser: isFromCurrentUser,
+                                  onOpenSenderProfile: isFromCurrentUser
+                                      ? null
+                                      : () {
+                                          final uid = _numericSenderIdFromMessage(message);
+                                          if (uid == null) {
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                  'Profile unavailable for this message.',
+                                                ),
+                                              ),
+                                            );
+                                            return;
+                                          }
+                                          Navigator.of(context).push<void>(
+                                            MaterialPageRoute<void>(
+                                              builder: (_) => XProfileScreen(
+                                                appBarTitle: 'Profile',
+                                                viewUserId: uid.toString(),
+                                              ),
+                                            ),
+                                          );
+                                        },
                                 ),
                               )
                                   .animate(delay: (index * 30).ms)
@@ -545,7 +610,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                             textField: true,
                             child: PanAfricanTextField(
                             controller: messageController,
-                            hint: 'Type a message...',
+                            hint: 'Message… (@Polie for help)',
                             maxLines: 3,
                             onChanged: (_) {},
                           ),
@@ -657,11 +722,13 @@ class _GlobalMessageBubble extends StatelessWidget {
   final Map<String, dynamic> message;
   final bool isDark;
   final bool isFromCurrentUser;
+  final VoidCallback? onOpenSenderProfile;
 
   const _GlobalMessageBubble({
     required this.message,
     required this.isDark,
     this.isFromCurrentUser = false,
+    this.onOpenSenderProfile,
   });
 
   @override
@@ -695,14 +762,18 @@ class _GlobalMessageBubble extends StatelessWidget {
             Semantics(
               label: 'Avatar for $senderName',
               excludeSemantics: true,
-              child: PanAfricanAvatar(
-                imageUrl: avatarUrl is String ? avatarUrl : null,
-                initials: senderName.isNotEmpty ? senderName[0].toUpperCase() : '?',
-                size: 40.w,
-                backgroundColor: isToxic ? PanAfricanColors.error : PanAfricanColors.primary,
-                borderColor: isToxic ? PanAfricanColors.error : PanAfricanColors.primary,
-                showBadge: isToxic,
-                badgeColor: PanAfricanColors.error,
+              child: InkWell(
+                onTap: onOpenSenderProfile,
+                borderRadius: BorderRadius.circular(20.w),
+                child: PanAfricanAvatar(
+                  imageUrl: avatarUrl is String ? avatarUrl : null,
+                  initials: senderName.isNotEmpty ? senderName[0].toUpperCase() : '?',
+                  size: 40.w,
+                  backgroundColor: isToxic ? PanAfricanColors.error : PanAfricanColors.primary,
+                  borderColor: isToxic ? PanAfricanColors.error : PanAfricanColors.primary,
+                  showBadge: isToxic,
+                  badgeColor: PanAfricanColors.error,
+                ),
               ),
             ),
             SizedBox(width: PanAfricanSpacing.sm),
@@ -714,7 +785,10 @@ class _GlobalMessageBubble extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: Row(
+                      child: InkWell(
+                        onTap: isFromCurrentUser ? null : onOpenSenderProfile,
+                        borderRadius: BorderRadius.circular(8),
+                        child: Row(
                         mainAxisAlignment: isFromCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
                         children: [
                           Text(
@@ -743,6 +817,7 @@ class _GlobalMessageBubble extends StatelessWidget {
                             ),
                           ],
                         ],
+                      ),
                       ),
                     ),
                     if (timestamp != null)

@@ -117,7 +117,7 @@ class User {
       agree_to_privacy_terms: map['agree_to_privacy_terms'] ?? false,
       image_url: map['image_url'],
       avatar: map['avatar'] ?? map['avater'],
-      global_id: map['global_id'],
+      global_id: map['global_id']?.toString() ?? map['handle']?.toString(),
       ranks: map['ranks'] ?? '',
       points: map['points'] ?? '',
       level: map['level'] ?? '',

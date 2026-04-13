@@ -11,10 +11,24 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/services/polie_social_chat_helper.dart';
+import 'package:lingafriq/screens/feed/x_profile_screen.dart';
+import 'package:lingafriq/providers/user_provider.dart';
+import 'package:lingafriq/providers/chat_socket_provider.dart';
 import 'package:lingafriq/utils/transport_error_policy.dart';
 import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'package:lingafriq/widgets/performance/optimized_list_view.dart';
 import 'package:lingafriq/avatars/avatars.dart';
+
+int? _numericSenderIdFromTribeMessage(Map<String, dynamic> message) {
+  final s = message['sender_id'];
+  if (s is Map) {
+    final id = s['id'];
+    if (id is int) return id;
+    if (id is String) return int.tryParse(id);
+  }
+  return int.tryParse(message['userId']?.toString() ?? '');
+}
 
 /// Tribe Chat Screen with Material 3 Design
 class TribeChatScreen extends HookConsumerWidget {
@@ -36,6 +50,11 @@ class TribeChatScreen extends HookConsumerWidget {
     final loadError = useState<String?>(null);
     final scrollController = useScrollController();
     final showMembers = useState(false);
+
+    final currentUser = ref.watch(userProvider);
+    final socketNotifier = ref.read(chatSocketProvider.notifier);
+    final socketState = ref.watch(chatSocketProvider);
+    final tribeRoom = 'tribe_$tribeId';
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -97,20 +116,23 @@ class TribeChatScreen extends HookConsumerWidget {
     }
 
     Future<void> sendMessage() async {
-      if (messageController.text.isEmpty) return;
+      final text = messageController.text.trim();
+      if (text.isEmpty) return;
 
+      var ok = false;
       isLoading.value = true;
       try {
         final response = await ApiService.post(
           '/chat/tribe/$tribeId',
           data: {
-            'message': messageController.text,
+            'message': text,
           },
         );
 
-        if (response.statusCode == 200) {
+        ok = response.statusCode == 200;
+        if (ok) {
           messageController.clear();
-          loadMessages();
+          await loadMessages();
         }
       } catch (e) {
         if (context.mounted) {
@@ -119,6 +141,30 @@ class TribeChatScreen extends HookConsumerWidget {
       } finally {
         isLoading.value = false;
       }
+
+      if (ok && context.mounted) {
+        try {
+          final outcome = await deliverPolieAfterSend(
+            ref: ref,
+            userMessage: text,
+            socketRoom: tribeRoom,
+            rateLimitScope: 't_$tribeId',
+            chatContext: 'Tribe: $tribeName',
+            useSocket: true,
+          );
+          if (outcome != null) {
+            if (outcome.rateLimited) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Too many @Polie requests. Try again in about a minute.'),
+                ),
+              );
+            } else if (outcome.localAppend != null && outcome.localAppend!.isNotEmpty) {
+              messages.value = [...messages.value, ...outcome.localAppend!];
+            }
+          }
+        } catch (_) {}
+      }
     }
 
     useEffect(() {
@@ -126,6 +172,49 @@ class TribeChatScreen extends HookConsumerWidget {
       loadMembers();
       return null;
     }, []);
+
+    useEffect(() {
+      if (currentUser != null) {
+        socketNotifier.connect(
+          currentUser.id.toString(),
+          currentUser.username,
+          globalId: currentUser.global_id,
+        );
+      }
+      socketNotifier.joinRoom(tribeRoom);
+      return () {
+        socketNotifier.leaveRoom(tribeRoom);
+      };
+    }, [tribeId, currentUser?.id]);
+
+    useEffect(() {
+      if (!socketState.isConnected) return null;
+      final socketMessages = socketNotifier.messagesForRoom(tribeRoom);
+      if (socketMessages.isEmpty) return null;
+
+      final existingIds = <String>{};
+      for (final m in messages.value) {
+        final id = m['_id']?.toString() ?? m['id']?.toString() ?? '';
+        if (id.isNotEmpty) existingIds.add(id);
+        final clientId = m['clientMessageId']?.toString() ?? '';
+        if (clientId.isNotEmpty) existingIds.add(clientId);
+      }
+
+      final newMessages = <Map<String, dynamic>>[];
+      for (final m in socketMessages) {
+        final id = m['_id']?.toString() ?? m['id']?.toString() ?? '';
+        final clientId = m['clientMessageId']?.toString() ?? '';
+        if ((id.isNotEmpty && existingIds.contains(id)) ||
+            (clientId.isNotEmpty && existingIds.contains(clientId))) {
+          continue;
+        }
+        newMessages.add(m);
+      }
+      if (newMessages.isNotEmpty) {
+        messages.value = [...messages.value, ...newMessages];
+      }
+      return null;
+    }, [socketState.messages.length, tribeId]);
 
     return LoadingOverlay(
       isLoading: isLoading.value,
@@ -238,6 +327,25 @@ class TribeChatScreen extends HookConsumerWidget {
                               return _TribeMessageBubble(
                                 message: message,
                                 isDark: isDark,
+                                onOpenSenderProfile: () {
+                                  final uid = _numericSenderIdFromTribeMessage(message);
+                                  if (uid == null) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Profile unavailable for this message.'),
+                                      ),
+                                    );
+                                    return;
+                                  }
+                                  Navigator.of(context).push<void>(
+                                    MaterialPageRoute<void>(
+                                      builder: (_) => XProfileScreen(
+                                        appBarTitle: 'Profile',
+                                        viewUserId: uid.toString(),
+                                      ),
+                                    ),
+                                  );
+                                },
                               )
                                   .animate(delay: (index * 30).ms)
                                   .fadeIn(duration: 200.ms);
@@ -263,7 +371,7 @@ class TribeChatScreen extends HookConsumerWidget {
                             textField: true,
                             child: PanAfricanTextField(
                               controller: messageController,
-                              hint: 'Type a message...',
+                              hint: 'Message… (@Polie for help)',
                               maxLines: 3,
                               onChanged: (_) {},
                             ),
@@ -363,10 +471,12 @@ class TribeChatScreen extends HookConsumerWidget {
 class _TribeMessageBubble extends StatelessWidget {
   final Map<String, dynamic> message;
   final bool isDark;
+  final VoidCallback? onOpenSenderProfile;
 
   const _TribeMessageBubble({
     required this.message,
     required this.isDark,
+    this.onOpenSenderProfile,
   });
 
   @override
@@ -390,10 +500,16 @@ class _TribeMessageBubble extends StatelessWidget {
           children: [
             Semantics(
               label: 'Avatar for $senderName',
-              excludeSemantics: true,
-              child: LingAfriqAvatar.fromInitials(
-                username: senderName.isNotEmpty ? senderName : '?',
-                size: 40.w,
+              button: onOpenSenderProfile != null,
+              child: InkWell(
+                onTap: onOpenSenderProfile,
+                borderRadius: BorderRadius.circular(20.w),
+                child: ExcludeSemantics(
+                  child: LingAfriqAvatar.fromInitials(
+                    username: senderName.isNotEmpty ? senderName : '?',
+                    size: 40.w,
+                  ),
+                ),
               ),
             ),
             SizedBox(width: PanAfricanSpacing.sm),
@@ -406,10 +522,14 @@ class _TribeMessageBubble extends StatelessWidget {
                       Expanded(
                         child: Row(
                           children: [
-                            Text(
-                              senderName,
-                              style: PanAfricanTypography.labelMedium(context)
-                                  .copyWith(color: PanAfricanColors.secondary),
+                            InkWell(
+                              onTap: onOpenSenderProfile,
+                              borderRadius: BorderRadius.circular(6),
+                              child: Text(
+                                senderName,
+                                style: PanAfricanTypography.labelMedium(context)
+                                    .copyWith(color: PanAfricanColors.secondary),
+                              ),
                             ),
                             if (globalId != null) ...[
                               SizedBox(width: PanAfricanSpacing.xxs),

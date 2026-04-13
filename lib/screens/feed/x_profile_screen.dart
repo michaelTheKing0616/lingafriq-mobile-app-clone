@@ -10,10 +10,13 @@ class XProfileScreen extends ConsumerStatefulWidget {
     super.key,
     this.appBarTitle = 'Profile',
     this.stitchCommunityChrome = false,
+    /// When set, loads that user's public feed profile (numeric app user id).
+    this.viewUserId,
   });
 
   final String appBarTitle;
   final bool stitchCommunityChrome;
+  final String? viewUserId;
 
   @override
   ConsumerState<XProfileScreen> createState() => _XProfileScreenState();
@@ -24,8 +27,21 @@ class _XProfileScreenState extends ConsumerState<XProfileScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(xFeedProvider.notifier).loadProfile();
+      final id = widget.viewUserId?.trim();
+      ref.read(xFeedProvider.notifier).loadProfile(
+            userId: id != null && id.isNotEmpty ? id : null,
+          );
     });
+  }
+
+  @override
+  void dispose() {
+    final id = widget.viewUserId?.trim();
+    if (id != null && id.isNotEmpty) {
+      // Restore provider to the signed-in user's profile for the rest of the app.
+      ref.read(xFeedProvider.notifier).loadProfile();
+    }
+    super.dispose();
   }
 
   Color _scaffoldBg(BuildContext context, bool isDark) {
@@ -81,7 +97,9 @@ class _XProfileScreenState extends ConsumerState<XProfileScreen> {
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
                       ),
                       Text(
-                        '@${profile.username}',
+                        profile.globalId != null && profile.globalId!.isNotEmpty
+                            ? '@${profile.globalId}'
+                            : '@${profile.username}',
                         style: TextStyle(color: XUi.secondaryText(isDark)),
                       ),
                     ],

@@ -288,7 +288,16 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
         initialRoomName: args?['roomName']?.toString(),
       );
     },
-    'features_guide': (_) => const FeaturesGuideScreen(),
+    'features_guide': (_) {
+      final args = settings.arguments;
+      var tab = 0;
+      if (args is Map) {
+        final t = args['tab'];
+        if (t is int) tab = t;
+        if (t is String) tab = int.tryParse(t) ?? 0;
+      }
+      return FeaturesGuideScreen(initialTab: tab.clamp(0, 5));
+    },
     'policy': (_) => const AppPolicyScreen(),
     // Lesson Flow
     'lesson-flow': (_) {

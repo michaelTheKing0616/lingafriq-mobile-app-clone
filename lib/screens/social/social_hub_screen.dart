@@ -136,6 +136,18 @@ class SocialHubScreen extends HookConsumerWidget {
               ],
             ),
           ),
+          IconButton(
+            tooltip: 'Social features guide',
+            icon: Icon(Icons.help_outline_rounded, color: PanAfricanColors.textPrimary),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.pushNamed(
+                context,
+                '/features_guide',
+                arguments: {'tab': 4},
+              );
+            },
+          ),
         ],
       ),
     );

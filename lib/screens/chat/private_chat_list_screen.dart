@@ -114,7 +114,9 @@ class _PrivateChatListScreenState extends ConsumerState<PrivateChatListScreen>
         .where(
           (c) =>
               c.displayName.toLowerCase().contains(q) ||
-              c.lastPreview.toLowerCase().contains(q),
+              c.lastPreview.toLowerCase().contains(q) ||
+              (c.otherGlobalId != null &&
+                  c.otherGlobalId!.toLowerCase().contains(q)),
         )
         .toList();
   }
@@ -484,6 +486,18 @@ class _PrivateChatListScreenState extends ConsumerState<PrivateChatListScreen>
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
+                  if (chat.otherGlobalId != null &&
+                      chat.otherGlobalId!.isNotEmpty) ...[
+                    SizedBox(height: 2.h),
+                    Text(
+                      '@${chat.otherGlobalId}',
+                      style: ModernGriotTypography.labelSmall(
+                        color: cs.onSurfaceVariant,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
                   SizedBox(height: 2.h),
                   Row(
                     children: [
