@@ -396,6 +396,7 @@ jobs:
           max=5
           attempt=1
           did_firebase_coreonly_update=0
+          did_firebase_messaging_update=0
           while [ "$attempt" -le "$max" ]; do
             echo "📦 pod install attempt $attempt/$max"
             if [ "$attempt" -eq 1 ]; then
@@ -423,9 +424,18 @@ jobs:
               continue
             fi
 
+            # firebase_messaging major bumps pin Firebase/Messaging to the SDK version from firebase_core (e.g. 12.4.0); stale Podfile.lock can still reference 11.x.
+            if [ "$did_firebase_messaging_update" -eq 0 ] && echo "$POD_OUTPUT" | grep -q "Firebase/Messaging" && echo "$POD_OUTPUT" | grep -q "In snapshot (Podfile.lock)"; then
+              echo "🧯 Detected Firebase/Messaging lock mismatch. Running: pod update Firebase/Messaging (and CoreOnly if needed)"
+              did_firebase_messaging_update=1
+              pod update Firebase/Messaging Firebase/CoreOnly --silent || pod update Firebase/Messaging --silent || true
+              attempt=$((attempt + 1))
+              continue
+            fi
+
             if [ "$attempt" -eq "$max" ]; then
               echo "$POD_OUTPUT"
-              echo "❌ pod install failed after $max attempts (e.g. GitHub 502 on WebRTC.xcframework.zip)"
+              echo "❌ pod install failed after $max attempts (CocoaPods lock skew, CDN/curl 502, GitHub 502 on WebRTC.xcframework.zip, etc.)"
               cd ..
               exit 1
             fi
