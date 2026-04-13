@@ -5,6 +5,12 @@ import 'package:lingafriq/utils/api_service.dart';
 
 import '../models/game/game_session_model.dart';
 
+/// Optional hook used by tests to avoid real HTTP when exercising [LazyGameLoader].
+typedef PrefetchGameCardsFn = Future<void> Function(
+  GameType gameType, {
+  required String language,
+});
+
 /// Result class for game loading operations
 class GameLoadResult {
   final bool success;
@@ -34,12 +40,16 @@ class GameLoadResult {
 class LazyGameLoader {
   // ignore: unused_field
   final Ref _ref;
+  final PrefetchGameCardsFn? _prefetchCardsOverride;
   final Map<GameType, bool> _loadedGames = {};
   final Map<GameType, DateTime> _loadTimes = {};
   final Map<GameType, String> _loadErrors = {};
   static const Duration _preloadWindow = Duration(minutes: 5);
 
-  LazyGameLoader(this._ref);
+  LazyGameLoader(
+    this._ref, {
+    PrefetchGameCardsFn? prefetchCards,
+  }) : _prefetchCardsOverride = prefetchCards;
 
   /// Get the last error for a game type (if any)
   String? getLastError(GameType gameType) => _loadErrors[gameType];
@@ -97,6 +107,9 @@ class LazyGameLoader {
   /// Warms Polie-backed card payloads via the legacy GET `/api/games/cards` route
   /// (see `node-backend-safe-push` `getGameCards`).
   Future<void> _prefetchCardsFromBackend(GameType gameType, {required String language}) async {
+    if (_prefetchCardsOverride != null) {
+      return _prefetchCardsOverride!(gameType, language: language);
+    }
     final res = await ApiService.get(
       ApiContract.url(ApiContract.games.cards),
       queryParameters: <String, dynamic>{

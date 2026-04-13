@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lingafriq/services/lazy_game_loader.dart';
 import 'package:lingafriq/models/game/game_session_model.dart';
+import 'package:lingafriq/services/lazy_game_loader.dart';
 
 void main() {
   group('GameLoadResult', () {
@@ -135,7 +135,17 @@ void main() {
     late LazyGameLoader loader;
 
     setUp(() {
-      container = ProviderContainer();
+      // Avoid real HTTP (CI has no guaranteed backend); exercise loader logic only.
+      container = ProviderContainer(
+        overrides: [
+          lazyGameLoaderProvider.overrideWith(
+            (ref) => LazyGameLoader(
+              ref,
+              prefetchCards: (GameType _, {required String language}) async {},
+            ),
+          ),
+        ],
+      );
       loader = container.read(lazyGameLoaderProvider);
     });
 
@@ -147,12 +157,14 @@ void main() {
       final result = await loader.retryGameLoad(GameType.wordMatchAudio);
       expect(result, isA<GameLoadResult>());
       expect(result.gameType, GameType.wordMatchAudio);
+      expect(result.success, isTrue);
     });
 
     test('loadGameOnDemand returns GameLoadResult', () async {
       final result = await loader.loadGameOnDemand(GameType.wordMatchAudio);
       expect(result, isA<GameLoadResult>());
       expect(result.gameType, GameType.wordMatchAudio);
+      expect(result.success, isTrue);
     });
   });
 }
