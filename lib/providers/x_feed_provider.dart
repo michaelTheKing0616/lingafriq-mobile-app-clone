@@ -17,6 +17,7 @@ class XFeedState {
   final bool listsLoading;
   final bool profileLoading;
   final bool trendingLoading;
+  final bool searchLoading;
 
   final List<FeedPostModel> posts;
   final List<Map<String, dynamic>> notifications;
@@ -24,10 +25,19 @@ class XFeedState {
   final List<Map<String, dynamic>> trending;
   final FeedProfileModel? profile;
 
+  /// Last GET /api/feed/explore/search request.
+  final String searchActiveQuery;
+  final String searchActiveType;
+  final List<FeedPostModel> searchPosts;
+  final List<Map<String, dynamic>> searchUsers;
+  final List<Map<String, dynamic>> searchHashtags;
+
   final String? timelineError;
   final String? notificationsError;
   final String? listsError;
   final String? profileError;
+  final String? searchError;
+  final String? trendingError;
 
   const XFeedState({
     required this.timelineLoading,
@@ -35,15 +45,23 @@ class XFeedState {
     required this.listsLoading,
     required this.profileLoading,
     required this.trendingLoading,
+    required this.searchLoading,
     required this.posts,
     required this.notifications,
     required this.lists,
     required this.trending,
+    required this.searchActiveQuery,
+    required this.searchActiveType,
+    required this.searchPosts,
+    required this.searchUsers,
+    required this.searchHashtags,
     this.profile,
     this.timelineError,
     this.notificationsError,
     this.listsError,
     this.profileError,
+    this.searchError,
+    this.trendingError,
   });
 
   factory XFeedState.initial() => const XFeedState(
@@ -52,15 +70,23 @@ class XFeedState {
         listsLoading: false,
         profileLoading: false,
         trendingLoading: false,
+        searchLoading: false,
         posts: [],
         notifications: [],
         lists: [],
         trending: [],
+        searchActiveQuery: '',
+        searchActiveType: 'posts',
+        searchPosts: [],
+        searchUsers: [],
+        searchHashtags: [],
         profile: null,
         timelineError: null,
         notificationsError: null,
         listsError: null,
         profileError: null,
+        searchError: null,
+        trendingError: null,
       );
 
   XFeedState copyWith({
@@ -69,15 +95,23 @@ class XFeedState {
     bool? listsLoading,
     bool? profileLoading,
     bool? trendingLoading,
+    bool? searchLoading,
     List<FeedPostModel>? posts,
     List<Map<String, dynamic>>? notifications,
     List<Map<String, dynamic>>? lists,
     List<Map<String, dynamic>>? trending,
+    String? searchActiveQuery,
+    String? searchActiveType,
+    List<FeedPostModel>? searchPosts,
+    List<Map<String, dynamic>>? searchUsers,
+    List<Map<String, dynamic>>? searchHashtags,
     FeedProfileModel? profile,
     Object? timelineError = _kUnset,
     Object? notificationsError = _kUnset,
     Object? listsError = _kUnset,
     Object? profileError = _kUnset,
+    Object? searchError = _kUnset,
+    Object? trendingError = _kUnset,
   }) {
     String? pickStr(Object? v, String? current) {
       if (identical(v, _kUnset)) return current;
@@ -90,15 +124,23 @@ class XFeedState {
       listsLoading: listsLoading ?? this.listsLoading,
       profileLoading: profileLoading ?? this.profileLoading,
       trendingLoading: trendingLoading ?? this.trendingLoading,
+      searchLoading: searchLoading ?? this.searchLoading,
       posts: posts ?? this.posts,
       notifications: notifications ?? this.notifications,
       lists: lists ?? this.lists,
       trending: trending ?? this.trending,
+      searchActiveQuery: searchActiveQuery ?? this.searchActiveQuery,
+      searchActiveType: searchActiveType ?? this.searchActiveType,
+      searchPosts: searchPosts ?? this.searchPosts,
+      searchUsers: searchUsers ?? this.searchUsers,
+      searchHashtags: searchHashtags ?? this.searchHashtags,
       profile: profile ?? this.profile,
       timelineError: pickStr(timelineError, this.timelineError),
       notificationsError: pickStr(notificationsError, this.notificationsError),
       listsError: pickStr(listsError, this.listsError),
       profileError: pickStr(profileError, this.profileError),
+      searchError: pickStr(searchError, this.searchError),
+      trendingError: pickStr(trendingError, this.trendingError),
     );
   }
 }
@@ -306,14 +348,88 @@ class XFeedNotifier extends Notifier<XFeedState> {
   }
 
   Future<void> loadTrending() async {
-    state = state.copyWith(trendingLoading: true);
+    state = state.copyWith(trendingLoading: true, trendingError: null);
     try {
       final res = await ApiService.get(ApiContract.url(ApiContract.feed.trending));
       final rows = _extractList(res.data);
-      state = state.copyWith(trendingLoading: false, trending: rows);
+      state = state.copyWith(
+        trendingLoading: false,
+        trending: rows,
+        trendingError: null,
+      );
     } catch (error) {
       logger.error('Failed loading feed trending', tag: 'x-feed', error: error);
-      state = state.copyWith(trendingLoading: false);
+      state = state.copyWith(
+        trendingLoading: false,
+        trending: const [],
+        trendingError: 'Could not load trending topics. Pull to retry.',
+      );
+    }
+  }
+
+  /// GET /api/feed/explore/search — [type]: `posts`, `users`, or `hashtags`.
+  Future<void> loadFeedSearch({
+    required String query,
+    String type = 'posts',
+  }) async {
+    final q = query.trim();
+    final t = type.trim().isEmpty ? 'posts' : type.trim();
+    if (q.isEmpty) {
+      state = state.copyWith(
+        searchLoading: false,
+        searchActiveQuery: '',
+        searchActiveType: t,
+        searchPosts: const [],
+        searchUsers: const [],
+        searchHashtags: const [],
+        searchError: null,
+      );
+      return;
+    }
+
+    state = state.copyWith(
+      searchLoading: true,
+      searchError: null,
+      searchActiveQuery: q,
+      searchActiveType: t,
+    );
+    try {
+      final res = await ApiService.get(
+        ApiContract.url(ApiContract.feed.search),
+        queryParameters: {'q': q, 'type': t},
+      );
+      final rows = _extractList(res.data);
+      if (t == 'users') {
+        state = state.copyWith(
+          searchLoading: false,
+          searchError: null,
+          searchUsers: rows,
+          searchPosts: const [],
+          searchHashtags: const [],
+        );
+      } else if (t == 'hashtags') {
+        state = state.copyWith(
+          searchLoading: false,
+          searchError: null,
+          searchHashtags: rows,
+          searchPosts: const [],
+          searchUsers: const [],
+        );
+      } else {
+        state = state.copyWith(
+          searchLoading: false,
+          searchError: null,
+          searchPosts: rows.map((row) => FeedPostModel.fromJson(row)).toList(),
+          searchUsers: const [],
+          searchHashtags: const [],
+        );
+      }
+    } catch (error) {
+      logger.error('Failed feed explore search', tag: 'x-feed', error: error);
+      state = state.copyWith(
+        searchLoading: false,
+        searchError: 'Could not search.',
+      );
     }
   }
 

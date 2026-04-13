@@ -56,12 +56,8 @@ class ProfileGlobalIdSection extends HookConsumerWidget {
         );
 
         if (response.statusCode == 200) {
-          // Update user provider
-          if (user != null) {
-            ref.read(userProvider.notifier).overrideUser(
-              user.copyWith(global_id: newHandle),
-            );
-          }
+          await ref.read(userProvider.notifier).refreshUser();
+          if (!context.mounted) return;
 
           isEditing.value = false;
           HapticFeedback.mediumImpact();

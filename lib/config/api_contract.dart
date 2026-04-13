@@ -45,6 +45,7 @@ class ApiContract {
   static const userContent = _UserContent();
   static const villages = _Villages();
   static const tribes = _Tribes();
+  static const classroom = _Classroom();
   static const journey = _Journey();
   static const avatar = _Avatar();
   static const currency = _Currency();
@@ -367,6 +368,8 @@ class _Ai {
 // =============================================================================
 class _Games {
   const _Games();
+  /// GET — full hub metadata (titles, rules, `game_id` for Polie). See `node-backend-safe-push` `GAME_CATALOG_ENTRIES`.
+  String get catalog => '/api/games/catalog';
   String get cards => '/api/games/cards';
   String get telemetry => '/api/games/telemetry/';
   String get sessionStart => '/api/games/session/start/';
@@ -637,6 +640,27 @@ class _Tribes {
   String get me => '/api/tribes/me';
   String classroomProgress(String id) =>
       '/api/tribes/$id/classroom/progress';
+}
+
+// =============================================================================
+// Live classroom — notes & speaker queue (classroom tribes)
+// =============================================================================
+class _Classroom {
+  const _Classroom();
+  String notes(String tribeId) => '/api/classroom/$tribeId/notes';
+  String note(String tribeId, String noteId) =>
+      '/api/classroom/$tribeId/notes/$noteId';
+  String speakerQueue(String tribeId) => '/api/classroom/$tribeId/speaker-queue';
+  String speakerQueueJoin(String tribeId) =>
+      '/api/classroom/$tribeId/speaker-queue/join';
+  String speakerQueueLeave(String tribeId) =>
+      '/api/classroom/$tribeId/speaker-queue/leave';
+  String speakerQueueNext(String tribeId) =>
+      '/api/classroom/$tribeId/speaker-queue/next';
+  String speakerQueueEntry(String tribeId, String entryId) =>
+      '/api/classroom/$tribeId/speaker-queue/$entryId';
+  String speakerQueueClearWaiting(String tribeId) =>
+      '/api/classroom/$tribeId/speaker-queue/clear-waiting';
 }
 
 // =============================================================================

@@ -81,14 +81,20 @@ class TribesService {
     }
   }
 
-  /// Get all available tribes
-  Future<List<Map<String, dynamic>>> getAllTribes({String? languageTag}) async {
+  /// Get all available tribes. Set [includeClassrooms] to list classroom tribes (Stitch lobby).
+  Future<List<Map<String, dynamic>>> getAllTribes({
+    String? languageTag,
+    bool includeClassrooms = false,
+  }) async {
     try {
       final queryParams = <String, dynamic>{};
       if (languageTag != null) {
         queryParams['language_tag'] = languageTag;
       }
-      
+      if (includeClassrooms) {
+        queryParams['include_classrooms'] = 'true';
+      }
+
       final response = await _dio.get(
         ApiContract.url(ApiContract.tribes.list),
         queryParameters: queryParams.isEmpty ? null : queryParams,

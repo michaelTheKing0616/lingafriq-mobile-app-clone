@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/theme/stitch_theme_extensions.dart';
 import 'package:lingafriq/utils/modern_griot_design_system.dart';
 
 const _globalFontFallback = <String>[
@@ -223,6 +224,9 @@ final lightTheme = ThemeData(
   ),
   extensions: <ThemeExtension>[
     ModernGriotThemeExtension.light,
+    FlbEditorialTheme.light,
+    StitchArcadeTheme.light,
+    StitchCommunityChatTheme.light,
   ],
 );
 
@@ -426,5 +430,8 @@ final darkTheme = ThemeData(
   ),
   extensions: <ThemeExtension>[
     ModernGriotThemeExtension.dark,
+    FlbEditorialTheme.dark,
+    StitchArcadeTheme.dark,
+    StitchCommunityChatTheme.dark,
   ],
 );

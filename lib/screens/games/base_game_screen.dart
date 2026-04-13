@@ -126,7 +126,10 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
       // Optional preload — failure must never block game start
       try {
         final lazyLoader = ref.read(lazyGameLoaderProvider);
-        await lazyLoader.loadGameOnDemand(widget.getGameType());
+        await lazyLoader.loadGameOnDemand(
+          widget.getGameType(),
+          language: widget.language,
+        );
       } catch (_) {
         // Preload is non-critical; continue to game
       }
@@ -143,7 +146,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
       if (gameProv.availableCards.isEmpty) {
         setState(() {
           _error = 'No content available for ${widget.language} yet.\n'
-              'Try selecting a different language (e.g. Yoruba, Swahili).';
+              'Try selecting another language from the games hub (e.g. Hausa, Igbo, or Kiswahili).';
           _isLoading = false;
         });
         unawaited(

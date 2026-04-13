@@ -1,5 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/config/api_contract.dart';
+import 'package:lingafriq/utils/api_service.dart';
+
 import '../models/game/game_session_model.dart';
 
 /// Result class for game loading operations
@@ -48,7 +51,7 @@ class LazyGameLoader {
   void clearError(GameType gameType) => _loadErrors.remove(gameType);
 
   /// Preload commonly used games
-  Future<List<GameLoadResult>> preloadCommonGames() async {
+  Future<List<GameLoadResult>> preloadCommonGames({String language = 'yoruba'}) async {
     final commonGames = [
       GameType.wordMatchAudio,
       GameType.pronunciationDuel,
@@ -61,7 +64,7 @@ class LazyGameLoader {
     for (final gameType in commonGames) {
       if (_loadedGames[gameType] != true) {
         try {
-          await _preloadGame(gameType);
+          await _preloadGame(gameType, language: language);
           _loadedGames[gameType] = true;
           _loadTimes[gameType] = DateTime.now();
           _loadErrors.remove(gameType); // Clear any previous error
@@ -81,22 +84,9 @@ class LazyGameLoader {
   }
 
   /// Preload a specific game
-  Future<void> _preloadGame(GameType gameType) async {
+  Future<void> _preloadGame(GameType gameType, {required String language}) async {
     try {
-      // Preload game assets based on game type
-      switch (gameType) {
-        case GameType.wordMatchAudio:
-        case GameType.pronunciationDuel:
-        case GameType.drumRhythmShadowing:
-          // Preload audio assets for games that require audio
-          await _preloadAudioAssets(gameType);
-          break;
-        case GameType.proverbUnlocker:
-        default:
-          // Preload game data (vocabulary, questions, etc.)
-          await _preloadGameData(gameType);
-      }
-      
+      await _prefetchCardsFromBackend(gameType, language: language);
       debugPrint('Successfully preloaded game: ${gameType.displayName}');
     } catch (e) {
       debugPrint('Error preloading game ${gameType.displayName}: $e');
@@ -104,20 +94,21 @@ class LazyGameLoader {
     }
   }
 
-  /// Preload audio assets for games that require audio
-  Future<void> _preloadAudioAssets(GameType gameType) async {
-    // Audio files are loaded on-demand by the game itself when needed
-    // This method ensures the game type is registered and ready
-    // In production, could pre-cache frequently used audio files here
-    await Future.delayed(const Duration(milliseconds: 50));
-  }
-
-  /// Preload game data (vocabulary, questions, etc.)
-  Future<void> _preloadGameData(GameType gameType) async {
-    // Game data is loaded on-demand by the game itself when needed
-    // This method ensures the game type is registered and ready
-    // In production, could pre-fetch and cache game data from API here
-    await Future.delayed(const Duration(milliseconds: 50));
+  /// Warms Polie-backed card payloads via the legacy GET `/api/games/cards` route
+  /// (see `node-backend-safe-push` `getGameCards`).
+  Future<void> _prefetchCardsFromBackend(GameType gameType, {required String language}) async {
+    final res = await ApiService.get(
+      ApiContract.url(ApiContract.games.cards),
+      queryParameters: <String, dynamic>{
+        'language': language,
+        'game_id': gameType.name,
+        'difficulty': 'A1',
+        'count': 3,
+      },
+    );
+    if (res.statusCode != 200) {
+      throw Exception('Game prefetch HTTP ${res.statusCode}');
+    }
   }
 
   /// Check if game is loaded
@@ -126,7 +117,10 @@ class LazyGameLoader {
   }
 
   /// Load game on demand - returns result with success/failure status
-  Future<GameLoadResult> loadGameOnDemand(GameType gameType) async {
+  Future<GameLoadResult> loadGameOnDemand(
+    GameType gameType, {
+    String language = 'yoruba',
+  }) async {
     if (_loadedGames[gameType] ?? false) {
       // Check if still fresh
       final loadTime = _loadTimes[gameType];
@@ -136,7 +130,7 @@ class LazyGameLoader {
     }
 
     try {
-      await _preloadGame(gameType);
+      await _preloadGame(gameType, language: language);
       _loadedGames[gameType] = true;
       _loadTimes[gameType] = DateTime.now();
       _loadErrors.remove(gameType); // Clear any previous error
@@ -150,10 +144,13 @@ class LazyGameLoader {
   }
 
   /// Retry loading a game that previously failed
-  Future<GameLoadResult> retryGameLoad(GameType gameType) async {
+  Future<GameLoadResult> retryGameLoad(
+    GameType gameType, {
+    String language = 'yoruba',
+  }) async {
     clearError(gameType);
     _loadedGames.remove(gameType);
-    return loadGameOnDemand(gameType);
+    return loadGameOnDemand(gameType, language: language);
   }
 
   /// Clear loaded games (memory management)

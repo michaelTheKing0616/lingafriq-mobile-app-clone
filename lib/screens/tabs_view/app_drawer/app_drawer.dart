@@ -26,6 +26,7 @@ import 'package:lingafriq/screens/heritage/flb_heritage_archive_screen.dart';
 import 'package:lingafriq/screens/media/import_media_screen_enhanced.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen_material3.dart';
 import 'package:lingafriq/screens/chat/private_chat_list_screen.dart';
+import 'package:lingafriq/screens/feed/x_feed_home_screen.dart';
 import 'package:lingafriq/screens/village/villages_hub_screen.dart';
 import 'package:lingafriq/screens/ugc/create_lesson_screen_enhanced.dart';
 import 'package:lingafriq/screens/gamification/tribe_selection_screen.dart';
@@ -430,6 +431,20 @@ class AppDrawer extends HookConsumerWidget {
                           Navigator.push(
                             context,
                             SmoothPageRoute(child: GlobalChatScreenMaterial3()),
+                          );
+                        },
+                        isDark: isDark.value,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.dynamic_feed_rounded,
+                        label: 'Community Feed',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(
+                              child: const XFeedHomeScreen(),
+                            ),
                           );
                         },
                         isDark: isDark.value,

@@ -217,6 +217,12 @@ class PanAfricanDrawer extends ConsumerWidget {
                           onTap: () => _navigateTo(context, ref, 'settings'),
                         ),
                         _DrawerItem(
+                          icon: Icons.map_rounded,
+                          title: 'Stitch feature map',
+                          subtitle: 'All mockup journeys',
+                          onTap: () => _navigateTo(context, ref, 'stitch-hub'),
+                        ),
+                        _DrawerItem(
                           icon: Icons.help_outline_rounded,
                           title: 'Features Guide',
                           onTap: () => _navigateTo(context, ref, 'features_guide'),

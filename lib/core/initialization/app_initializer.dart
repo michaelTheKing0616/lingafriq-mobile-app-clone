@@ -1,9 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../services/backend_health_service.dart';
-import '../../services/polie_cache_service.dart';
-import '../../services/lazy_game_loader.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../core/errors/app_exceptions.dart';
+import '../../services/backend_health_service.dart';
+import '../../services/lazy_game_loader.dart';
+import '../../services/polie_cache_service.dart';
+import '../../utils/games_prefetch_language.dart';
 
 /// App Initialization Service
 /// Handles all app startup initialization tasks
@@ -55,8 +58,10 @@ class AppInitializer {
       // 4. Preload common games
       debugPrint('🔍 Preloading common games...');
       try {
+        final prefs = await SharedPreferences.getInstance();
+        final gamesLang = resolveGamesPrefetchLanguageSync(prefs);
         final gameLoader = _ref.read(lazyGameLoaderProvider);
-        await gameLoader.preloadCommonGames();
+        await gameLoader.preloadCommonGames(language: gamesLang);
         results['game_preload'] = true;
         debugPrint('✅ Game preloading complete');
       } catch (e) {
@@ -92,10 +97,13 @@ class AppInitializer {
     try {
       // Warm up cache
       await PolieCacheService.getCacheStats();
-      
+
+      final prefs = await SharedPreferences.getInstance();
+      final gamesLang = resolveGamesPrefetchLanguageSync(prefs);
+
       // Preload games in background
       final gameLoader = _ref.read(lazyGameLoaderProvider);
-      gameLoader.preloadCommonGames().catchError((e) {
+      gameLoader.preloadCommonGames(language: gamesLang).catchError((e) {
         debugPrint('Background game preload failed: $e');
         return <GameLoadResult>[];
       });

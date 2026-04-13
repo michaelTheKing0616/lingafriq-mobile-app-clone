@@ -8,12 +8,13 @@ import 'package:lingafriq/utils/error_handler.dart' hide ErrorBoundary;
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
-import 'package:lingafriq/models/game/game_session_model.dart';
 import 'package:lingafriq/screens/games/game_router.dart';
+import 'package:lingafriq/providers/game_catalog_provider.dart';
 import 'package:lingafriq/services/lazy_game_loader.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
+import 'package:lingafriq/utils/games_prefetch_language.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'game_onboarding_overlay.dart';
 import 'game_catalog.dart';
@@ -28,14 +29,49 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
     final selectedCategory = useState<String?>(null);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final languages = ['yoruba', 'hausa', 'igbo', 'swahili', 'zulu', 'afrikaans', 'pidgin'];
+    final languages = kGamesHubLanguageSlugs;
     final categories = ['All', 'Vocabulary', 'Grammar', 'Pronunciation', 'Cultural'];
+
+    useEffect(() {
+      var alive = true;
+      Future(() async {
+        final prefs = await SharedPreferences.getInstance();
+        final lang = resolveGamesHubLanguageSync(prefs);
+        if (!alive) return;
+        selectedLanguage.value = lang;
+      });
+      return () {
+        alive = false;
+      };
+    }, const []);
     final selectedSection = useState('core');
     final isLoading = useState(false);
+    final remoteCatalog = useState<List<GameCatalogEntry>?>(null);
 
-    final coreGames = GameCatalog.bySection(GameCatalogSection.core);
-    final culturalGames = GameCatalog.bySection(GameCatalogSection.cultural);
-    final allGames = [...coreGames, ...culturalGames];
+    useEffect(() {
+      var alive = true;
+      Future(() async {
+        try {
+          final rows =
+              await ref.read(gameCatalogServiceProvider).fetchCatalogRows();
+          if (!alive) return;
+          final merged = GameCatalog.mergeRemoteRows(rows);
+          remoteCatalog.value = merged.isNotEmpty ? merged : null;
+        } catch (_) {
+          // Offline or error — keep static [GameCatalog.entries] via null remote.
+        }
+      });
+      return () {
+        alive = false;
+      };
+    }, const []);
+
+    final baseList = remoteCatalog.value ?? GameCatalog.entries;
+    final coreGames =
+        baseList.where((e) => e.section == GameCatalogSection.core).toList();
+    final culturalGames =
+        baseList.where((e) => e.section == GameCatalogSection.cultural).toList();
+    final allGames = List<GameCatalogEntry>.from(baseList);
     
     // Filter games by section and category
     var filteredGames = selectedSection.value == 'core' ? coreGames : culturalGames;
@@ -57,7 +93,22 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
             tooltip: 'Back',
           ),
         ),
-        title: Text('Language Games (${allGames.length}+)'),
+        title: Row(
+          children: [
+            Expanded(
+              child: Text('Language Games (${allGames.length})'),
+            ),
+            if (remoteCatalog.value != null)
+              Tooltip(
+                message: 'Game list loaded from server',
+                child: Icon(
+                  Icons.cloud_done_rounded,
+                  size: 22.sp,
+                  color: PanAfricanColors.primary,
+                ),
+              ),
+          ],
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -228,7 +279,10 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
                               operation: () async {
                                 isLoading.value = true;
                                 try {
-                                  await loader.loadGameOnDemand(gameType);
+                                  await loader.loadGameOnDemand(
+                                    gameType,
+                                    language: selectedLanguage.value,
+                                  );
                                 } catch (_) {
                                   // Preload is optional; still open the game
                                 }

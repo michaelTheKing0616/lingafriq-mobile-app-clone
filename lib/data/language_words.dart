@@ -3,6 +3,48 @@ import 'package:flutter/foundation.dart';
 /// Comprehensive word lists for different languages
 /// Used in language games like Word Match
 class LanguageWords {
+  /// Folds common Latin diacritics so labels like "Yorùbá" resolve to "Yoruba".
+  static String _foldLatinDiacritics(String s) {
+    var o = s;
+    o = o.replaceAll('à', 'a').replaceAll('á', 'a').replaceAll('â', 'a').replaceAll('ã', 'a').replaceAll('ä', 'a').replaceAll('å', 'a');
+    o = o.replaceAll('è', 'e').replaceAll('é', 'e').replaceAll('ê', 'e').replaceAll('ë', 'e');
+    o = o.replaceAll('ì', 'i').replaceAll('í', 'i').replaceAll('î', 'i').replaceAll('ï', 'i');
+    o = o.replaceAll('ò', 'o').replaceAll('ó', 'o').replaceAll('ô', 'o').replaceAll('õ', 'o').replaceAll('ö', 'o');
+    o = o.replaceAll('ù', 'u').replaceAll('ú', 'u').replaceAll('û', 'u').replaceAll('ü', 'u');
+    o = o.replaceAll('ý', 'y').replaceAll('ÿ', 'y');
+    o = o.replaceAll('ñ', 'n').replaceAll('ç', 'c');
+    return o;
+  }
+
+  /// Games hub slugs, ISO-style hints, and display aliases → [getWordsByLanguage] key.
+  static const Map<String, String> _hubSlugOrAliasToListKey = {
+    'yoruba': 'Yoruba',
+    'hausa': 'Hausa',
+    'igbo': 'Igbo',
+    'swahili': 'Swahili',
+    'kiswahili': 'Swahili',
+    'pidgin': 'Nigerian Pidgin',
+    'nigerian pidgin': 'Nigerian Pidgin',
+    'zulu': 'IsiZulu',
+    'isizulu': 'IsiZulu',
+    'isi zulu': 'IsiZulu',
+    'xhosa': 'isiXhosa',
+    'isixhosa': 'isiXhosa',
+    'isi xhosa': 'isiXhosa',
+    'amharic': 'Amharic',
+    'twi': 'Twi',
+    'akan': 'Twi',
+    'wolof': 'Wolof',
+    'afrikaans': 'Afrikaans',
+  };
+
+  static String _resolveLanguageNameForLookup(String raw) {
+    final t = raw.trim();
+    if (t.isEmpty) return t;
+    final folded = _foldLatinDiacritics(t.toLowerCase());
+    return _hubSlugOrAliasToListKey[folded] ?? t;
+  }
+
   static Map<String, List<Map<String, String>>> getWordsByLanguage() {
     return {
       'Hausa': [
@@ -401,12 +443,176 @@ class LanguageWords {
         {'english': 'Cat', 'translation': 'Ikati'},
         {'english': 'Money', 'translation': 'Imali'},
       ],
+      // isiXhosa — core vocabulary (parallel coverage to other hub lists)
+      'isiXhosa': [
+        {'english': 'Hello', 'translation': 'Molo'},
+        {'english': 'Thank you', 'translation': 'Enkosi'},
+        {'english': 'Goodbye', 'translation': 'Sala kakuhle'},
+        {'english': 'Water', 'translation': 'Amanzi'},
+        {'english': 'Food', 'translation': 'Ukutya'},
+        {'english': 'Friend', 'translation': 'Umhlobo'},
+        {'english': 'House', 'translation': 'Indlu'},
+        {'english': 'Book', 'translation': 'Incwadi'},
+        {'english': 'School', 'translation': 'Isikolo'},
+        {'english': 'Teacher', 'translation': 'Utitshala'},
+        {'english': 'Student', 'translation': 'Umfundi'},
+        {'english': 'Mother', 'translation': 'Umama'},
+        {'english': 'Father', 'translation': 'Utata'},
+        {'english': 'Child', 'translation': 'Umntwana'},
+        {'english': 'Good', 'translation': 'Kulungile'},
+        {'english': 'Bad', 'translation': 'Kubi'},
+        {'english': 'Big', 'translation': 'Inkulu'},
+        {'english': 'Small', 'translation': 'Ncinci'},
+        {'english': 'Hot', 'translation': 'Kushushu'},
+        {'english': 'Cold', 'translation': 'Ebandayo'},
+        {'english': 'Day', 'translation': 'Imini'},
+        {'english': 'Night', 'translation': 'Ubusuku'},
+        {'english': 'Sun', 'translation': 'Ilanga'},
+        {'english': 'Moon', 'translation': 'Inyanga'},
+        {'english': 'Star', 'translation': 'Inkwenkwezi'},
+        {'english': 'Tree', 'translation': 'Umthi'},
+        {'english': 'Bird', 'translation': 'Intaka'},
+        {'english': 'Dog', 'translation': 'Inja'},
+        {'english': 'Cat', 'translation': 'Ikati'},
+        {'english': 'Money', 'translation': 'Imali'},
+      ],
+      // Amharic — Ethiopic script (common textbook lemmas)
+      'Amharic': [
+        {'english': 'Hello', 'translation': 'ሰላም'},
+        {'english': 'Thank you', 'translation': 'አመሰግናለሁ'},
+        {'english': 'Goodbye', 'translation': 'ደህና ሁን'},
+        {'english': 'Water', 'translation': 'ውሃ'},
+        {'english': 'Food', 'translation': 'ምግብ'},
+        {'english': 'Friend', 'translation': 'ጓደኛ'},
+        {'english': 'House', 'translation': 'ቤት'},
+        {'english': 'Book', 'translation': 'መጽሐፍ'},
+        {'english': 'School', 'translation': 'ትምህርት ቤት'},
+        {'english': 'Teacher', 'translation': 'መምህር'},
+        {'english': 'Student', 'translation': 'ተማሪ'},
+        {'english': 'Mother', 'translation': 'እናት'},
+        {'english': 'Father', 'translation': 'አባት'},
+        {'english': 'Child', 'translation': 'ልጅ'},
+        {'english': 'Good', 'translation': 'ጥሩ'},
+        {'english': 'Bad', 'translation': 'መጥፎ'},
+        {'english': 'Big', 'translation': 'ትልቅ'},
+        {'english': 'Small', 'translation': 'ትንሽ'},
+        {'english': 'Hot', 'translation': 'ሞቃ'},
+        {'english': 'Cold', 'translation': 'ቀዝም'},
+        {'english': 'Day', 'translation': 'ቀን'},
+        {'english': 'Night', 'translation': 'ሌሊት'},
+        {'english': 'Sun', 'translation': 'ጸሐይ'},
+        {'english': 'Moon', 'translation': 'ጨረቃ'},
+        {'english': 'Star', 'translation': 'ኮከብ'},
+        {'english': 'Tree', 'translation': 'ዛፍ'},
+        {'english': 'Bird', 'translation': 'ወፍ'},
+        {'english': 'Dog', 'translation': 'ውሻ'},
+        {'english': 'Cat', 'translation': 'ድመት'},
+        {'english': 'Money', 'translation': 'ገንዘብ'},
+      ],
+      // Twi (Akan) — common classroom lemmas
+      'Twi': [
+        {'english': 'Hello', 'translation': 'Maakye'},
+        {'english': 'Thank you', 'translation': 'Medaase'},
+        {'english': 'Goodbye', 'translation': 'Da yie'},
+        {'english': 'Water', 'translation': 'Nsuo'},
+        {'english': 'Food', 'translation': 'Aduane'},
+        {'english': 'Friend', 'translation': 'Ɔdɔfo'},
+        {'english': 'House', 'translation': 'Efie'},
+        {'english': 'Book', 'translation': 'Nwoma'},
+        {'english': 'School', 'translation': 'Sukuu'},
+        {'english': 'Teacher', 'translation': 'Ɔkyerɛkyerɛni'},
+        {'english': 'Student', 'translation': 'Aketewa'},
+        {'english': 'Mother', 'translation': 'Maame'},
+        {'english': 'Father', 'translation': 'Agya'},
+        {'english': 'Child', 'translation': 'Abɔfra'},
+        {'english': 'Good', 'translation': 'Pa'},
+        {'english': 'Bad', 'translation': 'Bone'},
+        {'english': 'Big', 'translation': 'Kɛse'},
+        {'english': 'Small', 'translation': 'Kakra'},
+        {'english': 'Hot', 'translation': 'Hyɛ'},
+        {'english': 'Cold', 'translation': 'Dwen'},
+        {'english': 'Day', 'translation': 'Da'},
+        {'english': 'Night', 'translation': 'Anadwo'},
+        {'english': 'Sun', 'translation': 'Awia'},
+        {'english': 'Moon', 'translation': 'Bosome'},
+        {'english': 'Star', 'translation': 'Nsoromma'},
+        {'english': 'Tree', 'translation': 'Dua'},
+        {'english': 'Bird', 'translation': 'Anomaa'},
+        {'english': 'Dog', 'translation': 'Kraman'},
+        {'english': 'Cat', 'translation': 'Kɔtɔ'},
+        {'english': 'Money', 'translation': 'Sika'},
+      ],
+      // Wolof — Latin orthography (Senegal / Gambia conventions)
+      'Wolof': [
+        {'english': 'Hello', 'translation': 'Nanga def'},
+        {'english': 'Thank you', 'translation': 'Jërëjëf'},
+        {'english': 'Goodbye', 'translation': 'Ba beneen yoon'},
+        {'english': 'Water', 'translation': 'Ndox'},
+        {'english': 'Food', 'translation': 'Ceeb'},
+        {'english': 'Friend', 'translation': 'Xarit'},
+        {'english': 'House', 'translation': 'Kër'},
+        {'english': 'Book', 'translation': 'Téere'},
+        {'english': 'School', 'translation': 'Daara'},
+        {'english': 'Teacher', 'translation': 'Jàngalekat'},
+        {'english': 'Student', 'translation': 'Jàngkat'},
+        {'english': 'Mother', 'translation': 'Yaay'},
+        {'english': 'Father', 'translation': 'Baay'},
+        {'english': 'Child', 'translation': 'Xale'},
+        {'english': 'Good', 'translation': 'Baax'},
+        {'english': 'Bad', 'translation': 'Bon'},
+        {'english': 'Big', 'translation': 'Mag'},
+        {'english': 'Small', 'translation': 'Tuuti'},
+        {'english': 'Hot', 'translation': 'Tàng'},
+        {'english': 'Cold', 'translation': 'Sedd'},
+        {'english': 'Day', 'translation': 'Bes'},
+        {'english': 'Night', 'translation': 'Guddi'},
+        {'english': 'Sun', 'translation': 'Naaj'},
+        {'english': 'Moon', 'translation': 'Weer'},
+        {'english': 'Star', 'translation': 'Ñaar'},
+        {'english': 'Tree', 'translation': 'Garab'},
+        {'english': 'Bird', 'translation': 'Páxi'},
+        {'english': 'Dog', 'translation': 'Xaj'},
+        {'english': 'Cat', 'translation': 'Mus'},
+        {'english': 'Money', 'translation': 'Xaalis'},
+      ],
+      'Afrikaans': [
+        {'english': 'Hello', 'translation': 'Hallo'},
+        {'english': 'Thank you', 'translation': 'Dankie'},
+        {'english': 'Goodbye', 'translation': 'Totsiens'},
+        {'english': 'Water', 'translation': 'Water'},
+        {'english': 'Food', 'translation': 'Kos'},
+        {'english': 'Friend', 'translation': 'Vriend'},
+        {'english': 'House', 'translation': 'Huis'},
+        {'english': 'Book', 'translation': 'Boek'},
+        {'english': 'School', 'translation': 'Skool'},
+        {'english': 'Teacher', 'translation': 'Onderwyser'},
+        {'english': 'Student', 'translation': 'Leerling'},
+        {'english': 'Mother', 'translation': 'Ma'},
+        {'english': 'Father', 'translation': 'Pa'},
+        {'english': 'Child', 'translation': 'Kind'},
+        {'english': 'Good', 'translation': 'Goed'},
+        {'english': 'Bad', 'translation': 'Sleg'},
+        {'english': 'Big', 'translation': 'Groot'},
+        {'english': 'Small', 'translation': 'Klein'},
+        {'english': 'Hot', 'translation': 'Warm'},
+        {'english': 'Cold', 'translation': 'Koud'},
+        {'english': 'Day', 'translation': 'Dag'},
+        {'english': 'Night', 'translation': 'Nag'},
+        {'english': 'Sun', 'translation': 'Son'},
+        {'english': 'Moon', 'translation': 'Maan'},
+        {'english': 'Star', 'translation': 'Ster'},
+        {'english': 'Tree', 'translation': 'Boom'},
+        {'english': 'Bird', 'translation': 'Voël'},
+        {'english': 'Dog', 'translation': 'Hond'},
+        {'english': 'Cat', 'translation': 'Kat'},
+        {'english': 'Money', 'translation': 'Geld'},
+      ],
     };
   }
 
   static List<Map<String, String>> getWordsForLanguage(String languageName) {
     final allWords = getWordsByLanguage();
-    final normalizedName = languageName.trim();
+    final normalizedName = _resolveLanguageNameForLookup(languageName);
     
     // Try exact match first
     if (allWords.containsKey(normalizedName)) {
@@ -440,6 +646,14 @@ class LanguageWords {
       }
       if (allWords.containsKey('Zulu')) {
         return allWords['Zulu']!;
+      }
+    }
+
+    // isiXhosa / "Xhosa" API labels
+    final lower = normalizedName.toLowerCase();
+    if (lower.contains('xhosa') || lower.contains('isixhosa')) {
+      if (allWords.containsKey('isiXhosa')) {
+        return allWords['isiXhosa']!;
       }
     }
     

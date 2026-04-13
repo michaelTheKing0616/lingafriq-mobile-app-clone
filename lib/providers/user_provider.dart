@@ -1,5 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/profile_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:lingafriq/services/games_learning_language_preload.dart';
+import 'package:lingafriq/services/lazy_game_loader.dart';
+
 import 'api_provider.dart';
 
 final userProvider = NotifierProvider<UserProvider, ProfileModel?>(
@@ -14,6 +20,9 @@ class UserProvider extends Notifier<ProfileModel?> {
 
   void overrideUser(ProfileModel? user) {
     state = user;
+    if (user != null) {
+      _syncLearningLanguagePrefsFromProfile(user);
+    }
   }
 
   void resetUser() {
@@ -39,9 +48,29 @@ class UserProvider extends Notifier<ProfileModel?> {
       // Then get the full profile
       final updatedProfile = await apiNotifier.getProfileUser(userInfo.id);
       state = updatedProfile;
+      _syncLearningLanguagePrefsFromProfile(updatedProfile);
     } catch (e) {
       // Silently fail - user state remains unchanged
       // Error logging would be handled by the API provider
+    }
+  }
+
+  /// Keeps `learning_language` prefs aligned with the server profile and warms
+  /// game card cache when the stored value changes.
+  Future<void> _syncLearningLanguagePrefsFromProfile(ProfileModel profile) async {
+    final raw = profile.learningLanguage?.trim();
+    if (raw == null || raw.isEmpty) return;
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final prev = prefs.getString('learning_language')?.trim().toLowerCase();
+      final next = raw.toLowerCase();
+      if (prev == next) return;
+
+      await prefs.setString('learning_language', raw);
+      scheduleGamesPreloadWithLoader(ref.read(lazyGameLoaderProvider));
+    } catch (e) {
+      debugPrint('UserProvider._syncLearningLanguagePrefsFromProfile: $e');
     }
   }
 }

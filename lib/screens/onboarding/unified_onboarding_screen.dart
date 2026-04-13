@@ -21,6 +21,7 @@ import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
+import 'package:lingafriq/services/games_learning_language_preload.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:lingafriq/avatars/avatars.dart';
@@ -635,6 +636,7 @@ class _WeaverStep extends HookConsumerWidget {
               try {
                 final prefs = await SharedPreferences.getInstance();
                 await prefs.setString('learning_language', selectedLanguage.value!);
+                scheduleGamesPreloadAfterLearningLanguageSaved(ref);
               } catch (e) {
                 logger.error('Error saving learning language', error: e);
               }

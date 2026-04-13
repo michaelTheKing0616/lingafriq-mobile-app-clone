@@ -7,6 +7,7 @@ import 'package:lingafriq/services/gamification/competitions_service.dart';
 import 'package:lingafriq/services/gamification/items_service.dart';
 import 'package:lingafriq/services/gamification/events_service.dart';
 import 'package:lingafriq/services/gamification/socket_service.dart';
+import 'package:lingafriq/services/classroom/classroom_service.dart';
 import 'package:lingafriq/providers/dio_provider.dart';
 
 // Tribes Service Provider
@@ -47,5 +48,9 @@ final eventsServiceProvider = Provider<EventsService>((ref) {
 // Socket Service Provider
 final gamificationSocketServiceProvider = Provider<GamificationSocketService>((ref) {
   return GamificationSocketService();
+});
+
+final classroomServiceProvider = Provider<ClassroomService>((ref) {
+  return ClassroomService(ref.read(client));
 });
 

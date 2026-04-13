@@ -446,6 +446,123 @@ class _QuizChefGameState extends BaseGameScreenState<QuizChefGame> {
         _RecipeTemplate('Which means "fresh"?', 'Mbichi', ['Mbichi', 'Samaki', 'Changanya'], _WordCategory.adjective, '"Mbichi" — fresh/raw. "Matunda mbichi" means fresh fruits in Swahili markets.'),
         _RecipeTemplate('The verb "to boil" is:', 'Chemsha', ['Chemsha', 'Nazi', 'Tamu'], _WordCategory.verb, '"Chemsha maji" — boil water. The foundation of chai (tea) and many dishes.'),
       ];
+    } else if (lang == 'hausa') {
+      return const [
+        _RecipeTemplate('Which word means "to cook"?', 'Dafa', ['Dafa', 'Ruwa', 'Shinkafa'], _WordCategory.verb, '"Dafa abinci" — cook food. Hausa kitchens often center on one big pot and steady heat.'),
+        _RecipeTemplate('Select the noun for "rice":', 'Shinkafa', ['Shinkafa', 'Miya', 'Yaji'], _WordCategory.noun, 'Shinkafa pairs with rich miya (soup) across the Sahel and savanna.'),
+        _RecipeTemplate('Which describes "delicious"?', 'Mai dadi', ['Mai dadi', 'Ruwa', 'Barkono'], _WordCategory.adjective, '"Mai dadi" — tasty. A compliment cooks remember.'),
+        _RecipeTemplate('What is the verb for "eat"?', 'Ci', ['Ci', 'Dafa', 'Miya'], _WordCategory.verb, '"Ci abinci" — eat food. Sharing a bowl is a sign of trust.'),
+        _RecipeTemplate('Choose the noun for "soup":', 'Miya', ['Miya', 'Shinkafa', 'Ruwa'], _WordCategory.noun, 'Miya carries spices, oil, and meat — poured over grains or tuwo.'),
+        _RecipeTemplate('Which means "pepper" (hot)?', 'Barkono', ['Barkono', 'Shinkafa', 'Ci'], _WordCategory.noun, 'Barkono brings heat; balance it with cooling sides.'),
+        _RecipeTemplate('The verb "to wash (hands)" is:', 'Wanke', ['Wanke', 'Dafa', 'Miya'], _WordCategory.verb, '"Wanke hannaye" — wash hands before eating; hygiene is hospitality.'),
+        _RecipeTemplate('Select "water":', 'Ruwa', ['Ruwa', 'Yaji', 'Shinkafa'], _WordCategory.noun, 'Ruwa is life — from the well to the pot.'),
+        _RecipeTemplate('Which means "salt"?', 'Gishiri', ['Gishiri', 'Barkono', 'Miya'], _WordCategory.noun, 'Gishiri seasons gently; a little lifts every stew.'),
+        _RecipeTemplate('The verb "to drink" is:', 'Sha', ['Sha', 'Ruwa', 'Ci'], _WordCategory.verb, '"Sha ruwa" — drink water. Hydration keeps the cook focused.'),
+      ];
+    } else if (lang == 'igbo') {
+      return const [
+        _RecipeTemplate('Which means "water"?', 'Mmiri', ['Mmiri', 'Nri', 'Ulo'], _WordCategory.noun, 'Mmiri starts every pot — from washing grains to finishing soup.'),
+        _RecipeTemplate('Select the noun for "food":', 'Nri', ['Nri', 'Mmiri', 'Nna'], _WordCategory.noun, 'Nri is shared; bowls circle until everyone is full.'),
+        _RecipeTemplate('Which means "thank you"?', 'Daalu', ['Daalu', 'Ndewo', 'Oma'], _WordCategory.verb, 'Say daalu after a good meal — gratitude seasons the next one.'),
+        _RecipeTemplate('What means "hello"?', 'Ndewo', ['Ndewo', 'Nkita', 'Abali'], _WordCategory.verb, 'Ndewo opens the door; good food follows.'),
+        _RecipeTemplate('Choose "mother":', 'Nne', ['Nne', 'Nna', 'Nwa'], _WordCategory.noun, 'Nne often guards the recipes that make a house a home.'),
+        _RecipeTemplate('Which means "father"?', 'Nna', ['Nna', 'Nne', 'Ulo'], _WordCategory.noun, 'Nna brings kola; the table waits for everyone.'),
+        _RecipeTemplate('The word for "house":', 'Ulo', ['Ulo', 'Mmiri', 'Nri'], _WordCategory.noun, 'Ulo is where steam, laughter, and aroma meet.'),
+        _RecipeTemplate('Which means "good"?', 'Oma', ['Oma', 'Ojoo', 'Nta'], _WordCategory.adjective, 'When soup is oma, silence falls around the table.'),
+        _RecipeTemplate('Select "friend":', 'Enyi', ['Enyi', 'Nri', 'Onwa'], _WordCategory.noun, 'Enyi shares seat and plate — chop no be solo work.'),
+        _RecipeTemplate('Which means "yam"?', 'Ji', ['Ji', 'Ofe', 'Ose'], _WordCategory.noun, 'Ji anchors many feasts — roast, boil, or pound with pride.'),
+      ];
+    } else if (lang == 'pidgin') {
+      return const [
+        _RecipeTemplate('Which word means "food"?', 'Chop', ['Chop', 'Water', 'Padi'], _WordCategory.noun, '"Chop" — food you actually eat. If e sweet, you go know.'),
+        _RecipeTemplate('Select the word for "to eat":', 'Chop', ['Chop', 'Fine', 'Waka'], _WordCategory.verb, '"I wan chop" — I want to eat. Straight to the point.'),
+        _RecipeTemplate('Which describes "very good" (taste)?', 'Sweet', ['Sweet', 'Salty', 'Bitter'], _WordCategory.adjective, '"E sweet well well" — praise the cook!'),
+        _RecipeTemplate('What is "water"?', 'Water', ['Water', 'Chop', 'Pepper'], _WordCategory.noun, 'Water no get enemy — especially for pepper soup.'),
+        _RecipeTemplate('Choose "friend" (padi):', 'Padi', ['Padi', 'Chop', 'Wetin'], _WordCategory.noun, 'Good padi dey share chop, no be only gist.'),
+        _RecipeTemplate('Which means "pepper" (hot)?', 'Pepper', ['Pepper', 'Salt', 'Oil'], _WordCategory.noun, 'Pepper fit humble you — respect am.'),
+        _RecipeTemplate('The phrase "thank you" often:', 'Thank you', ['Thank you', 'Abeg', 'Wetin'], _WordCategory.verb, 'Politeness dey open doors — and second helpings.'),
+        _RecipeTemplate('Select "palm oil":', 'Red oil', ['Red oil', 'Water', 'Salt'], _WordCategory.noun, 'Red oil dey give soup color wey you fit see from road.'),
+        _RecipeTemplate('Which means "salt"?', 'Salt', ['Salt', 'Sugar', 'Pepper'], _WordCategory.noun, 'Salt small-small — no go overdo am.'),
+        _RecipeTemplate('The verb "to go" (kitchen run):', 'Go', ['Go', 'Come', 'Stay'], _WordCategory.verb, '"Go market" — where ingredients become story.'),
+      ];
+    } else if (lang == 'zulu' || lang == 'isizulu') {
+      return const [
+        _RecipeTemplate('Which word means "to cook"?', 'Pheka', ['Pheka', 'Idla', 'Amanzi'], _WordCategory.verb, '"Pheka ukudla" — cook food. Zulu pots reward patience.'),
+        _RecipeTemplate('Select the noun for "food":', 'Ukudla', ['Ukudla', 'Amanzi', 'Uthisha'], _WordCategory.noun, 'Ukudla is the meal — from pap to hearty stews.'),
+        _RecipeTemplate('Which describes "delicious"?', 'Kumnandi', ['Kumnandi', 'Kubi', 'Mncane'], _WordCategory.adjective, '"Kumnandi" — tasty. The word people say with a full mouth.'),
+        _RecipeTemplate('What is the verb for "eat"?', 'Idla', ['Idla', 'Pheka', 'Ukudla'], _WordCategory.verb, '"Idla kahle" — eat well. Hospitality is serious business.'),
+        _RecipeTemplate('Choose the noun for "water":', 'Amanzi', ['Amanzi', 'Ukudla', 'Shisa'], _WordCategory.noun, 'Amanzi cools pepper heat and washes the day away.'),
+        _RecipeTemplate('Which means "hot" (temperature)?', 'Shisa', ['Shisa', 'Banda', 'Ukudla'], _WordCategory.adjective, 'Shisa — when the pot is ready, you will know.'),
+        _RecipeTemplate('The verb "to mix" is:', 'Hlanganisa', ['Hlanganisa', 'Pheka', 'Idla'], _WordCategory.verb, 'Mixing flavors is mixing cultures on one plate.'),
+        _RecipeTemplate('Select "salt":', 'Usawoti', ['Usawoti', 'Amanzi', 'Shisa'], _WordCategory.noun, 'Usawoti balances — a pinch changes everything.'),
+        _RecipeTemplate('Which means "cold"?', 'Banda', ['Banda', 'Shisa', 'Kumnandi'], _WordCategory.adjective, 'Banda drinks pair with spicy mains.'),
+        _RecipeTemplate('The verb "to boil" is:', 'Bila', ['Bila', 'Idla', 'Amanzi'], _WordCategory.verb, 'Boiling clears and softens — the start of many stews.'),
+      ];
+    } else if (lang == 'xhosa' || lang == 'isixhosa') {
+      return const [
+        _RecipeTemplate('Which means "hello" (to one person)?', 'Molo', ['Molo', 'Enkosi', 'Amanzi'], _WordCategory.verb, 'Molo opens conversation — one respectful word at a time.'),
+        _RecipeTemplate('Select "thank you":', 'Enkosi', ['Enkosi', 'Ukutya', 'Umhlobo'], _WordCategory.verb, 'Enkosi carries gratitude from the table to the teacher.'),
+        _RecipeTemplate('Which means "water"?', 'Amanzi', ['Amanzi', 'Ukutya', 'Indlu'], _WordCategory.noun, 'Amanzi cools the throat after spice and work.'),
+        _RecipeTemplate('Choose the noun for "food":', 'Ukutya', ['Ukutya', 'Incwadi', 'Isikolo'], _WordCategory.noun, 'Ukutya is shared; umndilili wentselo starts with what is on the plate.'),
+        _RecipeTemplate('Which means "friend"?', 'Umhlobo', ['Umhlobo', 'Utitshala', 'Umfundi'], _WordCategory.noun, 'Friends pass dishes hand to hand.'),
+        _RecipeTemplate('Select "house":', 'Indlu', ['Indlu', 'Umthi', 'Intaka'], _WordCategory.noun, 'Indlu is where steam, stories, and songs gather.'),
+        _RecipeTemplate('Which means "teacher"?', 'Utitshala', ['Utitshala', 'Umntwana', 'Inja'], _WordCategory.noun, 'Utitshala shapes both language and manners.'),
+        _RecipeTemplate('Choose "sun":', 'Ilanga', ['Ilanga', 'Inyanga', 'Ubusuku'], _WordCategory.noun, 'Ilanga dries maize and warms the courtyard.'),
+        _RecipeTemplate('Which means "night"?', 'Ubusuku', ['Ubusuku', 'Imini', 'Ilanga'], _WordCategory.noun, 'Ubusuku is for rest — and for quiet study.'),
+        _RecipeTemplate('Select "money":', 'Imali', ['Imali', 'Ikati', 'Inja'], _WordCategory.noun, 'Imali buys spice and books — invest both wisely.'),
+      ];
+    } else if (lang == 'amharic') {
+      return const [
+        _RecipeTemplate('Which means "hello" / peace?', 'ሰላም', ['ሰላም', 'ውሃ', 'ምግብ'], _WordCategory.verb, 'ሰላም is both greeting and wish — peace before the meal.'),
+        _RecipeTemplate('Select "thank you":', 'አመሰግናለሁ', ['አመሰግናለሁ', 'ቤት', 'መጽሐፍ'], _WordCategory.verb, 'Gratitude in Amharic is full and formal — say it with eye contact.'),
+        _RecipeTemplate('Which means "water"?', 'ውሃ', ['ውሃ', 'ምግብ', 'ጓደኛ'], _WordCategory.noun, 'ውሃ is life at altitude and in the kitchen.'),
+        _RecipeTemplate('Choose "food":', 'ምግብ', ['ምግብ', 'ተማሪ', 'መምህር'], _WordCategory.noun, 'ምግብ carries spice routes and family recipes.'),
+        _RecipeTemplate('Which means "house"?', 'ቤት', ['ቤት', 'ዛፍ', 'ወፍ'], _WordCategory.noun, 'ቤት is where injera lands hot from the mitad.'),
+        _RecipeTemplate('Select "book":', 'መጽሐፍ', ['መጽሐፍ', 'ትምህርት ቤት', 'ልጅ'], _WordCategory.noun, 'መጽሐፍ holds grammar and gossip in careful balance.'),
+        _RecipeTemplate('Which means "good"?', 'ጥሩ', ['ጥሩ', 'መጥፎ', 'ትንሽ'], _WordCategory.adjective, 'ጥሩ food needs no advertisement.'),
+        _RecipeTemplate('Choose "sun":', 'ጸሐይ', ['ጸሐይ', 'ጨረቃ', 'ሌሊት'], _WordCategory.noun, 'ጸሐይ ripens berbere fields.'),
+        _RecipeTemplate('Which means "night"?', 'ሌሊት', ['ሌሊት', 'ቀን', 'ኮከብ'], _WordCategory.noun, 'ሌሊት is for slow cooking and slow study.'),
+        _RecipeTemplate('Select "money":', 'ገንዘብ', ['ገንዘብ', 'ውሻ', 'ድመት'], _WordCategory.noun, 'ገንዘብ feeds the market and the future.'),
+      ];
+    } else if (lang == 'twi' || lang == 'akan') {
+      return const [
+        _RecipeTemplate('Which means "thank you"?', 'Medaase', ['Medaase', 'Maakye', 'Nsuo'], _WordCategory.verb, 'Medaase closes the loop between host and guest.'),
+        _RecipeTemplate('Select "water":', 'Nsuo', ['Nsuo', 'Aduane', 'Efie'], _WordCategory.noun, 'Nsuo washes hands and greens alike.'),
+        _RecipeTemplate('Which means "food"?', 'Aduane', ['Aduane', 'Ɔdɔfo', 'Nwoma'], _WordCategory.noun, 'Aduane is fufu, stew, and the politics of the bowl.'),
+        _RecipeTemplate('Choose "friend":', 'Ɔdɔfo', ['Ɔdɔfo', 'Maame', 'Agya'], _WordCategory.noun, 'Ɔdɔfo shares pepper and patience.'),
+        _RecipeTemplate('Which means "house"?', 'Efie', ['Efie', 'Sukuu', 'Sika'], _WordCategory.noun, 'Efie is where the pestle meets the mortar.'),
+        _RecipeTemplate('Select "good":', 'Pa', ['Pa', 'Bone', 'Kakra'], _WordCategory.adjective, 'Pa soup needs time and trust.'),
+        _RecipeTemplate('Which means "sun"?', 'Awia', ['Awia', 'Bosome', 'Anadwo'], _WordCategory.noun, 'Awia sets the rhythm of market and farm.'),
+        _RecipeTemplate('Choose "night":', 'Anadwo', ['Anadwo', 'Da', 'Nsoromma'], _WordCategory.noun, 'Anadwo holds stories and leftover stew.'),
+        _RecipeTemplate('Which means "money"?', 'Sika', ['Sika', 'Kraman', 'Kɔtɔ'], _WordCategory.noun, 'Sika buys ingredients — wisdom seasons them.'),
+        _RecipeTemplate('Select "mother":', 'Maame', ['Maame', 'Agya', 'Abɔfra'], _WordCategory.noun, 'Maame often guards the recipes that define home.'),
+      ];
+    } else if (lang == 'wolof') {
+      return const [
+        _RecipeTemplate('Which means "how are you"?', 'Nanga def', ['Nanga def', 'Jërëjëf', 'Ndox'], _WordCategory.verb, 'Nanga def starts every kitchen visit with respect.'),
+        _RecipeTemplate('Select "thank you":', 'Jërëjëf', ['Jërëjëf', 'Ceeb', 'Xarit'], _WordCategory.verb, 'Jërëjëf is gratitude you can hear across the room.'),
+        _RecipeTemplate('Which means "water"?', 'Ndox', ['Ndox', 'Kër', 'Téere'], _WordCategory.noun, 'Ndox cools thieb and tempers spice.'),
+        _RecipeTemplate('Choose "rice / meal":', 'Ceeb', ['Ceeb', 'Xaj', 'Mus'], _WordCategory.noun, 'Ceeb bu jën is a coastal classic — rice and fish in harmony.'),
+        _RecipeTemplate('Which means "friend"?', 'Xarit', ['Xarit', 'Jàngalekat', 'Jàngkat'], _WordCategory.noun, 'Xarit shares bowl and burden.'),
+        _RecipeTemplate('Select "house":', 'Kër', ['Kër', 'Daara', 'Xaalis'], _WordCategory.noun, 'Kër is where attaya is poured three times.'),
+        _RecipeTemplate('Which means "good"?', 'Baax', ['Baax', 'Bon', 'Tuuti'], _WordCategory.adjective, 'Baax food needs no filter.'),
+        _RecipeTemplate('Choose "sun":', 'Naaj', ['Naaj', 'Weer', 'Ñaar'], _WordCategory.noun, 'Naaj dries fish and brightens the marché.'),
+        _RecipeTemplate('Which means "night"?', 'Guddi', ['Guddi', 'Bes', 'Garab'], _WordCategory.noun, 'Guddi is for attaya after the heat.'),
+        _RecipeTemplate('Select "money":', 'Xaalis', ['Xaalis', 'Páxi', 'Xaj'], _WordCategory.noun, 'Xaalis buys millet and mercy in careful measure.'),
+      ];
+    } else if (lang == 'afrikaans') {
+      return const [
+        _RecipeTemplate('Which means "hello"?', 'Hallo', ['Hallo', 'Dankie', 'Water'], _WordCategory.verb, 'Hallo in the kitchen means sleeves up.'),
+        _RecipeTemplate('Select "thank you":', 'Dankie', ['Dankie', 'Kos', 'Vriend'], _WordCategory.verb, 'Dankie after a braai is non-negotiable.'),
+        _RecipeTemplate('Which means "food"?', 'Kos', ['Kos', 'Huis', 'Skool'], _WordCategory.noun, 'Kos spans potjie pots and melktert alike.'),
+        _RecipeTemplate('Choose "water":', 'Water', ['Water', 'Warm', 'Koud'], _WordCategory.noun, 'Water hydrates boerewors makers and beginners alike.'),
+        _RecipeTemplate('Which means "friend"?', 'Vriend', ['Vriend', 'Ma', 'Pa'], _WordCategory.noun, 'Vriend shares braai tongs and playlists.'),
+        _RecipeTemplate('Select "house":', 'Huis', ['Huis', 'Boom', 'Voël'], _WordCategory.noun, 'Huis is where beskuit crumbs are forgiven.'),
+        _RecipeTemplate('Which means "good"?', 'Goed', ['Goed', 'Sleg', 'Klein'], _WordCategory.adjective, 'Goed kos needs patience and fire control.'),
+        _RecipeTemplate('Choose "sun":', 'Son', ['Son', 'Maan', 'Ster'], _WordCategory.noun, 'Son sets the braai clock across the Karoo.'),
+        _RecipeTemplate('Which means "night"?', 'Nag', ['Nag', 'Dag', 'Geld'], _WordCategory.noun, 'Nag is for potjie leftovers and slow stories.'),
+        _RecipeTemplate('Select "money":', 'Geld', ['Geld', 'Hond', 'Kat'], _WordCategory.noun, 'Geld buys wood and wors — wisdom chooses the cut.'),
+      ];
     }
     return const [
       _RecipeTemplate('Which word is a cooking verb?', 'Simmer', ['Simmer', 'Spoon', 'Savory'], _WordCategory.verb, 'Patience while simmering builds depth — in both food and language learning.'),

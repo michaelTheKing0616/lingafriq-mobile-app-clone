@@ -367,4 +367,56 @@ class GameCatalog {
   static List<GameCatalogEntry> bySection(GameCatalogSection section) {
     return entries.where((entry) => entry.section == section).toList();
   }
+
+  /// Maps Polie / backend `id` (e.g. `wordmatch_audio`) to [GameType] (extension `.name`).
+  static GameType? gameTypeFromPolieId(String id) {
+    for (final gt in GameType.values) {
+      if (gt.name == id) return gt;
+    }
+    return null;
+  }
+
+  /// Merges GET `/api/games/catalog` rows with local icons; sorts by [sort_order].
+  static List<GameCatalogEntry> mergeRemoteRows(List<Map<String, dynamic>> rows) {
+    final scored = <({int order, GameCatalogEntry entry})>[];
+    for (final m in rows) {
+      final id = m['id']?.toString();
+      if (id == null || id.isEmpty) continue;
+      final type = gameTypeFromPolieId(id);
+      if (type == null) continue;
+      final local = byType[type];
+      if (local == null) continue;
+      final secRaw = m['section']?.toString();
+      final section = secRaw == 'cultural'
+          ? GameCatalogSection.cultural
+          : GameCatalogSection.core;
+      final rules = <String>[];
+      final r = m['rules'];
+      if (r is List) {
+        for (final x in r) {
+          if (x is String && x.trim().isNotEmpty) {
+            rules.add(x.trim());
+          }
+        }
+      }
+      final orderRaw = m['sort_order'];
+      final o = orderRaw is int
+          ? orderRaw
+          : (orderRaw is num ? orderRaw.toInt() : 999);
+      scored.add((
+        order: o,
+        entry: GameCatalogEntry(
+          type: type,
+          name: m['name']?.toString() ?? local.name,
+          description: m['description']?.toString() ?? local.description,
+          category: m['category']?.toString() ?? local.category,
+          icon: local.icon,
+          section: section,
+          rules: rules.isNotEmpty ? rules : local.rules,
+        ),
+      ));
+    }
+    scored.sort((a, b) => a.order.compareTo(b.order));
+    return scored.map((e) => e.entry).toList();
+  }
 }

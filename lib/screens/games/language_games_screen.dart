@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/utils/games_prefetch_language.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/models/game/game_session_model.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/games/lazy_game_list.dart';
@@ -22,6 +24,19 @@ class LanguageGamesScreen extends HookConsumerWidget {
     final selectedGame = useState<GameType?>(null);
     final selectedLanguage = useState<String>('yoruba');
     final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    useEffect(() {
+      var alive = true;
+      Future(() async {
+        final prefs = await SharedPreferences.getInstance();
+        final lang = resolveGamesHubLanguageSync(prefs);
+        if (!alive) return;
+        selectedLanguage.value = lang;
+      });
+      return () {
+        alive = false;
+      };
+    }, const []);
     final colorScheme = Theme.of(context).colorScheme;
     final user = ref.watch(userProvider);
     final backAction = onBack ??

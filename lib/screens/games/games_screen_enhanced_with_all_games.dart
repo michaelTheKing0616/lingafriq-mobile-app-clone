@@ -6,10 +6,17 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show AppLanguage;
 import 'package:lingafriq/models/game/game_session_model.dart';
+import 'package:lingafriq/screens/games/game_router.dart';
 import 'package:lingafriq/services/lazy_game_loader.dart';
+import 'package:lingafriq/utils/error_handler.dart' hide ErrorBoundary;
+import 'package:lingafriq/utils/games_prefetch_language.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Enhanced Games Screen with ALL 35+ Games Properly Categorized
 class GamesScreenEnhanced extends HookConsumerWidget {
@@ -22,7 +29,18 @@ class GamesScreenEnhanced extends HookConsumerWidget {
     final selectedSection = useState<String>('core');
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final availableLanguages = AppLanguage.values;
+    useEffect(() {
+      var alive = true;
+      Future(() async {
+        final prefs = await SharedPreferences.getInstance();
+        final lang = resolveGamesHubAppLanguageSync(prefs);
+        if (!alive) return;
+        selectedLanguage.value = lang;
+      });
+      return () {
+        alive = false;
+      };
+    }, const []);
 
     // All 35+ Games Properly Categorized
     final coreGames = [
@@ -361,12 +379,10 @@ class GamesScreenEnhanced extends HookConsumerWidget {
                       ? PanAfricanColors.surfaceContainerDark
                       : PanAfricanColors.surfaceContainerLight,
                 ),
-                items: availableLanguages.map((lang) {
+                items: kAppLanguagesForGamesHub.map((lang) {
                   return DropdownMenuItem<AppLanguage>(
                     value: lang,
-                    child: Text(
-                      lang.name.substring(0, 1).toUpperCase() + lang.name.substring(1),
-                    ),
+                    child: Text(lang.displayName),
                   );
                 }).toList(),
                 onChanged: (value) {
@@ -480,10 +496,52 @@ class GamesScreenEnhanced extends HookConsumerWidget {
                           game: game,
                           isDark: isDark,
                           onTap: () {
-                            // Navigate to game using game router
+                            final gameType = game['type'] as GameType;
+                            final lang = gamesBackendSlugFromAppLanguage(
+                              selectedLanguage.value,
+                            );
                             final loader = ref.read(lazyGameLoaderProvider);
-                            loader.loadGameOnDemand(game['type'] as GameType);
-                            // Navigate to game screen
+                            safeAsync(
+                              context: context,
+                              errorContext: 'GamesScreenEnhanced.openGame',
+                              operation: () async {
+                                isLoading.value = true;
+                                try {
+                                  await loader.loadGameOnDemand(
+                                    gameType,
+                                    language: lang,
+                                  );
+                                } catch (_) {
+                                  // Preload is optional; still open the game
+                                }
+                                if (!context.mounted) return;
+                                try {
+                                  final gameWidget = buildGameScreen(
+                                    gameType: gameType,
+                                    language: lang,
+                                    onBack: () => Navigator.of(context).pop(),
+                                    ref: ref,
+                                  );
+                                  if (!context.mounted) return;
+                                  await Navigator.push(
+                                    context,
+                                    SmoothPageRoute(
+                                      child: ErrorBoundary(
+                                        errorMessage: 'This game could not load.',
+                                        onRetry: () => Navigator.of(context).pop(),
+                                        child: gameWidget,
+                                      ),
+                                    ),
+                                  );
+                                } catch (e) {
+                                  if (context.mounted) {
+                                    ErrorHandler.showError(context, e);
+                                  }
+                                } finally {
+                                  isLoading.value = false;
+                                }
+                              },
+                            );
                           },
                         )
                             .animate(delay: (index * 50).ms)

@@ -10,8 +10,10 @@ import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
+import 'package:lingafriq/utils/games_prefetch_language.dart';
 import 'package:lingafriq/widgets/adaptive_progress_indicator.dart';
 import 'package:lingafriq/widgets/error_widet.dart';
+import 'package:lingafriq/screens/games/pronunciation_game.dart';
 import 'package:lingafriq/screens/games/word_match_game.dart';
 import 'package:lingafriq/screens/games/fill_in_the_blank_game.dart';
 import 'package:lingafriq/screens/games/speed_challenge_game.dart';
@@ -103,7 +105,53 @@ class GamesScreen extends ConsumerWidget {
             Expanded(
               child: languagesAsync.when(
                 data: (languageResponse) {
-                  final languages = languageResponse.results;
+                  final seen = <String>{};
+                  final languages = <Language>[];
+                  for (final lang in languageResponse.results) {
+                    final slug = gamesHubSlugFromApiLanguage(lang);
+                    if (slug == null) continue;
+                    if (!seen.add(slug)) continue;
+                    languages.add(languageNormalizedForGamesHub(lang, fallbackSlug: slug));
+                  }
+                  if (languages.isEmpty) {
+                    return Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.translate_outlined,
+                              size: 48.sp,
+                              color: PanAfricanColors.neutralMedium,
+                            ),
+                            SizedBox(height: PanAfricanSpacing.md),
+                            Text(
+                              'No game-ready languages from the server',
+                              textAlign: TextAlign.center,
+                              style: PanAfricanTypography.titleMedium(context),
+                            ),
+                            SizedBox(height: PanAfricanSpacing.sm),
+                            Text(
+                              'Only languages that map to the games hub are listed here.',
+                              textAlign: TextAlign.center,
+                              style: PanAfricanTypography.bodyMedium(
+                                context,
+                                color: PanAfricanColors.neutralMedium,
+                              ),
+                            ),
+                            SizedBox(height: PanAfricanSpacing.lg),
+                            FilledButton(
+                              onPressed: () {
+                                ref.invalidate(languagesForGamesProvider);
+                              },
+                              child: const Text('Retry'),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
                   return SingleChildScrollView(
                     padding: EdgeInsets.all(PanAfricanSpacing.md),
                     child: Column(
@@ -355,7 +403,12 @@ class GameTypesScreen extends StatelessWidget {
                 color: PanAfricanColors.tertiary,
                 onTap: () {
                   HapticFeedback.lightImpact();
-                  // Navigate to pronunciation game
+                  Navigator.push(
+                    context,
+                    SmoothPageRoute(
+                      child: PronunciationGame(language: language),
+                    ),
+                  );
                 },
               ),
               SizedBox(height: PanAfricanSpacing.md),

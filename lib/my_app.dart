@@ -15,6 +15,8 @@ import 'screens/splash/splash_screen.dart';
 import 'screens/ai_chat/ai_mode_selection_screen.dart';
 import 'screens/ai_chat/polie_mode_selection_screen.dart';
 import 'screens/curriculum/curriculum_screen_material3.dart';
+import 'screens/games/games_screen.dart';
+import 'screens/games/games_screen_enhanced_with_all_games.dart';
 import 'screens/games/games_screen_material3.dart';
 import 'screens/goals/daily_goals_screen.dart';
 import 'screens/progress/progress_dashboard_screen.dart';
@@ -54,6 +56,13 @@ import 'screens/voice_contribution/voice_contribution_screen.dart';
 import 'screens/media/import_media_screen.dart';
 import 'screens/settings/settings_screen_material3.dart';
 import 'screens/help/features_guide_screen.dart';
+import 'screens/help/stitch_navigation_hub_screen.dart';
+import 'screens/chat/private_chat_list_screen.dart';
+import 'screens/chat/call_history_screen.dart';
+import 'screens/chat/live_classroom_screen_material3.dart';
+import 'screens/classroom/classroom_lobby_screen.dart';
+import 'screens/classroom/classroom_notes_screen.dart';
+import 'screens/classroom/speaker_queue_screen.dart';
 import 'screens/tabs_view/profile/app_policy_screen.dart';
 import 'screens/lesson/lesson_flow_screen.dart';
 import 'screens/grammar/grammar_hub_screen.dart' show GrammarHubScreen, GrammarTopic;
@@ -84,12 +93,15 @@ import 'screens/snap/snap_story_feed_screen.dart';
 import 'screens/snap/snap_camera_screen.dart';
 import 'screens/snap/snap_streaks_screen.dart';
 import 'screens/snap/snap_viewer_screen.dart';
-import 'screens/feed/x_compose_screen.dart';
-import 'screens/feed/x_explore_screen.dart';
-import 'screens/feed/x_feed_home_screen.dart';
-import 'screens/feed/x_lists_screen.dart';
-import 'screens/feed/x_post_detail_screen.dart';
-import 'screens/feed/x_profile_screen.dart';
+import 'package:lingafriq/screens/feed/community_profile_screen.dart';
+import 'package:lingafriq/screens/feed/explore_community_screen.dart';
+import 'package:lingafriq/screens/feed/search_community_screen.dart';
+import 'package:lingafriq/screens/feed/x_compose_screen.dart';
+import 'package:lingafriq/screens/feed/x_explore_screen.dart';
+import 'package:lingafriq/screens/feed/x_feed_home_screen.dart';
+import 'package:lingafriq/screens/feed/x_lists_screen.dart';
+import 'package:lingafriq/screens/feed/x_post_detail_screen.dart';
+import 'package:lingafriq/screens/feed/x_profile_screen.dart';
 import 'screens/personalities/personality_selection_screen.dart';
 import 'lessons/models/section_lesson_model.dart';
 import 'models/language_response.dart';
@@ -193,6 +205,10 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'polie_mode_selection': (_) => const PolieModeSelectionScreen(),
     'curriculum': (_) => const CurriculumScreenMaterial3(),
     'games': (_) => const GamesScreenMaterial3(),
+    /// Legacy flow: languages from `getLanguages()` API, then [GameTypesScreen].
+    'games_api_languages': (_) => const GamesScreen(),
+    /// Full static catalog (35+ games) with hub-aligned [AppLanguage] dropdown.
+    'games_enhanced_catalog': (_) => const GamesScreenEnhanced(),
     'daily_goals': (_) => const DailyGoalsScreen(),
     'progress': (_) => const ProgressDashboardScreen(),
     'achievements': (_) => const AchievementsScreen(),
@@ -245,6 +261,33 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'contribute_voice': (_) => const VoiceContributionScreen(),
     'import_media': (_) => const ImportMediaScreen(),
     'settings': (_) => const SettingsScreenMaterial3(),
+    'stitch-hub': (_) => const StitchNavigationHubScreen(),
+    'private-chat-inbox': (_) => const PrivateChatListScreen(),
+    'call-history': (_) => const CallHistoryScreen(),
+    'live-classroom': (_) {
+      final args = settings.arguments as Map<String, dynamic>?;
+      return LiveClassroomScreenMaterial3(
+        roomId: args?['roomId']?.toString(),
+        roomName: args?['roomName']?.toString(),
+        livekitToken: args?['livekitToken']?.toString(),
+        livekitUrl: args?['livekitUrl']?.toString(),
+      );
+    },
+    'classroom-lobby': (_) => const ClassroomLobbyScreen(),
+    'classroom-notes': (_) {
+      final args = settings.arguments as Map<String, dynamic>?;
+      return ClassroomNotesScreen(
+        initialTribeId: args?['tribeId']?.toString(),
+        initialRoomName: args?['roomName']?.toString(),
+      );
+    },
+    'speaker-queue': (_) {
+      final args = settings.arguments as Map<String, dynamic>?;
+      return SpeakerQueueScreen(
+        initialTribeId: args?['tribeId']?.toString(),
+        initialRoomName: args?['roomName']?.toString(),
+      );
+    },
     'features_guide': (_) => const FeaturesGuideScreen(),
     'policy': (_) => const AppPolicyScreen(),
     // Lesson Flow
@@ -400,6 +443,9 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'x-explore': (_) => const XExploreScreen(),
     'x-lists': (_) => const XListsScreen(),
     'x-profile': (_) => const XProfileScreen(),
+    'explore-community': (_) => const ExploreCommunityScreen(),
+    'search-community': (_) => const SearchCommunityScreen(),
+    'community-profile': (_) => const CommunityProfileScreen(),
     'historical-personas': (_) => const PersonalitySelectionScreen(),
   };
 

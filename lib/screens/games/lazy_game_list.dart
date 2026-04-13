@@ -39,16 +39,17 @@ class LazyGameList extends HookConsumerWidget {
     // Preload games when they become visible
     useEffect(() {
       final loader = ref.read(lazyGameLoaderProvider);
+      final lang = selectedLanguage;
       Future.microtask(() async {
         for (final game in visibleCoreGames) {
-          await loader.loadGameOnDemand(game);
+          await loader.loadGameOnDemand(game, language: lang);
         }
         for (final game in visibleCulturalGames) {
-          await loader.loadGameOnDemand(game);
+          await loader.loadGameOnDemand(game, language: lang);
         }
       });
       return null;
-    }, [visibleCoreGames.length, visibleCulturalGames.length]);
+    }, [visibleCoreGames.length, visibleCulturalGames.length, selectedLanguage]);
     
     return SingleChildScrollView(
       padding: EdgeInsets.all(4.w),

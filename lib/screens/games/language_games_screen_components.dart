@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/game/game_session_model.dart';
+import '../../utils/games_prefetch_language.dart';
 import '../../utils/pan_african_design_system.dart';
 import '../../widgets/pan_african_components.dart';
 import 'game_catalog.dart';
@@ -14,19 +15,6 @@ class LanguageSelector extends StatelessWidget {
     required this.selectedLanguage,
     required this.onLanguageChanged,
   });
-
-  final List<String> _languages = const [
-    'yoruba',
-    'swahili',
-    'hausa',
-    'igbo',
-    'zulu',
-    'xhosa',
-    'amharic',
-    'twi',
-    'pidgin',
-    'afrikaans',
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +41,7 @@ class LanguageSelector extends StatelessWidget {
           Wrap(
             spacing: PanAfricanSpacing.xs,
             runSpacing: PanAfricanSpacing.xs,
-            children: _languages.map((lang) {
+            children: kGamesHubLanguageSlugs.map((lang) {
               final isSelected = selectedLanguage == lang;
               return PanAfricanChip(
                 label: lang.toUpperCase(),

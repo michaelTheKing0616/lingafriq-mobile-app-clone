@@ -14,6 +14,7 @@ import 'package:lingafriq/screens/auth/world_class_login_screen.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
 import 'placement_test_screen.dart';
 import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/services/games_learning_language_preload.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
@@ -987,6 +988,7 @@ class _Step2LearningLanguage extends HookConsumerWidget {
       try {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('learning_language', selectedLanguage.value!);
+        scheduleGamesPreloadAfterLearningLanguageSaved(ref);
       } catch (e) {
         logger.error('Error saving learning language preference', error: e);
       }

@@ -184,9 +184,13 @@ class ProfileEditScreen extends HookConsumerWidget {
                   nationality: selectedCountry.value,
                 );
 
-                await ref.read(apiProvider.notifier).updateProfile(updatedUser.toMap());
-                ref.read(userProvider.notifier).overrideUser(updatedUser);
+                final ok = await ref.read(apiProvider.notifier).updateProfile(updatedUser.toMap());
+                if (!ok || !context.mounted) return;
 
+                // Server is source of truth for learningLanguage and prefs sync + games preload.
+                await ref.read(userProvider.notifier).refreshUser();
+
+                if (!context.mounted) return;
                 Navigator.of(context).pop();
                 HapticFeedback.lightImpact();
                 VxToast.show(context, msg: 'Success');
