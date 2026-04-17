@@ -162,56 +162,31 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
     // Use secure credential storage instead of SharedPreferences
     final credentialStorage = CredentialStorageService();
-    final storedCredentials = await credentialStorage.getStoredCredentials();
-    
-    if (storedCredentials == null) {
-      ref.read(navigationProvider).navigateOffAll(const WorldClassLoginScreen());
-      return;
-    }
-
-    final email = storedCredentials['email']!;
-    final password = storedCredentials['password']!;
-
-    // CRITICAL FIX: Handle login errors gracefully - don't block navigation.
-    // Limit auto-login to 10 seconds so the splash screen doesn't hang.
+    // SECURITY: Do not store passwords on device.
+    // Attempt silent re-auth via refresh token, then hydrate user profile.
     try {
-      logger.info('Auto-login attempt', context: {'email': email});
-      
-      final user = await login(email: email, password: password, splashlogin: true)
-          .timeout(const Duration(seconds: 10));
-
-      // Login success
-      if (user is ProfileModel) {
-        logger.info('Auto-login successful');
-        ref.read(userProvider.notifier).overrideUser(user);
-        unawaited(ref.read(apiProvider.notifier).registerDevice()); // Non-blocking
-        
-        // Check email verification status
-        if (!user.emailVerified) {
-          ref.read(navigationProvider).navigateOffAll(
-            EmailVerificationScreen(
-              email: email,
-              firstName: user.first_name,
-            ),
-          );
+      final refreshed = await ref.read(apiProvider.notifier).refreshAccessToken();
+      if (refreshed != null && refreshed.trim().isNotEmpty) {
+        await ref.read(userProvider.notifier).refreshUser();
+        final hydrated = ref.read(userProvider);
+        if (hydrated != null) {
+          unawaited(ref.read(apiProvider.notifier).registerDevice()); // Non-blocking
+          if (!hydrated.emailVerified) {
+            final userEmail = (await credentialStorage.getStoredEmail()) ?? hydrated.email;
+            ref.read(navigationProvider).navigateOffAll(
+              EmailVerificationScreen(
+                email: userEmail,
+                firstName: hydrated.first_name,
+              ),
+            );
+            return;
+          }
+          ref.read(navigationProvider).navigateOffAll(const TabsViewMaterial3());
           return;
         }
-        
-        ref.read(navigationProvider).navigateOffAll(const TabsViewMaterial3());
-        return;
       }
     } catch (e) {
-      // Login failed - clear invalid credentials and show login screen
-      logger.warn('Auto-login failed, showing login screen', error: e, context: {
-        'errorType': e.runtimeType.toString(),
-        'isDioException': e is DioException,
-        'dioErrorType': e is DioException ? e.type.toString() : null,
-      });
-      try {
-        await credentialStorage.clearCredentials();
-      } catch (_) {
-        // Ignore clear errors
-      }
+      logger.warn('Silent re-auth via refresh token failed', error: e);
     }
 
     // Navigate to login screen (either no credentials or login failed)

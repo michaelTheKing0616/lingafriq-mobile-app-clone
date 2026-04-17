@@ -256,6 +256,34 @@ class VoiceApiService {
     try {
       final normalizedLanguage = _normalizeLanguage(language);
       final clipped = text.length > 500 ? text.substring(0, 500) : text;
+      // Prefer the newer voice-service synth endpoint (supports voice + speed),
+      // and fall back to MMS-TTS when unavailable.
+      try {
+        final response = await _dio.post(
+          ApiContract.url(ApiContract.voice.ttsSynthesize),
+          data: {
+            'text': clipped,
+            'language': normalizedLanguage,
+            if (voice != null && voice.trim().isNotEmpty) 'voice': voice.trim(),
+            'speed': speed,
+          },
+          options: Options(
+            responseType: ResponseType.bytes,
+            contentType: 'application/json',
+            receiveTimeout: const Duration(seconds: 45),
+            sendTimeout: const Duration(seconds: 30),
+          ),
+        );
+
+        if (response.statusCode == 200 && response.data != null) {
+          final data = response.data;
+          if (data is List<int>) return Uint8List.fromList(data);
+          if (data is Uint8List) return data;
+        }
+      } catch (_) {
+        // ignore and fall back
+      }
+
       final response = await _dio.get(
         ApiContract.url(ApiContract.voice.mmsTts),
         queryParameters: <String, dynamic>{

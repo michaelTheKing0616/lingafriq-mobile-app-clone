@@ -11,9 +11,44 @@ class StitchNavigationHubScreen extends StatelessWidget {
       routes: [
         _HubRoute('Magazine & discovery', 'magazine'),
         _HubRoute('FLB heritage archive', 'flb-heritage-archive'),
+        _HubRoute('Heritage milestones (API)', 'heritage-milestones'),
+        _HubRoute('Living dictionary', 'living-dictionary'),
+        _HubRoute('Dialect: Common vs local', 'dialect-preference'),
         _HubRoute('Import / studio media', 'import_media'),
         _HubRoute('UGC hub', 'ugc'),
         _HubRoute('Vocabulary / glossary', 'vocabulary-builder'),
+      ],
+    ),
+    _HubSection(
+      title: 'Learning v2 · speak engine & trainers',
+      routes: [
+        _HubRoute('Speak engine API lab (code-switch · register coach)', 'speak-engine-lab'),
+        _HubRoute(
+          'Conversation practice (speak missions)',
+          'conversation-scenarios',
+          {'language': 'sw', 'languageName': 'Swahili'},
+        ),
+        _HubRoute('Tone & rhythm trainer', 'tone-rhythm-trainer', {'language': 'yoruba'}),
+        _HubRoute('Phrase DNA (templates)', 'phrase-dna-templates', {'language': 'yo'}),
+        _HubRoute('Synthetic voice styles', 'synthetic-voice-styles', {'language': 'yoruba'}),
+        _HubRoute('Point & say (AR)', 'point-and-say', {'language': 'yoruba'}),
+      ],
+    ),
+    _HubSection(
+      title: 'Passport · micro-mentors',
+      routes: [
+        _HubRoute(
+          'Passport proctored session',
+          'passport-proctored',
+          {'language': 'yoruba', 'proctorMode': 'device_rules'},
+        ),
+        _HubRoute(
+          'Passport credential (verify demo)',
+          'passport-credential',
+          {'verifyToken': 'demo-token', 'level': 'L2', 'score': 88},
+        ),
+        _HubRoute('Micro-mentor hub', 'micro-mentor-hub'),
+        _HubRoute('Staff mentor reports', 'staff-micro-mentor-reports'),
       ],
     ),
     _HubSection(
@@ -30,6 +65,21 @@ class StitchNavigationHubScreen extends StatelessWidget {
         _HubRoute('Classroom lobby (tribes)', 'classroom-lobby'),
         _HubRoute('Classroom notes', 'classroom-notes'),
         _HubRoute('Speaker queue', 'speaker-queue'),
+        _HubRoute(
+          'Classroom roster (v2 API)',
+          'classroom-roster-v2',
+          {'tribeId': '507f1f77bcf86cd799439011', 'tribeName': 'Demo classroom'},
+        ),
+        _HubRoute(
+          'Classroom assignments (v2 API)',
+          'classroom-assignments-v2',
+          {'tribeId': '507f1f77bcf86cd799439011', 'tribeName': 'Demo classroom'},
+        ),
+        _HubRoute(
+          'Classroom privacy (v2 API)',
+          'classroom-privacy-v2',
+          {'tribeId': '507f1f77bcf86cd799439011', 'tribeName': 'Demo classroom'},
+        ),
       ],
     ),
     _HubSection(
@@ -86,7 +136,10 @@ class StitchNavigationHubScreen extends StatelessWidget {
                       subtitle: Text('/${r.name}', style: const TextStyle(fontSize: 12)),
                       trailing: const Icon(Icons.chevron_right_rounded),
                       onTap: () {
-                        Navigator.of(context).pushNamed('/${r.name}');
+                        Navigator.of(context).pushNamed(
+                          '/${r.name}',
+                          arguments: r.arguments,
+                        );
                       },
                     ),
                   )
@@ -106,7 +159,9 @@ class _HubSection {
 }
 
 class _HubRoute {
-  const _HubRoute(this.label, this.name);
+  /// Optional [arguments] for routes that need `tribeId` / `roomName` / etc.
+  const _HubRoute(this.label, this.name, [this.arguments]);
   final String label;
   final String name;
+  final Object? arguments;
 }

@@ -14,6 +14,7 @@ import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/services/hybrid_polie/translation_service.dart';
 import 'package:lingafriq/providers/onboarding_provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'culture_magazine_enhanced_features.dart';
 
 /// Enhanced Cultural Magazine Screen with Polie Translation, Cultural Context, Vocabulary
@@ -417,6 +418,7 @@ class _ArticleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return GestureDetector(
       onTap: () {
         HapticFeedback.lightImpact();
@@ -447,28 +449,18 @@ class _ArticleCard extends StatelessWidget {
                         borderRadius: BorderRadius.vertical(
                           top: Radius.circular(PanAfricanRadius.lg),
                         ),
-                        child: Image.network(
-                          article['imageUrl'] as String,
+                        child: CachedNetworkImage(
+                          imageUrl: article['imageUrl'] as String,
                           width: double.infinity,
                           height: double.infinity,
                           fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => Center(
-                            child: Icon(
-                              Icons.article,
-                              size: 48.sp,
-                              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
-                            ),
-                          ),
+                          fadeInDuration: const Duration(milliseconds: 180),
+                          placeholder: (_, __) => _ArticleImageFallback(colors: colors),
+                          errorWidget: (_, __, ___) => _ArticleImageFallback(colors: colors),
                         ),
                       )
                     else
-                      Center(
-                        child: Icon(
-                          Icons.article,
-                          size: 48.sp,
-                          color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
-                        ),
-                      ),
+                      _ArticleImageFallback(colors: colors),
                     Positioned(
                       top: PanAfricanSpacing.xs,
                       right: PanAfricanSpacing.xs,
@@ -550,6 +542,22 @@ class _ArticleCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ArticleImageFallback extends StatelessWidget {
+  final ColorScheme colors;
+  const _ArticleImageFallback({required this.colors});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Icon(
+        Icons.article,
+        size: 48.sp,
+        color: colors.onPrimary.withOpacity(0.7),
       ),
     );
   }

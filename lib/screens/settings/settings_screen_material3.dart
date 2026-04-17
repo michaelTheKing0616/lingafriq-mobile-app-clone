@@ -18,6 +18,7 @@ import 'package:lingafriq/services/offline/offline_service.dart' show OfflineSer
 import 'package:lingafriq/screens/settings/edit_profile_screen.dart';
 import 'package:lingafriq/screens/settings/change_password_screen.dart';
 import 'package:lingafriq/screens/settings/privacy_settings_screen.dart';
+import 'package:lingafriq/screens/settings/synthetic_voice_styles_screen.dart';
 import 'package:lingafriq/providers/theme_mode_provider.dart';
 import 'package:lingafriq/providers/notification_provider.dart';
 import 'package:lingafriq/screens/goals/daily_goals_screen.dart';
@@ -31,6 +32,7 @@ import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
+import 'package:lingafriq/screens/staff/micro_mentor_reports_screen.dart';
 import 'package:lingafriq/services/auth/biometric_preference_service.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 
@@ -197,6 +199,26 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                         },
                         activeColor: PanAfricanColors.primary,
                       ),
+                      isDark: isDark.value,
+                    ),
+                    _SettingsDivider(isDark: isDark.value),
+                    _SettingsTile(
+                      icon: Icons.record_voice_over_rounded,
+                      title: 'Tutor voice styles',
+                      subtitle: 'Synthetic, non-identifying voices (opt-in)',
+                      trailing: Icon(
+                        Icons.chevron_right_rounded,
+                        color: PanAfricanColors.neutralMedium,
+                      ),
+                      onTap: () {
+                        HapticFeedback.lightImpact();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (_) => const SyntheticVoiceStylesScreen(language: 'yoruba'),
+                          ),
+                        );
+                      },
                       isDark: isDark.value,
                     ),
                     _SettingsDivider(isDark: isDark.value),
@@ -391,6 +413,28 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       },
                       isDark: isDark.value,
                     ),
+                    if (currentUser?.isStaffOrAdmin == true) ...[
+                      _SettingsDivider(isDark: isDark.value),
+                      _SettingsTile(
+                        icon: Icons.shield_outlined,
+                        title: 'Micro-mentor reports',
+                        subtitle: 'Review safety reports (staff)',
+                        trailing: Icon(
+                          Icons.chevron_right_rounded,
+                          color: PanAfricanColors.neutralMedium,
+                        ),
+                        onTap: () {
+                          HapticFeedback.lightImpact();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute<void>(
+                              builder: (context) => const StaffMicroMentorReportsScreen(),
+                            ),
+                          );
+                        },
+                        isDark: isDark.value,
+                      ),
+                    ],
                   ],
                   isDark.value,
                   4,

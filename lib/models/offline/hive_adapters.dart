@@ -103,6 +103,9 @@ class LocalVocabularyAdapter extends TypeAdapter<LocalVocabulary> {
       audioPath: fields[5] as String?,
       exampleSentence: fields[6] as String?,
       exampleTranslation: fields[7] as String?,
+      sourceMediaId: fields[19] as String?,
+      sourceStartMs: fields[20] as int?,
+      sourceEndMs: fields[21] as int?,
       easeFactor: (fields[8] as num?)?.toDouble() ?? 2.5,
       interval: fields[9] as int? ?? 0,
       repetitions: fields[10] as int? ?? 0,
@@ -120,7 +123,7 @@ class LocalVocabularyAdapter extends TypeAdapter<LocalVocabulary> {
   @override
   void write(BinaryWriter writer, LocalVocabulary obj) {
     writer
-      ..writeByte(19)
+      ..writeByte(22)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -158,7 +161,13 @@ class LocalVocabularyAdapter extends TypeAdapter<LocalVocabulary> {
       ..writeByte(17)
       ..write(obj.addedAt)
       ..writeByte(18)
-      ..write(obj.isMastered);
+      ..write(obj.isMastered)
+      ..writeByte(19)
+      ..write(obj.sourceMediaId)
+      ..writeByte(20)
+      ..write(obj.sourceStartMs)
+      ..writeByte(21)
+      ..write(obj.sourceEndMs);
   }
 }
 

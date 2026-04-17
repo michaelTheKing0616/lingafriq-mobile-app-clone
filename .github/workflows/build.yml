@@ -39,6 +39,9 @@ jobs:
           flutter analyze --no-fatal-infos --no-fatal-warnings
           echo "✅ Flutter analyze passed"
 
+      - name: i18n literal gate
+        run: dart run tool/i18n_gate.dart
+
       - name: Flutter test
         run: |
           echo "🧪 Running Flutter tests..."

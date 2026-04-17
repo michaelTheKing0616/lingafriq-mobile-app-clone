@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&amp;family=Lexend:wght@300;400;500&amp;family=Dosis:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-surface": "#2d1600",
+              "on-background": "#2d1600",
+              "inverse-surface": "#462a0d",
+              "surface-tint": "#aa3601",
+              "inverse-primary": "#ffb59c",
+              "surface-variant": "#ffdcbf",
+              "on-secondary-fixed-variant": "#005320",
+              "tertiary-container": "#9b6c00",
+              "on-tertiary-fixed": "#281900",
+              "on-error-container": "#93000a",
+              "surface": "#fff8f5",
+              "secondary-fixed": "#7ffc97",
+              "surface-container-low": "#fff1e8",
+              "surface-container": "#ffeada",
+              "surface-container-high": "#ffe3cd",
+              "inverse-on-surface": "#ffeee1",
+              "on-tertiary": "#ffffff",
+              "surface-container-lowest": "#ffffff",
+              "primary": "#a73400",
+              "primary-container": "#c94c1a",
+              "surface-container-highest": "#ffdcbf",
+              "surface-dim": "#ffd2aa",
+              "on-primary-fixed-variant": "#822700",
+              "tertiary-fixed": "#ffdeab",
+              "primary-fixed-dim": "#ffb59c",
+              "error": "#ba1a1a",
+              "error-container": "#ffdad6",
+              "secondary-fixed-dim": "#62df7d",
+              "tertiary-fixed-dim": "#f8bc51",
+              "outline-variant": "#e0bfb5",
+              "on-tertiary-fixed-variant": "#5f4100",
+              "on-secondary-container": "#007230",
+              "on-tertiary-container": "#fffbff",
+              "on-primary-fixed": "#390c00",
+              "on-secondary": "#ffffff",
+              "on-primary": "#ffffff",
+              "on-secondary-fixed": "#002109",
+              "secondary": "#006e2d",
+              "secondary-container": "#7cf994",
+              "on-primary-container": "#fffbff",
+              "tertiary": "#7b5500",
+              "background": "#fff8f5",
+              "on-error": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Lexend"],
+              "label": ["Dosis"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-speaker-glow {
+            box-shadow: 0 0 0 4px #7b5500;
+        }
+        body {
+            font-family: 'Dosis', sans-serif;
+            background-color: #fff8f5;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-surface overflow-hidden h-screen flex flex-col">
+<!-- Top Navigation Anchor -->
+<header class="bg-[#fff8f5] dark:bg-stone-950/80 backdrop-blur-md flex justify-between items-center w-full px-6 py-4 z-50">
+<div class="flex items-center gap-4">
+<span class="text-[#a73400] dark:text-[#ffdbcf] font-black italic font-headline text-2xl tracking-tight">LingAfriq</span>
+<div class="h-6 w-[1px] bg-outline-variant/30"></div>
+<div class="flex items-center gap-2 bg-surface-container-low px-4 py-1.5 rounded-full">
+<span class="material-symbols-outlined text-primary text-sm">timer</span>
+<span class="font-label font-bold text-primary tracking-widest uppercase text-xs">24:15 REMAINING</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-6 mr-6">
+<span class="text-[#a73400] font-label font-bold tracking-widest uppercase text-xs cursor-pointer">Class</span>
+<span class="text-[#c94c1a] font-label font-bold tracking-widest uppercase text-xs cursor-pointer opacity-70">Village</span>
+</div>
+<button class="bg-surface-container-highest p-2 rounded-full hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
+</button>
+<div class="w-10 h-10 rounded-full overflow-hidden bg-primary-fixed flex items-center justify-center">
+<img alt="Profile" class="w-full h-full object-cover" data-alt="close up portrait of a smiling young African woman with short natural hair in warm daylight studio setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqzxp6NNfX2G2OexPzaCqofcIdOKIeDKQNrMyRln82w44RY75atbte_DOsugCRQrosUK-eVngRXlFoutgnLTIwNku4VjNY_0LvfzuZY_xlyWD0_XuSq1DcdKdPEzneGsfJtq1Kf3hoisvXpOWGR2EFPOe1VNZTvHxXhiL6Ga-jiTXCG2aI6HfW-swV-RjbJ5FiU6qpZTqMViDihNl268aPhc4L3XImVmD0SYKySdaYeM1F3oVyocjp6BTZ3adNA96-yZf_IF8tZwmX"/>
+</div>
+</div>
+</header>
+<!-- Main Practice Canvas -->
+<main class="flex-1 flex flex-col md:flex-row p-4 md:p-6 gap-6 overflow-hidden">
+<!-- Video Grid: Using Asymmetric Layout Principle -->
+<section class="flex-1 grid grid-cols-1 md:grid-cols-2 grid-rows-2 gap-4 h-full">
+<!-- Participant 1 (Active Speaker) -->
+<div class="relative group surface-container-high rounded-lg overflow-hidden active-speaker-glow transition-all duration-500">
+<img class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" data-alt="candid shot of a young West African man speaking during a video call, warm interior lighting, blurred bookshelf background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNZ0kaxjC6sjkKiWDxJXXbSOhFKOtn8t66t6wCcH7Rl0iIvKQ2dUyazNAvFN4TsTDYSyAV_QuELleovhk5LqxhpQqNPXh2gURoSbmFY8Dm1hahRrx0rfKVOI_nnCLMwb0G1SoAx9ZDuCf4pFjlbZt_2egH6z5ziIeYkmqmCNq8OFhw1lRJEKXrMmKR81AA3BzZUuTqwNI7LgJMhGF5F4ScCg12aSoDJNmbymNNKRyxH9iPBM4nQBqR0B0TWtbH5XiiCxaA9REesEju"/>
+<div class="absolute bottom-4 left-4 flex flex-col gap-1">
+<span class="bg-primary/80 backdrop-blur-md text-white font-label font-bold px-3 py-1 rounded-full text-sm">Amara • Igbo</span>
+<div class="flex gap-1">
+<span class="w-1 h-3 bg-tertiary animate-pulse rounded-full"></span>
+<span class="w-1 h-4 bg-tertiary animate-pulse delay-75 rounded-full"></span>
+<span class="w-1 h-2 bg-tertiary animate-pulse delay-150 rounded-full"></span>
+</div>
+</div>
+<div class="absolute top-4 right-4 bg-tertiary/20 backdrop-blur-md p-2 rounded-full">
+<span class="material-symbols-outlined text-tertiary text-lg" style="font-variation-settings: 'FILL' 1;">mic</span>
+</div>
+</div>
+<!-- Participant 2 -->
+<div class="relative group surface-container-low rounded-lg overflow-hidden">
+<img class="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition-opacity" data-alt="medium shot of a person with stylish glasses smiling at a laptop screen in a bright, modern minimalist office space" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5miM0pTReMXELkMFNP1tCsJlm-Z2-CvNC9gkaLrjX5pHoLWXdA9Z5nMwzRfLVRdZvA6-Qj2pp8JXf6T0PIcw5m36fNEph-x9Sh0LHsl_5fnh6W-pGOIKENhb46Dno9gvls6mvsr0sKya6Mcgd4G2cBq3z7FsuYj5OzEjxjnijcA0ubqhNcDipcpV_chfE0XVx2h6Tt_WHXEDxDz_O7I2LVQ6uBR3ggcgoztvLQQfz8TmMTEjGjAikF-o6hIA_ErKAednRgHHtBZXV"/>
+<div class="absolute bottom-4 left-4">
+<span class="bg-on-surface/60 backdrop-blur-md text-white font-label font-bold px-3 py-1 rounded-full text-sm">Kofi • Twi</span>
+</div>
+</div>
+<!-- Participant 3 -->
+<div class="relative group surface-container-low rounded-lg overflow-hidden">
+<img class="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition-opacity" data-alt="young African woman focusing intensely on her tablet during an online learning session, soft window lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHrln_dAq-TTPOyxZMIZ5nSDnBb-n3A_RpapgcwxL7YC3HS1qTHD56cBR-ZE3FKUtzINMwj_MQIShLsIJQzBjvQXGxGokHRcRo4NZwRvNHRo-mnheQHXJAbpsMmn8AMrDpji6i91RztmENqu7v0G9NQ0X6kvYQfL61io0fq0lp5qCWYo4PBswUlHViMIYQ5tzYF9NCLYY4DSqW8hMI7mxo-s_kEcPU7WQSga_qmeRfxoFPZ7c0eX4uOhLyPEitDRin2BNQAZfNCEwK"/>
+<div class="absolute bottom-4 left-4">
+<span class="bg-on-surface/60 backdrop-blur-md text-white font-label font-bold px-3 py-1 rounded-full text-sm">Zara • Swahili</span>
+</div>
+</div>
+<!-- User (Self) -->
+<div class="relative group bg-surface-dim rounded-lg overflow-hidden">
+<img class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all" data-alt="selfie-view of a woman smiling, natural lighting, high focus on face, casual clothing" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWWxoFpgUobXMCyWVQW13uf6CLuJdWLpkrlcixJjyvY0CPnOVGlgMGYe-vj2Qsn1buKcEjQL4PibZOkZ2xS-aLhNXDrAAOFr24DW3d4yoU5xBF13S_Z6yxWpZoNoqoTcOVR4psqICcLdFucDZP87I4oQS_b0X1qrSFtRZ4E842d3_IlhQeRzJnMdKNA1fZZjFOpVLQJThQWksg6nvjVac9yI80FKpBdcQ4dLeMwyxMzonwj7Z21i7MQ7iOSUiey-DBbJSOuM77ewhy"/>
+<div class="absolute bottom-4 left-4">
+<span class="bg-primary-container text-white font-label font-bold px-3 py-1 rounded-full text-sm">You (You)</span>
+</div>
+<div class="absolute top-4 right-4 flex gap-2">
+<div class="bg-white/30 backdrop-blur-md p-2 rounded-full">
+<span class="material-symbols-outlined text-white text-lg">videocam</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Tools Sidebar: Glassmorphism Bento Grid -->
+<aside class="w-full md:w-80 flex flex-col gap-6 h-full">
+<!-- Flashcard Tool -->
+<div class="surface-container rounded-lg p-6 relative overflow-hidden flex flex-col gap-4 shadow-[0_20px_40px_rgba(45,22,0,0.06)]">
+<div class="flex items-center justify-between">
+<span class="font-label font-bold text-xs tracking-widest text-primary uppercase">Flashcard</span>
+<span class="text-[10px] text-on-surface-variant/60 font-medium">12/30 DECK</span>
+</div>
+<div class="bg-surface-bright rounded-lg p-8 flex flex-col items-center justify-center text-center gap-4 border-2 border-dashed border-outline-variant/30 min-h-[160px]">
+<h2 class="font-headline text-3xl font-extrabold text-primary tracking-tight">Msururu</h2>
+<p class="text-on-surface-variant font-body text-xs italic">Tap to reveal translation</p>
+</div>
+<!-- Tribe Totem overlapping edge -->
+<div class="absolute -bottom-4 -right-4 w-20 h-20 opacity-10">
+<span class="material-symbols-outlined text-[80px]" data-icon="auto_stories">auto_stories</span>
+</div>
+</div>
+<!-- Scratchpad Tool -->
+<div class="flex-1 bg-surface-container-low rounded-lg p-6 flex flex-col gap-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-lg" data-icon="edit_note">edit_note</span>
+<span class="font-label font-bold text-xs tracking-widest text-secondary uppercase">Shared Scratchpad</span>
+</div>
+<div class="flex-1 bg-white/50 rounded-lg p-4 font-body text-sm text-on-surface leading-relaxed border-none focus:ring-2 focus:ring-primary-fixed outline-none resize-none">
+<p class="mb-2 text-primary font-bold">Amara:</p>
+<p class="mb-4 text-on-surface-variant">"Msururu" typically means a queue or a line in Swahili.</p>
+<p class="mb-2 text-secondary font-bold">Kofi:</p>
+<p class="text-on-surface-variant">In Twi, we'd say "Ntentenee" for a long stretch/line.</p>
+</div>
+</div>
+<!-- Session Controls -->
+<div class="bg-surface-container-highest rounded-lg p-4 flex justify-between items-center gap-2">
+<div class="flex gap-2">
+<button class="w-12 h-12 flex items-center justify-center bg-surface-container-lowest rounded-full text-on-surface hover:bg-white transition-all">
+<span class="material-symbols-outlined">mic</span>
+</button>
+<button class="w-12 h-12 flex items-center justify-center bg-surface-container-lowest rounded-full text-on-surface hover:bg-white transition-all">
+<span class="material-symbols-outlined">videocam</span>
+</button>
+</div>
+<button class="bg-error text-white font-label font-bold px-6 py-3 rounded-full uppercase tracking-widest text-xs hover:bg-error-container hover:text-on-error-container transition-all">
+                    End Session
+                </button>
+</div>
+</aside>
+</main>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-end px-4 h-24 bg-[#a73400]/90 backdrop-blur-xl rounded-t-[2.5rem] z-50 shadow-2xl">
+<div class="flex flex-col items-center justify-center text-[#ffdbcf]/70 p-3">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label font-medium text-[10px] uppercase tracking-widest">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#ffdbcf]/70 p-3">
+<span class="material-symbols-outlined" data-icon="public">public</span>
+<span class="font-label font-medium text-[10px] uppercase tracking-widest">Global</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-[#fff8f5]/20 text-white rounded-full p-3 mb-1">
+<span class="material-symbols-outlined" data-icon="record_voice_over">record_voice_over</span>
+<span class="font-label font-medium text-[10px] uppercase tracking-widest">Class</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#ffdbcf]/70 p-3">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-label font-medium text-[10px] uppercase tracking-widest">Tribe</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#ffdbcf]/70 p-3">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-label font-medium text-[10px] uppercase tracking-widest">Village</span>
+</div>
+</nav>
+</body></html>

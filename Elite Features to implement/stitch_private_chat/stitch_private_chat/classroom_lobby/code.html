@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Lexend:wght@300;400;500;600&amp;family=Dosis:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-container": "#9b6c00",
+              "on-secondary-fixed-variant": "#005320",
+              "surface-variant": "#ffdcbf",
+              "on-tertiary": "#ffffff",
+              "surface-tint": "#aa3601",
+              "inverse-on-surface": "#ffeee1",
+              "background": "#fff8f5",
+              "on-secondary-container": "#007230",
+              "on-primary-fixed-variant": "#822700",
+              "on-surface-variant": "#59413a",
+              "surface-container-highest": "#ffdcbf",
+              "secondary-container": "#7cf994",
+              "on-tertiary-fixed-variant": "#5f4100",
+              "tertiary-fixed": "#ffdeab",
+              "surface-container-lowest": "#ffffff",
+              "primary": "#a73400",
+              "surface-container-high": "#ffe3cd",
+              "secondary-fixed": "#7ffc97",
+              "on-primary-fixed": "#390c00",
+              "on-error-container": "#93000a",
+              "on-error": "#ffffff",
+              "on-background": "#2d1600",
+              "on-primary": "#ffffff",
+              "inverse-primary": "#ffb59c",
+              "surface-container-low": "#fff1e8",
+              "on-primary-container": "#fffbff",
+              "on-secondary": "#ffffff",
+              "secondary-fixed-dim": "#62df7d",
+              "surface-dim": "#ffd2aa",
+              "outline-variant": "#e0bfb5",
+              "on-secondary-fixed": "#002109",
+              "primary-fixed-dim": "#ffb59c",
+              "on-surface": "#2d1600",
+              "on-tertiary-fixed": "#281900",
+              "surface-bright": "#fff8f5",
+              "tertiary-fixed-dim": "#f8bc51",
+              "outline": "#8c7168",
+              "error-container": "#ffdad6",
+              "primary-container": "#c94c1a",
+              "error": "#ba1a1a",
+              "tertiary": "#7b5500",
+              "surface-container": "#ffeada",
+              "surface": "#fff8f5",
+              "secondary": "#006e2d",
+              "primary-fixed": "#ffdbcf",
+              "on-tertiary-container": "#fffbff",
+              "inverse-surface": "#462a0d"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Lexend"],
+              "label": ["Lexend"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-effect {
+        background: rgba(167, 52, 0, 0.8);
+        backdrop-filter: blur(20px);
+      }
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 0px;
+        height: 0px;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body text-on-surface custom-scrollbar">
+<!-- Top Navigation Shell -->
+<header class="bg-[#fff8f5] dark:bg-stone-950 shadow-[0_20px_40px_rgba(45,22,0,0.06)] fixed top-0 z-50 flex justify-between items-center px-6 h-16 w-full">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden ring-2 ring-primary/20">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of a woman with intricate traditional African beaded jewelry and facial patterns, soft warm studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbFk7dYw7zzF1ejXRGEyMKMk0P7IW83vXpMZArXec06l3bYfl9DoBc0qrs2Km3MynlWKx10lEwjktGTiVM3Eu9RupiEvONGLn_n_4es-Y4e4ojCVCroYr8-Yp3NALH4bpyeR53M172V3az8y_8MlTJBZK3HW_sWvVQnPzIlJjlDyEtHx5O2A_9w_sHf9A7MiG1HDJbIt3bqfS8bNI-Da6f2nZyMLiOSBE0vQktjAAq-21kMbd5coNapvQkdjSYaMYTyYi3NHkqNUQq"/>
+</div>
+<h1 class="font-headline font-bold text-2xl tracking-tight text-[#a73400] dark:text-[#ffdbcf]">Classrooms</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-[#a73400] hover:bg-[#ffeada] transition-colors active:scale-95">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-5xl mx-auto">
+<!-- Filter Section: Asymmetric Pill Design -->
+<section class="flex gap-3 overflow-x-auto pb-6 custom-scrollbar">
+<button class="px-6 py-2.5 rounded-full bg-primary text-white font-medium whitespace-nowrap shadow-lg shadow-primary/20 transition-transform active:scale-95">All Sessions</button>
+<button class="px-6 py-2.5 rounded-full bg-surface-container text-on-surface-variant font-medium whitespace-nowrap hover:bg-surface-container-high transition-colors">Starting Soon</button>
+<button class="px-6 py-2.5 rounded-full bg-surface-container text-on-surface-variant font-medium whitespace-nowrap hover:bg-surface-container-high transition-colors">My Languages</button>
+</section>
+<!-- Featured / Active Sessions Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Card 1: Mastering Twi Vowels -->
+<div class="group bg-surface-container-low rounded-lg p-6 relative overflow-hidden transition-all hover:bg-surface-container hover:shadow-xl hover:shadow-primary/5">
+<div class="absolute top-0 right-0 p-4">
+<span class="flex items-center gap-1.5 px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-bold uppercase tracking-wider">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+                        Live
+                    </span>
+</div>
+<div class="flex flex-col gap-4">
+<div class="w-14 h-14 rounded-lg bg-tertiary-fixed overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Professional portrait of a mature Ghanaian man with a warm smile, wearing a traditional kente cloth stole" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcLqmF9JTWuoJ9HC-h6Lyarn5nvCG5GbTgnYky5GONMMmSt1gcNwM1m5UTZxRdZ16MZZjMchIvftqtWz0seCtzINcn7YGiy99iQrBOxmtV3PcZqwcPM8-UY10ZYiUL1CnjCE-YhxL3bOsgQcBoxq15Fn8cBrBnRyHEMUULw9yHyRowzWlw_5C3lsuW3LXH1TNdTTy6nXA-_pmlNNnNQmZqshy1RJN2X84EPasHf4o6hg-ZC0GSg1QRVnH1DrAMcIS8A60AnxuSnW_5"/>
+</div>
+<div>
+<h3 class="font-headline font-bold text-xl text-on-surface mb-1">Mastering Twi Vowels</h3>
+<p class="text-on-surface-variant text-sm font-medium">with Elder Kwesi • Level 14 Storyteller</p>
+</div>
+<div class="flex items-center justify-between mt-4">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-lg">groups</span>
+<span class="text-sm font-semibold tracking-tight">142 listening</span>
+</div>
+<button class="px-8 py-2 rounded-full bg-primary text-white font-bold hover:bg-primary-container transition-all active:scale-95 shadow-md shadow-primary/10">
+                            Join
+                        </button>
+</div>
+</div>
+</div>
+<!-- Card 2: Yoruba Proverbs -->
+<div class="group bg-surface-container-low rounded-lg p-6 relative overflow-hidden transition-all hover:bg-surface-container hover:shadow-xl hover:shadow-primary/5">
+<div class="absolute top-0 right-0 p-4">
+<span class="flex items-center gap-1.5 px-3 py-1 bg-surface-container-highest text-on-surface-variant rounded-full text-xs font-bold uppercase tracking-wider">
+                        Starting in 5m
+                    </span>
+</div>
+<div class="flex flex-col gap-4">
+<div class="w-14 h-14 rounded-lg bg-tertiary-fixed overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close up of an African woman smiling brightly with traditional headwrap in vibrant earthy colors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZIO74-lA_q9zmntnL0JpbT4cWXYDfDfxr86q9OJXX8v9s1q98Kr9M6bE-WCSzd9yMn_IwBjClDNTH9ywdNAt3MsqMryOBnOmofxmpFMpybIC6nqpph43f-Hq2KceH2vBB50L7Lwyux1cXvYR-Vt_Hxj5V8r_FKeRIQU0GW6RDn80jD81tnUAU-fTSZmx-SoNdpTVICu9aNJlCR8Ub7RTOio8xLaRxEee9R-SB1ylnBdQLq1EmAV4T_45YiPRFhrIObDOMCWl2WH4m"/>
+</div>
+<div>
+<h3 class="font-headline font-bold text-xl text-on-surface mb-1">Yoruba Wisdom: Proverbs</h3>
+<p class="text-on-surface-variant text-sm font-medium">with Sade Adeyemi • Cultural Lead</p>
+</div>
+<div class="flex items-center justify-between mt-4">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-lg">schedule</span>
+<span class="text-sm font-semibold tracking-tight">88 interested</span>
+</div>
+<button class="px-8 py-2 rounded-full bg-surface-container-highest text-primary font-bold hover:bg-surface-variant transition-all active:scale-95">
+                            Remind
+                        </button>
+</div>
+</div>
+</div>
+<!-- Card 3: Swahili for Travelers (Bento-style variation) -->
+<div class="md:col-span-2 group bg-surface-container-low rounded-lg p-8 relative overflow-hidden flex flex-col md:flex-row items-center gap-8 transition-all hover:bg-surface-container">
+<div class="relative">
+<div class="w-32 h-32 rounded-xl bg-primary-fixed overflow-hidden transform -rotate-3 group-hover:rotate-0 transition-transform">
+<img class="w-full h-full object-cover" data-alt="Wide shot of a diverse group of young people laughing and talking in an outdoor communal space with warm sunlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjqszdIBEUez0mXIXghC39YmBffW5ez2lP0ZUfJYZyhVjwsSrsFjuoy-NhjgxNGstevc6c4ljI4NxVRNF6SF97tVy68MNrzH9WZaiUdP-e-KC3jbrTZEt0Rf5UdeW1WJELD_Q5WHuAuqygcNgFpt69RYnWnc3vURTi9aVpGtAzijLQ4dsNRb1EFjVgNKSLXonocqwXR4La9osHdUHi8Ee3DaDPUWvOCPyyD0E6iEo9JG8cJHx5ApWaJB3TbB-6ZG-Z7q_FEt39WJTS"/>
+</div>
+<div class="absolute -bottom-2 -right-2 bg-tertiary-fixed w-12 h-12 rounded-full border-4 border-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-on-tertiary-fixed">podcasts</span>
+</div>
+</div>
+<div class="flex-1 text-center md:text-left">
+<div class="flex items-center justify-center md:justify-start gap-2 mb-2">
+<span class="px-2 py-0.5 rounded bg-on-secondary-fixed-variant text-secondary-fixed text-[10px] font-black uppercase">Trending</span>
+</div>
+<h3 class="font-headline font-bold text-2xl text-on-surface mb-2">Swahili: Market Negotiations</h3>
+<p class="text-on-surface-variant leading-relaxed max-w-md">Join Jabari for a live roleplay session focused on bargaining in the vibrant markets of Dar es Salaam.</p>
+</div>
+<div class="flex flex-col items-center gap-3">
+<div class="flex -space-x-3 mb-2">
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-slate-300 overflow-hidden"><img alt="user" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlInGYKkka9wxeW4onWbPJw7AoZSBg4_rV17OQ5G6wGnn-V3BERfUzcdpUZZYhhrcda0n2m3Rvq5zD7NkmnXXSKifjWsgco1j0pnd8v-ZfSCkSkybnUb5CWSDVydljPZcHOROOBbRgHkLZ_Nj76Tami6GXGpAOWuT9X7hXIK8-bAV360hNyXa6nu-xVtib7O4ak4Zz-IcmvUw3_ATpvjhyil-yZxvohe_XdnkMKncHlk4cOPbr1gCvkzAV1WztL-oI-1tRJzgkLAn0"/></div>
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-slate-400 overflow-hidden"><img alt="user" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8Xa75hcM0ssWA-norktD_2Ofp_bnx2jYVGPG5NQY-noVdeok6InWj8ZOp_3uxGkBboe95_P5PY4bKICsQHgSku-92ndyIH98ddWeVS_ztNkKTPWohsR9hQAGCPx8KDctBnezBjNEZujS1tyT8k2h0kHnUJakPEje7jmK9bCJt08rvZxn756ULEjHuOVWjOXVsaa1PGlwjdAVe-FtSGehT430_O16JoXMIJhe39KVBvrLrQsSfHN3QiAdkpJnaKYBztTW_3DXS6FBT"/></div>
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-slate-500 overflow-hidden"><img alt="user" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLlDzN9UDP-J9ulpB5yANI2VfZME-DwXXHsuqx1zjhGBSR2qVJ9wfPz5ghDczCPFNhwO-ONQMjVFzFGpJ95_3fiiiKndkQg5AMnKORufhDwub9AQQnyNk_Db26PlRX1sQYvEhcMuOy6LlwK3um0iLHTIC9A7QsxfrXtQnTS5c_TjhQlkVCqcQzaR6jR3tcKV4JB-np-ximrhtkJow_oLHWRfNeWvfhhqT-zhlhdDz3-39zF4OhuGTY2SWbOTwrDbZ3-4ai_gLt8LPg"/></div>
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-primary-container text-[10px] flex items-center justify-center text-white font-bold">+2k</div>
+</div>
+<button class="w-full md:w-auto px-10 py-3 rounded-full bg-primary text-white font-bold hover:shadow-lg hover:shadow-primary/30 transition-all active:scale-95">
+                        Jump In
+                    </button>
+</div>
+</div>
+<!-- Card 4: Amharic Basics -->
+<div class="group bg-surface-container-low rounded-lg p-6 relative overflow-hidden transition-all hover:bg-surface-container">
+<div class="absolute top-0 right-0 p-4">
+<span class="flex items-center gap-1.5 px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-bold uppercase tracking-wider">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+                        Live
+                    </span>
+</div>
+<div class="flex flex-col gap-4">
+<div class="w-14 h-14 rounded-lg bg-tertiary-fixed overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of a young man with a focused expression, wearing modern glasses and a stylish shirt with traditional patterns" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjw6f_cheXJELmiIcxt2nH9M3AvdGecGfpE0rhKO7J58zUDTVzRH2LV9AFF-NUXU7xkJrQjLlbU5b0SIoQXgJ6lNHvwh282x8D1l5495CDvofZV_HVGzI06Dlhn5pmKs4NBJML8J5cy_VbuX38J38oe7fJBbNMb68bJ-Hto33VlpBsiKBl_4jOvOzMqpeENA0ynK4hbCuFElj7uqqZBcW_z9Kz-G5JIv_48ZY8BQ79q4yPgroftlEPGlejdWHcL3e4kigXuKqwCZQo"/>
+</div>
+<div>
+<h3 class="font-headline font-bold text-xl text-on-surface mb-1">Amharic: The Fidel Script</h3>
+<p class="text-on-surface-variant text-sm font-medium">with Dr. Bekele • Linguistics Prof.</p>
+</div>
+<div class="flex items-center justify-between mt-4">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-lg">groups</span>
+<span class="text-sm font-semibold tracking-tight">45 listening</span>
+</div>
+<button class="px-8 py-2 rounded-full bg-primary text-white font-bold hover:bg-primary-container transition-all active:scale-95">
+                            Join
+                        </button>
+</div>
+</div>
+</div>
+<!-- Card 5: Zulu Clicks -->
+<div class="group bg-surface-container-low rounded-lg p-6 relative overflow-hidden transition-all hover:bg-surface-container">
+<div class="absolute top-0 right-0 p-4">
+<span class="flex items-center gap-1.5 px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-bold uppercase tracking-wider">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+                        Live
+                    </span>
+</div>
+<div class="flex flex-col gap-4">
+<div class="w-14 h-14 rounded-lg bg-tertiary-fixed overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Smiling African elder woman with white braided hair, wearing a high-contrast patterned robe, warm outdoor lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKIsY8yR-kP3S4W3e6BoFhgWUuWEHmtJi9h75-34KC-5p0nXVOYlAIRQiNiT1JvUVOaIK_wtRK4wTo_W3ZDMFJdCTnmCSk1Hq3ktgbw5_qhvoWks7fX-Pe8Xi14-Lsd9QKWhkzOpqkjkivAb5oqOO6H32mT0qC9V5R0oxmH528aEdbWCxHj0-IoAQcQnWajxWRHAVcqmPxh9h8Dj0GWVyG9nUylfcjV846VcBjqYNixrGpCCO2M_V7AbLKpOhARHMdj0JQvz-rYid7"/>
+</div>
+<div>
+<h3 class="font-headline font-bold text-xl text-on-surface mb-1">Mastering Zulu Clicks</h3>
+<p class="text-on-surface-variant text-sm font-medium">with Gogo Thandi • Native Speaker</p>
+</div>
+<div class="flex items-center justify-between mt-4">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-lg">groups</span>
+<span class="text-sm font-semibold tracking-tight">312 listening</span>
+</div>
+<button class="px-8 py-2 rounded-full bg-primary text-white font-bold hover:bg-primary-container transition-all active:scale-95">
+                            Join
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action Button: Host -->
+<div class="fixed bottom-24 right-6 z-50">
+<button class="flex items-center gap-3 px-6 py-4 rounded-full bg-tertiary text-on-tertiary font-bold shadow-2xl shadow-tertiary/40 transform transition-transform hover:-translate-y-1 active:scale-95">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+<span>Host a Practice Room</span>
+</button>
+</div>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full h-20 glass-effect flex justify-around items-center px-4 pb-2 rounded-t-[2rem] z-50">
+<a class="flex flex-col items-center justify-center text-[#ffdbcf]/70 p-2 hover:text-white transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-headline text-[10px] font-semibold uppercase tracking-widest mt-1">Village</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#ffdbcf]/70 p-2 hover:text-white transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-headline text-[10px] font-semibold uppercase tracking-widest mt-1">Feed</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#ffdbcf]/70 p-2 hover:text-white transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-headline text-[10px] font-semibold uppercase tracking-widest mt-1">Learn</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#c94c1a] text-white rounded-full p-3 mb-2 transform -translate-y-2 shadow-lg active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">podcasts</span>
+<span class="font-headline text-[10px] font-semibold uppercase tracking-widest mt-1">Rooms</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#ffdbcf]/70 p-2 hover:text-white transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">forum</span>
+<span class="font-headline text-[10px] font-semibold uppercase tracking-widest mt-1">Chat</span>
+</a>
+</nav>
+</body></html>

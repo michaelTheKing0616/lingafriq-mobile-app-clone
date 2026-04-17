@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Elders' Blessings Challenge</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@700;900&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-container": "#ffca56",
+              "on-secondary": "#ffffff",
+              "surface-container-high": "#e8e8e3",
+              "secondary-fixed-dim": "#ffb4a5",
+              "secondary-container": "#fd876f",
+              "on-primary-fixed": "#04006d",
+              "on-primary-container": "#ceceff",
+              "on-primary-fixed-variant": "#373a9b",
+              "secondary": "#9f402d",
+              "on-secondary-container": "#732010",
+              "surface-container": "#eeeee9",
+              "on-error": "#ffffff",
+              "on-error-container": "#93000a",
+              "inverse-on-surface": "#f1f1ec",
+              "primary": "#333697",
+              "on-primary": "#ffffff",
+              "inverse-surface": "#2f312e",
+              "on-tertiary-fixed-variant": "#5c4300",
+              "error": "#ba1a1a",
+              "primary-container": "#4b4fb0",
+              "tertiary": "#573f00",
+              "on-secondary-fixed-variant": "#802918",
+              "tertiary-container": "#745500",
+              "on-tertiary": "#ffffff",
+              "tertiary-fixed": "#ffdea0",
+              "surface": "#fafaf5",
+              "inverse-primary": "#c0c1ff",
+              "surface-container-low": "#f4f4ef",
+              "surface-variant": "#e3e3de",
+              "primary-fixed-dim": "#c0c1ff",
+              "tertiary-fixed-dim": "#f6be3b",
+              "surface-bright": "#fafaf5",
+              "secondary-fixed": "#ffdad3",
+              "surface-tint": "#4f54b4",
+              "primary-fixed": "#e1e0ff",
+              "surface-container-highest": "#e3e3de",
+              "error-container": "#ffdad6",
+              "on-surface": "#1a1c19",
+              "surface-dim": "#dadad5",
+              "on-tertiary-fixed": "#261900",
+              "outline": "#757684",
+              "on-secondary-fixed": "#3e0500",
+              "surface-container-lowest": "#ffffff",
+              "on-surface-variant": "#454652",
+              "background": "#fafaf5",
+              "outline-variant": "#c5c5d4",
+              "on-background": "#1a1c19"
+            },
+            fontFamily: {
+              "headline": ["Epilogue"],
+              "body": ["Plus Jakarta Sans"],
+              "label": ["Plus Jakarta Sans"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scrim-bottom {
+            background: linear-gradient(transparent, rgba(26, 28, 25, 0.8));
+        }
+        .pattern-overlay {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l30 30-30 30L0 30z' fill='%239f402d' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-tertiary-fixed selection:text-on-tertiary-fixed">
+<!-- Top Navigation (Shared Component: TopAppBar) -->
+<header class="w-full docked-top bg-[#fafaf5] dark:bg-[#1a1c19] z-50">
+<div class="flex items-center justify-between px-6 py-4 w-full">
+<button class="text-[#333697] dark:text-[#9ea1ff] hover:opacity-80 transition-opacity active:scale-95 transition-transform">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-['Epilogue'] font-bold text-lg tracking-tight text-[#333697] dark:text-[#9ea1ff]">Linguistics Heritage</h1>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden active:scale-95 transition-transform border-2 border-primary/20">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="minimalist avatar of a person with a warm expression and stylish traditional attire" src="https://lh3.googleusercontent.com/aida-public/AB6AXuADAbVR0xJT3q7xlVZkCqYHVzdYsTiDeeqQwMQBB-4WveT5Q-nuViEDuQCJkY9DaRq8Sl2S4y8xDcokxv0MrpJR-0dUN1-xrrk0TrT0H6o3CD6WhNb6tJJ81gr8P5B-PVzaOmX3tlEVI-DmEs7A58v1VUPJit8y2Jh9mvZevZ3Wry1uYzdqmm79LN6Jh3k8epkvtY2RPzsh_-1FqICxdQGqwb-acnXVNsy7YXu__F0_TuYb7__UPCqKzkdfFcB06Zuh-SUiKb3e4yY"/>
+</div>
+</div>
+<div class="bg-[#f4f4ef] dark:bg-[#2a2c29] h-px w-full"></div>
+</header>
+<main class="max-w-md mx-auto min-h-screen pb-32 pt-4 px-6 pattern-overlay">
+<!-- Game Title & Stats -->
+<div class="flex flex-col gap-2 mb-8 mt-4">
+<span class="font-label text-xs uppercase tracking-[0.2em] text-secondary font-extrabold">Challenge Mode</span>
+<h2 class="font-headline text-3xl text-primary font-black tracking-tight">Elders' Blessings</h2>
+</div>
+<!-- Respect Level Meter -->
+<section class="bg-surface-container-low p-6 rounded-xl mb-8 relative overflow-hidden group">
+<div class="flex justify-between items-end mb-4">
+<div class="flex flex-col">
+<span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Respect Level</span>
+<span class="text-2xl font-headline font-bold text-tertiary">Omoluabi <span class="text-sm font-normal opacity-60">Gold Rank</span></span>
+</div>
+<span class="text-primary font-bold text-xl">850 <span class="text-xs font-normal">pts</span></span>
+</div>
+<div class="h-3 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full w-[85%] bg-gradient-to-r from-secondary to-tertiary rounded-full transition-all duration-1000"></div>
+</div>
+<!-- Decorative Artifact Texture -->
+<div class="absolute -right-4 -bottom-4 opacity-5 pointer-events-none group-hover:scale-110 transition-transform duration-700">
+<span class="material-symbols-outlined text-8xl" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+</section>
+<!-- Scenario Card (Bento Layout Style) -->
+<div class="grid grid-cols-1 gap-6 mb-8">
+<div class="relative rounded-2xl overflow-hidden aspect-[4/5] shadow-2xl shadow-on-surface/5">
+<img class="w-full h-full object-cover" data-alt="a serene outdoor setting where a respectful young person greets an elderly woman seated on a traditional carved wooden bench in soft golden sunlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUcJVyRGRIB6FqHTXkFS7czW6Al_zDszERoPn2Uwks35oTDgEX8Vd91jxlhawMzMNT_bfEukpNc9fFLXMOAYWPMWw3VOrkduwTskqwIFQoq5AyECAVZ6a5mbH-3HXRtscLK1nX9mBw3FvU4aSIsUC5yXdAqdJnX8BlicAb297VrIZyGRR8lZYsOXTUKKCyc17e-iHKK_BNpRL-PrGiUKEOcyNgjCJybefky9a4ex0Mc8G5Hn0PhmOEYYNhRH5rqLi9o2338V8EBCw"/>
+<div class="absolute inset-0 scrim-bottom flex flex-col justify-end p-6 text-white">
+<div class="flex items-center gap-2 mb-2">
+<span class="bg-tertiary text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-tighter">Current Scene</span>
+</div>
+<p class="font-headline text-xl leading-snug">You meet a village elder by the iroko tree during the New Yam Festival. How do you address them before asking for their path to the square?</p>
+</div>
+</div>
+</div>
+<!-- Cultural Tip (The "Digital Griot" Note) -->
+<div class="bg-tertiary-fixed text-on-tertiary-fixed p-5 rounded-xl mb-10 border-l-4 border-tertiary flex gap-4 items-start">
+<span class="material-symbols-outlined text-tertiary shrink-0">info</span>
+<div class="flex flex-col gap-1">
+<p class="text-xs font-bold uppercase tracking-wider">Cultural Wisdom: Honorifics</p>
+<p class="text-sm leading-relaxed">In many West African cultures, address is hierarchical. Using "Ę" (Yoruba) or "Nne/Nna" (Igbo) acknowledges the wisdom of age and lineage before any request is made.</p>
+</div>
+</div>
+<!-- Selection Options (Asymmetric Selection) -->
+<div class="flex flex-col gap-4 mb-12">
+<h3 class="font-label text-xs font-black uppercase tracking-widest text-on-surface-variant px-1">Choose your blessing</h3>
+<button class="group w-full bg-surface-container-lowest p-6 rounded-2xl flex items-center justify-between hover:bg-primary hover:text-white transition-all duration-300 active:scale-95 shadow-sm text-left">
+<div class="flex flex-col">
+<span class="text-xs font-bold opacity-60 mb-1 group-hover:text-primary-fixed">Formal / Yoruba</span>
+<span class="text-lg font-headline font-bold">Ẹ kú ọdún o, Baba. Ẹ m'ẹnu dákẹ́?</span>
+</div>
+<span class="material-symbols-outlined opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</button>
+<button class="group w-full bg-surface-container-lowest p-6 rounded-2xl flex items-center justify-between hover:bg-secondary hover:text-white transition-all duration-300 active:scale-95 shadow-sm text-left translate-x-2">
+<div class="flex flex-col">
+<span class="text-xs font-bold opacity-60 mb-1 group-hover:text-secondary-fixed">Royal / Igbo</span>
+<span class="text-lg font-headline font-bold">Nnọọ Nna anyị. Ndụ gị g’adị ogologo.</span>
+</div>
+<span class="material-symbols-outlined opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</button>
+<button class="group w-full bg-surface-container-lowest p-6 rounded-2xl flex items-center justify-between hover:bg-tertiary hover:text-white transition-all duration-300 active:scale-95 shadow-sm text-left">
+<div class="flex flex-col">
+<span class="text-xs font-bold opacity-60 mb-1 group-hover:text-tertiary-fixed">Casual / Pidgin</span>
+<span class="text-lg font-headline font-bold">Baba how far? You de celebrate well?</span>
+</div>
+<span class="material-symbols-outlined opacity-0 group-hover:opacity-100 transition-opacity">close</span>
+</button>
+</div>
+</main>
+<!-- Bottom Navigation (Shared Component: BottomNavBar) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#fafaf5]/80 dark:bg-[#1a1c19]/80 backdrop-blur-xl rounded-t-[2rem] shadow-[0_-4px_20px_rgba(0,0,0,0.04)]">
+<a class="flex flex-col items-center justify-center text-[#1a1c19]/50 dark:text-[#fafaf5]/50 p-2 hover:text-[#333697] dark:hover:text-[#9ea1ff] transition-colors active:scale-90 transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px] uppercase tracking-widest mt-1">Lineage</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#333697] text-white rounded-full p-3 mb-1 shadow-lg active:scale-90 transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px] uppercase tracking-widest mt-1">Blessings</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#1a1c19]/50 dark:text-[#fafaf5]/50 p-2 hover:text-[#333697] dark:hover:text-[#9ea1ff] transition-colors active:scale-90 transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined">handshake</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px] uppercase tracking-widest mt-1">Diplomacy</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#1a1c19]/50 dark:text-[#fafaf5]/50 p-2 hover:text-[#333697] dark:hover:text-[#9ea1ff] transition-colors active:scale-90 transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px] uppercase tracking-widest mt-1">Archive</span>
+</a>
+</nav>
+</body></html>

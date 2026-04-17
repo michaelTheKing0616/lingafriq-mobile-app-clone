@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Modern Griot - Tribes</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,700;0,800;1,800&amp;family=Lexend:wght@300;400;500;600&amp;family=Dosis:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-container": "#9b6c00",
+              "on-secondary-fixed-variant": "#005320",
+              "surface-variant": "#ffdcbf",
+              "on-tertiary": "#ffffff",
+              "surface-tint": "#aa3601",
+              "inverse-on-surface": "#ffeee1",
+              "background": "#fff8f5",
+              "on-secondary-container": "#007230",
+              "on-primary-fixed-variant": "#822700",
+              "on-surface-variant": "#59413a",
+              "surface-container-highest": "#ffdcbf",
+              "secondary-container": "#7cf994",
+              "on-tertiary-fixed-variant": "#5f4100",
+              "tertiary-fixed": "#ffdeab",
+              "surface-container-lowest": "#ffffff",
+              "primary": "#a73400",
+              "surface-container-high": "#ffe3cd",
+              "secondary-fixed": "#7ffc97",
+              "on-primary-fixed": "#390c00",
+              "on-error-container": "#93000a",
+              "on-error": "#ffffff",
+              "on-background": "#2d1600",
+              "on-primary": "#ffffff",
+              "inverse-primary": "#ffb59c",
+              "surface-container-low": "#fff1e8",
+              "on-primary-container": "#fffbff",
+              "on-secondary": "#ffffff",
+              "secondary-fixed-dim": "#62df7d",
+              "surface-dim": "#ffd2aa",
+              "outline-variant": "#e0bfb5",
+              "on-secondary-fixed": "#002109",
+              "primary-fixed-dim": "#ffb59c",
+              "on-surface": "#2d1600",
+              "on-tertiary-fixed": "#281900",
+              "surface-bright": "#fff8f5",
+              "tertiary-fixed-dim": "#f8bc51",
+              "outline": "#8c7168",
+              "error-container": "#ffdad6",
+              "primary-container": "#c94c1a",
+              "error": "#ba1a1a",
+              "tertiary": "#7b5500",
+              "surface-container": "#ffeada",
+              "surface": "#fff8f5",
+              "secondary": "#006e2d",
+              "primary-fixed": "#ffdbcf",
+              "on-tertiary-container": "#fffbff",
+              "inverse-surface": "#462a0d"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Lexend"],
+              "label": ["Lexend"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-nav {
+        background: rgba(167, 52, 0, 0.85);
+        backdrop-filter: blur(20px);
+      }
+      .tribe-shadow {
+        box-shadow: 0 20px 40px rgba(45, 22, 0, 0.06);
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background font-body text-on-background min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-[#fff8f5] dark:bg-stone-950 shadow-[0_20px_40px_rgba(45,22,0,0.06)] flex justify-between items-center px-6 h-16 w-full docked full-width top-0 z-50 sticky">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-fixed">
+<img class="w-full h-full object-cover" data-alt="close up profile portrait of a wise elder with traditional african face paint and ornate beaded collar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL1DZ5093vPPZFvlj3vVufPFhe2QwvFHd2K_iAc7NYPk1tQgTjI0ZsMEoM8R2QRWDB6HUWz2WqebZ5d7BLMaz8xQa1r6cV88QZyxplBlhjMNvP2UcKWOEXANPgJgml5zgxNUfkRpX-dq0GObw29Bx0_c8d15Pc2Jb7pvOuOYrfOwFGaFiL3BhQByevfZNhy3HybYxrVzb4vfJ6QSbDFxGcsjFgoL0rExlw880TS18fJMAc1CsI86KnMCLifPLjIvcSIriXIIAcaCBM"/>
+</div>
+<h1 class="font-plus-jakarta-sans font-bold text-2xl tracking-tight text-[#a73400] dark:text-[#ffdbcf]">Tribes</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-stone-500 hover:bg-[#ffeada] p-2 rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</div>
+</header>
+<main class="px-6 pt-8 max-w-2xl mx-auto space-y-12">
+<!-- Hero: Global Leaderboard (Asymmetric Layout) -->
+<section class="relative">
+<div class="flex flex-col gap-2 mb-8">
+<h2 class="font-headline font-extrabold text-3xl tracking-tight text-primary">Global Leaderboard</h2>
+<p class="text-on-surface-variant font-medium">The most legendary circles of wisdom.</p>
+</div>
+<div class="flex items-end justify-center gap-4 relative py-12">
+<!-- Rank 2 -->
+<div class="flex flex-col items-center gap-3 w-1/3">
+<div class="relative group">
+<div class="absolute -top-4 -right-2 bg-silver rounded-full p-1 shadow-lg bg-stone-200">
+<span class="material-symbols-outlined text-stone-600" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+</div>
+<img class="w-20 h-20 md:w-24 md:h-24 rounded-lg tribe-shadow transition-transform group-hover:scale-105" data-alt="ornate silver west african mask with intricate carvings on a vibrant sunset orange background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCo95-JQ8Ar0usjG-8mP1zHgONOR3eQ9vJExOaQAeAm2Drdz7UHY3ICJ_abTXlwhxqyFr_467PW69o3priRSDtqsCpOcflmtLQMCwhm25TWwQHYsKYnr4sFn7-oKOpMvHJ_w5fP7kdvRXpS4Z6E5FG4XyuEZkVUVT1HytJ0FHq5anPgcaOzqAlOjjwFo7anYwQoMP3lN_7ktHrvVOoIqxJYXym3oY2R0UuwZsCk0550ML0HmdnPtqmMmH9OLTrBZTAB1wT0HC03vth"/>
+</div>
+<div class="text-center">
+<p class="font-bold text-on-surface">Ashanti Kings</p>
+<p class="text-xs font-bold text-primary uppercase tracking-widest">842k XP</p>
+</div>
+</div>
+<!-- Rank 1: The Centerpiece -->
+<div class="flex flex-col items-center gap-4 w-1/3 -translate-y-8">
+<div class="relative group">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 text-tertiary animate-bounce">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<div class="p-1 rounded-lg bg-gradient-to-br from-tertiary to-primary">
+<img class="w-24 h-24 md:w-32 md:h-32 rounded-lg tribe-shadow transition-transform group-hover:scale-110" data-alt="exquisite gold leaf african sun mask with radiant geometric beams and deep bronze textures" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATcuppDLzGoDu7y5LzYiW4g5h5qydAryWGEzHR0e1Ni9qEbjmqKWVRjD4sJ9jrg3UAniqJ4uzrkuTKxZ4FqXXEJOD0nG5N4WrfbkXDYoeKl2ZdFKObeN4WITbk0eXkGdXov4cS01zpq8Tkq13XUD2rFqdT1rATiiZE6cdXLyNijshPJxnX0ikClWXU4a2JCg8gION0I0Xn-mtP7EBwLUHJuXmt_pc4yujmKVPo4DTOwNfrV3evpu6IT1bcH2V3eGgo2xqyQg29x6Jr"/>
+</div>
+</div>
+<div class="text-center">
+<p class="font-bold text-xl text-on-surface">Benin Bronzes</p>
+<p class="text-sm font-black text-tertiary uppercase tracking-widest">1.2m XP</p>
+</div>
+</div>
+<!-- Rank 3 -->
+<div class="flex flex-col items-center gap-3 w-1/3">
+<div class="relative group">
+<div class="absolute -top-4 -left-2 bg-amber-600 rounded-full p-1 shadow-lg">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+</div>
+<img class="w-20 h-20 md:w-24 md:h-24 rounded-lg tribe-shadow transition-transform group-hover:scale-105" data-alt="bronze terracotta head sculpture with detailed facial features on a deep earthy clay background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEodS6iA4c4OuRDvsZtVemyjBzCLJ2fcVmvDnsuElGmE43uZ0DtwIEeRqzswnJMlBUOBMZI8W0hwCnEO6O9ldqn7NF5HLI65b825tFyDwwXrjdQfFx5n2Jnqgcyx7irccNwZOJywTfAHsAE3o3pODdGGR3nTgVxY7ghhXrTjhGub2iC8xzR25tmc3d5c6rKHBtOZhArAg-i-iSp9NZtOD01jEZUQjm_Y40dznwYUVPbTCuakmM4FhjqTqT2deMd8l2AaNbnoCBSyp1"/>
+</div>
+<div class="text-center">
+<p class="font-bold text-on-surface">Zulu Spears</p>
+<p class="text-xs font-bold text-primary uppercase tracking-widest">710k XP</p>
+</div>
+</div>
+</div>
+<!-- Background Decorative Texture -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-10 pointer-events-none -z-10">
+<svg fill="none" height="100%" viewbox="0 0 100 100" width="100%" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 50Q25 0 50 50T100 50" stroke="#a73400" stroke-width="0.5"></path>
+<path d="M0 60Q25 10 50 60T100 60" stroke="#a73400" stroke-width="0.5"></path>
+</svg>
+</div>
+</section>
+<!-- List: Find your Tribe -->
+<section class="space-y-6">
+<div class="flex justify-between items-end">
+<h3 class="font-headline font-bold text-2xl text-on-surface">Find your Tribe</h3>
+<button class="text-primary font-bold text-sm hover:underline">See All</button>
+</div>
+<!-- Tribes Grid/List -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Yoruba Warriors -->
+<div class="bg-surface-container-low rounded-lg p-5 flex flex-col gap-4 tribe-shadow hover:bg-surface-container transition-all cursor-pointer group">
+<div class="flex justify-between items-start">
+<div class="w-16 h-16 rounded-full bg-primary-fixed flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="abstract stylized warrior shield with interlocking yoruba patterns in vibrant orange and cream" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGK00ZQqi6-qgUFU8GhjcEbbKczxYjDp5JwqnfIcdfpLbk4BpbLvYuUt-suh6O_n9UJPBvUrShsfuTyRNu0vGR5pyhLkzoiWzCJgdOEonrui4du5tdMH04icOD-JNMkfPtHub7CeRYikaFGyQDjrRukFo32hCDWDsOJbRC9oqTqwulih5XSZyAFfGqbNFpsuclKmJsWsF6OrkctuaTU_IoFbZ2Sla-Bbc-5KRnPQKE9LeFK80uNi34Klqrg9mQdacN_KGP3IQKH-41"/>
+</div>
+<div class="bg-primary/10 px-3 py-1 rounded-full">
+<span class="text-[10px] font-black text-primary uppercase">Trending</span>
+</div>
+</div>
+<div>
+<h4 class="font-headline font-bold text-xl text-primary">Yoruba Warriors</h4>
+<div class="flex gap-4 mt-1">
+<div class="flex items-center gap-1 text-on-surface-variant text-xs">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">groups</span>
+                                2.4k members
+                            </div>
+<div class="flex items-center gap-1 text-on-surface-variant text-xs">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                                45k XP
+                            </div>
+</div>
+</div>
+<button class="w-full bg-primary text-white font-bold py-2 rounded-full active:scale-95 transition-transform">Join Battle</button>
+</div>
+<!-- Swahili Scholars -->
+<div class="bg-surface-container-low rounded-lg p-5 flex flex-col gap-4 tribe-shadow hover:bg-surface-container transition-all cursor-pointer group">
+<div class="flex justify-between items-start">
+<div class="w-16 h-16 rounded-full bg-secondary-fixed flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="ancient manuscript scroll with arabic-influenced swahili calligraphy and colorful decorative borders" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_Fm7pFnhbxjP7WuHXiogELPzhgpGQAKinuzMOM7Uq87gLjmQkCt4DoNNawCtCsTG5fPIZevJ4Ni07wp2Hu03bMkffhNa6AzH2OWDqyrPMhOFXPEzFyBcPatXaRPW-A7wp1JtCbzBaPlJLM_uqo9bOkB9FrrELS56zGZqdwgwe3fUw9Amuuiqga2oULxxE0e6ZjloWtcEcT2VvP0BN2OCCezegQ4cRHE10fMx35BaTqcWQJmwb1RCgJTVX0-hE8cpZ06PrKJAu241c"/>
+</div>
+</div>
+<div>
+<h4 class="font-headline font-bold text-xl text-secondary">Swahili Scholars</h4>
+<div class="flex gap-4 mt-1">
+<div class="flex items-center gap-1 text-on-surface-variant text-xs">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">groups</span>
+                                1.8k members
+                            </div>
+<div class="flex items-center gap-1 text-on-surface-variant text-xs">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                                32k XP
+                            </div>
+</div>
+</div>
+<button class="w-full bg-secondary text-white font-bold py-2 rounded-full active:scale-95 transition-transform">Study Now</button>
+</div>
+<!-- Haussa Traders -->
+<div class="bg-surface-container-low rounded-lg p-5 flex flex-col gap-4 tribe-shadow hover:bg-surface-container transition-all cursor-pointer group">
+<div class="flex justify-between items-start">
+<div class="w-16 h-16 rounded-full bg-tertiary-fixed flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="stylized camel caravan silhouette against a giant golden desert sun with geometric sand patterns" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqaGXonFnzMHqVgHT00bmq2D9b5SwPOxL-LTJp6ErkrBLIZeeAb8fVbXkQUPpALCdLLlMeXZe7CcNyxbsRrnBKWwUhCYNwc6m6WQ9eT3rq8fLPFdDbi2nsTvdW2yoiNlgMSizUBDW_JiI7U7wKGNHqTPNYLEmVh2pTsOtRjFt0BL60P8OkXobMxTGqZBc-lTjV--a3apGM9rOSvmFqBxWqKvn0pkoYlxRBdZoTpAeIYq5FUXlpF6ygf7nuDc-NN3wFeDqk9eon2_zJ"/>
+</div>
+</div>
+<div>
+<h4 class="font-headline font-bold text-xl text-tertiary">Haussa Traders</h4>
+<div class="flex gap-4 mt-1">
+<div class="flex items-center gap-1 text-on-surface-variant text-xs">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">groups</span>
+                                940 members
+                            </div>
+<div class="flex items-center gap-1 text-on-surface-variant text-xs">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                                18k XP
+                            </div>
+</div>
+</div>
+<button class="w-full bg-tertiary text-white font-bold py-2 rounded-full active:scale-95 transition-transform">Barter Knowledge</button>
+</div>
+<!-- Xhosa Voices -->
+<div class="bg-surface-container-low rounded-lg p-5 flex flex-col gap-4 tribe-shadow hover:bg-surface-container transition-all cursor-pointer group">
+<div class="flex justify-between items-start">
+<div class="w-16 h-16 rounded-full bg-[#ffdbcf] flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="rhythmic sound wave pattern transforming into traditional xhosa beadwork designs in monochrome black and white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArjGbYB8875rc58kYyTtz2Xy6yyE4zmwgUvmooYRDZS6Q0_LzjmgHQx5GQYDcgFQYzq_aRYdlxBOUZ_uA2o-o6JJtYpNSY7NRmUuPpxWhUtoiyz_MRq-zYv6dT6ux8Vo1v_nC50-md9Q0D00QjvWehfe-mLqNVFJVNPrAxwEgwKcotsCD9rST70Dl-9L232z26fgYMGzQGmxeGZJrQR_UOPvBleuDxIrUBVj6nOhB1ARlUCHYc3amciRWPMMHGrMDOVocln5vQ6e_b"/>
+</div>
+</div>
+<div>
+<h4 class="font-headline font-bold text-xl text-[#a73400]">Xhosa Voices</h4>
+<div class="flex gap-4 mt-1">
+<div class="flex items-center gap-1 text-on-surface-variant text-xs">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">groups</span>
+                                1.2k members
+                            </div>
+<div class="flex items-center gap-1 text-on-surface-variant text-xs">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                                27k XP
+                            </div>
+</div>
+</div>
+<button class="w-full bg-primary-container text-white font-bold py-2 rounded-full active:scale-95 transition-transform">Listen In</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Floating Action Button: Create Tribe -->
+<div class="fixed bottom-24 right-6 z-40">
+<button class="flex items-center gap-2 bg-primary text-white pl-4 pr-6 py-4 rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">add</span>
+<span class="font-bold">Create a Tribe</span>
+</button>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full h-20 flex justify-around items-center px-4 pb-2 bg-[#a73400]/80 dark:bg-stone-900/80 backdrop-blur-xl rounded-t-[2rem] z-50">
+<a class="flex flex-col items-center justify-center bg-[#c94c1a] dark:bg-[#a73400] text-white rounded-full p-3 mb-2 transform -translate-y-2 shadow-lg" href="#">
+<span class="material-symbols-outlined" data-icon="map" style="font-variation-settings: 'FILL' 1;">map</span>
+<span class="font-plus-jakarta-sans text-[10px] font-semibold uppercase tracking-widest mt-1">Village</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#ffdbcf]/70 p-2 hover:text-white transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-plus-jakarta-sans text-[10px] font-semibold uppercase tracking-widest mt-1">Feed</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#ffdbcf]/70 p-2 hover:text-white transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-plus-jakarta-sans text-[10px] font-semibold uppercase tracking-widest mt-1">Learn</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#ffdbcf]/70 p-2 hover:text-white transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="podcasts">podcasts</span>
+<span class="font-plus-jakarta-sans text-[10px] font-semibold uppercase tracking-widest mt-1">Rooms</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#ffdbcf]/70 p-2 hover:text-white transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="forum">forum</span>
+<span class="font-plus-jakarta-sans text-[10px] font-semibold uppercase tracking-widest mt-1">Chat</span>
+</a>
+</nav>
+</body></html>

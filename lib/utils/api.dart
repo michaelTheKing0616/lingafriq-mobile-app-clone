@@ -148,6 +148,11 @@ class Api {
   static const String chatConversations = 'chat/conversations';
   /// Private DM thread with another user (numeric id or handle-resolved id).
   static String chatPrivateMessages(String otherUserId) => 'chat/private/$otherUserId';
+
+  /// Typing presence for a chat room (e.g. `private_1_2`).
+  static const String chatTyping = 'chat/typing';
+  static String chatTypingForRoom(String roomId) =>
+      'chat/typing/${Uri.encodeComponent(roomId)}';
   /// WhatsApp-style REST surface (auth required).
   static const String waConversations = 'api/wa/conversations';
   static const String waMessages = 'api/wa/messages';
@@ -156,6 +161,8 @@ class Api {
   static String mediaUpload() => 'media/upload';
   static String mediaTranscribe(String mediaId) => 'media/$mediaId/transcribe';
   static String mediaDetails(String mediaId) => 'media/$mediaId';
+  static String mediaExtractLivingDictionary(String mediaId) =>
+      'media/$mediaId/extract-living-dictionary';
   
   // User Content API endpoints
   static const String userContent = 'api/user-content/';

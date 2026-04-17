@@ -3,9 +3,9 @@
 
 import 'package:workmanager/workmanager.dart';
 import 'package:flutter/foundation.dart';
-import 'offline_service.dart';
-import 'sync_operations.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
+import 'package:lingafriq/services/connectivity_service.dart';
+import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
 
 class BackgroundSyncService {
   static final BackgroundSyncService _instance = BackgroundSyncService._internal();
@@ -48,22 +48,16 @@ void backgroundSyncCallback() {
     try {
       logger.info('Periodic background sync task started', context: {'task': task});
       
-      // Get the offline service instance
-      final offlineService = OfflineService();
-      
-      // Check if device is online
-      if (!offlineService.isOnline) {
+      // In background isolates, avoid relying on in-memory online state.
+      // Use the connectivity probe used by the outbox itself.
+      if (!await ConnectivityService.hasInternet()) {
         logger.debug('Device is offline, skipping periodic background sync');
         return Future.value(false);
       }
       
-      // Trigger sync of pending changes
-      // This will process any queued sync operations
-      await offlineService.syncPendingChanges();
-      
-      // Sync specific data types
-      final syncOps = SyncOperations();
-      await syncOps.syncAll();
+      // Flush persisted outbox (sync v2) — the canonical offline-first mechanism.
+      await PersistedOutboxService.instance.ensureOpen();
+      await PersistedOutboxService.instance.flushPending();
       
       logger.info('Periodic background sync task completed successfully');
       return Future.value(true);

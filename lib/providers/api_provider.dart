@@ -246,13 +246,11 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
       final email = data['email'] as String;
       final prefs = ref.read(sharedPreferencesProvider);
-      ProfileModel? user = await prefs.getUser(email);
-
-      if (user == null || user.email != email) {
-        final userInfo = await getUserInfo();
-        user = await getProfileUser(userInfo.id);
-        await prefs.storeUser(user, userInfo.email);
-      }
+      // Always refresh profile from the server after login so fields like
+      // `is_admin` / `is_staff` (staff tools) are never stale vs cached prefs.
+      final userInfo = await getUserInfo();
+      final user = await getProfileUser(userInfo.id);
+      await prefs.storeUser(user, userInfo.email);
 
       // Update user provider with current user
       ref.read(userProvider.notifier).overrideUser(user);

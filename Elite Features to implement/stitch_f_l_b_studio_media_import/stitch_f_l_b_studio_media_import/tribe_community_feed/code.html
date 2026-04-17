@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Manrope:wght@200..800&amp;family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-fixed": "#ffe088",
+              "on-error-container": "#93000a",
+              "tertiary-fixed-dim": "#e9c349",
+              "surface-container": "#f1eee7",
+              "secondary": "#555f71",
+              "on-secondary-fixed": "#121c2c",
+              "on-secondary-container": "#596376",
+              "primary": "#9f3e07",
+              "primary-fixed": "#ffdbcd",
+              "on-primary-fixed": "#360f00",
+              "inverse-primary": "#ffb596",
+              "surface-dim": "#dcdad3",
+              "outline": "#8a7268",
+              "on-surface-variant": "#57423a",
+              "error": "#ba1a1a",
+              "surface-container-lowest": "#ffffff",
+              "on-tertiary-fixed": "#241a00",
+              "background": "#fcf9f2",
+              "on-primary-fixed-variant": "#7d2d00",
+              "surface": "#fcf9f2",
+              "outline-variant": "#dec0b5",
+              "on-tertiary-container": "#4f3d00",
+              "on-error": "#ffffff",
+              "tertiary-container": "#cca730",
+              "tertiary": "#735c00",
+              "on-background": "#1c1c18",
+              "surface-variant": "#e5e2db",
+              "surface-container-highest": "#e5e2db",
+              "on-surface": "#1c1c18",
+              "secondary-container": "#d6e0f6",
+              "inverse-surface": "#31312c",
+              "secondary-fixed": "#d9e3f9",
+              "surface-bright": "#fcf9f2",
+              "on-secondary-fixed-variant": "#3d4759",
+              "surface-container-high": "#ebe8e1",
+              "primary-fixed-dim": "#ffb596",
+              "on-secondary": "#ffffff",
+              "on-primary": "#ffffff",
+              "surface-container-low": "#f6f3ec",
+              "on-tertiary-fixed-variant": "#574500",
+              "on-tertiary": "#ffffff",
+              "inverse-on-surface": "#f3f0e9",
+              "secondary-fixed-dim": "#bdc7dc",
+              "primary-container": "#c05621",
+              "surface-tint": "#a14009",
+              "on-primary-container": "#fffeff",
+              "error-container": "#ffdad6"
+            },
+            fontFamily: {
+              "headline": ["Newsreader"],
+              "body": ["Manrope"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .editorial-shadow {
+            box-shadow: 0 20px 40px rgba(28, 28, 24, 0.06);
+        }
+        .terracotta-gradient {
+            background: linear-gradient(135deg, #9f3e07 0%, #c05621 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-fixed">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#fcf9f2] dark:bg-stone-900 backdrop-blur-md bg-opacity-90 flex justify-between items-center px-6 h-16 w-full bg-[#ebe8e1] dark:bg-stone-800">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-stone-600 dark:text-stone-400 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition-colors p-2 rounded-full">menu</button>
+<span class="font-newsreader italic text-[#9f3e07] dark:text-[#c05621] text-2xl tracking-tight">Àṣà</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-label text-xs tracking-widest text-primary font-bold uppercase hidden md:inline">Tribe Community</span>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden border border-outline-variant/20">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="portrait of a young african woman with braided hair and minimalist jewelry in soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA41BR6XA-91T1RlTNoghYhXoLlMvpA0GU7WNaZ7X4EWZD3goy6uwWuMmbs-OtDUCIcscmEm2p8b8QTPYoAEYl-oGY2hlCQGYriVzGNdtAuDbhH9vzqrmhX6NWP1YBJOZH1HkZzbR1uXAyHkWmpfV7kgp5pBiBRUGr-0tEbLfmbNitRSTPm5R8xoCspOYd5LBfrjnteI_2Dq2ce74S7cxsZxfFa0qMoWyTFEBBBj2nz99CKQ58e_OmDKuepowDCl2RwEvexG-ql1vKz"/>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Sidebar / Navigation Stats (Desktop) -->
+<aside class="lg:col-span-3 hidden lg:block space-y-12">
+<section class="space-y-6">
+<p class="font-label text-[10px] uppercase tracking-[0.2em] text-outline">Active Now</p>
+<div class="space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="text-sm font-medium">142 Members Online</span>
+</div>
+<div class="p-4 bg-surface-container-low rounded-sm space-y-2">
+<p class="text-xs text-secondary italic font-headline">"The beauty of language is the soul of its people."</p>
+</div>
+</div>
+</section>
+<section class="space-y-6">
+<div class="flex justify-between items-end">
+<p class="font-label text-[10px] uppercase tracking-[0.2em] text-outline">Streaks</p>
+<span class="font-label text-[10px] text-primary">View Leaderboard</span>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 bg-surface-container-lowest editorial-shadow rounded-sm">
+<div class="flex items-center gap-3">
+<span class="font-label text-xs text-outline">01</span>
+<span class="text-sm font-bold">Kojo A.</span>
+</div>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-label text-sm font-bold">42</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-lowest editorial-shadow rounded-sm">
+<div class="flex items-center gap-3">
+<span class="font-label text-xs text-outline">02</span>
+<span class="text-sm font-bold">Amara L.</span>
+</div>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-label text-sm font-bold">38</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-lowest editorial-shadow rounded-sm opacity-60">
+<div class="flex items-center gap-3">
+<span class="font-label text-xs text-outline">12</span>
+<span class="text-sm font-bold">You</span>
+</div>
+<div class="flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-sm">local_fire_department</span>
+<span class="font-label text-sm font-bold">04</span>
+</div>
+</div>
+</div>
+</section>
+</aside>
+<!-- Main Feed -->
+<div class="lg:col-span-6 space-y-12">
+<header class="mb-8">
+<h1 class="font-headline text-4xl lg:text-5xl font-extrabold tracking-tight text-on-surface">The Tribe Square</h1>
+<p class="font-body text-secondary mt-2">Connecting the archives to the studio.</p>
+</header>
+<!-- Community Map Bento Card -->
+<section class="relative overflow-hidden bg-inverse-surface text-inverse-on-surface rounded-sm p-8 min-h-[300px] flex flex-col justify-between">
+<div class="absolute inset-0 opacity-20" data-alt="abstract dark world map with neon connections and grain texture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDaZDdd3qG7P4HlINVwNMU8nf41LopVjtCWakJFHdemKdZUsLCpwQ8yBy2aCVeNklG5NB4ySifBbnx8ZK7QCkIK4wgIFFgC8NUMii6-h7BMwVivkDJ7ivH2tGRkAZ3-IdCO8Iic1rlLpI6mpvata0QRJ8vw9qlG8YzUiQkZrbmV6cTZxZ-DIJ-ChxGKM_MQx4BpeuxJ5UZnezNdkqUn_hqY86NiaA3qoxaI3aWEtAJjxipXwUY6OqPLdU1OXaGqszxmCBZsDuolEwTv'); background-size: cover; background-position: center;"></div>
+<div class="relative z-10">
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-tertiary-fixed">Global Pulse</span>
+<h2 class="font-headline text-2xl mt-2 italic">Language Map</h2>
+</div>
+<div class="relative z-10 mt-auto flex justify-between items-end">
+<p class="text-sm text-surface-dim max-w-[200px]">34 members currently practicing Yoruba in Lagos</p>
+<button class="bg-surface-container-lowest text-on-surface px-4 py-2 text-[10px] font-label uppercase tracking-widest rounded-sm">Explore Map</button>
+</div>
+</section>
+<!-- Feed Post: Archive Feature -->
+<article class="bg-surface-container-low p-6 lg:p-10 space-y-6 group">
+<div class="flex justify-between items-start">
+<div class="space-y-1">
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-primary">New Issue: The Archives</span>
+<h3 class="font-headline text-2xl group-hover:italic transition-all">Sahelian Textiles: Threads of History</h3>
+</div>
+<span class="text-outline font-label text-[10px]">2H AGO</span>
+</div>
+<div class="aspect-[16/9] overflow-hidden rounded-sm">
+<img alt="The Sahelian Textiles cover" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="close up of intricate west african woven textiles with indigo and ochre geometric patterns" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjRnI1h0x25dr_MRecFNIHe41WJbXAM44GT_5fMdMolgf8VDiC-yvt8rkWwXL_QV1gVcG5fqLGkoe9Yt2LcFWs-wlzejYw7-B2mo96rWCwz2u5cu3tv8Z6SOv5MoSfzoainUtgmZX-MTh30gH-k3KwysuzfSH3YHb0uqZuOSEtjdc7v-O6ZQnzGlq58Av0NNjzDTzqG0oknuU-xDb8gA7FW3soQL8n8PZwmFoZB5dCzWFI4nQePmPfrfpImYhNpxgbhXr2UI9XxWyF"/>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-slate-200 overflow-hidden"><img alt="avatar" data-alt="portrait of a man with short hair and clean shave" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDv_Vq1ulEp0d35VZIt08lCdqbzISWYqWuTHwUj-yPHNiApCXuMn-2vmGh6Aa-Bx3OecQ5D4yPdRS0nTohtysEjW_jliyb-dciETVw2nolu9TctF0e1O-ohZcJKy6O6MuedePL3Kf2Czo5t3yKusB_CDiSUeTi5BEqJu2NHwbJnAvl0zUgvJ507Eu9lD-i5eWPwz5mKNxeaJfI4Qa5UysuDVVvogtue1bANctW3mBc3X_IKefhGrFDlHHhZ5Wsnr_0aBTtJkkDXWrE_"/></div>
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-slate-300 overflow-hidden"><img alt="avatar" data-alt="portrait of a smiling woman in a yellow shirt" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrGi65zkBCVpMcrEuwVXSYIoTQ-eR8lAt3MjFzwlsoCBZhaBFab1XsZj3Mj_1rO63adzfAR0RFZhfRmWsdSO0axGQERPR9ZfbOJICNXy2g72ZdtAi2kTeKSb6FSqNsR7Yg5YFjO_D4i9Ri_4FJlVJQo1iDei5egzzQkXp90Sw1ZER20A9WUE8Ixt5EpbIAhwgFbvLvncumkLEyXjHtRk38D8cgbK8P-2JXGGzr_FHNkC89kmOHGf7ajP6oCL2NyPMpd7q7pnRjVO8y"/></div>
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-primary text-white flex items-center justify-center text-[10px] font-label">+12</div>
+</div>
+<div class="flex gap-4">
+<button class="flex items-center gap-2 text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg">chat_bubble</span>
+<span class="font-label text-xs">24</span>
+</button>
+<button class="flex items-center gap-2 text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg">bookmark</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Feed Post: Studio Share -->
+<article class="bg-surface-container-lowest editorial-shadow p-6 lg:p-10 space-y-6">
+<div class="flex items-center gap-4">
+<img alt="Amara avatar" class="w-12 h-12 rounded-full object-cover" data-alt="side profile of a young black man with thoughtful expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAA7ebGks0gJIIx4iOQ4PP5q9dwYSjEBNIVhsLt57N3PflnxIPCyIvvwG3IBIT8xguNaRtUoWfZa2cOM0rDaXcZoLonO0dia-tQSLk7yOE3yTDQz0Bek-yiu8Rv9dA96OpkxMQWJ6D2OaOi-SGyPB1WB1pUcfs4V5jJmUK0R4zq2u_hBQli4CI0FyN_dlTqb_YpBKHGmuHpoy5y2wA7i4V-tau-j6hMfrEfSwC4BwIiBvvqnurIaZ_DieHxdePKetGzqoyoTr6SxHra"/>
+<div>
+<h4 class="font-bold text-sm">Amara shared a new lesson</h4>
+<p class="text-xs text-secondary font-label">FROM THE STUDIO</p>
+</div>
+</div>
+<div class="p-6 bg-inverse-surface text-inverse-on-surface rounded-sm flex items-center justify-between group cursor-pointer">
+<div class="flex items-center gap-6">
+<div class="w-12 h-12 terracotta-gradient rounded-sm flex items-center justify-center">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+<div>
+<p class="font-headline text-lg">Common Phrases in Twi</p>
+<p class="font-label text-[10px] text-surface-dim uppercase tracking-widest">Audio Pronunciation Guide</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-tertiary-fixed group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</div>
+<!-- Discussion Thread Placeholder -->
+<div class="pt-6 border-t border-outline-variant/10 space-y-4">
+<div class="flex gap-4">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex-shrink-0"></div>
+<div class="bg-surface-container-low p-4 rounded-sm flex-1">
+<p class="text-xs font-bold mb-1">Kofi Mensah</p>
+<p class="text-sm">This is incredibly helpful for my trip next week. The accent is spot on!</p>
+</div>
+</div>
+<div class="flex items-center gap-3 pl-12 text-outline">
+<div class="w-px h-4 bg-outline-variant/30"></div>
+<span class="text-[10px] font-label uppercase">Reply</span>
+<span class="text-[10px] font-label uppercase">Like</span>
+</div>
+</div>
+</article>
+</div>
+<!-- Right Side: Curator's Pick & Actions -->
+<aside class="lg:col-span-3 space-y-12">
+<section class="space-y-6">
+<p class="font-label text-[10px] uppercase tracking-[0.2em] text-outline">Tribe Actions</p>
+<div class="grid grid-cols-1 gap-4">
+<button class="w-full text-left p-4 border border-outline-variant hover:border-primary transition-all rounded-sm flex justify-between items-center group">
+<span class="font-label text-xs font-bold uppercase tracking-widest">Post to Square</span>
+<span class="material-symbols-outlined text-sm group-hover:text-primary transition-colors">edit</span>
+</button>
+<button class="w-full text-left p-4 border border-outline-variant hover:border-primary transition-all rounded-sm flex justify-between items-center group">
+<span class="font-label text-xs font-bold uppercase tracking-widest">Start a Drill</span>
+<span class="material-symbols-outlined text-sm group-hover:text-primary transition-colors">bolt</span>
+</button>
+</div>
+</section>
+<section class="space-y-6 sticky top-24">
+<p class="font-label text-[10px] uppercase tracking-[0.2em] text-outline">The Archive Spotlight</p>
+<div class="space-y-4">
+<div class="aspect-square bg-surface-container-highest overflow-hidden rounded-sm relative group cursor-pointer">
+<img alt="Oral History Podcast" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" data-alt="vibrant photo of an elderly west african storyteller talking to children under a large baobab tree" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrpkYslbgslm0dQ8nFktFw3ZqKbD2LEQzEVgcbFGY1KoS9bbvAa3cktJ031zI9g91TGM5EsAkpknJL4joys0ZBEAVaX-R_lnvjUxs0DwZmzXa8ZuNhhNEeJQnR8U8kHvYxTt6bFLLtU75oivz7eRjqi0gb6J0u84si_ZUPXggtHczo-6Ze5VxS-fRnIfWbynwe8jdoDPf0IIRWUoLaTyd-pVFHWpcYQuuNVFFeyF2mCo9coKPbGescG-e3bNTpcOWpwqAfaeLzLaNA"/>
+<div class="absolute bottom-0 left-0 p-4 bg-surface/90 backdrop-blur-sm w-full">
+<p class="font-headline text-lg leading-tight">Griot Legacies: The Oral Historians</p>
+<p class="font-label text-[10px] text-primary mt-1 uppercase tracking-widest">Listen Now</p>
+</div>
+</div>
+</div>
+</section>
+</aside>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 rounded-t-sm bg-[#fcf9f2]/80 dark:bg-stone-950/80 backdrop-blur-xl border-t border-stone-200/10 shadow-[0_-10px_30px_rgba(28,28,24,0.04)] flex justify-around items-center pt-3 pb-6 px-4 w-full">
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 opacity-60 hover:opacity-100 transition-opacity active:scale-90" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-space-grotesk text-[10px] uppercase tracking-widest mt-1">Archives</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 opacity-60 hover:opacity-100 transition-opacity active:scale-90" href="#">
+<span class="material-symbols-outlined">settings_input_component</span>
+<span class="font-space-grotesk text-[10px] uppercase tracking-widest mt-1">Studio</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#9f3e07] dark:text-[#c05621] font-bold active:scale-90" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="font-space-grotesk text-[10px] uppercase tracking-widest mt-1">Tribe</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 opacity-60 hover:opacity-100 transition-opacity active:scale-90" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-space-grotesk text-[10px] uppercase tracking-widest mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

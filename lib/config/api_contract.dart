@@ -41,6 +41,11 @@ class ApiContract {
   static const voice = _Voice();
   static const onboarding = _Onboarding();
   static const sync = _Sync();
+  /// Idempotent outbox + delta (aligned with `node-backend-safe-push` `/api/v2/sync/*`).
+  static const syncV2 = _SyncV2();
+  static const contentPacks = _ContentPacks();
+  static const learningV2 = _LearningV2();
+  static const microMentorsV2 = _MicroMentorsV2();
   static const offline = _Offline();
   static const userContent = _UserContent();
   static const villages = _Villages();
@@ -291,6 +296,7 @@ class _SocialAudio {
 class _Content {
   const _Content();
   String get lessons => '/lessons/';
+  String lesson(String lessonId) => '/lessons/${Uri.encodeComponent(lessonId)}';
   String sectionLessons(int lessonId) => '/lessons/$lessonId/all';
   String completeLessonTutorial(dynamic lessonId, dynamic sectionId) =>
       '/lessons/$lessonId/lessons/$sectionId/lesson_lesson';
@@ -589,6 +595,73 @@ class _Sync {
   String get experimentsConfig => '/api/experiments/config';
 }
 
+class _SyncV2 {
+  const _SyncV2();
+  String get outboxPush => '/api/v2/sync/outbox/push';
+  String get delta => '/api/v2/sync/delta';
+  String get preferences => '/api/v2/sync/preferences';
+}
+
+class _ContentPacks {
+  const _ContentPacks();
+  String manifest(String language) =>
+      '/api/v2/content-packs/${Uri.encodeComponent(language)}/manifest';
+  /// Server-side integrity check for `/media/*` assets listed in a pack manifest.
+  String verify(String language) =>
+      '/api/v2/content-packs/${Uri.encodeComponent(language)}/verify';
+}
+
+class _LearningV2 {
+  const _LearningV2();
+  String get speakMissionEvaluate => '/api/v2/learning/speak-mission/evaluate';
+  String get codeSwitchSession => '/api/v2/learning/code-switch/session';
+  String get registerCoach => '/api/v2/learning/register-coach';
+  String get toneTrainer => '/api/v2/learning/tone-trainer/evaluate';
+  String get syntheticVoiceStyles => '/api/v2/learning/synthetic-voice/styles';
+  String get syntheticVoicePreference => '/api/v2/learning/synthetic-voice/preference';
+  String get syntheticVoiceResolve => '/api/v2/learning/synthetic-voice/resolve';
+  String get phraseDnaTemplates => '/api/v2/learning/phrase-dna/templates';
+  String get phraseDnaStart => '/api/v2/learning/phrase-dna/start';
+  String get phraseDnaSubmit => '/api/v2/learning/phrase-dna/submit';
+  String get dialectPreference => '/api/v2/learning/dialect-preference';
+  String get heritageMilestones => '/api/v2/learning/heritage/milestones';
+  String get heritageMilestoneComplete => '/api/v2/learning/heritage/milestones/complete';
+  String get livingDictionaryEntries => '/api/v2/learning/living-dictionary/entries';
+  String livingDictionaryEntry(String id) =>
+      '/api/v2/learning/living-dictionary/entries/${Uri.encodeComponent(id)}';
+  String get passportSessions => '/api/v2/passport/sessions';
+  String passportVerify(String token) =>
+      '/api/v2/passport/verify/${Uri.encodeComponent(token)}';
+  String get classroomSchoolDashboard => '/api/v2/classroom/school/dashboard';
+}
+
+class _MicroMentorsV2 {
+  const _MicroMentorsV2();
+
+  String get mentors => '/api/v2/micro-mentors/mentors';
+  String get mentorsMe => '/api/v2/micro-mentors/mentors/me';
+  String get sessions => '/api/v2/micro-mentors/sessions';
+  String session(String sessionId) =>
+      '/api/v2/micro-mentors/sessions/${Uri.encodeComponent(sessionId)}';
+  String sessionRespond(String sessionId) =>
+      '/api/v2/micro-mentors/sessions/${Uri.encodeComponent(sessionId)}/respond';
+  String sessionJoin(String sessionId) =>
+      '/api/v2/micro-mentors/sessions/${Uri.encodeComponent(sessionId)}/join';
+  String sessionConsent(String sessionId) =>
+      '/api/v2/micro-mentors/sessions/${Uri.encodeComponent(sessionId)}/consent';
+  String sessionRecording(String sessionId) =>
+      '/api/v2/micro-mentors/sessions/${Uri.encodeComponent(sessionId)}/recording';
+  String sessionRubric(String sessionId) =>
+      '/api/v2/micro-mentors/sessions/${Uri.encodeComponent(sessionId)}/rubric';
+  String sessionReport(String sessionId) =>
+      '/api/v2/micro-mentors/sessions/${Uri.encodeComponent(sessionId)}/report';
+
+  /// Staff/admin moderation queue (`requireAdminOrStaff`).
+  String get adminReports => '/api/v2/micro-mentors/admin/reports';
+  String adminReport(String reportId) =>
+      '/api/v2/micro-mentors/admin/reports/${Uri.encodeComponent(reportId)}';
+}
+
 // =============================================================================
 // Offline Content
 // =============================================================================
@@ -661,6 +734,24 @@ class _Classroom {
       '/api/classroom/$tribeId/speaker-queue/$entryId';
   String speakerQueueClearWaiting(String tribeId) =>
       '/api/classroom/$tribeId/speaker-queue/clear-waiting';
+
+  // V2 classroom admin (roster + assignments + staff dashboard)
+  String v2Roster(String tribeId) => '/api/v2/classroom/$tribeId/roster';
+  String v2Privacy(String tribeId) => '/api/v2/classroom/$tribeId/privacy';
+  String v2Assignments(String tribeId) => '/api/v2/classroom/$tribeId/assignments';
+  String v2SubmitAssignment(String tribeId, String assignmentId) =>
+      '/api/v2/classroom/$tribeId/assignments/$assignmentId/submit';
+  String get v2SchoolDashboard => '/api/v2/classroom/school/dashboard';
+  String v2TeacherDashboard(String tribeId) =>
+      '/api/v2/classroom/$tribeId/teacher/dashboard';
+
+  // V2 classroom sessions (offline-ready)
+  String v2Sessions(String tribeId) => '/api/v2/classroom/$tribeId/sessions';
+  String v2StartSession(String tribeId) => '/api/v2/classroom/$tribeId/sessions/start';
+  String v2EndSession(String tribeId, String sessionId) =>
+      '/api/v2/classroom/$tribeId/sessions/$sessionId/end';
+  String v2CheckIn(String tribeId, String sessionId) =>
+      '/api/v2/classroom/$tribeId/sessions/$sessionId/checkin';
 }
 
 // =============================================================================

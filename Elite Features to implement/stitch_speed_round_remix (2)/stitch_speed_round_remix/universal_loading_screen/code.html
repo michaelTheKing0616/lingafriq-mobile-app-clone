@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&amp;family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-container": "#fd876f",
+                        "on-background": "#1a1c19",
+                        "surface-container-high": "#e8e8e3",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "on-tertiary-fixed-variant": "#5c4300",
+                        "surface-bright": "#fafaf5",
+                        "on-secondary": "#ffffff",
+                        "background": "#fafaf5",
+                        "primary-fixed": "#e1e0ff",
+                        "tertiary-container": "#745500",
+                        "surface-tint": "#4f54b4",
+                        "on-secondary-fixed": "#3e0500",
+                        "on-primary-fixed": "#04006d",
+                        "tertiary-fixed": "#ffdea0",
+                        "on-primary": "#ffffff",
+                        "outline": "#757684",
+                        "secondary-fixed": "#ffdad3",
+                        "outline-variant": "#c5c5d4",
+                        "on-secondary-container": "#732010",
+                        "secondary-fixed-dim": "#ffb4a5",
+                        "surface-dim": "#dadad5",
+                        "on-secondary-fixed-variant": "#802918",
+                        "on-tertiary-container": "#ffca56",
+                        "primary-container": "#4b4fb0",
+                        "on-primary-fixed-variant": "#373a9b",
+                        "surface-container": "#eeeee9",
+                        "on-error-container": "#93000a",
+                        "tertiary": "#573f00",
+                        "surface-container-highest": "#e3e3de",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#f6be3b",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#1a1c19",
+                        "surface": "#fafaf5",
+                        "inverse-primary": "#c0c1ff",
+                        "on-surface-variant": "#454652",
+                        "inverse-surface": "#2f312e",
+                        "surface-variant": "#e3e3de",
+                        "secondary": "#9f402d",
+                        "on-primary-container": "#ceceff",
+                        "primary": "#333697",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#261900",
+                        "inverse-on-surface": "#f1f1ec",
+                        "surface-container-low": "#f4f4ef",
+                        "on-error": "#ffffff"
+                    },
+                    fontFamily: {
+                        "headline": ["Epilogue"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234b4fb0' fill-opacity='0.12'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .loading-pulse {
+            animation: pulse-glow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.15; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(1.05); }
+        }
+        .progress-bar-fill {
+            width: 68%;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-primary text-on-primary font-body overflow-hidden h-screen flex flex-col items-center justify-center relative">
+<div class="absolute inset-0 bg-pattern opacity-20 pointer-events-none"></div>
+<div class="absolute inset-0 bg-gradient-to-tr from-primary via-primary to-primary-container opacity-90"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-[500px] h-[500px] bg-primary-container/20 rounded-full blur-[120px] loading-pulse"></div>
+</div>
+<main class="relative z-10 flex flex-col items-center max-w-lg px-8 text-center">
+<div class="mb-12 relative group">
+<div class="absolute -inset-8 bg-tertiary-fixed-dim/20 rounded-full blur-2xl group-hover:blur-3xl transition-all duration-700 opacity-50"></div>
+<div class="relative bg-on-primary-container/10 p-10 rounded-full backdrop-blur-md shadow-2xl">
+<span class="material-symbols-outlined text-[120px] leading-none text-tertiary-fixed-dim" style="font-variation-settings: 'FILL' 1;">
+                    lightbulb_circle
+                </span>
+</div>
+<div class="absolute -top-4 -right-4 p-4 bg-secondary rounded-full shadow-lg">
+<span class="material-symbols-outlined text-3xl text-white" style="font-variation-settings: 'FILL' 1;">
+                    history_edu
+                </span>
+</div>
+</div>
+<div class="space-y-2 mb-8">
+<h1 class="font-headline font-black italic text-5xl tracking-tighter text-on-primary-container">
+                LinguAura
+            </h1>
+<p class="font-label text-on-primary-container/60 uppercase tracking-[0.2em] text-xs font-bold">
+                Summoning the Great Stories
+            </p>
+</div>
+<div class="w-full space-y-4">
+<div class="flex justify-between items-end mb-1">
+<span class="font-label text-on-primary-container/80 text-sm font-semibold tracking-wide">Initializing Wisdom...</span>
+<span class="font-headline text-2xl font-bold text-tertiary-fixed-dim">68%</span>
+</div>
+<div class="h-1.5 w-full bg-on-primary-container/10 rounded-full overflow-hidden">
+<div class="progress-bar-fill h-full bg-gradient-to-r from-tertiary-fixed-dim via-secondary-container to-secondary rounded-full shadow-[0_0_12px_rgba(246,190,59,0.4)]"></div>
+</div>
+</div>
+</main>
+<footer class="fixed bottom-16 w-full max-w-xl px-12 z-10">
+<div class="p-8 bg-surface-container-lowest/5 backdrop-blur-xl rounded-2xl border border-on-primary-container/10 relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-tertiary-fixed-dim"></div>
+<div class="flex gap-4 items-start">
+<div class="mt-1">
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-2xl">
+                        auto_awesome
+                    </span>
+</div>
+<div class="space-y-3">
+<h3 class="font-headline text-lg font-bold text-on-primary-container flex items-center gap-2">
+                        Did You Know?
+                    </h3>
+<p class="font-body text-on-primary-container/90 leading-relaxed text-sm lg:text-base">
+                        In Yoruba culture, greetings are an art form. The way you greet reflects your respect for the community.
+                    </p>
+</div>
+</div>
+<div class="absolute bottom-2 right-4 opacity-10">
+<span class="material-symbols-outlined text-6xl text-white">
+                    waves
+                </span>
+</div>
+</div>
+<div class="mt-12 flex justify-center gap-2 items-center text-on-primary-container/40">
+<div class="w-1.5 h-1.5 rounded-full bg-on-primary-container/20"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed-dim"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-on-primary-container/20"></div>
+</div>
+</footer>
+<div class="fixed top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-tertiary-fixed-dim/30 to-transparent"></div>
+<div class="fixed bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-secondary/30 to-transparent"></div>
+</body></html>

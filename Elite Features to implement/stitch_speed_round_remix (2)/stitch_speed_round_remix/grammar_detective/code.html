@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Grammar Detective | Linguistics Hub</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700;900&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "error": "#ba1a1a",
+              "tertiary": "#573f00",
+              "primary-container": "#4b4fb0",
+              "on-secondary-fixed-variant": "#802918",
+              "tertiary-fixed": "#ffdea0",
+              "tertiary-container": "#745500",
+              "on-tertiary": "#ffffff",
+              "on-error-container": "#93000a",
+              "primary": "#333697",
+              "on-primary": "#ffffff",
+              "inverse-on-surface": "#f1f1ec",
+              "on-tertiary-fixed-variant": "#5c4300",
+              "inverse-surface": "#2f312e",
+              "on-primary-fixed": "#04006d",
+              "on-primary-container": "#ceceff",
+              "secondary-container": "#fd876f",
+              "secondary": "#9f402d",
+              "on-primary-fixed-variant": "#373a9b",
+              "on-secondary-container": "#732010",
+              "surface-container": "#eeeee9",
+              "on-error": "#ffffff",
+              "on-tertiary-container": "#ffca56",
+              "on-secondary": "#ffffff",
+              "secondary-fixed-dim": "#ffb4a5",
+              "surface-container-high": "#e8e8e3",
+              "outline": "#757684",
+              "on-secondary-fixed": "#3e0500",
+              "surface-dim": "#dadad5",
+              "on-tertiary-fixed": "#261900",
+              "surface-container-lowest": "#ffffff",
+              "on-surface-variant": "#454652",
+              "background": "#fafaf5",
+              "outline-variant": "#c5c5d4",
+              "on-background": "#1a1c19",
+              "surface-container-highest": "#e3e3de",
+              "surface-tint": "#4f54b4",
+              "primary-fixed": "#e1e0ff",
+              "on-surface": "#1a1c19",
+              "error-container": "#ffdad6",
+              "surface-variant": "#e3e3de",
+              "primary-fixed-dim": "#c0c1ff",
+              "surface-container-low": "#f4f4ef",
+              "tertiary-fixed-dim": "#f6be3b",
+              "surface-bright": "#fafaf5",
+              "secondary-fixed": "#ffdad3",
+              "surface": "#fafaf5",
+              "inverse-primary": "#c0c1ff"
+            },
+            fontFamily: {
+              "headline": ["Epilogue"],
+              "body": ["Plus Jakarta Sans"],
+              "label": ["Plus Jakarta Sans"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .text-justified { text-align: justify; }
+        .pattern-overlay {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l15 30-15 30L15 30z' fill='%23333697' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body selection:bg-secondary-container selection:text-on-secondary-container overflow-x-hidden">
+<!-- Top App Bar (Shared Component) -->
+<header class="fixed top-0 w-full flex justify-between items-center px-6 py-4 bg-[#fafaf5] dark:bg-slate-950 z-50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#333697] dark:text-indigo-400">menu</span>
+<h1 class="font-epilogue font-bold tracking-tight text-xl text-[#333697] dark:text-indigo-400">Linguistics Hub</h1>
+</div>
+<div class="bg-surface-container-low dark:bg-slate-900 px-3 py-1.5 rounded-full flex items-center gap-2">
+<span class="font-epilogue font-bold tracking-tight text-sm text-[#333697] dark:text-indigo-400">5 🔥 120 XP</span>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 min-h-screen pattern-overlay">
+<!-- Hero Section: Editorial Asymmetry -->
+<section class="mb-12">
+<div class="relative">
+<span class="font-label text-xs font-extrabold uppercase tracking-[0.2em] text-secondary mb-2 block">Mission: Kano Case</span>
+<h2 class="font-headline text-4xl font-black text-primary leading-tight max-w-[80%]">Grammar Detective</h2>
+<div class="absolute -right-4 top-0 w-24 h-24 bg-tertiary-container/10 rounded-full blur-2xl"></div>
+</div>
+<p class="mt-4 text-on-surface-variant font-medium leading-relaxed max-w-[90%]">
+                Scan the parchment. Somewhere in this Hausa transcript, an error disrupts the flow of the narrative. Can you find it?
+            </p>
+</section>
+<!-- The "Parchment" Text Block -->
+<section class="mb-8">
+<div class="bg-surface-container-low p-8 rounded-xl relative overflow-hidden shadow-sm">
+<!-- Decorative pattern corner -->
+<div class="absolute top-0 right-0 w-16 h-16 opacity-10">
+<svg class="fill-primary" viewbox="0 0 100 100">
+<path d="M0 0 L100 0 L100 100 Z"></path>
+</svg>
+</div>
+<div class="relative z-10">
+<p class="font-headline text-xl leading-loose text-on-surface">
+<span class="px-1 py-0.5 hover:bg-surface-container-highest transition-colors cursor-pointer rounded">Sannu</span>
+<span class="px-1 py-0.5 hover:bg-surface-container-highest transition-colors cursor-pointer rounded">da</span>
+<span class="px-1 py-0.5 hover:bg-surface-container-highest transition-colors cursor-pointer rounded">zuwa.</span>
+<span class="px-1 py-0.5 hover:bg-surface-container-highest transition-colors cursor-pointer rounded">Yaya</span>
+<span class="px-1 py-0.5 hover:bg-surface-container-highest transition-colors cursor-pointer rounded">aikin?</span>
+<span class="px-1 py-0.5 bg-secondary-container/20 border-b-2 border-secondary text-secondary font-bold cursor-pointer rounded">Ina</span>
+<span class="px-1 py-0.5 bg-secondary-container/20 border-b-2 border-secondary text-secondary font-bold cursor-pointer rounded">zuwa</span>
+<span class="px-1 py-0.5 bg-secondary-container/20 border-b-2 border-secondary text-secondary font-bold cursor-pointer rounded">kasuwa</span>
+<span class="px-1 py-0.5 hover:bg-surface-container-highest transition-colors cursor-pointer rounded">gobe.</span>
+<span class="px-1 py-0.5 hover:bg-surface-container-highest transition-colors cursor-pointer rounded">Ina</span>
+<span class="px-1 py-0.5 hover:bg-surface-container-highest transition-colors cursor-pointer rounded">fatan</span>
+<span class="px-1 py-0.5 hover:bg-surface-container-highest transition-colors cursor-pointer rounded">komai</span>
+<span class="px-1 py-0.5 hover:bg-surface-container-highest transition-colors cursor-pointer rounded">yana</span>
+<span class="px-1 py-0.5 hover:bg-surface-container-highest transition-colors cursor-pointer rounded">lafiya.</span>
+</p>
+</div>
+<div class="mt-8 flex items-center justify-between border-t border-outline-variant/20 pt-4">
+<div class="flex gap-2">
+<span class="w-8 h-1 bg-primary rounded-full"></span>
+<span class="w-2 h-1 bg-outline-variant rounded-full"></span>
+<span class="w-2 h-1 bg-outline-variant rounded-full"></span>
+</div>
+<span class="font-label text-[10px] font-bold uppercase text-outline">Language: Hausa Standard</span>
+</div>
+</div>
+</section>
+<!-- Griot's Guide: The Explanation (Bottom Sheet Style) -->
+<section class="relative">
+<div class="bg-primary text-on-primary rounded-t-[2.5rem] p-8 -mx-6 shadow-2xl">
+<div class="w-12 h-1 bg-on-primary/20 rounded-full mx-auto mb-6"></div>
+<div class="flex items-start gap-4 mb-6">
+<div class="bg-tertiary-container p-3 rounded-xl">
+<span class="material-symbols-outlined text-on-tertiary-container" style="font-variation-settings: 'FILL' 1;">history_edu</span>
+</div>
+<div>
+<h3 class="font-headline text-2xl font-bold tracking-tight">Griot's Guide</h3>
+<p class="text-on-primary-container text-sm font-medium opacity-90">Temporal Discord Detected</p>
+</div>
+</div>
+<div class="space-y-6">
+<div class="bg-white/5 p-5 rounded-2xl border border-white/10 backdrop-blur-sm">
+<p class="font-body leading-relaxed italic opacity-90">
+                            "You found the rift, Detective. In Hausa, the continuous marker 'Ina' denotes the present. Yet, you speak of 'gobe' (tomorrow)."
+                        </p>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-highest/10 p-4 rounded-xl">
+<span class="text-[10px] font-bold uppercase tracking-widest text-secondary-container mb-1 block">The Error</span>
+<p class="text-sm font-bold">Ina zuwa...</p>
+</div>
+<div class="bg-tertiary-container/30 p-4 rounded-xl">
+<span class="text-[10px] font-bold uppercase tracking-widest text-tertiary-fixed mb-1 block">The Correction</span>
+<p class="text-sm font-bold">Zan tafi...</p>
+</div>
+</div>
+<div class="pt-2">
+<h4 class="font-label text-xs font-black uppercase text-tertiary-fixed-dim mb-2">The Wisdom</h4>
+<p class="text-sm leading-relaxed opacity-80">
+                            When traveling to the future, we must use the 'Zan' particle. The Griot reminds us: focus on the intent, not just the action.
+                        </p>
+</div>
+<button class="w-full bg-secondary-container text-on-secondary-container font-headline font-bold py-4 rounded-xl shadow-lg active:scale-95 transition-transform">
+                        Correct the Parchment
+                    </button>
+</div>
+</div>
+</section>
+<!-- Artifact Highlight: Visual Interest -->
+<section class="mt-12 mb-8">
+<div class="relative h-48 rounded-2xl overflow-hidden bg-surface-container-high">
+<img alt="Close up of traditional Hausa indigo dyed fabric with intricate geometric patterns and hand-stitched details" class="w-full h-full object-cover mix-blend-multiply opacity-60" data-alt="Traditional Hausa indigo dyed fabric with intricate white geometric patterns and organic hand-stitched textures in soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1i-Dda72PuXf5x2WsYumVl8NicJXURBGlq2H8WUqYTJK9eUTPcGx2YPIfKAr-AqY794S58-vFbBbheysNoh15JvQDxkw-FazBIZVnTFI88iop2nylTNg50XktveI7XlPiQWIAuDtQKREouPAl7c_nvbtEY4mZs89tkgEMlo2lTygBswNUrUiFVFvSWMxW1f82WGaZVvijI-X07ZHLNNCMB0jR5GX-W6grJ02SUbtqZnmSeate4Di5Re18X5ast-dBZvFgJJODVTY"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
+<div class="absolute bottom-6 left-6 right-6">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-tertiary-fixed text-sm">auto_awesome</span>
+<span class="text-xs font-bold text-tertiary-fixed uppercase tracking-widest">Heritage Insight</span>
+</div>
+<p class="text-white font-headline text-lg font-bold leading-tight">The Kano Dye Pits have preserved color for 500 years.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation (Shared Component) -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#fafaf5]/80 dark:bg-slate-950/80 backdrop-blur-xl shadow-[0_-4px_20px_rgba(51,54,151,0.04)] rounded-t-[2rem] border-t border-[#333697]/5">
+<div class="flex flex-col items-center justify-center bg-[#333697] text-white rounded-[1.5rem] px-5 py-2 mt-1 transition-transform active:scale-90 duration-200">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+<span class="font-plus-jakarta text-[11px] font-bold uppercase tracking-widest">Learn</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#333697] dark:text-indigo-200/60 p-2 hover:bg-[#f4f4ef] dark:hover:bg-indigo-900/30 rounded-full">
+<span class="material-symbols-outlined" data-icon="extension">extension</span>
+<span class="font-plus-jakarta text-[11px] font-bold uppercase tracking-widest">Games</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#333697] dark:text-indigo-200/60 p-2 hover:bg-[#f4f4ef] dark:hover:bg-indigo-900/30 rounded-full">
+<span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+<span class="font-plus-jakarta text-[11px] font-bold uppercase tracking-widest">Artifacts</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#333697] dark:text-indigo-200/60 p-2 hover:bg-[#f4f4ef] dark:hover:bg-indigo-900/30 rounded-full">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-plus-jakarta text-[11px] font-bold uppercase tracking-widest">Profile</span>
+</div>
+</nav>
+</body></html>

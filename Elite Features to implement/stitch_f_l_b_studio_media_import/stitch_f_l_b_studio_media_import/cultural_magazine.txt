@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Àṣà — African Cultural Magazine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,800;1,400;1,600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Karla:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --ink: #0D0A06;
+  --ink2: #1E1A12;
+  --ink3: #3A3328;
+  --char: #5A5040;
+  --sand: #C4A96A;
+  --sand-light: #E8D9A8;
+  --sand-pale: #FAF4E4;
+  --terracotta: #C45C32;
+  --terracotta-light: #E8956E;
+  --terracotta-pale: #FAEAE2;
+  --forest: #2E5C3A;
+  --forest-light: #5A9E6E;
+  --indigo: #2A3560;
+  --indigo-light: #6878B0;
+  --paper: #FDF8EE;
+  --paper2: #F5EDD8;
+  --paper3: #EDE0C4;
+  --cream: #FAF6EE;
+  --rule: rgba(90,80,64,0.18);
+  --rule-strong: rgba(90,80,64,0.35);
+  --r: 6px;
+  --r-lg: 12px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Karla', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ========== TOP MASTHEAD ========== */
+#masthead {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 3px solid var(--sand);
+}
+
+.masthead-ticker {
+  background: var(--sand);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 5px 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.ticker-inner {
+  display: inline-block;
+  animation: tickerScroll 28s linear infinite;
+}
+@keyframes tickerScroll {
+  from { transform: translateX(100vw); }
+  to { transform: translateX(-100%); }
+}
+
+.masthead-main {
+  display: flex;
+  align-items: center;
+  padding: 10px 28px;
+  gap: 20px;
+  border-bottom: 1px solid rgba(196,169,106,0.2);
+}
+
+.masthead-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 42px;
+  font-weight: 800;
+  color: var(--sand-light);
+  letter-spacing: -2px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.masthead-logo span { color: var(--terracotta-light); font-style: italic; }
+
+.masthead-tagline {
+  font-size: 10px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(196,169,106,0.6);
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.masthead-divider { width: 1px; height: 44px; background: rgba(196,169,106,0.2); flex-shrink: 0; }
+
+.masthead-nav {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+  flex-wrap: wrap;
+}
+.mnav-btn {
+  background: transparent;
+  border: none;
+  color: rgba(253,248,238,0.65);
+  font-family: 'Karla', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.mnav-btn:hover { background: rgba(196,169,106,0.15); color: var(--sand-light); }
+.mnav-btn.active { background: rgba(196,169,106,0.2); color: var(--sand-light); font-weight: 600; }
+
+.masthead-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+.maction-btn {
+  background: transparent;
+  border: 1px solid rgba(196,169,106,0.3);
+  color: var(--sand-light);
+  font-family: 'Karla', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.5px;
+}
+.maction-btn:hover { background: rgba(196,169,106,0.15); border-color: var(--sand); }
+.maction-btn.primary { background: var(--sand); color: var(--ink); border-color: var(--sand); font-weight: 600; }
+.maction-btn.primary:hover { background: var(--sand-light); }
+
+.search-bar {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(196,169,106,0.2);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-family: 'Karla', sans-serif;
+  color: var(--paper);
+  outline: none;
+  width: 180px;
+  transition: all 0.2s;
+}
+.search-bar::placeholder { color: rgba(196,169,106,0.4); }
+.search-bar:focus { width: 220px; border-color: rgba(196,169,106,0.5); background: rgba(255,255,255,0.12); }
+
+/* ========== EDITION BAR ========== */
+.edition-bar {
+  display: flex;
+  align-items: center;
+  padding: 7px 28px;
+  gap: 16px;
+}
+.edition-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(196,169,106,0.5); font-weight: 500; }
+.edition-chips { display: flex; gap: 6px; }
+.echip {
+  background: transparent;
+  border: 1px solid rgba(196,169,106,0.2);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: rgba(196,169,106,0.5);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.echip:hover { border-color: rgba(196,169,106,0.5); color: var(--sand-light); }
+.echip.active { background: var(--terracotta); border-color: var(--terracotta); color: white; }
+
+.edition-date { margin-left: auto; font-size: 10px; letter-spacing: 1px; color: rgba(196,169,106,0.4); text-transform: uppercase; }
+
+/* ========== LAYOUT ========== */
+#magazine-app { display: flex; height: calc(100vh - 110px); }
+
+/* ========== LEFT RAIL ========== */
+#left-rail {
+  width: 220px;
+  background: var(--ink2);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow-y: auto;
+  border-right: 1px solid rgba(196,169,106,0.1);
+}
+
+.rail-section { padding: 16px 14px 8px; }
+.rail-section-title {
+  font-size: 9px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(196,169,106,0.4);
+  font-weight: 600;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(196,169,106,0.1);
+}
+.rail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: 2px;
+}
+.rail-item:hover { background: rgba(196,169,106,0.1); }
+.rail-item.active { background: rgba(196,169,106,0.15); }
+.rail-icon { font-size: 15px; width: 22px; text-align: center; }
+.rail-label { font-size: 13px; color: rgba(253,248,238,0.75); font-weight: 400; }
+.rail-item.active .rail-label { color: var(--sand-light); font-weight: 500; }
+.rail-count { margin-left: auto; background: rgba(196,169,106,0.2); border-radius: 10px; padding: 1px 7px; font-size: 10px; color: var(--sand); font-weight: 600; }
+
+.rail-featured {
+  margin: 10px 14px;
+  background: linear-gradient(135deg, var(--terracotta) 0%, #8B3520 100%);
+  border-radius: 8px;
+  padding: 14px 12px;
+  cursor: pointer;
+}
+.rf-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 4px; }
+.rf-title { font-family: 'Playfair Display', serif; font-size: 15px; color: white; line-height: 1.3; font-weight: 600; }
+.rf-sub { font-size: 10px; color: rgba(255,255,255,0.55); margin-top: 6px; }
+
+.saved-badge {
+  margin: 8px 14px;
+  background: rgba(46,92,58,0.3);
+  border: 1px solid rgba(90,158,110,0.3);
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+.sb-count { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--sand-light); font-weight: 600; }
+.sb-label { font-size: 10px; color: rgba(196,169,106,0.5); letter-spacing: 0.5px; margin-top: 2px; }
+
+/* ========== MAIN CONTENT ========== */
+#main-content {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--paper);
+}
+
+/* ========== HERO SPREAD ========== */
+.hero-spread {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  min-height: 480px;
+  border-bottom: 2px solid var(--rule-strong);
+}
+.hero-lead {
+  background: var(--ink);
+  padding: 36px 32px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.hero-lead::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 70% 30%, rgba(196,169,106,0.12) 0%, transparent 60%),
+              radial-gradient(ellipse at 20% 80%, rgba(196,84,50,0.1) 0%, transparent 50%);
+}
+.hero-adinkra {
+  position: absolute;
+  right: -20px; top: -20px;
+  font-size: 220px;
+  opacity: 0.04;
+  color: var(--sand);
+  line-height: 1;
+  pointer-events: none;
+  font-family: 'Playfair Display', serif;
+}
+.hero-kicker {
+  display: inline-block;
+  background: var(--terracotta);
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 3px;
+  margin-bottom: 16px;
+  position: relative;
+}
+.hero-headline {
+  font-family: 'Playfair Display', serif;
+  font-size: 44px;
+  font-weight: 800;
+  color: var(--paper);
+  line-height: 1.1;
+  letter-spacing: -1px;
+  margin-bottom: 14px;
+  position: relative;
+  max-width: 520px;
+}
+.hero-headline em { color: var(--sand-light); font-style: italic; }
+.hero-deck {
+  font-size: 15px;
+  color: rgba(253,248,238,0.65);
+  line-height: 1.65;
+  max-width: 480px;
+  position: relative;
+  font-family: 'Libre Baskerville', serif;
+  margin-bottom: 24px;
+}
+.hero-byline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+.hero-av {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 13px; font-weight: 700;
+  flex-shrink: 0;
+}
+.hero-author { font-size: 12px; color: rgba(253,248,238,0.5); }
+.hero-author strong { color: rgba(253,248,238,0.8); font-weight: 600; }
+.hero-meta { display: flex; gap: 12px; margin-left: auto; }
+.hero-meta-item { font-size: 11px; color: rgba(196,169,106,0.5); display: flex; align-items: center; gap: 4px; }
+
+.hero-tags {
+  display: flex; gap: 6px; margin-top: 20px; flex-wrap: wrap; position: relative;
+}
+.hero-tag {
+  background: rgba(196,169,106,0.12);
+  border: 1px solid rgba(196,169,106,0.2);
+  border-radius: 3px;
+  padding: 3px 9px;
+  font-size: 10px;
+  color: rgba(196,169,106,0.7);
+  letter-spacing: 0.5px;
+  cursor: pointer;
+}
+.hero-tag:hover { background: rgba(196,169,106,0.2); color: var(--sand-light); }
+
+.hero-cta {
+  position: relative;
+  margin-top: 24px;
+  display: flex;
+  gap: 10px;
+}
+.btn-read {
+  background: var(--sand);
+  color: var(--ink);
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-family: 'Karla', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-read:hover { background: var(--sand-light); }
+.btn-save {
+  background: transparent;
+  border: 1px solid rgba(196,169,106,0.3);
+  border-radius: 4px;
+  padding: 10px 16px;
+  font-family: 'Karla', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(196,169,106,0.7);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-save:hover { border-color: var(--sand); color: var(--sand-light); }
+
+.hero-sidebar {
+  border-left: 1px solid var(--rule-strong);
+  display: flex;
+  flex-direction: column;
+}
+.hero-sidebar-story {
+  flex: 1;
+  padding: 20px;
+  border-bottom: 1px solid var(--rule);
+  cursor: pointer;
+  transition: background 0.1s;
+  display: flex;
+  flex-direction: column;
+}
+.hero-sidebar-story:hover { background: var(--sand-pale); }
+.hero-sidebar-story:last-child { border-bottom: none; }
+.hs-kicker { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; color: var(--terracotta); margin-bottom: 6px; }
+.hs-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 600; line-height: 1.3; color: var(--ink); margin-bottom: 6px; }
+.hs-title em { font-style: italic; color: var(--char); }
+.hs-deck { font-size: 12px; color: var(--char); line-height: 1.5; font-family: 'Libre Baskerville', serif; flex: 1; }
+.hs-meta { font-size: 10px; color: var(--sand); margin-top: 8px; font-weight: 500; }
+.hs-media-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--paper2);
+  border: 1px solid var(--paper3);
+  border-radius: 3px;
+  padding: 2px 7px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--char);
+  margin-bottom: 6px;
+}
+
+/* ========== SECTION RULES ========== */
+.section-rule {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 28px 8px;
+}
+.section-rule-line { flex: 1; height: 1px; background: var(--rule); }
+.section-rule-title {
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--char);
+}
+.section-rule-line.fat { background: var(--sand); height: 2px; }
+
+/* ========== CARD GRIDS ========== */
+.card-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-bottom: 1px solid var(--rule);
+}
+.card-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.mag-card {
+  padding: 18px 20px;
+  border-right: 1px solid var(--rule);
+  cursor: pointer;
+  transition: background 0.1s;
+  display: flex;
+  flex-direction: column;
+}
+.mag-card:hover { background: var(--sand-pale); }
+.mag-card:last-child { border-right: none; }
+
+.mc-thumb {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: var(--paper2);
+  border-radius: 4px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  position: relative;
+  overflow: hidden;
+}
+.mc-thumb-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(13,10,6,0.5) 100%);
+}
+.mc-thumb-badge {
+  position: absolute;
+  top: 6px; left: 6px;
+  background: var(--terracotta);
+  color: white;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+.mc-thumb-duration {
+  position: absolute;
+  bottom: 6px; right: 6px;
+  background: rgba(13,10,6,0.75);
+  color: white;
+  font-size: 9px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+.mc-kicker { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; color: var(--terracotta); margin-bottom: 5px; }
+.mc-title { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 600; line-height: 1.3; color: var(--ink); margin-bottom: 6px; }
+.mc-deck { font-size: 11px; color: var(--char); line-height: 1.5; flex: 1; font-family: 'Libre Baskerville', serif; }
+.mc-footer { display: flex; align-items: center; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.mc-lang { background: var(--sand-pale); border: 1px solid var(--paper3); border-radius: 3px; padding: 2px 7px; font-size: 9px; font-weight: 600; color: var(--sand); letter-spacing: 0.5px; }
+.mc-region { font-size: 10px; color: rgba(90,80,64,0.5); }
+.mc-read-time { font-size: 10px; color: rgba(90,80,64,0.5); margin-left: auto; }
+
+/* ========== FEATURE LONG-FORM ========== */
+.feature-longform {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  border-bottom: 1px solid var(--rule-strong);
+}
+.fl-main {
+  padding: 24px 28px;
+  border-right: 1px solid var(--rule);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.fl-main:hover { background: var(--sand-pale); }
+.fl-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; font-weight: 700; color: var(--forest); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.fl-label::after { content: ''; flex: 1; height: 1px; background: var(--forest-light); opacity: 0.3; }
+.fl-headline { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 800; line-height: 1.15; color: var(--ink); letter-spacing: -0.5px; margin-bottom: 10px; }
+.fl-headline em { font-style: italic; color: var(--terracotta); }
+.fl-deck { font-family: 'Libre Baskerville', serif; font-size: 14px; line-height: 1.7; color: var(--ink3); margin-bottom: 14px; }
+.fl-excerpt { font-size: 13px; line-height: 1.7; color: var(--char); border-left: 3px solid var(--sand); padding-left: 14px; font-family: 'Libre Baskerville', serif; font-style: italic; }
+.fl-byline { display: flex; align-items: center; gap: 10px; margin-top: 16px; }
+.fl-av { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+.fl-author { font-size: 12px; color: var(--char); }
+.fl-author strong { color: var(--ink); font-weight: 600; display: block; }
+.fl-meta { margin-left: auto; text-align: right; }
+.fl-meta-read { font-size: 10px; color: var(--sand); font-weight: 600; }
+.fl-meta-type { font-size: 9px; color: rgba(90,80,64,0.5); letter-spacing: 0.5px; text-transform: uppercase; margin-top: 2px; }
+
+.fl-sidebar { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.fls-card { border-bottom: 1px solid var(--rule); padding-bottom: 12px; cursor: pointer; }
+.fls-card:last-child { border-bottom: none; padding-bottom: 0; }
+.fls-num { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 800; color: var(--paper3); line-height: 1; margin-bottom: 4px; }
+.fls-kicker { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--terracotta); font-weight: 700; margin-bottom: 4px; }
+.fls-title { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.3; }
+
+/* ========== MEDIA TYPES STRIP ========== */
+.media-strip {
+  background: var(--ink2);
+  padding: 20px 28px;
+  border-bottom: 1px solid rgba(196,169,106,0.1);
+}
+.media-strip-title { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: rgba(196,169,106,0.4); font-weight: 600; margin-bottom: 14px; }
+.media-types { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 4px; }
+.media-type-card {
+  background: rgba(196,169,106,0.06);
+  border: 1px solid rgba(196,169,106,0.12);
+  border-radius: 10px;
+  padding: 16px 14px;
+  min-width: 130px;
+  cursor: pointer;
+  transition: all 0.15s;
+  flex-shrink: 0;
+  text-align: center;
+}
+.media-type-card:hover { background: rgba(196,169,106,0.12); border-color: rgba(196,169,106,0.25); }
+.media-type-card.active { background: rgba(196,169,106,0.18); border-color: var(--sand); }
+.mt-icon { font-size: 28px; margin-bottom: 6px; display: block; }
+.mt-label { font-size: 11px; font-weight: 600; color: var(--sand-light); display: block; margin-bottom: 2px; }
+.mt-count { font-size: 10px; color: rgba(196,169,106,0.4); }
+
+/* ========== READER OVERLAY ========== */
+#reader-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(13,10,6,0.85);
+  z-index: 200;
+  overflow-y: auto;
+  padding: 40px 20px;
+}
+#reader-overlay.open { display: block; }
+.reader-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  background: var(--paper);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.reader-header { background: var(--ink); padding: 24px 32px; position: relative; }
+.reader-close { position: absolute; top: 16px; right: 16px; background: rgba(196,169,106,0.15); border: 1px solid rgba(196,169,106,0.2); border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--sand-light); font-size: 14px; transition: background 0.15s; }
+.reader-close:hover { background: rgba(196,169,106,0.3); }
+.reader-kicker { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--terracotta-light); font-weight: 700; margin-bottom: 10px; }
+.reader-headline { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 800; color: var(--paper); line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 12px; }
+.reader-byline-bar { display: flex; align-items: center; gap: 10px; }
+.reader-av { width: 36px; height: 36px; border-radius: 50%; background: var(--terracotta); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; color: white; }
+.reader-author { font-size: 12px; }
+.reader-author strong { color: var(--sand-light); font-weight: 600; display: block; }
+.reader-author span { color: rgba(196,169,106,0.5); }
+.reader-tools { margin-left: auto; display: flex; gap: 8px; }
+.rtool { background: rgba(196,169,106,0.1); border: 1px solid rgba(196,169,106,0.15); border-radius: 4px; padding: 5px 10px; font-size: 10px; font-weight: 600; color: var(--sand); cursor: pointer; font-family: 'Karla', sans-serif; letter-spacing: 0.5px; transition: all 0.15s; }
+.rtool:hover { background: rgba(196,169,106,0.2); }
+
+.reader-body { padding: 28px 32px; }
+.reader-lede { font-family: 'Libre Baskerville', serif; font-size: 18px; line-height: 1.7; color: var(--ink2); margin-bottom: 20px; font-weight: 400; }
+.reader-text { font-family: 'Libre Baskerville', serif; font-size: 15px; line-height: 1.85; color: var(--ink3); margin-bottom: 16px; }
+.reader-pullquote { background: var(--paper2); border-left: 4px solid var(--sand); padding: 16px 20px; margin: 20px 0; font-family: 'Playfair Display', serif; font-size: 19px; font-style: italic; line-height: 1.4; color: var(--ink2); border-radius: 0 6px 6px 0; }
+.reader-vocab-callout {
+  background: var(--terracotta-pale);
+  border: 1px solid rgba(196,84,50,0.2);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin: 16px 0;
+}
+.rvc-title { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; color: var(--terracotta); margin-bottom: 8px; }
+.rvc-words { display: flex; flex-wrap: wrap; gap: 6px; }
+.rvc-word {
+  background: white;
+  border: 1px solid rgba(196,84,50,0.2);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.rvc-word:hover { background: var(--terracotta); color: white; border-color: var(--terracotta); }
+.rvc-word span { font-family: 'Playfair Display', serif; font-style: italic; }
+.reader-section-head { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--ink); margin: 24px 0 10px; border-bottom: 1px solid var(--rule); padding-bottom: 6px; }
+
+/* ========== RIGHT RAIL ========== */
+#right-rail {
+  width: 240px;
+  background: var(--cream);
+  border-left: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+.right-section { padding: 14px; border-bottom: 1px solid var(--rule); }
+.rs-title { font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 700; color: var(--char); margin-bottom: 10px; }
+.vocab-feed-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--rule);
+  cursor: pointer;
+}
+.vocab-feed-item:last-child { border-bottom: none; }
+.vfi-native { font-family: 'Playfair Display', serif; font-size: 16px; color: var(--ink); font-style: italic; font-weight: 600; }
+.vfi-lang { font-size: 9px; color: var(--sand); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+.vfi-def { font-size: 11px; color: var(--char); line-height: 1.4; }
+.vfi-actions { display: flex; gap: 6px; margin-top: 4px; }
+.vfi-btn { font-size: 9px; font-weight: 600; color: var(--sand); cursor: pointer; padding: 2px 6px; background: var(--sand-pale); border-radius: 3px; }
+
+.now-trending-item { display: flex; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--rule); cursor: pointer; }
+.now-trending-item:last-child { border-bottom: none; }
+.nti-num { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 800; color: var(--paper3); line-height: 1; width: 24px; flex-shrink: 0; }
+.nti-info { flex: 1; }
+.nti-cat { font-size: 8px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--terracotta); font-weight: 700; }
+.nti-title { font-size: 12px; font-weight: 600; color: var(--ink); line-height: 1.3; margin-top: 2px; font-family: 'Playfair Display', serif; }
+
+.language-filter { display: flex; flex-wrap: wrap; gap: 5px; }
+.lf-btn { background: var(--paper2); border: 1px solid var(--paper3); border-radius: 3px; padding: 4px 9px; font-size: 10px; font-weight: 600; color: var(--char); cursor: pointer; transition: all 0.15s; }
+.lf-btn:hover { background: var(--sand-pale); border-color: var(--sand-light); }
+.lf-btn.active { background: var(--sand); border-color: var(--sand); color: var(--ink); }
+
+/* ========== BOTTOM STRIP ========== */
+.bottom-strip {
+  background: var(--ink);
+  padding: 28px 28px;
+  border-top: 2px solid var(--sand);
+}
+.bs-title { font-family: 'Playfair Display', serif; font-size: 13px; color: rgba(196,169,106,0.5); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+.bs-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+.bs-item { cursor: pointer; }
+.bs-item-thumb { width: 100%; aspect-ratio: 3/2; background: var(--ink2); border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 8px; border: 1px solid rgba(196,169,106,0.1); transition: border-color 0.15s; }
+.bs-item:hover .bs-item-thumb { border-color: rgba(196,169,106,0.3); }
+.bs-item-title { font-family: 'Playfair Display', serif; font-size: 12px; color: rgba(253,248,238,0.75); line-height: 1.3; }
+.bs-item-meta { font-size: 9px; color: rgba(196,169,106,0.4); margin-top: 3px; }
+
+/* ========== SCROLLBAR ========== */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(196,169,106,0.2); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(196,169,106,0.4); }
+
+/* ========== ANIMATIONS ========== */
+@keyframes fadeSlideIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
+.mag-card, .hero-sidebar-story { animation: fadeSlideIn 0.4s ease backwards; }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header id="masthead">
+  <div class="masthead-ticker">
+    <span class="ticker-inner">
+      ✦ NEW: The Griot's Digital Renaissance — How oral tradition is finding a new home online &nbsp;&nbsp;&nbsp; ✦ AUDIO ESSAY: Nneka Ogwumike on language, identity, and belonging &nbsp;&nbsp;&nbsp; ✦ PHOTO SERIES: 72 Faces of the Sahel &nbsp;&nbsp;&nbsp; ✦ DOCUMENTARY: The Last Kora Makers of Gambia — watch now &nbsp;&nbsp;&nbsp; ✦ FEATURED: Nollywood's linguistic evolution &nbsp;&nbsp;&nbsp;
+    </span>
+  </div>
+  <div class="masthead-main">
+    <div>
+      <div class="masthead-logo">À<span>ṣ</span>à</div>
+      <div class="masthead-tagline">African Cultural Magazine · Est. 2024</div>
+    </div>
+    <div class="masthead-divider"></div>
+    <nav class="masthead-nav">
+      <button class="mnav-btn active" onclick="setSection(this)">All</button>
+      <button class="mnav-btn" onclick="setSection(this)">Language & Linguistics</button>
+      <button class="mnav-btn" onclick="setSection(this)">Music & Performance</button>
+      <button class="mnav-btn" onclick="setSection(this)">Film & Storytelling</button>
+      <button class="mnav-btn" onclick="setSection(this)">Visual Arts</button>
+      <button class="mnav-btn" onclick="setSection(this)">Food & Agriculture</button>
+      <button class="mnav-btn" onclick="setSection(this)">History & Tradition</button>
+      <button class="mnav-btn" onclick="setSection(this)">Fashion & Textile</button>
+      <button class="mnav-btn" onclick="setSection(this)">Spirituality</button>
+    </nav>
+    <div class="masthead-actions">
+      <input type="text" class="search-bar" placeholder="Search Àṣà…" />
+      <button class="maction-btn">🔖 Saved</button>
+      <button class="maction-btn primary">Subscribe</button>
+    </div>
+  </div>
+  <div class="edition-bar">
+    <span class="edition-label">Edition</span>
+    <div class="edition-chips">
+      <button class="echip active" onclick="setEdition(this)">🌍 Pan-African</button>
+      <button class="echip" onclick="setEdition(this)">🌿 West African</button>
+      <button class="echip" onclick="setEdition(this)">🏔️ East African</button>
+      <button class="echip" onclick="setEdition(this)">🌊 Southern</button>
+      <button class="echip" onclick="setEdition(this)">🏜️ North African</button>
+      <button class="echip" onclick="setEdition(this)">🌐 Diaspora</button>
+    </div>
+    <span class="edition-date">Vol. 1 · Issue 12 · March 2026</span>
+  </div>
+</header>
+
+<div id="magazine-app">
+
+  <!-- LEFT RAIL -->
+  <aside id="left-rail">
+    <div class="rail-section">
+      <div class="rail-section-title">Browse</div>
+      <div class="rail-item active"><span class="rail-icon">📰</span><span class="rail-label">For You</span><span class="rail-count">24</span></div>
+      <div class="rail-item"><span class="rail-icon">🔥</span><span class="rail-label">Trending</span><span class="rail-count">8</span></div>
+      <div class="rail-item"><span class="rail-icon">⭐</span><span class="rail-label">Editors' Picks</span></div>
+      <div class="rail-item"><span class="rail-icon">🆕</span><span class="rail-label">Latest</span><span class="rail-count">3</span></div>
+      <div class="rail-item"><span class="rail-icon">📚</span><span class="rail-label">Long Reads</span></div>
+    </div>
+
+    <div class="rail-section">
+      <div class="rail-section-title">Media Type</div>
+      <div class="rail-item"><span class="rail-icon">📖</span><span class="rail-label">Articles</span><span class="rail-count">148</span></div>
+      <div class="rail-item"><span class="rail-icon">🎧</span><span class="rail-label">Audio Essays</span><span class="rail-count">34</span></div>
+      <div class="rail-item"><span class="rail-icon">🎬</span><span class="rail-label">Documentaries</span><span class="rail-count">21</span></div>
+      <div class="rail-item"><span class="rail-icon">📷</span><span class="rail-label">Photo Essays</span><span class="rail-count">47</span></div>
+      <div class="rail-item"><span class="rail-icon">🎙️</span><span class="rail-label">Podcasts</span><span class="rail-count">19</span></div>
+      <div class="rail-item"><span class="rail-icon">📜</span><span class="rail-label">Oral Tradition</span><span class="rail-count">28</span></div>
+      <div class="rail-item"><span class="rail-icon">🗺️</span><span class="rail-label">Interactive</span><span class="rail-count">9</span></div>
+    </div>
+
+    <div class="rail-featured" onclick="openReader()">
+      <div class="rf-label">Featured This Week</div>
+      <div class="rf-title">"The Tongue Remembers What the Mind Forgets"</div>
+      <div class="rf-sub">A deep-dive into language memory & identity · 18 min read</div>
+    </div>
+
+    <div class="saved-badge">
+      <div class="sb-count">12</div>
+      <div class="sb-label">Saved articles</div>
+    </div>
+
+    <div class="rail-section">
+      <div class="rail-section-title">Languages</div>
+      <div class="rail-item"><span class="rail-icon">🇳🇬</span><span class="rail-label">Yoruba</span><span class="rail-count">41</span></div>
+      <div class="rail-item"><span class="rail-icon">🇰🇪</span><span class="rail-label">Swahili</span><span class="rail-count">38</span></div>
+      <div class="rail-item"><span class="rail-icon">🇬🇭</span><span class="rail-label">Twi / Akan</span><span class="rail-count">22</span></div>
+      <div class="rail-item"><span class="rail-icon">🇿🇦</span><span class="rail-label">Zulu / Xhosa</span><span class="rail-count">19</span></div>
+      <div class="rail-item"><span class="rail-icon">🇸🇳</span><span class="rail-label">Wolof</span><span class="rail-count">17</span></div>
+      <div class="rail-item"><span class="rail-icon">🇳🇬</span><span class="rail-label">Igbo</span><span class="rail-count">29</span></div>
+      <div class="rail-item"><span class="rail-icon">🇲🇱</span><span class="rail-label">Bambara</span><span class="rail-count">14</span></div>
+      <div class="rail-item"><span class="rail-icon">🇪🇹</span><span class="rail-label">Amharic</span><span class="rail-count">16</span></div>
+      <div class="rail-item"><span class="rail-icon">➕</span><span class="rail-label">+43 more</span></div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main id="main-content">
+
+    <!-- HERO SPREAD -->
+    <div class="hero-spread">
+      <div class="hero-lead" onclick="openReader()">
+        <div class="hero-adinkra">☽</div>
+        <div class="hero-kicker">Cover Story · Language & Identity</div>
+        <h1 class="hero-headline">
+          The <em>Griot</em> Goes Digital:<br/>How Africa's Oldest<br/>Storytellers Are Surviving<br/>the Algorithm
+        </h1>
+        <p class="hero-deck">
+          For thousands of years, griots carried nations in their voices — lineages, histories, the very grammar of belonging. Now, as platforms and pixels reshape how stories travel, a new generation of custodians is asking: can the oral tradition survive without the breath?
+        </p>
+        <div class="hero-tags">
+          <span class="hero-tag">ORAL TRADITION</span>
+          <span class="hero-tag">WEST AFRICA</span>
+          <span class="hero-tag">STORYTELLING</span>
+          <span class="hero-tag">GRIOT</span>
+          <span class="hero-tag">DIGITAL CULTURE</span>
+        </div>
+        <div class="hero-byline">
+          <div class="hero-av" style="background:#C4A96A;color:#0D0A06;">AK</div>
+          <div class="hero-author">
+            By <strong>Aminata Kouyaté-Diallo</strong>
+            Senior Correspondent, West Africa · 22 min read
+          </div>
+          <div class="hero-meta">
+            <div class="hero-meta-item">👁️ 14.2k</div>
+            <div class="hero-meta-item">🔖 842</div>
+            <div class="hero-meta-item">💬 204</div>
+          </div>
+        </div>
+        <div class="hero-cta">
+          <button class="btn-read">Read Full Story →</button>
+          <button class="btn-save">🔖 Save</button>
+          <button class="btn-save">🎧 Listen</button>
+        </div>
+      </div>
+
+      <div class="hero-sidebar">
+        <div class="hero-sidebar-story">
+          <div class="hs-media-badge">🎬 Documentary · 43 min</div>
+          <div class="hs-kicker">Film & Storytelling</div>
+          <h2 class="hs-title">Nollywood at 30: The Language<br/>Nobody Was Supposed to Speak</h2>
+          <p class="hs-deck">Pidgin English was the tongue of the streets, not the silver screen — until it wasn't. A cinematic history told through the voices of the directors who dared.</p>
+          <div class="hs-meta">👁 8.4k · 🇳🇬 Pidgin / Igbo / Yoruba</div>
+        </div>
+
+        <div class="hero-sidebar-story">
+          <div class="hs-media-badge">🎧 Audio Essay · 18 min</div>
+          <div class="hs-kicker">Music & Performance</div>
+          <h2 class="hs-title">Highlife, Afrobeats & the Grammar<br/>of <em>Belonging</em></h2>
+          <p class="hs-deck">What does it mean when a song teaches you more Twi than a classroom ever did? Three musicologists, one very long conversation.</p>
+          <div class="hs-meta">👁 6.1k · 🇬🇭 Twi / Ga</div>
+        </div>
+
+        <div class="hero-sidebar-story">
+          <div class="hs-media-badge">📷 Photo Essay · 72 images</div>
+          <div class="hs-kicker">Visual Arts · Fashion</div>
+          <h2 class="hs-title">Kente, Kanga, Kaba:<br/>Cloth as a Living Language</h2>
+          <p class="hs-deck">Every pattern speaks. A photographic journey across West and East Africa's most eloquent textile traditions — and the women who keep them alive.</p>
+          <div class="hs-meta">👁 19.3k · 🇬🇭 🇰🇪 🇸🇳</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MEDIA TYPES STRIP -->
+    <div class="media-strip">
+      <div class="media-strip-title">Browse by format</div>
+      <div class="media-types">
+        <div class="media-type-card active"><span class="mt-icon">🌍</span><span class="mt-label">All Media</span><span class="mt-count">340 items</span></div>
+        <div class="media-type-card"><span class="mt-icon">📖</span><span class="mt-label">Articles</span><span class="mt-count">148 items</span></div>
+        <div class="media-type-card"><span class="mt-icon">🎧</span><span class="mt-label">Audio Essays</span><span class="mt-count">34 items</span></div>
+        <div class="media-type-card"><span class="mt-icon">🎬</span><span class="mt-label">Documentaries</span><span class="mt-count">21 items</span></div>
+        <div class="media-type-card"><span class="mt-icon">📷</span><span class="mt-label">Photo Essays</span><span class="mt-count">47 items</span></div>
+        <div class="media-type-card"><span class="mt-icon">🎙️</span><span class="mt-label">Podcasts</span><span class="mt-count">19 episodes</span></div>
+        <div class="media-type-card"><span class="mt-icon">📜</span><span class="mt-label">Oral Tradition</span><span class="mt-count">28 recordings</span></div>
+        <div class="media-type-card"><span class="mt-icon">🗺️</span><span class="mt-label">Interactive</span><span class="mt-count">9 experiences</span></div>
+        <div class="media-type-card"><span class="mt-icon">🎭</span><span class="mt-label">Performance</span><span class="mt-count">12 videos</span></div>
+      </div>
+    </div>
+
+    <!-- FEATURED GRID -->
+    <div class="section-rule" style="padding-top:24px;">
+      <div class="section-rule-line fat"></div>
+      <span class="section-rule-title">Featured · Language & Culture</span>
+      <div class="section-rule-line fat"></div>
+    </div>
+
+    <div class="card-grid-3">
+      <div class="mag-card" style="animation-delay:0.05s;">
+        <div class="mc-thumb" style="background:#3A2C1A;">
+          <span>🥁</span>
+          <div class="mc-thumb-overlay"></div>
+          <div class="mc-thumb-badge">AUDIO</div>
+          <div class="mc-thumb-duration">24:18</div>
+        </div>
+        <div class="mc-kicker">Music · Oral Tradition</div>
+        <div class="mc-title">The Talking Drum Speaks Once More</div>
+        <div class="mc-deck">Inside the revival movement bringing bàtá and dùndún back to Yoruba-speaking communities in diaspora.</div>
+        <div class="mc-footer">
+          <span class="mc-lang">YORUBA</span>
+          <span class="mc-region">🇳🇬 Nigeria</span>
+          <span class="mc-read-time">🎧 24 min</span>
+        </div>
+      </div>
+
+      <div class="mag-card" style="animation-delay:0.1s;">
+        <div class="mc-thumb" style="background:#1A2E1A;">
+          <span>🌿</span>
+          <div class="mc-thumb-overlay"></div>
+          <div class="mc-thumb-badge">ARTICLE</div>
+        </div>
+        <div class="mc-kicker">Food & Agriculture</div>
+        <div class="mc-title">How the Kitchen Kept Igbo Alive</div>
+        <div class="mc-deck">From <em>ofe onugbu</em> to <em>ji mmiri ọjị</em> — a culinary ethnography of a language passed down through recipes, not textbooks.</div>
+        <div class="mc-footer">
+          <span class="mc-lang">IGBO</span>
+          <span class="mc-region">🇳🇬 Southeast</span>
+          <span class="mc-read-time">📖 12 min</span>
+        </div>
+      </div>
+
+      <div class="mag-card" style="animation-delay:0.15s;">
+        <div class="mc-thumb" style="background:#1A1A2E;">
+          <span>🌟</span>
+          <div class="mc-thumb-overlay"></div>
+          <div class="mc-thumb-badge">INTERACTIVE</div>
+        </div>
+        <div class="mc-kicker">Linguistics · Interactive</div>
+        <div class="mc-title">Map of 2,000 African Languages</div>
+        <div class="mc-deck">Explore the most linguistically diverse continent on Earth — an interactive journey through family trees, phonologies, and living communities.</div>
+        <div class="mc-footer">
+          <span class="mc-lang">PAN-AFRICAN</span>
+          <span class="mc-read-time">🗺️ Explore</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- LONG-FORM FEATURE -->
+    <div class="section-rule">
+      <div class="section-rule-line"></div>
+      <span class="section-rule-title">Long-Form Feature</span>
+      <div class="section-rule-line"></div>
+    </div>
+
+    <div class="feature-longform">
+      <div class="fl-main" onclick="openReader()">
+        <div class="fl-label">Editors' Pick · History</div>
+        <h2 class="fl-headline">The Manuscripts of<br/>Timbuktu: <em>A Language<br/>Buried in Sand</em></h2>
+        <p class="fl-deck">Over a million manuscripts lie in the libraries and private homes of Mali's ancient cities — written in Arabic script but singing in languages scholars are only now beginning to decode.</p>
+        <blockquote class="fl-excerpt">
+          "Every page is a dispute between the hand that wrote it and the tongue that spoke it. Arabic letters do not know how to carry the weight of Bambara vowels."
+        </blockquote>
+        <div class="fl-byline">
+          <div class="fl-av" style="background:#2A3560;color:#E8D9A8;">MS</div>
+          <div class="fl-author">
+            <strong>Dr. Moussa Sangaré</strong>
+            University of Bamako · Linguistics & Manuscript Studies
+          </div>
+          <div class="fl-meta">
+            <div class="fl-meta-read">35 min read</div>
+            <div class="fl-meta-type">📖 Long-Form Article + 🎧 Audio version</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fl-sidebar">
+        <div class="fls-card">
+          <div class="fls-num">01</div>
+          <div class="fls-kicker">Photography · Heritage</div>
+          <div class="fls-title">Inside a 14th-Century Manuscript Library</div>
+        </div>
+        <div class="fls-card">
+          <div class="fls-num">02</div>
+          <div class="fls-kicker">Audio · Scholarship</div>
+          <div class="fls-title">Reading Aloud in Bambara: A Live Session</div>
+        </div>
+        <div class="fls-card">
+          <div class="fls-num">03</div>
+          <div class="fls-kicker">Interview</div>
+          <div class="fls-title">The Archivists Racing Against Time & Heat</div>
+        </div>
+        <div class="fls-card">
+          <div class="fls-num">04</div>
+          <div class="fls-kicker">Vocabulary</div>
+          <div class="fls-title">50 Bambara Words from the Manuscripts</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD GRID 4 -->
+    <div class="section-rule">
+      <div class="section-rule-line"></div>
+      <span class="section-rule-title">Across the Continent</span>
+      <div class="section-rule-line"></div>
+    </div>
+
+    <div class="card-grid-4">
+      <div class="mag-card" style="animation-delay:0.05s;">
+        <div class="mc-thumb" style="background:#2A1E10;"><span>🦁</span><div class="mc-thumb-overlay"></div><div class="mc-thumb-badge">PODCAST</div><div class="mc-thumb-duration">Ep. 44</div></div>
+        <div class="mc-kicker">Spirituality</div>
+        <div class="mc-title">Sangomas, Saints & the Zulu Sacred</div>
+        <div class="mc-deck">The spiritual vocabulary of Zulu tradition — and what is lost when translated.</div>
+        <div class="mc-footer"><span class="mc-lang">ZULU</span><span class="mc-read-time">🎙️ 51 min</span></div>
+      </div>
+
+      <div class="mag-card" style="animation-delay:0.1s;">
+        <div class="mc-thumb" style="background:#0D1A12;"><span>🌿</span><div class="mc-thumb-overlay"></div><div class="mc-thumb-badge">DOCUMENTARY</div></div>
+        <div class="mc-kicker">Film</div>
+        <div class="mc-title">Ethiopian Cinema's Secret Language</div>
+        <div class="mc-deck">How Amharic cinema smuggled political dissent into mainstream audiences.</div>
+        <div class="mc-footer"><span class="mc-lang">AMHARIC</span><span class="mc-read-time">🎬 38 min</span></div>
+      </div>
+
+      <div class="mag-card" style="animation-delay:0.15s;">
+        <div class="mc-thumb" style="background:#1A0D0A;"><span>🎨</span><div class="mc-thumb-overlay"></div><div class="mc-thumb-badge">PHOTO ESSAY</div></div>
+        <div class="mc-kicker">Visual Arts</div>
+        <div class="mc-title">Ndebele Murals: Architecture That Speaks</div>
+        <div class="mc-deck">Each geometric pattern carries meaning across generations — but who will learn to read them?</div>
+        <div class="mc-footer"><span class="mc-lang">NDEBELE</span><span class="mc-read-time">📷 58 photos</span></div>
+      </div>
+
+      <div class="mag-card" style="animation-delay:0.2s;">
+        <div class="mc-thumb" style="background:#1A1A0D;"><span>🌙</span><div class="mc-thumb-overlay"></div><div class="mc-thumb-badge">ARTICLE</div></div>
+        <div class="mc-kicker">Folklore · Wolof</div>
+        <div class="mc-title">Leuk the Hare & the Lessons That Travel</div>
+        <div class="mc-deck">The Wolof trickster stories that shaped moral philosophy — and still do.</div>
+        <div class="mc-footer"><span class="mc-lang">WOLOF</span><span class="mc-region">🇸🇳</span><span class="mc-read-time">📖 9 min</span></div>
+      </div>
+    </div>
+
+    <!-- BOTTOM STRIP -->
+    <div class="bottom-strip">
+      <div class="bs-title">Recently Added</div>
+      <div class="bs-grid">
+        <div class="bs-item"><div class="bs-item-thumb">🥁</div><div class="bs-item-title">The Djembe Speaks: 40 Rhythms, 40 Meanings</div><div class="bs-item-meta">🎧 Audio · Mandinka</div></div>
+        <div class="bs-item"><div class="bs-item-thumb">📜</div><div class="bs-item-title">Proverb Atlas: 500 African Proverbs Mapped</div><div class="bs-item-meta">🗺️ Interactive</div></div>
+        <div class="bs-item"><div class="bs-item-thumb">👘</div><div class="bs-item-title">Boubou to Boardroom: Fashion's Linguistic Turn</div><div class="bs-item-meta">📖 Article · Wolof</div></div>
+        <div class="bs-item"><div class="bs-item-thumb">🌊</div><div class="bs-item-title">The Swahili Coast: A Trading Language's Seafaring Soul</div><div class="bs-item-meta">🎬 Documentary</div></div>
+        <div class="bs-item"><div class="bs-item-thumb">🍲</div><div class="bs-item-title">Names That Feed You: Food Words Across 30 Languages</div><div class="bs-item-meta">📖 Article · Multilingual</div></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- RIGHT RAIL -->
+  <aside id="right-rail">
+    <div class="right-section">
+      <div class="rs-title">My Vocabulary Feed</div>
+      <div class="vocab-feed-item">
+        <div class="vfi-lang">YORUBA</div>
+        <div class="vfi-native">Àṣà</div>
+        <div class="vfi-def">Culture; tradition; custom; the accumulated habits of a people</div>
+        <div class="vfi-actions"><span class="vfi-btn">🔊 Play</span><span class="vfi-btn">📌 Pin</span><span class="vfi-btn">📝 Note</span></div>
+      </div>
+      <div class="vocab-feed-item">
+        <div class="vfi-lang">SWAHILI</div>
+        <div class="vfi-native">Utamaduni</div>
+        <div class="vfi-def">Culture; civilization; the cultivated practices of society</div>
+        <div class="vfi-actions"><span class="vfi-btn">🔊 Play</span><span class="vfi-btn">📌 Pin</span><span class="vfi-btn">📝 Note</span></div>
+      </div>
+      <div class="vocab-feed-item">
+        <div class="vfi-lang">BAMBARA</div>
+        <div class="vfi-native">Jeliya</div>
+        <div class="vfi-def">The art and practice of the griot; custodianship of oral history</div>
+        <div class="vfi-actions"><span class="vfi-btn">🔊 Play</span><span class="vfi-btn">📌 Pin</span></div>
+      </div>
+      <div class="vocab-feed-item">
+        <div class="vfi-lang">IGBO</div>
+        <div class="vfi-native">Omenala</div>
+        <div class="vfi-def">Customary law; tradition; "that which is done in the land"</div>
+        <div class="vfi-actions"><span class="vfi-btn">🔊 Play</span><span class="vfi-btn">📌 Pin</span></div>
+      </div>
+    </div>
+
+    <div class="right-section">
+      <div class="rs-title">Now Trending</div>
+      <div class="now-trending-item"><div class="nti-num">1</div><div class="nti-info"><div class="nti-cat">Language</div><div class="nti-title">UNESCO's new endangered language report</div></div></div>
+      <div class="now-trending-item"><div class="nti-num">2</div><div class="nti-info"><div class="nti-cat">Music</div><div class="nti-title">Afrobeats' Yoruba renaissance</div></div></div>
+      <div class="now-trending-item"><div class="nti-num">3</div><div class="nti-info"><div class="nti-cat">Film</div><div class="nti-title">Nollywood surpasses Hollywood in volume</div></div></div>
+      <div class="now-trending-item"><div class="nti-num">4</div><div class="nti-info"><div class="nti-cat">Tradition</div><div class="nti-title">Digital griots and the algorithm question</div></div></div>
+      <div class="now-trending-item"><div class="nti-num">5</div><div class="nti-info"><div class="nti-cat">Visual Arts</div><div class="nti-title">Kenyan textile art goes global</div></div></div>
+    </div>
+
+    <div class="right-section">
+      <div class="rs-title">Filter Language</div>
+      <div class="language-filter">
+        <button class="lf-btn active">All</button>
+        <button class="lf-btn">Yoruba</button>
+        <button class="lf-btn">Swahili</button>
+        <button class="lf-btn">Igbo</button>
+        <button class="lf-btn">Twi</button>
+        <button class="lf-btn">Zulu</button>
+        <button class="lf-btn">Wolof</button>
+        <button class="lf-btn">Bambara</button>
+        <button class="lf-btn">Amharic</button>
+        <button class="lf-btn">Hausa</button>
+        <button class="lf-btn">+43</button>
+      </div>
+    </div>
+
+    <div class="right-section" style="border-bottom:none;">
+      <div class="rs-title">Reading Progress</div>
+      <div style="font-size:13px;color:var(--ink3);margin-bottom:8px;">This Week</div>
+      <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:4px;">
+        <span style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--ink);">7</span>
+        <span style="font-size:12px;color:var(--char);">articles read</span>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:12px;">
+        <span style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--terracotta);">94</span>
+        <span style="font-size:12px;color:var(--char);">vocab words saved</span>
+      </div>
+      <div style="background:var(--paper2);border-radius:4px;height:6px;overflow:hidden;margin-bottom:4px;"><div style="background:var(--sand);width:65%;height:100%;border-radius:4px;"></div></div>
+      <div style="font-size:10px;color:var(--char);">65% of weekly goal</div>
+    </div>
+  </aside>
+</div>
+
+<!-- READER OVERLAY -->
+<div id="reader-overlay" onclick="if(event.target===this)closeReader()">
+  <div class="reader-inner">
+    <div class="reader-header">
+      <div style="position:relative;">
+        <div class="reader-close" onclick="closeReader()">✕</div>
+        <div class="reader-kicker">Cover Story · Language & Identity · Oral Tradition</div>
+        <h1 class="reader-headline">The Griot Goes Digital: How Africa's Oldest Storytellers Are Surviving the Algorithm</h1>
+        <div class="reader-byline-bar">
+          <div class="reader-av">AK</div>
+          <div class="reader-author">
+            <strong>Aminata Kouyaté-Diallo</strong>
+            <span>Senior Correspondent, West Africa · March 25, 2026 · 22 min read</span>
+          </div>
+          <div class="reader-tools">
+            <button class="rtool">🎧 Listen</button>
+            <button class="rtool">🔖 Save</button>
+            <button class="rtool">🔤 Aa</button>
+            <button class="rtool">📤 Share</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="reader-body">
+      <p class="reader-lede">Adama Diabaté does not own a smartphone. He does not need one. Somewhere in the oral memory of his lineage sits the full genealogy of forty-three Mande clans — names, deeds, blood ties going back nine centuries. He has never written any of it down. He never will.</p>
+      <p class="reader-text">And yet his grandson — also named Adama, twenty-six years old and studying computer science in Dakar — has uploaded 140 hours of his grandfather's recitations to a private server he maintains from a rented room near the university. "If something happens to him," the younger Adama told me, "the knowledge cannot die with the body. That is not how it was meant to work."</p>
+
+      <div class="reader-vocab-callout">
+        <div class="rvc-title">📚 Vocabulary From This Article — Tap to Save</div>
+        <div class="rvc-words">
+          <div class="rvc-word"><span>Jeli</span> · griot (Mande)</div>
+          <div class="rvc-word"><span>Jeliya</span> · the art of the griot</div>
+          <div class="rvc-word"><span>Kora</span> · 21-string instrument</div>
+          <div class="rvc-word"><span>Balakulandiya</span> · oral genealogy</div>
+          <div class="rvc-word"><span>Nyamakala</span> · artisan caste</div>
+        </div>
+      </div>
+
+      <p class="reader-text">This tension — between the living memory and the digital archive — sits at the heart of an urgent crisis and an unexpected opportunity. Across West Africa, in the Sahel, along the coasts, a generation of griots, praise-singers, storytellers and elders is aging out of living tradition. Their successors are choosing other paths. And the communities that once gathered to listen are now scattered across cities and continents, kept company by algorithms that have no patience for a nine-hundred-year genealogy.</p>
+
+      <blockquote class="reader-pullquote">"You cannot download the feeling of sitting at a master's feet for ten years. But you can keep the voice. And the voice is the beginning."</blockquote>
+
+      <div class="reader-section-head">What the Archive Cannot Hold</div>
+
+      <p class="reader-text">The problem with recording a griot is not technical. It is contextual. A jeli's performance changes with the audience — when he sees a descendant of a rival clan in the crowd, he navigates. When a patron is present, certain genealogies are emphasized. When there are children, the register shifts. The archive freezes one performance, one night, one version of a truth that by its nature was always plural.</p>
+
+      <p class="reader-text">Mariam Kouyaté, a researcher at the École Normale Supérieure in Conakry who has spent twelve years studying jeli performance, describes this as "the paradox of preservation." "Every act of saving is also an act of fixing," she told me. "And what was never meant to be fixed cannot survive being fixed without losing something essential."</p>
+
+      <div class="reader-vocab-callout">
+        <div class="rvc-title">📚 More Vocabulary</div>
+        <div class="rvc-words">
+          <div class="rvc-word"><span>Donso</span> · hunter's guild (Bambara)</div>
+          <div class="rvc-word"><span>Griotte</span> · female griot (French loanword)</div>
+          <div class="rvc-word"><span>Donkili</span> · song / musical praise</div>
+        </div>
+      </div>
+
+      <div style="background:var(--sand-pale);border:1px solid var(--paper3);border-radius:8px;padding:16px;margin:16px 0;text-align:center;">
+        <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--char);margin-bottom:6px;">Continue Reading</div>
+        <div style="font-size:13px;color:var(--ink3);margin-bottom:12px;">You've read 30% of this article. It gets better.</div>
+        <button onclick="closeReader()" style="background:var(--sand);border:none;border-radius:4px;padding:10px 24px;font-family:'Karla',sans-serif;font-size:13px;font-weight:700;color:var(--ink);cursor:pointer;">Subscribe to read in full →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function setSection(btn) {
+  document.querySelectorAll('.mnav-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function setEdition(btn) {
+  document.querySelectorAll('.echip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function openReader() {
+  document.getElementById('reader-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeReader() {
+  document.getElementById('reader-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.querySelectorAll('.lf-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.lf-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+document.querySelectorAll('.media-type-card').forEach(card => {
+  card.addEventListener('click', function() {
+    document.querySelectorAll('.media-type-card').forEach(c => c.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

@@ -539,6 +539,12 @@ class _GetStartedScreen extends StatelessWidget {
         'description': 'Prepare for studies and broaden knowledge',
         'color': PanAfricanColors.ankaraPurple,
       },
+      {
+        'icon': Icons.record_voice_over_rounded,
+        'title': 'Local Dialect & Heritage',
+        'description': 'Prioritize how your community really speaks',
+        'color': PanAfricanColors.kenteTeal,
+      },
     ];
     
     return Container(
@@ -573,7 +579,7 @@ class _GetStartedScreen extends StatelessWidget {
                     ...paths.asMap().entries.map((entry) {
                       final index = entry.key;
                       final path = entry.value;
-                      final pathKey = ['explore', 'career', 'academic'][index];
+                      final pathKey = ['explore', 'career', 'academic', 'dialect'][index];
                       return SlideTransition(
                         position: Tween<Offset>(
                           begin: Offset(0, 0.3 + (index * 0.1)),

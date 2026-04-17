@@ -505,6 +505,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tribes'**
   String get tooltipTribes;
+
+  /// Section title for scraped article highlights
+  ///
+  /// In en, this message translates to:
+  /// **'Key takeaways'**
+  String get magazineKeyTakeaways;
+
+  /// Related Wikipedia-style topics from scraper
+  ///
+  /// In en, this message translates to:
+  /// **'Related topics'**
+  String get magazineRelatedTopics;
+
+  /// Footer for attribution and license text
+  ///
+  /// In en, this message translates to:
+  /// **'Source & license'**
+  String get magazineSourceAndLicense;
+
+  /// Reading time chip
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min read'**
+  String magazineReadingTime(int minutes);
+
+  /// Dismiss game tutorial sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Got it'**
+  String get gameTutorialGotIt;
+
+  /// Game tutorial dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'How to play'**
+  String get gameTutorialHowToPlay;
+
+  /// Typing indicator label
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is typing…'**
+  String chatPeerTyping(String name);
 }
 
 class _AppLocalizationsDelegate

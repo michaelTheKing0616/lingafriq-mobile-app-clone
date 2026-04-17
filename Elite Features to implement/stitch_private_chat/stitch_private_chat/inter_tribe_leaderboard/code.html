@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tribe Hub - Inter-Tribe Leaderboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Lexend:wght@300;400;500;600&amp;family=Dosis:wght@400;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-dim": "#ffd2aa",
+              "surface-bright": "#fff8f5",
+              "on-secondary-container": "#007230",
+              "tertiary": "#7b5500",
+              "on-tertiary-container": "#fffbff",
+              "inverse-surface": "#462a0d",
+              "tertiary-fixed": "#ffdeab",
+              "on-tertiary-fixed": "#281900",
+              "on-primary-fixed-variant": "#822700",
+              "surface-variant": "#ffdcbf",
+              "surface-tint": "#aa3601",
+              "on-secondary-fixed": "#002109",
+              "surface-container-low": "#fff1e8",
+              "on-secondary": "#ffffff",
+              "on-error-container": "#93000a",
+              "outline": "#8c7168",
+              "surface": "#fff8f5",
+              "on-tertiary": "#ffffff",
+              "surface-container-highest": "#ffdcbf",
+              "surface-container-high": "#ffe3cd",
+              "inverse-on-surface": "#ffeee1",
+              "error-container": "#ffdad6",
+              "outline-variant": "#e0bfb5",
+              "on-surface-variant": "#59413a",
+              "on-error": "#ffffff",
+              "on-primary": "#ffffff",
+              "surface-container": "#ffeada",
+              "primary": "#a73400",
+              "on-primary-container": "#fffbff",
+              "background": "#fff8f5",
+              "secondary-fixed-dim": "#62df7d",
+              "secondary-container": "#7cf994",
+              "on-background": "#2d1600",
+              "tertiary-fixed-dim": "#f8bc51",
+              "on-surface": "#2d1600",
+              "primary-fixed": "#ffdbcf",
+              "on-primary-fixed": "#390c00",
+              "primary-fixed-dim": "#ffb59c",
+              "primary-container": "#c94c1a",
+              "error": "#ba1a1a",
+              "tertiary-container": "#9b6c00",
+              "secondary": "#006e2d",
+              "on-secondary-fixed-variant": "#005320",
+              "inverse-primary": "#ffb59c",
+              "surface-container-lowest": "#ffffff",
+              "on-tertiary-fixed-variant": "#5f4100",
+              "secondary-fixed": "#7ffc97"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Lexend"],
+              "label": ["Lexend"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      body {
+        font-family: 'Lexend', sans-serif;
+        background-color: #fff8f5;
+        color: #2d1600;
+      }
+      .asymmetric-podium {
+        clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 100%);
+      }
+      .glass-nav {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(20px);
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface antialiased pb-32">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-50 bg-[#fff8f5] dark:bg-stone-900 flex justify-between items-center w-full px-6 py-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#a73400] dark:text-[#ffdbcf] text-2xl cursor-pointer">menu</span>
+<h1 class="font-['Plus_Jakarta_Sans'] font-black text-[#a73400] dark:text-[#ffdbcf] text-2xl tracking-tight">Tribe Hub</h1>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden border-2 border-primary-fixed shadow-sm">
+<img alt="User profile" data-alt="Close up portrait of a young African woman with intricate traditional facial markings and beaded jewelry in soft natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyGvUG1FYe3nKd9l23qFwHYGvU8g81BOterdyoSDbRPNYmg0PPWK4Y2Zmrs4YzbY7j22R8_RoGpSKzIJEcuRLIqvwY30cSKLtsu4kj4QJxPB6yXZjUnpW8_R52IbRfBs7E9AmHMek1739wHxSIkx8WHk7P6M-hB4HxqkJU5nUJibCRDYCbBqhqT7WLO7un0eXoCZqu9uF_wpeNWkKKEtx-LeH2p6wxXEiicxxrsRn6G8Ld_Zgz0k-tJTIaJKayi2Z5LHjVJjrHZ8Ty"/>
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-4 md:px-8 pt-6">
+<!-- Header Section -->
+<div class="mb-10 text-center">
+<h2 class="font-headline text-4xl font-extrabold text-primary mb-2 tracking-tight">Inter-Tribe Ranks</h2>
+<p class="text-on-surface-variant font-body">Unity is strength. See how the nations rise.</p>
+</div>
+<!-- Filters: Weekly, Monthly, All-Time -->
+<div class="flex justify-center gap-2 mb-12">
+<button class="px-6 py-2 rounded-full font-label text-sm font-semibold bg-primary text-on-primary shadow-lg transition-transform active:scale-95">Weekly</button>
+<button class="px-6 py-2 rounded-full font-label text-sm font-semibold bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">Monthly</button>
+<button class="px-6 py-2 rounded-full font-label text-sm font-semibold bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">All-Time</button>
+</div>
+<!-- Top 3 Podium (Organic Asymmetry) -->
+<div class="relative flex items-end justify-center gap-4 md:gap-8 mb-20 px-4 h-[340px]">
+<!-- Rank 2 -->
+<div class="flex flex-col items-center w-1/3 max-w-[140px]">
+<div class="relative mb-4 group">
+<div class="absolute -top-3 -right-2 bg-surface-container-highest px-2 py-0.5 rounded-full text-[10px] font-bold text-primary">#2</div>
+<div class="w-20 h-20 md:w-24 md:h-24 rounded-lg bg-surface-container overflow-hidden transform -rotate-3 transition-transform group-hover:rotate-0">
+<img class="w-full h-full object-cover" data-alt="Stylized illustration of a silver lion head totem with geometric patterns in earthy terracotta and gold tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFTZI1IgbVSqhcbj3YYa70ReigAnynKoAHD2N6fp5TRFaw06iNUYKOrzib5sFnIxMZjay3Nq1ohKXsIRrV2GhUzbtbs4tW156HvNPqPiPGjoQFyRvpRR7bDcTRaRRWLWYIMuy6lVkOzjitVDFXIdCHrzhPbQ7BVMgbj0dUXBASFAhIAGCmAS9bf43lSfyjk-1sT2BYbehYP_CMNK_woZfhY47wzVJlhduxIjo5s5UDY48RUT4pgb8y7DQ3vvSiaZCcdkEVKx5Iw88H"/>
+</div>
+</div>
+<div class="w-full h-32 bg-surface-container-low rounded-t-lg flex flex-col items-center pt-4 text-center">
+<span class="font-headline font-bold text-sm text-on-surface">Zulu Kings</span>
+<span class="font-body text-xs text-primary font-semibold">124.5k XP</span>
+</div>
+</div>
+<!-- Rank 1 (The Totem) -->
+<div class="flex flex-col items-center w-1/3 max-w-[180px] z-10 -mb-4">
+<div class="relative mb-6">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2">
+<span class="material-symbols-outlined text-tertiary text-4xl" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+</div>
+<div class="w-28 h-28 md:w-32 md:h-32 rounded-lg bg-surface-container-high overflow-hidden shadow-[0_20px_40px_rgba(45,22,0,0.1)] border-4 border-tertiary-fixed transition-transform hover:scale-105">
+<img class="w-full h-full object-cover" data-alt="A grand golden eagle totem with wings spread wide, decorated with traditional patterns and vibrant sunset colors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDPqQHU71P2crXbdKBbu-ZlHUvC29bJo8PIT_1e5yX5_zq_XiaxF3jE-2OZRabumKDKppsbQe4BdUOUquLEDTwc6-QOi3StpoLwR2pB8htloQD7yA_sUzh4JkewuiNYcz-1S6lA-mLBWUkED45f32lCAw1mnGAHaD60v96nAGVu6SEUlkTD9Iunljkx-H1XNaFWfDTahy-dY2rUhuoKX56Ke133ZPagGLX4dXXN3RHMNeBTKNui_YL735SL6dXvDzkdHOOoikRJygh"/>
+</div>
+</div>
+<div class="w-full h-48 bg-surface-container-high rounded-t-xl flex flex-col items-center pt-6 text-center shadow-lg">
+<span class="font-headline font-extrabold text-lg text-primary">Baobab Root</span>
+<span class="font-body text-sm text-tertiary font-bold">158.2k XP</span>
+<div class="mt-4 bg-tertiary-fixed px-3 py-1 rounded-full text-[10px] font-black tracking-widest text-on-tertiary-fixed uppercase">Reigning Tribe</div>
+</div>
+</div>
+<!-- Rank 3 -->
+<div class="flex flex-col items-center w-1/3 max-w-[140px]">
+<div class="relative mb-4 group">
+<div class="absolute -top-3 -right-2 bg-surface-container-highest px-2 py-0.5 rounded-full text-[10px] font-bold text-primary">#3</div>
+<div class="w-20 h-20 md:w-24 md:h-24 rounded-lg bg-surface-container overflow-hidden transform rotate-3 transition-transform group-hover:rotate-0">
+<img class="w-full h-full object-cover" data-alt="A geometric elephant totem in deep blue and turquoise hues, with delicate white tribal etchings" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQYf-smpbj0IDT4AtF-dz9VzApZrxMyaZTLuvwYHIxpUvmudXCVmpJv2t6wAzXT4Qh9rD7fQnmSMmAYMUASfGStFyyT3A4Ar0Yu3jpMP-x12Lpaywb5Wh9I2qqlPlEskGzmL4vgYAouPtAAuqYFcoz_H_XifsxpyCbWvqLnJhhSH6PmfJO92OxdJj52RrJz8YBwOUWLoa1yfHWWvYibcGtr30qSlq_dVvPNrj_CDY2jkHabVpovl1cweAcgUDFp4lsYPLuydZ4qHbS"/>
+</div>
+</div>
+<div class="w-full h-24 bg-surface-container-low rounded-t-lg flex flex-col items-center pt-4 text-center">
+<span class="font-headline font-bold text-sm text-on-surface">River Nile</span>
+<span class="font-body text-xs text-primary font-semibold">98.1k XP</span>
+</div>
+</div>
+</div>
+<!-- Your Tribe Highlight (The Anchor) -->
+<div class="mb-12">
+<div class="bg-primary text-on-primary rounded-lg p-6 shadow-2xl relative overflow-hidden group">
+<div class="absolute right-0 top-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-white/20 transition-all"></div>
+<div class="flex items-center justify-between relative z-10">
+<div class="flex items-center gap-6">
+<div class="text-3xl font-black font-headline opacity-50">14</div>
+<div class="w-16 h-16 rounded-full bg-primary-fixed-dim border-2 border-primary-fixed overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A majestic eagle totem head against a desert sunset background, bold and powerful with warm orange lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC287_CivvJnu5_YS9oC82hg6Dgk7I-yqFlowZ0te1-kJ7S2WLn6T-X1UP8cvXvRQpQpMf8W0qsIDhVus4kxvJNDOznU8OaaAYNOsyJ03PziAgXKkeXCkmVIjz3MQG2YNRqGN0yF4Ts0KKQyAwuHrY_iWludGMqwFsszfK2ccSf5jYxPHiCsVGMxjLspgl5fIqubWFCC4U5he9nPDCVAz2YLltgN2R3PUl8eVnUmJ3HJdZLAO9WM-FBPncNaDisQZN7R6OnmJAoj1nF"/>
+</div>
+<div>
+<h3 class="font-headline text-xl font-bold">Sahara Eagles</h3>
+<p class="font-body text-sm text-primary-fixed/80 italic">You're in the top 5% this week!</p>
+</div>
+</div>
+<div class="text-right">
+<div class="text-2xl font-black font-headline">42,850</div>
+<div class="text-[10px] font-medium tracking-tighter uppercase opacity-70">Total Tribe XP</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Scrolling List of Other Tribes -->
+<div class="space-y-4">
+<div class="flex justify-between items-center px-6 mb-4">
+<span class="font-label text-[10px] font-bold uppercase tracking-widest text-stone-400">Rank &amp; Tribe</span>
+<span class="font-label text-[10px] font-bold uppercase tracking-widest text-stone-400">Weekly Score</span>
+</div>
+<!-- Rank 4 -->
+<div class="group bg-surface-container-lowest hover:bg-surface-container transition-colors rounded-lg p-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="w-8 text-center font-headline font-bold text-on-surface-variant">4</span>
+<div class="w-12 h-12 rounded-lg bg-surface-container-low overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Minimalist wooden bird totem carved from dark mahogany with polished gold accents" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLUIsMqR5ntlNnGdudkRnDvTlNQhKUJJ4_pAGo3jPQCRk_aCB0clvmGVIfg5J3bt6V8mGbemDlGyzdjMuQaQRUoaahbkb3bcLK96ENVgkbZ8iKn2Bp7HDo2Ks9pXo6Jenz5IbbtgsOh2jBImUXTt38KLnEnoGpwB7M2hamC9hzwhTIILNGYfbse-411YxSOVic6BFpyo_OXYDdtKDIxVF1pho5rsACfZQgUN8KrkInZ8Gn3AiUj2_JXPFf_C2SwoE2INJ_EakPWWqh"/>
+</div>
+<span class="font-headline font-semibold text-on-surface">Atlas Lions</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-body font-bold text-primary">82,400</span>
+<span class="material-symbols-outlined text-secondary text-sm">trending_up</span>
+</div>
+</div>
+<!-- Rank 5 -->
+<div class="group bg-surface-container-lowest hover:bg-surface-container transition-colors rounded-lg p-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="w-8 text-center font-headline font-bold text-on-surface-variant">5</span>
+<div class="w-12 h-12 rounded-lg bg-surface-container-low overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Abstract floral pattern totem representing earth and growth, in shades of deep green and terracotta" src="https://lh3.googleusercontent.com/aida-public/AB6AXuASuqkeHZ_OmOABvFtOgHj5vi_OeHQTsOp8jS-YieuCqfBh2qguFCcP4mYDNzzHTdQMfAuuux9BC_FPocuE1McWpWJVuDK-DjCn7uY3jPa-4vPJNlauyNZQT7KORZt4cpdMulvx5Kf74PxHOpt2wti_zPFH2FS55hnY8N65BnFujC2cBx4bs7WNG9GQ-rdsm1ats2vyJvxf0Go6NgEYCaRCCtusf_6Rvjrq9O-Mj_Cbq4gyiuZVe-a3nq8UML2mMlJIPT3JAp2HEhqf"/>
+</div>
+<span class="font-headline font-semibold text-on-surface">Dahomey Warriors</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-body font-bold text-primary">79,120</span>
+<span class="material-symbols-outlined text-error text-sm">trending_down</span>
+</div>
+</div>
+<!-- Rank 6 -->
+<div class="group bg-surface-container-lowest hover:bg-surface-container transition-colors rounded-lg p-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="w-8 text-center font-headline font-bold text-on-surface-variant">6</span>
+<div class="w-12 h-12 rounded-lg bg-surface-container-low overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Rhino silhouette totem carved from smooth grey soapstone with traditional line art details" src="https://lh3.googleusercontent.com/aida-public/AB6AXuClxospb6R5tG_j1y8bi08VfjOKVBzV_s8J0vjvrkytoSJg4U5IW3c4VRawFheRwicTJ2h6eEB92ActOncZpM3XzklWcHp3rdHpDzx7VJYSGLNqUdt7zs-djs-FViALTQKr4hw0Z_b_OnQVgbT1bmZnvf0ihPbyF2sD2BZ6CijZ7zICkHpxJfCSExBlFF5dcnrdgF82tCZJK7y60kxIPfMhZeelG6RpVnPRt2MU615FX0Tw5X51XRN4e-mUK8n3KF5bwlxHmHntfQ8e"/>
+</div>
+<span class="font-headline font-semibold text-on-surface">Serengeti Shadows</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-body font-bold text-primary">76,500</span>
+<span class="material-symbols-outlined text-stone-400 text-sm">remove</span>
+</div>
+</div>
+<!-- Rank 7 -->
+<div class="group bg-surface-container-lowest hover:bg-surface-container transition-colors rounded-lg p-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="w-8 text-center font-headline font-bold text-on-surface-variant">7</span>
+<div class="w-12 h-12 rounded-lg bg-surface-container-low overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Sunburst totem design in vibrant yellows and oranges, representing fire and energy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGo6SHb3T-MnUkVm6OOIcvgQ6KB7nnkQwuQb7o2Wai8xvTfgXW1yfUPOBn8_PY05Za2MVvKJsQtM9e9oXBAn17qwEVJLGDC39RE75JpX99bzrBBZBH_3zpxkyPDNs_GNsOVcNMit_0b7aobcVuUeRpxaiGlAWMVM8r7TIHUCNlF4eFVSvHvtZJv3AsrLKFGTKQRJ8QzBDIo2YNIwCpss5YaKIQxByEKecRCCtdVRolSQnIxiV7i8lZodX10Zvct9hh_OLSj-wVceqo"/>
+</div>
+<span class="font-headline font-semibold text-on-surface">Kalahari Storm</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-body font-bold text-primary">64,200</span>
+<span class="material-symbols-outlined text-secondary text-sm">trending_up</span>
+</div>
+</div>
+<!-- Loading Spacer -->
+<div class="py-8 flex justify-center">
+<div class="flex gap-2">
+<div class="w-2 h-2 rounded-full bg-outline-variant animate-bounce"></div>
+<div class="w-2 h-2 rounded-full bg-outline-variant animate-bounce [animation-delay:0.2s]"></div>
+<div class="w-2 h-2 rounded-full bg-outline-variant animate-bounce [animation-delay:0.4s]"></div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-white/80 dark:bg-stone-900/80 backdrop-blur-md shadow-[0_-10px_40px_rgba(45,22,0,0.08)] rounded-t-[2rem]">
+<a class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-500 px-5 py-2 hover:text-[#a73400] transition-colors" href="#">
+<span class="material-symbols-outlined mb-1">groups</span>
+<span class="font-['Lexend'] text-[10px] font-medium uppercase tracking-widest">Hub</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-500 px-5 py-2 hover:text-[#a73400] transition-colors" href="#">
+<span class="material-symbols-outlined mb-1">swords</span>
+<span class="font-['Lexend'] text-[10px] font-medium uppercase tracking-widest">Duels</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#ffdbcf] dark:bg-[#a73400] text-[#a73400] dark:text-[#ffdbcf] rounded-full px-5 py-2 animate-pulse" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">leaderboard</span>
+<span class="font-['Lexend'] text-[10px] font-medium uppercase tracking-widest">Ranks</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-500 px-5 py-2 hover:text-[#a73400] transition-colors" href="#">
+<span class="material-symbols-outlined mb-1">explore</span>
+<span class="font-['Lexend'] text-[10px] font-medium uppercase tracking-widest">Explore</span>
+</a>
+</nav>
+</body></html>

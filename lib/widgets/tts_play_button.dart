@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 
 import 'package:lingafriq/providers/tts_provider.dart';
+import 'package:lingafriq/services/learning/synthetic_voice_style_service.dart';
 
 /// Play/stop control for server-side MMS-TTS (no device synthesis).
 class TtsPlayButton extends HookConsumerWidget {
@@ -32,6 +33,7 @@ class TtsPlayButton extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final tts = ref.watch(ttsProvider.notifier);
     final loading = useState(false);
+    final styleSvc = useMemoized(() => SyntheticVoiceStyleService());
 
     return StreamBuilder<PlayerState>(
       stream: tts.playerStateStream,
@@ -64,7 +66,32 @@ class TtsPlayButton extends HookConsumerWidget {
                 }
                 loading.value = true;
                 try {
-                  final ok = await tts.speak(text, languageName: languageName);
+                  // Resolve synthetic style (consent-gated server-side). If disabled, this returns default params.
+                  String? voice;
+                  double speed = 1.0;
+                  try {
+                    final resolved = await styleSvc.resolveForText(
+                      language: languageName,
+                      text: text,
+                    );
+                    final ttsParams = resolved['ttsParams'];
+                    if (ttsParams is Map) {
+                      voice = ttsParams['voice']?.toString();
+                      final s = ttsParams['speed'];
+                      if (s is num) speed = s.toDouble();
+                    }
+                  } catch (_) {
+                    // If resolve fails, just use default TTS.
+                    voice = null;
+                    speed = 1.0;
+                  }
+
+                  final ok = await tts.speak(
+                    text,
+                    languageName: languageName,
+                    voice: voice,
+                    speed: speed,
+                  );
                   if (!ok && context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(

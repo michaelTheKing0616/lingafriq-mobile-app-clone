@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,700;0,800;1,800&amp;family=Lexend:wght@300;400;500;600&amp;family=Dosis:wght@400;500;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-surface": "#2d1600",
+              "on-background": "#2d1600",
+              "inverse-surface": "#462a0d",
+              "surface-tint": "#aa3601",
+              "inverse-primary": "#ffb59c",
+              "surface-variant": "#ffdcbf",
+              "on-secondary-fixed-variant": "#005320",
+              "tertiary-container": "#9b6c00",
+              "on-tertiary-fixed": "#281900",
+              "on-error-container": "#93000a",
+              "surface": "#fff8f5",
+              "secondary-fixed": "#7ffc97",
+              "surface-container-low": "#fff1e8",
+              "surface-container": "#ffeada",
+              "surface-container-high": "#ffe3cd",
+              "inverse-on-surface": "#ffeee1",
+              "on-tertiary": "#ffffff",
+              "surface-container-lowest": "#ffffff",
+              "primary": "#a73400",
+              "primary-container": "#c94c1a",
+              "surface-container-highest": "#ffdcbf",
+              "surface-dim": "#ffd2aa",
+              "on-primary-fixed-variant": "#822700",
+              "tertiary-fixed": "#ffdeab",
+              "primary-fixed-dim": "#ffb59c",
+              "error": "#ba1a1a",
+              "error-container": "#ffdad6",
+              "secondary-fixed-dim": "#62df7d",
+              "tertiary-fixed-dim": "#f8bc51",
+              "outline-variant": "#e0bfb5",
+              "on-tertiary-fixed-variant": "#5f4100",
+              "on-secondary-container": "#007230",
+              "on-tertiary-container": "#fffbff",
+              "on-primary-fixed": "#390c00",
+              "on-secondary": "#ffffff",
+              "on-primary": "#ffffff",
+              "on-secondary-fixed": "#002109",
+              "secondary": "#006e2d",
+              "secondary-container": "#7cf994",
+              "on-primary-container": "#fffbff",
+              "tertiary": "#7b5500",
+              "background": "#fff8f5",
+              "on-error": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Lexend"],
+              "label": ["Lexend"],
+              "dosis": ["Dosis"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .pattern-bg {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l15 30-15 30L15 30z' fill='%23a73400' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+        .asymmetric-clip {
+            clip-path: polygon(0 0, 100% 5%, 100% 100%, 0 95%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed pattern-bg min-h-screen pb-32">
+<!-- TopAppBar -->
+<nav class="bg-[#fff8f5] dark:bg-stone-950/80 backdrop-blur-md docked full-width top-0 z-50 flex justify-between items-center w-full px-6 py-4 sticky">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed overflow-hidden">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="Close-up portrait of a young African woman with a bright smile, soft studio lighting, warm tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTR8iBNVp31NR-Z21h2pv7qhTtDGV8iAJjmEMKmNmvsmp5ZGVZiR1igAeTMbHpzzzvlD0C6Oc9N8pg2b0GP2Y-9urUoknEpCtd_QZjBibDDqOq4WaguQ_ikV2IdRhap2vNizI4k62m5g5tzue16Xh3uE9o0ZEox2StPdz4zQyDzA-YVY4yrmsdsq7BTcn0bAuPbYfr2PmfQ719Ub7CGGqRQm-1BotwcQupRKDBPT6zaBT2tOgWglhtVMP4eHoVzdqMPOwgRpi3oO0q"/>
+</div>
+<span class="font-['Plus_Jakarta_Sans'] font-black italic text-[#a73400] dark:text-[#ffdbcf] text-2xl tracking-tight">LingAfriq</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-[#a73400] dark:text-[#ffdbcf] hover:bg-[#ffeada] dark:hover:bg-stone-800 transition-colors p-2 rounded-full scale-95 active:duration-150">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</nav>
+<main class="max-w-2xl mx-auto px-6 py-8 space-y-10">
+<!-- Tribe Header Section -->
+<header class="relative space-y-6">
+<div class="flex items-end gap-6 relative">
+<!-- Tribe Totem -->
+<div class="relative z-10">
+<div class="w-32 h-32 rounded-xl bg-tertiary-fixed shadow-2xl rotate-3 flex items-center justify-center border-4 border-surface-container-lowest">
+<span class="material-symbols-outlined text-6xl text-on-tertiary-fixed" style="font-variation-settings: 'FILL' 1;">owl</span>
+</div>
+<div class="absolute -top-2 -right-2 bg-Gold text-on-tertiary-fixed px-3 py-1 rounded-full text-xs font-bold uppercase tracking-tighter bg-[#C8922A] shadow-md">
+                        Rank 3rd
+                    </div>
+</div>
+<div class="flex-1 pb-2">
+<h1 class="font-headline font-extrabold text-4xl text-primary leading-none tracking-tight">Sahara Eagles</h1>
+<p class="font-dosis font-medium text-on-surface-variant uppercase tracking-widest text-sm mt-1">The High-Flying Collective</p>
+</div>
+</div>
+<!-- XP Progress Bar -->
+<div class="bg-surface-container-low rounded-full h-8 w-full p-1.5 flex items-center shadow-inner">
+<div class="bg-gradient-to-r from-primary to-primary-container h-full rounded-full flex items-center justify-end px-3 transition-all duration-1000" style="width: 68%;">
+<span class="text-[10px] text-white font-bold font-dosis">8,450 / 12,000 XP</span>
+</div>
+</div>
+</header>
+<!-- Tribe vs. Tribe Event -->
+<section class="relative group">
+<div class="absolute -inset-1 bg-gradient-to-r from-primary to-tertiary rounded-lg blur opacity-25 group-hover:opacity-40 transition duration-1000"></div>
+<div class="relative bg-surface-container-lowest rounded-lg overflow-hidden shadow-xl">
+<div class="bg-primary p-4 flex justify-between items-center text-white">
+<span class="font-dosis font-bold tracking-widest text-xs uppercase">Live Tribe Duel</span>
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="text-[10px] font-bold uppercase">Ending in 04:22:10</span>
+</div>
+</div>
+<div class="p-6 flex items-center justify-between gap-4">
+<div class="text-center space-y-2 flex-1">
+<div class="w-16 h-16 bg-surface-container-high rounded-full mx-auto flex items-center justify-center border-2 border-primary">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">owl</span>
+</div>
+<p class="font-dosis font-bold text-xs uppercase text-primary">Eagles</p>
+<p class="text-3xl font-black text-on-surface tracking-tighter leading-none">12,402</p>
+</div>
+<div class="flex flex-col items-center">
+<div class="text-on-surface-variant font-black italic text-2xl opacity-20 py-2">VS</div>
+<div class="bg-surface-container p-2 rounded-full">
+<span class="material-symbols-outlined text-on-surface-variant">bolt</span>
+</div>
+</div>
+<div class="text-center space-y-2 flex-1">
+<div class="w-16 h-16 bg-surface-container-high rounded-full mx-auto flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-3xl">hanami_dango</span>
+</div>
+<p class="font-dosis font-bold text-xs uppercase text-on-surface-variant">Dragons</p>
+<p class="text-3xl font-black text-on-surface-variant tracking-tighter leading-none">11,890</p>
+</div>
+</div>
+<div class="bg-surface-container-low px-6 py-4 border-t border-outline-variant/10 flex justify-between items-center">
+<div>
+<h4 class="font-dosis font-bold text-on-surface text-sm">Swahili Vocabulary Duel</h4>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-wider">Top Reward: 500 Gold Totems</p>
+</div>
+<button class="bg-primary text-white px-6 py-2 rounded-full font-dosis font-bold uppercase text-xs hover:scale-105 transition-transform active:scale-95">Contribute</button>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+<!-- Tribe Feed (Bento Style) -->
+<section class="md:col-span-3 space-y-6">
+<div class="flex items-center justify-between px-2">
+<h3 class="font-dosis font-bold text-lg uppercase tracking-widest text-primary">Tribe Feed</h3>
+<span class="material-symbols-outlined text-primary cursor-pointer">post_add</span>
+</div>
+<!-- Chief's Message -->
+<div class="bg-surface-container rounded-lg p-6 relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1.5 h-full bg-tertiary"></div>
+<div class="flex gap-4">
+<div class="flex-shrink-0">
+<div class="w-12 h-12 rounded-full border-2 border-tertiary p-0.5">
+<img alt="Chief Profile" class="w-full h-full object-cover rounded-full" data-alt="Portrait of an older African man with wisdom in his eyes and traditional beadwork, soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAg6gO0DKcs2hBpnC4EHi8iCSf8SYol0KcvQj8HwNLdf2p4mYs7d2fBRn4kzJUIIAYblKkyXyLCwFtAKo--0xABXsFyPRmH4X8_Pv06KjBwC8YE2KB3otXF3TKljGu43xvULBdcRqsgted9x2SwzR_kpUPCFqY5tqe77LUTFajhaXM4GQNJZYJa-s6qF4m8C39Ogv9etrkO4D4y8SFDUtPlnqmSZYvo4hh-6753V-gnARJBsv9ck008jxfm1qWTH3GUbrAU_mtIcPpz"/>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex items-center gap-2">
+<span class="font-headline font-bold text-on-surface text-sm">Mzee Kwesi</span>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Chief</span>
+</div>
+<p class="font-body text-sm leading-relaxed text-on-surface-variant">"Eagles, our wings are strong today! We've climbed 2 ranks in the last 48 hours. Focus on the Verb Conjugation modules to secure the duel against the Dragons."</p>
+<div class="flex gap-4 pt-2">
+<button class="flex items-center gap-1.5 text-xs font-bold text-on-surface-variant/60 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">favorite</span> 24
+                                </button>
+<button class="flex items-center gap-1.5 text-xs font-bold text-on-surface-variant/60 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">comment</span> 12
+                                </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Event Post -->
+<div class="bg-surface-container-low rounded-lg p-6 space-y-4">
+<img alt="Community Event" class="w-full h-40 object-cover rounded-lg shadow-sm" data-alt="Vibrant outdoor community gathering in a sunny park with colorful banners and people interacting warmly" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCThpX-dANzVhfKISWk02ZvG-sCiumYuARzqDgORffAthBERpuwseS5EsHUk4--4KZwFLP8KnSQrOnCN73RWoxesUyT8RS80nauUjLDfgwF-X-Te95KfFYygaxO-W1RIYcmxnN3EG3DpjvCHxwDn8pnEZlfIvXv_vgmj05dNuUuzLuGzTQIkHJpADul1-DWxJyyLTSSLsLDm-5K_Dx4wAh1zGDZAu2IWFv-o_rYyVUVZs12_1xxzUWA_vxo4s6OYnAvKaO2_8__soXv"/>
+<div class="space-y-1">
+<h4 class="font-headline font-bold text-on-surface">Village Market Chat: Nairobi</h4>
+<p class="text-xs text-on-surface-variant font-body">Join the audio room tomorrow at 6 PM. We are practicing greetings and bartering phrases!</p>
+</div>
+<div class="flex items-center justify-between pt-2">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-surface-container"></div>
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-primary-fixed"></div>
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-tertiary-fixed"></div>
+<div class="w-8 h-8 rounded-full border-2 border-surface flex items-center justify-center bg-surface-container-highest text-[8px] font-bold">+18</div>
+</div>
+<button class="text-primary font-dosis font-bold text-xs uppercase tracking-widest hover:underline">Remind Me</button>
+</div>
+</div>
+</section>
+<!-- Leaderboard (Mini Side Panel) -->
+<section class="md:col-span-2 space-y-6">
+<div class="flex items-center gap-2 px-2">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+<h3 class="font-dosis font-bold text-lg uppercase tracking-widest text-on-surface">Top Contributors</h3>
+</div>
+<div class="bg-surface-container-high rounded-lg p-4 space-y-1">
+<!-- Rank 1 -->
+<div class="flex items-center gap-3 p-3 bg-surface-container-lowest rounded-lg shadow-sm transition-transform hover:-translate-y-0.5">
+<span class="font-dosis font-black text-tertiary text-lg w-4">1</span>
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed overflow-hidden">
+<img alt="Top User" class="w-full h-full object-cover" data-alt="Portrait of a young man with glasses and a stylish haircut, modern minimalist aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6QwR6FhjV6p8fru3rluyaRHbXJvwQ8SXXTYqwTD-t---OyUJ0DfPhTJnO_c1XdM0HhBMuNyFIR4qoz-VYB2xHPab4VbB512xZAwERz0niyIISD4xOgtjsCxKEK3JTSUqpMd0Babcamw_Sy_SBUPGG2raYkaROhM62UnBSQXUM1unYeIBeAv_mnbYXV_ceX8-N9GesOu8yfQC9w1JXzQa7qzhSVIy3N0ChP_-rpDQjY0sJTzqJWHg2sps-8ORCr-Xi7TyP2uFVTJ71"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-bold truncate">Zola_Vibe</p>
+<p class="text-[10px] text-on-surface-variant uppercase font-dosis font-medium">1,240 XP this week</p>
+</div>
+</div>
+<!-- Rank 2 -->
+<div class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-lowest transition-colors group">
+<span class="font-dosis font-black text-on-surface-variant/40 text-lg w-4">2</span>
+<div class="w-10 h-10 rounded-full bg-surface-variant overflow-hidden">
+<img alt="User" class="w-full h-full object-cover" data-alt="Close-up of a smiling woman with braided hair, soft warm lighting, natural skin texture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvhQSCZACfGIYeYXsK5N4kljArqNhT_MDPlH_HTMJnA8qHcan5_hgyVsbuYt7ELbe7T7iiDo322zpcKfyM_nkHBbK6DmUnlSr4Q5p-gKdAqe5Q3RD_10dqh37FflKR3Rv08E1h1iB0yQvkAH937b5jiYJ1w9fCzWCt22z7sQIUeB3DcWW4nhOHNzPjBpoeciBRcFKLkDXWtUJu1dAHWr2zotAbX6WfgCDN4yHv7nbCJbe7VyrDmKmEjIFyfT4iJ36Ty8nzfkcwCSM0"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-bold truncate">Nia_Sun</p>
+<p class="text-[10px] text-on-surface-variant uppercase font-dosis font-medium">980 XP</p>
+</div>
+</div>
+<!-- Rank 3 -->
+<div class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-lowest transition-colors">
+<span class="font-dosis font-black text-on-surface-variant/40 text-lg w-4">3</span>
+<div class="w-10 h-10 rounded-full bg-surface-variant overflow-hidden">
+<img alt="User" class="w-full h-full object-cover" data-alt="Profile of a cheerful man with short beard, warm sunset light, clean composition" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTMx542Lktoa51FCcZnnV0FEf0OUt8a4f0myYw9Z4aS4QqWHlNg_Fv4e7E3t9S9r4lg3lVEB1KWWIOYsx1O8ZK6rf372DWtx39PgkcY7EfzVszpTgRfOiXZifrdIGCFgfTsclppmFFC1OU4xsbFvPsIoaiwh7s1kIXVXfox9Poxz4oLSmXJOGjrD2wtzCrZduVR2QR9d_PSHjbdGrNPHkWueuhdaMwRbUQ2wevd-g0WX4YGutwpKdJ9xdwxHryX-1PN0D39_cVq9CM"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-bold truncate">Kofi_99</p>
+<p class="text-[10px] text-on-surface-variant uppercase font-dosis font-medium">850 XP</p>
+</div>
+</div>
+<!-- User's Rank -->
+<div class="mt-4 pt-4 border-t border-outline-variant/30">
+<div class="flex items-center gap-3 p-3 bg-primary/10 rounded-lg border border-primary/20">
+<span class="font-dosis font-black text-primary text-lg w-4">12</span>
+<div class="w-10 h-10 rounded-full bg-primary-fixed overflow-hidden ring-2 ring-primary">
+<img alt="You" class="w-full h-full object-cover" data-alt="Portrait of the user, vibrant colors, professional lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBt34vWuBi6xJXuIFv7KnM4AQhq9u6ppCc7YuSnp2bOBtDdE7mZxREVEU_0E4dMIKqu9yIjmwJDn3KeUZYd-GAJAVC9h0wtN7bSuyDD3Z5laW6gsRARP0LcreNgTlly1Vvl1E8rnhXBNscwDCzleDcMi0wceEL2X_ot_9p83h3Y3kaaTfqAtgjvdEKMITu4oO7WA0yKjG-uFuGU4M2r25SI_RfmwZSbiyU9ww3vW4su92DKNg2F5QdhPAqk8BoVNNQDPGDdOOSzM3nu"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-bold truncate">You (Abeba)</p>
+<p class="text-[10px] text-primary uppercase font-dosis font-black">440 XP</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Tribe Totem/Badges Section -->
+<div class="bg-surface-container-lowest p-6 rounded-lg relative overflow-hidden text-center space-y-4">
+<div class="absolute -top-10 -right-10 w-24 h-24 bg-tertiary-fixed-dim rounded-full blur-3xl opacity-50"></div>
+<h4 class="font-dosis font-bold text-sm uppercase tracking-widest">Tribe Totems</h4>
+<div class="flex justify-center gap-4">
+<div class="w-12 h-12 bg-Gold/20 rounded-lg flex items-center justify-center text-Gold">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+</div>
+<div class="w-12 h-12 bg-secondary-fixed-dim/20 rounded-lg flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">groups</span>
+</div>
+<div class="w-12 h-12 bg-primary-fixed-dim/20 rounded-lg flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">potted_plant</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-end px-4 h-24 bg-[#a73400]/90 backdrop-blur-xl rounded-t-[2.5rem] z-50 pb-safe shadow-2xl no-border">
+<a class="flex flex-col items-center justify-center text-[#ffdbcf]/70 p-3 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-['Dosis'] font-medium text-[10px] uppercase tracking-widest mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#ffdbcf]/70 p-3 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined">public</span>
+<span class="font-['Dosis'] font-medium text-[10px] uppercase tracking-widest mt-1">Global</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#ffdbcf]/70 p-3 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined">record_voice_over</span>
+<span class="font-['Dosis'] font-medium text-[10px] uppercase tracking-widest mt-1">Class</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#fff8f5]/20 text-white rounded-full p-3 mb-1 animate-pulse-subtle" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">groups</span>
+<span class="font-['Dosis'] font-medium text-[10px] uppercase tracking-widest mt-1">Tribe</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#ffdbcf]/70 p-3 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-['Dosis'] font-medium text-[10px] uppercase tracking-widest mt-1">Village</span>
+</a>
+</nav>
+<!-- Decorative Floating Element (Tribe Totem Background) -->
+<div class="fixed bottom-32 -left-12 opacity-5 pointer-events-none select-none">
+<span class="material-symbols-outlined text-[15rem]" style="font-variation-settings: 'FILL' 1;">owl</span>
+</div>
+</body></html>

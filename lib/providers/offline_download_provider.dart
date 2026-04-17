@@ -135,15 +135,14 @@ class OfflineDownloadNotifier extends StateNotifier<OfflineDownloadState> {
     }
     try {
       await ApiService.initialize();
-      final response = await ApiService.get(
-        ApiContract.url(ApiContract.offline.contentManifest(languageId)),
-      );
+      final response = await ApiService.get(ApiContract.contentPacks.manifest(languageId));
       if (response.statusCode != 200 || response.data == null) return;
-      final manifest = response.data as Map<String, dynamic>;
+      final root = response.data as Map<String, dynamic>;
+      final manifest = (root['manifest'] as Map?)?.cast<String, dynamic>() ?? {};
       final lessons = manifest['lessons'] as List<dynamic>? ?? [];
       final orderedIds = <String>[];
       for (final l in lessons) {
-        if (l is Map<String, dynamic>) {
+        if (l is Map) {
           final id = l['id']?.toString();
           if (id != null && id.isNotEmpty) orderedIds.add(id);
         }
@@ -154,7 +153,8 @@ class OfflineDownloadNotifier extends StateNotifier<OfflineDownloadState> {
           .toList();
       for (final lessonId in toDownload) {
         if (!(await ConnectivityService.hasInternet())) break;
-        await downloadLesson(lessonId);
+        await _downloadService.downloadSingleLesson(lessonId);
+        await _loadDownloadedLessons();
       }
     } catch (e) {
       logger.error('Auto-download next lessons failed', error: e, context: {'languageId': languageId});

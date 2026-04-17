@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Àfàláàbù Studio - Lesson Workspace</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Manrope:wght@200..800&amp;family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container": "#f1eee7",
+              "on-tertiary-fixed": "#241a00",
+              "surface-container-highest": "#e5e2db",
+              "on-primary-fixed-variant": "#7d2d00",
+              "surface-container-low": "#f6f3ec",
+              "secondary-fixed-dim": "#bdc7dc",
+              "surface-tint": "#a14009",
+              "primary-container": "#c05621",
+              "on-primary-container": "#fffeff",
+              "error-container": "#ffdad6",
+              "on-background": "#1c1c18",
+              "outline-variant": "#dec0b5",
+              "error": "#ba1a1a",
+              "on-tertiary-fixed-variant": "#574500",
+              "secondary-fixed": "#d9e3f9",
+              "secondary-container": "#d6e0f6",
+              "secondary": "#555f71",
+              "primary-fixed-dim": "#ffb596",
+              "inverse-on-surface": "#f3f0e9",
+              "on-error-container": "#93000a",
+              "tertiary-fixed-dim": "#e9c349",
+              "primary": "#9f3e07",
+              "on-surface-variant": "#57423a",
+              "on-secondary-container": "#596376",
+              "inverse-surface": "#31312c",
+              "surface-dim": "#dcdad3",
+              "tertiary": "#735c00",
+              "tertiary-fixed": "#ffe088",
+              "surface-variant": "#e5e2db",
+              "on-tertiary-container": "#4f3d00",
+              "on-secondary-fixed-variant": "#3d4759",
+              "primary-fixed": "#ffdbcd",
+              "inverse-primary": "#ffb596",
+              "background": "#fcf9f2",
+              "surface-container-lowest": "#ffffff",
+              "on-tertiary": "#ffffff",
+              "on-primary": "#ffffff",
+              "outline": "#8a7268",
+              "on-error": "#ffffff",
+              "on-primary-fixed": "#360f00",
+              "on-secondary": "#ffffff",
+              "on-secondary-fixed": "#121c2c",
+              "surface-container-high": "#ebe8e1",
+              "surface-bright": "#fcf9f2",
+              "on-surface": "#1c1c18",
+              "surface": "#fcf9f2",
+              "tertiary-container": "#cca730"
+            },
+            fontFamily: {
+              "headline": ["Newsreader"],
+              "body": ["Manrope"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .audio-weaver-active {
+        background-color: #cca730; /* tertiary-container */
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#1c1c18] border-none backdrop-blur-xl">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#c05621]" data-icon="biotech">biotech</span>
+<h1 class="text-xl font-bold tracking-tight text-[#fcf9f2]">Àfàláàbù Studio</h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex gap-8">
+<a class="text-[#c05621] border-b-2 border-[#c05621] font-label text-[0.75rem] uppercase tracking-widest" href="#">Processing</a>
+<a class="text-[#ebe8e1] opacity-60 hover:bg-white/5 transition-colors font-label text-[0.75rem] uppercase tracking-widest" href="#">My Media</a>
+<a class="text-[#ebe8e1] opacity-60 hover:bg-white/5 transition-colors font-label text-[0.75rem] uppercase tracking-widest" href="#">Tribe</a>
+</nav>
+<button class="bg-primary-container text-on-primary-container px-4 py-1 rounded-sm text-[0.75rem] font-label uppercase tracking-widest active:scale-95 transition-transform duration-150">Live</button>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-7xl mx-auto">
+<!-- Hero Section: Editorial Header -->
+<section class="mb-16">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
+<div class="max-w-2xl">
+<span class="font-label text-tertiary text-sm uppercase tracking-[0.2em] block mb-4">Lesson 04 / Media Synthesis</span>
+<h2 class="font-headline text-5xl md:text-7xl text-on-background leading-tight">The Resonance of <span class="italic">Ilu-Gangan</span></h2>
+</div>
+<div class="flex flex-col items-start md:items-end">
+<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary-container px-8 py-4 rounded-sm font-label text-sm uppercase tracking-widest shadow-xl active:scale-95 transition-all">
+                        Practice
+                    </button>
+</div>
+</div>
+<div class="mt-12 h-[400px] w-full relative overflow-hidden rounded-sm">
+<img alt="Yoruba talking drum detail" class="w-full h-full object-cover grayscale contrast-125" data-alt="close-up of a traditional Yoruba talking drum with intricate leather tension cords and dark wood body in dramatic high-contrast lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6prxjwqvEVIUvkshhp82adtFvZuxM5mTI7qSHumxzya2Z5-fBsj42x57Emd9dyTFXsM4Oh8-FdlUcbUfGKQ6s7A18bVSdUkvWuF3Fkaib-M00fl8GZNhxaFRuS7Iw75ES4BV10wHjPAM14zLzLeN8pFvBv0VJWCoTYc8pUYDnSevwwGnonX1ezscuI5BB6F5Q1DkWVRXg4VFg2GaqHgPJgvIekZ3_-JpzE2-E8mWRC7evYgLCUT3PziVFl8A9Tf2qeBbQAlxs_d85"/>
+<div class="absolute inset-0 bg-primary/10 mix-blend-multiply"></div>
+</div>
+</section>
+<!-- Bento Grid Layout for Lesson Modules -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<!-- Vocabulary Section (7 Cols) -->
+<section class="md:col-span-7 space-y-8">
+<div class="flex items-center justify-between border-b border-outline/10 pb-4">
+<h3 class="font-headline text-3xl">Vocabulary</h3>
+<span class="font-label text-xs text-secondary uppercase">4 Key Terms Found</span>
+</div>
+<div class="grid grid-cols-1 gap-4">
+<!-- Audio Weaver Component 1 -->
+<div class="group bg-surface-container-low p-6 rounded-sm transition-all hover:bg-surface-container-high cursor-pointer flex items-center justify-between">
+<div>
+<span class="font-label text-[0.65rem] text-primary uppercase block mb-1">01</span>
+<h4 class="font-headline text-2xl mb-1 text-on-background">Ayan</h4>
+<p class="font-body text-secondary text-sm">The spirit of the drum; the lineage of drummers.</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-24 h-8 bg-surface-container-highest flex items-end gap-0.5 px-2 py-1">
+<div class="w-1 bg-primary h-1/2"></div>
+<div class="w-1 bg-primary h-3/4"></div>
+<div class="w-1 bg-primary h-2/3"></div>
+<div class="w-1 bg-primary h-1/2"></div>
+<div class="w-1 bg-primary h-1/4"></div>
+<div class="w-1 bg-primary h-4/5"></div>
+<div class="w-1 bg-primary h-1/2"></div>
+</div>
+<span class="material-symbols-outlined text-tertiary text-3xl group-hover:scale-110 transition-transform" data-icon="volume_up">volume_up</span>
+</div>
+</div>
+<!-- Audio Weaver Component 2 -->
+<div class="group bg-surface-container-low p-6 rounded-sm transition-all hover:bg-surface-container-high cursor-pointer flex items-center justify-between border-l-4 border-primary">
+<div>
+<span class="font-label text-[0.65rem] text-primary uppercase block mb-1">02</span>
+<h4 class="font-headline text-2xl mb-1 text-on-background">Gangan</h4>
+<p class="font-body text-secondary text-sm">A specific type of pressure drum used to mimic human speech.</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-24 h-8 bg-surface-container-highest flex items-end gap-0.5 px-2 py-1">
+<div class="w-1 bg-primary h-1/4"></div>
+<div class="w-1 bg-primary h-1/2"></div>
+<div class="w-1 bg-primary h-full"></div>
+<div class="w-1 bg-primary h-3/4"></div>
+<div class="w-1 bg-primary h-1/2"></div>
+<div class="w-1 bg-primary h-1/3"></div>
+<div class="w-1 bg-primary h-1/2"></div>
+</div>
+<span class="material-symbols-outlined text-tertiary text-3xl" data-icon="volume_up">volume_up</span>
+</div>
+</div>
+<!-- Audio Weaver Component 3 -->
+<div class="group bg-surface-container-low p-6 rounded-sm transition-all hover:bg-surface-container-high cursor-pointer flex items-center justify-between">
+<div>
+<span class="font-label text-[0.65rem] text-primary uppercase block mb-1">03</span>
+<h4 class="font-headline text-2xl mb-1 text-on-background">Onílù</h4>
+<p class="font-body text-secondary text-sm">The drummer; a title of respect and technical mastery.</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-24 h-8 bg-surface-container-highest flex items-end gap-0.5 px-2 py-1">
+<div class="w-1 bg-primary h-1/2"></div>
+<div class="w-1 bg-primary h-1/3"></div>
+<div class="w-1 bg-primary h-1/2"></div>
+<div class="w-1 bg-primary h-2/3"></div>
+<div class="w-1 bg-primary h-1/2"></div>
+<div class="w-1 bg-primary h-1/4"></div>
+<div class="w-1 bg-primary h-3/4"></div>
+</div>
+<span class="material-symbols-outlined text-tertiary text-3xl" data-icon="volume_up">volume_up</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Cultural Context Section (5 Cols) -->
+<section class="md:col-span-5 bg-inverse-surface text-inverse-on-surface p-8 rounded-sm">
+<span class="font-label text-tertiary-fixed text-xs uppercase tracking-widest mb-6 block">The Archives</span>
+<h3 class="font-headline text-4xl mb-6">Cultural Context</h3>
+<div class="space-y-6 opacity-90 font-body leading-relaxed text-lg">
+<p>
+                        The <span class="italic text-tertiary-fixed">Gangan</span> is more than an instrument; it is a linguistic bridge. Because Yoruba is a tonal language, the drummer can manipulate the tension cords to shift pitch, effectively "speaking" proverbs, warnings, and histories over great distances.
+                    </p>
+<p>
+                        Drummers in this tradition belong to specific lineages, often carrying the name <span class="italic">Ayan</span> to signify their ancestral connection to the deity of drumming.
+                    </p>
+<div class="pt-6 border-t border-white/10">
+<blockquote class="font-headline text-2xl italic text-surface-variant">
+                            "The drum does not speak for itself; it speaks for the soul of the people."
+                        </blockquote>
+</div>
+</div>
+</section>
+<!-- Comprehension Section (Full Width or Split) -->
+<section class="md:col-span-12 mt-8">
+<div class="bg-surface-container p-8 md:p-12 rounded-sm border-l-8 border-tertiary">
+<div class="max-w-3xl">
+<h3 class="font-headline text-3xl mb-2">Comprehension Check</h3>
+<p class="font-body text-secondary mb-10">Based on the provided media and cultural notes.</p>
+<div class="space-y-8">
+<div>
+<h5 class="font-body font-bold text-xl mb-6">1. Why is the Gangan uniquely suited for "speaking" in Yoruba culture?</h5>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<button class="text-left p-4 bg-surface-container-lowest border-b-line border-outline/20 hover:bg-secondary-container transition-colors font-body text-sm flex items-center gap-3">
+<span class="w-6 h-6 flex items-center justify-center border border-outline rounded-full text-[10px] font-label">A</span>
+                                        It uses high-frequency electronic amplification.
+                                    </button>
+<button class="text-left p-4 bg-surface-container-lowest border-b-line border-primary/20 bg-primary-container/10 transition-colors font-body text-sm flex items-center gap-3">
+<span class="w-6 h-6 flex items-center justify-center bg-primary text-on-primary rounded-full text-[10px] font-label">B</span>
+                                        It mimics the tonal pitch of the Yoruba language.
+                                    </button>
+<button class="text-left p-4 bg-surface-container-lowest border-b-line border-outline/20 hover:bg-secondary-container transition-colors font-body text-sm flex items-center gap-3">
+<span class="w-6 h-6 flex items-center justify-center border border-outline rounded-full text-[10px] font-label">C</span>
+                                        It was traditionally the only instrument allowed.
+                                    </button>
+<button class="text-left p-4 bg-surface-container-lowest border-b-line border-outline/20 hover:bg-secondary-container transition-colors font-body text-sm flex items-center gap-3">
+<span class="w-6 h-6 flex items-center justify-center border border-outline rounded-full text-[10px] font-label">D</span>
+                                        It is carved from sacred Iroko wood.
+                                    </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Decorative Quote / End of Lesson -->
+<section class="my-24 text-center max-w-2xl mx-auto">
+<div class="w-12 h-0.5 bg-primary mx-auto mb-8"></div>
+<p class="font-headline text-3xl italic text-on-surface-variant">
+                "Learning a language is the first step to inhabiting a new world."
+            </p>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 backdrop-blur-xl bg-[#1c1c18]/90 shadow-[0_-10px_30px_rgba(0,0,0,0.3)]">
+<a class="flex flex-col items-center justify-center text-[#ebe8e1] opacity-50 hover:opacity-100 transition-opacity" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="folder_open">folder_open</span>
+<span class="font-label text-[0.75rem] uppercase tracking-widest">My Media</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#c05621] font-bold active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="Settings_Suggest">settings_suggest</span>
+<span class="font-label text-[0.75rem] uppercase tracking-widest">Processing</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#ebe8e1] opacity-50 hover:opacity-100 transition-opacity" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="group">group</span>
+<span class="font-label text-[0.75rem] uppercase tracking-widest">Tribe</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#ebe8e1] opacity-50 hover:opacity-100 transition-opacity" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="person">person</span>
+<span class="font-label text-[0.75rem] uppercase tracking-widest">Profile</span>
+</a>
+</nav>
+</body></html>

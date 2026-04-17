@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+<html class="light" lang="yo"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary": "#7b5500",
+              "secondary-container": "#7cf994",
+              "on-primary-fixed": "#390c00",
+              "on-secondary-fixed": "#002109",
+              "error-container": "#ffdad6",
+              "secondary": "#006e2d",
+              "tertiary-fixed": "#ffdeab",
+              "on-primary-fixed-variant": "#822700",
+              "secondary-fixed-dim": "#62df7d",
+              "tertiary-fixed-dim": "#f8bc51",
+              "surface-dim": "#ffd2aa",
+              "outline-variant": "#e0bfb5",
+              "surface-variant": "#ffdcbf",
+              "on-surface-variant": "#59413a",
+              "on-primary-container": "#fffbff",
+              "on-secondary-container": "#007230",
+              "surface-bright": "#fff8f5",
+              "primary-fixed-dim": "#ffb59c",
+              "surface-container-high": "#ffe3cd",
+              "on-secondary-fixed-variant": "#005320",
+              "background": "#fff8f5",
+              "surface-tint": "#aa3601",
+              "on-primary": "#ffffff",
+              "primary-container": "#c94c1a",
+              "on-tertiary-fixed-variant": "#5f4100",
+              "surface-container-lowest": "#ffffff",
+              "on-error-container": "#93000a",
+              "tertiary-container": "#9b6c00",
+              "inverse-surface": "#462a0d",
+              "surface-container": "#ffeada",
+              "on-background": "#2d1600",
+              "inverse-on-surface": "#ffeee1",
+              "on-tertiary-fixed": "#281900",
+              "on-error": "#ffffff",
+              "primary": "#a73400",
+              "secondary-fixed": "#7ffc97",
+              "outline": "#8c7168",
+              "surface-container-low": "#fff1e8",
+              "primary-fixed": "#ffdbcf",
+              "on-secondary": "#ffffff",
+              "on-surface": "#2d1600",
+              "inverse-primary": "#ffb59c",
+              "on-tertiary-container": "#fffbff",
+              "surface": "#fff8f5",
+              "error": "#ba1a1a",
+              "on-tertiary": "#ffffff",
+              "surface-container-highest": "#ffdcbf"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Lexend"],
+              "label": ["Lexend"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-nav {
+            background: rgba(167, 52, 0, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        .organic-shape {
+            border-radius: 63% 37% 54% 46% / 45% 48% 52% 55%;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body min-h-screen flex flex-col">
+<!-- TopAppBar (JSON Mapping) -->
+<header class="bg-[#fff8f5] dark:bg-stone-950 flex justify-between items-center w-full px-6 py-4 fixed top-0 z-50">
+<div class="flex items-center gap-4">
+<button class="text-[#a73400] dark:text-[#ffdbcf] active:scale-95 duration-200 transition-colors hover:bg-[#ffeada] p-2 rounded-full">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+<div class="flex flex-col">
+<h1 class="font-['Plus_Jakarta_Sans'] font-bold text-xl text-[#a73400] dark:text-[#ffdbcf]">Yorùbá Lesson</h1>
+</div>
+</div>
+<div class="flex-1 max-w-xs mx-8">
+<div class="h-3 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full w-[65%] bg-primary rounded-full"></div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="font-headline font-bold text-on-surface">12</span>
+</div>
+</header>
+<main class="flex-1 mt-24 mb-32 px-6 max-w-2xl mx-auto w-full">
+<!-- Instructional Header -->
+<div class="mb-12 text-center">
+<h2 class="font-headline text-3xl font-extrabold tracking-tight text-on-background mb-3">Match the Pairs</h2>
+<p class="text-on-surface-variant font-medium">Match the Yorùbá words with their English meanings</p>
+</div>
+<!-- Asymmetric Bento Grid for Matching -->
+<div class="grid grid-cols-2 gap-6 items-stretch">
+<!-- Yoruba Column -->
+<div class="space-y-4">
+<!-- Active/Selected State -->
+<button class="w-full p-6 text-left bg-primary-fixed border-2 border-primary rounded-lg transition-all active:scale-95 group">
+<span class="block font-headline text-2xl font-bold text-on-primary-fixed">Báwo</span>
+<span class="text-on-primary-fixed-variant text-sm font-label uppercase tracking-widest">Yorùbá</span>
+</button>
+<!-- Normal State -->
+<button class="w-full p-6 text-left bg-surface-container-lowest shadow-[0_10px_30px_rgba(45,22,0,0.04)] rounded-lg hover:bg-surface-container transition-all active:scale-95 group">
+<span class="block font-headline text-2xl font-bold text-on-surface">Ẹ káàárọ̀</span>
+<span class="text-on-surface-variant text-sm font-label uppercase tracking-widest">Yorùbá</span>
+</button>
+<!-- Matched State -->
+<button class="w-full p-6 text-left bg-secondary-fixed border-2 border-secondary rounded-lg opacity-60 cursor-default flex justify-between items-center">
+<div>
+<span class="block font-headline text-2xl font-bold text-on-secondary-fixed">Omi</span>
+<span class="text-on-secondary-fixed-variant text-sm font-label uppercase tracking-widest">Yorùbá</span>
+</div>
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</button>
+<button class="w-full p-6 text-left bg-surface-container-lowest shadow-[0_10px_30px_rgba(45,22,0,0.04)] rounded-lg hover:bg-surface-container transition-all active:scale-95 group">
+<span class="block font-headline text-2xl font-bold text-on-surface">Ìfẹ́</span>
+<span class="text-on-surface-variant text-sm font-label uppercase tracking-widest">Yorùbá</span>
+</button>
+</div>
+<!-- English Column -->
+<div class="space-y-4">
+<button class="w-full p-6 text-right bg-surface-container-lowest shadow-[0_10px_30px_rgba(45,22,0,0.04)] rounded-lg hover:bg-surface-container transition-all active:scale-95 group">
+<span class="block font-headline text-2xl font-bold text-on-surface">Good Morning</span>
+<span class="text-on-surface-variant text-sm font-label uppercase tracking-widest">English</span>
+</button>
+<!-- Potential Match Target -->
+<button class="w-full p-6 text-right bg-surface-container-lowest border-2 border-transparent hover:border-primary-fixed shadow-[0_10px_30px_rgba(45,22,0,0.04)] rounded-lg transition-all active:scale-95 group">
+<span class="block font-headline text-2xl font-bold text-on-surface">How</span>
+<span class="text-on-surface-variant text-sm font-label uppercase tracking-widest">English</span>
+</button>
+<button class="w-full p-6 text-right bg-surface-container-lowest shadow-[0_10px_30px_rgba(45,22,0,0.04)] rounded-lg hover:bg-surface-container transition-all active:scale-95 group">
+<span class="block font-headline text-2xl font-bold text-on-surface">Love</span>
+<span class="text-on-surface-variant text-sm font-label uppercase tracking-widest">English</span>
+</button>
+<!-- Matched State -->
+<button class="w-full p-6 text-right bg-secondary-fixed border-2 border-secondary rounded-lg opacity-60 cursor-default flex justify-between items-center flex-row-reverse">
+<div>
+<span class="block font-headline text-2xl font-bold text-on-secondary-fixed">Water</span>
+<span class="text-on-secondary-fixed-variant text-sm font-label uppercase tracking-widest">English</span>
+</div>
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</button>
+</div>
+</div>
+<!-- Decorative Tribe Totem Background Element -->
+<div class="fixed -bottom-10 -right-10 w-64 h-64 bg-tertiary-fixed opacity-10 organic-shape -z-10 rotate-12"></div>
+<div class="fixed top-40 -left-20 w-80 h-80 bg-primary-fixed opacity-5 organic-shape -z-10 -rotate-45"></div>
+</main>
+<!-- BottomNavBar (JSON Mapping) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-[#a73400]/80 backdrop-blur-xl rounded-t-[2rem] shadow-[0_-10px_40px_rgba(45,22,0,0.08)]">
+<a class="flex flex-col items-center justify-center text-white/70 px-4 py-2 hover:bg-white/20 transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="fort">fort</span>
+<span class="font-['Lexend'] text-[10px] font-medium">Village</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#fff8f5]/20 text-white rounded-2xl px-4 py-2 active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="school" style="font-variation-settings: 'FILL' 1;">school</span>
+<span class="font-['Lexend'] text-[10px] font-medium">Lessons</span>
+</a>
+<a class="flex flex-col items-center justify-center text-white/70 px-4 py-2 hover:bg-white/20 transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="menu_book">menu_book</span>
+<span class="font-['Lexend'] text-[10px] font-medium">Griot</span>
+</a>
+<a class="flex flex-col items-center justify-center text-white/70 px-4 py-2 hover:bg-white/20 transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="groups">groups</span>
+<span class="font-['Lexend'] text-[10px] font-medium">Tribe</span>
+</a>
+</nav>
+<!-- Floating Check Action (Only shows when logic allows, but visually represented for the "matched" prompt) -->
+<div class="fixed bottom-28 right-6">
+<button class="bg-secondary text-white w-16 h-16 rounded-full shadow-xl flex items-center justify-center active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-3xl" data-icon="done_all">done_all</span>
+</button>
+</div>
+</body></html>

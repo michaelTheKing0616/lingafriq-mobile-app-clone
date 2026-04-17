@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../models/offline/local_vocabulary.dart';
 import '../../services/offline/vocabulary_store.dart';
 import '../../utils/pan_african_design_system.dart';
+import 'package:lingafriq/screens/media/media_clip_player_screen.dart';
 
 class FlashcardReviewScreen extends ConsumerStatefulWidget {
   final List<LocalVocabulary> words;
@@ -164,6 +165,27 @@ class _FlashcardReviewScreenState extends ConsumerState<FlashcardReviewScreen> {
                                     currentWord.exampleSentence!,
                                     style: PanAfricanTypography.bodyMedium(context),
                                     textAlign: TextAlign.center,
+                                  ),
+                                ],
+                                if (currentWord.sourceMediaId != null &&
+                                    currentWord.sourceMediaId!.isNotEmpty) ...[
+                                  SizedBox(height: PanAfricanSpacing.md),
+                                  OutlinedButton.icon(
+                                    onPressed: () {
+                                      HapticFeedback.lightImpact();
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute<void>(
+                                          builder: (_) => MediaClipPlayerScreen(
+                                            mediaId: currentWord.sourceMediaId!,
+                                            title: currentWord.word,
+                                            startMs: currentWord.sourceStartMs,
+                                            endMs: currentWord.sourceEndMs,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    icon: const Icon(Icons.play_circle_rounded),
+                                    label: const Text('Play source clip'),
                                   ),
                                 ],
                                 SizedBox(height: PanAfricanSpacing.md),

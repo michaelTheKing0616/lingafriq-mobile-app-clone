@@ -23,6 +23,7 @@ import '../../utils/media_url_resolver.dart';
 import 'base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/services.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 const bool _allowSyntheticGameContent = bool.fromEnvironment(
   'ALLOW_SYNTHETIC_GAME_CONTENT',
@@ -414,13 +415,16 @@ class _ListenSketchGameState extends BaseGameScreenState<ListenSketchGame> {
                                     if ((option.imageUrl ?? '').isNotEmpty)
                                       ClipRRect(
                                         borderRadius: BorderRadius.circular(12),
-                                        child: Image.network(
-                                          option.imageUrl!,
+                                        child: CachedNetworkImage(
+                                          imageUrl: option.imageUrl!,
                                           height: 56,
                                           width: 56,
                                           fit: BoxFit.cover,
-                                          errorBuilder: (_, __, ___) =>
-                                              const Icon(Icons.image, size: 48),
+                                          fadeInDuration: const Duration(milliseconds: 180),
+                                          placeholder: (_, __) => const Icon(Icons.image, size: 48),
+                                          errorWidget: (_, __, ___) => const Icon(Icons.image, size: 48),
+                                          memCacheWidth: 56,
+                                          memCacheHeight: 56,
                                         ),
                                       )
                                     else
@@ -594,10 +598,14 @@ class _PictureWordGameState extends BaseGameScreenState<PictureWordGame> {
                     child: _currentCard!.imageUrl != null
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-                            child: Image.network(
-                              _currentCard!.imageUrl!,
+                            child: CachedNetworkImage(
+                              imageUrl: _currentCard!.imageUrl!,
                               fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) => Center(
+                              fadeInDuration: const Duration(milliseconds: 180),
+                              placeholder: (_, __) => Center(
+                                child: Icon(Icons.image, size: 64.sp, color: PanAfricanColors.neutralMedium),
+                              ),
+                              errorWidget: (_, __, ___) => Center(
                                 child: Icon(Icons.image, size: 64.sp, color: PanAfricanColors.neutralMedium),
                               ),
                             ),

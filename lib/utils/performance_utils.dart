@@ -3,6 +3,7 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 /// Debouncer for search and other frequent operations
 class Debouncer {
@@ -210,38 +211,28 @@ class LazyImage extends StatelessWidget {
         );
     }
 
-    // Use Image.network with error handling
-    return Image.network(
-      imageUrl!,
+    return CachedNetworkImage(
+      imageUrl: imageUrl!,
       width: width,
       height: height,
       fit: fit,
-      loadingBuilder: (context, child, loadingProgress) {
-        if (loadingProgress == null) return child;
-        return placeholder ?? 
+      fadeInDuration: const Duration(milliseconds: 180),
+      placeholder: (context, url) =>
+          placeholder ??
           Container(
             width: width,
             height: height,
             color: Colors.grey[200],
-            child: Center(
-              child: CircularProgressIndicator(
-                value: loadingProgress.expectedTotalBytes != null
-                    ? loadingProgress.cumulativeBytesLoaded /
-                        loadingProgress.expectedTotalBytes!
-                    : null,
-              ),
-            ),
-          );
-      },
-      errorBuilder: (context, error, stackTrace) {
-        return errorWidget ?? 
+            child: const Center(child: CircularProgressIndicator()),
+          ),
+      errorWidget: (context, url, error) =>
+          errorWidget ??
           Container(
             width: width,
             height: height,
             color: Colors.grey[300],
-            child: Icon(Icons.broken_image),
-          );
-      },
+            child: const Icon(Icons.broken_image),
+          ),
     );
   }
 }

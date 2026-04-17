@@ -12,6 +12,7 @@ import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/screens/auth/world_class_login_screen.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
+import 'package:lingafriq/utils/certificate_pinning.dart';
 
 import '../utils/api.dart';
 
@@ -63,7 +64,10 @@ final client = Provider<Dio>(
         'backendUrl': ApiContract.baseUrl,
       });
     } else if (_isPinnedDomain(ApiContract.baseUrl)) {
-      logger.info('Production HTTPS backend detected', context: {
+      // Enable pinning (only active when CERTIFICATE_PIN_HASHES is set and not debug).
+      // This is safe to call even if pinning is disabled by config.
+      setupCertificatePinning(dio);
+      logger.info('Production HTTPS backend detected (pinning configured if hashes present)', context: {
         'backendUrl': ApiContract.baseUrl,
       });
     }

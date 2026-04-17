@@ -1,5 +1,5 @@
 name: lingafriq
-description: A new Flutter project.
+description: LingAfriq — African language learning (Flutter, Riverpod, offline-first sync).
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -101,6 +101,7 @@ dependencies:
   permission_handler: ^11.3.1
   # Charts & Visualization
   fl_chart: ^0.69.0
+  qr_flutter: ^4.1.0
   # Environment Variables
   flutter_dotenv: ^5.1.0
   purchases_flutter: ^9.11.0
@@ -114,6 +115,7 @@ dependencies:
   flutter_riverpod: any
   http: any
   collection: any
+  google_mlkit_object_detection: ^0.15.1
 dependency_overrides:
   # Fix record_linux compatibility issue - update to latest compatible version
   record_platform_interface: ^1.4.0

@@ -83,12 +83,13 @@ class DynamicLocalizationService {
     _currentLanguage = language;
     _currentLocale = Locale(language.code);
 
-    // Save preference
+    // Save preference — always persist the **resolved** ISO code so invalid input
+    // does not leave a bogus value in storage while the UI shows English.
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_prefKey, languageCode);
+    await prefs.setString(_prefKey, language.code);
 
     // Update Intl locale
-    Intl.defaultLocale = languageCode;
+    Intl.defaultLocale = language.code;
     
     // Notify listeners to trigger UI rebuild
     _localeNotifier.value = _currentLocale;

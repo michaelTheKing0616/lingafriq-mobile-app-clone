@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../models/social_audio/social_audio_room_model.dart';
 import '../../providers/social_audio_provider.dart';
 import '../../providers/user_provider.dart';
@@ -214,12 +215,14 @@ class _RoomDetailScreenState extends ConsumerState<RoomDetailScreen> {
           children: [
             // Cover image or placeholder
             if (_room!.coverImageUrl != null)
-              Image.network(
-                _room!.coverImageUrl!,
+              CachedNetworkImage(
+                imageUrl: _room!.coverImageUrl!,
                 width: double.infinity,
                 height: 200.h,
                 fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => _buildPlaceholderCover(isDark),
+                fadeInDuration: const Duration(milliseconds: 180),
+                placeholder: (_, __) => _buildPlaceholderCover(isDark),
+                errorWidget: (_, __, ___) => _buildPlaceholderCover(isDark),
               )
             else
               _buildPlaceholderCover(isDark),

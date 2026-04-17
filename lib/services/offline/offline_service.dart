@@ -4,6 +4,8 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:lingafriq/services/connectivity_service.dart';
+import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
+import 'package:lingafriq/services/offline/tone_trainer_queue_service.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
@@ -21,6 +23,7 @@ class OfflineService {
 
   /// Initialize offline service
   Future<void> initialize() async {
+    await PersistedOutboxService.instance.ensureOpen();
     await _refreshConnectivityStatus();
     _connectivityTimer = Timer.periodic(
       _connectivityPollInterval,
@@ -57,10 +60,14 @@ class OfflineService {
 
   /// Sync pending changes (internal method)
   Future<void> _syncPendingChanges() async {
-    if (_isSyncing || !_isOnline || _syncQueue.isEmpty) return;
+    if (_isSyncing || !_isOnline) return;
 
     _isSyncing = true;
     try {
+      if (_isOnline) {
+        await PersistedOutboxService.instance.flushPending();
+        await ToneTrainerQueueService.instance.flushPending(batchSize: 5);
+      }
       while (_syncQueue.isNotEmpty && _isOnline) {
         final syncFunction = _syncQueue.removeAt(0);
         try {

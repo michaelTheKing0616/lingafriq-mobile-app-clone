@@ -15,7 +15,7 @@ import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'package:lingafriq/screens/dashboard/dashboard_screen_material3.dart';
 import 'package:lingafriq/screens/profile/profile_screen_material3.dart';
 import 'package:lingafriq/screens/settings/settings_screen_material3.dart';
-import 'package:lingafriq/screens/curriculum/curriculum_screen_material3.dart';
+import 'package:lingafriq/screens/lessons/lessons_map_entry_screen.dart';
 import 'package:lingafriq/screens/games/games_screen_material3.dart';
 import 'package:lingafriq/screens/gamification/badge_collection_screen_material3.dart';
 import 'package:lingafriq/screens/tutor/tutor_dashboard_screen.dart';
@@ -24,9 +24,12 @@ import 'package:lingafriq/screens/magazine/culture_magazine_screen_enhanced.dart
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/screens/heritage/flb_heritage_archive_screen.dart';
 import 'package:lingafriq/screens/media/import_media_screen_enhanced.dart';
+import 'package:lingafriq/screens/ar/point_and_say_screen.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen_material3.dart';
 import 'package:lingafriq/screens/chat/private_chat_list_screen.dart';
 import 'package:lingafriq/screens/feed/x_feed_home_screen.dart';
+import 'package:lingafriq/screens/community/micro_mentor_hub_screen.dart';
+import 'package:lingafriq/screens/staff/micro_mentor_reports_screen.dart';
 import 'package:lingafriq/screens/village/villages_hub_screen.dart';
 import 'package:lingafriq/screens/ugc/create_lesson_screen_enhanced.dart';
 import 'package:lingafriq/screens/gamification/tribe_selection_screen.dart';
@@ -169,12 +172,14 @@ class AppDrawer extends HookConsumerWidget {
                       ),
                       _DrawerItem(
                         icon: PanAfricanIcons.book,
-                        label: 'Curriculum',
+                        label: 'Lessons',
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: CurriculumScreenMaterial3()),
+                            SmoothPageRoute(
+                              child: const LessonsMapEntryScreen(),
+                            ),
                           );
                         },
                         isDark: isDark.value,
@@ -227,18 +232,12 @@ class AppDrawer extends HookConsumerWidget {
                         label: 'Learning Path',
                         onTap: () {
                           Navigator.pop(context);
-                          final user = ref.read(userProvider);
-                          if (user?.learningLanguage != null) {
-                            // Navigate to curriculum which provides full Language objects for learning path
-                            Navigator.push(
-                              context,
-                              SmoothPageRoute(
-                                child: const CurriculumScreenMaterial3(),
-                              ),
-                            );
-                          } else {
-                            showLingAfriqInfo(context, 'Please select a language first');
-                          }
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(
+                              child: const LessonsMapEntryScreen(),
+                            ),
+                          );
                         },
                         isDark: isDark.value,
                       ),
@@ -405,6 +404,20 @@ class AppDrawer extends HookConsumerWidget {
                         isDark: isDark.value,
                       ),
                       _DrawerItem(
+                        icon: Icons.center_focus_strong_rounded,
+                        label: 'Point & Say',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(
+                              child: const PointAndSayScreen(language: 'yoruba'),
+                            ),
+                          );
+                        },
+                        isDark: isDark.value,
+                      ),
+                      _DrawerItem(
                         icon: Icons.create,
                         label: 'Create Content',
                         onTap: () {
@@ -444,6 +457,20 @@ class AppDrawer extends HookConsumerWidget {
                             context,
                             SmoothPageRoute(
                               child: const XFeedHomeScreen(),
+                            ),
+                          );
+                        },
+                        isDark: isDark.value,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.volunteer_activism_rounded,
+                        label: 'Micro‑Mentors',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(
+                              child: const MicroMentorHubScreen(),
                             ),
                           );
                         },
@@ -499,6 +526,27 @@ class AppDrawer extends HookConsumerWidget {
                       ),
                     ],
                   ),
+
+                  if (currentUser?.isStaffOrAdmin == true)
+                    _DrawerSection(
+                      title: 'Staff',
+                      children: [
+                        _DrawerItem(
+                          icon: Icons.shield_outlined,
+                          label: 'Micro-mentor reports',
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              SmoothPageRoute(
+                                child: const StaffMicroMentorReportsScreen(),
+                              ),
+                            );
+                          },
+                          isDark: isDark.value,
+                        ),
+                      ],
+                    ),
 
                   // Social Section
                   _DrawerSection(

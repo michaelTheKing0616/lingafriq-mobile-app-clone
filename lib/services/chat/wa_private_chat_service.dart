@@ -199,4 +199,44 @@ class WaPrivateChatService {
     if (raw is Map) return Map<String, dynamic>.from(raw);
     return null;
   }
+
+  /// Normalized `private_low_high` room id (matches Node `normalizePrivateRoomId`).
+  static String privateRoomIdForNumericUsers(int a, int b) {
+    final low = a < b ? a : b;
+    final high = a < b ? b : a;
+    return 'private_${low}_$high';
+  }
+
+  /// Updates typing presence for DM rooms (`POST /chat/typing`).
+  static Future<void> setTyping({
+    required String roomId,
+    required bool isTyping,
+  }) async {
+    await ApiService.post(
+      Api.chatTyping,
+      data: {
+        'roomId': roomId,
+        'isTyping': isTyping,
+      },
+    );
+  }
+
+  /// Whether **another participant** in the room is typing (`GET /chat/typing/:roomId`, `othersTyping` field).
+  static Future<bool> fetchOthersTyping(String roomId) async {
+    try {
+      final res = await ApiService.get(Api.chatTypingForRoom(roomId));
+      final raw = res.data;
+      if (raw is! Map) return false;
+      final data = raw['data'];
+      if (data is Map && data['othersTyping'] is bool) {
+        return data['othersTyping'] as bool;
+      }
+      if (data is List) {
+        return data.isNotEmpty;
+      }
+      return false;
+    } catch (_) {
+      return false;
+    }
+  }
 }

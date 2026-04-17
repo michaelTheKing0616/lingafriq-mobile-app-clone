@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
-import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/tabs_view/profile/change_password_screen.dart';
 import 'package:lingafriq/screens/tabs_view/profile/profile_edit_screen.dart';
@@ -120,22 +119,13 @@ class ProfileTab extends HookConsumerWidget {
                             context);
                     result.toString().log();
                     if (result != true) return;
-                    final confirmation =
+                    if (!context.mounted) return;
+                    final typedPassword =
                         await EnterPasswordDialog.show(context);
-                    confirmation.toString().log();
-                    if (confirmation is! String) return;
+                    typedPassword.toString().log();
+                    if (typedPassword == null || typedPassword.isEmpty) return;
 
-                    final password = ref
-                        .read(sharedPreferencesProvider)
-                        .emailAndPassword
-                        .password;
-                    final data = {"current_password": password};
-                    if (confirmation != password) {
-                      await ref
-                          .read(dialogProvider(""))
-                          .showPlatformDialogue(title: "Incorrect Password");
-                      return;
-                    }
+                    final data = {"current_password": typedPassword};
                     final deleteResult =
                         await ref.read(apiProvider.notifier).deleteUser(data);
                     if (deleteResult != true) return;

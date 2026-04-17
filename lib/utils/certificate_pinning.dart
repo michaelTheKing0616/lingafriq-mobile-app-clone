@@ -1,11 +1,12 @@
 // Certificate Pinning Utility
-// Implements certificate pinning for enhanced security
-// 
-// Features:
-// - Public key pinning
-// - Certificate pinning
-// - Fallback handling
-// - Development mode bypass
+//
+// SECURITY NOTE:
+// Dart's `dart:io` X509Certificate does not expose SPKI/public key bytes directly,
+// so this implementation performs *leaf certificate* pinning (DER SHA-256), not
+// public key/SPKI pinning.
+//
+// Operational implication: pins MUST be rotated whenever the server leaf
+// certificate changes (renewal, re-issuance, CA change).
 // 
 // Production-ready implementation (December 2025)
 
@@ -20,14 +21,13 @@ import 'package:lingafriq/utils/structured_logger.dart';
 
 /// Certificate pinning configuration
 class CertificatePinningConfig {
-  final List<String> publicKeyHashes;
-  final List<String>? certificateHashes;
+  /// SHA-256 pins of the leaf certificate DER, formatted as `sha256/<base64>`.
+  final List<String> certificateDerSha256Pins;
   final bool allowSelfSigned;
   final bool enabled;
 
   const CertificatePinningConfig({
-    required this.publicKeyHashes,
-    this.certificateHashes,
+    required this.certificateDerSha256Pins,
     this.allowSelfSigned = false,
     this.enabled = true,
   });
@@ -37,7 +37,7 @@ class CertificatePinningConfig {
     // Certificate pinning is configured via environment variables or secure storage
     // In production, certificate hashes are validated against pinned values
     // If no hashes are configured, pinning is disabled (allows app to run)
-    // To enable: Set CERTIFICATE_PIN_HASHES environment variable with comma-separated hashes
+    // To enable: Set CERTIFICATE_PIN_HASHES at build time with comma-separated pins.
     final envHashes = const String.fromEnvironment('CERTIFICATE_PIN_HASHES', defaultValue: '');
     final hashes = envHashes.isNotEmpty 
         ? envHashes.split(',').map((h) => h.trim()).where((h) => h.isNotEmpty).toList()
@@ -48,7 +48,7 @@ class CertificatePinningConfig {
     final isHttp = backendUrl.startsWith('http://');
     
     return CertificatePinningConfig(
-      publicKeyHashes: hashes,
+      certificateDerSha256Pins: hashes,
       enabled: hashes.isNotEmpty && !kDebugMode && !isHttp, // Disable for HTTP or debug mode
       allowSelfSigned: isHttp || kDebugMode, // Allow self-signed for HTTP/local development
     );
@@ -77,39 +77,26 @@ class CertificatePinner {
 
     try {
       // If no hashes are configured, allow connection (pinning is disabled)
-      if (config.publicKeyHashes.isEmpty) {
+      if (config.certificateDerSha256Pins.isEmpty) {
         logger.debug('Certificate pinning not configured - allowing connection');
         return true;
       }
 
-      // Check public key hash
-      final publicKeyHash = _getPublicKeyHash(certificate);
-      if (publicKeyHash == 'sha256/ERROR') {
+      // Check leaf certificate DER hash
+      final certDerPin = _getCertificateDerSha256Pin(certificate);
+      if (certDerPin == 'sha256/ERROR') {
         logger.error('Certificate hash computation failed');
         return false;
       }
 
-      if (config.publicKeyHashes.contains(publicKeyHash)) {
-        logger.debug('Certificate public key hash matches');
+      if (config.certificateDerSha256Pins.contains(certDerPin)) {
+        logger.debug('Certificate pin matches');
         return true;
       }
 
-      // Check certificate hash if configured
-      if (config.certificateHashes != null && config.certificateHashes!.isNotEmpty) {
-        final certHash = _getCertificateHash(certificate);
-        if (certHash == 'sha256/ERROR') {
-          logger.error('Certificate hash computation failed');
-          return false;
-        }
-        if (config.certificateHashes!.contains(certHash)) {
-          logger.debug('Certificate hash matches');
-          return true;
-        }
-      }
-
       logger.warn('Certificate pinning failed: hash mismatch', context: {
-        'publicKeyHash': publicKeyHash,
-        'expectedHashes': config.publicKeyHashes,
+        'certDerPin': certDerPin,
+        'expectedPins': config.certificateDerSha256Pins,
       });
 
       return false;
@@ -119,31 +106,15 @@ class CertificatePinner {
     }
   }
 
-  /// Get public key hash (SHA-256)
-  String _getPublicKeyHash(X509Certificate certificate) {
+  /// Get leaf certificate DER pin (SHA-256).
+  String _getCertificateDerSha256Pin(X509Certificate certificate) {
     try {
-      // Extract certificate DER data and compute SHA-256 hash
       final certBytes = certificate.der;
       final hash = sha256.convert(certBytes);
       final hashBase64 = base64.encode(hash.bytes);
       return 'sha256/$hashBase64';
     } catch (e) {
-      logger.error('Error computing public key hash', error: e);
-      // Return a hash that won't match anything, causing validation to fail safely
-      return 'sha256/ERROR';
-    }
-  }
-
-  /// Get certificate hash (SHA-256)
-  String _getCertificateHash(X509Certificate certificate) {
-    try {
-      // Compute SHA-256 hash of entire certificate DER data
-      final certBytes = certificate.der;
-      final hash = sha256.convert(certBytes);
-      final hashBase64 = base64.encode(hash.bytes);
-      return 'sha256/$hashBase64';
-    } catch (e) {
-      logger.error('Error computing certificate hash', error: e);
+      logger.error('Error computing certificate DER pin', error: e);
       // Return a hash that won't match anything, causing validation to fail safely
       return 'sha256/ERROR';
     }
@@ -195,7 +166,7 @@ void setupCertificatePinning(Dio dio, {CertificatePinningConfig? config}) {
     // Add interceptor for additional error handling
     dio.interceptors.add(pinner.createInterceptor());
     
-    logger.info('Certificate pinning enabled with ${pinnerConfig.publicKeyHashes.length} pinned hashes');
+    logger.info('Certificate pinning enabled with ${pinnerConfig.certificateDerSha256Pins.length} pins');
   } else {
     logger.debug('Certificate pinning disabled - set CERTIFICATE_PIN_HASHES to enable');
   }

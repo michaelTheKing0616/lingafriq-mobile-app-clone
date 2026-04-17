@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Village | Learning Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Lexend:wght@300;400;500;600&amp;family=Dosis:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .haptic-bounce:active {
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        body {
+            font-family: 'Lexend', sans-serif;
+            background-color: #fff8f5;
+        }
+        .headline-font {
+            font-family: 'Plus_Jakarta_Sans', sans-serif;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "on-tertiary-container": "#fffbff",
+                "on-secondary-fixed-variant": "#005320",
+                "surface-dim": "#ffd2aa",
+                "secondary-fixed-dim": "#62df7d",
+                "primary-container": "#c94c1a",
+                "on-primary-fixed-variant": "#822700",
+                "outline": "#8c7168",
+                "tertiary-fixed": "#ffdeab",
+                "on-primary": "#ffffff",
+                "on-secondary-container": "#007230",
+                "secondary-fixed": "#7ffc97",
+                "outline-variant": "#e0bfb5",
+                "on-secondary-fixed": "#002109",
+                "on-primary-fixed": "#390c00",
+                "tertiary-container": "#9b6c00",
+                "surface-tint": "#aa3601",
+                "primary-fixed": "#ffdbcf",
+                "surface-container-high": "#ffe3cd",
+                "secondary-container": "#7cf994",
+                "on-background": "#2d1600",
+                "surface-container-lowest": "#ffffff",
+                "surface-bright": "#fff8f5",
+                "on-secondary": "#ffffff",
+                "background": "#fff8f5",
+                "primary-fixed-dim": "#ffb59c",
+                "on-tertiary-fixed-variant": "#5f4100",
+                "primary": "#a73400",
+                "surface-container-low": "#fff1e8",
+                "on-error": "#ffffff",
+                "on-tertiary-fixed": "#281900",
+                "inverse-on-surface": "#ffeee1",
+                "error": "#ba1a1a",
+                "inverse-surface": "#462a0d",
+                "on-surface-variant": "#59413a",
+                "on-primary-container": "#fffbff",
+                "surface-variant": "#ffdcbf",
+                "secondary": "#006e2d",
+                "on-surface": "#2d1600",
+                "surface": "#fff8f5",
+                "inverse-primary": "#ffb59c",
+                "on-error-container": "#93000a",
+                "surface-container": "#ffeada",
+                "on-tertiary": "#ffffff",
+                "tertiary-fixed-dim": "#f8bc51",
+                "tertiary": "#7b5500",
+                "surface-container-highest": "#ffdcbf",
+                "error-container": "#ffdad6"
+              },
+              fontFamily: {
+                "headline": ["Plus Jakarta Sans"],
+                "body": ["Lexend"],
+                "label": ["Lexend"]
+              },
+              borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopAppBar -->
+<header class="bg-[#fff8f5] dark:bg-stone-950 fixed top-0 left-0 right-0 z-50">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-screen-xl mx-auto">
+<div class="flex items-center gap-3">
+<div class="relative">
+<img alt="User profile" class="w-10 h-10 rounded-full border-2 border-primary object-cover" data-alt="Portrait of a young woman with a vibrant tribal pattern headwrap and warm natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuANEXfoKGjV-etXKjHfmNxxUn6N3bLbAzRDCLWGGRRsbXujXKVqDRihygUI_oHQUZjkxtKEN91Bp1fcb01qnw7Z1h-C4gw1W8sgB-Zb-ANV3h4exSmuo4beEeLLBZUtw9LjF9V5GSgGP5lU7tWBT8qcDBtEYzRauhvO-3tFM2htBCFcElonaSXQH5Udv78XYQpbYL5IvW1KXnCJbsCXkkKml4Wg68O2nlGhRH12QjPaJMtY6Sh3D_8wOgNAirYnMFr74Ifzs3pENWjj"/>
+<div class="absolute -top-1 -right-1 w-4 h-4 bg-secondary border-2 border-surface rounded-full"></div>
+</div>
+</div>
+<h1 class="text-xl font-black text-[#a73400] dark:text-[#ffdbcf] font-['Plus_Jakarta_Sans'] tracking-tight">The Village</h1>
+<div class="flex items-center gap-2">
+<button class="text-[#a73400] dark:text-[#ffdbcf] p-2 hover:bg-[#fff1e8] dark:hover:bg-stone-900 transition-colors rounded-full active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="local_fire_department">local_fire_department</span>
+</button>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-screen-xl mx-auto space-y-8">
+<!-- Griot Progress Card (Hero) -->
+<section class="relative overflow-hidden bg-gradient-to-br from-primary to-primary-container rounded-lg p-8 text-on-primary shadow-xl">
+<!-- Decorative Pattern Overlay -->
+<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDb8Aw5sYKI6emtPkDJzVelrCPeX82T1wNHS36Hd7PDIrdGe37GvoTJwnFcUSiCFwaX_vnEhvQz_OWiD-AVCLG66GTQFf_tlLhGhAW_6IW5iaDVktiM1v2qaTE_cCXxkBih1fU6Nd7wUV0L4HezRNkE4D8lm-tyaTPWMJ2eD0ZTjB78J6r1_uCLlAAPWIQio4q6VghZzty7XkXQyeBGZRu-s0m0T-TfWOI-kuu2HhsPR9pl-3pADhVM7aQAYdxpmYf3uGGOSESU7nvZ');"></div>
+<div class="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="space-y-2">
+<span class="text-primary-fixed font-label text-xs uppercase tracking-[0.2em]">Current Standing</span>
+<h2 class="text-4xl font-headline font-extrabold leading-tight">Griot of the Wind</h2>
+<div class="flex items-center gap-4 mt-4">
+<div class="bg-white/20 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-bold">14 Day Streak</span>
+</div>
+<div class="bg-white/20 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="font-bold">2,480 XP</span>
+</div>
+</div>
+</div>
+<div class="flex -space-x-4 mb-2">
+<div class="w-12 h-12 rounded-full bg-tertiary-fixed border-4 border-primary flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-on-tertiary-fixed" data-icon="military_tech">military_tech</span>
+</div>
+<div class="w-12 h-12 rounded-full bg-secondary-fixed border-4 border-primary flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-on-secondary-fixed" data-icon="temp_preferences_custom">temp_preferences_custom</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Daily Ritual Section -->
+<section class="space-y-6">
+<div class="flex justify-between items-end">
+<h3 class="text-2xl font-headline font-bold text-on-surface">Daily Rituals</h3>
+<span class="text-sm font-medium text-primary">2/3 Complete</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Task 1: Complete -->
+<div class="bg-surface-container-low p-5 rounded-lg flex items-center gap-4 group transition-all">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container shrink-0">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Morning Chant</p>
+<p class="text-xs text-on-surface-variant">Review 5 greetings</p>
+</div>
+</div>
+<!-- Task 2: Complete -->
+<div class="bg-surface-container-low p-5 rounded-lg flex items-center gap-4 group transition-all">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container shrink-0">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Tribe Greeting</p>
+<p class="text-xs text-on-surface-variant">Post in the Village square</p>
+</div>
+</div>
+<!-- Task 3: Incomplete -->
+<div class="bg-surface-container p-5 rounded-lg flex items-center gap-4 border-2 border-primary/10 hover:border-primary/30 transition-all cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined">menu_book</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">The Weaver's Tale</p>
+<p class="text-xs text-on-surface-variant">Listen to the latest story</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Continue Learning Button -->
+<section class="relative group">
+<button class="w-full bg-surface-container-lowest p-8 rounded-xl shadow-[0_20px_40px_rgba(45,22,0,0.06)] flex flex-col md:flex-row items-center justify-between gap-6 border border-outline-variant/15 hover:shadow-[0_25px_50px_rgba(45,22,0,0.1)] transition-all active:scale-[0.98]">
+<div class="flex items-center gap-6">
+<div class="w-16 h-16 rounded-lg bg-tertiary-fixed flex items-center justify-center text-tertiary shadow-inner">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+</div>
+<div class="text-left">
+<span class="text-primary font-bold text-sm tracking-widest uppercase">Up Next</span>
+<h4 class="text-2xl font-headline font-extrabold text-on-surface">The Market Place: Haggling</h4>
+<p class="text-on-surface-variant">Module 4 • Lesson 12</p>
+</div>
+</div>
+<div class="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-full font-bold shadow-lg group-hover:bg-primary-container transition-colors">
+                    Continue Journey
+                    <span class="material-symbols-outlined">arrow_forward</span>
+</div>
+</button>
+<!-- Floating Totem Ornament -->
+<div class="absolute -top-6 -right-4 w-16 h-16 pointer-events-none rotate-12 group-hover:rotate-0 transition-transform">
+<div class="w-full h-full bg-tertiary-fixed border-4 border-surface-container-lowest rounded-full flex items-center justify-center shadow-xl">
+<span class="material-symbols-outlined text-on-tertiary-fixed" data-icon="psychology_alt">psychology_alt</span>
+</div>
+</div>
+</section>
+<!-- Bottom Summaries: Village & Tribe -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Village Summary -->
+<div class="bg-surface-container-low rounded-lg p-6 space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined">bungalow</span>
+<h5 class="font-bold">Village Status</h5>
+</div>
+<span class="text-xs font-label bg-primary-fixed text-on-primary-fixed px-2 py-1 rounded">Active Now</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex -space-x-2">
+<img class="w-8 h-8 rounded-full border-2 border-surface-container-low object-cover" data-alt="Close up portrait of a smiling man with textured skin and warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjIQyI75caecTxFC54mgSCJXq3VswpIZ6WhHWS18rxiEL72i6nWSvW5hz-We5panXjU0950_kBXg9GAWG3yhEhWDgqfSCPJnPw90CGwWzh6Scxah6Cfv5tjSoQS0beGW0POYGFBMBIvE8rtSoOrjQUw9cYTxVQx04n-p282Bcji_Xz6TcD1gVbZNWDJAB7CddwJXZthzseUUNxzYSKLaLFxjOtbDBE9ySy_GayGhYyA2T_FzRAqphPg28ltcEmOc9ijNIn9UBMUiID"/>
+<img class="w-8 h-8 rounded-full border-2 border-surface-container-low object-cover" data-alt="Portrait of a woman with natural hair and bright cheerful expression in a garden" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPewzA9x-v93rB54jQO7JGm-z1LOLqfGl7EG_Mox5EHEl49M28aMpbIfomtIfSqCrgGbYduCMcppzVcV5cE83lUj62GyhsDQVl5PsUA68DsLyDNjrF2JuxrluRGwV9nkjlazFmZcfM6SwkxZjQVLM72Gk3T0vG7CeOMxGMoaKFmbv5ZCWNBE3UbB5SAh3Bn2LfvdhUt_ADwBwed7mSfmkV9PYhLOYAw6b1OLy8c5UU3M6MOyCcjns3LIP450qIfT5NdoXk0YJqyWGW"/>
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-[10px] font-bold border-2 border-surface-container-low">+12</div>
+</div>
+<p class="text-sm text-on-surface-variant">The Elders are discussing 'Ancestral Roots' in the main square.</p>
+</div>
+</div>
+<!-- Tribe Activity -->
+<div class="bg-surface-container-low rounded-lg p-6 space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2 text-secondary">
+<span class="material-symbols-outlined">groups</span>
+<h5 class="font-bold">Tribe Activity</h5>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex items-start gap-3">
+<div class="w-2 h-10 bg-secondary rounded-full shrink-0"></div>
+<div>
+<p class="text-sm font-medium">New Challenge: "The Harvest"</p>
+<p class="text-xs text-on-surface-variant">Ends in 2 days • 400 XP Reward</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-[#a73400]/80 dark:bg-stone-900/80 backdrop-blur-xl rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(45,22,0,0.08)]">
+<!-- Home (Active) -->
+<a class="flex flex-col items-center justify-center bg-[#ffeada] dark:bg-[#c94c1a] text-[#a73400] dark:text-white rounded-full px-5 py-2 transition-all duration-300 haptic-bounce" href="#">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-['Lexend'] text-[10px] font-medium uppercase tracking-widest mt-0.5">Home</span>
+</a>
+<!-- Curriculum -->
+<a class="flex flex-col items-center justify-center text-white/70 dark:text-stone-400 px-5 py-2 hover:text-white transition-colors haptic-bounce" href="#">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+<span class="font-['Lexend'] text-[10px] font-medium uppercase tracking-widest mt-0.5">Curriculum</span>
+</a>
+<!-- Village -->
+<a class="flex flex-col items-center justify-center text-white/70 dark:text-stone-400 px-5 py-2 hover:text-white transition-colors haptic-bounce" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-['Lexend'] text-[10px] font-medium uppercase tracking-widest mt-0.5">Village</span>
+</a>
+<!-- Rewards -->
+<a class="flex flex-col items-center justify-center text-white/70 dark:text-stone-400 px-5 py-2 hover:text-white transition-colors haptic-bounce" href="#">
+<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
+<span class="font-['Lexend'] text-[10px] font-medium uppercase tracking-widest mt-0.5">Rewards</span>
+</a>
+</nav>
+</body></html>

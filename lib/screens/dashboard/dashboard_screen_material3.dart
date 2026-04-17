@@ -13,7 +13,8 @@ import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/models/daily_goal_model.dart';
 import 'package:lingafriq/screens/ai_chat/polie_mode_selection_screen.dart';
 import 'package:lingafriq/screens/ai_chat/ai_language_selection_screen.dart';
-import 'package:lingafriq/screens/curriculum/curriculum_screen_material3.dart';
+import 'package:lingafriq/screens/lessons/lessons_map_entry_screen.dart';
+import 'package:lingafriq/screens/tabs_view/home/language_detail_screen.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen_enhanced.dart';
 import 'package:lingafriq/screens/games/games_screen_material3.dart';
 import 'package:lingafriq/screens/goals/daily_goals_screen.dart';
@@ -423,7 +424,9 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                         HapticFeedback.lightImpact();
                         Navigator.push(
                           context,
-                          SmoothPageRoute(child: const CurriculumScreenMaterial3()),
+                          SmoothPageRoute(
+                            child: LanguageDetailScreen(language: language),
+                          ),
                         );
                       },
                       child: Container(
@@ -650,7 +653,9 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                         HapticFeedback.lightImpact();
                         Navigator.push(
                           context,
-                          SmoothPageRoute(child: const CurriculumScreenMaterial3()),
+                          SmoothPageRoute(
+                            child: LanguageDetailScreen(language: language),
+                          ),
                         );
                       },
                     ),
@@ -754,7 +759,9 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          SmoothPageRoute(child: const CurriculumScreenMaterial3()),
+                          SmoothPageRoute(
+                            child: const LessonsMapEntryScreen(),
+                          ),
                         );
                       },
                       backgroundColor: PanAfricanColors.primary,

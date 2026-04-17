@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Manrope:wght@200..800&amp;family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-dim": "#dcdad3",
+            "tertiary-fixed-dim": "#e9c349",
+            "surface-bright": "#fcf9f2",
+            "on-secondary-fixed": "#121c2c",
+            "surface-container-low": "#f6f3ec",
+            "primary-container": "#c05621",
+            "on-background": "#1c1c18",
+            "on-surface-variant": "#57423a",
+            "on-primary-fixed": "#360f00",
+            "surface-variant": "#e5e2db",
+            "outline": "#8a7268",
+            "on-tertiary-fixed": "#241a00",
+            "primary-fixed-dim": "#ffb596",
+            "on-secondary-fixed-variant": "#3d4759",
+            "on-error-container": "#93000a",
+            "on-tertiary": "#ffffff",
+            "on-surface": "#1c1c18",
+            "inverse-on-surface": "#f3f0e9",
+            "surface-tint": "#a14009",
+            "surface-container": "#f1eee7",
+            "surface": "#fcf9f2",
+            "secondary-fixed": "#d9e3f9",
+            "error-container": "#ffdad6",
+            "surface-container-high": "#ebe8e1",
+            "surface-container-highest": "#e5e2db",
+            "tertiary": "#735c00",
+            "secondary-fixed-dim": "#bdc7dc",
+            "secondary": "#555f71",
+            "outline-variant": "#dec0b5",
+            "error": "#ba1a1a",
+            "inverse-surface": "#31312c",
+            "on-tertiary-fixed-variant": "#574500",
+            "on-primary-container": "#fffeff",
+            "on-primary-fixed-variant": "#7d2d00",
+            "on-error": "#ffffff",
+            "tertiary-fixed": "#ffe088",
+            "on-primary": "#ffffff",
+            "primary": "#9f3e07",
+            "secondary-container": "#d6e0f6",
+            "on-secondary-container": "#596376",
+            "surface-container-lowest": "#ffffff",
+            "inverse-primary": "#ffb596",
+            "tertiary-container": "#cca730",
+            "on-secondary": "#ffffff",
+            "primary-fixed": "#ffdbcd",
+            "on-tertiary-container": "#4f3d00",
+            "background": "#fcf9f2"
+          },
+          fontFamily: {
+            "headline": ["Newsreader"],
+            "body": ["Manrope"],
+            "label": ["Space Grotesk"]
+          },
+          borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      line-height: 1;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+    }
+    .asymmetric-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 2rem;
+    }
+    @media (max-width: 768px) {
+      .asymmetric-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopAppBar Navigation Shell -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 w-full backdrop-blur-md bg-opacity-90 bg-[#fcf9f2] dark:bg-stone-900">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#9f3e07] dark:text-[#c05621] cursor-pointer">menu</span>
+<h1 class="font-serif text-2xl font-bold text-[#1c1c18] dark:text-[#fcf9f2]">Àṣà Archive</h1>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<nav class="flex gap-6">
+<a class="font-label text-sm uppercase tracking-widest text-[#9f3e07] dark:text-[#c05621] font-bold" href="#">Glossary</a>
+<a class="font-label text-sm uppercase tracking-widest text-[#555f71] dark:text-stone-400 hover:bg-[#ebe8e1] transition-colors" href="#">Studio</a>
+<a class="font-label text-sm uppercase tracking-widest text-[#555f71] dark:text-stone-400 hover:bg-[#ebe8e1] transition-colors" href="#">Contribute</a>
+</nav>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant/30">
+<img alt="Curator Profile" class="w-full h-full object-cover" data-alt="close-up portrait of an elderly man with wisdom in his eyes and traditional woven textile clothing in soft natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKTUE-nfdcqG0fnt7Pi4tOV07jiSJs2skSrnHhlwPMj2y2NF70kvJfzfGFSOn_Jh0OV97hZuXM5LYCP8VrGD6ILqXMsNtVusxqI-ku4f52o1weaRFRP4yenbqzIV8SPoBCYw9hFJhdJ8q6sr0PSpgTF89PaFzlg2RGYDdlpp98tgmQwFwV9mh6DjMFKCZM_hyeGdHmtWqbaXnIfLXtj38CFqMJJ_zSqso6Lv49zqCQABmZsNwuZdStWW82YDFdSisFzFc2FIGlSnFq"/>
+</div>
+</div>
+</header>
+<main class="pt-28 pb-32 px-6 max-w-7xl mx-auto min-h-screen">
+<!-- Hero Editorial Section -->
+<section class="mb-16">
+<div class="max-w-3xl">
+<span class="font-label text-xs uppercase tracking-[0.2em] text-tertiary mb-4 block">Lexicon Explorer</span>
+<h2 class="font-headline text-6xl md:text-8xl text-on-surface leading-tight mb-8">Omenala</h2>
+<p class="font-body text-xl text-secondary leading-relaxed max-w-2xl">
+          More than just 'culture', <span class="italic font-headline">Omenala</span> represents the divine alignment of action with the earth—a living philosophy of the Igbo people.
+        </p>
+</div>
+</section>
+<!-- Bento Grid Content -->
+<div class="asymmetric-grid mb-12">
+<!-- Column 1: Etymology & Roots -->
+<div class="space-y-8">
+<div class="bg-surface-container-low p-8 rounded-sm">
+<h3 class="font-label text-xs uppercase tracking-widest text-primary mb-6">Etymological Decomposition</h3>
+<div class="flex flex-col gap-6">
+<div class="flex items-baseline gap-4">
+<span class="font-headline text-3xl text-on-surface">Ome</span>
+<span class="w-px h-4 bg-outline-variant"></span>
+<span class="font-body text-sm text-secondary">To do, to act, to manifest.</span>
+</div>
+<div class="flex items-baseline gap-4">
+<span class="font-headline text-3xl text-on-surface">na</span>
+<span class="w-px h-4 bg-outline-variant"></span>
+<span class="font-body text-sm text-secondary">In, at, or with.</span>
+</div>
+<div class="flex items-baseline gap-4">
+<span class="font-headline text-3xl text-on-surface">ala</span>
+<span class="w-px h-4 bg-outline-variant"></span>
+<span class="font-body text-sm text-secondary">The earth, the ground, the goddess Ani.</span>
+</div>
+</div>
+<div class="mt-8 pt-8 border-t border-outline-variant/20">
+<p class="font-body italic text-on-surface-variant">"That which happens on the land."</p>
+</div>
+</div>
+<!-- Pronunciation Audio Weaver -->
+<div class="bg-surface-container-highest p-6 rounded-sm group cursor-pointer transition-all hover:bg-tertiary-container/20">
+<div class="flex justify-between items-center mb-4">
+<span class="font-label text-[10px] uppercase tracking-widest text-secondary">Pronunciation Guide</span>
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">volume_up</span>
+</div>
+<div class="flex gap-1 h-12 items-end px-2">
+<div class="w-1 bg-primary h-4 rounded-full"></div>
+<div class="w-1 bg-primary h-8 rounded-full"></div>
+<div class="w-1 bg-primary h-12 rounded-full"></div>
+<div class="w-1 bg-primary h-6 rounded-full"></div>
+<div class="w-1 bg-primary h-10 rounded-full"></div>
+<div class="w-1 bg-primary h-3 rounded-full"></div>
+<div class="w-1 bg-primary h-9 rounded-full"></div>
+<div class="w-1 bg-primary h-5 rounded-full"></div>
+<div class="w-1 bg-primary h-7 rounded-full"></div>
+<div class="w-1 bg-primary h-2 rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Column 2: Visual Context & Map -->
+<div class="space-y-8">
+<div class="relative aspect-video overflow-hidden rounded-sm shadow-xl shadow-on-surface/5">
+<img alt="Cultural Landscape" class="w-full h-full object-cover" data-alt="vibrant marketplace in West Africa with colorful textiles and warm afternoon sunlight filtering through wooden structures" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1qtBW72zOLl3dPNdSr_f2jROTjrTb41Z-FpyKbcVTdpbEJrDiD4g4-Wx1tM7XSXsk-NDk-_OwW-A_abykjXj0pb7YaR2kkiVhsNS6Tgzvoq7FitbgdfT1ykknqVh0kb7R5hUBbL42u9w051y3qrfScLyYgS3tbYvYizuyZfz8DZcALIxMlj6HbQnw7FxgnWr_pJ-D3kJxfdj_Shj8YkkpPjwrTPXN4e-PBN4VlLbmMyB-heAl93AoPtJ0jt-ZMj--ssy4db7-mpry"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-8">
+<span class="font-label text-xs text-white/80 uppercase tracking-widest mb-2">Visual Ethos</span>
+<p class="font-headline text-2xl text-white italic">The communal pulse of Omenala found in the daily market.</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-8 border border-outline-variant/10 rounded-sm">
+<h3 class="font-label text-xs uppercase tracking-widest text-primary mb-8 text-right">Family Tree Visualization</h3>
+<!-- Abstract Language Tree -->
+<div class="relative h-64 flex justify-center items-end">
+<!-- Root -->
+<div class="absolute bottom-0 w-1 bg-outline-variant h-12"></div>
+<div class="absolute bottom-12 px-4 py-2 bg-primary text-white font-label text-[10px] uppercase tracking-widest">Niger-Congo</div>
+<!-- Branches -->
+<svg class="absolute bottom-20 w-full h-40 overflow-visible" viewbox="0 0 400 200">
+<path d="M200 200 Q200 100 100 80" fill="none" stroke="#8a7268" stroke-dasharray="4 4" stroke-width="1.5"></path>
+<path d="M200 200 Q200 100 300 80" fill="none" stroke="#8a7268" stroke-dasharray="4 4" stroke-width="1.5"></path>
+<path d="M100 80 Q100 40 50 20" fill="none" stroke="#9f3e07" stroke-width="2"></path>
+<path d="M100 80 Q100 40 150 20" fill="none" stroke="#8a7268" stroke-dasharray="2 2" stroke-width="1.5"></path>
+</svg>
+<!-- Leaf Nodes -->
+<div class="absolute top-0 left-[10%] px-3 py-1 bg-surface-container-high rounded-full font-label text-[10px] uppercase tracking-tighter text-on-surface">Benue-Congo</div>
+<div class="absolute top-8 left-[35%] px-3 py-1 bg-surface-container-high rounded-full font-label text-[10px] uppercase tracking-tighter text-on-surface">Volta-Niger</div>
+<div class="absolute top-0 right-[20%] px-3 py-1 bg-primary-container text-white rounded-full font-label text-[10px] uppercase tracking-tighter">Igboid</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Related Words (No-Divider List) -->
+<section class="mt-20">
+<h3 class="font-label text-xs uppercase tracking-widest text-secondary mb-12">Syntactic Affinities</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+<div class="group">
+<span class="font-label text-[10px] text-primary mb-2 block">01</span>
+<h4 class="font-headline text-3xl mb-4 group-hover:translate-x-2 transition-transform duration-300">Odinala</h4>
+<p class="font-body text-sm text-secondary leading-relaxed">The foundational laws of nature and earth that predate human custom.</p>
+</div>
+<div class="group">
+<span class="font-label text-[10px] text-primary mb-2 block">02</span>
+<h4 class="font-headline text-3xl mb-4 group-hover:translate-x-2 transition-transform duration-300">Nso-Ala</h4>
+<p class="font-body text-sm text-secondary leading-relaxed">Taboos or prohibitions that violate the sanctity of the earth.</p>
+</div>
+<div class="group">
+<span class="font-label text-[10px] text-primary mb-2 block">03</span>
+<h4 class="font-headline text-3xl mb-4 group-hover:translate-x-2 transition-transform duration-300">Ikwu n'Ibe</h4>
+<p class="font-body text-sm text-secondary leading-relaxed">The communal network of kinsmen that upholds cultural continuity.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar Shell -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-4 pt-2 bg-[#fcf9f2] dark:bg-stone-950 z-50 shadow-[0_-4px_20px_rgba(28,28,24,0.04)] md:hidden">
+<div class="flex flex-col items-center justify-center bg-[#f7e8d0] dark:bg-[#c05621]/20 text-[#9f3e07] dark:text-[#c05621] rounded-sm px-3 py-1 translate-y-[-2px] transition-transform">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label text-[10px] uppercase tracking-widest">Glossary</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#555f71] dark:text-stone-500 hover:text-[#9f3e07] dark:hover:text-[#c05621]">
+<span class="material-symbols-outlined" data-icon="architecture">architecture</span>
+<span class="font-label text-[10px] uppercase tracking-widest">Studio</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#555f71] dark:text-stone-500 hover:text-[#9f3e07] dark:hover:text-[#c05621]">
+<span class="material-symbols-outlined" data-icon="publish">publish</span>
+<span class="font-label text-[10px] uppercase tracking-widest">Contribute</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#555f71] dark:text-stone-500 hover:text-[#9f3e07] dark:hover:text-[#c05621]">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label text-[10px] uppercase tracking-widest">Profile</span>
+</div>
+</nav>
+</body></html>

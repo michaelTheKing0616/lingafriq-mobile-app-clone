@@ -113,8 +113,12 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
             final data = raw;
             list = parseMessageList(data['data'] ?? data['messages'] ?? data['results'] ?? data['leaderboard']);
           }
-          messages.value = list;
-          await persistMessages();
+          if (list.isNotEmpty) {
+            messages.value = list;
+            await persistMessages();
+          } else if (messages.value.isEmpty) {
+            await loadCachedMessages();
+          }
         }
       } catch (e) {
         loadError.value = e is DioException

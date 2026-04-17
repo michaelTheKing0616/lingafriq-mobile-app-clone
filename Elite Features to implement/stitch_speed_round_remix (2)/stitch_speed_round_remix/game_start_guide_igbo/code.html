@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,700;0,900;1,900&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-lowest": "#ffffff",
+              "secondary-container": "#fd876f",
+              "on-background": "#1a1c19",
+              "surface-container-high": "#e8e8e3",
+              "primary-fixed-dim": "#c0c1ff",
+              "on-tertiary-fixed-variant": "#5c4300",
+              "surface-bright": "#fafaf5",
+              "on-secondary": "#ffffff",
+              "background": "#fafaf5",
+              "primary-fixed": "#e1e0ff",
+              "tertiary-container": "#745500",
+              "surface-tint": "#4f54b4",
+              "on-secondary-fixed": "#3e0500",
+              "on-primary-fixed": "#04006d",
+              "tertiary-fixed": "#ffdea0",
+              "on-primary": "#ffffff",
+              "outline": "#757684",
+              "secondary-fixed": "#ffdad3",
+              "outline-variant": "#c5c5d4",
+              "on-secondary-container": "#732010",
+              "secondary-fixed-dim": "#ffb4a5",
+              "surface-dim": "#dadad5",
+              "on-secondary-fixed-variant": "#802918",
+              "on-tertiary-container": "#ffca56",
+              "primary-container": "#4b4fb0",
+              "on-primary-fixed-variant": "#373a9b",
+              "surface-container": "#eeeee9",
+              "on-error-container": "#93000a",
+              "tertiary": "#573f00",
+              "surface-container-highest": "#e3e3de",
+              "error-container": "#ffdad6",
+              "tertiary-fixed-dim": "#f6be3b",
+              "on-tertiary": "#ffffff",
+              "on-surface": "#1a1c19",
+              "surface": "#fafaf5",
+              "inverse-primary": "#c0c1ff",
+              "on-surface-variant": "#454652",
+              "inverse-surface": "#2f312e",
+              "surface-variant": "#e3e3de",
+              "secondary": "#9f402d",
+              "on-primary-container": "#ceceff",
+              "primary": "#333697",
+              "error": "#ba1a1a",
+              "on-tertiary-fixed": "#261900",
+              "inverse-on-surface": "#f1f1ec",
+              "surface-container-low": "#f4f4ef",
+              "on-error": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Epilogue"],
+              "body": ["Plus Jakarta Sans"],
+              "label": ["Plus Jakarta Sans"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .adinkra-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5c-13.8 0-25 11.2-25 25s11.2 25 25 25 25-11.2 25-25-11.2-25-25-25zm0 45c-11 0-20-9-20-20s9-20 20-20 20 9 20 20-9 20-20 20z' fill='%23333697' fill-opacity='0.03'/%3E%3C/svg%3E");
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- Top AppBar - Following JSON structure -->
+<header class="w-full top-0 sticky z-50 bg-[#fafaf5] dark:bg-[#1a1c19] flex items-center justify-between px-6 py-4 w-full">
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-[#e3e3de] dark:hover:bg-[#44474e] transition-colors active:scale-95 duration-150 rounded-full">
+<span class="material-symbols-outlined text-[#333697] dark:text-[#9fa8da]">menu</span>
+</button>
+<h1 class="text-[#333697] dark:text-[#e3e3de] font-epilogue font-black italic text-2xl tracking-tight">LinguAura</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden border-2 border-primary/10">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="close up headshot of a smiling young african man with a neat haircut wearing a modern linen shirt" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgjdMAMcDa7X2W8d4pYM_XjwlQLTsdZryJCHNgpJgAW0G5F-2fhssXvxV4NdHAtoanLJgx86vuX7DsSbsGwZknqd4msWeYF2mzhT5-x5YaVhzcsbNNSClqf7VG0sIAjqolAgPGbkPq6v9aPJyX3QNYZaMTUemYEHXypl2AlCwHtN7CWt9ihVgLafxAjAdvLOkDCaoystyl4OFhouDyb3RmtWFFPoaUephZGtNeOR3rfZFRjy3nJdLx5Cx33Sk0xnGsPVWh1IM3-Zc"/>
+</div>
+</div>
+<div class="absolute bottom-0 left-0 bg-[#f4f4ef] dark:bg-[#2d2f2c] h-px w-full opacity-20"></div>
+</header>
+<main class="min-h-screen pb-32 adinkra-pattern">
+<!-- Hero Section -->
+<section class="px-6 pt-12 pb-8 flex flex-col md:flex-row items-center gap-12 max-w-6xl mx-auto">
+<div class="flex-1 space-y-4">
+<div class="inline-flex items-center px-4 py-1 rounded-full bg-tertiary-container/10 text-tertiary font-label text-sm font-bold tracking-widest uppercase">
+                    Igbo Language • Level 04
+                </div>
+<h2 class="font-headline text-5xl md:text-7xl font-black text-primary leading-tight">
+                    Mission: <br/>
+<span class="text-secondary italic">The Great Market</span>
+</h2>
+<p class="text-on-surface-variant text-lg max-w-md">
+                    Step into the bustling heart of Onitsha. Your reputation and your wallet depend on your words.
+                </p>
+</div>
+<div class="flex-1 relative">
+<div class="absolute inset-0 bg-primary/5 rounded-[3rem] rotate-3 -z-10"></div>
+<div class="absolute inset-0 bg-secondary/5 rounded-[3rem] -rotate-3 -z-10"></div>
+<div class="relative rounded-[2.5rem] overflow-hidden aspect-[4/5] shadow-xl">
+<img class="w-full h-full object-cover" data-alt="vibrant portrait of a majestic west african market trader woman wearing colorful kente cloth and gold jewelry smiling warmly in a sunlit marketplace" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6KfnsUCCNFG4JB3p9Ce5HCwCTUc5Qcp-JdP5NaFBvZe8_sLt7dFoioimEmycDi2VykRAO4YxjfTvNvDWgp0GYe2tRGO_PlDh3cE8u8mG6aPf9ISRtgskcIzPHzcKxRzeDXcZEgAUpwq8InZBAXoM0-la6ytLhQ6OjTfDUsahQg8Nt-jc80ZU7qRrJmcGpNz1G03o_RHIXV1-RaBNy92BXH-xHMsJJ2ZvbHBMjGT_NDbE0M6OJgbZCdt-DbRjy-TJ-lMlWXBsdm64"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent"></div>
+<div class="absolute bottom-6 left-6 right-6">
+<div class="backdrop-blur-md bg-white/20 p-4 rounded-2xl border border-white/30">
+<span class="text-white font-label text-xs uppercase font-bold opacity-80">Character</span>
+<h3 class="text-white font-headline text-xl">Mama Amaka</h3>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid Layout for Guide -->
+<section class="px-6 py-12 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Goal Card -->
+<div class="md:col-span-5 bg-surface-container-low p-8 rounded-[2rem] flex flex-col justify-between">
+<div>
+<span class="text-tertiary font-label text-xs font-black uppercase tracking-widest mb-4 block">Current Objective</span>
+<h3 class="font-headline text-3xl text-on-surface mb-4">Master the art of negotiation</h3>
+<p class="text-on-surface-variant leading-relaxed">
+                        Learn the culturally appropriate way to haggle for textiles and spices without causing offense. Navigate price drops through polite Igbo phrases.
+                    </p>
+</div>
+<div class="mt-8 flex gap-3">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-surface-container-low bg-primary text-[10px] flex items-center justify-center text-white font-bold">XP</div>
+<div class="w-8 h-8 rounded-full border-2 border-surface-container-low bg-secondary text-[10px] flex items-center justify-center text-white font-bold">GP</div>
+</div>
+<span class="text-sm font-semibold text-on-surface">+450 Mastery Points</span>
+</div>
+</div>
+<!-- Steps Card -->
+<div class="md:col-span-7 bg-primary text-on-primary p-8 rounded-[2rem] relative overflow-hidden">
+<!-- Decorative SVG Pattern -->
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-9xl">menu_book</span>
+</div>
+<h3 class="font-headline text-3xl mb-8">How to Play</h3>
+<div class="space-y-8 relative z-10">
+<div class="flex gap-6 group">
+<div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center shrink-0 group-hover:bg-secondary transition-colors">
+<span class="font-headline text-xl">1</span>
+</div>
+<div>
+<h4 class="font-bold text-lg mb-1">Listen to the offer</h4>
+<p class="text-on-primary/70 text-sm">Pay close attention to the trader's numbers and tone of voice.</p>
+</div>
+</div>
+<div class="flex gap-6 group">
+<div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center shrink-0 group-hover:bg-secondary transition-colors">
+<span class="font-headline text-xl">2</span>
+</div>
+<div>
+<h4 class="font-bold text-lg mb-1">Choose your response</h4>
+<p class="text-on-primary/70 text-sm">Select the most respectful yet firm negotiation phrase from your list.</p>
+</div>
+</div>
+<div class="flex gap-6 group">
+<div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center shrink-0 group-hover:bg-secondary transition-colors">
+<span class="font-headline text-xl">3</span>
+</div>
+<div>
+<h4 class="font-bold text-lg mb-1">Seal the deal</h4>
+<p class="text-on-primary/70 text-sm">Finalize the price and gain the trader's respect to unlock new items.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Tip / Artifact Chip -->
+<div class="md:col-span-12 bg-tertiary-fixed text-on-tertiary-fixed p-6 rounded-[1.5rem] flex flex-col md:flex-row items-center gap-6">
+<div class="w-14 h-14 bg-white/50 rounded-full flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-tertiary">lightbulb</span>
+</div>
+<div>
+<p class="font-semibold text-sm mb-1 uppercase tracking-wider opacity-60">Cultural Insight</p>
+<p class="text-on-tertiary-fixed leading-tight italic">"In the market, a smile is worth more than a thousand cowries. Start with a greeting before you ask for the price."</p>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="px-6 py-12 flex flex-col items-center">
+<button class="group relative px-12 py-5 bg-primary text-on-primary rounded-full font-headline text-xl font-bold shadow-lg hover:shadow-primary/20 hover:scale-105 active:scale-95 transition-all duration-300 overflow-hidden">
+<span class="relative z-10 flex items-center gap-3">
+                    Start Mission
+                    <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</span>
+<div class="absolute inset-0 bg-gradient-to-r from-primary to-primary-container opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</button>
+<button class="mt-6 text-primary font-label font-bold uppercase tracking-widest text-sm border-b-2 border-tertiary/30 hover:border-tertiary transition-all pb-1">
+                Review Vocabulary
+            </button>
+</section>
+</main>
+<!-- Bottom Navigation Bar - Following JSON structure -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-[#fafaf5]/80 dark:bg-[#1a1c19]/80 backdrop-blur-xl border-t border-[#e3e3de]/30 dark:border-[#44474e]/30 shadow-[0_-8px_32px_rgba(51,54,151,0.04)] rounded-t-[2rem]">
+<a class="flex flex-col items-center justify-center bg-[#333697] text-[#fafaf5] rounded-2xl px-5 py-2 scale-105 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">map</span>
+<span class="font-plus-jakarta text-[11px] font-semibold uppercase tracking-wider mt-1">Journey</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#44474e] dark:text-[#c4c6cf] px-5 py-2 opacity-70 hover:opacity-100 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-plus-jakarta text-[11px] font-semibold uppercase tracking-wider mt-1">Library</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#44474e] dark:text-[#c4c6cf] px-5 py-2 opacity-70 hover:opacity-100 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-plus-jakarta text-[11px] font-semibold uppercase tracking-wider mt-1">Guilds</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#44474e] dark:text-[#c4c6cf] px-5 py-2 opacity-70 hover:opacity-100 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-plus-jakarta text-[11px] font-semibold uppercase tracking-wider mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

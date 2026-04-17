@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Àṣà Studio - Processing Media</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,300..800;1,300..800&amp;family=Manrope:wght@200..800&amp;family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-fixed": "#ffe088",
+              "on-error-container": "#93000a",
+              "tertiary-fixed-dim": "#e9c349",
+              "surface-container": "#f1eee7",
+              "secondary": "#555f71",
+              "on-secondary-fixed": "#121c2c",
+              "on-secondary-container": "#596376",
+              "primary": "#9f3e07",
+              "primary-fixed": "#ffdbcd",
+              "on-primary-fixed": "#360f00",
+              "inverse-primary": "#ffb596",
+              "surface-dim": "#dcdad3",
+              "outline": "#8a7268",
+              "on-surface-variant": "#57423a",
+              "error": "#ba1a1a",
+              "surface-container-lowest": "#ffffff",
+              "on-tertiary-fixed": "#241a00",
+              "background": "#fcf9f2",
+              "on-primary-fixed-variant": "#7d2d00",
+              "surface": "#fcf9f2",
+              "outline-variant": "#dec0b5",
+              "on-tertiary-container": "#4f3d00",
+              "on-error": "#ffffff",
+              "tertiary-container": "#cca730",
+              "tertiary": "#735c00",
+              "on-background": "#1c1c18",
+              "surface-variant": "#e5e2db",
+              "surface-container-highest": "#e5e2db",
+              "on-surface": "#1c1c18",
+              "secondary-container": "#d6e0f6",
+              "inverse-surface": "#1c1c18",
+              "secondary-fixed": "#d9e3f9",
+              "surface-bright": "#fcf9f2",
+              "on-secondary-fixed-variant": "#3d4759",
+              "surface-container-high": "#ebe8e1",
+              "primary-fixed-dim": "#ffb596",
+              "on-secondary": "#ffffff",
+              "on-primary": "#ffffff",
+              "surface-container-low": "#f6f3ec",
+              "on-tertiary-fixed-variant": "#574500",
+              "on-tertiary": "#ffffff",
+              "inverse-on-surface": "#f3f0e9",
+              "secondary-fixed-dim": "#bdc7dc",
+              "primary-container": "#c05621",
+              "surface-tint": "#a14009",
+              "on-primary-container": "#fffeff",
+              "error-container": "#ffdad6"
+            },
+            fontFamily: {
+              "headline": ["Newsreader"],
+              "body": ["Manrope"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .studio-gradient {
+            background: linear-gradient(135deg, #9f3e07 0%, #c05621 100%);
+        }
+        .glass-panel {
+            background: rgba(49, 49, 44, 0.7);
+            backdrop-filter: blur(20px);
+        }
+        .waveform-bar {
+            animation: pulse-height 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-height {
+            0%, 100% { height: 20%; }
+            50% { height: 80%; }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-inverse-surface text-inverse-on-surface font-body selection:bg-primary/30 min-h-screen">
+<!-- Top Navigation Anchor (Shared Component) -->
+<header class="fixed top-0 w-full z-50 bg-[#fcf9f2] dark:bg-stone-900 backdrop-blur-md bg-opacity-90 flex justify-between items-center px-6 h-16 w-full">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-stone-600 dark:text-stone-400">menu</span>
+<h1 class="font-newsreader italic text-[#9f3e07] dark:text-[#c05621] text-2xl">Àṣà</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-label text-[10px] tracking-widest text-stone-500 uppercase">Studio Mode</span>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close up portrait of a professional curator with neutral background and soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-NdvK05aWoXB8NzyjZ1XAFMTzvu_C_bpkeE5UOFijTm_p1DyB9jfWaQaK6cg06SAGx9BkqUUdVIU5f1-3YM9YM_1qJTZxKJe7T5iHVCKAZBS3eImTPmsMAJfebk33xNA-UNS3d6VoTGMDlhvByir3v94pixwxsYeCWCYDWk7X9mQ8yxqjYe9qfpiYyJ0suFhLvOYTwHkZtSnWEb771obhfv5TYX3hUApz3nCNhibWy2biJNorF1oeCkGnw-F6w0Mu4RKxFdJlCVHo"/>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Left Column: AI Processing & Preview -->
+<div class="lg:col-span-8 space-y-8">
+<!-- Header Section -->
+<div class="space-y-2">
+<span class="font-label text-primary text-xs tracking-tighter uppercase">Project Alpha // Audio Ingest</span>
+<h2 class="font-headline text-4xl md:text-5xl tracking-tight text-white italic">Processing Oral History_042.wav</h2>
+</div>
+<!-- Bento Grid: Processing & Analysis -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Progress Ring Card -->
+<div class="bg-surface-container-low/5 border border-white/5 p-8 rounded-sm flex flex-col items-center justify-center relative overflow-hidden group">
+<div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="relative w-48 h-48 mb-6">
+<!-- Progress Ring -->
+<svg class="w-full h-full -rotate-90">
+<circle class="text-white/10" cx="96" cy="96" fill="transparent" r="88" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-primary" cx="96" cy="96" fill="transparent" r="88" stroke="currentColor" stroke-dasharray="553" stroke-dashoffset="140" stroke-width="4"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-label text-4xl font-bold text-white">74%</span>
+<span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Complete</span>
+</div>
+</div>
+<div class="w-full space-y-3">
+<div class="flex justify-between items-center">
+<span class="font-label text-[11px] text-white">Language Detection</span>
+<span class="material-symbols-outlined text-green-500 text-sm">check_circle</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label text-[11px] text-white">Diarization</span>
+<span class="material-symbols-outlined text-green-500 text-sm">check_circle</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label text-[11px] text-white">Acoustic Analysis</span>
+<div class="flex gap-1 items-center">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label text-[11px] text-primary">In Progress</span>
+</div>
+</div>
+<div class="flex justify-between items-center opacity-40">
+<span class="font-label text-[11px] text-white">Transcription</span>
+<span class="material-symbols-outlined text-sm">hourglass_empty</span>
+</div>
+</div>
+</div>
+<!-- Confidence & Metrics Card -->
+<div class="grid grid-rows-2 gap-6">
+<div class="bg-surface-container-low/5 border border-white/5 p-6 rounded-sm">
+<span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-4 block">Accuracy Confidence</span>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between mb-1">
+<span class="font-body text-sm text-white/80">Yorùbá Phonemes</span>
+<span class="font-label text-xs text-primary">98.2%</span>
+</div>
+<div class="h-1 bg-white/10 w-full overflow-hidden">
+<div class="h-full bg-primary w-[98%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-1">
+<span class="font-body text-sm text-white/80">Syntactic Mapping</span>
+<span class="font-label text-xs text-primary">84.5%</span>
+</div>
+<div class="h-1 bg-white/10 w-full overflow-hidden">
+<div class="h-full bg-primary w-[84%]"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low/5 border border-white/5 p-6 rounded-sm flex items-center gap-6">
+<div class="flex-1">
+<span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1 block">Speaker Split</span>
+<div class="flex items-end gap-1 h-12">
+<div class="flex-1 bg-primary/40 h-[100%]" title="Speaker A"></div>
+<div class="flex-1 bg-secondary h-[40%]" title="Speaker B"></div>
+<div class="flex-1 bg-primary/40 h-[60%]" title="Speaker A"></div>
+<div class="flex-1 bg-primary/40 h-[80%]" title="Speaker A"></div>
+<div class="flex-1 bg-secondary h-[20%]" title="Speaker B"></div>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label text-2xl text-white">02</p>
+<p class="font-label text-[9px] uppercase text-on-surface-variant">Detected</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Transcript Preview Area -->
+<div class="bg-surface-container-low/5 border border-white/5 rounded-sm overflow-hidden">
+<div class="p-4 border-b border-white/5 flex justify-between items-center bg-white/5">
+<h3 class="font-label text-[11px] uppercase tracking-widest text-white/60">Transcript Preview (First 30s)</h3>
+<div class="flex gap-2">
+<span class="font-label text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded-sm">LIVE FEED</span>
+</div>
+</div>
+<div class="p-8 space-y-6 max-h-80 overflow-y-auto custom-scrollbar">
+<div class="flex gap-4">
+<span class="font-label text-[10px] text-white/40 mt-1">00:04</span>
+<div class="flex-1">
+<p class="font-headline text-xl text-white italic mb-2 leading-relaxed">"Ẹ kú àárọ̀ o, bàbá. Ṣé àlàáfíà ni ẹ wà?"</p>
+<p class="font-body text-sm text-on-surface-variant">"Good morning, father. Are you in good health?"</p>
+</div>
+</div>
+<div class="flex gap-4">
+<span class="font-label text-[10px] text-white/40 mt-1">00:12</span>
+<div class="flex-1">
+<p class="font-headline text-xl text-white italic mb-2 leading-relaxed">"Àlàáfíà ni mo wà, ọmọ mi. Ohùn rẹ dún bí ẹni tí ó ní ìròyìn rere láti fún mi."</p>
+<p class="font-body text-sm text-on-surface-variant">"I am in peace, my child. Your voice sounds like someone who has good news to give me."</p>
+</div>
+</div>
+<div class="flex gap-4 opacity-50 blur-[1px]">
+<span class="font-label text-[10px] text-white/40 mt-1">00:28</span>
+<div class="flex-1">
+<p class="font-headline text-xl text-white italic mb-2 leading-relaxed">"Bẹ́ẹ̀ ni, bàbá. Ìròyìn nípa oko ni mo mú wá..."</p>
+<p class="font-body text-sm text-on-surface-variant">"Yes, father. It is news about the farm that I brought..."</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Bar -->
+<div class="flex flex-col sm:flex-row gap-4 items-center justify-between pt-6 border-t border-white/5">
+<p class="font-body text-xs text-on-surface-variant max-w-sm">Reviewing this preliminary data helps the AI refine the remaining 14 minutes of the recording.</p>
+<div class="flex gap-4 w-full sm:w-auto">
+<button class="flex-1 sm:flex-none border border-outline/30 px-6 py-3 rounded-sm font-label text-[10px] uppercase tracking-widest text-white hover:bg-white/5 transition-colors">Abort Process</button>
+<button class="flex-1 sm:flex-none studio-gradient px-8 py-3 rounded-sm font-label text-[10px] uppercase tracking-widest text-white shadow-xl shadow-primary/20 flex items-center justify-center gap-2 group">
+                        Review &amp; Correct
+                        <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Right Column: Initial Vocabulary Extractions -->
+<aside class="lg:col-span-4 space-y-6">
+<div class="sticky top-24">
+<div class="bg-surface-container-low/5 border border-white/5 p-6 rounded-sm">
+<h3 class="font-headline text-2xl text-white italic mb-6">Vocabulary Extractions</h3>
+<p class="font-body text-xs text-on-surface-variant mb-6">Initial terms identified as high-frequency or culturally significant markers.</p>
+<div class="space-y-4">
+<!-- Vocabulary Card -->
+<div class="group cursor-pointer">
+<div class="flex justify-between items-start mb-1">
+<h4 class="font-headline text-lg text-primary italic">Àlàáfíà</h4>
+<span class="font-label text-[9px] text-white/40 bg-white/5 px-2 py-0.5">NOUN</span>
+</div>
+<p class="font-body text-sm text-white/70 mb-2">Peace, well-being, health.</p>
+<div class="flex gap-2">
+<span class="font-label text-[10px] text-tertiary bg-tertiary/10 px-2 rounded-full">Common</span>
+<span class="font-label text-[10px] text-white/40">Used 4x</span>
+</div>
+<div class="h-px w-full bg-white/5 mt-4 group-hover:bg-primary/30 transition-colors"></div>
+</div>
+<div class="group cursor-pointer">
+<div class="flex justify-between items-start mb-1">
+<h4 class="font-headline text-lg text-primary italic">Ìròyìn</h4>
+<span class="font-label text-[9px] text-white/40 bg-white/5 px-2 py-0.5">NOUN</span>
+</div>
+<p class="font-body text-sm text-white/70 mb-2">News, report, information.</p>
+<div class="flex gap-2">
+<span class="font-label text-[10px] text-secondary-container text-on-secondary-container px-2 rounded-full">Formal</span>
+<span class="font-label text-[10px] text-white/40">Used 2x</span>
+</div>
+<div class="h-px w-full bg-white/5 mt-4 group-hover:bg-primary/30 transition-colors"></div>
+</div>
+<div class="group cursor-pointer">
+<div class="flex justify-between items-start mb-1">
+<h4 class="font-headline text-lg text-primary italic">Bàbá</h4>
+<span class="font-label text-[9px] text-white/40 bg-white/5 px-2 py-0.5">HONORIFIC</span>
+</div>
+<p class="font-body text-sm text-white/70 mb-2">Father, elder man.</p>
+<div class="flex gap-2">
+<span class="font-label text-[10px] text-tertiary bg-tertiary/10 px-2 rounded-full">Cultural</span>
+<span class="font-label text-[10px] text-white/40">Used 6x</span>
+</div>
+<div class="h-px w-full bg-white/5 mt-4 group-hover:bg-primary/30 transition-colors"></div>
+</div>
+</div>
+<button class="w-full mt-8 py-3 border border-white/10 font-label text-[10px] uppercase tracking-widest text-white/60 hover:text-white hover:border-white/30 transition-all">
+                        View Full Glossary (12)
+                    </button>
+</div>
+<!-- Bespoke Audio Weaver Trigger -->
+<div class="mt-6 bg-surface-container-highest/10 border border-white/5 p-4 rounded-sm group cursor-pointer hover:bg-surface-container-highest/20 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-sm bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-white">graphic_eq</span>
+</div>
+<div>
+<p class="font-label text-[10px] text-white uppercase tracking-widest">Live Audio Weaver</p>
+<p class="font-body text-xs text-on-surface-variant">Click to play source segment</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</main>
+<!-- Bottom Navigation Shell (Shared Component) -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-sm bg-[#fcf9f2]/80 dark:bg-stone-950/80 backdrop-blur-xl border-t border-stone-200/10 shadow-[0_-10px_30px_rgba(28,28,24,0.04)] flex justify-around items-center pt-3 pb-6 px-4 w-full md:hidden">
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 opacity-60 hover:opacity-100 transition-opacity active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-space-grotesk text-[10px] uppercase tracking-widest">Archives</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#9f3e07] dark:text-[#c05621] font-bold active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span class="font-space-grotesk text-[10px] uppercase tracking-widest">Studio</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 opacity-60 hover:opacity-100 transition-opacity active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-space-grotesk text-[10px] uppercase tracking-widest">Tribe</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 opacity-60 hover:opacity-100 transition-opacity active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-space-grotesk text-[10px] uppercase tracking-widest">Profile</span>
+</a>
+</nav>
+<!-- Desktop Sidebar/Nav Integration Placeholder (Visual Only) -->
+<div class="hidden md:block fixed left-0 top-0 h-full w-20 bg-stone-900 border-r border-white/5 z-40">
+<div class="flex flex-col items-center py-24 gap-12">
+<span class="material-symbols-outlined text-white/20 hover:text-white transition-colors cursor-pointer">auto_stories</span>
+<div class="relative group">
+<span class="material-symbols-outlined text-primary cursor-pointer">settings_input_component</span>
+<div class="absolute left-12 top-1/2 -translate-y-1/2 bg-primary text-white font-label text-[10px] px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Studio Ingest</div>
+</div>
+<span class="material-symbols-outlined text-white/20 hover:text-white transition-colors cursor-pointer">group</span>
+<span class="material-symbols-outlined text-white/20 hover:text-white transition-colors cursor-pointer">person</span>
+</div>
+</div>
+</body></html>

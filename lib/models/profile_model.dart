@@ -23,7 +23,10 @@ class ProfileModel {
   final String? learningLanguage; // Currently learning language code
   final int streak;
   final bool emailVerified; // Email verification status
-  
+  /// Set when loading own profile (`is_current_user`); used for staff-only UI.
+  final bool isAdmin;
+  final bool isStaff;
+
   ProfileModel({
     required this.id,
     required this.email,
@@ -41,7 +44,12 @@ class ProfileModel {
     this.learningLanguage,
     this.streak = 0,
     this.emailVerified = true, // Default to true for backward compatibility
+    this.isAdmin = false,
+    this.isStaff = false,
   });
+
+  /// Moderation / internal tools (backend: `requireAdminOrStaff`).
+  bool get isStaffOrAdmin => isAdmin || isStaff;
 
   ProfileModel copyWith({
     int? id,
@@ -60,6 +68,8 @@ class ProfileModel {
     String? learningLanguage,
     int? streak,
     bool? emailVerified,
+    bool? isAdmin,
+    bool? isStaff,
   }) {
     return ProfileModel(
       id: id ?? this.id,
@@ -78,6 +88,8 @@ class ProfileModel {
       learningLanguage: learningLanguage ?? this.learningLanguage,
       streak: streak ?? this.streak,
       emailVerified: emailVerified ?? this.emailVerified,
+      isAdmin: isAdmin ?? this.isAdmin,
+      isStaff: isStaff ?? this.isStaff,
     );
   }
 
@@ -108,8 +120,16 @@ class ProfileModel {
     }
     result.addAll({'streak': streak});
     result.addAll({'emailVerified': emailVerified});
+    result.addAll({'is_admin': isAdmin, 'is_staff': isStaff});
 
     return result;
+  }
+
+  static bool _parseBool(dynamic v) {
+    if (v == true) return true;
+    if (v == false) return false;
+    if (v is String) return v.toLowerCase() == 'true' || v == '1';
+    return false;
   }
 
   factory ProfileModel.fromMap(Map<String, dynamic> map) {
@@ -138,6 +158,8 @@ class ProfileModel {
           : map['completed_point']?.toInt() ?? 0,
       streak: map['streak'] is String ? num.parse(map['streak']).toInt() : map['streak']?.toInt() ?? 0,
       emailVerified: map['emailVerified'] ?? map['email_verified'] ?? true, // Default to true for backward compatibility
+      isAdmin: _parseBool(map['is_admin']),
+      isStaff: _parseBool(map['is_staff']),
     );
   }
 

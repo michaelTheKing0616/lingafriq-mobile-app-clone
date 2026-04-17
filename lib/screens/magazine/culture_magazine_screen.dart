@@ -1,11 +1,16 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/culture_content_model.dart';
+import 'package:lingafriq/providers/onboarding_provider.dart';
+import 'package:lingafriq/services/culture_magazine_service.dart';
+import 'package:lingafriq/services/polie_content_generator.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
-import 'package:lingafriq/services/culture_magazine_service.dart';
 import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 
 class CultureMagazineScreen extends ConsumerStatefulWidget {
@@ -15,15 +20,13 @@ class CultureMagazineScreen extends ConsumerStatefulWidget {
   ConsumerState<CultureMagazineScreen> createState() => _CultureMagazineScreenState();
 }
 
-class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen> {
   // ignore: unused_field
   String _selectedCategory = 'All';
-  
-  // API state
+
+  static const int _articlesPageSize = 40;
+
   List<CultureContent> _allArticles = [];
-  List<CultureContent> _featuredArticles = [];
   bool _isLoading = true;
   String? _errorMessage;
   late CultureMagazineService _cultureService;
@@ -31,65 +34,222 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 6, vsync: this); // Updated for 6 categories
     _cultureService = CultureMagazineService(ref);
     _loadArticles();
   }
-  
+
+  /// Loads published articles from the API; if none (or API error), generates cards via
+  /// [PolieContentGenerator.generateCulturalArticle] (Groq). Static cards are last-resort only.
   Future<void> _loadArticles() async {
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
-    
+
+    List<CultureContent> merged = [];
     try {
-      // Load all articles and featured articles in parallel
-      final results = await Future.wait([
-        _cultureService.getArticles(limit: 100),
-        _cultureService.getFeaturedArticles(),
-      ]);
-      
+      merged = await _fetchPublishedPagesFromApi();
+    } catch (e, st) {
+      logError(
+        'Culture magazine API load failed',
+        tag: 'culture_magazine',
+        error: e,
+        stackTrace: st,
+      );
+    }
+
+    if (merged.isNotEmpty) {
+      if (!mounted) return;
       setState(() {
-        _allArticles = results[0];
-        _featuredArticles = results[1];
-        
-        // If no articles from API, generate Polie content as fallback
-        if (_allArticles.isEmpty) {
-          _generatePolieFallbackArticles();
-        }
-        if (_featuredArticles.isEmpty) {
-          _generatePolieFallbackFeatured();
-        }
-        
+        _allArticles = merged;
         _isLoading = false;
       });
-    } catch (e) {
+      return;
+    }
+
+    try {
+      final ai = await _polieAiMagazineItems();
+      if (!mounted) return;
       setState(() {
-        // On error, use Polie-generated fallback content
-        _generatePolieFallbackArticles();
-        _generatePolieFallbackFeatured();
+        _allArticles = ai;
         _isLoading = false;
       });
-      debugPrint('Error loading articles, using Polie fallback: $e');
+    } catch (e, st) {
+      logError(
+        'Polie AI magazine generation failed; using static emergency cards',
+        tag: 'culture_magazine',
+        error: e,
+        stackTrace: st,
+      );
+      if (!mounted) return;
+      setState(() {
+        _allArticles = _staticEmergencyMagazineItems();
+        _isLoading = false;
+      });
     }
   }
 
-  /// Generate Polie fallback articles when API fails or returns empty
-  void _generatePolieFallbackArticles() {
-    final fallbackTypes = [ContentType.article, ContentType.story, ContentType.music, ContentType.festival];
-    _allArticles = fallbackTypes.map((type) => _getPolieFallbackContent(type).first).toList();
+  Future<List<CultureContent>> _fetchPublishedPagesFromApi() async {
+    final merged = <CultureContent>[];
+    final seenIds = <String>{};
+    var page = 1;
+    for (;;) {
+      final batch = await _cultureService.getArticles(
+        page: page,
+        limit: _articlesPageSize,
+      );
+      if (batch.isEmpty) break;
+      for (final a in batch) {
+        if (seenIds.add(a.id)) merged.add(a);
+      }
+      if (batch.length < _articlesPageSize) break;
+      page++;
+    }
+    return merged;
   }
 
-  /// Generate Polie fallback featured articles
-  void _generatePolieFallbackFeatured() {
-    _featuredArticles = [
-      _getPolieFallbackContent(ContentType.story).first.copyWith(isFeatured: true),
+  static const List<(ContentType, String)> _polieMagazineAiTypes = [
+    (ContentType.article, 'article'),
+    (ContentType.story, 'story'),
+    (ContentType.music, 'music'),
+    (ContentType.festival, 'festival'),
+  ];
+
+  String _languageForPolieMagazine() {
+    final raw = ref.read(onboardingProvider).selectedLanguage;
+    if (raw == null || raw.trim().isEmpty) return 'English';
+    return raw.trim();
+  }
+
+  /// Real Polie/Groq-generated magazine cards ([PolieContentGenerator.generateCulturalArticle]).
+  Future<List<CultureContent>> _polieAiMagazineItems() async {
+    final gen = ref.read(polieContentGeneratorProvider);
+    final language = _languageForPolieMagazine();
+    final out = <CultureContent>[];
+
+    for (final entry in _polieMagazineAiTypes) {
+      try {
+        final map = await gen.generateCulturalArticle(
+          language: language,
+          type: entry.$2,
+        );
+        out.add(_cultureContentFromPolieMap(map, entry.$1));
+      } catch (e, st) {
+        logError(
+          'Polie magazine item failed (${entry.$2})',
+          tag: 'culture_magazine',
+          error: e,
+          stackTrace: st,
+        );
+      }
+    }
+
+    if (out.isEmpty) {
+      throw StateError('No Polie magazine items generated');
+    }
+    return out;
+  }
+
+  CultureContent _cultureContentFromPolieMap(Map<String, dynamic> map, ContentType type) {
+    final title = (map['title']?.toString() ?? 'Cultural highlight').trim();
+    final body = (map['content']?.toString() ?? '').trim();
+    var desc = (map['description']?.toString() ?? '').trim();
+    if (desc.isEmpty && body.isNotEmpty) {
+      desc = body.substring(0, math.min(180, body.length));
+    }
+    final lang = (map['language']?.toString() ?? _languageForPolieMagazine()).trim();
+    final id = 'polie_ai_${type.name}_${title.hashCode}';
+    return CultureContent(
+      id: id,
+      title: title,
+      description: desc.isEmpty ? 'Polie-generated cultural read' : desc,
+      type: type,
+      content: body.isEmpty ? desc : body,
+      language: lang.isEmpty ? 'English' : lang,
+      country: '🇿🇦',
+      publishDate: DateTime.now(),
+      isFeatured: false,
+    );
+  }
+
+  /// Offline / last-resort copy when API and Groq are unavailable.
+  List<CultureContent> _staticEmergencyMagazineItems() {
+    const types = [
+      ContentType.article,
+      ContentType.story,
+      ContentType.music,
+      ContentType.festival,
     ];
+    return types
+        .map(
+          (type) => CultureContent(
+            id: 'polie_static_${type.name}',
+            title: _staticTitle(type),
+            description: _staticDescription(type),
+            type: type,
+            content: _staticBody(type),
+            language: 'English',
+            country: '🇿🇦',
+            publishDate: DateTime.now(),
+            isFeatured: false,
+          ),
+        )
+        .toList();
+  }
+
+  String _staticTitle(ContentType type) {
+    switch (type) {
+      case ContentType.story:
+        return 'Traditional African Story';
+      case ContentType.music:
+        return 'African Music Traditions';
+      case ContentType.festival:
+        return 'Cultural Festival';
+      case ContentType.lore:
+        return 'Ancient Wisdom';
+      case ContentType.article:
+        return 'Cultural Article';
+      case ContentType.recipe:
+        return 'Traditional Recipe';
+    }
+  }
+
+  String _staticDescription(ContentType type) {
+    switch (type) {
+      case ContentType.story:
+        return 'Discover timeless African folktales';
+      case ContentType.music:
+        return 'Explore the rhythms of Africa';
+      case ContentType.festival:
+        return 'Celebrate African traditions';
+      case ContentType.lore:
+        return 'Learn from ancestral wisdom';
+      case ContentType.article:
+        return 'Insights into African culture';
+      case ContentType.recipe:
+        return 'Taste of Africa';
+    }
+  }
+
+  String _staticBody(ContentType type) {
+    switch (type) {
+      case ContentType.story:
+        return 'Once upon a time, in the heart of Africa, stories were passed down through generations...';
+      case ContentType.music:
+        return 'African music is a rich tapestry of rhythms, melodies, and cultural expressions...';
+      case ContentType.festival:
+        return 'Festivals across Africa celebrate the diversity and unity of the continent...';
+      case ContentType.lore:
+        return 'The wisdom of African ancestors continues to guide and inspire...';
+      case ContentType.article:
+        return 'African culture is a vibrant mosaic of traditions, languages, and customs...';
+      case ContentType.recipe:
+        return 'Traditional African cuisine reflects the continent\'s rich agricultural heritage...';
+    }
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
     super.dispose();
   }
 
@@ -97,9 +257,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
   Widget build(BuildContext context) {
     return ErrorBoundary(
       errorMessage: 'Unable to load cultural magazine. Please check your connection and try again.',
-      onRetry: () {
-        setState(() {});
-      },
+      onRetry: _loadArticles,
       child: _buildContent(context),
     );
   }
@@ -231,10 +389,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
                           ),
                           articles: _allArticles.where((a) => a.type == ContentType.music).length,
                           onTap: () {
-                            setState(() {
-                              _selectedCategory = 'Music';
-                              _tabController.animateTo(1);
-                            });
+                            setState(() => _selectedCategory = 'Music');
                           },
                           isDark: isDark,
                         ),
@@ -248,10 +403,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
                           ),
                           articles: _allArticles.where((a) => a.type == ContentType.story || a.type == ContentType.lore).length,
                           onTap: () {
-                            setState(() {
-                              _selectedCategory = 'Stories';
-                              _tabController.animateTo(2);
-                            });
+                            setState(() => _selectedCategory = 'Stories');
                           },
                           isDark: isDark,
                         ),
@@ -265,10 +417,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
                           ),
                           articles: _allArticles.where((a) => a.type == ContentType.article).length,
                           onTap: () {
-                            setState(() {
-                              _selectedCategory = 'Articles';
-                              _tabController.animateTo(3);
-                            });
+                            setState(() => _selectedCategory = 'Articles');
                           },
                           isDark: isDark,
                         ),
@@ -282,10 +431,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
                           ),
                           articles: _allArticles.where((a) => a.type == ContentType.lore).length,
                           onTap: () {
-                            setState(() {
-                              _selectedCategory = 'History';
-                              _tabController.animateTo(4);
-                            });
+                            setState(() => _selectedCategory = 'History');
                           },
                           isDark: isDark,
                         ),
@@ -299,10 +445,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
                           ),
                           articles: _allArticles.where((a) => a.type == ContentType.festival).length,
                           onTap: () {
-                            setState(() {
-                              _selectedCategory = 'Festivals';
-                              _tabController.animateTo(5);
-                            });
+                            setState(() => _selectedCategory = 'Festivals');
                           },
                           isDark: isDark,
                         ),
@@ -316,10 +459,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
                           ),
                           articles: _allArticles.where((a) => a.type == ContentType.recipe).length,
                           onTap: () {
-                            setState(() {
-                              _selectedCategory = 'Recipes';
-                              _tabController.animateTo(6);
-                            });
+                            setState(() => _selectedCategory = 'Recipes');
                           },
                           isDark: isDark,
                         ),
@@ -333,79 +473,6 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
         ],
       ),
     );
-  }
-
-  /// Get Polie-generated fallback content when API data is unavailable
-  /// This ensures the app always has production-ready content
-  /// Falls back to curated cultural content when Polie API is unavailable
-  List<CultureContent> _getPolieFallbackContent(ContentType type) {
-    // Returns curated fallback content based on content type
-    // This content is generated from our cultural content database
-    // In production, this would be enhanced with cached Polie-generated content
-    return [
-      CultureContent(
-        id: 'polie_${type.toString()}_${DateTime.now().millisecondsSinceEpoch}',
-        title: _getTypeTitle(type),
-        description: _getTypeDescription(type),
-        type: type,
-        content: _getTypeContent(type),
-        language: 'English',
-        country: '🇿🇦',
-        publishDate: DateTime.now(),
-        isFeatured: false,
-      ),
-    ];
-  }
-
-  String _getTypeTitle(ContentType type) {
-    switch (type) {
-      case ContentType.story:
-        return 'Traditional African Story';
-      case ContentType.music:
-        return 'African Music Traditions';
-      case ContentType.festival:
-        return 'Cultural Festival';
-      case ContentType.lore:
-        return 'Ancient Wisdom';
-      case ContentType.article:
-        return 'Cultural Article';
-      case ContentType.recipe:
-        return 'Traditional Recipe';
-    }
-  }
-
-  String _getTypeDescription(ContentType type) {
-    switch (type) {
-      case ContentType.story:
-        return 'Discover timeless African folktales';
-      case ContentType.music:
-        return 'Explore the rhythms of Africa';
-      case ContentType.festival:
-        return 'Celebrate African traditions';
-      case ContentType.lore:
-        return 'Learn from ancestral wisdom';
-      case ContentType.article:
-        return 'Insights into African culture';
-      case ContentType.recipe:
-        return 'Taste of Africa';
-    }
-  }
-
-  String _getTypeContent(ContentType type) {
-    switch (type) {
-      case ContentType.story:
-        return 'Once upon a time, in the heart of Africa, stories were passed down through generations...';
-      case ContentType.music:
-        return 'African music is a rich tapestry of rhythms, melodies, and cultural expressions...';
-      case ContentType.festival:
-        return 'Festivals across Africa celebrate the diversity and unity of the continent...';
-      case ContentType.lore:
-        return 'The wisdom of African ancestors continues to guide and inspire...';
-      case ContentType.article:
-        return 'African culture is a vibrant mosaic of traditions, languages, and customs...';
-      case ContentType.recipe:
-        return 'Traditional African cuisine reflects the continent\'s rich agricultural heritage...';
-    }
   }
 
 }

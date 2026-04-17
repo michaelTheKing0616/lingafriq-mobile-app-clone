@@ -24,24 +24,25 @@ class CredentialStorageService {
     String? lastName,
   }) async {
     await _storage.write(key: 'email', value: email);
-    await _storage.write(key: 'password', value: password);
+    // SECURITY: Do NOT persist raw passwords on device.
+    // We rely on refresh tokens for silent re-auth instead.
+    await _storage.delete(key: 'password');
     if (firstName != null) {
       await _storage.write(key: 'firstName', value: firstName);
     }
     if (lastName != null) {
       await _storage.write(key: 'lastName', value: lastName);
     }
-    // Also store as username for compatibility
-    await CredentialStorage.storeCredentials(username: email, password: password);
+    // Legacy credential storage intentionally not used (password persistence removed).
+    // If older builds stored credentials, they will be cleared on next clearCredentials().
   }
 
   Future<Map<String, String>?> getStoredCredentials() async {
     final email = await _storage.read(key: 'email');
-    final password = await _storage.read(key: 'password');
-    if (email != null && password != null) {
+    // SECURITY: password is no longer stored.
+    if (email != null && email.trim().isNotEmpty) {
       return {
         'email': email,
-        'password': password,
         'firstName': await _storage.read(key: 'firstName') ?? '',
         'lastName': await _storage.read(key: 'lastName') ?? '',
       };
@@ -51,8 +52,7 @@ class CredentialStorageService {
 
   Future<bool> hasStoredCredentials() async {
     final email = await _storage.read(key: 'email');
-    final password = await _storage.read(key: 'password');
-    return email != null && password != null;
+    return email != null && email.trim().isNotEmpty;
   }
 
   Future<String?> getStoredEmail() async {
@@ -60,7 +60,8 @@ class CredentialStorageService {
   }
 
   Future<String?> getStoredPassword() async {
-    return await _storage.read(key: 'password');
+    // SECURITY: password is no longer stored.
+    return null;
   }
 
   Future<String?> getStoredFirstName() async {

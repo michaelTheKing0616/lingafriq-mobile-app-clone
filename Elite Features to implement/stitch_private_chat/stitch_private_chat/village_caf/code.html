@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-high": "#ffe3cd",
+              "on-error": "#ffffff",
+              "on-secondary": "#ffffff",
+              "on-secondary-container": "#007230",
+              "on-primary-container": "#fffbff",
+              "surface-container-lowest": "#ffffff",
+              "inverse-primary": "#ffb59c",
+              "on-surface": "#2d1600",
+              "on-error-container": "#93000a",
+              "inverse-on-surface": "#ffeee1",
+              "on-tertiary": "#ffffff",
+              "primary-container": "#c94c1a",
+              "error": "#ba1a1a",
+              "primary-fixed-dim": "#ffb59c",
+              "on-primary-fixed-variant": "#822700",
+              "background": "#fff8f5",
+              "on-primary-fixed": "#390c00",
+              "outline-variant": "#e0bfb5",
+              "outline": "#8c7168",
+              "surface-container": "#ffeada",
+              "on-tertiary-container": "#fffbff",
+              "surface-container-highest": "#ffdcbf",
+              "surface-variant": "#ffdcbf",
+              "on-secondary-fixed": "#002109",
+              "on-tertiary-fixed-variant": "#5f4100",
+              "tertiary-container": "#9b6c00",
+              "surface-container-low": "#fff1e8",
+              "surface-bright": "#fff8f5",
+              "secondary-container": "#7cf994",
+              "on-secondary-fixed-variant": "#005320",
+              "tertiary-fixed-dim": "#f8bc51",
+              "secondary-fixed": "#7ffc97",
+              "secondary-fixed-dim": "#62df7d",
+              "tertiary-fixed": "#ffdeab",
+              "primary-fixed": "#ffdbcf",
+              "on-tertiary-fixed": "#281900",
+              "inverse-surface": "#462a0d",
+              "error-container": "#ffdad6",
+              "secondary": "#006e2d",
+              "on-background": "#2d1600",
+              "tertiary": "#7b5500",
+              "primary": "#a73400",
+              "surface-dim": "#ffd2aa",
+              "on-surface-variant": "#59413a",
+              "surface": "#fff8f5",
+              "on-primary": "#ffffff",
+              "surface-tint": "#aa3601"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Lexend"],
+              "label": ["Lexend"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3Base64...%3Cpath d='M10 10 Q 15 5, 20 10 T 30 10' fill='none' stroke='%23a73400' stroke-opacity='0.05'/%3E%3Cpath d='M50 50 Q 55 45, 60 50 T 70 50' fill='none' stroke='%23a73400' stroke-opacity='0.03'/%3E%3Ccircle cx='80' cy='20' r='2' fill='%23a73400' fill-opacity='0.05'/%3E%3C/svg%3E");
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background font-body text-on-surface custom-pattern min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-[#fff1e8] dark:bg-stone-900 no-border">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden ring-2 ring-primary">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="User wearing a traditional kente-patterned headwrap, soft lighting, portrait photography style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWnJPgLPVjXwFVikI3MNB55ozJcmfzL4BFGEQCigpXpDAf7BNDcAO4bqO6vn9vTbnJVUGcdlzOli_IS8D7tZtPv9fV4bgBOjG1bd1xYmZ30wCriisx75ufMWgIdJlzae8qeeUtyNpq1MDUuYz8ZV7QGS1AUIP_siuOpi4QRsHsmGiLkgBGlt1_IwgdfFRWVEqZ_5gBhMbWj5Qyt-w6MX5gAFC8jXInXznDLyXlwKwHgjz4-av_V9gE0cM84-lUYbUdrri2ZO2kxDLl"/>
+</div>
+<h1 class="font-headline font-bold text-2xl uppercase tracking-wider text-primary">Café</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1 bg-surface-container px-3 py-1 rounded-full scale-95 transition-opacity hover:opacity-80">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="token">token</span>
+<span class="text-primary font-bold text-sm">1,240</span>
+</div>
+</div>
+</header>
+<main class="pt-24 px-6 max-w-2xl mx-auto space-y-8">
+<!-- Daily Special Section (Bento Grid Style) -->
+<section class="relative">
+<div class="bg-surface-container-high rounded-lg p-6 overflow-hidden relative shadow-sm">
+<div class="absolute -right-4 -top-4 opacity-10">
+<span class="material-symbols-outlined text-9xl" data-icon="restaurant_menu">restaurant_menu</span>
+</div>
+<div class="flex items-center gap-2 mb-4">
+<span class="bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-widest">Daily Special</span>
+<h2 class="font-headline font-bold text-lg text-primary">Kunywa (To Drink)</h2>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-bright p-3 rounded-lg border-l-4 border-primary">
+<p class="text-label text-[10px] text-on-surface-variant uppercase">I drink</p>
+<p class="font-headline font-bold text-primary-container">Ninanywa</p>
+</div>
+<div class="bg-surface-bright p-3 rounded-lg border-l-4 border-primary/40">
+<p class="text-label text-[10px] text-on-surface-variant uppercase">We drink</p>
+<p class="font-headline font-bold text-primary-container">Tunanywa</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Who's Brewing (Asymmetric Avatar Cluster) -->
+<section>
+<h3 class="text-label font-bold text-xs uppercase tracking-widest text-on-surface-variant mb-4 ml-2">Who's Brewing</h3>
+<div class="flex -space-x-3 items-center">
+<div class="w-12 h-12 rounded-full border-4 border-background overflow-hidden relative group">
+<img class="w-full h-full object-cover" data-alt="Smiling man with short hair in casual attire, outdoor lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcuT3FvXqU_flK1sV7R9yFNtGMzRvfbWvAciN9kUr2sIvT5peVeG4Yxn4bqyNCEWaRaGHKhydcGf-_ZwOPDjzdCiVOgsDQTHjID9htLTSus6QFgudDar9t7B9G2JnFuS1Ztnl49tIIqGPgPjW1OuY0d1W8JhyPWxcHQWs-_8RRs3vj3BeeQ3tM9-y-TT--ubuoZRpZUfBuQf6ow5O_Sjgp81xtkVvPyinfE2Uoy7xNSLy62fb6RbkITASOKXUWqPhBxdMK41WJOZN0"/>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-secondary rounded-full border-2 border-background"></div>
+</div>
+<div class="w-12 h-12 rounded-full border-4 border-background overflow-hidden relative">
+<img class="w-full h-full object-cover" data-alt="Confident woman with braided hair smiling, studio portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7TMev3mZuyeknmVKTOF1Oe5IJDRB4c4zzkiKw0dwcAJ9e5jg6MNldudXRSxOfa8RBlHuZZnmqvznB9qjYyYawvbMM9UxDzxhUVrQshUzFM3DJxqhLFYQAbIeTMSwfPrng5X4OZ5N2Cj9byUM9X8IbqiOwXDGBSQ4yZ54Z4009AUDL9N_vzXR8ONSKTzh0k7XhQfDfR6lXrm-Vrw84_ekr3q9q8jYyk2K-Z1BcfH6rPx8jCOmFUui1KwVLjZEXRk9dq5-NjfpEe7OL"/>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-secondary rounded-full border-2 border-background"></div>
+</div>
+<div class="w-12 h-12 rounded-full border-4 border-background overflow-hidden relative scale-110 z-10">
+<img class="w-full h-full object-cover" data-alt="Young man with artistic glasses, warm indoor lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDq398W2EpeJAmf-UNLs7QwHoW2XFGLwh35FinJVmg9Go-vqnsaCzGGhd7kHAiFHt6iC4drK5DCTvziYXdKm9SuGy62CW5CoCUefvCDKCo_008jbwTPlhXnb6U-IfUL06e5pRuKTXcKKODRT5eaPSGwZ8Y8Md47fW4Ad9r_l-lekME79YSZCANiX-InWLT23kIdV6kKFd1KLkriUvlmrJD4rLlTfouvu4sB6pElxtQePwIM2rkApQPHI7_GF1KG2V0Ky1bLg2NWuyW6"/>
+<div class="absolute inset-0 bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-xl" data-icon="coffee" style="font-variation-settings: 'FILL' 1;">coffee</span>
+</div>
+</div>
+<div class="w-12 h-12 rounded-full border-4 border-background overflow-hidden relative">
+<img class="w-full h-full object-cover" data-alt="Woman with natural hair laughing, soft sunset lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMGM5sBx6-YAfF5Ol-mWd9MrWCJZGG163YH8cifeWbGfjp_ONIihXm5zUBtFIvqJ985OX-LzxcywKZe5fwuI_fT7vfUUHEfj_bmloFpEEhrA3RyQOv--geDBnCjHZ7B9keJvNAZqGRZX_rvoyhGN7ZM374csV4XeFc9LCi-mbP52QS1HaGF-wBgmwyzwiPro1asGFCGsKoFg1RZjOieTyn8ZdBE-ZJWhyI76WPF5V0bSJ0Djy9C_NZv2dBiAhlzW8FY_pl4jnRkGDa"/>
+</div>
+<div class="w-12 h-12 rounded-full border-4 border-background bg-surface-container flex items-center justify-center text-xs font-bold text-primary">
+                    +12
+                </div>
+</div>
+</section>
+<!-- Main Chat Area -->
+<section class="space-y-6 pb-12">
+<!-- Message: Incoming -->
+<div class="flex gap-3 max-w-[85%]">
+<div class="w-8 h-8 rounded-full overflow-hidden mt-1 shrink-0">
+<img class="w-full h-full object-cover" data-alt="Young man with artistic glasses, warm indoor lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9x2BXiVfgVKRks-B8XS_-ULh-Izf0sj322WinQTQkOHtZX1E4ie9ZYuPU4p_kAHw8v-X5y3W48CMZ21ANfOLCD0a9IpPEFNC55vncVjw0s4U2qb1SixcrLFHmRFyzWZUKK_dBNJrmMlw8riek3CVrebv7ZVXnCnC-uOBKWsWp_MkFVb6mBuCb5TWae_P96mulioOjLnwL0B8cKzoj8i9p2MkZwgLsc3iVJuobyd_4sWETFnljhKd01bBKJNDbN3Rd-hvf1LUSq5rI"/>
+</div>
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-tighter">Zuberi</span>
+<span class="material-symbols-outlined text-tertiary text-xs" data-icon="coffee" style="font-variation-settings: 'FILL' 1;">coffee</span>
+</div>
+<div class="bg-surface-container-highest p-4 rounded-lg rounded-tl-none shadow-sm">
+<p class="text-on-surface font-medium">Habari za asubuhi! Ninanywa chai leo.</p>
+<p class="text-on-surface-variant text-[10px] mt-2 italic border-t border-outline-variant/20 pt-1">Good morning! I am drinking tea today.</p>
+</div>
+</div>
+</div>
+<!-- Message: Outgoing -->
+<div class="flex flex-row-reverse gap-3 max-w-[85%] ml-auto">
+<div class="w-8 h-8 rounded-full overflow-hidden mt-1 shrink-0">
+<img class="w-full h-full object-cover" data-alt="User profile photo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBI8N3OsDMcGr1jv_os7l7i6wiS64VQNB6iHNRrfBBhwUcwSqAdSPzY6-ivk37obYafGbwBB3WKeXUro14uSWmP-h61fVS73VlaxW9EUNhZv8EYU2XgzQlGMu7fx31qsdAWAvFoatUmiOjUEKtjJ7Ck13KmJgV0cfz37qvhysRz-l1lhsn2tz7uQI2TvvFfuIEpItG3Sc45XhHFP41_8aOTUOoLoQwQ0KbzleyibtLIH3BB-nL3RrvJ7AwAoLssusVfxR1XYMbJetWr"/>
+</div>
+<div class="space-y-1 text-right">
+<div class="flex items-center justify-end gap-2">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-tighter">Me</span>
+</div>
+<div class="bg-secondary-container p-4 rounded-lg rounded-tr-none shadow-sm text-left">
+<p class="text-on-secondary-container font-medium">Safi sana, Zuberi. Mimi pia ninanywa chai!</p>
+<p class="text-on-secondary-fixed-variant text-[10px] mt-2 italic border-t border-on-secondary-container/10 pt-1">Very cool, Zuberi. I am also drinking tea!</p>
+</div>
+</div>
+</div>
+<!-- Global Message (Thread Style) -->
+<div class="relative pl-6">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary rounded-full"></div>
+<div class="flex items-center gap-3 mb-2">
+<div class="w-6 h-6 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Woman profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_AMaTnSsQSYk_dXqfcxHOF5L5SyJxbYRDLfN174VYNzO-2N4vBLqPIei1Cr62GuZvDZBubYFvsNOQEeqISDNXTPSViF2yXa48l9SaJWisdn1x0a8Pp_UP5Z_G6_ldYq85BfWYxIzuEpOVg5NdGr0UKDEq0HkPnTSXFYyeo_HvaNlizpKWBqjk2L9lkEG4K_AZK2LaFqG8kofNVSLpPKd3x4W3D_0SM5GMMxIlRjchpmfRuSTwQG09IUsvBI2svk3413T3nMnfaoq0"/>
+</div>
+<span class="text-[10px] font-bold text-secondary uppercase tracking-tighter">Tribe Elder Amani</span>
+</div>
+<div class="bg-white/60 backdrop-blur-md p-4 rounded-lg shadow-[0_4px_20px_rgba(0,110,45,0.05)]">
+<p class="text-on-surface text-sm">Welcome to the morning brew! Try using the daily verb in a sentence about your favorite drink.</p>
+</div>
+</div>
+<!-- Message: Incoming with Voice Pulsing -->
+<div class="flex gap-3 max-w-[85%]">
+<div class="w-8 h-8 rounded-full overflow-hidden mt-1 shrink-0 ring-4 ring-tertiary/20 animate-pulse">
+<img class="w-full h-full object-cover" data-alt="Smiling man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1BX3n2TLBgtSN15QgHpav-BFw1nz5KMW0tLNE9Pn1msq3g9avipb9tjGX2jBtjSonc2g8NpG9nfmiuTlS97je546WeGlhrkWIwkhfiSJEn2p2LGSOywBv3khGx_emV0AU_lUAufZ7NTX9BT1JdcFtU8I0Se3enFZdlXcEZJ3fghkNVcIlBdza6iPqbSepAmGf6VXsSZkz69RXeEAolXSQe6_RdNVVGiO_7dixyzzIJUaq32S7eddM-rQ2-NuZOF-4Q0T-d3v056KZ"/>
+</div>
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-tighter">Kofi</span>
+<div class="flex gap-0.5">
+<div class="w-1 h-3 bg-tertiary rounded-full"></div>
+<div class="w-1 h-4 bg-tertiary rounded-full"></div>
+<div class="w-1 h-2 bg-tertiary rounded-full"></div>
+</div>
+</div>
+<div class="bg-surface-container-highest p-4 rounded-lg rounded-tl-none shadow-sm flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="play_circle" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+<div class="h-1 bg-outline-variant w-32 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-1/3"></div>
+</div>
+<span class="text-[10px] text-on-surface-variant">0:04</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Chat Input Area (Fixed above NavBar) -->
+<div class="fixed bottom-24 left-0 w-full px-6 z-40">
+<div class="max-w-2xl mx-auto flex items-center gap-2 bg-surface-container-lowest p-2 rounded-full shadow-lg border border-outline-variant/10">
+<button class="w-10 h-10 flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+</button>
+<input class="flex-1 bg-transparent border-none focus:ring-0 text-sm py-2" placeholder="Type in Swahili..." type="text"/>
+<button class="bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="send" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#a73400]/80 dark:bg-stone-900/90 backdrop-blur-xl rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(45,22,0,0.12)]">
+<a class="flex flex-col items-center justify-center text-white/70 dark:text-stone-400 p-2 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-label text-[10px] font-semibold uppercase tracking-tighter mt-1">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center text-white/70 dark:text-stone-400 p-2 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="storefront">storefront</span>
+<span class="font-label text-[10px] font-semibold uppercase tracking-tighter mt-1">Market</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#ffeada] text-[#a73400] rounded-full p-3 mb-1 scale-110 shadow-lg" href="#">
+<span class="material-symbols-outlined" data-icon="chat_bubble" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+<span class="font-label text-[10px] font-semibold uppercase tracking-tighter mt-1">Café</span>
+</a>
+<a class="flex flex-col items-center justify-center text-white/70 dark:text-stone-400 p-2 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-label text-[10px] font-semibold uppercase tracking-tighter mt-1">Hut</span>
+</a>
+<a class="flex flex-col items-center justify-center text-white/70 dark:text-stone-400 p-2 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+<span class="font-label text-[10px] font-semibold uppercase tracking-tighter mt-1">School</span>
+</a>
+</nav>
+</body></html>

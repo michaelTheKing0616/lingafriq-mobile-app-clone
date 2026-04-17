@@ -13,6 +13,7 @@ import '../models/game/game_content_failure.dart';
 import '../providers/gamification_provider.dart';
 import '../providers/backend_sync_provider.dart';
 import '../providers/user_provider.dart';
+import '../services/offline/persisted_outbox_service.dart';
 import '../providers/dio_provider.dart';
 import '../utils/diacritics_enforcer.dart';
 import '../utils/progress_integration.dart';
@@ -1698,14 +1699,15 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  /// Sync SRS to backend. Sends keys as "cardId|language" so backend can parse card_id and language.
+  /// Sync SRS to backend via Sync v2 outbox (`game_srs_upsert_many`), matching
+  /// `applyGameSrsUpsertMany` in `syncV2.controller.ts`. Survives restarts via Hive.
+  /// Legacy `SyncType.gameSRS` is no longer queued here; persisted legacy tasks may still flush via [BackendSyncProvider].
   Future<void> _syncSRSToBackend() async {
     try {
       final user = ref.read(userProvider);
       if (user == null) return;
 
-      final syncProvider = ref.read(backendSyncProvider.notifier);
-      final srsData = <String, dynamic>{};
+      final entries = <Map<String, dynamic>>[];
       final userIdPrefix = '${user.id}_';
       _userSRS.forEach((key, value) {
         if (!key.startsWith(userIdPrefix)) return;
@@ -1715,23 +1717,28 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         final language = rest.substring(lastUnderscore + 1);
         if (language.isEmpty) return;
         final cardId = rest.substring(0, lastUnderscore);
-        srsData['$cardId|$language'] = value.toJson();
+        if (cardId.isEmpty) return;
+        final lastReview = value.lastReview ?? DateTime.now();
+        entries.add({
+          'cardId': cardId,
+          'language': language.toLowerCase(),
+          'ease': value.ease,
+          'repetitions': value.repetitions,
+          'intervalDays': value.intervalDays < 1 ? 1 : value.intervalDays,
+          'lastReview': lastReview.toUtc().toIso8601String(),
+        });
       });
 
-      if (srsData.isEmpty) return;
+      if (entries.isEmpty) return;
 
-      await syncProvider.queueSync(
-        SyncTask(
-        type: SyncType.gameSRS,
-        data: {
-          'user_id': user.id.toString(),
-          'srs': srsData,
-          'timestamp': DateTime.now().toIso8601String(),
-        },
-        ),
+      await PersistedOutboxService.instance.ensureOpen();
+      await PersistedOutboxService.instance.enqueue(
+        type: 'game_srs_upsert_many',
+        payload: {'entries': entries},
       );
+      // Flush is triggered by [BackendSyncProvider.syncAll], app resume, and periodic sync.
     } catch (e) {
-      logger.error('Error queuing SRS sync', tag: 'game-provider', error: e);
+      logger.error('Error enqueueing game_srs_upsert_many', tag: 'game-provider', error: e);
     }
   }
 

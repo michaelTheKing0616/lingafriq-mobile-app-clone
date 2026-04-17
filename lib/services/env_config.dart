@@ -3,6 +3,8 @@
 // Keys are injected via GitHub Actions secrets during build
 // Production defaults avoid localhost; override via --dart-define during build.
 
+import 'package:flutter/foundation.dart';
+
 class EnvConfig {
   // Private constructor to prevent instantiation
   EnvConfig._();
@@ -83,7 +85,13 @@ class EnvConfig {
   /// Production: https://admin.lingafriq.com (nginx → localhost:4000).
   static String get backendBaseUrl {
     const url = String.fromEnvironment('BACKEND_URL', defaultValue: 'https://admin.lingafriq.com');
-    return url;
+    final trimmed = url.trim();
+    if (kReleaseMode && trimmed.startsWith('http://')) {
+      throw StateError(
+        'Insecure BACKEND_URL in release build (http://). Use https:// or change build config.',
+      );
+    }
+    return trimmed;
   }
   
   /// Get all configuration status for debugging

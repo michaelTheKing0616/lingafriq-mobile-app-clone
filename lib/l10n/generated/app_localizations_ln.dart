@@ -199,4 +199,29 @@ class AppLocalizationsLn extends AppLocalizations {
 
   @override
   String get tooltipTribes => 'Tribes';
+
+  @override
+  String get magazineKeyTakeaways => 'Key takeaways';
+
+  @override
+  String get magazineRelatedTopics => 'Related topics';
+
+  @override
+  String get magazineSourceAndLicense => 'Source & license';
+
+  @override
+  String magazineReadingTime(int minutes) {
+    return '$minutes min read';
+  }
+
+  @override
+  String get gameTutorialGotIt => 'Got it';
+
+  @override
+  String get gameTutorialHowToPlay => 'How to play';
+
+  @override
+  String chatPeerTyping(String name) {
+    return '$name is typing…';
+  }
 }

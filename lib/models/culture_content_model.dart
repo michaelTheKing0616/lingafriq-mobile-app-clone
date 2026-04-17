@@ -17,6 +17,13 @@ class CultureContent {
   final String? imageUrl;
   final String? audioUrl;
   final String? videoUrl;
+  /// Extra images from scraper/CMS (hero remains [imageUrl] when set).
+  final List<String> imageGallery;
+  final List<String> highlights;
+  final List<String> relatedTopics;
+  final int? readingTimeMinutes;
+  final String? license;
+  final String? attribution;
   final String content;
   final String language;
   final String? country;
@@ -33,6 +40,12 @@ class CultureContent {
     this.imageUrl,
     this.audioUrl,
     this.videoUrl,
+    this.imageGallery = const [],
+    this.highlights = const [],
+    this.relatedTopics = const [],
+    this.readingTimeMinutes,
+    this.license,
+    this.attribution,
     required this.content,
     required this.language,
     this.country,
@@ -50,6 +63,12 @@ class CultureContent {
     'imageUrl': imageUrl,
     'audioUrl': audioUrl,
     'videoUrl': videoUrl,
+    'imageGallery': imageGallery,
+    'highlights': highlights,
+    'relatedTopics': relatedTopics,
+    'readingTimeMinutes': readingTimeMinutes,
+    'license': license,
+    'attribution': attribution,
     'content': content,
     'language': language,
     'country': country,
@@ -70,6 +89,12 @@ class CultureContent {
     imageUrl: map['imageUrl'],
     audioUrl: map['audioUrl'],
     videoUrl: map['videoUrl'],
+    imageGallery: List<String>.from(map['imageGallery'] ?? []),
+    highlights: List<String>.from(map['highlights'] ?? []),
+    relatedTopics: List<String>.from(map['relatedTopics'] ?? []),
+    readingTimeMinutes: map['readingTimeMinutes'] as int?,
+    license: map['license'] as String?,
+    attribution: map['attribution'] as String?,
     content: map['content'] ?? '',
     language: map['language'] ?? '',
     country: map['country'],
@@ -124,14 +149,42 @@ class CultureContent {
       publishDate = DateTime.now();
     }
 
+    final hero = map['featured_image'] ?? map['imageUrl']?.toString();
+    final rawImages = map['images'];
+    var gallery = <String>[];
+    if (rawImages is List) {
+      gallery = rawImages.map((e) => e.toString()).where((s) => s.isNotEmpty).toList();
+    }
+    if (hero != null && hero.toString().isNotEmpty) {
+      gallery = gallery.where((u) => u != hero.toString()).toList();
+    }
+
+    final rawHigh = map['highlights'];
+    final highlights = rawHigh is List
+        ? rawHigh.map((e) => e.toString()).where((s) => s.isNotEmpty).toList()
+        : <String>[];
+    final rawRel = map['related_topics'];
+    final related = rawRel is List
+        ? rawRel.map((e) => e.toString()).where((s) => s.isNotEmpty).toList()
+        : <String>[];
+
+    final rt = map['reading_time_minutes'];
+    final readingMins = rt is num ? rt.round() : null;
+
     return CultureContent(
       id: map['_id']?.toString() ?? map['id']?.toString() ?? '',
       title: map['title'] ?? '',
       description: map['excerpt'] ?? map['description'] ?? '',
       type: contentType,
-      imageUrl: map['featured_image'] ?? map['imageUrl'],
+      imageUrl: hero?.toString(),
       audioUrl: map['audio_url'] ?? map['audioUrl'],
       videoUrl: map['video_url'] ?? map['videoUrl'],
+      imageGallery: gallery,
+      highlights: highlights,
+      relatedTopics: related,
+      readingTimeMinutes: readingMins,
+      license: map['license']?.toString(),
+      attribution: map['attribution']?.toString(),
       content: map['content'] ?? '',
       language: map['language'] ?? 'English',
       country: map['country'] ?? map['region'],
@@ -153,6 +206,12 @@ class CultureContent {
     String? imageUrl,
     String? audioUrl,
     String? videoUrl,
+    List<String>? imageGallery,
+    List<String>? highlights,
+    List<String>? relatedTopics,
+    int? readingTimeMinutes,
+    String? license,
+    String? attribution,
     String? content,
     String? language,
     String? country,
@@ -169,6 +228,12 @@ class CultureContent {
       imageUrl: imageUrl ?? this.imageUrl,
       audioUrl: audioUrl ?? this.audioUrl,
       videoUrl: videoUrl ?? this.videoUrl,
+      imageGallery: imageGallery ?? this.imageGallery,
+      highlights: highlights ?? this.highlights,
+      relatedTopics: relatedTopics ?? this.relatedTopics,
+      readingTimeMinutes: readingTimeMinutes ?? this.readingTimeMinutes,
+      license: license ?? this.license,
+      attribution: attribution ?? this.attribution,
       content: content ?? this.content,
       language: language ?? this.language,
       country: country ?? this.country,

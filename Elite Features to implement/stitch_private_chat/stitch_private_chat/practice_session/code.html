@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Lexend:wght@300;400;500;600&amp;family=Dosis:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-bright": "#fff8f5",
+              "on-secondary": "#ffffff",
+              "surface-container": "#ffeada",
+              "primary-fixed": "#ffdbcf",
+              "surface-dim": "#ffd2aa",
+              "inverse-surface": "#462a0d",
+              "tertiary-container": "#9b6c00",
+              "secondary": "#006e2d",
+              "on-surface-variant": "#59413a",
+              "on-primary": "#ffffff",
+              "surface-container-low": "#fff1e8",
+              "surface-variant": "#ffdcbf",
+              "on-tertiary": "#ffffff",
+              "on-primary-fixed-variant": "#822700",
+              "on-secondary-container": "#007230",
+              "on-primary-container": "#fffbff",
+              "surface-container-high": "#ffe3cd",
+              "on-surface": "#2d1600",
+              "surface-container-highest": "#ffdcbf",
+              "surface": "#fff8f5",
+              "on-tertiary-container": "#fffbff",
+              "secondary-container": "#7cf994",
+              "on-background": "#2d1600",
+              "on-error": "#ffffff",
+              "inverse-on-surface": "#ffeee1",
+              "error-container": "#ffdad6",
+              "primary-fixed-dim": "#ffb59c",
+              "outline-variant": "#e0bfb5",
+              "outline": "#8c7168",
+              "background": "#fff8f5",
+              "on-tertiary-fixed-variant": "#5f4100",
+              "secondary-fixed-dim": "#62df7d",
+              "secondary-fixed": "#7ffc97",
+              "primary-container": "#c94c1a",
+              "on-error-container": "#93000a",
+              "error": "#ba1a1a",
+              "on-secondary-fixed-variant": "#005320",
+              "on-primary-fixed": "#390c00",
+              "tertiary-fixed-dim": "#f8bc51",
+              "on-secondary-fixed": "#002109",
+              "surface-tint": "#aa3601",
+              "tertiary-fixed": "#ffdeab",
+              "inverse-primary": "#ffb59c",
+              "tertiary": "#7b5500",
+              "primary": "#a73400",
+              "on-tertiary-fixed": "#281900",
+              "surface-container-lowest": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Lexend"],
+              "label": ["Lexend"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .speaking-glow {
+        box-shadow: 0 0 0 3px #7b5500;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body min-h-screen overflow-hidden flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-[#fff8f5] dark:bg-orange-950 flex justify-between items-center w-full px-6 py-4 z-50">
+<div class="flex items-center gap-4">
+<button class="text-[#a73400] dark:text-orange-400 hover:bg-[#ffeada] dark:hover:bg-orange-800/50 transition-colors active:scale-95 duration-200 ease-in-out p-2 rounded-full">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+<h1 class="font-['Plus_Jakarta_Sans'] font-bold text-xl tracking-tight text-[#a73400] dark:text-orange-400">Practice Room</h1>
+</div>
+<!-- Center Title (Injected Content) -->
+<div class="hidden md:flex flex-col items-center">
+<span class="font-headline font-extrabold text-[#a73400]">Wolof Pronunciation Lab</span>
+<span class="text-xs font-medium tracking-widest text-outline">14:22</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="bg-surface-container-high px-3 py-1 rounded-full text-xs font-bold text-primary flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-error animate-pulse"></span>
+                LIVE
+            </div>
+<button class="text-[#a73400] dark:text-orange-400 hover:bg-[#ffeada] dark:hover:bg-orange-800/50 transition-colors active:scale-95 duration-200 ease-in-out p-2 rounded-full">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+</header>
+<!-- Main Workspace (Video Grid) -->
+<main class="flex-1 p-4 md:p-8 flex flex-col relative">
+<!-- 2x2 Video Grid -->
+<div class="grid grid-cols-2 grid-rows-2 gap-4 flex-1">
+<!-- Participant 1: Active Speaker -->
+<div class="relative rounded-lg overflow-hidden bg-surface-container-highest speaking-glow group">
+<img alt="Participant" class="w-full h-full object-cover" data-alt="Close up portrait of a smiling young African man wearing a traditional patterned shirt in a bright room" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1kwSei63tXzVYBO60dGsgLJ3ovjmDB34zuQ050DKYlLor84Be3WRX2rfJGD2ujknp1BJwAcyTi6lSspuUlYOD9ExGNtU7wmUQWeo16rfhk2LSVsDNhIuzSC9fHF_r1XQOswQXYYSl5ALHTL76qdY8SUsKmQ-p-39sRFhE1mWAlC1kz2q2vbc0lXieEYOlMn0xHvDeBNc2fQYWiaoqfdZevE0F1DQKLjPzwMBaOuMY2PMz05AujGpvVjp5tCUHq-QnOlD8Ncds-yzU"/>
+<div class="absolute bottom-4 left-4 flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="text-white text-xs font-medium">Amadou (Instructor)</span>
+</div>
+<div class="absolute top-4 right-4 text-tertiary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">mic</span>
+</div>
+</div>
+<!-- Participant 2 -->
+<div class="relative rounded-lg overflow-hidden bg-surface-container-low group">
+<img alt="Participant" class="w-full h-full object-cover opacity-90" data-alt="Young woman with curly hair wearing headphones looking intently at a screen in a cozy library setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUfVjAY8dAgS0VgAE3PmHFMql5UKwPVfzJOp0BDuHWPyJYhCdCuibY_XKBjDxVqyjp3hsafMzPW9cV3lLZArKIBdE8hsc-rcsmk_V4hWL5jqdIpL5OCcKLdwPjf6PsaN2pd_zwLJnlHL_1Nv72XTp8WIFo9p6XlYGp84dZAvdmHiILXjFlz9FJdJS2BdbTHYhbd_c1s3GAQL9hyLSKjhOzC_QUh4FQeJL3qy7B6dFBpv8Hi4WMSYO8PJqZNiw1_GmUTiG_cTPIcSDj"/>
+<div class="absolute bottom-4 left-4 flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
+<span class="text-white text-xs font-medium">Fatou</span>
+</div>
+</div>
+<!-- Participant 3 -->
+<div class="relative rounded-lg overflow-hidden bg-surface-container-low group">
+<img alt="Participant" class="w-full h-full object-cover grayscale-[30%]" data-alt="Middle aged man with glasses and a friendly expression sitting in a modern home office with warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7XvtAo6nD-9r5fAZX-KWGuoROw9ECnmpqts_b6ANYqFKZN2yUO3L0ZRXN8OuwyEVNx8k8DsAALbJydoP2u1BBFjZe-t6lE1L1WOVTgpb8P03bTcrnBMk5sqTmhwrpFcART1sFbRJDYXeeY6iQ2a9tEOU2KvXbfiJ-KCCKZIzzVsdqk3VduYozJ4fFP1efoOzjFRZhZZmKT6NZneKZo57qbux-d9hiKEgEPBbGSCr6yJJnewI-ASAdNkZ9nFBxktDIPVUwmYpN8Qsz"/>
+<div class="absolute bottom-4 left-4 flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
+<span class="text-white text-xs font-medium">Modou</span>
+</div>
+</div>
+<!-- Participant 4 (User) -->
+<div class="relative rounded-lg overflow-hidden bg-surface-container-low group">
+<img alt="You" class="w-full h-full object-cover" data-alt="Close-up of a young woman smiling warmly, wearing a blue scarf, blurred apartment background with natural morning light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqaYY655qRV_SHv5V0irUdAJjiscaMk1Iz67C_FXc_q9QtnbMjdIDkLedYUyItCJRwjlFSlQcFCo5QYmLNZdAiqBnDfQzvZFHnHsVjKFoR3TJxMw8YiqF8YhQ8Oomczw99JH2FX3gqq0vQUnDMUSnld4ykmhSnr16XJPLMlyAlOFIw3eNbThrgaRf6logb0NrGGRvZrDcE6vzAObSl3pUzPjn7Agsf8d-WdXzesxnhIE1IMFQSI4SPUx4wUJBCpzf10InEclreD2iB"/>
+<div class="absolute bottom-4 left-4 flex items-center gap-2 bg-primary/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
+<span class="text-white text-xs font-bold">YOU</span>
+</div>
+<div class="absolute top-4 right-4 text-white/50">
+<span class="material-symbols-outlined">mic_off</span>
+</div>
+</div>
+</div>
+<!-- Focus Tool Overlay -->
+<div class="absolute bottom-32 left-1/2 -translate-x-1/2 w-[90%] md:w-auto z-40">
+<div class="bg-surface-bright/95 backdrop-blur-xl rounded-lg p-6 shadow-[0_20px_40px_rgba(45,22,0,0.1)] border border-primary-fixed flex items-center gap-8 min-w-[320px]">
+<div class="flex-1">
+<span class="text-[0.65rem] uppercase tracking-widest font-bold text-tertiary mb-1 block">Active Pronunciation Target</span>
+<h2 class="font-headline font-bold text-3xl text-primary leading-none">Nanga def?</h2>
+<p class="text-xs text-outline mt-1 font-medium">Translation: How are you doing?</p>
+</div>
+<button class="w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform active:scale-95">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Controls Overlay) -->
+<nav class="fixed bottom-6 left-0 right-0 z-50 flex justify-around items-center px-4 py-2 bg-[#a73400]/80 dark:bg-orange-950/80 backdrop-blur-xl bottom-6 left-1/2 -translate-x-1/2 w-[90%] rounded-full shadow-[0_20px_40px_rgba(45,22,0,0.1)]">
+<!-- Mic Off (Inactive) -->
+<button class="flex items-center justify-center text-white/70 dark:text-orange-300/70 p-4 hover:bg-white/10 dark:hover:bg-white/5 rounded-full active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="mic_off">mic_off</span>
+</button>
+<!-- Video Off (Inactive) -->
+<button class="flex items-center justify-center text-white/70 dark:text-orange-300/70 p-4 hover:bg-white/10 dark:hover:bg-white/5 rounded-full active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="videocam_off">videocam_off</span>
+</button>
+<!-- Focus Tool / Hand (Active State) -->
+<button class="flex items-center justify-center bg-[#c94c1a] dark:bg-orange-800 rounded-full p-4 text-white hover:bg-white/10 dark:hover:bg-white/5 active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="front_hand">front_hand</span>
+</button>
+<!-- More (Inactive) -->
+<button class="flex items-center justify-center text-white/70 dark:text-orange-300/70 p-4 hover:bg-white/10 dark:hover:bg-white/5 rounded-full active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
+</button>
+<!-- Focus Tool Toggle (Custom Extension) -->
+<div class="h-8 w-[1px] bg-white/20 mx-2"></div>
+<button class="flex items-center gap-2 px-6 py-4 rounded-full text-white bg-white/10 hover:bg-white/20 transition-colors font-label text-xs font-medium">
+<span class="material-symbols-outlined text-sm">center_focus_weak</span>
+<span class="hidden md:inline">Focus Tool</span>
+</button>
+</nav>
+</body></html>

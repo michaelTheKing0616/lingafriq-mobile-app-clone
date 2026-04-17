@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Lexend:wght@300;400;500;600&amp;family=Dosis:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-bright": "#fff8f5",
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#ffeada",
+                        "primary-fixed": "#ffdbcf",
+                        "surface-dim": "#ffd2aa",
+                        "inverse-surface": "#462a0d",
+                        "tertiary-container": "#9b6c00",
+                        "secondary": "#006e2d",
+                        "on-surface-variant": "#59413a",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#fff1e8",
+                        "surface-variant": "#ffdcbf",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#822700",
+                        "on-secondary-container": "#007230",
+                        "on-primary-container": "#fffbff",
+                        "surface-container-high": "#ffe3cd",
+                        "on-surface": "#2d1600",
+                        "surface-container-highest": "#ffdcbf",
+                        "surface": "#fff8f5",
+                        "on-tertiary-container": "#fffbff",
+                        "secondary-container": "#7cf994",
+                        "on-background": "#2d1600",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#ffeee1",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#ffb59c",
+                        "outline-variant": "#e0bfb5",
+                        "outline": "#8c7168",
+                        "background": "#fff8f5",
+                        "on-tertiary-fixed-variant": "#5f4100",
+                        "secondary-fixed-dim": "#62df7d",
+                        "secondary-fixed": "#7ffc97",
+                        "primary-container": "#c94c1a",
+                        "on-error-container": "#93000a",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed-variant": "#005320",
+                        "on-primary-fixed": "#390c00",
+                        "tertiary-fixed-dim": "#f8bc51",
+                        "on-secondary-fixed": "#002109",
+                        "surface-tint": "#aa3601",
+                        "tertiary-fixed": "#ffdeab",
+                        "inverse-primary": "#ffb59c",
+                        "tertiary": "#7b5500",
+                        "primary": "#a73400",
+                        "on-tertiary-fixed": "#281900",
+                        "surface-container-lowest": "#ffffff"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Lexend"],
+                        "label": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .preserve-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body text-on-surface min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-[#fff8f5] dark:bg-orange-950 flex justify-between items-center w-full px-6 py-4 fixed top-0 z-40">
+<div class="flex items-center gap-4">
+<button class="text-[#a73400] dark:text-orange-400 active:scale-95 duration-200 ease-in-out hover:bg-[#ffeada] dark:hover:bg-orange-800/50 p-2 rounded-full">
+<span class="material-symbols-outlined">close</span>
+</button>
+<div class="flex flex-col">
+<h1 class="font-['Plus_Jakarta_Sans'] font-bold text-xl tracking-tight text-[#a73400] dark:text-orange-400">Practice Room</h1>
+<span class="text-[10px] uppercase tracking-widest text-outline font-bold">Yoruba Vocab Drill</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="bg-surface-container-high px-4 py-1.5 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary">timer</span>
+<span class="font-headline font-bold text-sm text-on-surface">12:45</span>
+</div>
+<button class="text-[#a73400] dark:text-orange-400 active:scale-95 duration-200 ease-in-out hover:bg-[#ffeada] dark:hover:bg-orange-800/50 p-2 rounded-full">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</header>
+<main class="flex-1 mt-20 mb-28 px-6 flex flex-col items-center justify-center max-w-5xl mx-auto w-full">
+<!-- Participant Strip -->
+<div class="flex items-center justify-center gap-2 mb-10 overflow-x-auto py-2 w-full no-scrollbar">
+<div class="relative group">
+<div class="w-12 h-12 rounded-full ring-2 ring-tertiary p-0.5 bg-surface-container-lowest">
+<img class="w-full h-full rounded-full object-cover" data-alt="Portrait of a smiling young man with dark skin and short hair in a minimalist digital avatar style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-gxNmPinpGhFjJXke-YdEASsvTlfWValCnW2clWbIvJUL5Nhwd5zJiEnKgTL4Kxy0KmG2Q37QoAAzEY3Qaxp3sjRwfodvAwnBTLaAFmB47phMzcYRVn7qQUJFxWmRzoa6C9NFbQJoJTpUNzUdE1A8Us3ldCgZU7W767LlKu0Qi8Q_OxzNXtich3U3KkAiPQhk5Jke91GRN0zayN_Nu11aHVVTkGRv097mJDNamc8iEBj7n2hjtXao0PbEptCNGRsxcEaG3cD1nWLN"/>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-tertiary w-4 h-4 rounded-full flex items-center justify-center border-2 border-surface">
+<span class="material-symbols-outlined text-[10px] text-white" style="font-variation-settings: 'FILL' 1;">mic</span>
+</div>
+</div>
+<div class="w-12 h-12 rounded-full ring-2 ring-outline-variant/30 p-0.5 bg-surface-container-lowest">
+<img class="w-full h-full rounded-full object-cover" data-alt="Close up of a person with colorful glasses and bright clothing in a friendly avatar illustration" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZVVpMGvmEPzk62LFMS1473NPHC1fEORqJLtqcqypXcJOSea2jydECdNZ-8i_nJB5N5SeRc5Bnz6DcSua-qnHu7VHAK7DAfNTjAn7Zcs9H3ou0qGcq2OFlXlELGJbqy-EK0EfIBCLTarVPPZW9fOrmxtMx9bXPg9mMJf669gQp6K9gBjWBFnC0i9tS6wf5YHOEiWJJEHhLtUQ9aXYFrO4TbybFA2EEVximWJL5XtQRwyDbzNSpv1AbT0zlqXgesO5naag7HhVxCsQX"/>
+</div>
+<div class="w-12 h-12 rounded-full ring-2 ring-outline-variant/30 p-0.5 bg-surface-container-lowest">
+<img class="w-full h-full rounded-full object-cover" data-alt="Stylized digital character portrait of a woman with braided hair and warm expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4zwbWjQMGAo85zdxoqB32V8SrkGLu3ixLxl4VOx2S0yUfGVv11Cu98rRLyjckz1tka5wo3yJu8xX-KPdOSwhQ3rm6R3I-qAey6scAVhNC9WJBVWeNmGRiLHbP47sn-0oVpApCqDtifNdot1QoN0bdeLAekC_BNPPJxcC7R52wqQuh0nsYEc1h-IRk5qVr-TYVyJ1stPCqr7YajxBRs_5jW-7RKmmwJCIX0oCGslV6zoe6CvfvKuFBE_xebrjTZE-o8U1KSeNWi4UU"/>
+</div>
+<div class="w-12 h-12 rounded-full ring-2 ring-outline-variant/30 p-0.5 bg-surface-container-lowest">
+<img class="w-full h-full rounded-full object-cover" data-alt="Minimalist avatar of a person with a yellow beanie and broad smile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGq5vKz5bhTtyo0qBdOnQUwwdYHvDL3MlAgTOmjHRe20mDp4YImZocnBG-boHU_45q-fhX-jopknhyroXZ-nt-P0MLyo2zmKoKnAMYrAnAyX3D1VzO_l5pk2RiOWqRRmN5nXrijiQBDrpnuwkd2DqCjC1Gev2g_YRACX5dZLuF3WxMrYLXGRZZ4Nj-vV1D0c2ZISPcowfr7Ss-ljdK3NPJAThe75ZupeT-QLpcL0tMnVjiCP7di_c8sOId-Mx0k4UBBJKr_Ou_fyaY"/>
+</div>
+<button class="w-12 h-12 rounded-full border-2 border-dashed border-outline-variant flex items-center justify-center text-outline hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+<!-- Flashcard Hero -->
+<div class="relative w-full max-w-md aspect-[3/4] perspective-1000 group">
+<div class="relative w-full h-full transition-transform duration-700 preserve-3d">
+<!-- Flipped State (Showing Content) -->
+<div class="absolute inset-0 bg-surface-container-lowest rounded-xl shadow-[0_20px_40px_rgba(45,22,0,0.08)] flex flex-col items-center justify-between p-12 overflow-hidden">
+<!-- Background Texture Decor -->
+<div class="absolute -top-24 -right-24 w-64 h-64 bg-primary-fixed/20 rounded-full blur-3xl"></div>
+<div class="absolute -bottom-24 -left-24 w-64 h-64 bg-tertiary-fixed/20 rounded-full blur-3xl"></div>
+<div class="w-full flex justify-between items-start z-10">
+<span class="bg-primary-container/10 text-primary px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase">Noun</span>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">volume_up</span>
+</button>
+</div>
+<div class="flex flex-col items-center text-center z-10">
+<h2 class="font-headline font-extrabold text-5xl text-on-surface mb-6 tracking-tight">Àlàáfíà</h2>
+<div class="w-12 h-1 bg-tertiary-fixed rounded-full mb-8"></div>
+<p class="font-body text-2xl text-on-surface-variant font-light tracking-wide italic">"Peace and Good Health"</p>
+</div>
+<div class="w-full space-y-4 z-10">
+<div class="bg-surface-container-low p-4 rounded-lg">
+<p class="text-xs text-outline mb-1 uppercase font-bold tracking-tighter">Common Usage</p>
+<p class="text-sm text-on-surface">Se àlàáfíà ni? (Are you in good health/peace?)</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Tribe Totem/Badge Overlap -->
+<div class="absolute -top-4 -right-4 bg-tertiary-fixed text-on-tertiary-fixed font-bold py-2 px-4 rounded-lg shadow-lg rotate-12 z-20 font-headline text-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                Level Up!
+            </div>
+</div>
+<!-- Feedback Controls -->
+<div class="grid grid-cols-2 gap-4 w-full max-w-md mt-12">
+<button class="bg-surface-container-highest border-2 border-primary-container/20 py-4 px-6 rounded-lg flex flex-col items-center gap-2 hover:bg-primary-fixed transition-all active:scale-95 group">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">history</span>
+<span class="font-headline font-bold text-on-surface">Review later</span>
+</button>
+<button class="bg-secondary-container py-4 px-6 rounded-lg flex flex-col items-center gap-2 hover:bg-secondary transition-all active:scale-95 group">
+<span class="material-symbols-outlined text-on-secondary-container group-hover:scale-110 transition-transform">check_circle</span>
+<span class="font-headline font-bold text-on-secondary-container">I know it</span>
+</button>
+</div>
+</main>
+<!-- Contextual Toolbar (Floating Glass Style) -->
+<div class="fixed right-6 bottom-32 flex flex-col gap-3 z-50">
+<button class="w-14 h-14 bg-surface-container-lowest/80 backdrop-blur-md rounded-full shadow-xl flex items-center justify-center text-primary hover:bg-primary-container hover:text-white transition-all active:rotate-12">
+<span class="material-symbols-outlined">edit_note</span>
+</button>
+<button class="w-14 h-14 bg-surface-container-lowest/80 backdrop-blur-md rounded-full shadow-xl flex items-center justify-center text-primary hover:bg-primary-container hover:text-white transition-all active:rotate-12">
+<span class="material-symbols-outlined">chat_bubble</span>
+</button>
+</div>
+<!-- BottomNavBar (The Shell) -->
+<nav class="fixed bottom-6 left-0 right-0 z-50 flex justify-around items-center px-4 py-2 bg-[#a73400]/80 dark:bg-orange-950/80 backdrop-blur-xl w-[90%] left-1/2 -translate-x-1/2 rounded-full shadow-[0_20px_40px_rgba(45,22,0,0.1)]">
+<div class="flex items-center justify-center text-white/70 dark:text-orange-300/70 p-4 hover:bg-white/10 dark:hover:bg-white/5 rounded-full active:scale-90 transition-transform cursor-pointer">
+<span class="material-symbols-outlined">mic_off</span>
+</div>
+<div class="flex items-center justify-center text-white/70 dark:text-orange-300/70 p-4 hover:bg-white/10 dark:hover:bg-white/5 rounded-full active:scale-90 transition-transform cursor-pointer">
+<span class="material-symbols-outlined">videocam_off</span>
+</div>
+<!-- Active Nav -->
+<div class="flex items-center justify-center bg-[#c94c1a] dark:bg-orange-800 rounded-full p-4 active:scale-90 transition-transform cursor-pointer text-white">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">front_hand</span>
+</div>
+<div class="flex items-center justify-center text-white/70 dark:text-orange-300/70 p-4 hover:bg-white/10 dark:hover:bg-white/5 rounded-full active:scale-90 transition-transform cursor-pointer">
+<span class="material-symbols-outlined">more_horiz</span>
+</div>
+</nav>
+<!-- Background Decorative Elements -->
+<div class="fixed top-[20%] -left-20 w-80 h-80 bg-surface-container-low rounded-full mix-blend-multiply opacity-50 blur-3xl pointer-events-none"></div>
+<div class="fixed bottom-[10%] -right-20 w-96 h-96 bg-surface-variant rounded-full mix-blend-multiply opacity-30 blur-3xl pointer-events-none"></div>
+</body></html>

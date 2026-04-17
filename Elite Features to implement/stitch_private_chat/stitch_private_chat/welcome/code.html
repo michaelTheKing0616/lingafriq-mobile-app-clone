@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&amp;family=Lexend:wght@300;400;500;600&amp;family=Dosis:wght@400;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary-container": "#fffbff",
+                        "on-secondary-fixed-variant": "#005320",
+                        "surface-dim": "#ffd2aa",
+                        "secondary-fixed-dim": "#62df7d",
+                        "primary-container": "#c94c1a",
+                        "on-primary-fixed-variant": "#822700",
+                        "outline": "#8c7168",
+                        "tertiary-fixed": "#ffdeab",
+                        "on-primary": "#ffffff",
+                        "on-secondary-container": "#007230",
+                        "secondary-fixed": "#7ffc97",
+                        "outline-variant": "#e0bfb5",
+                        "on-secondary-fixed": "#002109",
+                        "on-primary-fixed": "#390c00",
+                        "tertiary-container": "#9b6c00",
+                        "surface-tint": "#aa3601",
+                        "primary-fixed": "#ffdbcf",
+                        "surface-container-high": "#ffe3cd",
+                        "secondary-container": "#7cf994",
+                        "on-background": "#2d1600",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#fff8f5",
+                        "on-secondary": "#ffffff",
+                        "background": "#fff8f5",
+                        "primary-fixed-dim": "#ffb59c",
+                        "on-tertiary-fixed-variant": "#5f4100",
+                        "primary": "#a73400",
+                        "surface-container-low": "#fff1e8",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#281900",
+                        "inverse-on-surface": "#ffeee1",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#462a0d",
+                        "on-surface-variant": "#59413a",
+                        "on-primary-container": "#fffbff",
+                        "surface-variant": "#ffdcbf",
+                        "secondary": "#006e2d",
+                        "on-surface": "#2d1600",
+                        "surface": "#fff8f5",
+                        "inverse-primary": "#ffb59c",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#ffeada",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#f8bc51",
+                        "tertiary": "#7b5500",
+                        "surface-container-highest": "#ffdcbf",
+                        "error-container": "#ffdad6"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Lexend"],
+                        "label": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .organic-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l15 30H15L30 0zM0 30l15 30H-15L0 30zm60 0l15 30H45L60 30zM30 60l15 30H15L30 60z' fill='%23a73400' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+        .asymmetric-mask {
+            clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<div class="relative min-h-screen flex flex-col overflow-hidden organic-pattern">
+<!-- Top Navigation (Shell suppressed per transactional rule, but branding remains) -->
+<header class="flex justify-between items-center w-full px-6 py-8 max-w-screen-xl mx-auto z-20">
+<div class="flex items-center gap-2">
+<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+</div>
+<span class="font-headline font-extrabold text-2xl tracking-tighter text-primary">LingAfriq</span>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors" href="#">Our Method</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors" href="#">Villages</a>
+<a class="px-6 py-2 rounded-full border border-outline-variant hover:bg-surface-container-low transition-colors" href="#">Login</a>
+</div>
+</header>
+<!-- Main Content Area: The Modern Griot -->
+<main class="flex-grow flex flex-col md:flex-row items-center max-w-screen-xl mx-auto px-6 py-12 gap-12 relative">
+<!-- Left Side: Copy and CTAs -->
+<div class="w-full md:w-1/2 z-10 space-y-8 text-center md:text-left">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface-container text-primary font-label text-xs uppercase tracking-widest font-semibold">
+<span class="material-symbols-outlined text-sm" data-icon="flare">flare</span>
+                    The Modern Griot Experience
+                </div>
+<h1 class="font-headline text-5xl md:text-7xl font-extrabold text-primary leading-[1.1] tracking-tight">
+                    Your Ancestry, <br/>
+<span class="text-on-surface">Digitally Woven.</span>
+</h1>
+<p class="text-lg md:text-xl text-on-surface-variant max-w-md leading-relaxed">
+                    Master African languages through the rhythm of storytelling. Step into the village where every word carries the weight of a thousand generations.
+                </p>
+<div class="flex flex-col sm:flex-row items-center gap-4 pt-4">
+<button class="w-full sm:w-auto px-10 py-5 rounded-xl bg-primary text-on-primary font-headline text-lg font-bold shadow-[0_20px_40px_rgba(167,52,0,0.2)] hover:scale-105 transition-transform flex items-center justify-center gap-3 group">
+                        Begin Journey
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="east">east</span>
+</button>
+<button class="w-full sm:w-auto px-10 py-5 rounded-xl bg-surface-container text-primary font-headline text-lg font-bold hover:bg-surface-container-high transition-colors">
+                        Already a Learner
+                    </button>
+</div>
+<!-- Tribal Stat Cluster -->
+<div class="grid grid-cols-2 gap-6 pt-12">
+<div class="space-y-1">
+<span class="block text-3xl font-headline font-black text-on-surface">45+</span>
+<span class="text-sm font-label uppercase tracking-widest text-on-surface-variant">Dialects Preserved</span>
+</div>
+<div class="space-y-1">
+<span class="block text-3xl font-headline font-black text-on-surface">12k</span>
+<span class="text-sm font-label uppercase tracking-widest text-on-surface-variant">Village Members</span>
+</div>
+</div>
+</div>
+<!-- Right Side: Imagery and Organic Layout -->
+<div class="w-full md:w-1/2 relative h-[500px] md:h-[700px]">
+<!-- Asymmetric Portrait Card -->
+<div class="absolute inset-0 z-0 bg-primary-container/10 rounded-[4rem] rotate-3 translate-x-4 translate-y-4"></div>
+<div class="absolute inset-0 z-10 overflow-hidden rounded-[3.5rem] bg-surface-container-highest shadow-xl">
+<img alt="African Elder" class="w-full h-full object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-700" data-alt="stunning close-up portrait of a dignified African elder wearing modern kente cloth with tech accessories, warm studio lighting, earth tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6D0-7OpmjGu-_RKgDOw9o6DfRiV_bmcszjY2xPzdJzEKk2TgbFLyiC3y_RUuKlkdE2pz9NWMq7l-VVgglJzVoT3zltRlOPJYahbSwWBrhHYJwBHmyasRNs4_opD3lWqPaFWNjjDaHErFCxuENEMV3owYK-eU3lookKktm-i9-Zyir9YRe945bgEZHzkQsxc4Q4NbD0odyNVSkAZNDNNfKVgKzY3MkfItCtF1LIGasCF0b5dhUDKxt5OtwItQvoNgVabVdsVv1qfEH"/>
+</div>
+<!-- Floating Totems / Badges (Breaking the Grid) -->
+<div class="absolute -top-6 -right-6 md:-right-12 z-20 w-32 h-32 bg-tertiary-fixed rounded-full flex items-center justify-center text-on-tertiary-fixed shadow-2xl animate-bounce-slow">
+<div class="text-center">
+<span class="material-symbols-outlined text-4xl" data-icon="temp_preferences_custom">temp_preferences_custom</span>
+<span class="block text-[10px] font-bold uppercase mt-1">Griot Certified</span>
+</div>
+</div>
+<div class="absolute -bottom-10 -left-6 md:-left-12 z-20 p-6 bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl flex items-center gap-4 max-w-xs">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined" data-icon="graphic_eq">graphic_eq</span>
+</div>
+<div>
+<p class="text-xs font-bold uppercase text-secondary tracking-widest">Active Echo</p>
+<p class="text-sm font-medium text-on-surface">Listen to the rhythm of Yoruba</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Aesthetic Footer Elements -->
+<div class="w-full max-w-screen-xl mx-auto px-6 py-8 flex flex-col md:flex-row justify-between items-center gap-6 opacity-60">
+<div class="flex gap-4">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="w-2 h-2 rounded-full bg-outline-variant"></span>
+<span class="w-2 h-2 rounded-full bg-outline-variant"></span>
+</div>
+<p class="text-xs font-label uppercase tracking-widest font-medium">Built for the future, inspired by the hearth.</p>
+<div class="flex gap-6 text-xs font-label uppercase tracking-widest">
+<a class="hover:text-primary" href="#">Privacy</a>
+<a class="hover:text-primary" href="#">Global Village</a>
+</div>
+</div>
+<!-- Background Accent -->
+<div class="absolute top-0 right-0 w-1/3 h-screen bg-gradient-to-l from-primary-fixed/20 to-transparent -z-10"></div>
+<div class="absolute bottom-0 left-0 w-64 h-64 bg-tertiary-fixed/10 blur-[100px] -z-10"></div>
+</div>
+<style>
+        @keyframes bounce-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .animate-bounce-slow {
+            animation: bounce-slow 4s ease-in-out infinite;
+        }
+    </style>
+</body></html>

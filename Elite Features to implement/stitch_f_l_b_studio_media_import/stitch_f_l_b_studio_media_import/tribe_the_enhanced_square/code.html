@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tribe Square | Àfàláàbù</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Manrope:wght@200..800&amp;family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-primary-fixed": "#360f00",
+                        "secondary-fixed": "#d9e3f9",
+                        "inverse-on-surface": "#f3f0e9",
+                        "secondary-fixed-dim": "#bdc7dc",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#241a00",
+                        "surface-tint": "#a14009",
+                        "secondary": "#555f71",
+                        "primary-fixed-dim": "#ffb596",
+                        "primary-fixed": "#ffdbcd",
+                        "on-secondary-fixed": "#121c2c",
+                        "tertiary-container": "#cca730",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#ffe088",
+                        "surface-variant": "#e5e2db",
+                        "surface-container-highest": "#e5e2db",
+                        "outline": "#8a7268",
+                        "on-error": "#ffffff",
+                        "error": "#ba1a1a",
+                        "outline-variant": "#dec0b5",
+                        "tertiary-fixed-dim": "#e9c349",
+                        "on-tertiary-container": "#4f3d00",
+                        "surface-container-lowest": "#ffffff",
+                        "primary": "#9f3e07",
+                        "surface-bright": "#fcf9f2",
+                        "tertiary": "#735c00",
+                        "surface-container": "#f1eee7",
+                        "primary-container": "#c05621",
+                        "inverse-primary": "#ffb596",
+                        "surface-container-low": "#f6f3ec",
+                        "inverse-surface": "#31312c",
+                        "secondary-container": "#d6e0f6",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#1c1c18",
+                        "on-primary-fixed-variant": "#7d2d00",
+                        "on-tertiary-fixed-variant": "#574500",
+                        "on-primary-container": "#fffeff",
+                        "background": "#fcf9f2",
+                        "on-surface-variant": "#57423a",
+                        "on-background": "#1c1c18",
+                        "on-secondary-fixed-variant": "#3d4759",
+                        "on-secondary-container": "#596376",
+                        "surface-dim": "#dcdad3",
+                        "surface-container-high": "#ebe8e1",
+                        "surface": "#fcf9f2"
+                    },
+                    fontFamily: {
+                        "headline": ["Newsreader"],
+                        "body": ["Manrope"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .editorial-shadow {
+            box-shadow: 0 20px 40px rgba(28, 28, 24, 0.06);
+        }
+        .terracotta-gradient {
+            background: linear-gradient(135deg, #9f3e07 0%, #c05621 100%);
+        }
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body selection:bg-primary-fixed">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#fcf9f2] dark:bg-[#1c1c18] backdrop-blur-md bg-opacity-90 flex justify-between items-center px-6 h-16 w-full shadow-none bg-surface">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#9f3e07] dark:text-[#c05621] cursor-pointer active:scale-95 duration-150">menu</span>
+<h1 class="text-2xl font-serif text-[#9f3e07] dark:text-[#c05621] font-['Newsreader'] italic tracking-tight">Àfàláàbù</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="h-8 w-8 rounded-full bg-surface-container-high overflow-hidden border border-outline-variant/30">
+<img alt="User profile photo" class="h-full w-full object-cover" data-alt="close-up portrait of a West African man with a thoughtful expression against a warm neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8b6ZVaoCihteT2BCbJ50L41rxYqRXTN_5Dmv51Yc_CM1u0mvgzLc0V85hjHjLoZUsvdlV_ntgv_Uo8D-8Y-94re87COtMUeeXPQqHI4AVrC06iMtEeJ6w272o95coCeUIMSS6viWz-ZImFuN9yAkUa8hB3J5jgDWA0SJx504-LyXi5ymBSYYOywq9-59jR4EymwJCdAcZZjBC4OVCC285j1g-E5NCRxExTamlCvaX6jt1LNPC10VfDlUIPOuamaTaAQmX9fjNyLEE"/>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-7xl mx-auto">
+<!-- Welcome Section -->
+<section class="mb-12">
+<p class="font-label text-xs uppercase tracking-[0.2em] text-secondary mb-2">Community Bulletin</p>
+<h2 class="font-headline text-5xl md:text-6xl text-on-surface leading-tight max-w-2xl">The Digital Village Square</h2>
+</section>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<!-- Featured Archive: Cultural Lexicon -->
+<div class="md:col-span-8 group relative overflow-hidden bg-surface-container-low rounded-sm">
+<div class="aspect-[16/9] md:aspect-auto md:h-[500px] w-full relative overflow-hidden">
+<img alt="The Archives" class="w-full h-full object-cover grayscale-[0.3] group-hover:scale-105 transition-transform duration-700" data-alt="cinematic shot of an ancient leather-bound manuscript on a rustic wooden table with morning sunlight streaming through a window" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDY1FEVzyyHlHTZT2RslKjcNydSwQjtrMXC_HK4DguSrZnulXcdRbJO3rQTp5NFSK2DW2NkB4dPrTqxbJBYQcjmoQg-Tq-Oqynk2x3jimNT_1GDT9VLRFwBM_IaP_thUyVZZ7zJO8p-qSXfo9IF4JDw1ZycN1ByAUMFBCxcQ5SfA2Diy9NQ-i6FsvMOPO2O84eTZrDMQ5TB0DtfXqndYbL-_9eXhKzF5ROuQt53zOn2yBHu2VW7zMsOfv9LkdRlhXQgj-PImCDUww06"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface/80 via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-8">
+<span class="inline-block px-3 py-1 bg-tertiary text-on-tertiary font-label text-[10px] uppercase tracking-widest mb-4">The Archives</span>
+<h3 class="font-headline text-4xl text-white italic mb-2">The Etymology of 'Àṣà'</h3>
+<p class="text-white/80 font-body max-w-md">Discover how tradition shapes our modern vernacular through a curated study of ancestral roots.</p>
+</div>
+</div>
+</div>
+<!-- Community Guilds Sidebar -->
+<div class="md:col-span-4 flex flex-col gap-8">
+<div class="bg-surface-container-high p-8 rounded-sm">
+<div class="flex justify-between items-end mb-6">
+<h4 class="font-headline text-2xl italic">Cultural Guilds</h4>
+<span class="font-label text-[10px] text-primary uppercase tracking-widest">Join All</span>
+</div>
+<div class="space-y-6">
+<div class="flex items-center justify-between group cursor-pointer">
+<div>
+<p class="font-body font-bold text-on-surface">Oral Historians</p>
+<p class="font-label text-[10px] text-secondary">4.2k Curators</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">groups</span>
+</div>
+<div class="flex items-center justify-between group cursor-pointer">
+<div>
+<p class="font-body font-bold text-on-surface">Tone Masterclass</p>
+<p class="font-label text-[10px] text-secondary">1.8k Curators</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">graphic_eq</span>
+</div>
+<div class="flex items-center justify-between group cursor-pointer">
+<div>
+<p class="font-body font-bold text-on-surface">Proverb Artisans</p>
+<p class="font-label text-[10px] text-secondary">3.1k Curators</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">history_edu</span>
+</div>
+</div>
+</div>
+<!-- Call to Action -->
+<button class="terracotta-gradient w-full py-6 rounded-sm text-on-primary font-label text-xs uppercase tracking-widest hover:opacity-90 transition-opacity active:scale-[0.98]">
+                    Enter the Studio
+                </button>
+</div>
+<!-- Shared Studio Lessons (The Feed) -->
+<div class="md:col-span-12 mt-8">
+<div class="flex items-center justify-between mb-8">
+<h4 class="font-headline text-3xl">Live from the Studios</h4>
+<div class="flex gap-4">
+<span class="p-2 border border-outline-variant rounded-full cursor-pointer hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-sm">tune</span>
+</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Lesson Card 1 -->
+<article class="flex flex-col gap-4 bg-surface-container-low p-6 rounded-sm editorial-shadow border border-transparent hover:border-outline-variant/20 transition-all">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded-full overflow-hidden bg-surface-dim">
+<img alt="Curator Profile" class="w-full h-full object-cover" data-alt="portrait of a young african woman smiling in soft natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0xLUozOa1mfzB_lKB8cEPiuArBMVTsAaGBEaUYYNFe8GbKTuNVNIMBB8H9szRHzbDzA_bGpkVF0vcerEDPA_FGOAptvW1V2HOytNAO07GSYRPYRp1-r6dVqgC16r01MnTR2md4HP0RC42sg6CoGkWgkKB5Ag2AETeyBNbB95FEBPaANLAYyI6xWIs9mLJkB5RMgG7tkutuDkmEK0fgm0z0iSHKk2RzZJSABj5CYiNam__d-6Wu6CF5YklJS8q0uDVrd4xFOOgWo77"/>
+</div>
+<div>
+<p class="font-body font-bold text-sm">Funmi Ade</p>
+<p class="font-label text-[10px] text-secondary uppercase tracking-tighter">Level 6 Linguist</p>
+</div>
+</div>
+<div class="aspect-square bg-surface-dim rounded-sm overflow-hidden relative">
+<img alt="Lesson Context" class="w-full h-full object-cover opacity-80" data-alt="abstract painting with earthy tones of terracotta, ochre, and deep blue showing rhythmic brush strokes" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4hOC__0zwjk_OqME0c-Oc-K-AyEOHJH3LSoKRClw6SjLvMBpsrpbTKGO9qIy9j-P3uCihJZD1iEul_dqLJwTBxLD-Wp2W8GAOvuuBZ42QD86h_ZLm1Rs4rHHcTHyEedPphsuCDOwOWUUNeGiC0s1v2ivCTbR8aur4Rm6OKQbiYkcaiYcdTquMAgRrwbXxKgPWTOYfrFh1s12LRx_pn45i208xcpmaypVUpoXE7auRsebpjjCzMaI0PuE2mxoBk1OhayPiQSkqed5E"/>
+<div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+<span class="font-label text-[10px] text-on-surface/60 mb-2">STUDIO HIGHLIGHT</span>
+<h5 class="font-headline text-2xl text-on-surface">The Nuance of Greeting</h5>
+</div>
+</div>
+<p class="font-body text-sm text-on-surface-variant line-clamp-2">Just published a breakdown of the three-tiered greeting system in Yoruba dialect. Check the audio weaver for pronunciation!</p>
+<div class="flex items-center justify-between pt-4 border-t border-outline-variant/10">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-sm cursor-pointer hover:text-primary transition-colors">favorite</span>
+<span class="material-symbols-outlined text-sm cursor-pointer hover:text-primary transition-colors">chat_bubble</span>
+</div>
+<span class="material-symbols-outlined text-sm cursor-pointer">share</span>
+</div>
+</article>
+<!-- Lesson Card 2 (Audio Focused) -->
+<article class="flex flex-col gap-4 bg-inverse-surface p-6 rounded-sm editorial-shadow">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded-full overflow-hidden bg-surface-variant">
+<img alt="Curator Profile" class="w-full h-full object-cover" data-alt="portrait of an older african man with wise eyes and a short grey beard" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvxOSVgsTCagJ63GKSbaofIo2_4vA92gdVMx3oqusEodupAWIYQsublo8X2ik75C4KcynUGpR-f_H41C6iWOnGpr35GWcrBmZsTRREqsO7Fov_KCMX2RH_N_qncjqj51d02XCJegyxvJEsQbaPY0T0-yz6lJdwRWTgbM0jJ2_uo12QF3WJrdj5IPTWtowbLh43QRUBmmHANOIrdGuP1S7hUlEO9jUlz0-PaM8eP-Rk75NC4et1hUQXKPndhBEVgD7jtN6S6L6EVSTG"/>
+</div>
+<div>
+<p class="font-body font-bold text-inverse-on-surface text-sm">Baba Tunde</p>
+<p class="font-label text-[10px] text-surface-variant uppercase tracking-tighter">Elder Historian</p>
+</div>
+</div>
+<div class="h-48 bg-surface-container-highest/10 rounded-sm flex flex-col items-center justify-center relative cursor-pointer hover:bg-surface-container-highest/20 transition-colors">
+<span class="material-symbols-outlined text-4xl text-primary mb-4" data-weight="fill">play_circle</span>
+<div class="w-3/4 h-12 flex items-center justify-center gap-1">
+<div class="w-1 h-4 bg-primary rounded-full"></div>
+<div class="w-1 h-8 bg-primary-container rounded-full"></div>
+<div class="w-1 h-12 bg-primary rounded-full"></div>
+<div class="w-1 h-6 bg-primary-container rounded-full"></div>
+<div class="w-1 h-10 bg-primary rounded-full"></div>
+<div class="w-1 h-4 bg-primary-container rounded-full"></div>
+<div class="w-1 h-8 bg-primary rounded-full"></div>
+<div class="w-1 h-2 bg-primary-container rounded-full"></div>
+</div>
+<p class="font-label text-[10px] text-surface-variant mt-4">PRONUNCIATION DRILL: 02:14</p>
+</div>
+<p class="font-body text-sm text-surface-variant">Exploring the phonetics of 'Igbega'. Pay attention to the rising tone at the end of the second syllable.</p>
+<div class="flex items-center justify-between pt-4 border-t border-surface-variant/10">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-sm text-surface-variant cursor-pointer hover:text-primary transition-colors">favorite</span>
+<span class="material-symbols-outlined text-sm text-surface-variant cursor-pointer hover:text-primary transition-colors">chat_bubble</span>
+</div>
+</div>
+</article>
+<!-- Lesson Card 3 -->
+<article class="flex flex-col gap-4 bg-surface-container-low p-6 rounded-sm editorial-shadow border border-transparent hover:border-outline-variant/20 transition-all">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded-full overflow-hidden bg-surface-dim">
+<img alt="Curator Profile" class="w-full h-full object-cover" data-alt="profile photo of a young stylish african man wearing glasses" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNP0HwUVKleXICSWMLsBD3_GCNNOwANVris3KbQo8y7jzNbBIq3QD1UsXxFhLP7zamnY4VOLgcKnq8LrtEUmweLhDI835s9sZjInvpg3hgy6vVNRaVbq8sREYGrad5BX6gIPFvBCe3qUZtmQQY24wDqd9PJ2GryNqNHtj56tJWdQW6yI9b3tVIgrNACqTzUK0CJC2aOMVdbjPhFSGMgv2Q6lqXCjCDXd0Q3dSl3wFvwq9LrRhOvByXCvXDt2MyE5IXlRe1eFR7QbEH"/>
+</div>
+<div>
+<p class="font-body font-bold text-sm">Amara K.</p>
+<p class="font-label text-[10px] text-secondary uppercase tracking-tighter">Vocab Sculptor</p>
+</div>
+</div>
+<div class="flex flex-wrap gap-2 mb-2">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full font-label text-[9px] uppercase tracking-wider">Grammar</span>
+<span class="px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed rounded-full font-label text-[9px] uppercase tracking-wider">Level 4</span>
+</div>
+<h5 class="font-headline text-2xl italic leading-tight">The Architecture of Sentence Flow</h5>
+<p class="font-body text-sm text-on-surface-variant">Breaking down the 01-05 structure of complex sentences for the upcoming Community Exam.</p>
+<div class="flex items-center justify-between pt-4 border-t border-outline-variant/10 mt-auto">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-sm cursor-pointer hover:text-primary transition-colors">favorite</span>
+<span class="material-symbols-outlined text-sm cursor-pointer hover:text-primary transition-colors">chat_bubble</span>
+</div>
+<span class="material-symbols-outlined text-sm cursor-pointer">share</span>
+</div>
+</article>
+</div>
+</div>
+<!-- Vocabulary Discussion Feature -->
+<div class="md:col-span-12 mt-12 mb-12">
+<div class="bg-surface-container p-12 rounded-sm relative overflow-hidden">
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-20 -mt-20 blur-3xl"></div>
+<div class="relative z-10 flex flex-col md:flex-row gap-12 items-center">
+<div class="md:w-1/2">
+<span class="font-label text-xs uppercase tracking-widest text-primary mb-4 block">Word of the Day Discussion</span>
+<h3 class="font-headline text-5xl italic mb-6">Àmúyẹ</h3>
+<p class="font-body text-lg text-on-surface-variant mb-8 leading-relaxed">Join the conversation about the nuanced meaning of 'Àmúyẹ'—often translated as "worth taking" or "desirable," but holding deeper roots in communal validation.</p>
+<div class="flex gap-6">
+<button class="font-label text-xs uppercase tracking-widest text-primary border-b-2 border-primary pb-1">34 Comments</button>
+<button class="font-label text-xs uppercase tracking-widest text-secondary hover:text-on-surface transition-colors">Join Thread</button>
+</div>
+</div>
+<div class="md:w-1/2 w-full">
+<div class="space-y-4">
+<div class="bg-surface-container-lowest p-4 rounded-sm shadow-sm border-l-4 border-primary">
+<p class="text-sm italic font-body">"In my region, we use this primarily for architectural integrity. It's fascinating how the meaning shifts inland..."</p>
+<p class="text-[10px] font-label text-secondary mt-2">— KWAME_STUDIO</p>
+</div>
+<div class="bg-surface-container-lowest/60 p-4 rounded-sm border-l-4 border-secondary/30 ml-8">
+<p class="text-sm font-body">"That's exactly what my grandmother used to say! Great catch."</p>
+<p class="text-[10px] font-label text-secondary mt-2">— ADO_VOICE</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 bg-[#fcf9f2]/80 dark:bg-[#1c1c18]/80 backdrop-blur-xl border-t-[0.5px] border-[#1c1c18]/10 shadow-[0_-4px_20px_rgba(28,28,24,0.04)] flex justify-around items-center pt-3 pb-6 w-full">
+<div class="flex flex-col items-center justify-center text-[#555f71] dark:text-[#939ba1] hover:opacity-80 active:scale-90 transition-transform cursor-pointer">
+<span class="material-symbols-outlined mb-1">auto_stories</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest">Archives</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#555f71] dark:text-[#939ba1] hover:opacity-80 active:scale-90 transition-transform cursor-pointer">
+<span class="material-symbols-outlined mb-1">science</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest">Studio</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#9f3e07] dark:text-[#c05621] font-bold pb-1 border-b-2 border-[#9f3e07] hover:opacity-80 active:scale-90 transition-transform cursor-pointer">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">forum</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest">Feed</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#555f71] dark:text-[#939ba1] hover:opacity-80 active:scale-90 transition-transform cursor-pointer">
+<span class="material-symbols-outlined mb-1">account_box</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest">Profile</span>
+</div>
+</nav>
+<!-- Floating Action Button (Only on main dashboard context) -->
+<div class="fixed bottom-24 right-6 z-40">
+<button class="terracotta-gradient w-14 h-14 rounded-full flex items-center justify-center text-white shadow-xl active:scale-90 transition-transform">
+<span class="material-symbols-outlined">add_comment</span>
+</button>
+</div>
+</body></html>

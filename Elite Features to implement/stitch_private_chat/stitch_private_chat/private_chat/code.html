@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,700;0,800;1,800&amp;family=Lexend:wght@300;400;500;600&amp;family=Dosis:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-surface": "#2d1600",
+              "on-background": "#2d1600",
+              "inverse-surface": "#462a0d",
+              "surface-tint": "#aa3601",
+              "inverse-primary": "#ffb59c",
+              "surface-variant": "#ffdcbf",
+              "on-secondary-fixed-variant": "#005320",
+              "tertiary-container": "#9b6c00",
+              "on-tertiary-fixed": "#281900",
+              "on-error-container": "#93000a",
+              "surface": "#fff8f5",
+              "secondary-fixed": "#7ffc97",
+              "surface-container-low": "#fff1e8",
+              "surface-container": "#ffeada",
+              "surface-container-high": "#ffe3cd",
+              "inverse-on-surface": "#ffeee1",
+              "on-tertiary": "#ffffff",
+              "surface-container-lowest": "#ffffff",
+              "primary": "#a73400",
+              "primary-fixed": "#ffdbcf",
+              "on-surface-variant": "#59413a",
+              "outline": "#8c7168",
+              "surface-bright": "#fff8f5",
+              "primary-container": "#c94c1a",
+              "surface-container-highest": "#ffdcbf",
+              "surface-dim": "#ffd2aa",
+              "on-primary-fixed-variant": "#822700",
+              "tertiary-fixed": "#ffdeab",
+              "primary-fixed-dim": "#ffb59c",
+              "error": "#ba1a1a",
+              "error-container": "#ffdad6",
+              "secondary-fixed-dim": "#62df7d",
+              "tertiary-fixed-dim": "#f8bc51",
+              "outline-variant": "#e0bfb5",
+              "on-tertiary-fixed-variant": "#5f4100",
+              "on-secondary-container": "#007230",
+              "on-tertiary-container": "#fffbff",
+              "on-primary-fixed": "#390c00",
+              "on-secondary": "#ffffff",
+              "on-primary": "#ffffff",
+              "on-secondary-fixed": "#002109",
+              "secondary": "#006e2d",
+              "secondary-container": "#7cf994",
+              "on-primary-container": "#fffbff",
+              "tertiary": "#7b5500",
+              "background": "#fff8f5",
+              "on-error": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Lexend"],
+              "label": ["Lexend"],
+              "dosis": ["Dosis"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .kente-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l15 30H15L30 0zM0 30l15 30H0V30zm60 0v30H45l15-30z' fill='%23006e2d' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+        .bubble-in {
+            border-bottom-left-radius: 0.25rem;
+        }
+        .bubble-out {
+            border-bottom-right-radius: 0.25rem;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-dosis text-on-surface antialiased overflow-hidden h-screen flex flex-col">
+<!-- TopAppBar Fragment Logic -->
+<header class="bg-[#fff8f5] dark:bg-stone-950/80 backdrop-blur-md flex justify-between items-center w-full px-6 py-4 z-50">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary hover:bg-[#ffeada] p-2 rounded-full transition-colors">arrow_back</button>
+<div class="relative">
+<img alt="Amara Diallo Profile" class="w-12 h-12 rounded-full object-cover" data-alt="portrait of a beautiful West African woman with braided hair and colorful traditional headwrap, soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnq4sety1Yfe5VaLQJZylgu1yeAyrb5Ne3pLOP7Bl3HQn75jYBHtnK2CYF4vtwfP-GzJV4TmepEuvQKEuX5eYHdo1_U1vNdZmAwsE010cNUiq2Oky2qFd5Io5fAb4GLuZwZedpksNrdQ1grql1QWt0upHnwV_p6n6MlQ1KEfpyWmoJk05QK2faU_9I5aMaIcnHhFlwNcWvz4budNOS8_j-a-rb2ymVe1RuJAbM3iP-nZZguvhrP8haG1FsgZH_1z_4WtX5oki4MQSt"/>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-secondary-fixed border-2 border-surface rounded-full"></div>
+</div>
+<div class="flex flex-col">
+<h1 class="font-headline font-bold text-xl tracking-tight text-primary leading-tight">Amara Diallo</h1>
+<span class="text-xs font-medium text-secondary flex items-center gap-1">
+                    Wolof Partner <span class="w-1 h-1 bg-secondary rounded-full"></span> Online
+                </span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary-container hover:bg-[#ffeada] p-2 rounded-full transition-colors">videocam</button>
+<button class="material-symbols-outlined text-primary-container hover:bg-[#ffeada] p-2 rounded-full transition-colors">call</button>
+<button class="material-symbols-outlined text-primary-container hover:bg-[#ffeada] p-2 rounded-full transition-colors">more_vert</button>
+</div>
+</header>
+<main class="flex-1 flex overflow-hidden">
+<!-- Sidebar: Chat List (Desktop/Tablet) -->
+<aside class="hidden md:flex flex-col w-80 bg-surface-container-low border-r border-outline-variant/15">
+<div class="p-4">
+<div class="bg-surface-container-highest rounded-full px-4 py-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-outline">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-full font-body" placeholder="Search conversations" type="text"/>
+</div>
+</div>
+<div class="overflow-y-auto flex-1">
+<!-- Chat Item: Active -->
+<div class="px-4 py-3 bg-surface-container flex items-center gap-3 cursor-pointer">
+<img alt="Amara" class="w-14 h-14 rounded-full object-cover" data-alt="vibrant portrait of a smiling woman from Senegal" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkoa0WaMlZVcWLPImENmWG-itkuNdSW9IRqLAoUPX2icch9hXqrnMfXsVlObv4fv6SFLdoS2Xw2P-lRYNDhT6EVuYP7zcMGJ8VQtjcoKT80K8apNpWZW37b07rymWETgGnm6174dzMPI09ZlHFzhnntw8CEiFVOBZBL6TTCy4kSQwwRWDA_O_LxZkQg7uSJK3B1rAxB-0NPVGJ62kmrghuawfEtUabmOqBmUQ9C-w_jtuqMGaKh6ZXFNSLia5_BbUQtri96LLLRkwh"/>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline">
+<h3 class="font-bold truncate text-primary">Amara Diallo</h3>
+<span class="text-[10px] text-outline font-body">14:32</span>
+</div>
+<p class="text-sm text-on-surface-variant truncate font-body italic">Waaw waaw, ndax dëkk ngoon?</p>
+</div>
+</div>
+<!-- Chat Item: Others -->
+<div class="px-4 py-3 hover:bg-surface-container/50 flex items-center gap-3 cursor-pointer transition-colors">
+<img alt="Kofi" class="w-14 h-14 rounded-full object-cover" data-alt="Close up of a young Ghanaian man with a friendly smile wearing a patterned shirt" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnUXlitXFNiVa2LaCLXR6ItzHBkZbp-2re5E-zV74kJnf9nlj-PGdqEBy_YAsXbFSVAdo8jlgzB3EanbpaYuCFaTiJdvKe2FK9Fu0atQ5dCiBBe9t4uJrwTAO1F2xX7EUT791NV9U7LGx8tS8aV926dQfNUMVU5_jleRO64RTOw30E10wrFbWGUIrUlzroWOWznvc6a52CW_Ov6RqqfVTU_2AJq_YuuFogqGKarzBHFIYRxVel-EBlM0KnPB_rZcPZCzajnCeVC2E-"/>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline">
+<h3 class="font-bold truncate">Kofi Mensah</h3>
+<span class="text-[10px] text-outline font-body">Yesterday</span>
+</div>
+<p class="text-sm text-on-surface-variant truncate font-body">See you at the village square!</p>
+</div>
+<div class="bg-primary text-white text-[10px] rounded-full w-5 h-5 flex items-center justify-center font-bold">2</div>
+</div>
+<!-- Chat Item: Others -->
+<div class="px-4 py-3 hover:bg-surface-container/50 flex items-center gap-3 cursor-pointer transition-colors">
+<div class="w-14 h-14 rounded-full bg-tertiary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-on-tertiary-fixed text-3xl">groups</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline">
+<h3 class="font-bold truncate">Dakar Tribe</h3>
+<span class="text-[10px] text-outline font-body">Tue</span>
+</div>
+<p class="text-sm text-secondary font-semibold truncate font-body">Moussa: Jerejef!</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Chat Thread -->
+<section class="flex-1 flex flex-col bg-surface kente-pattern relative">
+<div class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6">
+<!-- Timestamp -->
+<div class="flex justify-center">
+<span class="bg-surface-container-highest/80 backdrop-blur-sm px-4 py-1 rounded-full text-[10px] uppercase tracking-widest font-bold text-on-surface-variant">Today</span>
+</div>
+<!-- Message Received -->
+<div class="flex flex-col items-start gap-1 max-w-[85%] md:max-w-[70%]">
+<div class="bg-surface-container-highest text-on-surface p-4 rounded-xl bubble-in shadow-sm">
+<p class="text-base font-medium">Salaam amary! Nanga def?</p>
+<div class="mt-1 flex items-center gap-2 pt-2 border-t border-outline-variant/20">
+<span class="material-symbols-outlined text-primary text-sm">translate</span>
+<p class="text-xs font-body text-on-surface-variant">Hello Amary! How are you?</p>
+</div>
+</div>
+<span class="text-[10px] text-outline ml-2 font-body">14:28</span>
+</div>
+<!-- Message Sent -->
+<div class="flex flex-col items-end gap-1 ml-auto max-w-[85%] md:max-w-[70%]">
+<div class="bg-secondary-container text-on-secondary-container p-4 rounded-xl bubble-out shadow-sm">
+<p class="text-base font-medium">Mangi fi rekk, jerejef. Yaw nag?</p>
+<div class="mt-1 flex items-center gap-2 pt-2 border-t border-secondary/20">
+<span class="material-symbols-outlined text-secondary text-sm">translate</span>
+<p class="text-xs font-body text-on-secondary-fixed-variant">I am fine, thank you. And you?</p>
+</div>
+</div>
+<div class="flex items-center gap-1 mr-2">
+<span class="text-[10px] text-outline font-body">14:30</span>
+<span class="material-symbols-outlined text-[14px] text-secondary" style="font-variation-settings: 'FILL' 1;">done_all</span>
+</div>
+</div>
+<!-- Vocabulary Card Intervention -->
+<div class="flex justify-center my-8">
+<div class="bg-surface-bright border border-outline-variant/30 p-6 rounded-lg max-w-sm w-full shadow-xl shadow-on-surface/5 relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 bg-tertiary-fixed w-16 h-16 rounded-full opacity-20 group-hover:scale-110 transition-transform"></div>
+<div class="flex justify-between items-start mb-4">
+<div>
+<span class="bg-primary-fixed text-on-primary-fixed text-[10px] px-2 py-0.5 rounded-full uppercase font-bold tracking-tighter">New Word</span>
+<h4 class="text-3xl font-headline font-extrabold text-primary mt-2">dëkk</h4>
+</div>
+<button class="bg-primary text-white p-3 rounded-full flex items-center justify-center hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+<div class="space-y-1">
+<p class="text-lg text-on-surface font-medium">place / village / to live</p>
+<p class="text-sm text-on-surface-variant italic font-body">"Fépp fuy dëkk, danga fiy dëkk."</p>
+</div>
+</div>
+</div>
+<!-- Message Received with complex translation -->
+<div class="flex flex-col items-start gap-1 max-w-[85%] md:max-w-[70%]">
+<div class="bg-surface-container-highest text-on-surface p-4 rounded-xl bubble-in shadow-sm">
+<p class="text-base font-medium">Waaw waaw, ndax dëkk ngoon?</p>
+<div class="mt-2 flex items-start gap-2 pt-3 border-t border-outline-variant/20">
+<span class="material-symbols-outlined text-primary text-sm mt-0.5">translate</span>
+<div class="flex flex-col">
+<p class="text-sm font-body text-on-surface-variant leading-tight">Yes, are you in your hometown tonight?</p>
+<span class="text-[10px] text-primary/70 font-bold uppercase mt-1">Cultural Context: Village visits</span>
+</div>
+</div>
+</div>
+<span class="text-[10px] text-outline ml-2 font-body">14:32</span>
+</div>
+</div>
+<!-- Input Bar -->
+<footer class="p-4 bg-surface-container-low/90 backdrop-blur-xl border-t border-outline-variant/10">
+<div class="flex items-center gap-2 max-w-5xl mx-auto">
+<div class="flex-1 bg-surface-container-lowest rounded-full px-4 py-2 flex items-center gap-2 shadow-sm">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors">mood</button>
+<input class="flex-1 bg-transparent border-none focus:ring-0 text-sm py-2 font-body" placeholder="Reply in Wolof..." type="text"/>
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors">attach_file</button>
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors">photo_camera</button>
+</div>
+<button class="bg-primary w-12 h-12 rounded-full flex items-center justify-center text-white shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
+<!-- Contextual logic: if text is empty, show mic, else show send -->
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">mic</span>
+</button>
+</div>
+</footer>
+</section>
+</main>
+<!-- BottomNavBar logic from Shared Components -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-end px-4 h-24 bg-[#a73400]/90 dark:bg-stone-900/90 backdrop-blur-xl rounded-t-[2.5rem] z-50 pb-safe shadow-2xl">
+<a class="flex flex-col items-center justify-center text-[#ffdbcf]/70 p-3 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-['Dosis'] font-medium text-[10px] uppercase tracking-widest">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#ffdbcf]/70 p-3 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined">public</span>
+<span class="font-['Dosis'] font-medium text-[10px] uppercase tracking-widest">Global</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#ffdbcf]/70 p-3 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined">record_voice_over</span>
+<span class="font-['Dosis'] font-medium text-[10px] uppercase tracking-widest">Class</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#fff8f5]/20 text-white rounded-full p-3 mb-1 animate-pulse-subtle" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-['Dosis'] font-medium text-[10px] uppercase tracking-widest">Tribe</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#ffdbcf]/70 p-3 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-['Dosis'] font-medium text-[10px] uppercase tracking-widest">Village</span>
+</a>
+</nav>
+</body></html>

@@ -19,7 +19,7 @@ class OnboardingData {
   bool? culturalContentEnabled;
   
   // Learning Path
-  String? selectedPath; // 'explore', 'career', 'academic' - from onboarding path selection
+  String? selectedPath; // 'explore', 'career', 'academic', 'dialect' - from onboarding path selection
   
   // Goals & Motivation
   String? primaryGoal; // 'travel', 'heritage', 'business', 'academic', 'confidence', 'brain_training'

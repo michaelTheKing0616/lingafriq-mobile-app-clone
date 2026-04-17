@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,700;1,400;1,700&amp;family=Manrope:wght@400;500;700&amp;family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary-fixed-variant": "#3d4759",
+              "inverse-primary": "#ffb596",
+              "surface-variant": "#e5e2db",
+              "surface-tint": "#a14009",
+              "inverse-surface": "#31312c",
+              "on-surface": "#1c1c18",
+              "on-background": "#1c1c18",
+              "outline": "#8a7268",
+              "on-surface-variant": "#57423a",
+              "primary": "#9f3e07",
+              "primary-fixed": "#ffdbcd",
+              "inverse-on-surface": "#f3f0e9",
+              "on-tertiary": "#ffffff",
+              "surface-container-lowest": "#ffffff",
+              "surface-container": "#f1eee7",
+              "surface-container-high": "#ebe8e1",
+              "secondary-fixed": "#d9e3f9",
+              "surface-container-low": "#f6f3ec",
+              "on-error-container": "#93000a",
+              "surface": "#fcf9f2",
+              "on-tertiary-fixed": "#241a00",
+              "tertiary-container": "#cca730",
+              "on-secondary-container": "#596376",
+              "on-tertiary-container": "#4f3d00",
+              "on-primary-fixed": "#360f00",
+              "outline-variant": "#dec0b5",
+              "on-tertiary-fixed-variant": "#574500",
+              "error": "#ba1a1a",
+              "error-container": "#ffdad6",
+              "secondary-fixed-dim": "#bdc7dc",
+              "tertiary-fixed-dim": "#e9c349",
+              "primary-fixed-dim": "#ffb596",
+              "surface-container-highest": "#e5e2db",
+              "surface-dim": "#dcdad3",
+              "on-primary-fixed-variant": "#7d2d00",
+              "tertiary-fixed": "#ffe088",
+              "primary-container": "#c05621",
+              "surface-bright": "#fcf9f2",
+              "on-error": "#ffffff",
+              "on-primary-container": "#fffeff",
+              "tertiary": "#735c00",
+              "background": "#fcf9f2",
+              "secondary": "#555f71",
+              "secondary-container": "#d6e0f6",
+              "on-secondary-fixed": "#121c2c",
+              "on-primary": "#ffffff",
+              "on-secondary": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Newsreader"],
+              "body": ["Manrope"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .editorial-shadow {
+        box-shadow: 0 20px 40px rgba(28, 28, 24, 0.06);
+      }
+      .terracotta-gradient {
+        background: linear-gradient(135deg, #9f3e07 0%, #c05621 100%);
+      }
+      ::-webkit-scrollbar { width: 4px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: #dec0b5; border-radius: 10px; }
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#fcf9f2] dark:bg-[#1c1c18] backdrop-blur-md bg-opacity-90 flex justify-between items-center px-6 h-16 w-full max-w-none border-b border-outline-variant/10">
+<div class="flex items-center gap-4">
+<button class="text-[#9f3e07] dark:text-[#c05621] hover:opacity-80 transition-opacity active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+</div>
+<h1 class="font-['Newsreader'] italic text-2xl tracking-tight text-[#9f3e07] dark:text-[#c05621] font-bold tracking-tighter">Àfàláàbù</h1>
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="Close up portrait of a young African woman with artistic braided hair and vibrant traditional earrings against a soft beige background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWoUTgejBTzQ0lOwfAb82s9pynWZ4Ep96gvfKUe_dyDx4CCuKx3TOSu1h6VkvUNzmwqx67CQvdZpl0TtKHsmOeGFJdEJR9BbM-u_T6M06zLSywcdqo1tg700lhgQMy27hyCQendVZvC8DZptHx2pR2BwbdwvtRDR02ikm3fqM1WtpRVw0rxFuGAaHtj6-CRoi5nUTFVJli4FmQRAt1-EwHnSU29-NVnWxoI7oOnrvjmIGgqXu08jNgieeV3Azy6e4KRthYUs2K8ECE"/>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-7xl mx-auto">
+<!-- Experience Selector (Tab Switcher) -->
+<section class="mb-10 sticky top-20 z-40 bg-surface/80 backdrop-blur-sm py-4 -mx-6 px-6">
+<div class="flex p-1 bg-surface-container rounded-lg max-w-md mx-auto">
+<button class="flex-1 flex items-center justify-center gap-2 py-3 bg-white shadow-sm rounded-md font-label text-[10px] uppercase tracking-widest text-primary font-bold transition-all">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+                    The Archive
+                </button>
+<button class="flex-1 flex items-center justify-center gap-2 py-3 rounded-md font-label text-[10px] uppercase tracking-widest text-secondary hover:text-primary transition-all">
+<span class="material-symbols-outlined text-sm">settings_input_component</span>
+                    The Studio
+                </button>
+</div>
+</section>
+<!-- Archive Section (Magazine Style) -->
+<section class="mb-20" id="archive-section">
+<div class="flex justify-between items-baseline mb-8">
+<h2 class="font-headline text-3xl italic">Featured Collections</h2>
+<a class="font-label text-[10px] uppercase tracking-widest text-primary border-b border-primary/20" href="#">Browse All</a>
+</div>
+<div class="space-y-16">
+<!-- Main Featured Item -->
+<div class="relative group overflow-hidden rounded-sm aspect-[3/4] md:aspect-video shadow-2xl">
+<img alt="The Griot" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2B0vTTihyDDevpwfOP5MMbjVr94AD109xBcYvKcp7kK-1tzuQ2sNgXAR6-7omaoT1y9XzYziRmhGbeOWamK0q4GH2vpStF92Vg85peJ__14YV2tXRJPnU3m54SclCylqwNYoGk6FqSTSx5THc0RRDiH61auaX9AqRUN23KM9lzkJaNrHpETqUXhAnVgZsLe0Mor6RRiTAF63e6tBqyH4VFmIrnqUaXCsWCH-fRyu9kXAoaBKEdR4jeZqo_xxEuFeH83JnOgz2Kzrq"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute bottom-8 left-8 right-8">
+<span class="font-label text-[10px] text-white/70 uppercase tracking-[0.3em] mb-3 block">Volume 12 • The Oral Archive</span>
+<h3 class="font-headline text-4xl text-white italic leading-tight mb-4">The Griot's Tongue: Preserving the Mandé Legacy</h3>
+<button class="bg-white text-on-surface px-6 py-3 rounded-sm font-label text-[10px] uppercase tracking-widest active:scale-95 transition-transform">Begin Exploration</button>
+</div>
+</div>
+<!-- Editorial Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+<div class="group cursor-pointer">
+<div class="mb-6 overflow-hidden rounded-sm aspect-square">
+<img alt="Indigo" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnC2hQA2auHGo4uJ6XNy7e0jgJFQEwa0aMp1-sl0u2yjaxnm8doFw9iTlqAqx9QAr_pHl_xdakfb-9u2NbzeoW3MZVdNfIQDsd9bKSYDxpY4TVSvFTLRywqpMSy6feRyP7mkLQ6Hvk7Ut2lZ_RXBCq2HnfBZYWK4ypa2KinDUg0d0VFnVwCkfCXJ5nSlSdZ9E5Z0clulxRb5I7KcQdnHSEai-yD8mnyCtecRlVHGS9ZDcFcDu74-uHdhqkl8mP9sUbYadKSWgRkWG1"/>
+</div>
+<span class="font-label text-[10px] text-tertiary uppercase tracking-widest block mb-2">Visual Languages</span>
+<h4 class="font-headline text-2xl mb-3 leading-snug group-hover:text-primary transition-colors">Adire: The Poetry of Indigo Textiles</h4>
+<p class="font-body text-secondary text-sm leading-relaxed italic">"Every pattern is a word, every shade of blue is a sentence in the history of the Yorùbá."</p>
+</div>
+<div class="group cursor-pointer">
+<div class="mb-6 overflow-hidden rounded-sm aspect-square">
+<img alt="Architecture" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCosy2OHKwh8-W2H-_TL2FvG1KAeJ8imJx4DKouQPpADizfq9s1ovuTk9RbIrLyr2sPJkAcD0lXaWJD4uCYXg4DWPaBcNoO6vDRxMzUNp35JwEXd9O1keYO4ruMAa4OCMsgNMeczdWCYxuDrJh6jCYBbRoIIPWYRCpdTuHrbod_fV0dz5bokI9RARPLquy3LQWr8r_n2z4FQFraOrstpesl-opofdU4jeTqfX20MbRsUj-rAukwOl1L4oNJykeU7Qj0suYPxiM4ReAR"/>
+</div>
+<span class="font-label text-[10px] text-tertiary uppercase tracking-widest block mb-2">Built Form</span>
+<h4 class="font-headline text-2xl mb-3 leading-snug group-hover:text-primary transition-colors">The Syntax of Clay and Earth</h4>
+<p class="font-body text-secondary text-sm leading-relaxed italic">Exploring how Sudano-Sahelian architecture mirrors linguistic structures.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Studio Preview Section -->
+<section class="mb-20 bg-inverse-surface text-inverse-on-surface p-8 rounded-sm" id="studio-section">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+<div>
+<span class="font-label text-[10px] text-primary-fixed uppercase tracking-widest block mb-2">The Studio Space</span>
+<h2 class="font-headline text-4xl italic">Archive Laboratory</h2>
+</div>
+<button class="terracotta-gradient text-white px-8 py-4 rounded-sm font-label text-[10px] uppercase tracking-widest flex items-center gap-3 active:scale-95 transition-transform shadow-lg">
+<span class="material-symbols-outlined text-lg">cloud_upload</span>
+                    Import New Media
+                </button>
+</div>
+<div>
+<div class="flex items-center gap-4 mb-8">
+<h3 class="font-label text-sm uppercase tracking-widest text-surface-variant">Recently Processed</h3>
+<div class="h-px flex-grow bg-white/10"></div>
+</div>
+<div class="space-y-3">
+<!-- Lesson Item 1 -->
+<div class="flex items-center gap-4 p-4 bg-white/5 rounded-sm hover:bg-white/10 transition-colors border-l-2 border-primary group">
+<div class="w-12 h-12 bg-white/5 rounded-sm flex items-center justify-center overflow-hidden flex-shrink-0">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+</div>
+<div class="flex-grow">
+<h4 class="font-label text-xs uppercase tracking-wider mb-1">Dundun_Patterns_02.mp4</h4>
+<p class="text-[10px] text-surface-variant opacity-60">TRANSCRIPTION COMPLETE • 4 MINS AGO</p>
+</div>
+<span class="material-symbols-outlined text-surface-variant/40 group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+<!-- Lesson Item 2 -->
+<div class="flex items-center gap-4 p-4 bg-white/5 rounded-sm hover:bg-white/10 transition-colors border-l-2 border-tertiary-container group">
+<div class="w-12 h-12 bg-white/5 rounded-sm flex items-center justify-center overflow-hidden flex-shrink-0">
+<span class="material-symbols-outlined text-tertiary-container">description</span>
+</div>
+<div class="flex-grow">
+<h4 class="font-label text-xs uppercase tracking-wider mb-1">Oral_History_Kano_01.pdf</h4>
+<p class="text-[10px] text-surface-variant opacity-60">LINGUISTIC MAPPING READY • 2 HOURS AGO</p>
+</div>
+<span class="material-symbols-outlined text-surface-variant/40 group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<div class="mt-8 text-center">
+<button class="font-label text-[10px] uppercase tracking-widest text-surface-variant/60 hover:text-white transition-colors">Enter Laboratory Dashboard</button>
+</div>
+</div>
+</section>
+<!-- Visual Narratives Photo Series -->
+<section class="mb-32">
+<h3 class="font-headline text-3xl italic mb-12 text-center underline underline-offset-8 decoration-outline-variant">Visual Narratives</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+<div class="relative group">
+<img alt="Portrait" class="w-full rounded-sm editorial-shadow transition-transform duration-500 group-hover:-translate-y-2" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAU08_LTjAHDrC4JYGzs9pELfVrNT7za79UTKhbUVUv23Ij2BjSnXolC2LcafcpAdBVmNhdj4RQvoS8edfhPrXKhxeIs6vQTbO4NpIGRG1vtjmtpbC_K28BqLt7-CRiYdC_eqqVo0XCKGjh24kVyN1QdbIxmfwdymDw06BPl8elnWlQYW8aBxJgAVNZyLHrjMKdVNQVEyAsgtR1aTeUxDcKBJ1pQPzN2wr-OjUgyCVkGFSQnNx1Ma5a9tMLVO4tFW5Gn43n1IdqOe1m"/>
+<div class="mt-6">
+<h4 class="font-headline text-xl italic mb-1">The Face of the Ancestor</h4>
+<p class="font-label text-[10px] tracking-widest text-outline">BY OLUWAFEMI ADEYEMI</p>
+</div>
+</div>
+<div class="pt-12 md:pt-24">
+<div class="max-w-md ml-auto text-right border-r-2 border-primary pr-6">
+<p class="font-body text-secondary leading-relaxed italic text-lg mb-8">
+                            "Language is the landscape of the soul. When we speak, we are not just exchanging data; we are painting the terrain of our ancestors."
+                        </p>
+<button class="font-label text-[10px] uppercase tracking-widest text-primary">View Photo Essay</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-4 pt-2 bg-[#fcf9f2] dark:bg-[#1c1c18] backdrop-blur-lg bg-opacity-95 z-50 border-t border-[#1c1c18]/10 dark:border-[#ffffff]/10 shadow-[0_-4px_20px_rgba(28,28,24,0.04)]">
+<a class="flex flex-col items-center justify-center text-[#9f3e07] dark:text-[#c05621] font-bold bg-[#c05621]/10 rounded-xl px-3 py-1 translate-y-[-2px] transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#555f71] dark:text-[#ebe8e1] opacity-70 hover:text-[#9f3e07] dark:hover:text-[#c05621] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest mt-1">Studio</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#555f71] dark:text-[#ebe8e1] opacity-70 hover:text-[#9f3e07] dark:hover:text-[#c05621] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest mt-1">Tribe</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#555f71] dark:text-[#ebe8e1] opacity-70 hover:text-[#9f3e07] dark:hover:text-[#c05621] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest mt-1">Profile</span>
+</a>
+</nav>
+<!-- Global Action Button -->
+<button class="fixed bottom-24 right-6 w-14 h-14 terracotta-gradient text-white rounded-full flex items-center justify-center shadow-xl z-40 active:scale-90 transition-transform md:hidden">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+</button>
+</body></html>

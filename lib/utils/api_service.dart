@@ -14,7 +14,22 @@ import 'package:lingafriq/utils/transport_error_policy.dart';
 class ApiService {
   static late Dio _dio;
   static bool _initialized = false;
+  static bool _usingStandaloneClient = false;
   static const int _maxRetryAttempts = 3;
+
+  /// Use the same [Dio] instance as [client] in `dio_provider.dart` (auth refresh, retries).
+  /// Called from [MyApp.initState] so all [ApiService] traffic shares one client.
+  static void bindSharedDio(Dio dio) {
+    _dio = dio;
+    _initialized = true;
+    _usingStandaloneClient = false;
+  }
+
+  /// True when [bindSharedDio] has been applied (preferred) or legacy [initialize] completed.
+  static bool get isReady => _initialized;
+
+  /// False when the legacy standalone [Dio] from [initialize] is in use.
+  static bool get usesSharedDioClient => _initialized && !_usingStandaloneClient;
 
   static bool _isRetryableStatus(int? statusCode) {
     if (statusCode == null) return false;
@@ -57,6 +72,17 @@ class ApiService {
   /// Initialize the API service with base configuration
   static Future<void> initialize() async {
     if (_initialized) return;
+
+    // Prefer [bindSharedDio] from app startup; yield briefly for [MyApp.initState].
+    for (var i = 0; i < 24 && !_initialized; i++) {
+      await Future<void>.delayed(const Duration(milliseconds: 25));
+    }
+    if (_initialized) return;
+
+    logger.warn(
+      'ApiService: shared Dio not bound after wait — creating standalone client. '
+      'Auth/refresh behavior may differ from api_provider. Call bindSharedDio early.',
+    );
 
     final baseUrl = EnvConfig.backendBaseUrl.endsWith('/')
         ? EnvConfig.backendBaseUrl
@@ -167,6 +193,7 @@ class ApiService {
     ));
 
     _initialized = true;
+    _usingStandaloneClient = true;
   }
 
   /// GET request

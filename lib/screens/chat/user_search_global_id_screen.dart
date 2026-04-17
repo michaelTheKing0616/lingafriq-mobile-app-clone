@@ -128,19 +128,45 @@ class UserSearchGlobalIdScreen extends HookConsumerWidget {
               // Search Bar
               Padding(
                 padding: EdgeInsets.all(PanAfricanSpacing.lg),
-                child: PanAfricanTextField(
-                  controller: searchQuery,
-                  label: 'Search by @handle (global_id)',
-                  hint: 'e.g., @username or username',
-                  prefixIcon: Icons.search,
-                  onChanged: (value) {
-                    if (value.length >= 2) {
-                      debouncedSearch(value);
-                    } else {
-                      searchResults.value = [];
-                      searchError.value = null;
-                    }
-                  },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    PanAfricanTextField(
+                      controller: searchQuery,
+                      label: 'Search by @handle (global_id)',
+                      hint: 'e.g., @username or username',
+                      prefixIcon: Icons.search,
+                      textInputAction: TextInputAction.search,
+                      onSubmitted: (value) {
+                        FocusScope.of(context).unfocus();
+                        if (value.trim().length >= 2) {
+                          searchUsers(value);
+                        }
+                      },
+                      onChanged: (value) {
+                        if (value.length >= 2) {
+                          debouncedSearch(value);
+                        } else {
+                          searchResults.value = [];
+                          searchError.value = null;
+                        }
+                      },
+                    ),
+                    SizedBox(height: PanAfricanSpacing.sm),
+                    FilledButton.icon(
+                      onPressed: isSearching.value
+                          ? null
+                          : () {
+                              FocusScope.of(context).unfocus();
+                              final q = searchQuery.text.trim();
+                              if (q.length >= 2) {
+                                searchUsers(q);
+                              }
+                            },
+                      icon: const Icon(Icons.person_search_rounded),
+                      label: const Text('Search'),
+                    ),
+                  ],
                 ),
               ),
 

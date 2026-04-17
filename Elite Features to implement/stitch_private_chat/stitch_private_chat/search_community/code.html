@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Lexend:wght@300;400;500;600&amp;family=Dosis:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "inverse-surface": "#462a0d",
+                        "on-tertiary-fixed-variant": "#5f4100",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#ffeee1",
+                        "primary": "#a73400",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed-variant": "#005320",
+                        "tertiary-container": "#9b6c00",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#ffdeab",
+                        "error": "#ba1a1a",
+                        "primary-container": "#c94c1a",
+                        "tertiary": "#7b5500",
+                        "surface-container-high": "#ffe3cd",
+                        "secondary-fixed-dim": "#62df7d",
+                        "on-tertiary-container": "#fffbff",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-container": "#007230",
+                        "surface-container": "#ffeada",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#7cf994",
+                        "on-primary-fixed": "#390c00",
+                        "on-primary-container": "#fffbff",
+                        "on-primary-fixed-variant": "#822700",
+                        "secondary": "#006e2d",
+                        "surface-tint": "#aa3601",
+                        "primary-fixed": "#ffdbcf",
+                        "surface-container-highest": "#ffdcbf",
+                        "error-container": "#ffdad6",
+                        "on-surface": "#2d1600",
+                        "outline-variant": "#e0bfb5",
+                        "on-background": "#2d1600",
+                        "surface-dim": "#ffd2aa",
+                        "on-tertiary-fixed": "#281900",
+                        "outline": "#8c7168",
+                        "on-secondary-fixed": "#002109",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface-variant": "#59413a",
+                        "background": "#fff8f5",
+                        "surface": "#fff8f5",
+                        "inverse-primary": "#ffb59c",
+                        "surface-bright": "#fff8f5",
+                        "secondary-fixed": "#7ffc97",
+                        "surface-container-low": "#fff1e8",
+                        "surface-variant": "#ffdcbf",
+                        "primary-fixed-dim": "#ffb59c",
+                        "tertiary-fixed-dim": "#f8bc51"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Lexend"],
+                        "label": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Lexend', sans-serif; }
+        h1, h2, h3 { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-[#fff8f5] dark:bg-orange-950/20 text-[#a73400] dark:text-orange-500 docked full-width top-0 sticky z-50 no-border bg-[#fff1e8] dark:bg-orange-900/10 flat no shadows flex justify-between items-center px-6 py-4 w-full backdrop-blur-md bg-opacity-80">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-primary-fixed border-2 border-primary">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="portrait of a young African woman with a warm smile and stylish glasses in soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3_ReckA6ywa-pAQln4BOWH8lagMzl2QeXEXVpmd8e0KLk5KNHzZqUyJcXnYa7AyLKluqNqvCV80SrzjsvYb9LsylZ0dICRfcJUDtLkFgAat2T0vTxii1VriA5AlXmVRy_JDgUK-FXJhWRdcMCHmBFBb3DG82MgHfptE8Q8YZ6g1DBghVLTqX6Q6wQQ-7nlFZjZ1bwNikT27y6up4LZaGRFOXp_b9EreZYxOBpGE8SwbcyFhBgFK1tUFyfJa2UAxoZ0nTkEyjvmTPa"/>
+</div>
+<span class="font-['Plus_Jakarta_Sans'] font-bold text-2xl tracking-tight text-[#a73400] dark:text-orange-500 italic">LingAfriq</span>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#ffeada] dark:hover:bg-orange-800/30 transition-colors active:scale-95 duration-150 ease-in-out">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</header>
+<main class="max-w-screen-xl mx-auto px-6 pt-6 space-y-12">
+<!-- Sticky Search Bar -->
+<section class="sticky top-[80px] z-40 bg-surface/80 backdrop-blur-md -mx-6 px-6 py-2">
+<div class="relative group">
+<div class="absolute inset-y-0 left-5 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-primary">search</span>
+</div>
+<input class="w-full bg-surface-container-low border-none focus:ring-2 focus:ring-primary rounded-full py-5 pl-14 pr-6 text-lg font-medium placeholder:text-on-surface-variant/50 transition-all shadow-sm group-hover:shadow-md" placeholder="Search LingAfriq" type="text"/>
+</div>
+</section>
+<!-- Trending Now - Asymmetric Layout -->
+<section>
+<div class="flex items-end justify-between mb-6">
+<div>
+<span class="text-primary font-bold tracking-widest text-xs uppercase block mb-1">Happening Fast</span>
+<h2 class="text-3xl font-extrabold tracking-tight">Trending now</h2>
+</div>
+<button class="text-primary font-bold text-sm hover:underline">View all</button>
+</div>
+<div class="flex flex-wrap gap-3">
+<div class="bg-surface-container px-6 py-3 rounded-full flex items-center gap-2 hover:bg-primary hover:text-white transition-all cursor-pointer group">
+<span class="font-bold text-lg text-primary group-hover:text-white">#TonalTuesday</span>
+</div>
+<div class="bg-surface-container-highest px-6 py-3 rounded-full flex items-center gap-2 hover:bg-primary hover:text-white transition-all cursor-pointer group">
+<span class="font-bold text-lg text-primary group-hover:text-white">#SwahiliSongs</span>
+</div>
+<div class="bg-surface-container-low px-6 py-3 rounded-full flex items-center gap-2 hover:bg-primary hover:text-white transition-all cursor-pointer group">
+<span class="font-bold text-lg text-primary group-hover:text-white">#LearnWolof</span>
+</div>
+<div class="bg-primary-fixed px-6 py-3 rounded-full flex items-center gap-2 hover:bg-primary hover:text-white transition-all cursor-pointer group">
+<span class="font-bold text-lg text-primary group-hover:text-white">#YorubaProverbs</span>
+</div>
+</div>
+</section>
+<!-- Who to Follow - Woven Cards -->
+<section>
+<h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                Who to follow
+                <span class="w-2 h-2 rounded-full bg-secondary block"></span>
+</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- User Card 1 -->
+<div class="bg-surface-container-low rounded-lg p-6 flex items-center gap-6 relative overflow-hidden group">
+<div class="absolute -top-4 -right-4 w-24 h-24 bg-primary-fixed/20 rounded-full blur-2xl group-hover:bg-primary-fixed/40 transition-all"></div>
+<div class="w-20 h-20 rounded-2xl overflow-hidden flex-shrink-0 z-10 border-4 border-white shadow-lg rotate-3 group-hover:rotate-0 transition-transform">
+<img alt="Amina M." class="w-full h-full object-cover" data-alt="Close up of a professional African woman with elegant headwrap against a soft textured wall" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqW9sH7fxjD6jPH2aTQFylVho45kst1wgTQ76lzSwAHlD9U-QAaR9g3xfP1p58qE6tjC0wWQXzN0RCHeys0QdZN9DsSjnSvsehXQUy4Jl9uGwi5-xVYJJlyu50FBJAYcbfecGwGt1lKrwyD1fM3GcjunjLLUWaC5u2qbL9zi_QEzOM3M54MsAcA1pg-jeqPwjPIFcWbj8mRgWsJdwvSlqIuuhH5qJgPxMHD6OrFoq7jQ74m5TH1hImYfKuPtn92NtGMScSVf-d0dB8"/>
+</div>
+<div class="flex-grow z-10">
+<h3 class="text-xl font-bold">Amina M.</h3>
+<p class="text-on-surface-variant text-sm mb-3">Yoruba Specialist</p>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-bold text-sm hover:bg-primary-container transition-colors active:scale-95">Follow</button>
+</div>
+</div>
+<!-- User Card 2 -->
+<div class="bg-surface-container-low rounded-lg p-6 flex items-center gap-6 relative overflow-hidden group">
+<div class="absolute -bottom-4 -left-4 w-24 h-24 bg-secondary-fixed/20 rounded-full blur-2xl group-hover:bg-secondary-fixed/40 transition-all"></div>
+<div class="w-20 h-20 rounded-2xl overflow-hidden flex-shrink-0 z-10 border-4 border-white shadow-lg -rotate-3 group-hover:rotate-0 transition-transform">
+<img alt="Kwame O." class="w-full h-full object-cover" data-alt="Confident African man in a traditional kente cloth inspired shirt smiling warmly" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCJ4-T-tuEyFQbwAxACOB_vPkojb0w-El-sDe5xrO0Q45Sodw09OVivLgE_fQ0GztZ2YceRdOg3ZsbLiPeRf3NMuql0S-DwF-R7ZiLTd1GY0T0r08gQ6Lp5SuCyrhWYSLIur3fb3dZAIXUbDeNagsJdzz8zxEcOzwsNvQjMr008XC28DE_a3wZe48978eAmVeKzmcRJ1-wVlX8QLs0KigL27-kKVXKTrOIF4NNXjOCXbNTBz4MB-Wp2zf8zkmKdaHp2el7M8604Qai"/>
+</div>
+<div class="flex-grow z-10">
+<h3 class="text-xl font-bold">Kwame O.</h3>
+<p class="text-on-surface-variant text-sm mb-3">Twi Enthusiast</p>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-bold text-sm hover:bg-primary-container transition-colors active:scale-95">Follow</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Language Communities Grid - Bento Style -->
+<section class="pb-12">
+<h2 class="text-2xl font-bold mb-8">Language Communities</h2>
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Card 1 Swahili -->
+<div class="bg-surface-container rounded-lg p-6 flex flex-col items-center text-center group hover:bg-surface-container-high transition-all cursor-pointer aspect-square justify-center relative overflow-hidden">
+<div class="absolute top-2 right-2 opacity-10 scale-150 rotate-12 transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined text-6xl">language</span>
+</div>
+<div class="w-16 h-16 bg-primary-fixed rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl" data-weight="fill">temple_hindu</span>
+</div>
+<h3 class="font-bold text-xl">Swahili</h3>
+<p class="text-on-surface-variant text-xs mt-1 font-medium uppercase tracking-widest">12.4k members</p>
+</div>
+<!-- Card 2 Yoruba -->
+<div class="bg-surface-container rounded-lg p-6 flex flex-col items-center text-center group hover:bg-surface-container-high transition-all cursor-pointer aspect-square justify-center relative overflow-hidden">
+<div class="absolute top-2 right-2 opacity-10 scale-150 -rotate-12 transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined text-6xl">diversity_2</span>
+</div>
+<div class="w-16 h-16 bg-secondary-fixed rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-secondary text-3xl" data-weight="fill">shield_moon</span>
+</div>
+<h3 class="font-bold text-xl">Yoruba</h3>
+<p class="text-on-surface-variant text-xs mt-1 font-medium uppercase tracking-widest">8.9k members</p>
+</div>
+<!-- Card 3 Zulu -->
+<div class="bg-surface-container rounded-lg p-6 flex flex-col items-center text-center group hover:bg-surface-container-high transition-all cursor-pointer aspect-square justify-center relative overflow-hidden">
+<div class="absolute top-2 right-2 opacity-10 scale-150 rotate-45 transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined text-6xl">star</span>
+</div>
+<div class="w-16 h-16 bg-tertiary-fixed rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-tertiary text-3xl" data-weight="fill">military_tech</span>
+</div>
+<h3 class="font-bold text-xl">Zulu</h3>
+<p class="text-on-surface-variant text-xs mt-1 font-medium uppercase tracking-widest">15.2k members</p>
+</div>
+<!-- Card 4 Amharic -->
+<div class="bg-surface-container rounded-lg p-6 flex flex-col items-center text-center group hover:bg-surface-container-high transition-all cursor-pointer aspect-square justify-center relative overflow-hidden">
+<div class="absolute top-2 right-2 opacity-10 scale-150 -rotate-45 transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined text-6xl">history_edu</span>
+</div>
+<div class="w-16 h-16 bg-primary-fixed-dim rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl" data-weight="fill">auto_stories</span>
+</div>
+<h3 class="font-bold text-xl">Amharic</h3>
+<p class="text-on-surface-variant text-xs mt-1 font-medium uppercase tracking-widest">6.1k members</p>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-white/80 dark:bg-orange-950/80 rounded-t-[2.5rem] z-50 backdrop-blur-xl no-border shadow-[0_-4px_20px_rgba(45,22,0,0.04)] shadow-2xl">
+<a class="flex flex-col items-center justify-center text-orange-900/40 dark:text-orange-200/40 px-6 py-2 hover:text-[#a73400] dark:hover:text-orange-300 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined mb-1">forum</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-semibold uppercase tracking-wider">Feed</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#a73400] dark:text-orange-400 bg-[#ffdbcf] dark:bg-orange-900/40 rounded-full px-6 py-2 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">search</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-semibold uppercase tracking-wider">Search</span>
+</a>
+<a class="flex flex-col items-center justify-center text-orange-900/40 dark:text-orange-200/40 px-6 py-2 hover:text-[#a73400] dark:hover:text-orange-300 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined mb-1">notifications</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-semibold uppercase tracking-wider">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-orange-900/40 dark:text-orange-200/40 px-6 py-2 hover:text-[#a73400] dark:hover:text-orange-300 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined mb-1">diversity_3</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-semibold uppercase tracking-wider">Tribe</span>
+</a>
+</nav>
+</body></html>

@@ -93,7 +93,7 @@ class TransportErrorPolicy {
     if (isBackendIssue(error)) {
       final statusCode = error.response?.statusCode;
       if (statusCode != null && statusCode >= 500) {
-        return 'Server is temporarily unavailable. Your data is saved locally and will sync when the server is back online.';
+        return 'The service is temporarily unavailable. Please try again in a few minutes.';
       }
       if (error.type == DioExceptionType.badCertificate) {
         return 'Could not verify server security certificate. Please update the app or try again later.';

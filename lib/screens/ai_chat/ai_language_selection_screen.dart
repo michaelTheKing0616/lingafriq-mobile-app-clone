@@ -4,11 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 
 class AILanguageSelectionScreen extends HookConsumerWidget {
   const AILanguageSelectionScreen({super.key});
+
+  /// ISO-style codes for [LanguageVillagesScreen] route args and downstream APIs.
+  static const _languageCodeByName = <String, String>{
+    'Yoruba': 'yo',
+    'Swahili': 'sw',
+    'Hausa': 'ha',
+    'Zulu': 'zu',
+    'Amharic': 'am',
+    'Twi': 'tw',
+    'Igbo': 'ig',
+    'Xhosa': 'xh',
+    'Wolof': 'wo',
+  };
+
+  static const _proficiencyTierLabels = ['Seeker', 'Pathfinder', 'Griot'];
 
   static const _languages = [
     _LangData('Yoruba', '🇳🇬', 12400, ['Tonal'], Color(0xFF009639)),
@@ -107,7 +123,49 @@ class AILanguageSelectionScreen extends HookConsumerWidget {
                     child: GriotGradientButton(
                       label: 'ENTER THE VILLAGE',
                       icon: Icons.arrow_forward_rounded,
-                      onPressed: () {},
+                      onPressed: () async {
+                        final idx = selected.value;
+                        if (idx < 0 || idx >= _languages.length) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Choose a language to enter the village.',
+                                style: ModernGriotTypography.bodyMedium(),
+                              ),
+                            ),
+                          );
+                          return;
+                        }
+                        final lang = _languages[idx];
+                        final code = _languageCodeByName[lang.name] ??
+                            lang.name.toLowerCase().replaceAll(' ', '_');
+                        final prefs = await SharedPreferences.getInstance();
+                        await prefs.setString(
+                          'ai_village_entry_language',
+                          lang.name,
+                        );
+                        await prefs.setString(
+                          'ai_village_entry_language_code',
+                          code,
+                        );
+                        await prefs.setInt(
+                          'ai_village_proficiency_index',
+                          proficiency.value.clamp(0, 2),
+                        );
+                        await prefs.setString(
+                          'ai_village_proficiency_label',
+                          _proficiencyTierLabels[
+                              proficiency.value.clamp(0, 2)],
+                        );
+                        if (!context.mounted) return;
+                        await Navigator.of(context).pushNamed(
+                          'language-village',
+                          arguments: <String, String>{
+                            'languageDisplayName': lang.name,
+                            'languageCode': code,
+                          },
+                        );
+                      },
                     ),
                   ),
                   SizedBox(height: 12.h),

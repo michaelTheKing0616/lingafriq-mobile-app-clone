@@ -13,6 +13,8 @@ The LingAfriq mobile app is a **feature-rich Flutter application** for African l
 
 **Overall Assessment**: Growing → Mature (feature-complete, needs hardening)
 
+**Roadmap coverage (April 2026):** Product phases **0, 1, 15, 2, 2.5, 3, 4, 4.5, 5** are implemented in-repo; **staging QA** remains environment-specific. **Stitch hub** (`stitch-hub`) lists named routes for learning v2, passport, micro-mentors, classroom v2, and related surfaces. **Backend** `endpoint.contracts.test.ts` + mobile `api_contract_learning_v2_smoke_test.dart` guard critical path strings and route mounts. **Multi-sprint** items ([Medium-Term](#medium-term-evolution-ideas-)) stay tracked separately from product delivery.
+
 ---
 
 ## Table of Contents
@@ -25,22 +27,26 @@ The LingAfriq mobile app is a **feature-rich Flutter application** for African l
 6. [High-Risk / Optional Future Ideas (🔴)](#high-risk--optional-future-ideas-)
 7. [Recommended Next Steps](#recommended-next-steps)
 8. [Quick Wins Checklist](#quick-wins-checklist)
+9. [LingAfriq product phases (April 2026)](#lingafriq-product-phases--implementation-status-april-2026)
+10. [Appendix: file locations](#appendix-file-locations-for-key-changes)
 
 ---
 
 ## Current State Summary
 
-| Attribute | Value |
-|-----------|-------|
-| **Architecture** | Feature-organized Flutter app with Riverpod state management |
-| **Screens** | 199 screens across 15+ feature categories |
-| **Services** | 105+ domain-separated services |
-| **State Management** | Riverpod 3.0 with hooks_riverpod |
-| **Navigation** | Imperative (GlobalKey Navigator) |
-| **Offline Support** | Comprehensive: sync queue, conflict resolution, cache encryption |
-| **AI Integration** | Multiple providers (Groq, HuggingFace, backend proxy) |
-| **Design System** | Pan-African (main app) + Polie (AI features) |
-| **Maturity** | Growing → Mature |
+
+| Attribute            | Value                                                            |
+| -------------------- | ---------------------------------------------------------------- |
+| **Architecture**     | Feature-organized Flutter app with Riverpod state management     |
+| **Screens**          | 199 screens across 15+ feature categories                        |
+| **Services**         | 105+ domain-separated services                                   |
+| **State Management** | Riverpod 3.0 with hooks_riverpod                                 |
+| **Navigation**       | Imperative (GlobalKey Navigator)                                 |
+| **Offline Support**  | Comprehensive: sync queue, conflict resolution, cache encryption |
+| **AI Integration**   | Multiple providers (Groq, HuggingFace, backend proxy)            |
+| **Design System**    | Pan-African (main app) + Polie (AI features)                     |
+| **Maturity**         | Growing → Mature                                                 |
+
 
 ### Tech Stack
 
@@ -57,20 +63,22 @@ The LingAfriq mobile app is a **feature-rich Flutter application** for African l
 
 What's working well — the codebase has solid foundations:
 
-| Area | Strength |
-|------|----------|
-| **Folder Structure** | Clear separation: screens/, services/, providers/, models/, widgets/, utils/ |
+
+| Area                     | Strength                                                                                    |
+| ------------------------ | ------------------------------------------------------------------------------------------- |
+| **Folder Structure**     | Clear separation: screens/, services/, providers/, models/, widgets/, utils/                |
 | **Offline Architecture** | Comprehensive sync queue, conflict resolution, selective sync, cache compression/encryption |
-| **Error Handling** | ErrorRecoveryService, ApiClientWithRecovery, ErrorConverter pattern |
-| **Secrets Management** | Build-time injection via `--dart-define`, centralized EnvConfig |
-| **Token Security** | FlutterSecureStorage with platform keychain/keystore |
-| **Token Refresh** | Automatic refresh on 401 via Dio interceptor |
-| **List Performance** | OptimizedListView wrapper with cacheExtent |
-| **Search UX** | Proper 400-500ms debounce on search inputs |
-| **Feature Coverage** | AI chat, tutoring, gamification, social features, voice/audio |
-| **Certificate Pinning** | Infrastructure ready (can be enabled for production) |
-| **Design System** | Consistent Pan-African tokens (spacing, typography, colors) across 199 screens |
-| **Material 3 Migration** | Dual implementations show thoughtful migration path |
+| **Error Handling**       | ErrorRecoveryService, ApiClientWithRecovery, ErrorConverter pattern                         |
+| **Secrets Management**   | Build-time injection via `--dart-define`, centralized EnvConfig                             |
+| **Token Security**       | FlutterSecureStorage with platform keychain/keystore                                        |
+| **Token Refresh**        | Automatic refresh on 401 via Dio interceptor                                                |
+| **List Performance**     | OptimizedListView wrapper with cacheExtent                                                  |
+| **Search UX**            | Proper 400-500ms debounce on search inputs                                                  |
+| **Feature Coverage**     | AI chat, tutoring, gamification, social features, voice/audio                               |
+| **Certificate Pinning**  | Infrastructure ready (can be enabled for production)                                        |
+| **Design System**        | Consistent Pan-African tokens (spacing, typography, colors) across 199 screens              |
+| **Material 3 Migration** | Dual implementations show thoughtful migration path                                         |
+
 
 ---
 
@@ -78,18 +86,20 @@ What's working well — the codebase has solid foundations:
 
 Patterns that appear across the codebase:
 
-| Area | Observation | Impact | Priority |
-|------|-------------|--------|----------|
-| **Testing** | ~10 test files for 609+ source files (~1-2% coverage) | High — Cannot safely refactor or ship with confidence | 🔴 Critical |
-| **Monolithic API** | `ApiProvider` is 2000+ lines with all endpoints | Medium — Hard to maintain, test, and scale | 🟡 Medium |
-| **Network Security** | Cleartext traffic enabled, certificate pinning disabled | High — Production vulnerability | 🔴 Critical |
-| **Password Storage** | Passwords stored in secure storage (should not be stored at all) | High — Security anti-pattern | 🔴 Critical |
-| **Inconsistent Image Loading** | Mix of `CachedNetworkImage` and `Image.network` | Medium — Unnecessary network calls, no placeholders | 🟢 Low |
-| **Non-lazy Lists** | Several screens use `ListView()` with children | Medium — Performance degradation with large lists | 🟢 Low |
-| **No Pagination** | Lists load all data upfront (e.g., 100 articles) | Medium — Memory pressure, slow initial load | 🟡 Medium |
-| **Limited `compute()` Usage** | Only 2 instances; heavy work on main thread | Medium — UI jank on complex operations | 🟡 Medium |
-| **Mixed State Management** | `setState()` mixed with Riverpod in same widgets | Low — Potential unnecessary rebuilds | 🟢 Low |
-| **CI/CD Missing Tests** | Build pipelines don't execute tests | High — No quality gate before releases | 🔴 Critical |
+
+| Area                           | Observation                                                                                                                                                                           | Impact                                                | Priority    |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ----------- |
+| **Testing**                    | **~58** `*_test.dart` files; backend `endpoint.contracts.test.ts`, `sync_v2.test.ts`, `npm run test:contracts`. Overall line coverage still modest — grow tests per risky module. | High — Cannot safely refactor or ship with confidence | 🔴 Critical |
+| **Monolithic API**             | `ApiProvider` is 2000+ lines with all endpoints                                                                                                                                       | Medium — Hard to maintain, test, and scale            | 🟡 Medium   |
+| **Network Security**           | Release manifest uses `usesCleartextTraffic=false` + `network_security_config.xml` (localhost/10.0.2.2 cleartext for dev only). Leaf cert pinning opt-in via `CERTIFICATE_PIN_HASHES` | Medium — Keep pinning enabled in prod builds          | 🟡 Medium   |
+| **Password Storage**           | `CredentialStorageService` does not persist passwords; legacy SharedPreferences password getters removed. Re-auth via refresh tokens.                                                 | Low — Keep avoiding password persistence              | 🟢 Low      |
+| **Inconsistent Image Loading** | **Audited April 2026:** no runtime `Image.network` in `lib/` (comments only). Prefer `CachedNetworkImage` for new surfaces.                                                         | Low — maintenance                                     | 🟢 Low      |
+| **Non-lazy Lists**             | Several screens use `ListView()` with children                                                                                                                                        | Medium — Performance degradation with large lists     | 🟢 Low      |
+| **No Pagination**              | Some lists still load full result sets; culture magazine now requests **paged API batches** (merged client-side). Other screens may still need lazy UI lists                          | Medium — Tune per screen                              | 🟡 Medium   |
+| **Limited `compute()` Usage**  | Only 2 instances; heavy work on main thread                                                                                                                                           | Medium — UI jank on complex operations                | 🟡 Medium   |
+| **Mixed State Management**     | `setState()` mixed with Riverpod in same widgets                                                                                                                                      | Low — Potential unnecessary rebuilds                  | 🟢 Low      |
+| **CI / release gates**         | Mobile: `flutter test --coverage` in `build-and-release.yml`. Backend: `npm test` / `npm run test:contracts` locally or in CI. Optional Codecov.                                    | Low — optional Codecov                                | 🟢 Low      |
+
 
 ---
 
@@ -97,16 +107,19 @@ Patterns that appear across the codebase:
 
 Low-risk improvements that can be made now:
 
-| Improvement | Effort | Value | First Step |
-|-------------|--------|-------|------------|
-| **Replace `Image.network` with `CachedNetworkImage`** | Low | High | Update `modern_card.dart`, `ui_consistency.dart`, profile screens |
-| **Convert non-lazy lists to `ListView.builder`** | Low | Medium | `tribe_vs_tribe_screen.dart`, `social_gifting_screen.dart` |
-| **Add test execution to CI/CD** | Low | High | Add `flutter test` step to `build-and-release.yml` |
-| **Enable stricter lint rules** | Low | Medium | Enable `avoid_print`, `use_build_context_synchronously` in `analysis_options.yaml` |
-| **Remove deprecated password storage methods** | Low | High | Remove password methods from `SharedPreferencesProvider` |
-| **Add pagination to culture magazine** | Medium | Medium | Implement infinite scroll, load 20 items at a time |
-| **Update main README** | Low | Low | Replace Flutter template with project documentation |
-| **Add coverage reporting** | Low | Medium | Add `flutter test --coverage` and Codecov integration |
+
+| Improvement                                           | Effort | Value  | First Step                                                                                                                                                                                                                          |
+| ----------------------------------------------------- | ------ | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Replace `Image.network` with `CachedNetworkImage`** | Low    | High   | **Audited — no active `Image.network` in `lib/`**; use `CachedNetworkImage` for new screens                                                                                                                                          |
+| **Convert non-lazy social scrollables**               | Low    | Medium | Done — `tribe_vs_tribe_screen.dart`: `CustomScrollView` + `SliverList` for leaderboard; loading: `ListView.builder`. `social_gifting_screen.dart`: `SingleChildScrollView` + `Column` (fixed form sections, not a homogeneous list) |
+| **Add test execution to CI/CD**                       | Low    | High   | Done — `flutter test` in `build-and-release.yml`                                                                                                                                                                                    |
+| **Enable stricter lint rules**                        | Low    | Medium | Done — `avoid_print`, `use_build_context_synchronously` enabled in `analysis_options.yaml`                                                                                                                                          |
+| **Remove deprecated password storage methods**        | Low    | High   | Done — plaintext getters / `storeEmailAndPassword` removed from `SharedPreferencesProvider`                                                                                                                                         |
+| **Add pagination to culture magazine**                | Medium | Medium | Done — API `page`/`limit` loop + dedupe in `culture_magazine_screen.dart`                                                                                                                                                           |
+| **Update main README**                                | Low    | Low    | Done — see `README.md`                                                                                                                                                                                                              |
+| **Add coverage reporting**                            | Low    | Medium | Done — `flutter test --coverage` + lcov in CI; Codecov optional                                                                                                                                                                     |
+| **Backend mobile route contract smoke**               | Low    | High   | Done — `npm run test:contracts` in `node-backend-safe-push`                                                                                                                                                                        |
+
 
 ### Implementation Guide for Safe Wins
 
@@ -155,16 +168,21 @@ CachedNetworkImage(
 
 Changes that require planning and coordination:
 
-| Idea | Rationale | Prerequisites | Risk Level | Effort |
-|------|-----------|---------------|------------|--------|
-| **Split `ApiProvider` into domain services** | 2000+ lines is unmaintainable; enables parallel development | Define domain boundaries, create interfaces | 🟡 Caution | Medium |
-| **Introduce Repository pattern** | Decouple data access from business logic; enables testing | Define abstractions, incremental migration | 🟡 Caution | Medium |
-| **Disable cleartext traffic in production** | Security requirement for app store compliance | Network security config for Android, conditional Info.plist | 🟡 Caution | Low |
-| **Enable certificate pinning** | Prevent MITM attacks | Set `CERTIFICATE_PIN_HASHES` in CI/CD, document rotation | 🟡 Caution | Low |
-| **Add API response caching** | Reduce network calls, improve perceived performance | Evaluate `flutter_cache_manager`, define cache TTLs | 🟡 Caution | Medium |
-| **Migrate to declarative routing** | Enable deep linking, better navigation state | Evaluate `go_router`, incremental migration | 🟡 Caution | High |
-| **Add widget tests for critical UI** | Catch regressions, enable refactoring | Identify critical paths, set up golden tests | 🟡 Caution | Medium |
-| **Offload heavy work to isolates** | Prevent UI jank on JSON parsing, filtering | Identify hotspots, use `compute()` pattern | 🟡 Caution | Medium |
+
+| Idea                                         | Rationale                                                   | Prerequisites                                                                                                  | Risk Level | Effort |
+| -------------------------------------------- | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ---------- | ------ |
+| **Split `ApiProvider` into domain services** | 2000+ lines is unmaintainable; enables parallel development | Define domain boundaries, create interfaces                                                                    | 🟡 Caution | Medium |
+| **Introduce Repository pattern**             | Decouple data access from business logic; enables testing   | Define abstractions, incremental migration                                                                     | 🟡 Caution | Medium |
+| **Disable cleartext traffic in production**  | Security requirement for app store compliance               | **Android release baseline shipped** (`usesCleartextTraffic=false` + `network_security_config.xml`); re-verify iOS / manifest changes | 🟡 Caution | Low    |
+| **Enable certificate pinning**               | Prevent MITM attacks                                        | Set `CERTIFICATE_PIN_HASHES` in CI/CD; use `tool/print_ssl_pin.dart`; follow `docs/CERTIFICATE_PINNING_OPS.md` | 🟡 Caution | Low    |
+| **Add API response caching**                 | Reduce network calls, improve perceived performance         | Evaluate `flutter_cache_manager`, define cache TTLs                                                            | 🟡 Caution | Medium |
+| **Migrate to declarative routing**           | Enable deep linking, better navigation state                | Evaluate `go_router`, incremental migration                                                                    | 🟡 Caution | High   |
+| **Add widget tests for critical UI**         | Catch regressions, enable refactoring                       | Identify critical paths, set up golden tests                                                                   | 🟡 Caution | Medium |
+| **Offload heavy work to isolates**           | Prevent UI jank on JSON parsing, filtering                  | Identify hotspots, use `compute()` pattern                                                                     | 🟡 Caution | Medium |
+
+These items are **multi-sprint** work; they stay open until explicitly implemented. Product-phase delivery (see [Lingafriq product phases](#lingafriq-product-phases--implementation-status-april-2026)) does not depend on completing this table.
+
+**April 2026 incremental coverage (does not “close” the table):** Route-arg unit tests (`classroom_v2_route_args`, `passport_route_args`); expanded **`npm run test:contracts`** (sync preferences, classroom assignments list, micro-mentors `mentors/me`, plus prior learning v2 / passport / packs checks). Use these as regression gates; the architectural rows above still need dedicated initiatives.
 
 ### RFC Template for Medium-Term Changes
 
@@ -199,13 +217,15 @@ Changes that require planning and coordination:
 
 Ambitious changes for future consideration:
 
-| Idea | Potential Benefit | Risks | Recommendation |
-|------|-------------------|-------|----------------|
-| **Clean Architecture refactor** | Strict layer separation, testability | Major rewrite, high effort, team learning curve | Evaluate later; current structure works |
-| **Add code generation (freezed/json_serializable)** | Immutable models, less boilerplate | Learning curve, build complexity, migration effort | Consider for new features only |
-| **GraphQL migration** | Efficient data fetching, type safety | Backend changes required, learning curve | Evaluate if API complexity increases |
-| **Micro-frontend architecture** | Independent feature development | Complexity, coordination overhead | Not needed at current scale |
-| **Full offline-first with CRDT** | Conflict-free sync | Complexity, specialized knowledge | Current sync queue adequate |
+
+| Idea                                                | Potential Benefit                    | Risks                                              | Recommendation                          |
+| --------------------------------------------------- | ------------------------------------ | -------------------------------------------------- | --------------------------------------- |
+| **Clean Architecture refactor**                     | Strict layer separation, testability | Major rewrite, high effort, team learning curve    | Evaluate later; current structure works |
+| **Add code generation (freezed/json_serializable)** | Immutable models, less boilerplate   | Learning curve, build complexity, migration effort | Consider for new features only          |
+| **GraphQL migration**                               | Efficient data fetching, type safety | Backend changes required, learning curve           | Evaluate if API complexity increases    |
+| **Micro-frontend architecture**                     | Independent feature development      | Complexity, coordination overhead                  | Not needed at current scale             |
+| **Full offline-first with CRDT**                    | Conflict-free sync                   | Complexity, specialized knowledge                  | Current sync queue adequate             |
+
 
 ---
 
@@ -213,46 +233,61 @@ Ambitious changes for future consideration:
 
 Prioritized action list for immediate consideration:
 
-### Phase 1: Critical Security (Week 1-2)
+### April 2026 — verified in repo (keep monitoring)
 
-1. **Disable cleartext traffic for production builds**
-   - Modify `AndroidManifest.xml` with network security config
-   - Conditionally set `NSAllowsArbitraryLoads` in Info.plist
-   - Test with production backend
+- **Cleartext:** Release Android manifest uses `usesCleartextTraffic="false"` with `network_security_config.xml` (see [Quick Wins](#quick-wins-checklist)).
+- **Password persistence:** Deprecated SharedPreferences password paths removed; flows use server verification + tokens (see Quick Wins).
+- **CI tests / lint:** `build-and-release.yml` runs `flutter test --coverage`; `analysis_options.yaml` enables `avoid_print` and `use_build_context_synchronously`.
+- **Ongoing:** **Certificate pinning** — still operate via `CERTIFICATE_PIN_HASHES` + `docs/CERTIFICATE_PINNING_OPS.md` for production rollout and rotation (infra task, not a one-line code fix).
 
-2. **Remove password storage**
-   - Delete `savePassword()` and `getPassword()` from `CredentialStorageService`
-   - Remove deprecated methods from `SharedPreferencesProvider`
-   - Verify app works with token-only authentication
+### Phase 1: Critical Security (historical checklist)
 
-3. **Enable certificate pinning**
-   - Set `CERTIFICATE_PIN_HASHES` environment variable in CI/CD
-   - Document certificate rotation process
-   - Test pinning with production certificates
+1. **Disable cleartext traffic for production builds** — ✓ baseline in place; re-verify when changing manifests.
+2. **Remove password storage** — ✓ removed from client persistence patterns above.
+3. **Enable certificate pinning** — follow `docs/CERTIFICATE_PINNING_OPS.md` and validate release builds against HTTPS endpoints.
 
-### Phase 2: Quality Gates (Week 2-3)
+### Phase 2: Quality Gates (historical checklist)
 
-4. **Add CI test execution**
-   - Add `flutter test` step to GitHub Actions
-   - Fail build on test failures
-   - Add coverage reporting
-
-5. **Enable stricter linting**
-   - Enable disabled lint rules
-   - Fix existing violations
-   - Add linting to CI
+1. **Add CI test execution** — ✓ `flutter test` in `build-and-release.yml`.
+2. **Enable stricter linting** — ✓ key rules in `analysis_options.yaml`; expand rules incrementally as violations are fixed.
 
 ### Phase 3: Architecture Improvements (Week 4+)
 
-6. **Split `ApiProvider`**
-   - Extract `AuthApiService`, `GamificationApiService`, etc.
-   - Maintain backward compatibility
-   - Incremental migration
+1. **Split `ApiProvider`**
+  - Extract `AuthApiService`, `GamificationApiService`, etc.
+  - Maintain backward compatibility
+  - Incremental migration
+2. **Progress metrics via sync v2 outbox (shipped)**
+  - `ProgressTrackingProvider` now enqueues `progress_metrics_merge` through `PersistedOutboxService` (Hive-backed), with debounced coalescing, instead of `SyncType.progress` full-document sync.
+  - See `docs/MOBILE_API_CONTRACT_AUDIT.md` for contract notes; other services may still use `SyncType.progress` until migrated.
+3. **Learning v2 discovery routes (shipped)**
+  - Named routes: `heritage-milestones`, `living-dictionary`, `dialect-preference`, **`speak-engine-lab`**, **`conversation-scenarios`** (optional `language` / `languageName` args), **`tone-rhythm-trainer`**, **`phrase-dna-templates`**, **`synthetic-voice-styles`**, **`point-and-say`** (see `my_app.dart`; **Stitch hub** passes `arguments` for demo languages). Reuses existing screens (`LivingDictionaryScreen`, tone/phrase DNA/AR, etc.) without duplicating services.
+3b. **Passport · micro-mentors (shipped — discovery)**
+  - **`passport-proctored`** (`language`, `proctorMode`), **`passport-credential`** (`verifyToken`, `level`, `score` — helpers in `passport_route_args.dart`), **`micro-mentor-hub`**, **`staff-micro-mentor-reports`**; listed under **Stitch** “Passport · micro-mentors”. Credential demo token may fail public verify until a real session token exists.
+4. **Classroom v2 (shipped — discovery)**
+  - Routes `classroom-roster-v2`, `classroom-assignments-v2`, `classroom-privacy-v2` (arguments: `tribeId`, `tribeName`); shared parsing + missing-id scaffold in `classroom_v2_route_args.dart`; listed in `StitchNavigationHubScreen` with demo args. Screens: `ClassroomRosterScreen`, `ClassroomAssignmentsScreen`, `ClassroomPrivacyScreen`.
 
-7. **Add widget tests**
-   - Start with auth flows
-   - Add golden tests for design system components
-   - Target 70% coverage for new code
+8b. **Dialect learning path + preference (shipped)**
+
+- Onboarding path `dialect` (fourth card on `ModernOnboardingScreen` — tap a card before **Get started** so `selectedPath` is set) maps to backend learning-path `type: dialect` (`node-backend-safe-push/src/models/learningPath.model.ts` enum extended). Local module scaffold in `learning_path_provider.dart` (`_getDialectModules`). Works with existing `DialectPreferenceService` / `DialectVariantPicker` (set preference separately; path emphasizes locale-first content).
+
+8b2. **Offline lesson packs (already in app)**
+
+- `LessonDownloadService`: v2 manifest fetch, per-asset SHA-256 verify, Hive resume state (`lingafriq_offline_pack_state_v1`), `OfflineDownloadProvider` auto-download hooks. No parallel stack needed.
+
+8c. **Living dictionary from media (shipped)**
+
+- `ImportMediaScreenEnhanced`: after transcription, calls extract + `LivingDictionaryService.listEntries`, batches into `VocabularyStore`, shows a SnackBar count, structured `logError` on failure (no `debugPrint`).
+
+8d. **Culture magazine — Polie AI fallback (shipped)**
+
+- When the CMS returns **no** articles (or the REST fetch fails), `CultureMagazineScreen` calls `PolieContentGenerator.generateCulturalArticle` (Groq via `groqChatProvider`) for four types: article, story, music, festival, using onboarding `selectedLanguage`. Maps AI output into `CultureContent` (`_cultureContentFromPolieMap`). **Static emergency cards** (`_staticEmergencyMagazineItems`) run only if every AI call fails.
+
+### Recommended next steps (performance / polish)
+
+1. Expand **widget tests** toward auth flows and design-system goldens.
+
+**Widget tests in repo:** `test/screens/learning/dialect_preference_screen_test.dart` (route args); `test/screens/classroom/classroom_v2_route_args_test.dart` (classroom v2 `Navigator` args); `test/screens/passport/passport_route_args_test.dart` (passport `Navigator` args); `test/screens/profile/delete_account_dialog_test.dart` (delete confirmation). CI runs `flutter test --coverage` with lcov summary + artifacts (see `build-and-release.yml`).
 
 ---
 
@@ -260,48 +295,93 @@ Prioritized action list for immediate consideration:
 
 Tasks that can be completed today:
 
-- [ ] Add `flutter test` step to `.github/workflows/build-and-release.yml`
-- [ ] Enable `avoid_print: true` in `analysis_options.yaml`
-- [ ] Replace `Image.network` in `modern_card.dart` with `CachedNetworkImage`
-- [ ] Remove `savePassword()` and `getPassword()` from `SharedPreferencesProvider`
-- [ ] Add `android:usesCleartextTraffic="false"` for release builds
-- [ ] Update main README.md with project overview
-- [ ] Add `// TODO:` comments for files needing pagination
+- `flutter test` and `flutter test --coverage` in `.github/workflows/build-and-release.yml` (lcov summary + `coverage-*` artifacts on Android & iOS jobs)
+- Enable `avoid_print: true` in `analysis_options.yaml`
+- `Image.network` in `lib/` is not used for runtime images (only a commented line in `batch_integration_script.dart`); `modern_card.dart` and related cards use `cached_network_image` where applicable
+- Delete-account flows use the password from `EnterPasswordDialog` only (server verifies); removed plaintext `emailAndPassword` getters and deprecated `storeEmailAndPassword` from `SharedPreferencesProvider`. Use `CredentialStorageService` for stored email.
+- Release `AndroidManifest.xml` uses `usesCleartextTraffic="false"` with `res/xml/network_security_config.xml` (dev localhost only)
+- Main `[README.md](README.md)` — project overview, run/test commands, layout pointers
+- **Culture magazine**: API paging + **Groq/Polie** generation when empty/failed API (`_polieAiMagazineItems` → `generateCulturalArticle`); static cards only as last resort (`_staticEmergencyMagazineItems`)
 
 ---
 
 ## Safety Classification Legend
 
-| Level | Meaning | Action |
-|-------|---------|--------|
-| 🟢 **Safe** | Low risk, easily reversible | Can implement now |
+
+| Level          | Meaning                       | Action             |
+| -------------- | ----------------------------- | ------------------ |
+| 🟢 **Safe**    | Low risk, easily reversible   | Can implement now  |
 | 🟡 **Caution** | Moderate risk, needs planning | RFC proposal first |
-| 🔴 **Danger** | High risk, significant effort | Evaluate carefully |
+| 🔴 **Danger**  | High risk, significant effort | Evaluate carefully |
+
 
 ---
 
 ## Appendix: File Locations for Key Changes
 
 ### Security
+
 - `android/app/src/main/AndroidManifest.xml` - Cleartext traffic
 - `ios/Runner/Info.plist` - Network security
 - `lib/services/auth/credential_storage_service.dart` - Token storage
-- `lib/providers/shared_preferences_provider.dart` - Deprecated password methods
+- `lib/providers/shared_preferences_provider.dart` - Tokens + onboarding flags; legacy email/password keys cleared via `removeEmailAndPassword` where needed
 - `lib/utils/certificate_pinning.dart` - Certificate pinning
 
 ### Testing
+
 - `.github/workflows/build-and-release.yml` - CI/CD
 - `analysis_options.yaml` - Lint rules
 - `test/` - Test files
+- `node-backend-safe-push/src/__test__/integration/endpoint.contracts.test.ts` - Mobile route mount smoke (run via `npm run test:contracts`)
+- `lib/screens/help/stitch_navigation_hub_screen.dart` - Stitch feature map (`stitch-hub`) for manual QA of named routes
 
 ### Performance
-- `lib/screens/social/tribe_vs_tribe_screen.dart` - Non-lazy list
-- `lib/screens/social/social_gifting_screen.dart` - Non-lazy list
-- `lib/screens/magazine/culture_magazine_screen.dart` - No pagination
+
+- `lib/screens/social/tribe_vs_tribe_screen.dart` - Leaderboard uses lazy `SliverList`; loading skeletons use `ListView.builder`
+- `lib/screens/social/social_gifting_screen.dart` - `SingleChildScrollView` + `Column` for fixed sections (preferred over `ListView` for non-list form layouts)
+- `lib/screens/magazine/culture_magazine_screen.dart` - Multi-page aggregation via API `page`/`limit` (see `CultureMagazineService.getArticles`)
 
 ### Architecture
+
 - `lib/providers/api_provider.dart` - Monolithic API (2000+ lines)
 - `lib/utils/api_service.dart` - API service layer
+- `lib/screens/classroom/classroom_v2_route_args.dart` - Shared `Navigator` args for classroom v2 roster / assignments / privacy routes
+- `lib/screens/passport/passport_route_args.dart` - Shared `Navigator` args for passport proctored + credential routes
+- `lib/services/learning/speak_mission_service.dart`, `code_switch_session_service.dart`, `register_coach_service.dart` - Learning v2 Phase 2 HTTP clients
+- `lib/screens/learning/speak_engine_lab_screen.dart` - QA surface for code-switch + register-coach APIs
+
+---
+
+## LingAfriq product phases — implementation status (April 2026)
+
+This table ties the **product backlog phases** (sync, learning v2, passport, classroom, AR, mentors) to **what exists in this repo** and what still needs **environment-specific QA**. Backend route parity for mobile is tracked in `node-backend-safe-push/src/contracts/mobileApiContract.ts` (aligned with `lib/config/api_contract.dart`; `src/config/mobileApiContract.ts` re-exports to avoid drift).
+
+**Continued codebase elevation** (testing coverage, `ApiProvider` decomposition, routing, isolates) remains in [Systemic Improvement Opportunities](#systemic-improvement-opportunities) and [Medium-Term Evolution Ideas](#medium-term-evolution-ideas-) above — orthogonal to the product-phase table below.
+
+| Phase | Scope | Codebase status | Staging / production QA |
+| ----- | ----- | ----------------- | ------------------------ |
+| **0** | Sync v2 outbox push, delta, `game_srs_upsert_many`, preferences | **Shipped** — `PersistedOutboxService`, `SyncV2Service`, `syncV2.controller.ts`, tests in `src/__test__/sync_v2.test.ts` | Verify flush + delta against real API; JWT refresh under load |
+| **1** | Content packs, dialect preference, heritage milestones | **Shipped** — packs download, `DialectPreferenceService`, heritage UI + API | Validate manifests on staging CDN; milestone completion sync |
+| **15** | Living dictionary, media → lexeme pipeline | **Shipped** — `LivingDictionary*`, backend `livingLexeme`, DELETE entry | Consent/retention policy review; PII review |
+| **2** | Speaking missions, code-switch, register coach | **Shipped** — `SpeakMissionService`, `speak_mission_evaluate_screen.dart`, `CodeSwitchSessionService` / `RegisterCoachService`, **`SpeakEngineLabScreen`** (`speak-engine-lab`), `learningV2.controller.ts` routes | AI provider keys on staging; scoring spot-checks; JWT on lab + conversation flows |
+| **2.5** | Tone/rhythm trainer, phrase DNA, synthetic voice | **Shipped** — `tone_rhythm_trainer_screen.dart`, `phrase_dna_service.dart`, `synthetic_voice_style_service.dart` | Audio upload limits; offline queues (`tone_trainer_queue_service`) |
+| **3** | Proctored passport, credential verify | **Shipped** — `passport.controller.ts`, `passport_service.dart`, proctored session + credential screens | Artifact storage, verify links, token signing secret rotation |
+| **4** | Classroom / school dashboard, rosters, assignments, **tribe privacy** | **Shipped (API + mobile v2 screens + Stitch routes)** — backend `classroomV2` (roster, assignments, **privacy**), `ClassroomRosterScreen` / `ClassroomAssignmentsScreen` / **`ClassroomPrivacyScreen`**, named routes (`classroom-roster-v2`, `classroom-assignments-v2`, `classroom-privacy-v2`) + Stitch hub; staff dashboard remains **staff JWT** | Pack distribution policies; privacy settings UX with real tribes; production QA |
+| **4.5** | AR point-and-say | **Shipped** — `point_and_say_screen.dart`, `point_and_say_queue_service.dart` (degrades without camera) | Device matrix; permissions |
+| **5** | Micro-mentors | **Shipped** — `micro_mentor_*` screens, `microMentorsV2.route.ts`, admin reports | Capacity, consent, retention jobs |
+
+### Staging verification checklist (run before major releases)
+
+1. Auth: login, refresh, sign-out; confirm no duplicate SRS receipts under concurrent outbox push (`sync_v2.test.ts` covers locally).
+2. Sync: enqueue `game_srs_upsert_many` from app → flush → optional `GET /api/v2/sync/delta` for multi-device sanity.
+3. Learning v2: `POST …/speak-mission/evaluate` with real JWT; **`POST …/code-switch/session`** and **`POST …/register-coach`** (see **`SpeakEngineLabScreen`**); **`POST …/tone-trainer/evaluate`** with audio where applicable; living dictionary list/add/delete.
+4. Passport: start session → submit → public verify URL behavior.
+5. Micro-mentors: list mentors, session flow, staff report route with staff JWT.
+6. Content packs: `GET …/content-packs/{lang}/manifest` and `POST …/verify` with learner JWT; confirm Range/video assets if used.
+7. Classroom: staff JWT → `GET /api/v2/classroom/school/dashboard`; teacher flows in app against a real classroom tribe as applicable.
+8. Contract smoke: `npm run test:contracts` (or `npx jest src/__test__/integration/endpoint.contracts.test.ts`) in `node-backend-safe-push` — route mounts not 404, including **sync v2** (delta, preferences, outbox push), **learning v2** (speak, code-switch, register, tone), **passport** sessions, **content packs** manifest/verify, **micro-mentors** mentors + `mentors/me`, **classroom v2** roster + **assignments** + privacy.
+9. Classroom v2: teacher JWT → `GET …/classroom/{tribeId}/roster`, `…/assignments`, and `…/privacy` (settings); learner submission flow as designed.
+10. Mobile: from **Stitch feature map** (`/stitch-hub`) exercise **Learning v2** (speak lab, tone, phrase DNA, AR), **Passport · micro-mentors** (proctored session, credential demo, mentor hub, staff reports), and **Classroom v2** (roster / assignments / privacy) with real IDs where applicable (replace demo `tribeId` or pass `Navigator` args from lobby).
 
 ---
 

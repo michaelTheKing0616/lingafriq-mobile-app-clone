@@ -3,12 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lingafriq/services/gamification/tribes_service.dart';
 import 'package:lingafriq/providers/gamification_services_provider.dart';
 import 'package:lingafriq/services/polie_content_generator.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/screens/classroom/classroom_assignments_screen.dart';
+import 'package:lingafriq/screens/classroom/classroom_privacy_screen.dart';
+import 'package:lingafriq/screens/classroom/classroom_roster_screen.dart';
+import 'package:lingafriq/screens/classroom/classroom_session_screen.dart';
 
 class ClassroomDashboardScreen extends ConsumerStatefulWidget {
   final String tribeId;
@@ -37,6 +40,53 @@ class _ClassroomDashboardScreenState
   bool _isAskingPolie = false;
   String? _poliePrompt;
 
+  void _showSessionAnalyticsDetails(Map<String, dynamic> s, bool isDark) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final rate = (s['attendanceRate'] ?? 0).toString();
+    final checkedIn = (s['checkedInCount'] ?? 0).toString();
+    final size = (s['classSize'] ?? 0).toString();
+    final status = s['status']?.toString() ?? '';
+    final agenda = s['agenda']?.toString();
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      isScrollControlled: true,
+      backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+      builder: (_) {
+        return Padding(
+          padding: EdgeInsets.all(PanAfricanSpacing.lg),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Session attendance',
+                style: PanAfricanTypography.titleMedium(context),
+              ),
+              SizedBox(height: PanAfricanSpacing.sm),
+              Text(
+                '$rate% ($checkedIn/$size)',
+                style: PanAfricanTypography.displaySmall(context, color: PanAfricanColors.primary),
+              ),
+              SizedBox(height: PanAfricanSpacing.xxs),
+              Text(
+                status.isEmpty ? '—' : status,
+                style: PanAfricanTypography.bodySmall(context, color: colorScheme.onSurface.withOpacity(0.75)),
+              ),
+              if (agenda != null && agenda.trim().isNotEmpty) ...[
+                SizedBox(height: PanAfricanSpacing.md),
+                Text('Agenda', style: PanAfricanTypography.titleSmall(context)),
+                SizedBox(height: PanAfricanSpacing.xxs),
+                Text(agenda, style: PanAfricanTypography.bodyMedium(context)),
+              ],
+              SizedBox(height: PanAfricanSpacing.lg),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -51,8 +101,8 @@ class _ClassroomDashboardScreenState
       _error = null;
     });
     try {
-      final TribesService tribesService = ref.read(tribesServiceProvider);
-      final res = await tribesService.getClassroomProgress(widget.tribeId);
+      final res =
+          await ref.read(classroomServiceProvider).getTeacherDashboardV2(widget.tribeId);
       setState(() {
         _data = res;
         _isLoading = false;
@@ -87,6 +137,67 @@ class _ClassroomDashboardScreenState
           },
         ),
         actions: [
+          IconButton(
+            tooltip: 'Privacy',
+            icon: const Icon(Icons.privacy_tip_rounded),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => ClassroomPrivacyScreen(
+                    tribeId: widget.tribeId,
+                    tribeName: widget.tribeName,
+                  ),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            tooltip: 'Session',
+            icon: const Icon(Icons.school_rounded),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => ClassroomSessionScreen(
+                    tribeId: widget.tribeId,
+                    tribeName: widget.tribeName,
+                    languageTag: widget.languageTag,
+                  ),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            tooltip: 'Assignments',
+            icon: const Icon(Icons.assignment_rounded),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => ClassroomAssignmentsScreen(
+                    tribeId: widget.tribeId,
+                    tribeName: widget.tribeName,
+                  ),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            tooltip: 'Roster',
+            icon: const Icon(Icons.group_rounded),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => ClassroomRosterScreen(
+                    tribeId: widget.tribeId,
+                    tribeName: widget.tribeName,
+                  ),
+                ),
+              );
+            },
+          ),
           if (widget.classroomCode != null)
             IconButton(
               icon: const Icon(Icons.copy_rounded),
@@ -193,6 +304,11 @@ class _ClassroomDashboardScreenState
     final totalSessions = aggregate['totalSessions'] ?? 0;
     final languages =
         List<String>.from(aggregate['languagesStudied'] ?? const []);
+    final analytics = Map<String, dynamic>.from(_data?['analytics'] ?? const {});
+    final recentSessions =
+        List<Map<String, dynamic>>.from(analytics['recentSessions'] ?? const []);
+    final recentAssignments =
+        List<Map<String, dynamic>>.from(analytics['recentAssignments'] ?? const []);
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
@@ -234,6 +350,82 @@ class _ClassroomDashboardScreenState
             'Languages: ${languages.isEmpty ? 'None yet' : languages.join(', ')}',
             style: PanAfricanTypography.bodySmall(context, color: colorScheme.onPrimary.withOpacity(0.85)),
           ),
+          if (recentSessions.isNotEmpty) ...[
+            SizedBox(height: PanAfricanSpacing.md),
+            Text(
+              'Attendance (recent)',
+              style: PanAfricanTypography.titleSmall(context, color: colorScheme.onPrimary),
+            ),
+            SizedBox(height: PanAfricanSpacing.xxs),
+            SizedBox(
+              height: 40.h,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: recentSessions.take(10).map((s) {
+                  final rate = (s['attendanceRate'] ?? 0) is num
+                      ? (s['attendanceRate'] as num).toDouble()
+                      : double.tryParse((s['attendanceRate'] ?? '0').toString()) ?? 0;
+                  final barHeight = (rate.clamp(0, 100) / 100.0) * 34.0;
+                  final status = s['status']?.toString() ?? '';
+                  final barColor = status.toLowerCase().contains('ended')
+                      ? Colors.white.withOpacity(0.95)
+                      : Colors.white.withOpacity(0.75);
+                  return Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 3.w),
+                      child: InkWell(
+                        borderRadius: PanAfricanRadius.smBR,
+                        onTap: () {
+                          HapticFeedback.lightImpact();
+                          _showSessionAnalyticsDetails(s, isDark);
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Container(
+                              height: (barHeight < 3 ? 3 : barHeight).h,
+                              decoration: BoxDecoration(
+                                color: barColor,
+                                borderRadius: PanAfricanRadius.smBR,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+            SizedBox(height: PanAfricanSpacing.xxxs),
+            Text(
+              'Tap a bar for details',
+              style: PanAfricanTypography.labelSmall(context, color: colorScheme.onPrimary.withOpacity(0.8)),
+            ),
+          ],
+          if (recentAssignments.isNotEmpty) ...[
+            SizedBox(height: PanAfricanSpacing.md),
+            Text(
+              'Assignments (recent)',
+              style: PanAfricanTypography.titleSmall(context, color: colorScheme.onPrimary),
+            ),
+            SizedBox(height: PanAfricanSpacing.xxs),
+            ...recentAssignments.take(2).map((a) {
+              final title = a['title']?.toString() ?? 'Assignment';
+              final rate = (a['completionRate'] ?? 0).toString();
+              final submitted = (a['submittedCount'] ?? 0).toString();
+              final size = (a['classSize'] ?? 0).toString();
+              return Padding(
+                padding: EdgeInsets.only(top: PanAfricanSpacing.xxxs),
+                child: Text(
+                  '$title — $rate% ($submitted/$size)',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: PanAfricanTypography.bodySmall(context, color: colorScheme.onPrimary.withOpacity(0.9)),
+                ),
+              );
+            }),
+          ],
         ],
       ),
     );

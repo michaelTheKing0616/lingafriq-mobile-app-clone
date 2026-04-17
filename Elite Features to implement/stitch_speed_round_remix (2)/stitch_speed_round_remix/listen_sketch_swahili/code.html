@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LingoGriot - Listen &amp; Sketch</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary-fixed": "#ffdad3",
+                        "on-primary-container": "#ceceff",
+                        "secondary-fixed-dim": "#ffb4a5",
+                        "surface-dim": "#dadad5",
+                        "tertiary-fixed": "#ffdea0",
+                        "surface-bright": "#fafaf5",
+                        "tertiary-container": "#745500",
+                        "primary-fixed": "#e1e0ff",
+                        "outline-variant": "#c5c5d4",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#04006d",
+                        "tertiary-fixed-dim": "#f6be3b",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed-variant": "#802918",
+                        "error": "#ba1a1a",
+                        "surface-container-highest": "#e3e3de",
+                        "on-surface": "#1a1c19",
+                        "secondary": "#9f402d",
+                        "primary-container": "#4b4fb0",
+                        "on-primary-fixed-variant": "#373a9b",
+                        "on-background": "#1a1c19",
+                        "on-tertiary-fixed": "#261900",
+                        "surface-tint": "#4f54b4",
+                        "on-tertiary-fixed-variant": "#5c4300",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "tertiary": "#573f00",
+                        "surface-variant": "#e3e3de",
+                        "surface": "#fafaf5",
+                        "surface-container-high": "#e8e8e3",
+                        "primary": "#333697",
+                        "surface-container": "#eeeee9",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#454652",
+                        "inverse-primary": "#c0c1ff",
+                        "on-secondary-fixed": "#3e0500",
+                        "surface-container-low": "#f4f4ef",
+                        "outline": "#757684",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "background": "#fafaf5",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#732010",
+                        "on-tertiary-container": "#ffca56",
+                        "secondary-container": "#fd876f",
+                        "inverse-surface": "#2f312e",
+                        "inverse-on-surface": "#f1f1ec"
+                    },
+                    fontFamily: {
+                        "headline": ["Epilogue"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+.parchment-bg {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuDWeSyf4T1cTf9RRcrZj56ifhKUrXd59y1jQQqhv4px4exr8RQAixPpSEzEd8CIZ6uVTpDEVbCrYz4oiQdViI09d5ATsTgklttfGbhOMiXRMSOHdRSo0SFtZIB4fkG3iTP4MhQRJeExXb87AI81Aj_0ef6yIe8AtNRnSHodYh8Q9MVY3niTFHBWcJ12LRvH1smVeMxHdUK02mOwmpCNuK-XjsiKsjdjCUmNK-bWoiHRAGXOU6XKXwopzqY2-PVIm0DAFmzhn1rGnaY);
+    background-color: #f4f4ef
+    }
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px
+    }
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent
+    }
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #e3e3de;
+    border-radius: 10px
+    }</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-secondary-container selection:text-on-secondary-container custom-scrollbar">
+<!-- TopAppBar -->
+<header class="bg-[#fafaf5] dark:bg-[#1a1c19] w-full docked-top z-50">
+<div class="flex items-center justify-between px-6 py-4 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<button class="text-[#333697] dark:text-[#4b4fb0] hover:bg-[#e3e3de] dark:hover:bg-[#3a3c39] transition-colors p-2 rounded-full Active: scale-95 duration-150">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="text-2xl font-bold text-[#333697] dark:text-[#4b4fb0] font-['Epilogue'] tracking-tight">LingoGriot</h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-[#333697] dark:text-[#4b4fb0] font-['Epilogue'] font-bold tracking-tight" href="#">Listen</a>
+<a class="text-[#4b4fb0]/70 dark:text-[#fafaf5]/70 font-['Epilogue'] font-bold tracking-tight hover:text-[#333697] transition-colors" href="#">Memory</a>
+<a class="text-[#4b4fb0]/70 dark:text-[#fafaf5]/70 font-['Epilogue'] font-bold tracking-tight hover:text-[#333697] transition-colors" href="#">Translate</a>
+</nav>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20">
+<img alt="User profile" data-alt="portrait of a young African woman with short hair smiling warmly against a soft beige studio background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpV0Y0nDbsx7XFohQzN4rpdUlYyDbJPWMTk5tI1M8WfB2YtMh7n6YaEyjv93V-Y_2w3m1rXJKDlQp3KU_dSEwMp3LIt0i-GygBZXObeyV82fusvBZ7ByIHyg6XRp8uPGqtqcEObvHLDSxpBRViKLJPjE4Vnt3F4bzeEk5u9-S8-G5F9agEs6DvA4Y2Ivouufn98xVf-G63Jz4FxhicCk0v5IfyU5Lb4BC5Zb56i_kjV46ARfv3voqipPrXCq8yYbtZYz2rm0iOwi8"/>
+</div>
+</div>
+</div>
+<div class="bg-[#f4f4ef] dark:bg-[#2a2c29] h-px w-full"></div>
+</header>
+<main class="max-w-7xl mx-auto px-6 pt-8 pb-32">
+<!-- Game Header & Progress -->
+<section class="mb-12">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<span class="font-label text-secondary font-bold uppercase tracking-[0.2em] text-xs mb-2 block">Level 12 Swahili • Listen &amp; Sketch</span>
+<h2 class="font-headline text-4xl md:text-5xl font-extrabold text-primary leading-tight">Nyumba ndogo mlimani</h2>
+</div>
+<div class="w-full md:w-64">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label text-sm font-semibold text-on-surface-variant">Progress</span>
+<span class="font-label text-sm font-bold text-primary">75%</span>
+</div>
+<div class="h-3 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 75%;"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Interaction Area -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Audio and Tools Column -->
+<div class="lg:col-span-3 space-y-6 order-2 lg:order-1">
+<div class="bg-surface-container-low p-6 rounded-xl shadow-2xl shadow-primary/5">
+<button class="w-full bg-primary text-on-primary py-8 rounded-xl flex flex-col items-center justify-center gap-4 hover:opacity-90 transition-all Active: scale-95 duration-150 group">
+<span class="material-symbols-outlined !text-5xl" style="font-variation-settings: 'FILL' 1;">spatial_audio_off</span>
+<span class="font-headline font-bold text-lg">Replay Phrase</span>
+</button>
+<div class="mt-6 space-y-4">
+<p class="text-on-surface-variant text-sm font-medium italic text-center">"Hear the story, build the world."</p>
+</div>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl">
+<h3 class="font-label text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">Sketching Elements</h3>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex flex-col items-center gap-2 p-3 rounded-lg bg-surface hover:bg-surface-container-high transition-colors border-b-2 border-transparent active:border-tertiary">
+<span class="material-symbols-outlined text-primary">house</span>
+<span class="text-xs font-bold">Nyumba</span>
+</button>
+<button class="flex flex-col items-center gap-2 p-3 rounded-lg bg-surface hover:bg-surface-container-high transition-colors border-b-2 border-transparent active:border-tertiary">
+<span class="material-symbols-outlined text-primary">landscape</span>
+<span class="text-xs font-bold">Mlimani</span>
+</button>
+<button class="flex flex-col items-center gap-2 p-3 rounded-lg bg-surface-container-highest opacity-50 cursor-not-allowed">
+<span class="material-symbols-outlined text-outline">cloud</span>
+<span class="text-xs font-bold">Mawingu</span>
+</button>
+<button class="flex flex-col items-center gap-2 p-3 rounded-lg bg-surface-container-highest opacity-50 cursor-not-allowed">
+<span class="material-symbols-outlined text-outline">park</span>
+<span class="text-xs font-bold">Miti</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Canvas Area (Bento-inspired asymmetry) -->
+<div class="lg:col-span-9 space-y-8 order-1 lg:order-2">
+<div class="parchment-bg rounded-3xl min-h-[500px] relative overflow-hidden shadow-2xl shadow-[#333697]/5 border-outline-variant/10 border-2 group">
+<!-- Heritage Watermark -->
+<div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAK2APrGYE4YIn7JgZbNr-_NHFcDsb6FX6dzZonhiUBKefU3uBM19fbMzXaYaXEx7HsgytO9xgEerBZlnuF3ahAkP6n4dKXBDyuQSy7JbN1BqSldZg5iLBZUaJ1CXmZ8YDCKKjCkJfAcrSRfNUw2JlB7bpTFPD99PEW1BH0Ksuk-etgdjR8Q9-E-t-7EttmgUjr-8MKxprvI3rfZ5hFElZZ2CVmOsgu4ioxLbqpaxmjLOo-mRnJ8zXCPoTMVh30aGvYsR16n0ShFD8');"></div>
+<!-- Decorative Frame -->
+<div class="absolute inset-4 border border-secondary/10 rounded-2xl pointer-events-none"></div>
+<!-- Interactive Elements (Simulated Sketching) -->
+<div class="absolute inset-0 p-12 flex flex-col items-center justify-center">
+<div class="relative w-full max-w-2xl aspect-video bg-white/40 backdrop-blur-sm rounded-2xl border-2 border-dashed border-primary/20 flex items-center justify-center group-hover:border-primary/40 transition-colors">
+<!-- Background Mounts -->
+<div class="absolute bottom-0 w-full h-2/3 flex items-end justify-center px-4 overflow-hidden">
+<img alt="Mountains" class="w-full h-full object-cover opacity-80 mix-blend-multiply filter sepia-[.3] rounded-t-[100px]" data-alt="abstract illustration of tall dramatic purple mountains with sharp peaks under a soft hazy sky at dawn" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvg8H5k9SJxnhXmIbk8Of44jVhoEqby_m-nUDDOrn5GJPVwyZUD9jLnFmfGU_R_s-h0lDxqRtmpb2QoMI9oyyhMwxFXPmK3v5L8KnsVNIjTU_x_-q65RHXs7m3QNe_AT1u3xjzy6J3WkA3F__y4_zxSQ-914mFx_s7zxeg-YRtxrC02z_yY2skOACIFewKBqg3VTPLta3GWrOvpx4BZfdniHgLvinB4Mv5riMxfQzo92Yj6vAd57nnqxO5a4jbv8w1L-aYpAjt4pM"/>
+</div>
+<!-- House Element (Interactive Selection) -->
+<div class="relative z-10 w-48 h-48 bg-secondary-container/80 backdrop-blur shadow-xl rounded-xl flex items-center justify-center border-4 border-white cursor-pointer hover:scale-105 transition-transform">
+<span class="material-symbols-outlined !text-7xl text-on-secondary-container" style="font-variation-settings: 'FILL' 1;">home</span>
+<div class="absolute -top-4 -right-4 bg-tertiary text-on-tertiary w-8 h-8 rounded-full flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-sm">check</span>
+</div>
+</div>
+<div class="absolute top-8 left-8 text-primary/40 pointer-events-none">
+<span class="material-symbols-outlined !text-4xl">edit_note</span>
+</div>
+</div>
+</div>
+<!-- Bottom Action Bar on Canvas -->
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4">
+<button class="bg-surface/90 backdrop-blur px-6 py-3 rounded-full font-label text-sm font-bold text-primary shadow-sm hover:bg-white transition-all">Clear Canvas</button>
+<button class="bg-primary text-on-primary px-10 py-3 rounded-full font-label text-sm font-extrabold shadow-xl hover:scale-105 transition-all">Submit Scene</button>
+</div>
+</div>
+<!-- Griot's Note (Editorial Section) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="md:col-span-2 bg-primary text-on-primary p-8 rounded-3xl relative overflow-hidden group">
+<!-- Background texture -->
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary-container rounded-full -mr-16 -mt-16 opacity-50"></div>
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-tertiary-fixed-dim" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+<h3 class="font-headline text-2xl font-bold">Griot's Note</h3>
+</div>
+<p class="font-body text-lg leading-relaxed opacity-90">
+                                In East African coastal architecture, the <span class="text-tertiary-fixed-dim font-bold">Nyumba</span> (house) is more than shelter—it's a reflection of the landscape. Using coral stone and thatch, these dwellings harmonize with the <span class="text-tertiary-fixed-dim font-bold">Mlima</span> (mountain) terrains, designed to catch the monsoon breezes.
+                            </p>
+</div>
+</div>
+<div class="bg-secondary-container p-8 rounded-3xl flex flex-col justify-between border-b-4 border-secondary">
+<span class="material-symbols-outlined text-on-secondary-container !text-4xl mb-4">military_tech</span>
+<div>
+<h4 class="font-headline text-xl font-bold text-on-secondary-container mb-2">Heritage Point</h4>
+<p class="text-sm font-medium text-on-secondary-container/80">You've unlocked the 'Architect of the Hills' badge for correctly identifying mountain topography!</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Feedback Section (Asymmetric Footer of Content) -->
+<section class="mt-16 p-10 bg-surface-container rounded-[2rem] border-l-8 border-secondary">
+<div class="flex flex-col md:flex-row items-center gap-8">
+<div class="w-24 h-24 rounded-2xl bg-secondary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined !text-5xl text-secondary" style="font-variation-settings: 'FILL' 1;">psychology_alt</span>
+</div>
+<div>
+<h4 class="font-headline text-2xl font-bold text-secondary mb-2">Did you know?</h4>
+<p class="text-on-surface-variant max-w-2xl">
+                        The word "Mlima" refers to a mountain, while "Kilima" refers to a hill. The prefix shift (M- to Ki-) subtly changes the scale of the landscape in the Swahili imagination.
+                    </p>
+</div>
+<div class="md:ml-auto">
+<button class="bg-surface text-secondary border border-secondary px-6 py-3 rounded-xl font-bold hover:bg-secondary-fixed transition-colors">Learn More Words</button>
+</div>
+</div>
+</section>
+</main>
+<!-- NavigationDrawer (Mobile/Slide-out) - Hidden by default but logic for styles included -->
+<aside class="fixed inset-y-0 left-0 w-80 bg-[#f4f4ef] dark:bg-[#1a1c19] shadow-2xl shadow-[#333697]/5 -translate-x-full z-50 transition-transform duration-300">
+<div class="flex flex-col h-full p-8">
+<div class="flex items-center gap-4 mb-10">
+<div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden">
+<img alt="Learner profile image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAohZwC9_kalXzxnrZGOzFi977Tftr3JeC7KGJ5742e3vFasGqLcx0UIE2JtE4zsM63bzcm-LyTUEnodMmK8Ia8VBnekK2N665dr12nV-jg5ybqMcF0tqJcIEY67SMnOUf-_DOMK_K3u0BBTc7aiMNp3wASf1saoZm81WqgHuQYmYYCryp5onrCupeLzF44xObk-Ss0f0oMah5fdQkDo1v-J1h7hdkXpSpFLfLGxDnInZ0NmZr7TyWtNAL41ghqA1vyRWrCJ8Vtrz4"/>
+</div>
+<div>
+<h3 class="font-headline text-lg font-bold text-[#333697]">Zola</h3>
+<p class="text-xs text-on-surface-variant font-medium">Level 12 Griot • 2,450 XP</p>
+</div>
+</div>
+<nav class="space-y-4">
+<a class="flex items-center gap-4 text-[#333697]/80 dark:text-[#fafaf5]/80 pl-4 py-2 rounded-lg hover:bg-[#e3e3de]" href="#">
+<span class="material-symbols-outlined">timeline</span>
+<span class="font-['Epilogue'] font-medium">My Progress</span>
+</a>
+<a class="flex items-center gap-4 text-[#e07a5f] font-bold border-l-4 border-[#e07a5f] pl-4 py-2" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-['Epilogue'] font-medium">Cultural Stories</span>
+</a>
+<a class="flex items-center gap-4 text-[#333697]/80 dark:text-[#fafaf5]/80 pl-4 py-2" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-['Epilogue'] font-medium">Language Maps</span>
+</a>
+</nav>
+</div>
+</aside>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-[#fafaf5]/80 dark:bg-[#1a1c19]/80 backdrop-blur-xl flex justify-around items-center px-4 pb-8 pt-4 border-t border-[#e3e3de]/20 shadow-[0_-4px_20px_rgba(0,0,0,0.04)]">
+<a class="flex flex-col items-center justify-center bg-[#4b4fb0] text-[#fafaf5] rounded-xl px-5 py-2 transition-all" href="#">
+<span class="material-symbols-outlined">spatial_audio_off</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-semibold uppercase tracking-wider mt-1">Listen</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#333697]/60 dark:text-[#fafaf5]/60 px-5 py-2 hover:text-[#333697]" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-semibold uppercase tracking-wider mt-1">Memory</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#333697]/60 dark:text-[#fafaf5]/60 px-5 py-2 hover:text-[#333697]" href="#">
+<span class="material-symbols-outlined">translate</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-semibold uppercase tracking-wider mt-1">Translate</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#333697]/60 dark:text-[#fafaf5]/60 px-5 py-2 hover:text-[#333697]" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-semibold uppercase tracking-wider mt-1">Library</span>
+</a>
+</nav>
+</body></html>

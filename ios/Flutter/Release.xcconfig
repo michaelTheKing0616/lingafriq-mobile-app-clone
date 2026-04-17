@@ -1,2 +1,7 @@
 #include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"
 #include "Generated.xcconfig"
+
+// iOS ATS (App Transport Security)
+// Release builds must not allow cleartext traffic.
+LINGAFRIQ_IOS_ALLOW_ARBITRARY_LOADS=NO
+LINGAFRIQ_IOS_ALLOWS_LOCAL_NETWORKING=NO

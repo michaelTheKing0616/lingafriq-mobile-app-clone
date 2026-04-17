@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta_Sans:wght@400;500;600;700;800&amp;family=Lexend:wght@300;400;500;600&amp;family=Dosis:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "inverse-surface": "#462a0d",
+                        "on-tertiary-fixed-variant": "#5f4100",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#ffeee1",
+                        "primary": "#a73400",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed-variant": "#005320",
+                        "tertiary-container": "#9b6c00",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#ffdeab",
+                        "error": "#ba1a1a",
+                        "primary-container": "#c94c1a",
+                        "tertiary": "#7b5500",
+                        "surface-container-high": "#ffe3cd",
+                        "secondary-fixed-dim": "#62df7d",
+                        "on-tertiary-container": "#fffbff",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-container": "#007230",
+                        "surface-container": "#ffeada",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#7cf994",
+                        "on-primary-fixed": "#390c00",
+                        "on-primary-container": "#fffbff",
+                        "on-primary-fixed-variant": "#822700",
+                        "secondary": "#006e2d",
+                        "surface-tint": "#aa3601",
+                        "primary-fixed": "#ffdbcf",
+                        "surface-container-highest": "#ffdcbf",
+                        "error-container": "#ffdad6",
+                        "on-surface": "#2d1600",
+                        "outline-variant": "#e0bfb5",
+                        "on-background": "#2d1600",
+                        "surface-dim": "#ffd2aa",
+                        "on-tertiary-fixed": "#281900",
+                        "outline": "#8c7168",
+                        "on-secondary-fixed": "#002109",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface-variant": "#59413a",
+                        "background": "#fff8f5",
+                        "surface": "#fff8f5",
+                        "inverse-primary": "#ffb59c",
+                        "surface-bright": "#fff8f5",
+                        "secondary-fixed": "#7ffc97",
+                        "surface-container-low": "#fff1e8",
+                        "surface-variant": "#ffdcbf",
+                        "primary-fixed-dim": "#ffb59c",
+                        "tertiary-fixed-dim": "#f8bc51"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Lexend"],
+                        "label": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-[#fff8f5] dark:bg-orange-950/20 docked full-width top-0 sticky z-50 no-border bg-[#fff1e8] dark:bg-orange-900/10 flat no shadows backdrop-blur-md bg-opacity-80">
+<div class="flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="Close up portrait of a smiling West African woman with short natural hair against a warm soft-focus background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYg3_wXHzmSqBW4b17OKRWFtbL_H4R6VpNu31W5sOaLApRaa0EmuKkmFfvmj4ybP7QLueUpLTf_D679yqR0CxDK2Fn5QjbjtVybpbmv1ECPE6SghNCouJ-bq0Z3TvvsIWAhPfJG7QNqncVedpIGoQTuDVpsw9nYiVhvVxVzINsxgr1mniDNwUOFWakS2J1qpqdyjnY0MhqtfmnOp0vsFjiW-Fp_Zn6j0HLX5GdCD2YbTG9AQehH7TqO2gZ-Z_ZlpEJjELlQSuFYX5k"/>
+</div>
+<h1 class="font-['Plus_Jakarta_Sans'] font-bold text-2xl tracking-tight text-[#a73400] dark:text-orange-500 italic">LingAfriq</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#ffeada] dark:hover:bg-orange-800/30 transition-colors active:scale-95 duration-150 ease-in-out text-orange-900/60 dark:text-orange-200/60">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+</header>
+<main class="max-w-2xl mx-auto">
+<!-- Hero Section -->
+<section class="relative">
+<div class="h-48 md:h-64 w-full overflow-hidden">
+<img alt="Nature landscape cover" class="w-full h-full object-cover" data-alt="Sweeping aerial view of a vibrant Senegalese baobab forest at sunset with orange and purple sky reflecting on local waterways" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPsaQMZZAUxhKyBMTA3_DKu8FodqfemzUg0iZKnpko31E61_baW5UHYpYnBEc9_GNv2JEL5YwQOJNUhn5aEqm2OX8hHdfjrfOywr5i2hcpUBirb-10u90B9iPfTF4kbpQS7sMVDue8mqF5dXJyUssuXnSynpkJeEqUBunty4kSBv-d2OO1UEvV6r2g2KBuo95YiVMQv1z7CAg1NpTGFKwfQnVeZHXif5a0hiOwnV8Ozm0me4DrsFx7XG6ULjJ823GWg7z2tVeMId49"/>
+</div>
+<!-- Profile Info Overlay -->
+<div class="px-6 -mt-16 relative z-10">
+<div class="flex items-end justify-between">
+<div class="relative">
+<div class="w-32 h-32 rounded-full border-4 border-surface overflow-hidden shadow-xl">
+<img alt="Amara Diallo avatar" class="w-full h-full object-cover" data-alt="Professional portrait of Amara Diallo, a young Senegalese woman with warm brown skin and elegant poise" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcUPgFvh2oCiUch-xSDtR54NuLKKcB7C49kvDt_mL1LnSWuHTH3bAExIsEG7AuQxP0KSOri5Bu0nSezduaDMAa_r5d9-UuUveWQQetkss1E8VhbzVqJgp7fUwn7rGZ_W3mP9SPGBLGh_tQYrKE9zCZM365kq770BTN_EN8q--XuXzDBYoMs2lQhX39O0ocWjR3R3JM_-NYSzZRDhGlA_BEI-6xA1AxPtVKW6zsKlvWS_VKEvyCtqjd22DVdPYQ3834OKYom1urktRT"/>
+</div>
+<div class="absolute bottom-1 right-1 bg-secondary w-8 h-8 rounded-full border-2 border-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-sm" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<div class="pb-2">
+<button class="bg-primary text-on-primary font-bold px-6 py-2.5 rounded-full shadow-lg hover:brightness-110 active:scale-95 transition-all">
+                            Follow
+                        </button>
+</div>
+</div>
+<div class="mt-4">
+<h2 class="font-headline text-3xl font-extrabold text-on-surface tracking-tight">Amara Diallo</h2>
+<p class="text-on-surface-variant font-medium">@amara_d</p>
+</div>
+<p class="mt-4 text-on-surface leading-relaxed max-w-lg">
+                    Wolof &amp; French speaker. Passionate about West African history and linguistics. 🇸🇳
+                </p>
+<!-- Stats Bento Row -->
+<div class="mt-6 grid grid-cols-3 gap-3">
+<div class="bg-surface-container-low p-4 rounded-xl flex flex-col items-center">
+<span class="font-bold text-xl text-primary">1.2k</span>
+<span class="text-xs font-label uppercase tracking-widest text-on-surface-variant">Followers</span>
+</div>
+<div class="bg-surface-container-low p-4 rounded-xl flex flex-col items-center">
+<span class="font-bold text-xl text-primary">450</span>
+<span class="text-xs font-label uppercase tracking-widest text-on-surface-variant">Following</span>
+</div>
+<div class="bg-surface-container-low p-4 rounded-xl flex flex-col items-center border-b-4 border-tertiary">
+<span class="font-bold text-xl text-tertiary">5k</span>
+<span class="text-xs font-label uppercase tracking-widest text-on-surface-variant">XP</span>
+</div>
+</div>
+<!-- Language Totems -->
+<div class="mt-6 flex flex-wrap gap-3">
+<div class="bg-primary-fixed text-on-primary-fixed px-4 py-2 rounded-full flex items-center gap-2 font-semibold shadow-sm">
+<span class="material-symbols-outlined text-lg" data-icon="translate">translate</span>
+                        Wolof Native
+                    </div>
+<div class="bg-tertiary-fixed text-on-tertiary-fixed px-4 py-2 rounded-full flex items-center gap-2 font-semibold shadow-sm overflow-visible relative">
+<span class="material-symbols-outlined text-lg" data-icon="school">school</span>
+                        Twi Learner (Lvl 3)
+                        <div class="absolute -top-2 -right-1 bg-gold rounded-full w-5 h-5 flex items-center justify-center border border-white" style="background-color: #C8922A;">
+<span class="material-symbols-outlined text-[10px] text-white" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tabs Navigation -->
+<nav class="mt-8 px-6 border-b border-outline-variant/20 sticky top-[72px] bg-surface z-40">
+<div class="flex justify-between items-center overflow-x-auto hide-scrollbar">
+<button class="py-4 px-2 border-b-4 border-primary text-primary font-bold text-sm whitespace-nowrap">Posts</button>
+<button class="py-4 px-2 border-b-4 border-transparent text-on-surface-variant hover:text-primary transition-colors font-semibold text-sm whitespace-nowrap">Replies</button>
+<button class="py-4 px-2 border-b-4 border-transparent text-on-surface-variant hover:text-primary transition-colors font-semibold text-sm whitespace-nowrap">Media</button>
+<button class="py-4 px-2 border-b-4 border-transparent text-on-surface-variant hover:text-primary transition-colors font-semibold text-sm whitespace-nowrap">Likes</button>
+</div>
+</nav>
+<!-- Feed Section -->
+<div class="p-6 space-y-6">
+<!-- Recent Post: Dakar -->
+<article class="bg-surface-container-lowest rounded-lg overflow-hidden shadow-sm relative group">
+<div class="p-4 flex gap-4">
+<div class="shrink-0">
+<img alt="Mini avatar" class="w-10 h-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxAARiPnd_j3K_7MXcysjscyHGc6PuC3gQJ5mTN3yOvWlMO8-JcMTgK2afCHJAQM4HUIBdKjIe8fSjO7VQ6PHRKENnnUJatrSKQ-L6y7aIxnilGDzockYtgwqGufbqEjMFV3FXW_cxX1r2alWDgEN5_-p-d1z7bS8EnW4KIcVzn8UxVpz5TbfY-jQMeDHQyUaBnBwZ8N-z8XKv_XRaCl-bQUAUNns51q-_mSM0q8CvSptu5l8ATnw5xxNr0XbH53R4ajuP0x8YV0Q6"/>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-1">
+<span class="font-bold text-on-surface">Amara Diallo</span>
+<span class="text-on-surface-variant text-sm">· 2h</span>
+</div>
+<p class="mt-2 text-on-surface leading-relaxed">
+                            Sunset over the Plateau in Dakar today. The way the Atlantic breeze hits the terracotta buildings... nothing quite like it. Feeling inspired to write a thread about Senegalese architecture! 🇸🇳✨
+                        </p>
+<!-- Asymmetric Image Layout -->
+<div class="mt-4 grid grid-cols-12 gap-2 h-64">
+<div class="col-span-8 h-full rounded-l-lg overflow-hidden">
+<img alt="Dakar Architecture" class="w-full h-full object-cover" data-alt="Golden hour view of Dakar city skyline with terracotta colored buildings and the Atlantic ocean in the distance" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSOrDStRcWeHR29KmDLlK07LG2a58t7wFix6O2ydpz3HZMKS4G5lAhfYdoQftIe3FgfL1ofPD3sSrhM9iluAb9OJ82gW-P3APmMqAxTaKMwPJplbS8xjEHlm2wKimLYybMoQ2CISZy-qo_MkdtRQWbTE9S2vUiF4tuaN5pPw1lofmoYGO9_dCGnF4bl84tQ7UONSletAP0FGB2LZUki-4xtbkUwHbEZgzadKXMGrO2EPY3emybZxlZSCGTJ0EkdjDYktgXgIEFKcWh"/>
+</div>
+<div class="col-span-4 h-full flex flex-col gap-2">
+<div class="h-1/2 rounded-tr-lg overflow-hidden">
+<img alt="Senegalese texture" class="w-full h-full object-cover" data-alt="Close up of vibrant Senegalese woven textile patterns with orange and gold threads" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1Qs9H9_fHNlEXzHtNv412t3WA71OTVlnwot9Ue9EvmNaSZyJ0pp6Ac-_gnLkzyza6D-AycoYMdGVFDVoTKdFAdsBn8pSkf944_Z2uNs1LUy-jsKQL6VhpJbdO0MY17g4I5uBPLdc0xTx0hIJ7xap3RiEo9eWv3J6KQ5eFY_EGTnIW-CtBXe2e7voRrjgXrtWrLmK9m0BCk27R_N-TBH5LIsA1ZiGgsbHFxCwLQYHcfJkD-FMcmn41hwJl_KfVF9X-JzuHFNwdQdV1"/>
+</div>
+<div class="h-1/2 rounded-br-lg overflow-hidden">
+<img alt="Dakar Street" class="w-full h-full object-cover" data-alt="Candid street scene in Dakar with a yellow taxi and local vendors under a bright blue sky" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBo-Ti-YMV5EqRESdc1LwYgySsp3liP8bgUtuN4o2y1aYUPxGDhu8uZmd-5Eyma1614RygKFutHAvQwZ0BxWv4mWQrrWJOpEXQpjX-Ihzg2o1WX9C6gpVjx64LviSVmEDC9IcLW7AoCwrtXMkmXxw6waixR-Y4DobsS7Zkv7NKyx5ZeEez3T9BTUbErbJ9a4lssWkuPFRsTI7j5yU-rEzAKMbKyaLG6TJhZcxE1jsWtOQDNpa6qpriWS_Fj4K3nwrgbsspvTaGLGS2N"/>
+</div>
+</div>
+</div>
+<!-- Post Actions -->
+<div class="mt-4 flex justify-between items-center text-on-surface-variant">
+<button class="flex items-center gap-2 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="forum">forum</span>
+<span class="text-sm font-semibold">24</span>
+</button>
+<button class="flex items-center gap-2 hover:text-secondary transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="rebase_edit">rebase_edit</span>
+<span class="text-sm font-semibold">12</span>
+</button>
+<button class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-xl" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="text-sm font-semibold">158</span>
+</button>
+<button class="flex items-center gap-2 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="share">share</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Glass left accent bar for global mode feel -->
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-secondary/30"></div>
+</article>
+<!-- Community Participation Card -->
+<div class="bg-surface-container-high rounded-lg p-6 flex items-center justify-between">
+<div>
+<h3 class="font-headline font-bold text-lg text-primary">Join the Tribe</h3>
+<p class="text-sm text-on-surface-variant mt-1">Amara is active in 'Wolof Griots' tribe.</p>
+</div>
+<button class="bg-on-surface text-surface px-4 py-2 rounded-full text-sm font-bold">View Tribe</button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-white/80 dark:bg-orange-950/80 fixed bottom-0 w-full rounded-t-[2.5rem] z-50 backdrop-blur-xl no-border shadow-[0_-4px_20px_rgba(45,22,0,0.04)] shadow-2xl fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3">
+<!-- Feed Tab -->
+<a class="flex flex-col items-center justify-center text-orange-900/40 dark:text-orange-200/40 px-6 py-2 hover:text-[#a73400] dark:hover:text-orange-300 transition-transform active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="forum">forum</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-semibold uppercase tracking-wider">Feed</span>
+</a>
+<!-- Search Tab -->
+<a class="flex flex-col items-center justify-center text-orange-900/40 dark:text-orange-200/40 px-6 py-2 hover:text-[#a73400] dark:hover:text-orange-300 transition-transform active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-semibold uppercase tracking-wider">Search</span>
+</a>
+<!-- Alerts Tab -->
+<a class="flex flex-col items-center justify-center text-orange-900/40 dark:text-orange-200/40 px-6 py-2 hover:text-[#a73400] dark:hover:text-orange-300 transition-transform active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-semibold uppercase tracking-wider">Alerts</span>
+</a>
+<!-- Tribe (Profile Mapping) Tab - ACTIVE -->
+<a class="flex flex-col items-center justify-center text-[#a73400] dark:text-orange-400 bg-[#ffdbcf] dark:bg-orange-900/40 rounded-full px-6 py-2 transition-all transition-transform active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="diversity_3" style="font-variation-settings: 'FILL' 1;">diversity_3</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-semibold uppercase tracking-wider">Tribe</span>
+</a>
+</nav>
+</body></html>

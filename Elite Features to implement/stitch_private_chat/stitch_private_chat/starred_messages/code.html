@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Saved Snippets - Language Village</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Lexend:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary-container": "#9b6c00",
+                        "on-tertiary-fixed": "#281900",
+                        "on-error-container": "#93000a",
+                        "surface": "#fff8f5",
+                        "secondary-fixed": "#7ffc97",
+                        "surface-container-low": "#fff1e8",
+                        "surface-container-high": "#ffe3cd",
+                        "surface-container": "#ffeada",
+                        "inverse-on-surface": "#ffeee1",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#a73400",
+                        "primary-container": "#c94c1a",
+                        "outline": "#8c7168",
+                        "on-surface-variant": "#59413a",
+                        "on-surface": "#2d1600",
+                        "on-background": "#2d1600",
+                        "inverse-surface": "#462a0d",
+                        "surface-tint": "#aa3601",
+                        "inverse-primary": "#ffb59c",
+                        "surface-variant": "#ffdcbf",
+                        "on-secondary-fixed-variant": "#005320",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed": "#002109",
+                        "secondary": "#006e2d",
+                        "secondary-container": "#7cf994",
+                        "tertiary": "#7b5500",
+                        "on-primary-container": "#fffbff",
+                        "background": "#fff8f5",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#fff8f5",
+                        "tertiary-fixed": "#ffdeab",
+                        "surface-dim": "#ffd2aa",
+                        "surface-container-highest": "#ffdcbf",
+                        "on-primary-fixed-variant": "#822700",
+                        "primary-fixed-dim": "#ffb59c",
+                        "secondary-fixed-dim": "#62df7d",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#f8bc51",
+                        "outline-variant": "#e0bfb5",
+                        "on-tertiary-fixed-variant": "#5f4100",
+                        "on-secondary-container": "#007230",
+                        "on-tertiary-container": "#fffbff",
+                        "on-primary-fixed": "#390c00",
+                        "primary-fixed": "#ffdbcf"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Lexend"],
+                        "label": ["Lexend"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Lexend', sans-serif;
+            background-color: #fff8f5;
+        }
+        .asymmetric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="bg-[#fff1e8] dark:bg-stone-900 docked full-width top-0 z-50 flex items-center justify-between px-6 py-4 w-full sticky">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container overflow-hidden">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="Portrait of a young African woman with braided hair and a warm smile, soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAewX0B1TZDORzzUfJU-vHuha3b4PsOdu1Z9TvWn9annYEDcH5yi3mZ-7bAn1ew41eytVKk7sSgG_kgCuTViQMnWAYWAmvVvTBSdW2Ao-FuLpW_7AnN4v0iQcGX3XghSpgEt0UN7Hzh3Yopissn1WJrSNzb9ucclRCOfHUvk2eNSt_N3vNTuxsgIbXvkbhSnYFaJtA5bXX44uoM1WxDMsYbHW_46w81bBCvtq72vDoC_CKr3hA6t3yiO4fnbNqcy7SGbC5oSRDaq4gs"/>
+</div>
+<h1 class="font-['Plus_Jakarta_Sans'] font-bold text-2xl text-[#a73400] tracking-tight">Language Village</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-[#a73400] hover:bg-[#ffeada] transition-colors p-2 rounded-full active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-6 pt-8">
+<!-- Search Section -->
+<div class="mb-10">
+<div class="relative max-w-2xl mx-auto">
+<div class="absolute inset-y-0 left-5 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline" data-icon="search">search</span>
+</div>
+<input class="w-full py-5 pl-14 pr-6 bg-surface-container border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-on-surface placeholder-on-surface-variant font-body" placeholder="Search saved phrases or tips..." type="text"/>
+<div class="absolute inset-y-0 right-4 flex items-center">
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity">
+                        Filter
+                    </button>
+</div>
+</div>
+</div>
+<!-- Header Hero Asymmetric -->
+<div class="flex flex-col md:flex-row items-end justify-between mb-12 gap-6">
+<div class="max-w-xl">
+<span class="text-tertiary font-bold tracking-widest text-xs uppercase mb-2 block">CULTURAL ARCHIVE</span>
+<h2 class="font-headline text-5xl font-extrabold text-on-surface leading-tight">Your Starred <br/><span class="text-primary italic">Snippets.</span></h2>
+<p class="text-on-surface-variant mt-4 font-body leading-relaxed">
+                    A curated collection of Swahili wisdom, grammar essentials, and daily expressions gathered from your village journey.
+                </p>
+</div>
+<div class="hidden md:block relative">
+<div class="w-24 h-24 bg-tertiary-fixed rounded-lg rotate-12 absolute -top-4 -right-4 flex items-center justify-center shadow-xl z-10">
+<span class="material-symbols-outlined text-on-tertiary-fixed text-4xl" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div class="w-48 h-32 bg-primary-fixed rounded-lg -rotate-6 overflow-hidden shadow-lg border-4 border-white">
+<div class="h-full w-full bg-gradient-to-br from-primary-container to-primary flex items-center justify-center p-4">
+<p class="text-on-primary font-headline font-bold text-center text-sm">Learning is a treasure that follows its owner everywhere.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Saved Messages Content - Asymmetric Layout -->
+<div class="asymmetric-grid pb-12">
+<!-- Message Card 1: Grammar Tip -->
+<div class="bg-surface-container-low rounded-lg p-6 flex flex-col gap-4 hover:shadow-lg transition-all border-l-4 border-tertiary relative overflow-hidden group">
+<div class="absolute -right-6 -top-6 w-24 h-24 bg-tertiary/5 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center text-xs font-bold text-tertiary">M</div>
+<div>
+<p class="text-sm font-bold text-on-surface">Mwalimu Juma</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">Oct 12, 2023 • Grammar Tip</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-tertiary text-xl" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<div class="mt-2">
+<p class="font-headline text-xl text-primary font-bold mb-2">The "Ni-" Prefix</p>
+<p class="text-on-surface-variant text-sm leading-relaxed font-body">
+                        In Swahili, 'Ni-' is used to denote the first person singular (I). For example: <span class="bg-surface-container px-1 rounded">Ninasoma</span> (I am reading).
+                    </p>
+</div>
+<div class="flex justify-end gap-3 mt-4 border-t border-outline-variant/10 pt-4">
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors text-xs font-medium">
+<span class="material-symbols-outlined text-sm" data-icon="content_copy">content_copy</span> Copy
+                    </button>
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors text-xs font-medium">
+<span class="material-symbols-outlined text-sm" data-icon="share">share</span> Share
+                    </button>
+</div>
+</div>
+<!-- Message Card 2: Phrase -->
+<div class="bg-surface-container rounded-lg p-6 flex flex-col gap-4 hover:shadow-lg transition-all relative overflow-hidden group">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden">
+<img alt="Sender" class="w-full h-full object-cover" data-alt="Profile of a cheerful elderly man with white beard and glasses" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpr5R3SpU2eRuuLdwV4y4PuKhGnQj3bawxxRLiGrr_bVDxw7FeNBAOZEIh3N3wvp2-68kdLe2vt30OYxMEmDsOOHtzfxj7bAEHGGVo41BSasYIz59OqNSJ1WKUhPpV65-w55Ev5iULx1sTS12IXDb3UEQCFrQ6HW1-rr8wyVnhCO22Bj7CTRlzdL53bQC1gR_IzAjsfAMOngKqRZB-Gqecoehw_7CUdOzoXUf8VV00FZ-XQGpyn3WjiN3L4lox19PRPMGhEKZkpmsY"/>
+</div>
+<div>
+<p class="text-sm font-bold text-on-surface">Baba T'Challa</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">Oct 10, 2023 • Common Phrase</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-tertiary text-xl" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<div class="mt-4 bg-white/40 p-5 rounded-lg backdrop-blur-sm">
+<p class="font-headline text-2xl text-on-surface font-extrabold italic">"Haba na haba, hujaza kibaba."</p>
+<div class="w-8 h-1 bg-primary/30 my-3"></div>
+<p class="text-on-surface-variant text-sm font-body italic">
+                        Little by little, the container gets full. (patience is key)
+                    </p>
+</div>
+<div class="flex justify-end gap-4 mt-2">
+<button class="p-2 hover:bg-primary-fixed rounded-full transition-colors active:scale-90">
+<span class="material-symbols-outlined text-primary" data-icon="content_copy">content_copy</span>
+</button>
+<button class="p-2 hover:bg-primary-fixed rounded-full transition-colors active:scale-90">
+<span class="material-symbols-outlined text-primary" data-icon="share">share</span>
+</button>
+</div>
+</div>
+<!-- Message Card 3: Vocabulary (Tonal Layering Card) -->
+<div class="bg-surface-container-highest rounded-lg p-6 flex flex-col justify-between hover:shadow-xl transition-all md:row-span-2 border border-outline-variant/10">
+<div>
+<div class="flex justify-between items-start mb-6">
+<span class="bg-secondary text-on-secondary px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">Vocabulary</span>
+<span class="material-symbols-outlined text-tertiary text-xl" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<h3 class="text-5xl font-extrabold font-headline text-primary mb-2">Rafiki</h3>
+<p class="text-on-surface-variant text-lg font-body mb-6">/ra-fee-kee/</p>
+<div class="h-px w-full bg-outline-variant/20 mb-6"></div>
+<p class="text-on-surface font-medium text-xl font-body leading-relaxed">
+                        A person whom one knows and with whom one has a bond of mutual affection.
+                    </p>
+<p class="mt-4 text-secondary font-bold text-sm">Synonyms: Mshirika, Mwenzangu</p>
+</div>
+<div class="mt-8 flex items-center justify-between">
+<div class="flex -space-x-2">
+<img class="w-8 h-8 rounded-full border-2 border-surface" data-alt="Avatar icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDusA5FmBOIV6jqd1WVbYx1sb2Zxl6fuP0ZWGpZwd06ETOE2YbcfdxIZOAmaJO1nNKokcQjd6k0QFByUygDEaudEb_tZatNQQjr0bKaFjlKb3fv65Fm3wWsLntB9KVlmtCITcsCaur49Ocu58LY4DeXhXdEy6v8Xf-12bGLZcUD31I4833xIgoihFZjcavkOs7QfsTueg11OKEecdvB2OK_Z1dMD3fol5qFIuW9cmmH1h-BTL_gbAndJCBuIpq7ZFzddY5jG-nm8oQ7"/>
+<img class="w-8 h-8 rounded-full border-2 border-surface" data-alt="Avatar icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDstUorvviqOHAeZR2T4rd0wxSWFoytThzf93jtMP2FfH6bDMfOV6XWEnE6pnjC-A6ugxq_nvNp8TvOhIDXAHh_zxuBKnHYE5pUUANzg18fZThyS2e8cchvT3c3thyEUnAuB0DEE-3p7r5GomTXgJbBGs9ETvVZFjyXNQygMFnf-F0HBQhvUI4PUa69wFCQ68WxO8PfZehhKsijy8uPyCmBUAPUrZO6Xctwxcz7cXF7HnyCqZ6jg194LioA5LMYKh4fMG6A_wnitfoA"/>
+</div>
+<div class="flex gap-2">
+<button class="p-3 bg-surface-container-low hover:bg-surface-container rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="content_copy">content_copy</span>
+</button>
+<button class="p-3 bg-surface-container-low hover:bg-surface-container rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="share">share</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Message Card 4: Short Chat snippet -->
+<div class="bg-white/60 rounded-lg p-6 border-l-4 border-secondary shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Chat Fragment</p>
+<span class="material-symbols-outlined text-tertiary text-xl" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<div class="space-y-3">
+<div class="flex items-start gap-2">
+<div class="w-2 h-10 bg-secondary/10 rounded-full"></div>
+<p class="text-sm font-body text-on-surface leading-relaxed italic">"Habari za asubuhi? Umeamkaje?"</p>
+</div>
+<p class="text-xs text-on-surface-variant font-medium pl-4">Good morning? How did you wake up (how was your sleep)?</p>
+</div>
+<div class="flex justify-between items-center mt-6">
+<span class="text-[10px] text-on-surface-variant">Saved from Tribe: Coastal Swahili</span>
+<div class="flex gap-1">
+<span class="material-symbols-outlined text-on-surface-variant text-lg cursor-pointer hover:text-primary" data-icon="content_copy">content_copy</span>
+<span class="material-symbols-outlined text-on-surface-variant text-lg cursor-pointer hover:text-primary" data-icon="share">share</span>
+</div>
+</div>
+</div>
+<!-- Message Card 5: Achievement Tip -->
+<div class="bg-gradient-to-br from-tertiary-fixed to-surface-container-high rounded-lg p-6 relative overflow-hidden group">
+<span class="material-symbols-outlined absolute -bottom-4 -right-4 text-9xl text-white/20 rotate-12" data-icon="auto_stories">auto_stories</span>
+<div class="flex justify-between mb-4">
+<span class="bg-on-tertiary-fixed text-tertiary-fixed px-2 py-1 rounded text-[9px] font-bold">LITERATURE</span>
+<span class="material-symbols-outlined text-tertiary text-xl" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-headline font-bold text-on-tertiary-fixed mb-2">Proverb Tip</p>
+<p class="text-on-tertiary-fixed/80 text-sm font-body leading-snug mb-4">
+                    Always look for metaphors in Swahili speech. They often hide deep respect and centuries of wisdom.
+                </p>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-on-tertiary-fixed cursor-pointer" data-icon="content_copy">content_copy</span>
+<span class="material-symbols-outlined text-on-tertiary-fixed cursor-pointer" data-icon="share">share</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Totem (CTA) -->
+<div class="fixed bottom-28 right-8 z-40">
+<button class="w-16 h-16 bg-primary text-on-primary rounded-full shadow-[0_20px_40px_rgba(167,52,0,0.3)] flex items-center justify-center hover:scale-110 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
+</button>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-white/80 dark:bg-stone-900/80 backdrop-blur-xl shadow-[0_-10px_40px_rgba(45,22,0,0.06)] rounded-t-[2rem]">
+<div class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 hover:opacity-80 active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="chat">chat</span>
+<span class="font-['Lexend'] text-xs font-medium">Chats</span>
+</div>
+<div class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 hover:opacity-80 active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="adjust">adjust</span>
+<span class="font-['Lexend'] text-xs font-medium">Status</span>
+</div>
+<div class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 hover:opacity-80 active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="call">call</span>
+<span class="font-['Lexend'] text-xs font-medium">Calls</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-[#ffdbcf] dark:bg-[#a73400]/30 text-[#a73400] rounded-full px-5 py-1 hover:opacity-80 active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-['Lexend'] text-xs font-medium">Saved</span>
+</div>
+</nav>
+</body></html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Archive — The Griot's Tongue</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Manrope:wght@200..800&amp;family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container-low": "#f6f3ec",
+                        "surface-bright": "#fcf9f2",
+                        "tertiary-fixed-dim": "#e9c349",
+                        "on-surface-variant": "#57423a",
+                        "primary-fixed-dim": "#ffb596",
+                        "on-tertiary-fixed": "#241a00",
+                        "tertiary-fixed": "#ffe088",
+                        "on-primary-fixed": "#360f00",
+                        "background": "#fcf9f2",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed": "#ffdbcd",
+                        "primary-container": "#c05621",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#e5e2db",
+                        "secondary-fixed": "#d9e3f9",
+                        "on-tertiary-container": "#4f3d00",
+                        "error": "#ba1a1a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#1c1c18",
+                        "inverse-primary": "#ffb596",
+                        "surface-tint": "#a14009",
+                        "on-secondary-container": "#596376",
+                        "inverse-on-surface": "#f3f0e9",
+                        "on-surface": "#1c1c18",
+                        "surface-container-high": "#ebe8e1",
+                        "surface-container": "#f1eee7",
+                        "secondary-container": "#d6e0f6",
+                        "surface-dim": "#dcdad3",
+                        "on-primary": "#ffffff",
+                        "outline-variant": "#dec0b5",
+                        "surface-variant": "#e5e2db",
+                        "inverse-surface": "#31312c",
+                        "on-primary-container": "#fffeff",
+                        "primary": "#9f3e07",
+                        "on-secondary-fixed-variant": "#3d4759",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "outline": "#8a7268",
+                        "secondary": "#555f71",
+                        "surface": "#fcf9f2",
+                        "tertiary-container": "#cca730",
+                        "tertiary": "#735c00",
+                        "on-secondary-fixed": "#121c2c",
+                        "secondary-fixed-dim": "#bdc7dc",
+                        "on-tertiary-fixed-variant": "#574500",
+                        "on-primary-fixed-variant": "#7d2d00"
+                    },
+                    fontFamily: {
+                        "headline": ["Newsreader", "serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Space Grotesk", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .editorial-gradient {
+            background: linear-gradient(135deg, #9f3e07 0%, #c05621 100%);
+        }
+        .paper-texture {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed overflow-x-hidden">
+<div class="fixed inset-0 paper-texture z-[-1]"></div>
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#fcf9f2]/90 dark:bg-stone-900/90 backdrop-blur-xl flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-4">
+<button class="text-orange-900 dark:text-orange-200 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition-colors p-2 rounded-sm">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+<div class="absolute left-1/2 -translate-x-1/2">
+<h1 class="font-headline italic text-3xl text-[#9f3e07] dark:text-[#c05621] tracking-tight">Àṣà</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-orange-900 dark:text-orange-200 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition-colors p-2 rounded-sm">
+<span class="material-symbols-outlined">search</span>
+</button>
+</div>
+</header>
+<main class="pt-24 pb-32">
+<!-- Hero Section -->
+<section class="px-6 md:px-12 lg:px-24 mb-24 relative">
+<div class="flex flex-col md:flex-row gap-12 items-end">
+<div class="w-full md:w-2/3">
+<p class="font-label text-xs uppercase tracking-[0.2em] text-secondary mb-6">Archive Collection 01</p>
+<h2 class="font-headline text-5xl md:text-7xl lg:text-8xl leading-none text-on-surface mb-8">
+                        The Griot's Tongue: Preserving the <span class="italic text-primary">Mandé Legacy</span>
+</h2>
+<p class="font-body text-xl text-on-surface-variant max-w-2xl leading-relaxed mb-10">
+                        A sensory journey through the oral histories, artisanal masterworks, and rhythmic pulses of West Africa's ancient heartland.
+                    </p>
+<button class="editorial-gradient text-white font-label text-sm uppercase tracking-widest py-4 px-10 rounded-sm shadow-xl shadow-primary/10 hover:opacity-90 transition-opacity flex items-center gap-3">
+                        Start Exploration
+                        <span class="material-symbols-outlined text-lg">arrow_right_alt</span>
+</button>
+</div>
+<div class="w-full md:w-1/3">
+<div class="aspect-[3/4] bg-surface-container-high overflow-hidden shadow-2xl relative">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="dramatic portrait of an elderly African griot with deep facial lines illuminated by warm side-lighting against a dark earth-toned background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBK-wpd1YxP8bhtAdGJ5acO4G5yixgVhM8NTH0l_vhtyBOS5iWsi9ACQirq0RRk32I_2XEJQ9dTSvFZ05Zad9WuizTqp2R-ulnkwrnjqszwegp6_7-WrKExwAV9IKwDiavGMPn7s7DP_WBVwlgjAdNKwSbMGtu-ybEic3CREDKCxwu5xHutxrCrTnJ3ON1KHNIEMTvaJGPD6Dh_1hj4gQIzRAHjeq8mQGjWbogDreh5GlskDQQkPQDeXJWLcUBjQR9WJ_5Hl9ipS7bv"/>
+<div class="absolute bottom-4 right-4 bg-background/80 backdrop-blur p-4">
+<span class="font-label text-[10px] uppercase text-primary">Est. 1235 AD</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid: Featured Content -->
+<section class="px-6 md:px-12 lg:px-24 mb-32">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<!-- Article Section -->
+<article class="md:col-span-7 bg-surface-container shadow-sm p-8 md:p-12 flex flex-col justify-between min-h-[500px] relative overflow-hidden">
+<div class="relative z-10">
+<div class="flex items-center gap-4 mb-12">
+<span class="font-label text-xs py-1 px-3 bg-tertiary/10 text-tertiary rounded-full">Article</span>
+<span class="font-label text-xs text-secondary">12 min read</span>
+</div>
+<h3 class="font-headline text-4xl md:text-5xl leading-tight mb-8">The Oral Memory of Water: Tales from the Niger</h3>
+<p class="font-body text-lg text-on-surface-variant mb-12 max-w-lg">
+                            How ancestral river-songs guide modern irrigation and communal law in the inland delta.
+                        </p>
+</div>
+<div class="relative z-10">
+<a class="font-label text-sm uppercase tracking-widest text-primary font-bold flex items-center gap-2 group" href="#">
+                            Read Full Text
+                            <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">east</span>
+</a>
+</div>
+<div class="absolute top-0 right-0 w-1/3 h-full opacity-10 pointer-events-none">
+<img class="h-full object-cover" data-alt="abstract flowing water ripples on a deep river surface caught in late afternoon golden sunlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCr84Fr6PyttH4-YwIBO0o-EDuLzXAhmfkMHngJDtMMqGLu8tLC9awLwsbYDkZCjCtYHMr0ew1zb0INkVQOUSJztOa5tDzJk_IOINpwGY9ZZ87euZVcVfmKjZARBii9iTCKr-myYQiuAKICn_mSituOsRNnHHGL1JprPE3tZ6z7wVWbOjJ2hh5Syno4wpBVtvYVWL_wDA0tNDNEzZHYiHTXA9dzD7DBkItQrPyc8GPKr8RemBgPOP0xCWvZRhwcd8HxFRFOzrQOPctg"/>
+</div>
+</article>
+<!-- Photo Essay Section -->
+<div class="md:col-span-5 flex flex-col gap-8">
+<div class="bg-surface-container-high p-8 flex-1 group cursor-pointer overflow-hidden">
+<div class="mb-6 overflow-hidden">
+<img class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" data-alt="wide cinematic shot of the Sahel desert landscape at dusk with long shadows and soft purple and orange sky" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfSY-9KMd5_SOUUDLB8TTOFGjUkPUvzJRZFjydYbXgVJ8bUToCGHuV3rlGnBRJuj2o1IiWvqYzGDpkrqDs0q_clUElG_pbjBo_PjEmYiUPXyzX6E3fOf7Oa2RN7vWxjFDrVSfW119-bq36fHNE9gwJZh1S5YaySr6LYXSmpPr28BjdpXPNYDsN1QeH5IoYCk4rt0UxpP-O2pXD2OuN2evH_wmvdtv7ezb3Eg2xZNvALlzGOElY-6faLHIqFj71hBqIxoxuONYLws3Q"/>
+</div>
+<span class="font-label text-xs text-primary block mb-3">Photo Essay</span>
+<h4 class="font-headline text-2xl mb-4">72 Faces of the Sahel</h4>
+<p class="font-body text-sm text-on-surface-variant leading-relaxed">
+                            A visual chronicle of the nomadic communities spanning Mali to Burkina Faso.
+                        </p>
+</div>
+<!-- Audio Archive Section (The Studio laboratory style) -->
+<div class="bg-inverse-surface text-inverse-on-surface p-8 flex-1">
+<div class="flex justify-between items-start mb-12">
+<div>
+<span class="font-label text-[10px] uppercase tracking-widest text-tertiary-fixed-dim">Audio Archive</span>
+<h4 class="font-headline text-2xl text-white mt-2 italic">The Last Kora Makers</h4>
+</div>
+<span class="material-symbols-outlined text-tertiary-fixed-dim" data-weight="fill">graphic_eq</span>
+</div>
+<!-- Audio Weaver Component -->
+<div class="bg-surface-container-highest/10 p-4 mb-6 cursor-pointer hover:bg-tertiary-container/20 transition-colors group">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-4xl text-tertiary-fixed-dim">play_circle</span>
+<div class="flex-1 space-y-2">
+<div class="h-1 w-full bg-white/20 relative overflow-hidden">
+<div class="absolute inset-y-0 left-0 w-1/3 bg-tertiary-fixed-dim"></div>
+</div>
+<div class="flex justify-between font-label text-[10px] text-white/40">
+<span>04:12</span>
+<span>24:00</span>
+</div>
+</div>
+</div>
+</div>
+<p class="font-label text-xs text-white/60">Recording: Kabouda, Mali | 1974</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Grid of Related Materials -->
+<section class="px-6 md:px-12 lg:px-24">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+<div>
+<p class="font-label text-xs uppercase tracking-widest text-secondary mb-2">Preservation Ledger</p>
+<h3 class="font-headline text-4xl">Related Materials</h3>
+</div>
+<div class="flex gap-4">
+<button class="w-12 h-12 flex items-center justify-center bg-surface-container-high hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined">west</span>
+</button>
+<button class="w-12 h-12 flex items-center justify-center bg-surface-container-high hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined">east</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Item 01 -->
+<div class="bg-surface-container-low p-6 hover:bg-surface-container-high transition-colors">
+<span class="font-label text-xs text-outline mb-8 block">01 / MANUSCRIPT</span>
+<h5 class="font-headline text-xl mb-4">Timbuktu Trade Logs</h5>
+<p class="font-body text-sm text-on-surface-variant mb-8 leading-relaxed">Digitized fragments of 16th-century gold exchange protocols.</p>
+<span class="material-symbols-outlined text-primary">arrow_outward</span>
+</div>
+<!-- Item 02 -->
+<div class="bg-surface-container-low p-6 hover:bg-surface-container-high transition-colors">
+<span class="font-label text-xs text-outline mb-8 block">02 / BOTANY</span>
+<h5 class="font-headline text-xl mb-4">The Baobab Spirits</h5>
+<p class="font-body text-sm text-on-surface-variant mb-8 leading-relaxed">Mapping sacred groves across the Manding Plateau.</p>
+<span class="material-symbols-outlined text-primary">arrow_outward</span>
+</div>
+<!-- Item 03 -->
+<div class="bg-surface-container-low p-6 hover:bg-surface-container-high transition-colors border-l-4 border-primary/20">
+<span class="font-label text-xs text-primary mb-8 block">03 / LINGUISTICS</span>
+<h5 class="font-headline text-xl mb-4">Bambara Syntax</h5>
+<p class="font-body text-sm text-on-surface-variant mb-8 leading-relaxed">Interactive syntax maps for dialectical variations.</p>
+<span class="material-symbols-outlined text-primary">arrow_outward</span>
+</div>
+<!-- Item 04 -->
+<div class="bg-surface-container-low p-6 hover:bg-surface-container-high transition-colors">
+<span class="font-label text-xs text-outline mb-8 block">04 / TEXTILE</span>
+<h5 class="font-headline text-xl mb-4">Bogolan Indigo</h5>
+<p class="font-body text-sm text-on-surface-variant mb-8 leading-relaxed">Mud-cloth symbolism decoded via high-res scans.</p>
+<span class="material-symbols-outlined text-primary">arrow_outward</span>
+</div>
+</div>
+</section>
+</main>
+<!-- NavigationDrawer (Mental Blueprint implementation) -->
+<aside class="fixed top-0 left-0 h-full w-80 bg-[#fcf9f2] dark:bg-stone-900 shadow-2xl shadow-stone-900/10 z-[60] -translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]" id="nav-drawer">
+<div class="flex flex-col h-full p-8">
+<div class="flex items-center gap-4 mb-12">
+<div class="w-12 h-12 bg-primary rounded-sm flex items-center justify-center overflow-hidden">
+<img alt="Curator Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2sfo43_bjK8qVpO4K1YGKktVpnk1ICk-OVPLxG8LrpOBM9xreHRnTz5tfZHxRg4wPBqYtumMiCa9uxPQf8cZfc2e2G8DQKcAMsETegHEQ-RJ8cSpwqwu0jw7Lr_DPO6I0vOC3DfeiE9sH8xfS1f_kGbFZqNJZLCMfr173gspgROfM7DIUKZMkwAhnptXzvRkhRutNRvSTXB1yCPJdB5h9YjjF0PIgTbHAmmF55AgnfPp7Gp2urBS7T-VvMzAAZPOGx1qtKyoQ4TD8"/>
+</div>
+<div>
+<p class="font-headline text-lg leading-relaxed text-[#9f3e07] dark:text-[#c05621] font-bold">The Curator</p>
+<p class="font-mono text-[10px] text-stone-400 uppercase tracking-widest">Ancestral Knowledge</p>
+</div>
+</div>
+<nav class="flex-1 space-y-4">
+<a class="block text-[#9f3e07] dark:text-white font-headline text-lg font-bold border-l-4 border-[#9f3e07] pl-4" href="#">Curated Collections</a>
+<a class="block text-stone-500 dark:text-stone-400 pl-4 font-headline text-lg hover:bg-[#ebe8e1] dark:hover:bg-stone-800 transition-colors py-2" href="#">Photo Essays</a>
+<a class="block text-stone-500 dark:text-stone-400 pl-4 font-headline text-lg hover:bg-[#ebe8e1] dark:hover:bg-stone-800 transition-colors py-2" href="#">Audio Archives</a>
+<a class="block text-stone-500 dark:text-stone-400 pl-4 font-headline text-lg hover:bg-[#ebe8e1] dark:hover:bg-stone-800 transition-colors py-2" href="#">Language Maps</a>
+<a class="block text-stone-500 dark:text-stone-400 pl-4 font-headline text-lg hover:bg-[#ebe8e1] dark:hover:bg-stone-800 transition-colors py-2" href="#">The Studio</a>
+</nav>
+<div class="pt-8 border-t border-stone-200/50">
+<p class="font-mono text-xs text-stone-400 uppercase">V.01.24</p>
+</div>
+</div>
+</aside>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center pt-2 pb-6 px-4 bg-[#fcf9f2]/80 dark:bg-stone-900/80 backdrop-blur-md z-50 shadow-[0_-10px_30px_rgba(28,28,24,0.04)] md:hidden">
+<a class="flex flex-col items-center justify-center bg-[#c05621] text-white rounded-sm px-3 py-1 scale-105 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-mono text-[10px] uppercase tracking-widest mt-1">Archives</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 grayscale hover:text-[#9f3e07] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="science">science</span>
+<span class="font-mono text-[10px] uppercase tracking-widest mt-1">Studio</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 grayscale hover:text-[#9f3e07] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-mono text-[10px] uppercase tracking-widest mt-1">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 grayscale hover:text-[#9f3e07] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-mono text-[10px] uppercase tracking-widest mt-1">Profile</span>
+</a>
+</nav>
+<!-- Footer Decoration -->
+<footer class="mt-24 pb-48 px-6 text-center border-t border-surface-container-high pt-12">
+<p class="font-headline text-2xl italic text-primary mb-2">Àṣà Heritage Archives</p>
+<p class="font-label text-[10px] uppercase tracking-[0.4em] text-secondary">A Digital Preservation Initiative</p>
+</footer>
+</body></html>

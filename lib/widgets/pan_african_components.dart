@@ -1082,6 +1082,8 @@ class PanAfricanTextField extends StatelessWidget {
   final VoidCallback? onSuffixTap;
   final String? errorText;
   final String? helperText;
+  final TextInputAction? textInputAction;
+  final ValueChanged<String>? onSubmitted;
 
   const PanAfricanTextField({
     super.key,
@@ -1096,6 +1098,8 @@ class PanAfricanTextField extends StatelessWidget {
     this.onSuffixTap,
     this.errorText,
     this.helperText,
+    this.textInputAction,
+    this.onSubmitted,
   });
 
   @override
@@ -1107,6 +1111,8 @@ class PanAfricanTextField extends StatelessWidget {
       onChanged: onChanged,
       maxLines: maxLines,
       obscureText: obscureText,
+      textInputAction: textInputAction,
+      onSubmitted: onSubmitted,
       style: PanAfricanTypography.bodyLarge(context),
       decoration: InputDecoration(
         labelText: label,

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Village - Choose Your Tongue</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&amp;family=Lexend:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-container": "#fffbff",
+              "on-secondary-fixed-variant": "#005320",
+              "surface-dim": "#ffd2aa",
+              "secondary-fixed-dim": "#62df7d",
+              "primary-container": "#c94c1a",
+              "on-primary-fixed-variant": "#822700",
+              "outline": "#8c7168",
+              "tertiary-fixed": "#ffdeab",
+              "on-primary": "#ffffff",
+              "on-secondary-container": "#007230",
+              "secondary-fixed": "#7ffc97",
+              "outline-variant": "#e0bfb5",
+              "on-secondary-fixed": "#002109",
+              "on-primary-fixed": "#390c00",
+              "tertiary-container": "#9b6c00",
+              "surface-tint": "#aa3601",
+              "primary-fixed": "#ffdbcf",
+              "surface-container-high": "#ffe3cd",
+              "secondary-container": "#7cf994",
+              "on-background": "#2d1600",
+              "surface-container-lowest": "#ffffff",
+              "surface-bright": "#fff8f5",
+              "on-secondary": "#ffffff",
+              "background": "#fff8f5",
+              "primary-fixed-dim": "#ffb59c",
+              "on-tertiary-fixed-variant": "#5f4100",
+              "primary": "#a73400",
+              "surface-container-low": "#fff1e8",
+              "on-error": "#ffffff",
+              "on-tertiary-fixed": "#281900",
+              "inverse-on-surface": "#ffeee1",
+              "error": "#ba1a1a",
+              "inverse-surface": "#462a0d",
+              "on-surface-variant": "#59413a",
+              "on-primary-container": "#fffbff",
+              "surface-variant": "#ffdcbf",
+              "secondary": "#006e2d",
+              "on-surface": "#2d1600",
+              "surface": "#fff8f5",
+              "inverse-primary": "#ffb59c",
+              "on-error-container": "#93000a",
+              "surface-container": "#ffeada",
+              "on-tertiary": "#ffffff",
+              "tertiary-fixed-dim": "#f8bc51",
+              "tertiary": "#7b5500",
+              "surface-container-highest": "#ffdcbf",
+              "error-container": "#ffdad6"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Lexend"],
+              "label": ["Lexend"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .asymmetric-clip {
+            clip-path: polygon(0% 0%, 100% 0%, 95% 100%, 5% 100%);
+        }
+        .glass-bg {
+            background: rgba(167, 52, 0, 0.8);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Top Navigation Anchor -->
+<header class="bg-[#fff8f5] dark:bg-stone-950 flex justify-between items-center w-full px-6 py-4 max-w-screen-xl mx-auto top-0 sticky z-50">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full border-2 border-primary-container overflow-hidden">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="Close up portrait of a smiling African woman with traditional braided hair and vibrant tribal jewelry" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpraHJtvsxXlN5vB5hIZjSt7WS7T9p622iEINAOAe_jupNXeMzo57SxGmWUb_0CHwDrvfdOirhV5tiogEGnQnhIFYqZ_gprOP9G9Blz8byL5xgP1NrHASypB5y40dtd7d192AKZqSJSZhDY7NkGuBHrdH7HUGJ3JOlL_8z4m0r4FNmpQmzeatxKVzREALxvtB-CY7Od37vu_DlaGouU8TO4mQifw_kI2K6FLfMi05aAbxS6qFvtE2IFb9i2vDTFz6Bgk_EncTw9IH9"/>
+</div>
+<span class="font-['Plus_Jakarta_Sans'] font-bold tracking-tight text-xl font-black text-[#a73400] dark:text-[#ffdbcf]">The Village</span>
+</div>
+<button class="text-[#a73400] dark:text-[#ffdbcf] hover:bg-[#fff1e8] dark:hover:bg-stone-900 transition-colors p-2 rounded-full">
+<span class="material-symbols-outlined" data-icon="local_fire_department">local_fire_department</span>
+</button>
+</header>
+<main class="max-w-screen-xl mx-auto px-6 pt-8 pb-32">
+<!-- Hero Section -->
+<section class="mb-12 relative">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="max-w-2xl">
+<span class="font-label text-primary font-bold uppercase tracking-widest text-xs mb-3 block">Ancestral Roots</span>
+<h1 class="font-headline text-4xl md:text-6xl font-extrabold text-on-background leading-tight">
+                        Choose your <span class="text-primary italic">tongue</span>
+</h1>
+<p class="text-on-surface-variant mt-4 text-lg max-w-md">
+                        Every language is a world. Which path will you walk today?
+                    </p>
+</div>
+<!-- Asymmetric Totem -->
+<div class="hidden md:block absolute -top-12 -right-4 w-48 h-48 bg-tertiary-fixed rounded-xl rotate-12 -z-10 opacity-40"></div>
+<div class="hidden md:block absolute -top-8 -right-8">
+<img alt="African mask" class="w-40 h-52 object-cover rounded-lg shadow-[0_20px_40px_rgba(45,22,0,0.1)] -rotate-6" data-alt="Stylized wooden African mask with intricate geometric carvings and earth-toned pigments against a soft cream background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGKQE4ZgXtUomgcL4p5aX3L3NAjmTEWk0ZIGJl0yauk1sDMR8ebLBRnElyXBUWcYcTaAHSodR2YogeQLfYD0pBpvkv4APyNImEgcLFrhNbh31AehWeNCopDz0MfpQpxqZN-owISJ06764cXRTuTyf9v0e_2dHqUSRYjwrvoq8Z6Auv1RK2ZIx3O3oTv_89l7R5yf9AkMu9eZ-AOIauWdZ-00u5kOJcJIw_ignqyvnvOaqv786KhOzJHuC9VoMgkRYmDnF0H90XKiAq"/>
+</div>
+</div>
+</section>
+<!-- Language Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+<!-- Language Card: Swahili -->
+<div class="group relative bg-surface-container-low p-6 rounded-lg hover:bg-surface-container transition-all duration-300 cursor-pointer overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl" data-icon="auto_stories">auto_stories</span>
+</div>
+<div class="flex items-start justify-between mb-8">
+<div class="w-16 h-16 rounded-full bg-surface-container-highest flex items-center justify-center text-4xl shadow-sm border border-outline-variant/10">
+                        🇰🇪
+                    </div>
+<div class="text-right">
+<span class="block text-xs font-label uppercase tracking-tighter text-on-surface-variant">Learners</span>
+<span class="text-primary font-bold">124k+</span>
+</div>
+</div>
+<h3 class="font-headline text-2xl font-bold text-on-background mb-1">Swahili</h3>
+<p class="text-on-surface-variant text-sm italic mb-4">Kiswahili</p>
+<div class="flex items-center gap-2">
+<span class="px-3 py-1 bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold uppercase rounded-full tracking-widest">Trending</span>
+<span class="px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed text-[10px] font-bold uppercase rounded-full tracking-widest">Bantu</span>
+</div>
+</div>
+<!-- Language Card: Yoruba -->
+<div class="group relative bg-surface-container-low p-6 rounded-lg hover:bg-surface-container transition-all duration-300 cursor-pointer overflow-hidden">
+<div class="flex items-start justify-between mb-8">
+<div class="w-16 h-16 rounded-full bg-surface-container-highest flex items-center justify-center text-4xl shadow-sm border border-outline-variant/10">
+                        🇳🇬
+                    </div>
+<div class="text-right">
+<span class="block text-xs font-label uppercase tracking-tighter text-on-surface-variant">Learners</span>
+<span class="text-primary font-bold">89k+</span>
+</div>
+</div>
+<h3 class="font-headline text-2xl font-bold text-on-background mb-1">Yoruba</h3>
+<p class="text-on-surface-variant text-sm italic mb-4">Èdè Yorùbá</p>
+<div class="flex items-center gap-2">
+<span class="px-3 py-1 bg-surface-container-highest text-on-surface-variant text-[10px] font-bold uppercase rounded-full tracking-widest">Volta-Niger</span>
+</div>
+</div>
+<!-- Language Card: Zulu -->
+<div class="group relative bg-surface-container-low p-6 rounded-lg hover:bg-surface-container transition-all duration-300 cursor-pointer overflow-hidden">
+<div class="flex items-start justify-between mb-8">
+<div class="w-16 h-16 rounded-full bg-surface-container-highest flex items-center justify-center text-4xl shadow-sm border border-outline-variant/10">
+                        🇿🇦
+                    </div>
+<div class="text-right">
+<span class="block text-xs font-label uppercase tracking-tighter text-on-surface-variant">Learners</span>
+<span class="text-primary font-bold">56k+</span>
+</div>
+</div>
+<h3 class="font-headline text-2xl font-bold text-on-background mb-1">Zulu</h3>
+<p class="text-on-surface-variant text-sm italic mb-4">isiZulu</p>
+<div class="flex items-center gap-2">
+<span class="px-3 py-1 bg-surface-container-highest text-on-surface-variant text-[10px] font-bold uppercase rounded-full tracking-widest">Nguni</span>
+</div>
+</div>
+<!-- Language Card: Amharic -->
+<div class="group relative bg-surface-container-low p-6 rounded-lg hover:bg-surface-container transition-all duration-300 cursor-pointer overflow-hidden border-2 border-primary/20 scale-[1.02] shadow-xl">
+<div class="absolute -top-2 -left-2 rotate-12">
+<span class="bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-tighter">Selected Path</span>
+</div>
+<div class="flex items-start justify-between mb-8">
+<div class="w-16 h-16 rounded-full bg-surface-container-highest flex items-center justify-center text-4xl shadow-sm border border-outline-variant/10">
+                        🇪🇹
+                    </div>
+<div class="text-right">
+<span class="block text-xs font-label uppercase tracking-tighter text-on-surface-variant">Learners</span>
+<span class="text-primary font-bold">42k+</span>
+</div>
+</div>
+<h3 class="font-headline text-2xl font-bold text-on-background mb-1">Amharic</h3>
+<p class="text-on-surface-variant text-sm italic mb-4">አማርኛ</p>
+<div class="flex items-center gap-2">
+<span class="px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed text-[10px] font-bold uppercase rounded-full tracking-widest">Semitic</span>
+<span class="px-3 py-1 bg-primary-fixed text-on-primary-fixed text-[10px] font-bold uppercase rounded-full tracking-widest">Ge'ez Script</span>
+</div>
+</div>
+<!-- Language Card: Wolof -->
+<div class="group relative bg-surface-container-low p-6 rounded-lg hover:bg-surface-container transition-all duration-300 cursor-pointer overflow-hidden">
+<div class="flex items-start justify-between mb-8">
+<div class="w-16 h-16 rounded-full bg-surface-container-highest flex items-center justify-center text-4xl shadow-sm border border-outline-variant/10">
+                        🇸🇳
+                    </div>
+<div class="text-right">
+<span class="block text-xs font-label uppercase tracking-tighter text-on-surface-variant">Learners</span>
+<span class="text-primary font-bold">31k+</span>
+</div>
+</div>
+<h3 class="font-headline text-2xl font-bold text-on-background mb-1">Wolof</h3>
+<p class="text-on-surface-variant text-sm italic mb-4">Wollof</p>
+<div class="flex items-center gap-2">
+<span class="px-3 py-1 bg-surface-container-highest text-on-surface-variant text-[10px] font-bold uppercase rounded-full tracking-widest">Senegambian</span>
+</div>
+</div>
+<!-- Placeholder / Request -->
+<div class="group relative border-2 border-dashed border-outline-variant p-6 rounded-lg flex flex-col items-center justify-center text-center opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="material-symbols-outlined text-4xl text-outline mb-3" data-icon="add_circle">add_circle</span>
+<span class="font-headline font-bold text-on-surface-variant">Missing a dialect?</span>
+<p class="text-xs text-on-surface-variant mt-2">Nominate your village's tongue for our next curriculum.</p>
+</div>
+</section>
+<!-- Proficiency Selector -->
+<section class="bg-surface-container-high rounded-xl p-8 mb-12 relative overflow-hidden">
+<!-- Decorative Background Element -->
+<div class="absolute bottom-0 right-0 opacity-10 translate-x-1/4 translate-y-1/4">
+<span class="material-symbols-outlined text-[200px]" data-icon="account_tree">account_tree</span>
+</div>
+<div class="relative z-10 max-w-xl mx-auto text-center">
+<h2 class="font-headline text-2xl font-bold mb-8">Your level of mastery</h2>
+<div class="flex flex-wrap justify-center gap-4">
+<!-- Level: Beginner -->
+<button class="group flex flex-col items-center gap-2 px-6 py-4 rounded-lg bg-surface-container-lowest border border-transparent hover:border-primary-container transition-all">
+<span class="material-symbols-outlined text-tertiary" data-icon="seedling">potted_plant</span>
+<span class="font-label text-sm font-semibold">Beginner</span>
+<span class="text-[10px] text-on-surface-variant uppercase tracking-widest">The Seed</span>
+</button>
+<!-- Level: Intermediate -->
+<button class="group flex flex-col items-center gap-2 px-6 py-4 rounded-lg bg-primary-container text-white shadow-lg shadow-primary/20 ring-4 ring-primary-container/20">
+<span class="material-symbols-outlined" data-icon="eco" style="font-variation-settings: 'FILL' 1;">eco</span>
+<span class="font-label text-sm font-semibold">Intermediate</span>
+<span class="text-[10px] text-white/80 uppercase tracking-widest">The Sprout</span>
+</button>
+<!-- Level: Advanced -->
+<button class="group flex flex-col items-center gap-2 px-6 py-4 rounded-lg bg-surface-container-lowest border border-transparent hover:border-primary-container transition-all">
+<span class="material-symbols-outlined text-secondary" data-icon="park">park</span>
+<span class="font-label text-sm font-semibold">Advanced</span>
+<span class="text-[10px] text-on-surface-variant uppercase tracking-widest">The Baobab</span>
+</button>
+</div>
+<div class="mt-10">
+<button class="bg-primary text-white px-10 py-4 rounded-full font-headline font-extrabold tracking-wide shadow-[0_10px_30px_rgba(167,52,0,0.3)] hover:scale-105 active:scale-95 transition-all duration-200">
+                        ENTER THE VILLAGE
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Navigation Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-[#a73400]/80 dark:bg-stone-900/80 backdrop-blur-xl rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(45,22,0,0.08)]">
+<!-- Home -->
+<a class="flex flex-col items-center justify-center text-white/70 dark:text-stone-400 px-5 py-2 hover:text-white dark:hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="home">home</span>
+<span class="font-['Lexend'] text-[10px] font-medium uppercase tracking-widest">Home</span>
+</a>
+<!-- Curriculum (Active) -->
+<a class="flex flex-col items-center justify-center bg-[#ffeada] dark:bg-[#c94c1a] text-[#a73400] dark:text-white rounded-full px-5 py-2 transition-all duration-300 scale-90" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="account_tree">account_tree</span>
+<span class="font-['Lexend'] text-[10px] font-medium uppercase tracking-widest">Curriculum</span>
+</a>
+<!-- Village -->
+<a class="flex flex-col items-center justify-center text-white/70 dark:text-stone-400 px-5 py-2 hover:text-white dark:hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="groups">groups</span>
+<span class="font-['Lexend'] text-[10px] font-medium uppercase tracking-widest">Village</span>
+</a>
+<!-- Rewards -->
+<a class="flex flex-col items-center justify-center text-white/70 dark:text-stone-400 px-5 py-2 hover:text-white dark:hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="military_tech">military_tech</span>
+<span class="font-['Lexend'] text-[10px] font-medium uppercase tracking-widest">Rewards</span>
+</a>
+</nav>
+<!-- Accessibility Overlay / Toast -->
+<div class="fixed top-24 right-6 pointer-events-none">
+<div class="bg-secondary-container text-on-secondary-container px-6 py-4 rounded-lg shadow-xl flex items-center gap-4 animate-bounce">
+<div class="bg-white/20 p-2 rounded-full">
+<span class="material-symbols-outlined" data-icon="tips_and_updates">tips_and_updates</span>
+</div>
+<div>
+<p class="text-xs font-bold uppercase tracking-tight">Pro Tip</p>
+<p class="text-sm">Start with Swahili for wider usage across East Africa!</p>
+</div>
+</div>
+</div>
+</body></html>

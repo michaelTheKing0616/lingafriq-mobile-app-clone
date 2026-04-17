@@ -14,6 +14,10 @@ import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/services/user_generated_content_service.dart';
 import 'package:lingafriq/utils/supported_languages.dart';
+import 'package:lingafriq/services/learning/living_dictionary_service.dart';
+import 'package:lingafriq/services/offline/vocabulary_store.dart';
+import 'package:lingafriq/models/offline/local_vocabulary.dart';
+import 'package:lingafriq/utils/structured_logger.dart';
 
 /// Extracts an ID string from a map, checking both '_id' and 'id' keys.
 String? _extractId(Map<String, dynamic>? m) {
@@ -109,7 +113,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
         if (context.mounted) {
           showLingAfriqError(context, 'Could not pick file. Try a smaller file or different format.');
         }
-        debugPrint('Import media pick error: $e $stack');
+        logError('Import media pick error', tag: 'import_media', error: e, stackTrace: stack);
       }
     }
 
@@ -129,6 +133,63 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                 'mediaId': mediaId,
               };
               showTranscriptionPreview.value = true;
+
+              // Extract living dictionary entries from this media (server-backed),
+              // then persist them into the offline vocabulary store for immediate SRS use.
+              try {
+                await ApiService.post(Api.mediaExtractLivingDictionary(mediaId));
+                final living = LivingDictionaryService();
+                final entries = (await living.listEntries(
+                  sourceMediaId: mediaId,
+                  language: selectedLanguage.value,
+                ))
+                    .entries;
+                final words = <LocalVocabulary>[];
+                for (final e in entries) {
+                  final id = (e['_id'] ?? e['id'] ?? '').toString();
+                  final lemma = (e['lemma'] ?? '').toString();
+                  final tr = (e['translation'] ?? '').toString();
+                  final lang2 = (e['language'] ?? selectedLanguage.value).toString();
+                  final ctx = (e['context'] ?? '').toString();
+                  final startMs = (e['startMs'] is num) ? (e['startMs'] as num).round() : null;
+                  final endMs = (e['endMs'] is num) ? (e['endMs'] as num).round() : null;
+                  if (id.isEmpty || lemma.isEmpty) continue;
+                  words.add(LocalVocabulary(
+                    id: id,
+                    word: lemma,
+                    translation: tr.isEmpty ? '—' : tr,
+                    language: lang2,
+                    exampleSentence: ctx.isEmpty ? null : ctx,
+                    category: 'imported_media',
+                    sourceMediaId: mediaId,
+                    sourceStartMs: startMs,
+                    sourceEndMs: endMs,
+                  ));
+                }
+                final n = words.length;
+                if (n > 0) {
+                  await VocabularyStore().addWordsBatch(words);
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).clearSnackBars();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          n == 1
+                              ? 'Saved 1 living dictionary entry for offline study'
+                              : 'Saved $n living dictionary entries for offline study',
+                        ),
+                      ),
+                    );
+                  }
+                }
+              } catch (e, st) {
+                logError(
+                  'Living dictionary extraction/index failed',
+                  tag: 'import_media',
+                  error: e,
+                  stackTrace: st,
+                );
+              }
               return;
             } else if (media['processing_status'] == 'failed') {
               throw Exception('Transcription failed');
@@ -196,7 +257,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
           }
         }
       } catch (e, stack) {
-        debugPrint('Import media upload error: $e $stack');
+        logError('Import media upload error', tag: 'import_media', error: e, stackTrace: stack);
         final msg = e.toString().toLowerCase();
         String friendly = 'Upload or transcription failed. Please check your connection and try again.';
         if (msg.contains('unsupported language')) {
@@ -706,8 +767,13 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                                   ),
                                   data: {'lesson_id': lessonId},
                                 );
-                              } catch (e) {
-                                debugPrint('Failed to link media to lesson: $e');
+                              } catch (e, st) {
+                                logError(
+                                  'Failed to link media to lesson',
+                                  tag: 'import_media',
+                                  error: e,
+                                  stackTrace: st,
+                                );
                               }
                             }
                             if (context.mounted) {

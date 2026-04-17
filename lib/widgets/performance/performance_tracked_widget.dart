@@ -7,6 +7,7 @@
 // - Memory usage monitoring
 
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../services/performance/performance_monitor_integrated.dart';
 /// Widget that automatically tracks its performance
 class PerformanceTrackedWidget extends StatefulWidget {
@@ -177,22 +178,38 @@ class PerformanceTrackedImage extends StatelessWidget {
     final monitor = PerformanceMonitorIntegrated();
     final loadStart = DateTime.now();
 
-    return Image.network(
-      imageUrl,
+    return CachedNetworkImage(
+      imageUrl: imageUrl,
       width: width,
       height: height,
       fit: fit,
-      frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-        if (wasSynchronouslyLoaded || frame != null) {
-          final loadTime = DateTime.now().difference(loadStart);
-          monitor.trackImageLoad(
-            identifier,
-            loadTime,
-            cached: wasSynchronouslyLoaded,
-          );
-        }
-        return child;
+      fadeInDuration: const Duration(milliseconds: 180),
+      placeholder: (_, __) => _trackedPlaceholder(monitor, loadStart, cached: false),
+      errorWidget: (_, __, ___) => const Icon(Icons.broken_image),
+      imageBuilder: (context, provider) {
+        final loadTime = DateTime.now().difference(loadStart);
+        monitor.trackImageLoad(identifier, loadTime, cached: false);
+        return Image(
+          image: provider,
+          width: width,
+          height: height,
+          fit: fit,
+        );
       },
+    );
+  }
+
+  Widget _trackedPlaceholder(
+    PerformanceMonitorIntegrated monitor,
+    DateTime loadStart, {
+    required bool cached,
+  }) {
+    final loadTime = DateTime.now().difference(loadStart);
+    monitor.trackImageLoad(identifier, loadTime, cached: cached);
+    return SizedBox(
+      width: width,
+      height: height,
+      child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
     );
   }
 }

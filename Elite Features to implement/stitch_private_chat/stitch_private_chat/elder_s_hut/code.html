@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,700;0,800;1,400;1,700;1,800&amp;family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-high": "#ffe3cd",
+              "on-error": "#ffffff",
+              "on-secondary": "#ffffff",
+              "on-secondary-container": "#007230",
+              "on-primary-container": "#fffbff",
+              "surface-container-lowest": "#ffffff",
+              "inverse-primary": "#ffb59c",
+              "on-surface": "#2d1600",
+              "on-error-container": "#93000a",
+              "inverse-on-surface": "#ffeee1",
+              "on-tertiary": "#ffffff",
+              "primary-container": "#c94c1a",
+              "error": "#ba1a1a",
+              "primary-fixed-dim": "#ffb59c",
+              "on-primary-fixed-variant": "#822700",
+              "background": "#fff8f5",
+              "on-primary-fixed": "#390c00",
+              "outline-variant": "#e0bfb5",
+              "outline": "#8c7168",
+              "surface-container": "#ffeada",
+              "on-tertiary-container": "#fffbff",
+              "surface-container-highest": "#ffdcbf",
+              "surface-variant": "#ffdcbf",
+              "on-secondary-fixed": "#002109",
+              "on-tertiary-fixed-variant": "#5f4100",
+              "tertiary-container": "#9b6c00",
+              "surface-container-low": "#fff1e8",
+              "surface-bright": "#fff8f5",
+              "secondary-container": "#7cf994",
+              "on-secondary-fixed-variant": "#005320",
+              "tertiary-fixed-dim": "#f8bc51",
+              "secondary-fixed": "#7ffc97",
+              "secondary-fixed-dim": "#62df7d",
+              "tertiary-fixed": "#ffdeab",
+              "primary-fixed": "#ffdbcf",
+              "on-tertiary-fixed": "#281900",
+              "inverse-surface": "#462a0d",
+              "error-container": "#ffdad6",
+              "secondary": "#006e2d",
+              "on-background": "#2d1600",
+              "tertiary": "#7b5500",
+              "primary": "#a73400",
+              "surface-dim": "#ffd2aa",
+              "on-surface-variant": "#59413a",
+              "surface": "#fff8f5",
+              "on-primary": "#ffffff",
+              "surface-tint": "#aa3601"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Lexend"],
+              "label": ["Lexend"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .totem-glow {
+        filter: drop-shadow(0 0 15px rgba(200, 146, 42, 0.4));
+      }
+      .asymmetric-cut {
+        clip-path: polygon(0 0, 100% 5%, 100% 100%, 0 95%);
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-stone-950 text-stone-200 font-body selection:bg-tertiary-fixed selection:text-on-tertiary-fixed overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-stone-900/90 backdrop-blur-xl no-border">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary">
+<img class="w-full h-full object-cover" data-alt="User wearing a traditional kente-patterned headwrap, portrait with warm studio lighting and rich textures" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaMWB9g0vgI1ATwo9YJ7EclybT7Vm8ZPBy_reP5VFq7fliz_bTdbyjVfQu1KT70GwqwkwwjYZJHVr1VoA_q_tG9QvgiBzUHymK4CteLjKxurAUzqvuSDAHXtp4LKgYNh87NfhTfOIAOFtKvVWSsNbYnUKm1Z8loN45oI8q9zHQtKqC7fgz1E_fXKPT8wajXgcgjhqZCtuccYRpobEJ4OK006svOzcpkhZU_2evW8V2Kh5ctd6itqN92Sq6YB1UAYfuAvR7FCpbNT-N"/>
+</div>
+<h1 class="font-headline font-extrabold text-2xl uppercase tracking-wider text-[#ff8a50] italic">The Village</h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex gap-8">
+<span class="text-[#ff8a50] font-bold cursor-pointer hover:opacity-80 transition-opacity">Hut</span>
+<span class="text-stone-500 cursor-pointer hover:opacity-80 transition-opacity">Map</span>
+<span class="text-stone-500 cursor-pointer hover:opacity-80 transition-opacity">Market</span>
+</nav>
+<span class="material-symbols-outlined text-[#ff8a50] cursor-pointer" data-icon="token">token</span>
+</div>
+</header>
+<main class="min-h-screen pt-24 pb-32 px-6 flex flex-col items-center max-w-4xl mx-auto">
+<!-- Elder Totem Section -->
+<section class="relative w-full flex flex-col items-center justify-center py-12 mb-8">
+<div class="absolute inset-0 bg-gradient-to-b from-tertiary/20 to-transparent rounded-full blur-3xl opacity-30 scale-150"></div>
+<div class="relative z-10 w-48 h-64 md:w-64 md:h-80 totem-glow transform hover:scale-105 transition-transform duration-700">
+<img class="w-full h-full object-contain" data-alt="Intricate wooden sculpture of a wise elder face, glowing with warm internal light against a dark background, traditional African artistry" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0Xe_tPmxDc39_ApgK0RkZj_ED_xu_QfKE5SQH-UgOhNwOpVB2zb3reoGUokNc7fH2Rxc8gKU81S_TONgV7MPjyqNPC1zEPo9p5hI8lARB_lfNDv8jffOzXVBMOCVktMwPfjaDu5YpHW4-KKHNcDHaei_FJKa3px3kj8x_BW8KA7wuVhPGi8yGxwgPF28rjRfCo71Pypz_8p9zohUgaV4dWjA5zKJsWTVnfyI7dPL7SzXd2fLROtL9dolLlKNiOVNTv8EPT_zD0CRC"/>
+</div>
+<div class="mt-6 text-center">
+<h2 class="font-headline text-3xl font-bold text-tertiary-fixed tracking-tight">The Griot</h2>
+<p class="text-sm uppercase tracking-[0.2em] text-stone-500 mt-1 font-semibold">Keeper of the Words</p>
+</div>
+</section>
+<!-- Dialogue Flow -->
+<section class="w-full space-y-8 relative">
+<!-- Elder's Message -->
+<div class="flex flex-col items-start max-w-[90%] md:max-w-[75%] space-y-4">
+<div class="bg-stone-900/60 backdrop-blur-md p-8 rounded-lg border-l-4 border-tertiary shadow-xl relative">
+<span class="absolute -top-3 -left-3 material-symbols-outlined text-tertiary-fixed text-4xl" data-icon="format_quote">format_quote</span>
+<p class="text-2xl md:text-3xl font-headline italic text-[#C8922A] leading-relaxed">
+                        "Haba na haba, hujaza kibaba."
+                    </p>
+<div class="mt-8 pt-6 border-t border-stone-800 space-y-3">
+<p class="text-stone-400 text-sm font-label uppercase tracking-widest">Cultural Wisdom</p>
+<p class="text-stone-200 leading-relaxed font-light text-lg">
+                            Little by little, the container is filled. This is a lesson in patience and persistence—the same energy you bring to your learning today. Even the tallest tree in the Savannah grew from a single seed.
+                        </p>
+</div>
+</div>
+</div>
+<!-- Interaction Menu -->
+<div class="pt-8 w-full">
+<h3 class="text-stone-500 text-[10px] uppercase tracking-[0.3em] font-bold mb-6 text-center">Respond to the Elder</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Option 1 -->
+<button class="group flex items-center justify-between p-5 bg-stone-900 hover:bg-tertiary/20 rounded-xl transition-all duration-300 border border-transparent hover:border-tertiary/50">
+<div class="flex flex-col items-start">
+<span class="text-stone-400 text-[10px] uppercase font-bold mb-1">Inquiry</span>
+<span class="text-white font-medium">Ask for a story</span>
+</div>
+<span class="material-symbols-outlined text-tertiary-fixed group-hover:translate-x-1 transition-transform" data-icon="auto_stories">auto_stories</span>
+</button>
+<!-- Option 2 -->
+<button class="group flex items-center justify-between p-5 bg-stone-900 hover:bg-tertiary/20 rounded-xl transition-all duration-300 border border-transparent hover:border-tertiary/50">
+<div class="flex flex-col items-start">
+<span class="text-stone-400 text-[10px] uppercase font-bold mb-1">Meaning</span>
+<span class="text-white font-medium">Explain the proverb</span>
+</div>
+<span class="material-symbols-outlined text-tertiary-fixed group-hover:translate-x-1 transition-transform" data-icon="lightbulb">lightbulb</span>
+</button>
+<!-- Option 3 -->
+<button class="group flex items-center justify-between p-5 bg-tertiary/10 rounded-xl transition-all duration-300 border border-tertiary/30 hover:bg-tertiary/30">
+<div class="flex flex-col items-start">
+<span class="text-tertiary-fixed text-[10px] uppercase font-bold mb-1">Action</span>
+<span class="text-white font-medium">Practice my speech</span>
+</div>
+<span class="material-symbols-outlined text-tertiary-fixed animate-pulse" data-icon="mic">mic</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Decorative Achievement Totem (Overlapping as per system) -->
+<div class="fixed right-[-2rem] top-1/2 -translate-y-1/2 w-24 h-24 bg-tertiary-fixed rounded-full shadow-2xl flex items-center justify-center border-4 border-stone-950 rotate-12 md:flex hidden">
+<div class="text-on-tertiary-fixed text-center">
+<span class="material-symbols-outlined text-3xl block" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="text-[10px] font-bold uppercase leading-none">Sage</span>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-stone-900/90 backdrop-blur-xl rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(45,22,0,0.12)]">
+<div class="flex flex-col items-center justify-center text-stone-400 p-2">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-label text-[10px] font-semibold uppercase tracking-tighter mt-1">Map</span>
+</div>
+<div class="flex flex-col items-center justify-center text-stone-400 p-2">
+<span class="material-symbols-outlined" data-icon="storefront">storefront</span>
+<span class="font-label text-[10px] font-semibold uppercase tracking-tighter mt-1">Market</span>
+</div>
+<div class="flex flex-col items-center justify-center text-stone-400 p-2">
+<span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-label text-[10px] font-semibold uppercase tracking-tighter mt-1">Café</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-[#7b5500] text-[#ffdeab] rounded-full p-3 mb-1 scale-110 shadow-lg">
+<span class="material-symbols-outlined" data-icon="auto_stories" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+<span class="font-label text-[10px] font-semibold uppercase tracking-tighter mt-1">Hut</span>
+</div>
+<div class="flex flex-col items-center justify-center text-stone-400 p-2">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+<span class="font-label text-[10px] font-semibold uppercase tracking-tighter mt-1">School</span>
+</div>
+</nav>
+</body></html>

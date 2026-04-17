@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Practice Session Summary</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&amp;family=Lexend:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-bright": "#fff8f5",
+              "on-secondary": "#ffffff",
+              "surface-container": "#ffeada",
+              "primary-fixed": "#ffdbcf",
+              "surface-dim": "#ffd2aa",
+              "inverse-surface": "#462a0d",
+              "tertiary-container": "#9b6c00",
+              "secondary": "#006e2d",
+              "on-surface-variant": "#59413a",
+              "on-primary": "#ffffff",
+              "surface-container-low": "#fff1e8",
+              "surface-variant": "#ffdcbf",
+              "on-tertiary": "#ffffff",
+              "on-primary-fixed-variant": "#822700",
+              "on-secondary-container": "#007230",
+              "on-primary-container": "#fffbff",
+              "surface-container-high": "#ffe3cd",
+              "on-surface": "#2d1600",
+              "surface-container-highest": "#ffdcbf",
+              "surface": "#fff8f5",
+              "on-tertiary-container": "#fffbff",
+              "secondary-container": "#7cf994",
+              "on-background": "#2d1600",
+              "on-error": "#ffffff",
+              "inverse-on-surface": "#ffeee1",
+              "error-container": "#ffdad6",
+              "primary-fixed-dim": "#ffb59c",
+              "outline-variant": "#e0bfb5",
+              "outline": "#8c7168",
+              "background": "#fff8f5",
+              "on-tertiary-fixed-variant": "#5f4100",
+              "secondary-fixed-dim": "#62df7d",
+              "secondary-fixed": "#7ffc97",
+              "primary-container": "#c94c1a",
+              "on-error-container": "#93000a",
+              "error": "#ba1a1a",
+              "on-secondary-fixed-variant": "#005320",
+              "on-primary-fixed": "#390c00",
+              "tertiary-fixed-dim": "#f8bc51",
+              "on-secondary-fixed": "#002109",
+              "surface-tint": "#aa3601",
+              "tertiary-fixed": "#ffdeab",
+              "inverse-primary": "#ffb59c",
+              "tertiary": "#7b5500",
+              "primary": "#a73400",
+              "on-tertiary-fixed": "#281900",
+              "surface-container-lowest": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Lexend"],
+              "label": ["Lexend"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-card {
+        background: rgba(255, 234, 218, 0.4);
+        backdrop-filter: blur(12px);
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed-variant">
+<!-- TopAppBar -->
+<header class="bg-[#fff8f5] dark:bg-orange-950 docked full-width top-0 sticky z-50">
+<div class="flex justify-between items-center w-full px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#a73400] dark:text-orange-400 active:scale-95 duration-200 ease-in-out cursor-pointer" data-icon="close">close</span>
+<h1 class="font-['Plus_Jakarta_Sans'] font-bold text-xl tracking-tight text-[#a73400] dark:text-orange-400">Practice Room</h1>
+</div>
+<div class="flex items-center">
+<span class="material-symbols-outlined text-[#a73400] dark:text-orange-400 active:scale-95 duration-200 ease-in-out cursor-pointer p-2 hover:bg-[#ffeada] rounded-full transition-colors" data-icon="settings">settings</span>
+</div>
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-6 py-8 md:py-12">
+<!-- Hero Celebration -->
+<section class="text-center mb-16 relative">
+<div class="absolute -top-12 left-1/2 -translate-x-1/2 opacity-20 pointer-events-none">
+<span class="material-symbols-outlined text-[120px] text-tertiary" data-icon="celebration">celebration</span>
+</div>
+<h2 class="font-headline font-extrabold text-4xl md:text-5xl text-primary tracking-tight mb-4">Session Complete! Great Practice!</h2>
+<p class="text-on-surface-variant text-lg">You're becoming a Modern Griot. Your progress is recorded.</p>
+</section>
+<!-- Stats Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+<div class="bg-surface-container-low p-8 rounded-lg flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-primary mb-2" data-icon="schedule">schedule</span>
+<span class="font-headline font-bold text-4xl text-on-surface">32 min</span>
+<span class="font-label text-sm text-on-surface-variant uppercase tracking-widest mt-1">Duration</span>
+</div>
+<div class="bg-surface-container p-8 rounded-lg flex flex-col items-center justify-center text-center transform md:scale-110 shadow-[0_20px_40px_rgba(45,22,0,0.06)] z-10">
+<span class="material-symbols-outlined text-secondary mb-2" data-icon="menu_book">menu_book</span>
+<span class="font-headline font-bold text-4xl text-on-surface">14</span>
+<span class="font-label text-sm text-on-surface-variant uppercase tracking-widest mt-1">Words Practiced</span>
+</div>
+<div class="bg-surface-container-low p-8 rounded-lg flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-tertiary mb-2" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-headline font-bold text-4xl text-on-surface">+45</span>
+<span class="font-label text-sm text-on-surface-variant uppercase tracking-widest mt-1">XP Earned</span>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
+<!-- Vocab List (3/5 width) -->
+<section class="lg:col-span-3">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-headline font-bold text-2xl text-on-surface">Vocabulary Covered</h3>
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold uppercase tracking-tighter">Mastered</span>
+</div>
+<div class="space-y-3">
+<div class="group flex items-center justify-between p-5 bg-surface-container-lowest hover:bg-surface-container transition-colors duration-300 rounded-lg">
+<div class="flex flex-col gap-1">
+<span class="font-headline text-xl text-on-surface">Jambo</span>
+<span class="text-sm text-on-surface-variant">Hello (Swahili)</span>
+</div>
+<span class="material-symbols-outlined text-secondary font-bold" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="group flex items-center justify-between p-5 bg-surface-container-lowest hover:bg-surface-container transition-colors duration-300 rounded-lg">
+<div class="flex flex-col gap-1">
+<span class="font-headline text-xl text-on-surface">Umoja</span>
+<span class="text-sm text-on-surface-variant">Unity (Swahili)</span>
+</div>
+<span class="material-symbols-outlined text-secondary font-bold" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="group flex items-center justify-between p-5 bg-surface-container-lowest hover:bg-surface-container transition-colors duration-300 rounded-lg">
+<div class="flex flex-col gap-1">
+<span class="font-headline text-xl text-on-surface">Kuishi</span>
+<span class="text-sm text-on-surface-variant">To Live (Swahili)</span>
+</div>
+<span class="material-symbols-outlined text-secondary font-bold" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="group flex items-center justify-between p-5 bg-surface-container-lowest hover:bg-surface-container transition-colors duration-300 rounded-lg">
+<div class="flex flex-col gap-1">
+<span class="font-headline text-xl text-on-surface">Rafiki</span>
+<span class="text-sm text-on-surface-variant">Friend (Swahili)</span>
+</div>
+<span class="material-symbols-outlined text-secondary font-bold" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="group flex items-center justify-between p-5 bg-surface-container-lowest hover:bg-surface-container transition-colors duration-300 rounded-lg">
+<div class="flex flex-col gap-1">
+<span class="font-headline text-xl text-on-surface">Hujambo</span>
+<span class="text-sm text-on-surface-variant">How are you? (Swahili)</span>
+</div>
+<span class="material-symbols-outlined text-secondary font-bold" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+</section>
+<!-- Shared Moments (2/5 width) -->
+<section class="lg:col-span-2 space-y-8">
+<div>
+<h3 class="font-headline font-bold text-2xl text-on-surface mb-6">Shared Moments</h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="aspect-square rounded-lg overflow-hidden relative group">
+<img alt="community" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="candid close-up of diverse group of friends laughing together in a bright outdoor community garden setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcN0PK3t-rz5E9cjDKIrDEorA4AUgVqn7gv-xP5V873oeTQvHQd49Y5dosJTrbuci1TLAZhVid0OT5TXWj278JK7lsL9lnx_6t7-bFXcNvVUFXA8LPAX7IvmoiAJ08ldYqavLDCgyloMgnjrHSDjicen6sgsflAi2-PEtJoUNVZs9sD_m_b-Vvut6iOV5txaVxGAO5Clyd2QeUseS0aYuICauC-GSRqlJeCBlW57OwQ3QQSrtXlJDVYlsC_9Xfj7mL91IW_kOvvxSq"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
+<span class="text-white text-xs font-bold uppercase tracking-wider">Group Laugh</span>
+</div>
+</div>
+<div class="aspect-square rounded-lg overflow-hidden relative group">
+<img alt="student" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="focused young person wearing headphones smiling while looking at a screen in a warmly lit modern workspace" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkC75PgvFZMWNYNoWMKkJUMqw8yXqjNhCjsHiS5XQ_eikuFHRpHdJz7JkNyQtQaY0zBeJFm1-ZDMSbc_FuYsLMzRzztRBqd8DxBld_KPTQxsVC2ArreHLyu8fwPd30BlhTOiswf2cl6rJTrzb-5UJiiFnhFUqpX7jg41ZsnXuOl7599IbpeDWMaqKQ_Iqg8Y0D70idgS0ZrlvJFQLn5i9jV28EBQjiko2dIbcYCiqnxF9pGMOsB9hG4fQXooPwKs7L19XQDRlNXHR1"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
+<span class="text-white text-xs font-bold uppercase tracking-wider">Deep Focus</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Best Pronunciation Badge -->
+<div class="bg-surface-container-high p-6 rounded-lg relative overflow-hidden border-l-4 border-tertiary">
+<div class="flex items-start gap-4">
+<div class="bg-tertiary-fixed p-3 rounded-full flex-shrink-0">
+<span class="material-symbols-outlined text-on-tertiary-fixed text-3xl" data-icon="record_voice_over" style="font-variation-settings: 'FILL' 1;">record_voice_over</span>
+</div>
+<div>
+<h4 class="font-headline font-bold text-lg text-on-surface leading-tight">Silver Tongue Achievement</h4>
+<p class="text-sm text-on-surface-variant mt-1">98% pronunciation accuracy on 'Umoja' recorded during the live session.</p>
+</div>
+</div>
+<!-- Totem Overlay Effect -->
+<div class="absolute -right-4 -bottom-4 opacity-10">
+<span class="material-symbols-outlined text-[100px]" data-icon="shield">shield</span>
+</div>
+</div>
+</section>
+</div>
+<!-- Primary Action -->
+<footer class="mt-16 flex flex-col items-center gap-6">
+<button class="bg-primary text-white font-headline font-bold text-xl px-12 py-5 rounded-full shadow-[0_20px_40px_rgba(167,52,0,0.2)] hover:bg-primary-container active:scale-95 transition-all duration-200 w-full md:w-auto">
+                Finish &amp; Exit
+            </button>
+<p class="text-sm text-outline font-medium tracking-wide">YOUR PROGRESS HAS BEEN SAVED TO YOUR TRIBE DASHBOARD</p>
+</footer>
+</main>
+<!-- Decorative Organic Element -->
+<div class="fixed -bottom-24 -left-24 w-64 h-64 bg-primary-fixed rounded-full blur-[80px] opacity-30 -z-10"></div>
+<div class="fixed -top-24 -right-24 w-64 h-64 bg-secondary-fixed rounded-full blur-[80px] opacity-20 -z-10"></div>
+</body></html>

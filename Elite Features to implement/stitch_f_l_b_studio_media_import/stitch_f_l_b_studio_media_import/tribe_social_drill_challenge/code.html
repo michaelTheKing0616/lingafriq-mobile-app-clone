@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,600;0,700;1,400;1,600&amp;family=Manrope:wght@400;500;600;700&amp;family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .editorial-shadow {
+            box-shadow: 0 20px 40px rgba(28, 28, 24, 0.06);
+        }
+        .terracotta-gradient {
+            background: linear-gradient(135deg, #9f3e07 0%, #c05621 100%);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "on-primary-fixed": "#360f00",
+                "secondary-fixed": "#d9e3f9",
+                "inverse-on-surface": "#f3f0e9",
+                "secondary-fixed-dim": "#bdc7dc",
+                "on-primary": "#ffffff",
+                "on-tertiary-fixed": "#241a00",
+                "surface-tint": "#a14009",
+                "secondary": "#555f71",
+                "primary-fixed-dim": "#ffb596",
+                "primary-fixed": "#ffdbcd",
+                "on-secondary-fixed": "#121c2c",
+                "tertiary-container": "#cca730",
+                "on-tertiary": "#ffffff",
+                "tertiary-fixed": "#ffe088",
+                "surface-variant": "#e5e2db",
+                "surface-container-highest": "#e5e2db",
+                "outline": "#8a7268",
+                "on-error": "#ffffff",
+                "error": "#ba1a1a",
+                "outline-variant": "#dec0b5",
+                "tertiary-fixed-dim": "#e9c349",
+                "on-tertiary-container": "#4f3d00",
+                "surface-container-lowest": "#ffffff",
+                "primary": "#9f3e07",
+                "surface-bright": "#fcf9f2",
+                "tertiary": "#735c00",
+                "surface-container": "#f1eee7",
+                "primary-container": "#c05621",
+                "inverse-primary": "#ffb596",
+                "surface-container-low": "#f6f3ec",
+                "inverse-surface": "#31312c",
+                "secondary-container": "#d6e0f6",
+                "on-error-container": "#93000a",
+                "error-container": "#ffdad6",
+                "on-secondary": "#ffffff",
+                "on-surface": "#1c1c18",
+                "on-primary-fixed-variant": "#7d2d00",
+                "on-tertiary-fixed-variant": "#574500",
+                "on-primary-container": "#fffeff",
+                "background": "#fcf9f2",
+                "on-surface-variant": "#57423a",
+                "on-background": "#1c1c18",
+                "on-secondary-fixed-variant": "#3d4759",
+                "on-secondary-container": "#596376",
+                "surface-dim": "#dcdad3",
+                "surface-container-high": "#ebe8e1",
+                "surface": "#fcf9f2"
+              },
+              fontFamily: {
+                "headline": ["Newsreader"],
+                "body": ["Manrope"],
+                "label": ["Space Grotesk"]
+              },
+              borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#fcf9f2] dark:bg-[#1c1c18] backdrop-blur-md bg-opacity-90 flex justify-between items-center px-6 h-16 w-full shadow-none">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#9f3e07] dark:text-[#c05621] cursor-pointer">arrow_back</span>
+<h1 class="font-['Newsreader'] italic tracking-tight text-2xl font-serif text-[#9f3e07] dark:text-[#c05621]">Àfàláàbù</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-8">
+<a class="font-label text-[#555f71] hover:text-[#9f3e07] text-xs uppercase tracking-widest transition-colors" href="#">Archives</a>
+<a class="font-label text-[#9f3e07] font-bold text-xs uppercase tracking-widest transition-colors" href="#">Studio</a>
+<a class="font-label text-[#555f71] hover:text-[#9f3e07] text-xs uppercase tracking-widest transition-colors" href="#">Feed</a>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-high overflow-hidden border border-outline-variant/30">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="Portrait of a young Nigerian scholar in high-contrast editorial lighting, warm mahogany tones, clean background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8JelhzkAZYsWN83xDQ-km5llTcqonvz1V7AmwQ6Lciforcvtic34E-xOmMN_kOo1LYlFckbl24shNVbLDonjt3NOz8loi4gQsESZxngG7yI8eK9oi6bJ-KGiH-r45yMRi366kCrq-HiaaOMz30FgzDZix8rUy0ZSvLK5hkGwt-9nW-liQ9WsiI5co4-8XA7i7nWzWl-E5EWHl8tyUFIIDykOZ85g-aGvYP1nlzCFXQEuY-Juag10pr3oCTmdgW3DgmfLohvHCb-xs"/>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-7xl mx-auto">
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Left Column: The Challenge (8 cols) -->
+<section class="lg:col-span-8 space-y-12">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b-0">
+<div class="space-y-2">
+<span class="font-label text-xs uppercase tracking-[0.2em] text-tertiary">Session 042 // Studio Drill</span>
+<h2 class="font-headline text-5xl md:text-6xl font-bold tracking-tight text-on-surface leading-tight">Proverb Completion</h2>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label text-xs uppercase tracking-widest text-secondary mb-1">Time Remaining</span>
+<div class="font-label text-4xl font-bold text-primary tabular-nums">00:44</div>
+</div>
+</div>
+<!-- Main Drill Interface -->
+<div class="bg-surface-container-low p-8 md:p-12 editorial-shadow relative overflow-hidden">
+<!-- Accent Texture -->
+<div class="absolute top-0 right-0 w-32 h-32 opacity-5 pointer-events-none">
+<span class="material-symbols-outlined text-[8rem]">history_edu</span>
+</div>
+<div class="space-y-10 relative z-10">
+<!-- The Prompt -->
+<div class="space-y-6">
+<p class="font-headline text-3xl italic text-on-surface-variant leading-relaxed">
+                                "Ilé ọba t’ó jóná, ẹwà l’ó bù kún un..."
+                            </p>
+<p class="font-body text-secondary max-w-xl">
+                                Complete the traditional Yoruba proverb. Consider the linguistic rhythm and the philosophical implication of restoration.
+                            </p>
+</div>
+<!-- Options / Input -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<button class="flex items-center justify-between p-6 bg-surface-container-lowest border border-transparent hover:border-primary transition-all text-left group">
+<span class="font-body text-lg text-on-surface">...ẹni t’ó bá d’éní.</span>
+<span class="font-label text-[10px] text-outline opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-tighter">Option A</span>
+</button>
+<button class="flex items-center justify-between p-6 bg-surface-container-lowest border border-primary transition-all text-left group">
+<span class="font-body text-lg text-on-surface">...ṣùgbọ́n ayé ò rẹ́rìn-ín.</span>
+<span class="font-label text-[10px] text-primary uppercase tracking-tighter">Selected</span>
+</button>
+<button class="flex items-center justify-between p-6 bg-surface-container-lowest border border-transparent hover:border-primary transition-all text-left group">
+<span class="font-body text-lg text-on-surface">...àyè l’ó bù kún un.</span>
+<span class="font-label text-[10px] text-outline opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-tighter">Option C</span>
+</button>
+<button class="flex items-center justify-between p-6 bg-surface-container-lowest border border-transparent hover:border-primary transition-all text-left group">
+<span class="font-body text-lg text-on-surface">...ìfẹ́ l’ó kù.</span>
+<span class="font-label text-[10px] text-outline opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-tighter">Option D</span>
+</button>
+</div>
+<!-- Action Bar -->
+<div class="pt-6 flex flex-col md:flex-row gap-4 md:items-center justify-between border-t border-outline-variant/20">
+<div class="flex gap-2">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+</div>
+<button class="terracotta-gradient px-12 py-4 text-white font-label text-sm uppercase tracking-widest rounded-sm hover:opacity-90 transition-opacity active:scale-95 duration-150">
+                                Submit Answer
+                            </button>
+</div>
+</div>
+</div>
+<!-- Context Card -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="bg-surface p-6 border-l-2 border-tertiary">
+<h4 class="font-label text-[10px] uppercase tracking-widest text-tertiary mb-3">Linguistic Tip</h4>
+<p class="font-body text-sm text-secondary leading-relaxed">
+                            Tone markings in the word <span class="italic font-bold text-on-surface">"ẹwà"</span> (beauty) significantly change the meaning compared to <span class="italic font-bold text-on-surface">"ewà"</span> (beans). Always listen for the pitch contour.
+                        </p>
+</div>
+<div class="bg-surface-container-high p-6 flex items-center gap-4">
+<div class="p-3 bg-surface-container-lowest rounded-sm">
+<span class="material-symbols-outlined text-primary">psychology</span>
+</div>
+<div>
+<p class="font-label text-[10px] uppercase tracking-widest text-secondary">Save to Studio</p>
+<p class="font-headline italic text-lg text-on-surface">Grammar of Restoration</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Column: Leaderboard & Friends (4 cols) -->
+<aside class="lg:col-span-4 space-y-8">
+<div class="bg-surface p-8 editorial-shadow">
+<div class="flex justify-between items-center mb-8">
+<h3 class="font-headline text-2xl italic text-on-surface">Guild Ranking</h3>
+<span class="material-symbols-outlined text-outline cursor-pointer">filter_list</span>
+</div>
+<!-- Ranking List -->
+<div class="space-y-6">
+<!-- Self -->
+<div class="flex items-center justify-between group">
+<div class="flex items-center gap-4">
+<span class="font-label text-xs text-primary font-bold">01</span>
+<div class="w-10 h-10 rounded-sm overflow-hidden bg-surface-container-high">
+<img alt="Aremu" class="w-full h-full object-cover" data-alt="Close up of a young man with glasses, soft studio lighting, high-end professional photography style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBloepLRbA9r0IcRHGPnwU3AYdkNRNGc_dYepWfI93-W9FknBmGUE_3pqwtVyJrSRN88KPBo0JB-GK3jga99NhXLpQNkrtLa4FGTyaFRpmmP-SJAnrqqGTol_7tCJWvCuQQ3NYNakedyaGYCfvBIy1nfUyukSG02jVrf3uSafZkNnhU9KqyqTS23DKL3yqRvScoAeEIz1lcmmB6uDemBEhC41douQiASs4mzJC7ez1axdVeM5sgzuQ6sc6-7EZhwyHOXX1CNOyYjGOI"/>
+</div>
+<div>
+<p class="font-body font-bold text-on-surface text-sm">Aremu Adeyemi</p>
+<p class="font-label text-[10px] uppercase text-secondary">You</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label text-sm font-bold text-primary">1,420</p>
+<p class="font-label text-[9px] uppercase text-outline">pts</p>
+</div>
+</div>
+<!-- Divider via tonal shift -->
+<div class="h-[1px] bg-outline-variant/20"></div>
+<!-- Friend 1 -->
+<div class="flex items-center justify-between opacity-80 hover:opacity-100 transition-opacity">
+<div class="flex items-center gap-4">
+<span class="font-label text-xs text-secondary">02</span>
+<div class="w-10 h-10 rounded-sm overflow-hidden bg-surface-container-high">
+<img alt="Amaka" class="w-full h-full object-cover" data-alt="Portrait of a woman smiling subtly, wearing traditional indigo dyed fabric, soft warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGQqqrA2D8S2tDdFSgbyd6--h83G1PYtM-zQpM0IelDGAB1D9AuwT3Zfzbx5AdvUiq-JKlf0jciZd8PJXjb9aNDiJ4nBuxpFWhqjWqbqBx7q_XaxIVAA13zAi0oJkVY5YKlAYuKSUwvzUNPfAcAegVtxyouP-qqh8IVHncgh-zf-0d00oFFER1xp5VA6XD72vP-somcZTNkr9hSeoCWEJffBm8V9dL0ZF9DhrxJ50lTlHWYiOT_Afw-yIfQigdPyMIDEttvHKpww17"/>
+</div>
+<div>
+<p class="font-body text-on-surface text-sm">Amaka M.</p>
+<p class="font-label text-[10px] uppercase text-secondary">Level 5 Curator</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label text-sm text-on-surface">1,385</p>
+</div>
+</div>
+<!-- Friend 2 -->
+<div class="flex items-center justify-between opacity-80 hover:opacity-100 transition-opacity">
+<div class="flex items-center gap-4">
+<span class="font-label text-xs text-secondary">03</span>
+<div class="w-10 h-10 rounded-sm overflow-hidden bg-surface-container-high">
+<img alt="Kofi" class="w-full h-full object-cover" data-alt="Young man profile silhouette against a warm sunset background, editorial feel" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4I1x6QDlYpxLeceOUtPEY5DNu2_yA73cN4xv1Evjsn8V4TE_0gCHYJ6oPJg9QoAKzmbpvzn-MsGyH2AH8cioI0NtuzU80vio-6m4A108dUoaHnL0IZ7ngWyegfAQkue6zxQPRrMI1HHwJD7VToLJrAsublJltbuLw3pbRsmajNtdnh5MMEcAhluFgi6zkXbzIWLaOekQyoKfq1VJa3FRs9hlPrGJxT9RjbKhidnefa3h1UNV1NRhtJEyeui3bvkzpAAxWm8Bhm1Y1"/>
+</div>
+<div>
+<p class="font-body text-on-surface text-sm">Kofi Osei</p>
+<p class="font-label text-[10px] uppercase text-secondary">Linguist</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label text-sm text-on-surface">1,210</p>
+</div>
+</div>
+<!-- Friend 3 -->
+<div class="flex items-center justify-between opacity-80 hover:opacity-100 transition-opacity">
+<div class="flex items-center gap-4">
+<span class="font-label text-xs text-secondary">04</span>
+<div class="w-10 h-10 rounded-sm overflow-hidden bg-surface-container-high">
+<img alt="Zainab" class="w-full h-full object-cover" data-alt="Elegant woman in profile wearing a headscarf, soft museum-like lighting, cinematic quality" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtDBldyyClObq_ybf2GD6sCA8BTHiATGS1khOI27gINKSxne2MqKpgc6FKXUpbpElDsV9FegFccQ6xIMuqPvvBZw_BKdmK3MYYPRvdO7BY2Clwf7cD7KaMbBaVLFirv9yk5Kll_9Q_dMyo9cISbAjIDgW8dsaGWhaXVNDAQ-wVBbspCqGzkbz8IFKU589l95QJH6cSV2KCVm_HnnjVwhNzG1yLZ7_c95b928kdvmrSou6kIjyZz6eARFawgYCB7IawBbJQ1a5zG53o"/>
+</div>
+<div>
+<p class="font-body text-on-surface text-sm">Zainab T.</p>
+<p class="font-label text-[10px] uppercase text-secondary">Scholar</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label text-sm text-on-surface">980</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-10 py-3 border border-outline hover:bg-surface-container-high transition-colors font-label text-[10px] uppercase tracking-widest text-on-surface">
+                        View Global Ranking
+                    </button>
+</div>
+<!-- Social Challenge Card -->
+<div class="bg-inverse-surface p-8 text-inverse-on-surface">
+<div class="space-y-4">
+<div class="inline-block px-2 py-1 bg-tertiary-container text-on-tertiary-container font-label text-[10px] uppercase tracking-tighter">New Invitation</div>
+<h4 class="font-headline text-2xl italic leading-tight">Challenge Amaka to a "Tone Match" duel?</h4>
+<p class="font-body text-sm opacity-70">Winner gets 500 XP and a 'Master of Accents' badge for their profile.</p>
+<button class="w-full bg-surface-bright text-on-surface py-4 font-label text-xs uppercase tracking-[0.2em] hover:bg-primary hover:text-white transition-all">
+                            Send Invite
+                        </button>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Navigation Shells -->
+<!-- NavigationDrawer (Suppressed for focus mode but structural guide used) -->
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 bg-[#fcf9f2]/80 backdrop-blur-xl flex justify-around items-center pt-3 pb-6 w-full shadow-[0_-4px_20px_rgba(28,28,24,0.04)] border-t-[0.5px] border-[#1c1c18]/10">
+<a class="flex flex-col items-center justify-center text-[#555f71] dark:text-[#939ba1] hover:opacity-80 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest mt-1">Archives</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#9f3e07] dark:text-[#c05621] font-bold pb-1 border-b-2 border-[#9f3e07] active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">science</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest mt-1">Studio</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#555f71] dark:text-[#939ba1] hover:opacity-80 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">forum</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest mt-1">Feed</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#555f71] dark:text-[#939ba1] hover:opacity-80 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">account_box</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest mt-1">Profile</span>
+</a>
+</nav>
+<!-- FAB Suppression: Contextually hidden as per shell logic for "Details/Drill" screens -->
+</body></html>

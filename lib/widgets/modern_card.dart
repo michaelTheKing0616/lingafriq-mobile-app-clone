@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -126,18 +128,14 @@ class LanguageCard extends StatelessWidget {
           ClipRRect(
             borderRadius: PanAfricanRadius.lgBR,
             child: backgroundImage != null && backgroundImage!.isNotEmpty
-                ? Image.network(
-                    backgroundImage!,
+                ? CachedNetworkImage(
+                    imageUrl: backgroundImage!,
                     width: double.infinity,
                     height: double.infinity,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return _buildPlaceholder(context);
-                    },
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return _buildPlaceholder(context);
-                    },
+                    fadeInDuration: const Duration(milliseconds: 180),
+                    placeholder: (context, _) => _buildShimmerPlaceholder(context),
+                    errorWidget: (context, _, __) => _buildPlaceholder(context),
                   )
                 : _buildPlaceholder(context),
           ),
@@ -284,6 +282,17 @@ class LanguageCard extends StatelessWidget {
           size: 48.sp,
         ),
       ),
+    );
+  }
+
+  Widget _buildShimmerPlaceholder(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final base = isDark ? PanAfricanColors.neutralDark : PanAfricanColors.neutralLight;
+    final highlight = isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight;
+    return Shimmer.fromColors(
+      baseColor: base.withOpacity(0.55),
+      highlightColor: highlight.withOpacity(0.55),
+      child: _buildPlaceholder(context),
     );
   }
 }

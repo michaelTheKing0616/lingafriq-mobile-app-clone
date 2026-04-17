@@ -84,8 +84,11 @@ Future<PolieSocialDelivery?> deliverPolieAfterSend({
     userLanguage: lang,
     chatContext: chatContext,
   );
-  final formatted = handler.formatResponseForChat(result);
-  if (formatted.isEmpty) return const PolieSocialDelivery();
+  var formatted = handler.formatResponseForChat(result);
+  if (formatted.trim().isEmpty) {
+    formatted =
+        '🤖 **Polie:** Something went wrong. Please try @Polie again in a moment.';
+  }
 
   if (connected) {
     socket.sendMessage(

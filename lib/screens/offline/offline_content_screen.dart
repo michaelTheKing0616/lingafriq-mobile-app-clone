@@ -5,6 +5,7 @@ import 'package:lingafriq/providers/offline_content_provider.dart';
 import 'package:lingafriq/providers/offline_download_provider.dart';
 import 'package:lingafriq/providers/subscription_provider.dart';
 import 'package:lingafriq/services/offline/local_database_service.dart';
+import 'package:lingafriq/services/offline/lesson_download_service.dart';
 import 'package:lingafriq/models/offline/local_lesson.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/supported_languages.dart';
@@ -127,7 +128,8 @@ class OfflineContentScreen extends ConsumerWidget {
             SizedBox(height: 16.h),
             ...SupportedLanguages.getLanguageOptions().map((language) {
               final languageCode = language['code']!;
-              final isDownloaded = offlineContent.downloadedLanguages.contains(languageCode);
+              final languageKey = SupportedLanguages.getKeyFromCode(languageCode) ?? languageCode;
+              final isDownloaded = offlineContent.downloadedLanguages.contains(languageKey);
               return AnimatedCard(
                 child: ListTile(
                   leading: CircleAvatar(
@@ -147,13 +149,19 @@ class OfflineContentScreen extends ConsumerWidget {
                             ref.read(offlineContentProvider.notifier).deleteLanguage(languageCode);
                           },
                         )
-                      : AnimatedButton(
-                          text: 'Download',
-                          onPressed: offlineContent.isDownloading
-                              ? null
-                              : () {
-                                  ref.read(offlineContentProvider.notifier).downloadLanguage(languageCode);
-                                },
+                      : FutureBuilder<bool>(
+                          future: LessonDownloadService().hasResumablePackDownload(languageKey),
+                          builder: (context, snap) {
+                            final resumable = snap.data == true;
+                            return AnimatedButton(
+                              text: resumable ? 'Resume' : 'Download',
+                              onPressed: offlineContent.isDownloading
+                                  ? null
+                                  : () {
+                                      ref.read(offlineContentProvider.notifier).downloadLanguage(languageCode);
+                                    },
+                            );
+                          },
                         ),
                 ),
               )

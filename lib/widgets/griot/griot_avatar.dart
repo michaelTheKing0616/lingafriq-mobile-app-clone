@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 /// Rounded avatar with optional status ring and badge overlay.
 ///
@@ -104,10 +105,14 @@ class GriotAvatar extends StatelessWidget {
 
   Widget _buildImage(ColorScheme cs) {
     if (imageUrl != null && imageUrl!.isNotEmpty) {
-      return Image.network(
-        imageUrl!,
+      return CachedNetworkImage(
+        imageUrl: imageUrl!,
         fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) => _fallback(cs),
+        fadeInDuration: const Duration(milliseconds: 180),
+        placeholder: (_, __) => _fallback(cs),
+        errorWidget: (_, __, ___) => _fallback(cs),
+        memCacheWidth: size.toInt(),
+        memCacheHeight: size.toInt(),
       );
     }
     return _fallback(cs);

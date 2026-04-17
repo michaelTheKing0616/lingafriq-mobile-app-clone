@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Practice Room Setup</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Lexend:wght@300;400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Lexend', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        h1, h2, h3 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "surface-bright": "#fff8f5",
+                "on-secondary": "#ffffff",
+                "surface-container": "#ffeada",
+                "primary-fixed": "#ffdbcf",
+                "surface-dim": "#ffd2aa",
+                "inverse-surface": "#462a0d",
+                "tertiary-container": "#9b6c00",
+                "secondary": "#006e2d",
+                "on-surface-variant": "#59413a",
+                "on-primary": "#ffffff",
+                "surface-container-low": "#fff1e8",
+                "surface-variant": "#ffdcbf",
+                "on-tertiary": "#ffffff",
+                "on-primary-fixed-variant": "#822700",
+                "on-secondary-container": "#007230",
+                "on-primary-container": "#fffbff",
+                "surface-container-high": "#ffe3cd",
+                "on-surface": "#2d1600",
+                "surface-container-highest": "#ffdcbf",
+                "surface": "#fff8f5",
+                "on-tertiary-container": "#fffbff",
+                "secondary-container": "#7cf994",
+                "on-background": "#2d1600",
+                "on-error": "#ffffff",
+                "inverse-on-surface": "#ffeee1",
+                "error-container": "#ffdad6",
+                "primary-fixed-dim": "#ffb59c",
+                "outline-variant": "#e0bfb5",
+                "outline": "#8c7168",
+                "background": "#fff8f5",
+                "on-tertiary-fixed-variant": "#5f4100",
+                "secondary-fixed-dim": "#62df7d",
+                "secondary-fixed": "#7ffc97",
+                "primary-container": "#c94c1a",
+                "on-error-container": "#93000a",
+                "error": "#ba1a1a",
+                "on-secondary-fixed-variant": "#005320",
+                "on-primary-fixed": "#390c00",
+                "tertiary-fixed-dim": "#f8bc51",
+                "on-secondary-fixed": "#002109",
+                "surface-tint": "#aa3601",
+                "tertiary-fixed": "#ffdeab",
+                "inverse-primary": "#ffb59c",
+                "tertiary": "#7b5500",
+                "primary": "#a73400",
+                "on-tertiary-fixed": "#281900",
+                "surface-container-lowest": "#ffffff"
+              },
+              fontFamily: {
+                "headline": ["Plus Jakarta Sans"],
+                "body": ["Lexend"],
+                "label": ["Lexend"]
+              },
+              borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+            },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-[#fff8f5] dark:bg-orange-950 flex justify-between items-center w-full px-6 py-4">
+<div class="flex items-center gap-4">
+<button class="text-[#a73400] dark:text-orange-400 hover:bg-[#ffeada] dark:hover:bg-orange-800/50 transition-colors p-2 rounded-full active:scale-95 duration-200 ease-in-out">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+<h1 class="font-['Plus_Jakarta_Sans'] font-bold text-xl tracking-tight text-[#a73400] dark:text-orange-400">Practice Room</h1>
+</div>
+<button class="text-[#a73400] dark:text-orange-400 hover:bg-[#ffeada] dark:hover:bg-orange-800/50 transition-colors p-2 rounded-full active:scale-95 duration-200 ease-in-out">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</header>
+<main class="max-w-4xl mx-auto px-6 pt-24 pb-12">
+<!-- Hero Header -->
+<section class="mb-12">
+<h2 class="text-4xl md:text-5xl font-extrabold text-primary tracking-tight mb-4 leading-tight">Start Practice Session</h2>
+<p class="text-on-surface-variant max-w-xl text-lg">Set your focus and step into the village square. Every word spoken is a bridge built.</p>
+</section>
+<!-- Language Selector: Asymmetric Layout -->
+<section class="mb-12">
+<h3 class="text-label-md font-semibold text-outline uppercase tracking-widest mb-6">Select Language</h3>
+<div class="flex flex-wrap gap-4">
+<!-- Yoruba -->
+<div class="group relative flex-1 min-w-[160px] cursor-pointer">
+<div class="absolute inset-0 bg-primary-fixed rounded-lg transform translate-x-1 translate-y-1 group-hover:translate-x-0 group-hover:translate-y-0 transition-transform"></div>
+<div class="relative bg-surface-container-lowest p-6 rounded-lg border-2 border-transparent group-hover:border-primary transition-colors flex flex-col items-center text-center shadow-sm">
+<div class="w-16 h-16 rounded-full overflow-hidden mb-4 ring-4 ring-surface-container">
+<img class="w-full h-full object-cover" data-alt="close up of vibrant green and white nigerian flag textile texture with soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFBH4yP82flPkO8pEdP8FbOz_TO-fI_3zqsF6pyo-ddp62cLltIrO1Fwrm4REQtDtxr_kcZedXnp0OOlXZhME44QWjxhrqcl_VXTK-nrUpNsJd6p2hyleJyOomJQoRJXyN3UQucT3uoNCMeHXq5e7BZAXslblgV8fL_IoaF38zfeRj9PgTGrGJLWBSlYHbZfnozxbfPwMMkPkC8UfiemJJO-yWWTMoy-iQGmOdNlPjnW7DyeGHFG_QzUweE22HafkxNYKSRxrbYzoM"/>
+</div>
+<span class="font-bold text-lg text-on-surface">Yoruba</span>
+</div>
+</div>
+<!-- Swahili -->
+<div class="group relative flex-1 min-w-[160px] cursor-pointer">
+<div class="absolute inset-0 bg-tertiary-fixed rounded-lg transform translate-x-1 translate-y-1 group-hover:translate-x-0 group-hover:translate-y-0 transition-transform"></div>
+<div class="relative bg-surface-container-lowest p-6 rounded-lg border-2 border-transparent group-hover:border-primary transition-colors flex flex-col items-center text-center shadow-sm">
+<div class="w-16 h-16 rounded-full overflow-hidden mb-4 ring-4 ring-surface-container">
+<img class="w-full h-full object-cover" data-alt="kenyan flag fabric with bold red black and green colors in soft focus morning light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhMNMuwFcmIwnf6F0o4pMSzm0DIfWGVhVjcXceXgn0kRH4MLZnjRCfSI5gXGZZZYwJOCwv2t7qpS6LYceq_iAvg6LgDxnLtzXJ-d59JMn8m38pG-pC5QneUQwvCLxbptZ3UBhGxy8DZCWKQ2h1niJ_9we94n-RmtuThgItvRL6xpf27p1gQ10URZnO8ZrUaVR1UvnYD6opzTWS8GRuGjO3fcNLMCoO8HseJvXLh7YFQ4Z7oCf_tfyt6vuKYhlDR9Ui0RHsp7Z6GVGJ"/>
+</div>
+<span class="font-bold text-lg text-on-surface">Swahili</span>
+</div>
+</div>
+<!-- Zulu -->
+<div class="group relative flex-1 min-w-[160px] cursor-pointer">
+<div class="absolute inset-0 bg-secondary-fixed rounded-lg transform translate-x-1 translate-y-1 group-hover:translate-x-0 group-hover:translate-y-0 transition-transform"></div>
+<div class="relative bg-surface-container-lowest p-6 rounded-lg border-2 border-transparent group-hover:border-primary transition-colors flex flex-col items-center text-center shadow-sm">
+<div class="w-16 h-16 rounded-full overflow-hidden mb-4 ring-4 ring-surface-container">
+<img class="w-full h-full object-cover" data-alt="south african flag waving gently with colorful geometric patterns under bright clear sky" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAP7O_RUH9AXslUGEhsikihlWoGCBYFyDsZTM80crkVv_zf0j18tLbG9v8KaG3f-2apWa0CvV5vZSU0ykp0x53I5F9HNk7skszs_F5FQNpxtNv-D1lmHQ9lmUwEkRyUTAiVJIYsgfu50nWlTHQcbuGvNTAFii3Y_xd0G9HRLsCaMwGUDB_V7GcKAe-ZHgFuWEFrUMrswLo-K_mZuNP2lA2Li7HaQS-Yj0-Bzvq6tSBB_AmPzbYLvvdPCQRONWl66CbIEmhASPLcE9oM"/>
+</div>
+<span class="font-bold text-lg text-on-surface">Zulu</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Level Selector: Organic Pills -->
+<section class="mb-12">
+<h3 class="text-label-md font-semibold text-outline uppercase tracking-widest mb-6">Choose Proficiency</h3>
+<div class="flex flex-wrap gap-3">
+<button class="px-8 py-3 rounded-full bg-primary-fixed text-on-primary-fixed font-bold hover:bg-primary hover:text-white transition-all active:scale-95">Beginner</button>
+<button class="px-8 py-3 rounded-full bg-surface-container-high text-on-surface-variant font-bold hover:bg-primary-fixed transition-all active:scale-95">Intermediate</button>
+<button class="px-8 py-3 rounded-full bg-surface-container-high text-on-surface-variant font-bold hover:bg-primary-fixed transition-all active:scale-95">Advanced</button>
+</div>
+</section>
+<!-- Focus Area: Bento Grid -->
+<section class="mb-12">
+<h3 class="text-label-md font-semibold text-outline uppercase tracking-widest mb-6">Session Goal</h3>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Pronunciation Lab -->
+<div class="md:col-span-7 bg-surface-container-low rounded-lg p-8 relative overflow-hidden group cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="relative z-10">
+<div class="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary text-white">
+<span class="material-symbols-outlined" data-icon="mic">mic</span>
+</div>
+<h4 class="text-2xl font-bold text-on-surface mb-2">Pronunciation Lab</h4>
+<p class="text-on-surface-variant mb-6 max-w-xs">Perfect your accent with real-time feedback and native matching.</p>
+<div class="flex -space-x-2">
+<img class="w-8 h-8 rounded-full ring-2 ring-surface-container-low" data-alt="portrait of a young african man smiling warmly in a bright indoor setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLGvJsRjqpQmR_iE07s5eRSIPNr_JHYZldGMz0pl-uv4PCclp-VdvL1zAAaZM1iO2QSZh9UU7cZp3b3Zj0csDm5QpE78ftqKIi2HfUEyopko9TnPnHE2tkMhCEZUFejWAGipYjpolJpqZwp0eMh8M3q82zryiDKTPYRM6Z__B_5vX31WT0P8CZ3NwWLaZkOO68AEg-g7DYFzrR6b0ichvOVZOmFZYvBn65XiBvnESZHYM-78TtEAzUlAtf05-mE9ifsOxrM72heM2a"/>
+<img class="w-8 h-8 rounded-full ring-2 ring-surface-container-low" data-alt="portrait of a young african woman with braided hair smiling in soft daylight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQIyEgGEKGo8JjcjohvvzBZQGBGP5IC2QrTP4w3HaUhvuttiSqtK7c9IOluprJiq9xfa_cknpgBERns4ENpnaEOFbt7h8qbbeiXzclJYSiLihKr6xviV33XAkG0VoO4ihqN9FbIIxMIjYsgw_S4UhrhVKi5-veZyor5GWAW_1eWCyCBLPYrfA36n_F81jT1YbsSSLXV4z1dkQ9cbUkMP1uGv6EXXOScXdRmcJM7NZYB0sjLqaESRf2RmaOPg_YfVtnsyE2GFa2glUz"/>
+<div class="w-8 h-8 rounded-full bg-surface-variant ring-2 ring-surface-container-low flex items-center justify-center text-[10px] font-bold">+12</div>
+</div>
+</div>
+<!-- Totem Element Overlay -->
+<div class="absolute -right-4 -bottom-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-[160px]" data-icon="graphic_eq">graphic_eq</span>
+</div>
+</div>
+<!-- Vocab Drill -->
+<div class="md:col-span-5 bg-surface-container rounded-lg p-8 group cursor-pointer hover:bg-surface-variant transition-colors border-l-4 border-tertiary">
+<div class="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-xl bg-tertiary text-white">
+<span class="material-symbols-outlined" data-icon="style">style</span>
+</div>
+<h4 class="text-2xl font-bold text-on-surface mb-2">Vocab Drill</h4>
+<p class="text-on-surface-variant">Rapid-fire flashcards and cultural idioms.</p>
+</div>
+<!-- Casual Conversation -->
+<div class="md:col-span-12 bg-secondary-container/30 rounded-lg p-8 flex flex-col md:flex-row items-center gap-8 group cursor-pointer hover:bg-secondary-container/50 transition-colors">
+<div class="flex-1">
+<div class="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-xl bg-secondary text-white">
+<span class="material-symbols-outlined" data-icon="forum">forum</span>
+</div>
+<h4 class="text-2xl font-bold text-on-surface mb-2">Casual Conversation</h4>
+<p class="text-on-surface-variant max-w-md">Jump into a voice chat with the tribe and practice flowing dialogue naturally.</p>
+</div>
+<div class="flex gap-2">
+<div class="w-24 h-24 rounded-lg bg-surface-container-lowest shadow-lg p-2 flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-secondary" data-icon="record_voice_over">record_voice_over</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Information Note -->
+<div class="flex items-center gap-3 p-4 bg-surface-container-low rounded-lg mb-8">
+<span class="material-symbols-outlined text-primary" data-icon="info">info</span>
+<p class="text-sm text-on-surface-variant italic">Session is temporary and closes when everyone leaves.</p>
+</div>
+</main>
+<!-- BottomNavBar (Execution of style_shell_layout & style_component_shape) -->
+<nav class="fixed bottom-6 left-0 right-0 z-50 flex justify-around items-center px-4 py-2 bg-[#a73400]/80 dark:bg-orange-950/80 backdrop-blur-xl fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] rounded-full shadow-[0_20px_40px_rgba(45,22,0,0.1)]">
+<!-- Start Button Embedded in Nav Logic for prominence -->
+<div class="flex justify-between items-center w-full max-w-lg">
+<div class="flex items-center justify-center text-white/70 dark:text-orange-300/70 p-4 hover:bg-white/10 rounded-full transition-transform active:scale-90">
+<span class="material-symbols-outlined" data-icon="mic_off">mic_off</span>
+</div>
+<button class="flex-grow mx-4 py-4 bg-white text-primary rounded-full font-extrabold text-lg uppercase tracking-wider shadow-lg hover:bg-primary-fixed transition-all active:scale-95 flex items-center justify-center gap-3">
+<span>Start Session</span>
+<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+</button>
+<div class="flex items-center justify-center text-white/70 dark:text-orange-300/70 p-4 hover:bg-white/10 rounded-full transition-transform active:scale-90">
+<span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
+</div>
+</div>
+</nav>
+</body></html>

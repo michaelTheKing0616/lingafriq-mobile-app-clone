@@ -137,11 +137,33 @@ jobs:
           flutter analyze --no-fatal-infos --no-fatal-warnings
           echo "✅ Flutter analyze passed"
 
-      - name: Flutter test
+      - name: i18n literal gate
+        run: dart run tool/i18n_gate.dart
+
+      - name: Flutter test (with coverage)
         run: |
-          echo "🧪 Running Flutter tests..."
-          flutter test
+          echo "🧪 Running Flutter tests with coverage..."
+          flutter test --coverage
           echo "✅ Flutter tests passed"
+
+      - name: Coverage summary (lcov)
+        if: success()
+        run: |
+          if [ -f coverage/lcov.info ]; then
+            sudo apt-get update -qq && sudo apt-get install -y lcov
+            lcov --summary coverage/lcov.info
+          else
+            echo "No coverage/lcov.info produced"
+            exit 1
+          fi
+
+      - name: Upload coverage artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-android
+          path: coverage/
+          retention-days: 14
 
       - name: 🔢 Use incremented version
         run: |
@@ -188,6 +210,7 @@ jobs:
           set +e
           chmod +x android/gradlew || true
           flutter build appbundle --release --split-debug-info=build/symbols \
+            --dart-define=CERTIFICATE_PIN_HASHES="${{ secrets.CERTIFICATE_PIN_HASHES }}" \
             --build-name="$VERSION_NAME" --build-number="$BUILD_NUMBER" 2>&1 | tee build.log
           BUILD_EXIT_CODE=${PIPESTATUS[0]}
           if [ $BUILD_EXIT_CODE -eq 0 ]; then echo "Build succeeded"; exit 0; fi
@@ -205,6 +228,7 @@ jobs:
           flutter pub get
 
           flutter build appbundle --release --split-debug-info=build/symbols \
+            --dart-define=CERTIFICATE_PIN_HASHES="${{ secrets.CERTIFICATE_PIN_HASHES }}" \
             --build-name="$VERSION_NAME" --build-number="$BUILD_NUMBER" 2>&1 | tee build-retry.log
           BUILD_EXIT_CODE=${PIPESTATUS[0]}
           if [ $BUILD_EXIT_CODE -eq 0 ]; then echo "Build succeeded on retry"; exit 0; fi
@@ -280,11 +304,34 @@ jobs:
           flutter analyze --no-fatal-infos --no-fatal-warnings
           echo "✅ Flutter analyze passed"
 
-      - name: Flutter test
+      - name: i18n literal gate
+        run: dart run tool/i18n_gate.dart
+
+      - name: Flutter test (with coverage)
         run: |
-          echo "🧪 Running Flutter tests..."
-          flutter test
+          echo "🧪 Running Flutter tests with coverage..."
+          flutter test --coverage
           echo "✅ Flutter tests passed"
+
+      - name: Coverage summary (lcov)
+        if: success()
+        run: |
+          if [ ! -f coverage/lcov.info ]; then
+            echo "No coverage/lcov.info produced"
+            exit 1
+          fi
+          if ! command -v lcov >/dev/null 2>&1; then
+            brew install lcov
+          fi
+          lcov --summary coverage/lcov.info
+
+      - name: Upload coverage artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-ios
+          path: coverage/
+          retention-days: 14
 
       - name: 🔐 Setup iOS Code Signing
         env:
@@ -507,6 +554,7 @@ jobs:
           set +e
           if [ "$IOS_SIGNING_READY" = "true" ] && [ -n "$IOS_P12" ]; then
             flutter build ios --release --no-codesign --split-debug-info=build/symbols \
+              --dart-define=CERTIFICATE_PIN_HASHES="${{ secrets.CERTIFICATE_PIN_HASHES }}" \
               --build-name="$VERSION_NAME" --build-number="$BUILD_NUMBER" 2>&1 | tee build-ios.log
             build_code=${PIPESTATUS[0]}
             if [ $build_code -eq 0 ]; then
@@ -533,6 +581,7 @@ jobs:
             fi
           else
             flutter build ios --release --no-codesign --split-debug-info=build/symbols \
+              --dart-define=CERTIFICATE_PIN_HASHES="${{ secrets.CERTIFICATE_PIN_HASHES }}" \
               --build-name="$VERSION_NAME" --build-number="$BUILD_NUMBER" 2>&1 | tee build-ios.log
             code=${PIPESTATUS[0]}
           fi

@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Media Import Studio — Àfàláàbù</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg: #0B0C10;
+  --bg2: #111318;
+  --bg3: #181B22;
+  --bg4: #1F2330;
+  --surface: #242838;
+  --surface2: #2C3244;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --border3: rgba(255,255,255,0.18);
+  --text: #F2F4FA;
+  --text2: #B8BCCC;
+  --text3: #7A80A0;
+  --text4: #4A5070;
+  --accent: #E8A94A;
+  --accent2: #F5C878;
+  --accent-pale: rgba(232,169,74,0.1);
+  --accent-mid: rgba(232,169,74,0.2);
+  --red: #E05A44;
+  --red-pale: rgba(224,90,68,0.12);
+  --green: #52C989;
+  --green-pale: rgba(82,201,137,0.1);
+  --blue: #5B8EE8;
+  --blue-pale: rgba(91,142,232,0.1);
+  --purple: #A87EE8;
+  --purple-pale: rgba(168,126,232,0.1);
+  --teal: #4EC4C4;
+  --teal-pale: rgba(78,196,196,0.1);
+  --r: 8px;
+  --r-lg: 14px;
+  --r-xl: 20px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  font-family: 'Syne', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ========== LAYOUT ========== */
+#app { display: flex; height: 100vh; overflow: hidden; }
+
+/* ========== LEFT PANEL ========== */
+#left-panel {
+  width: 300px;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.lp-header {
+  padding: 18px 18px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.lp-logo {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+.lp-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 22px;
+  color: var(--text);
+  line-height: 1.2;
+}
+.lp-sub { font-size: 11px; color: var(--text3); margin-top: 4px; letter-spacing: 0.3px; }
+
+/* UPLOAD ZONE */
+.upload-zone {
+  margin: 14px;
+  border: 1.5px dashed var(--border2);
+  border-radius: var(--r-lg);
+  padding: 22px 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--accent-pale);
+  position: relative;
+}
+.upload-zone:hover { border-color: var(--accent); background: rgba(232,169,74,0.14); }
+.upload-zone.dragging { border-color: var(--accent); background: rgba(232,169,74,0.18); transform: scale(1.01); }
+.uz-icon { font-size: 32px; margin-bottom: 8px; display: block; }
+.uz-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.uz-sub { font-size: 10px; color: var(--text3); line-height: 1.5; }
+.uz-formats { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; margin-top: 10px; }
+.uz-format { background: var(--bg3); border: 1px solid var(--border2); border-radius: 4px; padding: 2px 7px; font-size: 9px; font-weight: 600; color: var(--text3); letter-spacing: 0.5px; font-family: 'DM Mono', monospace; }
+.uz-url-input { width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: 6px; padding: 8px 10px; font-size: 11px; color: var(--text2); margin-top: 10px; outline: none; font-family: 'Syne', sans-serif; transition: border-color 0.15s; }
+.uz-url-input:focus { border-color: var(--accent); }
+.uz-url-input::placeholder { color: var(--text4); }
+
+/* MEDIA LIST */
+.media-list-header {
+  display: flex; align-items: center;
+  padding: 10px 18px 6px;
+  gap: 8px;
+}
+.mlh-title { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text3); font-weight: 700; }
+.mlh-count { background: var(--surface); border-radius: 10px; padding: 1px 7px; font-size: 10px; color: var(--accent); font-weight: 700; }
+.mlh-add { margin-left: auto; font-size: 16px; cursor: pointer; color: var(--text3); transition: color 0.15s; }
+.mlh-add:hover { color: var(--accent); }
+
+.media-list { flex: 1; overflow-y: auto; padding: 0 10px 10px; display: flex; flex-direction: column; gap: 4px; }
+
+.media-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px;
+  border-radius: var(--r);
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1px solid transparent;
+}
+.media-item:hover { background: var(--bg3); border-color: var(--border); }
+.media-item.active { background: var(--bg4); border-color: var(--accent-mid); }
+.mi-icon {
+  width: 38px; height: 38px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; flex-shrink: 0;
+}
+.mi-info { flex: 1; min-width: 0; }
+.mi-name { font-size: 12px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mi-meta { font-size: 10px; color: var(--text3); margin-top: 2px; display: flex; gap: 6px; }
+.mi-status { font-size: 9px; font-weight: 700; letter-spacing: 0.5px; padding: 2px 7px; border-radius: 10px; margin-left: auto; white-space: nowrap; flex-shrink: 0; }
+.status-done { background: var(--green-pale); color: var(--green); border: 1px solid rgba(82,201,137,0.2); }
+.status-processing { background: var(--accent-pale); color: var(--accent); border: 1px solid rgba(232,169,74,0.2); }
+.status-ready { background: var(--blue-pale); color: var(--blue); border: 1px solid rgba(91,142,232,0.2); }
+.status-new { background: var(--bg3); color: var(--text3); border: 1px solid var(--border); }
+
+/* ========== CENTER PANEL ========== */
+#center-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.cp-topbar {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.cp-media-badge {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg3); border: 1px solid var(--border2);
+  border-radius: var(--r); padding: 6px 12px;
+}
+.cpb-icon { font-size: 16px; }
+.cpb-name { font-size: 13px; font-weight: 600; }
+.cpb-type { font-size: 10px; color: var(--text3); }
+.cp-topbar-center { flex: 1; display: flex; justify-content: center; }
+.view-tabs { display: flex; gap: 2px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 3px; }
+.vt-btn {
+  background: transparent; border: none;
+  border-radius: 6px; padding: 6px 14px;
+  font-family: 'Syne', sans-serif;
+  font-size: 11px; font-weight: 600;
+  color: var(--text3); cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.3px;
+}
+.vt-btn:hover { color: var(--text2); }
+.vt-btn.active { background: var(--surface); color: var(--text); }
+.cp-topbar-actions { display: flex; gap: 8px; }
+.cp-action-btn {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  padding: 7px 14px;
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.3px;
+}
+.cp-action-btn:hover { background: var(--surface); border-color: var(--border2); color: var(--text); }
+.cp-action-btn.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+.cp-action-btn.primary:hover { background: var(--accent2); }
+
+/* ========== MAIN VIEW PANELS ========== */
+.view-panel { display: none; flex: 1; overflow-y: auto; }
+.view-panel.active { display: flex; flex-direction: column; }
+
+/* --- TRANSCRIPTION VIEW --- */
+.transcription-area { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 0; overflow: hidden; }
+.trans-col { display: flex; flex-direction: column; overflow: hidden; }
+.trans-col-header {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+  flex-shrink: 0;
+}
+.tch-lang { font-size: 11px; font-weight: 700; color: var(--text2); letter-spacing: 0.5px; }
+.tch-badge { font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 2px 8px; border-radius: 10px; }
+.tch-tool { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; font-size: 10px; font-weight: 600; color: var(--text3); cursor: pointer; transition: all 0.15s; font-family: 'Syne'; }
+.tch-tool:hover { border-color: var(--border2); color: var(--text2); }
+.tch-accuracy { margin-left: auto; font-size: 10px; color: var(--green); font-weight: 700; }
+
+.trans-col.source { border-right: 1px solid var(--border); }
+.trans-scroll { flex: 1; overflow-y: auto; padding: 20px; }
+
+.transcript-segment {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.1s;
+  border-radius: 6px;
+  padding: 10px 8px;
+  margin-bottom: 2px;
+}
+.transcript-segment:hover { background: var(--bg3); }
+.transcript-segment.playing { background: var(--accent-pale); border-left: 2px solid var(--accent); padding-left: 6px; }
+.ts-time { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text4); padding-top: 3px; min-width: 44px; flex-shrink: 0; }
+.ts-content { flex: 1; }
+.ts-speaker { font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); margin-bottom: 3px; }
+.ts-text { font-size: 13px; line-height: 1.65; color: var(--text2); }
+.ts-text .vocab-highlight { background: rgba(232,169,74,0.2); border-bottom: 1px solid var(--accent); cursor: pointer; border-radius: 2px; padding: 0 2px; color: var(--accent2); transition: background 0.15s; }
+.ts-text .vocab-highlight:hover { background: rgba(232,169,74,0.35); }
+.ts-confidence { font-size: 9px; color: var(--text4); margin-top: 4px; font-family: 'DM Mono', monospace; }
+
+.trans-col.target .ts-text { color: var(--text); }
+.trans-col.target .ts-speaker { color: var(--teal); }
+
+.media-player {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+.mp-controls { display: flex; gap: 8px; align-items: center; }
+.mp-btn { background: var(--bg3); border: 1px solid var(--border2); border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 13px; transition: all 0.15s; }
+.mp-btn:hover { background: var(--surface); }
+.mp-play-btn { background: var(--accent); border-color: var(--accent); width: 38px; height: 38px; font-size: 15px; }
+.mp-play-btn:hover { background: var(--accent2); }
+.mp-progress { flex: 1; display: flex; align-items: center; gap: 10px; }
+.mp-bar-track { flex: 1; height: 4px; background: var(--surface); border-radius: 2px; cursor: pointer; position: relative; }
+.mp-bar-fill { width: 34%; height: 100%; background: var(--accent); border-radius: 2px; }
+.mp-bar-thumb { position: absolute; top: 50%; right: 66%; transform: translate(50%,-50%); width: 12px; height: 12px; background: var(--accent); border-radius: 50%; border: 2px solid var(--bg); }
+.mp-time { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text3); white-space: nowrap; }
+.mp-speed { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; font-size: 10px; font-weight: 700; color: var(--accent); cursor: pointer; font-family: 'DM Mono'; }
+.mp-vol { display: flex; align-items: center; gap: 6px; }
+
+/* --- LESSON VIEW --- */
+.lesson-view { padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+
+.lesson-overview {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: 22px;
+  display: flex;
+  gap: 20px;
+  align-items: start;
+}
+.lo-icon { font-size: 48px; flex-shrink: 0; }
+.lo-info { flex: 1; }
+.lo-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 6px; }
+.lo-title { font-family: 'Instrument Serif', serif; font-size: 24px; color: var(--text); line-height: 1.2; margin-bottom: 8px; }
+.lo-stats { display: flex; gap: 16px; }
+.lo-stat { text-align: center; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; }
+.lo-stat-val { font-size: 20px; font-weight: 800; color: var(--accent); display: block; }
+.lo-stat-lbl { font-size: 9px; color: var(--text3); letter-spacing: 0.5px; text-transform: uppercase; display: block; margin-top: 2px; }
+.lo-actions { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+.lo-btn { background: var(--accent); border: none; border-radius: var(--r); padding: 10px 20px; font-family: 'Syne'; font-size: 12px; font-weight: 700; color: var(--bg); cursor: pointer; transition: all 0.15s; letter-spacing: 0.3px; white-space: nowrap; }
+.lo-btn:hover { background: var(--accent2); }
+.lo-btn.secondary { background: var(--bg3); border: 1px solid var(--border2); color: var(--text2); }
+.lo-btn.secondary:hover { background: var(--surface); }
+
+/* Lesson modules */
+.lesson-modules { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.lesson-module {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 18px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.lesson-module:hover { border-color: var(--border2); background: var(--bg3); }
+.lesson-module.accent-border { border-color: var(--accent-mid); }
+.lm-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.lm-icon { font-size: 20px; }
+.lm-title { font-size: 14px; font-weight: 700; color: var(--text); }
+.lm-badge { margin-left: auto; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; padding: 2px 8px; border-radius: 10px; }
+.badge-new { background: var(--accent-pale); color: var(--accent); border: 1px solid rgba(232,169,74,0.25); }
+.badge-done { background: var(--green-pale); color: var(--green); border: 1px solid rgba(82,201,137,0.2); }
+.badge-locked { background: var(--bg4); color: var(--text4); border: 1px solid var(--border); }
+
+/* Vocab grid */
+.vocab-grid { display: flex; flex-direction: column; gap: 6px; }
+.vocab-row {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--bg3); border-radius: 8px;
+  padding: 8px 12px; cursor: pointer; transition: all 0.15s;
+  border: 1px solid transparent;
+}
+.vocab-row:hover { border-color: var(--border2); }
+.vocab-row.saved { border-color: rgba(82,201,137,0.25); background: rgba(82,201,137,0.05); }
+.vr-native { font-family: 'Instrument Serif', serif; font-size: 17px; color: var(--accent2); font-style: italic; min-width: 120px; }
+.vr-eng { font-size: 12px; color: var(--text2); flex: 1; }
+.vr-pos { font-size: 9px; color: var(--text4); font-weight: 700; letter-spacing: 0.5px; background: var(--bg4); padding: 2px 6px; border-radius: 4px; font-family: 'DM Mono'; }
+.vr-actions { display: flex; gap: 5px; }
+.vr-btn { background: var(--bg4); border: 1px solid var(--border); border-radius: 5px; padding: 4px 8px; font-size: 10px; color: var(--text3); cursor: pointer; transition: all 0.15s; font-family: 'Syne'; font-weight: 600; }
+.vr-btn:hover { background: var(--surface); color: var(--text2); }
+.vr-btn.save-btn.saved { background: var(--green-pale); border-color: rgba(82,201,137,0.25); color: var(--green); }
+
+/* Quiz */
+.quiz-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 20px; }
+.qc-q { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 14px; line-height: 1.5; }
+.qc-options { display: flex; flex-direction: column; gap: 8px; }
+.qc-option {
+  background: var(--bg3); border: 1px solid var(--border2);
+  border-radius: var(--r); padding: 12px 16px;
+  font-size: 13px; color: var(--text2);
+  cursor: pointer; transition: all 0.15s;
+}
+.qc-option:hover { background: var(--surface); border-color: var(--border3); color: var(--text); }
+.qc-option.correct { background: var(--green-pale); border-color: rgba(82,201,137,0.4); color: var(--green); font-weight: 600; }
+.qc-option.wrong { background: var(--red-pale); border-color: rgba(224,90,68,0.3); color: var(--red); }
+.qc-explain { background: var(--accent-pale); border: 1px solid var(--accent-mid); border-radius: var(--r); padding: 12px; font-size: 12px; color: var(--text2); line-height: 1.6; margin-top: 12px; display: none; }
+.qc-explain.show { display: block; }
+
+/* Cultural context */
+.cultural-card { background: linear-gradient(135deg, rgba(42,53,96,0.5) 0%, rgba(168,126,232,0.08) 100%); border: 1px solid rgba(91,142,232,0.15); border-radius: var(--r-lg); padding: 18px; }
+.cc-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.cc-icon { font-size: 20px; }
+.cc-title { font-size: 13px; font-weight: 700; color: var(--blue); }
+.cc-text { font-size: 13px; line-height: 1.7; color: var(--text2); font-family: 'Instrument Serif', serif; }
+.cc-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+.cc-tag { background: var(--blue-pale); border: 1px solid rgba(91,142,232,0.2); border-radius: 4px; padding: 3px 9px; font-size: 9px; font-weight: 700; color: var(--blue); letter-spacing: 0.5px; text-transform: uppercase; }
+
+/* --- SETTINGS VIEW --- */
+.settings-view { padding: 24px; display: flex; flex-direction: column; gap: 16px; max-width: 680px; }
+.sv-section { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 18px; }
+.sv-section-title { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text3); font-weight: 700; margin-bottom: 14px; }
+.sv-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.sv-row:last-child { border-bottom: none; }
+.sv-label { font-size: 13px; font-weight: 600; color: var(--text); flex: 1; }
+.sv-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+/* Dropdowns / Selects */
+select.sv-select {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  padding: 8px 12px;
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text2);
+  outline: none;
+  cursor: pointer;
+  min-width: 200px;
+  transition: border-color 0.15s;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%237A80A0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 28px;
+}
+select.sv-select:focus { border-color: var(--accent); }
+
+.sv-toggle {
+  width: 44px; height: 24px; border-radius: 12px;
+  background: var(--surface); border: none; cursor: pointer;
+  position: relative; transition: background 0.2s; flex-shrink: 0;
+}
+.sv-toggle.on { background: var(--accent); }
+.sv-toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: white; transition: transform 0.2s; }
+.sv-toggle.on::after { transform: translateX(20px); }
+
+/* ========== RIGHT PANEL ========== */
+#right-panel {
+  width: 280px;
+  background: var(--bg2);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.rp-tabs { display: flex; border-bottom: 1px solid var(--border); }
+.rp-tab { flex: 1; padding: 12px 6px; text-align: center; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text3); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; }
+.rp-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.rp-tab:hover:not(.active) { color: var(--text2); }
+
+.rp-body { flex: 1; overflow-y: auto; }
+.rp-section { padding: 14px; border-bottom: 1px solid var(--border); }
+.rp-section-title { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text3); font-weight: 700; margin-bottom: 10px; }
+
+/* Vocab Feed */
+.vocab-item { padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 2px; }
+.vocab-item:last-child { border-bottom: none; }
+.vi-word { font-family: 'Instrument Serif', serif; font-size: 18px; color: var(--accent2); font-style: italic; }
+.vi-lang { font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text4); }
+.vi-def { font-size: 11px; color: var(--text3); line-height: 1.4; }
+.vi-source { font-size: 9px; color: var(--text4); display: flex; align-items: center; gap: 4px; margin-top: 2px; font-family: 'DM Mono'; }
+.vi-actions { display: flex; gap: 5px; margin-top: 4px; }
+.vi-btn { font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 4px; cursor: pointer; border: 1px solid; font-family: 'Syne'; transition: all 0.15s; }
+.vi-btn.play { color: var(--teal); border-color: rgba(78,196,196,0.25); background: var(--teal-pale); }
+.vi-btn.pin { color: var(--accent); border-color: rgba(232,169,74,0.25); background: var(--accent-pale); }
+.vi-btn.note { color: var(--blue); border-color: rgba(91,142,232,0.25); background: var(--blue-pale); }
+.vi-btn.quiz { color: var(--purple); border-color: rgba(168,126,232,0.25); background: var(--purple-pale); }
+
+/* Progress */
+.progress-ring-container { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+.prog-circle { width: 60px; height: 60px; flex-shrink: 0; }
+.prog-info { flex: 1; }
+.prog-pct { font-size: 22px; font-weight: 800; color: var(--accent); }
+.prog-label { font-size: 10px; color: var(--text3); margin-top: 2px; }
+
+.skill-bar { margin-bottom: 8px; }
+.sb-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--text3); margin-bottom: 4px; }
+.sb-track { height: 5px; background: var(--surface); border-radius: 3px; overflow: hidden; }
+.sb-fill { height: 100%; border-radius: 3px; }
+
+.ai-suggestion {
+  background: linear-gradient(135deg, rgba(168,126,232,0.1) 0%, rgba(91,142,232,0.08) 100%);
+  border: 1px solid rgba(168,126,232,0.2);
+  border-radius: var(--r);
+  padding: 10px 12px;
+  margin-bottom: 8px;
+}
+.ais-title { font-size: 10px; font-weight: 700; color: var(--purple); letter-spacing: 0.5px; margin-bottom: 4px; }
+.ais-text { font-size: 11px; color: var(--text3); line-height: 1.5; }
+.ais-action { font-size: 10px; font-weight: 700; color: var(--accent); cursor: pointer; margin-top: 6px; display: inline-block; }
+
+/* ========== PROCESSING OVERLAY ========== */
+#processing-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(11,12,16,0.92);
+  z-index: 999;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+#processing-overlay.show { display: flex; }
+.proc-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: var(--r-xl); padding: 36px; max-width: 480px; width: 90%; text-align: center; }
+.proc-icon { font-size: 48px; margin-bottom: 14px; animation: procPulse 2s infinite; }
+@keyframes procPulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.1);} }
+.proc-title { font-family: 'Instrument Serif', serif; font-size: 24px; color: var(--text); margin-bottom: 8px; }
+.proc-sub { font-size: 12px; color: var(--text3); margin-bottom: 24px; line-height: 1.6; }
+.proc-steps { display: flex; flex-direction: column; gap: 10px; text-align: left; margin-bottom: 24px; }
+.proc-step { display: flex; align-items: center; gap: 12px; }
+.ps-dot { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+.ps-dot.done { background: var(--green-pale); border: 1px solid rgba(82,201,137,0.3); color: var(--green); }
+.ps-dot.active { background: var(--accent-pale); border: 1px solid rgba(232,169,74,0.3); color: var(--accent); animation: procPulse 1s infinite; }
+.ps-dot.pending { background: var(--bg4); border: 1px solid var(--border); color: var(--text4); }
+.ps-label { font-size: 13px; color: var(--text2); }
+.ps-label.done { color: var(--green); }
+.ps-label.active { color: var(--accent); font-weight: 600; }
+.ps-label.pending { color: var(--text4); }
+.proc-bar-track { width: 100%; height: 4px; background: var(--surface); border-radius: 2px; overflow: hidden; }
+.proc-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--teal)); border-radius: 2px; animation: procBarGrow 2.5s ease forwards; }
+@keyframes procBarGrow { from{width:0%} to{width:78%} }
+
+/* ========== SCROLLBAR ========== */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.14); }
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ===== LEFT PANEL ===== -->
+  <aside id="left-panel">
+    <div class="lp-header">
+      <div class="lp-logo">Àfàláàbù · Studio</div>
+      <div class="lp-title">Import Media</div>
+      <div class="lp-sub">Transcribe · Translate · Learn from any source</div>
+    </div>
+
+    <!-- Upload Zone -->
+    <div class="upload-zone" id="upload-zone" onclick="showProcessing()">
+      <span class="uz-icon">📥</span>
+      <div class="uz-title">Drop media here or click to browse</div>
+      <div class="uz-sub">Audio, video, images, PDFs, documents<br/>URLs, YouTube, podcasts, articles — all supported</div>
+      <div class="uz-formats">
+        <span class="uz-format">MP3</span><span class="uz-format">MP4</span><span class="uz-format">WAV</span><span class="uz-format">M4A</span>
+        <span class="uz-format">PDF</span><span class="uz-format">DOCX</span><span class="uz-format">SRT</span>
+        <span class="uz-format">JPG</span><span class="uz-format">PNG</span><span class="uz-format">WEBP</span>
+      </div>
+      <input class="uz-url-input" type="text" placeholder="Or paste a YouTube / podcast / article URL…" onclick="event.stopPropagation()" />
+    </div>
+
+    <!-- Media List -->
+    <div class="media-list-header">
+      <span class="mlh-title">My Media</span>
+      <span class="mlh-count">6</span>
+      <span class="mlh-add" onclick="showProcessing()">＋</span>
+    </div>
+    <div class="media-list">
+
+      <div class="media-item active" onclick="selectMedia(this)">
+        <div class="mi-icon" style="background:rgba(232,169,74,0.15);">🎙️</div>
+        <div class="mi-info">
+          <div class="mi-name">Griot Adama — Family Recitation</div>
+          <div class="mi-meta"><span>Bambara</span><span>·</span><span>47 min</span></div>
+        </div>
+        <div class="mi-status status-done">LESSON READY</div>
+      </div>
+
+      <div class="media-item" onclick="selectMedia(this)">
+        <div class="mi-icon" style="background:rgba(91,142,232,0.15);">🎬</div>
+        <div class="mi-info">
+          <div class="mi-name">Nollywood Clip — Nneka (2018)</div>
+          <div class="mi-meta"><span>Igbo / Pidgin</span><span>·</span><span>12 min</span></div>
+        </div>
+        <div class="mi-status status-done">LESSON READY</div>
+      </div>
+
+      <div class="media-item" onclick="selectMedia(this)">
+        <div class="mi-icon" style="background:rgba(82,201,137,0.15);">🎵</div>
+        <div class="mi-info">
+          <div class="mi-name">Youssou N'Dour — Immigrés</div>
+          <div class="mi-meta"><span>Wolof / French</span><span>·</span><span>5:14</span></div>
+        </div>
+        <div class="mi-status status-processing">PROCESSING…</div>
+      </div>
+
+      <div class="media-item" onclick="selectMedia(this)">
+        <div class="mi-icon" style="background:rgba(168,126,232,0.15);">📄</div>
+        <div class="mi-info">
+          <div class="mi-name">Swahili Short Story — PDF scan</div>
+          <div class="mi-meta"><span>Swahili</span><span>·</span><span>8 pages</span></div>
+        </div>
+        <div class="mi-status status-ready">TRANSCRIBED</div>
+      </div>
+
+      <div class="media-item" onclick="selectMedia(this)">
+        <div class="mi-icon" style="background:rgba(78,196,196,0.15);">📸</div>
+        <div class="mi-info">
+          <div class="mi-name">Kente cloth label photo</div>
+          <div class="mi-meta"><span>Twi</span><span>·</span><span>Image · OCR</span></div>
+        </div>
+        <div class="mi-status status-done">LESSON READY</div>
+      </div>
+
+      <div class="media-item" onclick="selectMedia(this)">
+        <div class="mi-icon" style="background:rgba(255,255,255,0.06);">🌐</div>
+        <div class="mi-info">
+          <div class="mi-name">BBC Hausa podcast ep. 34</div>
+          <div class="mi-meta"><span>Hausa</span><span>·</span><span>URL · 22 min</span></div>
+        </div>
+        <div class="mi-status status-new">NEW</div>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- ===== CENTER PANEL ===== -->
+  <main id="center-panel">
+    <!-- Topbar -->
+    <div class="cp-topbar">
+      <div class="cp-media-badge">
+        <span class="cpb-icon">🎙️</span>
+        <div>
+          <div class="cpb-name">Griot Adama — Family Recitation</div>
+          <div class="cpb-type">Audio · Bambara · 47 min · Imported Mar 24, 2026</div>
+        </div>
+      </div>
+
+      <div class="cp-topbar-center">
+        <div class="view-tabs">
+          <button class="vt-btn" onclick="switchView(this,'transcription')">Transcript</button>
+          <button class="vt-btn active" onclick="switchView(this,'lesson')">Lesson</button>
+          <button class="vt-btn" onclick="switchView(this,'settings')">Settings</button>
+        </div>
+      </div>
+
+      <div class="cp-topbar-actions">
+        <button class="cp-action-btn">📤 Export</button>
+        <button class="cp-action-btn">🔗 Share</button>
+        <button class="cp-action-btn primary">✨ Regenerate</button>
+      </div>
+    </div>
+
+    <!-- TRANSCRIPTION VIEW -->
+    <div class="view-panel" id="view-transcription">
+      <div class="transcription-area">
+        <!-- Source -->
+        <div class="trans-col source">
+          <div class="trans-col-header">
+            <div>
+              <div class="tch-lang">🇲🇱 BAMBARA (SOURCE)</div>
+              <div style="font-size:9px;color:var(--text4);margin-top:2px;font-family:'DM Mono';">Auto-detected · Mande family</div>
+            </div>
+            <div class="tch-badge" style="background:var(--green-pale);border:1px solid rgba(82,201,137,0.2);color:var(--green);">98.4% CONFIDENCE</div>
+            <button class="tch-tool">Edit</button>
+            <button class="tch-tool">Copy</button>
+          </div>
+          <div class="trans-scroll">
+
+            <div class="transcript-segment playing">
+              <div class="ts-time">00:00</div>
+              <div class="ts-content">
+                <div class="ts-speaker">ADAMA DIABATÉ (GRIOT)</div>
+                <div class="ts-text">In baara ye <span class="vocab-highlight">jeliya</span> dɔ ye, ka kuma Keïta jamu kan. <span class="vocab-highlight">Sundiata</span> Keïta tun ye mansa ye Mali jamana kɔnɔ...</div>
+                <div class="ts-confidence">Confidence: 98.4% · Speaker 1 · Diatonic Bambara dialect</div>
+              </div>
+            </div>
+
+            <div class="transcript-segment">
+              <div class="ts-time">00:34</div>
+              <div class="ts-content">
+                <div class="ts-speaker">ADAMA DIABATÉ (GRIOT)</div>
+                <div class="ts-text">A ka <span class="vocab-highlight">fanga</span> tun ka bon kosɛbɛ. <span class="vocab-highlight">Balakulandiya</span> min b'a ka mɔgɔw kɔnɔ, o kelen tɛ se ka bɛn kelen na.</div>
+                <div class="ts-confidence">Confidence: 96.1% · Note: archaic Mande pronoun form detected</div>
+              </div>
+            </div>
+
+            <div class="transcript-segment">
+              <div class="ts-time">01:12</div>
+              <div class="ts-content">
+                <div class="ts-speaker">ADAMA DIABATÉ (GRIOT)</div>
+                <div class="ts-text">Ne be kuma a ka <span class="vocab-highlight">donso</span> kow la. <span class="vocab-highlight">Nyamakala</span> w'a ka baarakɛlaw ye, u ye seere kɛ yɔrɔ bɛɛ la.</div>
+                <div class="ts-confidence">Confidence: 94.7%</div>
+              </div>
+            </div>
+
+            <div class="transcript-segment">
+              <div class="ts-time">01:58</div>
+              <div class="ts-content">
+                <div class="ts-speaker">ADAMA DIABATÉ (GRIOT)</div>
+                <div class="ts-text">O <span class="vocab-highlight">kuma</span> minnu be se ka tɛmɛ, olu b'a ka <span class="vocab-highlight">sɔrɔla</span> jɔ la doron. I ka se ka dalen ye nin ɲɛfɔli nin kɔnɔ k'a lajɛ.</div>
+                <div class="ts-confidence">Confidence: 99.1%</div>
+              </div>
+            </div>
+
+            <div class="transcript-segment">
+              <div class="ts-time">02:41</div>
+              <div class="ts-content">
+                <div class="ts-speaker">ADAMA DIABATÉ (GRIOT)</div>
+                <div class="ts-text">Mali jamana ka <span class="vocab-highlight">tarixi</span> be caman ye. Mansa Musa tun ye <span class="vocab-highlight">wari</span> caman ni — o tun ka bɔ <span class="vocab-highlight">kankan</span> na.</div>
+                <div class="ts-confidence">Confidence: 97.3%</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Translation -->
+        <div class="trans-col target">
+          <div class="trans-col-header">
+            <div>
+              <div class="tch-lang">🇬🇧 ENGLISH (TRANSLATION)</div>
+              <div style="font-size:9px;color:var(--text4);margin-top:2px;font-family:'DM Mono';">AI Translation · Cultural context preserved</div>
+            </div>
+            <div class="tch-badge" style="background:var(--blue-pale);border:1px solid rgba(91,142,232,0.2);color:var(--blue);">AI TRANSLATED</div>
+            <button class="tch-tool">Edit</button>
+            <button class="tch-tool">Copy</button>
+            <div class="tch-accuracy" style="margin-left:auto;">Target: EN</div>
+          </div>
+          <div class="trans-scroll">
+
+            <div class="transcript-segment playing">
+              <div class="ts-time">00:00</div>
+              <div class="ts-content">
+                <div class="ts-speaker">TRANSLATION · SEGMENT 1</div>
+                <div class="ts-text">This work is a <span class="vocab-highlight">jeliya</span> [griot's art], speaking of the lineage of the Keïta name. <span class="vocab-highlight">Sundiata</span> Keïta was a king within the land of Mali...</div>
+              </div>
+            </div>
+
+            <div class="transcript-segment">
+              <div class="ts-time">00:34</div>
+              <div class="ts-content">
+                <div class="ts-speaker">TRANSLATION · SEGMENT 2</div>
+                <div class="ts-text">His <span class="vocab-highlight">power</span> [fanga] was exceedingly great. The <span class="vocab-highlight">oral genealogy</span> [balakulandiya] that lives within his people cannot be reduced to a single account.</div>
+              </div>
+            </div>
+
+            <div class="transcript-segment">
+              <div class="ts-time">01:12</div>
+              <div class="ts-content">
+                <div class="ts-speaker">TRANSLATION · SEGMENT 3</div>
+                <div class="ts-text">I speak of his <span class="vocab-highlight">hunter's guild</span> [donso] affairs. The <span class="vocab-highlight">artisan caste</span> [nyamakala] were his workers, bearing witness in every place.</div>
+              </div>
+            </div>
+
+            <div class="transcript-segment">
+              <div class="ts-time">01:58</div>
+              <div class="ts-content">
+                <div class="ts-speaker">TRANSLATION · SEGMENT 4</div>
+                <div class="ts-text">The words that can pass across generations stand only in this <span class="vocab-highlight">narration</span> [sɔrɔla]. You can find insight within this recitation if you examine it carefully.</div>
+              </div>
+            </div>
+
+            <div class="transcript-segment">
+              <div class="ts-time">02:41</div>
+              <div class="ts-content">
+                <div class="ts-speaker">TRANSLATION · SEGMENT 5</div>
+                <div class="ts-text">The <span class="vocab-highlight">history</span> [tarixi] of the Mali land is vast. Mansa Musa held great <span class="vocab-highlight">wealth</span> [wari] — it originated from <span class="vocab-highlight">Kankan</span>.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Media Player -->
+      <div class="media-player">
+        <div class="mp-controls">
+          <div class="mp-btn">⏮</div>
+          <div class="mp-btn">⏪</div>
+          <div class="mp-btn mp-play-btn">⏸</div>
+          <div class="mp-btn">⏩</div>
+          <div class="mp-btn">⏭</div>
+        </div>
+        <div class="mp-progress">
+          <span class="mp-time">16:02</span>
+          <div class="mp-bar-track">
+            <div class="mp-bar-fill"></div>
+            <div class="mp-bar-thumb"></div>
+          </div>
+          <span class="mp-time">47:18</span>
+        </div>
+        <div class="mp-speed">1.0×</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:14px;">🔊</span>
+          <div style="width:70px;height:4px;background:var(--surface);border-radius:2px;"><div style="width:75%;height:100%;background:var(--text3);border-radius:2px;"></div></div>
+        </div>
+        <div style="display:flex;gap:6px;margin-left:4px;">
+          <div class="mp-btn" style="font-size:10px;border-radius:6px;width:auto;padding:0 10px;font-weight:700;color:var(--teal);">🔤 Sync</div>
+          <div class="mp-btn" style="font-size:10px;border-radius:6px;width:auto;padding:0 10px;font-weight:700;color:var(--purple);">🔁 Loop Segment</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LESSON VIEW -->
+    <div class="view-panel active" id="view-lesson">
+      <div class="lesson-view">
+
+        <!-- Overview -->
+        <div class="lesson-overview">
+          <div class="lo-icon">🎓</div>
+          <div class="lo-info">
+            <div class="lo-label">AI-Generated Lesson · Bambara Language</div>
+            <div class="lo-title">Oral History & the Griot Tradition:<br/>A Lesson from Adama's Recitation</div>
+            <div class="lo-stats">
+              <div class="lo-stat"><span class="lo-stat-val">5</span><span class="lo-stat-lbl">Modules</span></div>
+              <div class="lo-stat"><span class="lo-stat-val">34</span><span class="lo-stat-lbl">Vocab Words</span></div>
+              <div class="lo-stat"><span class="lo-stat-val">12</span><span class="lo-stat-lbl">Quiz Questions</span></div>
+              <div class="lo-stat"><span class="lo-stat-val">B1</span><span class="lo-stat-lbl">CEFR Level</span></div>
+            </div>
+          </div>
+          <div class="lo-actions">
+            <button class="lo-btn">▶ Start Lesson</button>
+            <button class="lo-btn secondary">📥 Download</button>
+            <button class="lo-btn secondary">📤 Share with Tribe</button>
+          </div>
+        </div>
+
+        <!-- Modules grid -->
+        <div class="lesson-modules">
+
+          <!-- Module 1: Cultural Context -->
+          <div class="lesson-module">
+            <div class="lm-header">
+              <span class="lm-icon">🏛️</span>
+              <span class="lm-title">Cultural Context</span>
+              <span class="lm-badge badge-done">✓ DONE</span>
+            </div>
+            <div class="cultural-card">
+              <div class="cc-header">
+                <span class="cc-icon">📜</span>
+                <span class="cc-title">The Griot Tradition in Mande Society</span>
+              </div>
+              <p class="cc-text">Griots (called <em>jeli</em> in Bambara) are hereditary custodians of oral history in West African Mande societies. They hold genealogical knowledge, serve as historians, musicians, and praise-singers. Their craft — <em>jeliya</em> — is passed down through family lineages and cannot be fully transcribed or transferred through writing alone.</p>
+              <div class="cc-tags">
+                <span class="cc-tag">Oral Tradition</span>
+                <span class="cc-tag">Mali Empire</span>
+                <span class="cc-tag">Mande Society</span>
+                <span class="cc-tag">Caste System</span>
+                <span class="cc-tag">Sundiata Epic</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Module 2: Vocabulary -->
+          <div class="lesson-module accent-border">
+            <div class="lm-header">
+              <span class="lm-icon">📚</span>
+              <span class="lm-title">Vocabulary — 34 Words</span>
+              <span class="lm-badge badge-new">IN PROGRESS</span>
+            </div>
+            <div class="vocab-grid">
+              <div class="vocab-row saved">
+                <div class="vr-native">jeliya</div>
+                <div class="vr-eng">the art/practice of the griot; oral custodianship</div>
+                <div class="vr-pos">NOUN</div>
+                <div class="vr-actions">
+                  <button class="vr-btn save-btn saved">✓ Saved</button>
+                  <button class="vr-btn">🔊</button>
+                </div>
+              </div>
+              <div class="vocab-row">
+                <div class="vr-native">fanga</div>
+                <div class="vr-eng">power; force; authority; strength</div>
+                <div class="vr-pos">NOUN</div>
+                <div class="vr-actions">
+                  <button class="vr-btn save-btn" onclick="this.classList.add('saved');this.textContent='✓ Saved';this.closest('.vocab-row').classList.add('saved')">+ Save</button>
+                  <button class="vr-btn">🔊</button>
+                </div>
+              </div>
+              <div class="vocab-row">
+                <div class="vr-native">donso</div>
+                <div class="vr-eng">hunter; member of the traditional hunters' guild</div>
+                <div class="vr-pos">NOUN</div>
+                <div class="vr-actions">
+                  <button class="vr-btn save-btn" onclick="this.classList.add('saved');this.textContent='✓ Saved';this.closest('.vocab-row').classList.add('saved')">+ Save</button>
+                  <button class="vr-btn">🔊</button>
+                </div>
+              </div>
+              <div class="vocab-row">
+                <div class="vr-native">nyamakala</div>
+                <div class="vr-eng">artisan caste; skilled workers with specialized hereditary roles</div>
+                <div class="vr-pos">NOUN</div>
+                <div class="vr-actions">
+                  <button class="vr-btn save-btn" onclick="this.classList.add('saved');this.textContent='✓ Saved';this.closest('.vocab-row').classList.add('saved')">+ Save</button>
+                  <button class="vr-btn">🔊</button>
+                </div>
+              </div>
+              <div style="text-align:center;padding:8px;font-size:11px;color:var(--accent);cursor:pointer;font-weight:600;">View all 34 words →</div>
+            </div>
+          </div>
+
+          <!-- Module 3: Grammar -->
+          <div class="lesson-module">
+            <div class="lm-header">
+              <span class="lm-icon">🔤</span>
+              <span class="lm-title">Grammar Patterns</span>
+              <span class="lm-badge badge-new">NEW</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="background:var(--bg3);border-radius:var(--r);padding:10px 12px;">
+                <div style="font-size:10px;color:var(--accent);font-weight:700;margin-bottom:4px;">PATTERN IDENTIFIED</div>
+                <div style="font-size:13px;color:var(--text2);line-height:1.5;">Bambara verb-final sentence structure: <span style="color:var(--accent2);font-style:italic;font-family:'Instrument Serif',serif;">Subject + Object + Verb</span></div>
+                <div style="font-size:11px;color:var(--text3);margin-top:4px;">Example from recording: "A ka fanga tun ka bon" → "His power was great"</div>
+              </div>
+              <div style="background:var(--bg3);border-radius:var(--r);padding:10px 12px;">
+                <div style="font-size:10px;color:var(--teal);font-weight:700;margin-bottom:4px;">ASPECT MARKER</div>
+                <div style="font-size:13px;color:var(--text2);line-height:1.5;">Past tense marker <span style="color:var(--accent2);font-family:'Instrument Serif',serif;font-style:italic;">tun</span> used 14× in this recording</div>
+              </div>
+              <div style="background:var(--bg3);border-radius:var(--r);padding:10px 12px;">
+                <div style="font-size:10px;color:var(--purple);font-weight:700;margin-bottom:4px;">FORMALITY REGISTER</div>
+                <div style="font-size:13px;color:var(--text2);line-height:1.5;">Archaic pronoun forms detected — formal/ceremonial register</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Module 4: Quiz -->
+          <div class="lesson-module">
+            <div class="lm-header">
+              <span class="lm-icon">🎯</span>
+              <span class="lm-title">Comprehension Quiz</span>
+              <span class="lm-badge badge-new">12 QUESTIONS</span>
+            </div>
+            <div class="quiz-card">
+              <div style="font-size:10px;color:var(--text3);margin-bottom:10px;font-family:'DM Mono';">Q3 / 12 · Vocabulary from Segment 1</div>
+              <div class="qc-q">In Bambara, what does the word <span style="color:var(--accent2);font-style:italic;font-family:'Instrument Serif',serif;">jeliya</span> refer to in the context of this recording?</div>
+              <div class="qc-options">
+                <div class="qc-option" onclick="handleQuiz(this,'wrong')">A ruler or king of the Mali empire</div>
+                <div class="qc-option" onclick="handleQuiz(this,'correct')">The art and practice of the griot — oral custodianship</div>
+                <div class="qc-option" onclick="handleQuiz(this,'wrong')">A type of traditional drum instrument</div>
+                <div class="qc-option" onclick="handleQuiz(this,'wrong')">A spiritual ceremony</div>
+              </div>
+              <div class="qc-explain" id="quiz-explain">
+                ✓ Correct! <em>Jeliya</em> is the totality of a griot's art — it includes genealogy, music, praise, and historical memory. The word comes from <em>jeli</em> (griot) + the suffix <em>-ya</em> (which nominalizes, like "-ness" or "-hood" in English). Adama uses this word in the opening line to announce his purpose.
+              </div>
+            </div>
+          </div>
+
+          <!-- Module 5: Listening Drill -->
+          <div class="lesson-module">
+            <div class="lm-header">
+              <span class="lm-icon">🎧</span>
+              <span class="lm-title">Listening Drills</span>
+              <span class="lm-badge badge-new">8 DRILLS</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="background:var(--bg3);border-radius:var(--r);padding:10px 12px;cursor:pointer;transition:all 0.15s;border:1px solid transparent;" onmouseover="this.style.borderColor='var(--border2)'" onmouseout="this.style.borderColor='transparent'">
+                <div style="font-size:10px;color:var(--teal);font-weight:700;margin-bottom:4px;">DRILL 1 · SHADOWING</div>
+                <div style="font-size:12px;color:var(--text2);">Repeat after Adama — Segment 1 (30s)</div>
+                <div style="font-size:11px;color:var(--text3);margin-top:3px;">Tone, pacing, breath pattern emphasized</div>
+              </div>
+              <div style="background:var(--bg3);border-radius:var(--r);padding:10px 12px;cursor:pointer;transition:all 0.15s;border:1px solid transparent;" onmouseover="this.style.borderColor='var(--border2)'" onmouseout="this.style.borderColor='transparent'">
+                <div style="font-size:10px;color:var(--purple);font-weight:700;margin-bottom:4px;">DRILL 2 · DICTATION</div>
+                <div style="font-size:12px;color:var(--text2);">Listen & transcribe Segment 2 in Bambara</div>
+              </div>
+              <div style="background:var(--bg3);border-radius:var(--r);padding:10px 12px;cursor:pointer;transition:all 0.15s;border:1px solid transparent;" onmouseover="this.style.borderColor='var(--border2)'" onmouseout="this.style.borderColor='transparent'">
+                <div style="font-size:10px;color:var(--blue);font-weight:700;margin-bottom:4px;">DRILL 3 · GAP FILL</div>
+                <div style="font-size:12px;color:var(--text2);">Fill in missing vocabulary words as you listen</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Module 6: Speaking Practice -->
+          <div class="lesson-module" style="grid-column: 1 / -1;">
+            <div class="lm-header">
+              <span class="lm-icon">🗣️</span>
+              <span class="lm-title">Speaking Practice & AI Feedback</span>
+              <span class="lm-badge badge-locked">🔒 UNLOCK WITH XP</span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;opacity:0.5;pointer-events:none;">
+              <div style="background:var(--bg3);border-radius:var(--r);padding:12px;text-align:center;">
+                <div style="font-size:20px;margin-bottom:6px;">🎤</div>
+                <div style="font-size:11px;font-weight:600;color:var(--text2);">Pronunciation Check</div>
+                <div style="font-size:10px;color:var(--text4);margin-top:2px;">Record & get scored</div>
+              </div>
+              <div style="background:var(--bg3);border-radius:var(--r);padding:12px;text-align:center;">
+                <div style="font-size:20px;margin-bottom:6px;">🔄</div>
+                <div style="font-size:11px;font-weight:600;color:var(--text2);">Role Reversal</div>
+                <div style="font-size:10px;color:var(--text4);margin-top:2px;">Play the griot yourself</div>
+              </div>
+              <div style="background:var(--bg3);border-radius:var(--r);padding:12px;text-align:center;">
+                <div style="font-size:20px;margin-bottom:6px;">🤖</div>
+                <div style="font-size:11px;font-weight:600;color:var(--text2);">AI Conversation</div>
+                <div style="font-size:10px;color:var(--text4);margin-top:2px;">Talk about the content</div>
+              </div>
+              <div style="background:var(--bg3);border-radius:var(--r);padding:12px;text-align:center;">
+                <div style="font-size:20px;margin-bottom:6px;">📝</div>
+                <div style="font-size:11px;font-weight:600;color:var(--text2);">Written Response</div>
+                <div style="font-size:10px;color:var(--text4);margin-top:2px;">Summarize in Bambara</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS VIEW -->
+    <div class="view-panel" id="view-settings">
+      <div class="settings-view">
+        <div style="font-family:'Instrument Serif',serif;font-size:22px;color:var(--text);margin-bottom:4px;">Import Settings</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:8px;">Configure how media is processed, transcribed, and turned into lessons</div>
+
+        <div class="sv-section">
+          <div class="sv-section-title">Language Settings</div>
+
+          <div class="sv-row">
+            <div><div class="sv-label">Source Language Detection</div><div class="sv-sub">Let AI detect the language automatically, or specify manually</div></div>
+            <select class="sv-select">
+              <option>🤖 Auto-detect (recommended)</option>
+              <option>🇳🇬 Yoruba</option><option>🇰🇪 Swahili</option><option>🇳🇬 Igbo</option>
+              <option>🇬🇭 Twi / Akan</option><option>🇿🇦 Zulu</option><option>🇸🇳 Wolof</option>
+              <option>🇲🇱 Bambara / Dioula</option><option>🇪🇹 Amharic</option><option>🇳🇬 Hausa</option>
+              <option>🇳🇬 Fulfulde</option><option>🇨🇩 Lingala</option><option>🇿🇦 Xhosa</option>
+              <option>🇷🇼 Kinyarwanda</option><option>🇿🇲 Nyanja / Chichewa</option>
+              <option>🇲🇬 Malagasy</option><option>🇬🇳 Fula</option><option>🇹🇿 Sukuma</option>
+              <option>🇳🇬 Tiv</option><option>🇬🇭 Ewe</option><option>🇧🇯 Fon</option>
+              <option>🇿🇼 Shona</option><option>🇧🇼 Setswana</option><option>🇱🇸 Sesotho</option>
+              <option>🇸🇿 Swati</option><option>🇿🇦 Venda</option><option>🇿🇦 Tsonga</option>
+              <option>🇳🇬 Kanuri</option><option>🇸🇩 Dinka</option><option>🇳🇬 Ibibio</option>
+              <option>+ 43 more languages…</option>
+            </select>
+          </div>
+
+          <div class="sv-row">
+            <div><div class="sv-label">Translation Target Language</div><div class="sv-sub">Translate all transcribed content into this language</div></div>
+            <select class="sv-select">
+              <option>🇬🇧 English</option>
+              <option>🇫🇷 French</option><option>🇵🇹 Portuguese</option><option>🇪🇸 Spanish</option>
+              <option>🇦🇷 Arabic</option><option>🇩🇪 German</option><option>🇳🇱 Dutch</option>
+              <option>🇷🇺 Russian</option><option>🇨🇳 Mandarin</option><option>🇯🇵 Japanese</option>
+              <option>🇮🇳 Hindi</option><option>🇰🇷 Korean</option><option>🇧🇷 Brazilian Portuguese</option>
+              <option>🇳🇬 Yoruba</option><option>🇰🇪 Swahili</option><option>🇳🇬 Igbo</option>
+              <option>🇲🇱 Bambara</option><option>🇸🇳 Wolof</option>
+              <option>+ 80 more languages…</option>
+            </select>
+          </div>
+
+          <div class="sv-row">
+            <div><div class="sv-label">Dialect / Regional Variant</div><div class="sv-sub">Specify regional dialect for more accurate transcription</div></div>
+            <select class="sv-select">
+              <option>Standard / Auto</option>
+              <option>Diatonic (Bambara)</option><option>Dioula variant</option><option>Jula (Côte d'Ivoire)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="sv-section">
+          <div class="sv-section-title">Transcription Quality</div>
+          <div class="sv-row">
+            <div><div class="sv-label">Transcription Accuracy Mode</div><div class="sv-sub">Higher accuracy takes longer but produces better results</div></div>
+            <select class="sv-select">
+              <option>🏆 Maximum Accuracy (Recommended)</option>
+              <option>⚡ Fast (Real-time)</option>
+              <option>⚖️ Balanced</option>
+            </select>
+          </div>
+          <div class="sv-row">
+            <div><div class="sv-label">Speaker Diarization</div><div class="sv-sub">Identify and label individual speakers automatically</div></div>
+            <button class="sv-toggle on" onclick="this.classList.toggle('on')"></button>
+          </div>
+          <div class="sv-row">
+            <div><div class="sv-label">Vocabulary Highlighting</div><div class="sv-sub">Highlight learnable words directly in the transcript</div></div>
+            <button class="sv-toggle on" onclick="this.classList.toggle('on')"></button>
+          </div>
+          <div class="sv-row">
+            <div><div class="sv-label">Confidence Scores</div><div class="sv-sub">Show AI confidence % per segment</div></div>
+            <button class="sv-toggle on" onclick="this.classList.toggle('on')"></button>
+          </div>
+        </div>
+
+        <div class="sv-section">
+          <div class="sv-section-title">Lesson Generation</div>
+          <div class="sv-row">
+            <div><div class="sv-label">Your Current Level</div><div class="sv-sub">Lessons and vocabulary are pitched to your level</div></div>
+            <select class="sv-select"><option>A1 Beginner</option><option>A2 Elementary</option><option>B1 Intermediate</option><option selected>B1–B2 Upper Intermediate</option><option>C1 Advanced</option><option>C2 Mastery</option></select>
+          </div>
+          <div class="sv-row">
+            <div><div class="sv-label">Auto-Generate Cultural Context</div><div class="sv-sub">AI adds background on culture, history, and traditions referenced in the media</div></div>
+            <button class="sv-toggle on" onclick="this.classList.toggle('on')"></button>
+          </div>
+          <div class="sv-row">
+            <div><div class="sv-label">Quiz Difficulty</div><div class="sv-sub">How challenging the auto-generated quiz should be</div></div>
+            <select class="sv-select"><option>Easy — Recognition only</option><option selected>Medium — Comprehension + use</option><option>Hard — Production + context</option></select>
+          </div>
+          <div class="sv-row">
+            <div><div class="sv-label">Vocabulary to Highlight</div><div class="sv-sub">How many words to extract per hour of media</div></div>
+            <select class="sv-select"><option>20 words/hr (light)</option><option selected>50 words/hr (balanced)</option><option>100+ words/hr (intensive)</option></select>
+          </div>
+          <div class="sv-row">
+            <div><div class="sv-label">Auto-Save to Vocabulary Feed</div><div class="sv-sub">New words automatically added to your personal feed</div></div>
+            <button class="sv-toggle on" onclick="this.classList.toggle('on')"></button>
+          </div>
+          <div class="sv-row">
+            <div><div class="sv-label">Share Lesson with Tribe</div><div class="sv-sub">Automatically post generated lessons to your tribe's noticeboard</div></div>
+            <button class="sv-toggle" onclick="this.classList.toggle('on')"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ===== RIGHT PANEL ===== -->
+  <aside id="right-panel">
+    <div class="rp-tabs">
+      <div class="rp-tab active" onclick="setRpTab(this,'vocab')">Vocab</div>
+      <div class="rp-tab" onclick="setRpTab(this,'progress')">Progress</div>
+      <div class="rp-tab" onclick="setRpTab(this,'ai')">AI Tips</div>
+    </div>
+
+    <div class="rp-body" id="rp-vocab">
+      <div class="rp-section">
+        <div class="rp-section-title">Saved from This Media · 14 words</div>
+
+        <div class="vocab-item">
+          <div class="vi-lang">BAMBARA</div>
+          <div class="vi-word">jeliya</div>
+          <div class="vi-def">The art and practice of the griot; oral custodianship of history and culture</div>
+          <div class="vi-source">📍 Griot Adama · 00:00</div>
+          <div class="vi-actions">
+            <button class="vi-btn play">▶ Play</button>
+            <button class="vi-btn pin">📌 Pin</button>
+            <button class="vi-btn quiz">🎯 Quiz</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vi-lang">BAMBARA</div>
+          <div class="vi-word">fanga</div>
+          <div class="vi-def">Power; force; authority; strength — often used for political or spiritual power</div>
+          <div class="vi-source">📍 Griot Adama · 00:34</div>
+          <div class="vi-actions">
+            <button class="vi-btn play">▶ Play</button>
+            <button class="vi-btn note">📝 Note</button>
+            <button class="vi-btn quiz">🎯 Quiz</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vi-lang">BAMBARA</div>
+          <div class="vi-word">balakulandiya</div>
+          <div class="vi-def">Oral genealogy; the spoken record of lineage and family history</div>
+          <div class="vi-source">📍 Griot Adama · 00:34</div>
+          <div class="vi-actions">
+            <button class="vi-btn play">▶ Play</button>
+            <button class="vi-btn pin">📌 Pin</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vi-lang">BAMBARA</div>
+          <div class="vi-word">nyamakala</div>
+          <div class="vi-def">Artisan caste; hereditary skilled workers (smiths, weavers, griots, leather workers)</div>
+          <div class="vi-source">📍 Griot Adama · 01:12</div>
+          <div class="vi-actions">
+            <button class="vi-btn play">▶ Play</button>
+            <button class="vi-btn note">📝 Note</button>
+            <button class="vi-btn quiz">🎯 Quiz</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vi-lang">BAMBARA</div>
+          <div class="vi-word">tarixi</div>
+          <div class="vi-def">History; historical record — loanword from Arabic تاريخ (ta'rikh)</div>
+          <div class="vi-source">📍 Griot Adama · 02:41</div>
+          <div class="vi-actions">
+            <button class="vi-btn play">▶ Play</button>
+            <button class="vi-btn pin">📌 Pin</button>
+          </div>
+        </div>
+
+        <div style="padding:10px 0;text-align:center;font-size:11px;color:var(--accent);font-weight:600;cursor:pointer;">View all 14 saved words →</div>
+      </div>
+    </div>
+
+    <div class="rp-body" id="rp-progress" style="display:none;">
+      <div class="rp-section">
+        <div class="rp-section-title">Lesson Progress</div>
+        <div class="progress-ring-container">
+          <svg class="prog-circle" viewBox="0 0 60 60">
+            <circle cx="30" cy="30" r="24" fill="none" stroke="#1F2330" stroke-width="5"/>
+            <circle cx="30" cy="30" r="24" fill="none" stroke="#E8A94A" stroke-width="5" stroke-dasharray="150.8" stroke-dashoffset="40" stroke-linecap="round" transform="rotate(-90 30 30)"/>
+          </svg>
+          <div class="prog-info">
+            <div class="prog-pct">74%</div>
+            <div class="prog-label">Lesson complete<br/>3 of 5 modules done</div>
+          </div>
+        </div>
+        <div class="skill-bar"><div class="sb-label"><span>Vocabulary</span><span>14/34</span></div><div class="sb-track"><div class="sb-fill" style="width:41%;background:var(--accent);"></div></div></div>
+        <div class="skill-bar"><div class="sb-label"><span>Quiz score</span><span>9/12</span></div><div class="sb-track"><div class="sb-fill" style="width:75%;background:var(--green);"></div></div></div>
+        <div class="skill-bar"><div class="sb-label"><span>Listening drills</span><span>5/8</span></div><div class="sb-track"><div class="sb-fill" style="width:62%;background:var(--blue);"></div></div></div>
+        <div class="skill-bar"><div class="sb-label"><span>Cultural context</span><span>Read</span></div><div class="sb-track"><div class="sb-fill" style="width:100%;background:var(--teal);"></div></div></div>
+      </div>
+      <div class="rp-section">
+        <div class="rp-section-title">XP Earned from This Media</div>
+        <div style="font-family:'Instrument Serif',serif;font-size:36px;color:var(--accent);font-weight:400;">+285 XP</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px;">Vocab saved: +140 · Quiz: +90 · Listening: +55</div>
+      </div>
+    </div>
+
+    <div class="rp-body" id="rp-ai" style="display:none;">
+      <div class="rp-section">
+        <div class="rp-section-title">AI Learning Suggestions</div>
+        <div class="ai-suggestion">
+          <div class="ais-title">📌 Pattern Spotted</div>
+          <div class="ais-text">You've seen the noun suffix <em>-ya</em> (nominalizer) 8 times in this media. It converts verbs/adjectives to nouns — like "jeliya" from "jeli". Practice it with the flashcard deck.</div>
+          <span class="ais-action">→ Open drill</span>
+        </div>
+        <div class="ai-suggestion">
+          <div class="ais-title">🎧 Listening Gap</div>
+          <div class="ais-text">You paused 3 times at segments with the aspect marker <em>tun</em>. AI has generated a focused drill on past tense markers in Bambara.</div>
+          <span class="ais-action">→ Start drill</span>
+        </div>
+        <div class="ai-suggestion">
+          <div class="ais-title">📚 Related Media</div>
+          <div class="ais-text">Based on this content, the magazine article "Jeliya and the Digital Archive" in Àṣà magazine covers the same cultural ground in English — great companion reading.</div>
+          <span class="ais-action">→ Open in Magazine</span>
+        </div>
+        <div class="ai-suggestion">
+          <div class="ais-title">🏘️ Village Connection</div>
+          <div class="ais-text">The Bambara Language Village has a "Griot's Corner" room where members discuss this exact tradition. 4 people are there now.</div>
+          <span class="ais-action">→ Join room</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- PROCESSING OVERLAY -->
+<div id="processing-overlay">
+  <div class="proc-card">
+    <div class="proc-icon">🤖</div>
+    <div class="proc-title">Analysing Your Media</div>
+    <div class="proc-sub">Our AI is working through your file — detecting language, transcribing speech, generating a structured lesson and extracting vocabulary.</div>
+    <div class="proc-steps">
+      <div class="proc-step"><div class="ps-dot done">✓</div><div class="ps-label done">Language detected — Bambara (Mande family)</div></div>
+      <div class="proc-step"><div class="ps-dot done">✓</div><div class="ps-label done">Speaker diarization complete — 1 speaker</div></div>
+      <div class="proc-step"><div class="ps-dot active">⟳</div><div class="ps-label active">Transcribing audio — 78% complete…</div></div>
+      <div class="proc-step"><div class="ps-dot pending">4</div><div class="ps-label pending">Translating to English</div></div>
+      <div class="proc-step"><div class="ps-dot pending">5</div><div class="ps-label pending">Extracting vocabulary & cultural context</div></div>
+      <div class="proc-step"><div class="ps-dot pending">6</div><div class="ps-label pending">Generating lesson, quiz & grammar notes</div></div>
+    </div>
+    <div class="proc-bar-track"><div class="proc-bar-fill"></div></div>
+    <div style="margin-top:12px;font-size:11px;color:var(--text4);">Estimated: ~2 min remaining</div>
+    <button onclick="closeProcessing()" style="margin-top:16px;background:transparent;border:1px solid var(--border2);border-radius:var(--r);padding:8px 20px;font-family:'Syne';font-size:11px;font-weight:600;color:var(--text3);cursor:pointer;">Process in background</button>
+  </div>
+</div>
+
+<script>
+function switchView(btn, id) {
+  document.querySelectorAll('.vt-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('view-' + id).classList.add('active');
+}
+
+function selectMedia(el) {
+  document.querySelectorAll('.media-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function setRpTab(btn, id) {
+  document.querySelectorAll('.rp-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#rp-vocab, #rp-progress, #rp-ai').forEach(p => p.style.display = 'none');
+  document.getElementById('rp-' + id).style.display = 'block';
+}
+
+function showProcessing() {
+  document.getElementById('processing-overlay').classList.add('show');
+}
+
+function closeProcessing() {
+  document.getElementById('processing-overlay').classList.remove('show');
+}
+
+function handleQuiz(el, type) {
+  document.querySelectorAll('.qc-option').forEach(o => o.classList.remove('correct','wrong'));
+  el.classList.add(type);
+  document.getElementById('quiz-explain').classList.add('show');
+}
+
+// Drag over effect
+const zone = document.getElementById('upload-zone');
+if (zone) {
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragging'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('dragging'));
+  zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('dragging'); showProcessing(); });
+}
+</script>
+</body>
+</html>

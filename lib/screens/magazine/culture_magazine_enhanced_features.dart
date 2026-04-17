@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/widgets/portrait_video_player.dart';
@@ -222,6 +223,162 @@ class MagazineEnhancedFeatures {
   }
 }
 
+List<String> _readMagazineStringList(Map<String, dynamic> article, List<String> keys) {
+  for (final k in keys) {
+    final v = article[k];
+    if (v is List) {
+      return v.map((e) => e.toString()).where((s) => s.trim().isNotEmpty).toList();
+    }
+  }
+  return const [];
+}
+
+int? _readMagazineReadingMinutes(Map<String, dynamic> article) {
+  final v = article['reading_time_minutes'] ?? article['readingTimeMinutes'];
+  if (v is num) return v.round();
+  return int.tryParse(v?.toString() ?? '');
+}
+
+String? _readMagazineSingleField(Map<String, dynamic> article, List<String> keys) {
+  for (final k in keys) {
+    final v = article[k];
+    if (v != null && v.toString().trim().isNotEmpty) return v.toString().trim();
+  }
+  return null;
+}
+
+/// Reading time, highlights, related topics, and license/attribution from scraper fields.
+class _MagazineArticleStructuredSections extends StatelessWidget {
+  const _MagazineArticleStructuredSections({required this.article});
+
+  final Map<String, dynamic> article;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) return const SizedBox.shrink();
+
+    final minutes = _readMagazineReadingMinutes(article);
+    final highlights = _readMagazineStringList(
+      article,
+      const ['highlights', 'key_takeaways', 'keyTakeaways'],
+    );
+    final topics = _readMagazineStringList(
+      article,
+      const ['related_topics', 'relatedTopics'],
+    );
+    final attribution = _readMagazineSingleField(
+      article,
+      const ['attribution', 'source', 'credit'],
+    );
+    final license = _readMagazineSingleField(
+      article,
+      const ['license', 'licence'],
+    );
+
+    final hasReading = minutes != null && minutes > 0;
+    if (!hasReading &&
+        highlights.isEmpty &&
+        topics.isEmpty &&
+        attribution == null &&
+        license == null) {
+      return const SizedBox.shrink();
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (hasReading) ...[
+          Row(
+            children: [
+              Icon(Icons.schedule_rounded, size: 18.sp, color: PanAfricanColors.primary),
+              SizedBox(width: PanAfricanSpacing.xs),
+              Text(
+                l10n.magazineReadingTime(minutes),
+                style: PanAfricanTypography.labelLarge(context).copyWith(
+                  color: PanAfricanColors.primary,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: PanAfricanSpacing.md),
+        ],
+        if (highlights.isNotEmpty) ...[
+          Text(
+            l10n.magazineKeyTakeaways,
+            style: PanAfricanTypography.titleMedium(context),
+          ),
+          SizedBox(height: PanAfricanSpacing.sm),
+          ...highlights.map(
+            (h) => Padding(
+              padding: EdgeInsets.only(bottom: PanAfricanSpacing.xs),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    String.fromCharCode(0x2022) + ' ',
+                    style: PanAfricanTypography.bodyLarge(context),
+                  ),
+                  Expanded(
+                    child: Text(h, style: PanAfricanTypography.bodyMedium(context)),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: PanAfricanSpacing.md),
+        ],
+        if (topics.isNotEmpty) ...[
+          Text(
+            l10n.magazineRelatedTopics,
+            style: PanAfricanTypography.titleMedium(context),
+          ),
+          SizedBox(height: PanAfricanSpacing.sm),
+          Wrap(
+            spacing: PanAfricanSpacing.xs,
+            runSpacing: PanAfricanSpacing.xs,
+            children: topics
+                .map(
+                  (t) => Chip(
+                    label: Text(t, style: PanAfricanTypography.labelMedium(context)),
+                    visualDensity: VisualDensity.compact,
+                  ),
+                )
+                .toList(),
+          ),
+          SizedBox(height: PanAfricanSpacing.md),
+        ],
+        if (attribution != null || license != null)
+          Card(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? PanAfricanColors.cardDark
+                : PanAfricanColors.cardLight,
+            child: Padding(
+              padding: EdgeInsets.all(PanAfricanSpacing.md),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.magazineSourceAndLicense,
+                    style: PanAfricanTypography.titleSmall(context),
+                  ),
+                  if (attribution != null) ...[
+                    SizedBox(height: PanAfricanSpacing.sm),
+                    Text(attribution, style: PanAfricanTypography.bodySmall(context)),
+                  ],
+                  if (license != null) ...[
+                    SizedBox(height: PanAfricanSpacing.sm),
+                    Text(license, style: PanAfricanTypography.bodySmall(context)),
+                  ],
+                ],
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
 /// Widget for Article Detail with Enhanced Features
 class ArticleDetailEnhanced extends HookConsumerWidget {
   final Map<String, dynamic> article;
@@ -329,6 +486,7 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _MagazineArticleRichMedia(article: article),
+              _MagazineArticleStructuredSections(article: article),
               SizedBox(height: PanAfricanSpacing.md),
               // Article Content
               Text(
@@ -589,6 +747,9 @@ class _MagazineArticleRichMedia extends StatelessWidget {
         if (s.startsWith('http')) images.add(s);
       }
     }
+    if (featured != null && featured.startsWith('http')) {
+      images.removeWhere((u) => u == featured);
+    }
     final videoUrl = article['video_url'] ?? article['videoUrl'];
     final audioUrl = article['audio_url'] ?? article['audioUrl'];
 
@@ -612,7 +773,7 @@ class _MagazineArticleRichMedia extends StatelessWidget {
           ),
           SizedBox(height: PanAfricanSpacing.md),
         ],
-        if (images.length > 1) ...[
+        if (images.isNotEmpty) ...[
           SizedBox(
             height: 110,
             child: ListView.separated(

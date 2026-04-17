@@ -13,7 +13,7 @@ import 'package:lingafriq/providers/theme_mode_provider.dart';
 import 'package:lingafriq/providers/tab_scaffold_provider.dart';
 import 'package:lingafriq/screens/profile/profile_screen_material3.dart';
 import 'package:lingafriq/screens/settings/settings_screen_material3.dart';
-import 'package:lingafriq/screens/curriculum/curriculum_screen_material3.dart';
+import 'package:lingafriq/screens/lessons/lessons_map_entry_screen.dart';
 import 'package:lingafriq/screens/games/games_screen_material3.dart';
 import 'package:lingafriq/screens/gamification/badge_collection_screen_material3.dart';
 import 'package:lingafriq/screens/ai_chat/ai_language_selection_screen.dart';
@@ -22,9 +22,15 @@ import 'package:lingafriq/screens/magazine/culture_magazine_screen_enhanced.dart
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/screens/heritage/flb_heritage_archive_screen.dart';
 import 'package:lingafriq/screens/media/import_media_screen_enhanced.dart';
+import 'package:lingafriq/screens/vocabulary/living_dictionary_screen.dart';
+import 'package:lingafriq/screens/learning/phrase_dna/phrase_dna_templates_screen.dart';
+import 'package:lingafriq/screens/learning/tone_rhythm/tone_rhythm_trainer_screen.dart';
+import 'package:lingafriq/screens/ar/point_and_say_screen.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen_material3.dart';
 import 'package:lingafriq/screens/chat/private_chat_list_screen.dart';
 import 'package:lingafriq/screens/feed/x_feed_home_screen.dart';
+import 'package:lingafriq/screens/community/micro_mentor_hub_screen.dart';
+import 'package:lingafriq/screens/staff/micro_mentor_reports_screen.dart';
 import 'package:lingafriq/screens/chat/live_classroom_screen_material3.dart';
 import 'package:lingafriq/screens/ugc/create_lesson_screen_enhanced.dart';
 import 'package:lingafriq/screens/social_audio/room_discovery_screen.dart';
@@ -138,12 +144,14 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       ),
                       _DrawerItem(
                         icon: PanAfricanIcons.book,
-                        label: 'Curriculum',
+                        label: 'Lessons',
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: CurriculumScreenMaterial3()),
+                            SmoothPageRoute(
+                              child: const LessonsMapEntryScreen(),
+                            ),
                           );
                         },
                         isDark: isDark,
@@ -204,6 +212,32 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                         isDark: isDark,
                       ),
                       _DrawerItem(
+                        icon: Icons.auto_awesome_mosaic_rounded,
+                        label: 'Phrase DNA',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(child: const PhraseDnaTemplatesScreen()),
+                          );
+                        },
+                        isDark: isDark,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.graphic_eq_rounded,
+                        label: 'Tone & Rhythm',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(
+                              child: const ToneRhythmTrainerScreen(language: 'yoruba'),
+                            ),
+                          );
+                        },
+                        isDark: isDark,
+                      ),
+                      _DrawerItem(
                         icon: Icons.account_balance_rounded,
                         label: l10n.drawerFlbHeritageArchive,
                         onTap: () {
@@ -226,6 +260,50 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                             context,
                             SmoothPageRoute(child: ImportMediaScreenEnhanced()),
                           );
+                        },
+                        isDark: isDark,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.center_focus_strong_rounded,
+                        label: 'Point & Say',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(
+                              child: const PointAndSayScreen(language: 'yoruba'),
+                            ),
+                          );
+                        },
+                        isDark: isDark,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.auto_stories_rounded,
+                        label: 'Living Dictionary',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(child: const LivingDictionaryScreen()),
+                          );
+                        },
+                        isDark: isDark,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.flag_rounded,
+                        label: 'Heritage milestones',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, 'heritage-milestones');
+                        },
+                        isDark: isDark,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.translate_rounded,
+                        label: 'Dialect preference',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, 'dialect-preference');
                         },
                         isDark: isDark,
                       ),
@@ -269,6 +347,20 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                             context,
                             SmoothPageRoute(
                               child: const XFeedHomeScreen(),
+                            ),
+                          );
+                        },
+                        isDark: isDark,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.volunteer_activism_rounded,
+                        label: 'Micro‑Mentors',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(
+                              child: const MicroMentorHubScreen(),
                             ),
                           );
                         },
@@ -352,6 +444,27 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       ),
                     ],
                   ),
+
+                  if (currentUser?.isStaffOrAdmin == true)
+                    _DrawerSection(
+                      title: 'Staff',
+                      children: [
+                        _DrawerItem(
+                          icon: Icons.shield_outlined,
+                          label: 'Micro-mentor reports',
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              SmoothPageRoute(
+                                child: const StaffMicroMentorReportsScreen(),
+                              ),
+                            );
+                          },
+                          isDark: isDark,
+                        ),
+                      ],
+                    ),
 
                   // Gamification
                   _DrawerSection(

@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/models/progress_metrics_model.dart';
 import 'package:lingafriq/providers/api_provider.dart';
-import 'package:lingafriq/providers/backend_sync_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
+import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
 import 'base_provider.dart';
 import '../utils/structured_logger.dart';
 
@@ -33,6 +35,12 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
     _loadMetrics();
     _loadHistory();
     _syncWithBackend();
+    ref.onDispose(() {
+      _outboxMergeTimer?.cancel();
+      if (_pendingOutboxMerge.isNotEmpty) {
+        unawaited(_flushPendingOutboxMerge());
+      }
+    });
     return BaseProviderState();
   }
 
@@ -63,7 +71,11 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
     );
     _saveMetrics();
     _updateDailyHistory();
-    _syncToBackend(); // Sync to backend after update
+    _scheduleDebouncedProgressOutbox({
+      'words_learned': count,
+      'known_words': count,
+      if (language != null) 'words_by_language': {language: count},
+    });
     state = state.copyWith();
   }
 
@@ -79,7 +91,12 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
     );
     _saveMetrics();
     _updateDailyHistory();
-    _syncToBackend(); // Sync to backend after update
+    final lh = minutes / 60.0;
+    _scheduleDebouncedProgressOutbox({
+      'listening_hours': lh,
+      'time_spent_minutes': minutes,
+      'time_by_activity': {'listening': lh},
+    });
     state = state.copyWith();
   }
 
@@ -95,7 +112,12 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
     );
     _saveMetrics();
     _updateDailyHistory();
-    _syncToBackend(); // Sync to backend after update
+    final sh = minutes / 60.0;
+    _scheduleDebouncedProgressOutbox({
+      'speaking_hours': sh,
+      'time_spent_minutes': minutes,
+      'time_by_activity': {'speaking': sh},
+    });
     state = state.copyWith();
   }
 
@@ -111,7 +133,12 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
     );
     _saveMetrics();
     _updateDailyHistory();
-    _syncToBackend(); // Sync to backend after update
+    final readAct = count / 200.0 / 60.0;
+    _scheduleDebouncedProgressOutbox({
+      'reading_words': count,
+      'time_spent_minutes': count / 200.0,
+      'time_by_activity': {'reading': readAct},
+    });
     state = state.copyWith();
   }
 
@@ -127,7 +154,12 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
     );
     _saveMetrics();
     _updateDailyHistory();
-    _syncToBackend(); // Sync to backend after update
+    final wAct = count / 50.0 / 60.0;
+    _scheduleDebouncedProgressOutbox({
+      'written_words': count,
+      'time_spent_minutes': count / 50.0,
+      'time_by_activity': {'writing': wAct},
+    });
     state = state.copyWith();
   }
 
@@ -142,38 +174,79 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
     );
     _saveMetrics();
     _updateDailyHistory();
-    _syncToBackend(); // Sync to backend after update
+    final actHours = minutes / 60.0;
+    _scheduleDebouncedProgressOutbox({
+      'time_spent_minutes': minutes,
+      'time_by_activity': {activity: actHours},
+    });
     state = state.copyWith();
   }
 
-  /// Sync progress metrics to backend (debounced to avoid too many calls)
-  Future<void> _syncToBackend() async {
-    try {
-      final user = ref.read(userProvider);
-      if (user == null) return;
+  /// Pending incremental payload for `POST /api/v2/sync/outbox/push` (`progress_metrics_merge`).
+  final Map<String, dynamic> _pendingOutboxMerge = {};
+  Timer? _outboxMergeTimer;
 
-      // Debounce: only sync if last sync was more than 5 seconds ago
-      final now = DateTime.now();
-      if (_lastBackendSync != null && now.difference(_lastBackendSync!).inSeconds < 5) {
-        return; // Skip if synced recently
+  static const Duration _outboxMergeDebounce = Duration(seconds: 5);
+
+  void _scheduleDebouncedProgressOutbox(Map<String, dynamic> delta) {
+    _mergeIntoPendingOutbox(delta);
+    _outboxMergeTimer?.cancel();
+    _outboxMergeTimer = Timer(_outboxMergeDebounce, () {
+      unawaited(_flushPendingOutboxMerge());
+    });
+  }
+
+  void _mergeIntoPendingOutbox(Map<String, dynamic> delta) {
+    for (final e in delta.entries) {
+      final k = e.key;
+      final v = e.value;
+      if (k == 'words_by_language' && v is Map) {
+        final cur = Map<String, dynamic>.from(
+          (_pendingOutboxMerge['words_by_language'] as Map?)?.cast<String, dynamic>() ?? {},
+        );
+        v.forEach((lang, n) {
+          if (n is num) {
+            cur[lang.toString()] = (cur[lang.toString()] as num? ?? 0) + n;
+          }
+        });
+        _pendingOutboxMerge['words_by_language'] = cur;
+      } else if (k == 'time_by_activity' && v is Map) {
+        final cur = Map<String, dynamic>.from(
+          (_pendingOutboxMerge['time_by_activity'] as Map?)?.cast<String, dynamic>() ?? {},
+        );
+        v.forEach((act, n) {
+          if (n is num) {
+            cur[act.toString()] = (cur[act.toString()] as num? ?? 0) + n;
+          }
+        });
+        _pendingOutboxMerge['time_by_activity'] = cur;
+      } else if (v is num) {
+        _pendingOutboxMerge[k] = (_pendingOutboxMerge[k] as num? ?? 0) + v;
       }
-      _lastBackendSync = now;
-      
-      final syncProvider = ref.read(backendSyncProvider.notifier);
-      await syncProvider.queueSync(SyncTask(
-        type: SyncType.progress,
-        data: {
-          'user_id': user.id.toString(),
-          'metrics': _metrics.toMap(),
-          'timestamp': DateTime.now().toIso8601String(),
-        },
-      ));
-    } catch (e) {
-      logger.error('Error queuing progress sync', tag: 'progress-tracking', error: e);
     }
   }
 
-  DateTime? _lastBackendSync;
+  Future<void> _flushPendingOutboxMerge() async {
+    if (_pendingOutboxMerge.isEmpty) return;
+    final user = ref.read(userProvider);
+    if (user == null) {
+      _pendingOutboxMerge.clear();
+      return;
+    }
+
+    final payload = Map<String, dynamic>.from(_pendingOutboxMerge);
+    _pendingOutboxMerge.clear();
+
+    try {
+      await PersistedOutboxService.instance.ensureOpen();
+      await PersistedOutboxService.instance.enqueue(
+        type: 'progress_metrics_merge',
+        payload: payload,
+      );
+    } catch (e) {
+      logger.error('Error enqueueing progress_metrics_merge', tag: 'progress-tracking', error: e);
+    }
+  }
 
   void _updateDailyHistory() {
     final today = DateTime.now();

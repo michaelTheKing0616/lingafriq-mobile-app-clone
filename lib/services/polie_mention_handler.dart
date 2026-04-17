@@ -196,11 +196,22 @@ class PolieMentionHandler {
         userLanguage: userLanguage ?? 'english',
         chatContext: chatContext,
       );
-      
+      final trimmed = response.trim();
+      if (trimmed.isEmpty) {
+        return PolieMentionResult(
+          hasMention: true,
+          query: query,
+          error:
+              'Polie could not generate a reply right now. Please try again.',
+          assistanceType: assistanceType,
+          processingTimeMs: DateTime.now().difference(startTime).inMilliseconds,
+        );
+      }
+
       return PolieMentionResult(
         hasMention: true,
         query: query,
-        response: response,
+        response: trimmed,
         assistanceType: assistanceType,
         processingTimeMs: DateTime.now().difference(startTime).inMilliseconds,
       );
@@ -330,9 +341,13 @@ The user is learning $userLanguage.''';
     }
     
     if (result.response == null) {
-      return '🤖 **Polie:** I\'m thinking...';
+      return '🤖 **Polie:** I couldn\'t load a reply. Please try again.';
     }
-    
+
+    if (result.response!.trim().isEmpty) {
+      return '🤖 **Polie:** The reply came back empty. Please try again.';
+    }
+
     // Add type-specific emoji
     String emoji;
     switch (result.assistanceType) {

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,700;1,400;1,700&amp;family=Manrope:wght@400;600;800&amp;family=Space+Grotesk:wght@300;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .text-justify-editorial {
+            text-align: justify;
+            text-justify: inter-word;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary-fixed": "#ffe088",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed-dim": "#e9c349",
+                        "surface-container": "#f1eee7",
+                        "secondary": "#555f71",
+                        "on-secondary-fixed": "#121c2c",
+                        "on-secondary-container": "#596376",
+                        "primary": "#9f3e07",
+                        "primary-fixed": "#ffdbcd",
+                        "on-primary-fixed": "#360f00",
+                        "inverse-primary": "#ffb596",
+                        "surface-dim": "#dcdad3",
+                        "outline": "#8a7268",
+                        "on-surface-variant": "#57423a",
+                        "error": "#ba1a1a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed": "#241a00",
+                        "background": "#fcf9f2",
+                        "on-primary-fixed-variant": "#7d2d00",
+                        "surface": "#fcf9f2",
+                        "outline-variant": "#dec0b5",
+                        "on-tertiary-container": "#4f3d00",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#cca730",
+                        "tertiary": "#735c00",
+                        "on-background": "#1c1c18",
+                        "surface-variant": "#e5e2db",
+                        "surface-container-highest": "#e5e2db",
+                        "on-surface": "#1c1c18",
+                        "secondary-container": "#d6e0f6",
+                        "inverse-surface": "#31312c",
+                        "secondary-fixed": "#d9e3f9",
+                        "surface-bright": "#fcf9f2",
+                        "on-secondary-fixed-variant": "#3d4759",
+                        "surface-container-high": "#ebe8e1",
+                        "primary-fixed-dim": "#ffb596",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#f6f3ec",
+                        "on-tertiary-fixed-variant": "#574500",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#f3f0e9",
+                        "secondary-fixed-dim": "#bdc7dc",
+                        "primary-container": "#c05621",
+                        "surface-tint": "#a14009",
+                        "on-primary-container": "#fffeff",
+                        "error-container": "#ffdad6"
+                    },
+                    fontFamily: {
+                        "headline": ["Newsreader"],
+                        "body": ["Manrope"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top AppBar Navigation -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 w-full bg-[#fcf9f2] dark:bg-stone-900 backdrop-blur-md bg-opacity-90">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-stone-600 dark:text-stone-400 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition-colors p-2 rounded-sm active:scale-95 duration-200 ease-in-out">arrow_back</button>
+<span class="font-newsreader italic text-[#9f3e07] dark:text-[#c05621] text-2xl">Àṣà</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center gap-8 font-label text-[10px] uppercase tracking-widest text-stone-500">
+<a class="text-[#9f3e07] dark:text-[#c05621] font-bold" href="#">Archives</a>
+<a class="hover:opacity-100 transition-opacity" href="#">Studio</a>
+<a class="hover:opacity-100 transition-opacity" href="#">Tribe</a>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="close up portrait of a scholarly man with glasses and a thoughtful expression in soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7nhowRSOSGGD5X7ie7sfwRQreC-Gg9mH71sJNFSoeQBjryzDn7vdIzVt7W_MxmkSVzW6_lsCjhQFbjbs_VRX4cNWzc_mRLIHjsq0FM1CZoxJZX6l5rMyquO1QwmD3MBJdVoW205X6guQ5mNZI1sBylRizU4flLcH0IawZWpNHNChLdlZCtH7NVezXTKAyD8nH9vfhwSzO-rd4AwtMEMeVZG-mhh1gkq8gnAUxi_JO2-naaT5AT2llhN-V6BcssmsHcOwyMNSmEWet"/>
+</div>
+</div>
+</header>
+<!-- Progress Indicator Shell -->
+<div class="fixed top-16 left-0 w-full h-1 bg-surface-container-high z-50">
+<div class="h-full bg-primary" style="width: 35%;"></div>
+</div>
+<!-- Main Content Canvas -->
+<main class="pt-16 pb-32">
+<!-- Hero Section: Cover Image & Bold Title -->
+<section class="relative w-full h-[751px] overflow-hidden flex flex-col justify-end p-8 md:p-24 bg-on-background">
+<div class="absolute inset-0 opacity-70">
+<img class="w-full h-full object-cover" data-alt="atmospheric photo of dark rippling river water at twilight with golden light reflections and mysterious shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAroRCmgOX61WooORemReXFbZECLlCZw-bu24GZd3b5nY7EUtOed9D-j_cBr6hjrwk9iK5qBEVOZAXo29y4L3JyQ1uKET-JApNJupp4YbRgXIPaiN4fu_0Gvat2wVaUvaFyQf4xFYj-kpd2g0_KQP9s0IE-t_-Y-G2EsojCnK0b85h0L2TZNSnPtGSNt4MaX9CT3O7YbKdedpvuGIBhMiUi-IzBbvZwoDisFZ_707BLP3_pl5AeGM7O2Kisx-aKKTM2npFXDg9R_-Fk"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-background via-on-background/40 to-transparent"></div>
+</div>
+<div class="relative z-10 max-w-4xl">
+<div class="flex items-center gap-3 mb-6">
+<span class="font-label text-xs uppercase tracking-[0.2em] text-tertiary-fixed-dim bg-on-tertiary-fixed/20 px-3 py-1 rounded-sm">Folklore &amp; Origins</span>
+<span class="font-label text-xs text-surface-container-low/60 italic">12 min read</span>
+</div>
+<h1 class="font-headline text-5xl md:text-8xl text-surface-bright leading-[1.1] mb-8 tracking-tighter">
+                    The Oral <br/><span class="italic font-light">Memory</span> of Water
+                </h1>
+<div class="flex items-center gap-6">
+<div class="flex -space-x-3">
+<img class="w-12 h-12 rounded-full border-2 border-on-background object-cover" data-alt="portrait of a female academic researcher in a library setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAF2EfHFkeRpa4JvQ_KWp7EONjuUADTvuwukBSX9T5gkdpHu_bz0myo3b5NWmYUknvvlwT8GZ9F9gE5GI7UG9vkMVBjNqQWQcuIxtKNvkiJdAeNE60Qu-nmqVdSIpK-VfMD-QFBche5he6LdqyNJKIm37xzD7gs-AM5iy_e80O7namoG__Ryk2vEHtgmMw9RI2XJXP8cZw1LxbIhkAmLM0I-RipI67boBQqHF1_jBGjGihWSdurhaPukXkoTumJoVoC0O543YrUBYS5"/>
+<img class="w-12 h-12 rounded-full border-2 border-on-background object-cover" data-alt="portrait of an elderly indigenous man with traditional markings" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQYqbwU7pRtnPCPd27aJgvYWhFmpnik6zZtmfodzo9PWwW7Ju_yz3XvXtOUhhSazaUyf0PF5ZU9JZam4rD0Czs0eQkfcp3FgqrVOF9heJbYMNF5bGdHJj2JBKzFxnJgQQQewRhhZJ_gy08P_Ihg5UnsRkblFHt38bN3ZjmU88Ll5bV_hymSPXAkiwWHeJMltHt3eYTrU0wGWNhfDtl1w6_UWN51SmQeb28rSWmh66gzHLVtQ23nDF2TN9sf6mCbalnA1XNF23Igzbd"/>
+</div>
+<div>
+<p class="font-label text-xs text-surface-container-low uppercase tracking-widest">Curated by</p>
+<p class="font-headline text-lg text-surface-bright">Dr. Abiola &amp; The Elders</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Audio Essay Toggle & Stats Bar -->
+<section class="sticky top-16 z-40 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/10 px-8 py-4 flex flex-wrap justify-between items-center gap-4">
+<div class="flex items-center gap-4 bg-surface-container-lowest shadow-sm px-4 py-2 rounded-full border border-outline-variant/20 cursor-pointer hover:bg-primary-fixed/30 transition-colors group">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label text-[10px] uppercase tracking-wider text-secondary">Audio Essay</span>
+<span class="text-xs font-bold text-on-surface">Listen to Narration (14:20)</span>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<div class="text-right">
+<p class="font-label text-[10px] uppercase tracking-tighter text-secondary">Saved Terms</p>
+<p class="font-label text-sm font-bold text-primary">08 <span class="text-secondary/40 font-normal">/ 14</span></p>
+</div>
+<div class="h-8 w-px bg-outline-variant/30"></div>
+<button class="material-symbols-outlined text-secondary hover:text-primary transition-colors">bookmark</button>
+<button class="material-symbols-outlined text-secondary hover:text-primary transition-colors">share</button>
+</div>
+</section>
+<!-- Article Content -->
+<article class="max-w-7xl mx-auto px-8 py-24 grid grid-cols-1 lg:grid-cols-12 gap-16">
+<!-- Sidebar: Cultural Notes -->
+<aside class="lg:col-span-3 order-2 lg:order-1 space-y-12">
+<div class="bg-surface-container-low p-8 rounded-sm relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-16 h-16 bg-tertiary-container/10 -mr-8 -mt-8 rounded-full"></div>
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-tertiary block mb-4">Cultural Note</span>
+<h4 class="font-headline text-xl mb-4 text-on-surface">The Olókun Protocol</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed mb-6 font-body">
+                        In many coastal traditions, the deity Olókun represents the vast, unsearchable depths of the ocean and the unconscious mind. To speak of water is to invoke a contract of transparency.
+                    </p>
+<button class="font-label text-[10px] font-bold text-primary uppercase border-b border-primary/30 pb-1 hover:border-primary transition-all">Deep Dive: Maritime Mythology</button>
+</div>
+<div class="border-l-2 border-outline-variant pl-6 py-2">
+<span class="font-label text-[10px] uppercase text-secondary block mb-2">Lexicon Progress</span>
+<div class="flex gap-1 flex-wrap">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="w-2 h-2 rounded-full bg-outline-variant"></span>
+<span class="w-2 h-2 rounded-full bg-outline-variant"></span>
+</div>
+</div>
+</aside>
+<!-- Main Text Column -->
+<div class="lg:col-span-7 lg:col-start-5 order-1 lg:order-2">
+<p class="font-headline text-2xl md:text-3xl italic text-primary leading-relaxed mb-12 first-letter:text-6xl first-letter:font-bold first-letter:float-left first-letter:mr-4 first-letter:mt-2">
+                    The river does not just flow; it remembers. In the ancient dialects of the Niger delta, the word for 'history' and 'current' share a linguistic root that suggests time is not a line, but a fluid.
+                </p>
+<div class="space-y-8 font-body text-lg leading-[1.8] text-on-surface-variant text-justify-editorial">
+<p>
+                        To understand the <span class="inline-block border-b-2 border-tertiary-container/40 cursor-help bg-tertiary-fixed/10 px-1 rounded-sm font-semibold text-on-surface relative group">Àfàláàbù
+                            <span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-4 bg-inverse-surface text-inverse-on-surface text-xs rounded-sm shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+<span class="font-label block uppercase mb-1 text-tertiary-fixed">Definition</span>
+<strong>Àfàláàbù:</strong> A concept denoting the ancestral blueprint or the inherent pattern of communal wisdom.
+                                <span class="block mt-2 pt-2 border-t border-white/10 italic">Pronunciation: Ah-fah-lah-boo</span>
+</span>
+</span> 
+                        philosophy, one must first sit at the edge of the creek at dawn. The water here is heavy with silt and stories. It carries the weight of thousands of migrations, the echoes of rhythmic paddling, and the silent prayers of those who sought refuge in the mangroves.
+                    </p>
+<!-- Quote Breakout -->
+<blockquote class="my-16 py-8 border-y border-outline-variant/30 relative">
+<span class="material-symbols-outlined absolute -top-4 left-1/2 -translate-x-1/2 bg-surface px-4 text-primary opacity-30 text-4xl">format_quote</span>
+<p class="font-headline text-3xl md:text-4xl text-center leading-snug text-on-surface italic px-8">
+                            "If you want to know the future, listen to the way the tide breaks against the old wood of the pier."
+                        </p>
+<cite class="block text-center mt-6 font-label text-xs uppercase tracking-widest text-secondary">— Elder Kalu, 1984</cite>
+</blockquote>
+<p>
+                        Linguists have long noted the peculiar <span class="inline-block border-b-2 border-tertiary-container/40 cursor-help bg-tertiary-fixed/10 px-1 rounded-sm font-semibold text-on-surface relative group">ìṣọ̀kan
+                            <span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-4 bg-inverse-surface text-inverse-on-surface text-xs rounded-sm shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+<span class="font-label block uppercase mb-1 text-tertiary-fixed">Definition</span>
+<strong>ìṣọ̀kan:</strong> Unity; a state of being one or in agreement. Often used in relation to the harmony of nature.
+                            </span>
+</span>
+                        found in maritime chants. These are not merely songs for labor; they are mnemonic devices that map out the underwater topography. A fisherman singing a specific cadence is actually reciting a map of the submerged rocks that his grandfather navigated seventy years prior.
+                    </p>
+<!-- Editorial Image Layout -->
+<div class="my-16 grid grid-cols-2 gap-4">
+<div class="col-span-2 md:col-span-1">
+<img class="w-full h-96 object-cover rounded-sm" data-alt="close up of traditional hand carved wooden paddle resting on a woven mat with intricate textures" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3ATYAiG8G3dUy69-DUTiTmQwoPuF5aRV-2ykeun1AIVj1Lji_QcbmllKteWiWESBVock8GO4cN7_BlrKxTS1ZDOq6SJHA9jWMcLo5Ii-TVxrs_8pVUhvGVYHapjJQWqqsCPbLpqmMTTnsQv0yMtLGbGscVvhy3S6eASQBGNuYYp666ohY7KdwESgiqVUOk2xI98kL44uFUszESY5J3zPlXsd1DmHtZiXdn67Z9HYwaQGqRTJcSqwuae0I9qj5Zn6S451jjVRydp1s"/>
+</div>
+<div class="col-span-2 md:col-span-1 flex flex-col justify-center bg-surface-container p-8">
+<span class="font-label text-[10px] text-primary uppercase mb-2">Object Study 04</span>
+<h5 class="font-headline text-xl mb-4">The Ceremonial Oar</h5>
+<p class="text-sm italic">Carved from Iroko wood, these oars are never meant to touch the water. They are kept in the 'Archive of Breaths' to symbolize the transition between life and the ancestral sea.</p>
+</div>
+</div>
+<p>
+                        As we move into a digital era, the preservation of these 'water memories' faces a unique challenge. How do we translate the tactile, salt-scented reality of the delta into the sterile environment of the screen? This is where the <span class="font-bold text-on-surface underline decoration-tertiary/40">Studio modality</span> becomes essential—creating tools that do not just store data, but evoke the same resonance as the original chant.
+                    </p>
+</div>
+<!-- Footer Article Navigation -->
+<div class="mt-24 pt-12 border-t border-outline-variant/30 flex justify-between items-center">
+<div class="flex flex-col">
+<span class="font-label text-[10px] text-secondary uppercase">Next Deep Dive</span>
+<a class="font-headline text-2xl text-primary hover:translate-x-2 transition-transform inline-flex items-center gap-2" href="#">The Architecture of Silence <span class="material-symbols-outlined">east</span></a>
+</div>
+</div>
+</div>
+</article>
+</main>
+<!-- Bottom Navigation Shell (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 rounded-t-sm bg-[#fcf9f2]/80 dark:bg-stone-950/80 backdrop-blur-xl border-t border-stone-200/10 shadow-[0_-10px_30px_rgba(28,28,24,0.04)] flex justify-around items-center pt-3 pb-6 px-4 w-full">
+<button class="flex flex-col items-center justify-center text-[#9f3e07] dark:text-[#c05621] font-bold active:scale-90 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+<span class="font-label text-[10px] uppercase tracking-widest mt-1">Archives</span>
+</button>
+<button class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 opacity-60 hover:opacity-100 transition-opacity active:scale-90 transition-transform">
+<span class="material-symbols-outlined">settings_input_component</span>
+<span class="font-label text-[10px] uppercase tracking-widest mt-1">Studio</span>
+</button>
+<button class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 opacity-60 hover:opacity-100 transition-opacity active:scale-90 transition-transform">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label text-[10px] uppercase tracking-widest mt-1">Tribe</span>
+</button>
+<button class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 opacity-60 hover:opacity-100 transition-opacity active:scale-90 transition-transform">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label text-[10px] uppercase tracking-widest mt-1">Profile</span>
+</button>
+</nav>
+<!-- Vocabulary Flashcard Modal (Placeholder) -->
+<div class="hidden fixed bottom-24 right-8 w-72 bg-surface-container-lowest shadow-2xl border border-outline-variant/30 rounded-lg p-6 z-50">
+<div class="flex justify-between items-start mb-4">
+<span class="bg-primary-fixed text-on-primary-fixed-variant text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">New Discovery</span>
+<button class="material-symbols-outlined text-sm">close</button>
+</div>
+<h3 class="font-headline text-2xl mb-1">Àfàláàbù</h3>
+<p class="text-xs text-secondary mb-4 italic">Blueprint of the Ancestors</p>
+<p class="text-sm mb-6">Added to your 'Studio' collection for the next drill.</p>
+<button class="w-full py-3 bg-primary text-on-primary font-label text-xs uppercase tracking-widest rounded-sm">Practice Now</button>
+</div>
+</body></html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LingoGriot - Emoji Translator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary-fixed": "#ffdad3",
+                        "on-primary-container": "#ceceff",
+                        "secondary-fixed-dim": "#ffb4a5",
+                        "surface-dim": "#dadad5",
+                        "tertiary-fixed": "#ffdea0",
+                        "surface-bright": "#fafaf5",
+                        "tertiary-container": "#745500",
+                        "primary-fixed": "#e1e0ff",
+                        "outline-variant": "#c5c5d4",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#04006d",
+                        "tertiary-fixed-dim": "#f6be3b",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed-variant": "#802918",
+                        "error": "#ba1a1a",
+                        "surface-container-highest": "#e3e3de",
+                        "on-surface": "#1a1c19",
+                        "secondary": "#9f402d",
+                        "primary-container": "#4b4fb0",
+                        "on-primary-fixed-variant": "#373a9b",
+                        "on-background": "#1a1c19",
+                        "on-tertiary-fixed": "#261900",
+                        "surface-tint": "#4f54b4",
+                        "on-tertiary-fixed-variant": "#5c4300",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "tertiary": "#573f00",
+                        "surface-variant": "#e3e3de",
+                        "surface": "#fafaf5",
+                        "surface-container-high": "#e8e8e3",
+                        "primary": "#333697",
+                        "surface-container": "#eeeee9",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#454652",
+                        "inverse-primary": "#c0c1ff",
+                        "on-secondary-fixed": "#3e0500",
+                        "surface-container-low": "#f4f4ef",
+                        "outline": "#757684",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "background": "#fafaf5",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#732010",
+                        "on-tertiary-container": "#ffca56",
+                        "secondary-container": "#fd876f",
+                        "inverse-surface": "#2f312e",
+                        "inverse-on-surface": "#f1f1ec"
+                    },
+                    fontFamily: {
+                        "headline": ["Epilogue"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .textured-bg {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23333697' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .asymmetric-pill {
+            border-radius: 40px 10px 40px 10px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body text-on-surface min-h-screen flex flex-col textured-bg overflow-y-auto">
+<!-- TopAppBar -->
+<header class="bg-[#fafaf5] dark:bg-[#1a1c19] w-full docked-top z-40">
+<div class="flex items-center justify-between px-6 py-4 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#333697] dark:text-[#4b4fb0] hover:bg-[#e3e3de] transition-colors p-2 rounded-full Active: scale-95 duration-150">
+                    menu
+                </button>
+<h1 class="text-2xl font-bold text-[#333697] dark:text-[#4b4fb0] font-['Epilogue'] tracking-tight">LingoGriot</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex gap-6 items-center">
+<span class="text-[#333697] font-bold cursor-pointer">Listen</span>
+<span class="text-[#4b4fb0]/70 cursor-pointer">Memory</span>
+<span class="text-[#4b4fb0]/70 cursor-pointer underline decoration-2 decoration-tertiary-container">Translate</span>
+<span class="text-[#4b4fb0]/70 cursor-pointer">Library</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden border-2 border-primary">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="portrait of a young African woman with a warm expression wearing colorful patterned traditional clothing and headwrap" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAx9LPYkameB3QhTHEVVrqRt_BG_0Nl5QVBuIJpKoid1aKidLRR0DHyh2otZa0nnKhlBnbT7kJbLTax90ZaQoszQPTgAXNtf9L8SeqiJZzg_p0601EB_gst-Thv3v89d616oZ7FSamnlTy7ioDuq3kSzaC2-rCKco_h6JdMEjpPTCBuTw1Dd1I792AribDNu9WHcD3Sy3CEgdllc6iTXbh1jwQB6Of3aeBKqv4dwVQWwbDuMCXDF7QEc_JYL3o6d57dbFqPLMbBWZM"/>
+</div>
+</div>
+</div>
+<div class="bg-[#f4f4ef] dark:bg-[#2a2c29] h-px w-full"></div>
+</header>
+<main class="flex-grow max-w-4xl mx-auto w-full px-6 py-12 space-y-16">
+<!-- Game Header Section -->
+<section class="space-y-4">
+<div class="flex items-center gap-3">
+<span class="bg-secondary-container text-on-secondary-container px-4 py-1 rounded-full text-xs font-bold tracking-widest uppercase font-label">Level 04</span>
+<span class="text-tertiary font-bold font-label flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+                    Master Griot Path
+                </span>
+</div>
+<h2 class="font-headline text-4xl md:text-5xl font-extrabold text-primary leading-tight">
+                Emoji <span class="text-secondary">Translator</span>
+</h2>
+<p class="text-lg text-on-surface-variant max-w-xl">
+                Crack the code of the ancestors. Decipher the emojis into the rhythmic flow of Pidgin English.
+            </p>
+</section>
+<!-- Main Game Canvas (Bento Style) -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+<!-- Emoji Bubble Display (Large Focus) -->
+<div class="md:col-span-12 lg:col-span-8 bg-surface-container-low rounded-3xl p-8 md:p-12 shadow-2xl shadow-primary/5 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-8xl">translate</span>
+</div>
+<div class="flex flex-col items-center justify-center space-y-10 relative z-10">
+<div class="flex gap-4 md:gap-8 flex-wrap justify-center">
+<!-- Emoji 1 -->
+<div class="w-24 h-24 md:w-32 md:h-32 bg-surface-container-lowest rounded-[2rem] shadow-xl flex items-center justify-center text-5xl md:text-6xl border-b-4 border-secondary/20">
+                            🦁
+                        </div>
+<!-- Emoji 2 -->
+<div class="w-24 h-24 md:w-32 md:h-32 bg-surface-container-lowest rounded-[2rem] shadow-xl flex items-center justify-center text-5xl md:text-6xl border-b-4 border-secondary/20 mt-4 md:mt-8">
+                            👑
+                        </div>
+<!-- Emoji 3 -->
+<div class="w-24 h-24 md:w-32 md:h-32 bg-surface-container-lowest rounded-[2rem] shadow-xl flex items-center justify-center text-5xl md:text-6xl border-b-4 border-secondary/20">
+                            🔥
+                        </div>
+</div>
+<!-- Textured Input Field -->
+<div class="w-full max-w-lg space-y-4">
+<label class="block text-center font-label text-sm font-bold uppercase tracking-widest text-primary/60">Your Translation</label>
+<div class="relative group">
+<input class="w-full bg-surface-container-high border-none border-b-2 border-tertiary/20 focus:border-tertiary focus:ring-0 rounded-2xl p-6 text-xl font-body text-on-surface shadow-inner placeholder:text-outline-variant transition-all" placeholder="Type the Pidgin phrase..." type="text"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 bg-primary text-on-primary p-3 rounded-xl shadow-lg hover:scale-105 transition-transform">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Side Info: Sabi Tip & Progress -->
+<div class="md:col-span-12 lg:col-span-4 space-y-8">
+<!-- Sabi Tip Card (Asymmetric) -->
+<div class="bg-secondary-fixed text-on-secondary-fixed-variant p-8 asymmetric-pill shadow-lg border-l-8 border-secondary">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+<h4 class="font-headline font-bold text-lg">Sabi Tip</h4>
+</div>
+<div class="space-y-4">
+<div>
+<p class="text-xs font-label uppercase font-bold opacity-60">Literal Meaning</p>
+<p class="font-body text-md font-medium">"The lion king is fire."</p>
+</div>
+<div class="pt-4 border-t border-on-secondary-fixed-variant/10">
+<p class="text-xs font-label uppercase font-bold opacity-60">Cultural Context</p>
+<p class="font-body text-sm leading-relaxed italic">
+                                Used to describe someone with immense power and presence. In Pidgin, "na fire" doesn't just mean heat—it means greatness, intensity, and being unbeatable.
+                            </p>
+</div>
+</div>
+</div>
+<!-- Stats/Achievement Mini Grid -->
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container rounded-2xl p-4 flex flex-col items-center justify-center text-center">
+<span class="text-2xl font-extrabold text-primary font-headline">12</span>
+<span class="text-[10px] font-label uppercase font-bold tracking-tighter text-outline">Streak Days</span>
+</div>
+<div class="bg-surface-container rounded-2xl p-4 flex flex-col items-center justify-center text-center">
+<span class="text-2xl font-extrabold text-secondary font-headline">85%</span>
+<span class="text-[10px] font-label uppercase font-bold tracking-tighter text-outline">Accuracy</span>
+</div>
+</div>
+<!-- Action Button -->
+<button class="w-full bg-surface-container-highest py-4 rounded-xl font-label font-bold text-primary flex items-center justify-center gap-2 hover:bg-outline-variant/20 transition-colors">
+<span class="material-symbols-outlined">skip_next</span>
+                    Get a Hint
+                </button>
+</div>
+</div>
+<!-- History/Recent Translations (Editorial Layout) -->
+<section class="space-y-8 pt-12">
+<h3 class="font-headline text-2xl font-bold text-on-surface border-l-4 border-tertiary-fixed-dim pl-4">Past Riddles</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Card 1 -->
+<div class="bg-surface-container-low p-6 rounded-2xl flex flex-col gap-4 group hover:bg-surface-container-high transition-colors">
+<div class="flex gap-2">
+<span class="text-2xl">🐕</span><span class="text-2xl">🏃‍♂️</span><span class="text-2xl">🦴</span>
+</div>
+<div>
+<p class="text-xs font-label font-bold text-secondary mb-1">CORRECT</p>
+<p class="font-body font-bold text-primary">"Dog wey get bone no dey run."</p>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-low p-6 rounded-2xl flex flex-col gap-4 opacity-70">
+<div class="flex gap-2">
+<span class="text-2xl">🐢</span><span class="text-2xl">🏁</span><span class="text-2xl">🏆</span>
+</div>
+<div>
+<p class="text-xs font-label font-bold text-secondary mb-1">CORRECT</p>
+<p class="font-body font-bold text-primary">"Slow and steady na win."</p>
+</div>
+</div>
+<!-- Image/Atmospheric Card -->
+<div class="relative h-full min-h-[160px] rounded-2xl overflow-hidden shadow-xl">
+<img alt="African Market" class="absolute inset-0 w-full h-full object-cover" data-alt="vibrant outdoor marketplace in West Africa with colorful textiles and bustling people under a warm hazy sun" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkGrueFTrgOtArpkYYHGgvLzIz3DVB63Y-02N7z54I5KHKORFp4Z0o61VS5FL7XX1TUP93rethtfiPvy9tzULBdGwAo9WdveZhNRZsVC_ECi2wS7j_eB05dFR8cnUqi2ZFXSlnYY73_HRcI5H1P3snIsNAx-8heS4Uxe9E0giw1p2KkBKCSkmNJTXihrSnjYPd2MSDyBZt_LInmuhvhuucdAtepFPhVdvavDRYELB1toEP0EKOK0sTt4SuR9c8bauZN5NqFHqt4ZY"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex items-end p-6">
+<p class="text-on-primary font-headline font-bold text-lg">Next: Marketplace Riddles</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-8 pt-4 bg-[#fafaf5]/80 dark:bg-[#1a1c19]/80 backdrop-blur-xl rounded-t-3xl shadow-[0_-4px_20px_rgba(0,0,0,0.04)]">
+<div class="flex flex-col items-center justify-center text-[#333697]/60 dark:text-[#fafaf5]/60 px-5 py-2">
+<span class="material-symbols-outlined">spatial_audio_off</span>
+<span class="font-['Plus_Jakarta_Sans'] text-xs font-semibold uppercase tracking-wider mt-1">Listen</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#333697]/60 dark:text-[#fafaf5]/60 px-5 py-2">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-['Plus_Jakarta_Sans'] text-xs font-semibold uppercase tracking-wider mt-1">Memory</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-[#4b4fb0] text-[#fafaf5] rounded-xl px-5 py-2 transition-all Active: scale-90 duration-200 ease-out">
+<span class="material-symbols-outlined">translate</span>
+<span class="font-['Plus_Jakarta_Sans'] text-xs font-semibold uppercase tracking-wider mt-1">Translate</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#333697]/60 dark:text-[#fafaf5]/60 px-5 py-2">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-['Plus_Jakarta_Sans'] text-xs font-semibold uppercase tracking-wider mt-1">Library</span>
+</div>
+</nav>
+<!-- Footer Spacer for Bottom Nav -->
+<div class="h-24 md:hidden"></div>
+</body></html>

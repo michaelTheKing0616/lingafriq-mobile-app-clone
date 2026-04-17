@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:dio/dio.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import '../../models/offline/local_media_cache.dart';
 import '../../utils/api_service.dart';
 import '../../utils/structured_logger.dart';
@@ -173,7 +174,7 @@ class MediaCacheManager {
     
     try {
       await ApiService.initialize();
-      final response = await ApiService.get('/lessons/$lessonId/');
+      final response = await ApiService.get(ApiContract.content.lesson(lessonId));
       if (response.statusCode != 200) {
         return;
       }

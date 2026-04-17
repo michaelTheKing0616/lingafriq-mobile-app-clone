@@ -60,7 +60,8 @@ class PanAfricanDrawer extends ConsumerWidget {
                         ),
                         _DrawerItem(
                           icon: Icons.school_rounded,
-                          title: 'Curriculum',
+                          title: 'Lessons',
+                          subtitle: 'Africa map, path, mannerisms, history',
                           onTap: () => _navigateTo(context, ref, 'curriculum'),
                         ),
                         _DrawerItem(

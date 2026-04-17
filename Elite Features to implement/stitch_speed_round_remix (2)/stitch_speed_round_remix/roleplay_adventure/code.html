@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LinguHeritage - Meeting the Elder</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700;800;900&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary-container": "#4b4fb0",
+              "on-primary-fixed-variant": "#373a9b",
+              "secondary": "#9f402d",
+              "surface-container-highest": "#e3e3de",
+              "on-surface": "#1a1c19",
+              "on-tertiary-fixed-variant": "#5c4300",
+              "primary-fixed-dim": "#c0c1ff",
+              "on-tertiary-fixed": "#261900",
+              "surface-tint": "#4f54b4",
+              "on-background": "#1a1c19",
+              "primary-fixed": "#e1e0ff",
+              "outline-variant": "#c5c5d4",
+              "on-tertiary": "#ffffff",
+              "on-primary-fixed": "#04006d",
+              "tertiary-fixed": "#ffdea0",
+              "surface-bright": "#fafaf5",
+              "tertiary-container": "#745500",
+              "surface-dim": "#dadad5",
+              "secondary-fixed": "#ffdad3",
+              "on-primary-container": "#ceceff",
+              "secondary-fixed-dim": "#ffb4a5",
+              "error": "#ba1a1a",
+              "on-primary": "#ffffff",
+              "on-secondary-fixed-variant": "#802918",
+              "tertiary-fixed-dim": "#f6be3b",
+              "surface-container-lowest": "#ffffff",
+              "on-secondary-container": "#732010",
+              "on-secondary": "#ffffff",
+              "error-container": "#ffdad6",
+              "background": "#fafaf5",
+              "outline": "#757684",
+              "surface-container-low": "#f4f4ef",
+              "secondary-container": "#fd876f",
+              "inverse-surface": "#2f312e",
+              "inverse-on-surface": "#f1f1ec",
+              "on-tertiary-container": "#ffca56",
+              "surface-container-high": "#e8e8e3",
+              "surface-variant": "#e3e3de",
+              "surface": "#fafaf5",
+              "tertiary": "#573f00",
+              "on-secondary-fixed": "#3e0500",
+              "on-surface-variant": "#454652",
+              "inverse-primary": "#c0c1ff",
+              "primary": "#333697",
+              "surface-container": "#eeeee9",
+              "on-error-container": "#93000a",
+              "on-error": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Epilogue"],
+              "body": ["Plus Jakarta Sans"],
+              "label": ["Plus Jakarta Sans"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+.heritage-gradient {
+    background: linear-gradient(135deg, #333697 0%, #4b4fb0 100%)
+    }
+.textile-pattern {
+    background-color: #fafaf5;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuC-4Rwj3MQqCjOlf4v5X2Z3RqS6v8cgKfhPuDJ9IB0-TpI8d5LpK3epArMBqy6v-7081vt_poVP7eM3kru-hMB9mBcyVTkVQKDDJBf3jwPzDu2z0FDI38Bfce7vbEtkw7D4oOClKz5uf3_r3B8j7EWz1Vs3EIyq8QoeMk9cra6kbmUaBETIAgt0qw6dKPkZnPVRdM-HMjNBrs_3xDNQTACBLUe3NEQSN2tHZQrvvS-esQVkwp2fhw8S3ei3jttYSS4SpA9ebROOj6M);
+    opacity: 0.05
+    }</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopAppBar -->
+<header class="bg-[#fafaf5] dark:bg-[#1a1c19] flex justify-between items-center px-6 py-4 w-full docked full-width top-0 z-50">
+<div class="flex items-center gap-4">
+<button class="text-[#333697] dark:text-[#9ea1ff] hover:bg-[#e3e3de] dark:hover:bg-[#444941] transition-all p-2 rounded-full active:scale-95">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="font-epilogue font-black text-[#333697] dark:text-[#9ea1ff] text-xl">LinguHeritage</h1>
+</div>
+<!-- Karma/Respect Meter (Custom Integration) -->
+<div class="hidden md:flex items-center gap-3 bg-surface-container-high px-4 py-2 rounded-full border-b-2 border-tertiary">
+<span class="material-symbols-outlined text-tertiary" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<div class="flex flex-col">
+<span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant leading-none">Respect Level</span>
+<span class="font-headline font-bold text-primary leading-none text-sm">Griot Apprentice</span>
+</div>
+<div class="w-24 h-1.5 bg-surface-variant rounded-full overflow-hidden ml-2">
+<div class="h-full bg-tertiary w-[65%]"></div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container overflow-hidden border-2 border-primary ring-2 ring-primary-fixed">
+<img alt="User Profile Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgOYEJiqGORIDySBFNyabyIJB_VELArPL0myB4Gjmr546LuXeNZfV1-0pf1rf2l3bfLsNlVAYjXY0FcPVP2B5CwXEWaXkjmzLD-Ire3hjdCh24D44g3-qwsK8zmQDcLebAdef8ralLehqEJadXmhxtiwVDu9Nd5R0vznzUfAsQ5xZYxIP1554NosxpUyckJq_yJk6v2S9t82zVxZThdpxGN7WKqiwQ_CT3PdVH3vQggL-o6SBJMpUh2LeaUXYD16kJG89l5kMEQbU"/>
+</div>
+</div>
+</header>
+<main class="min-h-screen pb-32">
+<!-- Hero Narrative Scene -->
+<section class="relative w-full h-[530px] md:h-[618px] flex items-end overflow-hidden">
+<!-- Background Image -->
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover brightness-[0.7]" data-alt="Intricate traditional African architectural interior with warm golden sunlight filtering through high windows, dust motes dancing in the air, textured earth walls" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDewBGMj6uAWQxZ2RsHlbyKNi5oZonyVfZINQHBI0hD7bAn8mwqxxKBoVlvygqBzjvdzYut3hks8450CDVY0K5-VMw7O2I6P_iH5cJt5bN5eq1rltgS8FeDuYyX7tkZgA_EAliKa5Z3F9eQtYxeeuPIIi368IH_J6fTRkkg4OIPuQv6QW3qfCCe5PRo-y_3lZcFULIkJj_I59MYk_E5Ij7p1qaEuaaWJeIGzDQ45_a7uRClOI--rBk2AIztYgTs7xcyG2TH7NNWLtc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent"></div>
+</div>
+<!-- Character Illustration (Asymmetric Placement) -->
+<div class="relative z-10 container mx-auto px-6 h-full flex items-end justify-end">
+<div class="w-full md:w-1/2 lg:w-2/5 h-full relative group">
+<img class="absolute bottom-0 right-0 h-[90%] object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.3)] transition-transform duration-700 hover:scale-105" data-alt="Dignified elderly African man in rich indigo embroidered robes sitting on an ornate wooden throne, wise expression, cinematic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7YrAW6VSVETs2YJKIRxs_QUJaTgS5lLZLmGkMvqJYdl7peeKuI5Vgnf_XTVClxa2U7RbKiX7kHzxVyRl1XQO1g90JGg1UzVVifWsVENSy8hP4c_Iy6MIAGd3xNgRbspGByL6Egs8vpulH_oBzCSFBXhtu_jnPgtHTy_M0aj91Z4ZdOwPqnUDGP_4ZCnuhDvQWPw1GNxI0L_rikgsTEXx6GkfYYQYRDFqrNnsVWg5Zs77N-t3W3gAuW9CFE4IABEYTrlDHKo-GMeQ"/>
+</div>
+</div>
+<!-- Respect Meter (Mobile Only) -->
+<div class="absolute top-6 left-6 z-20 md:hidden bg-surface/80 backdrop-blur-md px-4 py-2 rounded-xl shadow-lg border-l-4 border-tertiary">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-sm" data-icon="stars" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="font-label text-xs font-bold uppercase tracking-wider">Respect: 65%</span>
+</div>
+</div>
+</section>
+<!-- Story Content -->
+<section class="container mx-auto px-6 -mt-16 relative z-20">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Dialogue Box -->
+<div class="lg:col-span-7 bg-surface-container-low p-8 md:p-12 rounded-3xl shadow-xl relative overflow-hidden">
+<div class="textile-pattern absolute inset-0 pointer-events-none"></div>
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-6">
+<span class="font-label text-tertiary text-sm font-extrabold uppercase tracking-[0.2em]">Current Chapter</span>
+<div class="h-[2px] w-12 bg-tertiary-fixed-dim"></div>
+<span class="font-label text-on-surface-variant text-sm">The Whispering Baobab</span>
+</div>
+<h2 class="font-headline text-4xl md:text-5xl font-extrabold text-primary mb-6 leading-tight">Meeting the Village Elder</h2>
+<div class="space-y-6 font-body text-lg leading-relaxed text-on-surface-variant">
+<p>
+                                The air inside the council chamber is thick with the scent of dried herbs and ancient cedar. <span class="text-secondary font-bold">Elder Osei</span> watches you with eyes that seem to have witnessed the birth of the forest itself. 
+                            </p>
+<p>
+                                He leans forward, his indigo kente cloth rustling softly. "Many travelers pass through these gates," he speaks, his voice a melodic rasp. "Some seek gold, others seek power. But you... you carry the scent of the ancestors. Tell me, traveler, what brings your soul to this sacred hearth?"
+                            </p>
+</div>
+</div>
+</div>
+<!-- Decision Cards Column -->
+<div class="lg:col-span-5 flex flex-col gap-4">
+<h3 class="font-label text-on-surface-variant text-xs uppercase tracking-[0.3em] font-black mb-2 ml-2">Choose Your Path</h3>
+<!-- Decision Card 1 -->
+<button class="group relative bg-surface-container-high hover:bg-primary transition-all duration-300 p-6 rounded-2xl flex items-center gap-5 text-left active:scale-[0.98]">
+<div class="w-12 h-12 rounded-xl bg-primary/10 group-hover:bg-white/20 flex items-center justify-center text-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined" data-icon="folded_hands">folded_hands</span>
+</div>
+<div class="flex-1">
+<h4 class="font-headline font-bold text-lg group-hover:text-white transition-colors">Greet Respectfully</h4>
+<p class="font-body text-sm text-on-surface-variant group-hover:text-white/80 transition-colors">"I come with humility, Great Elder. I seek only the wisdom of those before me."</p>
+</div>
+<span class="material-symbols-outlined text-tertiary opacity-0 group-hover:opacity-100 transition-opacity" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<!-- Decision Card 2 -->
+<button class="group relative bg-surface-container-high hover:bg-secondary transition-all duration-300 p-6 rounded-2xl flex items-center gap-5 text-left active:scale-[0.98]">
+<div class="w-12 h-12 rounded-xl bg-secondary/10 group-hover:bg-white/20 flex items-center justify-center text-secondary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+</div>
+<div class="flex-1">
+<h4 class="font-headline font-bold text-lg group-hover:text-white transition-colors">Ask for Directions</h4>
+<p class="font-body text-sm text-on-surface-variant group-hover:text-white/80 transition-colors">"Pardon the intrusion, but I must find the River of Echoes before nightfall."</p>
+</div>
+<span class="material-symbols-outlined text-tertiary-fixed opacity-0 group-hover:opacity-100 transition-opacity" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<!-- Decision Card 3 -->
+<button class="group relative bg-surface-container-high hover:bg-tertiary transition-all duration-300 p-6 rounded-2xl flex items-center gap-5 text-left active:scale-[0.98]">
+<div class="w-12 h-12 rounded-xl bg-tertiary/10 group-hover:bg-white/20 flex items-center justify-center text-tertiary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined" data-icon="card_giftcard">card_giftcard</span>
+</div>
+<div class="flex-1">
+<h4 class="font-headline font-bold text-lg group-hover:text-white transition-colors">Offer a Gift</h4>
+<p class="font-body text-sm text-on-surface-variant group-hover:text-white/80 transition-colors">Present the Rare Kola Nut found in the Highlands to show your lineage's honor.</p>
+</div>
+<span class="material-symbols-outlined text-primary-fixed opacity-0 group-hover:opacity-100 transition-opacity" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center pb-6 pt-3 px-4 bg-white/80 dark:bg-[#1a1c19]/80 backdrop-blur-xl border-t border-[#1a1c19]/5 dark:border-white/5 shadow-[0_-4px_24px_rgba(0,0,0,0.04)] z-50 rounded-t-[2rem]">
+<a class="flex flex-col items-center justify-center text-[#444941] dark:text-[#c4c8ba] px-5 py-2 hover:scale-110 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="storefront">storefront</span>
+<span class="font-plus-jakarta font-medium text-[11px]">Markets</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#444941] dark:text-[#c4c8ba] px-5 py-2 hover:scale-110 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="directions_bus">directions_bus</span>
+<span class="font-plus-jakarta font-medium text-[11px]">Transit</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#333697] text-white rounded-full px-5 py-2 scale-90 duration-150" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="theater_comedy">theater_comedy</span>
+<span class="font-plus-jakarta font-medium text-[11px]">Adventures</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#444941] dark:text-[#c4c8ba] px-5 py-2 hover:scale-110 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="person">person</span>
+<span class="font-plus-jakarta font-medium text-[11px]">Profile</span>
+</a>
+</nav>
+<!-- Navigation Drawer (Hidden by default, used for interaction structure) -->
+<aside class="hidden fixed top-0 left-0 h-full w-80 bg-[#fafaf5] dark:bg-[#1a1c19] shadow-2xl z-[60] flex flex-col p-6 rounded-r-3xl transition-transform duration-300 transform -translate-x-full">
+<div class="flex flex-col items-start gap-1 mb-8">
+<div class="w-16 h-16 rounded-full bg-surface-container-highest mb-4 overflow-hidden border-2 border-primary">
+<img alt="Learner Avatar" class="w-full h-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFETczlO84MBZaF6EcxoJZ25YDDG-Q4jbRzG5l8DqeZdzNOc0S-YrEl3lakd6vE333utdhDO4G5EWkkctOIZBOWFiI8Yo2en1A0xTo3gSKzB_aCFUVUR-qRCKs11nqEGrkUzI8VXRiGzHqKAl9QkHNv1ny1OpKLSEAQdWnjT_-QIQ_Q_lnHEv-xBTxboAsWxWHe-qVLwkiWb8xOV5nyw_qA6BLc_VGqjl0evw7glFviYGw-5AhkYtVS9wkseElZPEXQJ0qCoCl2k4"/>
+</div>
+<h2 class="font-epilogue font-bold text-[#333697] text-xl">Griot Apprentice</h2>
+<p class="font-plus-jakarta text-on-surface-variant text-sm">Level 12 • Yoruba</p>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-4 px-4 py-3 text-[#444941] dark:text-[#c4c8ba] hover:translate-x-2 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-plus-jakarta text-base">Lesson History</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-[#444941] dark:text-[#c4c8ba] hover:translate-x-2 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="bookmark">bookmark</span>
+<span class="font-plus-jakarta text-base">Saved Phrases</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 bg-[#e3e3de] dark:bg-[#444941] text-[#333697] font-bold rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-plus-jakarta text-base">Cultural Notes</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-[#444941] dark:text-[#c4c8ba] hover:translate-x-2 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-plus-jakarta text-base">Settings</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-[#444941] dark:text-[#c4c8ba] hover:translate-x-2 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-plus-jakarta text-base">Help</span>
+</a>
+</nav>
+</aside>
+</body></html>

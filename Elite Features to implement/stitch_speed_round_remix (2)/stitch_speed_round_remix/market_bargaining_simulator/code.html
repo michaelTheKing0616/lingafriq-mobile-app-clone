@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LinguHeritage - Market Bargaining Simulator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700;800;900&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary-container": "#4b4fb0",
+              "on-primary-fixed-variant": "#373a9b",
+              "secondary": "#9f402d",
+              "surface-container-highest": "#e3e3de",
+              "on-surface": "#1a1c19",
+              "on-tertiary-fixed-variant": "#5c4300",
+              "primary-fixed-dim": "#c0c1ff",
+              "on-tertiary-fixed": "#261900",
+              "surface-tint": "#4f54b4",
+              "on-background": "#1a1c19",
+              "primary-fixed": "#e1e0ff",
+              "outline-variant": "#c5c5d4",
+              "on-tertiary": "#ffffff",
+              "on-primary-fixed": "#04006d",
+              "tertiary-fixed": "#ffdea0",
+              "surface-bright": "#fafaf5",
+              "tertiary-container": "#745500",
+              "surface-dim": "#dadad5",
+              "secondary-fixed": "#ffdad3",
+              "on-primary-container": "#ceceff",
+              "secondary-fixed-dim": "#ffb4a5",
+              "error": "#ba1a1a",
+              "on-primary": "#ffffff",
+              "on-secondary-fixed-variant": "#802918",
+              "tertiary-fixed-dim": "#f6be3b",
+              "surface-container-lowest": "#ffffff",
+              "on-secondary-container": "#732010",
+              "on-secondary": "#ffffff",
+              "error-container": "#ffdad6",
+              "background": "#fafaf5",
+              "outline": "#757684",
+              "surface-container-low": "#f4f4ef",
+              "secondary-container": "#fd876f",
+              "inverse-surface": "#2f312e",
+              "inverse-on-surface": "#f1f1ec",
+              "on-tertiary-container": "#ffca56",
+              "surface-container-high": "#e8e8e3",
+              "surface-variant": "#e3e3de",
+              "surface": "#fafaf5",
+              "tertiary": "#573f00",
+              "on-secondary-fixed": "#3e0500",
+              "on-surface-variant": "#454652",
+              "inverse-primary": "#c0c1ff",
+              "primary": "#333697",
+              "surface-container": "#eeeee9",
+              "on-error-container": "#93000a",
+              "on-error": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Epilogue"],
+              "body": ["Plus Jakarta Sans"],
+              "label": ["Plus Jakarta Sans"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .pattern-overlay {
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l15 30-15 30L15 30z' fill='%23333697' fill-opacity='0.03'/%3E%3C/svg%3E");
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body text-on-surface antialiased overflow-x-hidden">
+<!-- TopAppBar -->
+<nav class="bg-[#fafaf5] dark:bg-[#1a1c19] transition-colors duration-300 flex justify-between items-center px-6 py-4 w-full docked full-width top-0 z-50">
+<div class="flex items-center gap-4">
+<button class="text-[#333697] dark:text-[#9ea1ff] hover:bg-[#e3e3de] dark:hover:bg-[#444941] transition-all p-2 rounded-full active:opacity-80 scale-95 transition-transform">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<span class="font-epilogue font-black text-[#333697] dark:text-[#9ea1ff] text-xl">LinguHeritage</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-8">
+<a class="text-[#333697] dark:text-[#9ea1ff] font-plus-jakarta text-sm uppercase tracking-wider font-bold" href="#">Markets</a>
+<a class="text-[#444941] dark:text-[#c4c8ba] font-plus-jakarta text-sm uppercase tracking-wider hover:text-[#333697] transition-colors" href="#">Transit</a>
+<a class="text-[#444941] dark:text-[#c4c8ba] font-plus-jakarta text-sm uppercase tracking-wider hover:text-[#333697] transition-colors" href="#">Adventures</a>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-white overflow-hidden shadow-sm">
+<img alt="User Profile Avatar" class="w-full h-full object-cover" data-alt="professional headshot of a smiling young African woman with short natural hair in front of a warm sunlit background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhsydDWG9Fj4dDxKNYM2ETWcQMpyX7vK0DJPBcdAqmbjMU9oBgnULyt3gDYgVo7a8ZGV7fmatONXTwXSq73RLwl1zmLmQQa4x2g4GFm8wMc3ooxXcKiQY5kCe6e-2ytXrhDpf9sa4GN4z2FZjsXLDQCe9qLasN9OmQ1GO-e5JqRis6EvPJPZDi8qI5tfLUupnglW_MuRA0dPdMATwacKnuWXzSq6y0Y6Uya-zswV8ErrdfcE68f9UvoOrOoclK1zhwJi7cS1GoXUw"/>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="min-h-screen pt-20 pb-32 px-4 md:px-8 pattern-overlay">
+<div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Left: Character & Interaction Area -->
+<div class="lg:col-span-7 flex flex-col gap-6">
+<!-- Market Scene Container -->
+<div class="relative w-full aspect-[4/3] rounded-xl overflow-hidden shadow-2xl bg-surface-container-low">
+<img alt="Lagos Market" class="absolute inset-0 w-full h-full object-cover opacity-60" data-alt="vibrant bustling open-air market in Lagos Nigeria with colorful textiles hanging and golden late afternoon sunlight filtering through stalls" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcV7teJ_lznhKFCImH4yicRfNUXaaVlVYa9Q5UBdtq-FOQXfLJaIw-r8ixaPcK5Ru8ZVPxa5om2YaDDN8iuGZ-b3H90Uw13VvVZVvpLW2Sx2afVdvjHXqPsR98C69BkPQ8qtORpMZ4TArORgLpYfVdRrzzXeIqM2BReKTsdoLYHsn7xMvS_xNxxBln3NZHaeZPhL4TNWkK1nl1QTc2RYopUqkBStWHyvHRpdX4yV2D_TBUpnuTvaT6NQVxj67qEmM-GKSeF01g14k"/>
+<!-- Vendor Character Avatar -->
+<div class="absolute bottom-0 right-0 w-3/4 md:w-2/3 h-full flex items-end justify-end translate-x-10 pointer-events-none">
+<img alt="Market Vendor" class="h-[90%] object-contain drop-shadow-2xl" data-alt="friendly West African male vendor wearing a colorful dashiki smiling warmly and gesturing with his hands in a bright outdoor market" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3Rp3si8Vz9RqshkF8ij4_YCFYfMRTYddJTt5_EdQmxgFgbEi40DVgXGigEG5hdPRmsSDlyA094HZ8zg2XvMhyzK5UpIs46WAiG3Hqjp_Y2zKq6DX_6QOSN1ij6qn7wIUWQz-RzbiXtMGCfuciFUOemYX1q1cdnxe4fYsNA-fZkFkpryE9jiCgPSwOVWg0rPuhP8XgUZOoiAKYPK-N_vr2gRq7S0YuGyTFdNhIL0eXBzntL0errLDjxNA9DchAnfonnbOp8Dj_2DI"/>
+</div>
+<!-- Speech Bubble -->
+<div class="absolute top-12 left-8 max-w-[280px] md:max-w-xs animate-float">
+<div class="bg-surface-container-lowest p-6 rounded-2xl rounded-bl-none shadow-xl relative">
+<span class="block text-tertiary font-bold text-xs uppercase tracking-widest mb-1">Musa says:</span>
+<p class="font-headline font-bold text-xl md:text-2xl text-primary leading-tight">
+                                "Oga, aso yi jẹ́ ẹgbẹ̀rún mẹ́fà. Owo pọ̀ die, ṣùgbọ́n didara ni."
+                            </p>
+<p class="mt-3 text-sm text-on-surface-variant italic border-t border-outline-variant/30 pt-3">
+                                "Sir, this cloth is six thousand. It's a bit pricey, but it's quality."
+                            </p>
+</div>
+</div>
+<!-- Price Tag Overlay -->
+<div class="absolute bottom-8 left-8 flex flex-col gap-2">
+<div class="bg-secondary text-on-secondary px-4 py-2 rounded-lg font-headline font-bold text-lg shadow-lg">
+                            Current Ask: ₦6,000
+                        </div>
+<div class="bg-primary/90 backdrop-blur-md text-white px-4 py-2 rounded-lg font-headline font-bold text-sm shadow-lg">
+                            Your Budget: ₦4,500
+                        </div>
+</div>
+</div>
+<!-- Dialogue Options (Mobile Responsive Flow) -->
+<div class="flex flex-wrap gap-3 mt-4">
+<button class="flex-1 min-w-[200px] bg-primary text-white font-bold py-4 px-6 rounded-xl hover:scale-[1.02] transition-transform active:scale-95 text-left group">
+<span class="block text-[10px] uppercase opacity-70 mb-1">Polite Counter</span>
+                        "Ẹ jọ̀ọ́, ẹ dín owó náà kù sí ẹgbẹ̀rún mẹ́rin."
+                        <span class="block text-xs font-normal opacity-80 mt-1">"Please, reduce the price to four thousand."</span>
+</button>
+<button class="flex-1 min-w-[200px] bg-surface-container-high border border-primary/10 text-on-surface font-bold py-4 px-6 rounded-xl hover:bg-surface-container-highest transition-all active:scale-95 text-left">
+<span class="block text-[10px] uppercase text-secondary mb-1">Firm Negotiation</span>
+                        "Rárá, ẹgbẹ̀rún mẹ́ta ni mo ní."
+                        <span class="block text-xs font-normal text-on-surface-variant mt-1">"No, three thousand is all I have."</span>
+</button>
+<button class="flex-1 min-w-[200px] bg-surface-container-high border border-primary/10 text-on-surface font-bold py-4 px-6 rounded-xl hover:bg-surface-container-highest transition-all active:scale-95 text-left">
+<span class="block text-[10px] uppercase text-tertiary mb-1">Complementary</span>
+                        "Aṣọ yi lẹ́wà, ṣùgbọ́n owó rẹ̀ ga jù."
+                        <span class="block text-xs font-normal text-on-surface-variant mt-1">"This cloth is beautiful, but the price is too high."</span>
+</button>
+</div>
+</div>
+<!-- Right: Insights & Inventory -->
+<div class="lg:col-span-5 flex flex-col gap-8">
+<!-- Griot's Insight Card -->
+<section class="bg-surface-container-low rounded-2xl p-8 relative overflow-hidden border-t-4 border-tertiary shadow-lg">
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-tertiary-container scale-125" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<h2 class="font-headline font-bold text-2xl text-tertiary">Griot's Insight</h2>
+</div>
+<p class="text-on-surface-variant leading-relaxed mb-6">
+                            In Yoruba bargaining culture, <span class="text-secondary font-bold italic">it's not just about the money</span>; it's a social dance. Always start with a greeting ("Ẹ kú iṣẹ́ o") and use polite honorifics. A smile and a compliment about the goods can often lower the price faster than a firm demand.
+                        </p>
+<div class="bg-tertiary-fixed rounded-lg p-4 flex gap-4 items-start">
+<span class="material-symbols-outlined text-tertiary">lightbulb</span>
+<div>
+<span class="block font-bold text-on-tertiary-fixed-variant text-sm mb-1">Cultural Tip</span>
+<p class="text-sm text-on-tertiary-fixed">Refer to older male vendors as 'Baba' or 'Oga' to show immediate respect.</p>
+</div>
+</div>
+</div>
+<!-- Decorative Pattern -->
+<div class="absolute -bottom-8 -right-8 w-32 h-32 opacity-10 rotate-12">
+<svg class="fill-tertiary" viewbox="0 0 100 100">
+<path d="M50 0 L100 50 L50 100 L0 50 Z"></path>
+</svg>
+</div>
+</section>
+<!-- Current Artifact Status -->
+<div class="bg-primary text-white rounded-2xl p-8 shadow-2xl relative overflow-hidden">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="font-headline font-black text-3xl mb-1">Aṣọ Òkè</h3>
+<span class="text-primary-fixed-dim text-xs uppercase tracking-widest font-bold">Loom-Woven Heritage</span>
+</div>
+<span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold uppercase">Quest Item</span>
+</div>
+<div class="flex gap-6 items-center">
+<div class="w-24 h-24 rounded-lg bg-white/10 p-2 border border-white/20">
+<img alt="African Textile" class="w-full h-full object-cover rounded-md shadow-inner" data-alt="close-up of intricate hand-woven Aso Oke textile with geometric indigo and gold patterns and textured threads" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCR46mAyBaIDGAUJSTtEFGvQqJDCwPQ88GytoRhVUGiI_uauARHUgbbdZLQeBJKt3XU-91Hfr4NE74WZcGCMpBI_ow45oAePqGFml0QkgrzmD4L7l4QeHAIT_vWxpdIcghzIq2ZY5aN0GibqPuuA4rNz_b-4v4ED0w8px0aeKBN7ZkOw2kCdvZDwyjpEWLUKjOlnLrcwgdTEM2mKozuDuH0HolBBKye-dlUoonxiYLUyxbMlM6PnBU1SVu-c4kFEX1s62e2ktajAyg"/>
+</div>
+<div class="flex-1">
+<div class="flex justify-between text-xs mb-1 font-bold">
+<span>Negotiation Progress</span>
+<span>65%</span>
+</div>
+<div class="h-2 w-full bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container w-[65%]"></div>
+</div>
+<p class="text-xs text-primary-fixed mt-3 leading-tight opacity-80">
+                                You're making progress. Musa is starting to appreciate your respectful tone.
+                            </p>
+</div>
+</div>
+</div>
+<!-- Inventory Quick-Look -->
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-highest p-4 rounded-xl flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">wallet</span>
+<div>
+<span class="block text-[10px] uppercase font-bold text-on-surface-variant">Wallet</span>
+<span class="font-headline font-bold text-lg">₦12,400</span>
+</div>
+</div>
+<div class="bg-surface-container-highest p-4 rounded-xl flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">verified_user</span>
+<div>
+<span class="block text-[10px] uppercase font-bold text-on-surface-variant">Respect</span>
+<span class="font-headline font-bold text-lg">Lv. 14</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- NavigationDrawer (Example Content) -->
+<div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] hidden" id="drawer">
+<div class="bg-[#fafaf5] dark:bg-[#1a1c19] h-full w-80 rounded-r-3xl shadow-2xl flex flex-col h-full p-6 transition-transform duration-300">
+<div class="flex items-center gap-4 mb-8">
+<div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div>
+<h4 class="font-epilogue font-bold text-[#333697]">Griot Apprentice</h4>
+<p class="text-xs text-on-surface-variant">Level 12 • Yoruba</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-4 p-4 text-[#444941] hover:translate-x-2 transition-transform font-plus-jakarta" href="#">
+<span class="material-symbols-outlined">history</span> Lesson History
+                </a>
+<a class="flex items-center gap-4 p-4 text-[#444941] hover:translate-x-2 transition-transform font-plus-jakarta" href="#">
+<span class="material-symbols-outlined">bookmark</span> Saved Phrases
+                </a>
+<a class="flex items-center gap-4 p-4 text-[#333697] font-bold rounded-lg bg-[#e3e3de] dark:bg-[#444941]" href="#">
+<span class="material-symbols-outlined">menu_book</span> Cultural Notes
+                </a>
+<a class="flex items-center gap-4 p-4 text-[#444941] hover:translate-x-2 transition-transform font-plus-jakarta" href="#">
+<span class="material-symbols-outlined">settings</span> Settings
+                </a>
+<a class="flex items-center gap-4 p-4 text-[#444941] hover:translate-x-2 transition-transform font-plus-jakarta" href="#">
+<span class="material-symbols-outlined">help</span> Help
+                </a>
+</nav>
+</div>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center pb-6 pt-3 px-4 bg-white/80 dark:bg-[#1a1c19]/80 backdrop-blur-xl z-50 md:hidden shadow-[0_-4px_24px_rgba(0,0,0,0.04)] rounded-t-[2rem] border-t border-[#1a1c19]/5">
+<div class="flex flex-col items-center justify-center bg-[#333697] text-white rounded-full px-5 py-2 Active: scale-90 duration-150">
+<span class="material-symbols-outlined" data-icon="storefront">storefront</span>
+<span class="font-plus-jakarta font-medium text-[11px]">Markets</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#444941] dark:text-[#c4c8ba] px-5 py-2 hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="directions_bus">directions_bus</span>
+<span class="font-plus-jakarta font-medium text-[11px]">Transit</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#444941] dark:text-[#c4c8ba] px-5 py-2 hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="theater_comedy">theater_comedy</span>
+<span class="font-plus-jakarta font-medium text-[11px]">Adventures</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#444941] dark:text-[#c4c8ba] px-5 py-2 hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-plus-jakarta font-medium text-[11px]">Profile</span>
+</div>
+</nav>
+<!-- FAB (Suppressed for focused bargaining state per rules, but included if needed for global context) -->
+<!-- Hidden here as bargaining is a focused transactional task -->
+</body></html>

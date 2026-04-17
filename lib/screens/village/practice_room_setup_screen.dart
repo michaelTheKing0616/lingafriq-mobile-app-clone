@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lingafriq/navigation/village_navigation.dart';
+import 'package:lingafriq/navigation/village_navigation.dart'
+    show VillageNavigation, VillageRouteNames;
+import 'package:lingafriq/services/connectivity_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
@@ -88,10 +91,74 @@ class _PracticeRoomSetupScreenState
                 child: GriotGradientButton(
                   label: 'Start Session',
                   icon: Icons.rocket_launch_rounded,
-                  onPressed: () {
+                  onPressed: () async {
                     HapticFeedback.heavyImpact();
+                    final online = await ConnectivityService.hasBackend();
+                    if (!mounted) return;
+                    if (!online) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'The LingAfriq server is not reachable right now. '
+                            'Check your connection and try again shortly.',
+                          ),
+                        ),
+                      );
+                      return;
+                    }
+                    final lang = _languages[_selectedLang];
+                    final prefs = await SharedPreferences.getInstance();
+                    await prefs.setString('practice_room_language', lang.name);
+                    await prefs.setString(
+                      'practice_room_proficiency',
+                      _proficiencies[_selectedProficiency],
+                    );
+                    await prefs.setInt('practice_room_goal_index', _selectedGoal);
+                    if (!mounted) return;
                     Navigator.of(context).pushNamed(
                       '/${VillageRouteNames.practiceSession}',
+                      arguments: <String, dynamic>{
+                        'language': lang.name,
+                        'proficiency': _proficiencies[_selectedProficiency],
+                        'goalTitle': _goals[_selectedGoal].title,
+                        'goalIndex': _selectedGoal,
+                      },
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: 14.h),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  icon: Icon(Icons.groups_rounded, size: 22.sp),
+                  label: Text(
+                    'Practice live with others',
+                    style: ModernGriotTypography.titleSmall(context: context),
+                  ),
+                  onPressed: () async {
+                    HapticFeedback.mediumImpact();
+                    final online = await ConnectivityService.hasBackend();
+                    if (!mounted) return;
+                    if (!online) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'The LingAfriq server is not reachable right now. '
+                            'Collaborative rooms need a connection to create and join.',
+                          ),
+                        ),
+                      );
+                      return;
+                    }
+                    final lang = _languages[_selectedLang];
+                    if (!mounted) return;
+                    Navigator.of(context).pushNamed(
+                      '/${VillageRouteNames.practiceCollaborative}',
+                      arguments: <String, dynamic>{
+                        'languageTag':
+                            VillageNavigation.isoCodeForLanguageLabel(lang.name),
+                      },
                     );
                   },
                 ),

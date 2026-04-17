@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:flutter/services.dart';
@@ -17,6 +18,7 @@ import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/pan_african_app_bar.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:lingafriq/utils/transport_error_policy.dart';
 import 'package:livekit_client/livekit_client.dart';
 import '../../widgets/whiteboard/interactive_whiteboard.dart';
 
@@ -290,6 +292,7 @@ class _ClassroomView extends HookConsumerWidget {
     final isScreenSharing = useState(false);
     final participants = useState<List<Map<String, dynamic>>>([]);
     final isLoading = useState(true);
+    final joinError = useState<String?>(null);
     final roomState = useState<Room?>(null);
     final localParticipant = useState<LocalParticipant?>(null);
     final remoteParticipants = useState<Map<String, RemoteParticipant>>({});
@@ -298,8 +301,10 @@ class _ClassroomView extends HookConsumerWidget {
     final dataListenerCleanup = useRef<VoidCallback?>(null);
 
     Future<void> joinClassroom() async {
+      joinError.value = null;
       await safeAsync(
         context: context,
+        showError: false,
         operation: () async {
           String token = initialLivekitToken ?? '';
           String url = initialLivekitUrl ?? AppConfig.liveKitUrl;
@@ -308,13 +313,21 @@ class _ClassroomView extends HookConsumerWidget {
             final response = await ApiService.get(
               AppConfig.chatClassroomToken(roomId),
             );
-            if (response.statusCode == 200) {
-              token = response.data['data']['token'] as String? ?? '';
-              url = response.data['data']['url'] as String? ?? AppConfig.liveKitUrl;
+            if (response.statusCode == 200 && response.data is Map) {
+              final payload = Map<String, dynamic>.from(response.data as Map);
+              final data = payload['data'];
+              if (data is Map) {
+                final d = Map<String, dynamic>.from(data);
+                token = d['token'] as String? ?? '';
+                url = d['url'] as String? ?? AppConfig.liveKitUrl;
+              }
             }
           }
           if (token.isEmpty) {
-            throw Exception('Unable to join classroom: missing LiveKit token.');
+            throw Exception(
+              'Live classroom needs a LiveKit token from the server. '
+              'Ask your admin to configure the chat classroom token endpoint, or open this room from a scheduled class that includes credentials.',
+            );
           }
 
             // Initialize LiveKit Room
@@ -399,7 +412,12 @@ class _ClassroomView extends HookConsumerWidget {
             isLoading.value = false;
         },
         onError: (e) {
-          ErrorHandler.showError(context, e);
+          final msg = e is DioException
+              ? TransportErrorPolicy.toUserMessage(e)
+              : e.toString().replaceFirst('Exception: ', '').trim();
+          joinError.value = msg.isEmpty
+              ? 'Could not join the live classroom. Please try again.'
+              : msg;
           isLoading.value = false;
         },
       );
@@ -471,6 +489,48 @@ class _ClassroomView extends HookConsumerWidget {
                   color: PanAfricanColors.primary,
                 ),
               )
+            : roomState.value == null && joinError.value != null
+                ? Padding(
+                    padding: EdgeInsets.all(PanAfricanSpacing.xl),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.videocam_off_outlined,
+                            size: 64.sp,
+                            color: PanAfricanColors.neutralMedium,
+                          ),
+                          SizedBox(height: PanAfricanSpacing.md),
+                          Text(
+                            'Could not connect',
+                            style: PanAfricanTypography.titleLarge(context),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: PanAfricanSpacing.sm),
+                          Text(
+                            joinError.value!,
+                            style: PanAfricanTypography.bodyMedium(context),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: PanAfricanSpacing.xl),
+                          FilledButton.icon(
+                            onPressed: () {
+                              isLoading.value = true;
+                              joinClassroom();
+                            },
+                            icon: const Icon(Icons.refresh_rounded),
+                            label: const Text('Retry'),
+                          ),
+                          SizedBox(height: PanAfricanSpacing.md),
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: const Text('Leave'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
             : Column(
                 children: [
                   // Video Grid

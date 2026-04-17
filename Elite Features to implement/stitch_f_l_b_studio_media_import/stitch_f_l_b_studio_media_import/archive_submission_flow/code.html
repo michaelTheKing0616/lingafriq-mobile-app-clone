@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Archive Submission Flow | Àṣà Archive</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Manrope:wght@200..800&amp;family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-dim": "#dcdad3",
+                        "tertiary-fixed-dim": "#e9c349",
+                        "surface-bright": "#fcf9f2",
+                        "on-secondary-fixed": "#121c2c",
+                        "surface-container-low": "#f6f3ec",
+                        "primary-container": "#c05621",
+                        "on-background": "#1c1c18",
+                        "on-surface-variant": "#57423a",
+                        "on-primary-fixed": "#360f00",
+                        "surface-variant": "#e5e2db",
+                        "outline": "#8a7268",
+                        "on-tertiary-fixed": "#241a00",
+                        "primary-fixed-dim": "#ffb596",
+                        "on-secondary-fixed-variant": "#3d4759",
+                        "on-error-container": "#93000a",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#1c1c18",
+                        "inverse-on-surface": "#f3f0e9",
+                        "surface-tint": "#a14009",
+                        "surface-container": "#f1eee7",
+                        "surface": "#fcf9f2",
+                        "secondary-fixed": "#d9e3f9",
+                        "error-container": "#ffdad6",
+                        "surface-container-high": "#ebe8e1",
+                        "surface-container-highest": "#e5e2db",
+                        "tertiary": "#735c00",
+                        "secondary-fixed-dim": "#bdc7dc",
+                        "secondary": "#555f71",
+                        "outline-variant": "#dec0b5",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#31312c",
+                        "on-tertiary-fixed-variant": "#574500",
+                        "on-primary-container": "#fffeff",
+                        "on-primary-fixed-variant": "#7d2d00",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#ffe088",
+                        "on-primary": "#ffffff",
+                        "primary": "#9f3e07",
+                        "secondary-container": "#d6e0f6",
+                        "on-secondary-container": "#596376",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#ffb596",
+                        "tertiary-container": "#cca730",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed": "#ffdbcd",
+                        "on-tertiary-container": "#4f3d00",
+                        "background": "#fcf9f2"
+                    },
+                    fontFamily: {
+                        "headline": ["Newsreader"],
+                        "body": ["Manrope"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .serif-display { font-family: 'Newsreader', serif; }
+        .tech-label { font-family: 'Space Grotesk', sans-serif; }
+        .body-manrope { font-family: 'Manrope', sans-serif; }
+        
+        /* Custom scrollbar for editorial feel */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #fcf9f2; }
+        ::-webkit-scrollbar-thumb { background: #dec0b5; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface body-manrope min-h-screen pb-24 selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 w-full backdrop-blur-md bg-opacity-90 bg-[#fcf9f2] dark:bg-stone-900">
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-[#ebe8e1] dark:hover:bg-stone-800 transition-colors rounded-sm">
+<span class="material-symbols-outlined text-[#9f3e07] dark:text-[#c05621]">menu</span>
+</button>
+<h1 class="font-serif text-2xl font-bold text-[#1c1c18] dark:text-[#fcf9f2]">Àṣà Archive</h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex gap-8">
+<a class="tech-label text-sm tracking-widest text-[#555f71] dark:text-stone-400 hover:text-[#9f3e07] transition-colors" href="#">GLOSSARY</a>
+<a class="tech-label text-sm tracking-widest text-[#555f71] dark:text-stone-400 hover:text-[#9f3e07] transition-colors" href="#">STUDIO</a>
+<a class="tech-label text-sm tracking-widest text-[#9f3e07] dark:text-[#c05621] font-bold" href="#">CONTRIBUTE</a>
+</nav>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="portrait of a distinguished elderly man with wise eyes and grey hair representing a cultural curator" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBitRFzoiL2QMzRbqSBPm-Kc7zGgLgHeNOLMP1VjBC761K95VpyahklCVZ8XgTbjqkwp7cvh5pJv-Aei1iMR_k8EcSPttptUqvJHLyhPnNDkc6XKyqX4ICuZIsQSuoeCGdsETHagm4_RRaOdiwsfZvLsXvgO3spxvHF3GRu0kN-Etv9QaM2LDBhx5qfeX6Y7YXbDjKgG1E93MsDOQ65qVldffRpNaSHV-TC4dv3yA4eyVii2vH5Ny6xW8lXlbwvp40eRfkmfqnc87yS"/>
+</div>
+</div>
+</header>
+<main class="max-w-6xl mx-auto px-6 pt-32 pb-12">
+<!-- Header Section with Asymmetry -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
+<div class="lg:col-span-8">
+<span class="tech-label text-xs uppercase tracking-[0.2em] text-tertiary mb-3 block">Submissions Portal</span>
+<h2 class="serif-display text-5xl md:text-6xl text-on-surface leading-tight font-medium">
+                    Preserve the <span class="italic text-primary">Living Breath</span> of our Language.
+                </h2>
+</div>
+<div class="lg:col-span-4 flex items-end">
+<p class="body-manrope text-on-surface-variant text-lg leading-relaxed border-l border-outline-variant pl-6 py-2">
+                    Submit your processed Studio materials to the permanent archive. Every entry is reviewed by the Council of Elders to ensure tonal and cultural integrity.
+                </p>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+<!-- Left Column: Material Selection -->
+<div class="lg:col-span-2 space-y-12">
+<!-- Section 1: Selection -->
+<section>
+<div class="flex items-baseline justify-between mb-8">
+<h3 class="serif-display text-2xl font-semibold">I. Studio Materials</h3>
+<span class="tech-label text-[10px] text-on-surface-variant opacity-60">SELECT ITEMS FOR ARCHIVING</span>
+</div>
+<div class="space-y-4">
+<!-- Bento-ish Selection Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="group bg-surface-container-low p-6 rounded-sm border-l-2 border-primary cursor-pointer hover:bg-surface-container transition-colors">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">description</span>
+<span class="material-symbols-outlined text-primary">check_circle</span>
+</div>
+<p class="tech-label text-[10px] text-tertiary uppercase tracking-wider mb-1">Transcript</p>
+<h4 class="title-lg font-bold">Oral History: The Weaver's Song</h4>
+<p class="body-manrope text-sm text-on-surface-variant mt-2 line-clamp-2">Processed from Studio Session #442. Contains dialectal nuances of the central plateau regions...</p>
+</div>
+<div class="group bg-surface-container-lowest p-6 rounded-sm border-l-2 border-outline-variant cursor-pointer hover:bg-surface-container transition-colors">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-on-surface-variant">audio_file</span>
+<div class="w-5 h-5 rounded-full border border-outline"></div>
+</div>
+<p class="tech-label text-[10px] text-on-surface-variant uppercase tracking-wider mb-1">Lesson Set</p>
+<h4 class="title-lg font-bold">Introduction to Tonal Shifts</h4>
+<p class="body-manrope text-sm text-on-surface-variant mt-2 line-clamp-2">Complete set of 12 interactive drills based on the archival phonology data.</p>
+</div>
+<div class="group bg-surface-container-low p-6 rounded-sm border-l-2 border-primary cursor-pointer hover:bg-surface-container transition-colors">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">dictionary</span>
+<span class="material-symbols-outlined text-primary">check_circle</span>
+</div>
+<p class="tech-label text-[10px] text-tertiary uppercase tracking-wider mb-1">Vocabulary</p>
+<h4 class="title-lg font-bold">Ethnobotanical Terms (Vol. 1)</h4>
+<p class="body-manrope text-sm text-on-surface-variant mt-2 line-clamp-2">45 verified terms related to medicinal plants and traditional cultivation methods.</p>
+</div>
+<div class="flex items-center justify-center border-2 border-dashed border-outline-variant rounded-sm p-6 hover:bg-surface-container-low transition-colors cursor-pointer">
+<div class="text-center">
+<span class="material-symbols-outlined text-outline">add_circle</span>
+<p class="tech-label text-xs mt-2 text-outline">BROWSE STUDIO PROJECTS</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2: Metadata Form -->
+<section>
+<div class="flex items-baseline justify-between mb-8">
+<h3 class="serif-display text-2xl font-semibold">II. Cultural Context</h3>
+<span class="tech-label text-[10px] text-on-surface-variant opacity-60">GEOGRAPHIC &amp; TEMPORAL METADATA</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+<div class="relative">
+<label class="tech-label text-[10px] text-on-surface-variant uppercase tracking-widest mb-1 block">Origin Region</label>
+<input class="w-full bg-transparent border-t-0 border-x-0 border-b border-outline focus:border-primary focus:ring-0 px-0 py-2 body-manrope font-medium" type="text" value="Southwestern Plateaus"/>
+</div>
+<div class="relative">
+<label class="tech-label text-[10px] text-on-surface-variant uppercase tracking-widest mb-1 block">Primary Language/Dialect</label>
+<input class="w-full bg-transparent border-t-0 border-x-0 border-b border-outline focus:border-primary focus:ring-0 px-0 py-2 body-manrope font-medium" type="text" value="Standard Àṣà (Ekiti Variant)"/>
+</div>
+<div class="relative">
+<label class="tech-label text-[10px] text-on-surface-variant uppercase tracking-widest mb-1 block">Era of Content</label>
+<select class="w-full bg-transparent border-t-0 border-x-0 border-b border-outline focus:border-primary focus:ring-0 px-0 py-2 body-manrope font-medium appearance-none">
+<option>Late Pre-Colonial (1850-1890)</option>
+<option>Early Modernity</option>
+<option>Contemporary Oral Tradition</option>
+</select>
+</div>
+<div class="relative">
+<label class="tech-label text-[10px] text-on-surface-variant uppercase tracking-widest mb-1 block">Contributor Role</label>
+<input class="w-full bg-transparent border-t-0 border-x-0 border-b border-outline focus:border-primary focus:ring-0 px-0 py-2 body-manrope font-medium" type="text" value="Senior Field Researcher"/>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Checklist & Actions (Recessed Side Bar) -->
+<div class="space-y-8">
+<div class="bg-surface-container-high p-8 rounded-sm sticky top-32 shadow-sm">
+<div class="flex items-center gap-3 mb-8">
+<span class="material-symbols-outlined text-tertiary">verified</span>
+<h3 class="serif-display text-xl font-semibold">Curation Checklist</h3>
+</div>
+<ul class="space-y-6">
+<li class="flex items-start gap-4 group">
+<div class="mt-1 w-5 h-5 flex-shrink-0 border-2 border-primary rounded-sm flex items-center justify-center cursor-pointer">
+<span class="material-symbols-outlined text-xs text-primary font-bold">check</span>
+</div>
+<div>
+<p class="body-manrope text-sm font-semibold text-on-surface">Verify Tonal Markers</p>
+<p class="body-manrope text-xs text-on-surface-variant mt-1 leading-relaxed">Ensure all accent marks correctly represent the high/mid/low register.</p>
+</div>
+</li>
+<li class="flex items-start gap-4 group">
+<div class="mt-1 w-5 h-5 flex-shrink-0 border-2 border-primary rounded-sm flex items-center justify-center cursor-pointer">
+<span class="material-symbols-outlined text-xs text-primary font-bold">check</span>
+</div>
+<div>
+<p class="body-manrope text-sm font-semibold text-on-surface">Check Translation Nuance</p>
+<p class="body-manrope text-xs text-on-surface-variant mt-1 leading-relaxed">Cross-reference with the idiom library for literal vs figurative accuracy.</p>
+</div>
+</li>
+<li class="flex items-start gap-4 group">
+<div class="mt-1 w-5 h-5 flex-shrink-0 border-2 border-outline rounded-sm flex items-center justify-center cursor-pointer hover:border-primary transition-colors">
+</div>
+<div>
+<p class="body-manrope text-sm font-semibold text-on-surface">Anonymize Source Data</p>
+<p class="body-manrope text-xs text-on-surface-variant mt-1 leading-relaxed">Remove personal identifiers while maintaining regional attribution.</p>
+</div>
+</li>
+<li class="flex items-start gap-4 group">
+<div class="mt-1 w-5 h-5 flex-shrink-0 border-2 border-outline rounded-sm flex items-center justify-center cursor-pointer hover:border-primary transition-colors">
+</div>
+<div>
+<p class="body-manrope text-sm font-semibold text-on-surface">Heritage Metadata Alignment</p>
+<p class="body-manrope text-xs text-on-surface-variant mt-1 leading-relaxed">Ensure the Era and Region tags match the Linguistic evolution markers.</p>
+</div>
+</li>
+</ul>
+<div class="mt-12 pt-8 border-t border-outline-variant">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-3 h-3 rounded-full bg-tertiary-container animate-pulse"></div>
+<span class="tech-label text-[10px] tracking-widest text-tertiary font-bold uppercase">Ready for Review</span>
+</div>
+<button class="w-full bg-gradient-to-br from-primary to-primary-container text-on-primary py-4 px-6 rounded-sm tech-label text-sm font-bold tracking-[0.1em] uppercase shadow-lg hover:translate-y-[-2px] active:scale-95 transition-all duration-150">
+                            Submit to Elder Review
+                        </button>
+<button class="w-full mt-4 bg-transparent text-secondary py-3 px-6 rounded-sm tech-label text-xs tracking-widest uppercase hover:bg-surface-dim transition-colors">
+                            Save as Private Draft
+                        </button>
+</div>
+</div>
+<!-- Decorative Card -->
+<div class="relative h-48 w-full rounded-sm overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 cursor-help">
+<img class="w-full h-full object-cover" data-alt="close-up of intricate traditional hand-woven fabric with geometric patterns in deep earthy tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLX4Vk1j2dM8qB59awJlvmBXksoFuojsN1Xga0dAyZCwjZAE4EiLDcBx12-chMDUnLTKHdSyRIIU6FIy1fO-JTzJ_r0SwhpOSLfcMjDgSktzq5IzCLRb0qnBBL2kCkkB3kBD8IvktRarZpeUkCmnxtyQVJ15wNjOVfB6gqOGQrb7wWlynGdW2Hr5OqC_QsXl07X1B8JferKNO0WIfx0O2UZbl7nIgI2g-SLoMHXbSR5eDy3-0meWt4aN45d8v3NzJayXcPQ24VXKdA"/>
+<div class="absolute inset-0 bg-primary/20 mix-blend-multiply"></div>
+<div class="absolute bottom-4 left-4 right-4">
+<p class="serif-display text-surface italic text-sm">"Knowledge not shared is knowledge lost to the dust of time."</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-4 pt-2 bg-[#fcf9f2] dark:bg-stone-950 z-50 shadow-[0_-4px_20px_rgba(28,28,24,0.04)]">
+<a class="flex flex-col items-center justify-center text-[#555f71] dark:text-stone-500 hover:text-[#9f3e07]" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="tech-label text-[10px] uppercase tracking-widest mt-1">Glossary</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#555f71] dark:text-stone-500 hover:text-[#9f3e07]" href="#">
+<span class="material-symbols-outlined">architecture</span>
+<span class="tech-label text-[10px] uppercase tracking-widest mt-1">Studio</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#f7e8d0] dark:bg-[#c05621]/20 text-[#9f3e07] dark:text-[#c05621] rounded-sm px-3 py-1 translate-y-[-2px]" href="#">
+<span class="material-symbols-outlined">publish</span>
+<span class="tech-label text-[10px] uppercase tracking-widest mt-1">Contribute</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#555f71] dark:text-stone-500 hover:text-[#9f3e07]" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="tech-label text-[10px] uppercase tracking-widest mt-1">Profile</span>
+</a>
+</nav>
+<!-- Invisible Backdrop for interactions -->
+<div class="fixed inset-0 pointer-events-none border-[1.5rem] border-surface z-40 opacity-50"></div>
+</body></html>

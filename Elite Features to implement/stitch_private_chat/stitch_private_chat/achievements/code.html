@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Lexend:wght@300;400;500;600;700&amp;family=Dosis:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary": "#7b5500",
+              "secondary-container": "#7cf994",
+              "on-primary-fixed": "#390c00",
+              "on-secondary-fixed": "#002109",
+              "error-container": "#ffdad6",
+              "secondary": "#006e2d",
+              "tertiary-fixed": "#ffdeab",
+              "on-primary-fixed-variant": "#822700",
+              "secondary-fixed-dim": "#62df7d",
+              "tertiary-fixed-dim": "#f8bc51",
+              "surface-dim": "#ffd2aa",
+              "outline-variant": "#e0bfb5",
+              "surface-variant": "#ffdcbf",
+              "on-surface-variant": "#59413a",
+              "on-primary-container": "#fffbff",
+              "on-secondary-container": "#007230",
+              "surface-bright": "#fff8f5",
+              "primary-fixed-dim": "#ffb59c",
+              "surface-container-high": "#ffe3cd",
+              "on-secondary-fixed-variant": "#005320",
+              "background": "#fff8f5",
+              "surface-tint": "#aa3601",
+              "on-primary": "#ffffff",
+              "primary-container": "#c94c1a",
+              "on-tertiary-fixed-variant": "#5f4100",
+              "surface-container-lowest": "#ffffff",
+              "on-error-container": "#93000a",
+              "tertiary-container": "#9b6c00",
+              "inverse-surface": "#462a0d",
+              "surface-container": "#ffeada",
+              "on-background": "#2d1600",
+              "inverse-on-surface": "#ffeee1",
+              "on-tertiary-fixed": "#281900",
+              "on-error": "#ffffff",
+              "primary": "#a73400",
+              "secondary-fixed": "#7ffc97",
+              "outline": "#8c7168",
+              "surface-container-low": "#fff1e8",
+              "primary-fixed": "#ffdbcf",
+              "on-secondary": "#ffffff",
+              "on-surface": "#2d1600",
+              "inverse-primary": "#ffb59c",
+              "on-tertiary-container": "#fffbff",
+              "surface": "#fff8f5",
+              "error": "#ba1a1a",
+              "on-tertiary": "#ffffff",
+              "surface-container-highest": "#ffdcbf"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Lexend"],
+              "label": ["Lexend"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-nav {
+        backdrop-filter: blur(20px);
+      }
+      .asymmetric-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 1.5rem;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed pb-32">
+<!-- TopAppBar -->
+<header class="bg-[#fff8f5] dark:bg-stone-950 docked full-width top-0 sticky z-50">
+<div class="flex justify-between items-center w-full px-6 py-4">
+<div class="flex items-center gap-4">
+<button class="text-[#a73400] dark:text-[#ffdbcf] active:scale-95 duration-200 hover:bg-[#ffeada] dark:hover:bg-stone-800 transition-colors p-2 rounded-full">
+<span class="material-symbols-outlined">close</span>
+</button>
+<h1 class="font-['Plus_Jakarta_Sans'] font-bold text-xl text-[#a73400] dark:text-[#ffdbcf]">Your Legacy</h1>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-low px-4 py-2 rounded-full">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-headline font-bold text-on-surface">32</span>
+</div>
+</div>
+</header>
+<main class="max-w-5xl mx-auto px-6 pt-8 space-y-12">
+<!-- Stats Hero: Bento Style -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="md:col-span-2 bg-primary-container bg-gradient-to-br from-primary to-primary-container p-8 rounded-lg relative overflow-hidden flex flex-col justify-between min-h-[220px]">
+<div class="relative z-10">
+<span class="text-white/80 font-label text-sm font-medium tracking-widest uppercase">Total Honor</span>
+<h2 class="text-white font-headline font-extrabold text-5xl mt-2 italic">12,450 XP</h2>
+</div>
+<div class="relative z-10 flex items-center gap-4">
+<div class="bg-white/20 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-white text-sm">trending_up</span>
+<span class="text-white font-label text-sm">+450 Today</span>
+</div>
+<div class="bg-white/20 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-white text-sm">workspace_premium</span>
+<span class="text-white font-label text-sm">Top 5% Learner</span>
+</div>
+</div>
+<!-- Abstract Texture Overlay -->
+<div class="absolute -right-12 -bottom-12 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+</div>
+<div class="bg-surface-container p-8 rounded-lg flex flex-col items-center justify-center text-center space-y-4">
+<div class="w-20 h-20 bg-tertiary-fixed rounded-full flex items-center justify-center shadow-xl">
+<span class="material-symbols-outlined text-tertiary text-4xl" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-2xl text-on-surface">Master Griot</h3>
+<p class="text-on-surface-variant font-label text-sm mt-1">Rank #14 in Nairobi Tribe</p>
+</div>
+<div class="w-full bg-outline-variant/20 h-2 rounded-full overflow-hidden mt-4">
+<div class="bg-tertiary h-full w-3/4"></div>
+</div>
+</div>
+</section>
+<!-- Achievements Grid: Organic Asymmetry -->
+<section class="space-y-6">
+<div class="flex justify-between items-end">
+<h2 class="font-headline font-extrabold text-3xl text-on-surface tracking-tight">Unlocked Totems</h2>
+<button class="text-primary font-bold text-sm hover:underline">View All Collection</button>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+<!-- Unlocked Badge 1 -->
+<div class="bg-surface-container-low p-6 rounded-lg text-center group hover:bg-surface-container transition-all duration-300 relative overflow-visible">
+<div class="relative mb-4">
+<div class="w-24 h-24 mx-auto bg-gradient-to-t from-secondary-fixed to-secondary-container rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-on-secondary-fixed text-4xl">emoji_nature</span>
+</div>
+<div class="absolute -top-2 -right-2 bg-secondary text-white p-1 rounded-full shadow-md">
+<span class="material-symbols-outlined text-xs">check</span>
+</div>
+</div>
+<h4 class="font-headline font-bold text-on-surface">First Word</h4>
+<p class="text-xs text-on-surface-variant mt-1 font-label">Spoke your first greeting in Swahili</p>
+</div>
+<!-- Unlocked Badge 2 -->
+<div class="bg-surface-container-low p-6 rounded-lg text-center group hover:bg-surface-container transition-all duration-300 relative">
+<div class="relative mb-4">
+<div class="w-24 h-24 mx-auto bg-gradient-to-t from-primary-fixed to-primary-container/40 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-4xl">local_fire_department</span>
+</div>
+<div class="absolute -top-2 -right-2 bg-secondary text-white p-1 rounded-full shadow-md">
+<span class="material-symbols-outlined text-xs">check</span>
+</div>
+</div>
+<h4 class="font-headline font-bold text-on-surface">7-Day Flame</h4>
+<p class="text-xs text-on-surface-variant mt-1 font-label">The light of learning never dims</p>
+</div>
+<!-- Unlocked Badge 3 -->
+<div class="bg-surface-container-low p-6 rounded-lg text-center group hover:bg-surface-container transition-all duration-300 relative">
+<div class="relative mb-4">
+<div class="w-24 h-24 mx-auto bg-gradient-to-t from-tertiary-fixed to-tertiary-container/30 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-tertiary text-4xl">groups</span>
+</div>
+<div class="absolute -top-2 -right-2 bg-secondary text-white p-1 rounded-full shadow-md">
+<span class="material-symbols-outlined text-xs">check</span>
+</div>
+</div>
+<h4 class="font-headline font-bold text-on-surface">Tribe Member</h4>
+<p class="text-xs text-on-surface-variant mt-1 font-label">Joined the community campfire</p>
+</div>
+<!-- Locked Badge -->
+<div class="bg-surface-container-low/50 p-6 rounded-lg text-center opacity-60 grayscale border-2 border-dashed border-outline-variant">
+<div class="mb-4">
+<div class="w-24 h-24 mx-auto bg-surface-variant rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-4xl">fort</span>
+</div>
+</div>
+<h4 class="font-headline font-bold text-on-surface">Village Elder</h4>
+<p class="text-xs text-on-surface-variant mt-1 font-label">Reach Level 25 to unlock</p>
+</div>
+</div>
+</section>
+<!-- Certificate Section: Showcase Layout -->
+<section class="space-y-6">
+<h2 class="font-headline font-extrabold text-3xl text-on-surface tracking-tight">Scrolls of Honor</h2>
+<div class="relative bg-surface-container-highest p-1 rounded-lg">
+<div class="bg-white rounded-lg p-10 flex flex-col md:flex-row items-center gap-12 shadow-sm relative overflow-hidden">
+<!-- Certificate Preview -->
+<div class="w-full md:w-1/2 aspect-[1.414/1] bg-surface-bright border-[12px] border-tertiary-fixed p-6 shadow-xl transform -rotate-1 hover:rotate-0 transition-transform duration-500 cursor-zoom-in relative group">
+<div class="h-full border border-tertiary/20 flex flex-col items-center justify-center text-center p-4">
+<span class="material-symbols-outlined text-tertiary mb-2">auto_stories</span>
+<span class="font-headline text-[10px] tracking-[0.2em] uppercase text-tertiary/60 mb-1">Ancestral Certificate of Completion</span>
+<h3 class="font-headline text-2xl font-black text-on-surface">Swahili Level 1</h3>
+<div class="w-24 h-px bg-tertiary/20 my-4"></div>
+<p class="font-body text-[10px] italic text-on-surface-variant">Granted to</p>
+<p class="font-headline text-lg font-bold text-primary">Adisa the Learner</p>
+<div class="mt-4 flex justify-between w-full px-4">
+<div class="text-[8px] text-tertiary/40">ID: AF-88219-SW</div>
+<div class="text-[8px] text-tertiary/40">24 Oct 2023</div>
+</div>
+</div>
+<div class="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent pointer-events-none"></div>
+<div class="absolute bottom-4 right-4 group-hover:scale-110 transition-transform">
+<div class="w-12 h-12 rounded-full border-4 border-double border-tertiary-fixed bg-tertiary flex items-center justify-center text-white font-bold text-[8px]">SEAL</div>
+</div>
+</div>
+<!-- Certificate Details -->
+<div class="w-full md:w-1/2 space-y-6">
+<div>
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold font-label">VERIFIED</span>
+<h3 class="font-headline font-extrabold text-4xl text-on-surface mt-4">Swahili Foundation</h3>
+<p class="text-on-surface-variant font-body leading-relaxed mt-4">You have successfully mastered the rhythmic foundations, basic verb conjugations, and social greetings of the Swahili coastal traditions.</p>
+</div>
+<div class="flex flex-wrap gap-3">
+<button class="bg-primary text-white font-bold px-6 py-3 rounded-full hover:bg-primary-container transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">download</span>
+                                Download PDF
+                            </button>
+<button class="bg-surface-container text-on-surface font-bold px-6 py-3 rounded-full hover:bg-surface-container-high transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">share</span>
+                                Share Path
+                            </button>
+</div>
+</div>
+<!-- Decorative Background Icon -->
+<span class="absolute -bottom-16 -right-16 material-symbols-outlined text-[20rem] text-surface-variant opacity-20 rotate-12 pointer-events-none">workspace_premium</span>
+</div>
+</div>
+</section>
+<!-- Ancestral Path Hint -->
+<section class="bg-tertiary-fixed/30 p-8 rounded-lg flex flex-col md:flex-row items-center justify-between gap-8">
+<div class="flex items-center gap-6">
+<div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-md shrink-0">
+<span class="material-symbols-outlined text-tertiary text-3xl">map</span>
+</div>
+<div>
+<h4 class="font-headline font-bold text-xl text-on-surface">The Path Continues</h4>
+<p class="text-on-surface-variant font-label text-sm">Next Milestone: <span class="text-primary font-bold">The Great Market (Level 15)</span></p>
+</div>
+</div>
+<div class="flex -space-x-3 overflow-hidden">
+<img alt="profile" class="inline-block h-10 w-10 rounded-full ring-4 ring-surface" data-alt="portrait of a confident smiling young woman with natural hair and warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCm1KvuaMMw3onn1hy12QdEH-uN8j1Nf2ap_ZoWnwhUYZDJTXQbHBCUdpTLVSx-Mp5Q5kuZvtJNOebWwAtla4m5HE3DZLUVEBo-QQqVgLZO0tKTMH6m0dTzsFYjFMPCHx2mxx0FD4cQvszK2fa3xVtn_qeHd7sbjuiI5RKarK5oHR74aphClO6AQBzhn-A2uRxIoX0z3cI4lj7bAf1EGFVf-ZDzeJrkEapV9IfKD7dfx1nlb_bFQ1nsWOcv_urxD1-tYvrR69Th5q3z"/>
+<img alt="profile" class="inline-block h-10 w-10 rounded-full ring-4 ring-surface" data-alt="close-up portrait of a thoughtful man with sun-kissed skin and outdoor morning light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaQ2d9591pWPVs9-5VMq0z40bUIEM3__PoDIa5PvLxx1Zr40-aBSggA4ETPo8fVZ-J4nqdzB4b86FNjdexxGK6hKxT1uPNVwvFiekCMUrl7MN03Wvb3316eS0k3yEbRB7d2hs6KUkAYvhuBPWutKO0yl_-hxT2Ff-iIQ-8ULje-tygau6sZ-qed9vzSvrEUJx3oQ8xdoNz02Y-CxxcrvA87LeK-FOmMHYVG5lOObUM-VwsrytY9y2IuicaKlYiCkxPdozR4Z_rV8gw"/>
+<img alt="profile" class="inline-block h-10 w-10 rounded-full ring-4 ring-surface" data-alt="vibrant portrait of a man laughing in a colorful market setting with soft bokeh background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDoOcJNOHTM_g2J5YR0eHESLOsUutBuyuRlHb9WTd3VPaySknU21hJCb0E4n7TP0VCX5RtErdvavkcJj5rsvD9-wyCG8-Et3POuG4-DIb8bcFRoflCrbNUKGqKs-_BCM66tj6z7WKQX2zMvDtYse_k6vEM4ZopWx7LZfIL7J0LrnoOaBcC0gSkgfMYnJzGCVsZ8UBZTCIxbxgnNyCGFT_hvo6CImuuNW4LDJc92GD8FaX3EvUMauNk4XKV2tRf6-qnXgs5qFHK6txLK"/>
+<div class="flex items-center justify-center h-10 w-10 rounded-full ring-4 ring-surface bg-primary text-white text-xs font-bold">+12</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-[#a73400]/80 dark:bg-[#a73400]/40 backdrop-blur-xl rounded-t-[2rem] shadow-[0_-10px_40px_rgba(45,22,0,0.08)]">
+<a class="flex flex-col items-center justify-center text-white/70 px-4 py-2 hover:bg-white/20 transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined">fort</span>
+<span class="font-['Lexend'] text-[10px] font-medium mt-1">Village</span>
+</a>
+<a class="flex flex-col items-center justify-center text-white/70 px-4 py-2 hover:bg-white/20 transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="font-['Lexend'] text-[10px] font-medium mt-1">Lessons</span>
+</a>
+<a class="flex flex-col items-center justify-center text-white/70 px-4 py-2 hover:bg-white/20 transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-['Lexend'] text-[10px] font-medium mt-1">Griot</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#fff8f5]/20 dark:bg-white/10 text-white rounded-2xl px-4 py-2 transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">groups</span>
+<span class="font-['Lexend'] text-[10px] font-medium mt-1">Tribe</span>
+</a>
+</nav>
+</body></html>

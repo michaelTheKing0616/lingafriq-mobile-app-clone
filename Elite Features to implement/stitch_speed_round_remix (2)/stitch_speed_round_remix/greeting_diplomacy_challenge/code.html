@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Greeting Diplomacy</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700;900&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-container": "#ffca56",
+              "on-secondary": "#ffffff",
+              "surface-container-high": "#e8e8e3",
+              "secondary-fixed-dim": "#ffb4a5",
+              "secondary-container": "#fd876f",
+              "on-primary-fixed": "#04006d",
+              "on-primary-container": "#ceceff",
+              "on-primary-fixed-variant": "#373a9b",
+              "secondary": "#9f402d",
+              "on-secondary-container": "#732010",
+              "surface-container": "#eeeee9",
+              "on-error": "#ffffff",
+              "on-error-container": "#93000a",
+              "inverse-on-surface": "#f1f1ec",
+              "primary": "#333697",
+              "on-primary": "#ffffff",
+              "inverse-surface": "#2f312e",
+              "on-tertiary-fixed-variant": "#5c4300",
+              "error": "#ba1a1a",
+              "primary-container": "#4b4fb0",
+              "tertiary": "#573f00",
+              "on-secondary-fixed-variant": "#802918",
+              "tertiary-container": "#745500",
+              "on-tertiary": "#ffffff",
+              "tertiary-fixed": "#ffdea0",
+              "surface": "#fafaf5",
+              "inverse-primary": "#c0c1ff",
+              "surface-container-low": "#f4f4ef",
+              "surface-variant": "#e3e3de",
+              "primary-fixed-dim": "#c0c1ff",
+              "tertiary-fixed-dim": "#f6be3b",
+              "surface-bright": "#fafaf5",
+              "secondary-fixed": "#ffdad3",
+              "surface-tint": "#4f54b4",
+              "primary-fixed": "#e1e0ff",
+              "surface-container-highest": "#e3e3de",
+              "error-container": "#ffdad6",
+              "on-surface": "#1a1c19",
+              "surface-dim": "#dadad5",
+              "on-tertiary-fixed": "#261900",
+              "outline": "#757684",
+              "on-secondary-fixed": "#3e0500",
+              "surface-container-lowest": "#ffffff",
+              "on-surface-variant": "#454652",
+              "background": "#fafaf5",
+              "outline-variant": "#c5c5d4",
+              "on-background": "#1a1c19"
+            },
+            fontFamily: {
+              "headline": ["Epilogue"],
+              "body": ["Plus Jakarta Sans"],
+              "label": ["Plus Jakarta Sans"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .heritage-pattern {
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l30 30-30 30L0 30z' fill='%23333697' fill-opacity='0.03'/%3E%3C/svg%3E");
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Shell -->
+<header class="bg-[#fafaf5] dark:bg-[#1a1c19] flex items-center justify-between px-6 py-4 w-full docked-top z-40">
+<div class="flex items-center gap-3">
+<button class="hover:opacity-80 transition-opacity active:scale-95 transition-transform text-[#333697] dark:text-[#9ea1ff]">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="font-['Epilogue'] font-black text-[#333697] dark:text-[#9ea1ff] tracking-tighter text-xl">Linguistics Heritage</h1>
+</div>
+<div class="h-10 w-10 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden border-2 border-primary/20">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="professional headshot of a student of linguistics with a warm smile and scholarly glasses" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrXAyaUQmR0EoRkHM_1pfBZP6H97vurgEZyZXzSwms7rosgYzHw0biqpgCw4jwviwi7-3RZgVrx6bH-5lEB2Vs_yNBbRVp1QYuLO127AUml_QiJhro7wv3EK1hY3xznKa37VX_OGpZvy4WBYhR-yhO6ugrtCSf85_FkcnwjzE4iYoJgOl-HMcIz4aaWqZ4D-oKpxC0WNsSMUL2LVQiND9oRu6TYbKj4385fexuWrRJdtJGgev7udSnvFqgUql21NOqlMTgN_epQbM"/>
+</div>
+</header>
+<div class="bg-[#f4f4ef] dark:bg-[#2a2c29] h-px w-full"></div>
+<main class="min-h-screen pb-32 heritage-pattern">
+<!-- Hero Section -->
+<section class="px-6 pt-8 pb-12">
+<div class="space-y-2">
+<span class="font-label text-xs uppercase tracking-[0.2em] text-tertiary font-bold">Linguistic Game</span>
+<h2 class="font-headline text-4xl font-black text-primary leading-none tracking-tight">Greeting Diplomacy</h2>
+<p class="text-on-surface-variant font-medium max-w-xs pt-2">Master the art of social etiquette through context-aware dialogue challenges.</p>
+</div>
+</section>
+<!-- Character Selection Grid -->
+<section class="px-6 mb-12">
+<div class="flex justify-between items-end mb-6">
+<h3 class="font-headline text-xl font-bold text-secondary">Choose Your Contact</h3>
+<span class="text-xs font-label text-on-surface-variant bg-surface-container-high px-3 py-1 rounded-full">Level 4 Master</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<!-- Character Card: Chief -->
+<div class="relative group cursor-pointer">
+<div class="bg-surface-container-low rounded-xl p-4 transition-all duration-300 group-hover:bg-primary/5 border-2 border-transparent group-hover:border-primary/20">
+<div class="aspect-square rounded-lg bg-primary-container/20 mb-3 overflow-hidden">
+<img alt="Character Chief" class="w-full h-full object-cover" data-alt="dignified elderly community leader in vibrant traditional kente robes with golden accessories in a sunlit courtyard" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGTDVInZEZqdLRNbNoOuJIwjQnOQWIi0IWMdo-N2uzZ0jt0YocukUvkl4cVkiMdjH4D62itJHTaYpRHoSWhTAIuntLQDYFgaC0gYCJfmsdl59WB2BO0aEo6EJFlTYhbtSuN6IdLMJ8aqiB7lTw9M1wCNGGffPFFgiO_H2aQNTpXNHOcAT3Vj94_N8mQh6PZD0OHTd7LqlkOpEJ6rphEknMxthf2zvkrs1-C0uBJ8JGMg2aDzIUdUvkkUcEMr4wL74E4J-MJPdpIxU"/>
+</div>
+<p class="font-headline font-bold text-on-surface">The Chief</p>
+<p class="text-[10px] font-label uppercase tracking-wider text-primary opacity-70">Highly Formal</p>
+</div>
+<div class="absolute -top-2 -right-2 bg-tertiary-fixed text-on-tertiary-fixed rounded-full p-1 shadow-sm">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<!-- Character Card: Market Trader -->
+<div class="relative group cursor-pointer ring-4 ring-primary/20 rounded-xl">
+<div class="bg-surface-container-low rounded-xl p-4 border-2 border-primary transition-all duration-300">
+<div class="aspect-square rounded-lg bg-secondary-container/20 mb-3 overflow-hidden">
+<img alt="Market Trader" class="w-full h-full object-cover" data-alt="energetic market trader gesturing warmly behind a colorful stall of spices and textiles in a bustling open-air market" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBF7EhaeQkJjyFGifsgsQ0g0iSyE2bi5mMJZxqKQ8XYjHF_cOa7nZlrr-5Z_Kv1VJG7SvEhekl_2UccAgXy0JgB3ikr23cHWhmm18SIHDYoaRuew4PMiYoz57DGx6nLWoVv97uQ-1JPBAdDXZ_VOlWzKWWR747HUjwNHA1PJbv7639AQEWzjOc_6GE7cTXbqmVl7LaWXeX3B3lAjHsHaZMvBdvYRz1CF7h5nxb5iKApKmYwvTqbuWhi8B1vZkLx49I17kT3flzCMKU"/>
+</div>
+<p class="font-headline font-bold text-on-surface">Market Trader</p>
+<p class="text-[10px] font-label uppercase tracking-wider text-secondary">Casual / Persuasive</p>
+</div>
+<div class="absolute -top-2 -right-2 bg-primary text-white rounded-full px-2 py-0.5 text-[10px] font-bold">ACTIVE</div>
+</div>
+<!-- Character Card: Peer -->
+<div class="relative group cursor-pointer">
+<div class="bg-surface-container-low rounded-xl p-4 transition-all duration-300 hover:bg-surface-container-high">
+<div class="aspect-square rounded-lg bg-tertiary-container/20 mb-3 overflow-hidden">
+<img alt="Peer" class="w-full h-full object-cover" data-alt="two young adults laughing together in a modern city cafe setting, vibrant and casual lifestyle photography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD94sQsMm9s0msTyoFUxL2XNAj1JgezZnQRkLkyjCNpgbyWgfVK_J28rrQZwqvsraJQ4jpjqOTp7cr6sZiWdWGKyVNuFidUAs7IX0gmQo2I4IKQfPZuPGrN49BRklLwZZqDsHyxwltKvWsRowRhs1L_ZDXWfo17d9x6ejPo4kwHqlPK-dH2b-UhjIuD0ZSECC4ineCkhce3hKoWKqt5alzRMd0t3YAPtFBid4e3WQvRQxAUt__D5YtSBpl40WsMsJzhYbIxPcgl-Pk"/>
+</div>
+<p class="font-headline font-bold text-on-surface">Peer</p>
+<p class="text-[10px] font-label uppercase tracking-wider text-on-surface-variant opacity-60">Informal</p>
+</div>
+</div>
+<!-- Character Card: In-law -->
+<div class="relative group cursor-pointer">
+<div class="bg-surface-container-low rounded-xl p-4 transition-all duration-300 hover:bg-surface-container-high">
+<div class="aspect-square rounded-lg bg-surface-container-highest mb-3 overflow-hidden">
+<img alt="In-law" class="w-full h-full object-cover" data-alt="graceful middle-aged woman in elegant attire hosting a family gathering in a lush garden setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKvG8LoLS38ZBs0SOH09oF5LtWkOqcw6m-CfHtMMjFe1eW0-OoeL0NPFnYgjU20MHoxmD4FCpLv3gCBp76cNo86YqIKRL0haFjtRWpTejZZ3828vFeSOYX8DGvWXQ-zAlnVOMpttM0HmBaNt2GJGI9CW6cRjGDto7NuOo62Ai5jX6ckIgvsaS7qvXjVTgOA0BW-GX77jg7l-exVS244WtLPgLOK1Bw2YN7XwAgjcmPNDOWIjZgG_dQX4cNqyGO-v6NzdN6i4akI8I"/>
+</div>
+<p class="font-headline font-bold text-on-surface">In-law</p>
+<p class="text-[10px] font-label uppercase tracking-wider text-on-surface-variant opacity-60">Respectful</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Challenge Canvas -->
+<section class="px-6 mb-20">
+<div class="bg-surface-container-lowest rounded-[2rem] p-8 shadow-[0_32px_64px_-16px_rgba(51,54,151,0.12)] border border-outline-variant/10">
+<div class="flex items-center gap-4 mb-8">
+<div class="h-12 w-12 rounded-full overflow-hidden border-2 border-secondary">
+<img alt="Trader Avatar" class="w-full h-full object-cover" data-alt="vibrant market trader avatar with a big smile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvmTMj3ltsYKixkedBi8sRlTrj4f-83nHOAU70R6uppt95LDEyFaF9Sr13Q0w3bufZ80BHYZQQYsDi1KogmYi9K5iNSp-5Ly8S80FdQ9TJ48ZMobId1z1ea4E438buDNW4Ot4tFJPat2PzCGrjEyzPc0zC9qKxcC_60IPCybVaWLuvSBGlCNzt4fut2XJI2GPtiZ1l7TZK1c4OIADNfhBX2ogcNMWYt1pzALjyWyAuV6VBluf_9NP9OP6fFLpR2_Zv2h8Ikh-RJJE"/>
+</div>
+<div>
+<h4 class="font-headline font-bold text-on-surface leading-none">Amina</h4>
+<span class="text-[10px] font-label text-secondary font-bold">THE MARKET TRADER</span>
+</div>
+</div>
+<!-- Speech Bubble -->
+<div class="relative bg-surface-container-high p-6 rounded-2xl rounded-tl-none mb-8 animate-fade-in">
+<div class="absolute -top-4 left-0 w-4 h-4 bg-surface-container-high" style="clip-path: polygon(0 0, 0% 100%, 100% 100%);"></div>
+<p class="text-lg font-headline font-medium text-on-surface leading-snug italic">"Ah, welcome back! The morning is bright, and my goods are fresh today. How do you find yourself on this fine day?"</p>
+</div>
+<!-- Feedback Display (Hidden until active) -->
+<div class="mb-8 flex items-center gap-3 p-4 bg-primary/5 rounded-xl border border-primary/10">
+<div class="bg-primary text-white rounded-full p-2">
+<span class="material-symbols-outlined text-sm" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div>
+<p class="text-xs font-bold text-primary">PERFECT MATCH!</p>
+<p class="text-[11px] text-on-surface-variant">Amina appreciates your warmth. Diplomacy +15</p>
+</div>
+</div>
+<!-- Response Options -->
+<div class="space-y-4">
+<button class="w-full group flex items-start gap-4 p-4 bg-primary text-white rounded-xl text-left transition-all active:scale-95">
+<div class="h-6 w-6 rounded-full bg-white/20 flex items-center justify-center font-bold text-xs shrink-0">A</div>
+<p class="font-medium text-sm">"Peace be with you, Mother. May your market flourish today. I am well, thank you."</p>
+</button>
+<button class="w-full group flex items-start gap-4 p-4 bg-surface-container-low text-on-surface rounded-xl text-left transition-all hover:bg-surface-container-high active:scale-95">
+<div class="h-6 w-6 rounded-full bg-surface-container-highest flex items-center justify-center font-bold text-xs shrink-0">B</div>
+<p class="font-medium text-sm text-on-surface-variant">"Hey! What's the price on those spices today? I'm in a bit of a rush."</p>
+</button>
+<button class="w-full group flex items-start gap-4 p-4 bg-surface-container-low text-on-surface rounded-xl text-left transition-all hover:bg-surface-container-high active:scale-95">
+<div class="h-6 w-6 rounded-full bg-surface-container-highest flex items-center justify-center font-bold text-xs shrink-0">C</div>
+<p class="font-medium text-sm text-on-surface-variant">"Good morning, trader. I wish to inspect your inventory of textiles."</p>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#fafaf5]/80 dark:bg-[#1a1c19]/80 backdrop-blur-xl rounded-t-[2rem] shadow-[0_-4px_20px_rgba(0,0,0,0.04)]">
+<a class="flex flex-col items-center justify-center text-[#1a1c19]/50 dark:text-[#fafaf5]/50 p-2 hover:text-[#333697] transition-colors active:scale-90 transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px] uppercase tracking-widest mt-1">Lineage</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#333697] text-white rounded-full p-3 mb-1 shadow-lg active:scale-90 transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px] uppercase tracking-widest mt-1">Blessings</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#1a1c19]/50 dark:text-[#fafaf5]/50 p-2 hover:text-[#333697] transition-colors active:scale-90 transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="handshake">handshake</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px] uppercase tracking-widest mt-1">Diplomacy</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#1a1c19]/50 dark:text-[#fafaf5]/50 p-2 hover:text-[#333697] transition-colors active:scale-90 transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px] uppercase tracking-widest mt-1">Archive</span>
+</a>
+</nav>
+<!-- Floating Action Button - Only for Primary Context -->
+<button class="fixed bottom-28 right-6 h-14 w-14 rounded-full bg-secondary text-white shadow-xl flex items-center justify-center active:scale-95 transition-transform z-40">
+<span class="material-symbols-outlined text-2xl" data-icon="quiz">quiz</span>
+</button>
+</body></html>

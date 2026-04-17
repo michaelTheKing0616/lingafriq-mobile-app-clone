@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Lexend:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#E05C2A",
+              "on-primary": "#ffffff",
+              "background": "#fff8f5",
+              "surface": "#ffffff",
+              "on-surface": "#2d1600",
+              "surface-variant": "#f4e9e4",
+              "on-surface-variant": "#59413a",
+              "outline": "#8c7168",
+              "outline-variant": "#e0bfb5",
+              "primary-container": "#ffdbcf",
+              "on-primary-container": "#390c00",
+              "secondary-container": "#fce8e1",
+              "tertiary": "#7b5500",
+              "tertiary-container": "#ffdeab",
+              "on-tertiary-container": "#281900",
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Lexend"],
+              "label": ["Lexend"]
+            },
+            borderRadius: {
+              "DEFAULT": "1rem",
+              "lg": "2rem",
+              "xl": "3rem",
+              "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      body {
+        font-family: 'Lexend', sans-serif;
+      }
+      .headline-font {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen pb-32">
+<!-- TopAppBar from COMPONENTS_5 -->
+<header class="bg-[#fff8f5] dark:bg-orange-950/20 docked full-width top-0 sticky z-50 no-border bg-[#fff1e8] dark:bg-orange-900/10 flex justify-between items-center px-6 py-4 w-full backdrop-blur-md bg-opacity-80">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-primary-container flex items-center justify-center">
+<img alt="User profile photo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBL72nzO7IM_GaDZVXVUG6_tm16ezJSMZ6gdW_Eldhp3WI6cUkAgCs2Ys3k6g2ZE3M1NLH2n_Bpc_9WGNTOQpyIxHX7Bkk2DkT83_KeaXMUvFteL_Yz-3rQ6TprcLSurUXyACnVpTvO01VOGjluTCQhXSVAQnqxKE3FJgnrPktwAVPP7-5rZjRinM78B-eoZ1ucrmUe-jqccTGZUtcsHHoUAbXlH8WPor_hthhETseaaQzs3sdKbyq1NAin-SEkSrfKNx3x9hwsPHxp"/>
+</div>
+<h1 class="font-['Plus_Jakarta_Sans'] font-bold text-2xl tracking-tight text-[#a73400] dark:text-orange-500 italic">LingAfriq</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#a73400] dark:text-orange-500 hover:bg-[#ffeada] dark:hover:bg-orange-800/30 transition-colors p-2 rounded-full active:scale-95 duration-150 ease-in-out">
+                settings
+            </button>
+</div>
+</header>
+<main class="max-w-2xl mx-auto px-4 pt-4">
+<!-- Back Button -->
+<div class="flex items-center gap-6 mb-4">
+<button class="p-2 rounded-full hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-on-surface">arrow_back</span>
+</button>
+<h2 class="font-headline font-bold text-xl">Thread</h2>
+</div>
+<!-- Focal Post -->
+<article class="bg-surface p-4 border-b border-outline-variant/30">
+<div class="flex items-start justify-between mb-3">
+<div class="flex gap-3">
+<div class="w-12 h-12 rounded-full overflow-hidden">
+<img alt="Elder Kwesi profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVt2PAz4KDEtcpMYLygpLchoYkpBRs-B9KH-dSTWCC5AZZLpr9W7WGX46BMmLPL7vvSRbsfjLo-gPD2vYCP9_6_DISFVX6V630DfbHVKPctI66rAQiEKjXD4tTA407KsZremCs4lZqCYUra3CTZjELJ3-S5dab0j4KKCP3X2yrorTUAfGdOh19BwLD_Tkz0QNEKk5irLH0IXnh7tYcEbrscA1q5HMJB9hxwPcagcgpJH0dWWM5quOhZxCllYBjatpBFJpkP6vQmx8J"/>
+</div>
+<div>
+<div class="flex items-center gap-1">
+<h3 class="font-headline font-bold text-base leading-tight">Elder Kwesi</h3>
+<span class="material-symbols-outlined text-primary text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<p class="text-on-surface-variant text-sm">@storyteller</p>
+</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant">more_horiz</button>
+</div>
+<div class="space-y-4">
+<p class="font-body text-xl leading-relaxed text-on-surface">
+                    In Twi, the word for <span class="text-primary font-bold">'Community'</span> is <span class="text-primary font-bold">'Oman'</span>. But it's more than just people in a place; it's the spirit of shared responsibility. 🇬🇭
+                </p>
+<div class="flex flex-wrap gap-2">
+<span class="text-primary text-sm font-medium hover:underline cursor-pointer">#ModernGriot</span>
+<span class="text-primary text-sm font-medium hover:underline cursor-pointer">#TwiLearning</span>
+</div>
+<div class="text-on-surface-variant text-sm py-4 border-y border-outline-variant/20">
+                    7:42 AM · Oct 24, 2023 · <span class="font-bold text-on-surface">12.4K</span> Views
+                </div>
+<!-- Engagement Stats -->
+<div class="flex items-center justify-between px-2 py-1 text-on-surface-variant border-b border-outline-variant/20">
+<button class="flex items-center gap-1 group">
+<div class="p-2 rounded-full group-hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">chat_bubble</span>
+</div>
+<span class="text-xs font-medium">142</span>
+</button>
+<button class="flex items-center gap-1 group">
+<div class="p-2 rounded-full group-hover:bg-green-500/10 transition-colors">
+<span class="material-symbols-outlined text-[20px] group-hover:text-green-600">repeat</span>
+</div>
+<span class="text-xs font-medium">856</span>
+</button>
+<button class="flex items-center gap-1 group">
+<div class="p-2 rounded-full group-hover:bg-red-500/10 transition-colors">
+<span class="material-symbols-outlined text-[20px] group-hover:text-red-500" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+<span class="text-xs font-medium">3.2K</span>
+</button>
+<button class="flex items-center gap-1 group">
+<div class="p-2 rounded-full group-hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">bookmark</span>
+</div>
+<span class="text-xs font-medium">421</span>
+</button>
+<button class="flex items-center group">
+<div class="p-2 rounded-full group-hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">share</span>
+</div>
+</button>
+</div>
+</div>
+</article>
+<!-- Reply Bar -->
+<div class="px-4 py-3 flex items-center gap-3 border-b border-outline-variant/30">
+<div class="w-10 h-10 rounded-full overflow-hidden shrink-0">
+<img alt="Your avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBr66dM0WMkXv0IDCNzhftDzsGzuGaXp2KaWiZ1VhVyLuR9OPEmQCNVL8VkWFYhWLxzQwojhZWlLiQmWOAU4VGAZ68N3Y_pURDRT5dtR-2-1zG5E6h7V_6N0rRkJx0stbrPWSoA78-Ea0VwruyW1cST0ZbP9-UAJ628lWN3nqXN6_eqqStybLVYCXD5yoj3mMxowe4bE45hPaDv049PLf95g0MGAGIEiFGqSPD4QeS8Dh5UzC5lrnlVZDFSTf0t8nPACJQ0r1mijesE"/>
+</div>
+<div class="flex-grow">
+<input class="w-full bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-on-surface-variant text-lg" placeholder="Post your reply" type="text"/>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-bold text-sm active:scale-95 transition-transform opacity-50 cursor-not-allowed">Reply</button>
+</div>
+<!-- Replies List -->
+<div class="divide-y divide-outline-variant/30">
+<!-- Reply 1 -->
+<div class="p-4 flex gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden shrink-0">
+<img alt="Kofi profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPRfKnQjxHBA6uwm3fV36J0FQjg7SHF36oBNfef9d8QhLt9PhwHn7tpzZEjxoesgfVWusfhWJ5ynI3OPcAxxVHf-52rA9fd_qrKODp2T-Ya9aMmA_mJ5b9r6bdQ3mrAJdJ2t9IAYPgd5vnx7UFj00i9uTZJMq2tXqr-GzJEhUtb4FuLHB8Td_5bnrIdG6Yq4JwZojn3QA1siSEQX0KzqxY0KwM19fviCFw5jg6kf181Jfwr9XxH5lkPhGH6Ot4yTPiOEA7WXtBcqWL"/>
+</div>
+<div class="flex-grow">
+<div class="flex items-center justify-between mb-0.5">
+<div class="flex items-center gap-1.5">
+<span class="font-bold text-sm">Kofi</span>
+<span class="text-on-surface-variant text-sm">@koficodes · 2h</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-lg">more_horiz</span>
+</div>
+<p class="text-on-surface text-sm mb-3">Beautifully put, Elder. Reminds me of the proverb: <span class="italic text-primary font-medium">"Ti koro nko agyina"</span>.</p>
+<div class="flex justify-between max-w-xs text-on-surface-variant">
+<button class="flex items-center gap-1 group">
+<span class="material-symbols-outlined text-[18px] group-hover:text-primary">chat_bubble</span>
+<span class="text-[10px]">12</span>
+</button>
+<button class="flex items-center gap-1 group">
+<span class="material-symbols-outlined text-[18px] group-hover:text-green-600">repeat</span>
+<span class="text-[10px]">4</span>
+</button>
+<button class="flex items-center gap-1 group">
+<span class="material-symbols-outlined text-[18px] group-hover:text-red-500">favorite</span>
+<span class="text-[10px]">48</span>
+</button>
+<button class="flex items-center group">
+<span class="material-symbols-outlined text-[18px] group-hover:text-primary">share</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Reply 2 -->
+<div class="p-4 flex gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden shrink-0">
+<img alt="Amina profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC93btCruvhuqUXdUV64G1mMaqUTbftlogWKH1CGVu88FZtD4g6kMmkN-o3pfHHo4tJbxng3pLOFa-dwjABdZ_zOSr85N9m-vjOz9k__jmnEMleDIWjRYAgVEv5CWaCJGwHzIUKUj3vGDpVbOFvGYAkAu35cp6Dn_Xu4We3it6FvGzoPEMf4YgNM2FZnPvTNOm0lVaSu-torWWyQgnBdJ0UPsLQcrZs8blCHpmtVPcdPsnH6dsEI71a_V0_2jB8QBM2sZh2wd-Zmrtb"/>
+</div>
+<div class="flex-grow">
+<div class="flex items-center justify-between mb-0.5">
+<div class="flex items-center gap-1.5">
+<span class="font-bold text-sm">Amina</span>
+<span class="text-on-surface-variant text-sm">@amina_m · 1h</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-lg">more_horiz</span>
+</div>
+<p class="text-on-surface text-sm mb-3">Does <span class="font-semibold">'Oman'</span> also imply a nation state or just a small community?</p>
+<div class="flex justify-between max-w-xs text-on-surface-variant">
+<button class="flex items-center gap-1 group">
+<span class="material-symbols-outlined text-[18px] group-hover:text-primary">chat_bubble</span>
+<span class="text-[10px]">3</span>
+</button>
+<button class="flex items-center gap-1 group">
+<span class="material-symbols-outlined text-[18px] group-hover:text-green-600">repeat</span>
+</button>
+<button class="flex items-center gap-1 group">
+<span class="material-symbols-outlined text-[18px] group-hover:text-red-500">favorite</span>
+<span class="text-[10px]">15</span>
+</button>
+<button class="flex items-center group">
+<span class="material-symbols-outlined text-[18px] group-hover:text-primary">share</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Tribe CTA -->
+<div class="my-8 mx-4 p-6 bg-tertiary-container text-on-tertiary-container rounded-2xl relative overflow-hidden">
+<div class="absolute -right-6 -top-6 opacity-10 transform rotate-12 pointer-events-none">
+<span class="material-symbols-outlined text-9xl" style="font-variation-settings: 'FILL' 1;">diversity_3</span>
+</div>
+<h4 class="font-headline font-extrabold text-xl mb-2">Join the Twi Tribe</h4>
+<p class="text-sm opacity-90 mb-4 max-w-[80%] leading-snug">Connect with 1.2k learners discussing culture and language every day.</p>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-bold text-sm active:scale-95 transition-transform">Enter Village</button>
+</div>
+</main>
+<!-- BottomNavBar from COMPONENTS_5 -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-white/80 dark:bg-orange-950/80 rounded-t-[2.5rem] z-50 backdrop-blur-xl shadow-2xl no-border shadow-[0_-4px_20px_rgba(45,22,0,0.04)]">
+<a class="flex flex-col items-center justify-center text-[#a73400] dark:text-orange-400 bg-[#ffdbcf] dark:bg-orange-900/40 rounded-full px-6 py-2 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">forum</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-semibold uppercase tracking-wider">Feed</span>
+</a>
+<a class="flex flex-col items-center justify-center text-orange-900/40 dark:text-orange-200/40 px-6 py-2 hover:text-[#a73400] dark:hover:text-orange-300 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">search</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-semibold uppercase tracking-wider">Search</span>
+</a>
+<a class="flex flex-col items-center justify-center text-orange-900/40 dark:text-orange-200/40 px-6 py-2 hover:text-[#a73400] dark:hover:text-orange-300 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-semibold uppercase tracking-wider">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-orange-900/40 dark:text-orange-200/40 px-6 py-2 hover:text-[#a73400] dark:hover:text-orange-300 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">diversity_3</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-semibold uppercase tracking-wider">Tribe</span>
+</a>
+</nav>
+</body></html>

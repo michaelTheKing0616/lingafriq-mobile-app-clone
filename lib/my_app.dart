@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -7,14 +9,17 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 
 import 'app_theme.dart';
+import 'providers/dio_provider.dart';
 import 'providers/navigation_provider.dart';
+import 'services/offline/persisted_outbox_service.dart';
+import 'utils/api_service.dart';
 import 'providers/theme_mode_provider.dart';
 import 'screens/splash/splash_screen.dart';
 
 // Route screen imports
 import 'screens/ai_chat/ai_mode_selection_screen.dart';
 import 'screens/ai_chat/polie_mode_selection_screen.dart';
-import 'screens/curriculum/curriculum_screen_material3.dart';
+import 'screens/lessons/lessons_map_entry_screen.dart';
 import 'screens/games/games_screen.dart';
 import 'screens/games/games_screen_enhanced_with_all_games.dart';
 import 'screens/games/games_screen_material3.dart';
@@ -51,6 +56,9 @@ import 'screens/social/ancestral_tree_screen.dart';
 import 'screens/magazine/culture_magazine_screen_enhanced.dart';
 import 'screens/heritage/flb_heritage_archive_screen.dart';
 import 'screens/heritage/flb_heritage_detail_screen.dart';
+import 'screens/learning/heritage_milestones_screen.dart';
+import 'screens/learning/dialect_preference_screen.dart';
+import 'screens/vocabulary/living_dictionary_screen.dart';
 import 'screens/ugc/ugc_hub_screen.dart';
 import 'screens/voice_contribution/voice_contribution_screen.dart';
 import 'screens/media/import_media_screen.dart';
@@ -62,6 +70,10 @@ import 'screens/chat/call_history_screen.dart';
 import 'screens/chat/live_classroom_screen_material3.dart';
 import 'screens/classroom/classroom_lobby_screen.dart';
 import 'screens/classroom/classroom_notes_screen.dart';
+import 'screens/classroom/classroom_roster_screen.dart';
+import 'screens/classroom/classroom_assignments_screen.dart';
+import 'screens/classroom/classroom_privacy_screen.dart';
+import 'screens/classroom/classroom_v2_route_args.dart';
 import 'screens/classroom/speaker_queue_screen.dart';
 import 'screens/tabs_view/profile/app_policy_screen.dart';
 import 'screens/lesson/lesson_flow_screen.dart';
@@ -78,6 +90,11 @@ import 'screens/content/vocabulary_builder_screen.dart';
 import 'screens/content/listening_practice_screen.dart';
 import 'screens/content/writing_practice_screen.dart';
 import 'screens/learning/learning_path_screen.dart';
+import 'screens/learning/tone_rhythm/tone_rhythm_trainer_screen.dart';
+import 'screens/learning/phrase_dna/phrase_dna_templates_screen.dart';
+import 'screens/learning/speak_engine_lab_screen.dart';
+import 'screens/settings/synthetic_voice_styles_screen.dart';
+import 'screens/ar/point_and_say_screen.dart';
 import 'screens/social/friend_quests_screen.dart';
 import 'screens/social/create_friend_quest_screen.dart';
 import 'screens/auth/email_verification_screen.dart';
@@ -103,6 +120,7 @@ import 'package:lingafriq/screens/feed/x_lists_screen.dart';
 import 'package:lingafriq/screens/feed/x_post_detail_screen.dart';
 import 'package:lingafriq/screens/feed/x_profile_screen.dart';
 import 'screens/personalities/personality_selection_screen.dart';
+import 'screens/staff/micro_mentor_reports_screen.dart';
 import 'lessons/models/section_lesson_model.dart';
 import 'models/language_response.dart';
 import 'models/offline/local_vocabulary.dart';
@@ -128,7 +146,34 @@ class MyApp extends ConsumerStatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends ConsumerState<MyApp> {
+class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    // Bind immediately so [ApiService] uses the same Dio as [apiProvider]/[client]
+    // (auth refresh, 401 handling, DNS retry) before any child widget runs HTTP.
+    ApiService.bindSharedDio(ref.read(client));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      unawaited(PersistedOutboxService.instance.ensureOpen());
+      unawaited(PersistedOutboxService.instance.flushPending());
+    });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      unawaited(PersistedOutboxService.instance.flushPending());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final navigatorKey = ref.watch(navigationProvider).navigatorKey;
@@ -203,7 +248,7 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
   final routes = <String, WidgetBuilder>{
     'ai_chat_select': (_) => const AIModeSelectionScreen(),
     'polie_mode_selection': (_) => const PolieModeSelectionScreen(),
-    'curriculum': (_) => const CurriculumScreenMaterial3(),
+    'curriculum': (_) => const LessonsMapEntryScreen(),
     'games': (_) => const GamesScreenMaterial3(),
     /// Legacy flow: languages from `getLanguages()` API, then [GameTypesScreen].
     'games_api_languages': (_) => const GamesScreen(),
@@ -227,8 +272,16 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'elder-hut': (_) => const ElderHutScreen(),
     'practice-room-setup': (_) => const PracticeRoomSetupScreen(),
     'practice-session': (_) => const PracticeSessionScreen(),
-    'practice-room-collaborative': (_) =>
-        const PracticeRoomCollaborativeScreen(),
+    'practice-room-collaborative': (_) {
+      final args = settings.arguments as Map<String, dynamic>?;
+      return PracticeRoomCollaborativeScreen(
+        roomId: args?['roomId']?.toString(),
+        roomName: args?['roomName']?.toString(),
+        livekitToken: args?['livekitToken']?.toString(),
+        livekitUrl: args?['livekitUrl']?.toString(),
+        languageTag: args?['language']?.toString() ?? args?['languageTag']?.toString(),
+      );
+    },
     'session-summary': (_) => const SessionSummaryScreen(),
     'flashcard-focus': (_) => const FlashcardFocusScreen(),
     'matching-pairs': (_) => const MatchingPairsScreen(),
@@ -245,6 +298,9 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'magic_items': (_) => const MagicItemsScreen(),
     'ancestral_tree': (_) => const AncestralTreeScreen(),
     'magazine': (_) => const CultureMagazineScreenEnhanced(),
+    'heritage-milestones': (_) => const HeritageMilestonesScreen(),
+    'living-dictionary': (_) => const LivingDictionaryScreen(),
+    'dialect-preference': (ctx) => const DialectPreferenceScreen(),
     'flb-heritage-archive': (_) => const FlbHeritageArchiveScreen(),
     'flb-heritage-detail': (ctx) {
       final content = heritageDetailFromArguments(settings.arguments);
@@ -287,6 +343,27 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
         initialTribeId: args?['tribeId']?.toString(),
         initialRoomName: args?['roomName']?.toString(),
       );
+    },
+    'classroom-roster-v2': (_) {
+      final p = ClassroomV2RouteArgs.parse(settings.arguments);
+      if (p.tribeId == null) {
+        return ClassroomV2RouteArgs.missingTribeIdScaffold('/classroom-roster-v2');
+      }
+      return ClassroomRosterScreen(tribeId: p.tribeId!, tribeName: p.tribeName);
+    },
+    'classroom-assignments-v2': (_) {
+      final p = ClassroomV2RouteArgs.parse(settings.arguments);
+      if (p.tribeId == null) {
+        return ClassroomV2RouteArgs.missingTribeIdScaffold('/classroom-assignments-v2');
+      }
+      return ClassroomAssignmentsScreen(tribeId: p.tribeId!, tribeName: p.tribeName);
+    },
+    'classroom-privacy-v2': (_) {
+      final p = ClassroomV2RouteArgs.parse(settings.arguments);
+      if (p.tribeId == null) {
+        return ClassroomV2RouteArgs.missingTribeIdScaffold('/classroom-privacy-v2');
+      }
+      return ClassroomPrivacyScreen(tribeId: p.tribeId!, tribeName: p.tribeName);
     },
     'features_guide': (_) {
       final args = settings.arguments;
@@ -356,7 +433,64 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
       return ShareProgressScreen(cardType: args?['cardType'] as String? ?? 'daily_streak');
     },
     // Content
-    'conversation-scenarios': (_) => const ConversationScenariosScreen(),
+    'conversation-scenarios': (_) {
+      final raw = settings.arguments;
+      if (raw is! Map) return const ConversationScenariosScreen();
+      final args = Map<String, dynamic>.from(raw);
+      final language = args['language']?.toString().trim();
+      final languageName = args['languageName']?.toString().trim();
+      final hasLang = language != null && language.isNotEmpty;
+      final hasName = languageName != null && languageName.isNotEmpty;
+      if (!hasLang && !hasName) return const ConversationScenariosScreen();
+      return ConversationScenariosScreen(
+        language: hasLang ? language : null,
+        languageName: hasName ? languageName : null,
+      );
+    },
+    'speak-engine-lab': (_) => const SpeakEngineLabScreen(),
+    'tone-rhythm-trainer': (_) {
+      final raw = settings.arguments;
+      final map = raw is Map ? Map<String, dynamic>.from(raw as Map) : <String, dynamic>{};
+      final lang = map['language']?.toString().trim();
+      final language = (lang == null || lang.isEmpty) ? 'yoruba' : lang;
+      final et = map['expectedText']?.toString().trim();
+      return ToneRhythmTrainerScreen(
+        language: language,
+        expectedText: (et == null || et.isEmpty) ? null : et,
+      );
+    },
+    'phrase-dna-templates': (_) {
+      final raw = settings.arguments;
+      final map = raw is Map ? Map<String, dynamic>.from(raw as Map) : <String, dynamic>{};
+      final lang = map['language']?.toString().trim();
+      return PhraseDnaTemplatesScreen(language: (lang == null || lang.isEmpty) ? null : lang);
+    },
+    'synthetic-voice-styles': (_) {
+      final raw = settings.arguments;
+      final map = raw is Map ? Map<String, dynamic>.from(raw as Map) : <String, dynamic>{};
+      final lang = map['language']?.toString().trim() ?? 'yoruba';
+      return SyntheticVoiceStylesScreen(language: lang);
+    },
+    'point-and-say': (_) {
+      final raw = settings.arguments;
+      final map = raw is Map ? Map<String, dynamic>.from(raw as Map) : <String, dynamic>{};
+      final lang = map['language']?.toString().trim() ?? 'yoruba';
+      return PointAndSayScreen(language: lang);
+    },
+    'passport-proctored': (_) {
+      final p = PassportRouteArgs.parseProctored(settings.arguments);
+      return PassportProctoredSessionScreen(language: p.language, proctorMode: p.proctorMode);
+    },
+    'passport-credential': (_) {
+      final p = PassportRouteArgs.parseCredential(settings.arguments);
+      if (p == null) return PassportRouteArgs.missingCredentialScaffold();
+      return PassportCredentialScreen(
+        verifyToken: p.verifyToken,
+        level: p.level,
+        score: p.score,
+      );
+    },
+    'micro-mentor-hub': (_) => const MicroMentorHubScreen(),
     'cultural-hub': (_) => const CulturalHubScreen(),
     'vocabulary-builder': (_) => const VocabularyBuilderScreen(),
     'listening-practice': (_) => const ListeningPracticeScreen(),
@@ -456,6 +590,7 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'search-community': (_) => const SearchCommunityScreen(),
     'community-profile': (_) => const CommunityProfileScreen(),
     'historical-personas': (_) => const PersonalitySelectionScreen(),
+    'staff-micro-mentor-reports': (_) => const StaffMicroMentorReportsScreen(),
   };
 
   final builder = routes[normalizedRoute];

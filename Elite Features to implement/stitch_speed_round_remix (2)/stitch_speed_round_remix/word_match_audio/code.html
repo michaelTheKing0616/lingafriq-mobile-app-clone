@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Polyglot Atelier - Word Match</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#70f8e8",
+                        "outline-variant": "#c5c5d4",
+                        "on-secondary-fixed-variant": "#005049",
+                        "on-tertiary-fixed-variant": "#683d00",
+                        "on-primary-fixed-variant": "#0031c4",
+                        "surface-dim": "#d9dadb",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-variant": "#e1e3e4",
+                        "inverse-primary": "#bac3ff",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#edeeef",
+                        "surface-tint": "#2e4edc",
+                        "tertiary-container": "#834e00",
+                        "on-surface-variant": "#454652",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#f8f9fa",
+                        "on-background": "#191c1d",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#633900",
+                        "on-surface": "#191c1d",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-container-low": "#f3f4f5",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed-dim": "#4fdbcc",
+                        "secondary": "#006a62",
+                        "on-secondary-container": "#007168",
+                        "on-secondary-fixed": "#00201d",
+                        "surface": "#f8f9fa",
+                        "primary-container": "#284ad8",
+                        "tertiary-fixed": "#ffdcbc",
+                        "outline": "#757684",
+                        "primary-fixed": "#dee1ff",
+                        "secondary-container": "#70f8e8",
+                        "primary-fixed-dim": "#bac3ff",
+                        "on-primary-fixed": "#001159",
+                        "primary": "#002fbb",
+                        "error": "#ba1a1a",
+                        "background": "#f8f9fa",
+                        "tertiary-fixed-dim": "#ffb86b",
+                        "on-tertiary-fixed": "#2c1700",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#2e3132",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-primary-container": "#c9d0ff",
+                        "on-tertiary-container": "#ffc890"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .fill-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body text-on-surface antialiased min-h-screen flex flex-col">
+<!-- TopAppBar (From JSON) -->
+<header class="fixed top-0 left-0 w-full flex justify-between items-center px-6 py-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl z-50 shadow-[0_24px_24px_-4px_rgba(63,81,181,0.06)]">
+<div class="flex items-center gap-4 flex-1">
+<button class="active:scale-95 duration-200 ease-out p-2 rounded-full hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors">
+<span class="material-symbols-outlined text-slate-500 dark:text-slate-400">close</span>
+</button>
+<div class="w-full max-w-md h-3 bg-surface-container-highest rounded-full overflow-hidden relative">
+<div class="absolute inset-0 bg-gradient-to-r from-secondary to-secondary-fixed-dim h-full rounded-full w-3/4 shadow-[0_0_12px_rgba(0,106,98,0.3)]"></div>
+</div>
+</div>
+<div class="flex items-center gap-2 ml-6">
+<span class="font-['Plus_Jakarta_Sans'] font-bold tracking-tight text-indigo-700 dark:text-indigo-400 text-xl">5 🔥</span>
+</div>
+</header>
+<!-- Main Canvas Area -->
+<main class="flex-grow pt-32 pb-32 px-6 max-w-5xl mx-auto w-full">
+<!-- Section Header -->
+<div class="mb-12 text-center">
+<h1 class="font-headline text-4xl font-extrabold tracking-tight text-on-surface mb-2">Connect the Meaning</h1>
+<p class="text-on-surface-variant font-medium">Tap a word to hear its voice, then match it to its anchor.</p>
+</div>
+<!-- Matching Grid: Asymmetric Layout -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+<!-- Left Column: Source Language (Indigo Cards) -->
+<div class="space-y-6">
+<div class="flex items-center gap-3 mb-4">
+<span class="text-xs font-bold uppercase tracking-widest text-primary/60">Français</span>
+<div class="h-[1px] flex-grow bg-outline-variant/30"></div>
+</div>
+<!-- Word Card 1 (Active/Selected State) -->
+<div class="group relative bg-primary-fixed border-2 border-primary p-6 rounded-[1.5rem] shadow-[0_24px_24px_-4px_rgba(0,47,187,0.12)] cursor-pointer active:scale-[0.98] transition-all duration-300">
+<div class="flex justify-between items-center">
+<span class="font-headline text-2xl font-bold text-on-primary-fixed">Bonjour</span>
+<button class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined">volume_up</span>
+</button>
+</div>
+</div>
+<!-- Word Card 2 -->
+<div class="group relative bg-surface-container-lowest p-6 rounded-[1.5rem] shadow-[0_24px_24px_-4px_rgba(63,81,181,0.06)] border border-transparent hover:border-outline-variant/30 cursor-pointer active:scale-[0.98] transition-all duration-300">
+<div class="flex justify-between items-center">
+<span class="font-headline text-2xl font-bold text-on-surface">Bibliothèque</span>
+<button class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant group-hover:bg-primary-fixed group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">volume_up</span>
+</button>
+</div>
+</div>
+<!-- Word Card 3 (Error State Mockup) -->
+<div class="group relative bg-error-container border-2 border-error p-6 rounded-[1.5rem] shadow-[0_12px_24px_-4px_rgba(186,26,26,0.1)] cursor-pointer active:scale-[0.98] transition-all duration-300">
+<div class="flex justify-between items-center">
+<span class="font-headline text-2xl font-bold text-on-error-container">L'école</span>
+<button class="w-10 h-10 rounded-full bg-error flex items-center justify-center text-white">
+<span class="material-symbols-outlined">volume_up</span>
+</button>
+</div>
+</div>
+<!-- Word Card 4 -->
+<div class="group relative bg-surface-container-lowest p-6 rounded-[1.5rem] shadow-[0_24px_24px_-4px_rgba(63,81,181,0.06)] border border-transparent hover:border-outline-variant/30 cursor-pointer active:scale-[0.98] transition-all duration-300">
+<div class="flex justify-between items-center">
+<span class="font-headline text-2xl font-bold text-on-surface">Maintenant</span>
+<button class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant group-hover:bg-primary-fixed group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">volume_up</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Right Column: Target Language (Bubbles) -->
+<div class="space-y-6 md:pt-12">
+<div class="flex items-center gap-3 mb-4">
+<div class="h-[1px] flex-grow bg-outline-variant/30"></div>
+<span class="text-xs font-bold uppercase tracking-widest text-secondary/60">English</span>
+</div>
+<!-- Meaning Bubble 1 -->
+<div class="bg-surface-container-low p-6 rounded-[2rem] border border-transparent hover:bg-surface-container-high transition-colors cursor-pointer flex items-center justify-center group active:scale-95 duration-200">
+<span class="font-body text-xl font-semibold text-on-surface-variant group-hover:text-on-surface">The school</span>
+</div>
+<!-- Meaning Bubble 2 (Active/Match State) -->
+<div class="bg-primary border-2 border-primary-container p-6 rounded-[2rem] shadow-[0_20px_40px_rgba(0,47,187,0.2)] cursor-pointer flex items-center justify-center active:scale-95 duration-200">
+<span class="font-body text-xl font-bold text-on-primary">Hello</span>
+</div>
+<!-- Meaning Bubble 3 -->
+<div class="bg-surface-container-low p-6 rounded-[2rem] border border-transparent hover:bg-surface-container-high transition-colors cursor-pointer flex items-center justify-center group active:scale-95 duration-200">
+<span class="font-body text-xl font-semibold text-on-surface-variant group-hover:text-on-surface">Now</span>
+</div>
+<!-- Meaning Bubble 4 -->
+<div class="bg-surface-container-low p-6 rounded-[2rem] border border-transparent hover:bg-surface-container-high transition-colors cursor-pointer flex items-center justify-center group active:scale-95 duration-200">
+<span class="font-body text-xl font-semibold text-on-surface-variant group-hover:text-on-surface">Library</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Fixed Bottom Bar -->
+<footer class="fixed bottom-0 left-0 w-full p-6 bg-white/90 backdrop-blur-md z-40">
+<div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+<div class="hidden md:flex items-center gap-4">
+<div class="flex -space-x-2">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center ring-2 ring-white">
+<span class="material-symbols-outlined text-tertiary text-sm fill-icon">star</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center ring-2 ring-white">
+<span class="material-symbols-outlined text-secondary text-sm fill-icon">emoji_events</span>
+</div>
+</div>
+<p class="text-sm font-semibold text-on-surface-variant">Daily Goal: 3/5 matches completed</p>
+</div>
+<!-- Check Button (Disabled Styling applied via opacity and hover suppression) -->
+<button class="w-full md:w-auto px-12 py-4 bg-outline-variant text-on-surface-variant/50 font-headline font-bold text-lg rounded-xl cursor-not-allowed transition-all">
+                CHECK PAIRS
+            </button>
+</div>
+</footer>
+<!-- Floating Achievement Interaction (Visual Polish) -->
+<div class="fixed top-24 right-8 hidden lg:block">
+<div class="bg-tertiary-fixed-dim/20 backdrop-blur-sm p-4 rounded-2xl border border-tertiary-fixed-dim/30 flex flex-col items-center gap-2">
+<div class="w-12 h-12 rounded-full bg-gradient-to-tr from-tertiary to-tertiary-container flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-on-tertiary fill-icon">auto_awesome</span>
+</div>
+<span class="font-bold text-xs text-tertiary uppercase tracking-tighter">Perfect Streak</span>
+</div>
+</div>
+<!-- BottomNavBar (Suppressed for focused task per rule: Task-Focused screens hide navigation shell) -->
+</body></html>

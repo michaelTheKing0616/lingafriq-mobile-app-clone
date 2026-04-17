@@ -1,2 +1,7 @@
 #include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"
 #include "Generated.xcconfig"
+
+// iOS ATS (App Transport Security)
+// Debug builds may point to local/dev http endpoints.
+LINGAFRIQ_IOS_ALLOW_ARBITRARY_LOADS=YES
+LINGAFRIQ_IOS_ALLOWS_LOCAL_NETWORKING=YES

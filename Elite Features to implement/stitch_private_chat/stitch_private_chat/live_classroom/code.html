@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LingAfriq Live Classroom</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,700;0,800;1,800&amp;family=Lexend:wght@300;400;500;600&amp;family=Dosis:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-surface": "#2d1600",
+              "on-background": "#2d1600",
+              "inverse-surface": "#462a0d",
+              "surface-tint": "#aa3601",
+              "inverse-primary": "#ffb59c",
+              "surface-variant": "#ffdcbf",
+              "on-secondary-fixed-variant": "#005320",
+              "tertiary-container": "#9b6c00",
+              "on-tertiary-fixed": "#281900",
+              "on-error-container": "#93000a",
+              "surface": "#fff8f5",
+              "secondary-fixed": "#7ffc97",
+              "surface-container-low": "#fff1e8",
+              "surface-container": "#ffeada",
+              "surface-container-high": "#ffe3cd",
+              "inverse-on-surface": "#ffeee1",
+              "on-tertiary": "#ffffff",
+              "surface-container-lowest": "#ffffff",
+              "primary": "#a73400",
+              "primary-container": "#c94c1a",
+              "surface-container-highest": "#ffdcbf",
+              "surface-dim": "#ffd2aa",
+              "on-primary-fixed-variant": "#822700",
+              "tertiary-fixed": "#ffdeab",
+              "primary-fixed-dim": "#ffb59c",
+              "error": "#ba1a1a",
+              "error-container": "#ffdad6",
+              "secondary-fixed-dim": "#62df7d",
+              "tertiary-fixed-dim": "#f8bc51",
+              "outline-variant": "#e0bfb5",
+              "on-tertiary-fixed-variant": "#5f4100",
+              "on-secondary-container": "#007230",
+              "on-tertiary-container": "#fffbff",
+              "on-primary-fixed": "#390c00",
+              "on-secondary": "#ffffff",
+              "on-primary": "#ffffff",
+              "on-secondary-fixed": "#002109",
+              "secondary": "#006e2d",
+              "secondary-container": "#7cf994",
+              "on-primary-container": "#fffbff",
+              "tertiary": "#7b5500",
+              "background": "#fff8f5",
+              "on-error": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Lexend"],
+              "label": ["Dosis"],
+              "dosis": ["Dosis"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .bg-focus-black { background-color: #111111; }
+      .text-dosis { font-family: 'Dosis', sans-serif; }
+      .speaking-pulse {
+        box-shadow: 0 0 0 0 rgba(167, 52, 0, 0.7);
+        animation: pulse-ring 1.5s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+      }
+      @keyframes pulse-ring {
+        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(167, 52, 0, 0.7); }
+        70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(167, 52, 0, 0); }
+        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(167, 52, 0, 0); }
+      }
+      .live-dot {
+        animation: blink 1.2s infinite;
+      }
+      @keyframes blink {
+        0% { opacity: 1; }
+        50% { opacity: 0.3; }
+        100% { opacity: 1; }
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-focus-black text-white min-h-screen font-body selection:bg-primary-container/30">
+<!-- Top Navigation (Shell Implementation) -->
+<header class="bg-focus-black/80 backdrop-blur-md sticky top-0 z-50 flex justify-between items-center w-full px-6 py-4">
+<div class="flex items-center gap-4">
+<div class="bg-error rounded-full w-3 h-3 live-dot"></div>
+<div>
+<h1 class="font-headline font-bold text-xl tracking-tight text-white leading-none">Live Classroom</h1>
+<p class="font-label text-xs uppercase tracking-widest text-primary-fixed opacity-80 mt-1">Yoruba Tonality Deep Dive</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center bg-white/10 rounded-full px-3 py-1 gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="groups">groups</span>
+<span class="font-label font-bold text-sm tracking-tighter">1.2K</span>
+</div>
+<button class="bg-primary hover:bg-primary-container transition-colors text-white font-label font-bold px-5 py-2 rounded-full text-sm scale-95 active:duration-150">
+                Leave
+            </button>
+</div>
+</header>
+<main class="max-w-5xl mx-auto px-6 pb-32">
+<!-- Speaker Grid (High Energy Layout) -->
+<section class="mt-8 mb-12">
+<div class="flex flex-col md:flex-row gap-8 items-start">
+<!-- Host (The Modern Griot) -->
+<div class="flex flex-col items-center w-full md:w-1/3">
+<div class="relative mb-4">
+<div class="absolute -top-4 -right-2 z-10 bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full flex items-center gap-1 shadow-xl">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+<span class="font-label text-xs font-bold uppercase tracking-wider">Host</span>
+</div>
+<div class="w-32 h-32 md:w-44 md:h-44 rounded-full p-1.5 bg-gradient-to-tr from-primary to-tertiary-fixed speaking-pulse">
+<img alt="Tutor Chidinma" class="w-full h-full rounded-full object-cover border-4 border-focus-black" data-alt="Close-up portrait of a confident West African woman with braided hair wearing traditional vibrant patterned clothing, smiling warmly" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCV6-yAASPJ2eYFNc0ixZYvZKdATW4ZWU9dhkdKWYV-9173oS8kEQfMKxUNrJDN78WjA2G8AfF3EHveb29L9QqYtEjMXP8iEfa0YsImJ1WX_hLNabUXyX90Nepgu7p5toi-9-DGJxYOgq2LGJ5Yfp4eX8SSxiZap6WdwpMiIaQj4gVMLx5fzkdSfcD-SLl_KtZz-ARArvdWCM6M1TO1Cz0jLmAJlNrBfbMMm7wvnN2LPJ5u2f8qbf7sdphjDuEtHLVBbGDudHzxiKSN"/>
+</div>
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-full flex items-center gap-1 shadow-lg">
+<span class="material-symbols-outlined text-[10px]" style="font-variation-settings: 'FILL' 1;">mic</span>
+<span class="text-[10px] font-bold">SPEAKING</span>
+</div>
+</div>
+<h2 class="font-headline font-extrabold text-xl md:text-2xl text-white italic">Tutor Chidinma</h2>
+<p class="font-label text-sm text-primary-fixed-dim uppercase tracking-widest font-semibold mt-1">Language Specialist</p>
+</div>
+<!-- Secondary Speakers Grid -->
+<div class="w-full md:w-2/3 grid grid-cols-2 sm:grid-cols-3 gap-6 pt-4">
+<!-- Speaker 2 -->
+<div class="flex flex-col items-center group">
+<div class="relative mb-3">
+<div class="w-20 h-20 md:w-24 md:h-24 rounded-full p-1 bg-white/10 group-hover:bg-primary/50 transition-colors">
+<img alt="Speaker Kwame" class="w-full h-full rounded-full object-cover border-2 border-focus-black" data-alt="Portrait of a young Ghanaian man wearing a modern kente-patterned shirt, indoor soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeD-EmmPOf9v7-NjwERLpOuRe8ORpahKqNKf8WGaWCUFkGPsXYQp9rZx0WyefntFiyj--R7vCwjnBB3oVlGlOdYkSRtXhZAMJagxMHTa59apcz5PRmHs3WiIaKRsZdl_e5k4dD0iiSNz5bcd09284k-5OqD1M97zFj4TvfPDvv7jIK6x4fdx2sOZBaNTSoyoBXMIJusrjwmMb5Jp1QNslMjKEtXT4uzSaP5SuIGkZ0y5DCcVjj0auWxMCT2X7M2M9LbzoUKHvAWehw"/>
+</div>
+</div>
+<span class="font-label font-bold text-white tracking-wide">Kwame.eth</span>
+<div class="flex items-center gap-1 text-white/50">
+<span class="material-symbols-outlined text-xs">mic_off</span>
+</div>
+</div>
+<!-- Speaker 3 -->
+<div class="flex flex-col items-center group">
+<div class="relative mb-3">
+<div class="w-20 h-20 md:w-24 md:h-24 rounded-full p-1 bg-secondary-fixed/50 speaking-pulse">
+<img alt="Speaker Sarah" class="w-full h-full rounded-full object-cover border-2 border-focus-black" data-alt="Headshot of a smiling woman with glasses, neutral professional background, studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEtqOIplJV-UaWUAqmA8o8H2faX7-lgUztI5_ZL4ZMQ6HFDqSJx5UAC6Ni7cRtOo7_01Xz39kM-L8cJxhYrTVy8UXCrMWMoxlie4jUqECjYf8W_5k7q62NOgO6jzZJbYOpGaBb0W1czxA9mUu0yW8mwxoblnOAs3Nm5MkxEGQy31Y28gu3tI6IzF4jZCZPa-TIU7jceSuP63mZyq03pNoEnKfgbUvO3S_x6cb30Jxp7QrjnSwNJEO8FsXHx-Lvc7jgAA4DbWuxnVgh"/>
+</div>
+</div>
+<span class="font-label font-bold text-white tracking-wide">Sarah Oh</span>
+<div class="flex items-center gap-1 text-secondary-fixed">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">mic</span>
+</div>
+</div>
+<!-- Speaker 4 -->
+<div class="flex flex-col items-center group">
+<div class="relative mb-3">
+<div class="w-20 h-20 md:w-24 md:h-24 rounded-full p-1 bg-white/10">
+<img alt="Speaker Malick" class="w-full h-full rounded-full object-cover border-2 border-focus-black" data-alt="African man in traditional white attire, looking thoughtfully off-camera, warm sunset lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAD1Whpg9czHKVeX3Fabm2oR7VkmdHTNwm_3xXK5EBnVjQS9gRr3r3UOFbbeIYPs7tuMGMQzgRXn5ZWZfT276fN8CZUfbVK5l3p_jvk12TL9KJ7VlxvDVfcnuwYoYMS_XLvKu7Hx24MrRfG4GFiTVwlaW5gX-EE7LIEKdpv9lavKC5I4ZSKL_nIVx882d0DI1slxOIO6E6e9HSatx4fo4Uhyq-FvQJwJRBd3PvVNvMX-ZF1JX0U99DBbmiaMNHEUqne8fUlDSlSrZDW"/>
+</div>
+</div>
+<span class="font-label font-bold text-white tracking-wide">Malick D.</span>
+<div class="flex items-center gap-1 text-white/50">
+<span class="material-symbols-outlined text-xs">mic_off</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Asymmetric Layout: Audience & Real-time Notes -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+<!-- Listeners Column -->
+<div class="lg:col-span-4 order-2 lg:order-1">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-label font-bold text-sm uppercase tracking-widest text-primary-fixed">Listening Now</h3>
+<span class="text-xs text-white/40">+1,192 more</span>
+</div>
+<div class="flex flex-wrap gap-4">
+<!-- Listener Avatars -->
+<div class="w-12 h-12 rounded-full overflow-hidden border border-white/10">
+<img alt="User" class="w-full h-full object-cover" data-alt="User avatar 1" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3CXcx7Pd9s5OaExd66RJpY2QZXjdSLy_epgn3Y_2mJ4ruv_uW3mlutcHP1agCofHbMW32VwaOYkMzyGf_toH_UCxt4R8W-EfM7-jzLh4OXIJNVERFSFFmnK-F1BjQCxZmXqqcXrzZdOHIBhkHdnvLIWS1ay2Yw-x5qUB35E1K4-u4gfCSEhqbofzJP82GBv43QbZZaanjOqryKqaYjdyVuiSQ1vVB8uK_T2C92HHZdDxkqphEsJJA-4GuiDnEVgQzdjCr7a1LWOde"/>
+</div>
+<div class="w-12 h-12 rounded-full overflow-hidden border border-white/10">
+<img alt="User" class="w-full h-full object-cover" data-alt="User avatar 2" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARWBeaLQiXBJDIZN-j0Y4o4GXNI2smMDT-Z1WnH-VsVqrMeMjND6yFevJisqAqaNn4UEc16M4x2cufUlLGZp8TEd1DhIbM4rmQgDxthzWDcchR9C-ciosHaVz7QJ1bmnmQ-Eg7z42HHNc0McKn3B-ax6QautORv636ulYdFKLuAUO-FcKUBUFKDJ-AzTZcXSNwJ3OrjFi3q_nNMjdUTTTPocVJEDlxU4nIggjhaKKmZsZy-3o_gaHYQLLt2DyLn05vHESjsKE9ATgr"/>
+</div>
+<div class="w-12 h-12 rounded-full overflow-hidden border border-white/10">
+<img alt="User" class="w-full h-full object-cover" data-alt="User avatar 3" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqz1R_sdkxgX7B-o_4iIIkXwIzghIrJpkdSKL64js6jLIjqHDP3Ai1vZKD2ASiM-8F2a4pQBnehWHUZRs11c5qMvi9xo9KqS_fqRR-bdRvcoImikgMU-0LwMGcfkEBWZOBJ1umFdZRSvNpFgb-DL9G3xCRJBwA9pUq1HXdkfCo_YIVdUTN89-kFnwoHXnW3_YEcruQT_yURQ0_UQblu1AI6Daa8zv2NfWrpmHa_PXALJ80by20SCSPkwaAQYDumJRuCvX3VwquWtbI"/>
+</div>
+<div class="w-12 h-12 rounded-full overflow-hidden border border-white/10">
+<img alt="User" class="w-full h-full object-cover" data-alt="User avatar 4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQ3MTYMrNrzCXXbiVOT-vh3cg7057mxg88W8n5wQLMg2fjDxMPDLCdoYAk4Tmu4YO_fedJY07eNYKBvzClD7lGcbKcGEiT27tM4vLw7CLEyNL_8u202kq7ZJ4Sk9N9xJ39usnOcYi3vqlW0lHkkA4QxIH5Tfs3MdppzaUEAyKk0g1LcZWD2q_3a8grV5mwwO4BDVbmNFHR53ZcnBMLhpDA2vDsLDIvEx8q64lBhClmssEKB9aULXrHGM5GX_7DcXC3zdwTU3FoNlYw"/>
+</div>
+<div class="w-12 h-12 rounded-full overflow-hidden border border-white/10">
+<img alt="User" class="w-full h-full object-cover" data-alt="User avatar 5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGMShfHorNLFxZS40YFiRNThwsBhn6g2yjifo3CfCU_P-TGagN0iaVq-WkiUCJCvvjTW2qjJYEOdH4Zau-WSsjMSaAiN4QuaNE5uJHi_Oc7mo7H_auF1RUecfL_VEuyIBYc0rzzDwri8PFcZMRpXXKKm-3Hskpt53SeCFGO2BL4bg736P2txEiGeRibwx_OiBRPhvdWRg7bJd1_ge6FDO1DEJhzG5gtJmWFjSV2Pl9bkyingL7pt0GLDvtHPsQ513al09V-msUvvTA"/>
+</div>
+<div class="w-12 h-12 rounded-full overflow-hidden border border-white/10 relative">
+<div class="absolute inset-0 bg-primary/40 backdrop-blur-sm flex items-center justify-center text-xs font-bold">+12</div>
+<img alt="User" class="w-full h-full object-cover" data-alt="User avatar placeholder" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-w2bulQr1Ym_fWTj_nXEYv-8aTsQ4Nh4pxrP1vLu46iD4gGjI858fqZsnnHWxPqTvEmL8i6OvlnESs8biApfPQ4LOBYJ8N5okUKsSkr_A2X1p-pT2pgetAKzwlD0w_-W6HTImSCxnzz2iRuRaEwuU4TviKYnFoiCHFdUjeD9JqBQKOKuq-MVxhwztr4Ojf-BR-3jnRqsusJalh53gUDhSI5FA_zKvJ3cYrI9uMXBIjd6TF_ViE810HkXM22B3sYPNOx3O4o8CcuRa"/>
+</div>
+</div>
+<!-- Interactive Reactions Area -->
+<div class="mt-12 bg-white/5 rounded-xl p-6 border border-white/5">
+<h4 class="font-label font-bold text-xs uppercase tracking-widest text-primary-fixed mb-4">React Live</h4>
+<div class="grid grid-cols-4 gap-4">
+<button class="flex flex-col items-center gap-1 hover:bg-white/10 p-2 rounded-lg transition-colors">
+<span class="text-2xl">🔥</span>
+<span class="text-[10px] font-label font-bold">Lit</span>
+</button>
+<button class="flex flex-col items-center gap-1 hover:bg-white/10 p-2 rounded-lg transition-colors">
+<span class="text-2xl">🌍</span>
+<span class="text-[10px] font-label font-bold">Tribe</span>
+</button>
+<button class="flex flex-col items-center gap-1 hover:bg-white/10 p-2 rounded-lg transition-colors">
+<span class="text-2xl">🙏</span>
+<span class="text-[10px] font-label font-bold">Respect</span>
+</button>
+<button class="flex flex-col items-center gap-1 hover:bg-white/10 p-2 rounded-lg transition-colors">
+<span class="text-2xl">💡</span>
+<span class="text-[10px] font-label font-bold">Aha!</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Whiteboard / Notes Column -->
+<div class="lg:col-span-8 order-1 lg:order-2">
+<div class="bg-surface-container-lowest/5 rounded-lg border border-white/10 p-8 shadow-2xl relative overflow-hidden backdrop-blur-sm">
+<!-- Lesson Context Chip -->
+<div class="flex items-center gap-2 mb-8">
+<span class="bg-tertiary text-on-tertiary text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">Active Lesson</span>
+<span class="text-white/40 text-xs font-label">Tones &amp; Diacritics</span>
+</div>
+<!-- Main Vocabulary Display -->
+<div class="mb-12">
+<div class="relative inline-block mb-4">
+<h2 class="font-headline font-black text-6xl md:text-7xl text-primary leading-tight tracking-tighter">Ẹ kú àárọ̀</h2>
+<div class="absolute -right-12 top-2 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-white" data-icon="volume_up">volume_up</span>
+</div>
+</div>
+<div class="flex items-center gap-4 text-white/60">
+<span class="font-label italic text-xl">[Eh koo ah-raw]</span>
+<span class="w-2 h-2 rounded-full bg-white/20"></span>
+<span class="font-label font-medium text-xl">Good Morning</span>
+</div>
+</div>
+<!-- Live Transcript -->
+<div class="space-y-6">
+<div class="flex gap-4">
+<div class="flex-shrink-0 w-8 h-8 rounded-full bg-tertiary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-on-tertiary-fixed text-sm" data-icon="record_voice_over" style="font-variation-settings: 'FILL' 1;">record_voice_over</span>
+</div>
+<div>
+<p class="text-white font-label leading-relaxed opacity-90 italic">"Notice the low tone on the 'à' and the middle tone on the 'rọ̀'. This distinction is vital for meaning..."</p>
+<p class="text-[10px] font-bold text-primary-fixed mt-1 opacity-50">TUTOR CHIDINMA • JUST NOW</p>
+</div>
+</div>
+</div>
+<!-- Interactive Totem Element -->
+<div class="absolute -right-10 bottom-10 opacity-20 transform rotate-12 pointer-events-none">
+<span class="material-symbols-outlined text-[180px] text-tertiary-fixed" data-icon="auto_stories">auto_stories</span>
+</div>
+</div>
+<!-- Phrase Quick-Reference -->
+<div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-surface-container-low/10 p-5 rounded-lg flex items-center justify-between border-l-4 border-secondary">
+<div>
+<p class="font-label font-bold text-lg text-white">Bawo ni?</p>
+<p class="text-white/50 text-xs">How are you?</p>
+</div>
+<span class="material-symbols-outlined text-secondary" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="bg-surface-container-low/10 p-5 rounded-lg flex items-center justify-between opacity-50">
+<div>
+<p class="font-label font-bold text-lg text-white">O dabo</p>
+<p class="text-white/50 text-xs">Goodbye</p>
+</div>
+<span class="material-symbols-outlined text-white/30" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Controls Shell (Floating Architecture) -->
+<div class="fixed bottom-0 left-0 w-full z-50 px-6 pb-8 md:pb-12 pointer-events-none">
+<div class="max-w-xl mx-auto bg-white/10 backdrop-blur-xl rounded-full p-3 flex justify-around items-center border border-white/5 shadow-2xl pointer-events-auto">
+<button class="flex flex-col items-center justify-center text-white p-3 hover:bg-white/10 rounded-full transition-all group">
+<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform" data-icon="mic_off">mic_off</span>
+<span class="font-label font-medium text-[10px] uppercase tracking-widest mt-1">Mute</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary-fixed p-3 bg-secondary-fixed/10 rounded-full transition-all group">
+<span class="material-symbols-outlined text-2xl group-hover:animate-bounce" data-icon="front_hand">front_hand</span>
+<span class="font-label font-medium text-[10px] uppercase tracking-widest mt-1">Raise</span>
+</button>
+<div class="w-px h-8 bg-white/10 mx-2"></div>
+<button class="flex flex-col items-center justify-center text-white p-3 hover:bg-white/10 rounded-full transition-all group">
+<span class="material-symbols-outlined text-2xl" data-icon="add_reaction">add_reaction</span>
+<span class="font-label font-medium text-[10px] uppercase tracking-widest mt-1">React</span>
+</button>
+<button class="flex flex-col items-center justify-center text-white p-3 hover:bg-white/10 rounded-full transition-all group">
+<span class="material-symbols-outlined text-2xl" data-icon="ios_share">ios_share</span>
+<span class="font-label font-medium text-[10px] uppercase tracking-widest mt-1">Invite</span>
+</button>
+</div>
+</div>
+<!-- Decorative Elements -->
+<div class="fixed top-0 left-0 w-full h-full pointer-events-none opacity-20 mix-blend-overlay">
+<div class="absolute top-[20%] left-[10%] w-[300px] h-[300px] bg-primary rounded-full blur-[120px]"></div>
+<div class="absolute bottom-[20%] right-[10%] w-[300px] h-[300px] bg-tertiary rounded-full blur-[120px]"></div>
+</div>
+</body></html>

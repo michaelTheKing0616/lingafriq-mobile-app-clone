@@ -15,6 +15,7 @@ import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/utils/games_prefetch_language.dart';
+import 'package:lingafriq/theme/stitch_theme_extensions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'game_onboarding_overlay.dart';
 import 'game_catalog.dart';
@@ -28,6 +29,7 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
     final selectedLanguage = useState('yoruba');
     final selectedCategory = useState<String?>(null);
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final stitch = Theme.of(context).extension<StitchArcadeTheme>();
 
     final languages = kGamesHubLanguageSlugs;
     final categories = ['All', 'Vocabulary', 'Grammar', 'Pronunciation', 'Cultural'];
@@ -113,9 +115,11 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
         elevation: 0,
       ),
       body: Container(
-        color: isDark
-            ? PanAfricanColors.surfaceDark
-            : PanAfricanColors.surfaceLight,
+        color: stitch != null
+            ? (isDark ? stitch.parchmentLow : stitch.parchment)
+            : (isDark
+                ? PanAfricanColors.surfaceDark
+                : PanAfricanColors.surfaceLight),
         child: Column(
           children: [
             // Language Selector
@@ -386,7 +390,8 @@ class _GameCard extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(PanAfricanSpacing.md),
               decoration: BoxDecoration(
-                color: PanAfricanColors.primary,
+                color: Theme.of(context).extension<StitchArcadeTheme>()?.terracottaAccent ??
+                    PanAfricanColors.primary,
                 shape: BoxShape.circle,
                 boxShadow: PanAfricanShadows.sm,
               ),

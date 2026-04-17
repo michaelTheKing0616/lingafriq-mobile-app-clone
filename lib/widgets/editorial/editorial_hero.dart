@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 /// Full-bleed hero image with gradient overlay and metadata.
 ///
@@ -48,14 +49,12 @@ class EditorialHero extends StatelessWidget {
 
   Widget _buildImage(ColorScheme colors) {
     if (imageUrl != null && imageUrl!.isNotEmpty) {
-      return Image.network(
-        imageUrl!,
+      return CachedNetworkImage(
+        imageUrl: imageUrl!,
         fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) => _buildPlaceholder(colors),
-        loadingBuilder: (_, child, progress) {
-          if (progress == null) return child;
-          return _buildPlaceholder(colors);
-        },
+        fadeInDuration: const Duration(milliseconds: 180),
+        placeholder: (_, __) => _buildPlaceholder(colors),
+        errorWidget: (_, __, ___) => _buildPlaceholder(colors),
       );
     }
     return _buildPlaceholder(colors);

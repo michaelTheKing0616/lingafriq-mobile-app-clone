@@ -27,7 +27,7 @@ class LocalDatabaseService {
   Box? _metadataBox;
 
   bool _isInitialized = false;
-  final int _schemaVersion = 1;
+  final int _schemaVersion = 2;
 
   /// Initialize Hive database
   /// Call this from main.dart before runApp()
@@ -90,9 +90,28 @@ class LocalDatabaseService {
 
   /// Perform migration between schema versions
   Future<void> _performMigration(int fromVersion, int toVersion) async {
-    // Migration logic here
-    // Example: if (fromVersion < 2) { migrateToV2(); }
-    // This is a placeholder for future migrations
+    // v2: LocalVocabulary now includes optional source media pointers (id + start/end ms).
+    if (fromVersion < 2) {
+      // Ensure existing vocab rows are re-written with the new fields present (null defaults),
+      // so subsequent reads/writes are consistent across devices.
+      final box = _vocabularyBox;
+      if (box != null && box.isOpen) {
+        final keys = box.keys.toList();
+        for (final k in keys) {
+          final v = box.get(k);
+          if (v == null) continue;
+          // Write back with explicit null defaults for new fields.
+          await box.put(
+            k,
+            v.copyWith(
+              sourceMediaId: v.sourceMediaId,
+              sourceStartMs: v.sourceStartMs,
+              sourceEndMs: v.sourceEndMs,
+            ),
+          );
+        }
+      }
+    }
   }
 
   // ============================================================================

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,700;1,400;1,700&amp;family=Manrope:wght@400;500;700&amp;family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary-fixed-variant": "#3d4759",
+              "inverse-primary": "#ffb596",
+              "surface-variant": "#e5e2db",
+              "surface-tint": "#a14009",
+              "inverse-surface": "#31312c",
+              "on-surface": "#1c1c18",
+              "on-background": "#1c1c18",
+              "outline": "#8a7268",
+              "on-surface-variant": "#57423a",
+              "primary": "#9f3e07",
+              "primary-fixed": "#ffdbcd",
+              "inverse-on-surface": "#f3f0e9",
+              "on-tertiary": "#ffffff",
+              "surface-container-lowest": "#ffffff",
+              "surface-container": "#f1eee7",
+              "surface-container-high": "#ebe8e1",
+              "secondary-fixed": "#d9e3f9",
+              "surface-container-low": "#f6f3ec",
+              "on-error-container": "#93000a",
+              "surface": "#fcf9f2",
+              "on-tertiary-fixed": "#241a00",
+              "tertiary-container": "#cca730",
+              "on-secondary-container": "#596376",
+              "on-tertiary-container": "#4f3d00",
+              "on-primary-fixed": "#360f00",
+              "outline-variant": "#dec0b5",
+              "on-tertiary-fixed-variant": "#574500",
+              "error": "#ba1a1a",
+              "error-container": "#ffdad6",
+              "secondary-fixed-dim": "#bdc7dc",
+              "tertiary-fixed-dim": "#e9c349",
+              "primary-fixed-dim": "#ffb596",
+              "surface-container-highest": "#e5e2db",
+              "surface-dim": "#dcdad3",
+              "on-primary-fixed-variant": "#7d2d00",
+              "tertiary-fixed": "#ffe088",
+              "primary-container": "#c05621",
+              "surface-bright": "#fcf9f2",
+              "on-error": "#ffffff",
+              "on-primary-container": "#fffeff",
+              "tertiary": "#735c00",
+              "background": "#fcf9f2",
+              "secondary": "#555f71",
+              "secondary-container": "#d6e0f6",
+              "on-secondary-fixed": "#121c2c",
+              "on-primary": "#ffffff",
+              "on-secondary": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Newsreader"],
+              "body": ["Manrope"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .editorial-shadow {
+        box-shadow: 0 20px 40px rgba(28, 28, 24, 0.06);
+      }
+      .terracotta-gradient {
+        background: linear-gradient(135deg, #9f3e07 0%, #c05621 100%);
+      }
+      ::-webkit-scrollbar { width: 4px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: #dec0b5; border-radius: 10px; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#fcf9f2] dark:bg-[#1c1c18] backdrop-blur-md bg-opacity-90 flex justify-between items-center px-6 h-16 w-full max-w-none shadow-none">
+<div class="flex items-center gap-4">
+<button class="text-[#9f3e07] dark:text-[#c05621] hover:opacity-80 transition-opacity active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+</div>
+<h1 class="font-['Newsreader'] italic text-2xl tracking-tight text-[#9f3e07] dark:text-[#c05621] font-bold tracking-tighter">Àfàláàbù</h1>
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="Close up portrait of a young African woman with artistic braided hair and vibrant traditional earrings against a soft beige background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWoUTgejBTzQ0lOwfAb82s9pynWZ4Ep96gvfKUe_dyDx4CCuKx3TOSu1h6VkvUNzmwqx67CQvdZpl0TtKHsmOeGFJdEJR9BbM-u_T6M06zLSywcdqo1tg700lhgQMy27hyCQendVZvC8DZptHx2pR2BwbdwvtRDR02ikm3fqM1WtpRVw0rxFuGAaHtj6-CRoi5nUTFVJli4FmQRAt1-EwHnSU29-NVnWxoI7oOnrvjmIGgqXu08jNgieeV3Azy6e4KRthYUs2K8ECE"/>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-7xl mx-auto">
+<!-- Language Filter Chips -->
+<section class="mb-12 overflow-x-auto">
+<div class="flex gap-3 pb-2 no-scrollbar">
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-label text-[10px] uppercase tracking-widest flex-shrink-0">All Traditions</button>
+<button class="bg-secondary-container text-on-secondary-container px-6 py-2 rounded-full font-label text-[10px] uppercase tracking-widest flex-shrink-0 hover:bg-outline-variant transition-colors">Yorùbá</button>
+<button class="bg-secondary-container text-on-secondary-container px-6 py-2 rounded-full font-label text-[10px] uppercase tracking-widest flex-shrink-0 hover:bg-outline-variant transition-colors">Swahili</button>
+<button class="bg-secondary-container text-on-secondary-container px-6 py-2 rounded-full font-label text-[10px] uppercase tracking-widest flex-shrink-0 hover:bg-outline-variant transition-colors">Igbo</button>
+<button class="bg-secondary-container text-on-secondary-container px-6 py-2 rounded-full font-label text-[10px] uppercase tracking-widest flex-shrink-0 hover:bg-outline-variant transition-colors">Wolof</button>
+<button class="bg-secondary-container text-on-secondary-container px-6 py-2 rounded-full font-label text-[10px] uppercase tracking-widest flex-shrink-0 hover:bg-outline-variant transition-colors">Amharic</button>
+</div>
+</section>
+<!-- Cover Story (Bento Featured) -->
+<section class="mb-16">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-12 items-end">
+<div class="lg:col-span-8 relative group overflow-hidden rounded-sm">
+<img alt="Griot with Kora" class="w-full h-[600px] object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Dignified West African elder playing a wooden kora instrument outdoors, sun filtering through acacia leaves, warm cinematic golden hour lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2B0vTTihyDDevpwfOP5MMbjVr94AD109xBcYvKcp7kK-1tzuQ2sNgXAR6-7omaoT1y9XzYziRmhGbeOWamK0q4GH2vpStF92Vg85peJ__14YV2tXRJPnU3m54SclCylqwNYoGk6FqSTSx5THc0RRDiH61auaX9AqRUN23KM9lzkJaNrHpETqUXhAnVgZsLe0Mor6RRiTAF63e6tBqyH4VFmIrnqUaXCsWCH-fRyu9kXAoaBKEdR4jeZqo_xxEuFeH83JnOgz2Kzrq"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+<div class="absolute bottom-8 left-8 right-8">
+<span class="font-label text-[10px] text-white/80 uppercase tracking-[0.3em] mb-4 block">The Oral Archive • Series 01</span>
+<h2 class="font-headline text-4xl lg:text-6xl text-white italic leading-tight max-w-2xl">The Griot's Tongue: Preserving the Mandé Legacy</h2>
+</div>
+</div>
+<div class="lg:col-span-4 mt-8 lg:mt-0 text-right">
+<div class="inline-block text-left max-w-sm">
+<p class="font-label text-xs text-primary uppercase tracking-widest mb-4">Reading Progress</p>
+<div class="w-full bg-surface-container-high h-px mb-6">
+<div class="bg-primary h-px w-2/3"></div>
+</div>
+<p class="font-body text-secondary leading-relaxed mb-8">
+                            In the heart of the Sahel, history isn't written—it's sung. Explore the linguistic nuances of the Kora masters and how melodies carry syntax across generations.
+                        </p>
+<button class="terracotta-gradient text-white px-8 py-4 rounded-sm font-label text-[10px] uppercase tracking-widest active:scale-95 transition-transform">
+                            Begin Exploration
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Latest Articles (Editorial Grid) -->
+<section class="mb-16">
+<div class="flex justify-between items-baseline mb-12">
+<h3 class="font-headline text-3xl italic">The Archives</h3>
+<span class="font-label text-[10px] uppercase tracking-widest text-outline">Issue No. 42 • Autumn 2024</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+<!-- Article 1 -->
+<div class="group cursor-pointer">
+<div class="mb-6 overflow-hidden rounded-sm aspect-[4/5] bg-surface-container">
+<img alt="Indigo Dyeing" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Abstract close-up of deep indigo-dyed Adire fabric from Nigeria, showing intricate white resist patterns and textile texture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnC2hQA2auHGo4uJ6XNy7e0jgJFQEwa0aMp1-sl0u2yjaxnm8doFw9iTlqAqx9QAr_pHl_xdakfb-9u2NbzeoW3MZVdNfIQDsd9bKSYDxpY4TVSvFTLRywqpMSy6feRyP7mkLQ6Hvk7Ut2lZ_RXBCq2HnfBZYWK4ypa2KinDUg0d0VFnVwCkfCXJ5nSlSdZ9E5Z0clulxRb5I7KcQdnHSEai-yD8mnyCtecRlVHGS9ZDcFcDu74-uHdhqkl8mP9sUbYadKSWgRkWG1"/>
+</div>
+<span class="font-label text-[10px] text-tertiary uppercase tracking-widest block mb-2">Visual Languages</span>
+<h4 class="font-headline text-2xl mb-3 leading-snug group-hover:text-primary transition-colors">Adire: The Poetry of Indigo Textiles</h4>
+<p class="font-body text-secondary text-sm leading-relaxed">Decoding the symbolic lexicon hidden within the indigo patterns of the Yorùbá people.</p>
+</div>
+<!-- Article 2 -->
+<div class="group cursor-pointer">
+<div class="mb-6 overflow-hidden rounded-sm aspect-[4/5] bg-surface-container">
+<img alt="Architecture" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Sudano-Sahelian architecture showing the intricate mud plaster walls and wooden scaffolding of a mosque in Mali under a clear sky" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCosy2OHKwh8-W2H-_TL2FvG1KAeJ8imJx4DKouQPpADizfq9s1ovuTk9RbIrLyr2sPJkAcD0lXaWJD4uCYXg4DWPaBcNoO6vDRxMzUNp35JwEXd9O1keYO4ruMAa4OCMsgNMeczdWCYxuDrJh6jCYBbRoIIPWYRCpdTuHrbod_fV0dz5bokI9RARPLquy3LQWr8r_n2z4FQFraOrstpesl-opofdU4jeTqfX20MbRsUj-rAukwOl1L4oNJykeU7Qj0suYPxiM4ReAR"/>
+</div>
+<span class="font-label text-[10px] text-tertiary uppercase tracking-widest block mb-2">Built Form</span>
+<h4 class="font-headline text-2xl mb-3 leading-snug group-hover:text-primary transition-colors">The Syntax of Clay and Earth</h4>
+<p class="font-body text-secondary text-sm leading-relaxed">How Sudano-Sahelian architecture reflects the structural logic of the local dialects.</p>
+</div>
+<!-- Article 3 -->
+<div class="group cursor-pointer">
+<div class="mb-6 overflow-hidden rounded-sm aspect-[4/5] bg-surface-container">
+<img alt="Spices" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A vibrant market scene in Zanzibar with wooden bowls filled with aromatic spices like cloves and cinnamon, soft market light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCfGd9pn0yXeeu3QR_vps6OSknPhRSUcd7zTLGxm_Kebm8AxNUKqaBNW44nIkXwsfR0fyIlFDXN0wVQL-fZCCdsOIV8HXykIORXD26y57xVAiVyPsXxsovyCtt7rtNEIYouzotiqn2FfEphwn0Eift7M6Fe7Xt6tNFi8yI5dNUiA-yECTEsrEPnBOzWq4Tels2zcwfQvDaAEHO_Td7mU0QZBnRwqXxO4UdIjZC415PaHdz6XLFO9tFj1NeX_euybMAVqD7dSV_91m0"/>
+</div>
+<span class="font-label text-[10px] text-tertiary uppercase tracking-widest block mb-2">Culinary Dialects</span>
+<h4 class="font-headline text-2xl mb-3 leading-snug group-hover:text-primary transition-colors">Spices of the Swahili Coast</h4>
+<p class="font-body text-secondary text-sm leading-relaxed">A linguistic journey through the trade routes that shaped the Swahili culinary vocabulary.</p>
+</div>
+</div>
+</section>
+<!-- Audio Essays (The Studio Vibe) -->
+<section class="mb-16 bg-inverse-surface text-inverse-on-surface p-12 rounded-sm relative overflow-hidden">
+<div class="absolute top-0 right-0 p-8 opacity-10">
+<span class="material-symbols-outlined text-[120px]" data-icon="settings_input_component">settings_input_component</span>
+</div>
+<div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div>
+<span class="font-label text-[10px] text-tertiary-fixed uppercase tracking-widest block mb-6">The Studio Sessions</span>
+<h3 class="font-headline text-4xl italic mb-6">Orality &amp; Tone: A Masterclass</h3>
+<p class="font-body text-surface-variant leading-relaxed mb-8 max-w-md">
+                        Master the tonal inflections of Igbo through curated audio essays. Listen to native speakers weave stories while highlighting grammatical nuances in real-time.
+                    </p>
+<div class="flex gap-4">
+<button class="bg-primary text-on-primary px-6 py-3 rounded-sm font-label text-[10px] uppercase tracking-widest hover:opacity-90">Enter Studio</button>
+<button class="border border-outline text-inverse-on-surface px-6 py-3 rounded-sm font-label text-[10px] uppercase tracking-widest hover:bg-white/5">View Curriculum</button>
+</div>
+</div>
+<!-- Audio Weaver Component -->
+<div class="bg-surface-dim/10 backdrop-blur-sm p-6 rounded-sm border border-white/5">
+<div class="flex justify-between items-center mb-8">
+<div>
+<p class="font-label text-[10px] text-primary-fixed mb-1">CURRENTLY PLAYING</p>
+<h5 class="font-body font-bold text-lg">Introduction to Igbo Tones</h5>
+</div>
+<span class="font-label text-[10px] text-surface-variant">04:22 / 12:45</span>
+</div>
+<!-- Bespoke Waveform Container -->
+<div class="h-24 flex items-end gap-1 mb-8">
+<div class="w-1 bg-primary h-12"></div>
+<div class="w-1 bg-primary h-16"></div>
+<div class="w-1 bg-primary h-8"></div>
+<div class="w-1 bg-primary h-20"></div>
+<div class="w-1 bg-primary h-14"></div>
+<div class="w-1 bg-primary h-24"></div>
+<div class="w-1 bg-primary h-10"></div>
+<div class="w-1 bg-primary h-18"></div>
+<div class="w-1 bg-primary h-12"></div>
+<div class="w-1 bg-primary h-22"></div>
+<div class="w-1 bg-primary h-16"></div>
+<div class="w-1 bg-primary-fixed h-10"></div>
+<div class="w-1 bg-primary-fixed h-14"></div>
+<div class="w-1 bg-primary-fixed h-8"></div>
+<div class="w-1 bg-primary-fixed h-20"></div>
+<div class="w-1 bg-primary-fixed h-12"></div>
+<div class="w-1 bg-primary-fixed h-16"></div>
+<div class="w-1 bg-primary-fixed h-6"></div>
+<div class="w-1 bg-primary-fixed h-14"></div>
+<div class="w-1 bg-primary-fixed h-10"></div>
+</div>
+<div class="flex justify-center gap-8 items-center">
+<button class="text-surface-variant hover:text-white transition-colors"><span class="material-symbols-outlined" data-icon="skip_previous">skip_previous</span></button>
+<button class="w-14 h-14 rounded-full bg-primary flex items-center justify-center text-white active:scale-95 transition-transform"><span class="material-symbols-outlined text-3xl" data-icon="play_arrow" style="font-variation-settings: 'FILL' 1;">play_arrow</span></button>
+<button class="text-surface-variant hover:text-white transition-colors"><span class="material-symbols-outlined" data-icon="skip_next">skip_next</span></button>
+</div>
+</div>
+</div>
+</section>
+<!-- Photo Series (Asymmetric Layout) -->
+<section class="mb-32">
+<h3 class="font-headline text-3xl italic mb-16 text-center underline underline-offset-8 decoration-outline-variant">Visual Narratives</h3>
+<div class="flex flex-col md:flex-row gap-8 items-center md:items-start">
+<div class="w-full md:w-5/12 pt-0 md:pt-16">
+<div class="relative group">
+<img alt="Portrait" class="w-full rounded-sm editorial-shadow transition-transform duration-500 group-hover:-translate-y-2" data-alt="Stunning close-up portrait of an elder with wise eyes wearing a vibrant woven headpiece, dramatic high-contrast lighting from the side" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAU08_LTjAHDrC4JYGzs9pELfVrNT7za79UTKhbUVUv23Ij2BjSnXolC2LcafcpAdBVmNhdj4RQvoS8edfhPrXKhxeIs6vQTbO4NpIGRG1vtjmtpbC_K28BqLt7-CRiYdC_eqqVo0XCKGjh24kVyN1QdbIxmfwdymDw06BPl8elnWlQYW8aBxJgAVNZyLHrjMKdVNQVEyAsgtR1aTeUxDcKBJ1pQPzN2wr-OjUgyCVkGFSQnNx1Ma5a9tMLVO4tFW5Gn43n1IdqOe1m"/>
+<div class="mt-6">
+<h4 class="font-headline text-xl italic mb-2">The Face of the Ancestor</h4>
+<p class="font-label text-[10px] tracking-widest text-outline">BY OLUWAFEMI ADEYEMI</p>
+</div>
+</div>
+</div>
+<div class="w-full md:w-7/12">
+<div class="relative group mb-12">
+<img alt="Landscape" class="w-full rounded-sm aspect-video object-cover editorial-shadow transition-transform duration-500 group-hover:-translate-y-2" data-alt="Wide shot of the red cliffs and canyons of the Ethiopian highlands during sunset, with mist in the valleys and deep shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDitQyNBXjIN9T4vS2DqrmDuB8wYxP6mdH7y6-nkBN4L_KM6ZHWgA3joD1EYviDidXr7XjAxSOE48MPC-XUEZ0IaWwhEQMi7pREiHJazQxJKPZdau2rvs7IH3zfpETbEZK_5ivmONAjalJASZ6revzFhR2lgek9zsKqDwB3B85osUgPt9BQxsoMVl7aPOGOwW9oaS0AzPnnMv4yFTkLiBUf9y_WuEOeYIRSQZ2mOAtXLyxaIfx_OyzBdXG6rOeff4wYhODgmHQpe2rx"/>
+<div class="mt-6 text-right">
+<h4 class="font-headline text-xl italic mb-2">Where the Earth Speaks Amharic</h4>
+<p class="font-label text-[10px] tracking-widest text-outline">PHOTO SERIES 04</p>
+</div>
+</div>
+<div class="max-w-md ml-auto text-right">
+<p class="font-body text-secondary leading-relaxed italic border-r-2 border-primary pr-6">
+                            "Language is the landscape of the soul. When we speak, we are not just exchanging data; we are painting the terrain of our ancestors."
+                        </p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-4 pt-2 bg-[#fcf9f2] dark:bg-[#1c1c18] backdrop-blur-lg bg-opacity-95 z-50 border-t border-[#1c1c18]/10 dark:border-[#ffffff]/10 shadow-[0_-4px_20px_rgba(28,28,24,0.04)]">
+<a class="flex flex-col items-center justify-center text-[#9f3e07] dark:text-[#c05621] font-bold bg-[#c05621]/10 rounded-xl px-3 py-1 translate-y-[-2px] transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#555f71] dark:text-[#ebe8e1] opacity-70 hover:text-[#9f3e07] dark:hover:text-[#c05621] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest mt-1">Studio</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#555f71] dark:text-[#ebe8e1] opacity-70 hover:text-[#9f3e07] dark:hover:text-[#c05621] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest mt-1">Tribe</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#555f71] dark:text-[#ebe8e1] opacity-70 hover:text-[#9f3e07] dark:hover:text-[#c05621] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest mt-1">Profile</span>
+</a>
+</nav>
+<!-- FAB (Suppressed on Home according to logic, but since it's the primary screen we might use a cultural explorer button) -->
+<button class="fixed bottom-24 right-6 w-14 h-14 terracotta-gradient text-white rounded-full flex items-center justify-center shadow-xl z-40 active:scale-90 transition-transform md:hidden">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+</button>
+</body></html>

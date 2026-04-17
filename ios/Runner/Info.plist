@@ -29,49 +29,9 @@
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-		<key>NSAllowsArbitraryLoadsForMedia</key>
-		<true/>
+		<string>$(LINGAFRIQ_IOS_ALLOW_ARBITRARY_LOADS)</string>
 		<key>NSAllowsLocalNetworking</key>
-		<true/>
-		<key>NSExceptionAllowsInsecureHTTPLoads</key>
-		<true/>
-		<key>NSExceptionDomains</key>
-		<dict>
-			<key>34.121.156.251</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-				<key>NSExceptionRequiresForwardSecrecy</key>
-				<false/>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-			</dict>
-			<key>34.121.156.251:8000</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-				<key>NSExceptionRequiresForwardSecrecy</key>
-				<false/>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-			</dict>
-			<key>http://34.121.156.251:8000</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-				<key>NSExceptionRequiresForwardSecrecy</key>
-				<false/>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-			</dict>
-		</dict>
+		<string>$(LINGAFRIQ_IOS_ALLOWS_LOCAL_NETWORKING)</string>
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Need camera access for uploading images</string>

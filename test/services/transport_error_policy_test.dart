@@ -175,7 +175,7 @@ void main() {
           ),
         );
         final message = TransportErrorPolicy.toUserMessage(error);
-        expect(message, contains('Server is temporarily unavailable'));
+        expect(message, contains('temporarily unavailable'));
       });
 
       test('returns no internet message for network issues', () {

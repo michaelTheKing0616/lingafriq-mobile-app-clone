@@ -4,17 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../utils/modern_griot_design_system.dart';
-import '../../widgets/griot/griot_widgets.dart';
+import 'package:lingafriq/lessons/models/lesson_response.dart';
+import 'package:lingafriq/lessons/screens/lessons_list_screen.dart';
+import 'package:lingafriq/lessons/screens/section_lessons_list.dart';
+import 'package:lingafriq/models/language_response.dart';
+import 'package:lingafriq/utils/modern_griot_design_system.dart';
+import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/widgets/griot/griot_widgets.dart';
+import 'package:lingafriq/screens/learning/dialect_variant_picker.dart';
 
+/// Winding learning path driven by real [Lesson] rows from the API (same as [LessonsListScreen]).
 class LearningPathScreen extends ConsumerStatefulWidget {
-  final dynamic language;
+  final Language language;
 
   const LearningPathScreen({super.key, required this.language});
 
   @override
-  ConsumerState<LearningPathScreen> createState() =>
-      _LearningPathScreenState();
+  ConsumerState<LearningPathScreen> createState() => _LearningPathScreenState();
 }
 
 class _LearningPathScreenState extends ConsumerState<LearningPathScreen>
@@ -22,22 +28,7 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen>
   late AnimationController _bounceCtrl;
   late Animation<double> _bounceAnim;
 
-  static const _lessons = [
-    _LessonNode('Greetings', _NodeState.completed, false),
-    _LessonNode('Numbers 1-10', _NodeState.completed, false),
-    _LessonNode('Family Words', _NodeState.completed, false),
-    _LessonNode('Basic Phrases', _NodeState.active, false),
-    _LessonNode('Checkpoint 1', _NodeState.checkpoint, true),
-    _LessonNode('Food & Drink', _NodeState.locked, false),
-    _LessonNode('At the Market', _NodeState.locked, false),
-    _LessonNode('Directions', _NodeState.locked, false),
-    _LessonNode('Checkpoint 2', _NodeState.locked, true),
-    _LessonNode('Past Tense', _NodeState.locked, false),
-    _LessonNode('Future Plans', _NodeState.locked, false),
-    _LessonNode('Final Mastery', _NodeState.locked, true),
-  ];
-
-  static const _activeIndex = 3;
+  static const _nodeSpacing = 110.0;
 
   @override
   void initState() {
@@ -57,103 +48,246 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen>
     super.dispose();
   }
 
+  /// Matches sequential unlock in [LessonsListScreen] (`_LessonItem` / `isEnabled`).
+  bool _sectionUnlocked(int index, List<Lesson> lessons) {
+    if (index <= 0) return true;
+    final prev = lessons[index - 1];
+    return prev.count == prev.completed;
+  }
+
+  bool _sectionCompleted(Lesson lesson) =>
+      lesson.count > 0 && lesson.completed >= lesson.count;
+
+  /// First incomplete, unlocked lesson index — matches sequential unlock in [LessonsListScreen].
+  int? _activeIndex(List<Lesson> lessons) {
+    for (var i = 0; i < lessons.length; i++) {
+      if (!_sectionUnlocked(i, lessons)) return null;
+      if (!_sectionCompleted(lessons[i])) return i;
+    }
+    return null;
+  }
+
+  _NodeState _stateFor(int index, List<Lesson> lessons, int? activeIndex) {
+    if (!_sectionUnlocked(index, lessons)) return _NodeState.locked;
+    final lesson = lessons[index];
+    if (_sectionCompleted(lesson)) return _NodeState.completed;
+    if (activeIndex == index) return _NodeState.active;
+    return _NodeState.locked;
+  }
+
+  void _openLesson(Lesson lesson) {
+    HapticFeedback.lightImpact();
+    Navigator.of(context).push(
+      SmoothPageRoute(
+        child: LessonSectionsListScreen(lesson: lesson),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    const nodeSpacing = 110.0;
-    final totalHeight = _lessons.length * nodeSpacing + 200;
-    final completedCount =
-        _lessons.where((l) => l.state == _NodeState.completed).length;
+    final lessonsAsync = ref.watch(lessonsListProvider(widget.language.id));
 
-    return GriotScaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.all(16.r),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => Navigator.maybePop(context),
-                    child: Container(
-                      width: 40.r,
-                      height: 40.r,
-                      decoration: BoxDecoration(
-                        color: cs.surfaceContainerLow,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(Icons.arrow_back_rounded, size: 20.sp),
+    return lessonsAsync.when(
+      data: (lessonResponse) {
+        final lessons = lessonResponse.results
+            .where((e) => e.lessons_language == widget.language.id)
+            .toList();
+        if (lessons.isEmpty) {
+          return GriotScaffold(
+            body: Center(
+              child: Padding(
+                padding: EdgeInsets.all(24.w),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.auto_stories_outlined, size: 48.sp),
+                    SizedBox(height: 16.h),
+                    Text(
+                      'No lesson sections yet for ${widget.language.name}.',
+                      textAlign: TextAlign.center,
+                      style: ModernGriotTypography.titleSmall(),
                     ),
-                  ),
-                  SizedBox(width: 12.w),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Learning Path',
-                            style: ModernGriotTypography.titleLarge()),
-                        Text(
-                            '$completedCount of ${_lessons.length} completed',
-                            style: ModernGriotTypography.bodySmall()),
-                      ],
+                    SizedBox(height: 12.h),
+                    Text(
+                      'Try again later or open the full lesson list.',
+                      textAlign: TextAlign.center,
+                      style: ModernGriotTypography.bodySmall(),
                     ),
-                  ),
-                  GriotBadgePill(
-                    label:
-                        '${(completedCount / _lessons.length * 100).round()}%',
-                    icon: Icons.trending_up_rounded,
-                    color: cs.secondaryContainer,
-                    textColor: cs.onSecondaryContainer,
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(vertical: 16.h),
-                child: SizedBox(
-                  height: totalHeight,
-                  child: Stack(
-                    children: [
-                      Positioned.fill(
-                        child: CustomPaint(
-                          painter: _WindingPathPainter(
-                            nodeCount: _lessons.length,
-                            nodeSpacing: nodeSpacing,
-                            activeIndex: _activeIndex,
-                            color: cs.primary,
-                            trackColor: cs.surfaceContainerHighest,
+                    SizedBox(height: 24.h),
+                    FilledButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          SmoothPageRoute(
+                            child: LessonsListScreen(language: widget.language),
                           ),
-                        ),
-                      ),
-                      Positioned(
-                        right: 16.w,
-                        top: 50.h,
-                        child: Opacity(
-                          opacity: 0.06,
-                          child: Icon(
-                            Icons.account_balance_rounded,
-                            size: 140.sp,
-                            color: cs.primary,
-                          ),
-                        ),
-                      ),
-                      ...List.generate(_lessons.length, (i) {
-                        final lesson = _lessons[i];
-                        final xOffset = _nodeX(i, nodeSpacing);
-                        final yOffset = i * nodeSpacing + 40.0;
-                        return Positioned(
-                          left: xOffset,
-                          top: yOffset,
-                          child: _buildNode(context, lesson, i),
                         );
-                      }),
-                    ],
-                  ),
+                      },
+                      child: const Text('Open lesson list'),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ],
+          );
+        }
+
+        final active = _activeIndex(lessons);
+        final completedCount =
+            lessons.where((l) => _sectionCompleted(l)).length;
+        // When all sections are done, paint the full path as "past" the last index.
+        final pathActiveIndex = active ?? lessons.length;
+
+        final totalHeight = lessons.length * _nodeSpacing + 200;
+
+        return GriotScaffold(
+          body: SafeArea(
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(16.r),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () => Navigator.maybePop(context),
+                        child: Container(
+                          width: 40.r,
+                          height: 40.r,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .surfaceContainerLow,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(Icons.arrow_back_rounded, size: 20.sp),
+                        ),
+                      ),
+                      SizedBox(width: 12.w),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Learning Path',
+                              style: ModernGriotTypography.titleLarge(),
+                            ),
+                            Text(
+                              '$completedCount of ${lessons.length} sections completed',
+                              style: ModernGriotTypography.bodySmall(),
+                            ),
+                          ],
+                        ),
+                      ),
+                      GriotBadgePill(
+                        label:
+                            '${(completedCount / lessons.length * 100).round()}%',
+                        icon: Icons.trending_up_rounded,
+                        color: Theme.of(context).colorScheme.secondaryContainer,
+                        textColor:
+                            Theme.of(context).colorScheme.onSecondaryContainer,
+                      ),
+                      SizedBox(width: 10.w),
+                      IconButton(
+                        tooltip: 'Dialect mode (Common vs Local)',
+                        icon: const Icon(Icons.tune_rounded),
+                        onPressed: () async {
+                          HapticFeedback.lightImpact();
+                          await showModalBottomSheet<bool>(
+                            context: context,
+                            isScrollControlled: true,
+                            builder: (_) => DialectVariantPicker(
+                              umbrellaLanguage: widget.language.name.toLowerCase(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(vertical: 16.h),
+                    child: SizedBox(
+                      height: totalHeight,
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: CustomPaint(
+                              painter: _WindingPathPainter(
+                                nodeCount: lessons.length,
+                                nodeSpacing: _nodeSpacing,
+                                activeIndex: pathActiveIndex,
+                                color: Theme.of(context).colorScheme.primary,
+                                trackColor: Theme.of(context)
+                                    .colorScheme
+                                    .surfaceContainerHighest,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            right: 16.w,
+                            top: 50.h,
+                            child: Opacity(
+                              opacity: 0.06,
+                              child: Icon(
+                                Icons.account_balance_rounded,
+                                size: 140.sp,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
+                          ),
+                          ...List.generate(lessons.length, (i) {
+                            final lesson = lessons[i];
+                            final state = _stateFor(i, lessons, active);
+                            final xOffset = _nodeX(i, _nodeSpacing);
+                            final yOffset = i * _nodeSpacing + 40.0;
+                            return Positioned(
+                              left: xOffset,
+                              top: yOffset,
+                              child: _buildNode(
+                                context,
+                                lesson: lesson,
+                                displayTitle: lesson.name.isNotEmpty
+                                    ? lesson.name
+                                    : 'Section ${i + 1}',
+                                state: state,
+                              ),
+                            );
+                          }),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+      loading: () => GriotScaffold(
+        body: const Center(child: CircularProgressIndicator()),
+      ),
+      error: (e, _) => GriotScaffold(
+        body: Center(
+          child: Padding(
+            padding: EdgeInsets.all(24.w),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Could not load lessons', style: ModernGriotTypography.titleSmall()),
+                SizedBox(height: 8.h),
+                Text('$e',
+                    textAlign: TextAlign.center,
+                    style: ModernGriotTypography.bodySmall()),
+                SizedBox(height: 16.h),
+                FilledButton(
+                  onPressed: () =>
+                      ref.invalidate(lessonsListProvider(widget.language.id)),
+                  child: const Text('Retry'),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -166,16 +300,22 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen>
     return center + sin(index * 0.8) * amplitude;
   }
 
-  Widget _buildNode(BuildContext context, _LessonNode lesson, int index) {
+  Widget _buildNode(
+    BuildContext context, {
+    required Lesson lesson,
+    required String displayTitle,
+    required _NodeState state,
+  }) {
     final cs = Theme.of(context).colorScheme;
-    final size = lesson.isCheckpoint ? 72.r : 56.r;
+    const size = 56.0;
+    final nodeSize = size.r;
 
     Widget nodeCircle;
-    switch (lesson.state) {
+    switch (state) {
       case _NodeState.completed:
         nodeCircle = Container(
-          width: size,
-          height: size,
+          width: nodeSize,
+          height: nodeSize,
           decoration: BoxDecoration(
             color: ModernGriotColors.secondary,
             shape: BoxShape.circle,
@@ -192,8 +332,8 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen>
             child: child,
           ),
           child: Container(
-            width: size,
-            height: size,
+            width: nodeSize,
+            height: nodeSize,
             decoration: BoxDecoration(
               gradient: ModernGriotGradients.signatureGradient,
               shape: BoxShape.circle,
@@ -204,37 +344,17 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen>
               children: [
                 Icon(Icons.play_arrow_rounded,
                     size: 20.sp, color: cs.onPrimary),
-                Text('START',
-                    style: TextStyle(
-                      fontSize: 8.sp,
-                      fontWeight: FontWeight.w800,
-                      color: cs.onPrimary,
-                      letterSpacing: 1,
-                    )),
+                Text(
+                  'START',
+                  style: TextStyle(
+                    fontSize: 8.sp,
+                    fontWeight: FontWeight.w800,
+                    color: cs.onPrimary,
+                    letterSpacing: 1,
+                  ),
+                ),
               ],
             ),
-          ),
-        );
-      case _NodeState.checkpoint:
-        final isLocked = index > _activeIndex;
-        nodeCircle = Container(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            color: isLocked
-                ? cs.surfaceContainerHighest.withAlpha(180)
-                : cs.surfaceContainerHigh,
-            shape: BoxShape.circle,
-            border: Border.all(
-                color: isLocked
-                    ? cs.outlineVariant.withAlpha(60)
-                    : cs.primary.withAlpha(80),
-                width: 2),
-          ),
-          child: Icon(
-            isLocked ? Icons.lock_rounded : Icons.emoji_events_rounded,
-            size: 28.sp,
-            color: isLocked ? cs.onSurfaceVariant.withAlpha(120) : cs.primary,
           ),
         );
       case _NodeState.locked:
@@ -242,8 +362,8 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen>
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
             child: Container(
-              width: size,
-              height: size,
+              width: nodeSize,
+              height: nodeSize,
               decoration: BoxDecoration(
                 color: cs.surfaceContainerHighest.withAlpha(180),
                 shape: BoxShape.circle,
@@ -255,10 +375,21 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen>
         );
     }
 
+    void onTap() {
+      if (state == _NodeState.locked) {
+        HapticFeedback.mediumImpact();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Complete the previous section first.'),
+          ),
+        );
+        return;
+      }
+      _openLesson(lesson);
+    }
+
     return GestureDetector(
-      onTap: lesson.state == _NodeState.locked
-          ? null
-          : () => HapticFeedback.lightImpact(),
+      onTap: onTap,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -271,12 +402,18 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen>
               borderRadius: ModernGriotRadius.borderPill,
               boxShadow: ModernGriotShadows.sm,
             ),
-            child: Text(
-              lesson.title,
-              style: ModernGriotTypography.labelSmall(
-                color: lesson.state == _NodeState.locked
-                    ? cs.onSurfaceVariant.withAlpha(120)
-                    : cs.onSurface,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 160.w),
+              child: Text(
+                displayTitle,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                style: ModernGriotTypography.labelSmall(
+                  color: state == _NodeState.locked
+                      ? cs.onSurfaceVariant.withAlpha(120)
+                      : cs.onSurface,
+                ),
               ),
             ),
           ),
@@ -286,14 +423,7 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen>
   }
 }
 
-enum _NodeState { completed, active, checkpoint, locked }
-
-class _LessonNode {
-  const _LessonNode(this.title, this.state, this.isCheckpoint);
-  final String title;
-  final _NodeState state;
-  final bool isCheckpoint;
-}
+enum _NodeState { completed, active, locked }
 
 class _WindingPathPainter extends CustomPainter {
   _WindingPathPainter({
@@ -330,8 +460,7 @@ class _WindingPathPainter extends CustomPainter {
         ..cubicTo(
             x1, y1 + nodeSpacing * 0.4, x2, y2 - nodeSpacing * 0.4, x2, y2);
 
-      dashPaint.color =
-          i < activeIndex ? color.withAlpha(180) : trackColor;
+      dashPaint.color = i < activeIndex ? color.withAlpha(180) : trackColor;
 
       _drawDashedPath(canvas, path, dashPaint, 8, 6);
     }

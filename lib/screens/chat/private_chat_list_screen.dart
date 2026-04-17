@@ -226,6 +226,18 @@ class _PrivateChatListScreenState extends ConsumerState<PrivateChatListScreen>
             controller: _searchController,
             hintText: 'Search conversations...',
             prefixIcon: Icons.search_rounded,
+            textInputAction: TextInputAction.search,
+            onFieldSubmitted: (_) => FocusScope.of(context).unfocus(),
+            suffixIcon: _searchController.text.isEmpty
+                ? null
+                : IconButton(
+                    tooltip: 'Clear search',
+                    icon: const Icon(Icons.clear_rounded),
+                    onPressed: () {
+                      HapticFeedback.selectionClick();
+                      _searchController.clear();
+                    },
+                  ),
           ),
         ),
       ),

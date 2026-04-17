@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
+import 'package:lingafriq/services/offline/sync_v2_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'api_provider.dart';
 import 'user_provider.dart';
@@ -190,7 +192,7 @@ class BackendSyncProvider extends Notifier<BackendSyncState> {
 
   /// Sync all pending tasks
   Future<void> syncAll() async {
-    if (state.isSyncing || _syncQueue.isEmpty) return;
+    if (state.isSyncing) return;
 
     final user = ref.read(userProvider);
     if (user == null) {
@@ -201,6 +203,22 @@ class BackendSyncProvider extends Notifier<BackendSyncState> {
     state = state.copyWith(isSyncing: true);
 
     try {
+      // Always flush the persisted sync-v2 outbox first.
+      // This prevents background/periodic sync from skipping outbox ops when the legacy queue is empty.
+      await PersistedOutboxService.instance.flushPending();
+      // Then pull delta (best-effort) so multi-device server changes can be surfaced.
+      // This is cached locally; applying delta to all stores is intentionally incremental.
+      await SyncV2Service.instance.pullDeltaAndCache();
+
+      if (_syncQueue.isEmpty) {
+        state = state.copyWith(
+          isSyncing: false,
+          lastSyncTime: DateTime.now(),
+          pendingSyncs: 0,
+        );
+        return;
+      }
+
       final List<SyncTask> retryableTasks = [];
       final List<SyncTask> newPermanentlyFailed = [];
 

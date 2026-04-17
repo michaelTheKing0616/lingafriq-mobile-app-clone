@@ -1,7 +1,10 @@
 // Selective Sync - Allows users to choose what data to sync
 // Optimizes bandwidth and storage by syncing only selected content
 
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lingafriq/services/offline/sync_v2_service.dart';
 
 /// Sync category enum for type-safe sync preferences
 enum SyncCategory {
@@ -74,12 +77,13 @@ class SyncPreference {
 
 class SelectiveSync {
   static const String _prefKey = 'selective_sync_settings';
+  static const String _serverPreferencesKey = 'selectiveSync';
 
   /// Get sync preferences
   static Future<Map<String, bool>> getSyncPreferences() async {
     final prefs = await SharedPreferences.getInstance();
-    final json = prefs.getString(_prefKey);
-    if (json == null) {
+    final raw = prefs.getString(_prefKey);
+    if (raw == null || raw.trim().isEmpty) {
       // Default: sync everything
       return {
         'lessons': true,
@@ -90,17 +94,33 @@ class SelectiveSync {
         'games': true,
       };
     }
-    // Parse JSON string to map
-    // Simplified implementation - in production use proper JSON parsing
-    return {};
+    try {
+      final decoded = jsonDecode(raw);
+      if (decoded is! Map) return {};
+      final out = <String, bool>{};
+      for (final entry in decoded.entries) {
+        final k = entry.key?.toString();
+        if (k == null || k.isEmpty) continue;
+        final v = entry.value;
+        if (v is bool) {
+          out[k] = v;
+        } else if (v is num) {
+          out[k] = v != 0;
+        } else if (v is String) {
+          out[k] = v.toLowerCase() == 'true';
+        }
+      }
+      return out;
+    } catch (_) {
+      // Corrupt/legacy value; fall back to defaults.
+      return {};
+    }
   }
 
   /// Set sync preferences
   static Future<void> setSyncPreferences(Map<String, bool> preferences) async {
     final prefs = await SharedPreferences.getInstance();
-    // Convert map to JSON string
-    // Simplified implementation - in production use proper JSON encoding
-    await prefs.setString(_prefKey, preferences.toString());
+    await prefs.setString(_prefKey, jsonEncode(preferences));
   }
 
   /// Check if a content type should be synced
@@ -131,7 +151,21 @@ class SelectiveSyncService {
   SelectiveSyncService._internal();
 
   Future<void> initialize() async {
-    // SelectiveSync uses static methods, no initialization needed
+    // Best-effort: apply cached server preferences to local store.
+    // We keep local as the immediate UX source of truth; server acts as roaming backup.
+    final cached = await SyncV2Service.instance.getCachedPreferences();
+    final fromServer = cached[SelectiveSync._serverPreferencesKey];
+    if (fromServer is Map) {
+      final merged = <String, bool>{};
+      for (final e in fromServer.entries) {
+        final k = e.key.toString();
+        final v = e.value;
+        if (v is bool) merged[k] = v;
+      }
+      if (merged.isNotEmpty) {
+        await SelectiveSync.setSyncPreferences(merged);
+      }
+    }
   }
 
   /// Set sync preference
@@ -139,6 +173,7 @@ class SelectiveSyncService {
     final allPrefs = await getAllPreferences();
     allPrefs[preference.category] = preference;
     await _saveAllPreferences(allPrefs);
+    await _pushToServer(allPrefs);
   }
 
   /// Get all sync preferences as Map<SyncCategory, SyncPreference>
@@ -177,6 +212,23 @@ class SelectiveSyncService {
       prefsMap[entry.key.name] = entry.value.enabled;
     }
     await SelectiveSync.setSyncPreferences(prefsMap);
+  }
+
+  Future<void> _pushToServer(Map<SyncCategory, SyncPreference> preferences) async {
+    try {
+      final local = <String, bool>{};
+      for (final entry in preferences.entries) {
+        local[entry.key.name] = entry.value.enabled;
+      }
+
+      final current = await SyncV2Service.instance.getCachedPreferences();
+      final next = <String, dynamic>{...current};
+      next[SelectiveSync._serverPreferencesKey] = local;
+
+      await SyncV2Service.instance.putPreferences(next);
+    } catch (_) {
+      // Offline-first: local write already succeeded; server roaming is best-effort.
+    }
   }
 
   /// Map category name to legacy format if needed

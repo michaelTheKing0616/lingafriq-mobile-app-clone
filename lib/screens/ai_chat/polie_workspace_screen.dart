@@ -20,8 +20,36 @@ import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
 import 'package:lingafriq/providers/tts_provider.dart';
 import 'package:lingafriq/utils/diacritics_enforcer.dart';
 import 'package:lingafriq/widgets/polie/polie_components.dart';
+import 'package:lingafriq/data/polie_translate_language_options.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart' as uuid;
+
+/// Maps route/setup language strings to a known Polie translation picker label.
+String _polieTxInitLabel(String raw) {
+  final o = polieOptionForDisplayName(raw) ?? polieOptionForBackendKey(raw);
+  if (o != null) return o.displayName;
+  return polieOptionFromGroqLabel(raw).displayName;
+}
+
+String _polieBackendKeyForDisplayOrGroq(String displayLabel) {
+  final o = polieOptionForDisplayName(displayLabel);
+  if (o != null) return o.backendKey;
+  return polieOptionFromGroqLabel(displayLabel).backendKey;
+}
+
+void _ensureDistinctTxLanguages(
+  ValueNotifier<String> source,
+  ValueNotifier<String> target,
+) {
+  if (source.value != target.value) return;
+  final alt = kPolieTranslateLanguageOptions
+      .map((e) => e.displayName)
+      .firstWhere(
+        (d) => d != source.value,
+        orElse: () => kPolieTranslateLanguageOptions.first.displayName,
+      );
+  if (alt != source.value) target.value = alt;
+}
 
 class PolieWorkspaceScreen extends HookConsumerWidget {
   final String sourceLanguage;
@@ -72,6 +100,10 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
     final translationHistory = useState<List<dynamic>>([]);
     final translationTrayOpen = useState<bool>(true);
     final translationTimer = useRef<Timer?>(null);
+    final translationSourceLang =
+        useState<String>(_polieTxInitLabel(sourceLanguage));
+    final translationTargetLang =
+        useState<String>(_polieTxInitLabel(targetLanguage));
 
     final tutorLesson = useState<_TutorLessonPayload?>(null);
     final tutorFeedback = useState<_TutorFeedbackPayload?>(null);
@@ -110,14 +142,29 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
     final vocabularyService = ref.read(vocabularyServiceProvider);
     final reviewProgress = ref.read(reviewProgressServiceProvider);
 
+    Future<void> syncTranslationLanguagesToChat() async {
+      if (activeMode.value != PolieMode.translation) return;
+      await chat.setModeAndLanguage(
+        mode: PolieMode.translation,
+        sourceLanguage: translationSourceLang.value,
+        targetLanguage: translationTargetLang.value,
+      );
+    }
+
     Future<void> setMode(PolieMode mode) async {
       activeMode.value = mode;
       modeError.value = null;
       modeResponse.value = '';
+      final src = mode == PolieMode.translation
+          ? translationSourceLang.value
+          : sourceLanguage;
+      final tgt = mode == PolieMode.translation
+          ? translationTargetLang.value
+          : targetLanguage;
       await chat.setModeAndLanguage(
         mode: mode,
-        sourceLanguage: sourceLanguage,
-        targetLanguage: targetLanguage,
+        sourceLanguage: src,
+        targetLanguage: tgt,
       );
     }
 
@@ -169,7 +216,7 @@ Return STRICT JSON only.
   "tone_achieved":"formal|casual|literal|poetic"
 }
 
-Translate from $sourceLanguage to $targetLanguage.
+Translate from ${translationSourceLang.value} to ${translationTargetLang.value}.
 Tone requested: ${translationTone.value}
 Text: "$trimmed"
 ''');
@@ -178,8 +225,12 @@ Text: "$trimmed"
           modeError.value = null;
           final tr = await TranslationService().translate(
             text: trimmed,
-            sourceLang: sourceLanguage,
-            targetLang: targetLanguage,
+            sourceLang: _polieBackendKeyForDisplayOrGroq(
+              translationSourceLang.value,
+            ),
+            targetLang: _polieBackendKeyForDisplayOrGroq(
+              translationTargetLang.value,
+            ),
             includePhraseBreakdown: false,
           );
           final primary = tr.translation.trim();
@@ -200,15 +251,15 @@ Text: "$trimmed"
           );
           translationOutput.value = _normalizeTranslationPayload(
             payload: parsed,
-            targetLanguage: targetLanguage,
+            targetLanguage: translationTargetLang.value,
             sourceText: trimmed,
           );
           await translationHistoryService.addTranslation(
             _toHistoryEntry(
               input: trimmed,
               payload: translationOutput.value!,
-              sourceLanguage: sourceLanguage,
-              targetLanguage: targetLanguage,
+              sourceLanguage: translationSourceLang.value,
+              targetLanguage: translationTargetLang.value,
             ),
           );
           await loadTranslationHistory();
@@ -225,7 +276,19 @@ Text: "$trimmed"
       final normalized = text.trim();
       if (normalized.isEmpty || normalized == '-') return;
       final lang = (languageName ?? targetLanguage).trim();
-      await ref.read(ttsProvider.notifier).speak(normalized, languageName: lang);
+      final ok = await ref.read(ttsProvider.notifier).speak(
+            normalized,
+            languageName: lang,
+          );
+      if (!ok && context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Could not play audio. Check your connection or try again.',
+            ),
+          ),
+        );
+      }
     }
 
     Future<void> openTranslationHistorySheet() async {
@@ -883,6 +946,8 @@ Language: $targetLanguage
         autoTranslate.value,
         activeMode.value,
         translationTone.value,
+        translationSourceLang.value,
+        translationTargetLang.value,
       ],
     );
 
@@ -1039,6 +1104,9 @@ Language: $targetLanguage
                 onRunTranslation: runTranslation,
                 onSearchHistory: () async => loadTranslationHistory(),
                 onOpenTranslationHistory: openTranslationHistorySheet,
+                translationSourceLang: translationSourceLang,
+                translationTargetLang: translationTargetLang,
+                onTranslationLanguagesChanged: syncTranslationLanguagesToChat,
                 // tutor
                 tutorLesson: tutorLesson.value,
                 tutorFeedback: tutorFeedback.value,
@@ -1109,6 +1177,9 @@ Language: $targetLanguage
     required Future<void> Function(String) onRunTranslation,
     required Future<void> Function() onSearchHistory,
     required Future<void> Function() onOpenTranslationHistory,
+    required ValueNotifier<String> translationSourceLang,
+    required ValueNotifier<String> translationTargetLang,
+    required Future<void> Function() onTranslationLanguagesChanged,
     required _TutorLessonPayload? tutorLesson,
     required _TutorFeedbackPayload? tutorFeedback,
     required ValueNotifier<String> tutorDifficulty,
@@ -1362,17 +1433,33 @@ Language: $targetLanguage
                           padding: const EdgeInsets.all(8),
                           child: Row(
                             children: [
-                              DropdownButton<String>(
-                                value: sourceLanguage,
-                                items: [sourceLanguage]
-                                    .map(
-                                      (e) => DropdownMenuItem(
-                                        value: e,
-                                        child: Text(e),
-                                      ),
-                                    )
-                                    .toList(),
-                                onChanged: (_) {},
+                              Expanded(
+                                child: DropdownButton<String>(
+                                  isExpanded: true,
+                                  value: translationSourceLang.value,
+                                  items: kPolieTranslateLanguageOptions
+                                      .map(
+                                        (o) => DropdownMenuItem<String>(
+                                          value: o.displayName,
+                                          child: Text(
+                                            o.displayName,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                  onChanged: isBusy
+                                      ? null
+                                      : (v) async {
+                                          if (v == null) return;
+                                          translationSourceLang.value = v;
+                                          _ensureDistinctTxLanguages(
+                                            translationSourceLang,
+                                            translationTargetLang,
+                                          );
+                                          await onTranslationLanguagesChanged();
+                                        },
+                                ),
                               ),
                               const Spacer(),
                               IconButton(
@@ -1418,23 +1505,42 @@ Language: $targetLanguage
                           padding: const EdgeInsets.all(8),
                           child: Row(
                             children: [
-                              DropdownButton<String>(
-                                value: targetLanguage,
-                                items: [targetLanguage]
-                                    .map(
-                                      (e) => DropdownMenuItem(
-                                        value: e,
-                                        child: Text(e),
-                                      ),
-                                    )
-                                    .toList(),
-                                onChanged: (_) {},
+                              Expanded(
+                                child: DropdownButton<String>(
+                                  isExpanded: true,
+                                  value: translationTargetLang.value,
+                                  items: kPolieTranslateLanguageOptions
+                                      .map(
+                                        (o) => DropdownMenuItem<String>(
+                                          value: o.displayName,
+                                          child: Text(
+                                            o.displayName,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                  onChanged: isBusy
+                                      ? null
+                                      : (v) async {
+                                          if (v == null) return;
+                                          translationTargetLang.value = v;
+                                          _ensureDistinctTxLanguages(
+                                            translationTargetLang,
+                                            translationSourceLang,
+                                          );
+                                          await onTranslationLanguagesChanged();
+                                        },
+                                ),
                               ),
                               const Spacer(),
                               IconButton(
                                 visualDensity: VisualDensity.compact,
                                 onPressed: () => onSpeakText(
                                   translationOutput?.primary ?? '',
+                                  languageName: _polieBackendKeyForDisplayOrGroq(
+                                    translationTargetLang.value,
+                                  ),
                                 ),
                                 icon: const Icon(
                                   Icons.volume_up_outlined,

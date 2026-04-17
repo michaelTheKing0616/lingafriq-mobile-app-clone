@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tribal Duel: Sahara Eagles vs. Congo Dragons</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Lexend:wght@300;400;500;600&amp;family=Dosis:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-dim": "#ffd2aa",
+                        "surface-bright": "#fff8f5",
+                        "on-secondary-container": "#007230",
+                        "tertiary": "#7b5500",
+                        "on-tertiary-container": "#fffbff",
+                        "inverse-surface": "#462a0d",
+                        "tertiary-fixed": "#ffdeab",
+                        "on-tertiary-fixed": "#281900",
+                        "on-primary-fixed-variant": "#822700",
+                        "surface-variant": "#ffdcbf",
+                        "surface-tint": "#aa3601",
+                        "on-secondary-fixed": "#002109",
+                        "surface-container-low": "#fff1e8",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "outline": "#8c7168",
+                        "surface": "#fff8f5",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#ffdcbf",
+                        "surface-container-high": "#ffe3cd",
+                        "inverse-on-surface": "#ffeee1",
+                        "error-container": "#ffdad6",
+                        "outline-variant": "#e0bfb5",
+                        "on-surface-variant": "#59413a",
+                        "on-error": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#ffeada",
+                        "primary": "#a73400",
+                        "on-primary-container": "#fffbff",
+                        "background": "#fff8f5",
+                        "secondary-fixed-dim": "#62df7d",
+                        "secondary-container": "#7cf994",
+                        "on-background": "#2d1600",
+                        "tertiary-fixed-dim": "#f8bc51",
+                        "on-surface": "#2d1600",
+                        "primary-fixed": "#ffdbcf",
+                        "on-primary-fixed": "#390c00",
+                        "primary-fixed-dim": "#ffb59c",
+                        "primary-container": "#c94c1a",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#9b6c00",
+                        "secondary": "#006e2d",
+                        "on-secondary-fixed-variant": "#005320",
+                        "inverse-primary": "#ffb59c",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#5f4100",
+                        "secondary-fixed": "#7ffc97"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Lexend"],
+                        "label": ["Lexend"],
+                        "display": ["Plus Jakarta Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e0bfb5;
+            border-radius: 10px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-[#fff8f5] flex justify-between items-center w-full px-6 py-4 fixed top-0 z-50">
+<div class="flex items-center gap-4">
+<button class="text-[#a73400] hover:bg-[#fff1e8] transition-colors p-2 rounded-full active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="font-headline font-black text-[#a73400] text-2xl tracking-tight">Tribe Hub</h1>
+</div>
+<div class="flex items-center gap-3">
+<div class="hidden md:flex gap-6 mr-6">
+<a class="font-label font-semibold text-[#a73400] text-sm uppercase tracking-widest" href="#">Hub</a>
+<a class="font-label font-semibold text-[#a73400] text-sm uppercase tracking-widest border-b-2 border-[#a73400]" href="#">Duels</a>
+<a class="font-label font-semibold text-stone-400 text-sm uppercase tracking-widest hover:text-[#a73400] transition-colors" href="#">Ranks</a>
+<a class="font-label font-semibold text-stone-400 text-sm uppercase tracking-widest hover:text-[#a73400] transition-colors" href="#">Explore</a>
+</div>
+<img alt="User profile" class="w-10 h-10 rounded-full border-2 border-primary-container" data-alt="close-up portrait of a young man with intricate tribal face paint patterns and traditional beaded necklace" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcZ9uFw50cSg2wO2S04tgi7gNL4h0xTCGwW0EXjW6DpSG9RR8IRoikDNH8vIMmlX-2TGxFv7BLQJjM1BMxuH8X6aGasWPvXPgYIs5k2abJXjmyueM6HuS94xK8ug8rw9aNtaUC7O27pJwH4sHfjuzYqE4v_yYCQmDycHhegnnDqvXFmIwC6DwanNkr5bmeoj-U3Cfy_7HAiWeyNqmSkt8gqmZieNBQcrtMZs2Y__421MdQt0hUvgqh808fKYnd1TAOAfggg4-2dUHr"/>
+</div>
+</header>
+<main class="flex-grow pt-24 pb-32 px-4 md:px-8 max-w-7xl mx-auto w-full">
+<!-- VS Header: Duel Status -->
+<section class="mb-12">
+<div class="relative flex flex-col md:flex-row items-center justify-between gap-8 md:gap-0 bg-surface-container-low p-8 rounded-xl overflow-hidden shadow-sm">
+<!-- Background Accent -->
+<div class="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 pointer-events-none"></div>
+<!-- Team Left: Sahara Eagles -->
+<div class="flex flex-col items-center z-10 text-center w-full md:w-1/3">
+<div class="relative">
+<div class="w-24 h-24 md:w-32 md:h-32 bg-surface-container-highest rounded-full flex items-center justify-center mb-4 shadow-xl border-4 border-primary">
+<span class="material-symbols-outlined text-5xl text-primary" data-icon="lightbulb">lightbulb</span>
+</div>
+<div class="absolute -top-2 -right-2 bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-xs font-bold font-headline uppercase">Rank 3</div>
+</div>
+<h2 class="font-headline font-bold text-xl text-primary mb-1">Sahara Eagles</h2>
+<p class="text-4xl font-black font-headline text-on-surface">1,240</p>
+</div>
+<!-- VS Middle -->
+<div class="flex flex-col items-center justify-center z-10">
+<div class="bg-primary text-white w-16 h-16 rounded-full flex items-center justify-center font-black text-2xl shadow-lg transform rotate-12 mb-4">VS</div>
+<div class="bg-surface-container-highest px-6 py-2 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-primary animate-pulse" data-icon="timer">timer</span>
+<span class="font-headline font-bold text-primary">08:42</span>
+</div>
+</div>
+<!-- Team Right: Congo Dragons -->
+<div class="flex flex-col items-center z-10 text-center w-full md:w-1/3">
+<div class="relative">
+<div class="w-24 h-24 md:w-32 md:h-32 bg-surface-container-highest rounded-full flex items-center justify-center mb-4 shadow-xl border-4 border-secondary">
+<span class="material-symbols-outlined text-5xl text-secondary" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div class="absolute -top-2 -left-2 bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-xs font-bold font-headline uppercase">Rank 1</div>
+</div>
+<h2 class="font-headline font-bold text-xl text-secondary mb-1">Congo Dragons</h2>
+<p class="text-4xl font-black font-headline text-on-surface">1,415</p>
+</div>
+</div>
+<!-- Question Progress Bar -->
+<div class="mt-8 flex items-center gap-4">
+<p class="font-label font-bold text-primary whitespace-nowrap">Question 14/20</p>
+<div class="h-4 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[70%] rounded-r-full"></div>
+</div>
+</div>
+</section>
+<!-- Main Content Area: Question & Social Feed -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Live Question Card (Center/Left) -->
+<div class="lg:col-span-8 space-y-6">
+<div class="bg-surface-container-lowest p-8 md:p-12 rounded-lg shadow-xl border-b-8 border-primary-fixed relative overflow-hidden">
+<!-- Tribal Totem Overlap -->
+<div class="absolute -top-12 -right-12 w-48 h-48 bg-tertiary-fixed/20 rounded-full blur-3xl"></div>
+<div class="flex justify-between items-start mb-12">
+<div class="space-y-1">
+<span class="bg-secondary-fixed text-on-secondary-fixed px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest">Vocabulary Challenge</span>
+<h3 class="font-headline font-black text-4xl text-on-surface mt-4">"Mazingira"</h3>
+</div>
+<span class="material-symbols-outlined text-4xl text-tertiary" data-icon="volume_up">volume_up</span>
+</div>
+<p class="text-on-surface-variant font-body text-lg mb-8 leading-relaxed">Choose the correct English translation for the Swahili term above.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<button class="group p-6 rounded-lg bg-surface-container hover:bg-primary-fixed transition-all duration-300 text-left flex items-center justify-between">
+<span class="font-label font-semibold text-lg">A. Civilization</span>
+<div class="w-6 h-6 border-2 border-outline rounded-full group-hover:border-primary flex items-center justify-center">
+<div class="w-2 h-2 bg-primary rounded-full opacity-0 group-hover:opacity-100"></div>
+</div>
+</button>
+<button class="group p-6 rounded-lg bg-surface-container hover:bg-primary-fixed transition-all duration-300 text-left flex items-center justify-between">
+<span class="font-label font-semibold text-lg">B. Environment</span>
+<div class="w-6 h-6 border-2 border-outline rounded-full group-hover:border-primary flex items-center justify-center">
+<div class="w-2 h-2 bg-primary rounded-full opacity-0 group-hover:opacity-100"></div>
+</div>
+</button>
+<button class="group p-6 rounded-lg bg-surface-container hover:bg-primary-fixed transition-all duration-300 text-left flex items-center justify-between">
+<span class="font-label font-semibold text-lg">C. Community</span>
+<div class="w-6 h-6 border-2 border-outline rounded-full group-hover:border-primary flex items-center justify-center">
+<div class="w-2 h-2 bg-primary rounded-full opacity-0 group-hover:opacity-100"></div>
+</div>
+</button>
+<button class="group p-6 rounded-lg bg-surface-container hover:bg-primary-fixed transition-all duration-300 text-left flex items-center justify-between">
+<span class="font-label font-semibold text-lg">D. Journey</span>
+<div class="w-6 h-6 border-2 border-outline rounded-full group-hover:border-primary flex items-center justify-center">
+<div class="w-2 h-2 bg-primary rounded-full opacity-0 group-hover:opacity-100"></div>
+</div>
+</button>
+</div>
+</div>
+<!-- Action Bar -->
+<div class="flex flex-wrap gap-4 items-center justify-between">
+<div class="flex -space-x-3">
+<img alt="Eagle Member" class="w-10 h-10 rounded-full border-2 border-surface" data-alt="close-up portrait of a woman wearing colorful East African patterned headscarf and gold jewelry" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPOGVb9ZM0DuWmyusughxuVIhW7kZ-gNt35gU2nwNbFKy4wuZWeCxTj7ssZHQEooDkf6faTApwJftcvCiTDIK3zGRbi-7b7Pi1LRPNAHGLRn6C6THa-QPPtRIMsDwwcsD0Zz-CRInm7AdABfLAZ_B86CzrsijoHA4DRDlx1-dn3h8va6ztbONX6fFVAqOfibdMrSf6xJt_vPdJYflWRy1VTMSZFLgPM0fVcMyy-D7PAxHg-te0vJTvMPrr23jXfeLKLnoANI_7fZkr"/>
+<img alt="Eagle Member" class="w-10 h-10 rounded-full border-2 border-surface" data-alt="close-up portrait of a man with traditional tribal markings on his forehead and high cheekbones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-TZ-taVvzPnLHQpga9i-0sT1Y0o3jTE1U7ktEvF-rTV0R71KMWMW_qVhsBtcqzMv62pgIoyK95MD74hy2vi6MoYiCxqmdYm3U7pb1j7arf5cyb9q2bU5GytRdTwpPY5yAmLnHShUUA53-drXUCC8TNkVCsqTk_6YOZoKwXLo5zeDXdQD_E1ID4ED0Gyx21nFt2JA5uO1oK59AfdPtA14aIPrtyjNHsfnJhhXFFajzLdRBn1weev5Gc9JqlxK433fQS4FfvhX-A5q_"/>
+<img alt="Eagle Member" class="w-10 h-10 rounded-full border-2 border-surface" data-alt="close-up portrait of a young person wearing a vibrant kente cloth garment with geometric patterns" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJWiwQet1ibExl18oxO-jrd1bXOE1Tx-gXp3bRAJVe0Cx9eCRzKMchDZ3a0Mtdx9ToQe7mMFACW549BwOzZfVI6zFKJr0bFj31k6Il408FfPwyFUhcDpbil0Gb1xOaKcDZ39IZ-MqT6Q1wqS08dYA4y81kqOVXemVUzKxZ9dysXkB3w7vqhG5ozUdnpsJN4vaRg_QTTWbDk3QJr3RHzE6CD8-fR28a7eV2P54o_NV_4W_QrwZI3hDAWBb9m0NWZHzOVHSjf19Z0-VJ"/>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest border-2 border-surface flex items-center justify-center text-xs font-bold">+128</div>
+</div>
+<p class="font-label font-medium text-on-surface-variant">Sahara Eagles members are voting...</p>
+<button class="bg-primary text-white font-headline font-black px-10 py-4 rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all">SUBMIT ANSWER</button>
+</div>
+</div>
+<!-- Social Feed: Tribe Support (Right Column) -->
+<aside class="lg:col-span-4 h-full">
+<div class="bg-surface-container-high rounded-lg p-6 flex flex-col h-[600px]">
+<div class="flex items-center justify-between mb-6">
+<h4 class="font-headline font-bold text-on-surface">Tribe Support</h4>
+<span class="bg-on-secondary-container/10 text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold">LIVE • 2.4k</span>
+</div>
+<div class="flex-grow overflow-y-auto custom-scrollbar space-y-4 pr-2">
+<!-- Message (Congo Dragon) -->
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-fixed flex-shrink-0 flex items-center justify-center text-[10px] font-bold">CD</div>
+<div class="bg-surface-container-lowest p-3 rounded-tr-xl rounded-b-xl shadow-sm">
+<p class="text-xs font-bold text-secondary mb-1">Griot_Master</p>
+<p class="text-sm">Environment! Mazingira is environment. We got this Dragons! 🔥</p>
+</div>
+</div>
+<!-- Message (Sahara Eagle) -->
+<div class="flex flex-row-reverse items-start gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex-shrink-0 flex items-center justify-center text-[10px] font-bold">SE</div>
+<div class="bg-primary-fixed p-3 rounded-tl-xl rounded-b-xl shadow-sm">
+<p class="text-xs font-bold text-on-primary-fixed-variant mb-1">EagleEye_01</p>
+<p class="text-sm">Don't let them win this round. Eagles fly higher! 🦅✨</p>
+</div>
+</div>
+<!-- System Notification -->
+<div class="flex justify-center my-4">
+<div class="bg-tertiary-fixed/30 text-on-tertiary-fixed px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest">
+                                Sahara Eagles used a 'Time Freeze' totem!
+                            </div>
+</div>
+<!-- Message (Congo Dragon) -->
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-fixed flex-shrink-0 flex items-center justify-center text-[10px] font-bold">CD</div>
+<div class="bg-surface-container-lowest p-3 rounded-tr-xl rounded-b-xl shadow-sm">
+<p class="text-xs font-bold text-secondary mb-1">Zuri_22</p>
+<p class="text-sm">Go Dragons! 🐉🐉🐉 Let's show them our fire!</p>
+</div>
+</div>
+<!-- Reaction Cluster -->
+<div class="flex gap-2 justify-center py-2">
+<button class="bg-surface-container-highest p-2 rounded-full hover:scale-110 transition-transform">🔥</button>
+<button class="bg-surface-container-highest p-2 rounded-full hover:scale-110 transition-transform">🦅</button>
+<button class="bg-surface-container-highest p-2 rounded-full hover:scale-110 transition-transform">🐉</button>
+<button class="bg-surface-container-highest p-2 rounded-full hover:scale-110 transition-transform">💪</button>
+</div>
+<!-- Message (Sahara Eagle) -->
+<div class="flex flex-row-reverse items-start gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex-shrink-0 flex items-center justify-center text-[10px] font-bold">SE</div>
+<div class="bg-primary-fixed p-3 rounded-tl-xl rounded-b-xl shadow-sm">
+<p class="text-xs font-bold text-on-primary-fixed-variant mb-1">Safari_Ken</p>
+<p class="text-sm">14/20 we are closing the gap! Come on team!</p>
+</div>
+</div>
+</div>
+<!-- Chat Input -->
+<div class="mt-4 pt-4 border-t border-outline-variant/30 flex items-center gap-2">
+<input class="w-full bg-surface-container rounded-full border-none focus:ring-2 focus:ring-primary px-4 py-3 text-sm" placeholder="Cheer your tribe..." type="text"/>
+<button class="bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined" data-icon="send">send</span>
+</button>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- BottomNavBar (Mobile-friendly) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-white/80 dark:bg-stone-900/80 backdrop-blur-md rounded-t-[2rem] shadow-[0_-10px_40px_rgba(45,22,0,0.08)] md:hidden">
+<a class="flex flex-col items-center justify-center text-stone-400 px-5 py-2 hover:text-[#a73400]" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-['Lexend'] text-[10px] font-medium uppercase tracking-widest mt-1">Hub</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#ffdbcf] text-[#a73400] rounded-full px-5 py-2 animate-pulse transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="swords">swords</span>
+<span class="font-['Lexend'] text-[10px] font-medium uppercase tracking-widest mt-1">Duels</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-400 px-5 py-2 hover:text-[#a73400]" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="font-['Lexend'] text-[10px] font-medium uppercase tracking-widest mt-1">Ranks</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-400 px-5 py-2 hover:text-[#a73400]" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-['Lexend'] text-[10px] font-medium uppercase tracking-widest mt-1">Explore</span>
+</a>
+</nav>
+<!-- Floating Action Button (FAB) - Boost Totem -->
+<div class="fixed bottom-24 right-6 md:bottom-8 md:right-8 z-40">
+<button class="bg-tertiary-container text-white p-4 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all flex items-center justify-center group">
+<span class="material-symbols-outlined text-3xl" data-icon="auto_fix_high">auto_fix_high</span>
+<span class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 font-headline font-bold ml-0 group-hover:ml-3">USE TOTEM</span>
+</button>
+</div>
+</body></html>

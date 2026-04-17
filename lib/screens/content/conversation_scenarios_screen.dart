@@ -6,6 +6,7 @@ import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/screens/ai_chat/polie_workspace_screen.dart';
 import 'package:lingafriq/data/roleplay_dataset.dart';
+import 'package:lingafriq/screens/content/speak_mission_evaluate_screen.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
@@ -346,8 +347,36 @@ class _ConversationScenariosScreenState extends ConsumerState<ConversationScenar
       ).then((_) {
         // Update progress after completion
         _updateScenarioProgress(scenario.id, completed: true);
+
+        // Offer a Speak-to-Understand evaluation flow immediately after practice.
+        // This is production-scored server-side and will return an error if AI providers are unavailable.
+        if (!mounted) return;
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => SpeakMissionEvaluateScreen(
+              languageCode: widget.language ?? scenario.language,
+              scenarioId: scenario.id,
+              scenarioTitle: scenario.title,
+              referenceKeywords: _defaultKeywordsForScenario(scenario),
+              registerContext: scenario.id == 'doctor' ? 'formal_service' : 'peer',
+            ),
+          ),
+        );
       });
     }
+  }
+
+  List<String> _defaultKeywordsForScenario(ConversationScenario s) {
+    // Deterministic keyword list (no AI) — used as a lightweight intent anchor.
+    // Users can still pass evaluation by communicating intent with synonyms; server rubric scores holistically.
+    final id = s.id.toLowerCase();
+    if (id.contains('market')) return ['price', 'how much', 'buy', 'sell', 'today'];
+    if (id.contains('restaurant')) return ['order', 'food', 'menu', 'please', 'thank you'];
+    if (id.contains('doctor')) return ['pain', 'feel', 'medicine', 'help', 'symptoms'];
+    if (id.contains('directions')) return ['where', 'go', 'left', 'right', 'near'];
+    if (id.contains('airport')) return ['ticket', 'passport', 'gate', 'check-in', 'help'];
+    return ['hello', 'please', 'thanks', 'help', 'today'];
   }
 
   void _updateScenarioProgress(String scenarioId, {required bool completed}) {

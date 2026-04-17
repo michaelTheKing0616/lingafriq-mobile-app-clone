@@ -52,6 +52,7 @@ class LearningPathNotifier extends Notifier<LearningPath> {
   String _resolvePathType(String? selectedPath) {
     if (selectedPath == 'career') return 'career';
     if (selectedPath == 'academic') return 'academic';
+    if (selectedPath == 'dialect') return 'dialect';
     return 'explore';
   }
 
@@ -160,9 +161,38 @@ class LearningPathNotifier extends Notifier<LearningPath> {
         return _getCareerModules(proficiency);
       case 'academic':
         return _getAcademicModules(proficiency);
+      case 'dialect':
+        return _getDialectModules(proficiency);
       default:
         return _getExploreModules(proficiency);
     }
+  }
+
+  /// Modules when the learner prioritizes local speech patterns (pairs with dialect preference API).
+  List<LearningModule> _getDialectModules(String proficiency) {
+    return [
+      LearningModule(
+        id: 'dialect_1',
+        title: 'Sound & identity',
+        description: 'Tune your ear to everyday speech in your chosen locale',
+        lessons: ['pronunciation_basics', 'tone_patterns', 'greetings_local'],
+        estimatedTime: 35,
+      ),
+      LearningModule(
+        id: 'dialect_2',
+        title: 'Living phrases',
+        description: 'Phrases you hear at home, market, and community events',
+        lessons: ['market_talk', 'family_kinship', 'proverbs'],
+        estimatedTime: 40,
+      ),
+      LearningModule(
+        id: 'dialect_3',
+        title: 'Heritage & story',
+        description: 'Connect language to songs, stories, and cultural memory',
+        lessons: ['storytelling', 'songs', 'heritage_prompts'],
+        estimatedTime: 45,
+      ),
+    ];
   }
   
   // Ensure all supported languages have learning paths
@@ -314,7 +344,7 @@ final learningPathProvider = NotifierProvider<LearningPathNotifier, LearningPath
 });
 
 class LearningPath {
-  final String type; // 'explore', 'career', 'academic'
+  final String type; // 'explore', 'career', 'academic', 'dialect'
   final String currentLevel;
   final List<LearningModule> modules;
   final int currentModuleIndex;

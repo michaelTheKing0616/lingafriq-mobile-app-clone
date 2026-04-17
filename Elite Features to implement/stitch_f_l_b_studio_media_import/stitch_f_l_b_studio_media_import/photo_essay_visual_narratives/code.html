@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Manrope:wght@200..800&amp;family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-low": "#f6f3ec",
+              "surface-bright": "#fcf9f2",
+              "tertiary-fixed-dim": "#e9c349",
+              "on-surface-variant": "#57423a",
+              "primary-fixed-dim": "#ffb596",
+              "on-tertiary-fixed": "#241a00",
+              "tertiary-fixed": "#ffe088",
+              "on-primary-fixed": "#360f00",
+              "background": "#fcf9f2",
+              "on-secondary": "#ffffff",
+              "on-tertiary": "#ffffff",
+              "primary-fixed": "#ffdbcd",
+              "primary-container": "#c05621",
+              "error-container": "#ffdad6",
+              "surface-container-highest": "#e5e2db",
+              "secondary-fixed": "#d9e3f9",
+              "on-tertiary-container": "#4f3d00",
+              "error": "#ba1a1a",
+              "surface-container-lowest": "#ffffff",
+              "on-background": "#1c1c18",
+              "inverse-primary": "#ffb596",
+              "surface-tint": "#a14009",
+              "on-secondary-container": "#596376",
+              "inverse-on-surface": "#f3f0e9",
+              "on-surface": "#1c1c18",
+              "surface-container-high": "#ebe8e1",
+              "surface-container": "#f1eee7",
+              "secondary-container": "#d6e0f6",
+              "surface-dim": "#dcdad3",
+              "on-primary": "#ffffff",
+              "outline-variant": "#dec0b5",
+              "surface-variant": "#e5e2db",
+              "inverse-surface": "#31312c",
+              "on-primary-container": "#fffeff",
+              "primary": "#9f3e07",
+              "on-secondary-fixed-variant": "#3d4759",
+              "on-error-container": "#93000a",
+              "on-error": "#ffffff",
+              "outline": "#8a7268",
+              "secondary": "#555f71",
+              "surface": "#fcf9f2",
+              "tertiary-container": "#cca730",
+              "tertiary": "#735c00",
+              "on-secondary-fixed": "#121c2c",
+              "secondary-fixed-dim": "#bdc7dc",
+              "on-tertiary-fixed-variant": "#574500",
+              "on-primary-fixed-variant": "#7d2d00"
+            },
+            fontFamily: {
+              "headline": ["Newsreader"],
+              "body": ["Manrope"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body selection:bg-primary-container selection:text-white">
+<!-- TopAppBar -->
+<nav class="fixed top-0 w-full z-50 bg-[#fcf9f2]/90 dark:bg-stone-900/90 backdrop-blur-xl flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-4">
+<button class="text-orange-900 dark:text-orange-200 hover:bg-stone-200/50 p-2 rounded-sm transition-colors">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+</div>
+<span class="font-serif italic text-3xl text-[#9f3e07] dark:text-[#c05621] tracking-tight">Àṣà</span>
+<div class="flex items-center gap-4">
+<button class="text-orange-900 dark:text-orange-200 hover:bg-stone-200/50 p-2 rounded-sm transition-colors">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="relative min-h-screen pt-20 pb-24 overflow-hidden">
+<!-- Header Section -->
+<header class="px-6 md:px-12 pt-8 pb-12 max-w-7xl mx-auto">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="max-w-2xl">
+<p class="font-label text-xs uppercase tracking-widest text-primary mb-4">Photo Essay — Volume 01</p>
+<h1 class="font-headline text-5xl md:text-7xl leading-tight text-on-background">Visual Narratives: <br/><span class="italic text-on-surface-variant">The Face of the Ancestor</span></h1>
+</div>
+<div class="flex items-center gap-8 mb-2">
+<div class="flex flex-col items-end">
+<span class="font-label text-[10px] uppercase text-outline">Curated by</span>
+<span class="font-headline italic text-xl">The Curator</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Full-Bleed Gallery Section -->
+<section class="relative w-full overflow-x-auto snap-x snap-mandatory flex hide-scrollbar">
+<!-- Slide 1 -->
+<div class="min-w-full h-[618px] md:h-[751px] snap-center px-4 md:px-12 flex flex-col md:flex-row gap-8 items-center">
+<div class="relative h-full w-full md:w-3/4 group">
+<div class="absolute inset-0 bg-surface-container-high transition-transform duration-700 group-hover:scale-[1.02]">
+<img alt="ancestral portrait" class="w-full h-full object-cover grayscale brightness-90 hover:grayscale-0 transition-all duration-1000" data-alt="striking close-up portrait of an elderly African woman with deep facial lines, wearing traditional ochre headwrap, dramatic sunlight casting long shadows across her face" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6wM54s4IeRUcv0n2RaQo7AWlMy33zlRXqJRRf4la6YDrylWGOODJBgQw9-ILloIIxMVthMJASWx0x8Kf-ltaeq7BnweoB32GLLWX4QHlAEPBTTTOyjOaQ71OZlP1swxStTCczJ2-php_WBtuAMcYaQl2RFvuUvKIAVO0xGr0JgAS0rXK-QWczJtqZgxHK10NmhflQyTfmPgPC6-Z8-HH0o7nqON79pT1IVNDOutSCpltEiomSDL34mkJAW2XYJBuCnUvn6B4jV6mJ"/>
+</div>
+<div class="absolute bottom-6 left-6 flex items-center gap-2 px-3 py-1 bg-surface-bright/80 backdrop-blur-md rounded-sm">
+<span class="font-label text-xs text-primary">01 / 05</span>
+</div>
+</div>
+<div class="w-full md:w-1/4 flex flex-col justify-center space-y-6">
+<div class="border-l-2 border-primary-container pl-6 space-y-4">
+<h3 class="font-headline text-2xl italic text-on-surface">The Sentinel of Memory</h3>
+<p class="font-body text-sm leading-relaxed text-on-surface-variant">
+                            Her gaze represents the unbroken lineage of the Sahel. The markings are not merely scars, but a map of identity carved into the canvas of the skin.
+                        </p>
+<div class="flex items-center gap-2 group cursor-pointer pt-4">
+<span class="font-label text-[10px] uppercase tracking-tighter text-tertiary">Cultural Note</span>
+<span class="material-symbols-outlined text-sm text-tertiary" data-icon="arrow_outward">arrow_outward</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Slide 2 -->
+<div class="min-w-full h-[618px] md:h-[751px] snap-center px-4 md:px-12 flex flex-col md:flex-row-reverse gap-8 items-center">
+<div class="relative h-full w-full md:w-3/4 group">
+<div class="absolute inset-0 bg-surface-container-high transition-transform duration-700 group-hover:scale-[1.02]">
+<img alt="wisdom portrait" class="w-full h-full object-cover grayscale brightness-90 hover:grayscale-0 transition-all duration-1000" data-alt="dignified portrait of a man with silver hair and weathered skin in a dark navy robe, cinematic profile lighting against a textured clay wall background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2plGn-trKYiRq1dmR4YhsKB1wJv_amoi8QMHBe5d54jagFyDRJq0wLSID4AbRt77cPNADI8-DV0sQ-4ZAUY9ugGIsioUtlExqdvmA6EY54An4eRqFEqQfcOcKXX1Pj4Q1RQ8Zkq42ucSOJ2_KZFYkCaEydiZe9nmodry1LEWdNdklRwlhPVBJyFj51fYP8sXszhachZLGoqpeuPDu_pcGc12B0yIo0Wa9rfyUB6RuX9JhpCYb5XHOE1S2zC8zjdHOrcFOLHCu1c_F"/>
+</div>
+<div class="absolute bottom-6 left-6 flex items-center gap-2 px-3 py-1 bg-surface-bright/80 backdrop-blur-md rounded-sm">
+<span class="font-label text-xs text-primary">02 / 05</span>
+</div>
+</div>
+<div class="w-full md:w-1/4 flex flex-col justify-center space-y-6">
+<div class="border-r-2 border-primary-container pr-6 text-right space-y-4">
+<h3 class="font-headline text-2xl italic text-on-surface">The Silent Archive</h3>
+<p class="font-body text-sm leading-relaxed text-on-surface-variant">
+                            In his silence, centuries of oral tradition are preserved. The stillness of the portrait echoes the depth of unspoken sagas.
+                        </p>
+<div class="flex items-center gap-2 justify-end group cursor-pointer pt-4">
+<span class="font-label text-[10px] uppercase tracking-tighter text-tertiary">Cultural Note</span>
+<span class="material-symbols-outlined text-sm text-tertiary" data-icon="arrow_outward">arrow_outward</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Progress Indicator -->
+<div class="max-w-xl mx-auto mt-16 px-6">
+<div class="h-[2px] w-full bg-surface-container-highest relative overflow-hidden">
+<div class="absolute left-0 top-0 h-full w-1/5 bg-primary transition-all duration-500"></div>
+</div>
+<div class="flex justify-between items-center mt-4">
+<button class="flex items-center gap-2 font-label text-[10px] uppercase text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="arrow_back">arrow_back</span> Prev
+                </button>
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface-variant">Exploring Lineage</span>
+<button class="flex items-center gap-2 font-label text-[10px] uppercase text-outline hover:text-primary transition-colors">
+                    Next <span class="material-symbols-outlined text-base" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Floating Cultural Note Overlay (Simulated context) -->
+<div class="fixed bottom-28 right-8 z-40 max-w-xs p-6 bg-surface-container-low border border-outline-variant/20 shadow-2xl rounded-sm">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label text-[10px] uppercase tracking-widest text-primary">Contextual Depth</span>
+<button class="text-outline hover:text-on-surface"><span class="material-symbols-outlined text-sm" data-icon="close">close</span></button>
+</div>
+<p class="font-headline italic text-xl text-on-surface mb-3">On Sacred Scars</p>
+<p class="font-body text-xs leading-loose text-on-secondary-container">
+                In many West African traditions, facial markings signify social status, lineage, and a protection against the spiritual void. They are a physical manifestation of a digital archive.
+            </p>
+<div class="mt-4 pt-4 border-t border-outline-variant/30">
+<a class="font-label text-[10px] uppercase text-tertiary flex items-center gap-1" href="#">Read Full Essay <span class="material-symbols-outlined text-[12px]" data-icon="arrow_forward">arrow_forward</span></a>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center pt-2 pb-6 px-4 bg-[#fcf9f2]/80 dark:bg-stone-900/80 backdrop-blur-md z-50 shadow-[0_-10px_30px_rgba(28,28,24,0.04)]">
+<a class="flex flex-col items-center justify-center bg-[#c05621] text-white rounded-sm px-3 py-1 scale-105 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+<span class="font-mono text-[10px] uppercase tracking-widest mt-1">Archives</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 grayscale hover:text-[#9f3e07] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="science">science</span>
+<span class="font-mono text-[10px] uppercase tracking-widest mt-1">Studio</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 grayscale hover:text-[#9f3e07] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-mono text-[10px] uppercase tracking-widest mt-1">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 grayscale hover:text-[#9f3e07] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-mono text-[10px] uppercase tracking-widest mt-1">Profile</span>
+</a>
+</nav>
+<!-- Footer Meta -->
+<footer class="px-6 py-12 bg-surface-container-high text-center border-t border-outline-variant/10">
+<div class="max-w-2xl mx-auto space-y-6">
+<p class="font-label text-[10px] uppercase tracking-[0.4em] text-outline">End of Segment</p>
+<h2 class="font-headline text-3xl italic">The archives are vast, <br/>but the memory is singular.</h2>
+<div class="flex justify-center gap-4 pt-4">
+<button class="px-8 py-3 bg-primary text-white font-label text-xs uppercase tracking-widest rounded-sm hover:opacity-90 transition-opacity">Explore More Essays</button>
+</div>
+</div>
+</footer>
+</body></html>

@@ -320,5 +320,50 @@
   "tooltipTribes": "Tribes",
   "@tooltipTribes": {
     "description": "Tooltip for tribes action on heritage detail"
+  },
+
+  "magazineKeyTakeaways": "Key takeaways",
+  "@magazineKeyTakeaways": {
+    "description": "Section title for scraped article highlights"
+  },
+
+  "magazineRelatedTopics": "Related topics",
+  "@magazineRelatedTopics": {
+    "description": "Related Wikipedia-style topics from scraper"
+  },
+
+  "magazineSourceAndLicense": "Source & license",
+  "@magazineSourceAndLicense": {
+    "description": "Footer for attribution and license text"
+  },
+
+  "magazineReadingTime": "{minutes} min read",
+  "@magazineReadingTime": {
+    "description": "Reading time chip",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+
+  "gameTutorialGotIt": "Got it",
+  "@gameTutorialGotIt": {
+    "description": "Dismiss game tutorial sheet"
+  },
+
+  "gameTutorialHowToPlay": "How to play",
+  "@gameTutorialHowToPlay": {
+    "description": "Game tutorial dialog title"
+  },
+
+  "chatPeerTyping": "{name} is typing…",
+  "@chatPeerTyping": {
+    "description": "Typing indicator label",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
   }
 }

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-high": "#ffe3cd",
+              "on-error": "#ffffff",
+              "on-secondary": "#ffffff",
+              "on-secondary-container": "#007230",
+              "on-primary-container": "#fffbff",
+              "surface-container-lowest": "#ffffff",
+              "inverse-primary": "#ffb59c",
+              "on-surface": "#2d1600",
+              "on-error-container": "#93000a",
+              "inverse-on-surface": "#ffeee1",
+              "on-tertiary": "#ffffff",
+              "primary-container": "#c94c1a",
+              "error": "#ba1a1a",
+              "primary-fixed-dim": "#ffb59c",
+              "on-primary-fixed-variant": "#822700",
+              "background": "#fff8f5",
+              "on-primary-fixed": "#390c00",
+              "outline-variant": "#e0bfb5",
+              "outline": "#8c7168",
+              "surface-container": "#ffeada",
+              "on-tertiary-container": "#fffbff",
+              "surface-container-highest": "#ffdcbf",
+              "surface-variant": "#ffdcbf",
+              "on-secondary-fixed": "#002109",
+              "on-tertiary-fixed-variant": "#5f4100",
+              "tertiary-container": "#9b6c00",
+              "surface-container-low": "#fff1e8",
+              "surface-bright": "#fff8f5",
+              "secondary-container": "#7cf994",
+              "on-secondary-fixed-variant": "#005320",
+              "tertiary-fixed-dim": "#f8bc51",
+              "secondary-fixed": "#7ffc97",
+              "secondary-fixed-dim": "#62df7d",
+              "tertiary-fixed": "#ffdeab",
+              "primary-fixed": "#ffdbcf",
+              "on-tertiary-fixed": "#281900",
+              "inverse-surface": "#462a0d",
+              "error-container": "#ffdad6",
+              "secondary": "#006e2d",
+              "on-background": "#2d1600",
+              "tertiary": "#7b5500",
+              "primary": "#a73400",
+              "surface-dim": "#ffd2aa",
+              "on-surface-variant": "#59413a",
+              "surface": "#fff8f5",
+              "on-primary": "#ffffff",
+              "surface-tint": "#aa3601"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Lexend"],
+              "label": ["Lexend"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .organic-blob {
+            clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+        }
+        .kente-pattern {
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(167, 52, 0, 0.05) 10px, rgba(167, 52, 0, 0.05) 20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-[#fff8f5] dark:bg-stone-950 no-border bg-[#fff1e8] dark:bg-stone-900">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary">
+<img class="w-full h-full object-cover" data-alt="User wearing a traditional kente-patterned headwrap, warm studio lighting, vibrant colors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2lFQkIw_73EUngEkMF7YhqgS_XDs49YshxB8zso5ykrm8XRonID6wEEXqEodkpjeUi4I2SxuwwdwJ6hssix17kxW3KtitwbeCWNsVbF5KrKoPcP6xOe1mIst557O6r-ybJGvsGeAI7_Cs8M_Mq08IiXATTDq9Y4gFhwx8T6bcPDeswj88BYf4pKxUKJgkRHppD7fFfyaUfySeSPP2Eabu5wghYvwLPEnJzcJxwNGK8haTitts714nqId_FoxsTrLg6GgagDEf1b6m"/>
+</div>
+<h1 class="font-headline font-bold text-2xl uppercase tracking-wider text-[#a73400] dark:text-[#ff8a50]">The Village</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1 px-3 py-1 bg-surface-container rounded-full text-primary font-bold">
+<span class="material-symbols-outlined text-sm" data-icon="token">token</span>
+<span class="text-sm">1,240</span>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-5xl mx-auto">
+<!-- Market Search & Greeting -->
+<section class="mb-12">
+<h2 class="font-headline font-extrabold text-4xl text-primary leading-tight mb-2">Village Market</h2>
+<p class="text-on-surface-variant mb-8 font-medium">Trade your cowries for ancient wisdom and modern tongues.</p>
+<div class="relative group">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline" data-icon="search">search</span>
+</div>
+<input class="w-full bg-surface-container-low border-none rounded-xl py-4 pl-12 pr-4 focus:ring-2 focus:ring-primary-container text-on-surface placeholder:text-outline/60 shadow-sm transition-all" placeholder="Search topics, dialects, or tribes..." type="text"/>
+</div>
+</section>
+<!-- Featured Section: Asymmetric Layout -->
+<section class="mb-16">
+<div class="flex items-center justify-between mb-8">
+<h3 class="font-headline font-bold text-xl tracking-tight flex items-center gap-2">
+<span class="w-2 h-8 bg-tertiary rounded-full"></span>
+                    Featured Collections
+                </h3>
+<button class="text-primary font-bold text-sm hover:underline">See All</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+<!-- Large Featured Card -->
+<div class="md:col-span-7 bg-surface-container-high rounded-lg overflow-hidden relative group hover:shadow-xl transition-all duration-300">
+<div class="absolute top-0 right-0 p-6 z-10">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest shadow-sm">Popular</span>
+</div>
+<div class="h-64 w-full relative">
+<img class="w-full h-full object-cover" data-alt="Golden hour safari landscape with acacia trees and a distant silhouette of a giraffe under a soft warm orange sky" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC29q0WY7VbjveG8yaiczplBElg-bW2DlbZ1_Tpv2-mXqL7yoQjgG7tYlqXaN3kVd0UCDQIAjAmp3n-fQS0QFptpmSGE7FFAWtDmvbN3rBBxHbEhOFh-TlwmG_kv15aFp9KtC0BTmiAen1hMuCs4iWk_3ZZRkLzzYSmICKOW3lFx7ef5QKR5JQvgKw9cUGsRa9nnFdym5m9TBn1_sSlix1Y7NA7kPbQziqwzzB12-lQKPWdKyKPwiVBxKMncs4Gj37pTKbEgNPWiBvm"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
+</div>
+<div class="p-8 relative">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h4 class="font-headline font-extrabold text-2xl text-on-primary-container mb-1">Essential Safari Phrases</h4>
+<p class="text-primary-fixed text-sm">Master the language of the wild.</p>
+</div>
+<div class="text-right">
+<div class="flex items-center gap-1 text-tertiary-fixed font-bold">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>4.9</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-6 mb-8 text-on-primary-container/80 text-sm font-medium">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-lg" data-icon="style">style</span> 48 Cards</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-lg" data-icon="speed">speed</span> Intermediate</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-2xl font-black text-on-primary-container">350</span>
+<span class="material-symbols-outlined text-tertiary-fixed" data-icon="token">token</span>
+</div>
+<button class="bg-on-primary-container text-primary font-bold py-3 px-8 rounded-full hover:bg-surface-bright transition-colors shadow-lg active:scale-95 duration-150">Trade Now</button>
+</div>
+</div>
+</div>
+<!-- Secondary Featured Card -->
+<div class="md:col-span-5 flex flex-col gap-8">
+<div class="bg-surface-container rounded-lg p-6 relative kente-pattern">
+<div class="flex gap-4 items-center mb-6">
+<div class="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 shadow-md">
+<img class="w-full h-full object-cover" data-alt="Traditional African stew in a clay pot with vibrant spices and steam rising, rustic warm kitchen setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2XXui9rwPHDIvOCuDdXKuyE6Y4P6QIQR5b0crRcTYZHt4NuJa8GeW8TjaadCMEnOnSNGbkBJXTRD8Vf32iCcLU6f3t32r-RCcI5vftmitg_nZ5oe58uWVh2rGTrA_GUGv-XvsHywGi6pSCRmuE5eWM23UL62ZJAkEoeBrRczVt0ZZQnMPMm4gnGNL6OFD_akrN5f4u0DfMdp1oo7OAbrGn6QW8mulzdYdKdYIzA689VX7i0saIvb88OL0Zj4e7gVeqL2_eRi3RLey"/>
+</div>
+<div>
+<h4 class="font-headline font-bold text-lg text-primary">Cooking Terms</h4>
+<p class="text-on-surface-variant text-sm">Flavors of the Motherland</p>
+</div>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex flex-col">
+<span class="text-xs font-bold uppercase text-outline mb-1">Price</span>
+<div class="flex items-center gap-1 text-primary font-bold">
+<span>180</span>
+<span class="material-symbols-outlined text-sm" data-icon="token">token</span>
+</div>
+</div>
+<button class="bg-primary-container text-white px-4 py-2 rounded-full text-sm font-bold shadow-md hover:opacity-90 transition-opacity">Unlock Pack</button>
+</div>
+</div>
+<div class="bg-surface-container-low border-2 border-dashed border-outline-variant rounded-lg p-6 flex flex-col items-center justify-center text-center group cursor-pointer">
+<div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mb-4 text-primary group-hover:scale-110 transition-transform shadow-sm">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</div>
+<h5 class="font-bold text-on-surface">Request a Topic</h5>
+<p class="text-xs text-on-surface-variant px-4 mt-1">Can't find a dialect? Ask the elders to create a pack.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Patterned Divider -->
+<div class="w-full h-8 flex items-center justify-center gap-4 mb-16 overflow-hidden opacity-20">
+<span class="material-symbols-outlined text-primary" data-icon="native_color_on">colors</span>
+<span class="material-symbols-outlined text-primary" data-icon="native_color_on">colors</span>
+<span class="material-symbols-outlined text-primary" data-icon="native_color_on">colors</span>
+<span class="material-symbols-outlined text-primary" data-icon="native_color_on">colors</span>
+<span class="material-symbols-outlined text-primary" data-icon="native_color_on">colors</span>
+<span class="material-symbols-outlined text-primary" data-icon="native_color_on">colors</span>
+</div>
+<!-- Bento Grid: Browse by Category -->
+<section class="mb-12">
+<div class="flex items-center justify-between mb-8">
+<h3 class="font-headline font-bold text-xl tracking-tight">Browse by Category</h3>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest p-6 rounded-lg shadow-sm hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="w-10 h-10 bg-secondary-fixed text-on-secondary-fixed rounded-full flex items-center justify-center mb-4 group-hover:rotate-12 transition-transform">
+<span class="material-symbols-outlined" data-icon="family_history">family_history</span>
+</div>
+<h6 class="font-bold text-on-surface mb-1">Family</h6>
+<p class="text-xs text-on-surface-variant">12 Packs • 420 Words</p>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest p-6 rounded-lg shadow-sm hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="w-10 h-10 bg-tertiary-fixed text-on-tertiary-fixed rounded-full flex items-center justify-center mb-4 group-hover:rotate-12 transition-transform">
+<span class="material-symbols-outlined" data-icon="festival">festival</span>
+</div>
+<h6 class="font-bold text-on-surface mb-1">Tradition</h6>
+<p class="text-xs text-on-surface-variant">8 Packs • 215 Words</p>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest p-6 rounded-lg shadow-sm hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="w-10 h-10 bg-primary-fixed text-on-primary-fixed rounded-full flex items-center justify-center mb-4 group-hover:rotate-12 transition-transform">
+<span class="material-symbols-outlined" data-icon="business_center">business_center</span>
+</div>
+<h6 class="font-bold text-on-surface mb-1">Trade</h6>
+<p class="text-xs text-on-surface-variant">15 Packs • 530 Words</p>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-container-lowest p-6 rounded-lg shadow-sm hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="w-10 h-10 bg-surface-container-high text-on-surface rounded-full flex items-center justify-center mb-4 group-hover:rotate-12 transition-transform">
+<span class="material-symbols-outlined" data-icon="landscape">landscape</span>
+</div>
+<h6 class="font-bold text-on-surface mb-1">Nature</h6>
+<p class="text-xs text-on-surface-variant">22 Packs • 890 Words</p>
+</div>
+</div>
+</section>
+<!-- Tribe Totem Pop (Breaking Grid) -->
+<div class="relative mt-20 mb-20">
+<div class="bg-primary rounded-lg p-10 flex flex-col md:flex-row items-center gap-8 overflow-hidden">
+<div class="absolute -right-10 -bottom-10 opacity-10">
+<span class="material-symbols-outlined text-[15rem]" data-icon="psychology_alt">psychology_alt</span>
+</div>
+<div class="relative z-10 text-center md:text-left md:w-2/3">
+<h3 class="font-headline font-black text-3xl text-white mb-4 italic">Tribe Wisdom Boost</h3>
+<p class="text-primary-fixed font-medium text-lg leading-relaxed mb-6">Trade 500 cowries for the "Master Griot" pack and unlock exclusive tonal audio for every word in the village.</p>
+<button class="bg-tertiary-fixed text-on-tertiary-fixed font-bold py-3 px-10 rounded-full shadow-xl hover:scale-105 transition-transform active:scale-95">Claim Your Totem</button>
+</div>
+<div class="md:w-1/3 flex justify-center relative">
+<div class="w-48 h-48 bg-tertiary-fixed rounded-full organic-blob overflow-hidden border-4 border-tertiary shadow-2xl scale-125 transform translate-y-4">
+<img class="w-full h-full object-cover" data-alt="Abstract vibrant African textile pattern with geometric shapes in earth tones, ochre, sienna and deep brown" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwkLM8p_pi20pr1NF2rjbk4xVcgERajHdYtvOsfBFLCP7LbsCkS7k1yaGwp1rqm0z6gGfSwSLjw9oF0WI82pRbJ0Y9B40q75xT0KOjup3FXD4kcO1PVkLLShvGE6-QWj_MwlLo4E4w0I78KU3PzKrc0fzl-HrEWxL-J2LeuZX0O5iRk6BX7IUl6BsojOseT9JStUsEdkxw388mAvlkGfOFAM9msLfsaHwwIdr-5pii41bJ1Gmu8yRKVt9RADGBcmAkd2vITZZ2tzDe"/>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#a73400]/80 dark:bg-stone-900/90 backdrop-blur-xl rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(45,22,0,0.12)] no-border tonal-layering">
+<a class="flex flex-col items-center justify-center text-white/70 dark:text-stone-400 p-2 hover:text-white dark:hover:text-[#ffdbcf] transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="map">map</span>
+<span class="font-lexend text-[10px] font-semibold uppercase tracking-tighter">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#ffeada] dark:bg-[#7b5500] text-[#a73400] dark:text-[#ffdeab] rounded-full p-3 mb-1 scale-110 shadow-lg active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="storefront">storefront</span>
+<span class="font-lexend text-[10px] font-semibold uppercase tracking-tighter">Market</span>
+</a>
+<a class="flex flex-col items-center justify-center text-white/70 dark:text-stone-400 p-2 hover:text-white dark:hover:text-[#ffdbcf] transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-lexend text-[10px] font-semibold uppercase tracking-tighter">Café</span>
+</a>
+<a class="flex flex-col items-center justify-center text-white/70 dark:text-stone-400 p-2 hover:text-white dark:hover:text-[#ffdbcf] transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="auto_stories">auto_stories</span>
+<span class="font-lexend text-[10px] font-semibold uppercase tracking-tighter">Hut</span>
+</a>
+<a class="flex flex-col items-center justify-center text-white/70 dark:text-stone-400 p-2 hover:text-white dark:hover:text-[#ffdbcf] transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="school">school</span>
+<span class="font-lexend text-[10px] font-semibold uppercase tracking-tighter">School</span>
+</a>
+</nav>
+</body></html>

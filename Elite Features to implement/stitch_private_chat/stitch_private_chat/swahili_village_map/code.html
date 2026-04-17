@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Village - Swahili Language Village</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "surface-container-high": "#ffe3cd",
+                "on-error": "#ffffff",
+                "on-secondary": "#ffffff",
+                "on-secondary-container": "#007230",
+                "on-primary-container": "#fffbff",
+                "surface-container-lowest": "#ffffff",
+                "inverse-primary": "#ffb59c",
+                "on-surface": "#2d1600",
+                "on-error-container": "#93000a",
+                "inverse-on-surface": "#ffeee1",
+                "on-tertiary": "#ffffff",
+                "primary-container": "#c94c1a",
+                "error": "#ba1a1a",
+                "primary-fixed-dim": "#ffb59c",
+                "on-primary-fixed-variant": "#822700",
+                "background": "#fff8f5",
+                "on-primary-fixed": "#390c00",
+                "outline-variant": "#e0bfb5",
+                "outline": "#8c7168",
+                "surface-container": "#ffeada",
+                "on-tertiary-container": "#fffbff",
+                "surface-container-highest": "#ffdcbf",
+                "surface-variant": "#ffdcbf",
+                "on-secondary-fixed": "#002109",
+                "on-tertiary-fixed-variant": "#5f4100",
+                "tertiary-container": "#9b6c00",
+                "surface-container-low": "#fff1e8",
+                "surface-bright": "#fff8f5",
+                "secondary-container": "#7cf994",
+                "on-secondary-fixed-variant": "#005320",
+                "tertiary-fixed-dim": "#f8bc51",
+                "secondary-fixed": "#7ffc97",
+                "secondary-fixed-dim": "#62df7d",
+                "tertiary-fixed": "#ffdeab",
+                "primary-fixed": "#ffdbcf",
+                "on-tertiary-fixed": "#281900",
+                "inverse-surface": "#462a0d",
+                "error-container": "#ffdad6",
+                "secondary": "#006e2d",
+                "on-background": "#2d1600",
+                "tertiary": "#7b5500",
+                "primary": "#a73400",
+                "surface-dim": "#ffd2aa",
+                "on-surface-variant": "#59413a",
+                "surface": "#fff8f5",
+                "on-primary": "#ffffff",
+                "surface-tint": "#aa3601"
+              },
+              fontFamily: {
+                "headline": ["Plus Jakarta Sans"],
+                "body": ["Lexend"],
+                "label": ["Lexend"]
+              },
+              borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .savannah-gradient {
+            background: radial-gradient(circle at center, #fff8f5 0%, #ffeada 100%);
+        }
+        .path-svg {
+            stroke-dasharray: 10;
+            filter: drop-shadow(0 2px 4px rgba(167, 52, 0, 0.1));
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background font-body text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed overflow-hidden h-screen w-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-[#fff1e8] dark:bg-stone-900 transition-opacity">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full overflow-hidden ring-2 ring-primary ring-offset-2">
+<img class="w-full h-full object-cover" data-alt="User wearing a traditional kente-patterned headwrap, close-up portrait with soft natural lighting and earthy tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBY5XOL8Hds_a3vfVnG2afDB0E54prPUPJU_LxvCen6WxdDSEl8ovvWx6439iQl0OIO1wlZ4ioMMfstdym7rlawnB9uEMkuA7_OBF_VUrRGXXvepU_H4hBfcO5A5ubS6d5a_YN6QxM9HsHrnl85QLzUECEUT9v-cJMYvgQjmKjknB7yzB2yPI064Y0Tb8cXMdSuZjkIeQTzrU9y2FbrOyob95nflygLPj-515JtnUQalVRCUGAwTxkex1u32hTv-RGeCNcZAkmK9MYk"/>
+</div>
+<h1 class="font-plus-jakarta-sans font-bold text-2xl uppercase tracking-wider text-[#a73400] dark:text-[#ff8a50]">
+                The Village
+            </h1>
+</div>
+<div class="flex items-center gap-3 bg-surface-container px-4 py-2 rounded-full shadow-sm">
+<span class="material-symbols-outlined text-primary" data-icon="token">token</span>
+<span class="font-bold text-primary">1,240</span>
+</div>
+</header>
+<!-- Main Map Canvas -->
+<main class="relative w-full h-full savannah-gradient overflow-hidden flex items-center justify-center pt-20 pb-24">
+<!-- Background Texture & Landscape -->
+<div class="absolute inset-0 opacity-10 pointer-events-none">
+<img class="w-full h-full object-cover grayscale brightness-150" data-alt="abstract textured background resembling cracked earth and dry savannah grass in warm ochre and terracotta tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpV_zyp06bCpWM6gvNGUWALG90wEyeQMhf3wPWFBqzqF_58H1aAi7ISWtYzfb9_U9tF83W3bb_F9tbE8nSkIKA3MmlJAVz0TJbQEo0SYKhG0r-3PEBjM_SiJ1H50spXTheva-gHC6HX1ah-5RTvL6MSW6flB8vaA7aEs0fQhvHVmQhjPA9MA1LAbYXV7hz-Lo2aELA33gEhM2PkexiwIxxVHEF7xuAefxscNmkejFhwfq4hFg6LC7EsTnT3_cvzyE6UI5Atfo1WTwV"/>
+</div>
+<!-- Animated Village Label -->
+<div class="absolute top-28 left-1/2 -translate-x-1/2 z-20 text-center">
+<div class="inline-flex flex-col items-center bg-white/40 backdrop-blur-md px-8 py-3 rounded-xl shadow-xl border border-white/20">
+<h2 class="font-headline font-extrabold text-3xl text-primary flex items-center gap-3">
+<span class="text-4xl">🇰🇪</span> Swahili Village
+                </h2>
+<div class="flex items-center gap-2 mt-1">
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full border-2 border-white bg-secondary-container flex items-center justify-center text-[10px] font-bold">JD</div>
+<div class="w-6 h-6 rounded-full border-2 border-white bg-tertiary-fixed flex items-center justify-center text-[10px] font-bold">MK</div>
+<div class="w-6 h-6 rounded-full border-2 border-white bg-primary-fixed flex items-center justify-center text-[10px] font-bold">AS</div>
+</div>
+<p class="text-[12px] font-semibold text-on-surface-variant uppercase tracking-widest">4.2k Learners Live</p>
+</div>
+</div>
+</div>
+<!-- The Village Grid (Asymmetric) -->
+<div class="relative w-full max-w-5xl h-[618px] flex items-center justify-center">
+<!-- SVG Paths (The Woven Way) -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" fill="none" viewbox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
+<path class="path-svg" d="M100,400 Q250,350 400,450 T700,400 T900,500" stroke="#e0bfb5" stroke-linecap="round" stroke-width="4"></path>
+<path class="path-svg opacity-50" d="M450,150 Q550,250 400,450" stroke="#e0bfb5" stroke-linecap="round" stroke-width="4"></path>
+<path class="path-svg opacity-50" d="M750,200 Q700,300 700,400" stroke="#e0bfb5" stroke-linecap="round" stroke-width="4"></path>
+</svg>
+<!-- Building: Elder's Hut (Focal Point) -->
+<button class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group z-10 transition-transform hover:scale-105 active:scale-95 focus:outline-none">
+<div class="relative">
+<div class="absolute -inset-4 bg-tertiary-fixed/30 rounded-full blur-xl group-hover:bg-tertiary-fixed/50 transition-colors"></div>
+<div class="w-40 h-40 bg-surface-container-lowest rounded-xl shadow-[0_20px_40px_rgba(45,22,0,0.1)] flex flex-col items-center justify-center p-4 border-b-8 border-tertiary">
+<span class="material-symbols-outlined text-tertiary text-6xl mb-2" data-icon="bungalow">bungalow</span>
+<span class="font-headline font-bold text-sm tracking-tighter uppercase text-on-surface">Elder's Hut</span>
+<span class="text-[10px] font-medium text-tertiary opacity-70">NYUMBA YA WAZEE</span>
+</div>
+<!-- Overlapping Totem -->
+<div class="absolute -top-4 -right-4 w-12 h-12 bg-tertiary-fixed rounded-lg shadow-lg flex items-center justify-center transform rotate-12 ring-4 ring-white">
+<span class="material-symbols-outlined text-on-tertiary-fixed" data-icon="auto_awesome">auto_awesome</span>
+</div>
+</div>
+</button>
+<!-- Building: School (Top Left) -->
+<button class="absolute top-10 left-[10%] group transition-transform hover:scale-105 active:scale-95 focus:outline-none">
+<div class="w-32 h-32 bg-surface-container-lowest rounded-lg shadow-lg flex flex-col items-center justify-center p-4 border-b-4 border-secondary">
+<span class="material-symbols-outlined text-secondary text-5xl mb-1" data-icon="school">school</span>
+<span class="font-headline font-bold text-xs uppercase text-on-surface">School</span>
+<span class="text-[9px] font-medium text-secondary opacity-70">SHULE</span>
+</div>
+</button>
+<!-- Building: Market (Bottom Right) -->
+<button class="absolute bottom-10 right-[15%] group transition-transform hover:scale-105 active:scale-95 focus:outline-none">
+<div class="w-36 h-36 bg-surface-container-lowest rounded-xl shadow-lg flex flex-col items-center justify-center p-4 border-b-4 border-primary">
+<span class="material-symbols-outlined text-primary text-5xl mb-1" data-icon="storefront">storefront</span>
+<span class="font-headline font-bold text-xs uppercase text-on-surface">Market</span>
+<span class="text-[9px] font-medium text-primary opacity-70">SOKO</span>
+</div>
+</button>
+<!-- Building: Café (Middle Left) -->
+<button class="absolute top-[40%] left-[5%] group transition-transform hover:scale-105 active:scale-95 focus:outline-none">
+<div class="w-28 h-28 bg-surface-container-lowest rounded-lg shadow-md flex flex-col items-center justify-center p-3 border-b-4 border-orange-500">
+<span class="material-symbols-outlined text-orange-500 text-4xl mb-1" data-icon="local_cafe">local_cafe</span>
+<span class="font-headline font-bold text-[10px] uppercase text-on-surface">Café</span>
+<span class="text-[8px] font-medium text-orange-500 opacity-70">MKAHWA</span>
+</div>
+<!-- User Totem Near Café -->
+<div class="absolute -bottom-6 -right-2 flex -space-x-1">
+<img class="w-6 h-6 rounded-full border-2 border-white object-cover" data-alt="avatar of young man smiling, bright outdoor lighting, cinematic portrait style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuACOxc6F4I6jDkN_4kv0zu4lBbbbF9Jq-DgjqxXM6wKAY65RrtpRqZXbQyb_AnCS8hrKgXt97Ayxb62Ark1kRrA10p2AvSPvKAddYIrqAf86NcUI-AuTM4PcvGJTo6-oV0bWYAFI-pLluaNkDlLTJpI1Xp-gOrxe7zwfZOClUZK_B3rBKmcu1Py4Fk1V7UcHjIlb_pGj1_c_ydPYNsY-XjZdxnyFg8ltdxBNRA1lKfkr74Z4MeXVouAeabYT02tID26Z9O7_ukgshQX"/>
+<div class="w-6 h-6 rounded-full border-2 border-white bg-green-500 flex items-center justify-center text-[8px] font-bold text-white">4+</div>
+</div>
+</button>
+<!-- Building: Griot Stage (Top Right) -->
+<button class="absolute top-[15%] right-[20%] group transition-transform hover:scale-105 active:scale-95 focus:outline-none">
+<div class="w-32 h-32 bg-surface-container-lowest rounded-full shadow-lg flex flex-col items-center justify-center p-4 border-4 border-dashed border-tertiary-container">
+<span class="material-symbols-outlined text-tertiary-container text-5xl mb-1" data-icon="theater_comedy">theater_comedy</span>
+<span class="font-headline font-bold text-[10px] uppercase text-on-surface">Griot Stage</span>
+<span class="text-[8px] font-medium text-tertiary-container opacity-70">JUKWAA LA SIMULIZI</span>
+</div>
+<!-- Active Speaker Pulse -->
+<div class="absolute inset-0 rounded-full animate-ping bg-tertiary-container/20 -z-10"></div>
+</button>
+<!-- Floating Totems (Scattered Avatars) -->
+<div class="absolute top-[20%] left-[45%] w-8 h-8 rounded-full border-2 border-white shadow-md overflow-hidden animate-bounce" style="animation-duration: 3s;">
+<img class="w-full h-full object-cover" data-alt="portrait of a laughing woman, warm sunlight, vibrant green background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxLw3iVIwED-dMXng3-kjnoGW62Ieo-wzI_gFEDU_kPHxuGJZf_29L-VtXUDinYN3USfebh5liLIlds1ZGxYyuF6mrCUiU4JbFGcV8ffNMnBW29r4bGgR9zlMUm59W3SBFBo-NyI98vnfrjaD2q0JZkK3Eeh7JuN1d3tQQ-uY80w4iFVqHx1PhAxNL0FZ-HJjGVUQ-i1Nq5kxryoxxPq-SQVINSUMRnZ6WZgUc1Cp1-OlhpWGXUmmcFQ0NxI72gdMOwft7DaX03M3g"/>
+</div>
+<div class="absolute bottom-[30%] right-[40%] w-10 h-10 rounded-full border-2 border-white shadow-md overflow-hidden animate-bounce" style="animation-duration: 4s;">
+<img class="w-full h-full object-cover" data-alt="man in traditional west african shirt, serene expression, sunset lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB80nZoIKRB_gl0Fu4qrEmXY9pG9P5_p_sE8DZmjXEpfhef0_Uzkb2CayUFI1k5c-D0FCFoPLMYIDQHwwDfpyn5yC6XUtRELxIyRzdULbUCEKQmPuuJNdBeeeKgk4tXcQ_t617YebJG4XxiiePdl3vwkFD8zBr5EXrQEnlV5mVqGC1XxAeImG-7soh77n1eNtULHnyIRH3Z_ER0CtrHmFX-ey2yDDoD_bhGDxrGAyG7ZHg4nNGq9QjUNRZkogs6k1Jvev-_5mYiEjNS"/>
+</div>
+</div>
+</main>
+<!-- Contextual FAB (Only for Main Screens) -->
+<button class="fixed bottom-32 right-8 z-50 group flex items-center gap-3 bg-primary text-white pl-6 pr-4 py-4 rounded-full shadow-2xl hover:bg-primary-container transition-all hover:scale-105 active:scale-95 backdrop-blur-md bg-opacity-90">
+<span class="font-headline font-bold text-sm uppercase tracking-widest">Talk to Griot</span>
+<div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-xl" data-icon="mic" data-weight="fill" style="font-variation-settings: 'FILL' 1;">mic</span>
+</div>
+</button>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#a73400]/80 dark:bg-stone-900/90 backdrop-blur-xl rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(45,22,0,0.12)]">
+<!-- Map (Active) -->
+<a class="flex flex-col items-center justify-center bg-[#ffeada] dark:bg-[#7b5500] text-[#a73400] dark:text-[#ffdeab] rounded-full p-3 mb-1 scale-110 shadow-lg transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="map" data-weight="fill" style="font-variation-settings: 'FILL' 1;">map</span>
+<span class="font-lexend text-[10px] font-semibold uppercase tracking-tighter mt-1">Map</span>
+</a>
+<!-- Market -->
+<a class="flex flex-col items-center justify-center text-white/70 dark:text-stone-400 p-2 hover:text-white dark:hover:text-[#ffdbcf] transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="storefront">storefront</span>
+<span class="font-lexend text-[10px] font-semibold uppercase tracking-tighter mt-1">Market</span>
+</a>
+<!-- Café -->
+<a class="flex flex-col items-center justify-center text-white/70 dark:text-stone-400 p-2 hover:text-white dark:hover:text-[#ffdbcf] transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-lexend text-[10px] font-semibold uppercase tracking-tighter mt-1">Café</span>
+</a>
+<!-- Hut -->
+<a class="flex flex-col items-center justify-center text-white/70 dark:text-stone-400 p-2 hover:text-white dark:hover:text-[#ffdbcf] transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="auto_stories">auto_stories</span>
+<span class="font-lexend text-[10px] font-semibold uppercase tracking-tighter mt-1">Hut</span>
+</a>
+<!-- School -->
+<a class="flex flex-col items-center justify-center text-white/70 dark:text-stone-400 p-2 hover:text-white dark:hover:text-[#ffdbcf] transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="school">school</span>
+<span class="font-lexend text-[10px] font-semibold uppercase tracking-tighter mt-1">School</span>
+</a>
+</nav>
+</body></html>

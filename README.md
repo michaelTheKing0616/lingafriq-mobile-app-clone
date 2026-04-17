@@ -1,16 +1,48 @@
-# lingafriq
+# LingAfriq
 
-A new Flutter project.
+Mobile client for **LingAfriq**, an African language learning app. Built with **Flutter**, **Riverpod**, and a **Node.js** backend (see the `node-backend-safe-push` directory in the repo root when present).
 
-## Getting Started
+## Requirements
 
-This project is a starting point for a Flutter application.
+- **Flutter** SDK compatible with `environment.sdk` in [`pubspec.yaml`](pubspec.yaml) (currently Dart `>=3.8.0 <4.0.0`).
+- **Android**: Android SDK / Gradle as configured under `android/` (see CI for pinned NDK / platform versions).
+- **iOS**: Xcode toolchain on macOS for local iOS builds.
 
-A few resources to get you started if this is your first Flutter project:
+## Run locally
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+```bash
+cd mobile-app-safe-push-michael   # if your clone uses this folder name
+flutter pub get
+flutter run
+```
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Configuration (API base URL, feature flags, optional certificate pinning hashes) is injected at build time via `--dart-define` / `EnvConfig`—see project docs under `docs/` and `lib/config/` for operational notes.
+
+## Tests and analysis
+
+```bash
+flutter analyze --no-fatal-infos --no-fatal-warnings
+flutter test
+flutter test --coverage   # writes coverage/lcov.info (ignored by git)
+```
+
+CI (`.github/workflows/build-and-release.yml`) runs **analyze**, **`flutter test --coverage`**, prints an **lcov summary** on Linux, and uploads **coverage artifacts** for Android and iOS jobs.
+
+## Project layout (high level)
+
+| Area        | Location |
+|------------|----------|
+| App code   | `lib/` |
+| Tests      | `test/` |
+| Native     | `android/`, `ios/` |
+| Tooling    | `tool/` |
+
+## Documentation
+
+- [`CODEBASE_ELEVATION_ROADMAP.md`](CODEBASE_ELEVATION_ROADMAP.md) — improvement backlog, product phases, staging checklist.
+- [`../node-backend-safe-push/README_IMPLEMENTATION.md`](../node-backend-safe-push/README_IMPLEMENTATION.md) — backend test/contract commands (`npm run test:contracts`, etc.) when the server repo is checked out alongside this app.
+- [`docs/`](docs/) — API contract notes, pinning ops, and other runbooks where present.
+
+## License
+
+See repository root or team policy for license terms.

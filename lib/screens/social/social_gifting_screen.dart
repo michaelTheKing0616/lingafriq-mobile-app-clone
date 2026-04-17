@@ -41,9 +41,11 @@ class SocialGiftingScreen extends HookConsumerWidget {
         ),
         ),
       ),
-      body: ListView(
+      body: SingleChildScrollView(
         padding: EdgeInsets.all(PanAfricanSpacing.md),
-        children: [
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
           // Header card
           Container(
             padding: EdgeInsets.all(PanAfricanSpacing.md),
@@ -262,7 +264,8 @@ class SocialGiftingScreen extends HookConsumerWidget {
               ],
             ),
           ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Lexend:wght@300;400;500;600&amp;family=Dosis:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-surface": "#462a0d",
+              "on-tertiary-fixed-variant": "#5f4100",
+              "on-error-container": "#93000a",
+              "inverse-on-surface": "#ffeee1",
+              "primary": "#a73400",
+              "on-primary": "#ffffff",
+              "on-secondary-fixed-variant": "#005320",
+              "tertiary-container": "#9b6c00",
+              "on-tertiary": "#ffffff",
+              "tertiary-fixed": "#ffdeab",
+              "error": "#ba1a1a",
+              "primary-container": "#c94c1a",
+              "tertiary": "#7b5500",
+              "surface-container-high": "#ffe3cd",
+              "secondary-fixed-dim": "#62df7d",
+              "on-tertiary-container": "#fffbff",
+              "on-secondary": "#ffffff",
+              "on-secondary-container": "#007230",
+              "surface-container": "#ffeada",
+              "on-error": "#ffffff",
+              "secondary-container": "#7cf994",
+              "on-primary-fixed": "#390c00",
+              "on-primary-container": "#fffbff",
+              "on-primary-fixed-variant": "#822700",
+              "secondary": "#006e2d",
+              "surface-tint": "#aa3601",
+              "primary-fixed": "#ffdbcf",
+              "surface-container-highest": "#ffdcbf",
+              "error-container": "#ffdad6",
+              "on-surface": "#2d1600",
+              "outline-variant": "#e0bfb5",
+              "on-background": "#2d1600",
+              "surface-dim": "#ffd2aa",
+              "on-tertiary-fixed": "#281900",
+              "outline": "#8c7168",
+              "on-secondary-fixed": "#002109",
+              "surface-container-lowest": "#ffffff",
+              "on-surface-variant": "#59413a",
+              "background": "#fff8f5",
+              "surface": "#fff8f5",
+              "inverse-primary": "#ffb59c",
+              "surface-bright": "#fff8f5",
+              "secondary-fixed": "#7ffc97",
+              "surface-container-low": "#fff1e8",
+              "surface-variant": "#ffdcbf",
+              "primary-fixed-dim": "#ffb59c",
+              "tertiary-fixed-dim": "#f8bc51"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Lexend"],
+              "label": ["Lexend"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Lexend', sans-serif; }
+        .font-headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-[#fff8f5] dark:bg-orange-950/20 docked full-width top-0 sticky z-50 no-border bg-[#fff1e8] dark:bg-orange-900/10 flex justify-between items-center px-6 py-4 w-full backdrop-blur-md bg-opacity-80">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-primary-fixed">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="portrait of a confident West African woman with braided hair and vibrant traditional accessories against a soft warm studio light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqoHWJZ1tY6aGmXP45u-tioVxTUBeWtq5B-8px66fg1yYk1oOCQXTCpUuZ6KN3sOzg8oxErggXXwPJY4M4zj_MlvTw3pY5x63chkDPn01JrS_Q3S_PauNKvLlFP9Xu9PWUzoqWTGZ4AKQwaIAV6oRHMIHhxPREerDvIbXv962dXtHu75LKCZ4xtBN05v8zCLc11QLd5upZ9OAlfus8AXLPB9kLtWpd1gKDGqNFXEvmpbRqRIm7pPI0QVigRlv16Q3lN7qIHIwa6Flh"/>
+</div>
+<h1 class="font-['Plus_Jakarta_Sans'] font-bold text-2xl tracking-tight text-[#a73400] dark:text-orange-500 font-extrabold italic">LingAfriq</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-orange-900/60 dark:text-orange-200/60 hover:bg-[#ffeada] dark:hover:bg-orange-800/30 transition-colors p-2 rounded-full active:scale-95 duration-150 ease-in-out">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+</header>
+<main class="max-w-2xl mx-auto px-4 mt-6">
+<!-- Tabs Section -->
+<div class="flex items-center gap-2 mb-8 bg-surface-container-low p-1.5 rounded-full w-fit mx-auto shadow-sm">
+<button class="px-8 py-2.5 rounded-full bg-primary text-on-primary font-headline font-bold text-sm tracking-wide shadow-lg shadow-primary/20 transition-all active:scale-95">
+                All
+            </button>
+<button class="px-8 py-2.5 rounded-full text-on-surface-variant font-headline font-semibold text-sm tracking-wide hover:bg-surface-container transition-all active:scale-95">
+                Mentions
+            </button>
+</div>
+<!-- Notification List -->
+<div class="flex flex-col gap-4">
+<!-- Notification: Like (Unread) -->
+<div class="bg-primary-fixed/30 p-5 rounded-lg flex gap-4 transition-all hover:bg-primary-fixed/40 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-2">
+<div class="w-2 h-2 bg-primary rounded-full"></div>
+</div>
+<div class="relative">
+<img alt="Kofi" class="w-12 h-12 rounded-full object-cover shadow-md" data-alt="headshot of a smiling young man with dark skin and short hair in a bright casual shirt" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1vmYBvDeW95TbjJ0xD1mtuotAQdf2Yk263pe47SJ_bJWhE0ZkgJsFXXpe9KkMwuKy4dVj-6qClMV298huM9V3N-Ic-2JbDutP0AQ-MjwhTo8ZRAEjP79WRWvOosKQwpTZtikgEYUEZKWOekGVK2Huqg5IC82JbkZGW8rY0v5MN-VP7xodhBYRDIKQB591HvLR0UcRX0_zyVVd4SR1mVikjCkfzP7y5Bb01fGlesdsOx8nUk1BuHpFZ89_PpFUKnthGeh3UOTeWJq9"/>
+<div class="absolute -bottom-1 -right-1 bg-white p-1 rounded-full shadow-sm flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-baseline mb-1">
+<p class="text-sm font-medium">
+<span class="font-bold text-on-surface">Kofi</span>
+<span class="text-on-surface-variant">liked your post</span>
+</p>
+<span class="text-[10px] uppercase tracking-widest text-on-surface-variant/60 font-bold">2m ago</span>
+</div>
+<div class="bg-surface-container-lowest/60 p-3 rounded-DEFAULT mt-2 text-sm text-on-surface-variant italic border-l-4 border-primary/20">
+                        "The way our ancestors used the stars for navigation is truly..."
+                    </div>
+</div>
+</div>
+<!-- Notification: Repost -->
+<div class="bg-surface-container-low p-5 rounded-lg flex gap-4 transition-all hover:bg-surface-container">
+<div class="relative">
+<img alt="Zahara" class="w-12 h-12 rounded-full object-cover shadow-md" data-alt="portrait of a woman with braided hair wearing colorful patterned African fabric headwrap" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkyKqb4QnpAmEOqWD92H795fVLuihGlxMgL0d4vM36nT1pgob66ryd4zNbFjRxYs4lHGzqviV4r4ktVhxQEvAwIEqcPyNAE6HsHDKsq_WNUBdSOut89qSy5jX8155dyqA9mc1G4UnXjP2SaujGBMxwSUQCW2EAlBb8spTfbDCHiGhiRhGKTWfLp3ZN-To_BH-ePh1PwDWGIVEFamtlh82KKetA6ztl4QLM-ymduo3tGmgQvf2bfQ0_UNH1nMQACwG1q3Dx3614Vam7"/>
+<div class="absolute -bottom-1 -right-1 bg-white p-1 rounded-full shadow-sm flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="rebase_edit">rebase_edit</span>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-baseline mb-1">
+<p class="text-sm font-medium">
+<span class="font-bold text-on-surface">Zahara</span>
+<span class="text-on-surface-variant">reposted your post</span>
+</p>
+<span class="text-[10px] uppercase tracking-widest text-on-surface-variant/60 font-bold">15m ago</span>
+</div>
+<p class="text-xs text-on-surface-variant/70 mt-1">Shared to Tribe: Modern Griots</p>
+</div>
+</div>
+<!-- Notification: Reply (Unread) -->
+<div class="bg-primary-fixed/30 p-5 rounded-lg flex gap-4 transition-all hover:bg-primary-fixed/40 relative">
+<div class="absolute top-0 right-0 p-2">
+<div class="w-2 h-2 bg-primary rounded-full"></div>
+</div>
+<div class="relative">
+<img alt="Elder Kwesi" class="w-12 h-12 rounded-full object-cover shadow-md" data-alt="distinguished elderly man with grey beard and traditional kente cloth stole" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJNuqEetMBsKrBffkZkgGHdHL-v1FFgoC6EYft4NBX1kBbsrXxOKm7yfdrtmDGQa0HSEY53-R2A1zV9-kYLoYSwZSS-3p7pOllCnq9H1DDRrV6XXds3klAvCaNJjdqe6LmJIypbPQ0nMeUeFqaFXWq49tU8-SvbZze2JnsQl4XoZXQB9_iIS3QUh319yEKKcwIDIK1erYN0y7qIPT0e8JBtAdm_Bo7UPmNLEH3EZFCH3AmD170FWSQkPQAcrlTcRi7GDR6Rm87AaLG"/>
+<div class="absolute -bottom-1 -right-1 bg-white p-1 rounded-full shadow-sm flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary text-sm" data-icon="reply">reply</span>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-baseline mb-1">
+<p class="text-sm font-medium">
+<span class="font-bold text-on-surface">Elder Kwesi</span>
+<span class="text-on-surface-variant">replied to your post</span>
+</p>
+<span class="text-[10px] uppercase tracking-widest text-on-surface-variant/60 font-bold">1h ago</span>
+</div>
+<div class="mt-2 bg-surface-container-lowest p-4 rounded-lg shadow-sm border-l-4 border-tertiary">
+<p class="text-sm text-on-surface leading-relaxed font-body">
+                            "Wisdom is like a baobab tree; no one individual can embrace it with both arms. Well said, child."
+                        </p>
+</div>
+</div>
+</div>
+<!-- Notification: Follow -->
+<div class="bg-surface-container-low p-5 rounded-lg flex gap-4 transition-all hover:bg-surface-container items-center">
+<div class="relative">
+<img alt="Amara Diallo" class="w-12 h-12 rounded-full object-cover shadow-md" data-alt="young African woman with short natural hair smiling warmly in natural sunlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiOfesxId6GjjMhHEjFk4JxmuRteB5wVvpEM6flz0cgpG4har0rDopWUJNdxhCV676h9UkvHkR4PYmmJs7fuB_jNK3O53MwVqn5iO0ltnCROvCtz3sGDuWiFhWK7Skyvp3olOjqo5nmc4aIqRdyo0qNmjKcm8IIsPbdfGwKZRkO6T_NYWkYCvFE7SrN6Xwo-V_i7n3L72ZK9es_dwHG1M3gi3s_cEMtdwfdzZV_2GSRvRm0VTA3iE_WyiZl68_Wy1coLXb5oHx42yr"/>
+<div class="absolute -bottom-1 -right-1 bg-white p-1 rounded-full shadow-sm flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="person_add">person_add</span>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center">
+<div>
+<p class="text-sm font-medium">
+<span class="font-bold text-on-surface">Amara Diallo</span>
+<span class="text-on-surface-variant">followed you</span>
+</p>
+<span class="text-[10px] uppercase tracking-widest text-on-surface-variant/60 font-bold">3h ago</span>
+</div>
+<button class="bg-primary-container text-on-primary-container px-5 py-2 rounded-full text-xs font-bold font-headline transition-all active:scale-90 hover:shadow-md">
+                            Follow back
+                        </button>
+</div>
+</div>
+</div>
+<!-- Suggestion Card (Bento Style) -->
+<div class="mt-8 bg-tertiary-fixed p-6 rounded-lg shadow-xl shadow-tertiary/5 border-t border-white/20 relative overflow-hidden group">
+<div class="absolute -right-8 -bottom-8 opacity-10 group-hover:scale-110 transition-transform duration-500">
+<span class="material-symbols-outlined text-[120px]" data-icon="diversity_3">diversity_3</span>
+</div>
+<div class="relative z-10">
+<h3 class="font-headline font-bold text-on-tertiary-fixed text-lg mb-2">Grow Your Tribe</h3>
+<p class="text-on-tertiary-fixed-variant text-sm max-w-[80%] mb-4">Engage with more language learners to get updates on local cultural gatherings.</p>
+<button class="bg-on-tertiary-fixed text-tertiary-fixed px-6 py-2 rounded-full text-xs font-bold font-headline uppercase tracking-widest">Explore Tribe</button>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-white/80 dark:bg-orange-950/80 fixed bottom-0 w-full rounded-t-[2.5rem] z-50 backdrop-blur-xl no-border shadow-[0_-4px_20px_rgba(45,22,0,0.04)] shadow-2xl">
+<a class="flex flex-col items-center justify-center text-orange-900/40 dark:text-orange-200/40 px-6 py-2 hover:text-[#a73400] dark:hover:text-orange-300 transition-transform active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="forum">forum</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-semibold uppercase tracking-wider mt-1">Feed</span>
+</a>
+<a class="flex flex-col items-center justify-center text-orange-900/40 dark:text-orange-200/40 px-6 py-2 hover:text-[#a73400] dark:hover:text-orange-300 transition-transform active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-semibold uppercase tracking-wider mt-1">Search</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#a73400] dark:text-orange-400 bg-[#ffdbcf] dark:bg-orange-900/40 rounded-full px-6 py-2 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="notifications" style="font-variation-settings: 'FILL' 1;">notifications</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-semibold uppercase tracking-wider mt-1">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-orange-900/40 dark:text-orange-200/40 px-6 py-2 hover:text-[#a73400] dark:hover:text-orange-300 transition-transform active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="diversity_3">diversity_3</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-semibold uppercase tracking-wider mt-1">Tribe</span>
+</a>
+</nav>
+</body></html>

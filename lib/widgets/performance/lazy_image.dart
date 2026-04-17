@@ -84,11 +84,14 @@ class LazyImage extends StatelessWidget {
 
     if (placeholder != null && placeholder!.isNotEmpty) {
       if (placeholder!.startsWith('http')) {
-        return Image.network(
-          placeholder!,
+        return CachedNetworkImage(
+          imageUrl: placeholder!,
           width: width,
           height: height,
           fit: fit,
+          fadeInDuration: fadeInDuration,
+          placeholder: (context, url) => _defaultLoadingBox(),
+          errorWidget: (context, url, error) => _defaultLoadingBox(),
         );
       } else {
         return Image.asset(
@@ -117,11 +120,14 @@ class LazyImage extends StatelessWidget {
 
     if (errorWidget != null && errorWidget!.isNotEmpty) {
       if (errorWidget!.startsWith('http')) {
-        return Image.network(
-          errorWidget!,
+        return CachedNetworkImage(
+          imageUrl: errorWidget!,
           width: width,
           height: height,
           fit: fit,
+          fadeInDuration: fadeInDuration,
+          placeholder: (context, url) => _defaultErrorBox(),
+          errorWidget: (context, url, error) => _defaultErrorBox(),
         );
       } else {
         return Image.asset(
@@ -133,6 +139,21 @@ class LazyImage extends StatelessWidget {
       }
     }
 
+    return _defaultErrorBox();
+  }
+
+  Widget _defaultLoadingBox() {
+    return Container(
+      width: width,
+      height: height,
+      color: Colors.grey[300],
+      child: const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+  Widget _defaultErrorBox() {
     return Container(
       width: width,
       height: height,

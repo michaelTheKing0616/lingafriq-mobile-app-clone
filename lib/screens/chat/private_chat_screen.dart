@@ -1,9 +1,13 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:socket_io_client/socket_io_client.dart' as io;
 
 import '../../models/profile_model.dart';
 import '../../providers/user_provider.dart';
@@ -12,11 +16,13 @@ import '../../services/chat/wa_private_chat_service.dart';
 import '../../services/polie_mention_handler.dart';
 import '../../services/polie_rate_limiter.dart';
 import '../../services/chat/polie_dm_local_store.dart';
+import '../../services/env_config.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../utils/pan_african_design_system.dart' show PanAfricanSpacing;
 import '../../utils/transport_error_policy.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import 'package:dio/dio.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 
 /// Private DM thread — loads history from `GET /chat/private/:otherUserId` and
 /// sends via `POST /api/wa/messages`.
@@ -27,9 +33,9 @@ class PrivateChatScreen extends ConsumerStatefulWidget {
     this.otherDisplayName,
     this.contact,
   }) : assert(
-          otherUserId != null || contact != null,
-          'Provide otherUserId or contact map with id/userId/otherUserId',
-        );
+         otherUserId != null || contact != null,
+         'Provide otherUserId or contact map with id/userId/otherUserId',
+       );
 
   final int? otherUserId;
   final String? otherDisplayName;
@@ -48,6 +54,44 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
   bool _loading = true;
   bool _sending = false;
   String? _loadError;
+
+  Timer? _typingPollTimer;
+  Timer? _typingDebounce;
+  Timer? _typingIdleTimer;
+  bool _peerTyping = false;
+  String? _dmRoomId;
+  io.Socket? _socket;
+  bool _socketReady = false;
+  bool _socketConnecting = false;
+  String? _myMongoId;
+  bool _typingListenerAttached = false;
+
+  static String _socketOriginFromBaseUrl(String baseUrl) {
+    final raw = baseUrl.trim();
+    if (raw.isEmpty) return raw;
+    final uri = Uri.parse(
+      raw.endsWith('/') ? raw.substring(0, raw.length - 1) : raw,
+    );
+    if (uri.scheme.isEmpty) return raw;
+    final portPart = uri.hasPort ? ':${uri.port}' : '';
+    return '${uri.scheme}://${uri.host}$portPart';
+  }
+
+  static String? _mongoIdFromJwt(String token) {
+    final parts = token.split('.');
+    if (parts.length < 2) return null;
+    try {
+      final payloadBytes = base64Url.decode(base64Url.normalize(parts[1]));
+      final payload = jsonDecode(utf8.decode(payloadBytes));
+      if (payload is! Map) return null;
+      final v = payload['_id'] ?? payload['sub'] ?? payload['userId'];
+      final s = v?.toString();
+      if (s == null || s.trim().isEmpty) return null;
+      return s.trim();
+    } catch (_) {
+      return null;
+    }
+  }
 
   int? get _peerNumericId {
     if (widget.otherUserId != null) return widget.otherUserId;
@@ -96,6 +140,15 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
       duration: const Duration(milliseconds: 1200),
     )..repeat();
     WidgetsBinding.instance.addPostFrameCallback((_) => _loadMessages());
+
+    // Listen once: if the user profile arrives after the chat loads, enable typing support.
+    ref.listen<ProfileModel?>(userProvider, (prev, next) {
+      if (next == null) return;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        _ensureTypingPresence();
+      });
+    });
   }
 
   Future<void> _loadMessages() async {
@@ -144,6 +197,7 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
           _loading = false;
         });
         _scrollToBottom();
+        _ensureTypingPresence();
       }
     } catch (e) {
       if (!mounted) return;
@@ -161,7 +215,9 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
     final ts = m['timestamp'] ?? m['createdAt'];
     DateTime? dt;
     if (ts != null) dt = DateTime.tryParse(ts.toString());
-    final timeStr = dt != null ? TimeOfDay.fromDateTime(dt.toLocal()).format(context) : '';
+    final timeStr = dt != null
+        ? TimeOfDay.fromDateTime(dt.toLocal()).format(context)
+        : '';
 
     var isMe = false;
     final sender = m['sender_id'];
@@ -184,11 +240,162 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
     );
   }
 
+  void _ensureTypingPresence() {
+    if (_typingListenerAttached) return;
+    final me = ref.read(userProvider);
+    final peer = _peerNumericId;
+    if (me == null || peer == null) return;
+    _dmRoomId = WaPrivateChatService.privateRoomIdForNumericUsers(me.id, peer);
+    _typingListenerAttached = true;
+    _messageController.addListener(_onComposerTypingChanged);
+    unawaited(_ensureSocket());
+    _startTypingPollingIfNeeded();
+  }
+
+  void _startTypingPollingIfNeeded() {
+    // When socket is connected, we rely on push events and avoid polling.
+    if (_socketReady) return;
+    _typingPollTimer?.cancel();
+    _typingPollTimer = Timer.periodic(const Duration(seconds: 2), (_) {
+      unawaited(_syncPeerTyping());
+    });
+  }
+
+  void _stopTypingPolling() {
+    _typingPollTimer?.cancel();
+    _typingPollTimer = null;
+  }
+
+  Future<void> _ensureSocket() async {
+    if (_socketReady || _socketConnecting) return;
+    final roomId = _dmRoomId;
+    if (roomId == null) return;
+    _socketConnecting = true;
+
+    // Token is required by backend socket auth middleware.
+    final prefs = await SharedPreferences.getInstance();
+    final token =
+        prefs.getString('auth_token') ?? prefs.getString('access_token');
+    if (token == null || token.trim().isEmpty) {
+      _socketConnecting = false;
+      return;
+    }
+
+    _myMongoId ??= _mongoIdFromJwt(token);
+
+    final origin = _socketOriginFromBaseUrl(EnvConfig.backendBaseUrl);
+    if (origin.trim().isEmpty) {
+      _socketConnecting = false;
+      return;
+    }
+
+    final socket = io.io(
+      origin,
+      io.OptionBuilder()
+          .setTransports(['websocket'])
+          .disableAutoConnect()
+          .setAuth({'token': token})
+          .build(),
+    );
+
+    socket.onConnect((_) {
+      _socketReady = true;
+      _socketConnecting = false;
+      _stopTypingPolling();
+      // Always re-join on reconnect (Socket.IO can reconnect silently).
+      final currentRoom = _dmRoomId;
+      if (currentRoom != null) {
+        socket.emit('join_room', {'room': currentRoom});
+      }
+      // On connect, do a quick sync so UI feels immediate.
+      unawaited(_syncPeerTyping());
+    });
+
+    socket.onDisconnect((_) {
+      _socketReady = false;
+      _socketConnecting = false;
+      _startTypingPollingIfNeeded();
+    });
+
+    socket.onConnectError((dynamic _) {
+      _socketReady = false;
+      _socketConnecting = false;
+      _startTypingPollingIfNeeded();
+    });
+
+    socket.on('chat:typing_indicator', (dynamic payload) {
+      if (!mounted) return;
+      if (payload is! Map) return;
+      final p = Map<String, dynamic>.from(payload as Map);
+      final pRoom = p['roomId']?.toString();
+      if (pRoom == null || pRoom != roomId) return;
+      final from = p['userId']?.toString();
+      if (_myMongoId != null && from != null && from == _myMongoId) {
+        return; // ignore our own typing echo
+      }
+      final isTyping = p['isTyping'] == true;
+      if (isTyping == _peerTyping) return;
+      setState(() => _peerTyping = isTyping);
+    });
+
+    _socket = socket;
+    socket.connect();
+  }
+
+  Future<void> _syncPeerTyping() async {
+    final id = _dmRoomId;
+    if (id == null || !mounted) return;
+    final v = await WaPrivateChatService.fetchOthersTyping(id);
+    if (!mounted || v == _peerTyping) return;
+    setState(() => _peerTyping = v);
+  }
+
+  void _onComposerTypingChanged() {
+    final room = _dmRoomId;
+    if (room == null) return;
+    _typingDebounce?.cancel();
+    final text = _messageController.text;
+    if (text.trim().isEmpty) {
+      _typingIdleTimer?.cancel();
+      unawaited(WaPrivateChatService.setTyping(roomId: room, isTyping: false));
+      _socket?.emit('chat:typing', {'roomId': room, 'isTyping': false});
+      return;
+    }
+    _typingDebounce = Timer(const Duration(milliseconds: 350), () {
+      unawaited(WaPrivateChatService.setTyping(roomId: room, isTyping: true));
+      _socket?.emit('chat:typing', {'roomId': room, 'isTyping': true});
+    });
+    _typingIdleTimer?.cancel();
+    _typingIdleTimer = Timer(const Duration(seconds: 4), () {
+      unawaited(WaPrivateChatService.setTyping(roomId: room, isTyping: false));
+      _socket?.emit('chat:typing', {'roomId': room, 'isTyping': false});
+    });
+  }
+
   @override
   void dispose() {
+    _stopTypingPolling();
+    _typingDebounce?.cancel();
+    _typingIdleTimer?.cancel();
+    if (_dmRoomId != null) {
+      unawaited(
+        WaPrivateChatService.setTyping(roomId: _dmRoomId!, isTyping: false),
+      );
+      _socket?.emit('chat:typing', {'roomId': _dmRoomId!, 'isTyping': false});
+      _socket?.emit('leave_room', {'room': _dmRoomId!});
+    }
+    if (_typingListenerAttached) {
+      _messageController.removeListener(_onComposerTypingChanged);
+    }
     _messageController.dispose();
     _scrollController.dispose();
     _typingController.dispose();
+    try {
+      _socket?.disconnect();
+    } catch (_) {}
+    try {
+      _socket?.dispose();
+    } catch (_) {}
     super.dispose();
   }
 
@@ -198,6 +405,11 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
     if (text.isEmpty || _sending || peer == null) return;
     HapticFeedback.lightImpact();
     setState(() => _sending = true);
+    final room = _dmRoomId;
+    if (room != null) {
+      unawaited(WaPrivateChatService.setTyping(roomId: room, isTyping: false));
+      _socket?.emit('chat:typing', {'roomId': room, 'isTyping': false});
+    }
     _messageController.clear();
     try {
       await WaPrivateChatService.sendTextMessage(
@@ -234,7 +446,9 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Too many @Polie requests. Try again in about a minute.'),
+            content: Text(
+              'Too many @Polie requests. Try again in about a minute.',
+            ),
           ),
         );
       }
@@ -322,10 +536,16 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
                     Material(
                       color: cs.errorContainer,
                       child: ListTile(
-                        leading: Icon(Icons.warning_amber_rounded, color: cs.onErrorContainer),
+                        leading: Icon(
+                          Icons.warning_amber_rounded,
+                          color: cs.onErrorContainer,
+                        ),
                         title: Text(
                           _loadError!,
-                          style: TextStyle(color: cs.onErrorContainer, fontSize: 13.sp),
+                          style: TextStyle(
+                            color: cs.onErrorContainer,
+                            fontSize: 13.sp,
+                          ),
                         ),
                         trailing: TextButton(
                           onPressed: _loadMessages,
@@ -342,9 +562,9 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
                               horizontal: PanAfricanSpacing.sm,
                               vertical: PanAfricanSpacing.md,
                             ),
-                            itemCount: _messages.length + 1,
+                            itemCount: _messages.length + (_peerTyping ? 1 : 0),
                             itemBuilder: (context, index) {
-                              if (index == _messages.length) {
+                              if (index >= _messages.length) {
                                 return _buildTypingIndicator(cs);
                               }
                               return _buildMessageBubble(_messages[index], cs);
@@ -471,8 +691,8 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
     final bubbleColor = msg.isFromPolie
         ? ModernGriotColors.primaryContainer.withAlpha(140)
         : msg.isMe
-            ? ModernGriotColors.secondary
-            : ModernGriotColors.surfaceContainerLow;
+        ? ModernGriotColors.secondary
+        : ModernGriotColors.surfaceContainerLow;
     final textColor = msg.isMe
         ? ModernGriotColors.onSecondary
         : ModernGriotColors.onSurface;
@@ -483,12 +703,14 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
     return Padding(
       padding: EdgeInsets.only(bottom: PanAfricanSpacing.xs),
       child: Column(
-        crossAxisAlignment:
-            msg.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        crossAxisAlignment: msg.isMe
+            ? CrossAxisAlignment.end
+            : CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment:
-                msg.isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+            mainAxisAlignment: msg.isMe
+                ? MainAxisAlignment.end
+                : MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               if (!msg.isMe) SizedBox(width: PanAfricanSpacing.xxl),
@@ -538,7 +760,9 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
                         ),
                       Text(
                         msg.text,
-                        style: ModernGriotTypography.bodyMedium(color: textColor),
+                        style: ModernGriotTypography.bodyMedium(
+                          color: textColor,
+                        ),
                       ),
                       SizedBox(height: 4.h),
                       Row(
@@ -546,10 +770,7 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
                         children: [
                           Text(
                             msg.time,
-                            style: TextStyle(
-                              fontSize: 10.sp,
-                              color: timeColor,
-                            ),
+                            style: TextStyle(fontSize: 10.sp, color: timeColor),
                           ),
                           if (msg.isMe) ...[
                             SizedBox(width: 4.w),
@@ -687,6 +908,8 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
   }
 
   Widget _buildTypingIndicator(ColorScheme cs) {
+    final l10n = AppLocalizations.of(context);
+    final label = l10n?.chatPeerTyping(_contactName) ?? '…';
     return AnimatedBuilder(
       animation: _typingController,
       builder: (context, child) {
@@ -695,39 +918,54 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
             left: PanAfricanSpacing.xxl,
             bottom: PanAfricanSpacing.sm,
           ),
-          child: Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: PanAfricanSpacing.md,
-                  vertical: PanAfricanSpacing.sm,
+              Padding(
+                padding: EdgeInsets.only(bottom: 4.h),
+                child: Text(
+                  label,
+                  style: ModernGriotTypography.labelSmall(
+                    color: cs.onSurfaceVariant,
+                  ),
                 ),
-                decoration: BoxDecoration(
-                  color: ModernGriotColors.surfaceContainerLow,
-                  borderRadius: ModernGriotRadius.borderLg,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: List.generate(3, (i) {
-                    final delay = i * 0.33;
-                    final t = (_typingController.value + delay) % 1.0;
-                    final y = -4.0 * (t < 0.5 ? t * 2 : (1.0 - t) * 2);
-                    return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 2.w),
-                      child: Transform.translate(
-                        offset: Offset(0, y),
-                        child: Container(
-                          width: 7.r,
-                          height: 7.r,
-                          decoration: BoxDecoration(
-                            color: cs.onSurfaceVariant.withAlpha(130),
-                            shape: BoxShape.circle,
+              ),
+              Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: PanAfricanSpacing.md,
+                      vertical: PanAfricanSpacing.sm,
+                    ),
+                    decoration: BoxDecoration(
+                      color: ModernGriotColors.surfaceContainerLow,
+                      borderRadius: ModernGriotRadius.borderLg,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: List.generate(3, (i) {
+                        final delay = i * 0.33;
+                        final t = (_typingController.value + delay) % 1.0;
+                        final y = -4.0 * (t < 0.5 ? t * 2 : (1.0 - t) * 2);
+                        return Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 2.w),
+                          child: Transform.translate(
+                            offset: Offset(0, y),
+                            child: Container(
+                              width: 7.r,
+                              height: 7.r,
+                              decoration: BoxDecoration(
+                                color: cs.onSurfaceVariant.withAlpha(130),
+                                shape: BoxShape.circle,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    );
-                  }),
-                ),
+                        );
+                      }),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -837,6 +1075,7 @@ class _ChatMessage {
   final String time;
   final bool isRead;
   final bool isFromPolie;
+
   /// Milliseconds since epoch for ordering with server messages.
   final int sortMs;
   final String? translation;

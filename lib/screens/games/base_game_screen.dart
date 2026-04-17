@@ -10,6 +10,7 @@ import '../../providers/game_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/gamification_provider.dart';
 import '../../providers/hearts_provider.dart';
+import '../../services/game_tutorial_helper.dart';
 import '../../services/lazy_game_loader.dart';
 import '../../services/telemetry_service.dart';
 import '../../utils/gamification_integration.dart';
@@ -170,6 +171,11 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
       }
       
       setState(() => _isLoading = false);
+      if (!mounted) return;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        unawaited(GameTutorialHelper.maybeShowForGame(context, widget.getGameType()));
+      });
     } catch (e) {
       setState(() {
         _error = 'Could not start game: $e';

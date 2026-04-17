@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Àfàláàbù Studio - Media Import</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,700;1,400&amp;family=Manrope:wght@400;600;800&amp;family=Space_Grotesk:wght@300;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary-fixed-variant": "#3d4759",
+                        "inverse-primary": "#ffb596",
+                        "surface-variant": "#e5e2db",
+                        "surface-tint": "#a14009",
+                        "inverse-surface": "#31312c",
+                        "on-surface": "#1c1c18",
+                        "on-background": "#1c1c18",
+                        "outline": "#8a7268",
+                        "on-surface-variant": "#57423a",
+                        "primary": "#9f3e07",
+                        "primary-fixed": "#ffdbcd",
+                        "inverse-on-surface": "#f3f0e9",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#f1eee7",
+                        "surface-container-high": "#ebe8e1",
+                        "secondary-fixed": "#d9e3f9",
+                        "surface-container-low": "#f6f3ec",
+                        "on-error-container": "#93000a",
+                        "surface": "#fcf9f2",
+                        "on-tertiary-fixed": "#241a00",
+                        "tertiary-container": "#cca730",
+                        "on-secondary-container": "#596376",
+                        "on-tertiary-container": "#4f3d00",
+                        "on-primary-fixed": "#360f00",
+                        "outline-variant": "#dec0b5",
+                        "on-tertiary-fixed-variant": "#574500",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#bdc7dc",
+                        "tertiary-fixed-dim": "#e9c349",
+                        "primary-fixed-dim": "#ffb596",
+                        "surface-container-highest": "#e5e2db",
+                        "surface-dim": "#dcdad3",
+                        "on-primary-fixed-variant": "#7d2d00",
+                        "tertiary-fixed": "#ffe088",
+                        "primary-container": "#c05621",
+                        "surface-bright": "#fcf9f2",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#fffeff",
+                        "tertiary": "#735c00",
+                        "background": "#fcf9f2",
+                        "secondary": "#555f71",
+                        "secondary-container": "#d6e0f6",
+                        "on-secondary-fixed": "#121c2c",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#ffffff"
+                    },
+                    fontFamily: {
+                        "headline": ["Newsreader"],
+                        "body": ["Manrope"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(49, 49, 44, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        .studio-gradient {
+            background: linear-gradient(135deg, #9f3e07 0%, #c05621 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-inverse-surface text-inverse-on-surface font-body selection:bg-tertiary-container selection:text-on-tertiary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#fcf9f2] dark:bg-[#1c1c18] backdrop-blur-md bg-opacity-90 flex justify-between items-center px-6 h-16 w-full max-w-none no-border shadow-none">
+<div class="flex items-center gap-4">
+<button class="text-[#9f3e07] dark:text-[#c05621] hover:opacity-80 transition-opacity Active: scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="font-['Newsreader'] font-bold text-[#9f3e07] dark:text-[#c05621] tracking-tighter text-2xl italic">Àfàláàbù</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant/30">
+<img alt="User Profile" data-alt="portrait of a young african man with a confident expression and creative style in soft natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQkpLA53jXBsqGVLYovF2TyUfcUWi8NOAe0UUpOINTcInGjD1WVfwgekYoSyIniRXKgiQi0k6BxufwxTKmHKL4bNBNGzoEYtGxI8LGyI3UDw5Y-z9Jgr8qUexL6qjsmz618vxqaLTgKStDUMmwPh8JftUCm5riAoXXFY9xVLwIG02iLecVg2nszeChKZbJhApqccqUYAfRr5V64My5fnuUXXqGea2odjPrA0EPHbwr3IWzDLN035gwT9_28-_GkjP7NwcdaXaaCkqP"/>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-7xl mx-auto">
+<!-- Studio Header Section -->
+<section class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="max-w-2xl">
+<div class="flex items-center gap-2 mb-2">
+<span class="font-label text-xs uppercase tracking-widest text-tertiary-fixed-dim">Laboratory Environment 04</span>
+<div class="h-px w-8 bg-tertiary-fixed-dim/30"></div>
+</div>
+<h2 class="font-headline text-5xl md:text-6xl text-inverse-on-surface tracking-tight leading-none mb-4">The Studio</h2>
+<p class="text-on-surface-variant dark:text-surface-variant font-body text-lg max-w-lg leading-relaxed">
+                    Transform your raw media into interactive archival lessons. Our AI curator extracts linguistics, cultural context, and rhythmic patterns from your uploads.
+                </p>
+</div>
+<div class="flex gap-4">
+<div class="flex flex-col items-end">
+<span class="font-label text-[10px] uppercase tracking-tighter opacity-50 mb-1">Storage used</span>
+<div class="h-1 w-32 bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-2/3"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Bento Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Upload Zone (Bento Primary) -->
+<div class="lg:col-span-7 group">
+<div class="relative h-full border-2 border-dashed border-outline-variant/20 rounded-lg p-12 flex flex-col items-center justify-center text-center transition-all hover:border-primary/50 hover:bg-white/5">
+<div class="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
+<div class="absolute top-0 right-0 w-64 h-64 studio-gradient blur-[100px] rounded-full"></div>
+<div class="absolute bottom-0 left-0 w-48 h-48 bg-secondary blur-[80px] rounded-full"></div>
+</div>
+<div class="relative z-10">
+<div class="w-20 h-20 mb-6 mx-auto rounded-full bg-inverse-on-surface/5 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-4xl" data-icon="cloud_upload">cloud_upload</span>
+</div>
+<h3 class="font-label text-xl mb-2 uppercase tracking-wide">Import Source Material</h3>
+<p class="font-body text-sm text-surface-variant/70 mb-8 max-w-xs mx-auto">
+                            Drag and drop video, audio, or PDF transcripts. High-fidelity processing starts immediately.
+                        </p>
+<div class="flex flex-wrap justify-center gap-4">
+<button class="bg-primary hover:bg-primary-container text-on-primary font-label text-xs uppercase tracking-widest px-8 py-4 rounded-sm transition-all transform active:scale-95 flex items-center gap-2">
+<span class="material-symbols-outlined text-lg" data-icon="file_open">file_open</span>
+                                Select Files
+                            </button>
+<button class="border border-outline-variant/30 hover:bg-white/5 text-inverse-on-surface font-label text-xs uppercase tracking-widest px-8 py-4 rounded-sm transition-all">
+                                External URL
+                            </button>
+</div>
+<div class="mt-12 grid grid-cols-3 gap-6 opacity-40">
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-2xl" data-icon="movie">movie</span>
+<span class="font-label text-[10px]">MP4 / MOV</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-2xl" data-icon="audio_file">audio_file</span>
+<span class="font-label text-[10px]">WAV / MP3</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-2xl" data-icon="description">description</span>
+<span class="font-label text-[10px]">PDF / TXT</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Side Controls (Bento Secondary) -->
+<div class="lg:col-span-5 flex flex-col gap-6">
+<!-- Status Card -->
+<div class="bg-surface-dim/10 rounded-lg p-6 border border-white/5">
+<div class="flex justify-between items-start mb-6">
+<h4 class="font-label text-sm uppercase tracking-widest text-primary">System Pulse</h4>
+<span class="flex h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-center py-2 border-b border-white/5">
+<span class="font-body text-sm opacity-60 italic">Linguistic Engine</span>
+<span class="font-label text-xs">ONLINE</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-white/5">
+<span class="font-body text-sm opacity-60 italic">Transcription API</span>
+<span class="font-label text-xs">98ms LATENCY</span>
+</div>
+<div class="flex justify-between items-center py-2">
+<span class="font-body text-sm opacity-60 italic">Media Buffer</span>
+<span class="font-label text-xs">STABLE</span>
+</div>
+</div>
+</div>
+<!-- Quick Guides -->
+<div class="bg-primary/10 rounded-lg p-6 border border-primary/20 relative overflow-hidden group">
+<div class="relative z-10">
+<h4 class="font-headline text-2xl italic mb-3">Curator's Tip</h4>
+<p class="font-body text-sm text-surface-variant/80 mb-4 leading-relaxed">
+                            For the best dialect detection, ensure your audio has minimal background noise. High-fidelity recordings yield 40% faster lesson generation.
+                        </p>
+<a class="font-label text-[10px] uppercase tracking-widest text-tertiary underline underline-offset-4" href="#">Learn about archival standards</a>
+</div>
+<span class="material-symbols-outlined absolute -bottom-4 -right-4 text-8xl text-primary/10 rotate-12 transition-transform group-hover:rotate-0" data-icon="auto_awesome">auto_awesome</span>
+</div>
+</div>
+</div>
+<!-- My Media Section (The "No-Divider" List) -->
+<section class="mt-20">
+<div class="flex items-center justify-between mb-10">
+<div class="flex items-center gap-4">
+<h3 class="font-headline text-3xl italic">My Media</h3>
+<span class="font-label text-xs bg-surface-container-highest/10 px-3 py-1 rounded-full text-surface-variant">24 Assets</span>
+</div>
+<div class="flex gap-2">
+<button class="w-10 h-10 rounded-sm border border-white/10 flex items-center justify-center text-surface-variant hover:bg-white/5">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+</button>
+<button class="w-10 h-10 rounded-sm border border-primary/30 bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="view_list">view_list</span>
+</button>
+</div>
+</div>
+<!-- Custom High-Tech List -->
+<div class="space-y-4">
+<!-- Item 1: Processing -->
+<div class="flex flex-col md:flex-row md:items-center justify-between p-6 bg-surface-dim/5 rounded-lg border-l-4 border-tertiary-container transition-all hover:bg-white/5 group">
+<div class="flex items-center gap-6 mb-4 md:mb-0">
+<span class="font-label text-xs text-white/30 group-hover:text-tertiary transition-colors">01</span>
+<div class="w-16 h-12 bg-surface-container-highest/20 rounded-sm flex items-center justify-center overflow-hidden">
+<img alt="Thumbnail" class="opacity-40 grayscale group-hover:grayscale-0 transition-all" data-alt="blurred cinematic close-up of a traditional yoruba drum being played by experienced hands" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAmXAGVKrIhD_tOfrHk-FUI-kH7s4sdrBIEWm1mgBr5T-w7Mvfb1rAcwiM19NYWjl_n5orOHLK5LEVARtoDT-V_XbQt6Xtl5tFuA3CsZjicnZFfbci4SjLlYP35CJ6wIpDl5X9bBGQJV7xG9jU4ilFhmTskvmb7XLU42hQT4RfG51UXmK_wIRQMzkB_3GCH4KmrTgr5FTmyDm2O6G_i81vkYllT-L6WO_n57YWyvQc3VQUCwFDCEkySY4M9EO7lMD4kJfIEgFtLFKk"/>
+</div>
+<div>
+<h4 class="font-label text-sm uppercase tracking-wider mb-1">Dundun_Patterns_02.mp4</h4>
+<p class="font-body text-xs text-surface-variant/40">Uploaded 4 mins ago • 142MB</p>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-2">
+<span class="flex h-1.5 w-1.5 rounded-full bg-tertiary animate-pulse"></span>
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-tertiary">Processing...</span>
+</div>
+<button class="text-white/30 hover:text-white transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Item 2: Ready -->
+<div class="flex flex-col md:flex-row md:items-center justify-between p-6 bg-surface-dim/5 rounded-lg border-l-4 border-primary transition-all hover:bg-white/5 group">
+<div class="flex items-center gap-6 mb-4 md:mb-0">
+<span class="font-label text-xs text-white/30 group-hover:text-primary transition-colors">02</span>
+<div class="relative w-16 h-12 bg-surface-container-highest/20 rounded-sm overflow-hidden">
+<img alt="Thumbnail" class="group-hover:scale-110 transition-transform" data-alt="macro texture of ancient indigo dyed fabric with intricate geometric patterns" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtSqMuRIPyJchWk0FGAgRj2Js8PUCBzjk6MSkxhSdTqgO4ygY2DKS54OhExN3ecOZ6B-jgjMox9JxL_5_tmZPYkMpPCXnCCstkT0UXY6Or__bnPhCzDZWQ6tBy9GNVCEFN5DYm_bax1a4Gg18lLZ8ri_KGhRRVWcouLME1I54hCQcNMbsuQIbQfrOW9Qf3hk_1Tu_8NPjz1TLms-TidW8SbTFbYhG_ZDhqNfqxhmYS3KrImpXd7GLekKVqmXydy0rJW-6KZHVCJ-0U"/>
+<div class="absolute inset-0 bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-lg" data-icon="play_arrow" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+</div>
+<div>
+<h4 class="font-label text-sm uppercase tracking-wider mb-1">Ancestral_Tales_Vol_01.wav</h4>
+<p class="font-body text-xs text-surface-variant/40">Uploaded Yesterday • 12MB</p>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-2">
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-primary bg-primary/10 px-3 py-1 rounded-sm">Lesson Ready</span>
+</div>
+<button class="text-white/30 hover:text-white transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Item 3: New -->
+<div class="flex flex-col md:flex-row md:items-center justify-between p-6 bg-surface-dim/5 rounded-lg border-l-4 border-outline-variant/30 transition-all hover:bg-white/5 group">
+<div class="flex items-center gap-6 mb-4 md:mb-0">
+<span class="font-label text-xs text-white/30 group-hover:text-white transition-colors">03</span>
+<div class="w-16 h-12 bg-surface-container-highest/20 rounded-sm flex items-center justify-center">
+<span class="material-symbols-outlined text-white/20" data-icon="description">description</span>
+</div>
+<div>
+<h4 class="font-label text-sm uppercase tracking-wider mb-1">Grammar_Structure_Final.pdf</h4>
+<p class="font-body text-xs text-surface-variant/40">Uploaded 2 days ago • 1.2MB</p>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-2">
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-surface-variant/40">Draft</span>
+</div>
+<button class="bg-white/10 hover:bg-white/20 text-white font-label text-[10px] uppercase tracking-widest px-4 py-2 rounded-sm transition-all">
+                            Initialize
+                        </button>
+<button class="text-white/30 hover:text-white transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+<div class="mt-12 text-center">
+<button class="font-label text-xs uppercase tracking-[0.3em] text-surface-variant/50 hover:text-primary transition-colors flex items-center gap-4 mx-auto">
+<span class="h-px w-12 bg-white/5"></span>
+                    View Full Archive
+                    <span class="h-px w-12 bg-white/5"></span>
+</button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-4 pt-2 bg-[#fcf9f2] dark:bg-[#1c1c18] backdrop-blur-lg bg-opacity-95 z-50 border-t border-[#1c1c18]/10 dark:border-[#ffffff]/10 shadow-[0_-4px_20px_rgba(28,28,24,0.04)]">
+<a class="flex flex-col items-center justify-center text-[#555f71] dark:text-[#ebe8e1] opacity-70 hover:text-[#9f3e07] dark:hover:text-[#c05621] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#9f3e07] dark:text-[#c05621] font-bold bg-[#c05621]/10 rounded-xl px-3 py-1 translate-y-[-2px] transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings_input_component" style="font-variation-settings: 'FILL' 1;">settings_input_component</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest mt-1">Studio</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#555f71] dark:text-[#ebe8e1] opacity-70 hover:text-[#9f3e07] dark:hover:text-[#c05621] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest mt-1">Tribe</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#555f71] dark:text-[#ebe8e1] opacity-70 hover:text-[#9f3e07] dark:hover:text-[#c05621] transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

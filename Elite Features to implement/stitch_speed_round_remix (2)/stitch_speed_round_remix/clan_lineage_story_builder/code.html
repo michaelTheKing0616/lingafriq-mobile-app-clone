@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Clan Lineage - Story Builder</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700;900&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-container": "#ffca56",
+              "on-secondary": "#ffffff",
+              "surface-container-high": "#e8e8e3",
+              "secondary-fixed-dim": "#ffb4a5",
+              "secondary-container": "#fd876f",
+              "on-primary-fixed": "#04006d",
+              "on-primary-container": "#ceceff",
+              "on-primary-fixed-variant": "#373a9b",
+              "secondary": "#9f402d",
+              "on-secondary-container": "#732010",
+              "surface-container": "#eeeee9",
+              "on-error": "#ffffff",
+              "on-error-container": "#93000a",
+              "inverse-on-surface": "#f1f1ec",
+              "primary": "#333697",
+              "on-primary": "#ffffff",
+              "inverse-surface": "#2f312e",
+              "on-tertiary-fixed-variant": "#5c4300",
+              "error": "#ba1a1a",
+              "primary-container": "#4b4fb0",
+              "tertiary": "#573f00",
+              "on-secondary-fixed-variant": "#802918",
+              "tertiary-container": "#745500",
+              "on-tertiary": "#ffffff",
+              "tertiary-fixed": "#ffdea0",
+              "surface": "#fafaf5",
+              "inverse-primary": "#c0c1ff",
+              "surface-container-low": "#f4f4ef",
+              "surface-variant": "#e3e3de",
+              "primary-fixed-dim": "#c0c1ff",
+              "tertiary-fixed-dim": "#f6be3b",
+              "surface-bright": "#fafaf5",
+              "secondary-fixed": "#ffdad3",
+              "surface-tint": "#4f54b4",
+              "primary-fixed": "#e1e0ff",
+              "surface-container-highest": "#e3e3de",
+              "error-container": "#ffdad6",
+              "on-surface": "#1a1c19",
+              "surface-dim": "#dadad5",
+              "on-tertiary-fixed": "#261900",
+              "outline": "#757684",
+              "on-secondary-fixed": "#3e0500",
+              "surface-container-lowest": "#ffffff",
+              "on-surface-variant": "#454652",
+              "background": "#fafaf5",
+              "outline-variant": "#c5c5d4",
+              "on-background": "#1a1c19"
+            },
+            fontFamily: {
+              "headline": ["Epilogue"],
+              "body": ["Plus Jakarta Sans"],
+              "label": ["Plus Jakarta Sans"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .web-line {
+            background: linear-gradient(to bottom, #573f00 1px, transparent 1px);
+            background-size: 100% 40px;
+        }
+        .ancestral-web {
+            background-image: radial-gradient(circle at 2px 2px, rgba(51, 54, 151, 0.05) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-tertiary-fixed selection:text-on-tertiary-fixed min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-[#fafaf5] dark:bg-[#1a1c19] w-full docked-top z-50">
+<div class="flex items-center justify-between px-6 py-4 w-full">
+<div class="active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[#333697] dark:text-[#9ea1ff]" data-icon="menu">menu</span>
+</div>
+<h1 class="font-['Epilogue'] font-black text-[#333697] dark:text-[#9ea1ff] tracking-tighter text-lg">Linguistics Heritage</h1>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-[10px] text-white font-bold active:scale-95 transition-transform">
+                UP
+            </div>
+</div>
+<div class="bg-[#f4f4ef] dark:bg-[#2a2c29] h-px"></div>
+</header>
+<main class="flex-grow pt-4 pb-32 px-4 space-y-10 ancestral-web">
+<!-- Hero Section: The Griot's Call -->
+<section class="mt-4">
+<div class="flex flex-col gap-2">
+<span class="font-label text-xs uppercase tracking-[0.2em] text-tertiary font-bold">The Oral Tradition</span>
+<h2 class="font-headline text-4xl font-black text-primary leading-tight tracking-tighter">Clan Lineage</h2>
+<p class="text-on-surface-variant text-sm max-w-[85%] leading-relaxed mt-2 italic">
+                    "A people without history is like a tree without roots." Fill the gaps in your tapestry to honor the ancestors.
+                </p>
+</div>
+</section>
+<!-- Ancestral Web / Tapestry Section -->
+<section class="relative py-8">
+<div class="absolute inset-0 flex justify-center opacity-20 pointer-events-none">
+<div class="w-px h-full bg-tertiary-container dashed-line"></div>
+</div>
+<div class="grid grid-cols-1 gap-12 relative z-10">
+<!-- Top Node (Completed) -->
+<div class="flex justify-center">
+<div class="bg-surface-container-low p-1 rounded-full shadow-sm">
+<div class="bg-primary rounded-full p-4 border-4 border-white aspect-square w-24 flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-white text-xl" data-icon="history_edu">history_edu</span>
+<span class="text-[10px] text-white/80 font-bold uppercase mt-1">Matriarch</span>
+</div>
+</div>
+</div>
+<!-- Middle Tier (Missing Nodes) -->
+<div class="flex justify-around items-center px-4 gap-4">
+<!-- Placeholder Node 1 -->
+<div class="flex flex-col items-center gap-3">
+<div class="w-20 h-20 rounded-full border-2 border-dashed border-tertiary/40 flex items-center justify-center bg-surface-container-highest/30">
+<span class="material-symbols-outlined text-tertiary/30" data-icon="add">add</span>
+</div>
+<span class="text-[10px] font-label font-bold text-tertiary-container uppercase tracking-widest">Missing Link</span>
+</div>
+<!-- Existing Node -->
+<div class="flex flex-col items-center gap-3">
+<div class="w-20 h-20 rounded-full bg-secondary-container flex items-center justify-center shadow-md relative group">
+<span class="material-symbols-outlined text-on-secondary-container" data-icon="person">person</span>
+<div class="absolute -bottom-1 -right-1 bg-tertiary rounded-full p-1 border-2 border-surface">
+<span class="material-symbols-outlined text-[10px] text-white" data-icon="verified" data-weight="fill">verified</span>
+</div>
+</div>
+<span class="text-[10px] font-label font-bold text-on-surface uppercase tracking-widest">The Diplomat</span>
+</div>
+<!-- Placeholder Node 2 -->
+<div class="flex flex-col items-center gap-3">
+<div class="w-20 h-20 rounded-full border-2 border-dashed border-tertiary/40 flex items-center justify-center bg-surface-container-highest/30">
+<span class="material-symbols-outlined text-tertiary/30" data-icon="help">help</span>
+</div>
+<span class="text-[10px] font-label font-bold text-tertiary-container uppercase tracking-widest">Unknown</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Draggable Inventory -->
+<section class="space-y-4">
+<h3 class="font-headline text-lg font-bold text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary" data-icon="auto_stories">auto_stories</span>
+                Ancestral Fragments
+            </h3>
+<div class="flex gap-3 overflow-x-auto pb-4 no-scrollbar">
+<!-- Card 1 -->
+<div class="flex-shrink-0 w-36 h-48 bg-surface-container-lowest rounded-xl shadow-lg border-t-4 border-secondary p-4 flex flex-col justify-between active:scale-95 transition-transform cursor-grab">
+<span class="material-symbols-outlined text-secondary" data-icon="fingerprint">fingerprint</span>
+<div>
+<p class="font-headline text-sm font-bold text-on-surface">Elder Ifeoma</p>
+<p class="font-label text-[10px] text-on-surface-variant uppercase mt-1">The Weaver</p>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="flex-shrink-0 w-36 h-48 bg-surface-container-lowest rounded-xl shadow-lg border-t-4 border-primary p-4 flex flex-col justify-between active:scale-95 transition-transform cursor-grab">
+<span class="material-symbols-outlined text-primary" data-icon="waves">waves</span>
+<div>
+<p class="font-headline text-sm font-bold text-on-surface">Obi the Seer</p>
+<p class="font-label text-[10px] text-on-surface-variant uppercase mt-1">Grand Uncle</p>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="flex-shrink-0 w-36 h-48 bg-surface-container-lowest rounded-xl shadow-lg border-t-4 border-tertiary p-4 flex flex-col justify-between active:scale-95 transition-transform cursor-grab">
+<span class="material-symbols-outlined text-tertiary" data-icon="shield">shield</span>
+<div>
+<p class="font-headline text-sm font-bold text-on-surface">Commander K</p>
+<p class="font-label text-[10px] text-on-surface-variant uppercase mt-1">Warrior King</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Story Journal Section -->
+<section class="bg-primary text-white p-8 rounded-[2rem] shadow-2xl relative overflow-hidden">
+<div class="absolute top-0 right-0 p-8 opacity-10">
+<span class="material-symbols-outlined text-[120px]" data-icon="menu_book">menu_book</span>
+</div>
+<div class="relative z-10 space-y-6">
+<div class="space-y-1">
+<h3 class="font-headline text-2xl font-black tracking-tight">The Living Journal</h3>
+<div class="h-1 w-12 bg-tertiary-fixed rounded-full"></div>
+</div>
+<div class="space-y-4">
+<div class="border-l-2 border-white/20 pl-4 space-y-2">
+<p class="text-xs font-label uppercase text-on-primary-container tracking-widest">Fragment IV</p>
+<p class="text-sm leading-relaxed font-light italic">
+                            "And so the Matriarch spoke of the great migration, carrying only the seeds of her father's home and the songs of her mother's people..."
+                        </p>
+</div>
+<button class="w-full bg-secondary text-white py-4 rounded-xl font-bold font-label uppercase tracking-widest text-xs hover:opacity-90 active:scale-95 transition-all shadow-xl">
+                        Append Narrative
+                    </button>
+</div>
+</div>
+</section>
+<!-- Decorative Heritage Element -->
+<section class="flex justify-center items-center py-6 opacity-30">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="eco">eco</span>
+<span class="material-symbols-outlined text-secondary" data-icon="all_inclusive">all_inclusive</span>
+<span class="material-symbols-outlined text-tertiary" data-icon="landscape">landscape</span>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#fafaf5]/80 dark:bg-[#1a1c19]/80 backdrop-blur-xl shadow-[0_-4px_20px_rgba(0,0,0,0.04)] rounded-t-[2rem]">
+<!-- Lineage Active -->
+<a class="flex flex-col items-center justify-center bg-[#333697] text-white rounded-full p-3 mb-1 shadow-lg active:scale-90 transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#1a1c19]/50 dark:text-[#fafaf5]/50 p-2 hover:text-[#333697] dark:hover:text-[#9ea1ff] transition-colors active:scale-90 duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px] uppercase tracking-widest mt-1">Blessings</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#1a1c19]/50 dark:text-[#fafaf5]/50 p-2 hover:text-[#333697] dark:hover:text-[#9ea1ff] transition-colors active:scale-90 duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="handshake">handshake</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px] uppercase tracking-widest mt-1">Diplomacy</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#1a1c19]/50 dark:text-[#fafaf5]/50 p-2 hover:text-[#333697] dark:hover:text-[#9ea1ff] transition-colors active:scale-90 duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px] uppercase tracking-widest mt-1">Archive</span>
+</a>
+</nav>
+<!-- FAB Suppression: Not rendered on focused building screens per instructions -->
+</body></html>

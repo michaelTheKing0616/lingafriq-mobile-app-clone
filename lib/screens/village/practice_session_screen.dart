@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/navigation/village_navigation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
@@ -24,6 +25,8 @@ class _PracticeSessionScreenState extends ConsumerState<PracticeSessionScreen>
   bool _focusToolOpen = false;
   int _activeSpeaker = 0;
   int _secondsElapsed = 0;
+  String _sessionLanguage = 'Yoruba';
+  String _sessionGoalTitle = 'Practice';
   late final AnimationController _pulseController;
   late final AnimationController _slideController;
   late final Animation<Offset> _slideAnimation;
@@ -44,6 +47,7 @@ class _PracticeSessionScreenState extends ConsumerState<PracticeSessionScreen>
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadSessionContext());
     _pulseController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1200),
@@ -61,6 +65,35 @@ class _PracticeSessionScreenState extends ConsumerState<PracticeSessionScreen>
     ));
     _startTimer();
     _rotateActiveSpeaker();
+  }
+
+  Future<void> _loadSessionContext() async {
+    final route = ModalRoute.of(context)?.settings.arguments;
+    if (route is Map) {
+      final lang = route['language']?.toString();
+      final goal = route['goalTitle']?.toString();
+      if (!mounted) return;
+      setState(() {
+        if (lang != null && lang.isNotEmpty) _sessionLanguage = lang;
+        if (goal != null && goal.isNotEmpty) _sessionGoalTitle = goal;
+      });
+      return;
+    }
+    final prefs = await SharedPreferences.getInstance();
+    final lang = prefs.getString('practice_room_language');
+    final goalIdx = prefs.getInt('practice_room_goal_index');
+    const goalTitles = [
+      'Pronunciation Lab',
+      'Vocab Drill',
+      'Casual Conversation',
+    ];
+    if (!mounted) return;
+    setState(() {
+      if (lang != null && lang.isNotEmpty) _sessionLanguage = lang;
+      if (goalIdx != null && goalIdx >= 0 && goalIdx < goalTitles.length) {
+        _sessionGoalTitle = goalTitles[goalIdx];
+      }
+    });
   }
 
   void _startTimer() {
@@ -137,7 +170,33 @@ class _PracticeSessionScreenState extends ConsumerState<PracticeSessionScreen>
           ),
           SizedBox(width: 12.w),
           _buildLiveBadge(),
-          const Spacer(),
+          SizedBox(width: 10.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  _sessionLanguage,
+                  style: ModernGriotTypography.titleSmall(
+                    context: context,
+                    color: cs.onSurface,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  _sessionGoalTitle,
+                  style: ModernGriotTypography.labelSmall(
+                    context: context,
+                    color: cs.onSurfaceVariant,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
           GriotBadgePill(
             label: _timerText,
             icon: Icons.timer_outlined,

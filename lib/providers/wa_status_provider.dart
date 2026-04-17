@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/models/wa_status_model.dart';
+import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 
@@ -68,6 +71,53 @@ class WaStatusNotifier extends Notifier<WaStatusState> {
     } catch (error) {
       logger.error('Failed loading my WA statuses', tag: 'wa-status', error: error);
       state = state.copyWith(loading: false, errorMessage: 'Could not load your statuses.');
+    }
+  }
+
+  /// Resolves a public URL from [uploadMedia] JSON (multiple backend shapes).
+  static String? mediaUrlFromUploadPayload(Map<String, dynamic>? raw) {
+    if (raw == null) return null;
+    final data = raw['data'];
+    if (data is Map) {
+      final m = Map<String, dynamic>.from(data);
+      for (final k in ['url', 'mediaUrl', 'fileUrl', 'src', 'path']) {
+        final v = m[k];
+        if (v is String && v.isNotEmpty) return v;
+      }
+    }
+    for (final k in ['url', 'mediaUrl', 'fileUrl', 'src']) {
+      final v = raw[k];
+      if (v is String && v.isNotEmpty) return v;
+    }
+    return null;
+  }
+
+  /// Uploads a local file via `/media/upload`, then creates a WA status with the returned URL.
+  Future<bool> createStatusFromLocalFile(
+    File file, {
+    required String mediaKind,
+    String? caption,
+  }) async {
+    try {
+      final uploaded = await ref.read(apiProvider.notifier).uploadMedia(
+            file,
+            type: mediaKind,
+          );
+      final url = mediaUrlFromUploadPayload(uploaded);
+      if (url == null || url.isEmpty) {
+        state = state.copyWith(errorMessage: 'Upload succeeded but no URL was returned.');
+        return false;
+      }
+      return createStatus(
+        mediaType: mediaKind,
+        mediaUrl: url,
+        text: caption ?? '',
+        caption: caption,
+      );
+    } catch (e) {
+      logger.error('createStatusFromLocalFile failed', tag: 'wa-status', error: e);
+      state = state.copyWith(errorMessage: 'Could not upload media.');
+      return false;
     }
   }
 

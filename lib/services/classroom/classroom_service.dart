@@ -221,4 +221,223 @@ class ClassroomService {
     }
     return d;
   }
+
+  // ---------------------------------------------------------------------------
+  // V2: roster + assignments + staff dashboard
+  // ---------------------------------------------------------------------------
+
+  Future<Map<String, dynamic>> getRosterV2(String tribeId) async {
+    final res = await _dio.get<Map<String, dynamic>>(
+      ApiContract.url(ApiContract.classroom.v2Roster(tribeId)),
+    );
+    final data = res.data;
+    if (data == null || data['success'] != true) {
+      throw DioException(
+        requestOptions: res.requestOptions,
+        message: data?['error']?.toString() ?? 'Failed to load roster',
+      );
+    }
+    return Map<String, dynamic>.from(data);
+  }
+
+  Future<Map<String, dynamic>> getTeacherDashboardV2(String tribeId) async {
+    final res = await _dio.get<Map<String, dynamic>>(
+      ApiContract.url(ApiContract.classroom.v2TeacherDashboard(tribeId)),
+    );
+    final data = res.data;
+    if (data == null || data['success'] != true) {
+      throw DioException(
+        requestOptions: res.requestOptions,
+        message: data?['error']?.toString() ?? 'Failed to load teacher dashboard',
+      );
+    }
+    return Map<String, dynamic>.from(data);
+  }
+
+  Future<Map<String, dynamic>> getPrivacyV2(String tribeId) async {
+    final res = await _dio.get<Map<String, dynamic>>(
+      ApiContract.url(ApiContract.classroom.v2Privacy(tribeId)),
+    );
+    final data = res.data;
+    if (data == null || data['success'] != true) {
+      throw DioException(
+        requestOptions: res.requestOptions,
+        message: data?['error']?.toString() ?? 'Failed to load privacy settings',
+      );
+    }
+    return Map<String, dynamic>.from(data);
+  }
+
+  Future<Map<String, dynamic>> updatePrivacyV2(
+    String tribeId, {
+    required bool shareRosterNames,
+    required bool shareRosterEmails,
+  }) async {
+    final res = await _dio.put<Map<String, dynamic>>(
+      ApiContract.url(ApiContract.classroom.v2Privacy(tribeId)),
+      data: {
+        'shareRosterNames': shareRosterNames,
+        'shareRosterEmails': shareRosterEmails,
+      },
+    );
+    final data = res.data;
+    if (data == null || data['success'] != true) {
+      throw DioException(
+        requestOptions: res.requestOptions,
+        message: data?['error']?.toString() ?? 'Failed to update privacy settings',
+      );
+    }
+    return Map<String, dynamic>.from(data);
+  }
+
+  Future<Map<String, dynamic>> listAssignmentsV2(String tribeId) async {
+    final res = await _dio.get<Map<String, dynamic>>(
+      ApiContract.url(ApiContract.classroom.v2Assignments(tribeId)),
+    );
+    final data = res.data;
+    if (data == null || data['success'] != true) {
+      throw DioException(
+        requestOptions: res.requestOptions,
+        message: data?['error']?.toString() ?? 'Failed to load assignments',
+      );
+    }
+    return Map<String, dynamic>.from(data);
+  }
+
+  Future<Map<String, dynamic>> createAssignmentV2(
+    String tribeId, {
+    required String title,
+    String? description,
+    String type = 'custom',
+    DateTime? dueAt,
+    Map<String, dynamic>? payload,
+  }) async {
+    final res = await _dio.post<Map<String, dynamic>>(
+      ApiContract.url(ApiContract.classroom.v2Assignments(tribeId)),
+      data: {
+        'title': title,
+        if (description != null) 'description': description,
+        'type': type,
+        if (dueAt != null) 'dueAt': dueAt.toUtc().toIso8601String(),
+        if (payload != null) 'payload': payload,
+      },
+    );
+    final data = res.data;
+    if (data == null || data['success'] != true) {
+      throw DioException(
+        requestOptions: res.requestOptions,
+        message: data?['error']?.toString() ?? 'Failed to create assignment',
+      );
+    }
+    return Map<String, dynamic>.from(data);
+  }
+
+  Future<Map<String, dynamic>> submitAssignmentV2(
+    String tribeId,
+    String assignmentId, {
+    Map<String, dynamic>? answers,
+    List<String>? artifactKeys,
+  }) async {
+    final res = await _dio.post<Map<String, dynamic>>(
+      ApiContract.url(
+        ApiContract.classroom.v2SubmitAssignment(tribeId, assignmentId),
+      ),
+      data: {
+        if (answers != null) 'answers': answers,
+        if (artifactKeys != null) 'artifactKeys': artifactKeys,
+      },
+    );
+    final data = res.data;
+    if (data == null || data['success'] != true) {
+      throw DioException(
+        requestOptions: res.requestOptions,
+        message: data?['error']?.toString() ?? 'Failed to submit assignment',
+      );
+    }
+    return Map<String, dynamic>.from(data);
+  }
+
+  Future<Map<String, dynamic>> getSchoolDashboardV2() async {
+    final res = await _dio.get<Map<String, dynamic>>(
+      ApiContract.url(ApiContract.classroom.v2SchoolDashboard),
+    );
+    final data = res.data;
+    if (data == null || data['success'] != true) {
+      throw DioException(
+        requestOptions: res.requestOptions,
+        message: data?['error']?.toString() ?? 'Failed to load school dashboard',
+      );
+    }
+    return Map<String, dynamic>.from(data);
+  }
+
+  Future<Map<String, dynamic>> listSessionsV2(String tribeId) async {
+    final res = await _dio.get<Map<String, dynamic>>(
+      ApiContract.url(ApiContract.classroom.v2Sessions(tribeId)),
+    );
+    final data = res.data;
+    if (data == null || data['success'] != true) {
+      throw DioException(
+        requestOptions: res.requestOptions,
+        message: data?['error']?.toString() ?? 'Failed to load sessions',
+      );
+    }
+    return Map<String, dynamic>.from(data);
+  }
+
+  Future<Map<String, dynamic>> startSessionV2(
+    String tribeId, {
+    String? agenda,
+    List<String>? packLanguages,
+  }) async {
+    final res = await _dio.post<Map<String, dynamic>>(
+      ApiContract.url(ApiContract.classroom.v2StartSession(tribeId)),
+      data: {
+        if (agenda != null) 'agenda': agenda,
+        if (packLanguages != null) 'packLanguages': packLanguages,
+      },
+    );
+    final data = res.data;
+    if (data == null || data['success'] != true) {
+      throw DioException(
+        requestOptions: res.requestOptions,
+        message: data?['error']?.toString() ?? 'Failed to start session',
+      );
+    }
+    return Map<String, dynamic>.from(data);
+  }
+
+  Future<void> endSessionV2(String tribeId, String sessionId) async {
+    final res = await _dio.post<Map<String, dynamic>>(
+      ApiContract.url(ApiContract.classroom.v2EndSession(tribeId, sessionId)),
+    );
+    final data = res.data;
+    if (data == null || data['success'] != true) {
+      throw DioException(
+        requestOptions: res.requestOptions,
+        message: data?['error']?.toString() ?? 'Failed to end session',
+      );
+    }
+  }
+
+  Future<void> checkInV2(
+    String tribeId,
+    String sessionId, {
+    DateTime? checkedInAtClient,
+  }) async {
+    final res = await _dio.post<Map<String, dynamic>>(
+      ApiContract.url(ApiContract.classroom.v2CheckIn(tribeId, sessionId)),
+      data: {
+        if (checkedInAtClient != null)
+          'checkedInAtClient': checkedInAtClient.toUtc().toIso8601String(),
+      },
+    );
+    final data = res.data;
+    if (data == null || data['success'] != true) {
+      throw DioException(
+        requestOptions: res.requestOptions,
+        message: data?['error']?.toString() ?? 'Failed to check in',
+      );
+    }
+  }
 }

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Lexend:wght@300;400;500;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary": "#7b5500",
+              "secondary-container": "#7cf994",
+              "on-primary-fixed": "#390c00",
+              "on-secondary-fixed": "#002109",
+              "error-container": "#ffdad6",
+              "secondary": "#006e2d",
+              "tertiary-fixed": "#ffdeab",
+              "on-primary-fixed-variant": "#822700",
+              "secondary-fixed-dim": "#62df7d",
+              "tertiary-fixed-dim": "#f8bc51",
+              "surface-dim": "#ffd2aa",
+              "outline-variant": "#e0bfb5",
+              "surface-variant": "#ffdcbf",
+              "on-surface-variant": "#59413a",
+              "on-primary-container": "#fffbff",
+              "on-secondary-container": "#007230",
+              "surface-bright": "#fff8f5",
+              "primary-fixed-dim": "#ffb59c",
+              "surface-container-high": "#ffe3cd",
+              "on-secondary-fixed-variant": "#005320",
+              "background": "#fff8f5",
+              "surface-tint": "#aa3601",
+              "on-primary": "#ffffff",
+              "primary-container": "#c94c1a",
+              "on-tertiary-fixed-variant": "#5f4100",
+              "surface-container-lowest": "#ffffff",
+              "on-error-container": "#93000a",
+              "tertiary-container": "#9b6c00",
+              "inverse-surface": "#462a0d",
+              "surface-container": "#ffeada",
+              "on-background": "#2d1600",
+              "inverse-on-surface": "#ffeee1",
+              "on-tertiary-fixed": "#281900",
+              "on-error": "#ffffff",
+              "primary": "#a73400",
+              "secondary-fixed": "#7ffc97",
+              "outline": "#8c7168",
+              "surface-container-low": "#fff1e8",
+              "primary-fixed": "#ffdbcf",
+              "on-secondary": "#ffffff",
+              "on-surface": "#2d1600",
+              "inverse-primary": "#ffb59c",
+              "on-tertiary-container": "#fffbff",
+              "surface": "#fff8f5",
+              "error": "#ba1a1a",
+              "on-tertiary": "#ffffff",
+              "surface-container-highest": "#ffdcbf"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Lexend"],
+              "label": ["Lexend"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-tribal-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l15 30-15 30L15 30z' fill='%23a73400' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body text-on-surface antialiased min-h-screen selection:bg-primary-fixed selection:text-on-primary-fixed overflow-x-hidden">
+<!-- Top Navigation Shell -->
+<header class="bg-[#fff8f5] dark:bg-stone-950 flex justify-between items-center w-full px-6 py-4 fixed top-0 z-50">
+<div class="flex items-center gap-4">
+<button class="text-[#a73400] dark:text-[#ffdbcf] hover:bg-[#ffeada] dark:hover:bg-stone-800 transition-colors p-2 rounded-full active:scale-95 duration-200">
+<span class="material-symbols-outlined text-2xl">close</span>
+</button>
+<h1 class="font-['Plus_Jakarta_Sans'] font-bold text-xl text-[#a73400] dark:text-[#ffdbcf]">Yorùbá Lesson</h1>
+</div>
+<div class="flex items-center gap-2">
+<div class="bg-surface-container px-4 py-1.5 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="font-headline font-bold text-on-surface">32</span>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-2xl mx-auto relative bg-tribal-pattern min-h-screen">
+<!-- Celebration Header -->
+<section class="text-center mb-12">
+<div class="inline-block relative mb-6">
+<div class="absolute inset-0 bg-primary opacity-20 blur-3xl rounded-full"></div>
+<div class="relative w-48 h-48 mx-auto flex items-center justify-center">
+<img class="w-full h-full object-contain animate-bounce" data-alt="a majestic hand-crafted golden trophy with intricate West African patterns sitting on a marble plinth with warm sunlight highlights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4ZXRnBYXgCfqVi_7e5WC-fY9K_JfNky1GTgHdOTBVWLas3a5mpYFYUzOL112f1nzVRWPQp6V0JXAYQyrk8dQScxgDo-Z_F05wKzgg1e3ZR6kNMIrqFfUetAxuGt7LFRvQPHqFVObJLoGXZqFthJBPvfVVvpjuo_GHefYMLvRPVpx5fF4aSXll-GtHuSrUBsIQg5tpRmKThyX0K8tf069hYiH00eH1k68X9wf_seYBabf7eaqccdJzRo6tYHyWVql-8ElzfcEh-AOo"/>
+</div>
+</div>
+<h2 class="font-headline font-extrabold text-4xl md:text-5xl text-primary tracking-tight mb-2">Lesson Mastery!</h2>
+<p class="text-on-surface-variant font-medium">You've unlocked the secrets of the Ancestral Tones.</p>
+</section>
+<!-- Stats Bento Grid -->
+<section class="grid grid-cols-2 gap-4 mb-8">
+<div class="bg-surface-container-low p-6 rounded-lg flex flex-col justify-between aspect-square md:aspect-auto">
+<div>
+<span class="material-symbols-outlined text-primary mb-4 text-3xl" style="font-variation-settings: 'FILL' 1;">stars</span>
+<p class="text-on-surface-variant text-sm font-semibold uppercase tracking-wider">Total XP</p>
+</div>
+<p class="font-headline font-extrabold text-4xl text-on-surface">+450</p>
+</div>
+<div class="bg-secondary-container/30 p-6 rounded-lg flex flex-col justify-between aspect-square md:aspect-auto">
+<div>
+<span class="material-symbols-outlined text-secondary mb-4 text-3xl">timer</span>
+<p class="text-on-secondary-fixed-variant text-sm font-semibold uppercase tracking-wider">Focus Time</p>
+</div>
+<p class="font-headline font-extrabold text-4xl text-on-secondary-container">12:45</p>
+</div>
+<div class="col-span-2 bg-surface-container p-6 rounded-lg relative overflow-hidden flex items-center justify-between">
+<div class="z-10">
+<p class="text-on-surface-variant text-sm font-semibold uppercase tracking-wider mb-1">Accuracy Rate</p>
+<p class="font-headline font-extrabold text-5xl text-tertiary">98%</p>
+</div>
+<div class="w-32 h-32 opacity-10 absolute -right-4 -bottom-4">
+<span class="material-symbols-outlined text-[120px]">target</span>
+</div>
+</div>
+</section>
+<!-- Reward Preview (The Totem) -->
+<section class="bg-surface-container-highest p-8 rounded-xl mb-12 relative border-outline-variant/10 border-2 overflow-visible">
+<div class="flex flex-col md:flex-row items-center gap-8">
+<div class="shrink-0 relative">
+<div class="absolute inset-0 bg-tertiary/20 blur-xl rounded-full"></div>
+<img class="w-32 h-32 object-contain relative z-10 transform -rotate-12" data-alt="a stylized wooden carved giraffe totem with geometric ochre and white paint details standing on a bed of dry savanna grass" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQAJ6sLxtViAHgNboJoTPFWn-eIVeTQ81lqpUPwmuIkVbyhZ8iRaquXIEsJkE2wXfwia5DpRGro5s29LSN05MFkz6H7wYTHv_VqoFTKHWzv6iqNNfi66ttGmsoSBsNRJECQk3I2TdP3F8B9zsEcL-2XyTuRnCth8xQe9pqeEvjN_UYjP8t6PDp2ASnUoOZfBMP8a_2KlekvXRgcSEtU5Bh-GYfWP2MUeD7ylLDVz9HbDz_iY6W_DSlKDTPUKxn7ddlLyysM-bWRmQF"/>
+</div>
+<div class="text-center md:text-left">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-xs font-bold uppercase mb-3 inline-block">New Totem Discovered</span>
+<h3 class="font-headline font-bold text-2xl text-on-surface-variant mb-2">The Observant Giraffe</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed max-w-xs">A symbol of higher perspective and wisdom. Your dedication has summoned its spirit to your Village.</p>
+</div>
+</div>
+</section>
+<!-- Primary Action -->
+<div class="flex flex-col gap-4">
+<button class="w-full bg-primary hover:bg-primary-container text-white font-headline font-bold py-5 rounded-lg text-xl shadow-lg shadow-primary/20 transition-all active:scale-[0.98] duration-150 flex items-center justify-center gap-3">
+                Claim Rewards
+                <span class="material-symbols-outlined">celebration</span>
+</button>
+<button class="w-full bg-transparent text-primary font-bold py-4 rounded-lg hover:bg-surface-container-low transition-colors">
+                Back to Village
+            </button>
+</div>
+</main>
+<!-- Navigation Shell (BottomNavBar) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-[#a73400]/80 dark:bg-[#a73400]/40 backdrop-blur-xl rounded-t-[2rem] shadow-[0_-10px_40px_rgba(45,22,0,0.08)]">
+<a class="flex flex-col items-center justify-center text-white/70 px-4 py-2 hover:bg-white/20 transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined mb-1">fort</span>
+<span class="font-['Lexend'] text-[10px] font-medium">Village</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#fff8f5]/20 dark:bg-white/10 text-white rounded-2xl px-4 py-2 active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">school</span>
+<span class="font-['Lexend'] text-[10px] font-medium">Lessons</span>
+</a>
+<a class="flex flex-col items-center justify-center text-white/70 px-4 py-2 hover:bg-white/20 transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined mb-1">menu_book</span>
+<span class="font-['Lexend'] text-[10px] font-medium">Griot</span>
+</a>
+<a class="flex flex-col items-center justify-center text-white/70 px-4 py-2 hover:bg-white/20 transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined mb-1">groups</span>
+<span class="font-['Lexend'] text-[10px] font-medium">Tribe</span>
+</a>
+</nav>
+</body></html>

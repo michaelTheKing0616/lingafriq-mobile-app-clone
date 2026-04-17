@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Speaker Queue - The Village</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "outline": "#8c7168",
+            "on-error-container": "#93000a",
+            "primary-fixed": "#ffdbcf",
+            "on-primary-container": "#fffbff",
+            "on-tertiary-fixed": "#281900",
+            "surface-container-low": "#fff1e8",
+            "error": "#ba1a1a",
+            "surface-bright": "#fff8f5",
+            "tertiary-fixed-dim": "#f8bc51",
+            "secondary-container": "#7cf994",
+            "error-container": "#ffdad6",
+            "surface-container-high": "#ffe3cd",
+            "on-surface": "#2d1600",
+            "on-secondary-fixed-variant": "#005320",
+            "tertiary-container": "#9b6c00",
+            "on-primary": "#ffffff",
+            "tertiary": "#7b5500",
+            "secondary-fixed-dim": "#62df7d",
+            "on-error": "#ffffff",
+            "on-secondary": "#ffffff",
+            "secondary-fixed": "#7ffc97",
+            "on-surface-variant": "#59413a",
+            "on-tertiary": "#ffffff",
+            "tertiary-fixed": "#ffdeab",
+            "surface-dim": "#ffd2aa",
+            "surface-variant": "#ffdcbf",
+            "surface-container-highest": "#ffdcbf",
+            "on-primary-fixed-variant": "#822700",
+            "surface-tint": "#aa3601",
+            "inverse-primary": "#ffb59c",
+            "inverse-on-surface": "#ffeee1",
+            "background": "#fff8f5",
+            "on-primary-fixed": "#390c00",
+            "surface-container-lowest": "#ffffff",
+            "primary-fixed-dim": "#ffb59c",
+            "on-tertiary-fixed-variant": "#5f4100",
+            "primary": "#a73400",
+            "inverse-surface": "#462a0d",
+            "secondary": "#006e2d",
+            "outline-variant": "#e0bfb5",
+            "on-tertiary-container": "#fffbff",
+            "on-background": "#2d1600",
+            "surface-container": "#ffeada",
+            "surface": "#fff8f5",
+            "on-secondary-fixed": "#002109",
+            "primary-container": "#c94c1a",
+            "on-secondary-container": "#007230"
+          },
+          fontFamily: {
+            "headline": ["Plus Jakarta Sans"],
+            "body": ["Lexend"],
+            "label": ["Lexend"]
+          },
+          borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .speaker-pulse {
+      box-shadow: 0 0 0 0 rgba(123, 85, 0, 0.4);
+      animation: pulse-ring 2s infinite;
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(123, 85, 0, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(123, 85, 0, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(123, 85, 0, 0); }
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-[#fff8f5] dark:bg-orange-950/20 sticky top-0 z-50 no-border bg-[#fff1e8] dark:bg-orange-900/10">
+<div class="flex justify-between items-center px-6 h-16 w-full max-w-screen-xl mx-auto">
+<div class="flex items-center gap-3">
+<img alt="User Profile" class="w-10 h-10 rounded-full object-cover" data-alt="Professional headshot of a smiling man with warm lighting and a soft blurred office background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFLmDb6n71MjXlIgKAFplkDiZkiYBnZsi_U-19pMD_AtByk9KTjnOSNEGaiyaT3pgiQEP4oXDrTS10L9A7c0_Q_0Cee8Q9Vz25ciBqoI4Z18WR204KMuCh1oFqvhkHK-75vwMG4iFcYmLTAfPb9HvCDLOyv7I3tyIPs-1_FTRLEtNL2SRixL47yulZX6jfxPHHOMzRL4IPJ5BS_tPHDmVWs_v0XmxdBvgFgZVBwUTsRHlEEqXyRWOZ2beKaQp49TAcSajqtkuaSeYZ"/>
+<span class="text-xl font-extrabold text-[#a73400] dark:text-[#ffb596] font-['Plus_Jakarta_Sans'] tracking-tight">The Village</span>
+</div>
+<button class="text-[#a73400] dark:text-[#ffb596] p-2 hover:bg-[#ffeada] dark:hover:bg-orange-800/30 transition-colors rounded-full active:scale-95 duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<main class="max-w-screen-xl mx-auto px-6 pt-8">
+<!-- Hero Header / Context -->
+<section class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="space-y-2">
+<div class="flex items-center gap-2 text-primary font-bold uppercase tracking-widest text-xs">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+          Live Session
+        </div>
+<h1 class="text-4xl md:text-5xl font-headline font-extrabold text-on-surface tracking-tight">Speaker Queue</h1>
+<p class="text-on-surface-variant max-w-md">Manage the conversation flow. Review learners waiting to share their voice with the Tribe.</p>
+</div>
+<!-- Session Stats Bento-ish Card -->
+<div class="bg-surface-container-low p-6 rounded-lg flex items-center gap-8">
+<div>
+<p class="text-[10px] font-bold text-outline uppercase tracking-wider mb-1">On Stage</p>
+<p class="text-2xl font-headline font-bold text-primary">03</p>
+</div>
+<div class="w-px h-10 bg-outline-variant/30"></div>
+<div>
+<p class="text-[10px] font-bold text-outline uppercase tracking-wider mb-1">Waiting</p>
+<p class="text-2xl font-headline font-bold text-tertiary">12</p>
+</div>
+</div>
+</section>
+<!-- Active Speaker / Host Section (Asymmetric Layout) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+<!-- Active Stage -->
+<div class="lg:col-span-8">
+<h2 class="text-lg font-bold font-headline mb-4 px-2">Current Speaker</h2>
+<div class="bg-surface-container-high rounded-lg p-8 relative overflow-hidden group">
+<!-- Background Accent -->
+<div class="absolute -right-10 -top-10 w-40 h-40 bg-tertiary-fixed rounded-full opacity-20 group-hover:scale-110 transition-transform duration-700"></div>
+<div class="flex flex-col md:flex-row items-center gap-8 relative z-10">
+<div class="relative">
+<div class="w-32 h-32 rounded-lg speaker-pulse overflow-hidden border-4 border-tertiary">
+<img alt="Active Speaker" class="w-full h-full object-cover" data-alt="A young woman with braided hair smiling warmly, vibrant colorful background with artistic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXyqj_F-DqDk0gbRkXoFdZzjsUv-YC3Se9ZOILE9M0Sdi3wTrulPwWkH6juyWCq5Zi0KCdrR4BSDxKQdqzCiRh4Ne1nDOv7BaAexkYciuhMCGmFUz4au8Mo_xZXf4_KZ9ftFqYjdPtoDIvoG2QGaAPP40SCuAYGREmw44Ewj2GG9ZsSbwGMfmN7lQwRwou1TNzkN6hPsvd6-AgJwUhz9ebO1uHPRngVJAO0l58DzvzKlfFR3-fsd6tm0BSz28nRxOJLNa572ML7Lkb"/>
+</div>
+<div class="absolute -bottom-2 -right-2 bg-tertiary text-on-tertiary p-2 rounded-full shadow-lg">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">mic</span>
+</div>
+</div>
+<div class="text-center md:text-left flex-1">
+<div class="flex flex-wrap justify-center md:justify-start gap-2 mb-3">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed text-[10px] font-bold px-3 py-1 rounded-full">LEVEL 42</span>
+<span class="bg-primary-fixed text-on-primary-fixed-variant text-[10px] font-bold px-3 py-1 rounded-full uppercase">Yoruba Fluency</span>
+</div>
+<h3 class="text-3xl font-headline font-extrabold text-on-surface">Zainab Abiola</h3>
+<p class="text-on-surface-variant font-medium mt-1">Speaking for 02:45...</p>
+<div class="mt-6 flex flex-wrap gap-3">
+<button class="bg-primary text-white px-6 py-2 rounded-full font-bold flex items-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm">move_down</span>
+                  Mute &amp; Demote
+                </button>
+<button class="bg-surface-container-highest text-on-surface px-6 py-2 rounded-full font-bold flex items-center gap-2 hover:bg-surface-dim transition-colors">
+<span class="material-symbols-outlined text-sm">timer</span>
+                  Add 1m
+                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Actions Sidebar -->
+<div class="lg:col-span-4 space-y-4">
+<h2 class="text-lg font-bold font-headline mb-4 px-2">Host Controls</h2>
+<div class="bg-surface-container-low p-6 rounded-lg space-y-4">
+<button class="w-full flex items-center justify-between p-4 bg-surface-container-lowest rounded-lg hover:bg-surface-container transition-colors group">
+<div class="flex items-center gap-4">
+<div class="bg-secondary-container text-on-secondary-container p-2 rounded-full">
+<span class="material-symbols-outlined">back_hand</span>
+</div>
+<span class="font-bold">Mute All Participants</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-4 bg-surface-container-lowest rounded-lg hover:bg-surface-container transition-colors group">
+<div class="flex items-center gap-4">
+<div class="bg-tertiary-fixed text-on-tertiary-fixed p-2 rounded-full">
+<span class="material-symbols-outlined">lock</span>
+</div>
+<span class="font-bold">Lock Speaker Queue</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-4 bg-error-container text-on-error-container rounded-lg hover:opacity-90 transition-opacity group">
+<div class="flex items-center gap-4">
+<div class="bg-white/20 p-2 rounded-full">
+<span class="material-symbols-outlined">logout</span>
+</div>
+<span class="font-bold">End Session for All</span>
+</div>
+</button>
+</div>
+</div>
+</div>
+<!-- The Queue (Woven List Pattern) -->
+<section>
+<div class="flex items-center justify-between mb-8 px-2">
+<h2 class="text-2xl font-headline font-extrabold text-on-surface">The Waiting Tribe <span class="text-outline font-normal text-lg ml-2">(12)</span></h2>
+<button class="text-primary font-bold flex items-center gap-2">
+<span class="material-symbols-outlined">sort</span>
+          By Join Time
+        </button>
+</div>
+<div class="space-y-4">
+<!-- Queue Item 1 -->
+<div class="flex flex-col md:flex-row items-center justify-between p-4 bg-surface-container-lowest rounded-lg hover:shadow-xl transition-all duration-300 gap-4">
+<div class="flex items-center gap-5 w-full md:w-auto">
+<div class="text-outline font-black text-xl w-8">01</div>
+<div class="relative">
+<img alt="Learner" class="w-14 h-14 rounded-lg object-cover" data-alt="Portrait of a young man with glasses and a friendly expression, soft natural sunlight, outdoor setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkTr_uHOipWeHHC67uC2zwkUTg9nS2DZ8e44xztt80EvcxRPxwcuxYjbnU8Gl4MgDA66QyO9TRYNq3T7zgf9jtmle_sZ5jM4836SmSh4397-E9I8JXIvd-sJUDDcoAh--TTsKO6N171vzxNW4UfdNbno-Z-njeW6ebChVtGE_wHghYJwKR41hKj_81Zrq_dZ0cEGMBCrhE6rMjVrMNzKVxOou9fDy2kWfT1oTwDluzAmF_fdNKrwQOgUSUzdrnz_-kisdi3FXl6iq8"/>
+<span class="absolute -top-2 -right-2 bg-secondary text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full">PRO</span>
+</div>
+<div>
+<h4 class="font-headline font-bold text-on-surface">Kofi Mensah</h4>
+<p class="text-xs text-outline font-medium uppercase tracking-tighter">Joined 12 mins ago • 45 XP Today</p>
+</div>
+</div>
+<div class="flex items-center gap-2 w-full md:w-auto justify-end">
+<button class="flex-1 md:flex-none px-6 py-2 bg-primary-fixed text-on-primary-fixed-variant rounded-full font-bold hover:bg-primary hover:text-white transition-all">Invite to Speak</button>
+<button class="p-2 text-outline-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined">person_remove</span>
+</button>
+<button class="p-2 text-outline-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Queue Item 2 -->
+<div class="flex flex-col md:flex-row items-center justify-between p-4 bg-surface-container-lowest rounded-lg hover:shadow-xl transition-all duration-300 gap-4">
+<div class="flex items-center gap-5 w-full md:w-auto">
+<div class="text-outline font-black text-xl w-8">02</div>
+<div class="relative">
+<img alt="Learner" class="w-14 h-14 rounded-lg object-cover" data-alt="Young woman with curly hair and bright yellow shirt, smiling cheerfully against a neutral studio background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVEp1_vhLbLjy2chdrF8akbFA5Hiu8ja4kiLwse4x94yjyo16OmKFlLrELSeIsAdqdhnRqdf7Wza_aGB_jfywnh8g80kcuFyp4GwudZRMDcGNcwN3Eko9foqtVAL8ZhpmUUND2kAMOKcW7aQ8sIXtu5hcoQ8kJgTn1I28KXaUEnPpUILp0qm2963EIJ-wSf7-_jCHh4-7aN7rfLi052DGKcMn49KWeVWgBFebr5f1JvJegIGnDpJIqwdLeEDlI55phMqC1a2aVvTs-"/>
+</div>
+<div>
+<h4 class="font-headline font-bold text-on-surface">Amara Okafor</h4>
+<p class="text-xs text-outline font-medium uppercase tracking-tighter">Joined 8 mins ago • 120 XP Today</p>
+</div>
+</div>
+<div class="flex items-center gap-2 w-full md:w-auto justify-end">
+<button class="flex-1 md:flex-none px-6 py-2 bg-primary-fixed text-on-primary-fixed-variant rounded-full font-bold hover:bg-primary hover:text-white transition-all">Invite to Speak</button>
+<button class="p-2 text-outline-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined">person_remove</span>
+</button>
+<button class="p-2 text-outline-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Queue Item 3 -->
+<div class="flex flex-col md:flex-row items-center justify-between p-4 bg-surface-container-lowest rounded-lg hover:shadow-xl transition-all duration-300 gap-4 opacity-70">
+<div class="flex items-center gap-5 w-full md:w-auto">
+<div class="text-outline font-black text-xl w-8">03</div>
+<div class="relative">
+<img alt="Learner" class="w-14 h-14 rounded-lg object-cover grayscale" data-alt="Serious man in high-quality black and white photography, focus on eyes and expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3cBMdarwDVqIlFVtyGhtIm9JCq5SHAHVx0vHjltzivDj3d-zb12BN-OPeqJqsA-_jilJj5tzp9VTtM4tJkYP8q4KU5ErkedWUvuyMR5zH_6wEUb7NlJIKOvv_2jcMEmPUaUR3qgJTCkJCRHeMtTAF1xDuifK1SUaT_KpCWuXAb1OAHDl4ouVV7u9uWUFaEtNgIUJ7wQk-XbFWn6o_ZvmA6jUpB7h3UKyelWIU-oKqkNWPknzafCy62zLWZmk8QkYH-B5E7yT49_R8"/>
+</div>
+<div>
+<h4 class="font-headline font-bold text-on-surface">Malik Diop</h4>
+<p class="text-xs text-outline font-medium uppercase tracking-tighter">Connection Weak • Joined 2 mins ago</p>
+</div>
+</div>
+<div class="flex items-center gap-2 w-full md:w-auto justify-end">
+<button class="flex-1 md:flex-none px-6 py-2 bg-outline-variant/20 text-outline rounded-full font-bold cursor-not-allowed">Wait for Signal</button>
+<button class="p-2 text-outline-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined">person_remove</span>
+</button>
+<button class="p-2 text-outline-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Empty State Mock for Bottom -->
+<div class="p-12 border-2 border-dashed border-outline-variant/30 rounded-lg flex flex-col items-center justify-center text-center">
+<div class="bg-surface-container p-4 rounded-full mb-4">
+<span class="material-symbols-outlined text-4xl text-outline-variant">groups</span>
+</div>
+<h4 class="font-headline font-bold text-on-surface">9 More Waiting</h4>
+<button class="mt-4 text-primary font-bold hover:underline">View All Participants</button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-4 pt-2 bg-[#a73400]/80 dark:bg-[#a73400]/40 backdrop-blur-xl fixed bottom-0 w-full z-50 rounded-t-[2rem] no-border shadow-[0_-10px_40px_rgba(45,22,0,0.06)]">
+<a class="flex flex-col items-center justify-center text-white/70 p-2 hover:bg-white/10 transition-all active:scale-90 duration-300 ease-out" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-['Lexend'] text-[10px] font-medium">Village</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#ffeada]/20 text-white rounded-full p-2 min-w-[64px] active:scale-90 duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">podcasts</span>
+<span class="font-['Lexend'] text-[10px] font-medium">Classroom</span>
+</a>
+<a class="flex flex-col items-center justify-center text-white/70 p-2 hover:bg-white/10 transition-all active:scale-90 duration-300 ease-out" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-['Lexend'] text-[10px] font-medium">Library</span>
+</a>
+<a class="flex flex-col items-center justify-center text-white/70 p-2 hover:bg-white/10 transition-all active:scale-90 duration-300 ease-out" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-['Lexend'] text-[10px] font-medium">Tribe</span>
+</a>
+</nav>
+</body></html>

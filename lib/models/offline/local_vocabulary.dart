@@ -7,6 +7,9 @@ class LocalVocabulary {
   String? audioPath;
   String? exampleSentence;
   String? exampleTranslation;
+  String? sourceMediaId;
+  int? sourceStartMs;
+  int? sourceEndMs;
   double easeFactor;
   int interval;
   int repetitions;
@@ -28,6 +31,9 @@ class LocalVocabulary {
     this.audioPath,
     this.exampleSentence,
     this.exampleTranslation,
+    this.sourceMediaId,
+    this.sourceStartMs,
+    this.sourceEndMs,
     this.easeFactor = 2.5,
     this.interval = 0,
     this.repetitions = 0,
@@ -51,6 +57,9 @@ class LocalVocabulary {
       'audioPath': audioPath,
       'exampleSentence': exampleSentence,
       'exampleTranslation': exampleTranslation,
+      'sourceMediaId': sourceMediaId,
+      'sourceStartMs': sourceStartMs,
+      'sourceEndMs': sourceEndMs,
       'easeFactor': easeFactor,
       'interval': interval,
       'repetitions': repetitions,
@@ -75,6 +84,9 @@ class LocalVocabulary {
       audioPath: json['audioPath'] as String?,
       exampleSentence: json['exampleSentence'] as String?,
       exampleTranslation: json['exampleTranslation'] as String?,
+      sourceMediaId: json['sourceMediaId'] as String?,
+      sourceStartMs: json['sourceStartMs'] as int?,
+      sourceEndMs: json['sourceEndMs'] as int?,
       easeFactor: (json['easeFactor'] as num?)?.toDouble() ?? 2.5,
       interval: json['interval'] as int? ?? 0,
       repetitions: json['repetitions'] as int? ?? 0,
@@ -104,6 +116,9 @@ class LocalVocabulary {
     String? audioPath,
     String? exampleSentence,
     String? exampleTranslation,
+    String? sourceMediaId,
+    int? sourceStartMs,
+    int? sourceEndMs,
     double? easeFactor,
     int? interval,
     int? repetitions,
@@ -125,6 +140,9 @@ class LocalVocabulary {
       audioPath: audioPath ?? this.audioPath,
       exampleSentence: exampleSentence ?? this.exampleSentence,
       exampleTranslation: exampleTranslation ?? this.exampleTranslation,
+      sourceMediaId: sourceMediaId ?? this.sourceMediaId,
+      sourceStartMs: sourceStartMs ?? this.sourceStartMs,
+      sourceEndMs: sourceEndMs ?? this.sourceEndMs,
       easeFactor: easeFactor ?? this.easeFactor,
       interval: interval ?? this.interval,
       repetitions: repetitions ?? this.repetitions,
