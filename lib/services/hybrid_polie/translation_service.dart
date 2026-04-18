@@ -328,6 +328,26 @@ class TranslationService {
     };
     if (codeMap.containsKey(lower)) return codeMap[lower];
     if (lower.length == 2) return lower;
+    // FLORES codes: use ISO 639-3 prefix → common ISO 639-1 where known.
+    if (_floresCodePattern.hasMatch(lower)) {
+      final prefix = lower.split('_').first;
+      const iso3to2 = {
+        'eng': 'en', 'fra': 'fr', 'spa': 'es', 'por': 'pt', 'deu': 'de',
+        'zho': 'zh', 'yor': 'yo', 'hau': 'ha', 'ibo': 'ig', 'swh': 'sw',
+        'zul': 'zu', 'xho': 'xh', 'amh': 'am', 'twi': 'tw', 'afr': 'af',
+        'pcm': 'en', 'wol': 'wo', 'som': 'so', 'arb': 'ar', 'pes': 'fa',
+        'prs': 'fa',
+        'rus': 'ru', 'pol': 'pl', 'ita': 'it', 'nld': 'nl', 'tur': 'tr',
+        'vie': 'vi', 'ind': 'id', 'jav': 'jv', 'sun': 'su', 'tgl': 'tl',
+        'ron': 'ro', 'hun': 'hu', 'ces': 'cs', 'slk': 'sk', 'bul': 'bg',
+        'ell': 'el', 'fin': 'fi', 'swe': 'sv', 'dan': 'da', 'nob': 'no',
+        'ukr': 'uk', 'hin': 'hi', 'ben': 'bn', 'tam': 'ta', 'tel': 'te',
+        'mal': 'ml', 'mar': 'mr', 'guj': 'gu', 'pan': 'pa', 'urd': 'ur',
+        'heb': 'he', 'jpn': 'ja', 'kor': 'ko', 'tha': 'th', 'khm': 'km',
+        'lao': 'lo', 'mya': 'my', 'kat': 'ka', 'hye': 'hy',
+      };
+      return iso3to2[prefix];
+    }
     return null;
   }
   
@@ -475,9 +495,15 @@ class TranslationService {
     );
   }
   
+  static final RegExp _floresCodePattern = RegExp(r'^[a-z]{3}_[A-Za-z0-9]+$');
+
+  /// NLLB / HuggingFace `src_lang` / `tgt_lang` (FLORES-200 style) or legacy English names.
   String _getLanguageCode(String language) {
-    // Map to NLLB language codes
-    final codeMap = {
+    final t = language.trim();
+    if (t.isEmpty) return 'eng_Latn';
+    if (_floresCodePattern.hasMatch(t)) return t;
+    final lower = t.toLowerCase();
+    const codeMap = {
       'yoruba': 'yor_Latn',
       'hausa': 'hau_Latn',
       'igbo': 'ibo_Latn',
@@ -500,7 +526,7 @@ class TranslationService {
       'chinese': 'zho_Hans',
     };
 
-    return codeMap[language.toLowerCase()] ?? 'eng_Latn';
+    return codeMap[lower] ?? 'eng_Latn';
   }
 }
 

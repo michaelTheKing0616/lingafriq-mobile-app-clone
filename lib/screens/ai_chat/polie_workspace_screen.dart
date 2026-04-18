@@ -1434,31 +1434,76 @@ Language: $targetLanguage
                           child: Row(
                             children: [
                               Expanded(
-                                child: DropdownButton<String>(
-                                  isExpanded: true,
-                                  value: translationSourceLang.value,
-                                  items: kPolieTranslateLanguageOptions
-                                      .map(
-                                        (o) => DropdownMenuItem<String>(
-                                          value: o.displayName,
-                                          child: Text(
-                                            o.displayName,
-                                            overflow: TextOverflow.ellipsis,
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: isBusy
+                                        ? null
+                                        : () {
+                                            showModalBottomSheet<void>(
+                                              context: context,
+                                              isScrollControlled: true,
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              builder: (sheetContext) =>
+                                                  _PolieLanguageSearchSheet(
+                                                title: 'Source language',
+                                                selectedDisplayName:
+                                                    translationSourceLang
+                                                        .value,
+                                                onSelected: (o) {
+                                                  translationSourceLang
+                                                      .value = o.displayName;
+                                                  _ensureDistinctTxLanguages(
+                                                    translationSourceLang,
+                                                    translationTargetLang,
+                                                  );
+                                                  onTranslationLanguagesChanged();
+                                                },
+                                              ),
+                                            );
+                                          },
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 4,
+                                        vertical: 6,
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                  'From',
+                                                  style: bodyStyle.copyWith(
+                                                    fontSize: 11,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  translationSourceLang.value,
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: GoogleFonts.nunito(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 13,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      )
-                                      .toList(),
-                                  onChanged: isBusy
-                                      ? null
-                                      : (v) async {
-                                          if (v == null) return;
-                                          translationSourceLang.value = v;
-                                          _ensureDistinctTxLanguages(
-                                            translationSourceLang,
-                                            translationTargetLang,
-                                          );
-                                          await onTranslationLanguagesChanged();
-                                        },
+                                          Icon(
+                                            Icons.arrow_drop_down_rounded,
+                                            color: theme.body,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                               const Spacer(),
@@ -1506,31 +1551,76 @@ Language: $targetLanguage
                           child: Row(
                             children: [
                               Expanded(
-                                child: DropdownButton<String>(
-                                  isExpanded: true,
-                                  value: translationTargetLang.value,
-                                  items: kPolieTranslateLanguageOptions
-                                      .map(
-                                        (o) => DropdownMenuItem<String>(
-                                          value: o.displayName,
-                                          child: Text(
-                                            o.displayName,
-                                            overflow: TextOverflow.ellipsis,
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: isBusy
+                                        ? null
+                                        : () {
+                                            showModalBottomSheet<void>(
+                                              context: context,
+                                              isScrollControlled: true,
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              builder: (sheetContext) =>
+                                                  _PolieLanguageSearchSheet(
+                                                title: 'Target language',
+                                                selectedDisplayName:
+                                                    translationTargetLang
+                                                        .value,
+                                                onSelected: (o) {
+                                                  translationTargetLang
+                                                      .value = o.displayName;
+                                                  _ensureDistinctTxLanguages(
+                                                    translationTargetLang,
+                                                    translationSourceLang,
+                                                  );
+                                                  onTranslationLanguagesChanged();
+                                                },
+                                              ),
+                                            );
+                                          },
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 4,
+                                        vertical: 6,
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                  'To',
+                                                  style: bodyStyle.copyWith(
+                                                    fontSize: 11,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  translationTargetLang.value,
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: GoogleFonts.nunito(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 13,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      )
-                                      .toList(),
-                                  onChanged: isBusy
-                                      ? null
-                                      : (v) async {
-                                          if (v == null) return;
-                                          translationTargetLang.value = v;
-                                          _ensureDistinctTxLanguages(
-                                            translationTargetLang,
-                                            translationSourceLang,
-                                          );
-                                          await onTranslationLanguagesChanged();
-                                        },
+                                          Icon(
+                                            Icons.arrow_drop_down_rounded,
+                                            color: theme.body,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                               const Spacer(),
@@ -1538,9 +1628,7 @@ Language: $targetLanguage
                                 visualDensity: VisualDensity.compact,
                                 onPressed: () => onSpeakText(
                                   translationOutput?.primary ?? '',
-                                  languageName: _polieBackendKeyForDisplayOrGroq(
-                                    translationTargetLang.value,
-                                  ),
+                                  languageName: translationTargetLang.value,
                                 ),
                                 icon: const Icon(
                                   Icons.volume_up_outlined,
@@ -4679,4 +4767,141 @@ _VocabPayload _fallbackVocabPayload(String language) {
     relatedWords: [_VocabRelatedWord(word: 'study', relationship: 'related')],
     difficulty: 'beginner',
   );
+}
+
+/// Searchable bottom sheet for FLORES / NLLB language selection.
+class _PolieLanguageSearchSheet extends StatefulWidget {
+  const _PolieLanguageSearchSheet({
+    required this.title,
+    required this.selectedDisplayName,
+    required this.onSelected,
+  });
+
+  final String title;
+  final String selectedDisplayName;
+  final void Function(PolieTranslateLanguageOption) onSelected;
+
+  @override
+  State<_PolieLanguageSearchSheet> createState() =>
+      _PolieLanguageSearchSheetState();
+}
+
+class _PolieLanguageSearchSheetState extends State<_PolieLanguageSearchSheet> {
+  late final TextEditingController _query;
+
+  @override
+  void initState() {
+    super.initState();
+    _query = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _query.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final bottomInset = MediaQuery.viewInsetsOf(context).bottom;
+    final q = _query.text.trim().toLowerCase();
+    final filtered = kPolieTranslateLanguageOptions.where((o) {
+      if (q.isEmpty) return true;
+      return o.displayName.toLowerCase().contains(q) ||
+          o.backendKey.toLowerCase().contains(q);
+    }).toList();
+
+    return Padding(
+      padding: EdgeInsets.only(bottom: bottomInset),
+      child: DraggableScrollableSheet(
+        expand: false,
+        initialChildSize: 0.78,
+        minChildSize: 0.5,
+        maxChildSize: 0.95,
+        builder: (context, scrollController) {
+          return DecoratedBox(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+            ),
+            child: Column(
+              children: [
+                const SizedBox(height: 8),
+                Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.black26,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 8, 4),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          widget.title,
+                          style: GoogleFonts.nunito(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 17,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: const Icon(Icons.close_rounded),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                  child: TextField(
+                    controller: _query,
+                    autofocus: true,
+                    onChanged: (_) => setState(() {}),
+                    decoration: InputDecoration(
+                      hintText: 'Search by name or code (e.g. yor_Latn)',
+                      prefixIcon: const Icon(Icons.search_rounded),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      isDense: true,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    controller: scrollController,
+                    itemCount: filtered.length,
+                    itemBuilder: (context, index) {
+                      final o = filtered[index];
+                      final sel = o.displayName == widget.selectedDisplayName;
+                      return ListTile(
+                        selected: sel,
+                        title: Text(
+                          o.displayName,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        subtitle: Text(
+                          o.backendKey,
+                          style: const TextStyle(fontSize: 11),
+                        ),
+                        onTap: () {
+                          widget.onSelected(o);
+                          Navigator.pop(context);
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
 }

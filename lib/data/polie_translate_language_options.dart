@@ -1,4 +1,7 @@
-/// Display labels and backend keys for Polie translation (hybrid API + prompts).
+/// Display labels and backend keys for Polie translation (hybrid API + NLLB).
+///
+/// [backendKey] is either a legacy short name (`english`) or a FLORES/NLLB code
+/// (`eng_Latn`). The full list is generated into the part file.
 class PolieTranslateLanguageOption {
   const PolieTranslateLanguageOption({
     required this.displayName,
@@ -9,32 +12,30 @@ class PolieTranslateLanguageOption {
   final String backendKey;
 }
 
-/// Languages users can pick as source or target. [backendKey] matches
-/// [TranslationService] / NLLB-style naming where applicable.
-const List<PolieTranslateLanguageOption> kPolieTranslateLanguageOptions = [
-  PolieTranslateLanguageOption(displayName: 'English', backendKey: 'english'),
-  PolieTranslateLanguageOption(displayName: 'French', backendKey: 'french'),
-  PolieTranslateLanguageOption(displayName: 'Spanish', backendKey: 'spanish'),
-  PolieTranslateLanguageOption(displayName: 'Portuguese', backendKey: 'portuguese'),
-  PolieTranslateLanguageOption(displayName: 'Arabic', backendKey: 'arabic'),
-  PolieTranslateLanguageOption(displayName: 'German', backendKey: 'german'),
-  PolieTranslateLanguageOption(displayName: 'Chinese', backendKey: 'chinese'),
-  PolieTranslateLanguageOption(displayName: 'Yoruba', backendKey: 'yoruba'),
-  PolieTranslateLanguageOption(displayName: 'Hausa', backendKey: 'hausa'),
-  PolieTranslateLanguageOption(displayName: 'Igbo', backendKey: 'igbo'),
-  PolieTranslateLanguageOption(displayName: 'Swahili', backendKey: 'swahili'),
-  PolieTranslateLanguageOption(displayName: 'Zulu', backendKey: 'zulu'),
-  PolieTranslateLanguageOption(displayName: 'Xhosa', backendKey: 'xhosa'),
-  PolieTranslateLanguageOption(displayName: 'Amharic', backendKey: 'amharic'),
-  PolieTranslateLanguageOption(displayName: 'Twi', backendKey: 'twi'),
-  PolieTranslateLanguageOption(displayName: 'Afrikaans', backendKey: 'afrikaans'),
-  PolieTranslateLanguageOption(
-    displayName: 'Nigerian Pidgin',
-    backendKey: 'pidgin',
-  ),
-  PolieTranslateLanguageOption(displayName: 'Wolof', backendKey: 'wolof'),
-  PolieTranslateLanguageOption(displayName: 'Somali', backendKey: 'somali'),
-];
+/// Route / deep-link keys from older builds → FLORES codes in [kPolieTranslateLanguageOptions].
+const Map<String, String> kPolieLegacyBackendToFlores = {
+  'english': 'eng_Latn',
+  'french': 'fra_Latn',
+  'spanish': 'spa_Latn',
+  'portuguese': 'por_Latn',
+  'arabic': 'arb_Arab',
+  'german': 'deu_Latn',
+  'chinese': 'zho_Hans',
+  'yoruba': 'yor_Latn',
+  'hausa': 'hau_Latn',
+  'igbo': 'ibo_Latn',
+  'swahili': 'swh_Latn',
+  'zulu': 'zul_Latn',
+  'xhosa': 'xho_Latn',
+  'amharic': 'amh_Ethi',
+  'twi': 'twi_Latn',
+  'afrikaans': 'afr_Latn',
+  'pidgin': 'pcm_Latn',
+  'wolof': 'wol_Latn',
+  'somali': 'som_Latn',
+};
+
+part 'nllb_flores_languages.generated.dart';
 
 PolieTranslateLanguageOption? polieOptionForDisplayName(String name) {
   final t = name.trim();
@@ -49,6 +50,12 @@ PolieTranslateLanguageOption? polieOptionForBackendKey(String key) {
   for (final o in kPolieTranslateLanguageOptions) {
     if (o.backendKey.toLowerCase() == t) return o;
   }
+  final mapped = kPolieLegacyBackendToFlores[t];
+  if (mapped != null) {
+    for (final o in kPolieTranslateLanguageOptions) {
+      if (o.backendKey == mapped) return o;
+    }
+  }
   return null;
 }
 
@@ -56,12 +63,18 @@ PolieTranslateLanguageOption? polieOptionForBackendKey(String key) {
 PolieTranslateLanguageOption polieOptionFromGroqLabel(String label) {
   final direct = polieOptionForDisplayName(label);
   if (direct != null) return direct;
+  final byKey = polieOptionForBackendKey(label);
+  if (byKey != null) return byKey;
   final lower = label.trim().toLowerCase();
   if (lower == 'nigerian pidgin') {
-    return kPolieTranslateLanguageOptions.firstWhere((o) => o.backendKey == 'pidgin');
+    return kPolieTranslateLanguageOptions.firstWhere(
+      (o) => o.backendKey == 'pcm_Latn',
+    );
   }
   if (lower == 'english') {
-    return kPolieTranslateLanguageOptions.firstWhere((o) => o.backendKey == 'english');
+    return kPolieTranslateLanguageOptions.firstWhere(
+      (o) => o.backendKey == 'eng_Latn',
+    );
   }
   return PolieTranslateLanguageOption(
     displayName: label,
