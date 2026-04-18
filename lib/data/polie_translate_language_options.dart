@@ -1,3 +1,5 @@
+part 'nllb_flores_languages.generated.dart';
+
 /// Display labels and backend keys for Polie translation (hybrid API + NLLB).
 ///
 /// [backendKey] is either a legacy short name (`english`) or a FLORES/NLLB code
@@ -34,8 +36,6 @@ const Map<String, String> kPolieLegacyBackendToFlores = {
   'wolof': 'wol_Latn',
   'somali': 'som_Latn',
 };
-
-part 'nllb_flores_languages.generated.dart';
 
 PolieTranslateLanguageOption? polieOptionForDisplayName(String name) {
   final t = name.trim();
