@@ -159,19 +159,15 @@ dependencies {
     // ProGuard rules will handle the missing classes
 }
 
-// Legacy com.google.firebase:firebase-iid duplicates FirebaseInstanceIdReceiver with
-// firebase-messaging 23+ (see :app:checkReleaseDuplicateClasses). IID is deprecated.
+// ML Kit's linkfirebase still pulls com.google.firebase:firebase-iid, but IID was removed
+// from Google Maven (replaced by FCM). Rejecting the module breaks resolution entirely.
+// Substitute firebase-messaging, which provides the superseding APIs (avoids duplicate IID + FCM classes).
 configurations.configureEach {
     resolutionStrategy {
-        componentSelection {
-            all { selection ->
-                def id = selection.candidate
-                if (id instanceof org.gradle.api.artifacts.component.ModuleComponentIdentifier &&
-                        id.group == 'com.google.firebase' &&
-                        id.module == 'firebase-iid') {
-                    selection.reject('omit firebase-iid; types are provided by firebase-messaging')
-                }
-            }
+        dependencySubstitution {
+            substitute(module('com.google.firebase:firebase-iid'))
+                .using(module('com.google.firebase:firebase-messaging:24.1.0'))
+                .because('firebase-iid removed from Maven; FCM replaces Instance ID')
         }
     }
 }
