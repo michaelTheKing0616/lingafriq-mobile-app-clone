@@ -20,14 +20,8 @@ class GameTutorialHelper {
     final key = '$_prefsPrefix${gameType.name}';
     if (prefs.getBool(key) == true) return;
 
-    GameCatalogEntry? entry;
-    for (final e in GameCatalog.entries) {
-      if (e.type == gameType) {
-        entry = e;
-        break;
-      }
-    }
-    if (entry == null) return;
+    final catalogEntry = GameCatalog.byType[gameType];
+    if (catalogEntry == null) return;
 
     if (!context.mounted) return;
     final l10n = AppLocalizations.of(context);
@@ -59,19 +53,19 @@ class GameTutorialHelper {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  entry.name,
+                  catalogEntry.name,
                   style: PanAfricanTypography.titleMedium(ctx).copyWith(
                     color: PanAfricanColors.primary,
                   ),
                 ),
                 SizedBox(height: PanAfricanSpacing.sm),
                 Text(
-                  entry.description,
+                  catalogEntry.description,
                   style: PanAfricanTypography.bodyMedium(ctx),
                 ),
-                if (entry.rules.isNotEmpty) ...[
+                if (catalogEntry.rules.isNotEmpty) ...[
                   SizedBox(height: PanAfricanSpacing.md),
-                  ...entry.rules.map(
+                  ...catalogEntry.rules.map(
                     (r) => Padding(
                       padding: EdgeInsets.only(bottom: PanAfricanSpacing.xs),
                       child: Row(
