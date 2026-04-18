@@ -159,6 +159,23 @@ dependencies {
     // ProGuard rules will handle the missing classes
 }
 
+// Legacy com.google.firebase:firebase-iid duplicates FirebaseInstanceIdReceiver with
+// firebase-messaging 23+ (see :app:checkReleaseDuplicateClasses). IID is deprecated.
+configurations.configureEach {
+    resolutionStrategy {
+        componentSelection {
+            all { selection ->
+                def id = selection.candidate
+                if (id instanceof org.gradle.api.artifacts.component.ModuleComponentIdentifier &&
+                        id.group == 'com.google.firebase' &&
+                        id.module == 'firebase-iid') {
+                    selection.reject('omit firebase-iid; types are provided by firebase-messaging')
+                }
+            }
+        }
+    }
+}
+
 flutter {
     source '../..'
 }
