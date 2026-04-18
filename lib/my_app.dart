@@ -147,10 +147,10 @@ class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
   @override
-  _MyAppState createState() => _MyAppState();
+  ConsumerState<MyApp> createState() => MyAppState();
 }
 
-class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
+class MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
@@ -477,7 +477,9 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     },
     'point-and-say': (_) {
       final raw = settings.arguments;
-      final map = raw is Map ? Map<String, dynamic>.from(raw as Map) : <String, dynamic>{};
+      final Map<String, dynamic> map = raw is Map
+          ? Map<String, dynamic>.from(raw)
+          : <String, dynamic>{};
       final lang = map['language']?.toString().trim() ?? 'yoruba';
       return PointAndSayScreen(language: lang);
     },
