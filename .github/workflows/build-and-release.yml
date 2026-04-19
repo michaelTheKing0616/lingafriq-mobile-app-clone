@@ -635,9 +635,6 @@ jobs:
       # If pilot fails with "A required agreement is missing or has expired", that is NOT a code/signing bug:
       # the Account Holder must open App Store Connect → Agreements, Tax, and Banking and accept pending agreements,
       # then re-run this workflow. See: https://developer.apple.com/help/app-store-connect/manage-agreements/sign-and-update-agreements
-      #
-      # Until then, you may set repository secret SKIP_TESTFLIGHT_UPLOAD=true so this step exits 0 and the workflow
-      # stays green; delete the secret after agreements are active to resume uploads.
       - name: 🚀 Upload IPA to TestFlight (App Store Connect API)
         if: >
           github.ref == 'refs/heads/main' &&
@@ -646,15 +643,8 @@ jobs:
           ASC_API_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
           APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
-          SKIP_TESTFLIGHT_UPLOAD: ${{ secrets.SKIP_TESTFLIGHT_UPLOAD }}
         run: |
           set -euo pipefail
-          case "${SKIP_TESTFLIGHT_UPLOAD:-}" in
-            true|TRUE)
-              echo "::notice::Skipping TestFlight upload (secret SKIP_TESTFLIGHT_UPLOAD is true). IPA remains in artifacts. Remove this secret after App Store Connect agreements are accepted."
-              exit 0
-              ;;
-          esac
           if [ "${IOS_SIGNING_READY:-false}" != "true" ]; then
             echo "Skipping TestFlight: iOS signing credentials not available (IOS_SIGNING_READY=false)."
             exit 0
