@@ -159,20 +159,14 @@ dependencies {
     // ProGuard rules will handle the missing classes
 }
 
-// ML Kit's linkfirebase still pulls com.google.firebase:firebase-iid, but IID was removed
-// from Google Maven (replaced by FCM). Map IID → firebase-messaging at the *same* version
-// as requested (matches FlutterFire BOM, e.g. 25.0.1). Pinning messaging:24.1.0 while the
-// graph resolves 25.0.1 caused mergeReleaseArtProfile to look for firebase-iid-25.0.1.aar
-// under firebase-messaging:25.0.1 and fail CI.
+// ML Kit (linkfirebase) still declares com.google.firebase:firebase-iid. The Firebase BOM
+// aligns IID to the same version as firebase-messaging (e.g. 25.0.1), but firebase-iid was
+// never shipped at 25.x — Gradle then fails mergeReleaseArtProfile looking for
+// firebase-iid-25.0.1.aar (and useTarget→messaging broke artifact identity). Pin IID to
+// the last published artifact; FCM remains from FlutterFire / BOM.
 configurations.configureEach {
     resolutionStrategy {
-        eachDependency { details ->
-            if (details.requested.group == 'com.google.firebase' &&
-                    details.requested.name == 'firebase-iid') {
-                details.useTarget("com.google.firebase:firebase-messaging:${details.requested.version}")
-                details.because('firebase-iid removed from Maven; FCM replaces Instance ID')
-            }
-        }
+        force 'com.google.firebase:firebase-iid:21.1.0'
     }
 }
 
