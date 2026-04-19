@@ -160,14 +160,18 @@ dependencies {
 }
 
 // ML Kit's linkfirebase still pulls com.google.firebase:firebase-iid, but IID was removed
-// from Google Maven (replaced by FCM). Rejecting the module breaks resolution entirely.
-// Substitute firebase-messaging, which provides the superseding APIs (avoids duplicate IID + FCM classes).
+// from Google Maven (replaced by FCM). Map IID → firebase-messaging at the *same* version
+// as requested (matches FlutterFire BOM, e.g. 25.0.1). Pinning messaging:24.1.0 while the
+// graph resolves 25.0.1 caused mergeReleaseArtProfile to look for firebase-iid-25.0.1.aar
+// under firebase-messaging:25.0.1 and fail CI.
 configurations.configureEach {
     resolutionStrategy {
-        dependencySubstitution {
-            substitute(module('com.google.firebase:firebase-iid'))
-                .using(module('com.google.firebase:firebase-messaging:24.1.0'))
-                .because('firebase-iid removed from Maven; FCM replaces Instance ID')
+        eachDependency { details ->
+            if (details.requested.group == 'com.google.firebase' &&
+                    details.requested.name == 'firebase-iid') {
+                details.useTarget("com.google.firebase:firebase-messaging:${details.requested.version}")
+                details.because('firebase-iid removed from Maven; FCM replaces Instance ID')
+            }
         }
     }
 }
