@@ -8,6 +8,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/config/api_contract.dart';
+import 'package:lingafriq/data/polie_translate_language_options.dart';
 import '../../config/url_constants.dart';
 import '../../utils/structured_logger.dart';
 import '../env_config.dart';
@@ -68,6 +69,10 @@ class TranslationService {
     
     // Truncate excessively long text
     final truncatedText = text.length > 5000 ? text.substring(0, 5000) : text;
+
+    /// Canonical NLLB/FLORES wire ids (aligns Polie picker + hybrid orchestrator display names).
+    final srcWire = _resolveToNllbCode(sourceLang);
+    final tgtWire = _resolveToNllbCode(targetLang);
     
     final cacheModelTag =
         llmModel == null || llmModel.isEmpty ? null : llmModel;
@@ -76,8 +81,8 @@ class TranslationService {
     if (useCache) {
       final cached = await HybridPolieCache.getCachedTranslation(
         text: truncatedText,
-        sourceLang: sourceLang,
-        targetLang: targetLang,
+        sourceLang: srcWire,
+        targetLang: tgtWire,
         modelTag: cacheModelTag,
       );
       if (cached != null) {
@@ -98,8 +103,8 @@ class TranslationService {
       config: RateLimiterConfig.translation,
       operation: () => _translateViaBackend(
         text: truncatedText,
-        sourceLang: sourceLang,
-        targetLang: targetLang,
+        sourceLang: srcWire,
+        targetLang: tgtWire,
         includePhraseBreakdown: includePhraseBreakdown,
         llmModel: llmModel,
       ),
@@ -110,8 +115,8 @@ class TranslationService {
       if (useCache && backendResult.data!.translation.isNotEmpty) {
         await HybridPolieCache.cacheTranslation(
           text: truncatedText,
-          sourceLang: sourceLang,
-          targetLang: targetLang,
+          sourceLang: srcWire,
+          targetLang: tgtWire,
           result: backendResult.data!.translation,
           modelTag: cacheModelTag,
         );
@@ -129,8 +134,8 @@ class TranslationService {
       config: RateLimiterConfig.translation,
       operation: () => _translateViaHuggingFace(
         text: truncatedText,
-        sourceLang: sourceLang,
-        targetLang: targetLang,
+        sourceLang: srcWire,
+        targetLang: tgtWire,
         hfToken: hfToken,
       ),
     );
@@ -140,8 +145,8 @@ class TranslationService {
       if (useCache && hfResult.data!.translation.isNotEmpty) {
         await HybridPolieCache.cacheTranslation(
           text: truncatedText,
-          sourceLang: sourceLang,
-          targetLang: targetLang,
+          sourceLang: srcWire,
+          targetLang: tgtWire,
           result: hfResult.data!.translation,
           modelTag: cacheModelTag,
         );
@@ -152,15 +157,15 @@ class TranslationService {
     // Try MyMemory API (free, no key; ISO 639-1 codes)
     final myMemoryTranslation = await translateWithMyMemory(
       truncatedText,
-      sourceLang,
-      targetLang,
+      srcWire,
+      tgtWire,
     );
     if (myMemoryTranslation != null && myMemoryTranslation.isNotEmpty) {
       if (useCache) {
         await HybridPolieCache.cacheTranslation(
           text: truncatedText,
-          sourceLang: sourceLang,
-          targetLang: targetLang,
+          sourceLang: srcWire,
+          targetLang: tgtWire,
           result: myMemoryTranslation,
           modelTag: cacheModelTag,
         );
@@ -217,8 +222,8 @@ class TranslationService {
         return _fallbackResult(text, sourceLang, targetLang);
       }
       
-      final srcCode = _getLanguageCode(sourceLang);
-      final tgtCode = _getLanguageCode(targetLang);
+      final srcCode = _resolveToNllbCode(sourceLang);
+      final tgtCode = _resolveToNllbCode(targetLang);
       
       final response = await _dio.post(
         _hfNllbUrl,
@@ -273,8 +278,8 @@ class TranslationService {
     String targetLang,
   ) async {
     if (text.trim().isEmpty) return null;
-    final src = _getMyMemoryLangCode(sourceLang);
-    final tgt = _getMyMemoryLangCode(targetLang);
+    final src = _getMyMemoryLangCode(_resolveToNllbCode(sourceLang));
+    final tgt = _getMyMemoryLangCode(_resolveToNllbCode(targetLang));
     if (src == null || tgt == null) return null;
     final uri = Uri.parse(
       'https://api.mymemory.translated.net/get',
@@ -359,6 +364,9 @@ class TranslationService {
     bool useCache = true,
   }) async {
     await _ensureInitialized();
+
+    final srcWire = _resolveToNllbCode(sourceLang);
+    final tgtWire = _resolveToNllbCode(targetLang);
     
     final results = <TranslationResult>[];
     final uncachedTexts = <String>[];
@@ -370,8 +378,8 @@ class TranslationService {
       if (useCache) {
         final cached = await HybridPolieCache.getCachedTranslation(
           text: text,
-          sourceLang: sourceLang,
-          targetLang: targetLang,
+          sourceLang: srcWire,
+          targetLang: tgtWire,
           modelTag: null,
         );
         if (cached != null) {
@@ -497,11 +505,18 @@ class TranslationService {
   
   static final RegExp _floresCodePattern = RegExp(r'^[a-z]{3}_[A-Za-z0-9]+$');
 
-  /// NLLB / HuggingFace `src_lang` / `tgt_lang` (FLORES-200 style) or legacy English names.
-  String _getLanguageCode(String language) {
+  /// NLLB / HuggingFace `src_lang` / `tgt_lang`: FLORES codes, Polie picker labels, or legacy keys.
+  String _resolveToNllbCode(String language) {
     final t = language.trim();
     if (t.isEmpty) return 'eng_Latn';
     if (_floresCodePattern.hasMatch(t)) return t;
+
+    final byDisplay = polieOptionForDisplayName(t);
+    if (byDisplay != null) return byDisplay.backendKey;
+
+    final byKey = polieOptionForBackendKey(t);
+    if (byKey != null) return byKey.backendKey;
+
     final lower = t.toLowerCase();
     const codeMap = {
       'yoruba': 'yor_Latn',

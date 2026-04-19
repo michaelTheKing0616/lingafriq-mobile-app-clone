@@ -1,7 +1,7 @@
 # Backend contract: `POST /hybrid-polie/translate`
 
-**Verified against:** `node-backend` (`hybrid-polie.controller.ts`, `translate` handler)  
-**Last updated:** 2026-04-05  
+**Verified against:** `node-backend-safe-push` (`hybrid-polie.controller.ts`, `translate` handler)  
+**Last updated:** 2026-04-19  
 
 ## Purpose
 
@@ -38,14 +38,16 @@ Extra JSON fields are ignored except the above.
 
 ## Engine order (confirmed)
 
-1. **Google Translate** (via `freeGoogleTranslate.service`), when language codes map successfully.  
-2. **NLLB / AfriNLLB family** (Hugging Face), when configured and available (exact stack differs slightly between **Downloads** `node-backend-main` and **intermediary** `node-backend-safe-push`).  
-3. **MyMemory** free API.
+1. **Google Translate** (via `freeGoogleTranslate.service`), **only when** both source and target map to non-`null` ISO codes (see above).  
+2. **AfriNLLB then NLLB-200** (Hugging Face), when token, URL, and env allow—AfriNLLB endpoints are tried **before** the generic NLLB model.  
+3. **MyMemory** free API, **only when** both sides map to non-`null` ISO codes (same mapping as Google for this purpose).
+
+If Google is skipped due to `null` mapping, the flow proceeds to HF, then MyMemory under the same rules.
 
 ## Client alignment (Flutter)
 
-- `lib/services/hybrid_polie/translation_service.dart` may send `llmModel` and `includePhraseBreakdown`. This is **safe** and now **visible in `metadata`** on the push-ready backend copy.  
-- To make `llmModel` **change behavior**, backend work is required (e.g. skip Google, force NLLB, or call an LLM post-edit). Track that under product/API design, not this contract doc.
+- `lib/services/hybrid_polie/translation_service.dart` resolves display names and backend keys to **FLORES wire codes** (`_resolveToNllbCode`) for caches, backend JSON, and HF/MyMemory, keeping behavior aligned with `polie_translate_language_options.dart`.  
+- `llmModel` and `includePhraseBreakdown` are **safe** and echoed in `metadata` where implemented. Changing routing based on `llmModel` still requires backend product work.
 
 ## Implementation locations
 
