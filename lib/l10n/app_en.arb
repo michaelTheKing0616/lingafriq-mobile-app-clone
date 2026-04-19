@@ -365,5 +365,15 @@
         "type": "String"
       }
     }
+  },
+
+  "polieTranslationSourceLabel": "From",
+  "@polieTranslationSourceLabel": {
+    "description": "Label above source language in Polie translation panel"
+  },
+
+  "polieTranslationTargetLabel": "To",
+  "@polieTranslationTargetLabel": {
+    "description": "Label above target language in Polie translation panel"
   }
 }

@@ -21,6 +21,7 @@ import 'package:lingafriq/providers/tts_provider.dart';
 import 'package:lingafriq/utils/diacritics_enforcer.dart';
 import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:lingafriq/data/polie_translate_language_options.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart' as uuid;
 
@@ -1415,6 +1416,7 @@ Language: $targetLanguage
             Expanded(
               child: LayoutBuilder(
                 builder: (context, constraints) {
+                  final l10n = AppLocalizations.of(context)!;
                   final panelGap = 8.0;
                   final idealPanelWidth = (constraints.maxWidth - panelGap) / 2;
                   final panelWidth = isPhone
@@ -1478,7 +1480,7 @@ Language: $targetLanguage
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 Text(
-                                                  'From',
+                                                  l10n.polieTranslationSourceLabel,
                                                   style: bodyStyle.copyWith(
                                                     fontSize: 11,
                                                   ),
@@ -1595,7 +1597,7 @@ Language: $targetLanguage
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 Text(
-                                                  'To',
+                                                  l10n.polieTranslationTargetLabel,
                                                   style: bodyStyle.copyWith(
                                                     fontSize: 11,
                                                   ),

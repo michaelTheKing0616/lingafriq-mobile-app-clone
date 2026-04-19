@@ -547,6 +547,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{name} is typing…'**
   String chatPeerTyping(String name);
+
+  /// Label above source language in Polie translation panel
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get polieTranslationSourceLabel;
+
+  /// Label above target language in Polie translation panel
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get polieTranslationTargetLabel;
 }
 
 class _AppLocalizationsDelegate

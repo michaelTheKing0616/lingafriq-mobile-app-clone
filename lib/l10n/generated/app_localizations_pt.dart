@@ -224,4 +224,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String chatPeerTyping(String name) {
     return '$name is typing…';
   }
+
+  @override
+  String get polieTranslationSourceLabel => 'From';
+
+  @override
+  String get polieTranslationTargetLabel => 'To';
 }
