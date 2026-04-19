@@ -631,6 +631,10 @@ jobs:
 
       # App Store Connect API (p8 + Key ID + Issuer ID). Secrets: APP_STORE_CONNECT_API_KEY, APP_STORE_CONNECT_KEY_ID, APP_STORE_CONNECT_ISSUER_ID
       # Note: pilot only accepts --api_key_path (JSON) or --api-key (JSON). PEM must not be passed as APP_STORE_CONNECT_API_KEY env while running fastlane (Pilot maps that env to api_key hash).
+      #
+      # If pilot fails with "A required agreement is missing or has expired", that is NOT a code/signing bug:
+      # the Account Holder must open App Store Connect → Agreements, Tax, and Banking and accept pending agreements,
+      # then re-run this workflow. See: https://developer.apple.com/help/app-store-connect/manage-agreements/sign-and-update-agreements
       - name: 🚀 Upload IPA to TestFlight (App Store Connect API)
         if: >
           github.ref == 'refs/heads/main' &&
@@ -667,12 +671,21 @@ jobs:
             --arg issuer_id "$APP_STORE_CONNECT_ISSUER_ID" \
             --rawfile key "$KEY_PATH" \
             '{key_id: $key_id, issuer_id: $issuer_id, key: $key}' > "$JSON_PATH"
+          set +e
           fastlane pilot upload \
             --ipa "$IPA" \
             --api_key_path "$JSON_PATH" \
             --skip_waiting_for_build_processing \
-            --skip_submission
+            --skip_submission 2>&1 | tee pilot-upload.log
+          PILOT_EXIT=${PIPESTATUS[0]}
+          set -e
           rm -f "$KEY_PATH" "$JSON_PATH"
+          if [ "$PILOT_EXIT" -ne 0 ]; then
+            if grep -qiE 'agreement is missing|agreement.*expired|required agreement' pilot-upload.log 2>/dev/null; then
+              echo "::error::App Store Connect blocked the upload until pending legal agreements are accepted. As Account Holder (or Admin), open https://appstoreconnect.apple.com → Agreements, Tax, and Banking → accept all items, then re-run this job. Docs: https://developer.apple.com/help/app-store-connect/manage-agreements/sign-and-update-agreements"
+            fi
+            exit "$PILOT_EXIT"
+          fi
           echo "✅ IPA submitted to App Store Connect; processing continues in App Store Connect → TestFlight."
 
   create-release:
