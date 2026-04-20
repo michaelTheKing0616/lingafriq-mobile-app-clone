@@ -565,6 +565,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'English translations'**
   String get polieConversationIncludeEnglishTranslations;
+
+  /// Title for the Polie tutor saved cards list.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved cards'**
+  String get polieTutorSavedCards;
+
+  /// Button/tooltip label to save a tutor card.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get polieTutorSaveCard;
+
+  /// Button label to remove a saved tutor card.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get polieTutorRemoveSavedCard;
+
+  /// Empty state message when user has no saved tutor cards.
+  ///
+  /// In en, this message translates to:
+  /// **'No saved cards yet.'**
+  String get polieTutorNoSavedCardsYet;
 }
 
 class _AppLocalizationsDelegate

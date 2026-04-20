@@ -16,6 +16,7 @@ import 'package:lingafriq/services/tutor_progress_service.dart';
 import 'package:lingafriq/services/vocabulary/vocabulary_service.dart';
 import 'package:lingafriq/services/vocabulary_progress_service.dart';
 import 'package:lingafriq/services/hybrid_polie/translation_service.dart';
+import 'package:lingafriq/services/polie_tutor_saved_cards_service.dart';
 import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
 import 'package:lingafriq/providers/tts_provider.dart';
 import 'package:lingafriq/utils/diacritics_enforcer.dart';
@@ -112,6 +113,8 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
     final tutorFlipped = useState<bool>(false);
     final tutorAutoLoadInFlight = useRef<bool>(false);
     final tutorSeenConcepts = useRef<Set<String>>({});
+    final tutorSavedCards = useState<List<PolieTutorSavedCard>>([]);
+    final tutorIsCurrentSaved = useState<bool>(false);
 
     final roleplayDifficulty = useState<String>('bilingual');
     final roleplayScene = useState<String>(
@@ -136,6 +139,40 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
     final modeIntroDismissed = useState<Set<String>>({});
 
     final chat = ref.read(groqChatProvider.notifier);
+    Future<void> refreshTutorSavedCards() async {
+      final saved = await PolieTutorSavedCardsService.loadSavedCards();
+      tutorSavedCards.value = saved
+          .where(
+            (c) =>
+                c.targetLanguage.trim().toLowerCase() ==
+                    targetLanguage.trim().toLowerCase() &&
+                c.difficulty.trim().toLowerCase() ==
+                    tutorDifficulty.value.trim().toLowerCase(),
+          )
+          .toList();
+
+      final currentConceptKey =
+          tutorLesson.value?.concept.trim().toLowerCase() ?? '';
+      tutorIsCurrentSaved.value = currentConceptKey.isNotEmpty &&
+          tutorSavedCards.value.any((c) => c.conceptKey == currentConceptKey);
+    }
+
+    Future<void> loadTutorSeenConcepts() async {
+      final seen = await PolieTutorSavedCardsService.loadSeenConceptKeys(
+        targetLanguage: targetLanguage,
+        difficulty: tutorDifficulty.value,
+      );
+      tutorSeenConcepts.value = seen.map((e) => e.trim().toLowerCase()).where((e) => e.isNotEmpty).toSet();
+    }
+
+    useEffect(() {
+      Future.microtask(() async {
+        await loadTutorSeenConcepts();
+        await refreshTutorSavedCards();
+      });
+      return null;
+    }, [tutorDifficulty.value, targetLanguage]);
+
     final translationHistoryService = ref.read(
       translationHistoryServiceProvider,
     );
@@ -496,14 +533,27 @@ Nonce: ${DateTime.now().microsecondsSinceEpoch}
                   ...tutorSeenConcepts.value,
                   retryParsed.concept.trim().toLowerCase(),
                 };
+                await PolieTutorSavedCardsService.addSeenConceptKey(
+                  targetLanguage: targetLanguage,
+                  difficulty: tutorDifficulty.value,
+                  conceptKey: retryParsed.concept.trim().toLowerCase(),
+                );
                 tutorLesson.value = retryParsed;
+                await refreshTutorSavedCards();
               } else {
                 tutorLesson.value = parsed;
+                await refreshTutorSavedCards();
               }
               return;
             }
             tutorSeenConcepts.value = {...tutorSeenConcepts.value, conceptKey};
+            await PolieTutorSavedCardsService.addSeenConceptKey(
+              targetLanguage: targetLanguage,
+              difficulty: tutorDifficulty.value,
+              conceptKey: conceptKey,
+            );
             tutorLesson.value = parsed;
+            await refreshTutorSavedCards();
           } else {
             // Retry once with stricter completeness constraints.
             final retryJson = await askForJson('''
@@ -525,6 +575,16 @@ Generate a complete tutor card for $targetLanguage at ${tutorDifficulty.value} l
                 retryJson,
                 modeResponse.value,
               );
+              final ck = tutorLesson.value!.concept.trim().toLowerCase();
+              if (ck.isNotEmpty) {
+                tutorSeenConcepts.value = {...tutorSeenConcepts.value, ck};
+                await PolieTutorSavedCardsService.addSeenConceptKey(
+                  targetLanguage: targetLanguage,
+                  difficulty: tutorDifficulty.value,
+                  conceptKey: ck,
+                );
+              }
+              await refreshTutorSavedCards();
             }
           }
         }
@@ -535,6 +595,125 @@ Generate a complete tutor card for $targetLanguage at ${tutorDifficulty.value} l
         isBusy.value = false;
         tutorAutoLoadInFlight.value = false;
       }
+    }
+
+    Future<void> saveCurrentTutorCard() async {
+      final lesson = tutorLesson.value;
+      if (lesson == null) return;
+      final conceptKey = lesson.concept.trim().toLowerCase();
+      if (conceptKey.isEmpty) return;
+      await PolieTutorSavedCardsService.saveCard(
+        PolieTutorSavedCard(
+          targetLanguage: targetLanguage,
+          difficulty: tutorDifficulty.value,
+          conceptKey: conceptKey,
+          concept: lesson.concept,
+          explanation: lesson.explanation,
+          exampleTarget: lesson.example.targetLang,
+          exampleTransliteration: lesson.example.transliteration,
+          exampleEnglish: lesson.example.english,
+          memoryTip: lesson.memoryTip,
+          watchOut: lesson.watchOut,
+          practiceQuestion: lesson.practiceQuestion,
+          practiceHint: lesson.practiceHint,
+          savedAt: DateTime.now(),
+        ),
+      );
+      await refreshTutorSavedCards();
+    }
+
+    Future<void> openTutorSavedCards() async {
+      final l10n = AppLocalizations.of(context)!;
+      await refreshTutorSavedCards();
+      await showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        builder: (sheetContext) => StatefulBuilder(
+          builder: (sheetContext, setSheetState) {
+            final items = tutorSavedCards.value;
+            return SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          l10n.polieTutorSavedCards,
+                          style: Theme.of(sheetContext).textTheme.titleLarge,
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          onPressed: () => Navigator.of(sheetContext).pop(),
+                          icon: const Icon(Icons.close_rounded),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    if (items.isEmpty)
+                      Padding(
+                        padding: const EdgeInsets.all(24),
+                        child: Text(
+                          l10n.polieTutorNoSavedCardsYet,
+                          style: Theme.of(sheetContext).textTheme.bodyMedium,
+                        ),
+                      )
+                    else
+                      Flexible(
+                        child: ListView.separated(
+                          shrinkWrap: true,
+                          itemCount: items.length,
+                          separatorBuilder: (_, __) => const Divider(height: 1),
+                          itemBuilder: (_, index) {
+                            final c = items[index];
+                            return ListTile(
+                              title: Text(c.concept),
+                              subtitle: Text(
+                                c.exampleTarget,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              onTap: () {
+                                tutorLesson.value = _TutorLessonPayload(
+                                  concept: c.concept,
+                                  explanation: c.explanation,
+                                  example: _TutorExample(
+                                    targetLang: c.exampleTarget,
+                                    transliteration: c.exampleTransliteration,
+                                    english: c.exampleEnglish,
+                                  ),
+                                  memoryTip: c.memoryTip,
+                                  watchOut: c.watchOut,
+                                  practiceQuestion: c.practiceQuestion,
+                                  practiceHint: c.practiceHint,
+                                );
+                                tutorFeedback.value = null;
+                                tutorFlipped.value = false;
+                                Navigator.of(sheetContext).pop();
+                                refreshTutorSavedCards();
+                              },
+                              trailing: TextButton(
+                                onPressed: () async {
+                                  await PolieTutorSavedCardsService.removeCard(
+                                    c.conceptKey,
+                                  );
+                                  await refreshTutorSavedCards();
+                                  setSheetState(() {});
+                                },
+                                child: Text(l10n.polieTutorRemoveSavedCard),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      );
     }
 
     Future<void> checkTutorAnswer() async {
@@ -1970,12 +2149,42 @@ Language: $targetLanguage
                                 ),
                               ),
                               const SizedBox(height: 8),
-                              FilledButton(
-                                onPressed: isBusy ? null : onLoadTutorLesson,
-                                style: FilledButton.styleFrom(
-                                  backgroundColor: theme.accent,
-                                ),
-                                child: Text(isBusy ? 'Loading...' : 'New Card'),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: FilledButton(
+                                      onPressed: isBusy ? null : onLoadTutorLesson,
+                                      style: FilledButton.styleFrom(
+                                        backgroundColor: theme.accent,
+                                      ),
+                                      child: Text(isBusy ? 'Loading...' : 'New Card'),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  IconButton(
+                                    tooltip: AppLocalizations.of(context)!.polieTutorSavedCards,
+                                    onPressed: isBusy ? null : openTutorSavedCards,
+                                    style: IconButton.styleFrom(
+                                      backgroundColor: Colors.white,
+                                    ),
+                                    icon: const Icon(Icons.bookmark_rounded),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  IconButton(
+                                    tooltip: AppLocalizations.of(context)!.polieTutorSaveCard,
+                                    onPressed: (isBusy || tutorLesson == null)
+                                        ? null
+                                        : saveCurrentTutorCard,
+                                    style: IconButton.styleFrom(
+                                      backgroundColor: Colors.white,
+                                    ),
+                                    icon: Icon(
+                                      tutorIsCurrentSaved.value
+                                          ? Icons.bookmark_added_rounded
+                                          : Icons.bookmark_add_rounded,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           )
@@ -1998,6 +2207,26 @@ Language: $targetLanguage
                                   backgroundColor: theme.accent,
                                 ),
                                 child: Text(isBusy ? 'Loading...' : 'New Card'),
+                              ),
+                              const SizedBox(width: 8),
+                              IconButton(
+                                tooltip: AppLocalizations.of(context)!.polieTutorSavedCards,
+                                onPressed: isBusy ? null : openTutorSavedCards,
+                                style: IconButton.styleFrom(backgroundColor: Colors.white),
+                                icon: const Icon(Icons.bookmark_rounded),
+                              ),
+                              const SizedBox(width: 8),
+                              IconButton(
+                                tooltip: AppLocalizations.of(context)!.polieTutorSaveCard,
+                                onPressed: (isBusy || tutorLesson == null)
+                                    ? null
+                                    : saveCurrentTutorCard,
+                                style: IconButton.styleFrom(backgroundColor: Colors.white),
+                                icon: Icon(
+                                  tutorIsCurrentSaved.value
+                                      ? Icons.bookmark_added_rounded
+                                      : Icons.bookmark_add_rounded,
+                                ),
                               ),
                             ],
                           ),

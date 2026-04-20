@@ -234,4 +234,16 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get polieConversationIncludeEnglishTranslations =>
       'English translations';
+
+  @override
+  String get polieTutorSavedCards => 'Saved cards';
+
+  @override
+  String get polieTutorSaveCard => 'Save';
+
+  @override
+  String get polieTutorRemoveSavedCard => 'Remove';
+
+  @override
+  String get polieTutorNoSavedCardsYet => 'No saved cards yet.';
 }

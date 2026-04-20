@@ -380,5 +380,22 @@
   "polieConversationIncludeEnglishTranslations": "English translations",
   "@polieConversationIncludeEnglishTranslations": {
     "description": "Toggle label in Polie conversation mode to include English translations."
+  },
+
+  "polieTutorSavedCards": "Saved cards",
+  "@polieTutorSavedCards": {
+    "description": "Title for the Polie tutor saved cards list."
+  },
+  "polieTutorSaveCard": "Save",
+  "@polieTutorSaveCard": {
+    "description": "Button/tooltip label to save a tutor card."
+  },
+  "polieTutorRemoveSavedCard": "Remove",
+  "@polieTutorRemoveSavedCard": {
+    "description": "Button label to remove a saved tutor card."
+  },
+  "polieTutorNoSavedCardsYet": "No saved cards yet.",
+  "@polieTutorNoSavedCardsYet": {
+    "description": "Empty state message when user has no saved tutor cards."
   }
 }
