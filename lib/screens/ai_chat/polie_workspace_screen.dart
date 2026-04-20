@@ -121,6 +121,7 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
 
     final conversationMessages = useState<List<_ConversationTurn>>([]);
     final languageRatio = useState<double>(0);
+    final conversationIncludeEnglishTranslations = useState<bool>(false);
 
     final vocabCard = useState<_VocabPayload?>(null);
     final vocabReveal = useState<bool>(false);
@@ -663,10 +664,12 @@ Stay in character. Respond naturally for the scene.
     Future<void> sendConversation([String? prefilledText]) async {
       final text = (prefilledText ?? conversationInput.text).trim();
       if (text.isEmpty) return;
-      final wantsInlineEnglish = RegExp(
-        r'english translation|with english|translate to english|english in',
-        caseSensitive: false,
-      ).hasMatch(text);
+      final wantsInlineEnglish =
+          conversationIncludeEnglishTranslations.value ||
+          RegExp(
+            r'english translation|with english|translate to english|english in',
+            caseSensitive: false,
+          ).hasMatch(text);
       conversationMessages.value = [
         ...conversationMessages.value,
         _ConversationTurn.user(text),
@@ -2563,6 +2566,7 @@ Language: $targetLanguage
     }
 
     if (mode == PolieMode.conversation) {
+      final l10n = AppLocalizations.of(context)!;
       return Container(
         key: key,
         color: const Color(0xFFF5F0E8),
@@ -2737,55 +2741,81 @@ Language: $targetLanguage
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(12, 6, 12, 12),
-              child: Row(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.sentiment_satisfied_alt_rounded),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: TextField(
-                      controller: conversationInput,
-                      decoration: _inputDecoration(theme, 'Type a message...')
-                          .copyWith(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(28),
-                              borderSide: BorderSide(color: theme.border),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(28),
-                              borderSide: BorderSide(color: theme.border),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(28),
-                              borderSide: BorderSide(
-                                color: theme.accent,
-                                width: 1.3,
-                              ),
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 14,
-                            ),
+                  Row(
+                    children: [
+                      Switch(
+                        value: conversationIncludeEnglishTranslations.value,
+                        onChanged: isBusy
+                            ? null
+                            : (v) => conversationIncludeEnglishTranslations.value = v,
+                        activeColor: theme.accent,
+                      ),
+                      Expanded(
+                        child: Text(
+                          l10n.polieConversationIncludeEnglishTranslations,
+                          style: bodyStyle.copyWith(
+                            color: const Color(0xFF2D1B0E),
+                            fontWeight: FontWeight.w600,
                           ),
-                    ),
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 8),
-                  IconButton(
-                    onPressed: () {},
-                    style: IconButton.styleFrom(backgroundColor: Colors.white),
-                    icon: const Icon(Icons.mic_none_rounded, size: 20),
-                  ),
-                  const SizedBox(width: 6),
-                  FilledButton(
-                    onPressed: isBusy ? null : onSendConversation,
-                    style: FilledButton.styleFrom(
-                      backgroundColor: theme.accent,
-                      shape: const CircleBorder(),
-                      padding: const EdgeInsets.all(12),
-                    ),
-                    child: Text(isBusy ? '...' : '➤'),
+                  const SizedBox(height: 6),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.sentiment_satisfied_alt_rounded),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: TextField(
+                          controller: conversationInput,
+                          decoration: _inputDecoration(theme, 'Type a message...')
+                              .copyWith(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(28),
+                                  borderSide: BorderSide(color: theme.border),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(28),
+                                  borderSide: BorderSide(color: theme.border),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(28),
+                                  borderSide: BorderSide(
+                                    color: theme.accent,
+                                    width: 1.3,
+                                  ),
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 14,
+                                ),
+                              ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      IconButton(
+                        onPressed: () {},
+                        style: IconButton.styleFrom(backgroundColor: Colors.white),
+                        icon: const Icon(Icons.mic_none_rounded, size: 20),
+                      ),
+                      const SizedBox(width: 6),
+                      FilledButton(
+                        onPressed: isBusy ? null : onSendConversation,
+                        style: FilledButton.styleFrom(
+                          backgroundColor: theme.accent,
+                          shape: const CircleBorder(),
+                          padding: const EdgeInsets.all(12),
+                        ),
+                        child: Text(isBusy ? '...' : '➤'),
+                      ),
+                    ],
                   ),
                 ],
               ),

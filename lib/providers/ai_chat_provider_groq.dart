@@ -320,18 +320,19 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   int _maxTokensForMode() {
     switch (_mode) {
       case PolieMode.translation:
-        return 350;
+        return 500;
       case PolieMode.roleplay:
-        return 700;
+        return 900;
       case PolieMode.tutor:
-        return 700;
+        return 900;
       case PolieMode.conversation:
-        return 550;
+        // Conversation needs enough budget for multi-sentence replies plus optional translations.
+        return 1400;
       case PolieMode.vocab:
       case PolieMode.review:
       case PolieMode.pronunciation:
       case PolieMode.grammar:
-        return 500;
+        return 700;
     }
   }
 
@@ -1509,7 +1510,11 @@ Use structured format: Rule -> Example -> Practice.''';
                   yield buffer;
                   buffer = "";
 
-                  if (isTurnHandOff) {
+                  // IMPORTANT: Do not cancel the stream early for conversation/roleplay.
+                  // Earlier heuristics caused short replies whenever Polie asked a question.
+                  if (isTurnHandOff &&
+                      _mode != PolieMode.conversation &&
+                      _mode != PolieMode.roleplay) {
                     _turn = ConversationTurn.user;
                     _currentStreamCancel?.call();
                     break;

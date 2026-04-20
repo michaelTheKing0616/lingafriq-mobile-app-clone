@@ -230,4 +230,8 @@ class AppLocalizationsHa extends AppLocalizations {
 
   @override
   String get polieTranslationTargetLabel => 'To';
+
+  @override
+  String get polieConversationIncludeEnglishTranslations =>
+      'English translations';
 }

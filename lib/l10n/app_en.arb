@@ -375,5 +375,10 @@
   "polieTranslationTargetLabel": "To",
   "@polieTranslationTargetLabel": {
     "description": "Label above target language in Polie translation panel"
+  },
+
+  "polieConversationIncludeEnglishTranslations": "English translations",
+  "@polieConversationIncludeEnglishTranslations": {
+    "description": "Toggle label in Polie conversation mode to include English translations."
   }
 }

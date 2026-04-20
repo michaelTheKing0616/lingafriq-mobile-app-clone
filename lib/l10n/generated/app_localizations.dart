@@ -559,6 +559,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'To'**
   String get polieTranslationTargetLabel;
+
+  /// Toggle label in Polie conversation mode to include English translations.
+  ///
+  /// In en, this message translates to:
+  /// **'English translations'**
+  String get polieConversationIncludeEnglishTranslations;
 }
 
 class _AppLocalizationsDelegate
