@@ -613,22 +613,26 @@ class _ContentPacks {
 
 class _LearningV2 {
   const _LearningV2();
-  String get speakMissionEvaluate => '/api/v2/learning/speak-mission/evaluate';
-  String get codeSwitchSession => '/api/v2/learning/code-switch/session';
-  String get registerCoach => '/api/v2/learning/register-coach';
-  String get toneTrainer => '/api/v2/learning/tone-trainer/evaluate';
-  String get syntheticVoiceStyles => '/api/v2/learning/synthetic-voice/styles';
-  String get syntheticVoicePreference => '/api/v2/learning/synthetic-voice/preference';
-  String get syntheticVoiceResolve => '/api/v2/learning/synthetic-voice/resolve';
-  String get phraseDnaTemplates => '/api/v2/learning/phrase-dna/templates';
-  String get phraseDnaStart => '/api/v2/learning/phrase-dna/start';
-  String get phraseDnaSubmit => '/api/v2/learning/phrase-dna/submit';
-  String get dialectPreference => '/api/v2/learning/dialect-preference';
-  String get heritageMilestones => '/api/v2/learning/heritage/milestones';
-  String get heritageMilestoneComplete => '/api/v2/learning/heritage/milestones/complete';
-  String get livingDictionaryEntries => '/api/v2/learning/living-dictionary/entries';
+  // Prefer compatibility mount because some production gateways do not proxy /api/v2/*.
+  // Canonical backend route remains /api/v2/learning/*, but server also exposes /api/learning-v2/*.
+  static const String _base = '/api/learning-v2';
+
+  String get speakMissionEvaluate => '$_base/speak-mission/evaluate';
+  String get codeSwitchSession => '$_base/code-switch/session';
+  String get registerCoach => '$_base/register-coach';
+  String get toneTrainer => '$_base/tone-trainer/evaluate';
+  String get syntheticVoiceStyles => '$_base/synthetic-voice/styles';
+  String get syntheticVoicePreference => '$_base/synthetic-voice/preference';
+  String get syntheticVoiceResolve => '$_base/synthetic-voice/resolve';
+  String get phraseDnaTemplates => '$_base/phrase-dna/templates';
+  String get phraseDnaStart => '$_base/phrase-dna/start';
+  String get phraseDnaSubmit => '$_base/phrase-dna/submit';
+  String get dialectPreference => '$_base/dialect-preference';
+  String get heritageMilestones => '$_base/heritage/milestones';
+  String get heritageMilestoneComplete => '$_base/heritage/milestones/complete';
+  String get livingDictionaryEntries => '$_base/living-dictionary/entries';
   String livingDictionaryEntry(String id) =>
-      '/api/v2/learning/living-dictionary/entries/${Uri.encodeComponent(id)}';
+      '$_base/living-dictionary/entries/${Uri.encodeComponent(id)}';
   String get passportSessions => '/api/v2/passport/sessions';
   String passportVerify(String token) =>
       '/api/v2/passport/verify/${Uri.encodeComponent(token)}';
@@ -638,28 +642,32 @@ class _LearningV2 {
 class _MicroMentorsV2 {
   const _MicroMentorsV2();
 
-  String get mentors => '/api/v2/micro-mentors/mentors';
-  String get mentorsMe => '/api/v2/micro-mentors/mentors/me';
-  String get sessions => '/api/v2/micro-mentors/sessions';
+  // Prefer compatibility mount because some production gateways do not proxy /api/v2/*.
+  // Canonical backend route remains /api/v2/micro-mentors/*, but server also exposes /api/micro-mentors/*.
+  static const String _base = '/api/micro-mentors';
+
+  String get mentors => '$_base/mentors';
+  String get mentorsMe => '$_base/mentors/me';
+  String get sessions => '$_base/sessions';
   String session(String sessionId) =>
-      '/api/v2/micro-mentors/sessions/${Uri.encodeComponent(sessionId)}';
+      '$_base/sessions/${Uri.encodeComponent(sessionId)}';
   String sessionRespond(String sessionId) =>
-      '/api/v2/micro-mentors/sessions/${Uri.encodeComponent(sessionId)}/respond';
+      '$_base/sessions/${Uri.encodeComponent(sessionId)}/respond';
   String sessionJoin(String sessionId) =>
-      '/api/v2/micro-mentors/sessions/${Uri.encodeComponent(sessionId)}/join';
+      '$_base/sessions/${Uri.encodeComponent(sessionId)}/join';
   String sessionConsent(String sessionId) =>
-      '/api/v2/micro-mentors/sessions/${Uri.encodeComponent(sessionId)}/consent';
+      '$_base/sessions/${Uri.encodeComponent(sessionId)}/consent';
   String sessionRecording(String sessionId) =>
-      '/api/v2/micro-mentors/sessions/${Uri.encodeComponent(sessionId)}/recording';
+      '$_base/sessions/${Uri.encodeComponent(sessionId)}/recording';
   String sessionRubric(String sessionId) =>
-      '/api/v2/micro-mentors/sessions/${Uri.encodeComponent(sessionId)}/rubric';
+      '$_base/sessions/${Uri.encodeComponent(sessionId)}/rubric';
   String sessionReport(String sessionId) =>
-      '/api/v2/micro-mentors/sessions/${Uri.encodeComponent(sessionId)}/report';
+      '$_base/sessions/${Uri.encodeComponent(sessionId)}/report';
 
   /// Staff/admin moderation queue (`requireAdminOrStaff`).
-  String get adminReports => '/api/v2/micro-mentors/admin/reports';
+  String get adminReports => '$_base/admin/reports';
   String adminReport(String reportId) =>
-      '/api/v2/micro-mentors/admin/reports/${Uri.encodeComponent(reportId)}';
+      '$_base/admin/reports/${Uri.encodeComponent(reportId)}';
 }
 
 // =============================================================================
