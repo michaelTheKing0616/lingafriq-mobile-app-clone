@@ -48,9 +48,9 @@ class Api {
   static const String lessons = "lessons/";
   static String sectionLessonsList(int lessonId) => "lessons/$lessonId/all";
   static String completeLessonTutorial(lessonId, sectionLessonId) =>
-      "/lessons/$lessonId/lessons/$sectionLessonId/lesson_lesson";
+      "/api/lessons/$lessonId/lessons/$sectionLessonId/lesson_lesson";
   static String completeLessonQuiz(lessonId, sectionLessonId) =>
-      "/lessons/$lessonId/lessons/$sectionLessonId/quiz_detail";
+      "/api/lessons/$lessonId/lessons/$sectionLessonId/quiz_detail";
   //Lessons End
 
   //Mannerisms Start
