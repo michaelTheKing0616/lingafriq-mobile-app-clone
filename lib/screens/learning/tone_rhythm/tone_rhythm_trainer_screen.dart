@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -7,7 +8,9 @@ import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/services/offline/tone_trainer_queue_service.dart';
 import 'package:lingafriq/services/voice/audio_recording_service.dart';
 import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/utils/offline_fallback_policy.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ToneRhythmTrainerScreen extends StatefulWidget {
   final String language;
@@ -36,17 +39,74 @@ class _ToneRhythmTrainerScreenState extends State<ToneRhythmTrainerScreen> {
   Timer? _tick;
   Duration _elapsed = Duration.zero;
 
+  String get _draftPrefsKey =>
+      'tone_rhythm_draft:${widget.language.trim().toLowerCase()}';
+
   @override
   void initState() {
     super.initState();
     _expectedCtrl = TextEditingController(text: widget.expectedText ?? '');
+    _loadDraft();
+    _expectedCtrl.addListener(_persistDraft);
   }
 
   @override
   void dispose() {
     _tick?.cancel();
+    _expectedCtrl.removeListener(_persistDraft);
     _expectedCtrl.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadDraft() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getString(_draftPrefsKey);
+      if (raw == null || raw.trim().isEmpty) return;
+      final parsed = jsonDecode(raw);
+      if (parsed is! Map) return;
+      final expected = (parsed['expectedText'] as String?)?.trim();
+      final recordingPath = (parsed['recordingPath'] as String?)?.trim();
+
+      if (expected != null && expected.isNotEmpty) {
+        _expectedCtrl.text = expected;
+      }
+
+      if (recordingPath != null &&
+          recordingPath.isNotEmpty &&
+          await File(recordingPath).exists()) {
+        setState(() => _recordingPath = recordingPath);
+      }
+    } catch (_) {
+      // If draft is corrupt, ignore and let user continue.
+    }
+  }
+
+  Future<void> _clearDraft() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_draftPrefsKey);
+    } catch (_) {}
+  }
+
+  Future<void> _persistDraft() async {
+    try {
+      final expected = _expectedCtrl.text.trim();
+      final recordingPath = _recordingPath;
+      if (expected.isEmpty && (recordingPath == null || recordingPath.isEmpty)) {
+        await _clearDraft();
+        return;
+      }
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(
+        _draftPrefsKey,
+        jsonEncode({
+          'expectedText': expected,
+          'recordingPath': recordingPath,
+          'updatedAt': DateTime.now().toIso8601String(),
+        }),
+      );
+    } catch (_) {}
   }
 
   void _startTicker() {
@@ -77,6 +137,7 @@ class _ToneRhythmTrainerScreenState extends State<ToneRhythmTrainerScreen> {
         _isRecording = false;
         _recordingPath = path;
       });
+      await _persistDraft();
       _stopwatch.stop();
       _stopTicker();
       return;
@@ -144,20 +205,25 @@ class _ToneRhythmTrainerScreenState extends State<ToneRhythmTrainerScreen> {
         throw Exception('Tone evaluation failed');
       }
       setState(() => _result = (res.data as Map).cast<String, dynamic>());
+      await _clearDraft();
     } catch (e) {
-      // Offline-first fallback: queue the audio upload for later.
-      try {
-        await ToneTrainerQueueService.instance.enqueue(
-          language: widget.language,
-          expectedText: expected,
-          audioPath: path,
-        );
-        setState(() {
-          _queuedNotice = 'Saved offline. We’ll analyze it automatically when you’re back online.';
-        });
-      } catch (_) {
-        setState(() => _error = e.toString());
+      final decision = OfflineFallbackPolicy.decide(e);
+      if (decision.shouldQueue) {
+        try {
+          await ToneTrainerQueueService.instance.enqueue(
+            language: widget.language,
+            expectedText: expected,
+            audioPath: path,
+          );
+          setState(() {
+            _queuedNotice = decision.userMessage;
+          });
+          return;
+        } catch (_) {
+          // Fall through to show the original error below.
+        }
       }
+      setState(() => _error = decision.userMessage ?? e.toString());
     } finally {
       setState(() => _isSubmitting = false);
     }

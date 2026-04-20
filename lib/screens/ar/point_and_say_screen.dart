@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,9 +12,11 @@ import 'package:lingafriq/services/voice/audio_recording_service.dart';
 import 'package:lingafriq/services/voice/voice_api_service.dart';
 import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/utils/offline_fallback_policy.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/tts_play_button.dart';
 import 'package:lingafriq/services/hybrid_polie/translation_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PointAndSayScreen extends ConsumerStatefulWidget {
   final String language;
@@ -47,6 +50,9 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
   Map<String, dynamic>? _toneResult;
   int _pendingQueue = 0;
 
+  String get _draftPrefsKey =>
+      'point_and_say_draft:${widget.language.trim().toLowerCase()}';
+
   @override
   void initState() {
     super.initState();
@@ -54,6 +60,8 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
     _translate = TranslationService();
     _languageCtrl = TextEditingController(text: widget.language.trim().toLowerCase());
     _initQueueCount();
+    _loadDraft();
+    _languageCtrl.addListener(_persistDraft);
   }
 
   Future<void> _initQueueCount() async {
@@ -63,8 +71,81 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
 
   @override
   void dispose() {
+    _languageCtrl.removeListener(_persistDraft);
     _languageCtrl.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadDraft() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getString(_draftPrefsKey);
+      if (raw == null || raw.trim().isEmpty) return;
+      final parsed = jsonDecode(raw);
+      if (parsed is! Map) return;
+
+      final language = (parsed['language'] as String?)?.trim();
+      final targetRaw = (parsed['targetRaw'] as String?)?.trim();
+      final targetTranslated = (parsed['targetTranslated'] as String?)?.trim();
+      final recordingPath = (parsed['recordingPath'] as String?)?.trim();
+      final evaluateTone = parsed['evaluateTone'] is bool
+          ? parsed['evaluateTone'] as bool
+          : null;
+
+      if (language != null && language.isNotEmpty) {
+        _languageCtrl.text = language;
+      }
+      setState(() {
+        _targetText = targetRaw?.isEmpty ?? true ? null : targetRaw;
+        _targetTextTranslated =
+            targetTranslated?.isEmpty ?? true ? null : targetTranslated;
+        _evaluateTone = evaluateTone ?? _evaluateTone;
+      });
+
+      if (recordingPath != null &&
+          recordingPath.isNotEmpty &&
+          await File(recordingPath).exists()) {
+        setState(() => _recordingPath = recordingPath);
+      }
+    } catch (_) {
+      // Ignore corrupt draft.
+    }
+  }
+
+  Future<void> _clearDraft() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_draftPrefsKey);
+    } catch (_) {}
+  }
+
+  Future<void> _persistDraft() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final language = _languageCtrl.text.trim().toLowerCase();
+      final recordingPath = _recordingPath;
+      final targetRaw = _targetText;
+      final targetTranslated = _targetTextTranslated;
+      final hasAnything = language.isNotEmpty ||
+          (recordingPath != null && recordingPath.isNotEmpty) ||
+          (targetRaw != null && targetRaw.trim().isNotEmpty) ||
+          (targetTranslated != null && targetTranslated.trim().isNotEmpty);
+      if (!hasAnything) {
+        await prefs.remove(_draftPrefsKey);
+        return;
+      }
+      await prefs.setString(
+        _draftPrefsKey,
+        jsonEncode({
+          'language': language,
+          'targetRaw': targetRaw,
+          'targetTranslated': targetTranslated,
+          'recordingPath': recordingPath,
+          'evaluateTone': _evaluateTone,
+          'updatedAt': DateTime.now().toIso8601String(),
+        }),
+      );
+    } catch (_) {}
   }
 
   Future<void> _capture() async {
@@ -81,6 +162,7 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
       _pronunciationQuick = null;
       _toneResult = null;
     });
+    await _persistDraft();
 
     try {
       final svc = ref.read(mediaImportServiceProvider);
@@ -161,6 +243,7 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
       _toneResult = null;
       _recordingPath = null;
     });
+    await _persistDraft();
     await _refreshPracticePhrases();
   }
 
@@ -176,6 +259,7 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
       _toneResult = null;
       _recordingPath = null;
     });
+    await _persistDraft();
 
     // Translate label from English -> target language (best effort).
     try {
@@ -271,6 +355,7 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
         _isRecording = false;
         _recordingPath = path;
       });
+      await _persistDraft();
       return;
     }
 
@@ -294,6 +379,7 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
       _recordingPath = null;
       _isRecording = true;
     });
+    await _persistDraft();
   }
 
   Future<void> _quickCheck() async {
@@ -344,32 +430,37 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
           setState(() => _toneResult = (toneRes.data as Map).cast<String, dynamic>());
         }
       }
+      await _clearDraft();
     } catch (e) {
-      // Offline-first: queue for later upload/sync.
-      try {
-        await PointAndSayQueueService.instance.enqueue(
-          language: language,
-          expectedText: target,
-          audioPath: path,
-          evaluateTone: _evaluateTone,
-          context: {
-            'targetRaw': _targetText,
-            'targetTranslated': _targetTextTranslated,
-            'hasOcr': _ocrText != null,
-            'hasImage': _imageFile != null,
-          },
-        );
-        await PointAndSayQueueService.instance.ensureOpen();
-        setState(() {
-          _pendingQueue = PointAndSayQueueService.instance.pendingCount;
-          _error = 'Queued for sync (offline).';
-        });
-        OfflineService().queueSync(() async {
-          await PointAndSayQueueService.instance.flushPending(voiceApi: _voice);
-        });
-      } catch (_) {
-        setState(() => _error = e.toString());
+      final decision = OfflineFallbackPolicy.decide(e);
+      if (decision.shouldQueue) {
+        try {
+          await PointAndSayQueueService.instance.enqueue(
+            language: language,
+            expectedText: target,
+            audioPath: path,
+            evaluateTone: _evaluateTone,
+            context: {
+              'targetRaw': _targetText,
+              'targetTranslated': _targetTextTranslated,
+              'hasOcr': _ocrText != null,
+              'hasImage': _imageFile != null,
+            },
+          );
+          await PointAndSayQueueService.instance.ensureOpen();
+          setState(() {
+            _pendingQueue = PointAndSayQueueService.instance.pendingCount;
+            _error = decision.userMessage;
+          });
+          OfflineService().queueSync(() async {
+            await PointAndSayQueueService.instance.flushPending(voiceApi: _voice);
+          });
+          return;
+        } catch (_) {
+          // Fall through to show the original error below.
+        }
       }
+      setState(() => _error = decision.userMessage ?? e.toString());
     } finally {
       setState(() => _busy = false);
     }
