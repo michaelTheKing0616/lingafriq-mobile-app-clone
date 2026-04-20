@@ -272,7 +272,32 @@ Text: "$trimmed"
             ),
             includePhraseBreakdown: false,
           );
-          final primary = tr.translation.trim();
+          var primary = tr.translation.trim();
+          // If Hybrid Polie fallback is used, it may not apply tone (Google/NLLB/MyMemory).
+          // Apply a short tone-rewrite pass so the tone chips have real effect.
+          if (primary.isNotEmpty && translationTone.value != 'formal') {
+            final rewrite = await askForJson('''
+Return STRICT JSON only.
+{"rewritten":"string"}
+
+You are rewriting a translation to match a requested tone WITHOUT changing meaning.
+Target language: ${translationTargetLang.value}
+Requested tone: ${translationTone.value}
+Rules:
+- Preserve the original meaning exactly.
+- Keep it in ${translationTargetLang.value}. Do not switch languages.
+- Keep it natural and idiomatic for native speakers.
+- For "literal", keep it as close to word-for-word as possible while still grammatical.
+- For "poetic", allow tasteful figurative language but do not add new facts.
+
+Original translation:
+"$primary"
+''');
+            final rewritten = (rewrite?['rewritten'] ?? '').toString().trim();
+            if (rewritten.isNotEmpty) {
+              primary = rewritten;
+            }
+          }
           if (primary.isNotEmpty) {
             json = <String, dynamic>{
               'primary': primary,
