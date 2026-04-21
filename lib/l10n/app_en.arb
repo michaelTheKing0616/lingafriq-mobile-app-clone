@@ -397,5 +397,18 @@
   "polieTutorNoSavedCardsYet": "No saved cards yet.",
   "@polieTutorNoSavedCardsYet": {
     "description": "Empty state message when user has no saved tutor cards."
+  },
+
+  "gameWordMatchConnectMeaningTitle": "Connect the Meaning",
+  "@gameWordMatchConnectMeaningTitle": {
+    "description": "Title in Word Match Audio game screen."
+  },
+  "gameWordMatchConnectMeaningSubtitle": "Tap a word to hear its voice, then match it to its anchor.",
+  "@gameWordMatchConnectMeaningSubtitle": {
+    "description": "Subtitle/instructions in Word Match Audio game screen."
+  },
+  "gameWordMatchEnglishLabel": "English",
+  "@gameWordMatchEnglishLabel": {
+    "description": "Right-column header label for meanings in Word Match Audio game."
   }
 }

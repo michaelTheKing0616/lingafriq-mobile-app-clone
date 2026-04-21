@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
@@ -129,6 +130,7 @@ class _WordMatchAudioGameState extends BaseGameScreenState<WordMatchAudioGame> {
 
   @override
   Widget buildGameContent(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     if (_leftTiles.isEmpty) {
       return Center(
         child: Text('No pairs available',
@@ -136,113 +138,236 @@ class _WordMatchAudioGameState extends BaseGameScreenState<WordMatchAudioGame> {
       );
     }
 
-    final progress = _leftTiles.isEmpty ? 0.0 : _matchedIds.length / _leftTiles.length;
+    final progress =
+        _leftTiles.isEmpty ? 0.0 : _matchedIds.length / _leftTiles.length;
     final canCheck = _selectedLeft != null && _selectedRight != null;
+    final isWide = MediaQuery.sizeOf(context).width >= 900;
 
     return SafeArea(
       child: Stack(
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.sm),
+            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
             child: Column(
               children: [
                 SizedBox(height: PanAfricanSpacing.sm),
-                GriotProgressBar(value: progress, height: 6, showGlowTip: true),
-                SizedBox(height: PanAfricanSpacing.sm),
-                // Column headers
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 5,
-                      child: Text('Foreign Word',
-                          style: ModernGriotTypography.labelLarge(context: context),
-                          textAlign: TextAlign.center),
+                // Progress (top bar style)
+                Container(
+                  height: 10,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: ModernGriotColors.surfaceContainerHighest,
+                    borderRadius: ModernGriotRadius.borderPill,
+                  ),
+                  alignment: Alignment.centerLeft,
+                  child: FractionallySizedBox(
+                    widthFactor: progress.clamp(0, 1),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: ModernGriotGradients.signatureGradient,
+                        borderRadius: ModernGriotRadius.borderPill,
+                        boxShadow: [
+                          BoxShadow(
+                            color: ModernGriotColors.secondary.withOpacity(0.22),
+                            blurRadius: 14,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
                     ),
-                    SizedBox(width: PanAfricanSpacing.xs),
-                    Expanded(
-                      flex: 5,
-                      child: Text('English Meaning',
-                          style: ModernGriotTypography.labelLarge(context: context),
-                          textAlign: TextAlign.center),
+                  ),
+                ),
+                SizedBox(height: PanAfricanSpacing.lg),
+                Column(
+                  children: [
+                    Text(
+                      l10n.gameWordMatchConnectMeaningTitle,
+                      textAlign: TextAlign.center,
+                      style: ModernGriotTypography.headlineSmall(
+                        context: context,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                    ),
+                    SizedBox(height: PanAfricanSpacing.xxs),
+                    Text(
+                      l10n.gameWordMatchConnectMeaningSubtitle,
+                      textAlign: TextAlign.center,
+                      style: ModernGriotTypography.bodyMedium(
+                        context: context,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
                     ),
                   ],
                 ),
-                SizedBox(height: PanAfricanSpacing.xs),
+                SizedBox(height: PanAfricanSpacing.lg),
                 // Two-column tile layout
                 Expanded(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        flex: 5,
-                        child: ListView.separated(
-                          itemCount: _leftTiles.length,
-                          separatorBuilder: (_, __) => SizedBox(height: PanAfricanSpacing.xs),
-                          itemBuilder: (_, i) {
-                            final tile = _leftTiles[i];
-                            return _WordTile(
-                              label: tile.label,
-                              state: _tileState(tile.id, true),
-                              showSpeaker: true,
-                              onTap: () => _selectTile('left', tile.id),
-                            );
-                          },
-                        ),
-                      ),
-                      SizedBox(width: PanAfricanSpacing.xs),
-                      Expanded(
-                        flex: 5,
-                        child: ListView.separated(
-                          itemCount: _rightTiles.length,
-                          separatorBuilder: (_, __) => SizedBox(height: PanAfricanSpacing.xs),
-                          itemBuilder: (_, i) {
-                            final tile = _rightTiles[i];
-                            return _WordTile(
-                              label: tile.label,
-                              state: _tileState(tile.id, false),
-                              onTap: () => _selectTile('right', tile.id),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      final gap = isWide ? 32.0 : 12.0;
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      widget.language,
+                                      style: ModernGriotTypography.labelSmall(
+                                        context: context,
+                                        color: ModernGriotColors.primary
+                                            .withOpacity(0.7),
+                                      ).copyWith(
+                                        letterSpacing: 1.5,
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                      child: Container(
+                                        height: 1,
+                                        color: ModernGriotColors.outlineVariant
+                                            .withOpacity(0.35),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: PanAfricanSpacing.sm),
+                                Expanded(
+                                  child: ListView.separated(
+                                    itemCount: _leftTiles.length,
+                                    separatorBuilder: (_, __) =>
+                                        SizedBox(height: PanAfricanSpacing.sm),
+                                    itemBuilder: (_, i) {
+                                      final tile = _leftTiles[i];
+                                      return _WordTile(
+                                        label: tile.label,
+                                        state: _tileState(tile.id, true),
+                                        showSpeaker: true,
+                                        useIndigoStyle: true,
+                                        onTap: () => _selectTile('left', tile.id),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(width: gap),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        height: 1,
+                                        color: ModernGriotColors.outlineVariant
+                                            .withOpacity(0.35),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Text(
+                                      l10n.gameWordMatchEnglishLabel,
+                                      style: ModernGriotTypography.labelSmall(
+                                        context: context,
+                                        color: ModernGriotColors.secondary
+                                            .withOpacity(0.7),
+                                      ).copyWith(
+                                        letterSpacing: 1.5,
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: PanAfricanSpacing.sm),
+                                Expanded(
+                                  child: ListView.separated(
+                                    itemCount: _rightTiles.length,
+                                    separatorBuilder: (_, __) =>
+                                        SizedBox(height: PanAfricanSpacing.sm),
+                                    itemBuilder: (_, i) {
+                                      final tile = _rightTiles[i];
+                                      return _WordTile(
+                                        label: tile.label,
+                                        state: _tileState(tile.id, false),
+                                        useBubbleStyle: true,
+                                        onTap: () => _selectTile('right', tile.id),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ),
-                SizedBox(height: PanAfricanSpacing.sm),
-                // CHECK PAIRS CTA
-                GriotGradientButton(
-                  label: 'CHECK PAIRS',
-                  icon: Icons.check_circle_rounded,
-                  onPressed: canCheck ? _checkPairs : null,
-                ),
-                SizedBox(height: PanAfricanSpacing.sm),
-                // Daily goal footer
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: PanAfricanSpacing.md,
-                    vertical: PanAfricanSpacing.xs,
-                  ),
-                  decoration: BoxDecoration(
-                    color: ModernGriotColors.surfaceContainerHigh,
-                    borderRadius: ModernGriotRadius.borderLg,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.flag_rounded,
-                          size: 16.sp, color: ModernGriotColors.secondary),
-                      SizedBox(width: 6.w),
-                      Text(
-                        'Daily Goal: ${_matchedIds.length}/${_leftTiles.length} pairs matched',
-                        style: ModernGriotTypography.labelMedium(
-                            context: context, color: ModernGriotColors.secondary),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: PanAfricanSpacing.sm),
+                SizedBox(height: 92),
               ],
+            ),
+          ),
+          // Bottom action bar
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: SafeArea(
+              top: false,
+              child: Container(
+                padding: EdgeInsets.fromLTRB(
+                  PanAfricanSpacing.md,
+                  PanAfricanSpacing.sm,
+                  PanAfricanSpacing.md,
+                  PanAfricanSpacing.md,
+                ),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface.withOpacity(0.92),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.08),
+                      blurRadius: 24,
+                      offset: const Offset(0, -8),
+                    ),
+                  ],
+                ),
+                child: FilledButton(
+                  onPressed: canCheck ? _checkPairs : null,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: ModernGriotColors.outlineVariant,
+                    foregroundColor: Theme.of(context).colorScheme.onSurfaceVariant,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: ModernGriotRadius.borderLg,
+                    ),
+                  ).copyWith(
+                    backgroundColor: WidgetStateProperty.resolveWith(
+                      (states) => states.contains(WidgetState.disabled)
+                          ? ModernGriotColors.outlineVariant.withOpacity(0.6)
+                          : ModernGriotColors.outlineVariant,
+                    ),
+                    foregroundColor: WidgetStateProperty.resolveWith(
+                      (states) => Theme.of(context)
+                          .colorScheme
+                          .onSurfaceVariant
+                          .withOpacity(states.contains(WidgetState.disabled) ? 0.6 : 1),
+                    ),
+                  ),
+                  child: Text(
+                    'CHECK PAIRS',
+                    style: ModernGriotTypography.titleSmall(context: context).copyWith(
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 0.6,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
           // Streak badge
@@ -289,12 +414,16 @@ class _WordTile extends StatelessWidget {
   final String label;
   final _TileState state;
   final bool showSpeaker;
+  final bool useIndigoStyle;
+  final bool useBubbleStyle;
   final VoidCallback onTap;
 
   const _WordTile({
     required this.label,
     required this.state,
     this.showSpeaker = false,
+    this.useIndigoStyle = false,
+    this.useBubbleStyle = false,
     required this.onTap,
   });
 
@@ -312,7 +441,9 @@ class _WordTile extends StatelessWidget {
       borderColor = ModernGriotColors.secondary;
       borderWidth = 1.5;
     } else if (isSelected) {
-      bg = ModernGriotColors.primaryContainer.withOpacity(0.25);
+      bg = useBubbleStyle
+          ? ModernGriotColors.primary
+          : ModernGriotColors.primaryContainer.withOpacity(0.25);
       borderColor = ModernGriotColors.primary;
       borderWidth = 2.0;
     } else if (isError) {
@@ -320,7 +451,11 @@ class _WordTile extends StatelessWidget {
       borderColor = ModernGriotColors.error;
       borderWidth = 2.0;
     } else {
-      bg = ModernGriotColors.surfaceContainerLowest;
+      bg = useIndigoStyle
+          ? ModernGriotColors.primaryFixed.withOpacity(0.55)
+          : (useBubbleStyle
+              ? ModernGriotColors.surfaceContainerLow
+              : ModernGriotColors.surfaceContainerLowest);
       borderColor = ModernGriotColors.outlineVariant.withOpacity(0.3);
       borderWidth = 1.0;
     }
@@ -335,22 +470,51 @@ class _WordTile extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: bg,
-          borderRadius: ModernGriotRadius.borderLg,
+          borderRadius: useBubbleStyle
+              ? BorderRadius.circular(32)
+              : ModernGriotRadius.borderLg,
           border: Border.all(color: borderColor, width: borderWidth),
-          boxShadow: isSelected ? ModernGriotShadows.sm : null,
+          boxShadow: isSelected ? ModernGriotShadows.sm : ModernGriotShadows.xs,
         ),
         child: Opacity(
           opacity: isMatched ? 0.6 : 1.0,
           child: Row(
             children: [
               if (showSpeaker) ...[
-                Icon(Icons.volume_up_rounded,
-                    size: 18.sp, color: ModernGriotColors.primary),
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: useIndigoStyle
+                        ? ModernGriotColors.primary
+                        : ModernGriotColors.surfaceContainerHigh,
+                    borderRadius: ModernGriotRadius.borderPill,
+                  ),
+                  child: Icon(
+                    Icons.volume_up_rounded,
+                    size: 18.sp,
+                    color: useIndigoStyle
+                        ? ModernGriotColors.onPrimary
+                        : ModernGriotColors.primary,
+                  ),
+                ),
                 SizedBox(width: 6.w),
               ],
               Expanded(
-                child: Text(label,
-                    style: ModernGriotTypography.bodyMedium(context: context)),
+                child: Text(
+                  label,
+                  textAlign: useBubbleStyle ? TextAlign.center : TextAlign.start,
+                  style: ModernGriotTypography.bodyMedium(context: context).copyWith(
+                    color: isSelected && useBubbleStyle
+                        ? ModernGriotColors.onPrimary
+                        : isError
+                            ? ModernGriotColors.error
+                            : (useIndigoStyle
+                                ? ModernGriotColors.onPrimaryFixed
+                                : ModernGriotColors.onSurface),
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
               ),
               if (isMatched)
                 Icon(Icons.check_circle_rounded,

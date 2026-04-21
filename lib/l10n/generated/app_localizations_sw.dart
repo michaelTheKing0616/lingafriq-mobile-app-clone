@@ -246,4 +246,14 @@ class AppLocalizationsSw extends AppLocalizations {
 
   @override
   String get polieTutorNoSavedCardsYet => 'No saved cards yet.';
+
+  @override
+  String get gameWordMatchConnectMeaningTitle => 'Connect the Meaning';
+
+  @override
+  String get gameWordMatchConnectMeaningSubtitle =>
+      'Tap a word to hear its voice, then match it to its anchor.';
+
+  @override
+  String get gameWordMatchEnglishLabel => 'English';
 }

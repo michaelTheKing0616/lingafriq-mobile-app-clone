@@ -589,6 +589,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No saved cards yet.'**
   String get polieTutorNoSavedCardsYet;
+
+  /// Title in Word Match Audio game screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect the Meaning'**
+  String get gameWordMatchConnectMeaningTitle;
+
+  /// Subtitle/instructions in Word Match Audio game screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a word to hear its voice, then match it to its anchor.'**
+  String get gameWordMatchConnectMeaningSubtitle;
+
+  /// Right-column header label for meanings in Word Match Audio game.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get gameWordMatchEnglishLabel;
 }
 
 class _AppLocalizationsDelegate
