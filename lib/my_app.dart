@@ -292,8 +292,9 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'flashcard-focus': (_) => const FlashcardFocusScreen(),
     'matching-pairs': (_) => const MatchingPairsScreen(),
     'tonal-lesson': (_) => const TonalLessonScreen(),
-    'tribe-hub': (_) => const TribeHubScreen(),
-    'tribe-discovery': (_) => const TribeDiscoveryScreen(),
+    // Use production tribe APIs (avoid dummy tribe screens).
+    'tribe-hub': (_) => const TribeSelectionScreen(),
+    'tribe-discovery': (_) => const TribeSelectionScreen(),
     'my-tribe': (_) => const MyTribeScreen(),
     'tribal-duel': (_) => const TribalDuelScreen(),
     'inter-tribe-leaderboard': (_) => const InterTribeLeaderboardScreen(),
