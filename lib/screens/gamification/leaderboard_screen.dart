@@ -134,7 +134,19 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
       ),
       body: RefreshIndicator(
         color: PanAfricanColors.primary,
-        onRefresh: () => leaderboard.refresh(),
+        onRefresh: () {
+          final tribe = _currentType == LeaderboardType.tribe
+              ? gamification.tribe
+              : null;
+          final country = _currentType == LeaderboardType.country
+              ? user?.nationality
+              : null;
+          return leaderboard.refresh(
+            type: _currentType,
+            tribe: tribe,
+            country: country,
+          );
+        },
         child: TabBarView(
           controller: _tabController,
           children: [
@@ -165,6 +177,18 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
     );
   }
 
+  Future<void> _refetchForType(LeaderboardType type) {
+    final gamification = ref.read(gamificationProvider.notifier).gamification;
+    final user = ref.read(userProvider);
+    final tribe = type == LeaderboardType.tribe ? gamification.tribe : null;
+    final country = type == LeaderboardType.country ? user?.nationality : null;
+    return ref.read(leaderboardProvider.notifier).refresh(
+          type: type,
+          tribe: tribe,
+          country: country,
+        );
+  }
+
   Widget _buildLeaderboardList(
     LeaderboardType type,
     List<LeaderboardEntry> entries,
@@ -185,7 +209,7 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
         message: error,
         onRetry: () {
           HapticFeedback.lightImpact();
-          ref.read(leaderboardProvider.notifier).fetchLeaderboards(type: type);
+          _refetchForType(type);
         },
         icon: Icons.error_outline_rounded,
       );
