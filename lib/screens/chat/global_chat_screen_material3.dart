@@ -58,7 +58,11 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
       try {
         final prefs = await SharedPreferences.getInstance();
         final savedChannel = prefs.getString('${cachePrefix}last_channel');
-        if (savedChannel != null && channels.value.contains(savedChannel)) {
+        // Only restore the saved channel on first mount; do NOT override the
+        // user's in-session selection (otherwise the UI "snaps back" to #general).
+        if (savedChannel != null &&
+            channels.value.contains(savedChannel) &&
+            selectedChannel.value == 'general') {
           selectedChannel.value = savedChannel;
         }
         final raw = prefs.getString('$cachePrefix${selectedChannel.value}');
@@ -297,6 +301,26 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
     // Connect socket and join the channel room on mount / channel change
     useEffect(() {
       loadCachedMessages();
+      return null;
+    }, const []);
+
+    // Persist channel selection immediately (not only after message loads),
+    // so app restarts return users to the last channel they actually selected.
+    useEffect(() {
+      () async {
+        try {
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString(
+            '${cachePrefix}last_channel',
+            selectedChannel.value,
+          );
+        } catch (_) {}
+      }();
+      return null;
+    }, [selectedChannel.value]);
+
+    // Connect socket and join the channel room on mount / channel change
+    useEffect(() {
       final user = ref.read(userProvider);
       if (user != null) {
         socketNotifier.connect(
@@ -548,6 +572,8 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                               final senderId = message['sender_id'] is Map
                                   ? (message['sender_id'] as Map)['id']
                                   : message['sender_id'];
+                              final senderGlobalId =
+                                  (message['global_id'] ?? '').toString();
                               final isFromCurrentUser = currentUser != null &&
                                   senderId != null &&
                                   senderId.toString() == currentUser.id.toString();
@@ -565,10 +591,24 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                                   isDark: isDark,
                                   isFromCurrentUser: isFromCurrentUser,
                                   onOpenSenderProfile: isFromCurrentUser
-                                      ? null
                                       : () {
+                                          // Polie is a system/bot account in chat; keep taps stable.
+                                          if (senderGlobalId.toLowerCase() == 'polie_bot') {
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                  'Profile unavailable for this message.',
+                                                ),
+                                              ),
+                                            );
+                                            return;
+                                          }
+
                                           final uid = _numericSenderIdFromMessage(message);
-                                          if (uid == null) {
+                                          // If it's the current user's message, open their own profile.
+                                          final viewId = uid?.toString() ??
+                                              currentUser?.id.toString();
+                                          if (viewId == null || viewId.isEmpty) {
                                             ScaffoldMessenger.of(context).showSnackBar(
                                               const SnackBar(
                                                 content: Text(
@@ -582,7 +622,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                                             MaterialPageRoute<void>(
                                               builder: (_) => XProfileScreen(
                                                 appBarTitle: 'Profile',
-                                                viewUserId: uid.toString(),
+                                                viewUserId: viewId,
                                               ),
                                             ),
                                           );
