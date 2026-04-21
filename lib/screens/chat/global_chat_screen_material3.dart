@@ -591,6 +591,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                                   isDark: isDark,
                                   isFromCurrentUser: isFromCurrentUser,
                                   onOpenSenderProfile: isFromCurrentUser
+                                      ? null
                                       : () {
                                           // Polie is a system/bot account in chat; keep taps stable.
                                           if (senderGlobalId.toLowerCase() == 'polie_bot') {

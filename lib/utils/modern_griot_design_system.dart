@@ -49,6 +49,10 @@ class ModernGriotColors {
   /// Text/icons on primaryContainer.
   static const Color onPrimaryContainer = Color(0xFF3A1500);
 
+  /// M3-style aliases for surfaces that pair with [primary] / [onPrimary].
+  static const Color primaryFixed = primaryContainer;
+  static const Color onPrimaryFixed = onPrimaryContainer;
+
   // ── Secondary ────────────────────────────────────────────────────────────
   /// Deep forest green — knowledge, growth.
   static const Color secondary = Color(0xFF526124);
@@ -545,6 +549,11 @@ class ModernGriotShadows {
   ModernGriotShadows._();
 
   static final Color _ambient = ModernGriotColors.onSurface.withAlpha(20);
+
+  /// Subtle elevation — lighter than [sm].
+  static List<BoxShadow> get xs => [
+        BoxShadow(color: _ambient, blurRadius: 4, offset: const Offset(0, 1)),
+      ];
 
   static List<BoxShadow> get sm => [
         BoxShadow(color: _ambient, blurRadius: 8, offset: const Offset(0, 2)),

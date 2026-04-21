@@ -1323,6 +1323,9 @@ Language: $targetLanguage
                 tutorInput: tutorInput,
                 onLoadTutorLesson: loadTutorLesson,
                 onCheckTutorAnswer: checkTutorAnswer,
+                onSaveTutorCard: saveCurrentTutorCard,
+                onOpenTutorSavedCards: openTutorSavedCards,
+                tutorIsCurrentSaved: tutorIsCurrentSaved,
                 // roleplay
                 roleplayDifficulty: roleplayDifficulty,
                 roleplayScene: roleplayScene,
@@ -1332,6 +1335,8 @@ Language: $targetLanguage
                 // conversation
                 conversationMessages: conversationMessages.value,
                 conversationInput: conversationInput,
+                conversationIncludeEnglishTranslations:
+                    conversationIncludeEnglishTranslations,
                 languageRatio: languageRatio.value,
                 onSendConversation: sendConversation,
                 onSpeakText: speakText,
@@ -1395,6 +1400,9 @@ Language: $targetLanguage
     required TextEditingController tutorInput,
     required Future<void> Function() onLoadTutorLesson,
     required Future<void> Function() onCheckTutorAnswer,
+    required Future<void> Function() onSaveTutorCard,
+    required Future<void> Function() onOpenTutorSavedCards,
+    required ValueNotifier<bool> tutorIsCurrentSaved,
     required ValueNotifier<String> roleplayDifficulty,
     required ValueNotifier<String> roleplayScene,
     required List<_RoleplayTurn> roleplayMessages,
@@ -1402,6 +1410,7 @@ Language: $targetLanguage
     required Future<void> Function() onSendRoleplay,
     required List<_ConversationTurn> conversationMessages,
     required TextEditingController conversationInput,
+    required ValueNotifier<bool> conversationIncludeEnglishTranslations,
     required double languageRatio,
     required Future<void> Function([String?]) onSendConversation,
     required Future<void> Function(String text, {String? languageName})
@@ -2188,7 +2197,9 @@ Language: $targetLanguage
                                   const SizedBox(width: 8),
                                   IconButton(
                                     tooltip: AppLocalizations.of(context)!.polieTutorSavedCards,
-                                    onPressed: isBusy ? null : openTutorSavedCards,
+                                    onPressed: isBusy
+                                        ? null
+                                        : () => onOpenTutorSavedCards(),
                                     style: IconButton.styleFrom(
                                       backgroundColor: Colors.white,
                                     ),
@@ -2199,7 +2210,7 @@ Language: $targetLanguage
                                     tooltip: AppLocalizations.of(context)!.polieTutorSaveCard,
                                     onPressed: (isBusy || tutorLesson == null)
                                         ? null
-                                        : saveCurrentTutorCard,
+                                        : () => onSaveTutorCard(),
                                     style: IconButton.styleFrom(
                                       backgroundColor: Colors.white,
                                     ),
@@ -2236,7 +2247,9 @@ Language: $targetLanguage
                               const SizedBox(width: 8),
                               IconButton(
                                 tooltip: AppLocalizations.of(context)!.polieTutorSavedCards,
-                                onPressed: isBusy ? null : openTutorSavedCards,
+                                onPressed: isBusy
+                                    ? null
+                                    : () => onOpenTutorSavedCards(),
                                 style: IconButton.styleFrom(backgroundColor: Colors.white),
                                 icon: const Icon(Icons.bookmark_rounded),
                               ),
@@ -2245,7 +2258,7 @@ Language: $targetLanguage
                                 tooltip: AppLocalizations.of(context)!.polieTutorSaveCard,
                                 onPressed: (isBusy || tutorLesson == null)
                                     ? null
-                                    : saveCurrentTutorCard,
+                                    : () => onSaveTutorCard(),
                                 style: IconButton.styleFrom(backgroundColor: Colors.white),
                                 icon: Icon(
                                   tutorIsCurrentSaved.value

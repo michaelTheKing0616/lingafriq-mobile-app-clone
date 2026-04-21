@@ -884,6 +884,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
   void _sanitizeWordMatchCards(List<PhraseCard> cards, String language) {
     if (cards.isEmpty) return;
+    final original = List<PhraseCard>.from(cards);
     final deduped = <PhraseCard>[];
     final seenTargets = <String>{};
     final seenGlosses = <String>{};
