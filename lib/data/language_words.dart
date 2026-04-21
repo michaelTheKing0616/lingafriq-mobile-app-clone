@@ -45,6 +45,11 @@ class LanguageWords {
     return _hubSlugOrAliasToListKey[folded] ?? t;
   }
 
+  /// Public wrapper used by gameplay code (e.g. games fallback decks) to stay aligned
+  /// with the hub slug / alias normalization above.
+  static String resolveWordListDisplayKey(String raw) =>
+      _resolveLanguageNameForLookup(raw);
+
   static Map<String, List<Map<String, String>>> getWordsByLanguage() {
     return {
       'Hausa': [

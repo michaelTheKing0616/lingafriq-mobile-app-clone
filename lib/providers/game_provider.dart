@@ -32,6 +32,8 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   static final Map<String, List<PhraseCard>> _cardCache = {};
   static Map<String, List<Map<String, dynamic>>>? _assetWordRepoByLanguage;
   static Map<String, Map<String, String>>? _assetEnglishToTargetByLanguage;
+  /// Extra lookup table so UI labels like "Fula" can resolve to repo keys like "fula (fulfulde)".
+  static final Map<String, String> _assetWordRepoAliasToCanonicalKey = {};
 
   GameSession? _currentSession;
   Completer<GameSession>? _startGameLock;
@@ -61,8 +63,11 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     String? level,
     int? cardCount,
   }) async {
+    // Prevent a race where callers await the session Future but read `availableCards`
+    // before `_availableCards` has been populated (duplicate start attempts during init).
     if (_startGameLock != null) {
-      return _startGameLock!.future;
+      final existing = await _startGameLock!.future;
+      if (_availableCards.isNotEmpty) return existing;
     }
     final completer = Completer<GameSession>();
     _startGameLock = completer;
@@ -287,16 +292,20 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     String? sessionId,
     String? gameId,
   }) async {
+    // Some game screens may accidentally request 0 cards; enforce a safe minimum
+    // so we never end up with an empty deck solely due to a bad parameter.
+    final effectiveCount = max(count, 10);
     final cacheKey = '${gameId ?? 'default'}_${language}_${level ?? 'A0'}';
     final isWordMatchGame = (gameId ?? '').toLowerCase().contains(
       'wordmatch_audio',
     );
-    final minRequired = count < 4 ? count : 4;
+    // Always require at least a small playable deck.
+    final minRequired = min(4, effectiveCount);
     if (_cardCache.containsKey(cacheKey)) {
       final cached = List<PhraseCard>.from(_cardCache[cacheKey]!);
       if (cached.length >= minRequired) {
         cached.shuffle(Random());
-        return cached.take(count).toList();
+        return cached.take(effectiveCount).toList();
       }
       _cardCache.remove(cacheKey);
     }
@@ -313,7 +322,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         'game_id': gameId ?? _currentSession?.gameType ?? 'phrase_cards',
         'language': language,
         'difficulty': level ?? 'A1',
-        'count': count,
+        'count': effectiveCount,
       };
       if (resolvedUserId != null && resolvedUserId.trim().isNotEmpty) {
         requestData['user_id'] = resolvedUserId;
@@ -364,8 +373,8 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
           if (isWordMatchGame) {
             _sanitizeWordMatchCards(cards, language);
           }
-          if (cards.length > count) {
-            cards.removeRange(count, cards.length);
+        if (cards.length > effectiveCount) {
+          cards.removeRange(effectiveCount, cards.length);
           }
 
           try {
@@ -411,7 +420,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     try {
       final queryParams = <String, dynamic>{
         'language': language,
-        'count': count,
+        'count': effectiveCount,
       };
       if (level != null) queryParams['level'] = level;
 
@@ -473,8 +482,8 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
           if (isWordMatchGame) {
             _sanitizeWordMatchCards(cards, language);
           }
-          if (cards.length > count) {
-            cards.removeRange(count, cards.length);
+        if (cards.length > effectiveCount) {
+          cards.removeRange(effectiveCount, cards.length);
           }
           try {
             for (var i = 0; i < cards.length; i++) {
@@ -524,7 +533,8 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
 
     // Fallback to curated local data and top-up card count when APIs under-deliver.
-    var neededForTarget = max(count - cards.length, minRequired - cards.length);
+    var neededForTarget =
+        max(effectiveCount - cards.length, minRequired - cards.length);
     if (neededForTarget > 0) {
       final assetRepoCards = _buildCardsFromAssetWordRepo(
         language,
@@ -533,7 +543,8 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         resolvedUserId,
       );
       cards.addAll(assetRepoCards);
-      neededForTarget = max(count - cards.length, minRequired - cards.length);
+      neededForTarget =
+          max(effectiveCount - cards.length, minRequired - cards.length);
     }
     if (neededForTarget > 0) {
       final fallbackCards = _generateFallbackCards(
@@ -549,7 +560,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     if (isWordMatchGame) {
       _sanitizeWordMatchCards(cards, language);
       final neededForWordMatch = max(
-        count - cards.length,
+        effectiveCount - cards.length,
         minRequired - cards.length,
       );
       if (neededForWordMatch > 0) {
@@ -565,8 +576,8 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         _sanitizeWordMatchCards(cards, language);
       }
     }
-    if (cards.length > count) {
-      cards.removeRange(count, cards.length);
+    if (cards.length > effectiveCount) {
+      cards.removeRange(effectiveCount, cards.length);
     }
     if (cards.isEmpty) {
       _lastContentFailure = GameContentFailure(
@@ -750,6 +761,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
       final repo = <String, List<Map<String, dynamic>>>{};
       final lexicon = <String, Map<String, String>>{};
+      _assetWordRepoAliasToCanonicalKey.clear();
 
       languages.forEach((key, value) {
         if (value is! List) return;
@@ -769,6 +781,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         if (entries.isNotEmpty) {
           repo[normalizedKey] = entries;
           lexicon[normalizedKey] = map;
+          _registerAssetRepoAliases(normalizedKey, key);
         }
       });
 
@@ -789,9 +802,9 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     int count,
     String? userId,
   ) {
-    final normalizedLang = _normalizeLanguageKey(language);
+    final canonicalLang = _assetRepoCanonicalKeyForUiLanguage(language);
     final entries =
-        _assetWordRepoByLanguage?[normalizedLang] ??
+        _assetWordRepoByLanguage?[canonicalLang] ??
         const <Map<String, dynamic>>[];
     if (entries.isEmpty || count <= 0) return const <PhraseCard>[];
 
@@ -803,7 +816,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       final text = (item['text'] ?? '').toString().trim();
       final gloss = (item['gloss'] ?? '').toString().trim();
       if (text.isEmpty || gloss.isEmpty) continue;
-      final cardId = 'asset_${normalizedLang}_${i}_${text.hashCode.abs()}';
+      final cardId = 'asset_${canonicalLang}_${i}_${text.hashCode.abs()}';
       final tagList = <String>[
         ...(item['game_tags'] is List
             ? (item['game_tags'] as List).map((e) => e.toString())
@@ -907,9 +920,43 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       deduped.add(card.copyWith(gloss: gloss));
     }
 
+    var next = deduped;
+    const minPairs = 4;
+    if (original.length >= minPairs && next.length < minPairs) {
+      final relaxed = <PhraseCard>[];
+      final seenTargets2 = <String>{};
+      final seenGlosses2 = <String>{};
+      for (final card in original) {
+        final text = card.text.trim();
+        if (text.isEmpty) continue;
+        var gloss = card.gloss.trim();
+        if (gloss.isEmpty) {
+          final recovered = _lookupEnglishGlossForTarget(
+            language: language,
+            target: text,
+            ascii: card.ascii,
+          );
+          if (recovered != null && recovered.isNotEmpty) {
+            gloss = recovered;
+          }
+        }
+        if (gloss.isEmpty) continue;
+
+        final targetKey = text.toLowerCase();
+        final glossKey = gloss.toLowerCase();
+        if (seenTargets2.contains(targetKey) || seenGlosses2.contains(glossKey)) {
+          continue;
+        }
+        seenTargets2.add(targetKey);
+        seenGlosses2.add(glossKey);
+        relaxed.add(card.copyWith(gloss: gloss));
+      }
+      next = relaxed;
+    }
+
     cards
       ..clear()
-      ..addAll(deduped);
+      ..addAll(next);
   }
 
   String? _lookupEnglishGlossForTarget({
@@ -917,8 +964,8 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     required String target,
     String? ascii,
   }) {
-    final normalizedLang = _normalizeLanguageKey(language);
-    final lexicon = _assetEnglishToTargetByLanguage?[normalizedLang];
+    final canonicalLang = _assetRepoCanonicalKeyForUiLanguage(language);
+    final lexicon = _assetEnglishToTargetByLanguage?[canonicalLang];
     if (lexicon == null || lexicon.isEmpty) return null;
     final targetLower = target.trim().toLowerCase();
     final asciiLower = (ascii ?? '').trim().toLowerCase();
@@ -930,6 +977,75 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
     }
     return null;
+  }
+
+  static void _registerAssetRepoAliases(String canonicalKey, String rawJsonKey) {
+    void put(String alias, String value) {
+      final k = _normRepoAlias(alias);
+      if (k.isEmpty) return;
+      _assetWordRepoAliasToCanonicalKey.putIfAbsent(k, () => value);
+    }
+
+    put(rawJsonKey, canonicalKey);
+    put(canonicalKey, canonicalKey);
+
+    final lower = rawJsonKey.toLowerCase();
+    put(lower, canonicalKey);
+
+    // Parentheses often encode alternate names, e.g. "fula (fulfulde)".
+    final noParen = lower.replaceAll('(', ' ').replaceAll(')', ' ');
+    put(noParen, canonicalKey);
+
+    final parts =
+        lower.split(RegExp(r'[^a-z]+')).where((e) => e.length >= 3).toList();
+    for (final p in parts) {
+      put(p, canonicalKey);
+    }
+  }
+
+  static String _foldLatinDiacriticsLite(String s) {
+    var o = s;
+    o = o.replaceAll('à', 'a').replaceAll('á', 'a').replaceAll('â', 'a').replaceAll('ã', 'a').replaceAll('ä', 'a').replaceAll('å', 'a');
+    o = o.replaceAll('è', 'e').replaceAll('é', 'e').replaceAll('ê', 'e').replaceAll('ë', 'e');
+    o = o.replaceAll('ì', 'i').replaceAll('í', 'i').replaceAll('î', 'i').replaceAll('ï', 'i');
+    o = o.replaceAll('ò', 'o').replaceAll('ó', 'o').replaceAll('ô', 'o').replaceAll('õ', 'o').replaceAll('ö', 'o');
+    o = o.replaceAll('ù', 'u').replaceAll('ú', 'u').replaceAll('û', 'u').replaceAll('ü', 'u');
+    o = o.replaceAll('ý', 'y').replaceAll('ÿ', 'y');
+    o = o.replaceAll('ñ', 'n').replaceAll('ç', 'c');
+    return o;
+  }
+
+  static String _normRepoAlias(String raw) {
+    final folded = _foldLatinDiacriticsLite(raw.trim().toLowerCase());
+    return folded.replaceAll(RegExp(r'[^a-z0-9]+'), '');
+  }
+
+  String _assetRepoCanonicalKeyForUiLanguage(String language) {
+    final repo = _assetWordRepoByLanguage;
+    if (repo == null || repo.isEmpty) {
+      return _normalizeLanguageKey(language);
+    }
+
+    final direct = _normalizeLanguageKey(language);
+    if (repo.containsKey(direct) && (repo[direct]?.isNotEmpty ?? false)) {
+      return direct;
+    }
+
+    final display = LanguageWords.resolveWordListDisplayKey(language);
+    final candidates = <String>{
+      _normRepoAlias(language),
+      _normRepoAlias(display),
+      _normRepoAlias(direct),
+      _normRepoAlias(_normalizeLanguageKey(display)),
+    }..removeWhere((e) => e.isEmpty);
+
+    for (final c in candidates) {
+      final hit = _assetWordRepoAliasToCanonicalKey[c];
+      if (hit != null && (repo[hit]?.isNotEmpty ?? false)) return hit;
+    }
+
+    // Last resort: stable normalization (may still miss; fallback generators cover gaps).
+    return direct;
   }
 
   String _normalizeLanguageKey(String language) {
