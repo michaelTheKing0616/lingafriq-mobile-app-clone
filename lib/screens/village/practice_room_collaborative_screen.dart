@@ -9,6 +9,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:lingafriq/config/app_config.dart';
+import 'package:lingafriq/config/api_contract.dart';
+import 'package:lingafriq/navigation/village_navigation.dart';
+import 'package:lingafriq/providers/onboarding_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/api.dart';
@@ -346,6 +349,26 @@ class _CollaborativeLiveSession extends HookConsumerWidget {
                 final d = Map<String, dynamic>.from(data);
                 token = d['token'] as String? ?? '';
                 url = d['url'] as String? ?? AppConfig.liveKitUrl;
+              }
+            }
+          }
+          if (token.isEmpty) {
+            // Fallback: language-village LiveKit token endpoint (used by practice rooms too).
+            final code = (languageTag != null && languageTag!.trim().isNotEmpty)
+                ? languageTag!.trim()
+                : VillageNavigation.isoCodeForLanguageLabel(
+                    ref.read(onboardingProvider).selectedLanguage ?? 'swahili',
+                  );
+            final response = await ApiService.get(
+              ApiContract.url(ApiContract.villages.livekitToken(code)),
+            );
+            if (response.statusCode == 200 && response.data is Map) {
+              final payload = Map<String, dynamic>.from(response.data as Map);
+              final data = payload['data'];
+              if (data is Map) {
+                final d = Map<String, dynamic>.from(data);
+                token = d['token'] as String? ?? token;
+                url = d['url'] as String? ?? url;
               }
             }
           }
