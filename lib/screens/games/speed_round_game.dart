@@ -185,74 +185,101 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame>
       child: SafeArea(
         child: Stack(
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
-              child: Column(
-                children: [
-                  SizedBox(height: PanAfricanSpacing.sm),
-                  // Timer ring + score row
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // Score
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: PanAfricanSpacing.md,
-                          vertical: PanAfricanSpacing.xs,
+            // Stitch-style top bar: close + timer anchor + streak pill.
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: PanAfricanSpacing.md,
+                  vertical: PanAfricanSpacing.sm,
+                ),
+                decoration: BoxDecoration(
+                  color: cs.surface.withOpacity(0.82),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.06),
+                      blurRadius: 24,
+                      offset: const Offset(0, 12),
+                    ),
+                  ],
+                ),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: widget.onBack,
+                          icon: Icon(
+                            Icons.close_rounded,
+                            color: ModernGriotColors.onSurfaceVariant,
+                          ),
                         ),
-                        decoration: BoxDecoration(
-                          color: ModernGriotColors.primaryContainer.withOpacity(0.2),
-                          borderRadius: ModernGriotRadius.borderPill,
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.star_rounded, color: ModernGriotColors.primary, size: 20.sp),
-                            SizedBox(width: 4.w),
-                            Text('$_score',
-                                style: ModernGriotTypography.titleMedium(
-                                    context: context, color: ModernGriotColors.primary)),
-                          ],
-                        ),
-                      ),
-                      GameTimerRing(
-                        totalSeconds: 60,
-                        remainingSeconds: _timeLeft,
-                        size: 64,
-                        onTimeUp: _endGame,
-                      ),
-                      // Streak
-                      if (_streak > 0)
+                        const Spacer(),
                         Container(
                           padding: EdgeInsets.symmetric(
                             horizontal: PanAfricanSpacing.md,
                             vertical: PanAfricanSpacing.xs,
                           ),
                           decoration: BoxDecoration(
-                            color: ModernGriotColors.secondary.withOpacity(0.15),
+                            color: ModernGriotColors.tertiaryContainer,
                             borderRadius: ModernGriotRadius.borderPill,
+                            boxShadow: ModernGriotShadows.xs,
                           ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(Icons.local_fire_department_rounded,
-                                  color: ModernGriotColors.secondary, size: 18.sp),
-                              SizedBox(width: 4.w),
-                              Text('$_streak',
-                                  style: ModernGriotTypography.titleSmall(
-                                      context: context, color: ModernGriotColors.secondary)),
-                            ],
+                          child: Text(
+                            '$_streak 🔥',
+                            style: ModernGriotTypography.titleSmall(
+                              context: context,
+                              color: ModernGriotColors.onTertiaryContainer,
+                            ).copyWith(fontWeight: FontWeight.w900),
                           ),
-                        )
-                      else
-                        SizedBox(width: 56.w),
-                    ],
-                  ),
-                  SizedBox(height: PanAfricanSpacing.md),
-                  // Progress bar
+                        ),
+                      ],
+                    ),
+                    Container(
+                      width: 56,
+                      height: 56,
+                      decoration: BoxDecoration(
+                        color: ModernGriotColors.error,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: ModernGriotColors.errorContainer,
+                          width: 4,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: ModernGriotColors.error.withOpacity(0.25),
+                            blurRadius: 18,
+                            spreadRadius: 2,
+                          ),
+                        ],
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        '$_timeLeft',
+                        style: ModernGriotTypography.titleLarge(
+                          context: context,
+                          color: ModernGriotColors.onError,
+                        ).copyWith(fontWeight: FontWeight.w900),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(
+                PanAfricanSpacing.md,
+                98,
+                PanAfricanSpacing.md,
+                PanAfricanSpacing.md,
+              ),
+              child: Column(
+                children: [
                   GriotProgressBar(value: progress, height: 6, showGlowTip: true),
                   SizedBox(height: PanAfricanSpacing.lg),
-                  // Question card
                   Expanded(
                     child: GameQuestionCard(
                       question: card.text,
@@ -261,7 +288,6 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame>
                     ),
                   ),
                   SizedBox(height: PanAfricanSpacing.lg),
-                  // Action buttons
                   Row(
                     children: [
                       Expanded(
