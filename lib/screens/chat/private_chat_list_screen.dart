@@ -14,7 +14,6 @@ import '../../utils/modern_griot_design_system.dart';
 import '../../utils/pan_african_design_system.dart' show PanAfricanSpacing;
 import '../../utils/transport_error_policy.dart';
 import '../../widgets/griot/griot_widgets.dart';
-import 'call_history_screen.dart';
 import 'private_chat_screen.dart';
 import 'user_search_global_id_screen.dart';
 
@@ -34,7 +33,8 @@ class _PrivateChatListScreenState extends ConsumerState<PrivateChatListScreen>
   final TextEditingController _searchController = TextEditingController();
   bool _showSearch = false;
 
-  static const _tabs = ['Chats', 'Status', 'Calls'];
+  // Calls are disabled until the underlying service is production-ready.
+  static const _tabs = ['Chats', 'Status'];
 
   List<WaPrivateConversationRow> _conversations = [];
   bool _loadingChats = true;
@@ -168,7 +168,6 @@ class _PrivateChatListScreenState extends ConsumerState<PrivateChatListScreen>
               children: [
                 _buildChatsTab(cs),
                 _buildStatusTab(cs),
-                const CallHistoryScreen(embedInTab: true),
               ],
             ),
           ),
