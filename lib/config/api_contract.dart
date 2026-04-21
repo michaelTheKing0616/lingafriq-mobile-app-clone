@@ -613,9 +613,9 @@ class _ContentPacks {
 
 class _LearningV2 {
   const _LearningV2();
-  // Prefer compatibility mount because some production gateways do not proxy /api/v2/*.
-  // Canonical backend route remains /api/v2/learning/*, but server also exposes /api/learning-v2/*.
-  static const String _base = '/api/learning-v2';
+  // Canonical routes (`node-backend-safe-push` / `mobileApiContract.ts`).
+  // Server may also expose `/api/learning-v2/*` as a compatibility alias.
+  static const String _base = '/api/v2/learning';
 
   String get speakMissionEvaluate => '$_base/speak-mission/evaluate';
   String get codeSwitchSession => '$_base/code-switch/session';
@@ -642,9 +642,9 @@ class _LearningV2 {
 class _MicroMentorsV2 {
   const _MicroMentorsV2();
 
-  // Prefer compatibility mount because some production gateways do not proxy /api/v2/*.
-  // Canonical backend route remains /api/v2/micro-mentors/*, but server also exposes /api/micro-mentors/*.
-  static const String _base = '/api/micro-mentors';
+  // Canonical routes (`node-backend-safe-push` / `mobileApiContract.ts`).
+  // Server may also expose `/api/micro-mentors/*` as a compatibility alias.
+  static const String _base = '/api/v2/micro-mentors';
 
   String get mentors => '$_base/mentors';
   String get mentorsMe => '$_base/mentors/me';
