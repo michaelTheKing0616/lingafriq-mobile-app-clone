@@ -349,7 +349,8 @@ class _PrivateChatListScreenState extends ConsumerState<PrivateChatListScreen>
           isMine: false,
           label: s.userId == 'me' ? 'You' : 'Status',
           initial: initial,
-          viewed: true,
+          statusId: s.id,
+          viewed: false,
         ),
       );
     }
@@ -373,7 +374,15 @@ class _PrivateChatListScreenState extends ConsumerState<PrivateChatListScreen>
             onTap: () {
               if (status.isMine) {
                 Navigator.pushNamed(context, '/wa-status-create');
+                return;
               }
+              final id = status.statusId;
+              if (id == null || id.isEmpty) return;
+              Navigator.pushNamed(
+                context,
+                '/wa-status-view',
+                arguments: <String, dynamic>{'statusId': id},
+              );
             },
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -615,11 +624,13 @@ class _StatusRing {
     required this.isMine,
     required this.label,
     required this.initial,
+    this.statusId,
     this.viewed = false,
   });
 
   final bool isMine;
   final String label;
   final String initial;
+  final String? statusId;
   final bool viewed;
 }

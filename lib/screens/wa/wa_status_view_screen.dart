@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -6,60 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../models/wa_status_model.dart';
+import '../../providers/wa_status_provider.dart';
+import '../../utils/media_url_resolver.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
-
-// ---------------------------------------------------------------------------
-// Mock status segments
-// ---------------------------------------------------------------------------
-
-class _StatusSegment {
-  const _StatusSegment({
-    required this.targetPhrase,
-    required this.pronunciation,
-    required this.translation,
-    required this.badge,
-  });
-
-  final String targetPhrase;
-  final String pronunciation;
-  final String translation;
-  final String badge;
-}
-
-const _mockSegments = <_StatusSegment>[
-  _StatusSegment(
-    targetPhrase: 'Ẹ kú àárọ̀',
-    pronunciation: '/ɛ kú àːɾɔ̀/',
-    translation: 'Good morning',
-    badge: 'A1 Beginner',
-  ),
-  _StatusSegment(
-    targetPhrase: 'Báwo ni?',
-    pronunciation: '/bá.wɔ̃ ni/',
-    translation: 'How are you?',
-    badge: 'Daily Streak 🔥',
-  ),
-  _StatusSegment(
-    targetPhrase: 'Mo dúpẹ́',
-    pronunciation: '/mɔ dúpɛ́/',
-    translation: 'Thank you',
-    badge: 'A2 Elementary',
-  ),
-  _StatusSegment(
-    targetPhrase: 'Odabọ̀',
-    pronunciation: '/ɔ.da.bɔ̀/',
-    translation: 'Goodbye',
-    badge: 'Phrase Master',
-  ),
-];
-
-const _emojiReactions = ['❤️', '🔥', '👏', '😮', '😂'];
-const _segmentDuration = Duration(seconds: 5);
-
-// ---------------------------------------------------------------------------
-// Screen
-// ---------------------------------------------------------------------------
+import '../../widgets/portrait_video_player.dart';
 
 class WaStatusViewScreen extends ConsumerStatefulWidget {
   const WaStatusViewScreen({super.key, required this.statusId});
@@ -67,68 +18,23 @@ class WaStatusViewScreen extends ConsumerStatefulWidget {
   final String statusId;
 
   @override
-  ConsumerState<WaStatusViewScreen> createState() =>
-      _WaStatusViewScreenState();
+  ConsumerState<WaStatusViewScreen> createState() => _WaStatusViewScreenState();
 }
 
-class _WaStatusViewScreenState extends ConsumerState<WaStatusViewScreen>
-    with SingleTickerProviderStateMixin {
-  int _currentIndex = 0;
-  Timer? _autoTimer;
-  late AnimationController _progressController;
+class _WaStatusViewScreenState extends ConsumerState<WaStatusViewScreen> {
   final _replyController = TextEditingController();
-
-  int get _totalSegments => _mockSegments.length;
 
   @override
   void initState() {
     super.initState();
-    _progressController = AnimationController(
-      vsync: this,
-      duration: _segmentDuration,
-    )..addStatusListener(_onProgressDone);
-    _startSegmentTimer();
-
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   }
 
   @override
   void dispose() {
-    _autoTimer?.cancel();
-    _progressController.dispose();
     _replyController.dispose();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     super.dispose();
-  }
-
-  void _startSegmentTimer() {
-    _progressController
-      ..reset()
-      ..forward();
-  }
-
-  void _onProgressDone(AnimationStatus status) {
-    if (status == AnimationStatus.completed) {
-      _goNext();
-    }
-  }
-
-  void _goNext() {
-    if (_currentIndex < _totalSegments - 1) {
-      setState(() => _currentIndex++);
-      _startSegmentTimer();
-    } else {
-      _dismiss();
-    }
-  }
-
-  void _goPrev() {
-    if (_currentIndex > 0) {
-      setState(() => _currentIndex--);
-      _startSegmentTimer();
-    } else {
-      _startSegmentTimer();
-    }
   }
 
   void _dismiss() {
@@ -137,10 +43,39 @@ class _WaStatusViewScreenState extends ConsumerState<WaStatusViewScreen>
     }
   }
 
+  WaStatusModel? _findStatus(WaStatusState st) {
+    for (final s in st.mine) {
+      if (s.id == widget.statusId) return s;
+    }
+    for (final s in st.feed) {
+      if (s.id == widget.statusId) return s;
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final segment = _mockSegments[_currentIndex];
-    final size = MediaQuery.of(context).size;
+    final st = ref.watch(waStatusProvider);
+    final status = _findStatus(st);
+    final cs = Theme.of(context).colorScheme;
+
+    if (status == null) {
+      return Scaffold(
+        backgroundColor: Colors.black,
+        body: SafeArea(
+          child: Center(
+            child: Text(
+              'Status not found',
+              style: ModernGriotTypography.titleMedium(
+                color: Colors.white.withOpacity(0.9),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    final resolvedMediaUrl = resolveMediaUrl(status.mediaUrl) ?? status.mediaUrl;
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -157,15 +92,64 @@ class _WaStatusViewScreenState extends ConsumerState<WaStatusViewScreen>
             SafeArea(
               child: Column(
                 children: [
-                  _progressBars(),
-                  SizedBox(height: 12.h),
+                  SizedBox(height: 10.h),
                   Expanded(
-                    child: _tapZones(size, segment),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (status.mediaType == 'image' &&
+                              resolvedMediaUrl.trim().isNotEmpty)
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(18),
+                              child: Image.network(
+                                resolvedMediaUrl,
+                                fit: BoxFit.contain,
+                                errorBuilder: (_, __, ___) =>
+                                    _fallbackText(status),
+                              ),
+                            )
+                          else if (status.mediaType == 'video' &&
+                              status.mediaUrl.trim().isNotEmpty)
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(18),
+                              child: PortraitPlayerPage(videoUrl: status.mediaUrl),
+                            )
+                          else
+                            _fallbackText(status),
+                          if (status.caption.trim().isNotEmpty) ...[
+                            SizedBox(height: 14.h),
+                            GriotGlassPanel(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 14.w,
+                                vertical: 10.h,
+                              ),
+                              borderRadius: ModernGriotRadius.borderXl,
+                              child: Text(
+                                status.caption,
+                                textAlign: TextAlign.center,
+                                style: ModernGriotTypography.bodyMedium(
+                                  color: Colors.white.withOpacity(0.92),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
                   ),
-                  _emojiRow(),
-                  _replyBar(),
-                  SizedBox(height: 8.h),
+                  _replyBar(cs),
+                  SizedBox(height: 10.h),
                 ],
+              ),
+            ),
+            Positioned(
+              top: MediaQuery.of(context).padding.top + 4.h,
+              left: 8.w,
+              child: IconButton(
+                onPressed: _dismiss,
+                icon: const Icon(Icons.close_rounded, color: Colors.white),
               ),
             ),
           ],
@@ -173,8 +157,6 @@ class _WaStatusViewScreenState extends ConsumerState<WaStatusViewScreen>
       ),
     );
   }
-
-  // ── Background gradient ──────────────────────────────────────────────────
 
   Widget _background() {
     return Container(
@@ -211,123 +193,24 @@ class _WaStatusViewScreenState extends ConsumerState<WaStatusViewScreen>
     );
   }
 
-  // ── Progress bars ────────────────────────────────────────────────────────
-
-  Widget _progressBars() {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-      child: Row(
-        children: List.generate(_totalSegments, (i) {
-          return Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 2.w),
-              child: _SegmentBar(
-                filled: i < _currentIndex,
-                active: i == _currentIndex,
-                controller: _progressController,
-              ),
-            ),
-          );
-        }),
+  Widget _fallbackText(WaStatusModel status) {
+    final text = status.text.trim().isNotEmpty
+        ? status.text.trim()
+        : (status.caption.trim().isNotEmpty ? status.caption.trim() : '');
+    return GriotGlassPanel(
+      padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 16.h),
+      borderRadius: ModernGriotRadius.borderXl,
+      child: Text(
+        text.isEmpty ? ' ' : text,
+        textAlign: TextAlign.center,
+        style: ModernGriotTypography.headlineSmall(
+          color: Colors.white.withOpacity(0.95),
+        ),
       ),
     );
   }
 
-  // ── Tap zones with phrase card ───────────────────────────────────────────
-
-  Widget _tapZones(Size size, _StatusSegment segment) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final halfWidth = constraints.maxWidth / 2;
-        return GestureDetector(
-          onTapUp: (details) {
-            if (details.localPosition.dx < halfWidth) {
-              _goPrev();
-            } else {
-              _goNext();
-            }
-          },
-          behavior: HitTestBehavior.translucent,
-          child: Center(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: GriotGlassPanel(
-                blurSigma: 30,
-                opacity: 0.25,
-                padding: EdgeInsets.all(24.r),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      segment.targetPhrase,
-                      textAlign: TextAlign.center,
-                      style: ModernGriotTypography.headlineLarge(
-                        context: context,
-                        color: Colors.white,
-                      ),
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      segment.pronunciation,
-                      textAlign: TextAlign.center,
-                      style: ModernGriotTypography.bodyLarge(
-                        color: Colors.white70,
-                      ),
-                    ),
-                    SizedBox(height: 12.h),
-                    Text(
-                      segment.translation,
-                      textAlign: TextAlign.center,
-                      style: ModernGriotTypography.titleMedium(
-                        color: Colors.white.withAlpha(230),
-                      ),
-                    ),
-                    SizedBox(height: 16.h),
-                    GriotBadgePill(
-                      label: segment.badge,
-                      color: ModernGriotColors.primaryContainer.withAlpha(200),
-                      textColor: Colors.white,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  // ── Emoji reactions ──────────────────────────────────────────────────────
-
-  Widget _emojiRow() {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 8.h),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _emojiReactions.map((emoji) {
-          return GestureDetector(
-            onTap: () {
-              HapticFeedback.lightImpact();
-            },
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 150),
-              padding: EdgeInsets.all(8.r),
-              decoration: BoxDecoration(
-                color: Colors.white.withAlpha(25),
-                shape: BoxShape.circle,
-              ),
-              child: Text(emoji, style: TextStyle(fontSize: 22.sp)),
-            ),
-          );
-        }).toList(),
-      ),
-    );
-  }
-
-  // ── Reply bar ────────────────────────────────────────────────────────────
-
-  Widget _replyBar() {
+  Widget _replyBar(ColorScheme cs) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: ClipRRect(
@@ -386,53 +269,3 @@ class _WaStatusViewScreenState extends ConsumerState<WaStatusViewScreen>
   }
 }
 
-// ---------------------------------------------------------------------------
-// Segment progress bar
-// ---------------------------------------------------------------------------
-
-class _SegmentBar extends StatelessWidget {
-  const _SegmentBar({
-    required this.filled,
-    required this.active,
-    required this.controller,
-  });
-
-  final bool filled;
-  final bool active;
-  final AnimationController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 3.h,
-      decoration: BoxDecoration(
-        color: Colors.white.withAlpha(60),
-        borderRadius: BorderRadius.circular(2),
-      ),
-      child: filled
-          ? Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(2),
-              ),
-            )
-          : active
-              ? AnimatedBuilder(
-                  animation: controller,
-                  builder: (context, _) {
-                    return FractionallySizedBox(
-                      alignment: Alignment.centerLeft,
-                      widthFactor: controller.value,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                      ),
-                    );
-                  },
-                )
-              : const SizedBox.shrink(),
-    );
-  }
-}
