@@ -11,6 +11,9 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/supported_languages.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/config/app_config.dart';
+import 'package:lingafriq/config/api_contract.dart';
+import 'package:lingafriq/navigation/village_navigation.dart';
+import 'package:lingafriq/providers/onboarding_provider.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
@@ -320,6 +323,26 @@ class _ClassroomView extends HookConsumerWidget {
                 final d = Map<String, dynamic>.from(data);
                 token = d['token'] as String? ?? '';
                 url = d['url'] as String? ?? AppConfig.liveKitUrl;
+              }
+            }
+          }
+          if (token.isEmpty) {
+            // Fallback: language-village LiveKit token endpoint.
+            // This unblocks classrooms in deployments where the legacy classroom-token
+            // endpoint is locked or not configured.
+            final onboarding = ref.read(onboardingProvider);
+            final label = onboarding.selectedLanguage ?? 'swahili';
+            final code = VillageNavigation.isoCodeForLanguageLabel(label);
+            final response = await ApiService.get(
+              ApiContract.url(ApiContract.villages.livekitToken(code)),
+            );
+            if (response.statusCode == 200 && response.data is Map) {
+              final payload = Map<String, dynamic>.from(response.data as Map);
+              final data = payload['data'];
+              if (data is Map) {
+                final d = Map<String, dynamic>.from(data);
+                token = d['token'] as String? ?? token;
+                url = d['url'] as String? ?? url;
               }
             }
           }
