@@ -35,6 +35,7 @@ import 'screens/village/swahili_village_map_screen.dart';
 import 'screens/village/village_market_screen.dart';
 import 'screens/village/village_cafe_screen.dart';
 import 'screens/village/elder_hut_screen.dart';
+import 'screens/village/language_village_place_screen.dart';
 import 'screens/village/practice_room_setup_screen.dart';
 import 'screens/village/practice_session_screen.dart';
 import 'screens/village/practice_room_collaborative_screen.dart';
@@ -270,6 +271,7 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'villages': (_) => const VillagesHubScreen(),
     'villages-hub': (_) => const VillagesHubScreen(),
     'language-village': (_) => const LanguageVillagesScreen(),
+    'language-village-place': (_) => const LanguageVillagePlaceScreen(),
     'swahili-village-map': (_) => const SwahiliVillageMapScreen(),
     'village-market': (_) => const VillageMarketScreen(),
     'village-cafe': (_) => const VillageCafeScreen(),

@@ -180,6 +180,8 @@ class LanguageVillagesScreen extends HookConsumerWidget {
                       VillageNavigation.enterLanguageVillagePlace(
                         context,
                         placeName: _locations[sel].name,
+                        languageDisplayName: languageDisplayName,
+                        languageCode: languageCode,
                       );
                     },
                   );

@@ -21,6 +21,7 @@ abstract final class VillageRouteNames {
   static const myTribe = 'my-tribe';
   static const tribalDuel = 'tribal-duel';
   static const interTribeLeaderboard = 'inter-tribe-leaderboard';
+  static const languageVillagePlace = 'language-village-place';
   static const polieModeSelection = 'polie_mode_selection';
   static const conversationScenarios = 'conversation-scenarios';
 }
@@ -96,24 +97,61 @@ abstract final class VillageNavigation {
   static void enterLanguageVillagePlace(
     BuildContext context, {
     required String placeName,
+    String? languageDisplayName,
+    String? languageCode,
   }) {
     HapticFeedback.mediumImpact();
     final nav = Navigator.of(context);
     switch (placeName) {
       case 'Griot Stage':
-        nav.pushNamed('/${VillageRouteNames.polieModeSelection}');
+        nav.pushNamed(
+          '/${VillageRouteNames.languageVillagePlace}',
+          arguments: <String, dynamic>{
+            'placeName': placeName,
+            'languageDisplayName': languageDisplayName,
+            'languageCode': languageCode,
+          },
+        );
         return;
       case 'The Market':
-        nav.pushNamed('/${VillageRouteNames.market}');
+        nav.pushNamed(
+          '/${VillageRouteNames.languageVillagePlace}',
+          arguments: <String, dynamic>{
+            'placeName': placeName,
+            'languageDisplayName': languageDisplayName,
+            'languageCode': languageCode,
+          },
+        );
         return;
       case 'Sun Café':
-        nav.pushNamed('/${VillageRouteNames.cafe}');
+        nav.pushNamed(
+          '/${VillageRouteNames.languageVillagePlace}',
+          arguments: <String, dynamic>{
+            'placeName': placeName,
+            'languageDisplayName': languageDisplayName,
+            'languageCode': languageCode,
+          },
+        );
         return;
       case "Elder's Hut":
-        nav.pushNamed('/${VillageRouteNames.elderHut}');
+        nav.pushNamed(
+          '/${VillageRouteNames.languageVillagePlace}',
+          arguments: <String, dynamic>{
+            'placeName': placeName,
+            'languageDisplayName': languageDisplayName,
+            'languageCode': languageCode,
+          },
+        );
         return;
       case 'The School':
-        nav.pushNamed('/${VillageRouteNames.practiceRoomSetup}');
+        nav.pushNamed(
+          '/${VillageRouteNames.languageVillagePlace}',
+          arguments: <String, dynamic>{
+            'placeName': placeName,
+            'languageDisplayName': languageDisplayName,
+            'languageCode': languageCode,
+          },
+        );
         return;
       default:
         nav.pushNamed('/${VillageRouteNames.conversationScenarios}');
