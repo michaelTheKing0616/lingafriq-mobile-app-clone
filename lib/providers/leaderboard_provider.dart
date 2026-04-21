@@ -16,20 +16,29 @@ final leaderboardProvider =
 /// Leaderboard provider for real-time rankings
 class LeaderboardProvider extends Notifier<BaseProviderState>
     with BaseProviderMixin {
-  final Map<LeaderboardType, List<LeaderboardEntry>> _cache = {};
-  DateTime? _lastFetch;
+  final Map<String, List<LeaderboardEntry>> _cache = {};
+  final Map<String, DateTime> _lastFetchByKey = {};
   static const Duration _cacheDuration = Duration(minutes: 5);
 
+  String _key(
+    LeaderboardType type, {
+    String? tribe,
+    String? country,
+    String? continent,
+  }) {
+    return '${type.name}:${tribe ?? ''}:${country ?? ''}:${continent ?? ''}';
+  }
+
   List<LeaderboardEntry> getGlobalLeaderboard() {
-    return _cache[LeaderboardType.global] ?? [];
+    return _cache[_key(LeaderboardType.global)] ?? [];
   }
 
   List<LeaderboardEntry> getTribeLeaderboard(String tribe) {
-    return _cache[LeaderboardType.tribe]?.where((e) => e.tribe == tribe).toList() ?? [];
+    return _cache[_key(LeaderboardType.tribe, tribe: tribe)] ?? [];
   }
 
   List<LeaderboardEntry> getCountryLeaderboard(String country) {
-    return _cache[LeaderboardType.country]?.where((e) => e.country == country).toList() ?? [];
+    return _cache[_key(LeaderboardType.country, country: country)] ?? [];
   }
 
   @override
@@ -45,10 +54,18 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
     String? country,
     String? continent,
   }) async {
+    final cacheKey = _key(
+      type,
+      tribe: tribe,
+      country: country,
+      continent: continent,
+    );
+
     // Check cache
-    if (_lastFetch != null &&
-        DateTime.now().difference(_lastFetch!) < _cacheDuration &&
-        _cache.containsKey(type)) {
+    final lastFetch = _lastFetchByKey[cacheKey];
+    if (lastFetch != null &&
+        DateTime.now().difference(lastFetch) < _cacheDuration &&
+        _cache.containsKey(cacheKey)) {
       return; // Use cached data
     }
 
@@ -93,18 +110,18 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
           break;
       }
 
-      _cache[type] = entries;
-      _lastFetch = DateTime.now();
+      _cache[cacheKey] = entries;
+      _lastFetchByKey[cacheKey] = DateTime.now();
       
       // Cache leaderboard data locally for offline access
       await _cacheLeaderboards();
     } catch (e) {
       logger.error('Error fetching leaderboards', tag: 'leaderboard', error: e);
       // Keep in-memory cache if present; otherwise try local storage fallback (up to 24h old)
-      if (!_cache.containsKey(type) || (_cache[type]?.isEmpty ?? true)) {
+      if (!_cache.containsKey(cacheKey) || (_cache[cacheKey]?.isEmpty ?? true)) {
         await _loadLeaderboards(maxAge: const Duration(hours: 24));
       }
-      _cache.putIfAbsent(type, () => []);
+      _cache.putIfAbsent(cacheKey, () => []);
       state = state.copyWith(
         errorMessage: 'Unable to load leaderboard right now. Pull to retry.',
         errorTimestamp: DateTime.now(),
@@ -223,10 +240,22 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
     }
   }
 
-  /// Get user's rank
-  Future<int?> getUserRank(String userId, {LeaderboardType type = LeaderboardType.global}) async {
-    await fetchLeaderboards(type: type);
-    final leaderboard = _cache[type] ?? [];
+  /// Get user's rank for the same scope as [fetchLeaderboards] (global/tribe/country/continent).
+  Future<int?> getUserRank(
+    String userId, {
+    LeaderboardType type = LeaderboardType.global,
+    String? tribe,
+    String? country,
+    String? continent,
+  }) async {
+    final cacheKey = _key(type, tribe: tribe, country: country, continent: continent);
+    await fetchLeaderboards(
+      type: type,
+      tribe: tribe,
+      country: country,
+      continent: continent,
+    );
+    final leaderboard = _cache[cacheKey] ?? [];
     final entry = leaderboard.firstWhere(
       (e) => e.userId == userId,
       orElse: () => LeaderboardEntry(
@@ -252,7 +281,7 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
       };
       
       for (var entry in _cache.entries) {
-        cacheData['data'][entry.key.name] = entry.value.map((e) => {
+        cacheData['data'][entry.key] = entry.value.map((e) => {
           'user_id': e.userId,
           'username': e.username,
           'xp': e.xp,
@@ -287,12 +316,8 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
         if (cacheAge < maxAge && decoded['data'] is Map) {
           final data = decoded['data'] as Map<String, dynamic>;
           for (var entry in data.entries) {
-            final type = LeaderboardType.values.firstWhere(
-              (e) => e.name == entry.key,
-              orElse: () => LeaderboardType.global,
-            );
             if (entry.value is List) {
-              _cache.putIfAbsent(type, () => _parseLeaderboardEntries(entry.value as List));
+              _cache[entry.key] = _parseLeaderboardEntries(entry.value as List);
             }
           }
         }
@@ -302,10 +327,21 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
     }
   }
 
-  /// Refresh leaderboards — invalidates freshness but keeps stale cache as fallback
-  Future<void> refresh() async {
-    _lastFetch = null;
-    await fetchLeaderboards();
+  /// Refresh leaderboards for one scope (invalidates only that cache key).
+  Future<void> refresh({
+    LeaderboardType type = LeaderboardType.global,
+    String? tribe,
+    String? country,
+    String? continent,
+  }) async {
+    final cacheKey = _key(type, tribe: tribe, country: country, continent: continent);
+    _lastFetchByKey.remove(cacheKey);
+    await fetchLeaderboards(
+      type: type,
+      tribe: tribe,
+      country: country,
+      continent: continent,
+    );
   }
 }
 

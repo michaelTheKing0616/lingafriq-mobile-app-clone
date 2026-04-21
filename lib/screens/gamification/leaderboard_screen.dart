@@ -76,9 +76,8 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
     if (user != null) {
       socketService.subscribeToLeaderboard('global:weekly');
       socketService.onLeaderboardUpdate((data) {
-        // Refresh leaderboard when update received
         if (mounted) {
-          ref.read(leaderboardProvider.notifier).refresh();
+          ref.read(leaderboardProvider.notifier).refresh(type: LeaderboardType.global);
         }
       });
     }
@@ -200,7 +199,7 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
         actionLabel: 'Refresh',
         onAction: () {
           HapticFeedback.lightImpact();
-          ref.read(leaderboardProvider.notifier).fetchLeaderboards(type: type);
+          _refetchForType(type);
         },
       );
     }
