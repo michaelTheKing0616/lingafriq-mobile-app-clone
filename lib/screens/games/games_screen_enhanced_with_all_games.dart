@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/widgets/lingafriq_scaffold.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
@@ -343,7 +344,8 @@ class GamesScreenEnhanced extends HookConsumerWidget {
     return LoadingOverlay(
       isLoading: isLoading.value,
       message: 'Loading games...',
-      child: Scaffold(
+      child: LingafriqScaffold(
+      applyTopSafeArea: false,
       appBar: AppBar(
         title: Text('Language Games (${allGames.length}+)'),
         backgroundColor: Colors.transparent,

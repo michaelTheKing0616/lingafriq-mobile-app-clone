@@ -58,6 +58,9 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
   final String targetLanguage;
   final PolieMode initialMode;
   final String? initialRoleplayScene;
+  /// When true, only the free-form [PolieMode.conversation] surface is shown (no mode rail).
+  /// Use the dedicated Ling Chat route for long AI dialogue; other Polie skills stay in the rail.
+  final bool conversationOnly;
 
   const PolieWorkspaceScreen({
     super.key,
@@ -65,17 +68,13 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
     required this.targetLanguage,
     required this.initialMode,
     this.initialRoleplayScene,
+    this.conversationOnly = false,
   });
 
   static const _modeItems = <ModeChipItem>[
     ModeChipItem(mode: PolieMode.translation, icon: '⇄', label: 'Translation'),
     ModeChipItem(mode: PolieMode.tutor, icon: '📖', label: 'Tutor'),
     ModeChipItem(mode: PolieMode.roleplay, icon: '🎭', label: 'Roleplay'),
-    ModeChipItem(
-      mode: PolieMode.conversation,
-      icon: '💬',
-      label: 'Conversation',
-    ),
     ModeChipItem(mode: PolieMode.vocab, icon: '✦', label: 'Vocabulary'),
     ModeChipItem(mode: PolieMode.review, icon: '📊', label: 'Review'),
   ];
@@ -84,7 +83,9 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final viewportWidth = MediaQuery.sizeOf(context).width;
     final isCompactTopBar = viewportWidth < 420;
-    final activeMode = useState<PolieMode>(initialMode);
+    final activeMode = useState<PolieMode>(
+      conversationOnly ? PolieMode.conversation : initialMode,
+    );
     final isBusy = useState<bool>(false);
     final modeResponse = useState<String>('');
     final modeError = useState<String?>(null);
@@ -1106,11 +1107,12 @@ Language: $targetLanguage
     }
 
     useEffect(() {
-      setMode(initialMode);
+      final init = conversationOnly ? PolieMode.conversation : initialMode;
+      setMode(init);
       loadTranslationHistory();
-      if (initialMode == PolieMode.tutor) loadTutorLesson();
-      if (initialMode == PolieMode.vocab) loadVocabCard();
-      if (initialMode == PolieMode.review) loadReview();
+      if (init == PolieMode.tutor) loadTutorLesson();
+      if (init == PolieMode.vocab) loadVocabCard();
+      if (init == PolieMode.review) loadReview();
       SharedPreferences.getInstance().then((prefs) {
         final dismissed = <String>{};
         for (final m in PolieMode.values) {
@@ -1182,7 +1184,7 @@ Language: $targetLanguage
           icon: const Icon(Icons.arrow_back_rounded),
         ),
         title: Text(
-          'Polie',
+          conversationOnly ? 'Ling Chat' : 'Polie',
           style: GoogleFonts.playfairDisplay(
             fontWeight: FontWeight.w700,
             color: modeTheme.title,
@@ -1234,28 +1236,29 @@ Language: $targetLanguage
       ),
       body: Column(
         children: [
-          Padding(
-            padding: EdgeInsets.fromLTRB(
-              isCompactTopBar ? 8 : 12,
-              0,
-              isCompactTopBar ? 8 : 12,
-              8,
-            ),
-            child: PolieModeSwitcherRail<PolieMode>(
-              selected: activeMode.value,
-              items: _modeItems
-                  .map(
-                    (e) => PolieModeSwitcherItem<PolieMode>(
-                      value: e.mode,
-                      icon: e.icon,
-                      label: e.label,
-                    ),
-                  )
-                  .toList(),
-              onChanged: (mode) async {
-                await setMode(mode);
-                if (mode == PolieMode.tutor && tutorLesson.value == null) {
-                  await loadTutorLesson();
+          if (!conversationOnly)
+            Padding(
+              padding: EdgeInsets.fromLTRB(
+                isCompactTopBar ? 8 : 12,
+                0,
+                isCompactTopBar ? 8 : 12,
+                8,
+              ),
+              child: PolieModeSwitcherRail<PolieMode>(
+                selected: activeMode.value,
+                items: _modeItems
+                    .map(
+                      (e) => PolieModeSwitcherItem<PolieMode>(
+                        value: e.mode,
+                        icon: e.icon,
+                        label: e.label,
+                      ),
+                    )
+                    .toList(),
+                onChanged: (mode) async {
+                  await setMode(mode);
+                  if (mode == PolieMode.tutor && tutorLesson.value == null) {
+                    await loadTutorLesson();
                 }
                 if (mode == PolieMode.vocab && vocabCard.value == null) {
                   await loadVocabCard();
@@ -1263,9 +1266,9 @@ Language: $targetLanguage
                 if (mode == PolieMode.review && reviewPayload.value == null) {
                   await loadReview();
                 }
-              },
+                },
+              ),
             ),
-          ),
           Expanded(
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 260),

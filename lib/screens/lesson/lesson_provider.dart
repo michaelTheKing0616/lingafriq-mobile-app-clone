@@ -205,10 +205,9 @@ class LessonFlowNotifier extends StateNotifier<LessonFlowState> {
     final correctOption = question.options.firstWhere((o) => o.isCorrect);
     final isCorrect = correctOption.text == selectedAnswer;
 
-    // Update total questions count
-    final sectionForCount = state.sections.firstWhere((s) => s.sectionId == sectionId);
-    final newTotalQuestions = state.totalQuestions + 
-        (sectionForCount.questions?.length ?? sectionForCount.wordQuestions?.length ?? 0);
+    // One scored attempt per "Check" — do not add the whole section size each time
+    // (that broke multi-question quizzes and inflated totals).
+    final newTotalQuestions = state.totalQuestions + 1;
 
     if (isCorrect) {
       await soundEffects.playCorrect();

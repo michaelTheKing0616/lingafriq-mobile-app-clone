@@ -7,6 +7,7 @@ import 'package:velocity_x/velocity_x.dart';
 import 'package:lingafriq/lessons/models/section_lesson_model.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/widgets/lingafriq_scaffold.dart';
 import 'package:lingafriq/widgets/points_and_profile_image_builder.dart';
 import 'package:lingafriq/widgets/portrait_video_player.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
@@ -40,6 +41,23 @@ class LessonFlowScreen extends HookConsumerWidget {
     final lessonState = ref.watch(lessonFlowProvider(lessonId));
     final comboTracker = lessonFlow.comboTracker;
 
+    void exitLesson() {
+      final sections = ref.read(lessonFlowProvider(lessonId)).sections;
+      _pauseAllSectionVideos(ref, sections);
+      comboTracker.reset();
+      ref.read(navigationProvider).pop();
+    }
+
+    // Stops any active BetterPlayer (iOS) if the screen is removed by any path.
+    useEffect(() {
+      return () {
+        try {
+          final sections = ref.read(lessonFlowProvider(lessonId)).sections;
+          _pauseAllSectionVideos(ref, sections);
+        } catch (_) {}
+      };
+    }, [lessonId]);
+
     // Initialize after build to avoid modifying provider during build (fixes widget tests).
     // Defer to post-frame + microtask so the state write runs outside the frame entirely.
     useEffect(() {
@@ -47,7 +65,9 @@ class LessonFlowScreen extends HookConsumerWidget {
         Future.microtask(() {
           final state = ref.read(lessonFlowProvider(lessonId));
           if (state.sections.isEmpty) {
-            ref.read(lessonFlowProvider(lessonId).notifier).initialize(sectionLessons);
+            ref
+                .read(lessonFlowProvider(lessonId).notifier)
+                .initialize(sectionLessons);
           }
         });
       });
@@ -70,133 +90,161 @@ class LessonFlowScreen extends HookConsumerWidget {
     }, [lessonState.currentSectionIndex]);
 
     // Show completion screen when all sections are done
-    final allCompleted = lessonState.sections.isNotEmpty &&
+    final allCompleted =
+        lessonState.sections.isNotEmpty &&
         lessonState.sections.every((s) => s.isCompleted);
-    final showCompletion = allCompleted && 
+    final showCompletion =
+        allCompleted &&
         lessonState.currentSectionIndex >= lessonState.sections.length;
 
     if (showCompletion) {
-      return Scaffold(
-        body: LessonCompleteWidget(
-          totalXP: lessonState.totalXPEarned,
-          comboBonus: lessonState.comboBonus,
-          accuracy: lessonState.accuracy,
-          timeTaken: lessonState.timeTaken.inSeconds,
-          bestCombo: comboTracker.maxCombo,
-          onContinue: () {
-            _pauseAllSectionVideos(ref, lessonState.sections);
-            comboTracker.reset();
-            ref.read(navigationProvider).pop();
-          },
-          onShare: () {
-            Share.share(
-              'I just completed a lesson on LingAfriq! ${lessonState.totalXPEarned} XP earned.',
-              subject: 'LingAfriq lesson complete',
-            );
-          },
+      return PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (bool didPop, Object? result) {
+          if (didPop) return;
+          exitLesson();
+        },
+        child: LingafriqScaffold(
+          body: LessonCompleteWidget(
+            totalXP: lessonState.totalXPEarned,
+            comboBonus: lessonState.comboBonus,
+            accuracy: lessonState.accuracy,
+            timeTaken: lessonState.timeTaken.inSeconds,
+            bestCombo: comboTracker.maxCombo,
+            onContinue: exitLesson,
+            onShare: () {
+              Share.share(
+                'I just completed a lesson on LingAfriq! ${lessonState.totalXPEarned} XP earned.',
+                subject: 'LingAfriq lesson complete',
+              );
+            },
+          ),
         ),
       );
     }
 
     final currentSection = lessonState.currentSection;
     if (currentSection == null || lessonState.sections.isEmpty) {
-      return Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(color: PanAfricanColors.primary),
+      return PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (bool didPop, Object? result) {
+          if (didPop) return;
+          ref.read(navigationProvider).pop();
+        },
+        child: LingafriqScaffold(
+          body: Center(
+            child: CircularProgressIndicator(color: PanAfricanColors.primary),
+          ),
         ),
       );
     }
 
-    return LoadingOverlayPro(
-      isLoading: lessonState.isLoading,
-      child: Scaffold(
-        body: Stack(
-          children: [
-            Column(
-              children: [
-                // Header
-                TopGradientBox(
-                  borderRadius: 0,
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Semantics(
-                                label: 'Exit lesson',
-                                button: true,
-                                child: BackButton(
-                                  color: Theme.of(context).colorScheme.onPrimary,
-                                  onPressed: () {
-                                    _pauseAllSectionVideos(ref, lessonState.sections);
-                                    comboTracker.reset();
-                                    ref.read(navigationProvider).pop();
-                                  },
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 16.w, bottom: 8.h),
-                                child: Text(
-                                  lessonTitle,
-                                  style: PanAfricanTypography.titleLarge(context).copyWith(
-                                    color: Theme.of(context).colorScheme.onPrimary,
-                                    fontWeight: FontWeight.bold,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, Object? result) {
+        if (didPop) return;
+        exitLesson();
+      },
+      child: LoadingOverlayPro(
+        isLoading: lessonState.isLoading,
+        child: LingafriqScaffold(
+          body: Stack(
+            children: [
+              Column(
+                children: [
+                  // Header
+                  TopGradientBox(
+                    borderRadius: 0,
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Semantics(
+                                  label: 'Exit lesson',
+                                  button: true,
+                                  child: BackButton(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onPrimary,
+                                    onPressed: exitLesson,
                                   ),
                                 ),
-                              ),
-                            ],
-                          ).expand(),
-                          PointsAndProfileImageBuilder(
-                            size: Size(0.07.sh, 0.07.sh),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    left: 16.w,
+                                    bottom: 8.h,
+                                  ),
+                                  child: Text(
+                                    lessonTitle,
+                                    style:
+                                        PanAfricanTypography.titleLarge(
+                                          context,
+                                        ).copyWith(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onPrimary,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                  ),
+                                ),
+                              ],
+                            ).expand(),
+                            PointsAndProfileImageBuilder(
+                              size: Size(0.07.sh, 0.07.sh),
+                            ),
+                            SizedBox(width: 16.w),
+                          ],
+                        ),
+                        // Progress bar
+                        Semantics(
+                          label:
+                              'Lesson progress. Section ${lessonState.currentSectionIndex + 1} of ${lessonState.sections.length}. ${(lessonState.completedSections / lessonState.sections.length * 100).toInt()} percent complete.',
+                          value:
+                              '${lessonState.currentSectionIndex + 1} of ${lessonState.sections.length}',
+                          child: LessonProgressBar(
+                            sections: lessonState.sections,
+                            currentIndex: lessonState.currentSectionIndex,
                           ),
-                          SizedBox(width: 16.w),
-                        ],
-                      ),
-                      // Progress bar
-                      Semantics(
-                        label: 'Lesson progress. Section ${lessonState.currentSectionIndex + 1} of ${lessonState.sections.length}. ${(lessonState.completedSections / lessonState.sections.length * 100).toInt()} percent complete.',
-                        value: '${lessonState.currentSectionIndex + 1} of ${lessonState.sections.length}',
-                        child: LessonProgressBar(
-                          sections: lessonState.sections,
-                          currentIndex: lessonState.currentSectionIndex,
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
 
-                // Content
-                Expanded(
-                  child: PageView.builder(
-                    controller: pageController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: lessonState.sections.length,
-                    itemBuilder: (context, index) {
-                      final section = lessonState.sections[index];
-                      final sectionLabel = 'Section ${index + 1} of ${lessonState.sections.length}';
-                      return Semantics(
-                        label: sectionLabel,
-                        header: true,
-                        child: _buildSectionContent(
-                          context,
-                          ref,
-                          section,
-                          lessonFlow,
-                          lessonState,
-                          pageController,
-                        ),
-                      );
-                    },
+                  // Content
+                  Expanded(
+                    child: PageView.builder(
+                      controller: pageController,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: lessonState.sections.length,
+                      itemBuilder: (context, index) {
+                        final section = lessonState.sections[index];
+                        final sectionLabel =
+                            'Section ${index + 1} of ${lessonState.sections.length}';
+                        return Semantics(
+                          label: sectionLabel,
+                          header: true,
+                          child: _buildSectionContent(
+                            context,
+                            ref,
+                            section,
+                            lessonFlow,
+                            lessonState,
+                            pageController,
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
 
-            // Combo display
-            ComboDisplayWidget(comboTracker: comboTracker),
-          ],
+              // Combo display
+              ComboDisplayWidget(comboTracker: comboTracker),
+            ],
+          ),
         ),
       ),
     );
@@ -261,45 +309,31 @@ class LessonFlowScreen extends HookConsumerWidget {
                 ref.read(lessonFlowProvider(lessonId).notifier).nextSection();
               }
             }
+
             completeAndAdvance();
           },
           onCheckAnswer: (questionId, answer) async {
-            final isCorrect = await lessonFlow.checkQuizAnswer(
+            await lessonFlow.checkQuizAnswer(
               section.sectionId,
               questionId,
               answer,
             );
-            if (isCorrect) {
-              // Complete section
-              await lessonFlow.completeSection(section.sectionId);
-              
-              if (lessonState.hasMoreSections) {
-                // Auto-advance after short delay
-                await Future.delayed(const Duration(milliseconds: 1500));
-                if (context.mounted) {
-                  final nextIndex = lessonState.currentSectionIndex + 1;
-                  lessonFlow.nextSection();
-                  if (pageController.hasClients) {
-                    pageController.animateToPage(
-                      nextIndex,
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    );
-                  }
-                }
-              } else {
-                // All sections complete - show completion screen
-                ref.read(lessonFlowProvider(lessonId).notifier).nextSection();
-              }
-            }
+            // Multi-question sections: do NOT complete or advance here — only on
+            // the last question via onFinish. Single-question sections also use
+            // onFinish (Check → Finish) for one consistent code path.
           },
           isAnswerChecked: (questionId) {
-            return lessonState.quizAnswers[section.sectionId]?[questionId] != null;
+            return lessonState.quizAnswers[section.sectionId]?[questionId] !=
+                null;
           },
           isAnswerCorrect: (questionId, option) {
-            final question = section.questions?.firstWhere((q) => q.id == questionId);
+            final question = section.questions?.firstWhere(
+              (q) => q.id == questionId,
+            );
             if (question == null) return false;
-            final correctOption = question.options.firstWhere((o) => o.isCorrect);
+            final correctOption = question.options.firstWhere(
+              (o) => o.isCorrect,
+            );
             return correctOption.text == option;
           },
         );
@@ -312,10 +346,12 @@ class LessonFlowScreen extends HookConsumerWidget {
             lessonFlow.setWordQuizAnswer(section.sectionId, blankIndex, answer);
           },
           onCheck: () async {
-            final allCorrect = await lessonFlow.checkWordQuizCompletion(section.sectionId);
+            final allCorrect = await lessonFlow.checkWordQuizCompletion(
+              section.sectionId,
+            );
             if (allCorrect) {
               await lessonFlow.completeSection(section.sectionId);
-              
+
               if (lessonState.hasMoreSections) {
                 await Future.delayed(const Duration(milliseconds: 1500));
                 if (context.mounted) {
@@ -340,9 +376,12 @@ class LessonFlowScreen extends HookConsumerWidget {
   }
 
   /// Pause all video players across all lesson sections before navigating away.
-  static void _pauseAllSectionVideos(WidgetRef ref, List<LessonContent> sections) {
+  static void _pauseAllSectionVideos(
+    WidgetRef ref,
+    List<LessonContent> sections,
+  ) {
     for (final section in sections) {
-      final videoUrl = section.videoUrl;
+      final videoUrl = section.videoUrl?.trim();
       if (videoUrl != null && videoUrl.isNotEmpty) {
         try {
           ref.read(betterPlayerController(videoUrl)).pause();
@@ -350,7 +389,7 @@ class LessonFlowScreen extends HookConsumerWidget {
       }
       if (section.questions != null) {
         for (final q in section.questions!) {
-          final qVideo = q.videoUrl;
+          final qVideo = q.videoUrl?.trim();
           if (qVideo != null && qVideo.isNotEmpty) {
             try {
               ref.read(betterPlayerController(qVideo)).pause();

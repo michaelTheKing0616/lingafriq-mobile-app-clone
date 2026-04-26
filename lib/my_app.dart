@@ -49,6 +49,7 @@ import 'screens/village/my_tribe_screen.dart';
 import 'screens/village/tribal_duel_screen.dart';
 import 'screens/village/inter_tribe_leaderboard_screen.dart';
 import 'screens/chat/global_chat_screen_material3.dart';
+import 'screens/chat/lingchat_ai_conversation_screen.dart';
 import 'screens/social/user_connections_screen.dart';
 import 'screens/gamification/quest_screen.dart';
 import 'screens/gamification/seasonal_events_screen.dart';
@@ -299,6 +300,7 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'tribal-duel': (_) => const TribalDuelScreen(),
     'inter-tribe-leaderboard': (_) => const InterTribeLeaderboardScreen(),
     'global_chat': (_) => const GlobalChatScreenMaterial3(),
+    'lingchat_ai': (_) => const LingChatAiConversationScreen(),
     'connections': (_) => const UserConnectionsScreen(),
     'quest': (_) => const QuestScreen(),
     'events': (_) => const SeasonalEventsScreen(),

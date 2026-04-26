@@ -20,6 +20,7 @@ import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/providers/chat_socket_provider.dart';
 import 'package:lingafriq/widgets/empty_state_widget.dart';
 import 'package:lingafriq/widgets/error_state_widget.dart';
+import 'package:lingafriq/widgets/lingafriq_scaffold.dart';
 import 'package:lingafriq/widgets/skeleton_loader.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/services/polie_social_chat_helper.dart';
@@ -369,7 +370,9 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
       return null;
     }, [socketState.messages.length]);
 
-    return Scaffold(
+    return LingafriqScaffold(
+        applyTopSafeArea: false,
+        applyBottomSafeArea: true,
         appBar: AppBar(
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -515,6 +518,24 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
             Expanded(
               child: Column(
                 children: [
+                  Material(
+                    color: PanAfricanColors.primary.withOpacity(0.1),
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.smart_toy_outlined,
+                        color: PanAfricanColors.primary,
+                      ),
+                      title: const Text('Message with Polie (AI)'),
+                      subtitle: const Text(
+                        'Private practice — your turns are not posted to channels',
+                      ),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () {
+                        HapticFeedback.selectionClick();
+                        Navigator.pushNamed(context, 'lingchat_ai');
+                      },
+                    ),
+                  ),
                   Container(
                     height: 48,
                     padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.sm),

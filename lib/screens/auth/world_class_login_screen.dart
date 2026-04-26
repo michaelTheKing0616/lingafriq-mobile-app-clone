@@ -156,6 +156,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
                       biometricPreferenceService,
                       ref,
                       isDark,
+                      isLoading,
                     )
                         .animate()
                         .fadeIn(delay: 600.ms, duration: 400.ms)
@@ -461,12 +462,14 @@ class WorldClassLoginScreen extends HookConsumerWidget {
     BiometricPreferenceService biometricPreferenceService,
     WidgetRef ref,
     bool isDark,
+    bool isLoading,
   ) {
     return Semantics(
       label: 'Sign in',
       button: true,
       child: ScaleOnTap(
         onTap: () async {
+          if (isLoading) return;
           if (!formKey.currentState!.validate()) {
             HapticFeedback.mediumImpact();
             return;
@@ -514,7 +517,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
         ),
         child: Center(
           child: Text(
-            'Sign In',
+            isLoading ? 'Signing in…' : 'Sign In',
             style: PanAfricanTypography.titleLarge(context).copyWith(
               color: Theme.of(context).colorScheme.onPrimary,
               fontWeight: FontWeight.bold,

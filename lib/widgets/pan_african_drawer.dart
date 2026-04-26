@@ -111,6 +111,13 @@ class PanAfricanDrawer extends ConsumerWidget {
                       title: 'Community & Social',
                       items: [
                         _DrawerItem(
+                          icon: Icons.smart_toy_outlined,
+                          title: 'Ling Chat (AI)',
+                          subtitle: 'Private conversation practice',
+                          accentColor: PanAfricanColors.primary,
+                          onTap: () => _navigateTo(context, ref, 'lingchat_ai'),
+                        ),
+                        _DrawerItem(
                           icon: Icons.leaderboard_rounded,
                           title: 'Leaderboards',
                           onTap: () => _navigateTo(context, ref, 'leaderboard'),

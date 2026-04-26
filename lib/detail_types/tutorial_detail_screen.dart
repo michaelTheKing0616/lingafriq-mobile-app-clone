@@ -34,6 +34,7 @@ class TutorialDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoading = ref.watch(apiProvider.select((value) => value.isLoading));
+    final videoKey = video?.trim() ?? '';
     return LoadingOverlayPro(
       isLoading: isLoading,
       child: Scaffold(
@@ -50,18 +51,25 @@ class TutorialDetailScreen extends ConsumerWidget {
                       BackButton(
                         color: Theme.of(context).colorScheme.onPrimary,
                         onPressed: () {
-                          if (video != null && video!.isNotEmpty) {
-                            ref.read(betterPlayerController(video!)).pause();
+                          if (videoKey.isNotEmpty) {
+                            try {
+                              ref
+                                  .read(betterPlayerController(videoKey))
+                                  .pause();
+                            } catch (_) {}
                           }
                           Navigator.of(context).pop();
                         },
                       ),
-                      title.text.xl2.semiBold.maxLines(2).ellipsis.color(Theme.of(context).colorScheme.onPrimary).make().p16(),
+                      title.text.xl2.semiBold
+                          .maxLines(2)
+                          .ellipsis
+                          .color(Theme.of(context).colorScheme.onPrimary)
+                          .make()
+                          .p16(),
                     ],
                   ).expand(),
-                  PointsAndProfileImageBuilder(
-                    size: Size(0.07.sh, 0.07.sh),
-                  ),
+                  PointsAndProfileImageBuilder(size: Size(0.07.sh, 0.07.sh)),
                   16.widthBox,
                 ],
               ),
@@ -71,16 +79,20 @@ class TutorialDetailScreen extends ConsumerWidget {
               children: [
                 if ((audio != null && audio!.isNotEmpty))
                   AudioPlayerWidget(audioUrl: audio!).pOnly(top: 8),
-                if ((video != null && video!.isNotEmpty))
+                if (videoKey.isNotEmpty)
                   Card(
-                    color: context.isDarkMode ? context.cardColor : Theme.of(context).colorScheme.surface,
+                    color: context.isDarkMode
+                        ? context.cardColor
+                        : Theme.of(context).colorScheme.surface,
                     elevation: 12,
                     shadowColor: Colors.black38,
-                    child: PortraitPlayerPage(videoUrl: video!),
+                    child: PortraitPlayerPage(videoUrl: videoKey),
                   ).px16().py8(),
                 if ((image != null && image!.isNotEmpty))
                   Card(
-                    color: context.isDarkMode ? context.cardColor : Theme.of(context).colorScheme.surface,
+                    color: context.isDarkMode
+                        ? context.cardColor
+                        : Theme.of(context).colorScheme.surface,
                     elevation: 12,
                     shadowColor: Colors.black38,
                     child: CachedNetworkImage(
@@ -91,7 +103,9 @@ class TutorialDetailScreen extends ConsumerWidget {
                   ).px16(),
                 if ((text != null && text!.isNotEmpty))
                   Card(
-                    color: context.isDarkMode ? context.cardColor : Theme.of(context).colorScheme.surface,
+                    color: context.isDarkMode
+                        ? context.cardColor
+                        : Theme.of(context).colorScheme.surface,
                     elevation: 12,
                     shadowColor: Colors.black38,
                     child: Column(
@@ -108,13 +122,17 @@ class TutorialDetailScreen extends ConsumerWidget {
             PrimaryButton(
               width: 0.6.sw,
               onTap: () async {
-                if (video != null && video!.isNotEmpty) {
-                  ref.read(betterPlayerController(video!)).pause();
+                if (videoKey.isNotEmpty) {
+                  try {
+                    ref.read(betterPlayerController(videoKey)).pause();
+                  } catch (_) {}
                 }
 
                 bool result = true;
                 if (!isCompleted) {
-                  result = await ref.read(apiProvider.notifier).markAsComplete(endpointToHit);
+                  result = await ref
+                      .read(apiProvider.notifier)
+                      .markAsComplete(endpointToHit);
                 }
                 if (result) {
                   Navigator.of(context).pop(true);

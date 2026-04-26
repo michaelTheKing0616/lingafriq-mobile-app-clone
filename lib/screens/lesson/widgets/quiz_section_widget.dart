@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -42,6 +43,14 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
   @override
   void initState() {
     super.initState();
+    final qs = widget.content.questions;
+    if (kDebugMode && qs != null && qs.length > 1) {
+      final ids = qs.map((e) => e.id).toSet();
+      assert(
+        ids.length == qs.length,
+        'Quiz questions must have unique ids (duplicate undermines state maps).',
+      );
+    }
     _pageController = PageController();
     _shakeController = AnimationController(
       vsync: this,
@@ -82,21 +91,22 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
     if (!isCorrect) {
       _shakeController.forward(from: 0);
       await Future.delayed(const Duration(milliseconds: 500));
+      if (!mounted) return;
       _shakeController.reset();
     }
 
+    if (!mounted) return;
     widget.onCheckAnswer(questionId, answer);
   }
 
-  void _goToNextQuestion(List<QuizQuestion> questions) {
-    if (_currentQuestionIndex >= questions.length - 1) return;
-    _pageController.nextPage(
+  /// Page index is driven by [PageView.onPageChanged] to avoid desync with
+  /// [PageController] (fixes crashes / wrong question after Next/Previous).
+  Future<void> _goToNextPage(int questionCount) async {
+    if (_currentQuestionIndex >= questionCount - 1) return;
+    await _pageController.nextPage(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
-    setState(() {
-      _currentQuestionIndex++;
-    });
   }
 
   @override
@@ -149,6 +159,12 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
           child: PageView.builder(
             controller: _pageController,
             physics: const NeverScrollableScrollPhysics(),
+            onPageChanged: (index) {
+              if (!mounted) return;
+              setState(() {
+                _currentQuestionIndex = index;
+              });
+            },
             itemCount: questions.length,
             itemBuilder: (context, index) {
               return _buildQuestionCard(questions[index], index == _currentQuestionIndex);
@@ -169,14 +185,11 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
                       label: 'Previous question',
                       button: true,
                       child: PanAfricanButton(
-                        onPressed: () {
-                          _pageController.previousPage(
+                        onPressed: () async {
+                          await _pageController.previousPage(
                             duration: const Duration(milliseconds: 300),
                             curve: Curves.easeInOut,
                           );
-                          setState(() {
-                            _currentQuestionIndex--;
-                          });
                         },
                         label: 'Previous',
                         icon: Icons.arrow_back_rounded,
@@ -198,11 +211,12 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
                     enabled: isChecked || selectedAnswer != null,
                     child: PanAfricanButton(
                       onPressed: isChecked
-                          ? () {
+                          ? () async {
                               if (_currentQuestionIndex == questions.length - 1) {
+                                if (!mounted) return;
                                 widget.onFinish();
                               } else {
-                                _goToNextQuestion(questions);
+                                await _goToNextPage(questions.length);
                               }
                             }
                           : (selectedAnswer != null

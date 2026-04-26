@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:lingafriq/utils/api.dart' as api_paths;
 
 class TransportErrorPolicy {
   TransportErrorPolicy._();
@@ -87,6 +88,34 @@ class TransportErrorPolicy {
     return false;
   }
 
+  /// True when a 429 is likely from sign-in or token refresh traffic (show neutral
+  /// copy instead of "you're too fast" which reads like user fault).
+  static bool isAuthJwtRateLimitPath(String path) {
+    final p = path.startsWith('/') ? path.substring(1) : path;
+    return p == api_paths.Api.login ||
+        p == api_paths.Api.refreshToken ||
+        p.contains('auth/jwt/');
+  }
+
+  /// User-facing message for HTTP 429, path-aware for auth/jwt.
+  static String messageForHttp429({
+    required String path,
+    int? retryAfterSeconds,
+  }) {
+    final isAuth = isAuthJwtRateLimitPath(path);
+    if (retryAfterSeconds != null) {
+      final minutes = (retryAfterSeconds / 60).ceil().clamp(1, 10000);
+      if (isAuth) {
+        return 'Sign-in is temporarily limited. Please try again in $minutes minute${minutes == 1 ? '' : 's'}.';
+      }
+      return 'Please slow down. Try again in $minutes minute${minutes == 1 ? '' : 's'}.';
+    }
+    if (isAuth) {
+      return 'Unable to sign in right now. The service may be busy — please try again in a few seconds.';
+    }
+    return 'You\'re making requests too quickly. Please wait a moment and try again.';
+  }
+
   static String toUserMessage(DioException error) {
     // Check backend issue FIRST — many connection errors are server-side, not
     // network-side. Previous order caused "no internet" for server-down cases.
@@ -112,12 +141,11 @@ class TransportErrorPolicy {
       if (statusCode == 404) return 'The requested resource was not found.';
       if (statusCode == 429) {
         final retryAfter = error.response?.headers.value('retry-after');
-        if (retryAfter != null) {
-          final seconds = int.tryParse(retryAfter) ?? 60;
-          final minutes = (seconds / 60).ceil();
-          return 'Please slow down. Try again in $minutes minute${minutes > 1 ? 's' : ''}.';
-        }
-        return 'You\'re making requests too quickly. Please wait a moment and try again.';
+        final seconds = retryAfter != null ? int.tryParse(retryAfter) : null;
+        return messageForHttp429(
+          path: error.requestOptions.path,
+          retryAfterSeconds: seconds,
+        );
       }
       if (statusCode != null && statusCode >= 400 && statusCode < 500) {
         final data = error.response?.data;

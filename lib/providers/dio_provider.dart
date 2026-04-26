@@ -13,6 +13,7 @@ import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/screens/auth/world_class_login_screen.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:lingafriq/utils/certificate_pinning.dart';
+import 'package:lingafriq/utils/transport_error_policy.dart';
 
 import '../utils/api.dart';
 
@@ -187,6 +188,10 @@ class _DioLogger extends Interceptor {
     if (err.response?.statusCode == 429) {
       final retryAfter = err.response?.headers.value('retry-after');
       final retrySeconds = retryAfter != null ? int.tryParse(retryAfter) : null;
+      final msg = TransportErrorPolicy.messageForHttp429(
+        path: err.requestOptions.path,
+        retryAfterSeconds: retrySeconds,
+      );
       
       // Create user-friendly error that will be caught by error handlers
       final userFriendlyError = DioException(
@@ -196,13 +201,9 @@ class _DioLogger extends Interceptor {
             ? Response(
                 requestOptions: err.requestOptions,
                 statusCode: 429,
-                statusMessage: retrySeconds != null
-                    ? 'Please slow down. Try again in ${(retrySeconds / 60).ceil()} minute${(retrySeconds / 60).ceil() > 1 ? 's' : ''}.'
-                    : 'You\'re making requests too quickly. Please wait a moment and try again.',
+                statusMessage: msg,
                 data: {
-                  'message': retrySeconds != null
-                      ? 'Please slow down. Try again in ${(retrySeconds / 60).ceil()} minute${(retrySeconds / 60).ceil() > 1 ? 's' : ''}.'
-                      : 'You\'re making requests too quickly. Please wait a moment and try again.',
+                  'message': msg,
                   'code': 429,
                   'retry_after': retrySeconds,
                 },
@@ -212,7 +213,7 @@ class _DioLogger extends Interceptor {
         error: 'Rate limit exceeded',
       );
       
-      _log('Rate limit (429) detected - transformed to user-friendly message');
+      _log('Rate limit (429) on ${err.requestOptions.path} - transformed to user-friendly message');
       return handler.reject(userFriendlyError);
     }
     

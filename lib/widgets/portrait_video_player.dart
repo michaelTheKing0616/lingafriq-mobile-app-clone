@@ -4,8 +4,16 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/media_url_resolver.dart';
 
+/// Family key: always trim so pause/dispose in lesson flow matches the same provider
+/// as the in-tree [PortraitPlayerPage].
+String lessonVideoControllerKey(String url) => url.trim();
+
 final betterPlayerController = Provider.family.autoDispose((ref, String url) {
-  final resolvedUrl = resolveMediaUrl(url) ?? url;
+  final key = lessonVideoControllerKey(url);
+  if (key.isEmpty) {
+    throw StateError('betterPlayerController: empty video URL');
+  }
+  final resolvedUrl = resolveMediaUrl(key) ?? key;
   BetterPlayerDataSource betterPlayerDataSource =
       BetterPlayerDataSource(BetterPlayerDataSourceType.network, resolvedUrl);
   final controller = BetterPlayerController(
@@ -35,7 +43,7 @@ final betterPlayerController = Provider.family.autoDispose((ref, String url) {
   return controller;
 });
 
-class PortraitPlayerPage extends ConsumerWidget {
+class PortraitPlayerPage extends ConsumerStatefulWidget {
   final String videoUrl;
 
   const PortraitPlayerPage({
@@ -44,8 +52,36 @@ class PortraitPlayerPage extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final controller = ref.watch(betterPlayerController(videoUrl));
+  ConsumerState<PortraitPlayerPage> createState() => _PortraitPlayerPageState();
+}
+
+class _PortraitPlayerPageState extends ConsumerState<PortraitPlayerPage> {
+  @override
+  void deactivate() {
+    // Run before the route finishes popping so iOS / AVPlayer cannot keep
+    // decoding audio in the background after the user leaves the screen.
+    _pauseAttachedPlayer();
+    super.deactivate();
+  }
+
+  void _pauseAttachedPlayer() {
+    final raw = widget.videoUrl.trim();
+    if (raw.isEmpty) return;
+    try {
+      final c = ref.read(betterPlayerController(raw));
+      c.pause();
+    } catch (_) {
+      // Provider may not exist if the player never mounted.
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final key = widget.videoUrl.trim();
+    if (key.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    final controller = ref.watch(betterPlayerController(key));
     return AspectRatio(
       aspectRatio: 16 / 9,
       child: BetterPlayer(controller: controller),

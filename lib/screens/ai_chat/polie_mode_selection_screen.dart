@@ -55,13 +55,6 @@ class PolieModeSelectionScreen extends ConsumerWidget {
         mode: PolieMode.roleplay,
       ),
       _ModeData(
-        title: 'Conversation',
-        description: 'Free-flowing dialogue. Natural practice with gentle correction.',
-        icon: Icons.chat_bubble_outline_rounded,
-        accentColor: PolieColors.electricTealLight,
-        mode: PolieMode.conversation,
-      ),
-      _ModeData(
         title: 'Vocabulary',
         description: 'New words, usage, and spaced repetition.',
         icon: Icons.book_rounded,
