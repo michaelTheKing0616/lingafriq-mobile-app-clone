@@ -9,10 +9,12 @@ class LivingDictionaryScreen extends ConsumerStatefulWidget {
   const LivingDictionaryScreen({super.key});
 
   @override
-  ConsumerState<LivingDictionaryScreen> createState() => _LivingDictionaryScreenState();
+  ConsumerState<LivingDictionaryScreen> createState() =>
+      _LivingDictionaryScreenState();
 }
 
-class _LivingDictionaryScreenState extends ConsumerState<LivingDictionaryScreen> {
+class _LivingDictionaryScreenState
+    extends ConsumerState<LivingDictionaryScreen> {
   final _svc = LivingDictionaryService();
   bool _loading = true;
   bool _loadingMore = false;
@@ -21,6 +23,7 @@ class _LivingDictionaryScreenState extends ConsumerState<LivingDictionaryScreen>
   String? _nextBefore;
   final _searchController = TextEditingController();
   String _query = '';
+
   /// `cache` when [LivingDictionaryService] served last successful snapshot (offline).
   String? _listDataSource;
   static const int _pageSize = 200;
@@ -67,8 +70,10 @@ class _LivingDictionaryScreenState extends ConsumerState<LivingDictionaryScreen>
       }
     });
     try {
+      final language = _defaultLanguageCode();
       final result = await _svc.listEntries(
         query: _query.isEmpty ? null : _query,
+        language: language,
         limit: _pageSize,
       );
       if (!mounted) return;
@@ -113,15 +118,15 @@ class _LivingDictionaryScreenState extends ConsumerState<LivingDictionaryScreen>
     try {
       await _svc.deleteEntry(id);
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Entry removed')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Entry removed')));
       await _load(reset: true);
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.toString())));
     }
   }
 
@@ -134,8 +139,10 @@ class _LivingDictionaryScreenState extends ConsumerState<LivingDictionaryScreen>
       _error = null;
     });
     try {
+      final language = _defaultLanguageCode();
       final result = await _svc.listEntries(
         query: _query.isEmpty ? null : _query,
+        language: language,
         before: before,
         limit: _pageSize,
       );
@@ -184,13 +191,19 @@ class _LivingDictionaryScreenState extends ConsumerState<LivingDictionaryScreen>
                 final lang = languageCtrl.text.trim();
                 if (lemma.isEmpty || lang.isEmpty) {
                   messenger.showSnackBar(
-                    const SnackBar(content: Text('Language and word / phrase are required')),
+                    const SnackBar(
+                      content: Text('Language and word / phrase are required'),
+                    ),
                   );
                   return;
                 }
                 if (!consentStorage) {
                   messenger.showSnackBar(
-                    const SnackBar(content: Text('Confirm storage consent to save this entry')),
+                    const SnackBar(
+                      content: Text(
+                        'Confirm storage consent to save this entry',
+                      ),
+                    ),
                   );
                   return;
                 }
@@ -199,7 +212,9 @@ class _LivingDictionaryScreenState extends ConsumerState<LivingDictionaryScreen>
                   await _svc.addEntry(
                     language: lang,
                     lemma: lemma,
-                    translation: translationCtrl.text.trim().isEmpty ? null : translationCtrl.text.trim(),
+                    translation: translationCtrl.text.trim().isEmpty
+                        ? null
+                        : translationCtrl.text.trim(),
                     idiom: idiom,
                     consentAcknowledged: consentStorage,
                   );
@@ -207,7 +222,9 @@ class _LivingDictionaryScreenState extends ConsumerState<LivingDictionaryScreen>
                   if (sheetContext.mounted) {
                     Navigator.of(sheetContext).pop();
                   }
-                  messenger.showSnackBar(const SnackBar(content: Text('Entry saved')));
+                  messenger.showSnackBar(
+                    const SnackBar(content: Text('Entry saved')),
+                  );
                   await _load(reset: true);
                 } catch (e) {
                   messenger.showSnackBar(SnackBar(content: Text(e.toString())));
@@ -223,7 +240,10 @@ class _LivingDictionaryScreenState extends ConsumerState<LivingDictionaryScreen>
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('Add to living dictionary', style: ModernGriotTypography.titleSmall()),
+                    Text(
+                      'Add to living dictionary',
+                      style: ModernGriotTypography.titleSmall(),
+                    ),
                     const SizedBox(height: 16),
                     TextField(
                       controller: languageCtrl,
@@ -259,13 +279,19 @@ class _LivingDictionaryScreenState extends ConsumerState<LivingDictionaryScreen>
                       contentPadding: EdgeInsets.zero,
                       title: const Text('Mark as idiom'),
                       value: idiom,
-                      onChanged: saving ? null : (v) => setModal(() => idiom = v),
+                      onChanged: saving
+                          ? null
+                          : (v) => setModal(() => idiom = v),
                     ),
                     CheckboxListTile(
                       contentPadding: EdgeInsets.zero,
                       controlAffinity: ListTileControlAffinity.leading,
-                      title: const Text('Save to my personal dictionary on this device account'),
-                      subtitle: const Text('Required for storage and sync with the server.'),
+                      title: const Text(
+                        'Save to my personal dictionary on this device account',
+                      ),
+                      subtitle: const Text(
+                        'Required for storage and sync with the server.',
+                      ),
                       value: consentStorage,
                       onChanged: saving
                           ? null
@@ -326,227 +352,269 @@ class _LivingDictionaryScreenState extends ConsumerState<LivingDictionaryScreen>
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _error != null
-              ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Could not load entries.',
-                          style: ModernGriotTypography.titleSmall(),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(_error!, textAlign: TextAlign.center),
-                        const SizedBox(height: 16),
-                        FilledButton(
-                          onPressed: () => _load(reset: true),
-                          child: const Text('Retry'),
-                        ),
-                      ],
+          ? Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Could not load entries.',
+                      style: ModernGriotTypography.titleSmall(),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(_error!, textAlign: TextAlign.center),
+                    const SizedBox(height: 16),
+                    FilledButton(
+                      onPressed: () => _load(reset: true),
+                      child: const Text('Retry'),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (_listDataSource == 'cache')
+                  Material(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.surfaceContainerHighest,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 10,
+                      ),
+                      child: Text(
+                        'Offline: showing your last saved word list for this search.',
+                        style: ModernGriotTypography.bodySmall(),
+                      ),
                     ),
                   ),
-                )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    if (_listDataSource == 'cache')
-                      Material(
-                        color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                          child: Text(
-                            'Offline: showing your last saved word list for this search.',
-                            style: ModernGriotTypography.bodySmall(),
-                          ),
-                        ),
-                      ),
-                    Expanded(
-                      child: RefreshIndicator(
-                        onRefresh: () => _load(reset: true),
-                        child: ListView.separated(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          padding: const EdgeInsets.all(12),
-                          itemCount: itemCount,
-                          separatorBuilder: (_, __) => const SizedBox(height: 8),
-                          itemBuilder: (context, i) {
-                      if (i == 0) {
-                        return Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: isDark
-                                ? Theme.of(context).colorScheme.surfaceContainerLow
-                                : Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.55),
-                            borderRadius: BorderRadius.circular(18),
-                            border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.12)),
-                          ),
-                          child: Row(
-                            children: [
-                              const Icon(Icons.search_rounded),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: TextField(
-                                  controller: _searchController,
-                                  decoration: const InputDecoration(
-                                    hintText: 'Search words / phrases',
-                                    border: InputBorder.none,
-                                    isDense: true,
+                Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: () => _load(reset: true),
+                    child: ListView.separated(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: const EdgeInsets.all(12),
+                      itemCount: itemCount,
+                      separatorBuilder: (_, __) => const SizedBox(height: 8),
+                      itemBuilder: (context, i) {
+                        if (i == 0) {
+                          return Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: isDark
+                                  ? Theme.of(
+                                      context,
+                                    ).colorScheme.surfaceContainerLow
+                                  : Theme.of(context)
+                                        .colorScheme
+                                        .surfaceContainerHighest
+                                        .withOpacity(0.55),
+                              borderRadius: BorderRadius.circular(18),
+                              border: Border.all(
+                                color: Theme.of(
+                                  context,
+                                ).dividerColor.withOpacity(0.12),
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(Icons.search_rounded),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: TextField(
+                                    controller: _searchController,
+                                    decoration: const InputDecoration(
+                                      hintText: 'Search words / phrases',
+                                      border: InputBorder.none,
+                                      isDense: true,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              if (_query.isNotEmpty)
-                                IconButton(
-                                  tooltip: 'Clear',
-                                  onPressed: () {
-                                    HapticFeedback.selectionClick();
-                                    _searchController.clear();
-                                  },
-                                  icon: const Icon(Icons.close_rounded),
-                                ),
-                            ],
-                          ),
-                        );
-                      }
-
-                      if (showEmpty) {
-                        if (i == 1) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 32),
-                            child: Column(
-                              children: [
-                                Icon(
-                                  Icons.menu_book_outlined,
-                                  size: 56,
-                                  color: Theme.of(context).colorScheme.outline,
-                                ),
-                                const SizedBox(height: 16),
-                                Text(
-                                  'No entries yet',
-                                  style: ModernGriotTypography.titleSmall(),
-                                  textAlign: TextAlign.center,
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  'Save words you hear in media import, or add them manually with +.',
-                                  style: ModernGriotTypography.bodySmall(),
-                                  textAlign: TextAlign.center,
-                                ),
+                                if (_query.isNotEmpty)
+                                  IconButton(
+                                    tooltip: 'Clear',
+                                    onPressed: () {
+                                      HapticFeedback.selectionClick();
+                                      _searchController.clear();
+                                    },
+                                    icon: const Icon(Icons.close_rounded),
+                                  ),
                               ],
                             ),
                           );
                         }
-                        return const SizedBox.shrink();
-                      }
 
-                      if (i == _entries.length + 1) {
-                        final canLoadMore =
-                            _nextBefore != null && _nextBefore!.isNotEmpty && _entries.isNotEmpty;
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: Center(
-                            child: canLoadMore
-                                ? OutlinedButton(
-                                    onPressed: _loadingMore ? null : _loadMore,
-                                    child: _loadingMore
-                                        ? const SizedBox(
-                                            width: 16,
-                                            height: 16,
-                                            child: CircularProgressIndicator(strokeWidth: 2),
-                                          )
-                                        : const Text('Load more'),
-                                  )
-                                : const SizedBox.shrink(),
-                          ),
-                        );
-                      }
-
-                      final entryIndex = i - 1;
-                      final e = _entries[entryIndex];
-                      final lemma = (e['lemma'] ?? '').toString();
-                      final translation = (e['translation'] ?? '').toString();
-                      final language = (e['language'] ?? '').toString();
-                      final idiom = e['idiom'] == true;
-                      final contextText = (e['context'] ?? '').toString();
-                      return Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surface,
-                          borderRadius: BorderRadius.circular(18),
-                          border: Border.all(
-                            color: Theme.of(context).dividerColor.withOpacity(0.25),
-                          ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    lemma.isEmpty ? '(untitled)' : lemma,
-                                    style: ModernGriotTypography.titleSmall(),
+                        if (showEmpty) {
+                          if (i == 1) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 32),
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.menu_book_outlined,
+                                    size: 56,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.outline,
                                   ),
-                                ),
-                                if (idiom)
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context).colorScheme.secondaryContainer,
-                                      borderRadius: BorderRadius.circular(999),
-                                    ),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    'No entries yet',
+                                    style: ModernGriotTypography.titleSmall(),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    'Save words you hear in media import, or add them manually with +.',
+                                    style: ModernGriotTypography.bodySmall(),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        }
+
+                        if (i == _entries.length + 1) {
+                          final canLoadMore =
+                              _nextBefore != null &&
+                              _nextBefore!.isNotEmpty &&
+                              _entries.isNotEmpty;
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: Center(
+                              child: canLoadMore
+                                  ? OutlinedButton(
+                                      onPressed: _loadingMore
+                                          ? null
+                                          : _loadMore,
+                                      child: _loadingMore
+                                          ? const SizedBox(
+                                              width: 16,
+                                              height: 16,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                              ),
+                                            )
+                                          : const Text('Load more'),
+                                    )
+                                  : const SizedBox.shrink(),
+                            ),
+                          );
+                        }
+
+                        final entryIndex = i - 1;
+                        final e = _entries[entryIndex];
+                        final lemma = (e['lemma'] ?? '').toString();
+                        final translation = (e['translation'] ?? '').toString();
+                        final language = (e['language'] ?? '').toString();
+                        final idiom = e['idiom'] == true;
+                        final contextText = (e['context'] ?? '').toString();
+                        return Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.surface,
+                            borderRadius: BorderRadius.circular(18),
+                            border: Border.all(
+                              color: Theme.of(
+                                context,
+                              ).dividerColor.withOpacity(0.25),
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
                                     child: Text(
-                                      'Idiom',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Theme.of(context).colorScheme.onSecondaryContainer,
-                                        fontWeight: FontWeight.w600,
+                                      lemma.isEmpty ? '(untitled)' : lemma,
+                                      style: ModernGriotTypography.titleSmall(),
+                                    ),
+                                  ),
+                                  if (idiom)
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.secondaryContainer,
+                                        borderRadius: BorderRadius.circular(
+                                          999,
+                                        ),
+                                      ),
+                                      child: Text(
+                                        'Idiom',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onSecondaryContainer,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
                                     ),
+                                  IconButton(
+                                    tooltip: 'Remove from dictionary',
+                                    icon: Icon(
+                                      Icons.delete_outline_rounded,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.outline,
+                                    ),
+                                    onPressed: () {
+                                      HapticFeedback.lightImpact();
+                                      _confirmAndDeleteEntry(e);
+                                    },
                                   ),
-                                IconButton(
-                                  tooltip: 'Remove from dictionary',
-                                  icon: Icon(
-                                    Icons.delete_outline_rounded,
-                                    color: Theme.of(context).colorScheme.outline,
+                                ],
+                              ),
+                              const SizedBox(height: 4),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.public_rounded,
+                                    size: 14,
+                                    color: Theme.of(context).hintColor,
                                   ),
-                                  onPressed: () {
-                                    HapticFeedback.lightImpact();
-                                    _confirmAndDeleteEntry(e);
-                                  },
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    language,
+                                    style: ModernGriotTypography.bodySmall(),
+                                  ),
+                                ],
+                              ),
+                              if (translation.isNotEmpty) ...[
+                                const SizedBox(height: 6),
+                                Text(
+                                  translation,
+                                  style: ModernGriotTypography.bodyMedium(),
                                 ),
                               ],
-                            ),
-                            const SizedBox(height: 4),
-                            Row(
-                              children: [
-                                Icon(Icons.public_rounded, size: 14, color: Theme.of(context).hintColor),
-                                const SizedBox(width: 6),
-                                Text(language, style: ModernGriotTypography.bodySmall()),
+                              if (contextText.isNotEmpty) ...[
+                                const SizedBox(height: 8),
+                                Text(
+                                  contextText,
+                                  style: ModernGriotTypography.bodySmall(),
+                                ),
                               ],
-                            ),
-                            if (translation.isNotEmpty) ...[
-                              const SizedBox(height: 6),
-                              Text(
-                                translation,
-                                style: ModernGriotTypography.bodyMedium(),
-                              ),
                             ],
-                            if (contextText.isNotEmpty) ...[
-                              const SizedBox(height: 8),
-                              Text(
-                                contextText,
-                                style: ModernGriotTypography.bodySmall(),
-                              ),
-                            ],
-                          ],
-                        ),
-                      );
-                    },
                           ),
-                        ),
-                      ),
-                    ],
+                        );
+                      },
+                    ),
                   ),
+                ),
+              ],
+            ),
     );
   }
 }
