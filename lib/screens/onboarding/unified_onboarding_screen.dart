@@ -28,7 +28,7 @@ import 'package:lingafriq/avatars/avatars.dart';
 import 'placement_test_screen.dart';
 
 /// Unified Onboarding: "Kijiji cha Lugha" - The Language Village
-/// 
+///
 /// Combines the best of both worlds:
 /// - Story-driven African narrative with cultural characters
 /// - Material 3 UI with Pan-African design system
@@ -58,7 +58,8 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
     final steps = [
       // Step 0: Welcome to the Village
       _VillageWelcomeStep(
-        onNext: () => _goToNext(pageController, currentStep, animationController),
+        onNext: () =>
+            _goToNext(pageController, currentStep, animationController),
       ),
       // Step 1: Meet the Elder (What language do you speak?)
       _ElderStep(
@@ -144,10 +145,18 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
               itemBuilder: (context, index) => steps[index],
             ),
             // Progress indicator
-            _buildProgressIndicator(context, ref, currentStep.value, totalSteps,
-              onBack: currentStep.value > 0 
-                ? () => _goToPrevious(pageController, currentStep, animationController)
-                : null,
+            _buildProgressIndicator(
+              context,
+              ref,
+              currentStep.value,
+              totalSteps,
+              onBack: currentStep.value > 0
+                  ? () => _goToPrevious(
+                      pageController,
+                      currentStep,
+                      animationController,
+                    )
+                  : null,
               onSkip: () => _skipOnboarding(context, ref),
             ),
           ],
@@ -176,28 +185,42 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
             if (onBack != null)
               IconButton(
                 onPressed: onBack,
-                icon: Icon(Icons.arrow_back_ios_rounded, color: Theme.of(context).colorScheme.onPrimary, size: 20.sp),
+                icon: Icon(
+                  Icons.arrow_back_ios_rounded,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  size: 20.sp,
+                ),
                 style: IconButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.15),
+                  backgroundColor: Theme.of(
+                    context,
+                  ).colorScheme.onPrimary.withOpacity(0.15),
                 ),
               )
             else
               SizedBox(width: 48.w),
-            
+
             // Progress bar
             Expanded(
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.12),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onPrimary.withOpacity(0.12),
                   borderRadius: BorderRadius.circular(PanAfricanRadius.pill),
-                  border: Border.all(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2)),
+                  border: Border.all(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onPrimary.withOpacity(0.2),
+                  ),
                 ),
                 child: Row(
                   children: [
                     Expanded(
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(PanAfricanRadius.pill),
+                        borderRadius: BorderRadius.circular(
+                          PanAfricanRadius.pill,
+                        ),
                         child: LayoutBuilder(
                           builder: (context, constraints) {
                             final progress = total == 0
@@ -207,14 +230,18 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                               children: [
                                 Container(
                                   height: 6.h,
-                                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onPrimary.withOpacity(0.2),
                                 ),
                                 AnimatedContainer(
                                   duration: const Duration(milliseconds: 300),
                                   height: 6.h,
                                   width: constraints.maxWidth * progress,
                                   decoration: BoxDecoration(
-                                    color: Theme.of(context).colorScheme.primaryContainer,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primaryContainer,
                                   ),
                                 ),
                               ],
@@ -227,7 +254,9 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                     Text(
                       '${current + 1}/$total',
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onPrimary.withOpacity(0.9),
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w600,
                       ),
@@ -236,7 +265,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                 ),
               ),
             ),
-            
+
             // Skip button (only on early steps)
             if (current < 3)
               Semantics(
@@ -247,7 +276,9 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                   child: Text(
                     'Skip',
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onPrimary.withOpacity(0.9),
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
                     ),
@@ -262,7 +293,11 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
     );
   }
 
-  void _goToNext(PageController controller, ValueNotifier<int> step, AnimationController anim) {
+  void _goToNext(
+    PageController controller,
+    ValueNotifier<int> step,
+    AnimationController anim,
+  ) {
     step.value++;
     controller.nextPage(
       duration: const Duration(milliseconds: 400),
@@ -270,7 +305,11 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
     );
   }
 
-  void _goToPrevious(PageController controller, ValueNotifier<int> step, AnimationController anim) {
+  void _goToPrevious(
+    PageController controller,
+    ValueNotifier<int> step,
+    AnimationController anim,
+  ) {
     if (step.value <= 0) return;
     step.value--;
     controller.previousPage(
@@ -279,18 +318,25 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
     );
   }
 
-  static Future<void> _skipOnboarding(BuildContext context, WidgetRef ref) async {
+  static Future<void> _skipOnboarding(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
     try {
       final prefs = ref.read(sharedPreferencesProvider).prefs;
       await prefs.setString('onboarding_complete', 'true');
       await prefs.setBool('onboarding_seen', true);
       if (context.mounted) {
-        ref.read(navigationProvider).navigateOffAll(const WorldClassLoginScreen());
+        ref
+            .read(navigationProvider)
+            .navigateOffAll(const WorldClassLoginScreen());
       }
     } catch (e) {
       logger.warn('Skip onboarding failed', error: e);
       if (context.mounted) {
-        ref.read(navigationProvider).navigateOffAll(const WorldClassLoginScreen());
+        ref
+            .read(navigationProvider)
+            .navigateOffAll(const WorldClassLoginScreen());
       }
     }
   }
@@ -314,13 +360,12 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
     // Queue backend sync
     try {
       final syncProvider = ref.read(backendSyncProvider.notifier);
-      await syncProvider.queueSync(SyncTask(
-        type: SyncType.onboarding,
-        data: {
-          ...data,
-          'completed_at': DateTime.now().toIso8601String(),
-        },
-      ));
+      await syncProvider.queueSync(
+        SyncTask(
+          type: SyncType.onboarding,
+          data: {...data, 'completed_at': DateTime.now().toIso8601String()},
+        ),
+      );
     } catch (e) {
       logger.warn('Backend sync failed for onboarding completion', error: e);
     }
@@ -329,7 +374,8 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
     final learningLanguage = data['learning_language'] as String?;
     if (learningLanguage != null && context.mounted) {
       try {
-        final alreadyPrompted = prefs.getBool('placement_test_prompt_shown') ?? false;
+        final alreadyPrompted =
+            prefs.getBool('placement_test_prompt_shown') ?? false;
         if (!alreadyPrompted) {
           final shouldTakeTest = await showDialog<bool>(
             context: context,
@@ -349,7 +395,10 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context, false),
-                  child: Text('Skip', style: TextStyle(color: PanAfricanColors.textSecondary)),
+                  child: Text(
+                    'Skip',
+                    style: TextStyle(color: PanAfricanColors.textSecondary),
+                  ),
                 ),
                 FilledButton(
                   onPressed: () => Navigator.pop(context, true),
@@ -363,11 +412,11 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
           );
 
           await prefs.setBool('placement_test_prompt_shown', true);
-          
+
           if (shouldTakeTest == true && context.mounted) {
             await Navigator.push(
               context,
-              SmoothPageRoute(
+              SmoothPageRoute.platform(
                 child: PlacementTestScreen(language: learningLanguage),
               ),
             );
@@ -384,9 +433,11 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
       final token = ref.read(apiProvider.notifier).token;
       final isLoggedIn = currentUser != null && (token?.isNotEmpty ?? false);
 
-      final nextScreen = isLoggedIn ? const TabsViewMaterial3() : const WorldClassLoginScreen();
+      final nextScreen = isLoggedIn
+          ? const TabsViewMaterial3()
+          : const WorldClassLoginScreen();
       Navigator.of(context).pushAndRemoveUntil(
-        SmoothPageRoute(child: nextScreen),
+        SmoothPageRoute.platform(child: nextScreen),
         (route) => false,
       );
     }
@@ -415,32 +466,43 @@ class _VillageWelcomeStep extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: 200.w,
-                      height: 200.w,
-                      child: OnboardingAvatarWidget(
-                        step: OnboardingStep.welcome,
-                        size: 200.w,
-                        animate: true,
-                      ),
-                    )
+                          width: 200.w,
+                          height: 200.w,
+                          child: OnboardingAvatarWidget(
+                            step: OnboardingStep.welcome,
+                            size: 200.w,
+                            animate: true,
+                          ),
+                        )
                         .animate()
-                        .scale(delay: 200.ms, duration: 700.ms, curve: Curves.elasticOut)
+                        .scale(
+                          delay: 200.ms,
+                          duration: 700.ms,
+                          curve: Curves.elasticOut,
+                        )
                         .fadeIn(duration: 500.ms),
                     SizedBox(height: 48.h),
                     Text(
                       'Welcome to',
                       style: PanAfricanTypography.titleMedium(context).copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onPrimary.withOpacity(0.9),
                         letterSpacing: 1,
                       ),
                     ).animate().fadeIn(delay: 400.ms),
                     SizedBox(height: 8.h),
                     Text(
-                      'Kijiji cha Lugha',
-                      textAlign: TextAlign.center,
-                      style: PanAfricanTypography.displaySmall(context, color: Theme.of(context).colorScheme.onPrimary)
-                          .copyWith(height: 1.1, letterSpacing: -1),
-                    ).animate().fadeIn(delay: 500.ms).slideY(begin: 0.2, end: 0),
+                          'Kijiji cha Lugha',
+                          textAlign: TextAlign.center,
+                          style: PanAfricanTypography.displaySmall(
+                            context,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ).copyWith(height: 1.1, letterSpacing: -1),
+                        )
+                        .animate()
+                        .fadeIn(delay: 500.ms)
+                        .slideY(begin: 0.2, end: 0),
                     SizedBox(height: 12.h),
                     Text(
                       'The Language Village',
@@ -456,9 +518,12 @@ class _VillageWelcomeStep extends StatelessWidget {
                       child: Text(
                         'Your journey to mastering African languages begins here.',
                         textAlign: TextAlign.center,
-                        style: PanAfricanTypography.bodyMedium(context).copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.85),
-                        ),
+                        style: PanAfricanTypography.bodyMedium(context)
+                            .copyWith(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onPrimary.withOpacity(0.85),
+                            ),
                       ),
                     ).animate().fadeIn(delay: 700.ms),
                   ],
@@ -469,7 +534,7 @@ class _VillageWelcomeStep extends StatelessWidget {
               padding: EdgeInsets.all(24.w),
               child: SizedBox(
                 width: double.infinity,
-                child:                 PanAfricanButton(
+                child: PanAfricanButton(
                   label: 'Begin Your Journey',
                   onPressed: () {
                     HapticFeedback.mediumImpact();
@@ -518,7 +583,8 @@ class _ElderStep extends HookConsumerWidget {
       gradient: PanAfricanGradients.earth,
       characterIcon: Icons.elderly_rounded,
       characterName: 'Pa LingAfriq',
-      dialogue: 'Karibu, traveler! I am Pa LingAfriq,\nkeeper of the village memory.',
+      dialogue:
+          'Karibu, traveler! I am Pa LingAfriq,\nkeeper of the village memory.',
       question: 'Tell me — what language flows from your tongue?',
       avatarStep: OnboardingStep.welcome,
       child: Column(
@@ -553,14 +619,19 @@ class _ElderStep extends HookConsumerWidget {
             onPressed: () async {
               // Set app language
               try {
-                await DynamicLocalizationService.setLanguage(selectedLanguage.value!);
+                await DynamicLocalizationService.setLanguage(
+                  selectedLanguage.value!,
+                );
               } catch (e) {
                 logger.error('Error setting language', error: e);
               }
               // Save to prefs
               try {
                 final prefs = await SharedPreferences.getInstance();
-                await prefs.setString('proficiency_language', selectedLanguage.value!);
+                await prefs.setString(
+                  'proficiency_language',
+                  selectedLanguage.value!,
+                );
               } catch (e) {
                 logger.error('Error saving language', error: e);
               }
@@ -587,9 +658,19 @@ class _WeaverStep extends HookConsumerWidget {
     {'code': 'ha', 'name': 'Hausa', 'flag': '🇳🇬', 'region': 'West Africa'},
     {'code': 'ig', 'name': 'Igbo', 'flag': '🇳🇬', 'region': 'West Africa'},
     {'code': 'zu', 'name': 'Zulu', 'flag': '🇿🇦', 'region': 'Southern Africa'},
-    {'code': 'xh', 'name': 'Xhosa', 'flag': '🇿🇦', 'region': 'Southern Africa'},
+    {
+      'code': 'xh',
+      'name': 'Xhosa',
+      'flag': '🇿🇦',
+      'region': 'Southern Africa',
+    },
     {'code': 'am', 'name': 'Amharic', 'flag': '🇪🇹', 'region': 'East Africa'},
-    {'code': 'pcm', 'name': 'Nigerian Pidgin', 'flag': '🇳🇬', 'region': 'West Africa'},
+    {
+      'code': 'pcm',
+      'name': 'Nigerian Pidgin',
+      'flag': '🇳🇬',
+      'region': 'West Africa',
+    },
     {'code': 'wo', 'name': 'Wolof', 'flag': '🇸🇳', 'region': 'West Africa'},
     {'code': 'tw', 'name': 'Twi', 'flag': '🇬🇭', 'region': 'West Africa'},
   ];
@@ -602,7 +683,8 @@ class _WeaverStep extends HookConsumerWidget {
       gradient: PanAfricanGradients.sunset,
       characterIcon: Icons.auto_fix_high_rounded,
       characterName: 'Adisa the Weaver',
-      dialogue: 'I weave the threads of languages\ninto patterns of understanding.',
+      dialogue:
+          'I weave the threads of languages\ninto patterns of understanding.',
       question: 'Which African tongue calls to your spirit?',
       avatarStep: OnboardingStep.languageSelection,
       child: Column(
@@ -635,7 +717,10 @@ class _WeaverStep extends HookConsumerWidget {
             onPressed: () async {
               try {
                 final prefs = await SharedPreferences.getInstance();
-                await prefs.setString('learning_language', selectedLanguage.value!);
+                await prefs.setString(
+                  'learning_language',
+                  selectedLanguage.value!,
+                );
                 scheduleGamesPreloadAfterLearningLanguageSaved(ref);
               } catch (e) {
                 logger.error('Error saving learning language', error: e);
@@ -659,10 +744,18 @@ class _ElderQuestionStep extends HookConsumerWidget {
 
   static const _ageCategories = ['child', 'teen', 'adult', 'senior'];
   static const _reasons = [
-    {'id': 'heritage', 'icon': Icons.family_restroom_rounded, 'label': 'Heritage'},
+    {
+      'id': 'heritage',
+      'icon': Icons.family_restroom_rounded,
+      'label': 'Heritage',
+    },
     {'id': 'travel', 'icon': Icons.flight_rounded, 'label': 'Travel'},
     {'id': 'school', 'icon': Icons.school_rounded, 'label': 'School'},
-    {'id': 'business', 'icon': Icons.business_center_rounded, 'label': 'Business'},
+    {
+      'id': 'business',
+      'icon': Icons.business_center_rounded,
+      'label': 'Business',
+    },
     {'id': 'curiosity', 'icon': Icons.lightbulb_rounded, 'label': 'Curiosity'},
     {'id': 'family', 'icon': Icons.favorite_rounded, 'label': 'Family'},
     {'id': 'culture', 'icon': Icons.music_note_rounded, 'label': 'Culture'},
@@ -691,7 +784,9 @@ class _ElderQuestionStep extends HookConsumerWidget {
                 Text(
                   'Your Season of Life',
                   style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onPrimary.withOpacity(0.9),
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                   ),
@@ -708,16 +803,22 @@ class _ElderQuestionStep extends HookConsumerWidget {
                         HapticFeedback.selectionClick();
                         selectedAge.value = sel ? age : null;
                       },
-                      backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.25),
+                      backgroundColor: Theme.of(
+                        context,
+                      ).colorScheme.onPrimary.withOpacity(0.25),
                       selectedColor: PanAfricanColors.secondary,
                       side: BorderSide(
                         color: isSelected
                             ? PanAfricanColors.secondary
-                            : Theme.of(context).colorScheme.onPrimary.withOpacity(0.4),
+                            : Theme.of(
+                                context,
+                              ).colorScheme.onPrimary.withOpacity(0.4),
                         width: 1.2,
                       ),
                       labelStyle: TextStyle(
-                        color: isSelected ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onPrimary,
+                        color: isSelected
+                            ? Theme.of(context).colorScheme.onSurface
+                            : Theme.of(context).colorScheme.onPrimary,
                         fontWeight: FontWeight.w600,
                         fontSize: 13.sp,
                       ),
@@ -737,7 +838,9 @@ class _ElderQuestionStep extends HookConsumerWidget {
                 Text(
                   'Why are you learning? (Select all that apply)',
                   style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onPrimary.withOpacity(0.9),
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                   ),
@@ -778,12 +881,16 @@ class _ElderQuestionStep extends HookConsumerWidget {
             ),
           ),
           _ContinueButton(
-            enabled: selectedAge.value != null && selectedReasons.value.isNotEmpty,
+            enabled:
+                selectedAge.value != null && selectedReasons.value.isNotEmpty,
             onPressed: () async {
               try {
                 final prefs = await SharedPreferences.getInstance();
                 await prefs.setString('age_category', selectedAge.value!);
-                await prefs.setStringList('learning_reasons', selectedReasons.value.toList());
+                await prefs.setStringList(
+                  'learning_reasons',
+                  selectedReasons.value.toList(),
+                );
               } catch (e) {
                 logger.error('Error saving age/reasons', error: e);
               }
@@ -808,12 +915,42 @@ class _PathChooserStep extends HookConsumerWidget {
   const _PathChooserStep({required this.onNext});
 
   static const _goals = [
-    {'id': 'travel', 'icon': Icons.explore_rounded, 'title': 'Travel', 'desc': 'Navigate confidently'},
-    {'id': 'heritage', 'icon': Icons.favorite_rounded, 'title': 'Heritage', 'desc': 'Connect with roots'},
-    {'id': 'business', 'icon': Icons.business_center_rounded, 'title': 'Business', 'desc': 'Professional growth'},
-    {'id': 'academic', 'icon': Icons.school_rounded, 'title': 'Academic', 'desc': 'Educational success'},
-    {'id': 'confidence', 'icon': Icons.mic_rounded, 'title': 'Confidence', 'desc': 'Speak boldly'},
-    {'id': 'brain', 'icon': Icons.psychology_rounded, 'title': 'Brain Training', 'desc': 'Sharpen your mind'},
+    {
+      'id': 'travel',
+      'icon': Icons.explore_rounded,
+      'title': 'Travel',
+      'desc': 'Navigate confidently',
+    },
+    {
+      'id': 'heritage',
+      'icon': Icons.favorite_rounded,
+      'title': 'Heritage',
+      'desc': 'Connect with roots',
+    },
+    {
+      'id': 'business',
+      'icon': Icons.business_center_rounded,
+      'title': 'Business',
+      'desc': 'Professional growth',
+    },
+    {
+      'id': 'academic',
+      'icon': Icons.school_rounded,
+      'title': 'Academic',
+      'desc': 'Educational success',
+    },
+    {
+      'id': 'confidence',
+      'icon': Icons.mic_rounded,
+      'title': 'Confidence',
+      'desc': 'Speak boldly',
+    },
+    {
+      'id': 'brain',
+      'icon': Icons.psychology_rounded,
+      'title': 'Brain Training',
+      'desc': 'Sharpen your mind',
+    },
   ];
 
   @override
@@ -824,7 +961,8 @@ class _PathChooserStep extends HookConsumerWidget {
       gradient: PanAfricanGradients.forest,
       characterIcon: Icons.fork_right_rounded,
       characterName: 'Zuri the Pathfinder',
-      dialogue: 'Many paths lead through our village.\nEach offers different wisdom.',
+      dialogue:
+          'Many paths lead through our village.\nEach offers different wisdom.',
       question: 'Which path calls to you?',
       avatarStep: OnboardingStep.goals,
       child: Column(
@@ -882,12 +1020,42 @@ class _RhythmMasterStep extends HookConsumerWidget {
   const _RhythmMasterStep({required this.onNext});
 
   static const _styles = [
-    {'id': 'audio', 'icon': Icons.headphones_rounded, 'title': 'Listening', 'desc': 'Learn by ear'},
-    {'id': 'visual', 'icon': Icons.visibility_rounded, 'title': 'Visual', 'desc': 'See to remember'},
-    {'id': 'stories', 'icon': Icons.auto_stories_rounded, 'title': 'Stories', 'desc': 'Narrative learning'},
-    {'id': 'drills', 'icon': Icons.repeat_rounded, 'title': 'Practice', 'desc': 'Repetition & drills'},
-    {'id': 'conversation', 'icon': Icons.chat_rounded, 'title': 'Conversation', 'desc': 'Talk to learn'},
-    {'id': 'mixed', 'icon': Icons.shuffle_rounded, 'title': 'Mixed', 'desc': 'Variety of methods'},
+    {
+      'id': 'audio',
+      'icon': Icons.headphones_rounded,
+      'title': 'Listening',
+      'desc': 'Learn by ear',
+    },
+    {
+      'id': 'visual',
+      'icon': Icons.visibility_rounded,
+      'title': 'Visual',
+      'desc': 'See to remember',
+    },
+    {
+      'id': 'stories',
+      'icon': Icons.auto_stories_rounded,
+      'title': 'Stories',
+      'desc': 'Narrative learning',
+    },
+    {
+      'id': 'drills',
+      'icon': Icons.repeat_rounded,
+      'title': 'Practice',
+      'desc': 'Repetition & drills',
+    },
+    {
+      'id': 'conversation',
+      'icon': Icons.chat_rounded,
+      'title': 'Conversation',
+      'desc': 'Talk to learn',
+    },
+    {
+      'id': 'mixed',
+      'icon': Icons.shuffle_rounded,
+      'title': 'Mixed',
+      'desc': 'Variety of methods',
+    },
   ];
 
   @override
@@ -956,10 +1124,30 @@ class _TimekeeperStep extends HookConsumerWidget {
   const _TimekeeperStep({required this.onNext});
 
   static const _times = [
-    {'id': 'sunrise', 'icon': Icons.wb_twilight_rounded, 'label': 'Sunrise', 'time': '6-9 AM'},
-    {'id': 'midday', 'icon': Icons.wb_sunny_rounded, 'label': 'Midday', 'time': '12-2 PM'},
-    {'id': 'sunset', 'icon': Icons.nights_stay_rounded, 'label': 'Sunset', 'time': '5-7 PM'},
-    {'id': 'night', 'icon': Icons.bedtime_rounded, 'label': 'Night', 'time': '8-10 PM'},
+    {
+      'id': 'sunrise',
+      'icon': Icons.wb_twilight_rounded,
+      'label': 'Sunrise',
+      'time': '6-9 AM',
+    },
+    {
+      'id': 'midday',
+      'icon': Icons.wb_sunny_rounded,
+      'label': 'Midday',
+      'time': '12-2 PM',
+    },
+    {
+      'id': 'sunset',
+      'icon': Icons.nights_stay_rounded,
+      'label': 'Sunset',
+      'time': '5-7 PM',
+    },
+    {
+      'id': 'night',
+      'icon': Icons.bedtime_rounded,
+      'label': 'Night',
+      'time': '8-10 PM',
+    },
   ];
 
   @override
@@ -972,149 +1160,181 @@ class _TimekeeperStep extends HookConsumerWidget {
       gradient: PanAfricanGradients.earth,
       characterIcon: Icons.schedule_rounded,
       characterName: 'Kofi the Timekeeper',
-      dialogue: 'Time is the gift we give ourselves.\nHow much will you invest?',
+      dialogue:
+          'Time is the gift we give ourselves.\nHow much will you invest?',
       question: 'When and how long shall we train?',
       avatarStep: OnboardingStep.schedule,
       child: SingleChildScrollView(
         padding: EdgeInsets.only(bottom: 16.h),
         child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(16.w),
-            child: Column(
-              children: [
-                // Duration slider
-                Container(
-                  padding: EdgeInsets.all(20.w),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Daily Goal',
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
+          children: [
+            Padding(
+              padding: EdgeInsets.all(16.w),
+              child: Column(
+                children: [
+                  // Duration slider
+                  Container(
+                    padding: EdgeInsets.all(20.w),
+                    decoration: BoxDecoration(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onPrimary.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Daily Goal',
+                              style: TextStyle(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onPrimary.withOpacity(0.9),
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          ),
-                          Text(
-                            '${duration.value} minutes',
-                            style: TextStyle(
-                              color: PanAfricanColors.secondary,
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w700,
+                            Text(
+                              '${duration.value} minutes',
+                              style: TextStyle(
+                                color: PanAfricanColors.secondary,
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
+                          ],
+                        ),
+                        SizedBox(height: 12.h),
+                        SliderTheme(
+                          data: SliderTheme.of(context).copyWith(
+                            activeTrackColor: PanAfricanColors.secondary,
+                            inactiveTrackColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary.withOpacity(0.2),
+                            thumbColor: PanAfricanColors.secondary,
+                            overlayColor: PanAfricanColors.secondary
+                                .withOpacity(0.2),
                           ),
-                        ],
-                      ),
-                      SizedBox(height: 12.h),
-                      SliderTheme(
-                        data: SliderTheme.of(context).copyWith(
-                          activeTrackColor: PanAfricanColors.secondary,
-                          inactiveTrackColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
-                          thumbColor: PanAfricanColors.secondary,
-                          overlayColor: PanAfricanColors.secondary.withOpacity(0.2),
+                          child: Slider(
+                            value: duration.value.toDouble(),
+                            min: 5,
+                            max: 60,
+                            divisions: 11,
+                            label: '${duration.value} min',
+                            onChanged: (v) => duration.value = v.toInt(),
+                          ),
                         ),
-                        child: Slider(
-                          value: duration.value.toDouble(),
-                          min: 5,
-                          max: 60,
-                          divisions: 11,
-                          label: '${duration.value} min',
-                          onChanged: (v) => duration.value = v.toInt(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '5 min',
+                              style: TextStyle(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onPrimary.withOpacity(0.54),
+                                fontSize: 12.sp,
+                              ),
+                            ),
+                            Text(
+                              '60 min',
+                              style: TextStyle(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onPrimary.withOpacity(0.54),
+                                fontSize: 12.sp,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('5 min', style: TextStyle(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.54), fontSize: 12.sp)),
-                          Text('60 min', style: TextStyle(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.54), fontSize: 12.sp)),
-                        ],
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(height: 20.h),
-                // Time of day
-                Text(
-                  'Best Time to Learn',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
+                  SizedBox(height: 20.h),
+                  // Time of day
+                  Text(
+                    'Best Time to Learn',
+                    style: TextStyle(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onPrimary.withOpacity(0.9),
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-                SizedBox(height: 12.h),
-              ],
-            ),
-          ),
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 1.8,
-              crossAxisSpacing: 10.w,
-              mainAxisSpacing: 10.h,
-            ),
-            itemCount: _times.length,
-            itemBuilder: (context, index) {
-              final time = _times[index];
-              final isSelected = selectedTime.value == time['id'];
-              return _TimeCard(
-                icon: time['icon'] as IconData,
-                label: time['label'] as String,
-                time: time['time'] as String,
-                isSelected: isSelected,
-                onTap: () {
-                  HapticFeedback.selectionClick();
-                  selectedTime.value = time['id'] as String;
-                },
-              );
-            },
-          ),
-          SizedBox(height: 8.h),
-          // Reminders toggle
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
-            child: SwitchListTile(
-              title: Text(
-                'Enable Daily Reminders',
-                style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 14.sp),
+                  SizedBox(height: 12.h),
+                ],
               ),
-              value: remindersEnabled.value,
-              onChanged: (v) => remindersEnabled.value = v,
-              activeColor: PanAfricanColors.secondary,
-              contentPadding: EdgeInsets.zero,
             ),
-          ),
-          _ContinueButton(
-            enabled: selectedTime.value != null,
-            onPressed: () async {
-              try {
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.setInt('daily_duration', duration.value);
-                await prefs.setString('preferred_time', selectedTime.value!);
-                await prefs.setBool('reminders_enabled', remindersEnabled.value);
-              } catch (e) {
-                logger.error('Error saving schedule', error: e);
-              }
-              onNext({
-                'daily_duration_minutes': duration.value,
-                'preferred_time_of_day': selectedTime.value,
-                'reminders_enabled': remindersEnabled.value,
-              });
-            },
-          ),
-        ],
-      ),
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 1.8,
+                crossAxisSpacing: 10.w,
+                mainAxisSpacing: 10.h,
+              ),
+              itemCount: _times.length,
+              itemBuilder: (context, index) {
+                final time = _times[index];
+                final isSelected = selectedTime.value == time['id'];
+                return _TimeCard(
+                  icon: time['icon'] as IconData,
+                  label: time['label'] as String,
+                  time: time['time'] as String,
+                  isSelected: isSelected,
+                  onTap: () {
+                    HapticFeedback.selectionClick();
+                    selectedTime.value = time['id'] as String;
+                  },
+                );
+              },
+            ),
+            SizedBox(height: 8.h),
+            // Reminders toggle
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: SwitchListTile(
+                title: Text(
+                  'Enable Daily Reminders',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    fontSize: 14.sp,
+                  ),
+                ),
+                value: remindersEnabled.value,
+                onChanged: (v) => remindersEnabled.value = v,
+                activeColor: PanAfricanColors.secondary,
+                contentPadding: EdgeInsets.zero,
+              ),
+            ),
+            _ContinueButton(
+              enabled: selectedTime.value != null,
+              onPressed: () async {
+                try {
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.setInt('daily_duration', duration.value);
+                  await prefs.setString('preferred_time', selectedTime.value!);
+                  await prefs.setBool(
+                    'reminders_enabled',
+                    remindersEnabled.value,
+                  );
+                } catch (e) {
+                  logger.error('Error saving schedule', error: e);
+                }
+                onNext({
+                  'daily_duration_minutes': duration.value,
+                  'preferred_time_of_day': selectedTime.value,
+                  'reminders_enabled': remindersEnabled.value,
+                });
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -1129,10 +1349,30 @@ class _GriotStep extends HookConsumerWidget {
   const _GriotStep({required this.onNext});
 
   static const _tones = [
-    {'id': 'playful', 'icon': Icons.sentiment_very_satisfied_rounded, 'label': 'Playful', 'desc': 'Fun & light'},
-    {'id': 'encouraging', 'icon': Icons.thumb_up_rounded, 'label': 'Encouraging', 'desc': 'Supportive'},
-    {'id': 'serious', 'icon': Icons.psychology_rounded, 'label': 'Focused', 'desc': 'Direct & efficient'},
-    {'id': 'friendly', 'icon': Icons.emoji_people_rounded, 'label': 'Friendly', 'desc': 'Warm & casual'},
+    {
+      'id': 'playful',
+      'icon': Icons.sentiment_very_satisfied_rounded,
+      'label': 'Playful',
+      'desc': 'Fun & light',
+    },
+    {
+      'id': 'encouraging',
+      'icon': Icons.thumb_up_rounded,
+      'label': 'Encouraging',
+      'desc': 'Supportive',
+    },
+    {
+      'id': 'serious',
+      'icon': Icons.psychology_rounded,
+      'label': 'Focused',
+      'desc': 'Direct & efficient',
+    },
+    {
+      'id': 'friendly',
+      'icon': Icons.emoji_people_rounded,
+      'label': 'Friendly',
+      'desc': 'Warm & casual',
+    },
   ];
 
   static const _gamificationLevels = [
@@ -1156,151 +1396,173 @@ class _GriotStep extends HookConsumerWidget {
       child: SingleChildScrollView(
         padding: EdgeInsets.only(bottom: 16.h),
         child: Column(
-        children: [
-          // Tone selection
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Communication Style',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                SizedBox(height: 12.h),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 90.h,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
+          children: [
+            // Tone selection
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
-              itemCount: _tones.length,
-              itemBuilder: (context, index) {
-                final tone = _tones[index];
-                final isSelected = selectedTone.value == tone['id'];
-                return Padding(
-                  padding: EdgeInsets.only(right: 10.w),
-                  child: _ToneCard(
-                    icon: tone['icon'] as IconData,
-                    label: tone['label'] as String,
-                    description: tone['desc'] as String,
-                    isSelected: isSelected,
-                    onTap: () {
-                      HapticFeedback.selectionClick();
-                      selectedTone.value = tone['id'] as String;
-                    },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Communication Style',
+                    style: TextStyle(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onPrimary.withOpacity(0.9),
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                );
-              },
+                  SizedBox(height: 12.h),
+                ],
+              ),
             ),
-          ),
-          SizedBox(height: 24.h),
-          // Gamification level
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Gamification Level',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                SizedBox(height: 12.h),
-                ..._gamificationLevels.map((level) {
-                  final isSelected = selectedGamification.value == level['id'];
+            SizedBox(
+              height: 90.h,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                itemCount: _tones.length,
+                itemBuilder: (context, index) {
+                  final tone = _tones[index];
+                  final isSelected = selectedTone.value == tone['id'];
                   return Padding(
-                    padding: EdgeInsets.only(bottom: 10.h),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () {
-                          HapticFeedback.selectionClick();
-                          selectedGamification.value = level['id'] as String;
-                        },
-                        borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                        child: Container(
-                          padding: EdgeInsets.all(16.w),
-                          decoration: BoxDecoration(
-                            color: isSelected
-                                ? PanAfricanColors.secondary.withOpacity(0.2)
-                                : Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                            border: Border.all(
-                              color: isSelected
-                                  ? PanAfricanColors.secondary
-                                  : Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
-                              width: isSelected ? 2 : 1,
-                            ),
+                    padding: EdgeInsets.only(right: 10.w),
+                    child: _ToneCard(
+                      icon: tone['icon'] as IconData,
+                      label: tone['label'] as String,
+                      description: tone['desc'] as String,
+                      isSelected: isSelected,
+                      onTap: () {
+                        HapticFeedback.selectionClick();
+                        selectedTone.value = tone['id'] as String;
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
+            SizedBox(height: 24.h),
+            // Gamification level
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Gamification Level',
+                    style: TextStyle(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onPrimary.withOpacity(0.9),
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(height: 12.h),
+                  ..._gamificationLevels.map((level) {
+                    final isSelected =
+                        selectedGamification.value == level['id'];
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 10.h),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () {
+                            HapticFeedback.selectionClick();
+                            selectedGamification.value = level['id'] as String;
+                          },
+                          borderRadius: BorderRadius.circular(
+                            PanAfricanRadius.md,
                           ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      level['label'] as String,
-                                      style: TextStyle(
-                                        color: Theme.of(context).colorScheme.onPrimary,
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    Text(
-                                      level['desc'] as String,
-                                      style: TextStyle(
-                                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
-                                        fontSize: 13.sp,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                          child: Container(
+                            padding: EdgeInsets.all(16.w),
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? PanAfricanColors.secondary.withOpacity(0.2)
+                                  : Theme.of(
+                                      context,
+                                    ).colorScheme.onPrimary.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(
+                                PanAfricanRadius.md,
                               ),
-                              if (isSelected)
-                                Icon(
-                                  Icons.check_circle_rounded,
-                                  color: PanAfricanColors.secondary,
-                                  size: 24.sp,
+                              border: Border.all(
+                                color: isSelected
+                                    ? PanAfricanColors.secondary
+                                    : Theme.of(
+                                        context,
+                                      ).colorScheme.onPrimary.withOpacity(0.2),
+                                width: isSelected ? 2 : 1,
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        level['label'] as String,
+                                        style: TextStyle(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onPrimary,
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      Text(
+                                        level['desc'] as String,
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary
+                                              .withOpacity(0.7),
+                                          fontSize: 13.sp,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                            ],
+                                if (isSelected)
+                                  Icon(
+                                    Icons.check_circle_rounded,
+                                    color: PanAfricanColors.secondary,
+                                    size: 24.sp,
+                                  ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                }),
-              ],
+                    );
+                  }),
+                ],
+              ),
             ),
-          ),
-          SizedBox(height: 24.h),
-          _ContinueButton(
-            enabled: selectedTone.value != null,
-            onPressed: () async {
-              try {
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.setString('app_tone', selectedTone.value!);
-                await prefs.setString('gamification_level', selectedGamification.value!);
-              } catch (e) {
-                logger.error('Error saving tone/gamification', error: e);
-              }
-              onNext({
-                'app_tone': selectedTone.value,
-                'gamification_level': selectedGamification.value,
-              });
-            },
-          ),
-        ],
-      ),
+            SizedBox(height: 24.h),
+            _ContinueButton(
+              enabled: selectedTone.value != null,
+              onPressed: () async {
+                try {
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.setString('app_tone', selectedTone.value!);
+                  await prefs.setString(
+                    'gamification_level',
+                    selectedGamification.value!,
+                  );
+                } catch (e) {
+                  logger.error('Error saving tone/gamification', error: e);
+                }
+                onNext({
+                  'app_tone': selectedTone.value,
+                  'gamification_level': selectedGamification.value,
+                });
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -1400,7 +1662,8 @@ class _NamingCeremonyStep extends HookConsumerWidget {
       }
     }
 
-    final canComplete = username.value.isNotEmpty &&
+    final canComplete =
+        username.value.isNotEmpty &&
         username.value.length >= 3 &&
         username.value.length <= 30 &&
         RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(username.value) &&
@@ -1429,7 +1692,11 @@ class _NamingCeremonyStep extends HookConsumerWidget {
                       ? FileImage(File(avatarPath.value!))
                       : null,
                   child: avatarPath.value == null
-                      ? Icon(Icons.person_rounded, size: 50.sp, color: Theme.of(context).colorScheme.onPrimary)
+                      ? Icon(
+                          Icons.person_rounded,
+                          size: 50.sp,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        )
                       : null,
                 ),
                 Positioned(
@@ -1441,7 +1708,11 @@ class _NamingCeremonyStep extends HookConsumerWidget {
                       color: PanAfricanColors.secondary,
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(Icons.camera_alt_rounded, size: 16.sp, color: Theme.of(context).colorScheme.onSurface),
+                    child: Icon(
+                      Icons.camera_alt_rounded,
+                      size: 16.sp,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                   ),
                 ),
               ],
@@ -1450,7 +1721,10 @@ class _NamingCeremonyStep extends HookConsumerWidget {
           SizedBox(height: 8.h),
           Text(
             'Tap to add photo (optional)',
-            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7), fontSize: 12.sp),
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
+              fontSize: 12.sp,
+            ),
           ),
           SizedBox(height: 24.h),
           // Username field
@@ -1458,25 +1732,49 @@ class _NamingCeremonyStep extends HookConsumerWidget {
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: TextField(
               controller: usernameController,
-              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 18.sp),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimary,
+                fontSize: 18.sp,
+              ),
               decoration: InputDecoration(
                 labelText: 'Username',
-                labelStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7)),
+                labelStyle: TextStyle(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onPrimary.withOpacity(0.7),
+                ),
                 hintText: 'Enter your username',
-                hintStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.38)),
+                hintStyle: TextStyle(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onPrimary.withOpacity(0.38),
+                ),
                 filled: true,
-                fillColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
+                fillColor: Theme.of(
+                  context,
+                ).colorScheme.onPrimary.withOpacity(0.1),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                  borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3)),
+                  borderSide: BorderSide(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onPrimary.withOpacity(0.3),
+                  ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                  borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3)),
+                  borderSide: BorderSide(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onPrimary.withOpacity(0.3),
+                  ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                  borderSide: BorderSide(color: PanAfricanColors.secondary, width: 2),
+                  borderSide: BorderSide(
+                    color: PanAfricanColors.secondary,
+                    width: 2,
+                  ),
                 ),
                 suffixIcon: isChecking.value
                     ? SizedBox(
@@ -1486,7 +1784,9 @@ class _NamingCeremonyStep extends HookConsumerWidget {
                           padding: EdgeInsets.all(12.w),
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary.withOpacity(0.7),
                           ),
                         ),
                       )
@@ -1524,7 +1824,10 @@ class _NamingCeremonyStep extends HookConsumerWidget {
   Widget? _getUsernameIcon(_UsernameStatus status) {
     switch (status) {
       case _UsernameStatus.available:
-        return Icon(Icons.check_circle_rounded, color: PanAfricanColors.success);
+        return Icon(
+          Icons.check_circle_rounded,
+          color: PanAfricanColors.success,
+        );
       case _UsernameStatus.taken:
         return Icon(Icons.cancel_rounded, color: PanAfricanColors.error);
       case _UsernameStatus.tooShort:
@@ -1633,10 +1936,21 @@ class _CharacterStepTemplate extends StatelessWidget {
                 height: 100.w,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.15),
-                  border: Border.all(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3), width: 2),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onPrimary.withOpacity(0.15),
+                  border: Border.all(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onPrimary.withOpacity(0.3),
+                    width: 2,
+                  ),
                 ),
-                child: Icon(characterIcon, size: 50.sp, color: Theme.of(context).colorScheme.onPrimary),
+                child: Icon(
+                  characterIcon,
+                  size: 50.sp,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
               ).animate().scale(duration: 400.ms, curve: Curves.easeOut),
             SizedBox(height: 12.h),
             // Dialogue + Question panel
@@ -1645,10 +1959,14 @@ class _CharacterStepTemplate extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 18.h),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.12),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onPrimary.withOpacity(0.12),
                   borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
                   border: Border.all(
-                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onPrimary.withOpacity(0.2),
                     width: 1,
                   ),
                 ),
@@ -1657,18 +1975,25 @@ class _CharacterStepTemplate extends StatelessWidget {
                     Text(
                       dialogue,
                       textAlign: TextAlign.center,
-                      style: PanAfricanTypography.headlineSmall(context, color: Theme.of(context).colorScheme.onPrimary)
-                          .copyWith(height: 1.3),
+                      style: PanAfricanTypography.headlineSmall(
+                        context,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ).copyWith(height: 1.3),
                     ),
                     SizedBox(height: 10.h),
                     Text(
                       question,
                       textAlign: TextAlign.center,
-                      style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary)
-                          .copyWith(
-                        fontStyle: FontStyle.italic,
-                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.85),
-                      ),
+                      style:
+                          PanAfricanTypography.bodyMedium(
+                            context,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ).copyWith(
+                            fontStyle: FontStyle.italic,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary.withOpacity(0.85),
+                          ),
                     ),
                   ],
                 ),
@@ -1751,7 +2076,9 @@ class _LanguageCard extends StatelessWidget {
                 : Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
             borderRadius: BorderRadius.circular(PanAfricanRadius.md),
             border: Border.all(
-              color: isSelected ? PanAfricanColors.secondary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+              color: isSelected
+                  ? PanAfricanColors.secondary
+                  : Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
               width: isSelected ? 2 : 1,
             ),
             boxShadow: [
@@ -1780,7 +2107,11 @@ class _LanguageCard extends StatelessWidget {
               ),
               if (isSelected) ...[
                 SizedBox(width: 8.w),
-                Icon(Icons.check_circle_rounded, color: PanAfricanColors.secondary, size: 18.sp),
+                Icon(
+                  Icons.check_circle_rounded,
+                  color: PanAfricanColors.secondary,
+                  size: 18.sp,
+                ),
               ],
             ],
           ),
@@ -1821,7 +2152,9 @@ class _LanguageListTile extends StatelessWidget {
                 : Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
             borderRadius: BorderRadius.circular(PanAfricanRadius.md),
             border: Border.all(
-              color: isSelected ? PanAfricanColors.secondary : Colors.transparent,
+              color: isSelected
+                  ? PanAfricanColors.secondary
+                  : Colors.transparent,
               width: 2,
             ),
             boxShadow: [
@@ -1851,7 +2184,9 @@ class _LanguageListTile extends StatelessWidget {
                     Text(
                       region,
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.6),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onPrimary.withOpacity(0.6),
                         fontSize: 12.sp,
                       ),
                     ),
@@ -1859,8 +2194,12 @@ class _LanguageListTile extends StatelessWidget {
                 ),
               ),
               Icon(
-                isSelected ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
-                color: isSelected ? PanAfricanColors.secondary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.54),
+                isSelected
+                    ? Icons.check_circle_rounded
+                    : Icons.radio_button_unchecked_rounded,
+                color: isSelected
+                    ? PanAfricanColors.secondary
+                    : Theme.of(context).colorScheme.onPrimary.withOpacity(0.54),
                 size: 24.sp,
               ),
             ],
@@ -1899,7 +2238,9 @@ class _ReasonCard extends StatelessWidget {
                 : Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
             borderRadius: BorderRadius.circular(PanAfricanRadius.md),
             border: Border.all(
-              color: isSelected ? PanAfricanColors.secondary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+              color: isSelected
+                  ? PanAfricanColors.secondary
+                  : Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
               width: isSelected ? 2 : 1,
             ),
             boxShadow: [
@@ -1919,12 +2260,16 @@ class _ReasonCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isSelected
                       ? PanAfricanColors.secondary.withOpacity(0.2)
-                      : Theme.of(context).colorScheme.onPrimary.withOpacity(0.08),
+                      : Theme.of(
+                          context,
+                        ).colorScheme.onPrimary.withOpacity(0.08),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   icon,
-                  color: isSelected ? PanAfricanColors.secondary : Theme.of(context).colorScheme.onPrimary,
+                  color: isSelected
+                      ? PanAfricanColors.secondary
+                      : Theme.of(context).colorScheme.onPrimary,
                   size: 24.sp,
                 ),
               ),
@@ -1976,7 +2321,9 @@ class _GoalCard extends StatelessWidget {
                 : Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
             borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
             border: Border.all(
-              color: isSelected ? PanAfricanColors.secondary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+              color: isSelected
+                  ? PanAfricanColors.secondary
+                  : Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
               width: isSelected ? 2 : 1,
             ),
             boxShadow: [
@@ -1996,12 +2343,16 @@ class _GoalCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isSelected
                       ? PanAfricanColors.secondary.withOpacity(0.2)
-                      : Theme.of(context).colorScheme.onPrimary.withOpacity(0.08),
+                      : Theme.of(
+                          context,
+                        ).colorScheme.onPrimary.withOpacity(0.08),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   icon,
-                  color: isSelected ? PanAfricanColors.secondary : Theme.of(context).colorScheme.onPrimary,
+                  color: isSelected
+                      ? PanAfricanColors.secondary
+                      : Theme.of(context).colorScheme.onPrimary,
                   size: 28.sp,
                 ),
               ),
@@ -2018,7 +2369,9 @@ class _GoalCard extends StatelessWidget {
               Text(
                 description,
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.6),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onPrimary.withOpacity(0.6),
                   fontSize: 11.sp,
                 ),
               ),
@@ -2071,7 +2424,9 @@ class _TimeCard extends StatelessWidget {
                 : Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
             borderRadius: BorderRadius.circular(PanAfricanRadius.md),
             border: Border.all(
-              color: isSelected ? PanAfricanColors.secondary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+              color: isSelected
+                  ? PanAfricanColors.secondary
+                  : Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
               width: isSelected ? 2 : 1,
             ),
             boxShadow: [
@@ -2091,12 +2446,16 @@ class _TimeCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isSelected
                       ? PanAfricanColors.secondary.withOpacity(0.2)
-                      : Theme.of(context).colorScheme.onPrimary.withOpacity(0.08),
+                      : Theme.of(
+                          context,
+                        ).colorScheme.onPrimary.withOpacity(0.08),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   icon,
-                  color: isSelected ? PanAfricanColors.secondary : Theme.of(context).colorScheme.onPrimary,
+                  color: isSelected
+                      ? PanAfricanColors.secondary
+                      : Theme.of(context).colorScheme.onPrimary,
                   size: 20.sp,
                 ),
               ),
@@ -2116,7 +2475,9 @@ class _TimeCard extends StatelessWidget {
                   Text(
                     time,
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.54),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onPrimary.withOpacity(0.54),
                       fontSize: 11.sp,
                     ),
                   ),
@@ -2162,7 +2523,9 @@ class _ToneCard extends StatelessWidget {
                 : Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
             borderRadius: BorderRadius.circular(PanAfricanRadius.md),
             border: Border.all(
-              color: isSelected ? PanAfricanColors.secondary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+              color: isSelected
+                  ? PanAfricanColors.secondary
+                  : Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
               width: isSelected ? 2 : 1,
             ),
             boxShadow: [
@@ -2182,12 +2545,16 @@ class _ToneCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isSelected
                       ? PanAfricanColors.secondary.withOpacity(0.2)
-                      : Theme.of(context).colorScheme.onPrimary.withOpacity(0.08),
+                      : Theme.of(
+                          context,
+                        ).colorScheme.onPrimary.withOpacity(0.08),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   icon,
-                  color: isSelected ? PanAfricanColors.secondary : Theme.of(context).colorScheme.onPrimary,
+                  color: isSelected
+                      ? PanAfricanColors.secondary
+                      : Theme.of(context).colorScheme.onPrimary,
                   size: 24.sp,
                 ),
               ),
@@ -2203,7 +2570,9 @@ class _ToneCard extends StatelessWidget {
               Text(
                 description,
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.54),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onPrimary.withOpacity(0.54),
                   fontSize: 10.sp,
                 ),
                 textAlign: TextAlign.center,

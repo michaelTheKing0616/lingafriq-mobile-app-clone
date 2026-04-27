@@ -32,7 +32,8 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
     final favoriteArticles = useState<Set<String>>({});
     final translationService = useMemoized(() => TranslationService());
     final onboarding = ref.watch(onboardingProvider);
-    final userLanguage = (onboarding.selectedLanguage ?? 'english').toLowerCase();
+    final userLanguage = (onboarding.selectedLanguage ?? 'english')
+        .toLowerCase();
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context)!;
@@ -54,7 +55,9 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
               : raw;
 
           if (listCandidate is List) {
-            final list = List<Map<String, dynamic>>.from(listCandidate.whereType<Map>());
+            final list = List<Map<String, dynamic>>.from(
+              listCandidate.whereType<Map>(),
+            );
             articles.value = list;
           } else {
             articles.value = [];
@@ -75,44 +78,44 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
     Future<void> toggleTranslation(String articleId, String language) async {
       // Toggle translation view
       showTranslation.value = !showTranslation.value;
-      
+
       // If enabling translation and not already translated, translate all articles
       if (showTranslation.value && translatedArticles.value.isEmpty) {
         isTranslating.value = true;
-        
+
         try {
           final translations = <String, Map<String, String>>{};
           bool anyRealTranslation = false;
-          
+
           for (final article in articles.value) {
             final id = article['_id']?.toString() ?? '';
             final title = article['title']?.toString() ?? '';
             final excerpt = article['excerpt']?.toString() ?? '';
-            
+
             if (id.isEmpty) continue;
-            
+
             final titleResult = await translationService.translate(
               text: title,
               sourceLang: 'english',
               targetLang: language,
             );
-            
+
             final excerptResult = await translationService.translate(
               text: excerpt,
               sourceLang: 'english',
               targetLang: language,
             );
-            
+
             if (titleResult.model != 'fallback') anyRealTranslation = true;
-            
+
             translations[id] = {
               'title': titleResult.translation,
               'excerpt': excerptResult.translation,
             };
           }
-          
+
           translatedArticles.value = translations;
-          
+
           if (!anyRealTranslation && context.mounted) {
             ErrorHandler.showError(
               context,
@@ -158,9 +161,16 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cultural Magazine', style: PanAfricanTypography.titleLarge(context)),
-        backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-        foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
+        title: Text(
+          'Cultural Magazine',
+          style: PanAfricanTypography.titleLarge(context),
+        ),
+        backgroundColor: isDark
+            ? PanAfricanColors.cardDark
+            : PanAfricanColors.cardLight,
+        foregroundColor: isDark
+            ? PanAfricanColors.textPrimaryDark
+            : PanAfricanColors.textPrimaryLight,
         elevation: 0,
         leading: IconButton(
           icon: Icon(PanAfricanIcons.back),
@@ -192,17 +202,26 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
               child: SizedBox(
                 width: 24.w,
                 height: 24.w,
-                child: CircularProgressIndicator(strokeWidth: 2, color: PanAfricanColors.primary),
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: PanAfricanColors.primary,
+                ),
               ),
             )
           else
             IconButton(
-              icon: Icon(showTranslation.value ? Icons.translate : Icons.translate_outlined),
+              icon: Icon(
+                showTranslation.value
+                    ? Icons.translate
+                    : Icons.translate_outlined,
+              ),
               onPressed: () {
                 HapticFeedback.lightImpact();
                 toggleTranslation('', userLanguage);
               },
-              tooltip: showTranslation.value ? 'Show Original' : 'Translate to $userLanguage',
+              tooltip: showTranslation.value
+                  ? 'Show Original'
+                  : 'Translate to $userLanguage',
             ),
         ],
       ),
@@ -242,88 +261,109 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
                           SizedBox(height: PanAfricanSpacing.md),
                           Text(
                             'Loading articles...',
-                            style: PanAfricanTypography.bodyMedium(context).copyWith(
-                              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.45),
-                            ),
+                            style: PanAfricanTypography.bodyMedium(context)
+                                .copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface.withOpacity(0.45),
+                                ),
                           ),
                         ],
                       ),
                     )
                   : articles.value.isEmpty
-                      ? Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(PanAfricanSpacing.xl),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.article_outlined,
-                                  size: 64,
-                                  color: isDark
-                                      ? PanAfricanColors.neutralMedium
-                                      : PanAfricanColors.neutralLight,
-                                ),
-                                SizedBox(height: PanAfricanSpacing.md),
-                                Text(
-                                  'No articles yet',
-                                  style: PanAfricanTypography.titleMedium(context),
-                                ),
-                                SizedBox(height: PanAfricanSpacing.xs),
-                                Text(
-                                  'Check back soon for cultural content.',
-                                  textAlign: TextAlign.center,
-                                  style: PanAfricanTypography.bodyMedium(context).copyWith(
-                                    color: isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.54) : Theme.of(context).colorScheme.onSurface.withOpacity(0.45),
-                                  ),
-                                ),
-                                SizedBox(height: PanAfricanSpacing.lg),
-                                TextButton.icon(
-                                  onPressed: () => loadArticles(),
-                                  icon: Icon(Icons.refresh_rounded, size: 20, color: PanAfricanColors.primary),
-                                  label: Text(
-                                    'Retry',
-                                    style: PanAfricanTypography.labelLarge(context).copyWith(
-                                      color: PanAfricanColors.primary,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                  ? Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(PanAfricanSpacing.xl),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.article_outlined,
+                              size: 64,
+                              color: isDark
+                                  ? PanAfricanColors.neutralMedium
+                                  : PanAfricanColors.neutralLight,
                             ),
-                          ),
-                        )
-                      : GridView.builder(
-                          padding: EdgeInsets.all(PanAfricanSpacing.md),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: PanAfricanSpacing.md,
-                            mainAxisSpacing: PanAfricanSpacing.md,
-                            childAspectRatio: 0.75,
-                          ),
-                          itemCount: articles.value.length,
-                          itemBuilder: (context, index) {
-                            final article = articles.value[index];
-                            final articleId = article['_id']?.toString() ?? '';
-                            final translated = translatedArticles.value[articleId];
-                            
-                            // Create display article with translations if available
-                            final displayArticle = showTranslation.value && translated != null
-                                ? {
-                                    ...article,
-                                    'title': translated['title'] ?? article['title'],
-                                    'excerpt': translated['excerpt'] ?? article['excerpt'],
-                                  }
-                                : article;
-                            
-                            return _ArticleCard(
+                            SizedBox(height: PanAfricanSpacing.md),
+                            Text(
+                              'No articles yet',
+                              style: PanAfricanTypography.titleMedium(context),
+                            ),
+                            SizedBox(height: PanAfricanSpacing.xs),
+                            Text(
+                              'Check back soon for cultural content.',
+                              textAlign: TextAlign.center,
+                              style: PanAfricanTypography.bodyMedium(context)
+                                  .copyWith(
+                                    color: isDark
+                                        ? Theme.of(context)
+                                              .colorScheme
+                                              .onSurface
+                                              .withOpacity(0.54)
+                                        : Theme.of(context)
+                                              .colorScheme
+                                              .onSurface
+                                              .withOpacity(0.45),
+                                  ),
+                            ),
+                            SizedBox(height: PanAfricanSpacing.lg),
+                            TextButton.icon(
+                              onPressed: () => loadArticles(),
+                              icon: Icon(
+                                Icons.refresh_rounded,
+                                size: 20,
+                                color: PanAfricanColors.primary,
+                              ),
+                              label: Text(
+                                'Retry',
+                                style: PanAfricanTypography.labelLarge(
+                                  context,
+                                ).copyWith(color: PanAfricanColors.primary),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  : GridView.builder(
+                      padding: EdgeInsets.all(PanAfricanSpacing.md),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: PanAfricanSpacing.md,
+                        mainAxisSpacing: PanAfricanSpacing.md,
+                        childAspectRatio: 0.75,
+                      ),
+                      itemCount: articles.value.length,
+                      itemBuilder: (context, index) {
+                        final article = articles.value[index];
+                        final articleId = article['_id']?.toString() ?? '';
+                        final translated = translatedArticles.value[articleId];
+
+                        // Create display article with translations if available
+                        final displayArticle =
+                            showTranslation.value && translated != null
+                            ? {
+                                ...article,
+                                'title':
+                                    translated['title'] ?? article['title'],
+                                'excerpt':
+                                    translated['excerpt'] ?? article['excerpt'],
+                              }
+                            : article;
+
+                        return _ArticleCard(
                               article: displayArticle,
                               showTranslation: showTranslation.value,
-                              isFavorite: favoriteArticles.value.contains(article['_id']),
+                              isFavorite: favoriteArticles.value.contains(
+                                article['_id'],
+                              ),
                               onFavorite: () => toggleFavorite(article['_id']),
                               onShare: () => shareArticle(article),
                               onTap: () {
                                 Navigator.push(
                                   context,
-                                  SmoothPageRoute(
+                                  SmoothPageRoute.platform(
                                     child: ArticleDetailEnhanced(
                                       article: article,
                                       translatedTitle: translated?['title'],
@@ -336,11 +376,11 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
                               },
                               isDark: isDark,
                             )
-                                .animate(delay: (index * 50).ms)
-                                .fadeIn(duration: 300.ms)
-                                .scale(begin: Offset(0.9, 0.9), end: Offset(1, 1));
-                          },
-                        ),
+                            .animate(delay: (index * 50).ms)
+                            .fadeIn(duration: 300.ms)
+                            .scale(begin: Offset(0.9, 0.9), end: Offset(1, 1));
+                      },
+                    ),
             ),
           ],
         ),
@@ -374,21 +414,29 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
         itemCount: categories.length,
         itemBuilder: (context, index) {
           final category = categories[index];
-          final isSelected = (category == 'All' && selectedCategory == null) ||
+          final isSelected =
+              (category == 'All' && selectedCategory == null) ||
               category.toLowerCase() == selectedCategory?.toLowerCase();
 
           return Padding(
             padding: EdgeInsets.only(right: PanAfricanSpacing.sm),
             child: FilterChip(
-              label: Text(category, style: PanAfricanTypography.labelMedium(context)),
+              label: Text(
+                category,
+                style: PanAfricanTypography.labelMedium(context),
+              ),
               selected: isSelected,
               onSelected: (selected) {
                 HapticFeedback.selectionClick();
-                onCategoryChanged(selected && category != 'All' ? category.toLowerCase() : null);
+                onCategoryChanged(
+                  selected && category != 'All' ? category.toLowerCase() : null,
+                );
               },
               selectedColor: PanAfricanColors.primaryContainer,
               checkmarkColor: PanAfricanColors.primary,
-              backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
+              backgroundColor: isDark
+                  ? PanAfricanColors.surfaceContainerDark
+                  : PanAfricanColors.surfaceContainerLight,
             ),
           );
         },
@@ -444,7 +492,8 @@ class _ArticleCard extends StatelessWidget {
                 ),
                 child: Stack(
                   children: [
-                    if (article['imageUrl'] != null && (article['imageUrl'] as String).isNotEmpty)
+                    if (article['imageUrl'] != null &&
+                        (article['imageUrl'] as String).isNotEmpty)
                       ClipRRect(
                         borderRadius: BorderRadius.vertical(
                           top: Radius.circular(PanAfricanRadius.lg),
@@ -455,8 +504,10 @@ class _ArticleCard extends StatelessWidget {
                           height: double.infinity,
                           fit: BoxFit.cover,
                           fadeInDuration: const Duration(milliseconds: 180),
-                          placeholder: (_, __) => _ArticleImageFallback(colors: colors),
-                          errorWidget: (_, __, ___) => _ArticleImageFallback(colors: colors),
+                          placeholder: (_, __) =>
+                              _ArticleImageFallback(colors: colors),
+                          errorWidget: (_, __, ___) =>
+                              _ArticleImageFallback(colors: colors),
                         ),
                       )
                     else
@@ -468,8 +519,12 @@ class _ArticleCard extends StatelessWidget {
                         children: [
                           IconButton(
                             icon: Icon(
-                              isFavorite ? Icons.favorite : Icons.favorite_border,
-                              color: isFavorite ? PanAfricanColors.error : Theme.of(context).colorScheme.onPrimary,
+                              isFavorite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: isFavorite
+                                  ? PanAfricanColors.error
+                                  : Theme.of(context).colorScheme.onPrimary,
                               size: 20.sp,
                             ),
                             onPressed: () {
@@ -480,7 +535,11 @@ class _ArticleCard extends StatelessWidget {
                             constraints: BoxConstraints(),
                           ),
                           IconButton(
-                            icon: Icon(Icons.share, color: Theme.of(context).colorScheme.onPrimary, size: 20.sp),
+                            icon: Icon(
+                              Icons.share,
+                              color: Theme.of(context).colorScheme.onPrimary,
+                              size: 20.sp,
+                            ),
                             onPressed: () {
                               HapticFeedback.lightImpact();
                               onShare();
@@ -525,7 +584,8 @@ class _ArticleCard extends StatelessWidget {
                             style: PanAfricanTypography.labelSmall(context),
                           ),
                           padding: EdgeInsets.zero,
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
                         ),
                         Spacer(),
                         if (showTranslation)
@@ -562,5 +622,3 @@ class _ArticleImageFallback extends StatelessWidget {
     );
   }
 }
-
-

@@ -11,7 +11,7 @@ class NavigationProvider {
   Future<T?> navigateTo<T>(Widget child) async {
     final state = navigatorKey.currentState;
     if (state == null) return null;
-    return await state.push<T>(SmoothPageRoute(child: child));
+    return await state.push<T>(SmoothPageRoute.platform<T>(child: child));
   }
 
   @Deprecated('Use navigateTo instead')
@@ -22,7 +22,9 @@ class NavigationProvider {
     final state = navigatorKey.currentState;
     if (state == null) return null;
     state.popUntil((route) => route.isFirst);
-    return await state.pushReplacement<T, void>(SmoothPageRoute(child: child));
+    return await state.pushReplacement<T, void>(
+      SmoothPageRoute.platform<T>(child: child),
+    );
   }
 
   @Deprecated('Use navigateOffAll instead')

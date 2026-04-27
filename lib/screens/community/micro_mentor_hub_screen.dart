@@ -11,10 +11,12 @@ class MicroMentorHubScreen extends ConsumerStatefulWidget {
   const MicroMentorHubScreen({super.key});
 
   @override
-  ConsumerState<MicroMentorHubScreen> createState() => _MicroMentorHubScreenState();
+  ConsumerState<MicroMentorHubScreen> createState() =>
+      _MicroMentorHubScreenState();
 }
 
-class _MicroMentorHubScreenState extends ConsumerState<MicroMentorHubScreen> with SingleTickerProviderStateMixin {
+class _MicroMentorHubScreenState extends ConsumerState<MicroMentorHubScreen>
+    with SingleTickerProviderStateMixin {
   late final TabController _tabs;
   final _langCtrl = TextEditingController(text: 'yoruba');
 
@@ -58,7 +60,9 @@ class _MicroMentorHubScreenState extends ConsumerState<MicroMentorHubScreen> wit
     );
 
     try {
-      final id = await ref.read(microMentorServiceProvider).requestSession(
+      final id = await ref
+          .read(microMentorServiceProvider)
+          .requestSession(
             mentorUserId: mentorUserId,
             language: language,
             scheduledStartTime: start,
@@ -67,12 +71,18 @@ class _MicroMentorHubScreenState extends ConsumerState<MicroMentorHubScreen> wit
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(id == 'queued' ? 'Queued offline. Will sync automatically.' : 'Requested session: $id'),
+          content: Text(
+            id == 'queued'
+                ? 'Queued offline. Will sync automatically.'
+                : 'Requested session: $id',
+          ),
         ),
       );
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.toString())));
     }
   }
 
@@ -80,7 +90,9 @@ class _MicroMentorHubScreenState extends ConsumerState<MicroMentorHubScreen> wit
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
+      backgroundColor: isDark
+          ? PanAfricanColors.surfaceDark
+          : PanAfricanColors.surfaceLight,
       appBar: AppBar(
         title: const Text('Micro‑Mentors'),
         bottom: TabBar(
@@ -112,15 +124,29 @@ class _MicroMentorHubScreenState extends ConsumerState<MicroMentorHubScreen> wit
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Become a mentor', style: PanAfricanTypography.titleMedium(ctx)),
+                    Text(
+                      'Become a mentor',
+                      style: PanAfricanTypography.titleMedium(ctx),
+                    ),
                     const SizedBox(height: 12),
-                    TextField(controller: nameCtrl, decoration: const InputDecoration(labelText: 'Display name')),
+                    TextField(
+                      controller: nameCtrl,
+                      decoration: const InputDecoration(
+                        labelText: 'Display name',
+                      ),
+                    ),
                     const SizedBox(height: 10),
-                    TextField(controller: bioCtrl, maxLines: 3, decoration: const InputDecoration(labelText: 'Bio')),
+                    TextField(
+                      controller: bioCtrl,
+                      maxLines: 3,
+                      decoration: const InputDecoration(labelText: 'Bio'),
+                    ),
                     const SizedBox(height: 10),
                     TextField(
                       controller: langsCtrl,
-                      decoration: const InputDecoration(labelText: 'Languages (comma-separated)'),
+                      decoration: const InputDecoration(
+                        labelText: 'Languages (comma-separated)',
+                      ),
                     ),
                     const SizedBox(height: 12),
                     FilledButton(
@@ -131,19 +157,27 @@ class _MicroMentorHubScreenState extends ConsumerState<MicroMentorHubScreen> wit
                             .where((s) => s.isNotEmpty)
                             .toList();
                         try {
-                          await ref.read(microMentorServiceProvider).upsertMyProfile({
-                            'displayName': nameCtrl.text.trim(),
-                            'bio': bioCtrl.text.trim(),
-                            'languages': langs,
-                            'isActive': true,
-                          });
+                          await ref
+                              .read(microMentorServiceProvider)
+                              .upsertMyProfile({
+                                'displayName': nameCtrl.text.trim(),
+                                'bio': bioCtrl.text.trim(),
+                                'languages': langs,
+                                'isActive': true,
+                              });
                           if (ctx.mounted) Navigator.pop(ctx);
                           if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Mentor profile saved')));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Mentor profile saved'),
+                              ),
+                            );
                           }
                         } catch (e) {
                           if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(e.toString())),
+                            );
                           }
                         }
                       },
@@ -171,7 +205,11 @@ class _MicroMentorHubScreenState extends ConsumerState<MicroMentorHubScreen> wit
 
 class _BrowseTab extends ConsumerStatefulWidget {
   final TextEditingController langCtrl;
-  final Future<void> Function({required String mentorUserId, required String language}) onRequest;
+  final Future<void> Function({
+    required String mentorUserId,
+    required String language,
+  })
+  onRequest;
 
   const _BrowseTab({required this.langCtrl, required this.onRequest});
 
@@ -196,7 +234,9 @@ class _BrowseTabState extends ConsumerState<_BrowseTab> {
       _error = null;
     });
     try {
-      final rows = await ref.read(microMentorServiceProvider).listMentors(language: widget.langCtrl.text.trim());
+      final rows = await ref
+          .read(microMentorServiceProvider)
+          .listMentors(language: widget.langCtrl.text.trim());
       setState(() => _mentors = rows);
     } catch (e) {
       setState(() => _error = e.toString());
@@ -215,7 +255,10 @@ class _BrowseTabState extends ConsumerState<_BrowseTab> {
           style: PanAfricanTypography.bodyMedium(context),
         ),
         SizedBox(height: PanAfricanSpacing.md),
-        Text('Filter language', style: PanAfricanTypography.titleSmall(context)),
+        Text(
+          'Filter language',
+          style: PanAfricanTypography.titleSmall(context),
+        ),
         SizedBox(height: PanAfricanSpacing.xxs),
         TextField(
           controller: widget.langCtrl,
@@ -236,24 +279,41 @@ class _BrowseTabState extends ConsumerState<_BrowseTab> {
         ),
         if (_error != null) ...[
           SizedBox(height: PanAfricanSpacing.sm),
-          Text(_error!, style: PanAfricanTypography.bodySmall(context).copyWith(color: PanAfricanColors.error)),
+          Text(
+            _error!,
+            style: PanAfricanTypography.bodySmall(
+              context,
+            ).copyWith(color: PanAfricanColors.error),
+          ),
         ],
         SizedBox(height: PanAfricanSpacing.md),
         if (_loading) const LinearProgressIndicator(minHeight: 3),
         ..._mentors.map((m) {
           final name = m['displayName']?.toString() ?? 'Mentor';
-          final langs = (m['languages'] as List?)?.map((e) => e.toString()).join(', ') ?? '';
+          final langs =
+              (m['languages'] as List?)?.map((e) => e.toString()).join(', ') ??
+              '';
           final userId = m['userId']?.toString() ?? '';
           return Card(
             child: ListTile(
-              title: Text(name, style: PanAfricanTypography.titleSmall(context)),
-              subtitle: Text(langs, maxLines: 2, overflow: TextOverflow.ellipsis),
+              title: Text(
+                name,
+                style: PanAfricanTypography.titleSmall(context),
+              ),
+              subtitle: Text(
+                langs,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
               trailing: const Icon(Icons.chevron_right_rounded),
               onTap: userId.isEmpty
                   ? null
                   : () async {
                       HapticFeedback.lightImpact();
-                      await widget.onRequest(mentorUserId: userId, language: widget.langCtrl.text.trim());
+                      await widget.onRequest(
+                        mentorUserId: userId,
+                        language: widget.langCtrl.text.trim(),
+                      );
                     },
             ),
           );
@@ -287,7 +347,9 @@ class _SessionsTabState extends ConsumerState<_SessionsTab> {
       _error = null;
     });
     try {
-      final rows = await ref.read(microMentorServiceProvider).listSessions(role: 'any');
+      final rows = await ref
+          .read(microMentorServiceProvider)
+          .listSessions(role: 'any');
       setState(() => _rows = rows);
     } catch (e) {
       setState(() => _error = e.toString());
@@ -300,10 +362,20 @@ class _SessionsTabState extends ConsumerState<_SessionsTab> {
   Widget build(BuildContext context) {
     if (_loading) return const Center(child: CircularProgressIndicator());
     if (_error != null) {
-      return Center(child: Padding(padding: EdgeInsets.all(PanAfricanSpacing.lg), child: Text(_error!)));
+      return Center(
+        child: Padding(
+          padding: EdgeInsets.all(PanAfricanSpacing.lg),
+          child: Text(_error!),
+        ),
+      );
     }
     if (_rows.isEmpty) {
-      return Center(child: Text('No sessions yet', style: PanAfricanTypography.bodyLarge(context)));
+      return Center(
+        child: Text(
+          'No sessions yet',
+          style: PanAfricanTypography.bodyLarge(context),
+        ),
+      );
     }
     return RefreshIndicator(
       onRefresh: _load,
@@ -320,7 +392,10 @@ class _SessionsTabState extends ConsumerState<_SessionsTab> {
           return ListTile(
             tileColor: Theme.of(context).colorScheme.surface,
             shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.lgBR),
-            title: Text('$lang • $status', style: PanAfricanTypography.titleSmall(context)),
+            title: Text(
+              '$lang • $status',
+              style: PanAfricanTypography.titleSmall(context),
+            ),
             subtitle: Text(when, maxLines: 2, overflow: TextOverflow.ellipsis),
             trailing: const Icon(Icons.open_in_new_rounded),
             onTap: id.isEmpty
@@ -328,7 +403,7 @@ class _SessionsTabState extends ConsumerState<_SessionsTab> {
                 : () {
                     HapticFeedback.lightImpact();
                     Navigator.of(context).push(
-                      SmoothPageRoute(
+                      SmoothPageRoute.platform(
                         child: MicroMentorSessionDetailScreen(sessionId: id),
                       ),
                     );

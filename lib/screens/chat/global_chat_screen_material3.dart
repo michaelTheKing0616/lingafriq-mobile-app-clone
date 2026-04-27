@@ -44,7 +44,15 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final messageController = useTextEditingController();
     final messages = useState<List<Map<String, dynamic>>>([]);
-    final channels = useState<List<String>>(['general', 'yoruba', 'hausa', 'igbo', 'pidgin', 'swahili', 'zulu']);
+    final channels = useState<List<String>>([
+      'general',
+      'yoruba',
+      'hausa',
+      'igbo',
+      'pidgin',
+      'swahili',
+      'zulu',
+    ]);
     final selectedChannel = useState('general');
     final isSending = useState(false);
     final isLoadingMessages = useState(true);
@@ -81,7 +89,10 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
     Future<void> persistMessages() async {
       try {
         final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('${cachePrefix}last_channel', selectedChannel.value);
+        await prefs.setString(
+          '${cachePrefix}last_channel',
+          selectedChannel.value,
+        );
         await prefs.setString(
           '$cachePrefix${selectedChannel.value}',
           jsonEncode(messages.value.take(120).toList()),
@@ -92,7 +103,13 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
     List<Map<String, dynamic>> parseMessageList(dynamic raw) {
       if (raw == null) return [];
       if (raw is List) {
-        return raw.map((e) => e is Map ? Map<String, dynamic>.from(e) : <String, dynamic>{'body': e.toString()}).toList();
+        return raw
+            .map(
+              (e) => e is Map
+                  ? Map<String, dynamic>.from(e)
+                  : <String, dynamic>{'body': e.toString()},
+            )
+            .toList();
       }
       return [];
     }
@@ -103,10 +120,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
       try {
         final response = await ApiService.get(
           Api.chatGlobal,
-          queryParameters: {
-            'channel': selectedChannel.value,
-            'limit': 50,
-          },
+          queryParameters: {'channel': selectedChannel.value, 'limit': 50},
         );
 
         if (response.statusCode == 200 && response.data != null) {
@@ -116,7 +130,12 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
             list = parseMessageList(raw);
           } else if (raw is Map) {
             final data = raw;
-            list = parseMessageList(data['data'] ?? data['messages'] ?? data['results'] ?? data['leaderboard']);
+            list = parseMessageList(
+              data['data'] ??
+                  data['messages'] ??
+                  data['results'] ??
+                  data['leaderboard'],
+            );
           }
           if (list.isNotEmpty) {
             messages.value = list;
@@ -154,7 +173,11 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
       messageController.clear();
       final localMsg = <String, dynamic>{
         'message': text,
-        'sender_id': {'id': user.id, 'username': user.username, 'global_id': user.global_id},
+        'sender_id': {
+          'id': user.id,
+          'username': user.username,
+          'global_id': user.global_id,
+        },
         'username': user.username,
         'global_id': user.global_id,
         'createdAt': DateTime.now().toIso8601String(),
@@ -169,14 +192,16 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
       if (socketSt.isConnected) {
         try {
           final room = 'global_${selectedChannel.value}';
-          ref.read(chatSocketProvider.notifier).sendMessage(
-            room,
-            text,
-            user.id.toString(),
-            user.username,
-            null,
-            user.global_id,
-          );
+          ref
+              .read(chatSocketProvider.notifier)
+              .sendMessage(
+                room,
+                text,
+                user.id.toString(),
+                user.username,
+                null,
+                user.global_id,
+              );
           sent = true;
         } catch (e) {
           debugPrint('[GlobalChat] Socket send failed: $e');
@@ -187,30 +212,38 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
       try {
         final response = await ApiService.post(
           Api.chatGlobal,
-          data: {
-            'message': text,
-            'channel': selectedChannel.value,
-          },
+          data: {'message': text, 'channel': selectedChannel.value},
         );
-        if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+        if (response.statusCode != null &&
+            response.statusCode! >= 200 &&
+            response.statusCode! < 300) {
           sent = true;
         } else {
-          debugPrint('[GlobalChat] REST send non-success: ${response.statusCode}');
+          debugPrint(
+            '[GlobalChat] REST send non-success: ${response.statusCode}',
+          );
         }
       } catch (e) {
         debugPrint('[GlobalChat] REST send failed: $e');
         if (!sent && context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Message could not be sent. Check your connection.'),
-              action: SnackBarAction(label: 'Retry', onPressed: () {
-                messageController.text = text;
-                sendMessage();
-              }),
+              content: Text(
+                'Message could not be sent. Check your connection.',
+              ),
+              action: SnackBarAction(
+                label: 'Retry',
+                onPressed: () {
+                  messageController.text = text;
+                  sendMessage();
+                },
+              ),
             ),
           );
           // Remove optimistic message on total failure
-          messages.value = messages.value.where((m) => m['clientMessageId'] != localMsg['clientMessageId']).toList();
+          messages.value = messages.value
+              .where((m) => m['clientMessageId'] != localMsg['clientMessageId'])
+              .toList();
         }
       }
 
@@ -228,10 +261,13 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
             if (outcome.rateLimited) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text('Too many @Polie requests. Try again in about a minute.'),
+                  content: Text(
+                    'Too many @Polie requests. Try again in about a minute.',
+                  ),
                 ),
               );
-            } else if (outcome.localAppend != null && outcome.localAppend!.isNotEmpty) {
+            } else if (outcome.localAppend != null &&
+                outcome.localAppend!.isNotEmpty) {
               messages.value = [...messages.value, ...outcome.localAppend!];
               await persistMessages();
             }
@@ -263,7 +299,10 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: EdgeInsets.only(top: PanAfricanSpacing.sm, bottom: PanAfricanSpacing.xs),
+                padding: EdgeInsets.only(
+                  top: PanAfricanSpacing.sm,
+                  bottom: PanAfricanSpacing.xs,
+                ),
                 child: Container(
                   width: 44,
                   height: 4,
@@ -277,15 +316,28 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                 padding: EdgeInsets.all(PanAfricanSpacing.md),
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Text('Switch Channel', style: PanAfricanTypography.titleMedium(context)),
+                  child: Text(
+                    'Switch Channel',
+                    style: PanAfricanTypography.titleMedium(context),
+                  ),
                 ),
               ),
               ...channels.value.map((channel) {
                 final selected = selectedChannel.value == channel;
                 return ListTile(
-                  leading: Icon(Icons.tag_rounded, color: selected ? PanAfricanColors.primary : PanAfricanColors.neutralMedium),
+                  leading: Icon(
+                    Icons.tag_rounded,
+                    color: selected
+                        ? PanAfricanColors.primary
+                        : PanAfricanColors.neutralMedium,
+                  ),
                   title: Text('#$channel'),
-                  trailing: selected ? const Icon(Icons.check_circle_rounded, color: PanAfricanColors.primary) : null,
+                  trailing: selected
+                      ? const Icon(
+                          Icons.check_circle_rounded,
+                          color: PanAfricanColors.primary,
+                        )
+                      : null,
                   onTap: () {
                     selectedChannel.value = channel;
                     Navigator.of(context).pop();
@@ -371,55 +423,56 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
     }, [socketState.messages.length]);
 
     return LingafriqScaffold(
-        applyTopSafeArea: false,
-        applyBottomSafeArea: true,
-        appBar: AppBar(
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('LingAfriq Live'),
-              Text(
-                '#${selectedChannel.value}',
-                style: PanAfricanTypography.bodySmall(context),
-              ),
-            ],
-          ),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          actions: [
+      applyTopSafeArea: false,
+      applyBottomSafeArea: true,
+      appBar: AppBar(
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('LingAfriq Live'),
+            Text(
+              '#${selectedChannel.value}',
+              style: PanAfricanTypography.bodySmall(context),
+            ),
+          ],
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: [
           Semantics(
             label: 'Find user',
             button: true,
             child: IconButton(
-            icon: Icon(Icons.person_search, semanticLabel: 'Find user'),
-            onPressed: () {
-              HapticFeedback.selectionClick();
-              Navigator.push(
-                context,
-                SmoothPageRoute(
-                  child: UserSearchGlobalIdScreen(
-                    onUserSelected: (user) {
-                      messageController.text = '@${user['global_id'] ?? user['username']} ';
-                    },
-                    currentChatType: 'global',
+              icon: Icon(Icons.person_search, semanticLabel: 'Find user'),
+              onPressed: () {
+                HapticFeedback.selectionClick();
+                Navigator.push(
+                  context,
+                  SmoothPageRoute.platform(
+                    child: UserSearchGlobalIdScreen(
+                      onUserSelected: (user) {
+                        messageController.text =
+                            '@${user['global_id'] ?? user['username']} ';
+                      },
+                      currentChatType: 'global',
+                    ),
                   ),
-                ),
-              );
-            },
-            tooltip: 'Find User',
-          ),
+                );
+              },
+              tooltip: 'Find User',
+            ),
           ),
           Semantics(
             label: 'Show channels',
             button: true,
             child: IconButton(
-            icon: Icon(Icons.tag, semanticLabel: 'Channels'),
-            onPressed: () {
-              HapticFeedback.selectionClick();
-              showChannelPicker();
-            },
-            tooltip: 'Channels',
-          ),
+              icon: Icon(Icons.tag, semanticLabel: 'Channels'),
+              onPressed: () {
+                HapticFeedback.selectionClick();
+                showChannelPicker();
+              },
+              tooltip: 'Channels',
+            ),
           ),
           Semantics(
             label: 'More options',
@@ -488,24 +541,28 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                           final isSelected = selectedChannel.value == channel;
 
                           return Semantics(
-                            label: 'Channel $channel${isSelected ? ', selected' : ''}',
+                            label:
+                                'Channel $channel${isSelected ? ', selected' : ''}',
                             button: true,
                             child: PanAfricanListTile(
-                            title: '#$channel',
-                            leading: Icon(
-                              Icons.tag,
-                              color: isSelected
-                                  ? PanAfricanColors.primary
-                                  : PanAfricanColors.neutralMedium,
+                              title: '#$channel',
+                              leading: Icon(
+                                Icons.tag,
+                                color: isSelected
+                                    ? PanAfricanColors.primary
+                                    : PanAfricanColors.neutralMedium,
+                              ),
+                              trailing: isSelected
+                                  ? Icon(
+                                      Icons.check_circle,
+                                      color: PanAfricanColors.primary,
+                                    )
+                                  : null,
+                              onTap: () {
+                                selectedChannel.value = channel;
+                                HapticFeedback.mediumImpact();
+                              },
                             ),
-                            trailing: isSelected
-                                ? Icon(Icons.check_circle, color: PanAfricanColors.primary)
-                                : null,
-                            onTap: () {
-                              selectedChannel.value = channel;
-                              HapticFeedback.mediumImpact();
-                            },
-                          ),
                           );
                         },
                       ),
@@ -538,12 +595,15 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                   ),
                   Container(
                     height: 48,
-                    padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.sm),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: PanAfricanSpacing.sm,
+                    ),
                     alignment: Alignment.centerLeft,
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemCount: channels.value.length,
-                      separatorBuilder: (_, __) => SizedBox(width: PanAfricanSpacing.xs),
+                      separatorBuilder: (_, __) =>
+                          SizedBox(width: PanAfricanSpacing.xs),
                       itemBuilder: (context, index) {
                         final channel = channels.value[index];
                         final selected = selectedChannel.value == channel;
@@ -561,100 +621,112 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                         ? ListView.builder(
                             padding: EdgeInsets.all(PanAfricanSpacing.md),
                             itemCount: 5,
-                            itemBuilder: (context, index) => const SkeletonListCard(),
+                            itemBuilder: (context, index) =>
+                                const SkeletonListCard(),
                           )
                         : loadError.value != null
-                            ? AppErrorState(
-                                message: loadError.value!,
-                                onRetry: loadMessages,
-                                icon: Icons.wifi_off_rounded,
-                              )
-                            : messages.value.isEmpty
-                                ? AppEmptyState(
-                                    icon: Icons.chat_bubble_outline,
-                                    title: 'No messages yet',
-                                    subtitle: 'Be the first to start the conversation!',
-                                    actionLabel: 'Say hello',
-                                    onAction: () {
-                                      messageController.text =
-                                          'Hello everyone! Excited to learn together.';
-                                      sendMessage();
-                                    },
-                                  )
-                                : Semantics(
-                            label: 'Messages list, ${messages.value.length} messages',
+                        ? AppErrorState(
+                            message: loadError.value!,
+                            onRetry: loadMessages,
+                            icon: Icons.wifi_off_rounded,
+                          )
+                        : messages.value.isEmpty
+                        ? AppEmptyState(
+                            icon: Icons.chat_bubble_outline,
+                            title: 'No messages yet',
+                            subtitle: 'Be the first to start the conversation!',
+                            actionLabel: 'Say hello',
+                            onAction: () {
+                              messageController.text =
+                                  'Hello everyone! Excited to learn together.';
+                              sendMessage();
+                            },
+                          )
+                        : Semantics(
+                            label:
+                                'Messages list, ${messages.value.length} messages',
                             child: OptimizedListView.builder(
-                            controller: scrollController,
-                            padding: EdgeInsets.all(PanAfricanSpacing.md),
-                            itemCount: messages.value.length,
-                            itemBuilder: (context, index) {
-                              final message = messages.value[index];
-                              final currentUser = ref.read(userProvider);
-                              final senderId = message['sender_id'] is Map
-                                  ? (message['sender_id'] as Map)['id']
-                                  : message['sender_id'];
-                              final senderGlobalId =
-                                  (message['global_id'] ?? '').toString();
-                              final isFromCurrentUser = currentUser != null &&
-                                  senderId != null &&
-                                  senderId.toString() == currentUser.id.toString();
-                              return GestureDetector(
-                                onLongPress: isFromCurrentUser
-                                    ? null
-                                    : () => _showMessageActions(
+                              controller: scrollController,
+                              padding: EdgeInsets.all(PanAfricanSpacing.md),
+                              itemCount: messages.value.length,
+                              itemBuilder: (context, index) {
+                                final message = messages.value[index];
+                                final currentUser = ref.read(userProvider);
+                                final senderId = message['sender_id'] is Map
+                                    ? (message['sender_id'] as Map)['id']
+                                    : message['sender_id'];
+                                final senderGlobalId =
+                                    (message['global_id'] ?? '').toString();
+                                final isFromCurrentUser =
+                                    currentUser != null &&
+                                    senderId != null &&
+                                    senderId.toString() ==
+                                        currentUser.id.toString();
+                                return GestureDetector(
+                                  onLongPress: isFromCurrentUser
+                                      ? null
+                                      : () => _showMessageActions(
                                           context,
                                           ref,
                                           message,
                                           isDark,
                                         ),
-                                child: _GlobalMessageBubble(
-                                  message: message,
-                                  isDark: isDark,
-                                  isFromCurrentUser: isFromCurrentUser,
-                                  onOpenSenderProfile: isFromCurrentUser
-                                      ? null
-                                      : () {
-                                          // Polie is a system/bot account in chat; keep taps stable.
-                                          if (senderGlobalId.toLowerCase() == 'polie_bot') {
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                              const SnackBar(
-                                                content: Text(
-                                                  'Profile unavailable for this message.',
+                                  child: _GlobalMessageBubble(
+                                    message: message,
+                                    isDark: isDark,
+                                    isFromCurrentUser: isFromCurrentUser,
+                                    onOpenSenderProfile: isFromCurrentUser
+                                        ? null
+                                        : () {
+                                            // Polie is a system/bot account in chat; keep taps stable.
+                                            if (senderGlobalId.toLowerCase() ==
+                                                'polie_bot') {
+                                              ScaffoldMessenger.of(
+                                                context,
+                                              ).showSnackBar(
+                                                const SnackBar(
+                                                  content: Text(
+                                                    'Profile unavailable for this message.',
+                                                  ),
                                                 ),
-                                              ),
-                                            );
-                                            return;
-                                          }
+                                              );
+                                              return;
+                                            }
 
-                                          final uid = _numericSenderIdFromMessage(message);
-                                          // If it's the current user's message, open their own profile.
-                                          final viewId = uid?.toString() ??
-                                              currentUser?.id.toString();
-                                          if (viewId == null || viewId.isEmpty) {
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                              const SnackBar(
-                                                content: Text(
-                                                  'Profile unavailable for this message.',
+                                            final uid =
+                                                _numericSenderIdFromMessage(
+                                                  message,
+                                                );
+                                            // If it's the current user's message, open their own profile.
+                                            final viewId =
+                                                uid?.toString() ??
+                                                currentUser?.id.toString();
+                                            if (viewId == null ||
+                                                viewId.isEmpty) {
+                                              ScaffoldMessenger.of(
+                                                context,
+                                              ).showSnackBar(
+                                                const SnackBar(
+                                                  content: Text(
+                                                    'Profile unavailable for this message.',
+                                                  ),
+                                                ),
+                                              );
+                                              return;
+                                            }
+                                            Navigator.of(context).push<void>(
+                                              MaterialPageRoute<void>(
+                                                builder: (_) => XProfileScreen(
+                                                  appBarTitle: 'Profile',
+                                                  viewUserId: viewId,
                                                 ),
                                               ),
                                             );
-                                            return;
-                                          }
-                                          Navigator.of(context).push<void>(
-                                            MaterialPageRoute<void>(
-                                              builder: (_) => XProfileScreen(
-                                                appBarTitle: 'Profile',
-                                                viewUserId: viewId,
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                ),
-                              )
-                                  .animate(delay: (index * 30).ms)
-                                  .fadeIn(duration: 200.ms);
-                            },
-                          ),
+                                          },
+                                  ),
+                                ).animate(delay: (index * 30).ms).fadeIn(duration: 200.ms);
+                              },
+                            ),
                           ),
                   ),
 
@@ -675,31 +747,35 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                             hint: 'Type a message to send',
                             textField: true,
                             child: PanAfricanTextField(
-                            controller: messageController,
-                            hint: 'Message… (@Polie for help)',
-                            maxLines: 3,
-                            onChanged: (_) {},
-                          ),
+                              controller: messageController,
+                              hint: 'Message… (@Polie for help)',
+                              maxLines: 3,
+                              onChanged: (_) {},
+                            ),
                           ),
                         ),
                         SizedBox(width: PanAfricanSpacing.sm),
                         Semantics(
-                          label: isSending.value ? 'Sending message' : 'Send message',
+                          label: isSending.value
+                              ? 'Sending message'
+                              : 'Send message',
                           button: true,
                           enabled: !isSending.value,
                           child: PanAfricanButton(
-                          label: 'Send',
-                          icon: Icons.send_rounded,
-                          isLoading: isSending.value,
-                          onPressed: isSending.value
-                              ? null
-                              : () {
-                                  HapticFeedback.lightImpact();
-                                  sendMessage();
-                                },
-                          backgroundColor: PanAfricanColors.primary,
-                          foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                        ),
+                            label: 'Send',
+                            icon: Icons.send_rounded,
+                            isLoading: isSending.value,
+                            onPressed: isSending.value
+                                ? null
+                                : () {
+                                    HapticFeedback.lightImpact();
+                                    sendMessage();
+                                  },
+                            backgroundColor: PanAfricanColors.primary,
+                            foregroundColor: Theme.of(
+                              context,
+                            ).colorScheme.onPrimary,
+                          ),
                         ),
                       ],
                     ),
@@ -720,8 +796,10 @@ void _showMessageActions(
   Map<String, dynamic> message,
   bool isDark,
 ) {
-  final messageId = message['_id']?.toString() ?? message['id']?.toString() ?? '';
-  final senderUserId = message['userId']?.toString() ??
+  final messageId =
+      message['_id']?.toString() ?? message['id']?.toString() ?? '';
+  final senderUserId =
+      message['userId']?.toString() ??
       (message['sender_id'] is Map
           ? (message['sender_id'] as Map)['id']?.toString()
           : message['sender_id']?.toString()) ??
@@ -740,7 +818,10 @@ void _showMessageActions(
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            leading: const Icon(Icons.flag_outlined, color: PanAfricanColors.warning),
+            leading: const Icon(
+              Icons.flag_outlined,
+              color: PanAfricanColors.warning,
+            ),
             title: const Text('Report Message'),
             onTap: () async {
               Navigator.pop(ctx);
@@ -752,13 +833,19 @@ void _showMessageActions(
                 );
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Message reported. Thank you.')),
+                    const SnackBar(
+                      content: Text('Message reported. Thank you.'),
+                    ),
                   );
                 }
               } catch (_) {
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Could not report message. Try again later.')),
+                    const SnackBar(
+                      content: Text(
+                        'Could not report message. Try again later.',
+                      ),
+                    ),
                   );
                 }
               }
@@ -770,10 +857,14 @@ void _showMessageActions(
             onTap: () {
               Navigator.pop(ctx);
               if (senderUserId.isEmpty) return;
-              ref.read(chatSocketProvider.notifier).markUserBlocked(senderUserId);
+              ref
+                  .read(chatSocketProvider.notifier)
+                  .markUserBlocked(senderUserId);
               if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('User blocked for this session.')),
+                  const SnackBar(
+                    content: Text('User blocked for this session.'),
+                  ),
                 );
               }
             },
@@ -802,26 +893,35 @@ class _GlobalMessageBubble extends StatelessWidget {
     final sender = message['sender_id'] is Map
         ? message['sender_id'] as Map<String, dynamic>
         : null;
-    final rawName = sender?['username'] ??
+    final rawName =
+        sender?['username'] ??
         sender?['first_name'] ??
         message['username'] ??
         message['sender'];
-    final senderName = rawName is String ? rawName : (rawName?.toString() ?? 'Unknown');
+    final senderName = rawName is String
+        ? rawName
+        : (rawName?.toString() ?? 'Unknown');
     final isToxic = message['flagged_toxic'] ?? false;
     final timestamp = message['createdAt'] ?? message['timestamp'];
-    final avatarUrl = sender?['avatar_url'] ?? sender?['avatar'] ?? message['avatar'];
+    final avatarUrl =
+        sender?['avatar_url'] ?? sender?['avatar'] ?? message['avatar'];
     final globalId = sender?['global_id'] ?? message['global_id'];
-    final messageText = message['message'] ?? message['body'] ?? message['text'] ?? '';
+    final messageText =
+        message['message'] ?? message['body'] ?? message['text'] ?? '';
     final bubbleColor = isToxic
         ? PanAfricanColors.error.withOpacity(0.08)
         : isFromCurrentUser
-            ? PanAfricanColors.primary.withOpacity(isDark ? 0.45 : 0.18)
-            : (isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight);
+        ? PanAfricanColors.primary.withOpacity(isDark ? 0.45 : 0.18)
+        : (isDark
+              ? PanAfricanColors.surfaceContainerDark
+              : PanAfricanColors.surfaceContainerLight);
 
     return Container(
       margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
       child: Row(
-        mainAxisAlignment: isFromCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment: isFromCurrentUser
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!isFromCurrentUser) ...[
@@ -833,10 +933,16 @@ class _GlobalMessageBubble extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20.w),
                 child: PanAfricanAvatar(
                   imageUrl: avatarUrl is String ? avatarUrl : null,
-                  initials: senderName.isNotEmpty ? senderName[0].toUpperCase() : '?',
+                  initials: senderName.isNotEmpty
+                      ? senderName[0].toUpperCase()
+                      : '?',
                   size: 40.w,
-                  backgroundColor: isToxic ? PanAfricanColors.error : PanAfricanColors.primary,
-                  borderColor: isToxic ? PanAfricanColors.error : PanAfricanColors.primary,
+                  backgroundColor: isToxic
+                      ? PanAfricanColors.error
+                      : PanAfricanColors.primary,
+                  borderColor: isToxic
+                      ? PanAfricanColors.error
+                      : PanAfricanColors.primary,
                   showBadge: isToxic,
                   badgeColor: PanAfricanColors.error,
                 ),
@@ -846,7 +952,9 @@ class _GlobalMessageBubble extends StatelessWidget {
           ],
           Expanded(
             child: Column(
-              crossAxisAlignment: isFromCurrentUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+              crossAxisAlignment: isFromCurrentUser
+                  ? CrossAxisAlignment.end
+                  : CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
@@ -855,35 +963,39 @@ class _GlobalMessageBubble extends StatelessWidget {
                         onTap: isFromCurrentUser ? null : onOpenSenderProfile,
                         borderRadius: BorderRadius.circular(8),
                         child: Row(
-                        mainAxisAlignment: isFromCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            isFromCurrentUser ? 'You' : senderName,
-                            style: PanAfricanTypography.labelMedium(context)
-                                .copyWith(color: PanAfricanColors.primary),
-                          ),
-                          if (globalId != null) ...[
-                            SizedBox(width: PanAfricanSpacing.xxs),
+                          mainAxisAlignment: isFromCurrentUser
+                              ? MainAxisAlignment.end
+                              : MainAxisAlignment.start,
+                          children: [
                             Text(
-                              '@${globalId.toString()}',
-                              style: PanAfricanTypography.labelSmall(context).copyWith(
-                                color: PanAfricanColors.neutralMedium,
-                              ),
+                              isFromCurrentUser ? 'You' : senderName,
+                              style: PanAfricanTypography.labelMedium(
+                                context,
+                              ).copyWith(color: PanAfricanColors.primary),
                             ),
-                          ],
-                          if (isToxic) ...[
-                            SizedBox(width: PanAfricanSpacing.xs),
-                            Semantics(
-                              label: 'Flagged as toxic content',
-                              child: PanAfricanBadge(
-                                label: 'Flagged',
-                                color: PanAfricanColors.error,
-                                icon: Icons.report_problem_rounded,
+                            if (globalId != null) ...[
+                              SizedBox(width: PanAfricanSpacing.xxs),
+                              Text(
+                                '@${globalId.toString()}',
+                                style: PanAfricanTypography.labelSmall(context)
+                                    .copyWith(
+                                      color: PanAfricanColors.neutralMedium,
+                                    ),
                               ),
-                            ),
+                            ],
+                            if (isToxic) ...[
+                              SizedBox(width: PanAfricanSpacing.xs),
+                              Semantics(
+                                label: 'Flagged as toxic content',
+                                child: PanAfricanBadge(
+                                  label: 'Flagged',
+                                  color: PanAfricanColors.error,
+                                  icon: Icons.report_problem_rounded,
+                                ),
+                              ),
+                            ],
                           ],
-                        ],
-                      ),
+                        ),
                       ),
                     ),
                     if (timestamp != null)
@@ -892,8 +1004,9 @@ class _GlobalMessageBubble extends StatelessWidget {
                         excludeSemantics: true,
                         child: Text(
                           _formatTimestamp(timestamp.toString()),
-                          style: PanAfricanTypography.labelSmall(context)
-                              .copyWith(color: PanAfricanColors.neutralMedium),
+                          style: PanAfricanTypography.labelSmall(
+                            context,
+                          ).copyWith(color: PanAfricanColors.neutralMedium),
                         ),
                       ),
                   ],
@@ -908,7 +1021,9 @@ class _GlobalMessageBubble extends StatelessWidget {
                   child: Text(
                     messageText,
                     style: PanAfricanTypography.bodyMedium(context),
-                    textAlign: isFromCurrentUser ? TextAlign.right : TextAlign.left,
+                    textAlign: isFromCurrentUser
+                        ? TextAlign.right
+                        : TextAlign.left,
                   ),
                 ),
               ],
@@ -921,7 +1036,9 @@ class _GlobalMessageBubble extends StatelessWidget {
               excludeSemantics: true,
               child: PanAfricanAvatar(
                 imageUrl: avatarUrl is String ? avatarUrl : null,
-                initials: senderName.isNotEmpty ? senderName[0].toUpperCase() : 'Y',
+                initials: senderName.isNotEmpty
+                    ? senderName[0].toUpperCase()
+                    : 'Y',
                 size: 40.w,
                 backgroundColor: PanAfricanColors.primary,
                 borderColor: PanAfricanColors.primary,
@@ -947,4 +1064,3 @@ class _GlobalMessageBubble extends StatelessWidget {
     }
   }
 }
-

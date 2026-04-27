@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart' show languagesProvider;
+import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart'
+    show languagesProvider;
 import 'package:lingafriq/screens/tabs_view/home/language_detail_screen.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/adaptive_progress_indicator.dart';
@@ -104,7 +105,9 @@ class LessonsMapEntryScreen extends ConsumerWidget {
                                 : PanAfricanColors.cardLight,
                             borderRadius: PanAfricanRadius.lgBR,
                             child: ListTile(
-                              contentPadding: EdgeInsets.all(PanAfricanSpacing.md),
+                              contentPadding: EdgeInsets.all(
+                                PanAfricanSpacing.md,
+                              ),
                               leading: ClipRRect(
                                 borderRadius: PanAfricanRadius.mdBR,
                                 child: CachedNetworkImage(
@@ -134,7 +137,9 @@ class LessonsMapEntryScreen extends ConsumerWidget {
                               ),
                               title: Text(
                                 language.name,
-                                style: PanAfricanTypography.titleMedium(context),
+                                style: PanAfricanTypography.titleMedium(
+                                  context,
+                                ),
                               ),
                               subtitle: Text(
                                 'Lessons, mannerisms, history & quiz',
@@ -147,8 +152,10 @@ class LessonsMapEntryScreen extends ConsumerWidget {
                               onTap: () {
                                 HapticFeedback.lightImpact();
                                 Navigator.of(context).push(
-                                  SmoothPageRoute(
-                                    child: LanguageDetailScreen(language: language),
+                                  SmoothPageRoute.platform(
+                                    child: LanguageDetailScreen(
+                                      language: language,
+                                    ),
                                   ),
                                 );
                               },

@@ -32,7 +32,13 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
     final stitch = Theme.of(context).extension<StitchArcadeTheme>();
 
     final languages = kGamesHubLanguageSlugs;
-    final categories = ['All', 'Vocabulary', 'Grammar', 'Pronunciation', 'Cultural'];
+    final categories = [
+      'All',
+      'Vocabulary',
+      'Grammar',
+      'Pronunciation',
+      'Cultural',
+    ];
 
     useEffect(() {
       var alive = true;
@@ -54,8 +60,9 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
       var alive = true;
       Future(() async {
         try {
-          final rows =
-              await ref.read(gameCatalogServiceProvider).fetchCatalogRows();
+          final rows = await ref
+              .read(gameCatalogServiceProvider)
+              .fetchCatalogRows();
           if (!alive) return;
           final merged = GameCatalog.mergeRemoteRows(rows);
           remoteCatalog.value = merged.isNotEmpty ? merged : null;
@@ -69,291 +76,324 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
     }, const []);
 
     final baseList = remoteCatalog.value ?? GameCatalog.entries;
-    final coreGames =
-        baseList.where((e) => e.section == GameCatalogSection.core).toList();
-    final culturalGames =
-        baseList.where((e) => e.section == GameCatalogSection.cultural).toList();
+    final coreGames = baseList
+        .where((e) => e.section == GameCatalogSection.core)
+        .toList();
+    final culturalGames = baseList
+        .where((e) => e.section == GameCatalogSection.cultural)
+        .toList();
     final allGames = List<GameCatalogEntry>.from(baseList);
-    
+
     // Filter games by section and category
-    var filteredGames = selectedSection.value == 'core' ? coreGames : culturalGames;
+    var filteredGames = selectedSection.value == 'core'
+        ? coreGames
+        : culturalGames;
     if (selectedCategory.value != null && selectedCategory.value != 'All') {
-      filteredGames = filteredGames.where((g) => g.category == selectedCategory.value).toList();
+      filteredGames = filteredGames
+          .where((g) => g.category == selectedCategory.value)
+          .toList();
     }
 
     return LoadingOverlay(
       isLoading: isLoading.value,
       message: 'Opening game...',
       child: Scaffold(
-      appBar: AppBar(
-        leading: Semantics(
-          label: 'Back',
-          button: true,
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back_rounded, semanticLabel: 'Back'),
-            onPressed: () => Navigator.of(context).pop(),
-            tooltip: 'Back',
+        appBar: AppBar(
+          leading: Semantics(
+            label: 'Back',
+            button: true,
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back_rounded, semanticLabel: 'Back'),
+              onPressed: () => Navigator.of(context).pop(),
+              tooltip: 'Back',
+            ),
           ),
+          title: Row(
+            children: [
+              Expanded(child: Text('Language Games (${allGames.length})')),
+              if (remoteCatalog.value != null)
+                Tooltip(
+                  message: 'Game list loaded from server',
+                  child: Icon(
+                    Icons.cloud_done_rounded,
+                    size: 22.sp,
+                    color: PanAfricanColors.primary,
+                  ),
+                ),
+            ],
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
         ),
-        title: Row(
-          children: [
-            Expanded(
-              child: Text('Language Games (${allGames.length})'),
-            ),
-            if (remoteCatalog.value != null)
-              Tooltip(
-                message: 'Game list loaded from server',
-                child: Icon(
-                  Icons.cloud_done_rounded,
-                  size: 22.sp,
-                  color: PanAfricanColors.primary,
+        body: Container(
+          color: stitch != null
+              ? (isDark ? stitch.parchmentLow : stitch.parchment)
+              : (isDark
+                    ? PanAfricanColors.surfaceDark
+                    : PanAfricanColors.surfaceLight),
+          child: Column(
+            children: [
+              // Language Selector
+              Container(
+                padding: EdgeInsets.all(PanAfricanSpacing.md),
+                child: Semantics(
+                  label: 'Select language',
+                  child: DropdownButtonFormField<String>(
+                    value: selectedLanguage.value,
+                    decoration: InputDecoration(
+                      labelText: 'Language',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(
+                          PanAfricanRadius.md,
+                        ),
+                      ),
+                      filled: true,
+                      fillColor: isDark
+                          ? PanAfricanColors.surfaceContainerDark
+                          : PanAfricanColors.surfaceContainerLight,
+                    ),
+                    items: languages.map((lang) {
+                      return DropdownMenuItem(
+                        value: lang,
+                        child: Text(lang.toUpperCase()),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      if (value != null) selectedLanguage.value = value;
+                    },
+                  ),
                 ),
               ),
-          ],
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: Container(
-        color: stitch != null
-            ? (isDark ? stitch.parchmentLow : stitch.parchment)
-            : (isDark
-                ? PanAfricanColors.surfaceDark
-                : PanAfricanColors.surfaceLight),
-        child: Column(
-          children: [
-            // Language Selector
-            Container(
-              padding: EdgeInsets.all(PanAfricanSpacing.md),
-              child: Semantics(
-                label: 'Select language',
-                child: DropdownButtonFormField<String>(
-                  value: selectedLanguage.value,
-                  decoration: InputDecoration(
-                    labelText: 'Language',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                    ),
-                    filled: true,
-                    fillColor: isDark
-                        ? PanAfricanColors.surfaceContainerDark
-                        : PanAfricanColors.surfaceContainerLight,
-                  ),
-                  items: languages.map((lang) {
-                    return DropdownMenuItem(
-                      value: lang,
-                      child: Text(lang.toUpperCase()),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    if (value != null) selectedLanguage.value = value;
-                  },
-                ),
-              ),
-            ),
 
-            // Section Tabs (Core vs Cultural)
-            Container(
-              padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.sm),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Semantics(
-                      label: 'Core Games, ${coreGames.length} games',
-                      button: true,
-                      selected: selectedSection.value == 'core',
-                      child: ChoiceChip(
-                        label: Text('Core Games (${coreGames.length})'),
-                        selected: selectedSection.value == 'core',
-                        onSelected: (selected) {
-                          if (selected) {
-                            selectedSection.value = 'core';
-                            HapticFeedback.lightImpact();
-                          }
-                        },
-                        selectedColor: PanAfricanColors.primaryContainer,
-                        labelStyle: PanAfricanTypography.labelMedium(context),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: PanAfricanSpacing.sm),
-                  Expanded(
-                    child: Semantics(
-                      label: 'Cultural Games, ${culturalGames.length} games',
-                      button: true,
-                      selected: selectedSection.value == 'cultural',
-                      child: ChoiceChip(
-                        label: Text('Cultural Games (${culturalGames.length})'),
-                        selected: selectedSection.value == 'cultural',
-                        onSelected: (selected) {
-                          if (selected) {
-                            selectedSection.value = 'cultural';
-                            HapticFeedback.lightImpact();
-                          }
-                        },
-                        selectedColor: PanAfricanColors.primaryContainer,
-                        labelStyle: PanAfricanTypography.labelMedium(context),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // Category Filters
-            Container(
-              padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.sm),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
+              // Section Tabs (Core vs Cultural)
+              Container(
+                padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.sm),
                 child: Row(
                   children: [
-                    ...categories.map((category) {
-                      final isSelected = selectedCategory.value == category ||
-                          (category == 'All' && selectedCategory.value == null);
-                      return Padding(
-                        padding: EdgeInsets.only(right: PanAfricanSpacing.sm),
-                        child: Semantics(
-                          label: 'Filter by $category category',
-                          button: true,
-                          selected: isSelected,
-                          child: FilterChip(
-                            label: Text(category),
-                            selected: isSelected,
-                            onSelected: (selected) {
-                              selectedCategory.value = selected && category != 'All' ? category : null;
+                    Expanded(
+                      child: Semantics(
+                        label: 'Core Games, ${coreGames.length} games',
+                        button: true,
+                        selected: selectedSection.value == 'core',
+                        child: ChoiceChip(
+                          label: Text('Core Games (${coreGames.length})'),
+                          selected: selectedSection.value == 'core',
+                          onSelected: (selected) {
+                            if (selected) {
+                              selectedSection.value = 'core';
                               HapticFeedback.lightImpact();
-                            },
-                            selectedColor: PanAfricanColors.primaryContainer,
-                            checkmarkColor: PanAfricanColors.primary,
-                          ),
+                            }
+                          },
+                          selectedColor: PanAfricanColors.primaryContainer,
+                          labelStyle: PanAfricanTypography.labelMedium(context),
                         ),
-                      );
-                    }),
+                      ),
+                    ),
+                    SizedBox(width: PanAfricanSpacing.sm),
+                    Expanded(
+                      child: Semantics(
+                        label: 'Cultural Games, ${culturalGames.length} games',
+                        button: true,
+                        selected: selectedSection.value == 'cultural',
+                        child: ChoiceChip(
+                          label: Text(
+                            'Cultural Games (${culturalGames.length})',
+                          ),
+                          selected: selectedSection.value == 'cultural',
+                          onSelected: (selected) {
+                            if (selected) {
+                              selectedSection.value = 'cultural';
+                              HapticFeedback.lightImpact();
+                            }
+                          },
+                          selectedColor: PanAfricanColors.primaryContainer,
+                          labelStyle: PanAfricanTypography.labelMedium(context),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
-            ),
 
-            // Games Grid
-            Expanded(
-              child: filteredGames.isEmpty
-                  ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ExcludeSemantics(
-                            child: Icon(
-                              Icons.sports_esports_outlined,
-                              size: 64.sp,
-                              color: PanAfricanColors.neutralMedium,
-                            ),
-                          ),
-                          SizedBox(height: PanAfricanSpacing.md),
-                          Semantics(
-                            label: 'No games in this category',
-                            child: Text(
-                              'No games in this category',
-                              style: PanAfricanTypography.bodyLarge(context),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : GridView.builder(
-                      padding: EdgeInsets.all(PanAfricanSpacing.lg),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: PanAfricanSpacing.md,
-                        mainAxisSpacing: PanAfricanSpacing.md,
-                        childAspectRatio: 0.85,
-                      ),
-                      itemCount: filteredGames.length,
-                      itemBuilder: (context, index) {
-                        final game = filteredGames[index];
-                        return _GameCard(
-                          game: game,
-                          isDark: isDark,
-                          onTap: () {
-                            final gameType = game.type;
-                            final loader = ref.read(lazyGameLoaderProvider);
-
-                            safeAsync(
-                              context: context,
-                              operation: () async {
-                                isLoading.value = true;
-                                try {
-                                  await loader.loadGameOnDemand(
-                                    gameType,
-                                    language: selectedLanguage.value,
-                                  );
-                                } catch (_) {
-                                  // Preload is optional; still open the game
-                                }
-                                if (!context.mounted) return;
-                                try {
-                                  final gameWidget = buildGameScreen(
-                                    gameType: gameType,
-                                    language: selectedLanguage.value,
-                                    onBack: () => Navigator.of(context).pop(),
-                                    ref: ref,
-                                  );
-                                  if (!context.mounted) return;
-
-                                  final prefs = await SharedPreferences.getInstance();
-                                  final dismissed = prefs.getBool('game_onboarding_${gameType.name}_dismissed') ?? false;
-                                  if (!dismissed && context.mounted) {
-                                    await showDialog(
-                                      context: context,
-                                      builder: (ctx) => GameOnboardingOverlay(
-                                        gameType: gameType.name,
-                                        title: game.name,
-                                        rules: game.rules.isNotEmpty ? game.rules : const [
-                                          'Learn and have fun with this game mode.',
-                                          'Focus on accuracy first, then speed.',
-                                        ],
-                                        onDismiss: () async {
-                                          await prefs.setBool('game_onboarding_${gameType.name}_dismissed', true);
-                                          Navigator.pop(ctx);
-                                        },
-                                      ),
-                                    );
-                                  }
-
-                                  if (!context.mounted) return;
-                                  await Navigator.push(
-                                    context,
-                                    SmoothPageRoute(
-                                      child: ErrorBoundary(
-                                        errorMessage: 'This game could not load.',
-                                        onRetry: () => Navigator.of(context).pop(),
-                                        child: gameWidget,
-                                      ),
-                                    ),
-                                  );
-                                } catch (e) {
-                                  if (context.mounted) {
-                                    ErrorHandler.showError(context, e);
-                                  }
-                                } finally {
-                                  isLoading.value = false;
-                                }
+              // Category Filters
+              Container(
+                padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.sm),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PanAfricanSpacing.md,
+                  ),
+                  child: Row(
+                    children: [
+                      ...categories.map((category) {
+                        final isSelected =
+                            selectedCategory.value == category ||
+                            (category == 'All' &&
+                                selectedCategory.value == null);
+                        return Padding(
+                          padding: EdgeInsets.only(right: PanAfricanSpacing.sm),
+                          child: Semantics(
+                            label: 'Filter by $category category',
+                            button: true,
+                            selected: isSelected,
+                            child: FilterChip(
+                              label: Text(category),
+                              selected: isSelected,
+                              onSelected: (selected) {
+                                selectedCategory.value =
+                                    selected && category != 'All'
+                                    ? category
+                                    : null;
+                                HapticFeedback.lightImpact();
                               },
-                              errorContext: 'openGame',
-                              showError: true,
-                            );
-                          },
-                        )
-                            .animate(delay: (index * 50).ms)
-                            .fadeIn(duration: 300.ms)
-                            .scale(begin: Offset(0.9, 0.9), end: Offset(1, 1));
-                      },
-                    ),
-            ),
-          ],
+                              selectedColor: PanAfricanColors.primaryContainer,
+                              checkmarkColor: PanAfricanColors.primary,
+                            ),
+                          ),
+                        );
+                      }),
+                    ],
+                  ),
+                ),
+              ),
+
+              // Games Grid
+              Expanded(
+                child: filteredGames.isEmpty
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ExcludeSemantics(
+                              child: Icon(
+                                Icons.sports_esports_outlined,
+                                size: 64.sp,
+                                color: PanAfricanColors.neutralMedium,
+                              ),
+                            ),
+                            SizedBox(height: PanAfricanSpacing.md),
+                            Semantics(
+                              label: 'No games in this category',
+                              child: Text(
+                                'No games in this category',
+                                style: PanAfricanTypography.bodyLarge(context),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : GridView.builder(
+                        padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: PanAfricanSpacing.md,
+                          mainAxisSpacing: PanAfricanSpacing.md,
+                          childAspectRatio: 0.85,
+                        ),
+                        itemCount: filteredGames.length,
+                        itemBuilder: (context, index) {
+                          final game = filteredGames[index];
+                          return _GameCard(
+                                game: game,
+                                isDark: isDark,
+                                onTap: () {
+                                  final gameType = game.type;
+                                  final loader = ref.read(
+                                    lazyGameLoaderProvider,
+                                  );
+
+                                  safeAsync(
+                                    context: context,
+                                    operation: () async {
+                                      isLoading.value = true;
+                                      try {
+                                        await loader.loadGameOnDemand(
+                                          gameType,
+                                          language: selectedLanguage.value,
+                                        );
+                                      } catch (_) {
+                                        // Preload is optional; still open the game
+                                      }
+                                      if (!context.mounted) return;
+                                      try {
+                                        final gameWidget = buildGameScreen(
+                                          gameType: gameType,
+                                          language: selectedLanguage.value,
+                                          onBack: () =>
+                                              Navigator.of(context).pop(),
+                                          ref: ref,
+                                        );
+                                        if (!context.mounted) return;
+
+                                        final prefs =
+                                            await SharedPreferences.getInstance();
+                                        final dismissed =
+                                            prefs.getBool(
+                                              'game_onboarding_${gameType.name}_dismissed',
+                                            ) ??
+                                            false;
+                                        if (!dismissed && context.mounted) {
+                                          await showDialog(
+                                            context: context,
+                                            builder: (ctx) => GameOnboardingOverlay(
+                                              gameType: gameType.name,
+                                              title: game.name,
+                                              rules: game.rules.isNotEmpty
+                                                  ? game.rules
+                                                  : const [
+                                                      'Learn and have fun with this game mode.',
+                                                      'Focus on accuracy first, then speed.',
+                                                    ],
+                                              onDismiss: () async {
+                                                await prefs.setBool(
+                                                  'game_onboarding_${gameType.name}_dismissed',
+                                                  true,
+                                                );
+                                                Navigator.pop(ctx);
+                                              },
+                                            ),
+                                          );
+                                        }
+
+                                        if (!context.mounted) return;
+                                        await Navigator.push(
+                                          context,
+                                          SmoothPageRoute.platform(
+                                            child: ErrorBoundary(
+                                              errorMessage:
+                                                  'This game could not load.',
+                                              onRetry: () =>
+                                                  Navigator.of(context).pop(),
+                                              child: gameWidget,
+                                            ),
+                                          ),
+                                        );
+                                      } catch (e) {
+                                        if (context.mounted) {
+                                          ErrorHandler.showError(context, e);
+                                        }
+                                      } finally {
+                                        isLoading.value = false;
+                                      }
+                                    },
+                                    errorContext: 'openGame',
+                                    showError: true,
+                                  );
+                                },
+                              )
+                              .animate(delay: (index * 50).ms)
+                              .fadeIn(duration: 300.ms)
+                              .scale(
+                                begin: Offset(0.9, 0.9),
+                                end: Offset(1, 1),
+                              );
+                        },
+                      ),
+              ),
+            ],
+          ),
         ),
       ),
-    ),
     );
   }
 }
@@ -390,7 +430,10 @@ class _GameCard extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(PanAfricanSpacing.md),
               decoration: BoxDecoration(
-                color: Theme.of(context).extension<StitchArcadeTheme>()?.terracottaAccent ??
+                color:
+                    Theme.of(
+                      context,
+                    ).extension<StitchArcadeTheme>()?.terracottaAccent ??
                     PanAfricanColors.primary,
                 shape: BoxShape.circle,
                 boxShadow: PanAfricanShadows.sm,
@@ -399,7 +442,7 @@ class _GameCard extends StatelessWidget {
                 icon,
                 size: 24.sp,
                 color: colorScheme.onPrimary,
-                              semanticLabel: '${game.name} game icon',
+                semanticLabel: '${game.name} game icon',
               ),
             ),
             SizedBox(height: PanAfricanSpacing.sm),
@@ -448,4 +491,3 @@ class _GameCard extends StatelessWidget {
     );
   }
 }
-

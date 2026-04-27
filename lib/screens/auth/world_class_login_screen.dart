@@ -32,7 +32,9 @@ class WorldClassLoginScreen extends HookConsumerWidget {
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
     final formKey = useMemoized(() => GlobalKey<FormState>());
-    final isLoading = ref.watch(authProvider.select((value) => value.isLoading));
+    final isLoading = ref.watch(
+      authProvider.select((value) => value.isLoading),
+    );
     final showPassword = useState<bool>(false);
     final isBiometricAvailable = useState<bool?>(null);
     final biometricEnabledForAccount = useState<bool>(false);
@@ -78,123 +80,126 @@ class WorldClassLoginScreen extends HookConsumerWidget {
             ),
           ),
           child: ResponsiveSafeArea(
-            child:               SingleChildScrollView(
-                padding: EdgeInsets.symmetric(
-                  horizontal: AdaptiveLayout.sideMargin(context),
-                  vertical: PanAfricanSpacing.lg,
-                ),
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(
+                horizontal: AdaptiveLayout.sideMargin(context),
+                vertical: PanAfricanSpacing.lg,
+              ),
               child: Form(
                 key: formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     SizedBox(height: PanAfricanSpacing.xl),
-                    
+
                     // Logo with animation
                     _buildLogo(context)
                         .animate()
                         .fadeIn(duration: 400.ms)
                         .scale(begin: Offset(0.8, 0.8), duration: 400.ms),
-                    
+
                     SizedBox(height: PanAfricanSpacing.xxl),
-                    
+
                     // Welcome text
                     _buildWelcomeText(context, isDark)
                         .animate()
                         .fadeIn(delay: 200.ms, duration: 400.ms)
                         .slideY(begin: 0.1, duration: 400.ms),
-                    
+
                     SizedBox(height: PanAfricanSpacing.xl),
-                    
+
                     // Email & password with AutofillGroup for Smart Lock / password managers
                     AutofillGroup(
                       child: Column(
                         children: [
                           _buildEmailField(
-                            context,
-                            emailController,
-                            credentialStorage,
-                            isDark,
-                          )
+                                context,
+                                emailController,
+                                credentialStorage,
+                                isDark,
+                              )
                               .animate()
                               .fadeIn(delay: 300.ms, duration: 400.ms)
                               .slideX(begin: -0.1, duration: 400.ms),
-                          
+
                           SizedBox(height: PanAfricanSpacing.md),
-                          
+
                           _buildPasswordField(
-                            context,
-                            passwordController,
-                            showPassword,
-                            isDark,
-                          )
+                                context,
+                                passwordController,
+                                showPassword,
+                                isDark,
+                              )
                               .animate()
                               .fadeIn(delay: 400.ms, duration: 400.ms)
                               .slideX(begin: -0.1, duration: 400.ms),
                         ],
                       ),
                     ),
-                    
+
                     SizedBox(height: PanAfricanSpacing.sm),
-                    
+
                     // Forgot password
-                    _buildForgotPassword(context, ref)
-                        .animate()
-                        .fadeIn(delay: 500.ms, duration: 400.ms),
-                    
+                    _buildForgotPassword(
+                      context,
+                      ref,
+                    ).animate().fadeIn(delay: 500.ms, duration: 400.ms),
+
                     SizedBox(height: PanAfricanSpacing.xl),
-                    
+
                     // Login button
                     _buildLoginButton(
-                      context,
-                      formKey,
-                      emailController,
-                      passwordController,
-                      credentialStorage,
-                      biometricEnrollmentService,
-                      biometricAuth,
-                      biometricPreferenceService,
-                      ref,
-                      isDark,
-                      isLoading,
-                    )
+                          context,
+                          formKey,
+                          emailController,
+                          passwordController,
+                          credentialStorage,
+                          biometricEnrollmentService,
+                          biometricAuth,
+                          biometricPreferenceService,
+                          ref,
+                          isDark,
+                          isLoading,
+                        )
                         .animate()
                         .fadeIn(delay: 600.ms, duration: 400.ms)
                         .scale(delay: 600.ms, duration: 400.ms),
-                    
+
                     SizedBox(height: PanAfricanSpacing.lg),
-                    
+
                     // Biometric login
                     if (isBiometricAvailable.value == true &&
                         biometricEnabledForAccount.value)
                       _buildBiometricButton(
-                        context,
-                        emailController,
-                        passwordController,
-                        credentialStorage,
-                        biometricAuth,
-                        biometricPreferenceService,
-                        ref,
-                        isDark,
-                      )
+                            context,
+                            emailController,
+                            passwordController,
+                            credentialStorage,
+                            biometricAuth,
+                            biometricPreferenceService,
+                            ref,
+                            isDark,
+                          )
                           .animate()
                           .fadeIn(delay: 700.ms, duration: 400.ms)
                           .scale(delay: 700.ms, duration: 400.ms),
-                    
+
                     SizedBox(height: PanAfricanSpacing.xl),
-                    
+
                     // Divider
-                    _buildDivider(context, isDark)
-                        .animate()
-                        .fadeIn(delay: 800.ms, duration: 400.ms),
-                    
+                    _buildDivider(
+                      context,
+                      isDark,
+                    ).animate().fadeIn(delay: 800.ms, duration: 400.ms),
+
                     SizedBox(height: PanAfricanSpacing.lg),
-                    
+
                     // Sign up link
-                    _buildSignUpLink(context, ref)
-                        .animate()
-                        .fadeIn(delay: 900.ms, duration: 400.ms),
-                    
+                    _buildSignUpLink(
+                      context,
+                      ref,
+                    ).animate().fadeIn(delay: 900.ms, duration: 400.ms),
+
                     SizedBox(height: PanAfricanSpacing.xl),
                   ],
                 ),
@@ -247,18 +252,18 @@ class WorldClassLoginScreen extends HookConsumerWidget {
         children: [
           Text(
             'Welcome Back!',
-          style: PanAfricanTypography.headlineLarge(context).copyWith(
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.onSurface,
+            style: PanAfricanTypography.headlineLarge(context).copyWith(
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
           ),
-        ),
-        SizedBox(height: PanAfricanSpacing.xs),
-        Text(
-          'Sign in to continue your language journey',
-          style: PanAfricanTypography.bodyLarge(context).copyWith(
-            color: isDark ? Colors.grey[300] : Colors.grey[700],
+          SizedBox(height: PanAfricanSpacing.xs),
+          Text(
+            'Sign in to continue your language journey',
+            style: PanAfricanTypography.bodyLarge(
+              context,
+            ).copyWith(color: isDark ? Colors.grey[300] : Colors.grey[700]),
           ),
-        ),
         ],
       ),
     );
@@ -296,46 +301,58 @@ class WorldClassLoginScreen extends HookConsumerWidget {
               prefixIcon: Semantics(
                 label: 'Email icon',
                 excludeSemantics: true,
-                child: Icon(Icons.email_outlined, color: PanAfricanColors.primary),
+                child: Icon(
+                  Icons.email_outlined,
+                  color: PanAfricanColors.primary,
+                ),
               ),
               suffixIcon: controller.text.isNotEmpty
                   ? Semantics(
                       label: 'Clear email',
                       button: true,
                       child: IconButton(
-                        icon: Icon(Icons.clear, size: 20.sp, color: PanAfricanColors.textSecondaryLight),
+                        icon: Icon(
+                          Icons.clear,
+                          size: 20.sp,
+                          color: PanAfricanColors.textSecondaryLight,
+                        ),
                         onPressed: () => controller.clear(),
                       ),
                     )
                   : null,
-            filled: true,
-            fillColor: isDark
-                ? PanAfricanColors.surfaceContainerDark
-                : PanAfricanColors.surfaceContainerLight,
-            border: OutlineInputBorder(
-              borderRadius: PanAfricanRadius.lgBR,
-              borderSide: BorderSide.none,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: PanAfricanRadius.lgBR,
-              borderSide: BorderSide(
-                color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
+              filled: true,
+              fillColor: isDark
+                  ? PanAfricanColors.surfaceContainerDark
+                  : PanAfricanColors.surfaceContainerLight,
+              border: OutlineInputBorder(
+                borderRadius: PanAfricanRadius.lgBR,
+                borderSide: BorderSide.none,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: PanAfricanRadius.lgBR,
+                borderSide: BorderSide(
+                  color: isDark
+                      ? PanAfricanColors.borderDark
+                      : PanAfricanColors.borderLight,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: PanAfricanRadius.lgBR,
+                borderSide: BorderSide(
+                  color: PanAfricanColors.primary,
+                  width: 2,
+                ),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: PanAfricanRadius.lgBR,
+                borderSide: BorderSide(color: PanAfricanColors.error, width: 2),
+              ),
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: PanAfricanSpacing.md,
+                vertical: PanAfricanSpacing.md,
               ),
             ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: PanAfricanRadius.lgBR,
-              borderSide: BorderSide(
-                color: PanAfricanColors.primary,
-                width: 2,
-              ),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: PanAfricanRadius.lgBR,
-              borderSide: BorderSide(color: PanAfricanColors.error, width: 2),
-            ),
-            contentPadding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md, vertical: PanAfricanSpacing.md            ),
           ),
-        ),
         ),
       ],
     );
@@ -376,14 +393,19 @@ class WorldClassLoginScreen extends HookConsumerWidget {
               prefixIcon: Semantics(
                 label: 'Password lock icon',
                 excludeSemantics: true,
-                child: Icon(Icons.lock_outline, color: PanAfricanColors.primary),
+                child: Icon(
+                  Icons.lock_outline,
+                  color: PanAfricanColors.primary,
+                ),
               ),
               suffixIcon: Semantics(
                 label: showPassword.value ? 'Hide password' : 'Show password',
                 button: true,
                 child: IconButton(
                   icon: Icon(
-                    showPassword.value ? Icons.visibility_off : Icons.visibility,
+                    showPassword.value
+                        ? Icons.visibility_off
+                        : Icons.visibility,
                     color: PanAfricanColors.textSecondaryLight,
                   ),
                   onPressed: () {
@@ -392,34 +414,39 @@ class WorldClassLoginScreen extends HookConsumerWidget {
                   },
                 ),
               ),
-            filled: true,
-            fillColor: isDark
-                ? PanAfricanColors.surfaceContainerDark
-                : PanAfricanColors.surfaceContainerLight,
-            border: OutlineInputBorder(
-              borderRadius: PanAfricanRadius.lgBR,
-              borderSide: BorderSide.none,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: PanAfricanRadius.lgBR,
-              borderSide: BorderSide(
-                color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
+              filled: true,
+              fillColor: isDark
+                  ? PanAfricanColors.surfaceContainerDark
+                  : PanAfricanColors.surfaceContainerLight,
+              border: OutlineInputBorder(
+                borderRadius: PanAfricanRadius.lgBR,
+                borderSide: BorderSide.none,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: PanAfricanRadius.lgBR,
+                borderSide: BorderSide(
+                  color: isDark
+                      ? PanAfricanColors.borderDark
+                      : PanAfricanColors.borderLight,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: PanAfricanRadius.lgBR,
+                borderSide: BorderSide(
+                  color: PanAfricanColors.primary,
+                  width: 2,
+                ),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: PanAfricanRadius.lgBR,
+                borderSide: BorderSide(color: PanAfricanColors.error, width: 2),
+              ),
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: PanAfricanSpacing.md,
+                vertical: PanAfricanSpacing.md,
               ),
             ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: PanAfricanRadius.lgBR,
-              borderSide: BorderSide(
-                color: PanAfricanColors.primary,
-                width: 2,
-              ),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: PanAfricanRadius.lgBR,
-              borderSide: BorderSide(color: PanAfricanColors.error, width: 2),
-            ),
-            contentPadding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md, vertical: PanAfricanSpacing.md            ),
           ),
-        ),
         ),
       ],
     );
@@ -436,7 +463,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
             HapticFeedback.lightImpact();
             Navigator.push(
               context,
-              SmoothPageRoute(child: const ForgotPasswordScreen()),
+              SmoothPageRoute.platform(child: const ForgotPasswordScreen()),
             );
           },
           child: Text(
@@ -481,7 +508,9 @@ class WorldClassLoginScreen extends HookConsumerWidget {
             // Login first — only persist credentials after success.
             // Storing before login meant failed attempts (server down, wrong
             // password) left stale credentials that auto-login would retry.
-            final user = await ref.read(authProvider.notifier).login(
+            final user = await ref
+                .read(authProvider.notifier)
+                .login(
                   email: emailController.text.trim(),
                   password: passwordController.text.trim(),
                   storeCredentials: true,
@@ -509,21 +538,21 @@ class WorldClassLoginScreen extends HookConsumerWidget {
           }
         },
         child: Container(
-        height: 56.h,
-        decoration: BoxDecoration(
-          gradient: PanAfricanGradients.forest,
-          borderRadius: PanAfricanRadius.lgBR,
-          boxShadow: PanAfricanShadows.glowGreen(0.3),
-        ),
-        child: Center(
-          child: Text(
-            isLoading ? 'Signing in…' : 'Sign In',
-            style: PanAfricanTypography.titleLarge(context).copyWith(
-              color: Theme.of(context).colorScheme.onPrimary,
-              fontWeight: FontWeight.bold,
+          height: 56.h,
+          decoration: BoxDecoration(
+            gradient: PanAfricanGradients.forest,
+            borderRadius: PanAfricanRadius.lgBR,
+            boxShadow: PanAfricanShadows.glowGreen(0.3),
+          ),
+          child: Center(
+            child: Text(
+              isLoading ? 'Signing in…' : 'Sign In',
+              style: PanAfricanTypography.titleLarge(context).copyWith(
+                color: Theme.of(context).colorScheme.onPrimary,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-        ),
         ),
       ),
     );
@@ -552,12 +581,13 @@ class WorldClassLoginScreen extends HookConsumerWidget {
             : Icons.face;
 
         return Semantics(
-          label: 'Sign in with ${biometricAuth.getBiometricTypeName(biometricType)}',
+          label:
+              'Sign in with ${biometricAuth.getBiometricTypeName(biometricType)}',
           button: true,
           child: ScaleOnTap(
             onTap: () async {
               HapticFeedback.mediumImpact();
-              
+
               final authenticated = await biometricAuth.authenticateWithResult(
                 localizedReason: 'Use biometric to sign in',
               );
@@ -569,11 +599,15 @@ class WorldClassLoginScreen extends HookConsumerWidget {
                     final email = (credentials['email'] ?? '').trim();
                     if (email.isEmpty) {
                       if (context.mounted) {
-                        ErrorHandler.showError(context, 'No account is linked for biometric sign-in.');
+                        ErrorHandler.showError(
+                          context,
+                          'No account is linked for biometric sign-in.',
+                        );
                       }
                       return;
                     }
-                    final biometricEnabled = await biometricPreferenceService.isEnabledForEmail(email);
+                    final biometricEnabled = await biometricPreferenceService
+                        .isEnabledForEmail(email);
                     if (!biometricEnabled) {
                       if (context.mounted) {
                         ErrorHandler.showError(
@@ -585,8 +619,10 @@ class WorldClassLoginScreen extends HookConsumerWidget {
                     }
                     emailController.text = credentials['email'] ?? '';
                     passwordController.text = credentials['password'] ?? '';
-                    
-                    await ref.read(authProvider.notifier).login(
+
+                    await ref
+                        .read(authProvider.notifier)
+                        .login(
                           email: credentials['email'] ?? '',
                           password: credentials['password'] ?? '',
                           storeCredentials: true,
@@ -600,40 +636,47 @@ class WorldClassLoginScreen extends HookConsumerWidget {
               } else if (context.mounted) {
                 ErrorHandler.showError(
                   context,
-                  authenticated.errorMessage ?? 'Biometric authentication failed.',
+                  authenticated.errorMessage ??
+                      'Biometric authentication failed.',
                 );
               }
             },
             child: Container(
-            height: 56.h,
-            decoration: BoxDecoration(
-              color: isDark
-                  ? PanAfricanColors.surfaceContainerDark
-                  : PanAfricanColors.surfaceContainerLight,
-              borderRadius: PanAfricanRadius.lgBR,
-              border: Border.all(
-                color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
+              height: 56.h,
+              decoration: BoxDecoration(
+                color: isDark
+                    ? PanAfricanColors.surfaceContainerDark
+                    : PanAfricanColors.surfaceContainerLight,
+                borderRadius: PanAfricanRadius.lgBR,
+                border: Border.all(
+                  color: isDark
+                      ? PanAfricanColors.borderDark
+                      : PanAfricanColors.borderLight,
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Semantics(
+                    excludeSemantics: true,
+                    child: Icon(
+                      icon,
+                      color: PanAfricanColors.primary,
+                      size: 24.sp,
+                    ),
+                  ),
+                  SizedBox(width: PanAfricanSpacing.sm),
+                  Text(
+                    'Sign in with ${biometricAuth.getBiometricTypeName(biometricType)}',
+                    style: PanAfricanTypography.bodyLarge(context).copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Semantics(
-                  excludeSemantics: true,
-                  child: Icon(icon, color: PanAfricanColors.primary, size: 24.sp),
-                ),
-                SizedBox(width: PanAfricanSpacing.sm),
-                Text(
-                  'Sign in with ${biometricAuth.getBiometricTypeName(biometricType)}',
-                  style: PanAfricanTypography.bodyLarge(context).copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
           ),
-        ),
         );
       },
     );
@@ -642,7 +685,13 @@ class WorldClassLoginScreen extends HookConsumerWidget {
   Widget _buildDivider(BuildContext context, bool isDark) {
     return Row(
       children: [
-        Expanded(child: Divider(color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight)),
+        Expanded(
+          child: Divider(
+            color: isDark
+                ? PanAfricanColors.borderDark
+                : PanAfricanColors.borderLight,
+          ),
+        ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
           child: Semantics(
@@ -650,12 +699,20 @@ class WorldClassLoginScreen extends HookConsumerWidget {
             child: Text(
               'OR',
               style: PanAfricanTypography.labelMedium(context).copyWith(
-                color: isDark ? PanAfricanColors.textSecondaryDark : PanAfricanColors.textSecondaryLight,
+                color: isDark
+                    ? PanAfricanColors.textSecondaryDark
+                    : PanAfricanColors.textSecondaryLight,
               ),
             ),
           ),
         ),
-        Expanded(child: Divider(color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight)),
+        Expanded(
+          child: Divider(
+            color: isDark
+                ? PanAfricanColors.borderDark
+                : PanAfricanColors.borderLight,
+          ),
+        ),
       ],
     );
   }
@@ -676,7 +733,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
               HapticFeedback.lightImpact();
               Navigator.push(
                 context,
-                SmoothPageRoute(child: const WorldClassSignupScreen()),
+                SmoothPageRoute.platform(child: const WorldClassSignupScreen()),
               );
             },
             child: Text(
@@ -708,15 +765,13 @@ class WorldClassLoginScreen extends HookConsumerWidget {
 
     if (await storage.hasStoredCredentials()) {
       final email = await storage.getStoredEmail();
-      
+
       if (email != null) {
         emailController.text = email;
-        biometricEnabledForAccount.value =
-            await biometricPreferenceService.isEnabledForEmail(email);
+        biometricEnabledForAccount.value = await biometricPreferenceService
+            .isEnabledForEmail(email);
       }
       // Don't auto-fill password for security, but enable biometric
     }
   }
-
 }
-

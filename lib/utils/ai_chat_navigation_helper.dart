@@ -20,7 +20,7 @@ void navigateToRoleplayScenarioSelection(
 }) {
   Navigator.push(
     context,
-    SmoothPageRoute(
+    SmoothPageRoute.platform(
       child: RoleplayScenarioSelectionScreen(
         language: language,
         languageName: languageName,
@@ -39,7 +39,7 @@ void navigateToRoleplayCompletionSummary(
 }) {
   Navigator.push(
     context,
-    SmoothPageRoute(
+    SmoothPageRoute.platform(
       child: RoleplayCompletionSummaryScreen(
         result: result,
         language: language,
@@ -58,7 +58,7 @@ void navigateToRoleplayProgressDashboard(
 }) {
   Navigator.push(
     context,
-    SmoothPageRoute(
+    SmoothPageRoute.platform(
       child: RoleplayProgressDashboardScreen(
         language: language,
         languageName: languageName,
@@ -76,7 +76,7 @@ void navigateToEnhancedTranslation(
 }) {
   Navigator.push(
     context,
-    SmoothPageRoute(
+    SmoothPageRoute.platform(
       child: EnhancedTranslationScreen(
         sourceLanguage: sourceLanguage,
         targetLanguage: targetLanguage,
@@ -94,7 +94,7 @@ void navigateToTutorProgressDashboard(
 }) {
   Navigator.push(
     context,
-    SmoothPageRoute(
+    SmoothPageRoute.platform(
       child: TutorProgressDashboardScreen(
         language: language,
         languageName: languageName,
@@ -111,7 +111,7 @@ void navigateToConversationAnalytics(
 }) {
   Navigator.push(
     context,
-    SmoothPageRoute(
+    SmoothPageRoute.platform(
       child: ConversationAnalyticsScreen(
         language: language,
         languageName: languageName,
@@ -128,7 +128,7 @@ void navigateToVocabularyDashboard(
 }) {
   Navigator.push(
     context,
-    SmoothPageRoute(
+    SmoothPageRoute.platform(
       child: VocabularyDashboardScreen(
         language: language,
         languageName: languageName,
@@ -145,7 +145,7 @@ void navigateToReviewDashboard(
 }) {
   Navigator.push(
     context,
-    SmoothPageRoute(
+    SmoothPageRoute.platform(
       child: ReviewDashboardScreen(
         language: language,
         languageName: languageName,
@@ -153,4 +153,3 @@ void navigateToReviewDashboard(
     ),
   );
 }
-

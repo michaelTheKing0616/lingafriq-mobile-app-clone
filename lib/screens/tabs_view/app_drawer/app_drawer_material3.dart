@@ -5,7 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
-import 'package:lingafriq/widgets/pan_african_components.dart' hide PanAfricanIcons;
+import 'package:lingafriq/widgets/pan_african_components.dart'
+    hide PanAfricanIcons;
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
@@ -54,11 +55,16 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
       await ref.read(themeModeProvider.notifier).toggleDarkMode();
       if (!context.mounted) return;
       final enabled = Theme.of(context).brightness == Brightness.dark;
-      showLingAfriqInfo(context, 'Dark mode ${enabled ? 'enabled' : 'disabled'}');
+      showLingAfriqInfo(
+        context,
+        'Dark mode ${enabled ? 'enabled' : 'disabled'}',
+      );
     }
 
     return Drawer(
-      backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
+      backgroundColor: isDark
+          ? PanAfricanColors.surfaceDark
+          : PanAfricanColors.surfaceLight,
       child: ResponsiveSafeArea(
         child: Column(
           children: [
@@ -83,8 +89,9 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           backgroundColor: PanAfricanColors.secondary,
                           child: Text(
                             currentUser?.username[0].toUpperCase() ?? 'U',
-                            style: PanAfricanTypography.headlineSmall(context)
-                                .copyWith(color: PanAfricanColors.neutralDarkest),
+                            style: PanAfricanTypography.headlineSmall(
+                              context,
+                            ).copyWith(color: PanAfricanColors.neutralDarkest),
                           ),
                         ),
                       ),
@@ -94,11 +101,16 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Semantics(
-                              label: 'Username: ${currentUser?.username ?? 'User'}',
+                              label:
+                                  'Username: ${currentUser?.username ?? 'User'}',
                               child: Text(
                                 currentUser?.username ?? 'User',
                                 style: PanAfricanTypography.titleLarge(context)
-                                    .copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                                    .copyWith(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onPrimary,
+                                    ),
                               ),
                             ),
                             SizedBox(height: PanAfricanSpacing.xxs),
@@ -107,7 +119,11 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                               child: Text(
                                 currentUser?.email ?? '',
                                 style: PanAfricanTypography.bodySmall(context)
-                                    .copyWith(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7)),
+                                    .copyWith(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onPrimary.withOpacity(0.7),
+                                    ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -119,10 +135,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                   ),
                 ],
               ),
-            )
-                .animate()
-                .fadeIn(duration: 300.ms)
-                .slideX(begin: -0.2),
+            ).animate().fadeIn(duration: 300.ms).slideX(begin: -0.2),
 
             // Navigation Items
             Expanded(
@@ -149,7 +162,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(
+                            SmoothPageRoute.platform(
                               child: const LessonsMapEntryScreen(),
                             ),
                           );
@@ -163,7 +176,9 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: const PolieModeSelectionScreen()),
+                            SmoothPageRoute.platform(
+                              child: const PolieModeSelectionScreen(),
+                            ),
                           );
                         },
                         isDark: isDark,
@@ -175,7 +190,9 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: AILanguageSelectionScreen()),
+                            SmoothPageRoute.platform(
+                              child: AILanguageSelectionScreen(),
+                            ),
                           );
                         },
                         isDark: isDark,
@@ -194,7 +211,9 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: GamesScreenMaterial3()),
+                            SmoothPageRoute.platform(
+                              child: GamesScreenMaterial3(),
+                            ),
                           );
                         },
                         isDark: isDark,
@@ -206,7 +225,9 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: CultureMagazineScreenEnhanced()),
+                            SmoothPageRoute.platform(
+                              child: CultureMagazineScreenEnhanced(),
+                            ),
                           );
                         },
                         isDark: isDark,
@@ -218,7 +239,9 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: const PhraseDnaTemplatesScreen()),
+                            SmoothPageRoute.platform(
+                              child: const PhraseDnaTemplatesScreen(),
+                            ),
                           );
                         },
                         isDark: isDark,
@@ -230,8 +253,10 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(
-                              child: const ToneRhythmTrainerScreen(language: 'yoruba'),
+                            SmoothPageRoute.platform(
+                              child: const ToneRhythmTrainerScreen(
+                                language: 'yoruba',
+                              ),
                             ),
                           );
                         },
@@ -244,7 +269,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(
+                            SmoothPageRoute.platform(
                               child: const FlbHeritageArchiveScreen(),
                             ),
                           );
@@ -258,7 +283,9 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: ImportMediaScreenEnhanced()),
+                            SmoothPageRoute.platform(
+                              child: ImportMediaScreenEnhanced(),
+                            ),
                           );
                         },
                         isDark: isDark,
@@ -270,8 +297,10 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(
-                              child: const PointAndSayScreen(language: 'yoruba'),
+                            SmoothPageRoute.platform(
+                              child: const PointAndSayScreen(
+                                language: 'yoruba',
+                              ),
                             ),
                           );
                         },
@@ -284,7 +313,9 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: const LivingDictionaryScreen()),
+                            SmoothPageRoute.platform(
+                              child: const LivingDictionaryScreen(),
+                            ),
                           );
                         },
                         isDark: isDark,
@@ -314,7 +345,9 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: CreateLessonScreenEnhanced()),
+                            SmoothPageRoute.platform(
+                              child: CreateLessonScreenEnhanced(),
+                            ),
                           );
                         },
                         isDark: isDark,
@@ -333,7 +366,9 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: GlobalChatScreenMaterial3()),
+                            SmoothPageRoute.platform(
+                              child: GlobalChatScreenMaterial3(),
+                            ),
                           );
                         },
                         isDark: isDark,
@@ -345,7 +380,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(
+                            SmoothPageRoute.platform(
                               child: const XFeedHomeScreen(),
                             ),
                           );
@@ -359,7 +394,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(
+                            SmoothPageRoute.platform(
                               child: const MicroMentorHubScreen(),
                             ),
                           );
@@ -373,7 +408,9 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: PrivateChatListScreen()),
+                            SmoothPageRoute.platform(
+                              child: PrivateChatListScreen(),
+                            ),
                           );
                         },
                         isDark: isDark,
@@ -385,7 +422,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(
+                            SmoothPageRoute.platform(
                               child: LiveClassroomScreenMaterial3(),
                             ),
                           );
@@ -399,7 +436,9 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: const VillagesHubScreen()),
+                            SmoothPageRoute.platform(
+                              child: const VillagesHubScreen(),
+                            ),
                           );
                         },
                         isDark: isDark,
@@ -425,7 +464,9 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: const TribeSelectionScreen()),
+                            SmoothPageRoute.platform(
+                              child: const TribeSelectionScreen(),
+                            ),
                           );
                         },
                         isDark: isDark,
@@ -437,7 +478,9 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: const PersonalitySelectionScreen()),
+                            SmoothPageRoute.platform(
+                              child: const PersonalitySelectionScreen(),
+                            ),
                           );
                         },
                         isDark: isDark,
@@ -456,7 +499,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                             Navigator.pop(context);
                             Navigator.push(
                               context,
-                              SmoothPageRoute(
+                              SmoothPageRoute.platform(
                                 child: const StaffMicroMentorReportsScreen(),
                               ),
                             );
@@ -477,7 +520,9 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: BadgeCollectionScreenMaterial3()),
+                            SmoothPageRoute.platform(
+                              child: BadgeCollectionScreenMaterial3(),
+                            ),
                           );
                         },
                         isDark: isDark,
@@ -489,7 +534,9 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: const LeaderboardScreen()),
+                            SmoothPageRoute.platform(
+                              child: const LeaderboardScreen(),
+                            ),
                           );
                         },
                         isDark: isDark,
@@ -508,7 +555,9 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: ProfileScreenMaterial3()),
+                            SmoothPageRoute.platform(
+                              child: ProfileScreenMaterial3(),
+                            ),
                           );
                         },
                         isDark: isDark,
@@ -520,7 +569,9 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: SettingsScreenMaterial3()),
+                            SmoothPageRoute.platform(
+                              child: SettingsScreenMaterial3(),
+                            ),
                           );
                         },
                         isDark: isDark,
@@ -560,7 +611,9 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                     : PanAfricanColors.surfaceContainerLight,
                 border: Border(
                   top: BorderSide(
-                    color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
+                    color: isDark
+                        ? PanAfricanColors.borderDark
+                        : PanAfricanColors.borderLight,
                   ),
                 ),
               ),
@@ -571,40 +624,39 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                   label: 'Logout',
                   icon: Icons.logout,
                   onPressed: () async {
-                  final shouldLogout = await showDialog<bool>(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: Text('Logout'),
-                      content: Text('Are you sure you want to logout?'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, false),
-                          child: Text('Cancel'),
-                        ),
-                        ElevatedButton(
-                          onPressed: () => Navigator.pop(context, true),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: PanAfricanColors.error,
-                            foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                    final shouldLogout = await showDialog<bool>(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text('Logout'),
+                        content: Text('Are you sure you want to logout?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: Text('Cancel'),
                           ),
-                          child: Text('Logout'),
-                        ),
-                      ],
-                    ),
-                  );
+                          ElevatedButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: PanAfricanColors.error,
+                              foregroundColor: Theme.of(
+                                context,
+                              ).colorScheme.onPrimary,
+                            ),
+                            child: Text('Logout'),
+                          ),
+                        ],
+                      ),
+                    );
 
-                  if (shouldLogout == true) {
-                    Navigator.pop(context);
-                    ref.read(authProvider.notifier).signOut();
-                  }
-                },
-                backgroundColor: PanAfricanColors.error,
+                    if (shouldLogout == true) {
+                      Navigator.pop(context);
+                      ref.read(authProvider.notifier).signOut();
+                    }
+                  },
+                  backgroundColor: PanAfricanColors.error,
+                ),
               ),
-            ),
-            )
-                .animate()
-                .fadeIn(duration: 300.ms)
-                .slideY(begin: 0.2),
+            ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.2),
           ],
         ),
       ),
@@ -616,10 +668,7 @@ class _DrawerSection extends StatelessWidget {
   final String title;
   final List<Widget> children;
 
-  const _DrawerSection({
-    required this.title,
-    required this.children,
-  });
+  const _DrawerSection({required this.title, required this.children});
 
   @override
   Widget build(BuildContext context) {
@@ -675,15 +724,9 @@ class _DrawerItem extends StatelessWidget {
       child: ListTile(
         leading: Semantics(
           excludeSemantics: true,
-          child: Icon(
-            icon,
-            color: PanAfricanColors.primary,
-          ),
+          child: Icon(icon, color: PanAfricanColors.primary),
         ),
-        title: Text(
-          label,
-          style: PanAfricanTypography.bodyLarge(context),
-        ),
+        title: Text(label, style: PanAfricanTypography.bodyLarge(context)),
         onTap: () {
           HapticFeedback.lightImpact();
           onTap();
@@ -692,10 +735,6 @@ class _DrawerItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(PanAfricanRadius.sm),
         ),
       ),
-    )
-        .animate()
-        .fadeIn(duration: 200.ms)
-        .slideX(begin: -0.1);
+    ).animate().fadeIn(duration: 200.ms).slideX(begin: -0.1);
   }
 }
-

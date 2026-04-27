@@ -74,12 +74,18 @@ class GamesScreen extends ConsumerWidget {
                           children: [
                             Text(
                               'Language Games',
-                            style: PanAfricanTypography.titleLarge(context, color: colorScheme.onPrimary),
+                              style: PanAfricanTypography.titleLarge(
+                                context,
+                                color: colorScheme.onPrimary,
+                              ),
                             ),
                             SizedBox(height: PanAfricanSpacing.xxs),
                             Text(
                               'Learn through play',
-                            style: PanAfricanTypography.bodyMedium(context, color: colorScheme.onPrimary.withOpacity(0.9)),
+                              style: PanAfricanTypography.bodyMedium(
+                                context,
+                                color: colorScheme.onPrimary.withOpacity(0.9),
+                              ),
                             ),
                           ],
                         ),
@@ -111,7 +117,9 @@ class GamesScreen extends ConsumerWidget {
                     final slug = gamesHubSlugFromApiLanguage(lang);
                     if (slug == null) continue;
                     if (!seen.add(slug)) continue;
-                    languages.add(languageNormalizedForGamesHub(lang, fallbackSlug: slug));
+                    languages.add(
+                      languageNormalizedForGamesHub(lang, fallbackSlug: slug),
+                    );
                   }
                   if (languages.isEmpty) {
                     return Center(
@@ -165,12 +173,13 @@ class GamesScreen extends ConsumerWidget {
                         OptimizedListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: PanAfricanSpacing.md,
-                            mainAxisSpacing: PanAfricanSpacing.md,
-                            childAspectRatio: 1.1,
-                          ),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: PanAfricanSpacing.md,
+                                mainAxisSpacing: PanAfricanSpacing.md,
+                                childAspectRatio: 1.1,
+                              ),
                           itemCount: languages.length,
                           itemBuilder: (context, index) {
                             final language = languages[index];
@@ -179,9 +188,11 @@ class GamesScreen extends ConsumerWidget {
                               colorIndex: index,
                               onTap: () {
                                 HapticFeedback.lightImpact();
-                                ref.read(navigationProvider).navigateTo(
-                                  GameTypesScreen(language: language),
-                                );
+                                ref
+                                    .read(navigationProvider)
+                                    .navigateTo(
+                                      GameTypesScreen(language: language),
+                                    );
                               },
                             );
                           },
@@ -242,11 +253,15 @@ class _GameLanguageCard extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+          color: isDark
+              ? PanAfricanColors.cardDark
+              : PanAfricanColors.cardLight,
           borderRadius: PanAfricanRadius.lgBR,
           boxShadow: PanAfricanShadows.md,
           border: Border.all(
-            color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
+            color: isDark
+                ? PanAfricanColors.borderDark
+                : PanAfricanColors.borderLight,
             width: 1,
           ),
         ),
@@ -260,10 +275,7 @@ class _GameLanguageCard extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [
-                    color,
-                    color.withOpacity(0.7),
-                  ],
+                  colors: [color, color.withOpacity(0.7)],
                 ),
                 shape: BoxShape.circle,
                 boxShadow: PanAfricanShadows.glow(color),
@@ -311,10 +323,7 @@ class _GameLanguageCard extends StatelessWidget {
 class GameTypesScreen extends StatelessWidget {
   final Language language;
 
-  const GameTypesScreen({
-    super.key,
-    required this.language,
-  });
+  const GameTypesScreen({super.key, required this.language});
 
   @override
   Widget build(BuildContext context) {
@@ -332,12 +341,13 @@ class GameTypesScreen extends StatelessWidget {
         ),
         title: Text(
           'Games - ${language.name}',
-          style: PanAfricanTypography.titleMedium(context, color: colorScheme.onPrimary),
+          style: PanAfricanTypography.titleMedium(
+            context,
+            color: colorScheme.onPrimary,
+          ),
         ),
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: PanAfricanGradients.forest,
-          ),
+          decoration: const BoxDecoration(gradient: PanAfricanGradients.forest),
         ),
         elevation: 0,
       ),
@@ -373,7 +383,7 @@ class GameTypesScreen extends StatelessWidget {
                   HapticFeedback.lightImpact();
                   Navigator.push(
                     context,
-                    SmoothPageRoute(
+                    SmoothPageRoute.platform(
                       child: WordMatchGame(language: language),
                     ),
                   );
@@ -389,7 +399,7 @@ class GameTypesScreen extends StatelessWidget {
                   HapticFeedback.lightImpact();
                   Navigator.push(
                     context,
-                    SmoothPageRoute(
+                    SmoothPageRoute.platform(
                       child: FillInTheBlankGame(language: language),
                     ),
                   );
@@ -405,7 +415,7 @@ class GameTypesScreen extends StatelessWidget {
                   HapticFeedback.lightImpact();
                   Navigator.push(
                     context,
-                    SmoothPageRoute(
+                    SmoothPageRoute.platform(
                       child: PronunciationGame(language: language),
                     ),
                   );
@@ -421,7 +431,7 @@ class GameTypesScreen extends StatelessWidget {
                   HapticFeedback.lightImpact();
                   Navigator.push(
                     context,
-                    SmoothPageRoute(
+                    SmoothPageRoute.platform(
                       child: SpeedChallengeGame(language: language),
                     ),
                   );
@@ -463,11 +473,15 @@ class _GameTypeCard extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(PanAfricanSpacing.md),
         decoration: BoxDecoration(
-          color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+          color: isDark
+              ? PanAfricanColors.cardDark
+              : PanAfricanColors.cardLight,
           borderRadius: PanAfricanRadius.lgBR,
           boxShadow: PanAfricanShadows.md,
           border: Border.all(
-            color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
+            color: isDark
+                ? PanAfricanColors.borderDark
+                : PanAfricanColors.borderLight,
             width: 1,
           ),
         ),
@@ -480,29 +494,19 @@ class _GameTypeCard extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [
-                    color,
-                    color.withOpacity(0.7),
-                  ],
+                  colors: [color, color.withOpacity(0.7)],
                 ),
                 borderRadius: PanAfricanRadius.mdBR,
                 boxShadow: PanAfricanShadows.sm,
               ),
-              child: Icon(
-                icon,
-                color: colorScheme.onPrimary,
-                size: 24.sp,
-              ),
+              child: Icon(icon, color: colorScheme.onPrimary, size: 24.sp),
             ),
             SizedBox(width: PanAfricanSpacing.md),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    style: PanAfricanTypography.titleMedium(context),
-                  ),
+                  Text(title, style: PanAfricanTypography.titleMedium(context)),
                   SizedBox(height: PanAfricanSpacing.xxs),
                   Text(
                     description,
@@ -517,11 +521,7 @@ class _GameTypeCard extends StatelessWidget {
                 color: color.withOpacity(0.1),
                 borderRadius: PanAfricanRadius.roundBR,
               ),
-              child: Icon(
-                Icons.play_arrow_rounded,
-                color: color,
-                size: 24.sp,
-              ),
+              child: Icon(Icons.play_arrow_rounded, color: color, size: 24.sp),
             ),
           ],
         ),
@@ -529,4 +529,3 @@ class _GameTypeCard extends StatelessWidget {
     );
   }
 }
-

@@ -52,7 +52,10 @@ class _CallHistoryScreenState extends ConsumerState<CallHistoryScreen> {
             .map((e) => Map<String, dynamic>.from(e))
             .toList();
       } else if (raw is List) {
-        list = raw.whereType<Map>().map((e) => Map<String, dynamic>.from(e)).toList();
+        list = raw
+            .whereType<Map>()
+            .map((e) => Map<String, dynamic>.from(e))
+            .toList();
       } else {
         list = [];
       }
@@ -71,7 +74,8 @@ class _CallHistoryScreenState extends ConsumerState<CallHistoryScreen> {
   static String _label(Map<String, dynamic> row) {
     final t = (row['title'] ?? '').toString().trim();
     if (t.isNotEmpty) return t;
-    final st = (row['session_type'] ?? row['sessionType'] ?? 'other').toString();
+    final st = (row['session_type'] ?? row['sessionType'] ?? 'other')
+        .toString();
     switch (st) {
       case 'live_classroom':
         return 'Live Classroom';
@@ -147,15 +151,21 @@ class _CallHistoryScreenState extends ConsumerState<CallHistoryScreen> {
                               style: TextStyle(color: cs.onErrorContainer),
                             ),
                           ),
-                          TextButton(onPressed: _load, child: const Text('Retry')),
+                          TextButton(
+                            onPressed: _load,
+                            child: const Text('Retry'),
+                          ),
                         ],
                       ),
                     ),
                   ),
                 if (_error != null) SizedBox(height: PanAfricanSpacing.md),
                 if (!_loading && _rows.isEmpty) ...[
-                  Icon(Icons.phone_in_talk_rounded,
-                      size: 56.sp, color: cs.onSurfaceVariant),
+                  Icon(
+                    Icons.phone_in_talk_rounded,
+                    size: 56.sp,
+                    color: cs.onSurfaceVariant,
+                  ),
                   SizedBox(height: PanAfricanSpacing.md),
                   Text(
                     'No call history yet',
@@ -174,9 +184,7 @@ class _CallHistoryScreenState extends ConsumerState<CallHistoryScreen> {
                 ..._rows.map((row) {
                   final peer = _peerName(row);
                   final dur = row['duration_seconds'] ?? row['durationSeconds'];
-                  final durStr = dur is num && dur > 0
-                      ? '${dur.toInt()}s'
-                      : '';
+                  final durStr = dur is num && dur > 0 ? '${dur.toInt()}s' : '';
                   return Padding(
                     padding: EdgeInsets.only(bottom: 10.h),
                     child: GriotCard(
@@ -186,7 +194,9 @@ class _CallHistoryScreenState extends ConsumerState<CallHistoryScreen> {
                         leading: Icon(_iconFor(row), color: cs.primary),
                         title: Text(
                           _label(row),
-                          style: ModernGriotTypography.titleSmall(context: context),
+                          style: ModernGriotTypography.titleSmall(
+                            context: context,
+                          ),
                         ),
                         subtitle: Text(
                           [
@@ -209,7 +219,9 @@ class _CallHistoryScreenState extends ConsumerState<CallHistoryScreen> {
                     HapticFeedback.mediumImpact();
                     Navigator.push(
                       context,
-                      SmoothPageRoute(child: LiveClassroomScreenMaterial3()),
+                      SmoothPageRoute.platform(
+                        child: LiveClassroomScreenMaterial3(),
+                      ),
                     );
                   },
                   icon: const Icon(Icons.school_outlined),
@@ -221,7 +233,9 @@ class _CallHistoryScreenState extends ConsumerState<CallHistoryScreen> {
                     HapticFeedback.mediumImpact();
                     Navigator.push(
                       context,
-                      SmoothPageRoute(child: const GlobalChatScreenMaterial3()),
+                      SmoothPageRoute.platform(
+                        child: const GlobalChatScreenMaterial3(),
+                      ),
                     );
                   },
                   icon: const Icon(Icons.public),

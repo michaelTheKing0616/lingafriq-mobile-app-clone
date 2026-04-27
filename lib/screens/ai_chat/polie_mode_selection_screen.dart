@@ -222,7 +222,7 @@ class PolieModeSelectionScreen extends ConsumerWidget {
 
     Navigator.push(
       context,
-      SmoothPageRoute(
+      SmoothPageRoute.platform(
         child: AiChatLanguageSetupScreen(initialMode: mode),
       ),
     );

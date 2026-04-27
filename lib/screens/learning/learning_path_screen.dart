@@ -37,9 +37,10 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen>
       vsync: this,
       duration: const Duration(milliseconds: 1200),
     )..repeat(reverse: true);
-    _bounceAnim = Tween<double>(begin: 0, end: -8).animate(
-      CurvedAnimation(parent: _bounceCtrl, curve: Curves.easeInOut),
-    );
+    _bounceAnim = Tween<double>(
+      begin: 0,
+      end: -8,
+    ).animate(CurvedAnimation(parent: _bounceCtrl, curve: Curves.easeInOut));
   }
 
   @override
@@ -78,9 +79,7 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen>
   void _openLesson(Lesson lesson) {
     HapticFeedback.lightImpact();
     Navigator.of(context).push(
-      SmoothPageRoute(
-        child: LessonSectionsListScreen(lesson: lesson),
-      ),
+      SmoothPageRoute.platform(child: LessonSectionsListScreen(lesson: lesson)),
     );
   }
 
@@ -118,7 +117,7 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen>
                     FilledButton(
                       onPressed: () {
                         Navigator.of(context).push(
-                          SmoothPageRoute(
+                          SmoothPageRoute.platform(
                             child: LessonsListScreen(language: widget.language),
                           ),
                         );
@@ -133,8 +132,9 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen>
         }
 
         final active = _activeIndex(lessons);
-        final completedCount =
-            lessons.where((l) => _sectionCompleted(l)).length;
+        final completedCount = lessons
+            .where((l) => _sectionCompleted(l))
+            .length;
         // When all sections are done, paint the full path as "past" the last index.
         final pathActiveIndex = active ?? lessons.length;
 
@@ -154,9 +154,9 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen>
                           width: 40.r,
                           height: 40.r,
                           decoration: BoxDecoration(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .surfaceContainerLow,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.surfaceContainerLow,
                             shape: BoxShape.circle,
                           ),
                           child: Icon(Icons.arrow_back_rounded, size: 20.sp),
@@ -183,8 +183,9 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen>
                             '${(completedCount / lessons.length * 100).round()}%',
                         icon: Icons.trending_up_rounded,
                         color: Theme.of(context).colorScheme.secondaryContainer,
-                        textColor:
-                            Theme.of(context).colorScheme.onSecondaryContainer,
+                        textColor: Theme.of(
+                          context,
+                        ).colorScheme.onSecondaryContainer,
                       ),
                       SizedBox(width: 10.w),
                       IconButton(
@@ -196,7 +197,8 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen>
                             context: context,
                             isScrollControlled: true,
                             builder: (_) => DialectVariantPicker(
-                              umbrellaLanguage: widget.language.name.toLowerCase(),
+                              umbrellaLanguage: widget.language.name
+                                  .toLowerCase(),
                             ),
                           );
                         },
@@ -218,9 +220,9 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen>
                                 nodeSpacing: _nodeSpacing,
                                 activeIndex: pathActiveIndex,
                                 color: Theme.of(context).colorScheme.primary,
-                                trackColor: Theme.of(context)
-                                    .colorScheme
-                                    .surfaceContainerHighest,
+                                trackColor: Theme.of(
+                                  context,
+                                ).colorScheme.surfaceContainerHighest,
                               ),
                             ),
                           ),
@@ -264,9 +266,8 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen>
           ),
         );
       },
-      loading: () => GriotScaffold(
-        body: const Center(child: CircularProgressIndicator()),
-      ),
+      loading: () =>
+          GriotScaffold(body: const Center(child: CircularProgressIndicator())),
       error: (e, _) => GriotScaffold(
         body: Center(
           child: Padding(
@@ -274,11 +275,16 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Could not load lessons', style: ModernGriotTypography.titleSmall()),
+                Text(
+                  'Could not load lessons',
+                  style: ModernGriotTypography.titleSmall(),
+                ),
                 SizedBox(height: 8.h),
-                Text('$e',
-                    textAlign: TextAlign.center,
-                    style: ModernGriotTypography.bodySmall()),
+                Text(
+                  '$e',
+                  textAlign: TextAlign.center,
+                  style: ModernGriotTypography.bodySmall(),
+                ),
                 SizedBox(height: 16.h),
                 FilledButton(
                   onPressed: () =>
@@ -321,8 +327,11 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen>
             shape: BoxShape.circle,
             boxShadow: ModernGriotShadows.glow(ModernGriotColors.secondary),
           ),
-          child: Icon(Icons.check_rounded,
-              size: 24.sp, color: ModernGriotColors.onSecondary),
+          child: Icon(
+            Icons.check_rounded,
+            size: 24.sp,
+            color: ModernGriotColors.onSecondary,
+          ),
         );
       case _NodeState.active:
         nodeCircle = AnimatedBuilder(
@@ -342,8 +351,11 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.play_arrow_rounded,
-                    size: 20.sp, color: cs.onPrimary),
+                Icon(
+                  Icons.play_arrow_rounded,
+                  size: 20.sp,
+                  color: cs.onPrimary,
+                ),
                 Text(
                   'START',
                   style: TextStyle(
@@ -368,8 +380,11 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen>
                 color: cs.surfaceContainerHighest.withAlpha(180),
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.lock_rounded,
-                  size: 18.sp, color: cs.onSurfaceVariant.withAlpha(120)),
+              child: Icon(
+                Icons.lock_rounded,
+                size: 18.sp,
+                color: cs.onSurfaceVariant.withAlpha(120),
+              ),
             ),
           ),
         );
@@ -379,9 +394,7 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen>
       if (state == _NodeState.locked) {
         HapticFeedback.mediumImpact();
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Complete the previous section first.'),
-          ),
+          const SnackBar(content: Text('Complete the previous section first.')),
         );
         return;
       }
@@ -458,7 +471,13 @@ class _WindingPathPainter extends CustomPainter {
       final path = Path()
         ..moveTo(x1, y1)
         ..cubicTo(
-            x1, y1 + nodeSpacing * 0.4, x2, y2 - nodeSpacing * 0.4, x2, y2);
+          x1,
+          y1 + nodeSpacing * 0.4,
+          x2,
+          y2 - nodeSpacing * 0.4,
+          x2,
+          y2,
+        );
 
       dashPaint.color = i < activeIndex ? color.withAlpha(180) : trackColor;
 
@@ -466,8 +485,13 @@ class _WindingPathPainter extends CustomPainter {
     }
   }
 
-  void _drawDashedPath(Canvas canvas, Path path, Paint paint, double dashLen,
-      double gapLen) {
+  void _drawDashedPath(
+    Canvas canvas,
+    Path path,
+    Paint paint,
+    double dashLen,
+    double gapLen,
+  ) {
     final metrics = path.computeMetrics();
     for (final metric in metrics) {
       double distance = 0;

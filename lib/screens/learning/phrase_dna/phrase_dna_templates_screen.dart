@@ -10,7 +10,8 @@ class PhraseDnaTemplatesScreen extends StatefulWidget {
   const PhraseDnaTemplatesScreen({super.key, this.language});
 
   @override
-  State<PhraseDnaTemplatesScreen> createState() => _PhraseDnaTemplatesScreenState();
+  State<PhraseDnaTemplatesScreen> createState() =>
+      _PhraseDnaTemplatesScreenState();
 }
 
 class _PhraseDnaTemplatesScreenState extends State<PhraseDnaTemplatesScreen> {
@@ -27,10 +28,14 @@ class _PhraseDnaTemplatesScreenState extends State<PhraseDnaTemplatesScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
+      backgroundColor: isDark
+          ? PanAfricanColors.surfaceDark
+          : PanAfricanColors.surfaceLight,
       appBar: AppBar(
         title: const Text('Phrase DNA'),
-        backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        backgroundColor: isDark
+            ? PanAfricanColors.cardDark
+            : PanAfricanColors.cardLight,
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _future,
@@ -77,7 +82,7 @@ class _PhraseDnaTemplatesScreenState extends State<PhraseDnaTemplatesScreen> {
                   if (id.isEmpty) return;
                   HapticFeedback.selectionClick();
                   Navigator.of(context).push(
-                    SmoothPageRoute(
+                    SmoothPageRoute.platform(
                       child: PhraseDnaSessionScreen(
                         templateId: id,
                         language: language,
@@ -90,25 +95,34 @@ class _PhraseDnaTemplatesScreenState extends State<PhraseDnaTemplatesScreen> {
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                    color: isDark
+                        ? PanAfricanColors.cardDark
+                        : PanAfricanColors.cardLight,
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: PanAfricanShadows.sm,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(title, style: PanAfricanTypography.titleMedium(context)),
+                      Text(
+                        title,
+                        style: PanAfricanTypography.titleMedium(context),
+                      ),
                       const SizedBox(height: 6),
                       Text(
                         pattern,
-                        style: PanAfricanTypography.bodyMedium(context).copyWith(
-                          color: Theme.of(context).colorScheme.primary,
-                          fontFamily: 'monospace',
-                        ),
+                        style: PanAfricanTypography.bodyMedium(context)
+                            .copyWith(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontFamily: 'monospace',
+                            ),
                       ),
                       if (desc.isNotEmpty) ...[
                         const SizedBox(height: 8),
-                        Text(desc, style: PanAfricanTypography.bodySmall(context)),
+                        Text(
+                          desc,
+                          style: PanAfricanTypography.bodySmall(context),
+                        ),
                       ],
                     ],
                   ),
@@ -121,4 +135,3 @@ class _PhraseDnaTemplatesScreenState extends State<PhraseDnaTemplatesScreen> {
     );
   }
 }
-
