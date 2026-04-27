@@ -58,7 +58,9 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
     super.initState();
     _voice = ref.read(voiceApiServiceProvider);
     _translate = TranslationService();
-    _languageCtrl = TextEditingController(text: widget.language.trim().toLowerCase());
+    _languageCtrl = TextEditingController(
+      text: widget.language.trim().toLowerCase(),
+    );
     _initQueueCount();
     _loadDraft();
     _languageCtrl.addListener(_persistDraft);
@@ -66,7 +68,9 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
 
   Future<void> _initQueueCount() async {
     await PointAndSayQueueService.instance.ensureOpen();
-    setState(() => _pendingQueue = PointAndSayQueueService.instance.pendingCount);
+    setState(
+      () => _pendingQueue = PointAndSayQueueService.instance.pendingCount,
+    );
   }
 
   @override
@@ -97,8 +101,9 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
       }
       setState(() {
         _targetText = targetRaw?.isEmpty ?? true ? null : targetRaw;
-        _targetTextTranslated =
-            targetTranslated?.isEmpty ?? true ? null : targetTranslated;
+        _targetTextTranslated = targetTranslated?.isEmpty ?? true
+            ? null
+            : targetTranslated;
         _evaluateTone = evaluateTone ?? _evaluateTone;
       });
 
@@ -126,7 +131,8 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
       final recordingPath = _recordingPath;
       final targetRaw = _targetText;
       final targetTranslated = _targetTextTranslated;
-      final hasAnything = language.isNotEmpty ||
+      final hasAnything =
+          language.isNotEmpty ||
           (recordingPath != null && recordingPath.isNotEmpty) ||
           (targetRaw != null && targetRaw.trim().isNotEmpty) ||
           (targetTranslated != null && targetTranslated.trim().isNotEmpty);
@@ -166,7 +172,10 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
 
     try {
       final svc = ref.read(mediaImportServiceProvider);
-      final res = await svc.pickImage(source: MediaSource.camera, performOCR: false);
+      final res = await svc.pickImage(
+        source: MediaSource.camera,
+        performOCR: false,
+      );
       if (!res.success || res.file == null || !(await res.file!.exists())) {
         throw Exception(res.error ?? 'Failed to capture image.');
       }
@@ -193,7 +202,9 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
           final text = l.text.trim();
           if (text.isEmpty) continue;
           final conf = (l.confidence * 100).clamp(0, 100);
-          things.add(_DetectedThing(label: text, confidencePct: conf.toDouble()));
+          things.add(
+            _DetectedThing(label: text, confidencePct: conf.toDouble()),
+          );
         }
       }
       things.sort((a, b) => b.confidencePct.compareTo(a.confidencePct));
@@ -208,7 +219,9 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
       if (ocrText.isNotEmpty && mounted) {
         try {
           final targetLang = _languageCtrl.text.trim().toLowerCase();
-          if (targetLang.isNotEmpty && ocrLang != 'unknown' && ocrLang != targetLang) {
+          if (targetLang.isNotEmpty &&
+              ocrLang != 'unknown' &&
+              ocrLang != targetLang) {
             final tr = await _translate.translate(
               text: ocrText.length > 500 ? ocrText.substring(0, 500) : ocrText,
               sourceLang: ocrLang,
@@ -218,7 +231,9 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
             if (mounted) {
               setState(() {
                 // keep as "suggested target", user explicitly selects to use it.
-                _targetTextTranslated = tr.translation.trim().isEmpty ? null : tr.translation.trim();
+                _targetTextTranslated = tr.translation.trim().isEmpty
+                    ? null
+                    : tr.translation.trim();
               });
             }
           }
@@ -407,6 +422,44 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
       _toneResult = null;
     });
     try {
+      final healthy = await _voice.checkVoiceServiceHealth();
+      if (!healthy) {
+        final decision = OfflineFallbackPolicy.decide(
+          Exception('voice_service_unavailable'),
+        );
+        if (decision.shouldQueue) {
+          await PointAndSayQueueService.instance.enqueue(
+            language: language,
+            expectedText: target,
+            audioPath: path,
+            evaluateTone: _evaluateTone,
+            context: {
+              'targetRaw': _targetText,
+              'targetTranslated': _targetTextTranslated,
+              'hasOcr': _ocrText != null,
+              'hasImage': _imageFile != null,
+              'voiceHealth': 'unhealthy',
+            },
+          );
+          await PointAndSayQueueService.instance.ensureOpen();
+          setState(() {
+            _pendingQueue = PointAndSayQueueService.instance.pendingCount;
+            _error =
+                decision.userMessage ??
+                'Voice service is unavailable. Queued for sync.';
+          });
+          OfflineService().queueSync(() async {
+            await PointAndSayQueueService.instance.flushPending(
+              voiceApi: _voice,
+            );
+          });
+          return;
+        }
+        throw Exception(
+          'Voice service is unavailable. Please try again later.',
+        );
+      }
+
       final res = await _voice.quickPronunciationCheck(
         audioPath: path,
         expectedText: target,
@@ -421,13 +474,12 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
           ApiContract.learningV2.toneTrainer,
           path,
           fileFieldName: 'audio',
-          additionalData: {
-            'expectedText': target,
-            'language': language,
-          },
+          additionalData: {'expectedText': target, 'language': language},
         );
         if (toneRes.statusCode == 200 && toneRes.data is Map) {
-          setState(() => _toneResult = (toneRes.data as Map).cast<String, dynamic>());
+          setState(
+            () => _toneResult = (toneRes.data as Map).cast<String, dynamic>(),
+          );
         }
       }
       await _clearDraft();
@@ -453,7 +505,9 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
             _error = decision.userMessage;
           });
           OfflineService().queueSync(() async {
-            await PointAndSayQueueService.instance.flushPending(voiceApi: _voice);
+            await PointAndSayQueueService.instance.flushPending(
+              voiceApi: _voice,
+            );
           });
           return;
         } catch (_) {
@@ -473,7 +527,10 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
       _error = null;
     });
     try {
-      final removed = await PointAndSayQueueService.instance.flushPending(voiceApi: _voice, batchSize: 10);
+      final removed = await PointAndSayQueueService.instance.flushPending(
+        voiceApi: _voice,
+        batchSize: 10,
+      );
       setState(() {
         _pendingQueue = PointAndSayQueueService.instance.pendingCount;
         _error = removed > 0 ? 'Synced $removed item(s).' : null;
@@ -491,10 +548,14 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
     final cs = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
+      backgroundColor: isDark
+          ? PanAfricanColors.surfaceDark
+          : PanAfricanColors.surfaceLight,
       appBar: AppBar(
         title: const Text('Point & Say'),
-        backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        backgroundColor: isDark
+            ? PanAfricanColors.cardDark
+            : PanAfricanColors.cardLight,
         actions: [
           IconButton(
             tooltip: 'Capture',
@@ -515,9 +576,15 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
             Container(
               padding: EdgeInsets.all(PanAfricanSpacing.md),
               decoration: BoxDecoration(
-                color: (isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight),
+                color: (isDark
+                    ? PanAfricanColors.cardDark
+                    : PanAfricanColors.cardLight),
                 borderRadius: PanAfricanRadius.lgBR,
-                border: Border.all(color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight),
+                border: Border.all(
+                  color: isDark
+                      ? PanAfricanColors.borderDark
+                      : PanAfricanColors.borderLight,
+                ),
               ),
               child: Row(
                 children: [
@@ -568,7 +635,10 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
                       ? SizedBox(
                           width: 18,
                           height: 18,
-                          child: CircularProgressIndicator(strokeWidth: 2, color: cs.onPrimary),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: cs.onPrimary,
+                          ),
                         )
                       : const Icon(Icons.camera_alt_rounded),
                   label: Text(_busy ? 'Working…' : 'Capture'),
@@ -578,20 +648,33 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
           ),
           if (_error != null) ...[
             SizedBox(height: PanAfricanSpacing.sm),
-            Text(_error!, style: PanAfricanTypography.bodySmall(context).copyWith(color: PanAfricanColors.error)),
+            Text(
+              _error!,
+              style: PanAfricanTypography.bodySmall(
+                context,
+              ).copyWith(color: PanAfricanColors.error),
+            ),
           ],
           if (_ocrText != null) ...[
             SizedBox(height: PanAfricanSpacing.lg),
-            Text('Detected text', style: PanAfricanTypography.titleMedium(context)),
+            Text(
+              'Detected text',
+              style: PanAfricanTypography.titleMedium(context),
+            ),
             SizedBox(height: PanAfricanSpacing.xxs),
             Container(
               padding: EdgeInsets.all(PanAfricanSpacing.md),
               decoration: BoxDecoration(
-                color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                color: isDark
+                    ? PanAfricanColors.cardDark
+                    : PanAfricanColors.cardLight,
                 borderRadius: PanAfricanRadius.lgBR,
                 boxShadow: PanAfricanShadows.sm,
               ),
-              child: Text(_ocrText!, style: PanAfricanTypography.bodyMedium(context)),
+              child: Text(
+                _ocrText!,
+                style: PanAfricanTypography.bodyMedium(context),
+              ),
             ),
             SizedBox(height: PanAfricanSpacing.sm),
             OutlinedButton.icon(
@@ -599,7 +682,8 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
               icon: const Icon(Icons.flag_rounded),
               label: const Text('Use as target phrase'),
             ),
-            if (_targetTextTranslated != null && _targetTextTranslated!.isNotEmpty) ...[
+            if (_targetTextTranslated != null &&
+                _targetTextTranslated!.isNotEmpty) ...[
               SizedBox(height: PanAfricanSpacing.sm),
               Text(
                 'Suggested translation',
@@ -609,11 +693,16 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
               Container(
                 padding: EdgeInsets.all(PanAfricanSpacing.md),
                 decoration: BoxDecoration(
-                  color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                  color: isDark
+                      ? PanAfricanColors.cardDark
+                      : PanAfricanColors.cardLight,
                   borderRadius: PanAfricanRadius.lgBR,
                   boxShadow: PanAfricanShadows.sm,
                 ),
-                child: Text(_targetTextTranslated!, style: PanAfricanTypography.bodyMedium(context)),
+                child: Text(
+                  _targetTextTranslated!,
+                  style: PanAfricanTypography.bodyMedium(context),
+                ),
               ),
               SizedBox(height: PanAfricanSpacing.sm),
               OutlinedButton.icon(
@@ -633,14 +722,19 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
           ],
           if (_things.isNotEmpty) ...[
             SizedBox(height: PanAfricanSpacing.lg),
-            Text('Detected objects', style: PanAfricanTypography.titleMedium(context)),
+            Text(
+              'Detected objects',
+              style: PanAfricanTypography.titleMedium(context),
+            ),
             SizedBox(height: PanAfricanSpacing.xxs),
             Wrap(
               spacing: 8,
               runSpacing: 8,
               children: _things.map((t) {
                 return ActionChip(
-                  label: Text('${t.label} ${t.confidencePct.toStringAsFixed(0)}%'),
+                  label: Text(
+                    '${t.label} ${t.confidencePct.toStringAsFixed(0)}%',
+                  ),
                   onPressed: () => _setTargetFromLabel(t.label),
                 );
               }).toList(),
@@ -653,24 +747,36 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
             width: double.infinity,
             padding: EdgeInsets.all(PanAfricanSpacing.md),
             decoration: BoxDecoration(
-              color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+              color: isDark
+                  ? PanAfricanColors.cardDark
+                  : PanAfricanColors.cardLight,
               borderRadius: PanAfricanRadius.lgBR,
-              border: Border.all(color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight),
+              border: Border.all(
+                color: isDark
+                    ? PanAfricanColors.borderDark
+                    : PanAfricanColors.borderLight,
+              ),
             ),
             child: Text(
-              ((_targetTextTranslated ?? _targetText) == null || (_targetTextTranslated ?? _targetText)!.trim().isEmpty)
+              ((_targetTextTranslated ?? _targetText) == null ||
+                      (_targetTextTranslated ?? _targetText)!.trim().isEmpty)
                   ? 'Tap an object chip or use detected text.'
                   : (_targetTextTranslated ?? _targetText)!,
               style: PanAfricanTypography.bodyMedium(context),
             ),
           ),
           SizedBox(height: PanAfricanSpacing.md),
-          if (((_targetTextTranslated ?? _targetText) ?? '').trim().isNotEmpty) ...[
+          if (((_targetTextTranslated ?? _targetText) ?? '')
+              .trim()
+              .isNotEmpty) ...[
             Row(
               children: [
                 const Icon(Icons.volume_up_rounded),
                 SizedBox(width: PanAfricanSpacing.xxs),
-                Text('Hear it', style: PanAfricanTypography.titleSmall(context)),
+                Text(
+                  'Hear it',
+                  style: PanAfricanTypography.titleSmall(context),
+                ),
                 const Spacer(),
                 TtsPlayButton(
                   text: (_targetTextTranslated ?? _targetText)!.trim(),
@@ -685,11 +791,16 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
           if (_effectiveTarget() != null) ...[
             Row(
               children: [
-                Text('Practice phrases', style: PanAfricanTypography.titleMedium(context)),
+                Text(
+                  'Practice phrases',
+                  style: PanAfricanTypography.titleMedium(context),
+                ),
                 const Spacer(),
                 IconButton(
                   tooltip: 'Refresh',
-                  onPressed: (_busy || _phrasesLoading) ? null : _refreshPracticePhrases,
+                  onPressed: (_busy || _phrasesLoading)
+                      ? null
+                      : _refreshPracticePhrases,
                   icon: const Icon(Icons.refresh_rounded),
                 ),
               ],
@@ -728,7 +839,10 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
               SizedBox(height: PanAfricanSpacing.sm),
               Text(
                 'Tap a phrase to set it as the target, then Hear → Record → Quick check.',
-                style: PanAfricanTypography.bodySmall(context, color: cs.onSurface.withOpacity(0.7)),
+                style: PanAfricanTypography.bodySmall(
+                  context,
+                  color: cs.onSurface.withOpacity(0.7),
+                ),
               ),
             ],
             SizedBox(height: PanAfricanSpacing.sm),
@@ -743,7 +857,9 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
                     setState(() => _evaluateTone = v);
                   },
             title: const Text('Also analyze tone & rhythm'),
-            subtitle: const Text('Recommended for tonal languages and short phrases.'),
+            subtitle: const Text(
+              'Recommended for tonal languages and short phrases.',
+            ),
           ),
           SizedBox(height: PanAfricanSpacing.sm),
           Row(
@@ -751,7 +867,9 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
               Expanded(
                 child: FilledButton.icon(
                   onPressed: _toggleRecord,
-                  icon: Icon(_isRecording ? Icons.stop_rounded : Icons.mic_rounded),
+                  icon: Icon(
+                    _isRecording ? Icons.stop_rounded : Icons.mic_rounded,
+                  ),
                   label: Text(_isRecording ? 'Stop' : 'Record'),
                 ),
               ),
@@ -770,17 +888,25 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
             Container(
               padding: EdgeInsets.all(PanAfricanSpacing.md),
               decoration: BoxDecoration(
-                color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                color: isDark
+                    ? PanAfricanColors.cardDark
+                    : PanAfricanColors.cardLight,
                 borderRadius: PanAfricanRadius.lgBR,
                 boxShadow: PanAfricanShadows.sm,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Quick result', style: PanAfricanTypography.titleSmall(context)),
+                  Text(
+                    'Quick result',
+                    style: PanAfricanTypography.titleSmall(context),
+                  ),
                   SizedBox(height: PanAfricanSpacing.xxs),
                   Text(
-                    (_pronunciationQuick!['message'] ?? _pronunciationQuick!['feedback'] ?? 'Done').toString(),
+                    (_pronunciationQuick!['message'] ??
+                            _pronunciationQuick!['feedback'] ??
+                            'Done')
+                        .toString(),
                     style: PanAfricanTypography.bodyMedium(context),
                   ),
                 ],
@@ -792,14 +918,19 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
             Container(
               padding: EdgeInsets.all(PanAfricanSpacing.md),
               decoration: BoxDecoration(
-                color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                color: isDark
+                    ? PanAfricanColors.cardDark
+                    : PanAfricanColors.cardLight,
                 borderRadius: PanAfricanRadius.lgBR,
                 boxShadow: PanAfricanShadows.sm,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Tone & rhythm', style: PanAfricanTypography.titleSmall(context)),
+                  Text(
+                    'Tone & rhythm',
+                    style: PanAfricanTypography.titleSmall(context),
+                  ),
                   SizedBox(height: PanAfricanSpacing.xxs),
                   Text(
                     'Accuracy: ${_toneResult!['accuracy'] ?? '—'}',
@@ -809,7 +940,9 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
                     SizedBox(height: PanAfricanSpacing.xxs),
                     Text(
                       'Meaning risk: high',
-                      style: PanAfricanTypography.bodySmall(context).copyWith(color: Colors.orange.shade700),
+                      style: PanAfricanTypography.bodySmall(
+                        context,
+                      ).copyWith(color: Colors.orange.shade700),
                     ),
                   ],
                 ],
@@ -828,4 +961,3 @@ class _DetectedThing {
   final double confidencePct;
   const _DetectedThing({required this.label, required this.confidencePct});
 }
-
