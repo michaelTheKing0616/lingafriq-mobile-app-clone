@@ -10,8 +10,8 @@ import '../utils/structured_logger.dart';
 
 final leaderboardProvider =
     NotifierProvider<LeaderboardProvider, BaseProviderState>(() {
-  return LeaderboardProvider();
-});
+      return LeaderboardProvider();
+    });
 
 /// Leaderboard provider for real-time rankings
 class LeaderboardProvider extends Notifier<BaseProviderState>
@@ -78,47 +78,60 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
 
       switch (type) {
         case LeaderboardType.global:
-          final data = await leaderboardsService.getGlobalLeaderboard(period: 'weekly');
+          final data = await leaderboardsService.getGlobalLeaderboard(
+            period: 'weekly',
+          );
           entries = _parseLeaderboardEntries(_extractEntriesList(data));
           break;
         case LeaderboardType.tribe:
-          if (tribe != null) {
-            final data = await leaderboardsService.getTribeLeaderboard(tribe, period: 'season');
+          if (tribe != null && tribe.trim().isNotEmpty) {
+            final data = await leaderboardsService.getTribeLeaderboard(
+              tribe,
+              period: 'season',
+            );
             entries = _parseLeaderboardEntries(_extractEntriesList(data));
           }
           break;
         case LeaderboardType.country:
-          if (country != null) {
-            final data = await leaderboardsService.getVillageLeaderboard(country, period: 'monthly');
+          if (country != null && country.trim().isNotEmpty) {
+            final data = await leaderboardsService.getVillageLeaderboard(
+              country,
+              period: 'monthly',
+            );
             entries = _parseLeaderboardEntries(_extractEntriesList(data));
           }
           break;
         case LeaderboardType.continental:
-          final data = await leaderboardsService.getGlobalLeaderboard(period: 'monthly');
+          final data = await leaderboardsService.getGlobalLeaderboard(
+            period: 'monthly',
+          );
           entries = _parseLeaderboardEntries(_extractEntriesList(data));
           break;
         case LeaderboardType.weekly:
         case LeaderboardType.monthly:
         case LeaderboardType.allTime:
-          final period = type == LeaderboardType.weekly 
-              ? 'weekly' 
-              : type == LeaderboardType.monthly 
-                  ? 'monthly' 
-                  : 'allTime';
-          final data = await leaderboardsService.getGlobalLeaderboard(period: period);
+          final period = type == LeaderboardType.weekly
+              ? 'weekly'
+              : type == LeaderboardType.monthly
+              ? 'monthly'
+              : 'alltime';
+          final data = await leaderboardsService.getGlobalLeaderboard(
+            period: period,
+          );
           entries = _parseLeaderboardEntries(_extractEntriesList(data));
           break;
       }
 
       _cache[cacheKey] = entries;
       _lastFetchByKey[cacheKey] = DateTime.now();
-      
+
       // Cache leaderboard data locally for offline access
       await _cacheLeaderboards();
     } catch (e) {
       logger.error('Error fetching leaderboards', tag: 'leaderboard', error: e);
       // Keep in-memory cache if present; otherwise try local storage fallback (up to 24h old)
-      if (!_cache.containsKey(cacheKey) || (_cache[cacheKey]?.isEmpty ?? true)) {
+      if (!_cache.containsKey(cacheKey) ||
+          (_cache[cacheKey]?.isEmpty ?? true)) {
         await _loadLeaderboards(maxAge: const Duration(hours: 24));
       }
       _cache.putIfAbsent(cacheKey, () => []);
@@ -148,50 +161,72 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
     return entries.map((entry) {
       // Handle different response formats
       final userData = entry['user'] ?? entry['user_id'] ?? entry;
-      final userDataMap = userData is Map ? userData as Map<String, dynamic> : <String, dynamic>{};
-      
+      final userDataMap = userData is Map
+          ? userData as Map<String, dynamic>
+          : <String, dynamic>{};
+
       // Extract XP/score (could be in entry or user data)
-      final xp = (entry['xp'] ?? entry['score'] ?? userDataMap['xp'] ?? userDataMap['total_xp'] ?? 0).toInt();
-      
+      final xp =
+          (entry['xp'] ??
+                  entry['score'] ??
+                  userDataMap['xp'] ??
+                  userDataMap['total_xp'] ??
+                  0)
+              .toInt();
+
       // Extract user information
-      final userId = entry['user_id']?.toString() ?? 
-                     userDataMap['id']?.toString() ?? 
-                     userDataMap['user_id']?.toString() ?? '';
-      final username = entry['username']?.toString() ?? 
-                       userDataMap['username']?.toString() ?? 
-                       userDataMap['global_id']?.toString() ?? 
-                       'Unknown';
-      
+      final userId =
+          entry['user_id']?.toString() ??
+          userDataMap['id']?.toString() ??
+          userDataMap['user_id']?.toString() ??
+          '';
+      final username =
+          entry['username']?.toString() ??
+          userDataMap['username']?.toString() ??
+          userDataMap['global_id']?.toString() ??
+          'Unknown';
+
       // Extract gamification data if available
-      final gamificationData = entry['gamification'] ?? userDataMap['gamification'] ?? <String, dynamic>{};
-      final gamificationMap = gamificationData is Map ? gamificationData as Map<String, dynamic> : <String, dynamic>{};
-      
+      final gamificationData =
+          entry['gamification'] ??
+          userDataMap['gamification'] ??
+          <String, dynamic>{};
+      final gamificationMap = gamificationData is Map
+          ? gamificationData as Map<String, dynamic>
+          : <String, dynamic>{};
+
       // Calculate level from XP
       final level = _calculateLevelFromXP(xp);
-      
+
       // Get level title from gamification data or calculate from level
-      final levelTitle = gamificationMap['level_title']?.toString() ?? 
-                         userDataMap['level_title']?.toString() ??
-                         LevelTitles.getTitleForLevel(level);
-      
+      final levelTitle =
+          gamificationMap['level_title']?.toString() ??
+          userDataMap['level_title']?.toString() ??
+          LevelTitles.getTitleForLevel(level);
+
       // Get daily streak from gamification data
-      final dailyStreak = (gamificationMap['daily_streak'] ?? 
-                           userDataMap['daily_streak'] ?? 
-                           entry['daily_streak'] ?? 
-                           0).toInt();
-      
+      final dailyStreak =
+          (gamificationMap['daily_streak'] ??
+                  userDataMap['daily_streak'] ??
+                  entry['daily_streak'] ??
+                  0)
+              .toInt();
+
       // Get tribe from gamification data or user data
-      final tribe = gamificationMap['tribe']?.toString() ?? 
-                    userDataMap['tribe']?.toString() ?? 
-                    entry['tribe']?.toString();
-      
-      final avatar = entry['avatar']?.toString() ??
-                     userDataMap['avatar']?.toString() ??
-                     userDataMap['avater']?.toString();
-      final country = entry['nationality']?.toString() ??
-                      userDataMap['nationality']?.toString() ??
-                      entry['country']?.toString() ??
-                      userDataMap['country']?.toString();
+      final tribe =
+          gamificationMap['tribe']?.toString() ??
+          userDataMap['tribe']?.toString() ??
+          entry['tribe']?.toString();
+
+      final avatar =
+          entry['avatar']?.toString() ??
+          userDataMap['avatar']?.toString() ??
+          userDataMap['avater']?.toString();
+      final country =
+          entry['nationality']?.toString() ??
+          userDataMap['nationality']?.toString() ??
+          entry['country']?.toString() ??
+          userDataMap['country']?.toString();
 
       return LeaderboardEntry(
         userId: userId,
@@ -248,7 +283,12 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
     String? country,
     String? continent,
   }) async {
-    final cacheKey = _key(type, tribe: tribe, country: country, continent: continent);
+    final cacheKey = _key(
+      type,
+      tribe: tribe,
+      country: country,
+      continent: continent,
+    );
     await fetchLeaderboards(
       type: type,
       tribe: tribe,
@@ -279,20 +319,24 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
         'timestamp': DateTime.now().millisecondsSinceEpoch,
         'data': <String, dynamic>{},
       };
-      
+
       for (var entry in _cache.entries) {
-        cacheData['data'][entry.key] = entry.value.map((e) => {
-          'user_id': e.userId,
-          'username': e.username,
-          'xp': e.xp,
-          'level': e.level,
-          'level_title': e.levelTitle,
-          'daily_streak': e.dailyStreak,
-          'tribe': e.tribe,
-          'rank': e.rank,
-        }).toList();
+        cacheData['data'][entry.key] = entry.value
+            .map(
+              (e) => {
+                'user_id': e.userId,
+                'username': e.username,
+                'xp': e.xp,
+                'level': e.level,
+                'level_title': e.levelTitle,
+                'daily_streak': e.dailyStreak,
+                'tribe': e.tribe,
+                'rank': e.rank,
+              },
+            )
+            .toList();
       }
-      
+
       await prefs.setString('leaderboard_cache', jsonEncode(cacheData));
     } catch (e) {
       logger.error('Error caching leaderboards', tag: 'leaderboard', error: e);
@@ -302,17 +346,21 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
 
   /// Load leaderboards from local cache.
   /// [maxAge] controls how old stored data can be before it's ignored.
-  Future<void> _loadLeaderboards({Duration maxAge = const Duration(hours: 1)}) async {
+  Future<void> _loadLeaderboards({
+    Duration maxAge = const Duration(hours: 1),
+  }) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final cachedData = prefs.getString('leaderboard_cache');
       if (cachedData != null) {
         final decoded = jsonDecode(cachedData) as Map<String, dynamic>;
         final cacheTimestamp = decoded['timestamp'] as int?;
-        final cacheAge = cacheTimestamp != null 
-            ? DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(cacheTimestamp))
+        final cacheAge = cacheTimestamp != null
+            ? DateTime.now().difference(
+                DateTime.fromMillisecondsSinceEpoch(cacheTimestamp),
+              )
             : const Duration(days: 365);
-        
+
         if (cacheAge < maxAge && decoded['data'] is Map) {
           final data = decoded['data'] as Map<String, dynamic>;
           for (var entry in data.entries) {
@@ -323,7 +371,11 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
         }
       }
     } catch (e) {
-      logger.error('Error loading cached leaderboards', tag: 'leaderboard', error: e);
+      logger.error(
+        'Error loading cached leaderboards',
+        tag: 'leaderboard',
+        error: e,
+      );
     }
   }
 
@@ -334,7 +386,12 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
     String? country,
     String? continent,
   }) async {
-    final cacheKey = _key(type, tribe: tribe, country: country, continent: continent);
+    final cacheKey = _key(
+      type,
+      tribe: tribe,
+      country: country,
+      continent: continent,
+    );
     _lastFetchByKey.remove(cacheKey);
     await fetchLeaderboards(
       type: type,
@@ -344,4 +401,3 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
     );
   }
 }
-

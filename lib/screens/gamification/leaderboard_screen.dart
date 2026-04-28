@@ -31,10 +31,14 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(leaderboardProvider.notifier).fetchLeaderboards(type: LeaderboardType.global);
+      ref
+          .read(leaderboardProvider.notifier)
+          .fetchLeaderboards(type: LeaderboardType.global);
       final user = ref.read(userProvider);
       if (user != null) {
-        ref.read(leaderboardProvider.notifier).fetchUserRanks(user.id.toString());
+        ref
+            .read(leaderboardProvider.notifier)
+            .fetchUserRanks(user.id.toString());
       }
     });
     _tabController.addListener(() {
@@ -52,17 +56,26 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
         }
       });
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        final tribe = _currentType == LeaderboardType.tribe
+        final rawTribe = _currentType == LeaderboardType.tribe
             ? ref.read(gamificationProvider.notifier).gamification.tribe
             : null;
-        final country = _currentType == LeaderboardType.country
+        final tribe = (rawTribe != null && rawTribe.trim().isNotEmpty)
+            ? rawTribe
+            : null;
+
+        final rawCountry = _currentType == LeaderboardType.country
             ? ref.read(userProvider)?.nationality
             : null;
-        ref.read(leaderboardProvider.notifier).fetchLeaderboards(
-          type: _currentType,
-          tribe: tribe,
-          country: country,
-        );
+        final country = (rawCountry != null && rawCountry.trim().isNotEmpty)
+            ? rawCountry
+            : null;
+        ref
+            .read(leaderboardProvider.notifier)
+            .fetchLeaderboards(
+              type: _currentType,
+              tribe: tribe,
+              country: country,
+            );
       });
     });
   }
@@ -77,7 +90,9 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
       socketService.subscribeToLeaderboard('global:weekly');
       socketService.onLeaderboardUpdate((data) {
         if (mounted) {
-          ref.read(leaderboardProvider.notifier).refresh(type: LeaderboardType.global);
+          ref
+              .read(leaderboardProvider.notifier)
+              .refresh(type: LeaderboardType.global);
         }
       });
     }
@@ -182,11 +197,9 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
     final user = ref.read(userProvider);
     final tribe = type == LeaderboardType.tribe ? gamification.tribe : null;
     final country = type == LeaderboardType.country ? user?.nationality : null;
-    return ref.read(leaderboardProvider.notifier).refresh(
-          type: type,
-          tribe: tribe,
-          country: country,
-        );
+    return ref
+        .read(leaderboardProvider.notifier)
+        .refresh(type: type, tribe: tribe, country: country);
   }
 
   Widget _buildLeaderboardList(
@@ -230,7 +243,8 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
 
     final user = ref.read(userProvider);
     final userRanks = ref.read(leaderboardProvider.notifier).userRanks;
-    final userInList = user != null && entries.any((e) => e.userId == user.id.toString());
+    final userInList =
+        user != null && entries.any((e) => e.userId == user.id.toString());
 
     return ListView.builder(
       padding: EdgeInsets.all(PanAfricanSpacing.md),
@@ -249,10 +263,10 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
           final periodKey = type == LeaderboardType.global
               ? 'global:weekly'
               : type == LeaderboardType.monthly
-                  ? 'global:monthly'
-                  : type == LeaderboardType.allTime
-                      ? 'global:alltime'
-                      : 'global:weekly';
+              ? 'global:monthly'
+              : type == LeaderboardType.allTime
+              ? 'global:alltime'
+              : 'global:weekly';
           final rankData = userRanks?[periodKey];
           final myRank = rankData?['rank'] as int? ?? 0;
           final myScore = (rankData?['score'] as num?)?.toInt() ?? 0;
@@ -262,23 +276,35 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
             padding: EdgeInsets.all(PanAfricanSpacing.md),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [PanAfricanColors.primary.withOpacity(0.15), PanAfricanColors.secondary.withOpacity(0.10)],
+                colors: [
+                  PanAfricanColors.primary.withOpacity(0.15),
+                  PanAfricanColors.secondary.withOpacity(0.10),
+                ],
               ),
               borderRadius: PanAfricanRadius.lgBR,
               border: Border.all(color: PanAfricanColors.primary, width: 1.5),
             ),
             child: Row(
               children: [
-                Icon(Icons.person_pin, color: PanAfricanColors.primary, size: 32.sp),
+                Icon(
+                  Icons.person_pin,
+                  color: PanAfricanColors.primary,
+                  size: 32.sp,
+                ),
                 SizedBox(width: PanAfricanSpacing.sm),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Your Ranking', style: PanAfricanTypography.titleSmall(context)),
+                      Text(
+                        'Your Ranking',
+                        style: PanAfricanTypography.titleSmall(context),
+                      ),
                       SizedBox(height: PanAfricanSpacing.xxs),
                       Text(
-                        myRank > 0 ? '#$myRank • $myScore XP' : 'Not ranked yet — earn XP to appear!',
+                        myRank > 0
+                            ? '#$myRank • $myScore XP'
+                            : 'Not ranked yet — earn XP to appear!',
                         style: PanAfricanTypography.bodySmall(context),
                       ),
                     ],
@@ -293,19 +319,20 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
         if (entryIndex < 0 || entryIndex >= entries.length) {
           return const SizedBox.shrink();
         }
-        
+
         final entry = entries[entryIndex];
-        final isCurrentUser = user != null &&
+        final isCurrentUser =
+            user != null &&
             entry.userId.isNotEmpty &&
             entry.userId == user.id.toString();
-        
+
         return _LeaderboardCard(
-          key: ValueKey('leaderboard_card_${entry.userId}_$entryIndex'),
-          entry: entry,
-          isCurrentUser: isCurrentUser,
-          rank: entryIndex + 1,
-          isDark: isDark,
-        )
+              key: ValueKey('leaderboard_card_${entry.userId}_$entryIndex'),
+              entry: entry,
+              isCurrentUser: isCurrentUser,
+              rank: entryIndex + 1,
+              isDark: isDark,
+            )
             .animate(delay: Duration(milliseconds: entryIndex * 50))
             .fadeIn(duration: 300.ms)
             .slideY(begin: 0.1, end: 0);
@@ -333,7 +360,6 @@ class _LeaderboardCard extends StatefulWidget {
 }
 
 class _LeaderboardCardState extends State<_LeaderboardCard> {
-
   Color _getRankColor(int rank) {
     switch (rank) {
       case 1:
@@ -361,7 +387,10 @@ class _LeaderboardCardState extends State<_LeaderboardCard> {
           color: bgColor,
           shape: BoxShape.circle,
           border: rank == 1
-              ? Border.all(color: PanAfricanColors.secondary.withOpacity(0.5), width: 1)
+              ? Border.all(
+                  color: PanAfricanColors.secondary.withOpacity(0.5),
+                  width: 1,
+                )
               : null,
         ),
         child: Center(
@@ -377,14 +406,13 @@ class _LeaderboardCardState extends State<_LeaderboardCard> {
       width: badgeSize,
       height: badgeSize,
       decoration: BoxDecoration(
-        color: widget.isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
+        color: widget.isDark
+            ? PanAfricanColors.surfaceContainerDark
+            : PanAfricanColors.surfaceContainerLight,
         shape: BoxShape.circle,
       ),
       child: Center(
-        child: Text(
-          '#$rank',
-          style: PanAfricanTypography.titleMedium(context),
-        ),
+        child: Text('#$rank', style: PanAfricanTypography.titleMedium(context)),
       ),
     );
   }
@@ -393,7 +421,8 @@ class _LeaderboardCardState extends State<_LeaderboardCard> {
   Widget build(BuildContext context) {
     final expanded = _expandedState;
     return Semantics(
-      label: 'Rank ${widget.rank}: ${widget.entry.username}, ${widget.entry.xp} XP${widget.isCurrentUser ? ", your rank" : ""}',
+      label:
+          'Rank ${widget.rank}: ${widget.entry.username}, ${widget.entry.xp} XP${widget.isCurrentUser ? ", your rank" : ""}',
       button: true,
       child: GestureDetector(
         onTap: () {
@@ -401,108 +430,120 @@ class _LeaderboardCardState extends State<_LeaderboardCard> {
           setState(() => _expandedState = !_expandedState);
         },
         child: Container(
-        margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
-        decoration: BoxDecoration(
-          color: widget.isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-          borderRadius: PanAfricanRadius.lgBR,
-          border: Border.all(
-            color: widget.isCurrentUser
-                ? PanAfricanColors.primary
-                : (widget.isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight),
-            width: widget.isCurrentUser ? 2 : 1,
+          margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
+          decoration: BoxDecoration(
+            color: widget.isDark
+                ? PanAfricanColors.cardDark
+                : PanAfricanColors.cardLight,
+            borderRadius: PanAfricanRadius.lgBR,
+            border: Border.all(
+              color: widget.isCurrentUser
+                  ? PanAfricanColors.primary
+                  : (widget.isDark
+                        ? PanAfricanColors.borderDark
+                        : PanAfricanColors.borderLight),
+              width: widget.isCurrentUser ? 2 : 1,
+            ),
+            boxShadow: widget.isCurrentUser
+                ? PanAfricanShadows.md
+                : PanAfricanShadows.sm,
           ),
-          boxShadow: widget.isCurrentUser ? PanAfricanShadows.md : PanAfricanShadows.sm,
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(PanAfricanSpacing.md),
-          child: Row(
-            children: [
-              _buildRankBadge(context, widget.rank),
-              SizedBox(width: PanAfricanSpacing.sm),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      widget.entry.username,
-                      style: PanAfricanTypography.titleMedium(
-                        context,
-                        color: widget.isCurrentUser ? PanAfricanColors.primary : null,
-                      ),
-                    ),
-                    SizedBox(height: PanAfricanSpacing.xxs),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.star_rounded,
-                          size: 14.0.sp,
-                          color: PanAfricanColors.secondary,
-                          semanticLabel: 'XP',
-                        ),
-                        SizedBox(width: PanAfricanSpacing.xxs),
-                        Text(
-                          '${widget.entry.xp} XP',
-                          style: PanAfricanTypography.bodySmall(context),
-                        ),
-                      ],
-                    ),
-                    if (expanded) ...[
-                      SizedBox(height: PanAfricanSpacing.xs),
-                      if (widget.entry.tribe != null)
-                        Padding(
-                          padding: EdgeInsets.only(bottom: PanAfricanSpacing.xxs),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: PanAfricanSpacing.xs,
-                              vertical: PanAfricanSpacing.xxxs,
-                            ),
-                            decoration: BoxDecoration(
-                              color: PanAfricanColors.primaryContainer,
-                              borderRadius: PanAfricanRadius.roundBR,
-                            ),
-                            child: Text(
-                              widget.entry.tribe!,
-                              style: PanAfricanTypography.labelSmall(
-                                context,
-                                color: PanAfricanColors.onPrimaryContainer,
-                              ),
-                            ),
-                          ),
-                        ),
+          child: Padding(
+            padding: EdgeInsets.all(PanAfricanSpacing.md),
+            child: Row(
+              children: [
+                _buildRankBadge(context, widget.rank),
+                SizedBox(width: PanAfricanSpacing.sm),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
                       Text(
-                        'Level ${widget.entry.level} • ${widget.entry.levelTitle}',
-                        style: PanAfricanTypography.bodySmall(context),
+                        widget.entry.username,
+                        style: PanAfricanTypography.titleMedium(
+                          context,
+                          color: widget.isCurrentUser
+                              ? PanAfricanColors.primary
+                              : null,
+                        ),
                       ),
                       SizedBox(height: PanAfricanSpacing.xxs),
                       Row(
                         children: [
                           Icon(
-                            Icons.local_fire_department_rounded,
+                            Icons.star_rounded,
                             size: 14.0.sp,
-                            color: PanAfricanColors.tertiary,
+                            color: PanAfricanColors.secondary,
+                            semanticLabel: 'XP',
                           ),
                           SizedBox(width: PanAfricanSpacing.xxs),
                           Text(
-                            '${widget.entry.dailyStreak} day streak',
-                            style: PanAfricanTypography.labelSmall(context),
+                            '${widget.entry.xp} XP',
+                            style: PanAfricanTypography.bodySmall(context),
                           ),
                         ],
                       ),
+                      if (expanded) ...[
+                        SizedBox(height: PanAfricanSpacing.xs),
+                        if (widget.entry.tribe != null)
+                          Padding(
+                            padding: EdgeInsets.only(
+                              bottom: PanAfricanSpacing.xxs,
+                            ),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: PanAfricanSpacing.xs,
+                                vertical: PanAfricanSpacing.xxxs,
+                              ),
+                              decoration: BoxDecoration(
+                                color: PanAfricanColors.primaryContainer,
+                                borderRadius: PanAfricanRadius.roundBR,
+                              ),
+                              child: Text(
+                                widget.entry.tribe!,
+                                style: PanAfricanTypography.labelSmall(
+                                  context,
+                                  color: PanAfricanColors.onPrimaryContainer,
+                                ),
+                              ),
+                            ),
+                          ),
+                        Text(
+                          'Level ${widget.entry.level} • ${widget.entry.levelTitle}',
+                          style: PanAfricanTypography.bodySmall(context),
+                        ),
+                        SizedBox(height: PanAfricanSpacing.xxs),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.local_fire_department_rounded,
+                              size: 14.0.sp,
+                              color: PanAfricanColors.tertiary,
+                            ),
+                            SizedBox(width: PanAfricanSpacing.xxs),
+                            Text(
+                              '${widget.entry.dailyStreak} day streak',
+                              style: PanAfricanTypography.labelSmall(context),
+                            ),
+                          ],
+                        ),
+                      ],
                     ],
-                  ],
+                  ),
                 ),
-              ),
-              Icon(
-                expanded ? Icons.expand_less_rounded : Icons.expand_more_rounded,
-                color: PanAfricanColors.neutralMedium,
-                size: 20.sp,
-                semanticLabel: expanded ? 'Collapse' : 'Expand',
-              ),
-            ],
+                Icon(
+                  expanded
+                      ? Icons.expand_less_rounded
+                      : Icons.expand_more_rounded,
+                  color: PanAfricanColors.neutralMedium,
+                  size: 20.sp,
+                  semanticLabel: expanded ? 'Collapse' : 'Expand',
+                ),
+              ],
+            ),
           ),
         ),
-      ),
       ),
     );
   }
@@ -515,4 +556,3 @@ class _LeaderboardCardState extends State<_LeaderboardCard> {
     _expandedState = widget.isCurrentUser;
   }
 }
-
