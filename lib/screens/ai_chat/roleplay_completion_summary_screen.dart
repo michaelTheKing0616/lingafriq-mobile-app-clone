@@ -42,6 +42,7 @@ class RoleplayCompletionSummaryScreen extends HookConsumerWidget {
     }, []);
 
     return Scaffold(
+      appBar: AppBar(title: const Text('Scenario complete')),
       body: Container(
         decoration: BoxDecoration(
           gradient: isDark
@@ -56,6 +57,7 @@ class RoleplayCompletionSummaryScreen extends HookConsumerWidget {
                 ),
         ),
         child: SafeArea(
+          top: false,
           child: SingleChildScrollView(
             padding: EdgeInsets.all(PanAfricanSpacing.xl),
             child: Column(

@@ -13,6 +13,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GriotScaffold(
+      appBar: AppBar(title: const Text('Home')),
       body: SafeArea(
         child: ListView(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),

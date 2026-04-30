@@ -1179,9 +1179,11 @@ Language: $targetLanguage
       appBar: AppBar(
         backgroundColor: modeTheme.background,
         elevation: 0,
-        leading: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
-          icon: const Icon(Icons.arrow_back_rounded),
+        leading: BackButton(
+          onPressed: () {
+            FocusManager.instance.primaryFocus?.unfocus();
+            Navigator.of(context).maybePop();
+          },
         ),
         title: Text(
           conversationOnly ? 'Ling Chat' : 'Polie',

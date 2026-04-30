@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'app_exceptions.dart';
 import '../../utils/structured_logger.dart';
 
@@ -115,7 +116,11 @@ class _ErrorFallback extends StatelessWidget {
   Widget build(BuildContext context) {
     if (fallback != null) return fallback!;
 
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
+      appBar: AppBar(
+        title: Text(l10n?.errorOccurred ?? 'Error'),
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -129,7 +134,7 @@ class _ErrorFallback extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                'Something went wrong',
+                l10n?.errorOccurred ?? 'Something went wrong',
                 style: Theme.of(context).textTheme.headlineSmall,
                 textAlign: TextAlign.center,
               ),

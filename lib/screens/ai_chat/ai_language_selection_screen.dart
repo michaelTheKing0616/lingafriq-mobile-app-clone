@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../providers/tab_scaffold_provider.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 
@@ -47,7 +48,27 @@ class AILanguageSelectionScreen extends HookConsumerWidget {
       body: SafeArea(
         child: Column(
           children: [
-            SizedBox(height: 24.h),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: IconButton(
+                icon: Icon(
+                  Navigator.of(context).canPop()
+                      ? Icons.arrow_back_rounded
+                      : Icons.menu_rounded,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+                tooltip: Navigator.of(context).canPop() ? 'Back' : 'Menu',
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  if (Navigator.of(context).canPop()) {
+                    Navigator.pop(context);
+                  } else {
+                    ref.read(scaffoldKeyProvider).currentState?.openDrawer();
+                  }
+                },
+              ),
+            ),
+            SizedBox(height: 8.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: RichText(

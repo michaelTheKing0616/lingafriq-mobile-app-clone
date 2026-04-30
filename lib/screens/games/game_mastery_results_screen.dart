@@ -90,6 +90,7 @@ class _GameMasteryResultsScreenState
 
     return Scaffold(
       backgroundColor: cs.surface,
+      appBar: AppBar(title: const Text('Results')),
       body: Stack(
         children: [
           Positioned.fill(
@@ -118,12 +119,13 @@ class _GameMasteryResultsScreenState
             ),
           ),
           SafeArea(
+            top: false,
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Column(
                 children: [
-                  SizedBox(height: 24.h),
+                  SizedBox(height: 8.h),
                   _CelebrationHero(bounceAnim: _starBounce),
                   SizedBox(height: 24.h),
                   GriotMasteryRing(

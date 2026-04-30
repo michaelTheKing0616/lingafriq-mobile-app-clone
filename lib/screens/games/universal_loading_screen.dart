@@ -100,6 +100,19 @@ class _UniversalLoadingScreenState extends ConsumerState<UniversalLoadingScreen>
         child: Stack(
           alignment: Alignment.center,
           children: [
+            if (Navigator.of(context).canPop())
+              Positioned(
+                top: MediaQuery.paddingOf(context).top + 8.h,
+                left: 8.w,
+                child: IconButton(
+                  icon: Icon(
+                    Icons.arrow_back_rounded,
+                    color: ModernGriotColors.onPrimary,
+                    size: 26.sp,
+                  ),
+                  onPressed: () => Navigator.maybePop(context),
+                ),
+              ),
             Positioned(
               top: screenSize.height * 0.28,
               child: _PulsingGlow(pulseAnim: _pulseAnim),

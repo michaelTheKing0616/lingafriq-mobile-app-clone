@@ -29,6 +29,7 @@ class MyTribeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GriotScaffold(
+      appBar: AppBar(title: const Text('My Tribe')),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 
 /// `Navigator` arguments for passport named routes (`passport-proctored`, `passport-credential`).
 final class PassportRouteArgs {
@@ -32,13 +33,14 @@ final class PassportRouteArgs {
     return (verifyToken: token, level: level, score: score);
   }
 
-  static Widget missingCredentialScaffold() {
+  static Widget missingCredentialScaffold(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text('Passport credential')),
-      body: const SafeArea(
+      appBar: AppBar(title: Text(l10n.errorOccurred)),
+      body: SafeArea(
         child: Center(
-          child: Padding(
-            padding: EdgeInsets.all(24),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
             child: Text(
               'Missing verifyToken.\n\n'
               'Use: Navigator.pushNamed(context, "/passport-credential", '

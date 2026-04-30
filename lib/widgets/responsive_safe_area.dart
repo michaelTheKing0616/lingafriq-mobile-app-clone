@@ -1,19 +1,21 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
-/// Short screen height threshold (e.g. 854x480, 4:3). Below this, top/bottom
-/// insets are capped so content is not pushed too far up/down.
+/// Height below which vertical insets can be capped slightly so constrained
+/// layouts retain usable vertical space (e.g. short landscape shells).
 const double _kShortScreenHeightThreshold = 560;
 const double _kShortScreenMaxVerticalInset = 12;
 
-/// Safety zones (notch/island): industry standard 24–44px top, 20–34px bottom.
-const double _kMinTopInset = 24;
-const double _kMaxTopInset = 44;
-const double _kMinBottomInset = 20;
-const double _kMaxBottomInset = 34;
-
-/// SafeArea that respects safety zones and works across all screen types.
-/// Normal screens: top clamped to 24–44px, bottom to 20–34px.
-/// Short screens (height <= 560): top/bottom capped at 12px to preserve vertical space.
+/// View-based safe area widget.
+///
+/// **Critical:** Unlike the previous implementation, device-reported bottom/top
+/// insets are **never capped downward** above the short-screen path. Older
+/// clamping (max 34px bottom) made bottom navigation sit too high on iPhones
+/// with larger home-indicator safe areas.
+///
+/// Prefer this over `[MediaQuery].padding = EdgeInsets.zero` at app root —
+/// combine with Flutter's `[SafeArea]` here for consistent behavior.
 class ResponsiveSafeArea extends StatelessWidget {
   final Widget child;
   final bool top;
@@ -34,31 +36,35 @@ class ResponsiveSafeArea extends StatelessWidget {
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context);
     final height = media.size.height;
-    final padding = media.padding;
-    final viewPadding = media.viewPadding;
-
-    double topInset = top ? (viewPadding.top > 0 ? viewPadding.top : padding.top) : 0;
-    double bottomInset = bottom ? (viewPadding.bottom > 0 ? viewPadding.bottom : padding.bottom) : 0;
-    double leftInset = left ? (viewPadding.left > 0 ? viewPadding.left : padding.left) : 0;
-    double rightInset = right ? (viewPadding.right > 0 ? viewPadding.right : padding.right) : 0;
 
     if (height <= _kShortScreenHeightThreshold) {
-      topInset = topInset > _kShortScreenMaxVerticalInset ? _kShortScreenMaxVerticalInset : topInset;
-      bottomInset = bottomInset > _kShortScreenMaxVerticalInset ? _kShortScreenMaxVerticalInset : bottomInset;
-    } else {
-      if (topInset < _kMinTopInset) topInset = _kMinTopInset;
-      if (topInset > _kMaxTopInset) topInset = _kMaxTopInset;
-      if (bottomInset < _kMinBottomInset) bottomInset = _kMinBottomInset;
-      if (bottomInset > _kMaxBottomInset) bottomInset = _kMaxBottomInset;
+      final viewPadding = media.viewPadding;
+      double topInset = top ? viewPadding.top : 0;
+      double bottomInset = bottom ? viewPadding.bottom : 0;
+      double leftInset = left ? viewPadding.left : 0;
+      double rightInset = right ? viewPadding.right : 0;
+
+      topInset = math.min(topInset, _kShortScreenMaxVerticalInset);
+      bottomInset = math.min(bottomInset, _kShortScreenMaxVerticalInset);
+
+      return Padding(
+        padding: EdgeInsets.only(
+          top: topInset,
+          bottom: bottomInset,
+          left: leftInset,
+          right: rightInset,
+        ),
+        child: child,
+      );
     }
 
-    return Padding(
-      padding: EdgeInsets.only(
-        top: topInset,
-        bottom: bottomInset,
-        left: leftInset,
-        right: rightInset,
-      ),
+    return SafeArea(
+      top: top,
+      bottom: bottom,
+      left: left,
+      right: right,
+      maintainBottomViewPadding: true,
+      minimum: EdgeInsets.zero,
       child: child,
     );
   }

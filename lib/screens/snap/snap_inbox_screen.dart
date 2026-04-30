@@ -25,22 +25,18 @@ class _SnapInboxScreenState extends ConsumerState<SnapInboxScreen> {
     final state = ref.watch(snapProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
+      appBar: AppBar(title: const Text('Snap Inbox')),
       body: Container(
         decoration: BoxDecoration(
           gradient: isDark ? PanAfricanGradients.darkSurface : PanAfricanGradients.kente,
         ),
         child: SafeArea(
+          top: false,
           child: RefreshIndicator(
             onRefresh: () => ref.read(snapProvider.notifier).loadInbox(),
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
-                Text(
-                  'Snap Inbox',
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
-                ),
                 const SizedBox(height: 4),
                 Text(
                   'Private visual messages that disappear.',

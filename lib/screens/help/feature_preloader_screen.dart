@@ -57,8 +57,10 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
     final totalPages = 1 + (widget.terms.isNotEmpty ? 1 : 0) + (widget.tips.isNotEmpty ? 1 : 0);
     
     return Scaffold(
+      appBar: AppBar(title: Text(widget.featureName)),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
+        top: false,
         child: Column(
           children: [
             // Progress indicator

@@ -57,6 +57,7 @@ class _ClassroomLobbyScreenState extends ConsumerState<ClassroomLobbyScreen> {
   @override
   Widget build(BuildContext context) {
     return GriotScaffold(
+      appBar: AppBar(title: const Text('Practice rooms')),
       floatingActionButton: GriotFab(
         icon: Icons.mic_rounded,
         heroTag: 'host_room',

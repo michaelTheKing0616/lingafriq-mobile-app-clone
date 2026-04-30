@@ -17,7 +17,7 @@ import 'package:lingafriq/screens/settings/settings_screen_material3.dart';
 import 'package:lingafriq/screens/lessons/lessons_map_entry_screen.dart';
 import 'package:lingafriq/screens/games/games_screen_material3.dart';
 import 'package:lingafriq/screens/gamification/badge_collection_screen_material3.dart';
-import 'package:lingafriq/screens/ai_chat/ai_language_selection_screen.dart';
+import 'package:lingafriq/screens/chat/lingchat_ai_conversation_screen.dart';
 import 'package:lingafriq/screens/ai_chat/polie_mode_selection_screen.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen_enhanced.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
@@ -192,7 +192,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.push(
                             context,
                             SmoothPageRoute.platform(
-                              child: AILanguageSelectionScreen(),
+                              child: const LingChatAiConversationScreen(),
                             ),
                           );
                         },

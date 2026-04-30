@@ -100,7 +100,7 @@ class _LiveClassroomScreenState extends ConsumerState<LiveClassroomScreen>
             children: [
               Column(
                 children: [
-                  _buildHeader(darkScheme),
+                  _buildHeader(context, darkScheme),
                   SizedBox(height: 12.h),
                   _buildSpeakerGrid(darkScheme),
                   SizedBox(height: 16.h),
@@ -122,11 +122,18 @@ class _LiveClassroomScreenState extends ConsumerState<LiveClassroomScreen>
     );
   }
 
-  Widget _buildHeader(ColorScheme cs) {
+  Widget _buildHeader(BuildContext context, ColorScheme cs) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
       child: Row(
         children: [
+          IconButton(
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
+            icon: Icon(Icons.arrow_back_rounded, color: cs.onSurface, size: 22.sp),
+            onPressed: () => Navigator.maybePop(context),
+          ),
+          SizedBox(width: 6.w),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
             decoration: BoxDecoration(

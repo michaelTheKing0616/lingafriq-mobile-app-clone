@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/navigation/village_navigation.dart';
+import '../../providers/tab_scaffold_provider.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 
@@ -89,7 +90,15 @@ class LanguageVillagesScreen extends HookConsumerWidget {
               top: MediaQuery.of(context).padding.top + 8.h,
               left: 16.w,
               child: GestureDetector(
-                onTap: () => Navigator.maybePop(context),
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  final nav = Navigator.of(context);
+                  if (nav.canPop()) {
+                    nav.maybePop();
+                  } else {
+                    ref.read(scaffoldKeyProvider).currentState?.openDrawer();
+                  }
+                },
                 child: Container(
                   width: 40.r,
                   height: 40.r,
@@ -101,7 +110,12 @@ class LanguageVillagesScreen extends HookConsumerWidget {
                     shape: BoxShape.circle,
                     boxShadow: ModernGriotShadows.sm,
                   ),
-                  child: Icon(Icons.arrow_back_rounded, size: 20.sp),
+                  child: Icon(
+                    Navigator.of(context).canPop()
+                        ? Icons.arrow_back_rounded
+                        : Icons.menu_rounded,
+                    size: 20.sp,
+                  ),
                 ),
               ),
             ),

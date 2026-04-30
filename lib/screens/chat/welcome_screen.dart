@@ -27,10 +27,14 @@ class ChatWelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ModernGriotColors.surface,
+      appBar: Navigator.of(context).canPop()
+          ? AppBar(title: const Text('Welcome'))
+          : null,
       body: GriotSvgPatternBackground(
         pattern: GriotPattern.triangles,
         opacity: 0.035,
         child: SafeArea(
+          top: !Navigator.of(context).canPop(),
           child: LayoutBuilder(
             builder: (context, constraints) {
               final isWide = constraints.maxWidth >= _breakpoint;

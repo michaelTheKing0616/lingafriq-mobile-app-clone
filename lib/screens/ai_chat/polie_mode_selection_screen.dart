@@ -6,8 +6,59 @@ import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:lingafriq/screens/ai_chat/ai_chat_language_setup_screen.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
+import 'package:lingafriq/providers/tab_scaffold_provider.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+
+/// Leading control: back when this route can pop / [onBack]; otherwise opens main drawer (tab shell).
+Widget _polieLeadingControl(
+  BuildContext context,
+  WidgetRef ref,
+  Color textPrimary,
+  VoidCallback? onBackCallback,
+) {
+  if (onBackCallback != null) {
+    return Semantics(
+      label: 'Back',
+      button: true,
+      child: IconButton(
+        icon: Icon(Icons.arrow_back_rounded, color: textPrimary),
+        tooltip: 'Back',
+        onPressed: () {
+          HapticFeedback.lightImpact();
+          onBackCallback();
+        },
+      ),
+    );
+  }
+  final canPop = Navigator.of(context).canPop();
+  if (canPop) {
+    return Semantics(
+      label: 'Back',
+      button: true,
+      child: IconButton(
+        icon: Icon(Icons.arrow_back_rounded, color: textPrimary),
+        tooltip: 'Back',
+        onPressed: () {
+          HapticFeedback.lightImpact();
+          Navigator.of(context).maybePop();
+        },
+      ),
+    );
+  }
+  return Semantics(
+    label: 'Open menu',
+    button: true,
+    child: IconButton(
+      icon: Icon(Icons.menu_rounded, color: textPrimary),
+      tooltip: 'Menu',
+      onPressed: () {
+        HapticFeedback.lightImpact();
+        ref.read(scaffoldKeyProvider).currentState?.openDrawer();
+      },
+    ),
+  );
+}
 
 /// Polie Tutor — vertical mode carousel. Afro-futurist, cinematic.
 /// Each mode opens into a full-bleed immersive workspace.
@@ -21,11 +72,11 @@ class PolieModeSelectionScreen extends ConsumerWidget {
     return ErrorBoundary(
       errorMessage: 'Unable to load mode selection. Please try again.',
       onRetry: () {},
-      child: _buildContent(context, ref),
+      child: _buildContent(context, ref, onBack),
     );
   }
 
-  Widget _buildContent(BuildContext context, WidgetRef ref) {
+  Widget _buildContent(BuildContext context, WidgetRef ref, VoidCallback? onBack) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final textPrimary =
         isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
@@ -79,17 +130,7 @@ class PolieModeSelectionScreen extends ConsumerWidget {
                 padding: EdgeInsets.symmetric(horizontal: PolieSpacing.md, vertical: PolieSpacing.sm),
                 child: Row(
                   children: [
-                    IconButton(
-                      icon: Icon(Icons.arrow_back_rounded, color: textPrimary),
-                      onPressed: () {
-                        HapticFeedback.lightImpact();
-                        if (onBack != null) {
-                          onBack!();
-                        } else if (Navigator.of(context).canPop()) {
-                          Navigator.of(context).pop();
-                        }
-                      },
-                    ),
+                    _polieLeadingControl(context, ref, textPrimary, onBack),
                     Expanded(
                       child: Text(
                         'Polie Tutor',
@@ -130,7 +171,7 @@ class PolieModeSelectionScreen extends ConsumerWidget {
                             ),
                             SizedBox(height: PolieSpacing.xs),
                             Text(
-                              'Translate, practice, roleplay, or review with Polie.',
+                              'Translate, chat, tutor, roleplay, or review with Polie.',
                               style: PolieTypography.bodySmall(context).copyWith(
                                 color: textSecondary,
                               ),

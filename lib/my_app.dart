@@ -224,8 +224,9 @@ class MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
                 return MediaQuery(
                   data: MediaQuery.of(context).copyWith(
                     textScaler: const TextScaler.linear(1.0),
-                    // Support edge-to-edge display
-                    padding: EdgeInsets.zero,
+                    // Never zero [MediaQuery.padding]: it wipes real safe-area insets and
+                    // breaks Scaffold/AppBar/[SafeArea]/bottom navigation on iOS.
+                    // Transparent system bars are handled by [AnnotatedRegion] above.
                   ),
                   child: AnnotatedRegion<SystemUiOverlayStyle>(
                     value: SystemUiOverlayStyle(
@@ -246,6 +247,22 @@ class MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
       },
     );
   }
+}
+
+/// Missing/invalid named-route arguments: [AppBar] + scrollable detail so users can pop.
+Widget _namedRouteArgumentIssueScaffold(BuildContext context, String detailMessage) {
+  final l10n = AppLocalizations.of(context)!;
+  return Scaffold(
+    appBar: AppBar(title: Text(l10n.errorOccurred)),
+    body: SafeArea(
+      child: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Text(detailMessage, textAlign: TextAlign.center),
+        ),
+      ),
+    ),
+  );
 }
 
 /// Route name -> Screen widget mapping for drawer navigation.
@@ -314,10 +331,9 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'flb-heritage-detail': (ctx) {
       final content = heritageDetailFromArguments(settings.arguments);
       if (content == null) {
-        return Scaffold(
-          body: Center(
-            child: Text(AppLocalizations.of(ctx)!.flbHeritageMissingContent),
-          ),
+        return _namedRouteArgumentIssueScaffold(
+          ctx,
+          AppLocalizations.of(ctx)!.flbHeritageMissingContent,
         );
       }
       return FlbHeritageDetailScreen(content: content);
@@ -353,24 +369,24 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
         initialRoomName: args?['roomName']?.toString(),
       );
     },
-    'classroom-roster-v2': (_) {
+    'classroom-roster-v2': (ctx) {
       final p = ClassroomV2RouteArgs.parse(settings.arguments);
       if (p.tribeId == null) {
-        return ClassroomV2RouteArgs.missingTribeIdScaffold('/classroom-roster-v2');
+        return ClassroomV2RouteArgs.missingTribeIdScaffold(ctx, '/classroom-roster-v2');
       }
       return ClassroomRosterScreen(tribeId: p.tribeId!, tribeName: p.tribeName);
     },
-    'classroom-assignments-v2': (_) {
+    'classroom-assignments-v2': (ctx) {
       final p = ClassroomV2RouteArgs.parse(settings.arguments);
       if (p.tribeId == null) {
-        return ClassroomV2RouteArgs.missingTribeIdScaffold('/classroom-assignments-v2');
+        return ClassroomV2RouteArgs.missingTribeIdScaffold(ctx, '/classroom-assignments-v2');
       }
       return ClassroomAssignmentsScreen(tribeId: p.tribeId!, tribeName: p.tribeName);
     },
-    'classroom-privacy-v2': (_) {
+    'classroom-privacy-v2': (ctx) {
       final p = ClassroomV2RouteArgs.parse(settings.arguments);
       if (p.tribeId == null) {
-        return ClassroomV2RouteArgs.missingTribeIdScaffold('/classroom-privacy-v2');
+        return ClassroomV2RouteArgs.missingTribeIdScaffold(ctx, '/classroom-privacy-v2');
       }
       return ClassroomPrivacyScreen(tribeId: p.tribeId!, tribeName: p.tribeName);
     },
@@ -386,12 +402,10 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     },
     'policy': (_) => const AppPolicyScreen(),
     // Lesson Flow
-    'lesson-flow': (_) {
+    'lesson-flow': (ctx) {
       final args = settings.arguments as Map<String, dynamic>?;
       if (args == null || args['lessonId'] == null || args['sectionLessons'] == null || args['lessonTitle'] == null) {
-        return const Scaffold(
-          body: Center(child: Text('Missing required arguments for LessonFlowScreen')),
-        );
+        return _namedRouteArgumentIssueScaffold(ctx, 'Missing required arguments for LessonFlowScreen');
       }
       return LessonFlowScreen(
         lessonId: args['lessonId'] as int,
@@ -401,21 +415,17 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     },
     // Grammar
     'grammar-hub': (_) => const GrammarHubScreen(),
-    'grammar-lesson': (_) {
+    'grammar-lesson': (ctx) {
       final args = settings.arguments as Map<String, dynamic>?;
       if (args == null || args['topic'] == null) {
-        return const Scaffold(
-          body: Center(child: Text('Missing required arguments for GrammarLessonScreen')),
-        );
+        return _namedRouteArgumentIssueScaffold(ctx, 'Missing required arguments for GrammarLessonScreen');
       }
       return GrammarLessonScreen(topic: args['topic'] as GrammarTopic);
     },
-    'grammar-exercise': (_) {
+    'grammar-exercise': (ctx) {
       final args = settings.arguments as Map<String, dynamic>?;
       if (args == null || args['topicId'] == null || args['topicName'] == null) {
-        return const Scaffold(
-          body: Center(child: Text('Missing required arguments for GrammarExerciseScreen')),
-        );
+        return _namedRouteArgumentIssueScaffold(ctx, 'Missing required arguments for GrammarExerciseScreen');
       }
       return GrammarExerciseScreen(
         topicId: args['topicId'] as String,
@@ -424,12 +434,10 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     },
     // Social
     'social-hub': (_) => const SocialHubScreen(),
-    'friend-profile': (_) {
+    'friend-profile': (ctx) {
       final args = settings.arguments as Map<String, dynamic>?;
       if (args == null || args['friendId'] == null) {
-        return const Scaffold(
-          body: Center(child: Text('Missing required arguments for FriendProfileScreen')),
-        );
+        return _namedRouteArgumentIssueScaffold(ctx, 'Missing required arguments for FriendProfileScreen');
       }
       return FriendProfileScreen(friendId: args['friendId'] as String);
     },
@@ -492,9 +500,9 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
       final p = PassportRouteArgs.parseProctored(settings.arguments);
       return PassportProctoredSessionScreen(language: p.language, proctorMode: p.proctorMode);
     },
-    'passport-credential': (_) {
+    'passport-credential': (ctx) {
       final p = PassportRouteArgs.parseCredential(settings.arguments);
-      if (p == null) return PassportRouteArgs.missingCredentialScaffold();
+      if (p == null) return PassportRouteArgs.missingCredentialScaffold(ctx);
       return PassportCredentialScreen(
         verifyToken: p.verifyToken,
         level: p.level,
@@ -507,11 +515,12 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'listening-practice': (_) => const ListeningPracticeScreen(),
     'writing-practice': (_) => const WritingPracticeScreen(),
     // Learning Path
-    'learning-path': (_) {
+    'learning-path': (ctx) {
       final args = settings.arguments as Map<String, dynamic>?;
       if (args == null || args['language'] == null) {
-        return const Scaffold(
-          body: Center(child: Text('Missing required arguments for LearningPathScreen')),
+        return _namedRouteArgumentIssueScaffold(
+          ctx,
+          'Missing required arguments for LearningPathScreen',
         );
       }
       return LearningPathScreen(language: args['language'] as Language);
@@ -520,11 +529,12 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'friend-quests': (_) => const FriendQuestsScreen(),
     'create-friend-quest': (_) => const CreateFriendQuestScreen(),
     // Auth
-    'email-verification': (_) {
+    'email-verification': (ctx) {
       final args = settings.arguments as Map<String, dynamic>?;
       if (args == null || args['email'] == null) {
-        return const Scaffold(
-          body: Center(child: Text('Missing required arguments for EmailVerificationScreen')),
+        return _namedRouteArgumentIssueScaffold(
+          ctx,
+          'Missing required arguments for EmailVerificationScreen',
         );
       }
       return EmailVerificationScreen(
@@ -534,11 +544,12 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     },
     // Vocabulary
     'my-vocabulary': (_) => const VocabularyScreen(),
-    'flashcard-review': (_) {
+    'flashcard-review': (ctx) {
       final args = settings.arguments as Map<String, dynamic>?;
       if (args == null || args['words'] == null || args['language'] == null) {
-        return const Scaffold(
-          body: Center(child: Text('Missing required arguments for FlashcardReviewScreen')),
+        return _namedRouteArgumentIssueScaffold(
+          ctx,
+          'Missing required arguments for FlashcardReviewScreen',
         );
       }
       return FlashcardReviewScreen(
@@ -549,12 +560,13 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     // WhatsApp upgrade screens
     'wa-status': (_) => const WaStatusListScreen(),
     'wa-status-create': (_) => const WaStatusCreateScreen(),
-    'wa-status-view': (_) {
+    'wa-status-view': (ctx) {
       final args = settings.arguments as Map<String, dynamic>?;
       final statusId = args?['statusId']?.toString();
       if (statusId == null || statusId.isEmpty) {
-        return const Scaffold(
-          body: Center(child: Text('Missing required arguments for WaStatusViewScreen')),
+        return _namedRouteArgumentIssueScaffold(
+          ctx,
+          'Missing required arguments for WaStatusViewScreen',
         );
       }
       return WaStatusViewScreen(statusId: statusId);
@@ -566,13 +578,14 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'snap-story-feed': (_) => const SnapStoryFeedScreen(),
     'snap-camera': (_) => const SnapCameraScreen(),
     'snap-streaks': (_) => const SnapStreaksScreen(),
-    'snap-viewer': (_) {
+    'snap-viewer': (ctx) {
       final args = settings.arguments as Map<String, dynamic>?;
       final snapId = args?['snapId']?.toString();
       final storyId = args?['storyId']?.toString();
       if ((snapId == null || snapId.isEmpty) && (storyId == null || storyId.isEmpty)) {
-        return const Scaffold(
-          body: Center(child: Text('Missing required arguments for SnapViewerScreen')),
+        return _namedRouteArgumentIssueScaffold(
+          ctx,
+          'Missing required arguments for SnapViewerScreen',
         );
       }
       return SnapViewerScreen(
@@ -583,12 +596,13 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     // X feed upgrade screens
     'x-feed-home': (_) => const XFeedHomeScreen(),
     'x-compose': (_) => const XComposeScreen(),
-    'x-post-detail': (_) {
+    'x-post-detail': (ctx) {
       final args = settings.arguments as Map<String, dynamic>?;
       final postId = args?['postId']?.toString();
       if (postId == null || postId.isEmpty) {
-        return const Scaffold(
-          body: Center(child: Text('Missing required arguments for XPostDetailScreen')),
+        return _namedRouteArgumentIssueScaffold(
+          ctx,
+          'Missing required arguments for XPostDetailScreen',
         );
       }
       return XPostDetailScreen(postId: postId);
@@ -641,6 +655,10 @@ class _Unfocus extends StatelessWidget {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: child,
+    );
+  }
+}
+hild,
     );
   }
 }

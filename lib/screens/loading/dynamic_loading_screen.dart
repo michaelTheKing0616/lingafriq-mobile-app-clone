@@ -198,6 +198,16 @@ class _DynamicLoadingScreenState
       body: SafeArea(
         child: Stack(
           children: [
+            if (Navigator.of(context).canPop())
+              Positioned(
+                top: MediaQuery.paddingOf(context).top + 4,
+                left: 4,
+                child: IconButton(
+                  icon: const Icon(Icons.close_rounded, color: Colors.white70),
+                  onPressed: () => Navigator.maybePop(context),
+                  tooltip: 'Close',
+                ),
+              ),
             // Background gradient
             Container(
               decoration: BoxDecoration(

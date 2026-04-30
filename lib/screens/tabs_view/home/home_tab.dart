@@ -20,6 +20,7 @@ import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/providers/gamification_provider.dart';
 import 'package:lingafriq/models/user_gamification_model.dart';
 import 'package:lingafriq/screens/ai_chat/ai_chat_select_screen.dart';
+import 'package:lingafriq/screens/chat/lingchat_ai_conversation_screen.dart';
 import 'package:lingafriq/screens/progress/progress_dashboard_screen.dart';
 
 import '../../../detail_types/introduction_screen.dart';
@@ -374,7 +375,7 @@ class HomeTab extends HookConsumerWidget {
               Expanded(
                 child: _QuickActionCard(
                   title: 'AI Tutor',
-                  subtitle: 'Practice with Polie',
+                  subtitle: 'Polie modes & skills',
                   icon: Icons.auto_awesome_rounded,
                   color: PanAfricanColors.kenteBlue,
                   onTap: () {
@@ -383,6 +384,24 @@ class HomeTab extends HookConsumerWidget {
                 ),
               ),
               SizedBox(width: PanAfricanSpacing.md),
+              Expanded(
+                child: _QuickActionCard(
+                  title: 'AI Chat',
+                  subtitle: 'Conversation with Polie',
+                  icon: Icons.chat_bubble_outline_rounded,
+                  color: PanAfricanColors.kenteTeal,
+                  onTap: () {
+                    ref.read(navigationProvider).navigateTo(
+                          const LingChatAiConversationScreen(),
+                        );
+                  },
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: PanAfricanSpacing.sm),
+          Row(
+            children: [
               Expanded(
                 child: _QuickActionCard(
                   title: 'Progress',

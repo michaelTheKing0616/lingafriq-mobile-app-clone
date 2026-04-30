@@ -67,6 +67,7 @@ class _SessionSummaryScreenState extends ConsumerState<SessionSummaryScreen>
     final cs = Theme.of(context).colorScheme;
 
     return GriotScaffold(
+      appBar: AppBar(title: const Text('Session summary')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 20.w),

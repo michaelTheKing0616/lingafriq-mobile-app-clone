@@ -25,22 +25,18 @@ class _SnapStoryFeedScreenState extends ConsumerState<SnapStoryFeedScreen> {
     final state = ref.watch(snapProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
+      appBar: AppBar(title: const Text('Stories')),
       body: Container(
         decoration: BoxDecoration(
           gradient: isDark ? PanAfricanGradients.darkSurface : PanAfricanGradients.sunset,
         ),
         child: SafeArea(
+          top: false,
           child: RefreshIndicator(
             onRefresh: () => ref.read(snapProvider.notifier).loadStories(),
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
-                Text(
-                  'Stories',
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
-                ),
                 const SizedBox(height: 4),
                 Text(
                   'Language moments from your community.',

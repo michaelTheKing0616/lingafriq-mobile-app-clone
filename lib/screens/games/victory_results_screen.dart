@@ -64,6 +64,7 @@ class _VictoryResultsScreenState extends ConsumerState<VictoryResultsScreen>
 
     return Scaffold(
       backgroundColor: cs.surface,
+      appBar: AppBar(title: const Text('Mission complete')),
       body: Stack(
         children: [
           Positioned.fill(
@@ -83,12 +84,13 @@ class _VictoryResultsScreenState extends ConsumerState<VictoryResultsScreen>
             ),
           ),
           SafeArea(
+            top: false,
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Column(
                 children: [
-                  SizedBox(height: 32.h),
+                  SizedBox(height: 16.h),
                   _ScrollArtifactIcon(glowAnim: _glowAnim),
                   SizedBox(height: 8.h),
                   Text(

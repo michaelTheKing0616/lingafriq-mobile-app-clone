@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 
 /// Shared [Navigator] `arguments` for classroom v2 roster, assignments, and privacy routes
 /// (Stitch hub, `Navigator.pushNamed`, dashboards).
@@ -21,11 +22,13 @@ final class ClassroomV2RouteArgs {
 
   /// Shown when [parse] returns a null `tribeId`. [pushNamedRoute] is the exact string passed to
   /// `Navigator.pushNamed` (e.g. `/classroom-roster-v2`).
-  static Widget missingTribeIdScaffold(String pushNamedRoute) {
+  static Widget missingTribeIdScaffold(BuildContext context, String pushNamedRoute) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
+      appBar: AppBar(title: Text(l10n.errorOccurred)),
       body: SafeArea(
         child: Center(
-          child: Padding(
+          child: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
             child: Text(
               'Missing tribeId.\n\n'

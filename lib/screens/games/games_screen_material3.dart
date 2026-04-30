@@ -104,7 +104,10 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
             button: true,
             child: IconButton(
               icon: const Icon(Icons.arrow_back_rounded, semanticLabel: 'Back'),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () {
+                FocusManager.instance.primaryFocus?.unfocus();
+                Navigator.of(context).maybePop();
+              },
               tooltip: 'Back',
             ),
           ),

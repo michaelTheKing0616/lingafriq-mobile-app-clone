@@ -67,6 +67,7 @@ class _AiChatLanguageSetupScreenState
             sourceLanguage: 'English',
             targetLanguage: language,
             initialMode: _mode,
+            conversationOnly: _mode == PolieMode.conversation,
           ),
         ),
       );

@@ -12,7 +12,7 @@ import 'package:lingafriq/providers/tab_scaffold_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/models/daily_goal_model.dart';
 import 'package:lingafriq/screens/ai_chat/polie_mode_selection_screen.dart';
-import 'package:lingafriq/screens/ai_chat/ai_language_selection_screen.dart';
+import 'package:lingafriq/screens/chat/lingchat_ai_conversation_screen.dart';
 import 'package:lingafriq/screens/lessons/lessons_map_entry_screen.dart';
 import 'package:lingafriq/screens/tabs_view/home/language_detail_screen.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen_enhanced.dart';
@@ -363,7 +363,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                     Navigator.push(
                       context,
                       SmoothPageRoute.platform(
-                        child: const AILanguageSelectionScreen(),
+                        child: const LingChatAiConversationScreen(),
                       ),
                     );
                   },

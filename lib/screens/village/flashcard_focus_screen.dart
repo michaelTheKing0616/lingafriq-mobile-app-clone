@@ -95,6 +95,7 @@ class _FlashcardFocusScreenState extends ConsumerState<FlashcardFocusScreen>
     final card = _mockCards[_currentIndex];
 
     return GriotScaffold(
+      appBar: AppBar(title: const Text('Flashcards')),
       extendBody: true,
       body: SafeArea(
         child: Column(

@@ -13,7 +13,6 @@ import 'package:lingafriq/screens/social/language_villages_screen.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/offline/offline_indicator.dart';
 import 'package:lingafriq/widgets/lingafriq_scaffold.dart';
-import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/avatars/avatars.dart';
 import 'package:lingafriq/providers/offline_download_provider.dart';
 import 'package:lingafriq/providers/curriculum_provider.dart';
@@ -78,6 +77,9 @@ class _TabsViewMaterial3State extends ConsumerState<TabsViewMaterial3> {
 
     return LingafriqScaffold(
       scaffoldKey: scaffoldKey,
+      // Tab shells: each inner screen manages its own top safe area ([AppBar]/[ResponsiveSafeArea]);
+      // avoid double-padding the whole subtree from the notch down.
+      applyTopSafeArea: false,
       applyBottomSafeArea: false,
       drawer: const AppDrawerMaterial3(),
       body: OfflineIndicator(
@@ -142,8 +144,13 @@ class _Material3BottomNavigationBar extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final colorScheme = Theme.of(context).colorScheme;
 
-    return ResponsiveSafeArea(
+    return SafeArea(
       top: false,
+      bottom: true,
+      left: false,
+      right: false,
+      maintainBottomViewPadding: true,
+      minimum: EdgeInsets.zero,
       child: NavigationBar(
         selectedIndex: currentIndex,
         onDestinationSelected: onTap,
