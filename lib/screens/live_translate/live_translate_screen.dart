@@ -53,7 +53,9 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
       if (state.processingState == ProcessingState.completed &&
           _phase == LiveTranslatePhase.playingTts) {
         setState(() {
-          _phase = _listeningActive ? LiveTranslatePhase.listening : LiveTranslatePhase.ready;
+          _phase = _speech.isListening
+              ? LiveTranslatePhase.listening
+              : LiveTranslatePhase.ready;
         });
       }
     });
