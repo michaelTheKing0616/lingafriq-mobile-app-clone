@@ -27,6 +27,7 @@ import 'package:lingafriq/screens/vocabulary/living_dictionary_screen.dart';
 import 'package:lingafriq/screens/learning/phrase_dna/phrase_dna_templates_screen.dart';
 import 'package:lingafriq/screens/learning/tone_rhythm/tone_rhythm_trainer_screen.dart';
 import 'package:lingafriq/screens/ar/point_and_say_screen.dart';
+import 'package:lingafriq/screens/live_translate/live_translate_screen.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen_material3.dart';
 import 'package:lingafriq/screens/chat/private_chat_list_screen.dart';
 import 'package:lingafriq/screens/feed/x_feed_home_screen.dart';
@@ -303,6 +304,15 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                               ),
                             ),
                           );
+                        },
+                        isDark: isDark,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.mic_none_rounded,
+                        label: 'Live translate',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(context, liveTranslateRoute());
                         },
                         isDark: isDark,
                       ),

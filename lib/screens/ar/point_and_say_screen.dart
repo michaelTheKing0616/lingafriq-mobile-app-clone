@@ -156,6 +156,7 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
 
   Future<void> _capture() async {
     if (_busy) return;
+    if (!mounted) return;
     setState(() {
       _busy = true;
       _error = null;
@@ -172,43 +173,57 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
 
     try {
       final svc = ref.read(mediaImportServiceProvider);
+      // Downscale camera shots to reduce ML Kit / detector memory pressure (iOS crashes).
       final res = await svc.pickImage(
         source: MediaSource.camera,
         performOCR: false,
+        imageQuality: 80,
+        maxWidth: 1600,
+        maxHeight: 1600,
       );
+      if (!mounted) return;
       if (!res.success || res.file == null || !(await res.file!.exists())) {
         throw Exception(res.error ?? 'Failed to capture image.');
       }
       final file = res.file!;
 
       final ocr = await svc.extractTextFromImage(file);
+      if (!mounted) return;
       final ocrText = (ocr['text'] ?? '').trim();
       final ocrLang = (ocr['language'] ?? 'unknown').toString();
 
-      final detector = ObjectDetector(
-        options: ObjectDetectorOptions(
-          mode: DetectionMode.single,
-          classifyObjects: true,
-          multipleObjects: true,
-        ),
-      );
-      final input = InputImage.fromFile(file);
-      final objects = await detector.processImage(input);
-      await detector.close();
-
+      // Object detection is best-effort; failures must not crash the screen.
       final things = <_DetectedThing>[];
-      for (final o in objects) {
-        for (final l in o.labels) {
-          final text = l.text.trim();
-          if (text.isEmpty) continue;
-          final conf = (l.confidence * 100).clamp(0, 100);
-          things.add(
-            _DetectedThing(label: text, confidencePct: conf.toDouble()),
-          );
+      try {
+        final detector = ObjectDetector(
+          options: ObjectDetectorOptions(
+            mode: DetectionMode.single,
+            classifyObjects: true,
+            multipleObjects: true,
+          ),
+        );
+        try {
+          final input = InputImage.fromFile(file);
+          final objects = await detector.processImage(input);
+          for (final o in objects) {
+            for (final l in o.labels) {
+              final text = l.text.trim();
+              if (text.isEmpty) continue;
+              final conf = (l.confidence * 100).clamp(0, 100);
+              things.add(
+                _DetectedThing(label: text, confidencePct: conf.toDouble()),
+              );
+            }
+          }
+        } finally {
+          await detector.close();
         }
+      } catch (_) {
+        // Keep OCR + preview even if ML Kit object detection fails on this device/image.
       }
       things.sort((a, b) => b.confidencePct.compareTo(a.confidencePct));
 
+      if (!mounted) return;
       setState(() {
         _imageFile = file;
         _ocrText = ocrText.isEmpty ? null : ocrText;
@@ -242,9 +257,9 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
         }
       }
     } catch (e) {
-      setState(() => _error = e.toString());
+      if (mounted) setState(() => _error = e.toString());
     } finally {
-      setState(() => _busy = false);
+      if (mounted) setState(() => _busy = false);
     }
   }
 
