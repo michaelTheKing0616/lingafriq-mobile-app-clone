@@ -26,6 +26,7 @@ import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/screens/heritage/flb_heritage_archive_screen.dart';
 import 'package:lingafriq/screens/media/import_media_screen_enhanced.dart';
 import 'package:lingafriq/screens/ar/point_and_say_screen.dart';
+import 'package:lingafriq/screens/live_translate/live_translate_screen.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen_material3.dart';
 import 'package:lingafriq/screens/chat/private_chat_list_screen.dart';
 import 'package:lingafriq/screens/feed/x_feed_home_screen.dart';
@@ -459,6 +460,15 @@ class AppDrawer extends HookConsumerWidget {
                               ),
                             ),
                           );
+                        },
+                        isDark: isDark.value,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.mic_none_rounded,
+                        label: 'Live translate',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(context, liveTranslateRoute());
                         },
                         isDark: isDark.value,
                       ),

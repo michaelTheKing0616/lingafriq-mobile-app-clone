@@ -39,6 +39,8 @@ class ApiContract {
   static const badges = _Badges();
   static const media = _Media();
   static const voice = _Voice();
+  /// Real-time hybrid translation (Socket.IO + session endpoint).
+  static const liveTranslate = _LiveTranslate();
   static const onboarding = _Onboarding();
   static const sync = _Sync();
   /// Idempotent outbox + delta (aligned with `node-backend-safe-push` `/api/v2/sync/*`).
@@ -516,6 +518,14 @@ class _Voice {
       '/api/voice/lessons/progress/$userId/$language';
   String get lessonsProgressUpdate => '/api/voice/lessons/progress';
   String get health => '/api/voice/health';
+}
+
+// =============================================================================
+// Live translate (real-time)
+// =============================================================================
+class _LiveTranslate {
+  const _LiveTranslate();
+  String get session => '/api/live-translate/session';
 }
 
 // =============================================================================
