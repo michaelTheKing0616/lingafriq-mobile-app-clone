@@ -399,6 +399,112 @@
     "description": "Empty state message when user has no saved tutor cards."
   },
 
+  "liveTranslateTitle": "Live translate",
+  "@liveTranslateTitle": {
+    "description": "Title for the live/real-time translation screen"
+  },
+  "liveTranslateEndSession": "End session",
+  "@liveTranslateEndSession": {
+    "description": "Button label to end a live translation session"
+  },
+  "liveTranslateStatus": "Status: {status}",
+  "@liveTranslateStatus": {
+    "description": "Status line on live translation screen",
+    "placeholders": {
+      "status": {}
+    }
+  },
+  "liveTranslateSource": "Source",
+  "@liveTranslateSource": {
+    "description": "Label for source captions panel"
+  },
+  "liveTranslateTranslation": "Translation",
+  "@liveTranslateTranslation": {
+    "description": "Label for translated captions panel"
+  },
+  "liveTranslateSourceLanguageLabel": "Source language (e.g. english)",
+  "@liveTranslateSourceLanguageLabel": {
+    "description": "Text field label for source language input"
+  },
+  "liveTranslateTargetLanguageLabel": "Target language (e.g. yoruba)",
+  "@liveTranslateTargetLanguageLabel": {
+    "description": "Text field label for target language input"
+  },
+  "liveTranslateStartSession": "Start session",
+  "@liveTranslateStartSession": {
+    "description": "Button label to start a live translation session"
+  },
+  "liveTranslateStarting": "Starting…",
+  "@liveTranslateStarting": {
+    "description": "Button label while creating live translation session"
+  },
+  "liveTranslateReconnect": "Reconnect",
+  "@liveTranslateReconnect": {
+    "description": "Button label to reconnect live translation session"
+  },
+  "liveTranslateListen": "Listen",
+  "@liveTranslateListen": {
+    "description": "Button label to start listening"
+  },
+  "liveTranslateStopListening": "Stop listening",
+  "@liveTranslateStopListening": {
+    "description": "Button label to stop listening"
+  },
+  "liveTranslateInterruptBargeIn": "Interrupt / barge-in",
+  "@liveTranslateInterruptBargeIn": {
+    "description": "Button label to interrupt playback and barge in"
+  },
+  "liveTranslatePlaceholderDash": "—",
+  "@liveTranslatePlaceholderDash": {
+    "description": "Placeholder when no caption is available"
+  },
+  "liveTranslateSpeechUnavailable": "Speech recognition not available on this device.",
+  "@liveTranslateSpeechUnavailable": {
+    "description": "Error when speech recognition is not available"
+  },
+  "liveTranslateMicPermissionRequired": "Microphone permission is required.",
+  "@liveTranslateMicPermissionRequired": {
+    "description": "Error when microphone permission is missing"
+  },
+  "liveTranslateInvalidSession": "Invalid session from server.",
+  "@liveTranslateInvalidSession": {
+    "description": "Error when backend returns invalid session payload"
+  },
+  "liveTranslateStartSessionFirst": "Start a session first.",
+  "@liveTranslateStartSessionFirst": {
+    "description": "Error shown when user tries to listen before starting a session"
+  },
+  "liveTranslateConnectionLost": "Connection lost. Tap Reconnect to continue.",
+  "@liveTranslateConnectionLost": {
+    "description": "Error shown when socket disconnects"
+  },
+  "liveTranslateSocketError": "Socket error: {error}",
+  "@liveTranslateSocketError": {
+    "description": "Error shown when socket connection fails",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "liveTranslateSessionFailed": "Session failed",
+  "@liveTranslateSessionFailed": {
+    "description": "Fallback error shown when session creation fails"
+  },
+  "liveTranslateCouldNotPlayAudio": "Could not play translation audio: {error}",
+  "@liveTranslateCouldNotPlayAudio": {
+    "description": "Error shown when TTS audio playback fails",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "liveTranslateSessionError": "Session error",
+  "@liveTranslateSessionError": {
+    "description": "Fallback error message when a live translate session error has no message"
+  },
+  "liveTranslateDefaultAudioMime": "audio/wav",
+  "@liveTranslateDefaultAudioMime": {
+    "description": "Default mime type for TTS audio when server does not provide one"
+  },
+
   "gameWordMatchConnectMeaningTitle": "Connect the Meaning",
   "@gameWordMatchConnectMeaningTitle": {
     "description": "Title in Word Match Audio game screen."

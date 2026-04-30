@@ -9,6 +9,7 @@ import 'package:lingafriq/providers/dio_provider.dart';
 import 'package:lingafriq/services/live_translate/live_translate_client.dart';
 import 'package:lingafriq/services/live_translate/live_translate_phase.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:speech_to_text/speech_to_text.dart';
@@ -83,7 +84,7 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
     setState(() => _speechReady = ok);
     if (!ok) {
       setState(() {
-        _error = 'Speech recognition not available on this device.';
+        _error = AppLocalizations.of(context)!.liveTranslateSpeechUnavailable;
         _phase = LiveTranslatePhase.error;
       });
     }
@@ -102,7 +103,9 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
   Future<void> _ensureMic() async {
     final status = await Permission.microphone.request();
     if (!status.isGranted) {
-      throw Exception('Microphone permission is required.');
+      throw Exception(
+        AppLocalizations.of(context)!.liveTranslateMicPermissionRequired,
+      );
     }
   }
 
@@ -135,7 +138,7 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
       );
 
       if (session.sessionId.isEmpty || session.socketToken.isEmpty) {
-        throw Exception('Invalid session from server.');
+        throw Exception(AppLocalizations.of(context)!.liveTranslateInvalidSession);
       }
 
       _sessionId = session.sessionId;
@@ -164,7 +167,7 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
           setState(() {
             if (_sessionId != null) {
               _phase = LiveTranslatePhase.reconnecting;
-              _error = 'Connection lost. Tap Reconnect to continue.';
+              _error = AppLocalizations.of(context)!.liveTranslateConnectionLost;
             }
           });
         },
@@ -172,7 +175,9 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
           if (!mounted) return;
           setState(() {
             _phase = LiveTranslatePhase.error;
-            _error = 'Socket error: ${e?.toString() ?? 'unknown'}';
+            _error = AppLocalizations.of(context)!.liveTranslateSocketError(
+              e?.toString() ?? 'unknown',
+            );
           });
         },
         onAnyError: (e) {
@@ -184,7 +189,9 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
       if (!mounted) return;
       setState(() {
         _phase = LiveTranslatePhase.error;
-        _error = e.response?.data?.toString() ?? e.message ?? 'Session failed';
+        _error = e.response?.data?.toString() ??
+            e.message ??
+            AppLocalizations.of(context)!.liveTranslateSessionFailed;
       });
     } catch (e) {
       if (!mounted) return;
@@ -220,7 +227,11 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
       await _ttsPlayer.play();
     } catch (e) {
       if (mounted) {
-        setState(() => _error = 'Could not play translation audio: $e');
+        setState(() {
+          _error = AppLocalizations.of(context)!.liveTranslateCouldNotPlayAudio(
+            e.toString(),
+          );
+        });
       }
     }
   }
@@ -246,7 +257,8 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
     final type = e['type']?.toString() ?? '';
     if (type == 'session.error') {
       setState(() {
-        _error = e['message']?.toString() ?? 'Session error';
+        _error = e['message']?.toString() ??
+            AppLocalizations.of(context)!.liveTranslateSessionError;
         _phase = LiveTranslatePhase.error;
       });
       return;
@@ -259,7 +271,8 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
     }
     if (type == 'tts.audio') {
       final b64 = e['audioBase64']?.toString() ?? '';
-      final mime = e['mime']?.toString() ?? 'audio/wav';
+      final mime = e['mime']?.toString() ??
+          AppLocalizations.of(context)!.liveTranslateDefaultAudioMime;
       if (b64.isNotEmpty) {
         _playTts(b64, mime);
       }
@@ -278,7 +291,7 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
   Future<void> _toggleListen() async {
     if (!_speechReady || _sessionId == null) {
       setState(() {
-        _error = 'Start a session first.';
+        _error = AppLocalizations.of(context)!.liveTranslateStartSessionFirst;
         _phase = LiveTranslatePhase.error;
       });
       return;
@@ -353,6 +366,7 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final canStart = _phase == LiveTranslatePhase.idle ||
         _phase == LiveTranslatePhase.error ||
         _phase == LiveTranslatePhase.reconnecting;
@@ -362,12 +376,12 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Live translate'),
+        title: Text(l10n.liveTranslateTitle),
         actions: [
           if (sessionActive)
             TextButton(
               onPressed: _endSession,
-              child: const Text('End session'),
+              child: Text(l10n.liveTranslateEndSession),
             ),
         ],
       ),
@@ -377,22 +391,22 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Status: ${_phase.label}',
+              l10n.liveTranslateStatus(_phase.label),
               style: theme.textTheme.titleSmall,
             ),
             const SizedBox(height: 8),
             TextField(
               controller: _sourceLang,
-              decoration: const InputDecoration(
-                labelText: 'Source language (e.g. english)',
+              decoration: InputDecoration(
+                labelText: l10n.liveTranslateSourceLanguageLabel,
               ),
               enabled: !sessionActive,
             ),
             const SizedBox(height: 8),
             TextField(
               controller: _targetLang,
-              decoration: const InputDecoration(
-                labelText: 'Target language (e.g. yoruba)',
+              decoration: InputDecoration(
+                labelText: l10n.liveTranslateTargetLanguageLabel,
               ),
               enabled: !sessionActive,
             ),
@@ -406,8 +420,8 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
               child: Text(
                 _phase == LiveTranslatePhase.creatingSession ||
                         _phase == LiveTranslatePhase.connectingSocket
-                    ? 'Starting…'
-                    : 'Start session',
+                    ? l10n.liveTranslateStarting
+                    : l10n.liveTranslateStartSession,
               ),
             ),
             const SizedBox(height: 8),
@@ -416,7 +430,7 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
                       _phase == LiveTranslatePhase.error)
                   ? _reconnect
                   : null,
-              child: const Text('Reconnect'),
+              child: Text(l10n.liveTranslateReconnect),
             ),
             const SizedBox(height: 12),
             FilledButton.tonal(
@@ -426,13 +440,15 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
                   ? _toggleListen
                   : null,
               child: Text(
-                _speech.isListening ? 'Stop listening' : 'Listen',
+                _speech.isListening
+                    ? l10n.liveTranslateStopListening
+                    : l10n.liveTranslateListen,
               ),
             ),
             const SizedBox(height: 8),
             OutlinedButton(
               onPressed: sessionActive ? _interruptPlaybackAndFloor : null,
-              child: const Text('Interrupt / barge-in'),
+              child: Text(l10n.liveTranslateInterruptBargeIn),
             ),
             if (_error != null) ...[
               const SizedBox(height: 12),
@@ -449,25 +465,31 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Source', style: theme.textTheme.labelLarge),
+                    Text(l10n.liveTranslateSource,
+                        style: theme.textTheme.labelLarge),
                     const SizedBox(height: 6),
                     Card(
                       child: Padding(
                         padding: const EdgeInsets.all(12),
                         child: Text(
-                          _sourceCaption.isEmpty ? '—' : _sourceCaption,
+                          _sourceCaption.isEmpty
+                              ? l10n.liveTranslatePlaceholderDash
+                              : _sourceCaption,
                           style: theme.textTheme.titleMedium,
                         ),
                       ),
                     ),
                     const SizedBox(height: 16),
-                    Text('Translation', style: theme.textTheme.labelLarge),
+                    Text(l10n.liveTranslateTranslation,
+                        style: theme.textTheme.labelLarge),
                     const SizedBox(height: 6),
                     Card(
                       child: Padding(
                         padding: const EdgeInsets.all(12),
                         child: Text(
-                          _translationCaption.isEmpty ? '—' : _translationCaption,
+                          _translationCaption.isEmpty
+                              ? l10n.liveTranslatePlaceholderDash
+                              : _translationCaption,
                           style: theme.textTheme.bodyLarge?.copyWith(
                             color: theme.colorScheme.primary,
                           ),
