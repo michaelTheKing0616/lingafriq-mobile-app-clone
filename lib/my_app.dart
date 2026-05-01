@@ -467,7 +467,7 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'speak-engine-lab': (_) => const SpeakEngineLabScreen(),
     'tone-rhythm-trainer': (_) {
       final raw = settings.arguments;
-      final map = raw is Map ? Map<String, dynamic>.from(raw as Map) : <String, dynamic>{};
+      final map = raw is Map ? Map<String, dynamic>.from(raw) : <String, dynamic>{};
       final lang = map['language']?.toString().trim();
       final language = (lang == null || lang.isEmpty) ? 'yoruba' : lang;
       final et = map['expectedText']?.toString().trim();
@@ -478,13 +478,13 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     },
     'phrase-dna-templates': (_) {
       final raw = settings.arguments;
-      final map = raw is Map ? Map<String, dynamic>.from(raw as Map) : <String, dynamic>{};
+      final map = raw is Map ? Map<String, dynamic>.from(raw) : <String, dynamic>{};
       final lang = map['language']?.toString().trim();
       return PhraseDnaTemplatesScreen(language: (lang == null || lang.isEmpty) ? null : lang);
     },
     'synthetic-voice-styles': (_) {
       final raw = settings.arguments;
-      final map = raw is Map ? Map<String, dynamic>.from(raw as Map) : <String, dynamic>{};
+      final map = raw is Map ? Map<String, dynamic>.from(raw) : <String, dynamic>{};
       final lang = map['language']?.toString().trim() ?? 'yoruba';
       return SyntheticVoiceStylesScreen(language: lang);
     },
@@ -655,10 +655,6 @@ class _Unfocus extends StatelessWidget {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: child,
-    );
-  }
-}
-hild,
     );
   }
 }

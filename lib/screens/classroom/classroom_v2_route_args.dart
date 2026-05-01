@@ -13,7 +13,7 @@ final class ClassroomV2RouteArgs {
     if (arguments is! Map) {
       return (tribeId: null, tribeName: defaultTribeName);
     }
-    final args = Map<String, dynamic>.from(arguments as Map);
+    final args = Map<String, dynamic>.from(arguments);
     final rawId = args['tribeId']?.toString().trim() ?? '';
     final name = args['tribeName']?.toString().trim() ?? defaultTribeName;
     if (rawId.isEmpty) return (tribeId: null, tribeName: name);
