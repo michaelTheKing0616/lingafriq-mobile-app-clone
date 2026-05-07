@@ -218,7 +218,7 @@ class AppDrawer extends HookConsumerWidget {
                       ),
                       _DrawerItem(
                         icon: PanAfricanIcons.chat,
-                        label: 'AI Assistant',
+                        label: 'AI Chat',
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(

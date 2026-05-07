@@ -721,7 +721,7 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
               ),
               SizedBox(height: PanAfricanSpacing.sm),
               OutlinedButton.icon(
-                onPressed: () {
+                onPressed: () async {
                   HapticFeedback.lightImpact();
                   setState(() {
                     _targetText = _targetTextTranslated!;
@@ -729,6 +729,8 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
                     _toneResult = null;
                     _recordingPath = null;
                   });
+                  await _persistDraft();
+                  await _refreshPracticePhrases();
                 },
                 icon: const Icon(Icons.flag_circle_rounded),
                 label: const Text('Use translated target'),
@@ -838,7 +840,7 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       HapticFeedback.lightImpact();
                       setState(() {
                         _targetText = p;
@@ -847,6 +849,8 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
                         _toneResult = null;
                         _recordingPath = null;
                       });
+                      await _persistDraft();
+                      await _refreshPracticePhrases();
                     },
                   );
                 }).toList(),

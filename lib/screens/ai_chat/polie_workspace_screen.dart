@@ -126,6 +126,7 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
     final conversationMessages = useState<List<_ConversationTurn>>([]);
     final languageRatio = useState<double>(0);
     final conversationIncludeEnglishTranslations = useState<bool>(false);
+    final conversationResponseStyle = useState<String>('lengthy');
 
     final vocabCard = useState<_VocabPayload?>(null);
     final vocabReveal = useState<bool>(false);
@@ -869,12 +870,24 @@ Stay in character. Respond naturally for the scene.
     Future<void> sendConversation([String? prefilledText]) async {
       final text = (prefilledText ?? conversationInput.text).trim();
       if (text.isEmpty) return;
-      final wantsInlineEnglish =
+      final wantsEnglish =
           conversationIncludeEnglishTranslations.value ||
           RegExp(
             r'english translation|with english|translate to english|english in',
             caseSensitive: false,
           ).hasMatch(text);
+      final style = conversationResponseStyle.value.trim().toLowerCase();
+      final styleInstruction = switch (style) {
+        'formal' => 'Use a formal, respectful register. Avoid slang. Be precise.',
+        'humorous' =>
+          'Be humorous and playful, but never rude. Keep accuracy and clarity.',
+        'witty' =>
+          'Be witty and clever. Light wordplay is welcome if it fits the topic. Keep accuracy.',
+        'terse' =>
+          'Be concise: 2–4 sentences max, but still answer fully and accurately.',
+        _ =>
+          'Be richly detailed: 12–20 sentences. Smart, accurate, engaging, and complete.',
+      };
       conversationMessages.value = [
         ...conversationMessages.value,
         _ConversationTurn.user(text),
@@ -882,50 +895,261 @@ Stay in character. Respond naturally for the scene.
       if (prefilledText == null) conversationInput.clear();
       isBusy.value = true;
       try {
+        bool _userAskedForGreeting(String userText) {
+          final t = userText.toLowerCase();
+          // Keep this broad but safe: only exempt greeting-only responses when the user
+          // explicitly asked for greetings/hello/how to greet.
+          return t.contains('greeting') ||
+              t.contains('greetings') ||
+              t.contains('say hello') ||
+              t.contains('hello') ||
+              t.contains('hi') ||
+              t.contains('good morning') ||
+              t.contains('good afternoon') ||
+              t.contains('good evening') ||
+              t.contains('how do i greet') ||
+              t.contains('how to greet') ||
+              t.contains('teach me a greeting');
+        }
+
+        bool _looksLikeGreetingOnly(String candidate) {
+          final normalized = candidate
+              .toLowerCase()
+              .trim()
+              .replaceAll(RegExp(r'[\u2019\u2018]'), "'")
+              .replaceAll(RegExp(r'[^a-zA-ZÀ-ÖØ-öø-ÿẸỌṢẹọṣ\'\s\?!.]'), '')
+              .replaceAll(RegExp(r'\s+'), ' ')
+              .trim();
+          if (normalized.isEmpty) return false;
+
+          // Quick reject: if there's enough content, it's not "greeting-only".
+          final words =
+              normalized.split(' ').where((w) => w.trim().isNotEmpty).toList();
+          if (words.length >= 6) return false;
+
+          // Common greeting-only outputs we want to catch (across several languages).
+          const greetingPhrases = <String>{
+            // Yoruba
+            'bawo',
+            'báwo',
+            'bawo ni',
+            'báwo ni',
+            'ẹ káàrọ̀',
+            'ẹ kaaro',
+            'ẹ káàsán',
+            'ẹ kaasan',
+            'ẹ kúalẹ́',
+            'ẹ kuale',
+            'ẹ n lẹ',
+            'ẹ nle',
+            'ẹ̀ n lẹ',
+            // Igbo / Hausa / Swahili / generic
+            'kedu',
+            'sannu',
+            'habari',
+            'habari yako',
+            'jambo',
+            'mambo',
+            'ndewo',
+            'hello',
+            'hi',
+          };
+
+          // Strip trailing punctuation for comparison.
+          final bare = normalized.replaceAll(RegExp(r'[?!.]+$'), '').trim();
+          if (greetingPhrases.contains(bare)) return true;
+
+          // Also catch "báwo ni?" variants etc.
+          if (greetingPhrases.contains(bare.replaceAll('?', ''))) return true;
+
+          return false;
+        }
+
+        bool _isMissingOrWeakMessageTarget(Map<String, dynamic> obj) {
+          final raw = (obj['message_target'] ?? obj['message'] ?? '').toString();
+          final cleaned = _cleanAiText(raw, fallback: '').trim();
+          if (cleaned.isEmpty) return true;
+          // Hard floor: avoid 1–2 word outputs like "Báwo ni".
+          if (!_userAskedForGreeting(text) && _looksLikeGreetingOnly(cleaned)) {
+            return true;
+          }
+          if (cleaned.length < 80) return true;
+          if (_looksTruncated(cleaned)) return true;
+          if (!_isConversationResponseRich(cleaned)) return true;
+          return false;
+        }
+
+        Future<Map<String, dynamic>?> _askConversationJson({
+          required String prompt,
+          int timeoutSeconds = 25,
+        }) async {
+          try {
+            final raw = await chat
+                .sendMessageForJson(prompt)
+                .timeout(Duration(seconds: timeoutSeconds));
+            modeResponse.value = raw;
+            final parsed = _tryParseJson(raw);
+            if (parsed == null) return null;
+            return parsed;
+          } catch (_) {
+            // Fall back to shared helper, but keep same behaviour.
+            return await askForJson(prompt);
+          }
+        }
+
+        final nonce = DateTime.now().microsecondsSinceEpoch;
+
         Map<String, dynamic>? json = await askForJson('''
 Return STRICT JSON only. Do NOT wrap in markdown. Do NOT include text outside the JSON.
 {
- "message":"A rich, complete reply in a mix of $targetLanguage and English. 4-8 sentences that may include translation, explanation, and short examples when helpful.",
+ "message_target":"A rich, complete reply in $targetLanguage. Use correct orthography/diacritics. Stay on-topic. Prefer longer answers unless style is 'terse'.",
+ "message_english":"English translation of message_target OR null when not requested.",
  "correction":{"has_correction":false,"was_correct":true,"correction":"corrected version or empty","note":"explanation"},
  "suggested_replies":["reply option 1 in $targetLanguage","reply option 2","reply option 3"],
  "new_vocab":[{"word":"new word","meaning":"meaning"}]
 }
 
-You are Polie, a friendly language coach focused on expressive, free-form help.
-Treat Conversation mode as a hybrid of translation + tutoring, but keep a conversational tone.
+You are Polie: a smart, witty, accurate conversation partner.
+This is OPEN-ENDED CHAT mode. The user can talk about any topic.
 Target language: $targetLanguage
+Response style: ${conversationResponseStyle.value}
+Style rules: $styleInstruction
 User message: "$text"
 Respond with depth and clarity:
 - If user asks for translation, provide natural translation and explain word choice.
 - If user asks for meaning/grammar/proverb/slang/culture, explain clearly and include 1-2 examples.
 - If user asks open-ended topic questions, still weave in useful language learning guidance.
 - Keep answers complete and not cut off.
-${wantsInlineEnglish ? '- User requested English translations: for each target-language sentence, include immediate English translation in parentheses.' : ''}
+${wantsEnglish ? '- User requested English translation: set message_english to a faithful translation of message_target.' : '- Do NOT include English translation. Set message_english to null.'}
 If the user made grammar mistakes in $targetLanguage, set has_correction to true and provide the correction.
+Nonce: $nonce
 ''');
-        if (json != null) {
-          final msg = _cleanAiText((json['message'] ?? '').toString());
-          if (_looksTruncated(msg) || !_isConversationResponseRich(msg)) {
-            final continuation = await askForJson('''
-Return STRICT JSON only:
-{"message":"single completed conversational message","correction":{"has_correction":false,"was_correct":true,"correction":"","note":"short note"},"suggested_replies":["reply 1","reply 2"],"new_vocab":[]}
 
-Continue and COMPLETE the previous response in natural style for $targetLanguage.
-Ensure the response is fully complete, coherent, and can include explanation/examples if relevant.
-The response MUST be at least 3 full sentences and directly follow user's instruction constraints.
+        // Stricter retry if message_target is missing/too short/low-quality.
+        if (json != null && _isMissingOrWeakMessageTarget(json!)) {
+          final strictJson = await _askConversationJson(prompt: '''
+Return STRICT JSON only. Absolutely no markdown.
+SCHEMA (must satisfy all constraints):
+{
+  "message_target":"string (MUST be in $targetLanguage ONLY, 12–20 sentences, >= 140 characters, no English unless user asked in the message itself)",
+  "message_english":"string|null (ONLY when requested: ${wantsEnglish ? 'required string' : 'must be null'})",
+  "correction":{"has_correction":boolean,"was_correct":boolean,"correction":"string","note":"string"},
+  "suggested_replies":["string","string","string"],
+  "new_vocab":[{"word":"string","meaning":"string"}]
+}
+
+You are Polie in OPEN-ENDED CHAT mode.
+Target language: $targetLanguage
+Response style: ${conversationResponseStyle.value}
+Style rules: $styleInstruction
+
 User message: "$text"
+
+Hard rules:
+- MUST answer the user’s question directly (first 1–2 sentences).
+- MUST be detailed and complete. No one-liners. No greetings-only responses.
+- MUST output correct diacritics/orthography for $targetLanguage.
+${wantsEnglish ? '- Provide message_english as a faithful translation of message_target.' : '- message_english MUST be null.'}
+Nonce: ${DateTime.now().microsecondsSinceEpoch}
 ''');
-            if (continuation != null &&
-                !_looksTruncated(
-                  _cleanAiText((continuation['message'] ?? '').toString()),
-                ) &&
-                _isConversationResponseRich(
-                  _cleanAiText((continuation['message'] ?? '').toString()),
-                )) {
-              json = continuation;
-            }
+          if (strictJson != null && !_isMissingOrWeakMessageTarget(strictJson)) {
+            json = strictJson;
           }
         }
+
+        // If still weak, do a continuation retry (strict).
+        if (json != null && _isMissingOrWeakMessageTarget(json!)) {
+          final continuation = await _askConversationJson(prompt: '''
+Return STRICT JSON only:
+{
+  "message_target":"string (in $targetLanguage, >= 140 chars, fully complete, no trailing truncation)",
+  "message_english":${wantsEnglish ? '"string"' : 'null'},
+  "correction":{"has_correction":false,"was_correct":true,"correction":"","note":"short note"},
+  "suggested_replies":["reply 1 in $targetLanguage","reply 2 in $targetLanguage","reply 3 in $targetLanguage"],
+  "new_vocab":[]
+}
+
+Rewrite the response from scratch (do NOT output a short continuation). It must be fully complete and detailed.
+User message: "$text"
+Target language: $targetLanguage
+Style: ${conversationResponseStyle.value}
+Nonce: ${DateTime.now().microsecondsSinceEpoch}
+''');
+          if (continuation != null && !_isMissingOrWeakMessageTarget(continuation)) {
+            json = continuation;
+          }
+        }
+
+        // LAST RESORT: normal Groq chat completion (not offline translation, not JSON).
+        if (json == null || (json != null && _isMissingOrWeakMessageTarget(json!))) {
+          final chatPrompt = '''
+You are Polie: a smart, witty, accurate conversation partner.
+This is OPEN-ENDED CHAT mode. The user can ask about ANY topic.
+
+Reply in $targetLanguage with correct orthography/diacritics.
+Response style: ${conversationResponseStyle.value}
+Style rules: $styleInstruction
+
+Rules:
+- Answer the user's question directly first.
+- Be detailed and complete (prefer 12–20 sentences unless style is "terse").
+- Do NOT ignore the user's prompt.
+${wantsEnglish ? '- After your reply, do NOT include the English translation in the same text. (It will be handled separately.)' : '- Do NOT include any English.'}
+
+User message: "$text"
+''';
+
+          final raw = await chat.sendMessage(
+            chatPrompt,
+            systemPromptOverride:
+                'You are Polie. Follow the user message instructions exactly.',
+          );
+          final targetReply = _cleanAiText(raw, fallback: raw).trim();
+
+          String? englishTranslation;
+          if (wantsEnglish && targetReply.isNotEmpty) {
+            try {
+              // Translate the Polie reply to English using the hybrid translation stack.
+              // Avoid offline dictionary here so it can't collapse to phrase-pack outputs.
+              final tr = await TranslationService().translate(
+                text: targetReply,
+                sourceLang: _polieBackendKeyForDisplayOrGroq(targetLanguage),
+                targetLang: _polieBackendKeyForDisplayOrGroq('English'),
+                includePhraseBreakdown: false,
+                allowOffline: false,
+              );
+              final maybe = tr.translation.trim();
+              if (maybe.isNotEmpty && maybe != targetReply) {
+                englishTranslation = maybe;
+              }
+            } catch (_) {
+              // Best-effort; keep null if translation fails.
+            }
+          }
+
+          final fallbackPayload = _enforceConversationDiacritics(
+            _ConversationPayload(
+              messageTarget: targetReply.isEmpty ? '-' : targetReply,
+              englishTranslation: englishTranslation,
+              correction: const _ConversationCorrection(
+                hasCorrection: false,
+                wasCorrect: true,
+                correction: null,
+                note: '-',
+              ),
+              suggestedReplies: const [],
+              newVocab: const [],
+            ),
+            targetLanguage,
+          );
+
+          conversationMessages.value = [
+            ...conversationMessages.value,
+            _ConversationTurn.ai(fallbackPayload),
+          ];
+          return;
+        }
+
         if (json != null) {
           final rawPayload = _ConversationPayload.fromJson(
             json,
@@ -1342,6 +1566,7 @@ Language: $targetLanguage
                 conversationInput: conversationInput,
                 conversationIncludeEnglishTranslations:
                     conversationIncludeEnglishTranslations,
+                conversationResponseStyle: conversationResponseStyle,
                 languageRatio: languageRatio.value,
                 onSendConversation: sendConversation,
                 onSpeakText: speakText,
@@ -1416,6 +1641,7 @@ Language: $targetLanguage
     required List<_ConversationTurn> conversationMessages,
     required TextEditingController conversationInput,
     required ValueNotifier<bool> conversationIncludeEnglishTranslations,
+    required ValueNotifier<String> conversationResponseStyle,
     required double languageRatio,
     required Future<void> Function([String?]) onSendConversation,
     required Future<void> Function(String text, {String? languageName})
@@ -2940,7 +3166,7 @@ Language: $targetLanguage
                             children: [
                               Expanded(
                                 child: Text(
-                                  ai.message,
+                                  ai.messageTarget,
                                   style: bodyStyle.copyWith(
                                     color: const Color(0xFF2D1B0E),
                                   ),
@@ -2953,7 +3179,7 @@ Language: $targetLanguage
                                   minWidth: 28,
                                   minHeight: 28,
                                 ),
-                                onPressed: () => onSpeakText(ai.message),
+                                onPressed: () => onSpeakText(ai.messageTarget),
                                 icon: const Icon(
                                   Icons.volume_up_outlined,
                                   size: 18,
@@ -2961,6 +3187,31 @@ Language: $targetLanguage
                               ),
                             ],
                           ),
+                          if (ai.englishTranslation != null &&
+                              ai.englishTranslation!.trim().isNotEmpty) ...[
+                            const SizedBox(height: 10),
+                            Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 8,
+                              ),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF5F0E8),
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: theme.border.withOpacity(0.55),
+                                ),
+                              ),
+                              child: Text(
+                                ai.englishTranslation!,
+                                style: bodyStyle.copyWith(
+                                  color: const Color(0xFF3F2A1A),
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                            ),
+                          ],
                           if (ai.correction.hasCorrection)
                             Padding(
                               padding: const EdgeInsets.only(top: 6),
@@ -3016,6 +3267,37 @@ Language: $targetLanguage
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Text(
+                          'Style:',
+                          style: bodyStyle.copyWith(
+                            color: const Color(0xFF2D1B0E),
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        ...const ['formal', 'humorous', 'witty', 'terse', 'lengthy']
+                            .map(
+                              (s) => ChoiceChip(
+                                label: Text(
+                                  s[0].toUpperCase() + s.substring(1),
+                                ),
+                                selected: conversationResponseStyle.value == s,
+                                selectedColor: theme.accent.withOpacity(0.2),
+                                onSelected: isBusy
+                                    ? null
+                                    : (_) => conversationResponseStyle.value = s,
+                              ),
+                            ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 6),
                   Row(
                     children: [
                       Switch(
@@ -4333,7 +4615,8 @@ _ConversationPayload _enforceConversationDiacritics(
   }
 
   return _ConversationPayload(
-    message: enforce(payload.message),
+    messageTarget: enforce(payload.messageTarget),
+    englishTranslation: payload.englishTranslation,
     correction: _ConversationCorrection(
       hasCorrection: payload.correction.hasCorrection,
       wasCorrect: payload.correction.wasCorrect,
@@ -4648,12 +4931,14 @@ class _RoleplayTurn {
 }
 
 class _ConversationPayload {
-  final String message;
+  final String messageTarget;
+  final String? englishTranslation;
   final _ConversationCorrection correction;
   final List<String> suggestedReplies;
   final List<_ConversationVocab> newVocab;
   const _ConversationPayload({
-    required this.message,
+    required this.messageTarget,
+    required this.englishTranslation,
     required this.correction,
     required this.suggestedReplies,
     required this.newVocab,
@@ -4669,11 +4954,15 @@ class _ConversationPayload {
     final vocabRaw = (_n(json, 'new_vocab', const []) as List)
         .map((e) => e is Map<String, dynamic> ? e : <String, dynamic>{})
         .toList();
+    final rawEnglish = json['message_english'];
     return _ConversationPayload(
-      message: _cleanAiText(
-        (_n(json, 'message', fallback) as String),
+      messageTarget: _cleanAiText(
+        (_n(json, 'message_target', _n(json, 'message', fallback)) as String),
         fallback: _cleanAiText(fallback),
       ),
+      englishTranslation: (rawEnglish is String && rawEnglish.trim().isNotEmpty)
+          ? _cleanAiText(rawEnglish)
+          : null,
       correction: _ConversationCorrection(
         hasCorrection: (_n(c, 'has_correction', false) as bool?) ?? false,
         wasCorrect: (_n(c, 'was_correct', true) as bool?) ?? true,

@@ -575,9 +575,46 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         _repairCardsWithAssetLexicon(cards, language);
         _sanitizeWordMatchCards(cards, language);
       }
+
+      // WordMatch requires at least a few clean (target, gloss) pairs.
+      // If sanitization removed too much (e.g. sentence-like phrases), top-up with
+      // the universal fallback generator and sanitize again.
+      const minPairs = 4;
+      if (cards.length < minPairs) {
+        final topUp = minPairs - cards.length;
+        if (topUp > 0) {
+          cards.addAll(
+            _generateFallbackCards(
+              language,
+              level,
+              topUp,
+              resolvedUserId,
+            ),
+          );
+          _repairCardsWithAssetLexicon(cards, language);
+          _sanitizeWordMatchCards(cards, language);
+        }
+      }
     }
     if (cards.length > effectiveCount) {
       cards.removeRange(effectiveCount, cards.length);
+    }
+
+    // Absolute safety net: guarantee a playable deck even if upstream services
+    // and asset repos are empty or card sanitizers remove too much content.
+    if (cards.length < minRequired) {
+      final topUp = minRequired - cards.length;
+      if (topUp > 0) {
+        cards.addAll(
+          _generateFallbackCards(
+            language,
+            level,
+            topUp,
+            resolvedUserId,
+          ),
+        );
+        _repairCardsWithAssetLexicon(cards, language);
+      }
     }
     if (cards.isEmpty) {
       _lastContentFailure = GameContentFailure(

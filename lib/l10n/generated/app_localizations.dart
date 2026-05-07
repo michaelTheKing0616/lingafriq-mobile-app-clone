@@ -590,6 +590,150 @@ abstract class AppLocalizations {
   /// **'No saved cards yet.'**
   String get polieTutorNoSavedCardsYet;
 
+  /// Title for the live/real-time translation screen
+  ///
+  /// In en, this message translates to:
+  /// **'Live translate'**
+  String get liveTranslateTitle;
+
+  /// Button label to end a live translation session
+  ///
+  /// In en, this message translates to:
+  /// **'End session'**
+  String get liveTranslateEndSession;
+
+  /// Status line on live translation screen
+  ///
+  /// In en, this message translates to:
+  /// **'Status: {status}'**
+  String liveTranslateStatus(Object status);
+
+  /// Label for source captions panel
+  ///
+  /// In en, this message translates to:
+  /// **'Source'**
+  String get liveTranslateSource;
+
+  /// Label for translated captions panel
+  ///
+  /// In en, this message translates to:
+  /// **'Translation'**
+  String get liveTranslateTranslation;
+
+  /// Text field label for source language input
+  ///
+  /// In en, this message translates to:
+  /// **'Source language (e.g. english)'**
+  String get liveTranslateSourceLanguageLabel;
+
+  /// Text field label for target language input
+  ///
+  /// In en, this message translates to:
+  /// **'Target language (e.g. yoruba)'**
+  String get liveTranslateTargetLanguageLabel;
+
+  /// Button label to start a live translation session
+  ///
+  /// In en, this message translates to:
+  /// **'Start session'**
+  String get liveTranslateStartSession;
+
+  /// Button label while creating live translation session
+  ///
+  /// In en, this message translates to:
+  /// **'Starting…'**
+  String get liveTranslateStarting;
+
+  /// Button label to reconnect live translation session
+  ///
+  /// In en, this message translates to:
+  /// **'Reconnect'**
+  String get liveTranslateReconnect;
+
+  /// Button label to start listening
+  ///
+  /// In en, this message translates to:
+  /// **'Listen'**
+  String get liveTranslateListen;
+
+  /// Button label to stop listening
+  ///
+  /// In en, this message translates to:
+  /// **'Stop listening'**
+  String get liveTranslateStopListening;
+
+  /// Button label to interrupt playback and barge in
+  ///
+  /// In en, this message translates to:
+  /// **'Interrupt / barge-in'**
+  String get liveTranslateInterruptBargeIn;
+
+  /// Placeholder when no caption is available
+  ///
+  /// In en, this message translates to:
+  /// **'—'**
+  String get liveTranslatePlaceholderDash;
+
+  /// Error when speech recognition is not available
+  ///
+  /// In en, this message translates to:
+  /// **'Speech recognition not available on this device.'**
+  String get liveTranslateSpeechUnavailable;
+
+  /// Error when microphone permission is missing
+  ///
+  /// In en, this message translates to:
+  /// **'Microphone permission is required.'**
+  String get liveTranslateMicPermissionRequired;
+
+  /// Error when backend returns invalid session payload
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid session from server.'**
+  String get liveTranslateInvalidSession;
+
+  /// Error shown when user tries to listen before starting a session
+  ///
+  /// In en, this message translates to:
+  /// **'Start a session first.'**
+  String get liveTranslateStartSessionFirst;
+
+  /// Error shown when socket disconnects
+  ///
+  /// In en, this message translates to:
+  /// **'Connection lost. Tap Reconnect to continue.'**
+  String get liveTranslateConnectionLost;
+
+  /// Error shown when socket connection fails
+  ///
+  /// In en, this message translates to:
+  /// **'Socket error: {error}'**
+  String liveTranslateSocketError(Object error);
+
+  /// Fallback error shown when session creation fails
+  ///
+  /// In en, this message translates to:
+  /// **'Session failed'**
+  String get liveTranslateSessionFailed;
+
+  /// Error shown when TTS audio playback fails
+  ///
+  /// In en, this message translates to:
+  /// **'Could not play translation audio: {error}'**
+  String liveTranslateCouldNotPlayAudio(Object error);
+
+  /// Fallback error message when a live translate session error has no message
+  ///
+  /// In en, this message translates to:
+  /// **'Session error'**
+  String get liveTranslateSessionError;
+
+  /// Default mime type for TTS audio when server does not provide one
+  ///
+  /// In en, this message translates to:
+  /// **'audio/wav'**
+  String get liveTranslateDefaultAudioMime;
+
   /// Title in Word Match Audio game screen.
   ///
   /// In en, this message translates to:

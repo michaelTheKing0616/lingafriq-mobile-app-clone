@@ -183,10 +183,15 @@ class TranslationService {
     // Try offline translation as last resort
     if (allowOffline) {
       try {
+        // IMPORTANT: OfflineTranslationService expects human-readable language names
+        // (e.g. "english", "yoruba"), not FLORES/NLLB wire ids (e.g. "eng_Latn").
+        // Normalize to maximize offline dictionary/model hit-rate.
+        final offlineSource = _normalizeForOffline(sourceLang);
+        final offlineTarget = _normalizeForOffline(targetLang);
         final offlineResult = await _offlineService.translate(
           text: truncatedText,
-          sourceLanguage: sourceLang,
-          targetLanguage: targetLang,
+          sourceLanguage: offlineSource,
+          targetLanguage: offlineTarget,
         );
         
         if (offlineResult.confidence >= 0.5) {
@@ -542,6 +547,59 @@ class TranslationService {
     };
 
     return codeMap[lower] ?? 'eng_Latn';
+  }
+
+  /// Normalize language identifiers for the offline translation stack.
+  /// OfflineTranslationService uses human-readable names (e.g. "english", "yoruba").
+  String _normalizeForOffline(String language) {
+    final t = language.trim();
+    if (t.isEmpty) return 'english';
+    final lower = t.toLowerCase();
+
+    // Handle common FLORES/NLLB codes
+    const floresToName = <String, String>{
+      'eng_latn': 'english',
+      'yor_latn': 'yoruba',
+      'hau_latn': 'hausa',
+      'ibo_latn': 'igbo',
+      'swh_latn': 'swahili',
+      'zul_latn': 'zulu',
+      'xho_latn': 'xhosa',
+      'amh_ethi': 'amharic',
+      'twi_latn': 'twi',
+      'afr_latn': 'afrikaans',
+      'pcm_latn': 'pidgin',
+      'wol_latn': 'wolof',
+      'som_latn': 'somali',
+      'fra_latn': 'french',
+      'spa_latn': 'spanish',
+      'por_latn': 'portuguese',
+      'arb_arab': 'arabic',
+      'deu_latn': 'german',
+      'zho_hans': 'chinese',
+    };
+    if (floresToName.containsKey(lower)) return floresToName[lower]!;
+
+    // Handle two-letter language codes that might appear in UI or integrations.
+    const iso2ToName = <String, String>{
+      'en': 'english',
+      'yo': 'yoruba',
+      'ha': 'hausa',
+      'ig': 'igbo',
+      'sw': 'swahili',
+      'zu': 'zulu',
+      'xh': 'xhosa',
+      'am': 'amharic',
+      'tw': 'twi',
+      'af': 'afrikaans',
+    };
+    if (iso2ToName.containsKey(lower)) return iso2ToName[lower]!;
+
+    // If it's a FLORES code we don't recognize, default to english (safe fallback).
+    if (_floresCodePattern.hasMatch(lower)) return 'english';
+
+    // Otherwise trust the human-readable name.
+    return lower;
   }
 }
 

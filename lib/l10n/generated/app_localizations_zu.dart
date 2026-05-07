@@ -248,6 +248,89 @@ class AppLocalizationsZu extends AppLocalizations {
   String get polieTutorNoSavedCardsYet => 'No saved cards yet.';
 
   @override
+  String get liveTranslateTitle => 'Live translate';
+
+  @override
+  String get liveTranslateEndSession => 'End session';
+
+  @override
+  String liveTranslateStatus(Object status) {
+    return 'Status: $status';
+  }
+
+  @override
+  String get liveTranslateSource => 'Source';
+
+  @override
+  String get liveTranslateTranslation => 'Translation';
+
+  @override
+  String get liveTranslateSourceLanguageLabel =>
+      'Source language (e.g. english)';
+
+  @override
+  String get liveTranslateTargetLanguageLabel =>
+      'Target language (e.g. yoruba)';
+
+  @override
+  String get liveTranslateStartSession => 'Start session';
+
+  @override
+  String get liveTranslateStarting => 'Starting…';
+
+  @override
+  String get liveTranslateReconnect => 'Reconnect';
+
+  @override
+  String get liveTranslateListen => 'Listen';
+
+  @override
+  String get liveTranslateStopListening => 'Stop listening';
+
+  @override
+  String get liveTranslateInterruptBargeIn => 'Interrupt / barge-in';
+
+  @override
+  String get liveTranslatePlaceholderDash => '—';
+
+  @override
+  String get liveTranslateSpeechUnavailable =>
+      'Speech recognition not available on this device.';
+
+  @override
+  String get liveTranslateMicPermissionRequired =>
+      'Microphone permission is required.';
+
+  @override
+  String get liveTranslateInvalidSession => 'Invalid session from server.';
+
+  @override
+  String get liveTranslateStartSessionFirst => 'Start a session first.';
+
+  @override
+  String get liveTranslateConnectionLost =>
+      'Connection lost. Tap Reconnect to continue.';
+
+  @override
+  String liveTranslateSocketError(Object error) {
+    return 'Socket error: $error';
+  }
+
+  @override
+  String get liveTranslateSessionFailed => 'Session failed';
+
+  @override
+  String liveTranslateCouldNotPlayAudio(Object error) {
+    return 'Could not play translation audio: $error';
+  }
+
+  @override
+  String get liveTranslateSessionError => 'Session error';
+
+  @override
+  String get liveTranslateDefaultAudioMime => 'audio/wav';
+
+  @override
   String get gameWordMatchConnectMeaningTitle => 'Connect the Meaning';
 
   @override

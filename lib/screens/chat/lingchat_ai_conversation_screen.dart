@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart' show PolieMode;
+import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/ai_chat/polie_workspace_screen.dart';
 import 'package:lingafriq/utils/games_prefetch_language.dart';
 
@@ -13,7 +14,13 @@ import 'package:lingafriq/utils/games_prefetch_language.dart';
 class LingChatAiConversationScreen extends ConsumerWidget {
   const LingChatAiConversationScreen({super.key});
 
-  Future<String> _resolveTargetLanguageDisplay() async {
+  Future<String> _resolveTargetLanguageDisplay(WidgetRef ref) async {
+    // Prefer the user's current learning language when available.
+    // Fallback to the "games hub" persisted language which is widely set in the app.
+    final user = ref.read(userProvider);
+    final userLang = (user?.learningLanguage ?? '').trim();
+    if (userLang.isNotEmpty) return userLang;
+
     final prefs = await SharedPreferences.getInstance();
     final slug = resolveGamesHubLanguageSync(prefs, fallback: 'yoruba');
     return displayTitleForGamesHubSlug(slug);
@@ -22,7 +29,7 @@ class LingChatAiConversationScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return FutureBuilder<String>(
-      future: _resolveTargetLanguageDisplay(),
+      future: _resolveTargetLanguageDisplay(ref),
       builder: (context, snapshot) {
         final lang = (snapshot.data ?? 'Yoruba').trim();
         return PolieWorkspaceScreen(
