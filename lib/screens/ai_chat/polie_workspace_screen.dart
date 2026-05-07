@@ -917,7 +917,12 @@ Stay in character. Respond naturally for the scene.
               .toLowerCase()
               .trim()
               .replaceAll(RegExp(r'[\u2019\u2018]'), "'")
-              .replaceAll(RegExp(r'[^a-zA-ZÀ-ÖØ-öø-ÿẸỌṢẹọṣ\'\s\?!.]'), '')
+              // NOTE: raw strings (r'') cannot escape `'` with backslash.
+              // Use a raw double-quoted string so `'` is allowed inside.
+              .replaceAll(
+                RegExp(r"[^a-zA-ZÀ-ÖØ-öø-ÿẸỌṢẹọṣ'\s?!.]"),
+                '',
+              )
               .replaceAll(RegExp(r'\s+'), ' ')
               .trim();
           if (normalized.isEmpty) return false;
