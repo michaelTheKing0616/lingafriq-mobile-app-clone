@@ -6,6 +6,7 @@ import '../models/leaderboard_entry_model.dart';
 import '../models/user_gamification_model.dart';
 import 'base_provider.dart';
 import 'gamification_services_provider.dart';
+import '../services/gamification/leaderboards_service.dart';
 import '../utils/structured_logger.dart';
 
 final leaderboardProvider =
@@ -18,7 +19,39 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
     with BaseProviderMixin {
   final Map<String, List<LeaderboardEntry>> _cache = {};
   final Map<String, DateTime> _lastFetchByKey = {};
+  final Map<String, bool> _hasMoreByKey = {};
+  final Map<String, bool> _isLoadingMoreByKey = {};
   static const Duration _cacheDuration = Duration(minutes: 5);
+
+  bool hasMore({
+    LeaderboardType type = LeaderboardType.global,
+    String? tribe,
+    String? country,
+    String? continent,
+  }) {
+    return _hasMoreByKey[_key(
+          type,
+          tribe: tribe,
+          country: country,
+          continent: continent,
+        )] ??
+        false;
+  }
+
+  bool isLoadingMore({
+    LeaderboardType type = LeaderboardType.global,
+    String? tribe,
+    String? country,
+    String? continent,
+  }) {
+    return _isLoadingMoreByKey[_key(
+          type,
+          tribe: tribe,
+          country: country,
+          continent: continent,
+        )] ??
+        false;
+  }
 
   String _key(
     LeaderboardType type, {
@@ -47,7 +80,75 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
     return BaseProviderState();
   }
 
-  /// Fetch leaderboards from backend
+  Future<({List<LeaderboardEntry> entries, bool hasMore})> _fetchPage({
+    required LeaderboardsService leaderboardsService,
+    required LeaderboardType type,
+    String? tribe,
+    String? country,
+    required int offset,
+    int limit = kLeaderboardPageSize,
+  }) async {
+    Map<String, dynamic> data;
+    switch (type) {
+      case LeaderboardType.global:
+        data = await leaderboardsService.getGlobalLeaderboard(
+          period: 'weekly',
+          limit: limit,
+          offset: offset,
+        );
+        break;
+      case LeaderboardType.tribe:
+        if (tribe == null || tribe.trim().isEmpty) {
+          return (entries: <LeaderboardEntry>[], hasMore: false);
+        }
+        data = await leaderboardsService.getTribeLeaderboard(
+          tribe,
+          period: 'season',
+          limit: limit,
+          offset: offset,
+        );
+        break;
+      case LeaderboardType.country:
+        if (country == null || country.trim().isEmpty) {
+          return (entries: <LeaderboardEntry>[], hasMore: false);
+        }
+        data = await leaderboardsService.getVillageLeaderboard(
+          country,
+          period: 'monthly',
+          limit: limit,
+          offset: offset,
+        );
+        break;
+      case LeaderboardType.continental:
+        data = await leaderboardsService.getGlobalLeaderboard(
+          period: 'monthly',
+          limit: limit,
+          offset: offset,
+        );
+        break;
+      case LeaderboardType.weekly:
+      case LeaderboardType.monthly:
+      case LeaderboardType.allTime:
+        final period = type == LeaderboardType.weekly
+            ? 'weekly'
+            : type == LeaderboardType.monthly
+            ? 'monthly'
+            : 'alltime';
+        data = await leaderboardsService.getGlobalLeaderboard(
+          period: period,
+          limit: limit,
+          offset: offset,
+        );
+        break;
+    }
+
+    final entries = _parseLeaderboardEntries(_extractEntriesList(data));
+    final hasMoreFlag = data['has_more'] == true ||
+        (entries.length >= limit && entries.isNotEmpty);
+    return (entries: entries, hasMore: hasMoreFlag);
+  }
+
+  /// Fetch leaderboards from backend (first page).
   Future<void> fetchLeaderboards({
     LeaderboardType type = LeaderboardType.global,
     String? tribe,
@@ -74,55 +175,16 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
     try {
       final leaderboardsService = ref.read(leaderboardsServiceProvider);
 
-      List<LeaderboardEntry> entries = [];
+      final page = await _fetchPage(
+        leaderboardsService: leaderboardsService,
+        type: type,
+        tribe: tribe,
+        country: country,
+        offset: 0,
+      );
 
-      switch (type) {
-        case LeaderboardType.global:
-          final data = await leaderboardsService.getGlobalLeaderboard(
-            period: 'weekly',
-          );
-          entries = _parseLeaderboardEntries(_extractEntriesList(data));
-          break;
-        case LeaderboardType.tribe:
-          if (tribe != null && tribe.trim().isNotEmpty) {
-            final data = await leaderboardsService.getTribeLeaderboard(
-              tribe,
-              period: 'season',
-            );
-            entries = _parseLeaderboardEntries(_extractEntriesList(data));
-          }
-          break;
-        case LeaderboardType.country:
-          if (country != null && country.trim().isNotEmpty) {
-            final data = await leaderboardsService.getVillageLeaderboard(
-              country,
-              period: 'monthly',
-            );
-            entries = _parseLeaderboardEntries(_extractEntriesList(data));
-          }
-          break;
-        case LeaderboardType.continental:
-          final data = await leaderboardsService.getGlobalLeaderboard(
-            period: 'monthly',
-          );
-          entries = _parseLeaderboardEntries(_extractEntriesList(data));
-          break;
-        case LeaderboardType.weekly:
-        case LeaderboardType.monthly:
-        case LeaderboardType.allTime:
-          final period = type == LeaderboardType.weekly
-              ? 'weekly'
-              : type == LeaderboardType.monthly
-              ? 'monthly'
-              : 'alltime';
-          final data = await leaderboardsService.getGlobalLeaderboard(
-            period: period,
-          );
-          entries = _parseLeaderboardEntries(_extractEntriesList(data));
-          break;
-      }
-
-      _cache[cacheKey] = entries;
+      _cache[cacheKey] = page.entries;
+      _hasMoreByKey[cacheKey] = page.hasMore;
       _lastFetchByKey[cacheKey] = DateTime.now();
 
       // Cache leaderboard data locally for offline access
@@ -140,6 +202,68 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
         errorTimestamp: DateTime.now(),
       );
     } finally {
+      state = state.copyWith(isLoading: false);
+    }
+  }
+
+  /// Load the next page and append to the in-memory cache.
+  Future<void> loadMoreLeaderboard({
+    LeaderboardType type = LeaderboardType.global,
+    String? tribe,
+    String? country,
+    String? continent,
+  }) async {
+    final cacheKey = _key(
+      type,
+      tribe: tribe,
+      country: country,
+      continent: continent,
+    );
+
+    if (!(_hasMoreByKey[cacheKey] ?? false)) return;
+    if (_isLoadingMoreByKey[cacheKey] == true) return;
+
+    _isLoadingMoreByKey[cacheKey] = true;
+    state = state.copyWith();
+
+    try {
+      final leaderboardsService = ref.read(leaderboardsServiceProvider);
+      final current = _cache[cacheKey] ?? [];
+      final page = await _fetchPage(
+        leaderboardsService: leaderboardsService,
+        type: type,
+        tribe: tribe,
+        country: country,
+        offset: current.length,
+      );
+
+      if (page.entries.isEmpty) {
+        _hasMoreByKey[cacheKey] = false;
+        return;
+      }
+
+      final existingIds = current.map((e) => e.userId).toSet();
+      final merged = List<LeaderboardEntry>.from(current);
+      for (final entry in page.entries) {
+        if (entry.userId.isEmpty || existingIds.contains(entry.userId)) {
+          continue;
+        }
+        merged.add(entry);
+        existingIds.add(entry.userId);
+      }
+
+      _cache[cacheKey] = merged;
+      _hasMoreByKey[cacheKey] = page.hasMore;
+      _lastFetchByKey[cacheKey] = DateTime.now();
+      await _cacheLeaderboards();
+    } catch (e) {
+      logger.error(
+        'Error loading more leaderboard entries',
+        tag: 'leaderboard',
+        error: e,
+      );
+    } finally {
+      _isLoadingMoreByKey[cacheKey] = false;
       state = state.copyWith(isLoading: false);
     }
   }
@@ -393,6 +517,7 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
       continent: continent,
     );
     _lastFetchByKey.remove(cacheKey);
+    _hasMoreByKey.remove(cacheKey);
     await fetchLeaderboards(
       type: type,
       tribe: tribe,

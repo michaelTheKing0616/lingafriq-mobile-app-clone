@@ -202,6 +202,23 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
         .refresh(type: type, tribe: tribe, country: country);
   }
 
+  void _maybeLoadMore(LeaderboardType type) {
+    final gamification = ref.read(gamificationProvider.notifier).gamification;
+    final user = ref.read(userProvider);
+    final tribe = type == LeaderboardType.tribe ? gamification.tribe : null;
+    final country = type == LeaderboardType.country ? user?.nationality : null;
+    final notifier = ref.read(leaderboardProvider.notifier);
+    if (!notifier.hasMore(type: type, tribe: tribe, country: country)) return;
+    if (notifier.isLoadingMore(type: type, tribe: tribe, country: country)) {
+      return;
+    }
+    notifier.loadMoreLeaderboard(
+      type: type,
+      tribe: tribe,
+      country: country,
+    );
+  }
+
   Widget _buildLeaderboardList(
     LeaderboardType type,
     List<LeaderboardEntry> entries,
@@ -242,22 +259,51 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
     }
 
     final user = ref.read(userProvider);
-    final userRanks = ref.read(leaderboardProvider.notifier).userRanks;
+    final notifier = ref.read(leaderboardProvider.notifier);
+    final gamification = ref.read(gamificationProvider.notifier).gamification;
+    final tribe = type == LeaderboardType.tribe ? gamification.tribe : null;
+    final country = type == LeaderboardType.country ? user?.nationality : null;
+    final userRanks = notifier.userRanks;
     final userInList =
         user != null && entries.any((e) => e.userId == user.id.toString());
+    final hasMore = notifier.hasMore(type: type, tribe: tribe, country: country);
+    final loadingMore =
+        notifier.isLoadingMore(type: type, tribe: tribe, country: country);
+    final extraFooter = (hasMore || loadingMore) ? 1 : 0;
 
-    return ListView.builder(
+    return NotificationListener<ScrollNotification>(
+      onNotification: (notification) {
+        if (notification.metrics.pixels <
+            notification.metrics.maxScrollExtent - 240) {
+          return false;
+        }
+        _maybeLoadMore(type);
+        return false;
+      },
+      child: ListView.builder(
       padding: EdgeInsets.all(PanAfricanSpacing.md),
-      itemCount: entries.length + (userInList || user == null ? 0 : 1),
-      // Use BouncingScrollPhysics for iOS-native feel and ClampingScrollPhysics fallback
+      itemCount:
+          entries.length + (userInList || user == null ? 0 : 1) + extraFooter,
       physics: const AlwaysScrollableScrollPhysics(
         parent: BouncingScrollPhysics(),
       ),
-      // Add item extent estimate for better scroll performance
-      itemExtent: null, // Let items size naturally
-      // Add key for proper widget recycling
       key: ValueKey('leaderboard_${type.name}'),
       itemBuilder: (context, index) {
+        final listBodyLength =
+            entries.length + (userInList || user == null ? 0 : 1);
+        if (index >= listBodyLength) {
+          return Padding(
+            padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
+            child: Center(
+              child: loadingMore
+                  ? const CircularProgressIndicator()
+                  : Text(
+                      'Scroll for more rankings',
+                      style: PanAfricanTypography.bodySmall(context),
+                    ),
+            ),
+          );
+        }
         // Show "Your Rank" card at top if user is not in the visible list
         if (!userInList && user != null && index == 0) {
           final periodKey = type == LeaderboardType.global
@@ -325,18 +371,20 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
             user != null &&
             entry.userId.isNotEmpty &&
             entry.userId == user.id.toString();
+        final displayRank = entry.rank > 0 ? entry.rank : entryIndex + 1;
 
         return _LeaderboardCard(
               key: ValueKey('leaderboard_card_${entry.userId}_$entryIndex'),
               entry: entry,
               isCurrentUser: isCurrentUser,
-              rank: entryIndex + 1,
+              rank: displayRank,
               isDark: isDark,
             )
             .animate(delay: Duration(milliseconds: entryIndex * 50))
             .fadeIn(duration: 300.ms)
             .slideY(begin: 0.1, end: 0);
       },
+    ),
     );
   }
 }

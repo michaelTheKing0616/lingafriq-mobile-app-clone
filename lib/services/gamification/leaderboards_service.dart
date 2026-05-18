@@ -1,26 +1,52 @@
 import 'package:dio/dio.dart';
 import 'package:lingafriq/utils/api.dart';
 
+/// Page size for leaderboard API requests (backend supports offset pagination).
+const int kLeaderboardPageSize = 100;
+
 class LeaderboardsService {
   final Dio _dio;
 
   LeaderboardsService(this._dio);
 
-  /// Get global leaderboard (tries api/leaderboards/global then gamification league)
+  Map<String, dynamic> _queryParams({
+    required String period,
+    required int limit,
+    required int offset,
+  }) =>
+      {
+        'period': period,
+        'limit': limit,
+        'offset': offset,
+      };
+
+  /// Get global leaderboard (tries api/leaderboards/global then gamification league).
   Future<Map<String, dynamic>> getGlobalLeaderboard({
     String period = 'weekly',
-    int limit = 100,
+    int limit = kLeaderboardPageSize,
+    int offset = 0,
   }) async {
     try {
       final response = await _dio.get(
         'api/leaderboards/global',
-        queryParameters: {'period': period, 'limit': limit},
+        queryParameters: _queryParams(
+          period: period,
+          limit: limit,
+          offset: offset,
+        ),
       );
-      return response.data is Map ? response.data as Map<String, dynamic> : {'entries': <dynamic>[]};
+      return response.data is Map
+          ? response.data as Map<String, dynamic>
+          : {'entries': <dynamic>[]};
     } catch (_) {
       try {
-        final fallback = await _dio.get(Api.leagueLeaderboard, queryParameters: {'limit': limit});
-        return fallback.data is Map ? fallback.data as Map<String, dynamic> : {'entries': <dynamic>[]};
+        final fallback = await _dio.get(
+          Api.leagueLeaderboard,
+          queryParameters: {'limit': limit},
+        );
+        return fallback.data is Map
+            ? fallback.data as Map<String, dynamic>
+            : {'entries': <dynamic>[]};
       } catch (__) {
         rethrow;
       }
@@ -31,14 +57,21 @@ class LeaderboardsService {
   Future<Map<String, dynamic>> getTribeLeaderboard(
     String tribeId, {
     String period = 'season',
-    int limit = 100,
+    int limit = kLeaderboardPageSize,
+    int offset = 0,
   }) async {
     try {
       final response = await _dio.get(
         'api/leaderboards/tribe/$tribeId',
-        queryParameters: {'period': period, 'limit': limit},
+        queryParameters: _queryParams(
+          period: period,
+          limit: limit,
+          offset: offset,
+        ),
       );
-      return response.data is Map ? response.data as Map<String, dynamic> : {'entries': <dynamic>[]};
+      return response.data is Map
+          ? response.data as Map<String, dynamic>
+          : {'entries': <dynamic>[]};
     } catch (e) {
       rethrow;
     }
@@ -48,14 +81,21 @@ class LeaderboardsService {
   Future<Map<String, dynamic>> getVillageLeaderboard(
     String lang, {
     String period = 'monthly',
-    int limit = 100,
+    int limit = kLeaderboardPageSize,
+    int offset = 0,
   }) async {
     try {
       final response = await _dio.get(
         'api/leaderboards/village/$lang',
-        queryParameters: {'period': period, 'limit': limit},
+        queryParameters: _queryParams(
+          period: period,
+          limit: limit,
+          offset: offset,
+        ),
       );
-      return response.data is Map ? response.data as Map<String, dynamic> : {'entries': <dynamic>[]};
+      return response.data is Map
+          ? response.data as Map<String, dynamic>
+          : {'entries': <dynamic>[]};
     } catch (e) {
       rethrow;
     }
@@ -71,4 +111,3 @@ class LeaderboardsService {
     }
   }
 }
-
