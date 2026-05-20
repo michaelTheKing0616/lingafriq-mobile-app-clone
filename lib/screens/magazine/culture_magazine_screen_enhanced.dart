@@ -21,15 +21,22 @@ import 'culture_magazine_enhanced_features.dart';
 class CultureMagazineScreenEnhanced extends HookConsumerWidget {
   const CultureMagazineScreenEnhanced({super.key});
 
+  static const int _pageSize = 24;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final articles = useState<List<Map<String, dynamic>>>([]);
     final translatedArticles = useState<Map<String, Map<String, String>>>({});
     final isLoading = useState(false);
+    final isLoadingMore = useState(false);
     final isTranslating = useState(false);
     final selectedCategory = useState<String?>(null);
     final showTranslation = useState(false);
     final favoriteArticles = useState<Set<String>>({});
+    final currentPage = useState(1);
+    final hasMore = useState(true);
+    final totalDocs = useState<int?>(null);
+    final scrollController = useScrollController();
     final translationService = useMemoized(() => TranslationService());
     final onboarding = ref.watch(onboardingProvider);
     final userLanguage = (onboarding.selectedLanguage ?? 'english')
@@ -38,47 +45,130 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context)!;
 
-    Future<void> loadArticles() async {
-      isLoading.value = true;
+    List<Map<String, dynamic>> _parseArticleDocs(dynamic raw) {
+      dynamic listCandidate = raw is Map
+          ? (raw['data'] ?? raw['results'] ?? raw['articles'])
+          : raw;
+
+      if (listCandidate is Map) {
+        listCandidate = listCandidate['docs'] ?? listCandidate['items'] ?? [];
+      }
+
+      if (listCandidate is! List) return [];
+
+      return List<Map<String, dynamic>>.from(listCandidate.whereType<Map>());
+    }
+
+    bool _parseHasNextPage(dynamic raw, int fetchedCount) {
+      if (raw is! Map) {
+        return fetchedCount >= _pageSize;
+      }
+      final data = raw['data'];
+      if (data is! Map) {
+        return fetchedCount >= _pageSize;
+      }
+      if (data['hasNextPage'] == true) return true;
+      final page = (data['page'] as num?)?.toInt();
+      final totalPages = (data['totalPages'] as num?)?.toInt();
+      if (page != null && totalPages != null) {
+        return page < totalPages;
+      }
+      return fetchedCount >= _pageSize;
+    }
+
+    int? _parseTotalDocs(dynamic raw) {
+      if (raw is! Map) return null;
+      final data = raw['data'];
+      if (data is! Map) return null;
+      return (data['totalDocs'] as num?)?.toInt();
+    }
+
+    Future<void> loadArticles({bool reset = true}) async {
+      if (reset) {
+        if (isLoading.value) return;
+        isLoading.value = true;
+        currentPage.value = 1;
+        hasMore.value = true;
+        totalDocs.value = null;
+      } else {
+        if (isLoadingMore.value || isLoading.value || !hasMore.value) return;
+        isLoadingMore.value = true;
+      }
+
       try {
+        final pageToFetch = reset ? 1 : currentPage.value;
+        final queryParameters = <String, dynamic>{
+          'page': pageToFetch,
+          'limit': _pageSize,
+        };
+        if (selectedCategory.value != null) {
+          queryParameters['category'] = selectedCategory.value!;
+        }
+
         final response = await ApiService.get(
           Api.cultureArticles(published: true),
-          queryParameters: selectedCategory.value != null
-              ? {'category': selectedCategory.value}
-              : null,
+          queryParameters: queryParameters,
         );
 
         if (response.statusCode == 200) {
           final raw = response.data;
-          dynamic listCandidate = raw is Map
-              ? (raw['data'] ?? raw['results'] ?? raw['articles'])
-              : raw;
+          final batch = _parseArticleDocs(raw);
+          final nextHasMore = _parseHasNextPage(raw, batch.length);
+          final total = _parseTotalDocs(raw);
 
-          if (listCandidate is Map) {
-            listCandidate =
-                listCandidate['docs'] ?? listCandidate['items'] ?? [];
-          }
-
-          if (listCandidate is List) {
-            final list = List<Map<String, dynamic>>.from(
-              listCandidate.whereType<Map>(),
-            );
-            articles.value = list;
+          if (reset) {
+            articles.value = batch;
+            translatedArticles.value = {};
           } else {
-            articles.value = [];
+            final seen = articles.value
+                .map((a) => a['_id']?.toString() ?? '')
+                .where((id) => id.isNotEmpty)
+                .toSet();
+            final merged = [...articles.value];
+            for (final item in batch) {
+              final id = item['_id']?.toString() ?? '';
+              if (id.isEmpty || seen.add(id)) merged.add(item);
+            }
+            articles.value = merged;
           }
-        } else {
+
+          hasMore.value = nextHasMore;
+          totalDocs.value = total;
+          currentPage.value = pageToFetch + 1;
+        } else if (reset) {
           articles.value = [];
+          hasMore.value = false;
         }
       } catch (e) {
         if (context.mounted) {
           ErrorHandler.showError(context, e);
         }
-        articles.value = [];
+        if (reset) {
+          articles.value = [];
+          hasMore.value = false;
+        }
       } finally {
-        isLoading.value = false;
+        if (reset) {
+          isLoading.value = false;
+        } else {
+          isLoadingMore.value = false;
+        }
       }
     }
+
+    void onScroll() {
+      if (!scrollController.hasClients) return;
+      final position = scrollController.position;
+      if (position.pixels >= position.maxScrollExtent - 320) {
+        loadArticles(reset: false);
+      }
+    }
+
+    useEffect(() {
+      void listener() => onScroll();
+      scrollController.addListener(listener);
+      return () => scrollController.removeListener(listener);
+    }, [scrollController, hasMore.value, isLoading.value, isLoadingMore.value]);
 
     Future<void> toggleTranslation(String articleId, String language) async {
       // Toggle translation view
@@ -160,7 +250,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
     }
 
     useEffect(() {
-      loadArticles();
+      loadArticles(reset: true);
       return null;
     }, [selectedCategory.value]);
 
@@ -314,7 +404,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
                             ),
                             SizedBox(height: PanAfricanSpacing.lg),
                             TextButton.icon(
-                              onPressed: () => loadArticles(),
+                              onPressed: () => loadArticles(reset: true),
                               icon: Icon(
                                 Icons.refresh_rounded,
                                 size: 20,
@@ -331,17 +421,22 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
                         ),
                       ),
                     )
-                  : GridView.builder(
-                      padding: EdgeInsets.all(PanAfricanSpacing.md),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: PanAfricanSpacing.md,
-                        mainAxisSpacing: PanAfricanSpacing.md,
-                        childAspectRatio: 0.75,
-                      ),
-                      itemCount: articles.value.length,
-                      itemBuilder: (context, index) {
-                        final article = articles.value[index];
+                  : Column(
+                      children: [
+                        Expanded(
+                          child: GridView.builder(
+                            controller: scrollController,
+                            padding: EdgeInsets.all(PanAfricanSpacing.md),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: PanAfricanSpacing.md,
+                              mainAxisSpacing: PanAfricanSpacing.md,
+                              childAspectRatio: 0.75,
+                            ),
+                            itemCount: articles.value.length,
+                            itemBuilder: (context, index) {
+                              final article = articles.value[index];
                         final articleId = article['_id']?.toString() ?? '';
                         final translated = translatedArticles.value[articleId];
 
@@ -383,8 +478,38 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
                             )
                             .animate(delay: (index * 50).ms)
                             .fadeIn(duration: 300.ms)
-                            .scale(begin: Offset(0.9, 0.9), end: Offset(1, 1));
-                      },
+                            .scale(
+                              begin: Offset(0.9, 0.9),
+                              end: Offset(1, 1),
+                            );
+                            },
+                          ),
+                        ),
+                        if (isLoadingMore.value)
+                          Padding(
+                            padding: EdgeInsets.only(
+                              bottom: PanAfricanSpacing.md,
+                            ),
+                            child: CircularProgressIndicator(
+                              color: PanAfricanColors.primary,
+                            ),
+                          )
+                        else if (hasMore.value)
+                          Padding(
+                            padding: EdgeInsets.only(
+                              bottom: PanAfricanSpacing.md,
+                            ),
+                            child: TextButton(
+                              onPressed: () => loadArticles(reset: false),
+                              child: Text(
+                                'Load more articles',
+                                style: PanAfricanTypography.labelLarge(
+                                  context,
+                                ).copyWith(color: PanAfricanColors.primary),
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
             ),
           ],
