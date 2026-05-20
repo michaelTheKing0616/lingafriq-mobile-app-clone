@@ -31,7 +31,9 @@ class HybridPolieOrchestrator {
     String? sourceLanguage,
     required GroqChatProvider groqProvider,
     String? hfToken,
+    void Function(HybridPolieResponse response, {required int elapsedMs})? onTelemetry,
   }) async {
+    final startedAt = DateTime.now();
     // Get HuggingFace token from environment if not provided
     final effectiveHfToken = hfToken ?? EnvConfig.huggingFaceToken;
     
@@ -170,7 +172,7 @@ class HybridPolieOrchestrator {
     }
     
     // 5. Build response
-    return HybridPolieResponse(
+    final response = HybridPolieResponse(
       output: finalOutput,
       model: modelUsed,
       diacriticsCorrected: diacriticsCorrected,
@@ -180,6 +182,11 @@ class HybridPolieOrchestrator {
       metadata: metadata,
       needsNativeReview: !isValid || (metadata['translation_confidence'] ?? 1.0) < 0.65,
     );
+    onTelemetry?.call(
+      response,
+      elapsedMs: DateTime.now().difference(startedAt).inMilliseconds,
+    );
+    return response;
   }
   
   TaskType _modeToTaskType(PolieMode mode) {

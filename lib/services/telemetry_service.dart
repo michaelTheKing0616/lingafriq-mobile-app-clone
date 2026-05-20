@@ -58,7 +58,7 @@ class TelemetryService {
     }
   }
 
-  /// Track Polie performance metrics
+  /// Track Polie / Hybrid Polie performance (powers admin telemetry dashboards).
   Future<void> trackPoliePerformance({
     required String mode,
     required String language,
@@ -67,24 +67,51 @@ class TelemetryService {
     bool? diacriticsCorrected,
     String? modelUsed,
     double? confidence,
+    bool needsNativeReview = false,
   }) async {
     try {
       await trackEngagement(
         eventType: 'polie_performance',
-        feature: 'ai_chat',
+        feature: 'hybrid_polie',
         metadata: {
           'mode': mode,
           'language': language,
           'response_time_ms': responseTimeMs,
           'token_count': tokenCount,
           'diacritics_corrected': diacriticsCorrected ?? false,
-          'model_used': modelUsed ?? 'default',
+          'model_used': modelUsed ?? 'fallback',
           'confidence': confidence,
+          'needs_native_review': needsNativeReview,
         },
       );
+      if (diacriticsCorrected == true) {
+        await _flushEvents();
+      }
     } catch (e) {
       debugPrint('Error tracking Polie performance: $e');
     }
+  }
+
+  /// After [HybridPolieOrchestrator] completes — same schema as trackPoliePerformance.
+  Future<void> trackHybridPolieResponse({
+    required String mode,
+    required String language,
+    required String modelUsed,
+    required int responseTimeMs,
+    required double confidence,
+    required bool diacriticsCorrected,
+    bool needsNativeReview = false,
+  }) {
+    return trackPoliePerformance(
+      mode: mode,
+      language: language,
+      responseTimeMs: responseTimeMs,
+      tokenCount: 0,
+      diacriticsCorrected: diacriticsCorrected,
+      modelUsed: modelUsed,
+      confidence: confidence,
+      needsNativeReview: needsNativeReview,
+    );
   }
 
   /// Track game session metrics

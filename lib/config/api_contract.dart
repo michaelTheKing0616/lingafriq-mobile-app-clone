@@ -67,6 +67,7 @@ class ApiContract {
   static const feed = _Feed();
   static const calls = _Calls();
   static const misc = _Misc();
+  static const telemetry = _Telemetry();
   static const gameContent = _GameContent();
   static const archive = _Archive();
   static const lexicon = _Lexicon();
@@ -925,4 +926,13 @@ class _TribeDuels {
       '/api/tribes/$tribeId/duels/$duelId/answer';
   String duelChat(String tribeId, String duelId) =>
       '/api/tribes/$tribeId/duels/$duelId/chat';
+}
+
+// =============================================================================
+// Telemetry (admin dashboards + Hybrid Polie charts)
+// =============================================================================
+class _Telemetry {
+  const _Telemetry();
+  /// POST batch — expands polie_performance into hybrid_polie_request events.
+  String get events => '/api/telemetry/events';
 }

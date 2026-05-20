@@ -1777,26 +1777,37 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  /// Send telemetry events
+  /// Send telemetry events (batch). Hybrid Polie events go to /api/telemetry/events.
   Future<bool> sendTelemetry(List<Map<String, dynamic>> events) async {
     try {
       if (events.isEmpty) return true;
 
-      // Canonical backend route: POST /api/games/telemetry/
-      // Backend accepts ONE event per request, so we batch client-side.
-      var ok = true;
-      for (final event in events) {
-        final res = await ref.read(client).post(
-          ApiContract.url(ApiContract.games.telemetry),
-          data: event,
-        );
-        ok = ok && (res.statusCode == 200 || res.statusCode == 201);
-      }
-      return ok;
+      final payload = events.map(_normalizeTelemetryEvent).toList();
+      final res = await ref.read(client).post(
+        ApiContract.url(ApiContract.telemetry.events),
+        data: {'events': payload},
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
       logger.error('Error sending telemetry', error: e);
       return false;
     }
+  }
+
+  Map<String, dynamic> _normalizeTelemetryEvent(Map<String, dynamic> event) {
+    final metadata = Map<String, dynamic>.from(
+      (event['metadata'] as Map?)?.cast<String, dynamic>() ?? {},
+    );
+    if (event['feature'] != null) {
+      metadata['feature'] = event['feature'];
+    }
+    return {
+      'eventType': event['event_type'] ?? event['eventType'] ?? event['event'],
+      'timestamp': event['timestamp'] ?? DateTime.now().toIso8601String(),
+      'language': metadata['language'],
+      'metadata': metadata,
+      if (metadata['model_used'] != null) 'model': metadata['model_used'],
+    };
   }
 
   /// Family subscription: aggregated progress dashboard

@@ -1082,6 +1082,22 @@ Use structured format: Rule -> Example -> Practice.''';
             sourceLanguage: _sourceLanguage,
             groqProvider: this,
             hfToken: null, // Can be set via environment
+            onTelemetry: (response, {required elapsedMs}) async {
+              try {
+                final telemetry = ref.read(telemetryServiceProvider);
+                await telemetry.trackHybridPolieResponse(
+                  mode: _mode.name,
+                  language: _selectedLanguage,
+                  modelUsed: response.model,
+                  responseTimeMs: elapsedMs,
+                  confidence: response.confidence,
+                  diacriticsCorrected: response.diacriticsCorrected,
+                  needsNativeReview: response.needsNativeReview,
+                );
+              } catch (e) {
+                logger.error('Hybrid Polie telemetry failed', tag: 'ai-chat', error: e);
+              }
+            },
           );
           
           // Stream the response word by word for natural feel

@@ -10,6 +10,7 @@ import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart' show groqChatProvider, PolieMode;
 import 'package:lingafriq/services/hybrid_polie/hybrid_polie_orchestrator.dart';
+import 'package:lingafriq/services/telemetry_service.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show AppLanguage;
 import 'package:lingafriq/services/vocabulary/vocabulary_service.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
@@ -84,6 +85,17 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
           targetLanguage: targetLanguage.value.name,
           sourceLanguage: sourceLanguage.value.name,
           groqProvider: groqProvider,
+          onTelemetry: (hybridResponse, {required elapsedMs}) async {
+            await ref.read(telemetryServiceProvider).trackHybridPolieResponse(
+              mode: PolieMode.translation.name,
+              language: targetLanguage.value.name,
+              modelUsed: hybridResponse.model,
+              responseTimeMs: elapsedMs,
+              confidence: hybridResponse.confidence,
+              diacriticsCorrected: hybridResponse.diacriticsCorrected,
+              needsNativeReview: hybridResponse.needsNativeReview,
+            );
+          },
         );
 
         if (response.model != 'fallback' && response.output.trim().isNotEmpty) {
