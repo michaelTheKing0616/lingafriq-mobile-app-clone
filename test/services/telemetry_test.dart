@@ -35,14 +35,17 @@ void main() {
         language: 'yoruba',
         responseTimeMs: 1500,
         tokenCount: 250,
-        diacriticsCorrected: true,
+        diacriticsCorrected: false,
         modelUsed: 'llama-3.1-70b',
         confidence: 0.95,
       );
-      
-      // Verify event was added to pending
+
       final stats = telemetry.getEngagementStats();
       expect(stats['pending_events'], greaterThan(0));
+      expect(
+        stats['interaction_counts'] as Map<String, dynamic>,
+        containsPair('hybrid_polie', greaterThan(0)),
+      );
     });
 
     test('Game session tracking', () async {

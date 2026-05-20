@@ -380,7 +380,8 @@ class GameCatalog {
   static List<GameCatalogEntry> mergeRemoteRows(List<Map<String, dynamic>> rows) {
     final scored = <({int order, GameCatalogEntry entry})>[];
     for (final m in rows) {
-      final id = m['id']?.toString();
+      if (m['enabled'] == false) continue;
+      final id = m['id']?.toString() ?? m['game_id']?.toString();
       if (id == null || id.isEmpty) continue;
       final type = gameTypeFromPolieId(id);
       if (type == null) continue;

@@ -50,9 +50,14 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
 
         if (response.statusCode == 200) {
           final raw = response.data;
-          final dynamic listCandidate = raw is Map
+          dynamic listCandidate = raw is Map
               ? (raw['data'] ?? raw['results'] ?? raw['articles'])
               : raw;
+
+          if (listCandidate is Map) {
+            listCandidate =
+                listCandidate['docs'] ?? listCandidate['items'] ?? [];
+          }
 
           if (listCandidate is List) {
             final list = List<Map<String, dynamic>>.from(
