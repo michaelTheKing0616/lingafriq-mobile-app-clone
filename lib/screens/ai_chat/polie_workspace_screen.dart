@@ -196,7 +196,7 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
       return null;
     }, [targetLanguage]);
 
-    String streakBannerText() {
+    String buildStreakBannerText() {
       final days = streakDays.value;
       if (days > 0) {
         return '🔥 $days day${days == 1 ? '' : 's'} streak!';
@@ -1618,7 +1618,7 @@ Language: $targetLanguage
                     modeName,
                   };
                 },
-                streakBannerText: streakBannerText(),
+                tutorStreakBannerText: buildStreakBannerText(),
               ),
             ),
           ),
@@ -1683,7 +1683,7 @@ Language: $targetLanguage
     required Future<void> Function() onLoadReview,
     required Set<String> introDismissed,
     required void Function(String modeName) onDismissIntro,
-    required String streakBannerText,
+    required String tutorStreakBannerText,
   }) {
     final screenWidth = MediaQuery.sizeOf(context).width;
     final isPhone = screenWidth < 700;
@@ -2278,7 +2278,7 @@ Language: $targetLanguage
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      streakBannerText(),
+                      tutorStreakBannerText,
                       style: GoogleFonts.nunito(
                         color: const Color(0xFFE8DAC5),
                         fontWeight: FontWeight.w700,
@@ -2368,7 +2368,7 @@ Language: $targetLanguage
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              streakBannerText,
+                              tutorStreakBannerText,
                               style: GoogleFonts.nunito(
                                 color: const Color(0xFFE8DAC5),
                                 fontWeight: FontWeight.w700,

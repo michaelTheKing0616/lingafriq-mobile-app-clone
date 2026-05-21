@@ -14,7 +14,6 @@ import 'package:lingafriq/screens/lesson/widgets/lesson_complete_widget.dart';
 import 'package:lingafriq/services/content/bundled_lesson_content_service.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/content/vocab_audio_controls.dart';
-import 'package:lingafriq/widgets/lingafriq_scaffold.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 
 /// Blueprint §39 — ten-stage authentic lesson flow from bundled curriculum.
@@ -71,7 +70,7 @@ class AuthenticLessonFlowScreen extends HookConsumerWidget {
       );
     }
 
-    return LingAfriqScaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text(lesson.title, maxLines: 1, overflow: TextOverflow.ellipsis),
         bottom: PreferredSize(
