@@ -6,10 +6,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/content/lingafriq_ux_voice.dart';
+import 'package:lingafriq/models/correction_result.dart';
 import 'package:lingafriq/models/translation_history_model.dart';
 import 'package:lingafriq/models/tutor_progress_model.dart';
 import 'package:lingafriq/models/vocabulary_progress_model.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
+import 'package:lingafriq/content/polie_conversation_prompt_builder.dart';
+import 'package:lingafriq/services/content/polie_prompt_service.dart';
+import 'package:lingafriq/services/content/polie_conversation_service.dart';
 import 'package:lingafriq/services/review_progress_service.dart';
 import 'package:lingafriq/services/translation_history_service.dart';
 import 'package:lingafriq/services/tutor_progress_service.dart';
@@ -182,6 +187,22 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
     final vocabProgress = ref.read(vocabularyProgressServiceProvider);
     final vocabularyService = ref.read(vocabularyServiceProvider);
     final reviewProgress = ref.read(reviewProgressServiceProvider);
+    final streakDays = useState<int>(0);
+
+    useEffect(() {
+      reviewProgress.loadStatistics(targetLanguage).then((stats) {
+        streakDays.value = stats.currentStreak;
+      });
+      return null;
+    }, [targetLanguage]);
+
+    String streakBannerText() {
+      final days = streakDays.value;
+      if (days > 0) {
+        return '🔥 $days day${days == 1 ? '' : 's'} streak!';
+      }
+      return LingAfriqUxVoice.dailyPractice.first;
+    }
 
     Future<void> syncTranslationLanguagesToChat() async {
       if (activeMode.value != PolieMode.translation) return;
@@ -207,6 +228,12 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
         sourceLanguage: src,
         targetLanguage: tgt,
       );
+      final snippets = await ref.read(poliePromptServiceProvider).loadSnippets();
+      final modes = snippets['modes'] as Map<String, dynamic>? ?? {};
+      final hint = modes[mode.name]?.toString();
+      if (hint != null && hint.isNotEmpty) {
+        chat.prependToSystemPrompt('MODE GUIDANCE: $hint');
+      }
     }
 
     Future<Map<String, dynamic>?> askForJson(String prompt) async {
@@ -1003,60 +1030,42 @@ Stay in character. Respond naturally for the scene.
         }
 
         final nonce = DateTime.now().microsecondsSinceEpoch;
+        final promptService = ref.read(poliePromptServiceProvider);
+        final personaSnippets = await promptService.persona(
+          PolieConversationPromptBuilder.defaultPersonaKey,
+        );
+        final convBuilder = PolieConversationPromptBuilder();
+        final personaPrefix = convBuilder.personaPrefixFromSnippets(
+          personaSnippets,
+          targetLanguage,
+        );
 
-        Map<String, dynamic>? json = await askForJson('''
-Return STRICT JSON only. Do NOT wrap in markdown. Do NOT include text outside the JSON.
-{
- "message_target":"A rich, complete reply in $targetLanguage. Use correct orthography/diacritics. Stay on-topic. Prefer longer answers unless style is 'terse'.",
- "message_english":"English translation of message_target OR null when not requested.",
- "correction":{"has_correction":false,"was_correct":true,"correction":"corrected version or empty","note":"explanation"},
- "suggested_replies":["reply option 1 in $targetLanguage","reply option 2","reply option 3"],
- "new_vocab":[{"word":"new word","meaning":"meaning"}]
-}
-
-You are Polie: a smart, witty, accurate conversation partner.
-This is OPEN-ENDED CHAT mode. The user can talk about any topic.
-Target language: $targetLanguage
-Response style: ${conversationResponseStyle.value}
-Style rules: $styleInstruction
-User message: "$text"
-Respond with depth and clarity:
-- If user asks for translation, provide natural translation and explain word choice.
-- If user asks for meaning/grammar/proverb/slang/culture, explain clearly and include 1-2 examples.
-- If user asks open-ended topic questions, still weave in useful language learning guidance.
-- Keep answers complete and not cut off.
-${wantsEnglish ? '- User requested English translation: set message_english to a faithful translation of message_target.' : '- Do NOT include English translation. Set message_english to null.'}
-If the user made grammar mistakes in $targetLanguage, set has_correction to true and provide the correction.
-Nonce: $nonce
-''');
+        Map<String, dynamic>? json = await askForJson(
+          convBuilder.buildConversationJsonPrompt(
+            targetLanguage: targetLanguage,
+            userMessage: text,
+            responseStyle: conversationResponseStyle.value,
+            styleInstruction: styleInstruction,
+            wantsEnglish: wantsEnglish,
+            personaSystemPrefix: personaPrefix,
+            nonce: nonce,
+          ),
+        );
 
         // Stricter retry if message_target is missing/too short/low-quality.
         if (json != null && _isMissingOrWeakMessageTarget(json!)) {
-          final strictJson = await _askConversationJson(prompt: '''
-Return STRICT JSON only. Absolutely no markdown.
-SCHEMA (must satisfy all constraints):
-{
-  "message_target":"string (MUST be in $targetLanguage ONLY, 12–20 sentences, >= 140 characters, no English unless user asked in the message itself)",
-  "message_english":"string|null (ONLY when requested: ${wantsEnglish ? 'required string' : 'must be null'})",
-  "correction":{"has_correction":boolean,"was_correct":boolean,"correction":"string","note":"string"},
-  "suggested_replies":["string","string","string"],
-  "new_vocab":[{"word":"string","meaning":"string"}]
-}
-
-You are Polie in OPEN-ENDED CHAT mode.
-Target language: $targetLanguage
-Response style: ${conversationResponseStyle.value}
-Style rules: $styleInstruction
-
-User message: "$text"
-
-Hard rules:
-- MUST answer the user’s question directly (first 1–2 sentences).
-- MUST be detailed and complete. No one-liners. No greetings-only responses.
-- MUST output correct diacritics/orthography for $targetLanguage.
-${wantsEnglish ? '- Provide message_english as a faithful translation of message_target.' : '- message_english MUST be null.'}
-Nonce: ${DateTime.now().microsecondsSinceEpoch}
-''');
+          final strictJson = await _askConversationJson(
+            prompt: convBuilder.buildConversationJsonPrompt(
+              targetLanguage: targetLanguage,
+              userMessage: text,
+              responseStyle: conversationResponseStyle.value,
+              styleInstruction: styleInstruction,
+              wantsEnglish: wantsEnglish,
+              personaSystemPrefix: personaPrefix,
+              nonce: DateTime.now().microsecondsSinceEpoch,
+              strict: true,
+            ),
+          );
           if (strictJson != null && !_isMissingOrWeakMessageTarget(strictJson)) {
             json = strictJson;
           }
@@ -1069,7 +1078,7 @@ Return STRICT JSON only:
 {
   "message_target":"string (in $targetLanguage, >= 140 chars, fully complete, no trailing truncation)",
   "message_english":${wantsEnglish ? '"string"' : 'null'},
-  "correction":{"has_correction":false,"was_correct":true,"correction":"","note":"short note"},
+  "correction":{"tier":"correct","has_correction":false,"was_correct":true,"correction":"","note":"short note"},
   "suggested_replies":["reply 1 in $targetLanguage","reply 2 in $targetLanguage","reply 3 in $targetLanguage"],
   "new_vocab":[]
 }
@@ -1137,6 +1146,7 @@ User message: "$text"
               messageTarget: targetReply.isEmpty ? '-' : targetReply,
               englishTranslation: englishTranslation,
               correction: const _ConversationCorrection(
+                tier: 'correct',
                 hasCorrection: false,
                 wasCorrect: true,
                 correction: null,
@@ -1337,7 +1347,15 @@ Language: $targetLanguage
 
     useEffect(() {
       final init = conversationOnly ? PolieMode.conversation : initialMode;
-      setMode(init);
+      setMode(init).then((_) async {
+        if (init == PolieMode.conversation || conversationOnly) {
+          final prefix = await ref.read(polieConversationServiceProvider).buildPersonaSystemPrefix(
+            targetLanguage: targetLanguage,
+            roleplayScene: initialRoleplayScene,
+          );
+          ref.read(groqChatProvider.notifier).prependToSystemPrompt(prefix);
+        }
+      });
       loadTranslationHistory();
       if (init == PolieMode.tutor) loadTutorLesson();
       if (init == PolieMode.vocab) loadVocabCard();
@@ -2258,7 +2276,7 @@ Language: $targetLanguage
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      '🔥 7 day streak!',
+                      streakBannerText(),
                       style: GoogleFonts.nunito(
                         color: const Color(0xFFE8DAC5),
                         fontWeight: FontWeight.w700,
@@ -2348,7 +2366,7 @@ Language: $targetLanguage
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '🔥 7 day streak!',
+                              streakBannerText(),
                               style: GoogleFonts.nunito(
                                 color: const Color(0xFFE8DAC5),
                                 fontWeight: FontWeight.w700,
@@ -2709,9 +2727,18 @@ Language: $targetLanguage
                                   style: bodyStyle,
                                 ),
                                 Text(
-                                  'Correction: ${tutorFeedback.correction}',
-                                  style: bodyStyle,
+                                  tutorFeedback.uxFeedbackLine(),
+                                  style: bodyStyle.copyWith(
+                                    color: Colors.orange.shade800,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
+                                if (tutorFeedback.correction.trim().isNotEmpty &&
+                                    tutorFeedback.correction != '-')
+                                  Text(
+                                    tutorFeedback.correction,
+                                    style: bodyStyle,
+                                  ),
                                 Text(
                                   'Why: ${tutorFeedback.why}',
                                   style: bodyStyle,
@@ -3220,11 +3247,24 @@ Language: $targetLanguage
                           if (ai.correction.hasCorrection)
                             Padding(
                               padding: const EdgeInsets.only(top: 6),
-                              child: Text(
-                                'Correction: ${ai.correction.correction ?? ai.correction.note}',
-                                style: bodyStyle.copyWith(
-                                  color: Colors.orange.shade800,
-                                ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    ai.correction.uxFeedbackLine(),
+                                    style: bodyStyle.copyWith(
+                                      color: Colors.orange.shade800,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  if ((ai.correction.correction ?? '').isNotEmpty)
+                                    Text(
+                                      ai.correction.correction!,
+                                      style: bodyStyle.copyWith(
+                                        color: Colors.orange.shade700,
+                                      ),
+                                    ),
+                                ],
                               ),
                             ),
                           if (ai.suggestedReplies.isNotEmpty) ...[
@@ -4802,6 +4842,19 @@ class _TutorFeedbackPayload {
     required this.nextStep,
     required this.drill,
   });
+  String uxFeedbackLine() {
+    final tier = verdict.toLowerCase();
+    return CorrectionResult(
+      tier: tier == 'correct' || tier == 'close' || tier == 'incorrect'
+          ? tier
+          : 'close',
+      hasCorrection:
+          correction.trim().isNotEmpty && correction != '-',
+      wasCorrect: verdict.toLowerCase() == 'correct',
+      correction: correction,
+    ).uxFeedbackLine();
+  }
+
   factory _TutorFeedbackPayload.fromJson(
     Map<String, dynamic> json,
     String fallback,
@@ -4969,6 +5022,7 @@ class _ConversationPayload {
           ? _cleanAiText(rawEnglish)
           : null,
       correction: _ConversationCorrection(
+        tier: CorrectionResult.fromJson(c).tier,
         hasCorrection: (_n(c, 'has_correction', false) as bool?) ?? false,
         wasCorrect: (_n(c, 'was_correct', true) as bool?) ?? true,
         correction: (_n(c, 'correction', '') as String?)?.trim().isEmpty ?? true
@@ -4994,16 +5048,28 @@ class _ConversationPayload {
 }
 
 class _ConversationCorrection {
+  final String tier;
   final bool hasCorrection;
   final bool wasCorrect;
   final String? correction;
   final String note;
   const _ConversationCorrection({
+    required this.tier,
     required this.hasCorrection,
     required this.wasCorrect,
     required this.correction,
     required this.note,
   });
+
+  String uxFeedbackLine() {
+    return CorrectionResult(
+      tier: tier,
+      hasCorrection: hasCorrection,
+      wasCorrect: wasCorrect,
+      correction: correction,
+      note: note,
+    ).uxFeedbackLine();
+  }
 }
 
 class _ConversationVocab {

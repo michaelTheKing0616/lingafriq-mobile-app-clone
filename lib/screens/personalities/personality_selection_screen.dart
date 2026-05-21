@@ -12,6 +12,7 @@ import '../../utils/error_handler.dart';
 import '../../services/monitoring/sentry_service.dart';
 import '../../utils/performance_utils.dart';
 import 'personality_chat_screen.dart';
+import '../persona_missions/persona_missions_hub_screen.dart';
 
 class PersonalitySelectionScreen extends HookConsumerWidget {
   const PersonalitySelectionScreen({super.key});
@@ -58,7 +59,19 @@ class PersonalitySelectionScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Talk with History'),
+        title: const Text('Talk with History'),
+        actions: [
+          TextButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const PersonaMissionsHubScreen()),
+              );
+            },
+            icon: const Icon(Icons.flag_outlined),
+            label: const Text('Missions'),
+          ),
+        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(24),
           child: Padding(

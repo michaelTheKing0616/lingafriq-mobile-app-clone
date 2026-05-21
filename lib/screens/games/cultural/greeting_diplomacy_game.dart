@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
+import '../../../models/game/game_content_models.dart';
 import '../../../services/polie_content_generator.dart';
+import '../game_scenario_loader.dart';
 import '../../../widgets/error_boundary.dart';
 import '../../loading/dynamic_loading_screen.dart';
 import '../base_game_screen.dart';
@@ -61,9 +63,23 @@ class _GreetingDiplomacyGameState extends BaseGameScreenState<GreetingDiplomacyG
   bool _isLoadingScenario = false;
   String _scenarioDescription = '';
   String? _correctGreeting;
+  List<GameWord> _bundledWords = [];
+  List<GameScenario> _bundledScenarios = [];
 
   @override
   Future<void> onGameInitialized() async {
+    _bundledWords = loadBundledGameWords(
+      ref,
+      language: widget.language,
+      gameTag: 'GreetingDiplomacy',
+      max: 16,
+    );
+    _bundledScenarios = loadBundledGameScenarios(
+      ref,
+      language: widget.language,
+      game: 'GreetingDiplomacy',
+      max: 8,
+    );
     await _loadNewScenario();
   }
 
@@ -78,6 +94,40 @@ class _GreetingDiplomacyGameState extends BaseGameScreenState<GreetingDiplomacyG
       _showResult = false;
       _selectedGreeting = null;
     });
+
+    if (_bundledWords.isNotEmpty) {
+      final rng = Random();
+      final word = _bundledWords[rng.nextInt(_bundledWords.length)];
+      final scenario = _bundledScenarios.isNotEmpty
+          ? _bundledScenarios[_round % _bundledScenarios.length]
+          : null;
+      final pool = _bundledWords
+          .map((w) => w.word)
+          .where((g) => g.isNotEmpty && g != word.word)
+          .toSet()
+          .toList()
+        ..shuffle(rng);
+      final options = <String>[word.word];
+      for (final g in pool) {
+        if (options.length >= 4) break;
+        options.add(g);
+      }
+      while (options.length < 4) {
+        options.add('—');
+      }
+      options.shuffle(rng);
+      setState(() {
+        _currentScenario = {'bundled': true};
+        _round++;
+        _scenarioDescription = scenario != null
+            ? '${scenario.title}\n${scenario.culturalNote ?? scenario.prompt}'
+            : (word.culturalNote ?? 'Choose the culturally appropriate greeting.');
+        _correctGreeting = word.word;
+        _greetingOptions = options.take(4).toList();
+        _isLoadingScenario = false;
+      });
+      return;
+    }
 
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);

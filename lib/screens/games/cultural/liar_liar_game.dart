@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
+import '../../../providers/game_content_provider.dart';
 import '../../../services/polie_content_generator.dart';
 import '../../../widgets/error_boundary.dart';
 import '../../loading/dynamic_loading_screen.dart';
@@ -77,6 +78,22 @@ class _LiarLiarGameState extends BaseGameScreenState<LiarLiarGame>
     });
 
     try {
+      final lang = widget.language.toLowerCase();
+      final bundled = ref.read(
+        liarLiarRoundsProvider(GameContentFilter(language: lang)),
+      );
+      if (bundled.isNotEmpty) {
+        final round = bundled[Random().nextInt(bundled.length)];
+        setState(() {
+          _round++;
+          _currentSentence = round.sentence;
+          _hasError = round.hasError;
+          _errorExplanation = round.explanation;
+          setLoading(false);
+        });
+        return;
+      }
+
       final polieGenerator = ref.read(polieContentGeneratorProvider);
       final gameContent = await polieGenerator.generateGameContent(
         gameType: 'liar_liar',

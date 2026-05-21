@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
+import '../../../models/game/game_content_models.dart';
 import '../../../services/polie_content_generator.dart';
+import '../game_scenario_loader.dart';
 import '../../../widgets/error_boundary.dart';
 import '../../loading/dynamic_loading_screen.dart';
 import '../base_game_screen.dart';
@@ -59,10 +61,33 @@ class _CallResponseGameState extends BaseGameScreenState<CallResponseGame>
   
   String _callPhrase = '';
   String? _correctResponse;
+  List<GameScenario> _scenarios = [];
 
   @override
   Future<void> onGameInitialized() async {
+    _scenarios = loadBundledGameScenarios(
+      ref,
+      language: widget.language,
+      game: 'CallAndResponse',
+      max: _maxRounds,
+    );
     await _loadNewPattern();
+  }
+
+  String _extractCall(GameScenario scenario) {
+    final title = scenario.title.trim();
+    if (title.toLowerCase().startsWith('call:')) {
+      return title.substring(5).trim();
+    }
+    return title.isNotEmpty ? title : scenario.prompt;
+  }
+
+  String _extractResponse(GameScenario scenario) {
+    final prompt = scenario.prompt.trim();
+    if (prompt.toLowerCase().startsWith('respond:')) {
+      return prompt.substring(8).trim();
+    }
+    return (scenario.expectedResponse ?? prompt).trim();
   }
 
   Future<void> _loadNewPattern() async {
@@ -76,6 +101,34 @@ class _CallResponseGameState extends BaseGameScreenState<CallResponseGame>
       _showResult = false;
       _selectedResponse = null;
     });
+
+    if (_scenarios.isNotEmpty) {
+      final scenario = _scenarios[_round % _scenarios.length];
+      final correct = _extractResponse(scenario);
+      final pool = _scenarios
+          .map(_extractResponse)
+          .where((text) => text.isNotEmpty)
+          .toSet()
+          .toList();
+      final options = <String>[correct];
+      for (final candidate in pool) {
+        if (options.length >= 4) break;
+        if (!options.contains(candidate)) options.add(candidate);
+      }
+      while (options.length < 4) {
+        options.addAll(_getFallbackResponses());
+      }
+      options.shuffle(Random());
+      setState(() {
+        _currentPattern = {'bundled': true, 'id': scenario.id};
+        _round++;
+        _callPhrase = _extractCall(scenario);
+        _correctResponse = correct;
+        _responseOptions = options.take(4).toList();
+        setLoading(false);
+      });
+      return;
+    }
 
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
+import '../../../models/game/game_content_models.dart';
 import '../../../services/polie_content_generator.dart';
+import '../game_scenario_loader.dart';
 import '../../../widgets/error_boundary.dart';
 import '../../loading/dynamic_loading_screen.dart';
 import '../base_game_screen.dart';
@@ -61,9 +63,16 @@ class _FoodQuestGameState extends BaseGameScreenState<FoodQuestGame>
   bool _isLoadingFood = false;
   String _foodDescription = '';
   String? _correctFood;
+  List<GameScenario> _scenarios = [];
 
   @override
   Future<void> onGameInitialized() async {
+    _scenarios = loadBundledGameScenarios(
+      ref,
+      language: widget.language,
+      game: 'FoodQuest',
+      max: _maxRounds,
+    );
     await _loadNewFood();
   }
 
@@ -78,6 +87,34 @@ class _FoodQuestGameState extends BaseGameScreenState<FoodQuestGame>
       _showResult = false;
       _selectedFood = null;
     });
+
+    if (_scenarios.isNotEmpty) {
+      final scenario = _scenarios[_round % _scenarios.length];
+      final correct = (scenario.expectedResponse ?? scenario.prompt).trim();
+      final pool = _scenarios
+          .map((s) => (s.expectedResponse ?? s.prompt).trim())
+          .where((text) => text.isNotEmpty)
+          .toSet()
+          .toList();
+      final options = <String>[correct];
+      for (final candidate in pool) {
+        if (options.length >= 4) break;
+        if (!options.contains(candidate)) options.add(candidate);
+      }
+      while (options.length < 4) {
+        options.addAll(_getFallbackFoods());
+      }
+      options.shuffle(Random());
+      setState(() {
+        _currentFood = {'bundled': true, 'id': scenario.id};
+        _round++;
+        _foodDescription = scenario.title;
+        _correctFood = correct;
+        _foodOptions = options.take(4).toList();
+        _isLoadingFood = false;
+      });
+      return;
+    }
 
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);

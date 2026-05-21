@@ -818,6 +818,15 @@ Use structured format: Rule -> Example -> Practice.''';
   /// This avoids the race condition where setMode saves/loads with the wrong
   /// language, then setLanguage saves/loads again with the wrong mode key.
   /// The chat history key is: ai_chat_history_groq_{mode}_{language}
+  /// Prepends bible/persona context to the active system prompt (conversation mode).
+  void prependToSystemPrompt(String prefix) {
+    final p = prefix.trim();
+    if (p.isEmpty) return;
+    final existing = _systemPrompt?.trim() ?? '';
+    _systemPrompt = existing.isEmpty ? p : '$p\n\n$existing';
+    state = state.copyWith();
+  }
+
   Future<void> setModeAndLanguage({
     required PolieMode mode,
     required String targetLanguage,

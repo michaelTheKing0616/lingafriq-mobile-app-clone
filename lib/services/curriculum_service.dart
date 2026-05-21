@@ -27,11 +27,31 @@ class CurriculumService {
     return null;
   }
 
+  /// Authentic LingAfriq A1–B1 curriculum (preferred over legacy placeholders).
+  Future<Map<String, dynamic>?> _loadAuthenticCurriculum() async {
+    return _loadJsonAsset(const [
+      'assets/data/lingafriq_authentic_curriculum_a1_c1.json',
+      'assets/data/lingafriq_authentic_curriculum_a1_a2_b1.json',
+      'assets/data/lingafriq_authentic_curriculum_a1.json',
+    ]);
+  }
+
   Future<Map<String, dynamic>?> _loadCompactAllLanguages() async {
+    final authentic = await _loadAuthenticCurriculum();
+    if (authentic != null) return authentic;
     return _loadJsonAsset(const [
       'curriculum_bundle/curriculum/curriculum_compact_A1_B1_all_languages.json',
       'lingafriq_full_curriculum_bundle/curriculum_bundle/curriculum/curriculum_compact_A1_B1_all_languages.json',
     ]);
+  }
+
+  /// Resolves language keys (e.g. pidgin → nigerian_pidgin) for curriculum lookup.
+  static String normalizeLanguageKey(String language) {
+    final key = language.toLowerCase().trim();
+    if (key == 'pidgin' || key == 'nigerian pidgin' || key == 'pcm') {
+      return 'nigerian_pidgin';
+    }
+    return key.replaceAll(' ', '_');
   }
 
   /// Load curriculum from FINAL_curriculum folder
@@ -39,8 +59,10 @@ class CurriculumService {
     try {
       final compact = await _loadCompactAllLanguages();
       final languages = compact?['languages'];
-      if (languages is Map && languages[language] is Map<String, dynamic>) {
-        return Map<String, dynamic>.from(languages[language] as Map);
+      final langKey = normalizeLanguageKey(language);
+      final block = languages[langKey] ?? languages[language];
+      if (block is Map<String, dynamic>) {
+        return Map<String, dynamic>.from(block);
       }
       return null;
     } catch (e) {
@@ -68,7 +90,8 @@ class CurriculumService {
       if (compact == null) return null;
       final languages = compact['languages'];
       if (languages is! Map) return null;
-      final languageMap = languages[language];
+      final langKey = normalizeLanguageKey(language);
+      final languageMap = languages[langKey] ?? languages[language];
       if (languageMap is! Map) return null;
       final units = languageMap[level];
       if (units is! List) return null;

@@ -1,0 +1,4969 @@
+{
+  "manifest": {
+    "language": "14",
+    "language_name": "shona",
+    "schemaVersion": 1,
+    "checksumSha256": "b3a4dbc91de166abca72583bc9da7fe9a025de39709f49f24974da4720194e51",
+    "totalLessons": 30,
+    "levels": [
+      "A1",
+      "A2",
+      "B1",
+      "B2",
+      "C1"
+    ],
+    "source": "lingafriq_authentic_curriculum",
+    "lessons": [
+      {
+        "id": "Shona-A1-u1-l1",
+        "title": "Hi",
+        "level": "A1",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/c9313d31f4b62dcb.mp3",
+            "sha256": "b38c4395aaf7744f200b45f50b685f5e8da3cee5176ec22a92cd91f3a3dfbd13",
+            "label": "Mangwanani"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/c9313d31f4b62dcb.mp3",
+            "sha256": "35971be5ad79312fe24b6ef4a6445dd377d3de919c2db8e2ff1a3b2aaf81202d",
+            "label": "Mangwanani"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/f2c26b8c71a4ec53.mp3",
+            "sha256": "753515e8e0825c93092d69504d656e5b631f7ba0426e8f9403b487974fd50098",
+            "label": "Mhoro"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/f2c26b8c71a4ec53.mp3",
+            "sha256": "ca236ea46401599c7d93e94cabb2fd2a293c1c5f9d74971846a53662a00cba40",
+            "label": "Mhoro"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/3f9eca0e4a73a98a.mp3",
+            "sha256": "3fc5c139efc56252142d6f59689790546f3d49185ef9b6066ddc6f6afc194f19",
+            "label": "Makadii?"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/3f9eca0e4a73a98a.mp3",
+            "sha256": "966a68e3ba78e64893508c61a08588d1ebe20bb4c6141da28ba5567e53d00ed5",
+            "label": "Makadii?"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-A1-u1-l1",
+          "title": "Hi",
+          "objective": "Greet.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Hi",
+              "type": "Tutorial",
+              "text": "Greet.\n\n• Mangwanani — Good morning\n• Mhoro — Hello\n• Makadii? — How are you?\n\nReal-life Hi — Shona\n\nA: Mangwanani — Good morning\nB: Mhoro — Hello\nA: Makadii? — How are you?",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Mangwanani — Good morning",
+                  "options": [
+                    "Mangwanani — Good morning",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Mangwanani — Good morning"
+                },
+                {
+                  "question": "Recall: Mhoro — Hello",
+                  "options": [
+                    "Mhoro — Hello",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Mhoro — Hello"
+                },
+                {
+                  "question": "Recall: Makadii? — How are you?",
+                  "options": [
+                    "Makadii? — How are you?",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Makadii? — How are you?"
+                },
+                {
+                  "id": "shona-A1-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Hi” in Shona?",
+                  "options": [
+                    "Ndiri zvakanaka",
+                    "Mangwanani",
+                    "Ndinoda",
+                    "Mhoro"
+                  ],
+                  "answer": "Mangwanani"
+                },
+                {
+                  "id": "shona-A1-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Thanks” in Shona?",
+                  "options": [
+                    "Ndiri zvakanaka",
+                    "Ndinoda",
+                    "Ndatenda",
+                    "Zita rangu ndini"
+                  ],
+                  "answer": "Ndatenda"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Mangwanani",
+                  "meaning": "Good morning",
+                  "options": [
+                    "Good morning",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Mhoro",
+                  "meaning": "Hello",
+                  "options": [
+                    "Hello",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Makadii?",
+                  "meaning": "How are you?",
+                  "options": [
+                    "How are you?",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-A1-u1-l2",
+        "title": "Thanks",
+        "level": "A1",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/d22ad7ff23d475d3.mp3",
+            "sha256": "00028cc305d0396abfde8e4651b579fb81396202433fb514f5a1066b86213c31",
+            "label": "Ndatenda"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/d22ad7ff23d475d3.mp3",
+            "sha256": "10a1d0e6b0d1f4ae5472f57a2b747b7c4b44c7f7ec442924b5af9cc7e5e04cdc",
+            "label": "Ndatenda"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/cb2c4fb1d62a1934.mp3",
+            "sha256": "8408ad6569bf00bd79f6a3a27cd303c3e0b60c6cff0091f879c5df090d489c57",
+            "label": "Ndapota"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/cb2c4fb1d62a1934.mp3",
+            "sha256": "d6e725c35ded5858f660f1095e04036b6692d9c38ef924f1ee73780cde68764b",
+            "label": "Ndapota"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/5843328c28602f8a.mp3",
+            "sha256": "c266055141442a443295075c6810cd2748ff60ca8a2dc6973f0606458c82f12b",
+            "label": "Ndiri zvakanaka"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/5843328c28602f8a.mp3",
+            "sha256": "483f8bfbf39aec915f9b9bbba7db9bb6de5fcd0358f9c85a8ad4d39dc46a8068",
+            "label": "Ndiri zvakanaka"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-A1-u1-l2",
+          "title": "Thanks",
+          "objective": "Thanks.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Thanks",
+              "type": "Tutorial",
+              "text": "Thanks.\n\n• Ndatenda — Thank you\n• Ndapota — Please\n• Ndiri zvakanaka — I am fine\n\nReal-life Thanks — Shona\n\nA: Ndatenda — Thank you\nB: Ndapota — Please\nA: Ndiri zvakanaka — I am fine",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Ndatenda — Thank you",
+                  "options": [
+                    "Ndatenda — Thank you",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndatenda — Thank you"
+                },
+                {
+                  "question": "Recall: Ndapota — Please",
+                  "options": [
+                    "Ndapota — Please",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndapota — Please"
+                },
+                {
+                  "question": "Recall: Ndiri zvakanaka — I am fine",
+                  "options": [
+                    "Ndiri zvakanaka — I am fine",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndiri zvakanaka — I am fine"
+                },
+                {
+                  "id": "shona-A1-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Hi” in Shona?",
+                  "options": [
+                    "Ndiri zvakanaka",
+                    "Mangwanani",
+                    "Ndinoda",
+                    "Mhoro"
+                  ],
+                  "answer": "Mangwanani"
+                },
+                {
+                  "id": "shona-A1-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Thanks” in Shona?",
+                  "options": [
+                    "Ndiri zvakanaka",
+                    "Ndinoda",
+                    "Ndatenda",
+                    "Zita rangu ndini"
+                  ],
+                  "answer": "Ndatenda"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Ndatenda",
+                  "meaning": "Thank you",
+                  "options": [
+                    "Thank you",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ndapota",
+                  "meaning": "Please",
+                  "options": [
+                    "Please",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ndiri zvakanaka",
+                  "meaning": "I am fine",
+                  "options": [
+                    "I am fine",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-A1-u1-l3",
+        "title": "Intro",
+        "level": "A1",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/9ae904668196a0ae.mp3",
+            "sha256": "abb94b9485d273ff6466719cc108bec734c97c41b40fe1c769abd32986709229",
+            "label": "Zita rangu ndini"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/9ae904668196a0ae.mp3",
+            "sha256": "41c600bbca0d03a0359199a5883efecd32f4aabf22eb5ec9ca531e5433277673",
+            "label": "Zita rangu ndini"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/e3aaa755318462f3.mp3",
+            "sha256": "0d8e1a3afd7bd7f20a3f8d6bd55b9c2de194a654d179b53b1e41d0c1e38b9f00",
+            "label": "Ndinoda"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/e3aaa755318462f3.mp3",
+            "sha256": "06bfc4c056a54e80b782d18f9fe881b46bd7c4f078cc38cb25b0ae9bf0e5b5f3",
+            "label": "Ndinoda"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/5843328c28602f8a.mp3",
+            "sha256": "c266055141442a443295075c6810cd2748ff60ca8a2dc6973f0606458c82f12b",
+            "label": "Ndiri zvakanaka"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/5843328c28602f8a.mp3",
+            "sha256": "483f8bfbf39aec915f9b9bbba7db9bb6de5fcd0358f9c85a8ad4d39dc46a8068",
+            "label": "Ndiri zvakanaka"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-A1-u1-l3",
+          "title": "Intro",
+          "objective": "Intro.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Intro",
+              "type": "Tutorial",
+              "text": "Intro.\n\n• Zita rangu ndini — My name is\n• Ndinoda — I want\n• Ndiri zvakanaka — I am fine\n\nReal-life Intro — Shona\n\nA: Zita rangu ndini — My name is\nB: Ndinoda — I want\nA: Ndiri zvakanaka — I am fine",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Zita rangu ndini — My name is",
+                  "options": [
+                    "Zita rangu ndini — My name is",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Zita rangu ndini — My name is"
+                },
+                {
+                  "question": "Recall: Ndinoda — I want",
+                  "options": [
+                    "Ndinoda — I want",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndinoda — I want"
+                },
+                {
+                  "question": "Recall: Ndiri zvakanaka — I am fine",
+                  "options": [
+                    "Ndiri zvakanaka — I am fine",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndiri zvakanaka — I am fine"
+                },
+                {
+                  "id": "shona-A1-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Hi” in Shona?",
+                  "options": [
+                    "Ndiri zvakanaka",
+                    "Mangwanani",
+                    "Ndinoda",
+                    "Mhoro"
+                  ],
+                  "answer": "Mangwanani"
+                },
+                {
+                  "id": "shona-A1-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Thanks” in Shona?",
+                  "options": [
+                    "Ndiri zvakanaka",
+                    "Ndinoda",
+                    "Ndatenda",
+                    "Zita rangu ndini"
+                  ],
+                  "answer": "Ndatenda"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Zita rangu ndini",
+                  "meaning": "My name is",
+                  "options": [
+                    "My name is",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ndinoda",
+                  "meaning": "I want",
+                  "options": [
+                    "I want",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ndiri zvakanaka",
+                  "meaning": "I am fine",
+                  "options": [
+                    "I am fine",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-A1-u2-l1",
+        "title": "Home",
+        "level": "A1",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/6bbb3f1d680cf304.mp3",
+            "sha256": "ea65c3f35b3791564224b26261ac07ce9066336eb7e9066dcb53f9413577d6f1",
+            "label": "Imba"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/6bbb3f1d680cf304.mp3",
+            "sha256": "2b574efc124b156d32d5cabbed8f0a7008ba90d5a35bb4ee0ffd55c71e2482cf",
+            "label": "Imba"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/e125514a0fb5600a.mp3",
+            "sha256": "a5efcc3cdde8759dd335555568fc05782e5069707a0b69ea6614f3edeacf70a4",
+            "label": "Mvura"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/e125514a0fb5600a.mp3",
+            "sha256": "030569a3bb7c4c0188e2169f4af5588c1609dd264de47f44be1c2d07c991003e",
+            "label": "Mvura"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/91e2d868e8ae447f.mp3",
+            "sha256": "6a6ac4d30f369cfdc65d28241364f5f1480feeee8784b42c32e0ca45b39998bf",
+            "label": "Chikafu"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/91e2d868e8ae447f.mp3",
+            "sha256": "e2c29a83d5e5507ce4a2515709a9f21a7df0137bf93450744082dc8582a57054",
+            "label": "Chikafu"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-A1-u2-l1",
+          "title": "Home",
+          "objective": "Home.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Home",
+              "type": "Tutorial",
+              "text": "Home.\n\n• Imba — House\n• Mvura — Water\n• Chikafu — Food\n\nReal-life Home — Shona\n\nA: Imba — House\nB: Mvura — Water\nA: Chikafu — Food",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Imba — House",
+                  "options": [
+                    "Imba — House",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Imba — House"
+                },
+                {
+                  "question": "Recall: Mvura — Water",
+                  "options": [
+                    "Mvura — Water",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Mvura — Water"
+                },
+                {
+                  "question": "Recall: Chikafu — Food",
+                  "options": [
+                    "Chikafu — Food",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Chikafu — Food"
+                },
+                {
+                  "id": "shona-A1-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Home” in Shona?",
+                  "options": [
+                    "Mhoro",
+                    "Imba",
+                    "Ndiri zvakanaka",
+                    "Ndatenda"
+                  ],
+                  "answer": "Imba"
+                },
+                {
+                  "id": "shona-A1-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Talk” in Shona?",
+                  "options": [
+                    "Ndiri zvakanaka",
+                    "Mhoro",
+                    "Chikafu",
+                    "Ndatenda"
+                  ],
+                  "answer": "Ndiri zvakanaka"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Imba",
+                  "meaning": "House",
+                  "options": [
+                    "House",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Mvura",
+                  "meaning": "Water",
+                  "options": [
+                    "Water",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Chikafu",
+                  "meaning": "Food",
+                  "options": [
+                    "Food",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-A1-u2-l2",
+        "title": "Talk",
+        "level": "A1",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/5843328c28602f8a.mp3",
+            "sha256": "c266055141442a443295075c6810cd2748ff60ca8a2dc6973f0606458c82f12b",
+            "label": "Ndiri zvakanaka"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/5843328c28602f8a.mp3",
+            "sha256": "483f8bfbf39aec915f9b9bbba7db9bb6de5fcd0358f9c85a8ad4d39dc46a8068",
+            "label": "Ndiri zvakanaka"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/d22ad7ff23d475d3.mp3",
+            "sha256": "00028cc305d0396abfde8e4651b579fb81396202433fb514f5a1066b86213c31",
+            "label": "Ndatenda"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/d22ad7ff23d475d3.mp3",
+            "sha256": "10a1d0e6b0d1f4ae5472f57a2b747b7c4b44c7f7ec442924b5af9cc7e5e04cdc",
+            "label": "Ndatenda"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/f2c26b8c71a4ec53.mp3",
+            "sha256": "753515e8e0825c93092d69504d656e5b631f7ba0426e8f9403b487974fd50098",
+            "label": "Mhoro"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/f2c26b8c71a4ec53.mp3",
+            "sha256": "ca236ea46401599c7d93e94cabb2fd2a293c1c5f9d74971846a53662a00cba40",
+            "label": "Mhoro"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-A1-u2-l2",
+          "title": "Talk",
+          "objective": "Chat.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Talk",
+              "type": "Tutorial",
+              "text": "Chat.\n\n• Ndiri zvakanaka — I am fine\n• Ndatenda — Thank you\n• Mhoro — Hello\n\nReal-life Talk — Shona\n\nA: Ndiri zvakanaka — I am fine\nB: Ndatenda — Thank you\nA: Mhoro — Hello",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Ndiri zvakanaka — I am fine",
+                  "options": [
+                    "Ndiri zvakanaka — I am fine",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndiri zvakanaka — I am fine"
+                },
+                {
+                  "question": "Recall: Ndatenda — Thank you",
+                  "options": [
+                    "Ndatenda — Thank you",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndatenda — Thank you"
+                },
+                {
+                  "question": "Recall: Mhoro — Hello",
+                  "options": [
+                    "Mhoro — Hello",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Mhoro — Hello"
+                },
+                {
+                  "id": "shona-A1-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Home” in Shona?",
+                  "options": [
+                    "Mhoro",
+                    "Imba",
+                    "Ndiri zvakanaka",
+                    "Ndatenda"
+                  ],
+                  "answer": "Imba"
+                },
+                {
+                  "id": "shona-A1-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Talk” in Shona?",
+                  "options": [
+                    "Ndiri zvakanaka",
+                    "Mhoro",
+                    "Chikafu",
+                    "Ndatenda"
+                  ],
+                  "answer": "Ndiri zvakanaka"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Ndiri zvakanaka",
+                  "meaning": "I am fine",
+                  "options": [
+                    "I am fine",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ndatenda",
+                  "meaning": "Thank you",
+                  "options": [
+                    "Thank you",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Mhoro",
+                  "meaning": "Hello",
+                  "options": [
+                    "Hello",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-A1-u2-l3",
+        "title": "Close",
+        "level": "A1",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/5843328c28602f8a.mp3",
+            "sha256": "c266055141442a443295075c6810cd2748ff60ca8a2dc6973f0606458c82f12b",
+            "label": "Ndiri zvakanaka"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/5843328c28602f8a.mp3",
+            "sha256": "483f8bfbf39aec915f9b9bbba7db9bb6de5fcd0358f9c85a8ad4d39dc46a8068",
+            "label": "Ndiri zvakanaka"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/d22ad7ff23d475d3.mp3",
+            "sha256": "00028cc305d0396abfde8e4651b579fb81396202433fb514f5a1066b86213c31",
+            "label": "Ndatenda"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/d22ad7ff23d475d3.mp3",
+            "sha256": "10a1d0e6b0d1f4ae5472f57a2b747b7c4b44c7f7ec442924b5af9cc7e5e04cdc",
+            "label": "Ndatenda"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/f2c26b8c71a4ec53.mp3",
+            "sha256": "753515e8e0825c93092d69504d656e5b631f7ba0426e8f9403b487974fd50098",
+            "label": "Mhoro"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/f2c26b8c71a4ec53.mp3",
+            "sha256": "ca236ea46401599c7d93e94cabb2fd2a293c1c5f9d74971846a53662a00cba40",
+            "label": "Mhoro"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-A1-u2-l3",
+          "title": "Close",
+          "objective": "Bye.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Close",
+              "type": "Tutorial",
+              "text": "Bye.\n\n• Ndiri zvakanaka — I am fine\n• Ndatenda — Thank you\n• Mhoro — Hello\n\nReal-life Close — Shona\n\nA: Ndiri zvakanaka — I am fine\nB: Ndatenda — Thank you\nA: Mhoro — Hello",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Ndiri zvakanaka — I am fine",
+                  "options": [
+                    "Ndiri zvakanaka — I am fine",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndiri zvakanaka — I am fine"
+                },
+                {
+                  "question": "Recall: Ndatenda — Thank you",
+                  "options": [
+                    "Ndatenda — Thank you",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndatenda — Thank you"
+                },
+                {
+                  "question": "Recall: Mhoro — Hello",
+                  "options": [
+                    "Mhoro — Hello",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Mhoro — Hello"
+                },
+                {
+                  "id": "shona-A1-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Home” in Shona?",
+                  "options": [
+                    "Mhoro",
+                    "Imba",
+                    "Ndiri zvakanaka",
+                    "Ndatenda"
+                  ],
+                  "answer": "Imba"
+                },
+                {
+                  "id": "shona-A1-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Talk” in Shona?",
+                  "options": [
+                    "Ndiri zvakanaka",
+                    "Mhoro",
+                    "Chikafu",
+                    "Ndatenda"
+                  ],
+                  "answer": "Ndiri zvakanaka"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Ndiri zvakanaka",
+                  "meaning": "I am fine",
+                  "options": [
+                    "I am fine",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ndatenda",
+                  "meaning": "Thank you",
+                  "options": [
+                    "Thank you",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Mhoro",
+                  "meaning": "Hello",
+                  "options": [
+                    "Hello",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-A2-u1-l1",
+        "title": "Past",
+        "level": "A2",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/d96973dfb06bb669.mp3",
+            "sha256": "6e4b348a9f7ad356e6905e7bb2bc1253fdc6aec31fe1fab20fde6288feef806f",
+            "label": "Ndadya"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/d96973dfb06bb669.mp3",
+            "sha256": "3224e867b29702d9b46b30e4eb12f1b11a852be13120303bef6a6cede41ec0a6",
+            "label": "Ndadya"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/4b224d099d62b75a.mp3",
+            "sha256": "3e1e3c42c4782510c3d6289e5b4c549bb5c6ae2e78f649061b1399f31c4d6de6",
+            "label": "Akasvika"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/4b224d099d62b75a.mp3",
+            "sha256": "4d18e19acdb85d4146ee81b3f61c805633865c26b11c5178bae482f7ab9df871",
+            "label": "Akasvika"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/43a14347f7211af4.mp3",
+            "sha256": "9549f22e65c849568931c89eb0303610b419d5b4ea09c46cf9b12b2f82caf06f",
+            "label": "Taenda"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/43a14347f7211af4.mp3",
+            "sha256": "672f90b1538a74a4a0f1f43ec11734b247d8118bbee3c14ba835773191a62e2e",
+            "label": "Taenda"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-A2-u1-l1",
+          "title": "Past",
+          "objective": "Past.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Past",
+              "type": "Tutorial",
+              "text": "Past.\n\n• Ndadya — I ate\n• Akasvika — Core phrase\n• Taenda — Core phrase\n\nReal-life Past — Shona\n\nA: Ndadya — I ate\nB: Akasvika — Core phrase\nA: Taenda — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Ndadya — I ate",
+                  "options": [
+                    "Ndadya — I ate",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndadya — I ate"
+                },
+                {
+                  "question": "Recall: Akasvika — Core phrase",
+                  "options": [
+                    "Akasvika — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Akasvika — Core phrase"
+                },
+                {
+                  "question": "Recall: Taenda — Core phrase",
+                  "options": [
+                    "Taenda — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Taenda — Core phrase"
+                },
+                {
+                  "id": "shona-A2-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Past” in Shona?",
+                  "options": [
+                    "Akasvika",
+                    "Ndinoda",
+                    "Taenda",
+                    "Ndadya"
+                  ],
+                  "answer": "Ndadya"
+                },
+                {
+                  "id": "shona-A2-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Story” in Shona?",
+                  "options": [
+                    "Ndadya",
+                    "Nezuro",
+                    "Ndinofara",
+                    "Taenda"
+                  ],
+                  "answer": "Nezuro"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Ndadya",
+                  "meaning": "I ate",
+                  "options": [
+                    "I ate",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Akasvika",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Taenda",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-A2-u1-l2",
+        "title": "Story",
+        "level": "A2",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/ac18b22480d4dcba.mp3",
+            "sha256": "abc5ef3c51e68de660bb3c5cd76ed936ad7034e478b8270bf8dcd82e5f5776c1",
+            "label": "Nezuro"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/ac18b22480d4dcba.mp3",
+            "sha256": "5b592676554e0e75f69a773602b696e0d9c02e059aa951a0c346c281a95602ec",
+            "label": "Nezuro"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/51cbac69540eb3ff.mp3",
+            "sha256": "963e576c3c88f5332e051a99e842ff6209be36894e8e606572b0d2a642c7d626",
+            "label": "Zuva rimwe"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/51cbac69540eb3ff.mp3",
+            "sha256": "b8a9ab1121b18fd664ab9b8e7babcb0795614574eae1272e87a1b60f6a8332e7",
+            "label": "Zuva rimwe"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/0a2e4bb9c3919738.mp3",
+            "sha256": "71cbd4647168ae71f86d47bdb002414d526a5628234c55341e7372bffaa1d573",
+            "label": "Ndakaona"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/0a2e4bb9c3919738.mp3",
+            "sha256": "36e4069e54c67b49ce16abce06afce7fe2fbbedb9d3f7bdf72123599840f15eb",
+            "label": "Ndakaona"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-A2-u1-l2",
+          "title": "Story",
+          "objective": "Story.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Story",
+              "type": "Tutorial",
+              "text": "Story.\n\n• Nezuro — Yesterday\n• Zuva rimwe — Core phrase\n• Ndakaona — Core phrase\n\nReal-life Story — Shona\n\nA: Nezuro — Yesterday\nB: Zuva rimwe — Core phrase\nA: Ndakaona — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Nezuro — Yesterday",
+                  "options": [
+                    "Nezuro — Yesterday",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nezuro — Yesterday"
+                },
+                {
+                  "question": "Recall: Zuva rimwe — Core phrase",
+                  "options": [
+                    "Zuva rimwe — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Zuva rimwe — Core phrase"
+                },
+                {
+                  "question": "Recall: Ndakaona — Core phrase",
+                  "options": [
+                    "Ndakaona — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndakaona — Core phrase"
+                },
+                {
+                  "id": "shona-A2-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Past” in Shona?",
+                  "options": [
+                    "Akasvika",
+                    "Ndinoda",
+                    "Taenda",
+                    "Ndadya"
+                  ],
+                  "answer": "Ndadya"
+                },
+                {
+                  "id": "shona-A2-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Story” in Shona?",
+                  "options": [
+                    "Ndadya",
+                    "Nezuro",
+                    "Ndinofara",
+                    "Taenda"
+                  ],
+                  "answer": "Nezuro"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Nezuro",
+                  "meaning": "Yesterday",
+                  "options": [
+                    "Yesterday",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Zuva rimwe",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ndakaona",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-A2-u1-l3",
+        "title": "Feelings",
+        "level": "A2",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/63796927a867b58d.mp3",
+            "sha256": "8248fdb48f2009f2e7b19b85d2718b345f0e9d31932a30549250a93276db993f",
+            "label": "Ndinofara"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/63796927a867b58d.mp3",
+            "sha256": "e7d9357f13fe66220644e96263ddb49e173bb6b5059147dc551d1305fb445534",
+            "label": "Ndinofara"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/82890ada312dd62a.mp3",
+            "sha256": "490f6e40c8261cc7dccf16ac2ebc0e8dc05af099e661c266ca49edf34c7627d3",
+            "label": "Ndakatsamwa"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/82890ada312dd62a.mp3",
+            "sha256": "7561d247704c3dd2e11a878e80b42a8d511d061058634ff161451df6b3f7aff7",
+            "label": "Ndakatsamwa"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/e3aaa755318462f3.mp3",
+            "sha256": "0d8e1a3afd7bd7f20a3f8d6bd55b9c2de194a654d179b53b1e41d0c1e38b9f00",
+            "label": "Ndinoda"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/e3aaa755318462f3.mp3",
+            "sha256": "06bfc4c056a54e80b782d18f9fe881b46bd7c4f078cc38cb25b0ae9bf0e5b5f3",
+            "label": "Ndinoda"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-A2-u1-l3",
+          "title": "Feelings",
+          "objective": "Feelings.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Feelings",
+              "type": "Tutorial",
+              "text": "Feelings.\n\n• Ndinofara — Core phrase\n• Ndakatsamwa — Core phrase\n• Ndinoda — I want\n\nReal-life Feelings — Shona\n\nA: Ndinofara — Core phrase\nB: Ndakatsamwa — Core phrase\nA: Ndinoda — I want",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Ndinofara — Core phrase",
+                  "options": [
+                    "Ndinofara — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndinofara — Core phrase"
+                },
+                {
+                  "question": "Recall: Ndakatsamwa — Core phrase",
+                  "options": [
+                    "Ndakatsamwa — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndakatsamwa — Core phrase"
+                },
+                {
+                  "question": "Recall: Ndinoda — I want",
+                  "options": [
+                    "Ndinoda — I want",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndinoda — I want"
+                },
+                {
+                  "id": "shona-A2-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Past” in Shona?",
+                  "options": [
+                    "Akasvika",
+                    "Ndinoda",
+                    "Taenda",
+                    "Ndadya"
+                  ],
+                  "answer": "Ndadya"
+                },
+                {
+                  "id": "shona-A2-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Story” in Shona?",
+                  "options": [
+                    "Ndadya",
+                    "Nezuro",
+                    "Ndinofara",
+                    "Taenda"
+                  ],
+                  "answer": "Nezuro"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Ndinofara",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ndakatsamwa",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ndinoda",
+                  "meaning": "I want",
+                  "options": [
+                    "I want",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-A2-u2-l1",
+        "title": "Work",
+        "level": "A2",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/f304097dbccd8f06.mp3",
+            "sha256": "a3d66d406ed701f4d5381acff69b5c86ce2230f56a26e844c50226b983b30c51",
+            "label": "Basa"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/f304097dbccd8f06.mp3",
+            "sha256": "31da27186ea159c4597ebeb07523355322f20808e6b5cf3a3d32ef15b752c698",
+            "label": "Basa"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/d3b13b36ae695012.mp3",
+            "sha256": "f55f4ec8e3d7b32880121a3b57aea6ea06a0d05e29866256dcc8fb7c4c1009ba",
+            "label": "Ophisi"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/d3b13b36ae695012.mp3",
+            "sha256": "d80c8c88fc882fd95bbf62cf68c31f6981c6f528f030d83b6dbf8d854af7f112",
+            "label": "Ophisi"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/8d6e0ecf092e0570.mp3",
+            "sha256": "c8b0482c75cfd7fac5b0ae057c607e5ed730768c1e493320e8cb39f2b79311dc",
+            "label": "Ndinoshanda"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/8d6e0ecf092e0570.mp3",
+            "sha256": "61e56b730cc7b7d855634ce499467e575d66e9cb5caa678b33b4a3751e082659",
+            "label": "Ndinoshanda"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-A2-u2-l1",
+          "title": "Work",
+          "objective": "Work.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Work",
+              "type": "Tutorial",
+              "text": "Work.\n\n• Basa — Work\n• Ophisi — Office\n• Ndinoshanda — I work\n\nReal-life Work — Shona\n\nA: Basa — Work\nB: Ophisi — Office\nA: Ndinoshanda — I work",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Basa — Work",
+                  "options": [
+                    "Basa — Work",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Basa — Work"
+                },
+                {
+                  "question": "Recall: Ophisi — Office",
+                  "options": [
+                    "Ophisi — Office",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ophisi — Office"
+                },
+                {
+                  "question": "Recall: Ndinoshanda — I work",
+                  "options": [
+                    "Ndinoshanda — I work",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndinoshanda — I work"
+                },
+                {
+                  "id": "shona-A2-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Work” in Shona?",
+                  "options": [
+                    "Mangwana",
+                    "Ophisi",
+                    "Ndapota ndibatsire",
+                    "Basa"
+                  ],
+                  "answer": "Basa"
+                },
+                {
+                  "id": "shona-A2-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Help” in Shona?",
+                  "options": [
+                    "Mangwana",
+                    "Ndinoshanda",
+                    "Maawa maviri",
+                    "Ndapota ndibatsire"
+                  ],
+                  "answer": "Ndapota ndibatsire"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Basa",
+                  "meaning": "Work",
+                  "options": [
+                    "Work",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ophisi",
+                  "meaning": "Office",
+                  "options": [
+                    "Office",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ndinoshanda",
+                  "meaning": "I work",
+                  "options": [
+                    "I work",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-A2-u2-l2",
+        "title": "Help",
+        "level": "A2",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/6aeab2efac53a488.mp3",
+            "sha256": "e3240978d9a24133cfa430a3d3c5949db3a725e5495a3bca30d9131570c20b1a",
+            "label": "Ndapota ndibatsire"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/6aeab2efac53a488.mp3",
+            "sha256": "0f65f47b38ef5a86bbbc4deaebf6b5697bf6d480f74e95da2aea29006f94dca5",
+            "label": "Ndapota ndibatsire"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/a16050c985dabead.mp3",
+            "sha256": "64599d400ae6a9fa9453687564c2a5d3f28896f589c9fe6871b59889ef85d84d",
+            "label": "Unogona?"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/a16050c985dabead.mp3",
+            "sha256": "2d2a50a16badae5a8c65a2f487ed7e06649a1d14e36b24977df7ac303fd20fb3",
+            "label": "Unogona?"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/e3aaa755318462f3.mp3",
+            "sha256": "0d8e1a3afd7bd7f20a3f8d6bd55b9c2de194a654d179b53b1e41d0c1e38b9f00",
+            "label": "Ndinoda"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/e3aaa755318462f3.mp3",
+            "sha256": "06bfc4c056a54e80b782d18f9fe881b46bd7c4f078cc38cb25b0ae9bf0e5b5f3",
+            "label": "Ndinoda"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-A2-u2-l2",
+          "title": "Help",
+          "objective": "Help.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Help",
+              "type": "Tutorial",
+              "text": "Help.\n\n• Ndapota ndibatsire — Core phrase\n• Unogona? — Core phrase\n• Ndinoda — I want\n\nReal-life Help — Shona\n\nA: Ndapota ndibatsire — Core phrase\nB: Unogona? — Core phrase\nA: Ndinoda — I want",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Ndapota ndibatsire — Core phrase",
+                  "options": [
+                    "Ndapota ndibatsire — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndapota ndibatsire — Core phrase"
+                },
+                {
+                  "question": "Recall: Unogona? — Core phrase",
+                  "options": [
+                    "Unogona? — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Unogona? — Core phrase"
+                },
+                {
+                  "question": "Recall: Ndinoda — I want",
+                  "options": [
+                    "Ndinoda — I want",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndinoda — I want"
+                },
+                {
+                  "id": "shona-A2-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Work” in Shona?",
+                  "options": [
+                    "Mangwana",
+                    "Ophisi",
+                    "Ndapota ndibatsire",
+                    "Basa"
+                  ],
+                  "answer": "Basa"
+                },
+                {
+                  "id": "shona-A2-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Help” in Shona?",
+                  "options": [
+                    "Mangwana",
+                    "Ndinoshanda",
+                    "Maawa maviri",
+                    "Ndapota ndibatsire"
+                  ],
+                  "answer": "Ndapota ndibatsire"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Ndapota ndibatsire",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Unogona?",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ndinoda",
+                  "meaning": "I want",
+                  "options": [
+                    "I want",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-A2-u2-l3",
+        "title": "Future",
+        "level": "A2",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/0dbc0e6d4037afa9.mp3",
+            "sha256": "4779752834ef2d598f610096dde7b4f1d5875ef8bb76a75dd5cc9a2d6df9058b",
+            "label": "Ndichaenda"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/0dbc0e6d4037afa9.mp3",
+            "sha256": "2651b7601f8f521e6cc403e124b45517404b35815d2e1585c278f9b8ee1e52ad",
+            "label": "Ndichaenda"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/3e5f18d77b8ef745.mp3",
+            "sha256": "2ec1103acfd79d729064e11fb43ca38a14b3d1fcacd4af1653eab55590038521",
+            "label": "Mangwana"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/3e5f18d77b8ef745.mp3",
+            "sha256": "a6951504232f3e7e7a6133f88d9c6ca75d9cf6bdc879357a9431e3fc7e5bcd3d",
+            "label": "Mangwana"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/1fce694851195d0d.mp3",
+            "sha256": "1debdd2ab3af7dfd7ed5798511a0782d8dd1e87fe777970eb80ebd8eb6281ff3",
+            "label": "Maawa maviri"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/1fce694851195d0d.mp3",
+            "sha256": "7e8e606dd8b5320876fcee5c875003cdeda6a54b28b99a44962a446ed3d03b41",
+            "label": "Maawa maviri"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-A2-u2-l3",
+          "title": "Future",
+          "objective": "Future.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Future",
+              "type": "Tutorial",
+              "text": "Future.\n\n• Ndichaenda — Core phrase\n• Mangwana — Tomorrow\n• Maawa maviri — Core phrase\n\nReal-life Future — Shona\n\nA: Ndichaenda — Core phrase\nB: Mangwana — Tomorrow\nA: Maawa maviri — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Ndichaenda — Core phrase",
+                  "options": [
+                    "Ndichaenda — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndichaenda — Core phrase"
+                },
+                {
+                  "question": "Recall: Mangwana — Tomorrow",
+                  "options": [
+                    "Mangwana — Tomorrow",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Mangwana — Tomorrow"
+                },
+                {
+                  "question": "Recall: Maawa maviri — Core phrase",
+                  "options": [
+                    "Maawa maviri — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Maawa maviri — Core phrase"
+                },
+                {
+                  "id": "shona-A2-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Work” in Shona?",
+                  "options": [
+                    "Mangwana",
+                    "Ophisi",
+                    "Ndapota ndibatsire",
+                    "Basa"
+                  ],
+                  "answer": "Basa"
+                },
+                {
+                  "id": "shona-A2-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Help” in Shona?",
+                  "options": [
+                    "Mangwana",
+                    "Ndinoshanda",
+                    "Maawa maviri",
+                    "Ndapota ndibatsire"
+                  ],
+                  "answer": "Ndapota ndibatsire"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Ndichaenda",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Mangwana",
+                  "meaning": "Tomorrow",
+                  "options": [
+                    "Tomorrow",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Maawa maviri",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-B1-u1-l1",
+        "title": "Think",
+        "level": "B1",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/c871c612d95be927.mp3",
+            "sha256": "a71fcda37e84405a7faa611b89131cfd906d8e0aedfcf666676dd5e25ef75ae3",
+            "label": "Ndinofunga"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/c871c612d95be927.mp3",
+            "sha256": "4f853e3f8f0b556a26d6e213ce734bc828db10b18110e5447effb43b3edef45a",
+            "label": "Ndinofunga"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/091b7876eace604d.mp3",
+            "sha256": "93bd6937a45388dd3edfc2794741c891ee485dc6cc1ab6035bfd397e82f6d94d",
+            "label": "Ndinobvuma"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/091b7876eace604d.mp3",
+            "sha256": "4beca9190293a0647b3e6aa06fc374dab03480520516175ca0a1a42d4a75eab4",
+            "label": "Ndinobvuma"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/ebd6c1ec18e4d519.mp3",
+            "sha256": "85b5e1c709b341b11dca7bcb2e9ac4c86f2f3b79b4588e459fb9e998a798650a",
+            "label": "Handibvumi"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/ebd6c1ec18e4d519.mp3",
+            "sha256": "1fcf59a78f8559512b38ef9a2933ff1f6977be05c5203eb87b29668d33d1ecaa",
+            "label": "Handibvumi"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-B1-u1-l1",
+          "title": "Think",
+          "objective": "Opinions.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Think",
+              "type": "Tutorial",
+              "text": "Opinions.\n\n• Ndinofunga — I think\n• Ndinobvuma — I agree\n• Handibvumi — I disagree\n\nReal-life Think — Shona\n\nA: Ndinofunga — I think\nB: Ndinobvuma — I agree\nA: Handibvumi — I disagree",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Ndinofunga — I think",
+                  "options": [
+                    "Ndinofunga — I think",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndinofunga — I think"
+                },
+                {
+                  "question": "Recall: Ndinobvuma — I agree",
+                  "options": [
+                    "Ndinobvuma — I agree",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndinobvuma — I agree"
+                },
+                {
+                  "question": "Recall: Handibvumi — I disagree",
+                  "options": [
+                    "Handibvumi — I disagree",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Handibvumi — I disagree"
+                },
+                {
+                  "id": "shona-B1-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Think” in Shona?",
+                  "options": [
+                    "Ndinonzwisisa",
+                    "Hazvina kuita",
+                    "Redhiyo",
+                    "Ndinofunga"
+                  ],
+                  "answer": "Ndinofunga"
+                },
+                {
+                  "id": "shona-B1-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Debate” in Shona?",
+                  "options": [
+                    "Ndakanzwa",
+                    "Ndinobvuma",
+                    "Ndinonzwisisa",
+                    "Chokwadi?"
+                  ],
+                  "answer": "Chokwadi?"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Ndinofunga",
+                  "meaning": "I think",
+                  "options": [
+                    "I think",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ndinobvuma",
+                  "meaning": "I agree",
+                  "options": [
+                    "I agree",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Handibvumi",
+                  "meaning": "I disagree",
+                  "options": [
+                    "I disagree",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-B1-u1-l2",
+        "title": "Debate",
+        "level": "B1",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/fa450b1edf8fa864.mp3",
+            "sha256": "b5bb7c7764e0b90b5aa7d43d063862510a2d89b413e80c05b42cc30d23d055fc",
+            "label": "Chokwadi?"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/fa450b1edf8fa864.mp3",
+            "sha256": "6c2e9ba835c27ea67880dcc011f658b56d03d653b7c312ce0bd9c02803632162",
+            "label": "Chokwadi?"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/1affa35f940cb081.mp3",
+            "sha256": "a6760a341cdb99331c22fcca6ad1e087aeb34f6df897c39a0bff394138c3f3ea",
+            "label": "Hazvina kuita"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/1affa35f940cb081.mp3",
+            "sha256": "7a5ab542611cfd708bfc3942fb61b7eb635428b2394fab4816944580b9bb534c",
+            "label": "Hazvina kuita"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/634027c6c827ec44.mp3",
+            "sha256": "1c19b0559bfaa46c451daecf84b0ec87355c74e47fc7af3137a51d1cf5d18f32",
+            "label": "Ndinonzwisisa"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/634027c6c827ec44.mp3",
+            "sha256": "a2e7dae431bb4d0504affb5eb8d5f653800aedd004de51bba002313ddaadeed6",
+            "label": "Ndinonzwisisa"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-B1-u1-l2",
+          "title": "Debate",
+          "objective": "Debate.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Debate",
+              "type": "Tutorial",
+              "text": "Debate.\n\n• Chokwadi? — Core phrase\n• Hazvina kuita — Core phrase\n• Ndinonzwisisa — Core phrase\n\nReal-life Debate — Shona\n\nA: Chokwadi? — Core phrase\nB: Hazvina kuita — Core phrase\nA: Ndinonzwisisa — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Chokwadi? — Core phrase",
+                  "options": [
+                    "Chokwadi? — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Chokwadi? — Core phrase"
+                },
+                {
+                  "question": "Recall: Hazvina kuita — Core phrase",
+                  "options": [
+                    "Hazvina kuita — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Hazvina kuita — Core phrase"
+                },
+                {
+                  "question": "Recall: Ndinonzwisisa — Core phrase",
+                  "options": [
+                    "Ndinonzwisisa — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndinonzwisisa — Core phrase"
+                },
+                {
+                  "id": "shona-B1-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Think” in Shona?",
+                  "options": [
+                    "Ndinonzwisisa",
+                    "Hazvina kuita",
+                    "Redhiyo",
+                    "Ndinofunga"
+                  ],
+                  "answer": "Ndinofunga"
+                },
+                {
+                  "id": "shona-B1-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Debate” in Shona?",
+                  "options": [
+                    "Ndakanzwa",
+                    "Ndinobvuma",
+                    "Ndinonzwisisa",
+                    "Chokwadi?"
+                  ],
+                  "answer": "Chokwadi?"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Chokwadi?",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Hazvina kuita",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ndinonzwisisa",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-B1-u1-l3",
+        "title": "News",
+        "level": "B1",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/d23a8096f8e29888.mp3",
+            "sha256": "41ccb1311be2b586523cff1fb5d40373e6bfd61f05226f84f05091a9f9f9477a",
+            "label": "Nhau"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/d23a8096f8e29888.mp3",
+            "sha256": "070ec585a0a38babd85b6e0ef303080992b9661d8a9ed715b63c17d06d2f8d5f",
+            "label": "Nhau"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/9f6cdcf00bd14016.mp3",
+            "sha256": "457724de5d90ca4d52f37373f826a3e350c31955048cd4705e26e39a71684711",
+            "label": "Redhiyo"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/9f6cdcf00bd14016.mp3",
+            "sha256": "c5e819605070033ceb692e3e83af5f5ee81149d48aab3d9786c594b5d28dca46",
+            "label": "Redhiyo"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/a7361c25b4db2ae8.mp3",
+            "sha256": "a9718b4a7fb2911f338d293701e66c8757b150d35710734bb5b04d724c44d61d",
+            "label": "Ndakanzwa"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/a7361c25b4db2ae8.mp3",
+            "sha256": "fb85e9296a8bc210efdaa258e7899ec21a40ce0dc9633dd8d53e1d7d1ca4b8f5",
+            "label": "Ndakanzwa"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-B1-u1-l3",
+          "title": "News",
+          "objective": "News.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "News",
+              "type": "Tutorial",
+              "text": "News.\n\n• Nhau — News\n• Redhiyo — Core phrase\n• Ndakanzwa — Core phrase\n\nReal-life News — Shona\n\nA: Nhau — News\nB: Redhiyo — Core phrase\nA: Ndakanzwa — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Nhau — News",
+                  "options": [
+                    "Nhau — News",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nhau — News"
+                },
+                {
+                  "question": "Recall: Redhiyo — Core phrase",
+                  "options": [
+                    "Redhiyo — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Redhiyo — Core phrase"
+                },
+                {
+                  "question": "Recall: Ndakanzwa — Core phrase",
+                  "options": [
+                    "Ndakanzwa — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndakanzwa — Core phrase"
+                },
+                {
+                  "id": "shona-B1-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Think” in Shona?",
+                  "options": [
+                    "Ndinonzwisisa",
+                    "Hazvina kuita",
+                    "Redhiyo",
+                    "Ndinofunga"
+                  ],
+                  "answer": "Ndinofunga"
+                },
+                {
+                  "id": "shona-B1-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Debate” in Shona?",
+                  "options": [
+                    "Ndakanzwa",
+                    "Ndinobvuma",
+                    "Ndinonzwisisa",
+                    "Chokwadi?"
+                  ],
+                  "answer": "Chokwadi?"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Nhau",
+                  "meaning": "News",
+                  "options": [
+                    "News",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Redhiyo",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ndakanzwa",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-B1-u2-l1",
+        "title": "Health",
+        "level": "B1",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/4fd639fa813103dc.mp3",
+            "sha256": "ce783302e173bc259fdfdaa2a852a9f5c8129e81c755236838e385298c8bd580",
+            "label": "Chirwere"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/4fd639fa813103dc.mp3",
+            "sha256": "6a4465051bfd458a6fa1de0be250edbe9fc3fdb619919cd2b0e12f635260a265",
+            "label": "Chirwere"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/454acbef171ca8c5.mp3",
+            "sha256": "694812159b1502e370fd8d5c26efcbae20d702895cd627ab954e28ce1ce4d888",
+            "label": "Mishonga"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/454acbef171ca8c5.mp3",
+            "sha256": "282660fa6e2fd346d1c0e890e46c64d7c7320e0071807766946e493c52abf1a7",
+            "label": "Mishonga"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/3fcadde6cf8b2ac8.mp3",
+            "sha256": "81f9c7501b0e2252400528bc5408275fcad44adc141d0399dc310534bc7b949c",
+            "label": "Ndarwara"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/3fcadde6cf8b2ac8.mp3",
+            "sha256": "d468fab76883d5f21477d9cc79a012815d127e31c6caf0502ac2d23d68a1c7df",
+            "label": "Ndarwara"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-B1-u2-l1",
+          "title": "Health",
+          "objective": "Health.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Health",
+              "type": "Tutorial",
+              "text": "Health.\n\n• Chirwere — Core phrase\n• Mishonga — Core phrase\n• Ndarwara — Core phrase\n\nReal-life Health — Shona\n\nA: Chirwere — Core phrase\nB: Mishonga — Core phrase\nA: Ndarwara — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Chirwere — Core phrase",
+                  "options": [
+                    "Chirwere — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Chirwere — Core phrase"
+                },
+                {
+                  "question": "Recall: Mishonga — Core phrase",
+                  "options": [
+                    "Mishonga — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Mishonga — Core phrase"
+                },
+                {
+                  "question": "Recall: Ndarwara — Core phrase",
+                  "options": [
+                    "Ndarwara — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndarwara — Core phrase"
+                },
+                {
+                  "id": "shona-B1-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Health” in Shona?",
+                  "options": [
+                    "Ndichachengeta",
+                    "Chirwere",
+                    "Ndapota",
+                    "Tsika"
+                  ],
+                  "answer": "Chirwere"
+                },
+                {
+                  "id": "shona-B1-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Society” in Shona?",
+                  "options": [
+                    "Nharaunda",
+                    "Zvakakosha",
+                    "Chirwere",
+                    "Ndichachengeta"
+                  ],
+                  "answer": "Nharaunda"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Chirwere",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Mishonga",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ndarwara",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-B1-u2-l2",
+        "title": "Society",
+        "level": "B1",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/809735bdea738e07.mp3",
+            "sha256": "74478ed504624ef096cb293e82434dca7c3887d05662b931690a8bf0a82976b1",
+            "label": "Nharaunda"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/809735bdea738e07.mp3",
+            "sha256": "9a029c2fc68dcaca3dbdd59849f8a66372f92c8a29d1868d3cfa8f64dd16b5db",
+            "label": "Nharaunda"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/4ad2294c2e2b4c53.mp3",
+            "sha256": "06987d719031cd11af7c0c5d448610f895e96e83df8e6084df2f3cee02a455b3",
+            "label": "Chikoro"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/4ad2294c2e2b4c53.mp3",
+            "sha256": "76048a1e0e3d7b38bcb15f9c3f9e9a498f71b61cef6b74b068e80ac17a725670",
+            "label": "Chikoro"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/a78b13e40500102d.mp3",
+            "sha256": "9a63cefab978001da41237478859bc906e715dac883f33a0e80293d80590e668",
+            "label": "Tsika"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/a78b13e40500102d.mp3",
+            "sha256": "4c71772e2686eddbd6a6b8083a28ea7ad2b7d3cc2fe72d40f452680cd7a0fc3b",
+            "label": "Tsika"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-B1-u2-l2",
+          "title": "Society",
+          "objective": "Society.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Society",
+              "type": "Tutorial",
+              "text": "Society.\n\n• Nharaunda — Community\n• Chikoro — Core phrase\n• Tsika — Culture\n\nReal-life Society — Shona\n\nA: Nharaunda — Community\nB: Chikoro — Core phrase\nA: Tsika — Culture",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Nharaunda — Community",
+                  "options": [
+                    "Nharaunda — Community",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nharaunda — Community"
+                },
+                {
+                  "question": "Recall: Chikoro — Core phrase",
+                  "options": [
+                    "Chikoro — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Chikoro — Core phrase"
+                },
+                {
+                  "question": "Recall: Tsika — Culture",
+                  "options": [
+                    "Tsika — Culture",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Tsika — Culture"
+                },
+                {
+                  "id": "shona-B1-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Health” in Shona?",
+                  "options": [
+                    "Ndichachengeta",
+                    "Chirwere",
+                    "Ndapota",
+                    "Tsika"
+                  ],
+                  "answer": "Chirwere"
+                },
+                {
+                  "id": "shona-B1-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Society” in Shona?",
+                  "options": [
+                    "Nharaunda",
+                    "Zvakakosha",
+                    "Chirwere",
+                    "Ndichachengeta"
+                  ],
+                  "answer": "Nharaunda"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Nharaunda",
+                  "meaning": "Community",
+                  "options": [
+                    "Community",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Chikoro",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Tsika",
+                  "meaning": "Culture",
+                  "options": [
+                    "Culture",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-B1-u2-l3",
+        "title": "Advice",
+        "level": "B1",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/9b06b6858699885c.mp3",
+            "sha256": "cd1115b7435a7ae92b588bee45d6d9ab1684aa5c37a712269b4c4f4a117eec3e",
+            "label": "Ndichachengeta"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/9b06b6858699885c.mp3",
+            "sha256": "7f6c376862c9147bd1d3d61a8ee1689d696c9e3505eb3f85d08229071522e981",
+            "label": "Ndichachengeta"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/3dd80dbfffab7654.mp3",
+            "sha256": "0234f3eb2fd3d091aa153c5c6ebed74139191fa66d20acc6f799acf131da55fe",
+            "label": "Zvakakosha"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/3dd80dbfffab7654.mp3",
+            "sha256": "a9cf5f548e7fa7f502ca758a9506e7e8493d84c6ef926442ada7c76d6b241548",
+            "label": "Zvakakosha"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/cb2c4fb1d62a1934.mp3",
+            "sha256": "8408ad6569bf00bd79f6a3a27cd303c3e0b60c6cff0091f879c5df090d489c57",
+            "label": "Ndapota"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/cb2c4fb1d62a1934.mp3",
+            "sha256": "d6e725c35ded5858f660f1095e04036b6692d9c38ef924f1ee73780cde68764b",
+            "label": "Ndapota"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-B1-u2-l3",
+          "title": "Advice",
+          "objective": "Advice.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Advice",
+              "type": "Tutorial",
+              "text": "Advice.\n\n• Ndichachengeta — Core phrase\n• Zvakakosha — Core phrase\n• Ndapota — Please\n\nReal-life Advice — Shona\n\nA: Ndichachengeta — Core phrase\nB: Zvakakosha — Core phrase\nA: Ndapota — Please",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Ndichachengeta — Core phrase",
+                  "options": [
+                    "Ndichachengeta — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndichachengeta — Core phrase"
+                },
+                {
+                  "question": "Recall: Zvakakosha — Core phrase",
+                  "options": [
+                    "Zvakakosha — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Zvakakosha — Core phrase"
+                },
+                {
+                  "question": "Recall: Ndapota — Please",
+                  "options": [
+                    "Ndapota — Please",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndapota — Please"
+                },
+                {
+                  "id": "shona-B1-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Health” in Shona?",
+                  "options": [
+                    "Ndichachengeta",
+                    "Chirwere",
+                    "Ndapota",
+                    "Tsika"
+                  ],
+                  "answer": "Chirwere"
+                },
+                {
+                  "id": "shona-B1-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Society” in Shona?",
+                  "options": [
+                    "Nharaunda",
+                    "Zvakakosha",
+                    "Chirwere",
+                    "Ndichachengeta"
+                  ],
+                  "answer": "Nharaunda"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Ndichachengeta",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Zvakakosha",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ndapota",
+                  "meaning": "Please",
+                  "options": [
+                    "Please",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-B2-u1-l1",
+        "title": "Intro",
+        "level": "B2",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/c9313d31f4b62dcb.mp3",
+            "sha256": "b38c4395aaf7744f200b45f50b685f5e8da3cee5176ec22a92cd91f3a3dfbd13",
+            "label": "Mangwanani"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/c9313d31f4b62dcb.mp3",
+            "sha256": "35971be5ad79312fe24b6ef4a6445dd377d3de919c2db8e2ff1a3b2aaf81202d",
+            "label": "Mangwanani"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/9ae904668196a0ae.mp3",
+            "sha256": "abb94b9485d273ff6466719cc108bec734c97c41b40fe1c769abd32986709229",
+            "label": "Zita rangu ndini"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/9ae904668196a0ae.mp3",
+            "sha256": "41c600bbca0d03a0359199a5883efecd32f4aabf22eb5ec9ca531e5433277673",
+            "label": "Zita rangu ndini"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/9302d09315a77a15.mp3",
+            "sha256": "77c887697c8281c1d4afcda2f426ba86569873364ce3730b410187951bbb16ca",
+            "label": "Ndinoshanda pano"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/9302d09315a77a15.mp3",
+            "sha256": "600766ba36af607af3bd2484dced426811fcaf3cefbe6960c09bc3e71c8a842b",
+            "label": "Ndinoshanda pano"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-B2-u1-l1",
+          "title": "Intro",
+          "objective": "Work intro.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Intro",
+              "type": "Tutorial",
+              "text": "Work intro.\n\n• Mangwanani — Good morning\n• Zita rangu ndini — My name is\n• Ndinoshanda pano — Core phrase\n\nReal-life Intro — Shona\n\nA: Mangwanani — Good morning\nB: Zita rangu ndini — My name is\nA: Ndinoshanda pano — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Mangwanani — Good morning",
+                  "options": [
+                    "Mangwanani — Good morning",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Mangwanani — Good morning"
+                },
+                {
+                  "question": "Recall: Zita rangu ndini — My name is",
+                  "options": [
+                    "Zita rangu ndini — My name is",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Zita rangu ndini — My name is"
+                },
+                {
+                  "question": "Recall: Ndinoshanda pano — Core phrase",
+                  "options": [
+                    "Ndinoshanda pano — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndinoshanda pano — Core phrase"
+                },
+                {
+                  "id": "shona-B2-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Intro” in Shona?",
+                  "options": [
+                    "Ndapota",
+                    "Zvakanaka",
+                    "Ndichatumira email",
+                    "Mangwanani"
+                  ],
+                  "answer": "Mangwanani"
+                },
+                {
+                  "id": "shona-B2-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Meeting” in Shona?",
+                  "options": [
+                    "Ndinofunga",
+                    "Ndinobvuma",
+                    "Ndapota",
+                    "Ndichatumira email"
+                  ],
+                  "answer": "Ndinofunga"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Mangwanani",
+                  "meaning": "Good morning",
+                  "options": [
+                    "Good morning",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Zita rangu ndini",
+                  "meaning": "My name is",
+                  "options": [
+                    "My name is",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ndinoshanda pano",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-B2-u1-l2",
+        "title": "Meeting",
+        "level": "B2",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/c871c612d95be927.mp3",
+            "sha256": "a71fcda37e84405a7faa611b89131cfd906d8e0aedfcf666676dd5e25ef75ae3",
+            "label": "Ndinofunga"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/c871c612d95be927.mp3",
+            "sha256": "4f853e3f8f0b556a26d6e213ce734bc828db10b18110e5447effb43b3edef45a",
+            "label": "Ndinofunga"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/091b7876eace604d.mp3",
+            "sha256": "93bd6937a45388dd3edfc2794741c891ee485dc6cc1ab6035bfd397e82f6d94d",
+            "label": "Ndinobvuma"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/091b7876eace604d.mp3",
+            "sha256": "4beca9190293a0647b3e6aa06fc374dab03480520516175ca0a1a42d4a75eab4",
+            "label": "Ndinobvuma"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/359ac9bc3adde7f8.mp3",
+            "sha256": "32f1780cdd96f84497265345df6e97234fb4ff57e670f5f4b42fd8ac89748608",
+            "label": "Tichadzoka"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/359ac9bc3adde7f8.mp3",
+            "sha256": "ee074d00b35df43f4c4d9bd2dac3700d1453e879da59e3fab09e061a121f9a28",
+            "label": "Tichadzoka"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-B2-u1-l2",
+          "title": "Meeting",
+          "objective": "Meeting.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Meeting",
+              "type": "Tutorial",
+              "text": "Meeting.\n\n• Ndinofunga — I think\n• Ndinobvuma — I agree\n• Tichadzoka — Core phrase\n\nReal-life Meeting — Shona\n\nA: Ndinofunga — I think\nB: Ndinobvuma — I agree\nA: Tichadzoka — Core phrase\nB: Ndinofunga — I think",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Ndinofunga — I think",
+                  "options": [
+                    "Ndinofunga — I think",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndinofunga — I think"
+                },
+                {
+                  "question": "Recall: Ndinobvuma — I agree",
+                  "options": [
+                    "Ndinobvuma — I agree",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndinobvuma — I agree"
+                },
+                {
+                  "question": "Recall: Tichadzoka — Core phrase",
+                  "options": [
+                    "Tichadzoka — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Tichadzoka — Core phrase"
+                },
+                {
+                  "id": "shona-B2-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Intro” in Shona?",
+                  "options": [
+                    "Ndapota",
+                    "Zvakanaka",
+                    "Ndichatumira email",
+                    "Mangwanani"
+                  ],
+                  "answer": "Mangwanani"
+                },
+                {
+                  "id": "shona-B2-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Meeting” in Shona?",
+                  "options": [
+                    "Ndinofunga",
+                    "Ndinobvuma",
+                    "Ndapota",
+                    "Ndichatumira email"
+                  ],
+                  "answer": "Ndinofunga"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Ndinofunga",
+                  "meaning": "I think",
+                  "options": [
+                    "I think",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ndinobvuma",
+                  "meaning": "I agree",
+                  "options": [
+                    "I agree",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Tichadzoka",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-B2-u1-l3",
+        "title": "Formal",
+        "level": "B2",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/cb2c4fb1d62a1934.mp3",
+            "sha256": "8408ad6569bf00bd79f6a3a27cd303c3e0b60c6cff0091f879c5df090d489c57",
+            "label": "Ndapota"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/cb2c4fb1d62a1934.mp3",
+            "sha256": "d6e725c35ded5858f660f1095e04036b6692d9c38ef924f1ee73780cde68764b",
+            "label": "Ndapota"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/2c1d7f3210a2f6de.mp3",
+            "sha256": "4ce42f30fe60937ed6dc77984aa24b42f22b6fd2ee7465ab132b3790a5884136",
+            "label": "Ndichatumira email"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/2c1d7f3210a2f6de.mp3",
+            "sha256": "500cf4d71950477fcc41ba216e6260c2c02bd150a1c9b1d1d8a29d19d29237e1",
+            "label": "Ndichatumira email"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/96b8de819c0f3e16.mp3",
+            "sha256": "43c99763432cde5e42fddbf30420be1a6154ab9dec10b50ce80aa75329ce84b8",
+            "label": "Zvakanaka"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/96b8de819c0f3e16.mp3",
+            "sha256": "db1c734eb5a2fba9c266fe3d16b7dfe6a2a3648dc18cf9c7c3581242ab837f40",
+            "label": "Zvakanaka"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-B2-u1-l3",
+          "title": "Formal",
+          "objective": "Formal.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Formal",
+              "type": "Tutorial",
+              "text": "Formal.\n\n• Ndapota — Please\n• Ndichatumira email — Core phrase\n• Zvakanaka — Core phrase\n\nReal-life Formal — Shona\n\nA: Ndapota — Please\nB: Ndichatumira email — Core phrase\nA: Zvakanaka — Core phrase\nB: Ndapota — Please",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Ndapota — Please",
+                  "options": [
+                    "Ndapota — Please",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndapota — Please"
+                },
+                {
+                  "question": "Recall: Ndichatumira email — Core phrase",
+                  "options": [
+                    "Ndichatumira email — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndichatumira email — Core phrase"
+                },
+                {
+                  "question": "Recall: Zvakanaka — Core phrase",
+                  "options": [
+                    "Zvakanaka — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Zvakanaka — Core phrase"
+                },
+                {
+                  "id": "shona-B2-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Intro” in Shona?",
+                  "options": [
+                    "Ndapota",
+                    "Zvakanaka",
+                    "Ndichatumira email",
+                    "Mangwanani"
+                  ],
+                  "answer": "Mangwanani"
+                },
+                {
+                  "id": "shona-B2-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Meeting” in Shona?",
+                  "options": [
+                    "Ndinofunga",
+                    "Ndinobvuma",
+                    "Ndapota",
+                    "Ndichatumira email"
+                  ],
+                  "answer": "Ndinofunga"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Ndapota",
+                  "meaning": "Please",
+                  "options": [
+                    "Please",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ndichatumira email",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Zvakanaka",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-B2-u2-l1",
+        "title": "News",
+        "level": "B2",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/d23a8096f8e29888.mp3",
+            "sha256": "41ccb1311be2b586523cff1fb5d40373e6bfd61f05226f84f05091a9f9f9477a",
+            "label": "Nhau"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/d23a8096f8e29888.mp3",
+            "sha256": "070ec585a0a38babd85b6e0ef303080992b9661d8a9ed715b63c17d06d2f8d5f",
+            "label": "Nhau"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/9f6cdcf00bd14016.mp3",
+            "sha256": "457724de5d90ca4d52f37373f826a3e350c31955048cd4705e26e39a71684711",
+            "label": "Redhiyo"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/9f6cdcf00bd14016.mp3",
+            "sha256": "c5e819605070033ceb692e3e83af5f5ee81149d48aab3d9786c594b5d28dca46",
+            "label": "Redhiyo"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/a7361c25b4db2ae8.mp3",
+            "sha256": "a9718b4a7fb2911f338d293701e66c8757b150d35710734bb5b04d724c44d61d",
+            "label": "Ndakanzwa"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/a7361c25b4db2ae8.mp3",
+            "sha256": "fb85e9296a8bc210efdaa258e7899ec21a40ce0dc9633dd8d53e1d7d1ca4b8f5",
+            "label": "Ndakanzwa"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-B2-u2-l1",
+          "title": "News",
+          "objective": "News.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "News",
+              "type": "Tutorial",
+              "text": "News.\n\n• Nhau — News\n• Redhiyo — Core phrase\n• Ndakanzwa — Core phrase\n\nReal-life News — Shona\n\nA: Nhau — News\nB: Redhiyo — Core phrase\nA: Ndakanzwa — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Nhau — News",
+                  "options": [
+                    "Nhau — News",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nhau — News"
+                },
+                {
+                  "question": "Recall: Redhiyo — Core phrase",
+                  "options": [
+                    "Redhiyo — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Redhiyo — Core phrase"
+                },
+                {
+                  "question": "Recall: Ndakanzwa — Core phrase",
+                  "options": [
+                    "Ndakanzwa — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndakanzwa — Core phrase"
+                },
+                {
+                  "id": "shona-B2-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “News” in Shona?",
+                  "options": [
+                    "Nhau",
+                    "Ndakanzwa",
+                    "Chokwadi?",
+                    "Ndinonzwisisa"
+                  ],
+                  "answer": "Nhau"
+                },
+                {
+                  "id": "shona-B2-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Debate” in Shona?",
+                  "options": [
+                    "Handibvumi",
+                    "Ndakanzwa",
+                    "Chokwadi?",
+                    "Redhiyo"
+                  ],
+                  "answer": "Chokwadi?"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Nhau",
+                  "meaning": "News",
+                  "options": [
+                    "News",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Redhiyo",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ndakanzwa",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-B2-u2-l2",
+        "title": "Debate",
+        "level": "B2",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/fa450b1edf8fa864.mp3",
+            "sha256": "b5bb7c7764e0b90b5aa7d43d063862510a2d89b413e80c05b42cc30d23d055fc",
+            "label": "Chokwadi?"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/fa450b1edf8fa864.mp3",
+            "sha256": "6c2e9ba835c27ea67880dcc011f658b56d03d653b7c312ce0bd9c02803632162",
+            "label": "Chokwadi?"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/634027c6c827ec44.mp3",
+            "sha256": "1c19b0559bfaa46c451daecf84b0ec87355c74e47fc7af3137a51d1cf5d18f32",
+            "label": "Ndinonzwisisa"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/634027c6c827ec44.mp3",
+            "sha256": "a2e7dae431bb4d0504affb5eb8d5f653800aedd004de51bba002313ddaadeed6",
+            "label": "Ndinonzwisisa"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/ebd6c1ec18e4d519.mp3",
+            "sha256": "85b5e1c709b341b11dca7bcb2e9ac4c86f2f3b79b4588e459fb9e998a798650a",
+            "label": "Handibvumi"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/ebd6c1ec18e4d519.mp3",
+            "sha256": "1fcf59a78f8559512b38ef9a2933ff1f6977be05c5203eb87b29668d33d1ecaa",
+            "label": "Handibvumi"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-B2-u2-l2",
+          "title": "Debate",
+          "objective": "Debate.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Debate",
+              "type": "Tutorial",
+              "text": "Debate.\n\n• Chokwadi? — Core phrase\n• Ndinonzwisisa — Core phrase\n• Handibvumi — I disagree\n\nReal-life Debate — Shona\n\nA: Chokwadi? — Core phrase\nB: Ndinonzwisisa — Core phrase\nA: Handibvumi — I disagree",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Chokwadi? — Core phrase",
+                  "options": [
+                    "Chokwadi? — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Chokwadi? — Core phrase"
+                },
+                {
+                  "question": "Recall: Ndinonzwisisa — Core phrase",
+                  "options": [
+                    "Ndinonzwisisa — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndinonzwisisa — Core phrase"
+                },
+                {
+                  "question": "Recall: Handibvumi — I disagree",
+                  "options": [
+                    "Handibvumi — I disagree",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Handibvumi — I disagree"
+                },
+                {
+                  "id": "shona-B2-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “News” in Shona?",
+                  "options": [
+                    "Nhau",
+                    "Ndakanzwa",
+                    "Chokwadi?",
+                    "Ndinonzwisisa"
+                  ],
+                  "answer": "Nhau"
+                },
+                {
+                  "id": "shona-B2-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Debate” in Shona?",
+                  "options": [
+                    "Handibvumi",
+                    "Ndakanzwa",
+                    "Chokwadi?",
+                    "Redhiyo"
+                  ],
+                  "answer": "Chokwadi?"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Chokwadi?",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ndinonzwisisa",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Handibvumi",
+                  "meaning": "I disagree",
+                  "options": [
+                    "I disagree",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-B2-u2-l3",
+        "title": "Report",
+        "level": "B2",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/2792707033af29a0.mp3",
+            "sha256": "6ce3f42e8be14172cf0354091e3b62d4127be80e9b245fe45ffd928999ebdb18",
+            "label": "Ndakaona kuti"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/2792707033af29a0.mp3",
+            "sha256": "e3e366135f728759c4edc80063bbe58d21f340c65830f0039a383a184639dc96",
+            "label": "Ndakaona kuti"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/a78b13e40500102d.mp3",
+            "sha256": "9a63cefab978001da41237478859bc906e715dac883f33a0e80293d80590e668",
+            "label": "Tsika"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/a78b13e40500102d.mp3",
+            "sha256": "4c71772e2686eddbd6a6b8083a28ea7ad2b7d3cc2fe72d40f452680cd7a0fc3b",
+            "label": "Tsika"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/48f28f73c9c8f6a8.mp3",
+            "sha256": "5127cf61608f59f51ed715fd1dc28003a7444527929daa119b888eaac632f3a7",
+            "label": "Vakuru"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/48f28f73c9c8f6a8.mp3",
+            "sha256": "825a5f7be7222bb513190752c1cadc85ac5d7310ccfe3f8a42db4f50ed824787",
+            "label": "Vakuru"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-B2-u2-l3",
+          "title": "Report",
+          "objective": "Report.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Report",
+              "type": "Tutorial",
+              "text": "Report.\n\n• Ndakaona kuti — Core phrase\n• Tsika — Culture\n• Vakuru — Core phrase\n\nReal-life Report — Shona\n\nA: Ndakaona kuti — Core phrase\nB: Tsika — Culture\nA: Vakuru — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Ndakaona kuti — Core phrase",
+                  "options": [
+                    "Ndakaona kuti — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndakaona kuti — Core phrase"
+                },
+                {
+                  "question": "Recall: Tsika — Culture",
+                  "options": [
+                    "Tsika — Culture",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Tsika — Culture"
+                },
+                {
+                  "question": "Recall: Vakuru — Core phrase",
+                  "options": [
+                    "Vakuru — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Vakuru — Core phrase"
+                },
+                {
+                  "id": "shona-B2-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “News” in Shona?",
+                  "options": [
+                    "Nhau",
+                    "Ndakanzwa",
+                    "Chokwadi?",
+                    "Ndinonzwisisa"
+                  ],
+                  "answer": "Nhau"
+                },
+                {
+                  "id": "shona-B2-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Debate” in Shona?",
+                  "options": [
+                    "Handibvumi",
+                    "Ndakanzwa",
+                    "Chokwadi?",
+                    "Redhiyo"
+                  ],
+                  "answer": "Chokwadi?"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Ndakaona kuti",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Tsika",
+                  "meaning": "Culture",
+                  "options": [
+                    "Culture",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Vakuru",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-C1-u1-l1",
+        "title": "Proverbs",
+        "level": "C1",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/eac7fc448b0bb1f0.mp3",
+            "sha256": "d240cb9477254bee83f0002d84cd13fe739af1bbc0e06a0dcd92f68522055fb0",
+            "label": "Runyararo"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/eac7fc448b0bb1f0.mp3",
+            "sha256": "0f83618ccd1ee84a09cc8ca0af5b119dda3d4102f2e0bb1e2a30661790984f72",
+            "label": "Runyararo"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/6bbb3f1d680cf304.mp3",
+            "sha256": "ea65c3f35b3791564224b26261ac07ce9066336eb7e9066dcb53f9413577d6f1",
+            "label": "Imba"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/6bbb3f1d680cf304.mp3",
+            "sha256": "2b574efc124b156d32d5cabbed8f0a7008ba90d5a35bb4ee0ffd55c71e2482cf",
+            "label": "Imba"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/ce80f408e72ce583.mp3",
+            "sha256": "b17ce04e3a97bbfed2e0ab1e55fd054371d8b43b6db934b88430a5b6c34e5721",
+            "label": "Rubatsiro"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/ce80f408e72ce583.mp3",
+            "sha256": "66904f6f7ee470dfbec4fd90585af1d79e68df74aecc18ac76a01ffa0a24307f",
+            "label": "Rubatsiro"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-C1-u1-l1",
+          "title": "Proverbs",
+          "objective": "Proverbs.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Proverbs",
+              "type": "Tutorial",
+              "text": "Proverbs.\n\n• Runyararo — Core phrase\n• Imba — House\n• Rubatsiro — Core phrase\n\nReal-life Proverbs — Shona\n\nA: Runyararo — Core phrase\nB: Imba — House\nA: Rubatsiro — Core phrase\nA: Runyararo — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Runyararo — Core phrase",
+                  "options": [
+                    "Runyararo — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Runyararo — Core phrase"
+                },
+                {
+                  "question": "Recall: Imba — House",
+                  "options": [
+                    "Imba — House",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Imba — House"
+                },
+                {
+                  "question": "Recall: Rubatsiro — Core phrase",
+                  "options": [
+                    "Rubatsiro — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Rubatsiro — Core phrase"
+                },
+                {
+                  "id": "shona-C1-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Proverbs” in Shona?",
+                  "options": [
+                    "Saka",
+                    "Runyararo",
+                    "Rubatsiro",
+                    "Asi"
+                  ],
+                  "answer": "Runyararo"
+                },
+                {
+                  "id": "shona-C1-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Rhetoric” in Shona?",
+                  "options": [
+                    "Zvakadaro",
+                    "Ndinoda kutaura",
+                    "Asi",
+                    "Imba"
+                  ],
+                  "answer": "Zvakadaro"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Runyararo",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Imba",
+                  "meaning": "House",
+                  "options": [
+                    "House",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Rubatsiro",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-C1-u1-l2",
+        "title": "Rhetoric",
+        "level": "C1",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/5f17e820fbac0499.mp3",
+            "sha256": "1cb2b3b867ff6e362af87b0f1f4d1a876dac686ffeeb949ab37a98e9aa33647d",
+            "label": "Zvakadaro"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/5f17e820fbac0499.mp3",
+            "sha256": "e230a193f716aeebf487935ad6d151d1d7cdb0eb85cddee1114869c8130d726a",
+            "label": "Zvakadaro"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/5631f789f9dfc993.mp3",
+            "sha256": "2d7d6f2900664010522d970afa1387030db9a17a7d81f27035658311e8e2464b",
+            "label": "Asi"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/5631f789f9dfc993.mp3",
+            "sha256": "867f08dc4573e11621f85e9dbef84cc6a2b5cf16bdf9b45a7f48eefb62be46d3",
+            "label": "Asi"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/fca040733eba7a9f.mp3",
+            "sha256": "33ef267a15433ac7b35c1adbfcf4a23ef509735d75ffb26ded23627fbcdc083d",
+            "label": "Saka"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/fca040733eba7a9f.mp3",
+            "sha256": "c55525883a124e9904774d9e8d37f4bdcd5edd48cbe02e89e4b59f04fef221fb",
+            "label": "Saka"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-C1-u1-l2",
+          "title": "Rhetoric",
+          "objective": "Links.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Rhetoric",
+              "type": "Tutorial",
+              "text": "Links.\n\n• Zvakadaro — It is expensive\n• Asi — Core phrase\n• Saka — Core phrase\n\nReal-life Rhetoric — Shona\n\nA: Zvakadaro — It is expensive\nB: Asi — Core phrase\nA: Saka — Core phrase\nA: Zvakadaro — It is expensive",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Zvakadaro — It is expensive",
+                  "options": [
+                    "Zvakadaro — It is expensive",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Zvakadaro — It is expensive"
+                },
+                {
+                  "question": "Recall: Asi — Core phrase",
+                  "options": [
+                    "Asi — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Asi — Core phrase"
+                },
+                {
+                  "question": "Recall: Saka — Core phrase",
+                  "options": [
+                    "Saka — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Saka — Core phrase"
+                },
+                {
+                  "id": "shona-C1-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Proverbs” in Shona?",
+                  "options": [
+                    "Saka",
+                    "Runyararo",
+                    "Rubatsiro",
+                    "Asi"
+                  ],
+                  "answer": "Runyararo"
+                },
+                {
+                  "id": "shona-C1-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Rhetoric” in Shona?",
+                  "options": [
+                    "Zvakadaro",
+                    "Ndinoda kutaura",
+                    "Asi",
+                    "Imba"
+                  ],
+                  "answer": "Zvakadaro"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Zvakadaro",
+                  "meaning": "It is expensive",
+                  "options": [
+                    "It is expensive",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Asi",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Saka",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-C1-u1-l3",
+        "title": "Monologue",
+        "level": "C1",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/1c0c18d0ac097337.mp3",
+            "sha256": "ca37a46e0fcfb0a9495fccc5ae08ac5ad1e8c14eaba5caf9362a9cfc6438bdaa",
+            "label": "Ndinoda kutaura"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/1c0c18d0ac097337.mp3",
+            "sha256": "eabf2eb7f7d3e68db1193c1aac08434b96b85de213973c8baf3effe320199914",
+            "label": "Ndinoda kutaura"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/04772690d15e1b74.mp3",
+            "sha256": "a756f13c3aa6c7f41516b00835fbea244b4998818c511c357acf2ee07e4f2fac",
+            "label": "Sekunge"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/04772690d15e1b74.mp3",
+            "sha256": "ca3375c767ec70bb841cbda307ca3d8da7554215453f2c5a69b1c12e31bd62d4",
+            "label": "Sekunge"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/8df389a09c4f03be.mp3",
+            "sha256": "dd24d25716b3563c3947657cf0d46f8f4c63cb3567efa9610a97e32888ce0c1e",
+            "label": "Pakupedzisira"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/8df389a09c4f03be.mp3",
+            "sha256": "e3bfa5091b9169977275fc379139bd918f7fa73477cac604b591b456130a2315",
+            "label": "Pakupedzisira"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-C1-u1-l3",
+          "title": "Monologue",
+          "objective": "Monologue.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Monologue",
+              "type": "Tutorial",
+              "text": "Monologue.\n\n• Ndinoda kutaura — Core phrase\n• Sekunge — Core phrase\n• Pakupedzisira — Core phrase\n\nReal-life Monologue — Shona\n\nA: Ndinoda kutaura — Core phrase\nB: Sekunge — Core phrase\nA: Pakupedzisira — Core phrase\nA: Ndinoda kutaura — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Ndinoda kutaura — Core phrase",
+                  "options": [
+                    "Ndinoda kutaura — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndinoda kutaura — Core phrase"
+                },
+                {
+                  "question": "Recall: Sekunge — Core phrase",
+                  "options": [
+                    "Sekunge — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Sekunge — Core phrase"
+                },
+                {
+                  "question": "Recall: Pakupedzisira — Core phrase",
+                  "options": [
+                    "Pakupedzisira — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Pakupedzisira — Core phrase"
+                },
+                {
+                  "id": "shona-C1-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Proverbs” in Shona?",
+                  "options": [
+                    "Saka",
+                    "Runyararo",
+                    "Rubatsiro",
+                    "Asi"
+                  ],
+                  "answer": "Runyararo"
+                },
+                {
+                  "id": "shona-C1-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Rhetoric” in Shona?",
+                  "options": [
+                    "Zvakadaro",
+                    "Ndinoda kutaura",
+                    "Asi",
+                    "Imba"
+                  ],
+                  "answer": "Zvakadaro"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Ndinoda kutaura",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Sekunge",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Pakupedzisira",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-C1-u2-l1",
+        "title": "Rebuttal",
+        "level": "C1",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/c1cfd567c937ebbb.mp3",
+            "sha256": "afd1b163a3cad7ed53f7b90484b83055fa2156fb9b0bd47a114e10242e116fc6",
+            "label": "Handibvumi asi"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/c1cfd567c937ebbb.mp3",
+            "sha256": "18a17e792197c8debf1df61c697d42ada4da2432b66b5f9e3051b557b737360e",
+            "label": "Handibvumi asi"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/bb3b0a3b4201c945.mp3",
+            "sha256": "8d548667bb26518712272f06c031f2e311bbde0a17ecac363d75d849c329af8d",
+            "label": "Ndinobvuma kuti"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/bb3b0a3b4201c945.mp3",
+            "sha256": "56117b4d5284e815233489bdcc11c960759986da38f642904b684cf911557b1c",
+            "label": "Ndinobvuma kuti"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/a78b13e40500102d.mp3",
+            "sha256": "9a63cefab978001da41237478859bc906e715dac883f33a0e80293d80590e668",
+            "label": "Tsika"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/a78b13e40500102d.mp3",
+            "sha256": "4c71772e2686eddbd6a6b8083a28ea7ad2b7d3cc2fe72d40f452680cd7a0fc3b",
+            "label": "Tsika"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-C1-u2-l1",
+          "title": "Rebuttal",
+          "objective": "Rebuttal.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Rebuttal",
+              "type": "Tutorial",
+              "text": "Rebuttal.\n\n• Handibvumi asi — Core phrase\n• Ndinobvuma kuti — Core phrase\n• Tsika — Culture\n\nReal-life Rebuttal — Shona\n\nA: Handibvumi asi — Core phrase\nB: Ndinobvuma kuti — Core phrase\nA: Tsika — Culture\nA: Handibvumi asi — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Handibvumi asi — Core phrase",
+                  "options": [
+                    "Handibvumi asi — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Handibvumi asi — Core phrase"
+                },
+                {
+                  "question": "Recall: Ndinobvuma kuti — Core phrase",
+                  "options": [
+                    "Ndinobvuma kuti — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndinobvuma kuti — Core phrase"
+                },
+                {
+                  "question": "Recall: Tsika — Culture",
+                  "options": [
+                    "Tsika — Culture",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Tsika — Culture"
+                },
+                {
+                  "id": "shona-C1-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Rebuttal” in Shona?",
+                  "options": [
+                    "Handibvumi asi",
+                    "Dzidzo",
+                    "Ndinobvuma kuti",
+                    "Ndatenda"
+                  ],
+                  "answer": "Handibvumi asi"
+                },
+                {
+                  "id": "shona-C1-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Abstract” in Shona?",
+                  "options": [
+                    "Ndinobvuma kuti",
+                    "Tichasangana",
+                    "Tsika",
+                    "Zvakanaka chaizvo"
+                  ],
+                  "answer": "Tsika"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Handibvumi asi",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ndinobvuma kuti",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Tsika",
+                  "meaning": "Culture",
+                  "options": [
+                    "Culture",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-C1-u2-l2",
+        "title": "Abstract",
+        "level": "C1",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/a78b13e40500102d.mp3",
+            "sha256": "9a63cefab978001da41237478859bc906e715dac883f33a0e80293d80590e668",
+            "label": "Tsika"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/a78b13e40500102d.mp3",
+            "sha256": "4c71772e2686eddbd6a6b8083a28ea7ad2b7d3cc2fe72d40f452680cd7a0fc3b",
+            "label": "Tsika"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/dbac0efb625b7e80.mp3",
+            "sha256": "db63788c2d74acc98a9eb0b2508740befcf49b35d5142a20959caf5b7ce04c48",
+            "label": "Dzidzo"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/dbac0efb625b7e80.mp3",
+            "sha256": "dda2c485e4d821a7f5b670b828f4b70f5e006149b7b9d02ea4b1072727b03e18",
+            "label": "Dzidzo"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/218523bfe7b56145.mp3",
+            "sha256": "ea4c7e1ddf0a1d349b8e901b1784769c8b28c48c39c5a5fbd39a72d4f3f1f074",
+            "label": "Utano"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/218523bfe7b56145.mp3",
+            "sha256": "cdd462f06f217bbf0955a7cf370dae334d6feac7d70db3ec1b02f898a638ae9f",
+            "label": "Utano"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-C1-u2-l2",
+          "title": "Abstract",
+          "objective": "Abstract.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Abstract",
+              "type": "Tutorial",
+              "text": "Abstract.\n\n• Tsika — Culture\n• Dzidzo — Core phrase\n• Utano — Core phrase\n\nReal-life Abstract — Shona\n\nA: Tsika — Culture\nB: Dzidzo — Core phrase\nA: Utano — Core phrase\nA: Tsika — Culture",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Tsika — Culture",
+                  "options": [
+                    "Tsika — Culture",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Tsika — Culture"
+                },
+                {
+                  "question": "Recall: Dzidzo — Core phrase",
+                  "options": [
+                    "Dzidzo — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Dzidzo — Core phrase"
+                },
+                {
+                  "question": "Recall: Utano — Core phrase",
+                  "options": [
+                    "Utano — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Utano — Core phrase"
+                },
+                {
+                  "id": "shona-C1-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Rebuttal” in Shona?",
+                  "options": [
+                    "Handibvumi asi",
+                    "Dzidzo",
+                    "Ndinobvuma kuti",
+                    "Ndatenda"
+                  ],
+                  "answer": "Handibvumi asi"
+                },
+                {
+                  "id": "shona-C1-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Abstract” in Shona?",
+                  "options": [
+                    "Ndinobvuma kuti",
+                    "Tichasangana",
+                    "Tsika",
+                    "Zvakanaka chaizvo"
+                  ],
+                  "answer": "Tsika"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Tsika",
+                  "meaning": "Culture",
+                  "options": [
+                    "Culture",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Dzidzo",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Utano",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Shona-C1-u2-l3",
+        "title": "Close",
+        "level": "C1",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/d22ad7ff23d475d3.mp3",
+            "sha256": "00028cc305d0396abfde8e4651b579fb81396202433fb514f5a1066b86213c31",
+            "label": "Ndatenda"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/d22ad7ff23d475d3.mp3",
+            "sha256": "10a1d0e6b0d1f4ae5472f57a2b747b7c4b44c7f7ec442924b5af9cc7e5e04cdc",
+            "label": "Ndatenda"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/8a5d3c88f7435d7c.mp3",
+            "sha256": "31c6285680d2147a8e2f3273226e4f0f5bb58c595a92480b2e05e200c9eb2fe1",
+            "label": "Tichasangana"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/8a5d3c88f7435d7c.mp3",
+            "sha256": "daf03dab28f9e7f01418d27df74f091b17d211680abb419510c0c6b1cf7626db",
+            "label": "Tichasangana"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/native/c5acc4eb77762850.mp3",
+            "sha256": "0f9afa4da5300795589b28ceedd81093a40bfd0f1336477afae59ce1aad6bde7",
+            "label": "Zvakanaka chaizvo"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/shona/slow/c5acc4eb77762850.mp3",
+            "sha256": "663acb885d53e766045a983455ebf7c48cbfafc3284ef3904ccffb6c562405cf",
+            "label": "Zvakanaka chaizvo"
+          }
+        ],
+        "lesson": {
+          "id": "Shona-C1-u2-l3",
+          "title": "Close",
+          "objective": "Close.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Close",
+              "type": "Tutorial",
+              "text": "Close.\n\n• Ndatenda — Thank you\n• Tichasangana — Core phrase\n• Zvakanaka chaizvo — Core phrase\n\nReal-life Close — Shona\n\nA: Ndatenda — Thank you\nB: Tichasangana — Core phrase\nA: Zvakanaka chaizvo — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Ndatenda — Thank you",
+                  "options": [
+                    "Ndatenda — Thank you",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndatenda — Thank you"
+                },
+                {
+                  "question": "Recall: Tichasangana — Core phrase",
+                  "options": [
+                    "Tichasangana — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Tichasangana — Core phrase"
+                },
+                {
+                  "question": "Recall: Zvakanaka chaizvo — Core phrase",
+                  "options": [
+                    "Zvakanaka chaizvo — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Zvakanaka chaizvo — Core phrase"
+                },
+                {
+                  "id": "shona-C1-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Rebuttal” in Shona?",
+                  "options": [
+                    "Handibvumi asi",
+                    "Dzidzo",
+                    "Ndinobvuma kuti",
+                    "Ndatenda"
+                  ],
+                  "answer": "Handibvumi asi"
+                },
+                {
+                  "id": "shona-C1-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Abstract” in Shona?",
+                  "options": [
+                    "Ndinobvuma kuti",
+                    "Tichasangana",
+                    "Tsika",
+                    "Zvakanaka chaizvo"
+                  ],
+                  "answer": "Tsika"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Ndatenda",
+                  "meaning": "Thank you",
+                  "options": [
+                    "Thank you",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Tichasangana",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Zvakanaka chaizvo",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

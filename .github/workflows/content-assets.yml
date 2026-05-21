@@ -1,0 +1,48 @@
+name: Content assets
+
+on:
+  push:
+    paths:
+      - 'tools/**'
+      - 'assets/data/**'
+      - 'test/**'
+      - '.github/workflows/content-assets.yml'
+  pull_request:
+    paths:
+      - 'tools/**'
+      - 'assets/data/**'
+      - 'test/**'
+      - '.github/workflows/content-assets.yml'
+  workflow_dispatch:
+
+jobs:
+  content-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Regenerate bundled content
+        run: python tools/generate_lingafriq_content.py
+
+      - name: Placeholder gate
+        run: |
+          if rg -n "Wrong|Also wrong|word1a|Yor_word" assets/data/; then
+            echo "Placeholder strings found in assets/data"
+            exit 1
+          fi
+          echo "No placeholder markers in assets/data"
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.0'
+          channel: stable
+
+      - name: Flutter pub get
+        run: flutter pub get
+
+      - name: Content asset tests
+        run: flutter test test/games/game_content_asset_test.dart test/content/

@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "categories": ["language_identity", "music_media", "cultural_education", "diaspora"]
+  },
+  "articles": [
+    {
+      "slug": "yoruba-greetings-time-of-day",
+      "title": "10 Yoruba Greetings Everyone Should Know",
+      "category": "language_identity",
+      "language": "yoruba",
+      "summary": "Why Yoruba greetings follow time, respect, and community — not just vocabulary lists.",
+      "body_outline": ["Morning vs afternoon forms", "Plural respect (Ẹ)", "Greeting before business", "Diaspora usage"],
+      "linked_vocab": ["Ẹ kú àárọ̀", "Ẹ kú ọ̀sán", "Báwo ni", "Ẹ ṣé"],
+      "seo_keywords": ["Yoruba greetings", "learn Yoruba", "Yoruba culture"]
+    },
+    {
+      "slug": "hausa-respect-and-tea",
+      "title": "Hausa Respect Culture and Tea Hospitality",
+      "category": "cultural_education",
+      "language": "hausa",
+      "summary": "Sannu, patience, and tea — how northern hospitality shapes language.",
+      "body_outline": ["Sannu variants", "Don Allah", "Tea as social ritual", "Market trade phrases"],
+      "linked_vocab": ["Sannu", "Don Allah", "Na gode", "Barka da zuwa"]
+    },
+    {
+      "slug": "igbo-kola-and-community",
+      "title": "Igbo Kola Nut Protocol in One Conversation",
+      "category": "cultural_education",
+      "language": "igbo",
+      "summary": "Onye wetara oji, wetara ndu — hospitality as language.",
+      "body_outline": ["Kola symbolism", "Ndewo", "Community meetings", "Proverb teaching"],
+      "linked_vocab": ["Ndewo", "Daalụ", "Egbe bere, ugo bere"]
+    },
+    {
+      "slug": "swahili-pole-pole",
+      "title": "Why Pole Pole Is More Than Slow",
+      "category": "language_identity",
+      "language": "swahili",
+      "summary": "Coastal rhythm, patience, and learning pace in East Africa.",
+      "body_outline": ["Shikamoo / Marahaba", "Karibu", "Haraka haraka proverb", "Urban vs coastal speech"],
+      "linked_vocab": ["Pole pole", "Karibu", "Shikamoo", "Asante"]
+    },
+    {
+      "slug": "zulu-ubuntu-speaking",
+      "title": "Speaking isiZulu with Ubuntu",
+      "category": "diaspora",
+      "language": "zulu",
+      "summary": "Personhood through people — how Zulu philosophy shapes conversation.",
+      "body_outline": ["Sawubona meaning", "Click encouragement", "Ubuntu proverb", "Praise poetry intro"],
+      "linked_vocab": ["Sawubona", "Umuntu ngumuntu ngabantu", "Ngiyabonga"]
+    },
+    {
+      "slug": "xhosa-clicks-confidence",
+      "title": "Clicks Are New — Mastery Comes Through Repetition",
+      "category": "language_identity",
+      "language": "xhosa",
+      "summary": "Normalize difficulty; celebrate brave attempts.",
+      "body_outline": ["Molo vs Molweni", "Click practice", "Encouragement framing", "Community support"],
+      "linked_vocab": ["Molo", "Enkosi", "Ndiyafunda isiXhosa"]
+    },
+    {
+      "slug": "wolof-teranga",
+      "title": "Teranga: Wolof Hospitality in Everyday Phrases",
+      "category": "cultural_education",
+      "language": "wolof",
+      "summary": "Senegal's hospitality ethic in language learners can use today.",
+      "body_outline": ["Teranga", "Attaya ceremony", "Dalal ak jamm", "Market warmth"],
+      "linked_vocab": ["Teranga", "Nanga def", "Jërëjëf", "Dalal ak jamm"]
+    },
+    {
+      "slug": "pidgin-not-broken-english",
+      "title": "Nigerian Pidgin Is Not Broken English",
+      "category": "diaspora",
+      "language": "pidgin",
+      "summary": "Identity, humour, and pan-Nigerian connection through Pidgin.",
+      "body_outline": ["How far culture", "Music and comedy", "Abeg and wahala", "Internet slang"],
+      "linked_vocab": ["How far?", "No wahala", "Abeg", "I dey learn Pidgin"]
+    },
+    {
+      "slug": "afrobeats-lyric-yoruba",
+      "title": "Afrobeats Lyric Breakdown: Greeting Lines in Yoruba",
+      "category": "music_media",
+      "language": "yoruba",
+      "summary": "Learn from songs you already love — responsibly and culturally.",
+      "body_outline": ["Pick one chorus", "Greeting lines", "Slang notes", "Practice with Polie"],
+      "linked_vocab": ["Báwo ni", "Ó dára", "Mo fẹ́"]
+    },
+    {
+      "slug": "nollywood-scene-pidgin",
+      "title": "Nollywood Scenes That Teach Real Pidgin",
+      "category": "music_media",
+      "language": "pidgin",
+      "summary": "Film dialogue as immersion when paired with reflection.",
+      "body_outline": ["Street register", "Humour", "Import Media workflow", "Quiz yourself"],
+      "linked_vocab": ["How you dey?", "Gist", "E be like film"]
+    }
+  ]
+}

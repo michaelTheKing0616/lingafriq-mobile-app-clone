@@ -5,6 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/models/curriculum_model.dart';
 import 'package:lingafriq/services/curriculum_service.dart';
+import 'package:lingafriq/services/content/bundled_lesson_content_service.dart';
+import 'package:lingafriq/widgets/content/vocab_audio_controls.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -64,6 +66,17 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
       _hasError = false;
       _errorMessage = null;
     });
+
+    final bundled = BundledLessonContentService.fromCurriculumLesson(widget.lesson);
+    if (bundled != null) {
+      if (mounted) {
+        setState(() {
+          _generatedContent = bundled;
+          _isGenerating = false;
+        });
+      }
+      return;
+    }
     
     try {
       final curriculumService = ref.read(curriculumServiceProvider);
@@ -566,6 +579,11 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
             margin: EdgeInsets.only(bottom: 12.sp),
             color: isDark ? const Color(0xFF1F3527) : Theme.of(context).colorScheme.surface,
             child: ListTile(
+              trailing: VocabAudioControls(
+                language: widget.language,
+                text: word.word,
+                compact: true,
+              ),
               title: Text(
                 word.word,
                 style: TextStyle(

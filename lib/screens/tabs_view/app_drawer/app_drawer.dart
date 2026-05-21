@@ -17,6 +17,8 @@ import 'package:lingafriq/screens/dashboard/dashboard_screen_material3.dart';
 import 'package:lingafriq/screens/profile/profile_screen_material3.dart';
 import 'package:lingafriq/screens/settings/settings_screen_material3.dart';
 import 'package:lingafriq/screens/lessons/lessons_map_entry_screen.dart';
+import 'package:lingafriq/screens/content/native_content_review_screen.dart';
+import 'package:lingafriq/screens/curriculum/authentic_curriculum_entry_screen.dart';
 import 'package:lingafriq/screens/games/games_screen_material3.dart';
 import 'package:lingafriq/screens/gamification/badge_collection_screen_material3.dart';
 import 'package:lingafriq/screens/tutor/tutor_dashboard_screen.dart';
@@ -46,6 +48,7 @@ import 'package:lingafriq/screens/content/cultural_hub_screen.dart';
 import 'package:lingafriq/screens/social/social_hub_screen.dart';
 import 'package:lingafriq/screens/social/friend_quests_screen.dart';
 import 'package:lingafriq/screens/personalities/personality_selection_screen.dart';
+import 'package:lingafriq/screens/persona_missions/persona_missions_hub_screen.dart';
 import 'package:lingafriq/services/offline/vocabulary_store.dart';
 
 /// Enhanced Modern Pan-African App Drawer with Future-Forward Styling
@@ -197,6 +200,34 @@ class AppDrawer extends HookConsumerWidget {
                             context,
                             SmoothPageRoute.platform(
                               child: const LessonsMapEntryScreen(),
+                            ),
+                          );
+                        },
+                        isDark: isDark.value,
+                      ),
+                      _DrawerItem(
+                        icon: PanAfricanIcons.ai,
+                        label: 'Authentic Path (A1–C1)',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute.platform(
+                              child: const AuthenticCurriculumEntryScreen(),
+                            ),
+                          );
+                        },
+                        isDark: isDark.value,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.verified_user_outlined,
+                        label: 'Native content review',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute.platform(
+                              child: const NativeContentReviewScreen(),
                             ),
                           );
                         },
@@ -586,6 +617,20 @@ class AppDrawer extends HookConsumerWidget {
                             context,
                             SmoothPageRoute.platform(
                               child: const PersonalitySelectionScreen(),
+                            ),
+                          );
+                        },
+                        isDark: isDark.value,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.theater_comedy_outlined,
+                        label: 'Persona Missions',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute.platform(
+                              child: const PersonaMissionsHubScreen(),
                             ),
                           );
                         },

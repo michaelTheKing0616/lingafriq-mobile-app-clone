@@ -94,6 +94,16 @@ class EnvConfig {
     return trimmed;
   }
   
+  /// Prefer bundled CMS manifests over API (offline-first / QA).
+  /// Set via: --dart-define=LINGAFRIQ_USE_BUNDLED_CMS=true
+  static bool get useBundledCmsFirst {
+    const flag = String.fromEnvironment(
+      'LINGAFRIQ_USE_BUNDLED_CMS',
+      defaultValue: 'false',
+    );
+    return flag.toLowerCase() == 'true' || flag == '1';
+  }
+
   /// Get all configuration status for debugging
   static Map<String, bool> get configurationStatus => {
     'groq': isGroqConfigured,

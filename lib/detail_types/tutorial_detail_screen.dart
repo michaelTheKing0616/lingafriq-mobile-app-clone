@@ -8,6 +8,7 @@ import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 
 import '../../widgets/audio_player_widget.dart';
+import 'package:lingafriq/widgets/content/vocab_audio_controls.dart';
 import '../../widgets/top_gradient_box_builder.dart';
 import '../widgets/points_and_profile_image_builder.dart';
 import '../widgets/portrait_video_player.dart';
@@ -20,6 +21,7 @@ class TutorialDetailScreen extends ConsumerWidget {
   final String? image;
   final String endpointToHit;
   final bool isCompleted;
+  final String? audioLanguage;
   const TutorialDetailScreen({
     super.key,
     required this.title,
@@ -29,6 +31,7 @@ class TutorialDetailScreen extends ConsumerWidget {
     required this.image,
     required this.endpointToHit,
     this.isCompleted = false,
+    this.audioLanguage,
   });
 
   @override
@@ -113,6 +116,15 @@ class TutorialDetailScreen extends ConsumerWidget {
                       children: [
                         double.infinity.widthBox,
                         text!.text.xl.make(),
+                        if (audioLanguage != null &&
+                            audioLanguage!.trim().isNotEmpty) ...[
+                          12.heightBox,
+                          VocabAudioControls(
+                            language: audioLanguage!,
+                            text: text!,
+                            compact: true,
+                          ),
+                        ],
                       ],
                     ).p12(),
                   ).px16(),

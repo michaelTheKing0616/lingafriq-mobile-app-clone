@@ -12,6 +12,7 @@ import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
 import 'base_game_screen.dart';
+import 'game_scenario_loader.dart';
 
 class StoryBuilderGame extends BaseGameScreen {
   const StoryBuilderGame({
@@ -35,8 +36,11 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
   final List<String> _translationSegments = [];
   String _culturalNote = '';
   String _locationName = '';
+  List<GameScenario> _scenarios = [];
   late List<PhraseCard> _cards;
   List<_StoryChoice> _choices = [];
+  int get _chapterCount =>
+      _scenarios.isNotEmpty ? _scenarios.length : _cards.length;
 
   static const _locations = [
     'Xhosa Village',
@@ -60,17 +64,79 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
   @override
   Future<void> onGameInitialized() async {
     _cards = ref.read(gameProvider.notifier).availableCards;
-    _locationName = _locations[Random().nextInt(_locations.length)];
+    _scenarios = loadBundledGameScenarios(
+      ref,
+      language: widget.language,
+      game: 'StoryBuilder',
+      max: 5,
+    );
+    _locationName = _scenarios.isNotEmpty
+        ? _scenarios.first.title
+        : _locations[Random().nextInt(_locations.length)];
     _prepareChapter();
   }
 
   void _prepareChapter() {
-    if (_currentChapter >= _cards.length) {
+    if (_currentChapter >= _chapterCount) {
       finishGame();
       return;
     }
-    final card = _cards[_currentChapter];
     final rng = Random();
+
+    if (_scenarios.isNotEmpty) {
+      final scenario = _scenarios[_currentChapter];
+      _storySegments.add(scenario.prompt);
+      _translationSegments.add(
+        scenario.expectedResponse ?? scenario.title,
+      );
+      _culturalNote = scenario.culturalNote?.isNotEmpty == true
+          ? scenario.culturalNote!
+          : 'Continue the story using phrases from ${widget.language}.';
+      _locationName = scenario.title;
+
+      final correctText =
+          scenario.expectedResponse ?? scenario.prompt;
+      final correct = _StoryChoice(
+        letter: 'A',
+        text: correctText,
+        isCorrect: true,
+      );
+      final distractors = _scenarios
+          .where((s) => s.id != scenario.id)
+          .map((s) => s.prompt)
+          .where((text) => text.isNotEmpty && text != correctText)
+          .take(3)
+          .map((text) => _StoryChoice(
+                letter: '',
+                text: text,
+                isCorrect: false,
+              ))
+          .toList();
+      while (distractors.length < 3) {
+        distractors.add(_StoryChoice(
+          letter: '',
+          text: 'Skip this beat',
+          isCorrect: false,
+        ));
+      }
+
+      final all = [correct, ...distractors]..shuffle(rng);
+      for (var i = 0; i < all.length; i++) {
+        all[i] = _StoryChoice(
+          letter: String.fromCharCode(65 + i),
+          text: all[i].text,
+          isCorrect: all[i].isCorrect,
+        );
+      }
+
+      setState(() {
+        _selectedChoice = -1;
+        _choices = all;
+      });
+      return;
+    }
+
+    final card = _cards[_currentChapter];
 
     _storySegments.add(card.text);
     _translationSegments.add(card.gloss);
@@ -125,8 +191,11 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
         ? DateTime.now().difference(startTime!).inMilliseconds
         : 3000;
 
+    final cardId = _scenarios.isNotEmpty
+        ? 'story_${_scenarios[_currentChapter].id}'
+        : _cards[_currentChapter].cardId;
     completeTurn(
-      cardId: _cards[_currentChapter].cardId,
+      cardId: cardId,
       result: choice.isCorrect ? GameResult.correct : GameResult.incorrect,
       durationMs: duration,
       feedback: {'chapter': _currentChapter, 'selected': choice.letter},
@@ -169,7 +238,7 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
           child: GameTopBar(
             onClose: () => (widget.onBack ?? () => Navigator.pop(context))(),
             currentStep: _currentChapter + 1,
-            totalSteps: _cards.length,
+            totalSteps: _chapterCount,
           ),
         ),
         Positioned(

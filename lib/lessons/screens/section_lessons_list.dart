@@ -20,6 +20,10 @@ import '../../widgets/language_type_header_builder.dart';
 import '../../widgets/loading_builder.dart';
 import '../../widgets/top_gradient_box_builder.dart';
 import '../models/section_lesson_model.dart';
+import 'package:lingafriq/navigation/learning_experience_navigation.dart';
+import 'package:lingafriq/utils/curriculum_languages.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/widgets/pan_african_components.dart';
 
 final sectionLessonsProvider =
     FutureProvider.autoDispose.family<List<SectionLessonModel>, int>((ref, id) {
@@ -28,9 +32,11 @@ final sectionLessonsProvider =
 
 class LessonSectionsListScreen extends ConsumerWidget {
   final Lesson lesson;
+  final String? studyLanguageKey;
   const LessonSectionsListScreen({
     super.key,
     required this.lesson,
+    this.studyLanguageKey,
   });
 
   @override
@@ -103,6 +109,7 @@ class LessonSectionsListScreen extends ConsumerWidget {
                 _SectionLessonsList(
                   lesson: lesson,
                   sectionLessons: sectionLessons,
+                  studyLanguageKey: studyLanguageKey,
                 ).expand()
             ],
           );
@@ -124,10 +131,12 @@ class LessonSectionsListScreen extends ConsumerWidget {
 class _SectionLessonsList extends ConsumerWidget {
   final Lesson lesson;
   final List<SectionLessonModel> sectionLessons;
+  final String? studyLanguageKey;
 
   const _SectionLessonsList({
     required this.lesson,
     required this.sectionLessons,
+    this.studyLanguageKey,
   });
 
   @override
@@ -138,15 +147,60 @@ class _SectionLessonsList extends ConsumerWidget {
         return Future.value();
       },
       child: ListView.builder(
-        itemCount: sectionLessons.length,
+        itemCount: sectionLessons.length + 1,
         padding: const EdgeInsets.all(16),
         itemBuilder: (context, index) {
-          final sectionLesson = sectionLessons[index];
+          if (index == 0) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: PanAfricanCard(
+                padding: EdgeInsets.all(PanAfricanSpacing.md),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Guided lesson flow',
+                      style: PanAfricanTypography.titleSmall(context),
+                    ),
+                    SizedBox(height: PanAfricanSpacing.xs),
+                    Text(
+                      'Tutorial, quizzes, and word practice in one flow with pronunciation support.',
+                      style: PanAfricanTypography.bodySmall(context),
+                    ),
+                    SizedBox(height: PanAfricanSpacing.sm),
+                    FilledButton.icon(
+                      onPressed: () async {
+                        await LearningExperienceNavigation.openUnifiedLessonFlow(
+                          context,
+                          lessonId: lesson.id,
+                          lessonTitle: lesson.name,
+                          sectionLessons: sectionLessons,
+                          audioLanguage: studyLanguageKey,
+                        );
+                        ref.invalidate(sectionLessonsProvider(lesson.id));
+                      },
+                      icon: const Icon(Icons.play_circle_outline_rounded),
+                      label: const Text('Start guided flow'),
+                    ),
+                    SizedBox(height: PanAfricanSpacing.xs),
+                    Text(
+                      'Or open each section below individually.',
+                      style: PanAfricanTypography.labelSmall(context).copyWith(
+                        color: PanAfricanColors.neutralMedium,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+          final sectionIndex = index - 1;
+          final sectionLesson = sectionLessons[sectionIndex];
           final isEnabled = (() {
-            if (index == 0) {
+            if (sectionIndex == 0) {
               return true;
             }
-            return sectionLessons[index - 1].completed ?? true;
+            return sectionLessons[sectionIndex - 1].completed ?? true;
           }).call();
           return _SectionLessonItem(
             lessonId: lesson.id,
@@ -194,6 +248,7 @@ class _SectionLessonsList extends ConsumerWidget {
     final tutorialScreen = TutorialDetailScreen(
       title: sectionLesson.title,
       text: _resolveText(payload),
+      audioLanguage: studyLanguageKey,
       audio: _resolveMedia(payload, const [
         'audio',
         'audio_url',
@@ -334,6 +389,7 @@ class _SectionLessonsList extends ConsumerWidget {
             quiz: quiz,
             endpointToHit: Api.completeLessonQuiz(lesson.id, sectionLesson.id),
             isCompleted: sectionLesson.isCompleted(ref),
+            audioLanguage: studyLanguageKey,
           ));
       return result;
     } catch (e) {
@@ -388,6 +444,7 @@ class _SectionLessonsList extends ConsumerWidget {
               wordCorrections: wordCorrections,
               endpointToHit: Api.completeLessonQuiz(lesson.id, sectionLesson.id),
               isCompleted: sectionLesson.isCompleted(ref),
+              audioLanguage: studyLanguageKey,
             ),
           );
       return result;

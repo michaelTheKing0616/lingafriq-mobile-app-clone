@@ -9,7 +9,7 @@ import 'speed_round_game.dart';
 import 'story_builder_game.dart';
 import 'roleplay_adventure_game.dart';
 import 'grammar_detective_game.dart';
-import 'game_templates.dart' hide PictureWordGame, MemoryMapGame, PronunciationKaraokeGame, GrammarJamGame, QuizChefGame;
+import 'game_templates.dart' hide PictureWordGame, MemoryMapGame, PronunciationKaraokeGame, GrammarJamGame;
 import 'picture_word_association_screen.dart';
 import 'memory_map_screen.dart';
 import 'pronunciation_karaoke_screen.dart';
@@ -25,6 +25,7 @@ import '../../games/drum_rhythm/drum_rhythm_screen.dart';
 import 'clan_lineage_story_builder_screen.dart';
 import 'grammar_jam_screen.dart';
 import 'quiz_chef_screen.dart';
+import 'conversation_relay_screen.dart';
 
 /// Game Router - Routes to appropriate game screen based on GameType
 Widget buildGameScreen({

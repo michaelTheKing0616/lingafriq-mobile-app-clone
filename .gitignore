@@ -56,6 +56,7 @@ keystore_base64.txt
 
 # CI logs / local artifacts (do not commit)
 logs_*/
+output/
 
 # Cursor / IDE artifacts
 Curosr_Chat_History/

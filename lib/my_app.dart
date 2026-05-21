@@ -20,6 +20,8 @@ import 'screens/splash/splash_screen.dart';
 import 'screens/ai_chat/ai_mode_selection_screen.dart';
 import 'screens/ai_chat/polie_mode_selection_screen.dart';
 import 'screens/lessons/lessons_map_entry_screen.dart';
+import 'screens/content/native_content_review_screen.dart';
+import 'screens/curriculum/authentic_curriculum_entry_screen.dart';
 import 'screens/games/games_screen.dart';
 import 'screens/games/games_screen_enhanced_with_all_games.dart';
 import 'screens/games/games_screen_material3.dart';
@@ -272,6 +274,8 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'ai_chat_select': (_) => const AIModeSelectionScreen(),
     'polie_mode_selection': (_) => const PolieModeSelectionScreen(),
     'curriculum': (_) => const LessonsMapEntryScreen(),
+    'authentic-path': (_) => const AuthenticCurriculumEntryScreen(),
+    'native-content-review': (_) => const NativeContentReviewScreen(),
     'games': (_) => const GamesScreenMaterial3(),
     /// Legacy flow: languages from `getLanguages()` API, then [GameTypesScreen].
     'games_api_languages': (_) => const GamesScreen(),
@@ -411,6 +415,7 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
         lessonId: args['lessonId'] as int,
         sectionLessons: args['sectionLessons'] as List<SectionLessonModel>,
         lessonTitle: args['lessonTitle'] as String,
+        audioLanguage: args['audioLanguage'] as String?,
       );
     },
     // Grammar

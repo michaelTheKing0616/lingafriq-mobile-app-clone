@@ -87,6 +87,41 @@ final gameScenariosProvider =
       );
 });
 
+/// Grammar Jam drills from bundled [game_content.json].
+final grammarDrillsProvider =
+    Provider.family<List<GrammarDrill>, GameContentFilter>((ref, filter) {
+  return ref.watch(gameContentProvider).maybeWhen(
+        data: (data) => data.grammarDrills
+            .where((d) => _matchesGrammarDrill(d, filter))
+            .toList(),
+        orElse: () => <GrammarDrill>[],
+      );
+});
+
+/// Liar Liar rounds from bundled [game_content.json].
+final liarLiarRoundsProvider =
+    Provider.family<List<LiarLiarRound>, GameContentFilter>((ref, filter) {
+  return ref.watch(gameContentProvider).maybeWhen(
+        data: (data) => data.liarLiarRounds
+            .where((r) => _matchesLiarRound(r, filter))
+            .toList(),
+        orElse: () => <LiarLiarRound>[],
+      );
+});
+
+bool _matchesGrammarDrill(GrammarDrill drill, GameContentFilter f) {
+  if (f.language != null && drill.language != f.language) return false;
+  if (f.cefr != null && drill.cefr != f.cefr) return false;
+  if (f.game != null && drill.game != f.game) return false;
+  return true;
+}
+
+bool _matchesLiarRound(LiarLiarRound round, GameContentFilter f) {
+  if (f.language != null && round.language != f.language) return false;
+  if (f.cefr != null && round.cefr != f.cefr) return false;
+  return true;
+}
+
 bool _matchesWord(GameWord word, GameContentFilter f) {
   if (f.language != null && word.language != f.language) return false;
   if (f.cefr != null && word.cefr != f.cefr) return false;

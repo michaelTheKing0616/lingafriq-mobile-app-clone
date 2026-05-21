@@ -8,6 +8,7 @@ import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
 import '../../providers/game_content_provider.dart';
+import '../../widgets/content/vocab_audio_controls.dart';
 import '../../models/game/game_content_models.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../utils/pan_african_design_system.dart';
@@ -281,10 +282,20 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame>
                   GriotProgressBar(value: progress, height: 6, showGlowTip: true),
                   SizedBox(height: PanAfricanSpacing.lg),
                   Expanded(
-                    child: GameQuestionCard(
-                      question: card.text,
-                      subtitle: card.gloss,
-                      hint: card.ipa != null ? 'Phonetic: ${card.ipa}' : null,
+                    child: Column(
+                      children: [
+                        GameQuestionCard(
+                          question: card.text,
+                          subtitle: card.gloss,
+                          hint: card.ipa != null ? 'Phonetic: ${card.ipa}' : null,
+                        ),
+                        SizedBox(height: PanAfricanSpacing.sm),
+                        VocabAudioControls(
+                          language: widget.language,
+                          text: card.text,
+                          compact: true,
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(height: PanAfricanSpacing.lg),

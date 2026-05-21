@@ -235,15 +235,84 @@ class GameScenario {
 ///
 /// Parses the top-level `game_content.json` structure and provides
 /// typed, filtered access to [words], [proverbs], and [scenarios].
+/// Grammar fill-in-the-blank drill for Grammar Jam.
+class GrammarDrill {
+  final int id;
+  final String language;
+  final String game;
+  final String phrase;
+  final String correct;
+  final List<String> options;
+  final String tip;
+  final String cefr;
+
+  const GrammarDrill({
+    required this.id,
+    required this.language,
+    required this.game,
+    required this.phrase,
+    required this.correct,
+    required this.options,
+    required this.tip,
+    required this.cefr,
+  });
+
+  factory GrammarDrill.fromJson(Map<String, dynamic> json) => GrammarDrill(
+        id: json['id'] as int,
+        language: json['language'] as String,
+        game: json['game'] as String? ?? 'GrammarJam',
+        phrase: json['phrase'] as String,
+        correct: json['correct'] as String,
+        options: (json['options'] as List<dynamic>?)
+                ?.map((e) => e.toString())
+                .toList() ??
+            const [],
+        tip: json['tip'] as String? ?? '',
+        cefr: json['cefr'] as String? ?? 'A1',
+      );
+}
+
+/// Liar Liar round: sentence may contain a deliberate error.
+class LiarLiarRound {
+  final int id;
+  final String language;
+  final String sentence;
+  final bool hasError;
+  final String explanation;
+  final String cefr;
+
+  const LiarLiarRound({
+    required this.id,
+    required this.language,
+    required this.sentence,
+    required this.hasError,
+    required this.explanation,
+    required this.cefr,
+  });
+
+  factory LiarLiarRound.fromJson(Map<String, dynamic> json) => LiarLiarRound(
+        id: json['id'] as int,
+        language: json['language'] as String,
+        sentence: json['sentence'] as String,
+        hasError: json['has_error'] as bool? ?? false,
+        explanation: json['explanation'] as String? ?? '',
+        cefr: json['cefr'] as String? ?? 'A1',
+      );
+}
+
 class GameContentData {
   final List<GameWord> words;
   final List<GameProverb> proverbs;
   final List<GameScenario> scenarios;
+  final List<GrammarDrill> grammarDrills;
+  final List<LiarLiarRound> liarLiarRounds;
 
   const GameContentData({
     this.words = const [],
     this.proverbs = const [],
     this.scenarios = const [],
+    this.grammarDrills = const [],
+    this.liarLiarRounds = const [],
   });
 
   /// Parses the full game_content.json structure.
@@ -262,6 +331,14 @@ class GameContentData {
             const [],
         scenarios: (json['scenarios'] as List<dynamic>?)
                 ?.map((e) => GameScenario.fromJson(e as Map<String, dynamic>))
+                .toList() ??
+            const [],
+        grammarDrills: (json['grammar_drills'] as List<dynamic>?)
+                ?.map((e) => GrammarDrill.fromJson(e as Map<String, dynamic>))
+                .toList() ??
+            const [],
+        liarLiarRounds: (json['liar_liar_rounds'] as List<dynamic>?)
+                ?.map((e) => LiarLiarRound.fromJson(e as Map<String, dynamic>))
                 .toList() ??
             const [],
       );
@@ -329,7 +406,9 @@ class GameContentData {
   String toString() => 'GameContentData('
       'words: ${words.length}, '
       'proverbs: ${proverbs.length}, '
-      'scenarios: ${scenarios.length})';
+      'scenarios: ${scenarios.length}, '
+      'grammarDrills: ${grammarDrills.length}, '
+      'liarLiarRounds: ${liarLiarRounds.length})';
 }
 
 // -----------------------------------------------------------------------------

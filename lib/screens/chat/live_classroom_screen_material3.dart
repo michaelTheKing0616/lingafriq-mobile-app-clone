@@ -24,6 +24,9 @@ import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/utils/transport_error_policy.dart';
 import 'package:livekit_client/livekit_client.dart';
 import '../../widgets/whiteboard/interactive_whiteboard.dart';
+import 'package:lingafriq/content/lingafriq_ux_voice.dart';
+import '../ai_chat/polie_workspace_screen.dart';
+import '../../providers/ai_chat_provider_groq.dart';
 
 /// Extracts a room ID from a backend response map, tolerating multiple response shapes.
 String _extractRoomId(Map<String, dynamic> data) {
@@ -202,6 +205,29 @@ class _RoomSelectionScreen extends HookConsumerWidget {
                     .animate()
                     .fadeIn(delay: 650.ms, duration: 400.ms)
                     .slideY(begin: 0.2, duration: 400.ms),
+                SizedBox(height: PanAfricanSpacing.md),
+                OutlinedButton.icon(
+                  onPressed: () {
+                    final langKey = selectedLanguage.value ?? 'yoruba';
+                    final info = SupportedLanguages.getLanguageInfo(langKey);
+                    final display = info['name'] as String? ?? langKey;
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => PolieWorkspaceScreen(
+                          sourceLanguage: 'English',
+                          targetLanguage: display,
+                          initialMode: PolieMode.conversation,
+                          initialRoleplayScene:
+                              'Pre-class warm-up for Live Classroom: $display',
+                          conversationOnly: true,
+                        ),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.smart_toy_outlined),
+                  label: const Text('Pre-class with Polie'),
+                ),
                 SizedBox(height: PanAfricanSpacing.lg),
                 Semantics(
                   label: isCreating.value ? 'Creating classroom' : 'Create classroom',
@@ -665,6 +691,41 @@ class _ClassroomView extends HookConsumerWidget {
                     },
                     onLeave: () async {
                       await leaveClassroom();
+                      if (!context.mounted) return;
+                      final review = await showDialog<bool>(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                          title: const Text('Class ended'),
+                          content: Text(
+                            '${LingAfriqUxVoice.dailyPractice.first}\n\nReview with Polie while the session is fresh?',
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(ctx, false),
+                              child: const Text('Not now'),
+                            ),
+                            FilledButton(
+                              onPressed: () => Navigator.pop(ctx, true),
+                              child: const Text('Post-class with Polie'),
+                            ),
+                          ],
+                        ),
+                      );
+                      if (review == true && context.mounted) {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => PolieWorkspaceScreen(
+                              sourceLanguage: 'English',
+                              targetLanguage: roomName,
+                              initialMode: PolieMode.conversation,
+                              initialRoleplayScene:
+                                  'Post-class summary for "$roomName": recap key phrases, one pronunciation tip, and one challenge for tomorrow.',
+                              conversationOnly: true,
+                            ),
+                          ),
+                        );
+                      }
                       if (context.mounted) {
                         Navigator.pop(context);
                       }

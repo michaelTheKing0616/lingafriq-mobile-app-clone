@@ -18,6 +18,7 @@ import '../widgets/gamification/combo_display_widget.dart';
 import '../services/sound_effects_service.dart';
 import '../providers/gamification_provider.dart';
 import '../widgets/gamification/xp_gain_overlay.dart';
+import 'package:lingafriq/widgets/content/vocab_audio_controls.dart';
 import 'quiz_answers_screen.dart';
 
 class QuizIndexNotifier extends Notifier<int> {
@@ -40,6 +41,7 @@ class QuizScreen extends HookConsumerWidget {
   final String endpointToHit;
   final bool isTakeQuiz;
   final bool isCompleted;
+  final String? audioLanguage;
   const QuizScreen({
     super.key,
     required this.title,
@@ -47,6 +49,7 @@ class QuizScreen extends HookConsumerWidget {
     required this.endpointToHit,
     this.isTakeQuiz = false,
     this.isCompleted = false,
+    this.audioLanguage,
   });
 
   @override
@@ -128,6 +131,7 @@ class QuizScreen extends HookConsumerWidget {
                   children: quiz.asMap().entries.map((e) {
                     return QuizItem(
                       quiz: e.value,
+                      audioLanguage: audioLanguage,
                       onSelect: (value) {
                         selectedAnswer[e.key].value = {e.value.question: value};
                       },
@@ -434,11 +438,13 @@ class QuizItem extends HookWidget {
   final String? initial;
   final QuizModel quiz;
   final ValueChanged<String> onSelect;
+  final String? audioLanguage;
   const QuizItem({
     super.key,
     required this.quiz,
     required this.onSelect,
     this.initial,
+    this.audioLanguage,
   });
 
   @override
@@ -482,9 +488,24 @@ class QuizItem extends HookWidget {
             gradientStart: PanAfricanColors.secondary,
             gradientEnd: PanAfricanColors.tertiary,
             padding: EdgeInsets.all(PanAfricanSpacing.lg),
-            child: Text(
-              quiz.question,
-              style: PanAfricanTypography.headlineSmall(context),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  quiz.question,
+                  style: PanAfricanTypography.headlineSmall(context),
+                ),
+                if (audioLanguage != null &&
+                    audioLanguage!.trim().isNotEmpty &&
+                    quiz.answer.trim().isNotEmpty) ...[
+                  SizedBox(height: 12.h),
+                  VocabAudioControls(
+                    language: audioLanguage!,
+                    text: quiz.answer,
+                    compact: true,
+                  ),
+                ],
+              ],
             ),
           ),
         ),

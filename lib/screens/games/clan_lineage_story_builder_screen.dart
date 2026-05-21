@@ -11,6 +11,7 @@ import '../../models/game/game_content_models.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
+import 'cultural/game_scenario_loader.dart';
 import 'base_game_screen.dart';
 
 class ClanStoryGame extends BaseGameScreen {
@@ -35,6 +36,7 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
   bool _showingChoice = false;
   List<String> _narrativeChoices = [];
   String? _selectedChoice;
+  List<GameScenario> _bundledScenarios = [];
 
   static const _maxSteps = 5;
 
@@ -46,29 +48,50 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
     final gameProv = ref.read(gameProvider.notifier);
     final cards = gameProv.availableCards;
     _ancestors.clear();
-
-    final names = [
-      ('Elder Ifeoma', 'The Matriarch', 'Keeper of ancestral wisdom and oral history'),
-      ('Obi the Seer', 'Village Oracle', 'Interpreter of dreams and signs from the spirit world'),
-      ('Commander K', 'War Chief', 'Defender of the clan during the Great Migration'),
-      ('Amara of the River', 'Healer', 'Master of herbal remedies passed down generations'),
-      ('Kofi the Builder', 'Architect', 'Designer of the sacred meeting grounds'),
-    ];
-
-    for (var i = 0; i < _maxSteps; i++) {
-      final n = names[i % names.length];
-      _ancestors.add(_Ancestor(
-        name: n.$1,
-        role: n.$2,
-        description: n.$3,
-        cardId: cards.isNotEmpty ? cards[i % cards.length].cardId : 'ancestor_$i',
-      ));
-    }
-
-    _journalEntries.add(
-      'The story of the ${widget.language} clan begins in a village '
-      'nestled between ancient baobab trees...',
+    _bundledScenarios = loadBundledGameScenarios(
+      ref,
+      language: widget.language,
+      game: 'VillageQuest',
+      max: _maxSteps,
     );
+
+    if (_bundledScenarios.isNotEmpty) {
+      for (var i = 0; i < _maxSteps; i++) {
+        final s = _bundledScenarios[i % _bundledScenarios.length];
+        _ancestors.add(_Ancestor(
+          name: s.title,
+          role: s.culturalNote ?? 'Elder',
+          description: s.prompt,
+          cardId: cards.isNotEmpty ? cards[i % cards.length].cardId : 'ancestor_$i',
+          scenario: s,
+        ));
+      }
+      final opener = _bundledScenarios.first;
+      _journalEntries.add('${opener.title}: ${opener.prompt}');
+    } else {
+      final names = [
+        ('Elder Ifeoma', 'The Matriarch', 'Keeper of ancestral wisdom and oral history'),
+        ('Obi the Seer', 'Village Oracle', 'Interpreter of dreams and signs from the spirit world'),
+        ('Commander K', 'War Chief', 'Defender of the clan during the Great Migration'),
+        ('Amara of the River', 'Healer', 'Master of herbal remedies passed down generations'),
+        ('Kofi the Builder', 'Architect', 'Designer of the sacred meeting grounds'),
+      ];
+
+      for (var i = 0; i < _maxSteps; i++) {
+        final n = names[i % names.length];
+        _ancestors.add(_Ancestor(
+          name: n.$1,
+          role: n.$2,
+          description: n.$3,
+          cardId: cards.isNotEmpty ? cards[i % cards.length].cardId : 'ancestor_$i',
+        ));
+      }
+
+      _journalEntries.add(
+        'The story of the ${widget.language} clan begins in a village '
+        'nestled between ancient baobab trees...',
+      );
+    }
 
     _prepareChoices();
     setState(() {});
@@ -77,11 +100,27 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
   void _prepareChoices() {
     if (_currentStep >= _maxSteps) return;
     final ancestor = _ancestors[_currentStep];
-    _narrativeChoices = [
-      '${ancestor.name} shared the secret of ${_culturalTopic()}.',
-      '${ancestor.name} led the clan through ${_culturalChallenge()}.',
-      '${ancestor.name} discovered a hidden ${_culturalArtifact()}.',
-    ]..shuffle(Random());
+    if (ancestor.scenario != null) {
+      final s = ancestor.scenario!;
+      final pool = _bundledScenarios.isNotEmpty
+          ? _bundledScenarios
+          : [s];
+      _narrativeChoices = pool
+          .map((e) => (e.expectedResponse ?? e.prompt).trim())
+          .where((t) => t.isNotEmpty)
+          .take(3)
+          .toList();
+      while (_narrativeChoices.length < 3) {
+        _narrativeChoices.add(s.prompt);
+      }
+    } else {
+      _narrativeChoices = [
+        '${ancestor.name} shared the secret of ${_culturalTopic()}.',
+        '${ancestor.name} led the clan through ${_culturalChallenge()}.',
+        '${ancestor.name} discovered a hidden ${_culturalArtifact()}.',
+      ];
+    }
+    _narrativeChoices.shuffle(Random());
     _showingChoice = true;
     _selectedChoice = null;
   }
@@ -384,6 +423,7 @@ class _Ancestor {
   final String role;
   final String description;
   final String cardId;
+  final GameScenario? scenario;
   bool completed;
 
   _Ancestor({
@@ -391,6 +431,7 @@ class _Ancestor {
     required this.role,
     required this.description,
     required this.cardId,
+    this.scenario,
     this.completed = false,
   });
 }

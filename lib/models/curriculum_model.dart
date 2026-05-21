@@ -21,6 +21,27 @@ class CurriculumMeta {
   );
 }
 
+class CurriculumMcqItem {
+  final String id;
+  final String question;
+  final List<String> options;
+  final String answer;
+
+  const CurriculumMcqItem({
+    required this.id,
+    required this.question,
+    required this.options,
+    required this.answer,
+  });
+
+  factory CurriculumMcqItem.fromMap(Map<String, dynamic> map) => CurriculumMcqItem(
+        id: (map['id'] as String?) ?? '',
+        question: (map['question'] as String?) ?? '',
+        options: List<String>.from((map['options'] as List<dynamic>?) ?? []),
+        answer: (map['answer'] as String?) ?? '',
+      );
+}
+
 class CurriculumExercise {
   final String type;
   final List<String> items;
@@ -98,6 +119,10 @@ class CurriculumLesson {
   final int? durationMin;
   final bool isCompleted;
   final double progress;
+  final String? objective;
+  final String? culturalNotes;
+  final String? polieRoleplayPrompt;
+  final String? polieRoleplayPersona;
 
   CurriculumLesson({
     required this.id,
@@ -109,6 +134,10 @@ class CurriculumLesson {
     this.durationMin,
     this.isCompleted = false,
     this.progress = 0.0,
+    this.objective,
+    this.culturalNotes,
+    this.polieRoleplayPrompt,
+    this.polieRoleplayPersona,
   });
 
   factory CurriculumLesson.fromMap(Map<String, dynamic> map) {
@@ -123,6 +152,10 @@ class CurriculumLesson {
     final progress = progressVal is num
         ? progressVal.toDouble()
         : (double.tryParse(progressVal?.toString() ?? '0') ?? 0.0);
+
+    final roleplay = map['polie_roleplay'] is Map
+        ? Map<String, dynamic>.from(map['polie_roleplay'] as Map)
+        : null;
 
     return CurriculumLesson(
       id: (map['id'] as String?) ?? '',
@@ -140,6 +173,10 @@ class CurriculumLesson {
           : int.tryParse((map['duration_min'] ?? map['durationMin'])?.toString() ?? ''),
       isCompleted: map['isCompleted'] as bool? ?? false,
       progress: progress,
+      objective: map['objective'] as String?,
+      culturalNotes: map['cultural_notes'] as String?,
+      polieRoleplayPrompt: roleplay?['prompt'] as String?,
+      polieRoleplayPersona: roleplay?['persona'] as String?,
     );
   }
 
@@ -167,6 +204,7 @@ class CurriculumUnit {
   final int unit;
   final String title;
   final List<CurriculumLesson> lessons;
+  final List<CurriculumMcqItem> unitQuiz;
   final bool isCompleted;
   final double progress;
 
@@ -174,6 +212,7 @@ class CurriculumUnit {
     required this.unit,
     required this.title,
     required this.lessons,
+    this.unitQuiz = const [],
     this.isCompleted = false,
     this.progress = 0.0,
   });
@@ -183,6 +222,15 @@ class CurriculumUnit {
     final progress = progressVal is num
         ? progressVal.toDouble()
         : (double.tryParse(progressVal?.toString() ?? '0') ?? 0.0);
+    final quizRaw = map['unit_quiz'];
+    final quizItems = quizRaw is Map
+        ? List<CurriculumMcqItem>.from(
+            ((quizRaw['items'] as List<dynamic>?) ?? [])
+                .whereType<Map>()
+                .map((e) => CurriculumMcqItem.fromMap(Map<String, dynamic>.from(e))),
+          )
+        : const <CurriculumMcqItem>[];
+
     return CurriculumUnit(
       unit: (map['unit'] is int)
           ? (map['unit'] as int?) ?? 0
@@ -191,6 +239,7 @@ class CurriculumUnit {
       lessons: ((map['lessons'] as List<dynamic>?) ?? [])
           .map((e) => CurriculumLesson.fromMap(Map<String, dynamic>.from((e is Map) ? e : {})))
           .toList(),
+      unitQuiz: quizItems,
       isCompleted: map['isCompleted'] as bool? ?? false,
       progress: progress,
     );

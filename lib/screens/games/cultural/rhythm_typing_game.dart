@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
+import '../../../models/game/game_content_models.dart';
 import '../../../services/polie_content_generator.dart';
+import '../game_scenario_loader.dart';
 import '../../../widgets/error_boundary.dart';
 import '../../loading/dynamic_loading_screen.dart';
 import '../base_game_screen.dart';
@@ -54,6 +56,7 @@ class _RhythmTypingGameState extends BaseGameScreenState<RhythmTypingGame>
   int get gameScore => _score;
   
   bool _isComplete = false;
+  List<GameWord> _bundledWords = [];
 
   @override
   void dispose() {
@@ -63,6 +66,12 @@ class _RhythmTypingGameState extends BaseGameScreenState<RhythmTypingGame>
 
   @override
   Future<void> onGameInitialized() async {
+    _bundledWords = loadBundledGameWords(
+      ref,
+      language: widget.language,
+      gameTag: 'SpeedRound',
+      max: 24,
+    );
     await _loadNewChallenge();
   }
 
@@ -77,6 +86,17 @@ class _RhythmTypingGameState extends BaseGameScreenState<RhythmTypingGame>
       _isComplete = false;
       _inputController.clear();
     });
+
+    if (_bundledWords.isNotEmpty) {
+      final w = _bundledWords[_round % _bundledWords.length];
+      setState(() {
+        _round++;
+        _targetText = w.word;
+        _rhythmPattern = w.tonalNote ?? 'DUM · da · DUM';
+        setLoading(false);
+      });
+      return;
+    }
 
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);

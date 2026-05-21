@@ -13,6 +13,7 @@ import '../../utils/pan_african_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
 import 'base_game_screen.dart';
+import 'game_scenario_loader.dart';
 
 class ToneTrainerGame extends BaseGameScreen {
   const ToneTrainerGame({
@@ -42,15 +43,95 @@ class _ToneTrainerGameState extends BaseGameScreenState<ToneTrainerGame> {
 
   @override
   Future<void> onGameInitialized() async {
-    final gameProv = ref.read(gameProvider.notifier);
-    _cards.addAll(gameProv.availableCards);
-    _buildQuestions();
+    final lang = widget.language.toLowerCase();
+    final tonalWords = ref
+        .read(
+          gameWordsProvider(
+            GameContentFilter(language: lang, gameTag: 'ToneTrainer'),
+          ),
+        )
+        .where((w) => w.tonalNote != null && w.tonalNote!.trim().isNotEmpty)
+        .toList();
+
+    if (tonalWords.isNotEmpty) {
+      final pool = List.of(tonalWords)..shuffle(Random());
+      for (final word in pool.take(getCardCount())) {
+        _cards.add(_phraseFromGameWord(word));
+        _questions.add(_ToneQuestion(
+          card: _cards.last,
+          correctToneIndex: _toneIndexFromNote(word.tonalNote!),
+          toneLabels: const ['á (High)', 'ā (Mid)', 'à (Low)'],
+          toneSymbols: const ['á', 'ā', 'à'],
+          tonalHint: word.tonalNote,
+        ));
+      }
+    }
+
+    final scenarios = loadBundledGameScenarios(
+      ref,
+      language: widget.language,
+      game: 'ToneTrainer',
+      max: getCardCount(),
+    );
+    if (_questions.length < getCardCount() && scenarios.isNotEmpty) {
+      for (final scenario in scenarios) {
+        if (_questions.length >= getCardCount()) break;
+        _cards.add(PhraseCard(
+          cardId: 'tone_scenario_${scenario.id}',
+          language: widget.language,
+          text: scenario.prompt,
+          ascii: scenario.prompt,
+          gloss: scenario.expectedResponse ?? scenario.title,
+          level: scenario.cefr,
+          contextExamples: [
+            if (scenario.culturalNote != null) scenario.culturalNote!,
+          ],
+        ));
+        _questions.add(_ToneQuestion(
+          card: _cards.last,
+          correctToneIndex: _toneIndexFromNote(
+            scenario.culturalNote ?? scenario.expectedResponse ?? '',
+          ),
+          toneLabels: const ['á (High)', 'ā (Mid)', 'à (Low)'],
+          toneSymbols: const ['á', 'ā', 'à'],
+          tonalHint: scenario.culturalNote ?? scenario.title,
+        ));
+      }
+    }
+
+    if (_questions.isEmpty) {
+      final gameProv = ref.read(gameProvider.notifier);
+      _cards.addAll(gameProv.availableCards);
+      _buildQuestionsFromCards();
+    }
+    setState(() {});
   }
 
-  void _buildQuestions() {
+  PhraseCard _phraseFromGameWord(GameWord word) => PhraseCard(
+        cardId: 'tone_word_${word.id}',
+        language: word.language,
+        text: word.word,
+        ascii: word.word,
+        gloss: word.englishMeaning,
+        ipa: word.phoneticGuide,
+        level: word.cefr,
+        contextExamples: [
+          if (word.culturalNote != null) word.culturalNote!,
+        ],
+      );
+
+  int _toneIndexFromNote(String note) {
+    final lower = note.toLowerCase();
+    if (lower.contains('low')) return 2;
+    if (lower.contains('mid')) return 1;
+    if (lower.contains('high')) return 0;
+    return 1;
+  }
+
+  void _buildQuestionsFromCards() {
     final rng = Random(DateTime.now().millisecondsSinceEpoch);
     for (final card in _cards) {
-      final correctTone = rng.nextInt(3); // 0=high, 1=mid, 2=low
+      final correctTone = rng.nextInt(3);
       _questions.add(_ToneQuestion(
         card: card,
         correctToneIndex: correctTone,
@@ -301,7 +382,7 @@ class _ToneTrainerGameState extends BaseGameScreenState<ToneTrainerGame> {
             // Cultural note
             GameCulturalNoteCard(
               title: 'Did you know?',
-              body: _getTonalFact(widget.language),
+              body: q.tonalHint ?? _getTonalFact(widget.language),
               icon: Icons.lightbulb_rounded,
             ),
             SizedBox(height: PanAfricanSpacing.xl),
@@ -459,11 +540,13 @@ class _ToneQuestion {
   final int correctToneIndex;
   final List<String> toneLabels;
   final List<String> toneSymbols;
+  final String? tonalHint;
 
   const _ToneQuestion({
     required this.card,
     required this.correctToneIndex,
     required this.toneLabels,
     required this.toneSymbols,
+    this.tonalHint,
   });
 }

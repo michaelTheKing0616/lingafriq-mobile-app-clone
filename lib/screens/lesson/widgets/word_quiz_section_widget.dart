@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/widgets/content/vocab_audio_controls.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import '../models/lesson_content.dart';
 
@@ -11,6 +12,7 @@ class WordQuizSectionWidget extends StatefulWidget {
   final Function(int blankIndex, String? answer) onAnswerChanged;
   final VoidCallback onCheck;
   final List<String?>? currentAnswers;
+  final String? audioLanguage;
 
   const WordQuizSectionWidget({
     super.key,
@@ -18,6 +20,7 @@ class WordQuizSectionWidget extends StatefulWidget {
     required this.onAnswerChanged,
     required this.onCheck,
     this.currentAnswers,
+    this.audioLanguage,
   });
 
   @override
@@ -224,8 +227,29 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
     final usedChoices = _answers.values.whereType<String>().toSet();
     final unusedChoices = _availableChoices.where((c) => !usedChoices.contains(c)).toList();
 
+    final audioPhrase = _primaryAudioPhrase(questions);
+    final lang = widget.audioLanguage?.trim();
+
     return Column(
       children: [
+        if (lang != null && lang.isNotEmpty && audioPhrase.isNotEmpty)
+          Padding(
+            padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 0),
+            child: Row(
+              children: [
+                Text(
+                  'Listen',
+                  style: PanAfricanTypography.labelMedium(context),
+                ),
+                SizedBox(width: 8.w),
+                VocabAudioControls(
+                  language: lang,
+                  text: audioPhrase,
+                  compact: true,
+                ),
+              ],
+            ),
+          ),
         // Sentence with blanks
         Expanded(
           child: SingleChildScrollView(
@@ -314,5 +338,17 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
         ),
       ],
     );
+  }
+
+  String _primaryAudioPhrase(List<WordQuizQuestion> questions) {
+    if (questions.isEmpty) return '';
+    final parts = <String>[];
+    for (final q in questions) {
+      final segments = q.question.split('/');
+      if (segments.length > 1) {
+        parts.add(segments.last.trim());
+      }
+    }
+    return parts.join(' ');
   }
 }

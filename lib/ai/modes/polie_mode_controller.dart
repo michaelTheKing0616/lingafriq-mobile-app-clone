@@ -376,7 +376,9 @@ class PolieModeController {
       parts.add('Correct!');
     } else {
       if (json['rule'] != null) parts.add('Rule: ${json['rule']}');
-      if (json['correction'] != null) parts.add('Correction: ${json['correction']}');
+      if (json['correction'] != null) {
+        parts.add(json['correction'] as String);
+      }
       if (json['explanation'] != null) parts.add(json['explanation'] as String);
     }
     if (json['practicePrompt'] != null) parts.add('\nNow try: ${json['practicePrompt']}');

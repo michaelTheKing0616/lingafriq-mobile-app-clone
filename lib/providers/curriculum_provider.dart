@@ -33,8 +33,16 @@ class CurriculumProvider extends Notifier<BaseProviderState> with BaseProviderMi
       
       // First, try to load from saved preferences (cached)
       final prefs = await SharedPreferences.getInstance();
+      const bundleVersion = '3.0.0';
+      final cachedVersion = prefs.getString('curriculum_bundle_version');
+      final versionOk = cachedVersion == bundleVersion;
+      if (!versionOk) {
+        await prefs.remove('curriculum_data');
+        await prefs.setString('curriculum_bundle_version', bundleVersion);
+      }
+
       final cachedCurriculum = prefs.getString('curriculum_data');
-      if (cachedCurriculum != null && cachedCurriculum.isNotEmpty) {
+      if (cachedCurriculum != null && cachedCurriculum.isNotEmpty && versionOk) {
         try {
           _curriculum = Curriculum.fromJson(cachedCurriculum);
           state = state.copyWith(isLoading: false);
@@ -55,7 +63,9 @@ class CurriculumProvider extends Notifier<BaseProviderState> with BaseProviderMi
       }
 
       final languages = List<String>.from(masterIndex['languages'] ?? []);
-      final levels = List<String>.from(masterIndex['levels'] ?? ['A1', 'A2', 'B1']);
+      final levels = List<String>.from(
+        masterIndex['levels'] ?? ['A1', 'A2', 'B1', 'B2', 'C1'],
+      );
       
       // Build curriculum from all languages and levels
       final languagesMap = <String, Map<String, List<CurriculumUnit>>>{};
@@ -159,6 +169,7 @@ class CurriculumProvider extends Notifier<BaseProviderState> with BaseProviderMi
           return CurriculumUnit(
             unit: u.unit,
             title: u.title,
+            unitQuiz: u.unitQuiz,
             lessons: u.lessons.map((l) {
               final lessonCompleted = _isLessonCompleted(language, level, l.id);
               return CurriculumLesson(

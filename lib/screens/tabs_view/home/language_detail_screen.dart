@@ -12,7 +12,8 @@ import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 import '../../../history/screens/history_list_screen.dart';
 import '../../../mannerisms/screens/mannerism_list_screen.dart';
 import '../../../providers/navigation_provider.dart';
-import '../../../screens/curriculum/curriculum_screen_material3.dart';
+import '../../../screens/curriculum/authentic_curriculum_entry_screen.dart';
+import 'package:lingafriq/utils/curriculum_languages.dart';
 import '../../../screens/learning/learning_path_screen.dart';
 import '../../../widgets/responsive_safe_area.dart';
 
@@ -126,14 +127,17 @@ class LanguageDetailScreen extends ConsumerWidget {
                                   ).animate(effects: kGradientTextEffects),
                                 ),
                                 Positioned(
-                                  left: constraints.maxWidth * 0.08,
-                                  top: constraints.maxHeight * (context.isSmall ? 0.38 : 0.33),
-                                  child: _CurriculumTextBuilder(
+                                  right: constraints.maxWidth * 0.06,
+                                  top: constraints.maxHeight * (context.isSmall ? 0.22 : 0.18),
+                                  child: _AuthenticPathChip(
                                     onTap: () {
                                       HapticFeedback.lightImpact();
-                                      ref
-                                          .read(navigationProvider)
-                                          .navigateTo(const CurriculumScreenMaterial3());
+                                      ref.read(navigationProvider).navigateTo(
+                                            AuthenticCurriculumEntryScreen(
+                                              initialLanguage:
+                                                  CurriculumLanguages.keyForApiLanguage(language),
+                                            ),
+                                          );
                                     },
                                   ),
                                 ).animate(effects: kGradientTextEffects),
@@ -270,9 +274,10 @@ class _MannerismTextBuilder extends StatelessWidget {
   }
 }
 
-class _CurriculumTextBuilder extends StatelessWidget {
+/// Bundled A1–C1 path — not the original API [LearningPathScreen] lessons.
+class _AuthenticPathChip extends StatelessWidget {
   final VoidCallback onTap;
-  const _CurriculumTextBuilder({required this.onTap});
+  const _AuthenticPathChip({required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -287,22 +292,28 @@ class _CurriculumTextBuilder extends StatelessWidget {
             vertical: PanAfricanSpacing.xs,
           ),
           decoration: BoxDecoration(
-            gradient: PanAfricanGradients.sunset,
+            gradient: LinearGradient(
+              colors: [
+                PanAfricanColors.secondary,
+                PanAfricanColors.tertiary,
+              ],
+            ),
             borderRadius: PanAfricanRadius.smBR,
             boxShadow: PanAfricanShadows.sm,
+            border: Border.all(color: Colors.white.withOpacity(0.35), width: 1.2),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.auto_stories_rounded, size: 16.sp, color: Colors.white),
+              Icon(Icons.auto_awesome_rounded, size: 18.sp, color: Colors.white),
               SizedBox(width: 4.sp),
               Text(
-                'Curriculum',
+                'Authentic Path',
                 style: TextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 11.sp,
+                  fontWeight: FontWeight.w700,
                   color: Colors.white,
-                  letterSpacing: 0.5,
+                  letterSpacing: 0.3,
                 ),
               ),
             ],

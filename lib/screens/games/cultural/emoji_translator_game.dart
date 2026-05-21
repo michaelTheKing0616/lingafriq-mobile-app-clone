@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
+import '../../../models/game/game_content_models.dart';
 import '../../../services/polie_content_generator.dart';
+import '../game_scenario_loader.dart';
 import '../../../widgets/error_boundary.dart';
 import '../../loading/dynamic_loading_screen.dart';
 import '../base_game_screen.dart';
@@ -56,11 +58,30 @@ class _EmojiTranslatorGameState extends BaseGameScreenState<EmojiTranslatorGame>
   @override
   int get gameScore => _score;
   String? _correctTranslation;
-  
+  List<GameWord> _bundledWords = [];
 
   @override
   Future<void> onGameInitialized() async {
+    _bundledWords = loadBundledGameWords(
+      ref,
+      language: widget.language,
+      gameTag: 'WordMatch',
+      max: 20,
+    );
     await _loadNewChallenge();
+  }
+
+  String _emojiForWord(GameWord w) {
+    final topic = w.topic?.toLowerCase() ?? '';
+    const sets = {
+      'greetings': '👋 😊 🤝',
+      'food': '🍚 🍲 🔥',
+      'family': '👨‍👩‍👧 ❤️ 🏡',
+      'travel': '🚌 ✈️ 🗺️',
+      'market': '🛒 💰 🏪',
+      'nature': '🌳 🌍 ☀️',
+    };
+    return sets[topic] ?? '💬 🌍 ✨';
   }
 
   Future<void> _loadNewChallenge() async {
@@ -74,6 +95,20 @@ class _EmojiTranslatorGameState extends BaseGameScreenState<EmojiTranslatorGame>
       _showResult = false;
       _selectedTranslation = null;
     });
+
+    if (_bundledWords.isNotEmpty) {
+      final w = _bundledWords[_round % _bundledWords.length];
+      final correct = w.word;
+      final pool = _bundledWords.map((e) => e.word);
+      setState(() {
+        _round++;
+        _emojiSequence = _emojiForWord(w);
+        _correctTranslation = correct;
+        _translationOptions = buildShuffledOptions(correct, pool);
+        setLoading(false);
+      });
+      return;
+    }
 
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);

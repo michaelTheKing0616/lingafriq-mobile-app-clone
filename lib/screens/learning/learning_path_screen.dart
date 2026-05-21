@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/lessons/models/lesson_response.dart';
 import 'package:lingafriq/lessons/screens/lessons_list_screen.dart';
 import 'package:lingafriq/lessons/screens/section_lessons_list.dart';
+import 'package:lingafriq/navigation/learning_experience_navigation.dart';
 import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/utils/modern_griot_design_system.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
@@ -78,8 +79,11 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen>
 
   void _openLesson(Lesson lesson) {
     HapticFeedback.lightImpact();
-    Navigator.of(context).push(
-      SmoothPageRoute.platform(child: LessonSectionsListScreen(lesson: lesson)),
+    LearningExperienceNavigation.openLessonSections(
+      context,
+      lesson: lesson,
+      studyLanguageKey:
+          LearningExperienceNavigation.languageKeyFor(widget.language),
     );
   }
 

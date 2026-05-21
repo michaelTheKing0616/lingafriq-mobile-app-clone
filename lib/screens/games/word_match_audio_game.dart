@@ -8,6 +8,7 @@ import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
 import '../../providers/game_content_provider.dart';
+import '../../widgets/content/vocab_audio_controls.dart';
 import '../../models/game/game_content_models.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../utils/pan_african_design_system.dart';
@@ -247,6 +248,7 @@ class _WordMatchAudioGameState extends BaseGameScreenState<WordMatchAudioGame> {
                                         label: tile.label,
                                         state: _tileState(tile.id, true),
                                         showSpeaker: true,
+                                        audioLanguage: widget.language,
                                         useIndigoStyle: true,
                                         onTap: () => _selectTile('left', tile.id),
                                       );
@@ -414,6 +416,7 @@ class _WordTile extends StatelessWidget {
   final String label;
   final _TileState state;
   final bool showSpeaker;
+  final String? audioLanguage;
   final bool useIndigoStyle;
   final bool useBubbleStyle;
   final VoidCallback onTap;
@@ -422,6 +425,7 @@ class _WordTile extends StatelessWidget {
     required this.label,
     required this.state,
     this.showSpeaker = false,
+    this.audioLanguage,
     this.useIndigoStyle = false,
     this.useBubbleStyle = false,
     required this.onTap,
@@ -480,23 +484,11 @@ class _WordTile extends StatelessWidget {
           opacity: isMatched ? 0.6 : 1.0,
           child: Row(
             children: [
-              if (showSpeaker) ...[
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: useIndigoStyle
-                        ? ModernGriotColors.primary
-                        : ModernGriotColors.surfaceContainerHigh,
-                    borderRadius: ModernGriotRadius.borderPill,
-                  ),
-                  child: Icon(
-                    Icons.volume_up_rounded,
-                    size: 18.sp,
-                    color: useIndigoStyle
-                        ? ModernGriotColors.onPrimary
-                        : ModernGriotColors.primary,
-                  ),
+              if (showSpeaker && audioLanguage != null) ...[
+                VocabAudioControls(
+                  language: audioLanguage!,
+                  text: label,
+                  compact: true,
                 ),
                 SizedBox(width: 6.w),
               ],

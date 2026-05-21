@@ -10,6 +10,7 @@ import '../../providers/game_content_provider.dart';
 import '../../models/game/game_content_models.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../utils/pan_african_design_system.dart';
+import '../../widgets/content/vocab_audio_controls.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
 import 'base_game_screen.dart';
@@ -207,6 +208,8 @@ class _PronunciationDuelGameState
                 style: ModernGriotTypography.bodyLarge(
                     context: context, color: ModernGriotColors.onSurfaceVariant),
                 textAlign: TextAlign.center),
+            SizedBox(height: PanAfricanSpacing.sm),
+            VocabAudioControls(language: widget.language, text: card.text, compact: true),
             SizedBox(height: PanAfricanSpacing.lg),
             // Native speaker waveform
             Container(

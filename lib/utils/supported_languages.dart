@@ -111,6 +111,24 @@ class SupportedLanguages {
       'requiresDiacritics': false,
       'validChars': 'abcdefghijklmnopqrstuvwxyz',
     },
+    'lingala': {
+      'name': 'Lingala',
+      'code': 'ln',
+      'flag': '🇨🇩',
+      'country': 'DRC',
+      'iso639_3': 'lin',
+      'requiresDiacritics': false,
+      'validChars': 'abcdefghijklmnopqrstuvwxyz',
+    },
+    'shona': {
+      'name': 'Shona',
+      'code': 'sn',
+      'flag': '🇿🇼',
+      'country': 'Zimbabwe',
+      'iso639_3': 'sna',
+      'requiresDiacritics': false,
+      'validChars': 'abcdefghijklmnopqrstuvwxyz',
+    },
   };
   
   /// Get all supported languages

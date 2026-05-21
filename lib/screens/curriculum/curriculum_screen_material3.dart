@@ -12,32 +12,59 @@ import 'package:lingafriq/widgets/skeleton_loader.dart';
 import 'package:lingafriq/providers/curriculum_provider.dart';
 import 'package:lingafriq/models/curriculum_model.dart';
 import 'package:lingafriq/screens/curriculum/lesson_detail_screen.dart';
+import 'package:lingafriq/screens/lesson/authentic_lesson_flow_screen.dart';
+import 'package:lingafriq/screens/curriculum/level_certificate_screen.dart';
+import 'package:lingafriq/screens/persona_missions/persona_missions_hub_screen.dart';
+import 'package:lingafriq/services/curriculum_service.dart';
+import 'package:lingafriq/utils/curriculum_languages.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 
 class CurriculumScreenMaterial3 extends HookConsumerWidget {
-  const CurriculumScreenMaterial3({super.key});
+  const CurriculumScreenMaterial3({
+    super.key,
+    this.initialLanguage,
+    this.initialLevel,
+  });
+
+  final String? initialLanguage;
+  final String? initialLevel;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedLanguage = useState('yoruba');
-    final selectedLevel = useState('A1');
+    final curriculum = ref.watch(curriculumProvider.notifier).curriculum;
+    final providerState = ref.watch(curriculumProvider);
+
+    final defaultLang = CurriculumService.normalizeLanguageKey(
+      initialLanguage ?? 'yoruba',
+    );
+    final selectedLanguage = useState(defaultLang);
+    final selectedLevel = useState(initialLevel ?? 'A1');
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final isLoading = useState(true);
     final error = useState<String?>(null);
 
-    final languages = ['yoruba', 'hausa', 'igbo', 'swahili', 'zulu'];
-    const fallbackLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
-
-    final curriculum = ref.watch(curriculumProvider.notifier).curriculum;
-    final providerState = ref.watch(curriculumProvider);
+    final languages = CurriculumLanguages.pickerKeys(fromMeta: curriculum?.meta.languages);
+    const fallbackLevels = ['A1', 'A2', 'B1', 'B2', 'C1'];
 
     final levels = curriculum != null && curriculum.meta.levels.isNotEmpty
         ? curriculum.meta.levels
         : fallbackLevels;
 
+    String resolveLangKey(String pickerValue) =>
+        CurriculumService.normalizeLanguageKey(pickerValue);
+
+    bool languageHasContent(String langKey) {
+      if (curriculum == null) return true;
+      final normalized = resolveLangKey(langKey);
+      return curriculum.languages.containsKey(normalized) ||
+          curriculum.languages.containsKey(langKey);
+    }
+
     bool levelHasContent(String level) {
       if (curriculum == null) return true;
-      final langData = curriculum.languages[selectedLanguage.value];
+      final normalized = resolveLangKey(selectedLanguage.value);
+      final langData =
+          curriculum.languages[normalized] ?? curriculum.languages[selectedLanguage.value];
       if (langData == null) return false;
       final unitList = langData[level];
       return unitList != null && unitList.isNotEmpty;
@@ -84,18 +111,63 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
     // Extract units for selected language + level
     List<CurriculumUnit> units = [];
     if (curriculum != null) {
-      final languageData = curriculum.languages[selectedLanguage.value];
+      final langKey = resolveLangKey(selectedLanguage.value);
+      final languageData =
+          curriculum.languages[langKey] ?? curriculum.languages[selectedLanguage.value];
       final levelData = languageData?[effectiveLevel];
       if (levelData != null) {
         units = levelData;
       }
     }
 
+    final allLessons = units.expand((u) => u.lessons).toList();
+    final completedLessons = allLessons
+        .where((l) => ref.read(curriculumProvider.notifier).isLessonCompleted(
+              selectedLanguage.value,
+              effectiveLevel,
+              l.id,
+            ))
+        .length;
+    final levelComplete = allLessons.isNotEmpty && completedLessons == allLessons.length;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Curriculum'),
+        title: const Text('Authentic Path'),
         backgroundColor: Colors.transparent,
         elevation: 0,
+        actions: [
+          IconButton(
+            tooltip: 'Persona missions',
+            icon: const Icon(Icons.theater_comedy_outlined),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => PersonaMissionsHubScreen(
+                    initialLanguage: selectedLanguage.value,
+                  ),
+                ),
+              );
+            },
+          ),
+          if (levelComplete)
+            IconButton(
+              tooltip: 'Level certificate',
+              icon: const Icon(Icons.workspace_premium_outlined),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => LevelCertificateScreen(
+                      language: selectedLanguage.value,
+                      level: effectiveLevel,
+                      lessonsCompleted: completedLessons,
+                    ),
+                  ),
+                );
+              },
+            ),
+        ],
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -139,9 +211,24 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
                               : PanAfricanColors.surfaceLight,
                         ),
                         items: languages.map((lang) {
+                          final hasContent = languageHasContent(lang);
                           return DropdownMenuItem(
                             value: lang,
-                            child: Text(lang[0].toUpperCase() + lang.substring(1)),
+                            child: Row(
+                              children: [
+                                Text(CurriculumLanguages.displayName(lang)),
+                                if (!hasContent) ...[
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    'Soon',
+                                    style: TextStyle(
+                                      fontSize: 10.sp,
+                                      color: Colors.orange.shade700,
+                                    ),
+                                  ),
+                                ],
+                              ],
+                            ),
                           );
                         }).toList(),
                         onChanged: (value) {
@@ -295,7 +382,7 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
                                         unit: unit,
                                         unitIndex: unitIndex,
                                         isDark: isDark,
-                                        language: selectedLanguage.value,
+                                        language: resolveLangKey(selectedLanguage.value),
                                         level: effectiveLevel,
                                         ref: ref,
                                       )
@@ -405,10 +492,11 @@ class _UnitCard extends StatelessWidget {
                   final completed = await Navigator.push<bool>(
                     context,
                     SmoothPageRoute(
-                      child: LessonDetailScreen(
+                      child: AuthenticLessonFlowScreen(
                         lesson: lesson,
                         language: language,
                         level: level,
+                        unitQuiz: unit.unitQuiz,
                       ),
                     ),
                   );

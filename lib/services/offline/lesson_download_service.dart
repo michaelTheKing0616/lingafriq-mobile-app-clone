@@ -13,6 +13,7 @@ import '../../utils/api_service.dart';
 import '../../utils/structured_logger.dart';
 import '../learning/dialect_preference_service.dart';
 import '../learning/heritage_milestone_service.dart';
+import '../content/cms_manifest_service.dart';
 import 'local_database_service.dart';
 
 /// Download progress information
@@ -228,16 +229,28 @@ class LessonDownloadService {
     try {
       await ApiService.initialize();
       
-      final manifestResponse = await ApiService.get(
-        ApiContract.contentPacks.manifest(language),
-      );
-
-      if (manifestResponse.statusCode != 200) {
-        throw Exception('Failed to fetch manifest: ${manifestResponse.statusCode}');
+      Map<String, dynamic>? manifest;
+      if (EnvConfig.useBundledCmsFirst) {
+        manifest = await CmsManifestService().loadBundledManifest(language);
+      }
+      if (manifest == null || manifest.isEmpty) {
+        try {
+          final manifestResponse = await ApiService.get(
+            ApiContract.contentPacks.manifest(language),
+          );
+          if (manifestResponse.statusCode == 200 && manifestResponse.data is Map) {
+            final root = manifestResponse.data as Map<String, dynamic>;
+            manifest = (root['manifest'] as Map?)?.cast<String, dynamic>();
+          }
+        } catch (e) {
+          logger.warn('API manifest fetch failed; trying bundled CMS', tag: 'offline', error: e);
+        }
       }
 
-      final root = manifestResponse.data as Map<String, dynamic>;
-      final manifest = (root['manifest'] as Map?)?.cast<String, dynamic>() ?? {};
+      manifest ??= await CmsManifestService().loadBundledManifest(language);
+      if (manifest == null || manifest.isEmpty) {
+        throw Exception('Failed to fetch manifest for $language (API and bundled)');
+      }
       final rawLessons = (manifest['lessons'] as List<dynamic>?) ?? [];
       final preferredTag = await _preferredDialectTagForManifest(manifest, language);
       final lessons = orderedLessonsForPackDownload(rawLessons, preferredTag);

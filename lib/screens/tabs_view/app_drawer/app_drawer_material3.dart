@@ -15,6 +15,8 @@ import 'package:lingafriq/providers/tab_scaffold_provider.dart';
 import 'package:lingafriq/screens/profile/profile_screen_material3.dart';
 import 'package:lingafriq/screens/settings/settings_screen_material3.dart';
 import 'package:lingafriq/screens/lessons/lessons_map_entry_screen.dart';
+import 'package:lingafriq/screens/content/native_content_review_screen.dart';
+import 'package:lingafriq/screens/curriculum/authentic_curriculum_entry_screen.dart';
 import 'package:lingafriq/screens/games/games_screen_material3.dart';
 import 'package:lingafriq/screens/gamification/badge_collection_screen_material3.dart';
 import 'package:lingafriq/screens/chat/lingchat_ai_conversation_screen.dart';
@@ -165,6 +167,34 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                             context,
                             SmoothPageRoute.platform(
                               child: const LessonsMapEntryScreen(),
+                            ),
+                          );
+                        },
+                        isDark: isDark,
+                      ),
+                      _DrawerItem(
+                        icon: PanAfricanIcons.ai,
+                        label: 'Authentic Path (A1–C1)',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute.platform(
+                              child: const AuthenticCurriculumEntryScreen(),
+                            ),
+                          );
+                        },
+                        isDark: isDark,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.verified_user_outlined,
+                        label: 'Native content review',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute.platform(
+                              child: const NativeContentReviewScreen(),
                             ),
                           );
                         },

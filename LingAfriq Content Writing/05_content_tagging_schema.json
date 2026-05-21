@@ -1,0 +1,45 @@
+{
+  "$schema": "LingAfriq content tagging v1",
+  "lesson_tags": {
+    "difficulty": ["A0", "A1", "A2", "B1", "B2", "C1"],
+    "vocab_theme": [
+      "greetings",
+      "family",
+      "food",
+      "market",
+      "transport",
+      "emotions",
+      "work",
+      "ceremony",
+      "slang",
+      "proverbs"
+    ],
+    "grammar_concept": ["questions", "negation", "pronouns", "tense_present", "honorifics"],
+    "cultural_topic": ["elder_respect", "greeting_culture", "naming", "hospitality", "trade", "oral_tradition"],
+    "pronunciation_difficulty": ["standard", "tone_aware", "click_consonants"],
+    "conversation_difficulty": ["guided", "semi_free", "free_form"],
+    "ai_readiness": ["beginner_slow", "intermediate", "advanced_native_speed"],
+    "certification_mapping": ["listening_A1", "speaking_A1", "cultural_A1"]
+  },
+  "game_tags": [
+    "WordMatch",
+    "SpeedRound",
+    "PronunciationDuel",
+    "ToneTrainer",
+    "Roleplay",
+    "GreetingDiplomacy",
+    "MarketBargaining",
+    "FoodQuest",
+    "ProverbUnlocker",
+    "FlashcardSafari",
+    "CulturalEtiquette",
+    "FolktaleReconstruction",
+    "VillageQuest"
+  ],
+  "xp_categories": {
+    "fluency_xp": ["lessons", "reviews", "speaking", "listening"],
+    "cultural_xp": ["magazine", "persona_missions", "cultural_lessons"],
+    "community_xp": ["live_class", "challenges", "peer_help"],
+    "mastery_xp": ["assessments", "certification", "pronunciation_excellence"]
+  }
+}

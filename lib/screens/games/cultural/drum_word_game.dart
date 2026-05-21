@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
+import '../../../models/game/game_content_models.dart';
 import '../../../services/polie_content_generator.dart';
+import '../game_scenario_loader.dart';
 import '../../../widgets/error_boundary.dart';
 import '../../loading/dynamic_loading_screen.dart';
 import '../base_game_screen.dart';
@@ -57,9 +59,16 @@ class _DrumWordGameState extends BaseGameScreenState<DrumWordGame>
   int get gameScore => _score;
   
   String _correctWord = '';
+  List<GameWord> _bundledWords = [];
 
   @override
   Future<void> onGameInitialized() async {
+    _bundledWords = loadBundledGameWords(
+      ref,
+      language: widget.language,
+      gameTag: 'WordMatch',
+      max: 20,
+    );
     await _loadNewChallenge();
   }
 
@@ -74,6 +83,19 @@ class _DrumWordGameState extends BaseGameScreenState<DrumWordGame>
       _showResult = false;
       _selectedWord = null;
     });
+
+    if (_bundledWords.isNotEmpty) {
+      final w = _bundledWords[Random().nextInt(_bundledWords.length)];
+      final pool = _bundledWords.map((e) => e.word).where((x) => x != w.word);
+      setState(() {
+        _round++;
+        _rhythmPattern = 'DUM · da-da · DUM';
+        _correctWord = w.word;
+        _wordOptions = buildShuffledOptions(w.word, pool);
+        setLoading(false);
+      });
+      return;
+    }
 
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);

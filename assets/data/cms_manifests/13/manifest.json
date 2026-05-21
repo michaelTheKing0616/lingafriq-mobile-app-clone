@@ -1,0 +1,4969 @@
+{
+  "manifest": {
+    "language": "13",
+    "language_name": "lingala",
+    "schemaVersion": 1,
+    "checksumSha256": "649106ce90978625e293f15820f8afd1a9f6ed7a3ba194a62f20d24e55742429",
+    "totalLessons": 30,
+    "levels": [
+      "A1",
+      "A2",
+      "B1",
+      "B2",
+      "C1"
+    ],
+    "source": "lingafriq_authentic_curriculum",
+    "lessons": [
+      {
+        "id": "Lingala-A1-u1-l1",
+        "title": "Hi",
+        "level": "A1",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/23a48c3b172b68cb.mp3",
+            "sha256": "a27c5fae5376bc088a0aec437ac1977c6c7bc71992b90b21bff3d0933eb2d8bb",
+            "label": "Mbote"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/23a48c3b172b68cb.mp3",
+            "sha256": "0f7b1c5171c59c31099b4c3218ff76e2998ce078b8baaf6fd13450e0581a0db3",
+            "label": "Mbote"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/20670d22cac09b36.mp3",
+            "sha256": "0d4212fcfbf68d8b2fa786c8181de000c82a7227792fa348c3868e500cf3302c",
+            "label": "Boni?"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/20670d22cac09b36.mp3",
+            "sha256": "7dbf85d4dd53f1a1187a9fce809f5f6243a0cfa9673934dff29346d9af10e3a8",
+            "label": "Boni?"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/9139d028db801b40.mp3",
+            "sha256": "759dfa356e70ccff7e0b8f0b63745749d0038e3bbf7acbe086c9a987fd3780a5",
+            "label": "Malamu"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/9139d028db801b40.mp3",
+            "sha256": "1bb74ae11d30dddcc1bbfa0731ab18457bcec532215baef0a3c20c9a71be9a64",
+            "label": "Malamu"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-A1-u1-l1",
+          "title": "Hi",
+          "objective": "Greet.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Hi",
+              "type": "Tutorial",
+              "text": "Greet.\n\n• Mbote — Hello\n• Boni? — How are you?\n• Malamu — Good / fine\n\nReal-life Hi — Lingala\n\nA: Mbote — Hello\nB: Boni? — How are you?\nA: Malamu — Good / fine",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Mbote — Hello",
+                  "options": [
+                    "Mbote — Hello",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Mbote — Hello"
+                },
+                {
+                  "question": "Recall: Boni? — How are you?",
+                  "options": [
+                    "Boni? — How are you?",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Boni? — How are you?"
+                },
+                {
+                  "question": "Recall: Malamu — Good / fine",
+                  "options": [
+                    "Malamu — Good / fine",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Malamu — Good / fine"
+                },
+                {
+                  "id": "lingala-A1-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Hi” in Lingala?",
+                  "options": [
+                    "Mbote",
+                    "Matondi",
+                    "Svp",
+                    "Malamu"
+                  ],
+                  "answer": "Mbote"
+                },
+                {
+                  "id": "lingala-A1-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Thanks” in Lingala?",
+                  "options": [
+                    "Nalingi",
+                    "Boni?",
+                    "Matondi",
+                    "Svp"
+                  ],
+                  "answer": "Matondi"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Mbote",
+                  "meaning": "Hello",
+                  "options": [
+                    "Hello",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Boni?",
+                  "meaning": "How are you?",
+                  "options": [
+                    "How are you?",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Malamu",
+                  "meaning": "Good / fine",
+                  "options": [
+                    "Good / fine",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-A1-u1-l2",
+        "title": "Thanks",
+        "level": "A1",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/7841562bcb8e29f0.mp3",
+            "sha256": "47fce2491505f298862d7ed7bd083e095510514e99497f85495de3cf6fa35311",
+            "label": "Matondi"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/7841562bcb8e29f0.mp3",
+            "sha256": "91a2db7de28efe34826f99662c9d2b1a21b62b3b2068feb1a9848563dea81a43",
+            "label": "Matondi"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/688484bad3077649.mp3",
+            "sha256": "7dd5e17b9c47318226cac4c66919bd101fc8f4a34db4a7fef6a86ad17c636859",
+            "label": "Svp"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/688484bad3077649.mp3",
+            "sha256": "e4630805140dbac12432f64f053d46ae61878f4ca79a9b9841575565b5ee10d0",
+            "label": "Svp"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/9139d028db801b40.mp3",
+            "sha256": "759dfa356e70ccff7e0b8f0b63745749d0038e3bbf7acbe086c9a987fd3780a5",
+            "label": "Malamu"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/9139d028db801b40.mp3",
+            "sha256": "1bb74ae11d30dddcc1bbfa0731ab18457bcec532215baef0a3c20c9a71be9a64",
+            "label": "Malamu"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-A1-u1-l2",
+          "title": "Thanks",
+          "objective": "Thanks.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Thanks",
+              "type": "Tutorial",
+              "text": "Thanks.\n\n• Matondi — Thank you\n• Svp — Please\n• Malamu — Good / fine\n\nReal-life Thanks — Lingala\n\nA: Matondi — Thank you\nB: Svp — Please\nA: Malamu — Good / fine",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Matondi — Thank you",
+                  "options": [
+                    "Matondi — Thank you",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Matondi — Thank you"
+                },
+                {
+                  "question": "Recall: Svp — Please",
+                  "options": [
+                    "Svp — Please",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Svp — Please"
+                },
+                {
+                  "question": "Recall: Malamu — Good / fine",
+                  "options": [
+                    "Malamu — Good / fine",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Malamu — Good / fine"
+                },
+                {
+                  "id": "lingala-A1-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Hi” in Lingala?",
+                  "options": [
+                    "Mbote",
+                    "Matondi",
+                    "Svp",
+                    "Malamu"
+                  ],
+                  "answer": "Mbote"
+                },
+                {
+                  "id": "lingala-A1-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Thanks” in Lingala?",
+                  "options": [
+                    "Nalingi",
+                    "Boni?",
+                    "Matondi",
+                    "Svp"
+                  ],
+                  "answer": "Matondi"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Matondi",
+                  "meaning": "Thank you",
+                  "options": [
+                    "Thank you",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Svp",
+                  "meaning": "Please",
+                  "options": [
+                    "Please",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Malamu",
+                  "meaning": "Good / fine",
+                  "options": [
+                    "Good / fine",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-A1-u1-l3",
+        "title": "Intro",
+        "level": "A1",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/f1b0aec5189d6667.mp3",
+            "sha256": "f6d121af8b25bfa4be057183b08593202bc9c83729122afd7ee13d5c827d522e",
+            "label": "Nkombo na ngai"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/f1b0aec5189d6667.mp3",
+            "sha256": "e956901bfab96e41cd4195580ecc46bb4f9e208fb25729f182e1f1aeffc1552d",
+            "label": "Nkombo na ngai"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/01567b5c61000d34.mp3",
+            "sha256": "0e45b3897600d845510f8320c235070bf302a4098245309aeff5ae787be35251",
+            "label": "Nalingi"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/01567b5c61000d34.mp3",
+            "sha256": "b5e7004d52d955873ce0648cf80934a0f4e01b92457bc98bbfe479d9b5d8ccb7",
+            "label": "Nalingi"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/9139d028db801b40.mp3",
+            "sha256": "759dfa356e70ccff7e0b8f0b63745749d0038e3bbf7acbe086c9a987fd3780a5",
+            "label": "Malamu"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/9139d028db801b40.mp3",
+            "sha256": "1bb74ae11d30dddcc1bbfa0731ab18457bcec532215baef0a3c20c9a71be9a64",
+            "label": "Malamu"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-A1-u1-l3",
+          "title": "Intro",
+          "objective": "Intro.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Intro",
+              "type": "Tutorial",
+              "text": "Intro.\n\n• Nkombo na ngai — My name is\n• Nalingi — I want\n• Malamu — Good / fine\n\nReal-life Intro — Lingala\n\nA: Nkombo na ngai — My name is\nB: Nalingi — I want\nA: Malamu — Good / fine",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Nkombo na ngai — My name is",
+                  "options": [
+                    "Nkombo na ngai — My name is",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nkombo na ngai — My name is"
+                },
+                {
+                  "question": "Recall: Nalingi — I want",
+                  "options": [
+                    "Nalingi — I want",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nalingi — I want"
+                },
+                {
+                  "question": "Recall: Malamu — Good / fine",
+                  "options": [
+                    "Malamu — Good / fine",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Malamu — Good / fine"
+                },
+                {
+                  "id": "lingala-A1-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Hi” in Lingala?",
+                  "options": [
+                    "Mbote",
+                    "Matondi",
+                    "Svp",
+                    "Malamu"
+                  ],
+                  "answer": "Mbote"
+                },
+                {
+                  "id": "lingala-A1-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Thanks” in Lingala?",
+                  "options": [
+                    "Nalingi",
+                    "Boni?",
+                    "Matondi",
+                    "Svp"
+                  ],
+                  "answer": "Matondi"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Nkombo na ngai",
+                  "meaning": "My name is",
+                  "options": [
+                    "My name is",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Nalingi",
+                  "meaning": "I want",
+                  "options": [
+                    "I want",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Malamu",
+                  "meaning": "Good / fine",
+                  "options": [
+                    "Good / fine",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-A1-u2-l1",
+        "title": "Home",
+        "level": "A1",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/d1ad404b1afaf73e.mp3",
+            "sha256": "9e030e18218883b506df4b97afe9cc6e5378861180180118218783658e89fc41",
+            "label": "Ndako"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/d1ad404b1afaf73e.mp3",
+            "sha256": "dcfbdeaa7dec6a1dad4558422e54847632dc03075e30d32b8ce1d4822eb5d163",
+            "label": "Ndako"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/934db27a387fb9df.mp3",
+            "sha256": "c9f28400e906c672e11ff5628cd917e13e6229747c9f2bfe50d4235101751637",
+            "label": "Mai"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/934db27a387fb9df.mp3",
+            "sha256": "3665d8d760cdd287dd712dcd6c8ee01eb336d54775c8096a86479dbb6b42fd66",
+            "label": "Mai"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/9b0ac4298c29caa0.mp3",
+            "sha256": "15597ee8d67a86fdb20fe5dbaa6ecb95a18c7d6120546d221ed462645264ab02",
+            "label": "Bilei"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/9b0ac4298c29caa0.mp3",
+            "sha256": "3832aab83c67f0dc11af90470feed2d36df9477fc51f3dac092199ca79d24cb4",
+            "label": "Bilei"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-A1-u2-l1",
+          "title": "Home",
+          "objective": "Home.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Home",
+              "type": "Tutorial",
+              "text": "Home.\n\n• Ndako — House\n• Mai — Water\n• Bilei — Food\n\nReal-life Home — Lingala\n\nA: Ndako — House\nB: Mai — Water\nA: Bilei — Food",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Ndako — House",
+                  "options": [
+                    "Ndako — House",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndako — House"
+                },
+                {
+                  "question": "Recall: Mai — Water",
+                  "options": [
+                    "Mai — Water",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Mai — Water"
+                },
+                {
+                  "question": "Recall: Bilei — Food",
+                  "options": [
+                    "Bilei — Food",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Bilei — Food"
+                },
+                {
+                  "id": "lingala-A1-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Home” in Lingala?",
+                  "options": [
+                    "Bilei",
+                    "Ndako",
+                    "Mai",
+                    "Malamu"
+                  ],
+                  "answer": "Ndako"
+                },
+                {
+                  "id": "lingala-A1-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Talk” in Lingala?",
+                  "options": [
+                    "Malamu",
+                    "Mai",
+                    "Matondi",
+                    "Bilei"
+                  ],
+                  "answer": "Malamu"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Ndako",
+                  "meaning": "House",
+                  "options": [
+                    "House",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Mai",
+                  "meaning": "Water",
+                  "options": [
+                    "Water",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Bilei",
+                  "meaning": "Food",
+                  "options": [
+                    "Food",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-A1-u2-l2",
+        "title": "Talk",
+        "level": "A1",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/9139d028db801b40.mp3",
+            "sha256": "759dfa356e70ccff7e0b8f0b63745749d0038e3bbf7acbe086c9a987fd3780a5",
+            "label": "Malamu"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/9139d028db801b40.mp3",
+            "sha256": "1bb74ae11d30dddcc1bbfa0731ab18457bcec532215baef0a3c20c9a71be9a64",
+            "label": "Malamu"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/7841562bcb8e29f0.mp3",
+            "sha256": "47fce2491505f298862d7ed7bd083e095510514e99497f85495de3cf6fa35311",
+            "label": "Matondi"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/7841562bcb8e29f0.mp3",
+            "sha256": "91a2db7de28efe34826f99662c9d2b1a21b62b3b2068feb1a9848563dea81a43",
+            "label": "Matondi"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/23a48c3b172b68cb.mp3",
+            "sha256": "a27c5fae5376bc088a0aec437ac1977c6c7bc71992b90b21bff3d0933eb2d8bb",
+            "label": "Mbote"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/23a48c3b172b68cb.mp3",
+            "sha256": "0f7b1c5171c59c31099b4c3218ff76e2998ce078b8baaf6fd13450e0581a0db3",
+            "label": "Mbote"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-A1-u2-l2",
+          "title": "Talk",
+          "objective": "Chat.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Talk",
+              "type": "Tutorial",
+              "text": "Chat.\n\n• Malamu — Good / fine\n• Matondi — Thank you\n• Mbote — Hello\n\nReal-life Talk — Lingala\n\nA: Malamu — Good / fine\nB: Matondi — Thank you\nA: Mbote — Hello",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Malamu — Good / fine",
+                  "options": [
+                    "Malamu — Good / fine",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Malamu — Good / fine"
+                },
+                {
+                  "question": "Recall: Matondi — Thank you",
+                  "options": [
+                    "Matondi — Thank you",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Matondi — Thank you"
+                },
+                {
+                  "question": "Recall: Mbote — Hello",
+                  "options": [
+                    "Mbote — Hello",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Mbote — Hello"
+                },
+                {
+                  "id": "lingala-A1-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Home” in Lingala?",
+                  "options": [
+                    "Bilei",
+                    "Ndako",
+                    "Mai",
+                    "Malamu"
+                  ],
+                  "answer": "Ndako"
+                },
+                {
+                  "id": "lingala-A1-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Talk” in Lingala?",
+                  "options": [
+                    "Malamu",
+                    "Mai",
+                    "Matondi",
+                    "Bilei"
+                  ],
+                  "answer": "Malamu"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Malamu",
+                  "meaning": "Good / fine",
+                  "options": [
+                    "Good / fine",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Matondi",
+                  "meaning": "Thank you",
+                  "options": [
+                    "Thank you",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Mbote",
+                  "meaning": "Hello",
+                  "options": [
+                    "Hello",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-A1-u2-l3",
+        "title": "Close",
+        "level": "A1",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/9139d028db801b40.mp3",
+            "sha256": "759dfa356e70ccff7e0b8f0b63745749d0038e3bbf7acbe086c9a987fd3780a5",
+            "label": "Malamu"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/9139d028db801b40.mp3",
+            "sha256": "1bb74ae11d30dddcc1bbfa0731ab18457bcec532215baef0a3c20c9a71be9a64",
+            "label": "Malamu"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/7841562bcb8e29f0.mp3",
+            "sha256": "47fce2491505f298862d7ed7bd083e095510514e99497f85495de3cf6fa35311",
+            "label": "Matondi"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/7841562bcb8e29f0.mp3",
+            "sha256": "91a2db7de28efe34826f99662c9d2b1a21b62b3b2068feb1a9848563dea81a43",
+            "label": "Matondi"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/23a48c3b172b68cb.mp3",
+            "sha256": "a27c5fae5376bc088a0aec437ac1977c6c7bc71992b90b21bff3d0933eb2d8bb",
+            "label": "Mbote"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/23a48c3b172b68cb.mp3",
+            "sha256": "0f7b1c5171c59c31099b4c3218ff76e2998ce078b8baaf6fd13450e0581a0db3",
+            "label": "Mbote"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-A1-u2-l3",
+          "title": "Close",
+          "objective": "Bye.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Close",
+              "type": "Tutorial",
+              "text": "Bye.\n\n• Malamu — Good / fine\n• Matondi — Thank you\n• Mbote — Hello\n\nReal-life Close — Lingala\n\nA: Malamu — Good / fine\nB: Matondi — Thank you\nA: Mbote — Hello",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Malamu — Good / fine",
+                  "options": [
+                    "Malamu — Good / fine",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Malamu — Good / fine"
+                },
+                {
+                  "question": "Recall: Matondi — Thank you",
+                  "options": [
+                    "Matondi — Thank you",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Matondi — Thank you"
+                },
+                {
+                  "question": "Recall: Mbote — Hello",
+                  "options": [
+                    "Mbote — Hello",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Mbote — Hello"
+                },
+                {
+                  "id": "lingala-A1-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Home” in Lingala?",
+                  "options": [
+                    "Bilei",
+                    "Ndako",
+                    "Mai",
+                    "Malamu"
+                  ],
+                  "answer": "Ndako"
+                },
+                {
+                  "id": "lingala-A1-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Talk” in Lingala?",
+                  "options": [
+                    "Malamu",
+                    "Mai",
+                    "Matondi",
+                    "Bilei"
+                  ],
+                  "answer": "Malamu"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Malamu",
+                  "meaning": "Good / fine",
+                  "options": [
+                    "Good / fine",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Matondi",
+                  "meaning": "Thank you",
+                  "options": [
+                    "Thank you",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Mbote",
+                  "meaning": "Hello",
+                  "options": [
+                    "Hello",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-A2-u1-l1",
+        "title": "Past",
+        "level": "A2",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/1039477d0484aeb9.mp3",
+            "sha256": "b8d96b97dbee9b0bffa0f5d83559e0a028c98b319f89909cb92994346d0f4fe3",
+            "label": "Malaki"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/1039477d0484aeb9.mp3",
+            "sha256": "175fb30fc22960cf0a94f0999c7a1356f3d098f4769b64756963400a740b74be",
+            "label": "Malaki"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/72cbf8ce26631103.mp3",
+            "sha256": "77941ed27c7b62bd851166463178ed59378d076e5f41964ab911d0baeabda98b",
+            "label": "Ayei"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/72cbf8ce26631103.mp3",
+            "sha256": "3ac4eb1965c6567167452f915e174eb81743ab22ce5f461a897e9e550fcd2213",
+            "label": "Ayei"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/1fcd9ab3e275f0f9.mp3",
+            "sha256": "7ecf12d991aaa4f83aed48d9b04b2a11b89094341a9e846b5950838c94d30c8d",
+            "label": "Tokei"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/1fcd9ab3e275f0f9.mp3",
+            "sha256": "0b02259c6aaa8da265178558ec01bfdb25fe1c4a1dff6ee86874a593b9dcb3e3",
+            "label": "Tokei"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-A2-u1-l1",
+          "title": "Past",
+          "objective": "Past.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Past",
+              "type": "Tutorial",
+              "text": "Past.\n\n• Malaki — I ate\n• Ayei — Core phrase\n• Tokei — Core phrase\n\nReal-life Past — Lingala\n\nA: Malaki — I ate\nB: Ayei — Core phrase\nA: Tokei — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Malaki — I ate",
+                  "options": [
+                    "Malaki — I ate",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Malaki — I ate"
+                },
+                {
+                  "question": "Recall: Ayei — Core phrase",
+                  "options": [
+                    "Ayei — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ayei — Core phrase"
+                },
+                {
+                  "question": "Recall: Tokei — Core phrase",
+                  "options": [
+                    "Tokei — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Tokei — Core phrase"
+                },
+                {
+                  "id": "lingala-A2-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Past” in Lingala?",
+                  "options": [
+                    "Malaki",
+                    "Mokolo moko",
+                    "Lobi",
+                    "Namoni"
+                  ],
+                  "answer": "Malaki"
+                },
+                {
+                  "id": "lingala-A2-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Story” in Lingala?",
+                  "options": [
+                    "Nasepeli",
+                    "Namoni",
+                    "Lobi",
+                    "Nazui"
+                  ],
+                  "answer": "Lobi"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Malaki",
+                  "meaning": "I ate",
+                  "options": [
+                    "I ate",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ayei",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Tokei",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-A2-u1-l2",
+        "title": "Story",
+        "level": "A2",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/d920fd89a020faab.mp3",
+            "sha256": "a6dd88a6451f49c1f866ecced22e1ccc521a23a07aca75b5ca67aeff399a3f6b",
+            "label": "Lobi"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/d920fd89a020faab.mp3",
+            "sha256": "fab1da1a8a48bbfb03da4507ddb42f371fe980e8c59e7503c3d4d5d0f54ef20a",
+            "label": "Lobi"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/38914a1ab2ad6741.mp3",
+            "sha256": "1720fade039c8ccef812508e6c4c849cf176b355934d02f59f73e30aef31c170",
+            "label": "Mokolo moko"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/38914a1ab2ad6741.mp3",
+            "sha256": "f4af453c690ef3896c2c93c6c5391ab930d2128c4083b689ecba4b2d55ac58c3",
+            "label": "Mokolo moko"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/d4e883918f583f75.mp3",
+            "sha256": "6f6eb2fb9befe08a43e235e6c972594cdd7146e516a86bb340fe45a9eb315e1e",
+            "label": "Namoni"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/d4e883918f583f75.mp3",
+            "sha256": "92235f1ada2c5a9e36244cb929b84e52bef62c0dae8f208ac08dd8b23c08670f",
+            "label": "Namoni"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-A2-u1-l2",
+          "title": "Story",
+          "objective": "Story.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Story",
+              "type": "Tutorial",
+              "text": "Story.\n\n• Lobi — Tomorrow\n• Mokolo moko — Core phrase\n• Namoni — Core phrase\n\nReal-life Story — Lingala\n\nA: Lobi — Tomorrow\nB: Mokolo moko — Core phrase\nA: Namoni — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Lobi — Tomorrow",
+                  "options": [
+                    "Lobi — Tomorrow",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Lobi — Tomorrow"
+                },
+                {
+                  "question": "Recall: Mokolo moko — Core phrase",
+                  "options": [
+                    "Mokolo moko — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Mokolo moko — Core phrase"
+                },
+                {
+                  "question": "Recall: Namoni — Core phrase",
+                  "options": [
+                    "Namoni — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Namoni — Core phrase"
+                },
+                {
+                  "id": "lingala-A2-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Past” in Lingala?",
+                  "options": [
+                    "Malaki",
+                    "Mokolo moko",
+                    "Lobi",
+                    "Namoni"
+                  ],
+                  "answer": "Malaki"
+                },
+                {
+                  "id": "lingala-A2-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Story” in Lingala?",
+                  "options": [
+                    "Nasepeli",
+                    "Namoni",
+                    "Lobi",
+                    "Nazui"
+                  ],
+                  "answer": "Lobi"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Lobi",
+                  "meaning": "Tomorrow",
+                  "options": [
+                    "Tomorrow",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Mokolo moko",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Namoni",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-A2-u1-l3",
+        "title": "Feelings",
+        "level": "A2",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/37f59dd38b7e851d.mp3",
+            "sha256": "d9d8286d69fac78c0b9d0ead0e8453adc105737825c92a99511a641106959101",
+            "label": "Nasepeli"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/37f59dd38b7e851d.mp3",
+            "sha256": "ab05bb950e107ed7864c40381c700ee10165d52831d4c59d3ce81aa937ce2535",
+            "label": "Nasepeli"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/5fa27d4e011dae77.mp3",
+            "sha256": "522e9bc0cd76391a9b8d07fc83855791761ee7132d580aeac41abd0c5ba02f65",
+            "label": "Nazui"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/5fa27d4e011dae77.mp3",
+            "sha256": "7387854237b2669428166e0482e638bf1fb3936860389c10aec42ca6a2f24e92",
+            "label": "Nazui"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/01567b5c61000d34.mp3",
+            "sha256": "0e45b3897600d845510f8320c235070bf302a4098245309aeff5ae787be35251",
+            "label": "Nalingi"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/01567b5c61000d34.mp3",
+            "sha256": "b5e7004d52d955873ce0648cf80934a0f4e01b92457bc98bbfe479d9b5d8ccb7",
+            "label": "Nalingi"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-A2-u1-l3",
+          "title": "Feelings",
+          "objective": "Feelings.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Feelings",
+              "type": "Tutorial",
+              "text": "Feelings.\n\n• Nasepeli — Core phrase\n• Nazui — Core phrase\n• Nalingi — I want\n\nReal-life Feelings — Lingala\n\nA: Nasepeli — Core phrase\nB: Nazui — Core phrase\nA: Nalingi — I want",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Nasepeli — Core phrase",
+                  "options": [
+                    "Nasepeli — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nasepeli — Core phrase"
+                },
+                {
+                  "question": "Recall: Nazui — Core phrase",
+                  "options": [
+                    "Nazui — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nazui — Core phrase"
+                },
+                {
+                  "question": "Recall: Nalingi — I want",
+                  "options": [
+                    "Nalingi — I want",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nalingi — I want"
+                },
+                {
+                  "id": "lingala-A2-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Past” in Lingala?",
+                  "options": [
+                    "Malaki",
+                    "Mokolo moko",
+                    "Lobi",
+                    "Namoni"
+                  ],
+                  "answer": "Malaki"
+                },
+                {
+                  "id": "lingala-A2-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Story” in Lingala?",
+                  "options": [
+                    "Nasepeli",
+                    "Namoni",
+                    "Lobi",
+                    "Nazui"
+                  ],
+                  "answer": "Lobi"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Nasepeli",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Nazui",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Nalingi",
+                  "meaning": "I want",
+                  "options": [
+                    "I want",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-A2-u2-l1",
+        "title": "Work",
+        "level": "A2",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/e3092d8abc201a6d.mp3",
+            "sha256": "09496c2256dee51e33e58bd650ddbf5e08b3ae39c8d7ef6ae6e0e6ffe0aa4def",
+            "label": "Mosala"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/e3092d8abc201a6d.mp3",
+            "sha256": "4a504ac6200ada4039decc42e29d34cddbf8391c2a732b58174ecb880a7969cb",
+            "label": "Mosala"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/595681e60b7891cd.mp3",
+            "sha256": "dcb58c99f8aca96072cf7e8f8f2cabc29c23a969006f2af1bbfaa2449ec8f94e",
+            "label": "Bureau"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/595681e60b7891cd.mp3",
+            "sha256": "1557a760c7e3270e7c284a2aee931616f5af306d6e2481e8b415f72df62af007",
+            "label": "Bureau"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/45dd4ad1f63396ba.mp3",
+            "sha256": "71e4d40479ca60ee46be41bc0e8974de1300d7f759886fd04d8999981f660fb3",
+            "label": "Nasalaka"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/45dd4ad1f63396ba.mp3",
+            "sha256": "3a685d4f158950ef2b0e346a10223aeb10c69180245f9d80f190da5d41c748f9",
+            "label": "Nasalaka"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-A2-u2-l1",
+          "title": "Work",
+          "objective": "Work.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Work",
+              "type": "Tutorial",
+              "text": "Work.\n\n• Mosala — Work\n• Bureau — Office\n• Nasalaka — I work\n\nReal-life Work — Lingala\n\nA: Mosala — Work\nB: Bureau — Office\nA: Nasalaka — I work",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Mosala — Work",
+                  "options": [
+                    "Mosala — Work",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Mosala — Work"
+                },
+                {
+                  "question": "Recall: Bureau — Office",
+                  "options": [
+                    "Bureau — Office",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Bureau — Office"
+                },
+                {
+                  "question": "Recall: Nasalaka — I work",
+                  "options": [
+                    "Nasalaka — I work",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nasalaka — I work"
+                },
+                {
+                  "id": "lingala-A2-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Work” in Lingala?",
+                  "options": [
+                    "Mosala",
+                    "Mokolo mibale",
+                    "Bureau",
+                    "Svp salisa ngai"
+                  ],
+                  "answer": "Mosala"
+                },
+                {
+                  "id": "lingala-A2-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Help” in Lingala?",
+                  "options": [
+                    "Nasalaka",
+                    "Okoki?",
+                    "Svp salisa ngai",
+                    "Mosala"
+                  ],
+                  "answer": "Svp salisa ngai"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Mosala",
+                  "meaning": "Work",
+                  "options": [
+                    "Work",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Bureau",
+                  "meaning": "Office",
+                  "options": [
+                    "Office",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Nasalaka",
+                  "meaning": "I work",
+                  "options": [
+                    "I work",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-A2-u2-l2",
+        "title": "Help",
+        "level": "A2",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/a60fba63dc8d3489.mp3",
+            "sha256": "1817a932b3f919aa68767bf407f3cadb17ad933dce36985768630d83c036e651",
+            "label": "Svp salisa ngai"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/a60fba63dc8d3489.mp3",
+            "sha256": "d1d72832055a1fbcabbdd3369c69efc2e94f69c73fa133deb9fef4e0dcaa8e22",
+            "label": "Svp salisa ngai"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/77974aa8c67650f9.mp3",
+            "sha256": "9f20e4f81b21c3a748420cb452748d873fcccbca146bc046a3232e95105fe712",
+            "label": "Okoki?"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/77974aa8c67650f9.mp3",
+            "sha256": "621784832694534a23ddbec37be117f0e4eb5dfc33182e3c776e49c31252d817",
+            "label": "Okoki?"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/01567b5c61000d34.mp3",
+            "sha256": "0e45b3897600d845510f8320c235070bf302a4098245309aeff5ae787be35251",
+            "label": "Nalingi"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/01567b5c61000d34.mp3",
+            "sha256": "b5e7004d52d955873ce0648cf80934a0f4e01b92457bc98bbfe479d9b5d8ccb7",
+            "label": "Nalingi"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-A2-u2-l2",
+          "title": "Help",
+          "objective": "Help.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Help",
+              "type": "Tutorial",
+              "text": "Help.\n\n• Svp salisa ngai — Core phrase\n• Okoki? — Core phrase\n• Nalingi — I want\n\nReal-life Help — Lingala\n\nA: Svp salisa ngai — Core phrase\nB: Okoki? — Core phrase\nA: Nalingi — I want",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Svp salisa ngai — Core phrase",
+                  "options": [
+                    "Svp salisa ngai — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Svp salisa ngai — Core phrase"
+                },
+                {
+                  "question": "Recall: Okoki? — Core phrase",
+                  "options": [
+                    "Okoki? — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Okoki? — Core phrase"
+                },
+                {
+                  "question": "Recall: Nalingi — I want",
+                  "options": [
+                    "Nalingi — I want",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nalingi — I want"
+                },
+                {
+                  "id": "lingala-A2-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Work” in Lingala?",
+                  "options": [
+                    "Mosala",
+                    "Mokolo mibale",
+                    "Bureau",
+                    "Svp salisa ngai"
+                  ],
+                  "answer": "Mosala"
+                },
+                {
+                  "id": "lingala-A2-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Help” in Lingala?",
+                  "options": [
+                    "Nasalaka",
+                    "Okoki?",
+                    "Svp salisa ngai",
+                    "Mosala"
+                  ],
+                  "answer": "Svp salisa ngai"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Svp salisa ngai",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Okoki?",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Nalingi",
+                  "meaning": "I want",
+                  "options": [
+                    "I want",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-A2-u2-l3",
+        "title": "Future",
+        "level": "A2",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/b9ac3b477a937886.mp3",
+            "sha256": "6b7ef2e59e86c38875217fc2e0f3e230d001fb9c4f3ad1a071b119f0149b862b",
+            "label": "Nakokende"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/b9ac3b477a937886.mp3",
+            "sha256": "a2b98f4a3e69ae3251440c74a85ca1d40b77c3a330e3a1cbdd9cf15752b7b5ed",
+            "label": "Nakokende"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/d920fd89a020faab.mp3",
+            "sha256": "a6dd88a6451f49c1f866ecced22e1ccc521a23a07aca75b5ca67aeff399a3f6b",
+            "label": "Lobi"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/d920fd89a020faab.mp3",
+            "sha256": "fab1da1a8a48bbfb03da4507ddb42f371fe980e8c59e7503c3d4d5d0f54ef20a",
+            "label": "Lobi"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/33093005d7ab6e3a.mp3",
+            "sha256": "e798d8473cb9ad5c844819f83d9fa9784a941e84fb687f10b99ed1894b006dd3",
+            "label": "Mokolo mibale"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/33093005d7ab6e3a.mp3",
+            "sha256": "82e2c0eab73a35a7ec404ec4b8c5b3591d6a518f089e40ce960249ad1281edbc",
+            "label": "Mokolo mibale"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-A2-u2-l3",
+          "title": "Future",
+          "objective": "Future.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Future",
+              "type": "Tutorial",
+              "text": "Future.\n\n• Nakokende — Core phrase\n• Lobi — Tomorrow\n• Mokolo mibale — Core phrase\n\nReal-life Future — Lingala\n\nA: Nakokende — Core phrase\nB: Lobi — Tomorrow\nA: Mokolo mibale — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Nakokende — Core phrase",
+                  "options": [
+                    "Nakokende — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nakokende — Core phrase"
+                },
+                {
+                  "question": "Recall: Lobi — Tomorrow",
+                  "options": [
+                    "Lobi — Tomorrow",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Lobi — Tomorrow"
+                },
+                {
+                  "question": "Recall: Mokolo mibale — Core phrase",
+                  "options": [
+                    "Mokolo mibale — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Mokolo mibale — Core phrase"
+                },
+                {
+                  "id": "lingala-A2-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Work” in Lingala?",
+                  "options": [
+                    "Mosala",
+                    "Mokolo mibale",
+                    "Bureau",
+                    "Svp salisa ngai"
+                  ],
+                  "answer": "Mosala"
+                },
+                {
+                  "id": "lingala-A2-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Help” in Lingala?",
+                  "options": [
+                    "Nasalaka",
+                    "Okoki?",
+                    "Svp salisa ngai",
+                    "Mosala"
+                  ],
+                  "answer": "Svp salisa ngai"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Nakokende",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Lobi",
+                  "meaning": "Tomorrow",
+                  "options": [
+                    "Tomorrow",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Mokolo mibale",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-B1-u1-l1",
+        "title": "Think",
+        "level": "B1",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/32ff4dbd8cb99ec3.mp3",
+            "sha256": "0980cc1fbe4d317a854b263e696a0f2733894b56b3a3bd9cefaceb625b88ddc5",
+            "label": "Nakanisi ete"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/32ff4dbd8cb99ec3.mp3",
+            "sha256": "55e417ac0ee8fada28abadcc98f0101d33b429c16409154fae82c7a3fdb58012",
+            "label": "Nakanisi ete"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/addf4f1f62f63433.mp3",
+            "sha256": "dc0d18501b091d49ea03b1982d53de3cbc8024e2c09bee5316fd5415189cafb2",
+            "label": "Nandimi"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/addf4f1f62f63433.mp3",
+            "sha256": "8242fb73224a2064719ad0f49334afa96f24690a99e6cbf26c75c4c91deea68f",
+            "label": "Nandimi"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/9c32214bbc49f3f5.mp3",
+            "sha256": "e85ac80e2e3a78d1ed85e1771b782bc8dbeb1966af465c88eb4c8bffb462ef16",
+            "label": "Nandimi te"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/9c32214bbc49f3f5.mp3",
+            "sha256": "9bc6335d53fa4077900ca2cf415272c6eb13bc7c750c7fd17f42d3147394e5df",
+            "label": "Nandimi te"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-B1-u1-l1",
+          "title": "Think",
+          "objective": "Opinions.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Think",
+              "type": "Tutorial",
+              "text": "Opinions.\n\n• Nakanisi ete — I think\n• Nandimi — I agree\n• Nandimi te — I disagree\n\nReal-life Think — Lingala\n\nA: Nakanisi ete — I think\nB: Nandimi — I agree\nA: Nandimi te — I disagree",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Nakanisi ete — I think",
+                  "options": [
+                    "Nakanisi ete — I think",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nakanisi ete — I think"
+                },
+                {
+                  "question": "Recall: Nandimi — I agree",
+                  "options": [
+                    "Nandimi — I agree",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nandimi — I agree"
+                },
+                {
+                  "question": "Recall: Nandimi te — I disagree",
+                  "options": [
+                    "Nandimi te — I disagree",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nandimi te — I disagree"
+                },
+                {
+                  "id": "lingala-B1-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Think” in Lingala?",
+                  "options": [
+                    "Vraiment?",
+                    "Nakanisi ete",
+                    "Nandimi",
+                    "Radio"
+                  ],
+                  "answer": "Nakanisi ete"
+                },
+                {
+                  "id": "lingala-B1-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Debate” in Lingala?",
+                  "options": [
+                    "Radio",
+                    "Nandimi",
+                    "Vraiment?",
+                    "Nayebi"
+                  ],
+                  "answer": "Vraiment?"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Nakanisi ete",
+                  "meaning": "I think",
+                  "options": [
+                    "I think",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Nandimi",
+                  "meaning": "I agree",
+                  "options": [
+                    "I agree",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Nandimi te",
+                  "meaning": "I disagree",
+                  "options": [
+                    "I disagree",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-B1-u1-l2",
+        "title": "Debate",
+        "level": "B1",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/c793ddc4bf37e5a8.mp3",
+            "sha256": "dc1cb5ed82222e2bc89a34e29475eabb573053016ee0f63b9c3940bb43264f08",
+            "label": "Vraiment?"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/c793ddc4bf37e5a8.mp3",
+            "sha256": "70e6d3353b81398adc083dd89722069c6e7a8367a03f87c36217c1a26773be72",
+            "label": "Vraiment?"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/522d9c0f4d74334d.mp3",
+            "sha256": "8d0caa1768d5613bcae30341b688c81914642bfa5ebf2167e11833f2b890108d",
+            "label": "Ezali te bongo"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/522d9c0f4d74334d.mp3",
+            "sha256": "d165693ffb89c961d95456f8fe09d28da2c980cff83ec05049a9a64815619af9",
+            "label": "Ezali te bongo"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/91bdcdf2d10886ad.mp3",
+            "sha256": "367c0acf9ac1f248143d864ede876a03c36801ea0edf8bff57da9b8a88afbb4d",
+            "label": "Nayebi"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/91bdcdf2d10886ad.mp3",
+            "sha256": "3759bede2c2a5cb86453cfb9fdc817d4f3d4da047831acacea6c4b670da31645",
+            "label": "Nayebi"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-B1-u1-l2",
+          "title": "Debate",
+          "objective": "Debate.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Debate",
+              "type": "Tutorial",
+              "text": "Debate.\n\n• Vraiment? — Core phrase\n• Ezali te bongo — Core phrase\n• Nayebi — Core phrase\n\nReal-life Debate — Lingala\n\nA: Vraiment? — Core phrase\nB: Ezali te bongo — Core phrase\nA: Nayebi — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Vraiment? — Core phrase",
+                  "options": [
+                    "Vraiment? — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Vraiment? — Core phrase"
+                },
+                {
+                  "question": "Recall: Ezali te bongo — Core phrase",
+                  "options": [
+                    "Ezali te bongo — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ezali te bongo — Core phrase"
+                },
+                {
+                  "question": "Recall: Nayebi — Core phrase",
+                  "options": [
+                    "Nayebi — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nayebi — Core phrase"
+                },
+                {
+                  "id": "lingala-B1-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Think” in Lingala?",
+                  "options": [
+                    "Vraiment?",
+                    "Nakanisi ete",
+                    "Nandimi",
+                    "Radio"
+                  ],
+                  "answer": "Nakanisi ete"
+                },
+                {
+                  "id": "lingala-B1-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Debate” in Lingala?",
+                  "options": [
+                    "Radio",
+                    "Nandimi",
+                    "Vraiment?",
+                    "Nayebi"
+                  ],
+                  "answer": "Vraiment?"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Vraiment?",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ezali te bongo",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Nayebi",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-B1-u1-l3",
+        "title": "News",
+        "level": "B1",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/ee347fa15bb2480c.mp3",
+            "sha256": "a1108402c7626b3907b63d175d25400104119d047da472a139bc7649a86411a1",
+            "label": "Sango"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/ee347fa15bb2480c.mp3",
+            "sha256": "bfd04bb398937752c6b92e0f41773a4a432654aecfc609e9b513fe057348347c",
+            "label": "Sango"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/e3b7f989a9ec7bb9.mp3",
+            "sha256": "f338a408e012087d7c14950c795ed5d9432889aecf4fedf2df059e89a12a2753",
+            "label": "Radio"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/e3b7f989a9ec7bb9.mp3",
+            "sha256": "5a1fbcbbf5b74900e77e54fc638f7264d66c40d49782ac6b9ec7c6705e3ec1f5",
+            "label": "Radio"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/dc0897b65c91fd68.mp3",
+            "sha256": "4ff94428bad23c0e86e184a0fce300f8fc35cb3827f0abb4d5f0200f7269d0d3",
+            "label": "Nayokaki"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/dc0897b65c91fd68.mp3",
+            "sha256": "70d200648f7f5a14e9cd0a1ba2d733567844db97209f7f83fc63e82e6f6cf016",
+            "label": "Nayokaki"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-B1-u1-l3",
+          "title": "News",
+          "objective": "News.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "News",
+              "type": "Tutorial",
+              "text": "News.\n\n• Sango — News\n• Radio — Core phrase\n• Nayokaki — Core phrase\n\nReal-life News — Lingala\n\nA: Sango — News\nB: Radio — Core phrase\nA: Nayokaki — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Sango — News",
+                  "options": [
+                    "Sango — News",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Sango — News"
+                },
+                {
+                  "question": "Recall: Radio — Core phrase",
+                  "options": [
+                    "Radio — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Radio — Core phrase"
+                },
+                {
+                  "question": "Recall: Nayokaki — Core phrase",
+                  "options": [
+                    "Nayokaki — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nayokaki — Core phrase"
+                },
+                {
+                  "id": "lingala-B1-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Think” in Lingala?",
+                  "options": [
+                    "Vraiment?",
+                    "Nakanisi ete",
+                    "Nandimi",
+                    "Radio"
+                  ],
+                  "answer": "Nakanisi ete"
+                },
+                {
+                  "id": "lingala-B1-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Debate” in Lingala?",
+                  "options": [
+                    "Radio",
+                    "Nandimi",
+                    "Vraiment?",
+                    "Nayebi"
+                  ],
+                  "answer": "Vraiment?"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Sango",
+                  "meaning": "News",
+                  "options": [
+                    "News",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Radio",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Nayokaki",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-B1-u2-l1",
+        "title": "Health",
+        "level": "B1",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/856735e3926f7fa1.mp3",
+            "sha256": "46a7902753f561c75d8020bdcbbef808b40244df748ebf591390a10abc2259f3",
+            "label": "Maladi"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/856735e3926f7fa1.mp3",
+            "sha256": "e9092d8e9fb6f02c117112f53235666d347db9feb4d063866cc91c0e8a906fcc",
+            "label": "Maladi"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/e200ae38eed9c692.mp3",
+            "sha256": "ec9a19fd44cfe66235750caadc7f1dd055f899b07a927002774d8ac8d402cc1c",
+            "label": "Mingi"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/e200ae38eed9c692.mp3",
+            "sha256": "a6c98821c6f79f0d4e13547ff92eed6fec6f8bacac034537185657c20aa1166d",
+            "label": "Mingi"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/5fa27d4e011dae77.mp3",
+            "sha256": "522e9bc0cd76391a9b8d07fc83855791761ee7132d580aeac41abd0c5ba02f65",
+            "label": "Nazui"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/5fa27d4e011dae77.mp3",
+            "sha256": "7387854237b2669428166e0482e638bf1fb3936860389c10aec42ca6a2f24e92",
+            "label": "Nazui"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-B1-u2-l1",
+          "title": "Health",
+          "objective": "Health.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Health",
+              "type": "Tutorial",
+              "text": "Health.\n\n• Maladi — Core phrase\n• Mingi — Core phrase\n• Nazui — Core phrase\n\nReal-life Health — Lingala\n\nA: Maladi — Core phrase\nB: Mingi — Core phrase\nA: Nazui — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Maladi — Core phrase",
+                  "options": [
+                    "Maladi — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Maladi — Core phrase"
+                },
+                {
+                  "question": "Recall: Mingi — Core phrase",
+                  "options": [
+                    "Mingi — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Mingi — Core phrase"
+                },
+                {
+                  "question": "Recall: Nazui — Core phrase",
+                  "options": [
+                    "Nazui — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nazui — Core phrase"
+                },
+                {
+                  "id": "lingala-B1-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Health” in Lingala?",
+                  "options": [
+                    "Maladi",
+                    "Lisanga",
+                    "Nakokanisa",
+                    "Mingi"
+                  ],
+                  "answer": "Maladi"
+                },
+                {
+                  "id": "lingala-B1-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Society” in Lingala?",
+                  "options": [
+                    "Eteyelo",
+                    "Lisanga",
+                    "Maladi",
+                    "Nazui"
+                  ],
+                  "answer": "Lisanga"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Maladi",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Mingi",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Nazui",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-B1-u2-l2",
+        "title": "Society",
+        "level": "B1",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/41596ff7358dc472.mp3",
+            "sha256": "d6a8ae2570e852bd856a1bed7eb429d74a7a51429736505c7f4280736d5ba154",
+            "label": "Lisanga"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/41596ff7358dc472.mp3",
+            "sha256": "e24a0d84e784c0862385fa8524da759c52d24ec3edc8067b9ba07e4a0e77fec8",
+            "label": "Lisanga"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/b361a279bde69e6e.mp3",
+            "sha256": "256865eec60b394109caf9e2fa6c45455828562d744cc422a450367114c4c205",
+            "label": "Eteyelo"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/b361a279bde69e6e.mp3",
+            "sha256": "45184e30db5ff0a0a0a920668fb37d14b2d00de756b69fa3085df4109a69858c",
+            "label": "Eteyelo"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/8e359f3a015e0d39.mp3",
+            "sha256": "be43870b5c6c3e1690ebd0ab36f2112bcd39281152df9f2c787b0d3c80d23cf7",
+            "label": "Bizaleli"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/8e359f3a015e0d39.mp3",
+            "sha256": "64080cc255192d1195e0d999481f0472685df6c69f4bd780a0a579f98c6c0749",
+            "label": "Bizaleli"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-B1-u2-l2",
+          "title": "Society",
+          "objective": "Society.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Society",
+              "type": "Tutorial",
+              "text": "Society.\n\n• Lisanga — Community\n• Eteyelo — Core phrase\n• Bizaleli — Culture\n\nReal-life Society — Lingala\n\nA: Lisanga — Community\nB: Eteyelo — Core phrase\nA: Bizaleli — Culture",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Lisanga — Community",
+                  "options": [
+                    "Lisanga — Community",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Lisanga — Community"
+                },
+                {
+                  "question": "Recall: Eteyelo — Core phrase",
+                  "options": [
+                    "Eteyelo — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Eteyelo — Core phrase"
+                },
+                {
+                  "question": "Recall: Bizaleli — Culture",
+                  "options": [
+                    "Bizaleli — Culture",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Bizaleli — Culture"
+                },
+                {
+                  "id": "lingala-B1-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Health” in Lingala?",
+                  "options": [
+                    "Maladi",
+                    "Lisanga",
+                    "Nakokanisa",
+                    "Mingi"
+                  ],
+                  "answer": "Maladi"
+                },
+                {
+                  "id": "lingala-B1-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Society” in Lingala?",
+                  "options": [
+                    "Eteyelo",
+                    "Lisanga",
+                    "Maladi",
+                    "Nazui"
+                  ],
+                  "answer": "Lisanga"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Lisanga",
+                  "meaning": "Community",
+                  "options": [
+                    "Community",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Eteyelo",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Bizaleli",
+                  "meaning": "Culture",
+                  "options": [
+                    "Culture",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-B1-u2-l3",
+        "title": "Advice",
+        "level": "B1",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/4d1f46aaccac379e.mp3",
+            "sha256": "d008e95562fe5486719e4900477d629bb2f4e7fa0c628986d5ba2c21232d40c6",
+            "label": "Nakokanisa"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/4d1f46aaccac379e.mp3",
+            "sha256": "db1e63b7e4661016e647e6ad6a71fe9b76b762eb9ea3a55c15cc191b95d6dc3d",
+            "label": "Nakokanisa"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/ffc9c5d0d51007ca.mp3",
+            "sha256": "323035bcde6bde075cb97ce3e300fc9c5c2867e8c2763d00960db58cb2a6eea1",
+            "label": "Ezali ntina"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/ffc9c5d0d51007ca.mp3",
+            "sha256": "fe0851806aba76baea03c08bc17adf4e467523adcb7ddb6a82adc678da280baa",
+            "label": "Ezali ntina"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/688484bad3077649.mp3",
+            "sha256": "7dd5e17b9c47318226cac4c66919bd101fc8f4a34db4a7fef6a86ad17c636859",
+            "label": "Svp"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/688484bad3077649.mp3",
+            "sha256": "e4630805140dbac12432f64f053d46ae61878f4ca79a9b9841575565b5ee10d0",
+            "label": "Svp"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-B1-u2-l3",
+          "title": "Advice",
+          "objective": "Advice.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Advice",
+              "type": "Tutorial",
+              "text": "Advice.\n\n• Nakokanisa — Core phrase\n• Ezali ntina — Core phrase\n• Svp — Please\n\nReal-life Advice — Lingala\n\nA: Nakokanisa — Core phrase\nB: Ezali ntina — Core phrase\nA: Svp — Please",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Nakokanisa — Core phrase",
+                  "options": [
+                    "Nakokanisa — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nakokanisa — Core phrase"
+                },
+                {
+                  "question": "Recall: Ezali ntina — Core phrase",
+                  "options": [
+                    "Ezali ntina — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ezali ntina — Core phrase"
+                },
+                {
+                  "question": "Recall: Svp — Please",
+                  "options": [
+                    "Svp — Please",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Svp — Please"
+                },
+                {
+                  "id": "lingala-B1-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Health” in Lingala?",
+                  "options": [
+                    "Maladi",
+                    "Lisanga",
+                    "Nakokanisa",
+                    "Mingi"
+                  ],
+                  "answer": "Maladi"
+                },
+                {
+                  "id": "lingala-B1-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Society” in Lingala?",
+                  "options": [
+                    "Eteyelo",
+                    "Lisanga",
+                    "Maladi",
+                    "Nazui"
+                  ],
+                  "answer": "Lisanga"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Nakokanisa",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ezali ntina",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Svp",
+                  "meaning": "Please",
+                  "options": [
+                    "Please",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-B2-u1-l1",
+        "title": "Intro",
+        "level": "B2",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/23a48c3b172b68cb.mp3",
+            "sha256": "a27c5fae5376bc088a0aec437ac1977c6c7bc71992b90b21bff3d0933eb2d8bb",
+            "label": "Mbote"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/23a48c3b172b68cb.mp3",
+            "sha256": "0f7b1c5171c59c31099b4c3218ff76e2998ce078b8baaf6fd13450e0581a0db3",
+            "label": "Mbote"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/f1b0aec5189d6667.mp3",
+            "sha256": "f6d121af8b25bfa4be057183b08593202bc9c83729122afd7ee13d5c827d522e",
+            "label": "Nkombo na ngai"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/f1b0aec5189d6667.mp3",
+            "sha256": "e956901bfab96e41cd4195580ecc46bb4f9e208fb25729f182e1f1aeffc1552d",
+            "label": "Nkombo na ngai"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/cd5f9e5b88884920.mp3",
+            "sha256": "975f648db6be9e153e335eae3c10642638005951db525c9dbfa5e55f06a4f9f5",
+            "label": "Nasalaka awa"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/cd5f9e5b88884920.mp3",
+            "sha256": "9618faf83e51ccf036aa7279c399a3d43862c0a5bfa23a74f26c9eee30aeb9a0",
+            "label": "Nasalaka awa"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-B2-u1-l1",
+          "title": "Intro",
+          "objective": "Work intro.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Intro",
+              "type": "Tutorial",
+              "text": "Work intro.\n\n• Mbote — Hello\n• Nkombo na ngai — My name is\n• Nasalaka awa — Core phrase\n\nReal-life Intro — Lingala\n\nA: Mbote — Hello\nB: Nkombo na ngai — My name is\nA: Nasalaka awa — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Mbote — Hello",
+                  "options": [
+                    "Mbote — Hello",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Mbote — Hello"
+                },
+                {
+                  "question": "Recall: Nkombo na ngai — My name is",
+                  "options": [
+                    "Nkombo na ngai — My name is",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nkombo na ngai — My name is"
+                },
+                {
+                  "question": "Recall: Nasalaka awa — Core phrase",
+                  "options": [
+                    "Nasalaka awa — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nasalaka awa — Core phrase"
+                },
+                {
+                  "id": "lingala-B2-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Intro” in Lingala?",
+                  "options": [
+                    "Nandimi",
+                    "Svp",
+                    "Nabotamela email",
+                    "Mbote"
+                  ],
+                  "answer": "Mbote"
+                },
+                {
+                  "id": "lingala-B2-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Meeting” in Lingala?",
+                  "options": [
+                    "Tokozonga",
+                    "Nasalaka awa",
+                    "Nakanisi ete",
+                    "Malamu"
+                  ],
+                  "answer": "Nakanisi ete"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Mbote",
+                  "meaning": "Hello",
+                  "options": [
+                    "Hello",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Nkombo na ngai",
+                  "meaning": "My name is",
+                  "options": [
+                    "My name is",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Nasalaka awa",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-B2-u1-l2",
+        "title": "Meeting",
+        "level": "B2",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/32ff4dbd8cb99ec3.mp3",
+            "sha256": "0980cc1fbe4d317a854b263e696a0f2733894b56b3a3bd9cefaceb625b88ddc5",
+            "label": "Nakanisi ete"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/32ff4dbd8cb99ec3.mp3",
+            "sha256": "55e417ac0ee8fada28abadcc98f0101d33b429c16409154fae82c7a3fdb58012",
+            "label": "Nakanisi ete"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/addf4f1f62f63433.mp3",
+            "sha256": "dc0d18501b091d49ea03b1982d53de3cbc8024e2c09bee5316fd5415189cafb2",
+            "label": "Nandimi"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/addf4f1f62f63433.mp3",
+            "sha256": "8242fb73224a2064719ad0f49334afa96f24690a99e6cbf26c75c4c91deea68f",
+            "label": "Nandimi"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/55a03a1468cb4f14.mp3",
+            "sha256": "e587e99892d03ebec46be1b251a3d5a68cf1caeacb4629441ba3b7a7406cf159",
+            "label": "Tokozonga"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/55a03a1468cb4f14.mp3",
+            "sha256": "428515703cfcb7c1570e65b80aa10ba7472ad3524230a87a8c49ee9123128c03",
+            "label": "Tokozonga"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-B2-u1-l2",
+          "title": "Meeting",
+          "objective": "Meeting.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Meeting",
+              "type": "Tutorial",
+              "text": "Meeting.\n\n• Nakanisi ete — I think\n• Nandimi — I agree\n• Tokozonga — Core phrase\n\nReal-life Meeting — Lingala\n\nA: Nakanisi ete — I think\nB: Nandimi — I agree\nA: Tokozonga — Core phrase\nB: Nakanisi ete — I think",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Nakanisi ete — I think",
+                  "options": [
+                    "Nakanisi ete — I think",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nakanisi ete — I think"
+                },
+                {
+                  "question": "Recall: Nandimi — I agree",
+                  "options": [
+                    "Nandimi — I agree",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nandimi — I agree"
+                },
+                {
+                  "question": "Recall: Tokozonga — Core phrase",
+                  "options": [
+                    "Tokozonga — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Tokozonga — Core phrase"
+                },
+                {
+                  "id": "lingala-B2-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Intro” in Lingala?",
+                  "options": [
+                    "Nandimi",
+                    "Svp",
+                    "Nabotamela email",
+                    "Mbote"
+                  ],
+                  "answer": "Mbote"
+                },
+                {
+                  "id": "lingala-B2-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Meeting” in Lingala?",
+                  "options": [
+                    "Tokozonga",
+                    "Nasalaka awa",
+                    "Nakanisi ete",
+                    "Malamu"
+                  ],
+                  "answer": "Nakanisi ete"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Nakanisi ete",
+                  "meaning": "I think",
+                  "options": [
+                    "I think",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Nandimi",
+                  "meaning": "I agree",
+                  "options": [
+                    "I agree",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Tokozonga",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-B2-u1-l3",
+        "title": "Formal",
+        "level": "B2",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/688484bad3077649.mp3",
+            "sha256": "7dd5e17b9c47318226cac4c66919bd101fc8f4a34db4a7fef6a86ad17c636859",
+            "label": "Svp"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/688484bad3077649.mp3",
+            "sha256": "e4630805140dbac12432f64f053d46ae61878f4ca79a9b9841575565b5ee10d0",
+            "label": "Svp"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/3d4e76f4edff4e9b.mp3",
+            "sha256": "b4565737aa328454fac3a6333fe3413a46d8fb2841eaeccc14d27d56bdd1c5ed",
+            "label": "Nabotamela email"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/3d4e76f4edff4e9b.mp3",
+            "sha256": "baf02a213c859121e1cac56ba36f43e7fb6ce6a99539edc4d49cd90ae888276d",
+            "label": "Nabotamela email"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/9139d028db801b40.mp3",
+            "sha256": "759dfa356e70ccff7e0b8f0b63745749d0038e3bbf7acbe086c9a987fd3780a5",
+            "label": "Malamu"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/9139d028db801b40.mp3",
+            "sha256": "1bb74ae11d30dddcc1bbfa0731ab18457bcec532215baef0a3c20c9a71be9a64",
+            "label": "Malamu"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-B2-u1-l3",
+          "title": "Formal",
+          "objective": "Formal.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Formal",
+              "type": "Tutorial",
+              "text": "Formal.\n\n• Svp — Please\n• Nabotamela email — Core phrase\n• Malamu — Good / fine\n\nReal-life Formal — Lingala\n\nA: Svp — Please\nB: Nabotamela email — Core phrase\nA: Malamu — Good / fine\nB: Svp — Please",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Svp — Please",
+                  "options": [
+                    "Svp — Please",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Svp — Please"
+                },
+                {
+                  "question": "Recall: Nabotamela email — Core phrase",
+                  "options": [
+                    "Nabotamela email — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nabotamela email — Core phrase"
+                },
+                {
+                  "question": "Recall: Malamu — Good / fine",
+                  "options": [
+                    "Malamu — Good / fine",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Malamu — Good / fine"
+                },
+                {
+                  "id": "lingala-B2-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Intro” in Lingala?",
+                  "options": [
+                    "Nandimi",
+                    "Svp",
+                    "Nabotamela email",
+                    "Mbote"
+                  ],
+                  "answer": "Mbote"
+                },
+                {
+                  "id": "lingala-B2-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Meeting” in Lingala?",
+                  "options": [
+                    "Tokozonga",
+                    "Nasalaka awa",
+                    "Nakanisi ete",
+                    "Malamu"
+                  ],
+                  "answer": "Nakanisi ete"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Svp",
+                  "meaning": "Please",
+                  "options": [
+                    "Please",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Nabotamela email",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Malamu",
+                  "meaning": "Good / fine",
+                  "options": [
+                    "Good / fine",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-B2-u2-l1",
+        "title": "News",
+        "level": "B2",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/ee347fa15bb2480c.mp3",
+            "sha256": "a1108402c7626b3907b63d175d25400104119d047da472a139bc7649a86411a1",
+            "label": "Sango"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/ee347fa15bb2480c.mp3",
+            "sha256": "bfd04bb398937752c6b92e0f41773a4a432654aecfc609e9b513fe057348347c",
+            "label": "Sango"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/e3b7f989a9ec7bb9.mp3",
+            "sha256": "f338a408e012087d7c14950c795ed5d9432889aecf4fedf2df059e89a12a2753",
+            "label": "Radio"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/e3b7f989a9ec7bb9.mp3",
+            "sha256": "5a1fbcbbf5b74900e77e54fc638f7264d66c40d49782ac6b9ec7c6705e3ec1f5",
+            "label": "Radio"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/dc0897b65c91fd68.mp3",
+            "sha256": "4ff94428bad23c0e86e184a0fce300f8fc35cb3827f0abb4d5f0200f7269d0d3",
+            "label": "Nayokaki"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/dc0897b65c91fd68.mp3",
+            "sha256": "70d200648f7f5a14e9cd0a1ba2d733567844db97209f7f83fc63e82e6f6cf016",
+            "label": "Nayokaki"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-B2-u2-l1",
+          "title": "News",
+          "objective": "News.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "News",
+              "type": "Tutorial",
+              "text": "News.\n\n• Sango — News\n• Radio — Core phrase\n• Nayokaki — Core phrase\n\nReal-life News — Lingala\n\nA: Sango — News\nB: Radio — Core phrase\nA: Nayokaki — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Sango — News",
+                  "options": [
+                    "Sango — News",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Sango — News"
+                },
+                {
+                  "question": "Recall: Radio — Core phrase",
+                  "options": [
+                    "Radio — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Radio — Core phrase"
+                },
+                {
+                  "question": "Recall: Nayokaki — Core phrase",
+                  "options": [
+                    "Nayokaki — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nayokaki — Core phrase"
+                },
+                {
+                  "id": "lingala-B2-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “News” in Lingala?",
+                  "options": [
+                    "Nayebi",
+                    "Namoni ete",
+                    "Bizaleli",
+                    "Sango"
+                  ],
+                  "answer": "Sango"
+                },
+                {
+                  "id": "lingala-B2-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Debate” in Lingala?",
+                  "options": [
+                    "Bizaleli",
+                    "Nayebi",
+                    "Vraiment?",
+                    "Radio"
+                  ],
+                  "answer": "Vraiment?"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Sango",
+                  "meaning": "News",
+                  "options": [
+                    "News",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Radio",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Nayokaki",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-B2-u2-l2",
+        "title": "Debate",
+        "level": "B2",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/c793ddc4bf37e5a8.mp3",
+            "sha256": "dc1cb5ed82222e2bc89a34e29475eabb573053016ee0f63b9c3940bb43264f08",
+            "label": "Vraiment?"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/c793ddc4bf37e5a8.mp3",
+            "sha256": "70e6d3353b81398adc083dd89722069c6e7a8367a03f87c36217c1a26773be72",
+            "label": "Vraiment?"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/91bdcdf2d10886ad.mp3",
+            "sha256": "367c0acf9ac1f248143d864ede876a03c36801ea0edf8bff57da9b8a88afbb4d",
+            "label": "Nayebi"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/91bdcdf2d10886ad.mp3",
+            "sha256": "3759bede2c2a5cb86453cfb9fdc817d4f3d4da047831acacea6c4b670da31645",
+            "label": "Nayebi"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/9c32214bbc49f3f5.mp3",
+            "sha256": "e85ac80e2e3a78d1ed85e1771b782bc8dbeb1966af465c88eb4c8bffb462ef16",
+            "label": "Nandimi te"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/9c32214bbc49f3f5.mp3",
+            "sha256": "9bc6335d53fa4077900ca2cf415272c6eb13bc7c750c7fd17f42d3147394e5df",
+            "label": "Nandimi te"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-B2-u2-l2",
+          "title": "Debate",
+          "objective": "Debate.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Debate",
+              "type": "Tutorial",
+              "text": "Debate.\n\n• Vraiment? — Core phrase\n• Nayebi — Core phrase\n• Nandimi te — I disagree\n\nReal-life Debate — Lingala\n\nA: Vraiment? — Core phrase\nB: Nayebi — Core phrase\nA: Nandimi te — I disagree",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Vraiment? — Core phrase",
+                  "options": [
+                    "Vraiment? — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Vraiment? — Core phrase"
+                },
+                {
+                  "question": "Recall: Nayebi — Core phrase",
+                  "options": [
+                    "Nayebi — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nayebi — Core phrase"
+                },
+                {
+                  "question": "Recall: Nandimi te — I disagree",
+                  "options": [
+                    "Nandimi te — I disagree",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nandimi te — I disagree"
+                },
+                {
+                  "id": "lingala-B2-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “News” in Lingala?",
+                  "options": [
+                    "Nayebi",
+                    "Namoni ete",
+                    "Bizaleli",
+                    "Sango"
+                  ],
+                  "answer": "Sango"
+                },
+                {
+                  "id": "lingala-B2-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Debate” in Lingala?",
+                  "options": [
+                    "Bizaleli",
+                    "Nayebi",
+                    "Vraiment?",
+                    "Radio"
+                  ],
+                  "answer": "Vraiment?"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Vraiment?",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Nayebi",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Nandimi te",
+                  "meaning": "I disagree",
+                  "options": [
+                    "I disagree",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-B2-u2-l3",
+        "title": "Report",
+        "level": "B2",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/53fb71516da675ea.mp3",
+            "sha256": "c9df65ef9fbaf6c18bc572d5d7fd224eae7fbecf4b368b971833e6c859b30f32",
+            "label": "Namoni ete"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/53fb71516da675ea.mp3",
+            "sha256": "fcc3e338a31bf1299ddc25941299ec18c5980ca99aeb4b070bdebfa4c1d19313",
+            "label": "Namoni ete"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/8e359f3a015e0d39.mp3",
+            "sha256": "be43870b5c6c3e1690ebd0ab36f2112bcd39281152df9f2c787b0d3c80d23cf7",
+            "label": "Bizaleli"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/8e359f3a015e0d39.mp3",
+            "sha256": "64080cc255192d1195e0d999481f0472685df6c69f4bd780a0a579f98c6c0749",
+            "label": "Bizaleli"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/efa009712406b077.mp3",
+            "sha256": "8911957d6893263e5c100b81347099a63cbed6ce7364520ebcc66a6ada3c5664",
+            "label": "Bakolo"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/efa009712406b077.mp3",
+            "sha256": "3b8f69c00ce86f9736d465f3565175c23e1c8d86ce4706badc5bb61b9d38a4cc",
+            "label": "Bakolo"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-B2-u2-l3",
+          "title": "Report",
+          "objective": "Report.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Report",
+              "type": "Tutorial",
+              "text": "Report.\n\n• Namoni ete — Core phrase\n• Bizaleli — Culture\n• Bakolo — Core phrase\n\nReal-life Report — Lingala\n\nA: Namoni ete — Core phrase\nB: Bizaleli — Culture\nA: Bakolo — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Namoni ete — Core phrase",
+                  "options": [
+                    "Namoni ete — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Namoni ete — Core phrase"
+                },
+                {
+                  "question": "Recall: Bizaleli — Culture",
+                  "options": [
+                    "Bizaleli — Culture",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Bizaleli — Culture"
+                },
+                {
+                  "question": "Recall: Bakolo — Core phrase",
+                  "options": [
+                    "Bakolo — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Bakolo — Core phrase"
+                },
+                {
+                  "id": "lingala-B2-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “News” in Lingala?",
+                  "options": [
+                    "Nayebi",
+                    "Namoni ete",
+                    "Bizaleli",
+                    "Sango"
+                  ],
+                  "answer": "Sango"
+                },
+                {
+                  "id": "lingala-B2-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Debate” in Lingala?",
+                  "options": [
+                    "Bizaleli",
+                    "Nayebi",
+                    "Vraiment?",
+                    "Radio"
+                  ],
+                  "answer": "Vraiment?"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Namoni ete",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Bizaleli",
+                  "meaning": "Culture",
+                  "options": [
+                    "Culture",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Bakolo",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-C1-u1-l1",
+        "title": "Proverbs",
+        "level": "C1",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/c5c8a096d2aa5804.mp3",
+            "sha256": "cdf819b8c49920303dce6cf79610ca0cb3189daa3dc44e818ae58ef0907bdef4",
+            "label": "Kimia"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/c5c8a096d2aa5804.mp3",
+            "sha256": "53608b8500184b44ef6f0c60bc1f987174dd4fac80d5733b3f13eba6f183efc1",
+            "label": "Kimia"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/d1ad404b1afaf73e.mp3",
+            "sha256": "9e030e18218883b506df4b97afe9cc6e5378861180180118218783658e89fc41",
+            "label": "Ndako"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/d1ad404b1afaf73e.mp3",
+            "sha256": "dcfbdeaa7dec6a1dad4558422e54847632dc03075e30d32b8ce1d4822eb5d163",
+            "label": "Ndako"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/139c6f1c7e3d45df.mp3",
+            "sha256": "60882bebcbf93da9499a13c2fc95ba85ff0c272be447e97dd95b41c82d8891b9",
+            "label": "Lisalisi"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/139c6f1c7e3d45df.mp3",
+            "sha256": "22c6d285969c70470e5c75df16bb61ea982e7034d1949cad1520c02bdaca97d5",
+            "label": "Lisalisi"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-C1-u1-l1",
+          "title": "Proverbs",
+          "objective": "Proverbs.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Proverbs",
+              "type": "Tutorial",
+              "text": "Proverbs.\n\n• Kimia — Core phrase\n• Ndako — House\n• Lisalisi — Core phrase\n\nReal-life Proverbs — Lingala\n\nA: Kimia — Core phrase\nB: Ndako — House\nA: Lisalisi — Core phrase\nA: Kimia — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Kimia — Core phrase",
+                  "options": [
+                    "Kimia — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Kimia — Core phrase"
+                },
+                {
+                  "question": "Recall: Ndako — House",
+                  "options": [
+                    "Ndako — House",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndako — House"
+                },
+                {
+                  "question": "Recall: Lisalisi — Core phrase",
+                  "options": [
+                    "Lisalisi — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Lisalisi — Core phrase"
+                },
+                {
+                  "id": "lingala-C1-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Proverbs” in Lingala?",
+                  "options": [
+                    "Kasi",
+                    "Ndako",
+                    "Kimia",
+                    "Yango wana"
+                  ],
+                  "answer": "Kimia"
+                },
+                {
+                  "id": "lingala-C1-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Rhetoric” in Lingala?",
+                  "options": [
+                    "Eza bongo",
+                    "Na nsuka",
+                    "Nalingi koloba",
+                    "Yango wana"
+                  ],
+                  "answer": "Eza bongo"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Kimia",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ndako",
+                  "meaning": "House",
+                  "options": [
+                    "House",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Lisalisi",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-C1-u1-l2",
+        "title": "Rhetoric",
+        "level": "C1",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/b169b6d8f89a7a46.mp3",
+            "sha256": "dde5774f97ee15840fd7ab8c7db986da66ce4b065d45e7c2ede5bcb0666a2232",
+            "label": "Eza bongo"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/b169b6d8f89a7a46.mp3",
+            "sha256": "2cb392976e3cff5dac502e4438af27a3c959d1555fa60dfe1508dea41936c30a",
+            "label": "Eza bongo"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/6f3f284a77c0c73b.mp3",
+            "sha256": "8b872bdb44fe2fb30ea167da844e5516f4bdc2289c7a6ca6805781cf29b4e032",
+            "label": "Kasi"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/6f3f284a77c0c73b.mp3",
+            "sha256": "c1600d86f8efd04009a389e7d8c5f22cb2770f5462f108c712d192965fca82e3",
+            "label": "Kasi"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/f2a322821c3ecdcd.mp3",
+            "sha256": "7d58b26f26bcfcee2c39cb511e35e7b5e87860e702da0862e4efdc6418e8856a",
+            "label": "Yango wana"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/f2a322821c3ecdcd.mp3",
+            "sha256": "9ee0db95b70d39b254c3e99562d8ea563505359366fce0126a8bd46aab3351f4",
+            "label": "Yango wana"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-C1-u1-l2",
+          "title": "Rhetoric",
+          "objective": "Links.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Rhetoric",
+              "type": "Tutorial",
+              "text": "Links.\n\n• Eza bongo — Core phrase\n• Kasi — Core phrase\n• Yango wana — Core phrase\n\nReal-life Rhetoric — Lingala\n\nA: Eza bongo — Core phrase\nB: Kasi — Core phrase\nA: Yango wana — Core phrase\nA: Eza bongo — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Eza bongo — Core phrase",
+                  "options": [
+                    "Eza bongo — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Eza bongo — Core phrase"
+                },
+                {
+                  "question": "Recall: Kasi — Core phrase",
+                  "options": [
+                    "Kasi — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Kasi — Core phrase"
+                },
+                {
+                  "question": "Recall: Yango wana — Core phrase",
+                  "options": [
+                    "Yango wana — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Yango wana — Core phrase"
+                },
+                {
+                  "id": "lingala-C1-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Proverbs” in Lingala?",
+                  "options": [
+                    "Kasi",
+                    "Ndako",
+                    "Kimia",
+                    "Yango wana"
+                  ],
+                  "answer": "Kimia"
+                },
+                {
+                  "id": "lingala-C1-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Rhetoric” in Lingala?",
+                  "options": [
+                    "Eza bongo",
+                    "Na nsuka",
+                    "Nalingi koloba",
+                    "Yango wana"
+                  ],
+                  "answer": "Eza bongo"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Eza bongo",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Kasi",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Yango wana",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-C1-u1-l3",
+        "title": "Monologue",
+        "level": "C1",
+        "unit": 1,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/5e2085f2b182b6d4.mp3",
+            "sha256": "c05c8f94b01c862dcc9c4cc55bd70888e9ce342ae305df192d3bddb83227ea45",
+            "label": "Nalingi koloba"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/5e2085f2b182b6d4.mp3",
+            "sha256": "d99b09efee65f75ce4463dbd533727ef044271eb57370c5b3f47e00cda272b88",
+            "label": "Nalingi koloba"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/8356de855ed046ac.mp3",
+            "sha256": "872b183c195459c42afc6b253aade12ef2a08f930d942df8e9099289cd2c809d",
+            "label": "Ndenge"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/8356de855ed046ac.mp3",
+            "sha256": "f1e7a06f4010c322632e6bb94a485473a24ed5aca552a542cfae13334435daad",
+            "label": "Ndenge"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/f51fb1a6d6147b98.mp3",
+            "sha256": "b7de6c9bc5ec322c712d107c8753bf7f44fb32ab142f324b56ad7282a4ee7fe4",
+            "label": "Na nsuka"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/f51fb1a6d6147b98.mp3",
+            "sha256": "2dd99b04779e6ef6c56edcd4d254905c7fbbbf307ba662a6c322b0dd56267439",
+            "label": "Na nsuka"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-C1-u1-l3",
+          "title": "Monologue",
+          "objective": "Monologue.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Monologue",
+              "type": "Tutorial",
+              "text": "Monologue.\n\n• Nalingi koloba — Core phrase\n• Ndenge — Core phrase\n• Na nsuka — Core phrase\n\nReal-life Monologue — Lingala\n\nA: Nalingi koloba — Core phrase\nB: Ndenge — Core phrase\nA: Na nsuka — Core phrase\nA: Nalingi koloba — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Nalingi koloba — Core phrase",
+                  "options": [
+                    "Nalingi koloba — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nalingi koloba — Core phrase"
+                },
+                {
+                  "question": "Recall: Ndenge — Core phrase",
+                  "options": [
+                    "Ndenge — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Ndenge — Core phrase"
+                },
+                {
+                  "question": "Recall: Na nsuka — Core phrase",
+                  "options": [
+                    "Na nsuka — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Na nsuka — Core phrase"
+                },
+                {
+                  "id": "lingala-C1-u1-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Proverbs” in Lingala?",
+                  "options": [
+                    "Kasi",
+                    "Ndako",
+                    "Kimia",
+                    "Yango wana"
+                  ],
+                  "answer": "Kimia"
+                },
+                {
+                  "id": "lingala-C1-u1-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Rhetoric” in Lingala?",
+                  "options": [
+                    "Eza bongo",
+                    "Na nsuka",
+                    "Nalingi koloba",
+                    "Yango wana"
+                  ],
+                  "answer": "Eza bongo"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Nalingi koloba",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Ndenge",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Na nsuka",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-C1-u2-l1",
+        "title": "Rebuttal",
+        "level": "C1",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/a9316df44615414b.mp3",
+            "sha256": "297d83c9a65e76ea00fda2956483ef7658845d6cc63447332e7cf24b617c6115",
+            "label": "Nandimi te kasi"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/a9316df44615414b.mp3",
+            "sha256": "7bd5c9595e17c7d677e4635e0f1b35cbf70d29fcc35d716531e4a9833358d13e",
+            "label": "Nandimi te kasi"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/b1b0cda199f74e32.mp3",
+            "sha256": "b16d6789b9b6b582f76bba355644b4ed02c0e94d13781415d810543a6e3cbd60",
+            "label": "Nandimi ete"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/b1b0cda199f74e32.mp3",
+            "sha256": "78ad6650b372a2739852731b1b4f0ac58e47165725dcd8e58c32c26daca4fd93",
+            "label": "Nandimi ete"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/8e359f3a015e0d39.mp3",
+            "sha256": "be43870b5c6c3e1690ebd0ab36f2112bcd39281152df9f2c787b0d3c80d23cf7",
+            "label": "Bizaleli"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/8e359f3a015e0d39.mp3",
+            "sha256": "64080cc255192d1195e0d999481f0472685df6c69f4bd780a0a579f98c6c0749",
+            "label": "Bizaleli"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-C1-u2-l1",
+          "title": "Rebuttal",
+          "objective": "Rebuttal.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Rebuttal",
+              "type": "Tutorial",
+              "text": "Rebuttal.\n\n• Nandimi te kasi — Core phrase\n• Nandimi ete — Core phrase\n• Bizaleli — Culture\n\nReal-life Rebuttal — Lingala\n\nA: Nandimi te kasi — Core phrase\nB: Nandimi ete — Core phrase\nA: Bizaleli — Culture\nA: Nandimi te kasi — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Nandimi te kasi — Core phrase",
+                  "options": [
+                    "Nandimi te kasi — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nandimi te kasi — Core phrase"
+                },
+                {
+                  "question": "Recall: Nandimi ete — Core phrase",
+                  "options": [
+                    "Nandimi ete — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Nandimi ete — Core phrase"
+                },
+                {
+                  "question": "Recall: Bizaleli — Culture",
+                  "options": [
+                    "Bizaleli — Culture",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Bizaleli — Culture"
+                },
+                {
+                  "id": "lingala-C1-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Rebuttal” in Lingala?",
+                  "options": [
+                    "Malamu mingi",
+                    "Bizaleli",
+                    "Nandimi te kasi",
+                    "Matondi"
+                  ],
+                  "answer": "Nandimi te kasi"
+                },
+                {
+                  "id": "lingala-C1-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Abstract” in Lingala?",
+                  "options": [
+                    "Sante",
+                    "Nandimi te kasi",
+                    "Bizaleli",
+                    "Matondi"
+                  ],
+                  "answer": "Bizaleli"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Nandimi te kasi",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Nandimi ete",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Bizaleli",
+                  "meaning": "Culture",
+                  "options": [
+                    "Culture",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-C1-u2-l2",
+        "title": "Abstract",
+        "level": "C1",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/8e359f3a015e0d39.mp3",
+            "sha256": "be43870b5c6c3e1690ebd0ab36f2112bcd39281152df9f2c787b0d3c80d23cf7",
+            "label": "Bizaleli"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/8e359f3a015e0d39.mp3",
+            "sha256": "64080cc255192d1195e0d999481f0472685df6c69f4bd780a0a579f98c6c0749",
+            "label": "Bizaleli"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/2d24862d09cb12dd.mp3",
+            "sha256": "6bbb4c058846fd33104d2a45c4df648d0f684be5e1db220f4f74883aeb830de3",
+            "label": "Boyekoli"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/2d24862d09cb12dd.mp3",
+            "sha256": "a61960b42226bc47037aaba20fa7693ee2524b5544c0437f2ab2a7975eb0f67f",
+            "label": "Boyekoli"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/f67e32f59c4255ad.mp3",
+            "sha256": "e546a9089db0f51ec16875d2a44760d0d88de007ea5a08e49fbba34945bf853e",
+            "label": "Sante"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/f67e32f59c4255ad.mp3",
+            "sha256": "703ed9da9aaf33f21d22de0df2e115550c799d880a6425cb44cc36509aa80752",
+            "label": "Sante"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-C1-u2-l2",
+          "title": "Abstract",
+          "objective": "Abstract.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Abstract",
+              "type": "Tutorial",
+              "text": "Abstract.\n\n• Bizaleli — Culture\n• Boyekoli — Core phrase\n• Sante — Core phrase\n\nReal-life Abstract — Lingala\n\nA: Bizaleli — Culture\nB: Boyekoli — Core phrase\nA: Sante — Core phrase\nA: Bizaleli — Culture",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Bizaleli — Culture",
+                  "options": [
+                    "Bizaleli — Culture",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Bizaleli — Culture"
+                },
+                {
+                  "question": "Recall: Boyekoli — Core phrase",
+                  "options": [
+                    "Boyekoli — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Boyekoli — Core phrase"
+                },
+                {
+                  "question": "Recall: Sante — Core phrase",
+                  "options": [
+                    "Sante — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Sante — Core phrase"
+                },
+                {
+                  "id": "lingala-C1-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Rebuttal” in Lingala?",
+                  "options": [
+                    "Malamu mingi",
+                    "Bizaleli",
+                    "Nandimi te kasi",
+                    "Matondi"
+                  ],
+                  "answer": "Nandimi te kasi"
+                },
+                {
+                  "id": "lingala-C1-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Abstract” in Lingala?",
+                  "options": [
+                    "Sante",
+                    "Nandimi te kasi",
+                    "Bizaleli",
+                    "Matondi"
+                  ],
+                  "answer": "Bizaleli"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Bizaleli",
+                  "meaning": "Culture",
+                  "options": [
+                    "Culture",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Boyekoli",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Sante",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "Lingala-C1-u2-l3",
+        "title": "Close",
+        "level": "C1",
+        "unit": 2,
+        "assets": [
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/7841562bcb8e29f0.mp3",
+            "sha256": "47fce2491505f298862d7ed7bd083e095510514e99497f85495de3cf6fa35311",
+            "label": "Matondi"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/7841562bcb8e29f0.mp3",
+            "sha256": "91a2db7de28efe34826f99662c9d2b1a21b62b3b2068feb1a9848563dea81a43",
+            "label": "Matondi"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/68898e34e9f84103.mp3",
+            "sha256": "0c4f06761c11031aefeadc8a4b20a206d258bf44241157b079d0240e889bfffb",
+            "label": "Tokomonana"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/68898e34e9f84103.mp3",
+            "sha256": "8d619f87d4c52500182eeb43037ac618b56fe186064dafa12a56b52d3eda7cc0",
+            "label": "Tokomonana"
+          },
+          {
+            "kind": "audio",
+            "variant": "native",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/native/97ac49d6fe616c2e.mp3",
+            "sha256": "c27a579e0df883e35fc0180d3c329d81783dcf6ac3c3802fa5293ce16957e81c",
+            "label": "Malamu mingi"
+          },
+          {
+            "kind": "audio",
+            "variant": "slow",
+            "url": "https://cdn.lingafriq.com/audio/v2/lingala/slow/97ac49d6fe616c2e.mp3",
+            "sha256": "a8a60078740ab0dc9b364224233f8f44eccf9c4559d2d149ab66ab3d8a44099f",
+            "label": "Malamu mingi"
+          }
+        ],
+        "lesson": {
+          "id": "Lingala-C1-u2-l3",
+          "title": "Close",
+          "objective": "Close.",
+          "cultural_notes": "",
+          "sections": [
+            {
+              "id": 1,
+              "title": "Close",
+              "type": "Tutorial",
+              "text": "Close.\n\n• Matondi — Thank you\n• Tokomonana — Core phrase\n• Malamu mingi — Core phrase\n\nReal-life Close — Lingala\n\nA: Matondi — Thank you\nB: Tokomonana — Core phrase\nA: Malamu mingi — Core phrase",
+              "score": 0
+            },
+            {
+              "id": 2,
+              "title": "Practice Quiz",
+              "type": "Instant Quiz",
+              "questions": [
+                {
+                  "question": "Recall: Matondi — Thank you",
+                  "options": [
+                    "Matondi — Thank you",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Matondi — Thank you"
+                },
+                {
+                  "question": "Recall: Tokomonana — Core phrase",
+                  "options": [
+                    "Tokomonana — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Tokomonana — Core phrase"
+                },
+                {
+                  "question": "Recall: Malamu mingi — Core phrase",
+                  "options": [
+                    "Malamu mingi — Core phrase",
+                    "Not this phrase",
+                    "Different meaning",
+                    "Another phrase"
+                  ],
+                  "answer": "Malamu mingi — Core phrase"
+                },
+                {
+                  "id": "lingala-C1-u2-q1",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Rebuttal” in Lingala?",
+                  "options": [
+                    "Malamu mingi",
+                    "Bizaleli",
+                    "Nandimi te kasi",
+                    "Matondi"
+                  ],
+                  "answer": "Nandimi te kasi"
+                },
+                {
+                  "id": "lingala-C1-u2-q2",
+                  "type": "mcq",
+                  "question": "Which phrase best fits “Abstract” in Lingala?",
+                  "options": [
+                    "Sante",
+                    "Nandimi te kasi",
+                    "Bizaleli",
+                    "Matondi"
+                  ],
+                  "answer": "Bizaleli"
+                }
+              ],
+              "score": 0
+            },
+            {
+              "id": 3,
+              "title": "Word Quiz",
+              "type": "Word Quiz",
+              "word_questions": [
+                {
+                  "word": "Matondi",
+                  "meaning": "Thank you",
+                  "options": [
+                    "Thank you",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Tokomonana",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                },
+                {
+                  "word": "Malamu mingi",
+                  "meaning": "Core phrase",
+                  "options": [
+                    "Core phrase",
+                    "Different phrase",
+                    "Opposite meaning",
+                    "Unrelated"
+                  ]
+                }
+              ],
+              "score": 0
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

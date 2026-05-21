@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/audio_player_widget.dart';
+import 'package:lingafriq/widgets/content/vocab_audio_controls.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/portrait_video_player.dart';
 import '../models/lesson_content.dart';
@@ -12,11 +13,15 @@ import '../models/lesson_content.dart';
 class TutorialSectionWidget extends ConsumerStatefulWidget {
   final LessonContent content;
   final VoidCallback onContinue;
+  final String? vocabAudioLanguage;
+  final String? vocabAudioText;
 
   const TutorialSectionWidget({
     super.key,
     required this.content,
     required this.onContinue,
+    this.vocabAudioLanguage,
+    this.vocabAudioText,
   });
 
   @override
@@ -98,12 +103,27 @@ class _TutorialSectionWidgetState extends ConsumerState<TutorialSectionWidget> {
                 if (widget.content.text != null && widget.content.text!.isNotEmpty) ...[
                   PanAfricanCard(
                     padding: EdgeInsets.all(20.w),
-                    child: Text(
-                      widget.content.text!,
-                      style: PanAfricanTypography.bodyLarge(context).copyWith(
-                        height: 1.6,
-                        fontSize: 16.sp,
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.content.text!,
+                          style: PanAfricanTypography.bodyLarge(context).copyWith(
+                            height: 1.6,
+                            fontSize: 16.sp,
+                          ),
+                        ),
+                        if (widget.vocabAudioLanguage != null &&
+                            widget.vocabAudioText != null &&
+                            widget.vocabAudioText!.trim().isNotEmpty) ...[
+                          SizedBox(height: 12.h),
+                          VocabAudioControls(
+                            language: widget.vocabAudioLanguage!,
+                            text: widget.vocabAudioText!,
+                            compact: true,
+                          ),
+                        ],
+                      ],
                     ),
                   ),
                 ],

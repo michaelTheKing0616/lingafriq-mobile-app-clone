@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
+import '../../../models/game/game_content_models.dart';
 import '../../../services/polie_content_generator.dart';
+import '../game_scenario_loader.dart';
 import '../../../widgets/error_boundary.dart';
 import '../../loading/dynamic_loading_screen.dart';
 import '../base_game_screen.dart';
@@ -57,10 +59,22 @@ class _AccentPuzzleGameState extends BaseGameScreenState<AccentPuzzleGame>
   int get gameScore => _score;
   
   String _correctRegion = '';
+  List<GameWord> _bundledWords = [];
 
   @override
   Future<void> onGameInitialized() async {
+    _bundledWords = loadBundledGameWords(
+      ref,
+      language: widget.language,
+      gameTag: 'WordMatch',
+      max: 24,
+    );
     await _loadNewPuzzle();
+  }
+
+  String _regionLabel(GameWord w) {
+    final label = (w.tonalNote ?? w.topic ?? w.partOfSpeech ?? '').trim();
+    return label.isNotEmpty ? label : 'Central';
   }
 
   Future<void> _loadNewPuzzle() async {
@@ -74,6 +88,20 @@ class _AccentPuzzleGameState extends BaseGameScreenState<AccentPuzzleGame>
       _showResult = false;
       _selectedRegion = null;
     });
+
+    if (_bundledWords.isNotEmpty) {
+      final w = _bundledWords[_round % _bundledWords.length];
+      final correct = _regionLabel(w);
+      final pool = _bundledWords.map(_regionLabel).where((r) => r.isNotEmpty);
+      setState(() {
+        _round++;
+        _targetWord = w.word;
+        _correctRegion = correct;
+        _regionOptions = buildShuffledOptions(correct, pool);
+        setLoading(false);
+      });
+      return;
+    }
 
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);

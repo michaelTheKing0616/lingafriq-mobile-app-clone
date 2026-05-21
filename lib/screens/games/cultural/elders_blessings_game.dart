@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
+import '../../../models/game/game_content_models.dart';
 import '../../../services/polie_content_generator.dart';
+import '../game_scenario_loader.dart';
 import '../../../widgets/error_boundary.dart';
 import '../../loading/dynamic_loading_screen.dart';
 import '../base_game_screen.dart';
@@ -59,9 +61,16 @@ class _EldersBlessingsGameState extends BaseGameScreenState<EldersBlessingsGame>
   
   String _blessingText = '';
   String _correctMeaning = '';
+  List<GameScenario> _bundledScenarios = [];
 
   @override
   Future<void> onGameInitialized() async {
+    _bundledScenarios = loadBundledGameScenarios(
+      ref,
+      language: widget.language,
+      game: 'EldersBlessings',
+      max: 10,
+    );
     await _loadNewBlessing();
   }
 
@@ -76,6 +85,23 @@ class _EldersBlessingsGameState extends BaseGameScreenState<EldersBlessingsGame>
       _showResult = false;
       _selectedMeaning = null;
     });
+
+    if (_bundledScenarios.isNotEmpty) {
+      final s = _bundledScenarios[_round % _bundledScenarios.length];
+      final correct = (s.expectedResponse ?? s.culturalNote ?? s.title).trim();
+      final pool = _bundledScenarios
+          .map((e) => (e.expectedResponse ?? e.culturalNote ?? e.title).trim())
+          .where((m) => m.isNotEmpty);
+      setState(() {
+        _currentBlessing = {'bundled': true, 'id': s.id};
+        _round++;
+        _blessingText = s.prompt.trim();
+        _correctMeaning = correct;
+        _meaningOptions = buildShuffledOptions(correct, pool);
+        setLoading(false);
+      });
+      return;
+    }
 
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
+import '../../../models/game/game_content_models.dart';
 import '../../../services/polie_content_generator.dart';
+import '../game_scenario_loader.dart';
 import '../../../widgets/error_boundary.dart';
 import '../../loading/dynamic_loading_screen.dart';
 import '../base_game_screen.dart';
@@ -59,9 +61,16 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame>
   
   String _storyTitle = '';
   String? _correctStoryPart;
+  List<GameScenario> _bundledScenarios = [];
 
   @override
   Future<void> onGameInitialized() async {
+    _bundledScenarios = loadBundledGameScenarios(
+      ref,
+      language: widget.language,
+      game: 'FolktaleReconstruction',
+      max: 10,
+    );
     await _loadNewStory();
   }
 
@@ -76,6 +85,26 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame>
       _showResult = false;
       _selectedPart = null;
     });
+
+    if (_bundledScenarios.isNotEmpty) {
+      final s = _bundledScenarios[_round % _bundledScenarios.length];
+      final parts = <String>[
+        s.title,
+        s.prompt,
+        if (s.culturalNote != null) s.culturalNote!,
+        if (s.expectedResponse != null) s.expectedResponse!,
+      ].where((p) => p.trim().isNotEmpty).toList();
+      final correct = parts.isNotEmpty ? parts.first : s.prompt;
+      setState(() {
+        _currentStory = {'bundled': true, 'id': s.id};
+        _round++;
+        _storyTitle = s.title;
+        _correctStoryPart = correct;
+        _storyParts = List<String>.from(parts)..shuffle(Random());
+        setLoading(false);
+      });
+      return;
+    }
 
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);

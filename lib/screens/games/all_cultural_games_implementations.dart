@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../models/game/game_session_model.dart';
 import '../../services/polie_content_generator.dart';
+import 'game_scenario_loader.dart';
 import '../../widgets/error_boundary.dart';
 import '../../screens/loading/dynamic_loading_screen.dart';
 import 'base_game_screen.dart';
@@ -15,12 +16,45 @@ import 'dart:math';
 /// Shared game implementation helper
 /// Provides common patterns for all cultural games
 class CulturalGameHelper {
+  /// Maps Polie gameType strings to bundled [game_content.json] keys.
+  static const Map<String, String> _bundledGameKeys = {
+    'call_response': 'CallAndResponse',
+    'greeting_diplomacy': 'GreetingDiplomacy',
+    'market_bargaining': 'MarketBargaining',
+    'village_quest': 'VillageQuest',
+    'folktale': 'FolktaleReconstruction',
+    'food_quest': 'FoodQuest',
+    'phrase_sniper': 'PhraseSniper',
+    'cultural_etiquette': 'CulturalEtiquette',
+    'elders_blessings': 'EldersBlessings',
+  };
+
   static Future<Map<String, dynamic>> loadPolieContent({
     required WidgetRef ref,
     required String gameType,
     required String language,
     String? difficulty,
   }) async {
+    final bundledKey = _bundledGameKeys[gameType];
+    if (bundledKey != null) {
+      final scenarios = loadBundledGameScenarios(
+        ref,
+        language: language,
+        game: bundledKey,
+        max: 8,
+      );
+      if (scenarios.isNotEmpty) {
+        final s = scenarios[Random().nextInt(scenarios.length)];
+        return {
+          'content': s.prompt,
+          'title': s.title,
+          'expected_response': s.expectedResponse,
+          'cultural_note': s.culturalNote,
+          'bundled': true,
+        };
+      }
+    }
+
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);
       return await polieGenerator.generateGameContent(

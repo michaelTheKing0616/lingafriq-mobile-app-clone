@@ -1,0 +1,41 @@
+{
+  "languages": [
+    "yoruba",
+    "hausa",
+    "igbo",
+    "swahili",
+    "zulu",
+    "xhosa",
+    "wolof",
+    "pidgin",
+    "afrikaans",
+    "amharic",
+    "twi",
+    "somali",
+    "lingala",
+    "shona"
+  ],
+  "words": 440,
+  "proverbs": 58,
+  "scenarios": 203,
+  "grammar_drills": 269,
+  "liar_liar_rounds": 93,
+  "audio_entries": 1109,
+  "curriculum_languages": [
+    "yoruba",
+    "hausa",
+    "igbo",
+    "swahili",
+    "zulu",
+    "xhosa",
+    "wolof",
+    "nigerian_pidgin",
+    "pidgin",
+    "afrikaans",
+    "amharic",
+    "twi",
+    "somali",
+    "lingala",
+    "shona"
+  ]
+}

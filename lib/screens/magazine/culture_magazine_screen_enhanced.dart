@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,12 +16,16 @@ import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/services/hybrid_polie/translation_service.dart';
 import 'package:lingafriq/providers/onboarding_provider.dart';
+import 'package:lingafriq/services/curriculum_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'culture_magazine_enhanced_features.dart';
 
 /// Enhanced Cultural Magazine Screen with Polie Translation, Cultural Context, Vocabulary
 class CultureMagazineScreenEnhanced extends HookConsumerWidget {
-  const CultureMagazineScreenEnhanced({super.key});
+  const CultureMagazineScreenEnhanced({super.key, this.initialFilterLanguage});
+
+  /// Optional language slug from curriculum (e.g. yoruba, nigerian_pidgin).
+  final String? initialFilterLanguage;
 
   static const int _pageSize = 24;
 
@@ -104,6 +110,11 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
         if (selectedCategory.value != null) {
           queryParameters['category'] = selectedCategory.value!;
         }
+        final filterLang = initialFilterLanguage?.trim();
+        if (filterLang != null && filterLang.isNotEmpty) {
+          queryParameters['language'] =
+              CurriculumService.normalizeLanguageKey(filterLang);
+        }
 
         final response = await ApiService.get(
           Api.cultureArticles(published: true),
@@ -112,7 +123,17 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
 
         if (response.statusCode == 200) {
           final raw = response.data;
-          final batch = _parseArticleDocs(raw);
+          var batch = _parseArticleDocs(raw);
+          if (filterLang != null && filterLang.isNotEmpty) {
+            final key = CurriculumService.normalizeLanguageKey(filterLang);
+            batch = batch.where((article) {
+              final lang =
+                  (article['language'] as String?)?.toLowerCase() ?? '';
+              return lang == key ||
+                  lang == filterLang.toLowerCase() ||
+                  (key == 'nigerian_pidgin' && lang == 'pidgin');
+            }).toList();
+          }
           final nextHasMore = _parseHasNextPage(raw, batch.length);
           final total = _parseTotalDocs(raw);
 
@@ -140,12 +161,44 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
           hasMore.value = false;
         }
       } catch (e) {
-        if (context.mounted) {
-          ErrorHandler.showError(context, e);
-        }
         if (reset) {
-          articles.value = [];
-          hasMore.value = false;
+          try {
+            final raw = await rootBundle.loadString('assets/data/magazine_articles_seed.json');
+            final data = jsonDecode(raw) as Map<String, dynamic>;
+            final seed = (data['articles'] as List<dynamic>?)
+                    ?.whereType<Map>()
+                    .map((m) => Map<String, dynamic>.from(m))
+                    .toList() ??
+                [];
+            if (seed.isNotEmpty) {
+              final filterLang = initialFilterLanguage?.trim();
+              if (filterLang != null && filterLang.isNotEmpty) {
+                final key = CurriculumService.normalizeLanguageKey(filterLang);
+                articles.value = seed
+                    .where((a) {
+                      final lang = (a['language'] as String?)?.toLowerCase() ?? '';
+                      return lang == key ||
+                          lang == filterLang.toLowerCase() ||
+                          (key == 'nigerian_pidgin' && lang == 'pidgin');
+                    })
+                    .toList();
+              } else {
+                articles.value = seed;
+              }
+              hasMore.value = false;
+            } else {
+              articles.value = [];
+              hasMore.value = false;
+            }
+          } catch (_) {
+            if (context.mounted) {
+              ErrorHandler.showError(context, e);
+            }
+            articles.value = [];
+            hasMore.value = false;
+          }
+        } else if (context.mounted) {
+          ErrorHandler.showError(context, e);
         }
       } finally {
         if (reset) {

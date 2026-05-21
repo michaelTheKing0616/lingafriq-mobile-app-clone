@@ -14,6 +14,8 @@ import 'package:lingafriq/models/daily_goal_model.dart';
 import 'package:lingafriq/screens/ai_chat/polie_mode_selection_screen.dart';
 import 'package:lingafriq/screens/chat/lingchat_ai_conversation_screen.dart';
 import 'package:lingafriq/screens/lessons/lessons_map_entry_screen.dart';
+import 'package:lingafriq/navigation/learning_experience_navigation.dart';
+import 'package:lingafriq/screens/curriculum/authentic_curriculum_entry_screen.dart';
 import 'package:lingafriq/screens/tabs_view/home/language_detail_screen.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen_enhanced.dart';
 import 'package:lingafriq/screens/games/games_screen_material3.dart';
@@ -402,6 +404,27 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                   isDark: isDark,
                 )
                 .animate(delay: 400.ms)
+                .fadeIn(duration: 300.ms)
+                .scale(begin: Offset(0.9, 0.9)),
+            _QuickActionCard(
+                  title: 'Authentic Path',
+                  icon: Icons.auto_awesome_rounded,
+                  onTap: () =>
+                      LearningExperienceNavigation.openAuthenticPath(context),
+                  isDark: isDark,
+                )
+                .animate(delay: 500.ms)
+                .fadeIn(duration: 300.ms)
+                .scale(begin: Offset(0.9, 0.9)),
+            _QuickActionCard(
+                  title: 'Content review',
+                  icon: Icons.verified_user_outlined,
+                  onTap: () => LearningExperienceNavigation.openNativeContentReview(
+                    context,
+                  ),
+                  isDark: isDark,
+                )
+                .animate(delay: 600.ms)
                 .fadeIn(duration: 300.ms)
                 .scale(begin: Offset(0.9, 0.9)),
           ],

@@ -16,6 +16,7 @@ import '../../providers/offline_download_provider.dart';
 import '../../screens/learning/learning_path_screen.dart';
 import '../models/lesson_response.dart';
 import 'section_lessons_list.dart';
+import 'package:lingafriq/navigation/learning_experience_navigation.dart';
 
 final lessonsListProvider = FutureProvider.autoDispose.family<LessonResponse, int>((ref, id) {
   return ref.read(apiProvider.notifier).getLessons(id);
@@ -162,7 +163,12 @@ class _LessonItem extends ConsumerWidget {
       child: InkWell(
         onTap: enabled
             ? () async {
-                ref.read(navigationProvider).navigateTo(LessonSectionsListScreen(lesson: lesson));
+                LearningExperienceNavigation.openLessonSections(
+                      context,
+                      lesson: lesson,
+                      studyLanguageKey:
+                          LearningExperienceNavigation.languageKeyFor(language),
+                    );
               }
             : null,
         child: Column(

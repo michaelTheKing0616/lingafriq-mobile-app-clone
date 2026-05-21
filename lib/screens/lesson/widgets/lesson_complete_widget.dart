@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lingafriq/content/lingafriq_ux_voice.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/animations/lesson_complete_animation.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
@@ -39,7 +40,7 @@ class LessonCompleteWidget extends StatelessWidget {
     return LessonCompleteAnimation(
       xpGained: totalXP,
       comboBonus: comboBonus > 0 ? comboBonus : null,
-      message: accuracy >= 80 ? 'Excellent work!' : accuracy >= 60 ? 'Good job!' : 'Keep practicing!',
+      message: LingAfriqUxVoice.lessonCompleteMessage(accuracy),
       onContinue: () {
         // Show detailed stats before continuing
         showModalBottomSheet(

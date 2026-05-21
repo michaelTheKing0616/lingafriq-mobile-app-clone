@@ -6,6 +6,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:lingafriq/lessons/models/section_lesson_model.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
+import 'package:lingafriq/content/lingafriq_ux_voice.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/lingafriq_scaffold.dart';
 import 'package:lingafriq/widgets/points_and_profile_image_builder.dart';
@@ -26,12 +27,14 @@ class LessonFlowScreen extends HookConsumerWidget {
   final int lessonId;
   final List<SectionLessonModel> sectionLessons;
   final String lessonTitle;
+  final String? audioLanguage;
 
   const LessonFlowScreen({
     super.key,
     required this.lessonId,
     required this.sectionLessons,
     required this.lessonTitle,
+    this.audioLanguage,
   });
 
   @override
@@ -114,7 +117,7 @@ class LessonFlowScreen extends HookConsumerWidget {
             onContinue: exitLesson,
             onShare: () {
               Share.share(
-                'I just completed a lesson on LingAfriq! ${lessonState.totalXPEarned} XP earned.',
+                LingAfriqUxVoice.lessonShareText(lessonState.totalXPEarned),
                 subject: 'LingAfriq lesson complete',
               );
             },
@@ -262,6 +265,8 @@ class LessonFlowScreen extends HookConsumerWidget {
       case LessonSectionType.tutorial:
         return TutorialSectionWidget(
           content: section,
+          vocabAudioLanguage: audioLanguage,
+          vocabAudioText: section.title,
           onContinue: () async {
             final success = await lessonFlow.completeSection(section.sectionId);
             if (success && lessonState.hasMoreSections) {
@@ -285,6 +290,10 @@ class LessonFlowScreen extends HookConsumerWidget {
       case LessonSectionType.longQuiz:
         return QuizSectionWidget(
           content: section,
+          vocabAudioLanguage: audioLanguage,
+          vocabAudioText: section.questions?.isNotEmpty == true
+              ? section.questions!.first.question
+              : null,
           onAnswerSelected: (questionId, answer) {
             lessonFlow.setQuizAnswer(section.sectionId, questionId, answer);
           },
@@ -341,6 +350,7 @@ class LessonFlowScreen extends HookConsumerWidget {
       case LessonSectionType.wordQuiz:
         return WordQuizSectionWidget(
           content: section,
+          audioLanguage: audioLanguage,
           currentAnswers: lessonState.wordQuizAnswers[section.sectionId],
           onAnswerChanged: (blankIndex, answer) {
             lessonFlow.setWordQuizAnswer(section.sectionId, blankIndex, answer);

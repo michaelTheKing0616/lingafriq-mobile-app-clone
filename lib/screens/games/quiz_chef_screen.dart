@@ -12,6 +12,7 @@ import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
 import 'base_game_screen.dart';
+import 'game_scenario_loader.dart';
 
 class QuizChefGame extends BaseGameScreen {
   const QuizChefGame({
@@ -52,21 +53,68 @@ class _QuizChefGameState extends BaseGameScreenState<QuizChefGame> {
     final cards = gameProv.availableCards;
     _rounds.clear();
 
-    final templates = _recipeTemplates(widget.language);
+    final scenarios = loadBundledGameScenarios(
+      ref,
+      language: widget.language,
+      game: 'QuizChef',
+      max: _maxRounds,
+    );
     final rng = Random();
-    for (var i = 0; i < _maxRounds; i++) {
-      final t = templates[i % templates.length];
-      final options = List<String>.from(t.options)..shuffle(rng);
-      _rounds.add(_RecipeRound(
-        question: t.question,
-        correctAnswer: t.correctAnswer,
-        options: options,
-        category: t.category,
-        proverbTip: t.proverbTip,
-        cardId: cards.isNotEmpty ? cards[i % cards.length].cardId : 'recipe_$i',
-      ));
+
+    if (scenarios.isNotEmpty) {
+      for (var i = 0; i < _maxRounds; i++) {
+        final scenario = scenarios[i % scenarios.length];
+        final correct = (scenario.expectedResponse ?? scenario.prompt).trim();
+        final distractors = scenarios
+            .where((s) => s.id != scenario.id)
+            .map((s) => (s.expectedResponse ?? s.prompt).trim())
+            .where((text) => text.isNotEmpty && text != correct)
+            .toSet()
+            .take(3)
+            .toList();
+        final options = [correct, ...distractors];
+        while (options.length < 4) {
+          options.add('${scenario.title} (alt)');
+        }
+        options.shuffle(rng);
+        _rounds.add(_RecipeRound(
+          question: scenario.prompt,
+          correctAnswer: correct,
+          options: options.take(4).toList(),
+          category: _categoryForIndex(i),
+          proverbTip: scenario.culturalNote?.isNotEmpty == true
+              ? scenario.culturalNote!
+              : scenario.title,
+          cardId: 'quiz_chef_${scenario.id}',
+        ));
+      }
+    } else {
+      final templates = _recipeTemplates(widget.language);
+      for (var i = 0; i < _maxRounds; i++) {
+        final t = templates[i % templates.length];
+        final options = List<String>.from(t.options)..shuffle(rng);
+        _rounds.add(_RecipeRound(
+          question: t.question,
+          correctAnswer: t.correctAnswer,
+          options: options,
+          category: t.category,
+          proverbTip: t.proverbTip,
+          cardId: cards.isNotEmpty ? cards[i % cards.length].cardId : 'recipe_$i',
+        ));
+      }
     }
     setState(() {});
+  }
+
+  static _WordCategory _categoryForIndex(int index) {
+    switch (index % 3) {
+      case 0:
+        return _WordCategory.verb;
+      case 1:
+        return _WordCategory.noun;
+      default:
+        return _WordCategory.adjective;
+    }
   }
 
   Future<void> _selectAnswer(String answer) async {

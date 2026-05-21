@@ -12,6 +12,7 @@ import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
 import '../../services/polie_content_generator.dart';
+import 'game_scenario_loader.dart';
 import '../../widgets/error_boundary.dart';
 import '../../screens/loading/dynamic_loading_screen.dart';
 import 'base_game_screen.dart';
@@ -480,6 +481,7 @@ class _MarketBargainingGameState extends BaseGameScreenState<MarketBargainingGam
   final int _maxRounds = 5;
   bool _isLoadingScenario = false;
   List<String> _bargainingPhrases = [];
+  List<GameScenario> _bundledScenarios = [];
 
   Future<void> _initializeGame() async {
     await _loadNewScenario();
@@ -493,6 +495,12 @@ class _MarketBargainingGameState extends BaseGameScreenState<MarketBargainingGam
 
   @override
   Future<void> onGameInitialized() async {
+    _bundledScenarios = loadBundledGameScenarios(
+      ref,
+      language: widget.language,
+      game: 'MarketBargaining',
+      max: 10,
+    );
     await _loadNewScenario();
   }
 
@@ -508,6 +516,22 @@ class _MarketBargainingGameState extends BaseGameScreenState<MarketBargainingGam
       _userOffer = null;
       _offerController.clear();
     });
+
+    if (_bundledScenarios.isNotEmpty) {
+      final s = _bundledScenarios[_round % _bundledScenarios.length];
+      setState(() {
+        _currentScenario = {'bundled': true, 'id': s.id};
+        _round++;
+        _sellerPrice = _generateSellerPrice();
+        _bargainingPhrases = [
+          s.prompt,
+          s.expectedResponse ?? '',
+          s.culturalNote ?? s.title,
+        ].where((p) => p.trim().isNotEmpty).toList();
+        _isLoadingScenario = false;
+      });
+      return;
+    }
 
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);

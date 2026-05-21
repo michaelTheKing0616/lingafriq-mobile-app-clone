@@ -4,7 +4,7 @@ import 'package:lingafriq/lessons/models/lesson_response.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lingafriq/lessons/screens/section_lessons_list.dart';
+import 'package:lingafriq/navigation/learning_experience_navigation.dart';
 
 /// State of a lesson node in the learning path.
 enum PathNodeState {
@@ -27,6 +27,7 @@ class PathNodeWidget extends ConsumerStatefulWidget {
   final int index;
   final VoidCallback? onTap;
   final double size;
+  final String? studyLanguageKey;
 
   const PathNodeWidget({
     super.key,
@@ -35,6 +36,7 @@ class PathNodeWidget extends ConsumerStatefulWidget {
     required this.index,
     this.onTap,
     this.size = 64,
+    this.studyLanguageKey,
   });
 
   @override
@@ -246,8 +248,10 @@ class _PathNodeWidgetState extends ConsumerState<PathNodeWidget>
       return;
     }
 
-    ref.read(navigationProvider).navigateTo(
-          LessonSectionsListScreen(lesson: widget.lesson),
-        );
+    LearningExperienceNavigation.openLessonSections(
+      context,
+      lesson: widget.lesson,
+      studyLanguageKey: widget.studyLanguageKey,
+    );
   }
 }

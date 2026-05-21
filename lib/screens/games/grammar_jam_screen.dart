@@ -55,18 +55,39 @@ class _GrammarJamGameState extends BaseGameScreenState<GrammarJamGame> {
 
     _rounds.clear();
     final rng = Random();
+    final lang = widget.language.toLowerCase();
+    final drills = ref.read(
+      grammarDrillsProvider(
+        GameContentFilter(language: lang, game: 'GrammarJam'),
+      ),
+    );
 
-    final templates = _grammarTemplates(widget.language);
-    for (var i = 0; i < _maxRounds; i++) {
-      final template = templates[i % templates.length];
-      final options = List<String>.from(template.options)..shuffle(rng);
-      _rounds.add(_GrammarRound(
-        phrase: template.phrase,
-        correctAnswer: template.correctAnswer,
-        options: options,
-        tip: template.tip,
-        cardId: cards.isNotEmpty ? cards[i % cards.length].cardId : 'grammar_$i',
-      ));
+    if (drills.isNotEmpty) {
+      final pool = List.of(drills)..shuffle(rng);
+      for (var i = 0; i < _maxRounds; i++) {
+        final d = pool[i % pool.length];
+        final options = List<String>.from(d.options)..shuffle(rng);
+        _rounds.add(_GrammarRound(
+          phrase: d.phrase,
+          correctAnswer: d.correct,
+          options: options,
+          tip: d.tip,
+          cardId: cards.isNotEmpty ? cards[i % cards.length].cardId : 'grammar_$i',
+        ));
+      }
+    } else {
+      final templates = _grammarTemplates(widget.language);
+      for (var i = 0; i < _maxRounds; i++) {
+        final template = templates[i % templates.length];
+        final options = List<String>.from(template.options)..shuffle(rng);
+        _rounds.add(_GrammarRound(
+          phrase: template.phrase,
+          correctAnswer: template.correctAnswer,
+          options: options,
+          tip: template.tip,
+          cardId: cards.isNotEmpty ? cards[i % cards.length].cardId : 'grammar_$i',
+        ));
+      }
     }
 
     _startRound();

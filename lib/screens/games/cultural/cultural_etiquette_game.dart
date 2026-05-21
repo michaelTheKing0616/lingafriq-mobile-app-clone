@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
+import '../../../models/game/game_content_models.dart';
 import '../../../services/polie_content_generator.dart';
+import '../game_scenario_loader.dart';
 import '../../../widgets/error_boundary.dart';
 import '../../loading/dynamic_loading_screen.dart';
 import '../base_game_screen.dart';
@@ -59,9 +61,16 @@ class _CulturalEtiquetteGameState extends BaseGameScreenState<CulturalEtiquetteG
   
   String _scenarioDescription = '';
   String? _correctResponse;
+  List<GameScenario> _bundledScenarios = [];
 
   @override
   Future<void> onGameInitialized() async {
+    _bundledScenarios = loadBundledGameScenarios(
+      ref,
+      language: widget.language,
+      game: 'CulturalEtiquette',
+      max: 10,
+    );
     await _loadNewScenario();
   }
 
@@ -76,6 +85,23 @@ class _CulturalEtiquetteGameState extends BaseGameScreenState<CulturalEtiquetteG
       _showResult = false;
       _selectedResponse = null;
     });
+
+    if (_bundledScenarios.isNotEmpty) {
+      final s = _bundledScenarios[_round % _bundledScenarios.length];
+      final correct = (s.expectedResponse ?? s.prompt).trim();
+      final pool = _bundledScenarios
+          .map((e) => (e.expectedResponse ?? e.prompt).trim())
+          .where((p) => p.isNotEmpty);
+      setState(() {
+        _currentScenario = {'bundled': true};
+        _round++;
+        _scenarioDescription = '${s.title}\n${s.culturalNote ?? s.prompt}';
+        _correctResponse = correct;
+        _responseOptions = buildShuffledOptions(correct, pool);
+        setLoading(false);
+      });
+      return;
+    }
 
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);

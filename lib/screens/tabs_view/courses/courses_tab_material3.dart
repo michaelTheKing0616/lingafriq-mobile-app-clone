@@ -12,7 +12,10 @@ import 'package:lingafriq/widgets/performance/optimized_list_view.dart';
 import 'package:lingafriq/widgets/adaptive_progress_indicator.dart';
 import 'package:lingafriq/widgets/error_widet.dart';
 import 'package:lingafriq/widgets/pan_african_app_bar.dart';
+import 'package:lingafriq/navigation/learning_experience_navigation.dart';
 import 'package:lingafriq/screens/tabs_view/home/language_detail_screen.dart';
+import 'package:lingafriq/utils/curriculum_languages.dart';
+import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart' show languagesProvider;
 import 'package:lingafriq/providers/tab_scaffold_provider.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
@@ -141,6 +144,15 @@ class CoursesTabMaterial3 extends HookConsumerWidget {
                                         LanguageDetailScreen(language: language),
                                       );
                                     },
+                                    onAuthenticPath: () {
+                                      LearningExperienceNavigation.openAuthenticPath(
+                                        context,
+                                        initialLanguage:
+                                            CurriculumLanguages.keyForApiLanguage(
+                                          language,
+                                        ),
+                                      );
+                                    },
                                   )
                                       .animate(delay: (index * 50).ms)
                                       .fadeIn(duration: 300.ms)
@@ -180,11 +192,13 @@ class _ProgressCard extends StatelessWidget {
   final Language language;
   final bool isDark;
   final VoidCallback onTap;
+  final VoidCallback onAuthenticPath;
 
   const _ProgressCard({
     required this.language,
     required this.isDark,
     required this.onTap,
+    required this.onAuthenticPath,
   });
 
   @override
@@ -314,6 +328,25 @@ class _ProgressCard extends StatelessWidget {
                       ),
                     ),
                   ],
+                ),
+              ),
+              SizedBox(height: PanAfricanSpacing.sm),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton.icon(
+                  onPressed: onAuthenticPath,
+                  icon: Icon(
+                    Icons.auto_awesome_rounded,
+                    size: 18.sp,
+                    color: PanAfricanColors.secondary,
+                  ),
+                  label: Text(
+                    'Authentic Path (A1–C1)',
+                    style: PanAfricanTypography.labelLarge(context).copyWith(
+                      color: PanAfricanColors.secondary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
               ),
             ],

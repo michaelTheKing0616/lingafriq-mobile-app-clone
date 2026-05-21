@@ -1,0 +1,206 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "description": "Historical persona narrative missions — user-selectable setting and custom plot in app (blueprint §42)"
+  },
+  "missions": [
+    {
+      "id": "yo_royal_messenger",
+      "language": "yoruba",
+      "persona_title": "The Royal Messenger",
+      "historical_setting": "Ọ̀yọ́ court, 18th century",
+      "user_setting_options": ["palace courtyard", "festival day", "diplomatic envoy visit"],
+      "steps": [
+        {"step": 1, "title": "Greeting palace elders", "vocab": ["Ẹ kú àárọ̀", "Ẹ jọ̀wọ́", "Bàbá"], "polie_prompt": "You arrive at the palace. Greet the elder appropriately."},
+        {"step": 2, "title": "Deliver ceremonial message", "vocab": ["Mo wá láti sọ pé", "Ọ̀rọ̀ ọba", "Pẹ̀lẹ́"], "polie_prompt": "Deliver the king's message slowly and respectfully."},
+        {"step": 3, "title": "Negotiate respect", "vocab": ["Ẹ ṣé", "Ó dára", "Mo ń gbọ́"], "polie_prompt": "Respond to questions about your message."},
+        {"step": 4, "title": "Public representation", "vocab": ["Ìbánisọ̀rọ̀", "Ilé", "Ọjà"], "polie_prompt": "Speak on behalf of the kingdom in a calm register."},
+        {"step": 5, "title": "Closing blessing", "vocab": ["Ẹ káàbọ̀", "Mo ń lọ", "Ẹ ṣé pupọ̀"], "polie_prompt": "Close the audience with proper courtesy."}
+      ],
+      "cultural_focus": ["greeting_hierarchy", "ceremonial_speech", "oral_protocol"]
+    },
+    {
+      "id": "yo_market_trader",
+      "language": "yoruba",
+      "persona_title": "The Market Trader",
+      "historical_setting": "Lagos market, modern day",
+      "user_setting_options": ["fabric row", "food stall", "evening market"],
+      "steps": [
+        {"step": 1, "title": "Open with greeting", "vocab": ["Ẹ kú ọ̀sán", "Ẹ́élo ni?", "Mo fẹ́"], "polie_prompt": "Greet the customer and invite them to your stall."},
+        {"step": 2, "title": "Praise the goods", "vocab": ["Ó dára", "Aṣọ", "Ata"], "polie_prompt": "Describe quality; build rapport."},
+        {"step": 3, "title": "Negotiate price", "vocab": ["Ó wú", "Jọ̀ọ́", "Owó"], "polie_prompt": "Negotiate politely — compliment before counter-offer."},
+        {"step": 4, "title": "Close the sale", "vocab": ["Ẹ ṣé", "Mo ń lọ", "Ọjà"], "polie_prompt": "Thank the customer; invite return."}
+      ],
+      "cultural_focus": ["market_etiquette", "persuasion", "numbers"]
+    },
+    {
+      "id": "ha_caravan_trader",
+      "language": "hausa",
+      "persona_title": "The Caravan Trader",
+      "historical_setting": "Trans-Saharan trade route",
+      "user_setting_options": ["desert camp", "Kano gate", "rainy season delay"],
+      "steps": [
+        {"step": 1, "title": "Sannu at the camp", "vocab": ["Sannu", "Ina lafiya?", "Lafiya lau"], "polie_prompt": "Welcome a fellow traveller."},
+        {"step": 2, "title": "Discuss goods", "vocab": ["Kasuwanci", "Kudi", "Nawa ne?"], "polie_prompt": "Describe trade goods and prices."},
+        {"step": 3, "title": "Travel plans", "vocab": ["Tafiya", "Gida", "A hankuri"], "polie_prompt": "Discuss route and patience on the road."}
+      ],
+      "cultural_focus": ["trade_language", "hospitality", "patience"]
+    },
+    {
+      "id": "sw_coastal_navigator",
+      "language": "swahili",
+      "persona_title": "The Coastal Navigator",
+      "historical_setting": "Indian Ocean coast",
+      "user_setting_options": ["Zanzibar port", "dhow departure", "monsoon season"],
+      "steps": [
+        {"step": 1, "title": "Harbor greeting", "vocab": ["Habari", "Karibu", "Safari"], "polie_prompt": "Greet crew and discuss the voyage."},
+        {"step": 2, "title": "Trade talk", "vocab": ["Bei gani?", "Chakula", "Pesa"], "polie_prompt": "Negotiate supplies for the journey."},
+        {"step": 3, "title": "Departure", "vocab": ["Pole pole", "Asante", "Kwaheri"], "polie_prompt": "Wish safe travels — calm, coastal rhythm."}
+      ],
+      "cultural_focus": ["coastal_culture", "trade", "poetry_rhythm"]
+    },
+    {
+      "id": "pcm_street_connector",
+      "language": "pidgin",
+      "persona_title": "The Street Connector",
+      "historical_setting": "Lagos, contemporary",
+      "user_setting_options": ["bus stop", "music studio", "football viewing"],
+      "steps": [
+        {"step": 1, "title": "How far opener", "vocab": ["How far?", "I dey fine", "No wahala"], "polie_prompt": "Casual street greeting with humour."},
+        {"step": 2, "title": "Gist and story", "vocab": ["Gist", "Wetin dey happen?", "Na so"], "polie_prompt": "Share a short funny story — invite response."},
+        {"step": 3, "title": "Make we go", "vocab": ["Make we go", "Abeg", "Thank you"], "polie_prompt": "Wrap up and invite the learner to reply naturally."}
+      ],
+      "cultural_focus": ["humour", "urban_identity", "music_slang"]
+    },
+    {
+      "id": "ig_heritage_host",
+      "language": "igbo",
+      "persona_title": "The Heritage Host",
+      "historical_setting": "Eastern Nigeria family compound",
+      "user_setting_options": ["kola ceremony", "new yam festival", "kindred meeting"],
+      "steps": [
+        {"step": 1, "title": "Welcome guest", "vocab": ["Ndewo", "Nnọọ", "Kedu ka ị mere?"], "polie_prompt": "Welcome the visitor with warmth and respect."},
+        {"step": 2, "title": "Offer kola", "vocab": ["Oji", "Biko", "Daalụ"], "polie_prompt": "Explain the kola ritual briefly, then invite response."},
+        {"step": 3, "title": "Family stories", "vocab": ["Ezinaụlọ", "Nna m", "Anyị"], "polie_prompt": "Share a short family story; ask the learner to reply."}
+      ],
+      "cultural_focus": ["hospitality", "kinship", "ceremony"]
+    },
+    {
+      "id": "zu_ubuntu_elder",
+      "language": "zulu",
+      "persona_title": "The Ubuntu Elder",
+      "historical_setting": "Rural KwaZulu-Natal",
+      "user_setting_options": ["morning council", "wedding visit", "harvest thanksgiving"],
+      "steps": [
+        {"step": 1, "title": "Sawubona", "vocab": ["Sawubona", "Ngiyaphila", "Unjani?"], "polie_prompt": "Greet with full presence — explain sawubona meaning."},
+        {"step": 2, "title": "Council wisdom", "vocab": ["Ubuntu", "Isibongo", "Umndeni"], "polie_prompt": "Share a proverb about community."},
+        {"step": 3, "title": "Blessing close", "vocab": ["Hamba kahle", "Siyabonga", "Sala kahle"], "polie_prompt": "Close with a blessing for the learner's path."}
+      ],
+      "cultural_focus": ["ubuntu", "proverbs", "respect"]
+    },
+    {
+      "id": "xh_river_guide",
+      "language": "xhosa",
+      "persona_title": "The River Guide",
+      "historical_setting": "Eastern Cape, contemporary",
+      "user_setting_options": ["river crossing", "village market", "school visit"],
+      "steps": [
+        {"step": 1, "title": "Molo greeting", "vocab": ["Molo", "Unjani?", "Ndiphilile"], "polie_prompt": "Greet warmly and ask after wellbeing."},
+        {"step": 2, "title": "Guide the way", "vocab": ["Ndifuna", "Nceda", "Apha"], "polie_prompt": "Offer directions with patience."},
+        {"step": 3, "title": "Farewell", "vocab": ["Enkosi", "Sala kakuhle", "Ndiza kuhamba"], "polie_prompt": "Close with gratitude and safe travels."}
+      ],
+      "cultural_focus": ["hospitality", "community", "nature"]
+    },
+    {
+      "id": "wo_griot_storyteller",
+      "language": "wolof",
+      "persona_title": "The Griot Storyteller",
+      "historical_setting": "Dakar, evening gathering",
+      "user_setting_options": ["terrace tea", "wedding celebration", "radio studio"],
+      "steps": [
+        {"step": 1, "title": "Nanga def", "vocab": ["Nanga def", "Maa ngi fi", "Jërëjëf"], "polie_prompt": "Welcome the listener with warmth."},
+        {"step": 2, "title": "Tell the tale", "vocab": ["Benn bés", "Ma gis", "Xibaar"], "polie_prompt": "Open a short story; invite response."},
+        {"step": 3, "title": "Song close", "vocab": ["Baax na", "Dinaa dem", "Jërëjëf"], "polie_prompt": "End with rhythm and thanks."}
+      ],
+      "cultural_focus": ["oral_tradition", "music", "respect"]
+    },
+    {
+      "id": "af_vineyard_host",
+      "language": "afrikaans",
+      "persona_title": "The Vineyard Host",
+      "historical_setting": "Western Cape farm",
+      "user_setting_options": ["harvest day", "family lunch", "tourist tour"],
+      "steps": [
+        {"step": 1, "title": "Welcome", "vocab": ["Goeie môre", "Welkom", "Hoe gaan dit?"], "polie_prompt": "Welcome guests to the farm."},
+        {"step": 2, "title": "Share the table", "vocab": ["Kos", "Water", "Dankie"], "polie_prompt": "Offer food and conversation."},
+        {"step": 3, "title": "Goodbye", "vocab": ["Tot later", "Geniet dit", "Dankie"], "polie_prompt": "Warm farewell."}
+      ],
+      "cultural_focus": ["hospitality", "food", "land"]
+    },
+    {
+      "id": "am_coffee_ceremony",
+      "language": "amharic",
+      "persona_title": "The Coffee Ceremony Host",
+      "historical_setting": "Addis Ababa home",
+      "user_setting_options": ["morning ceremony", "holiday visit", "guest arrival"],
+      "steps": [
+        {"step": 1, "title": "Welcome", "vocab": ["ሰላም", "እንኳን ደህና መጡ", "እባክህ"], "polie_prompt": "Welcome guest with ceremony respect."},
+        {"step": 2, "title": "Serve and talk", "vocab": ["አመሰግናለሁ", "ቡና", "ቤት"], "polie_prompt": "Explain the ritual briefly; invite reply."},
+        {"step": 3, "title": "Blessing", "vocab": ["ደህና ሁን", "እንገናኝ", "ሰላም"], "polie_prompt": "Close with blessing."}
+      ],
+      "cultural_focus": ["ceremony", "hospitality", "patience"]
+    },
+    {
+      "id": "tw_kente_weaver",
+      "language": "twi",
+      "persona_title": "The Kente Weaver",
+      "historical_setting": "Kumasi craft quarter",
+      "user_setting_options": ["loom workshop", "market stall", "festival day"],
+      "steps": [
+        {"step": 1, "title": "Maakye", "vocab": ["Maakye", "Ɛte sɛn?", "Me ho yɛ"], "polie_prompt": "Greet and invite the learner to watch."},
+        {"step": 2, "title": "Explain craft", "vocab": ["Me din de", "Gua", "Amammerɛ"], "polie_prompt": "Describe the cloth and its meaning."},
+        {"step": 3, "title": "Thanks", "vocab": ["Meda wo ase", "Mesrɛ wo", "Me ho yɛ"], "polie_prompt": "Thank the visitor warmly."}
+      ],
+      "cultural_focus": ["craft", "symbols", "pride"]
+    },
+    {
+      "id": "so_port_trader",
+      "language": "somali",
+      "persona_title": "The Port Trader",
+      "historical_setting": "Mogadishu coast",
+      "user_setting_options": ["dawn market", "ship arrival", "camel caravan"],
+      "steps": [
+        {"step": 1, "title": "Salaan", "vocab": ["Salaan", "Sidee tahay?", "Nabad"], "polie_prompt": "Greet trader to trader."},
+        {"step": 2, "title": "Deal talk", "vocab": ["Immisa ayey ku kacaysaa?", "Waan rabaa", "Mahadsanid"], "polie_prompt": "Negotiate goods politely."},
+        {"step": 3, "title": "Safe journey", "vocab": ["Nabad gelyo", "Mahadsanid", "Salaan"], "polie_prompt": "Wish safe travels."}
+      ],
+      "cultural_focus": ["trade", "poetry", "diaspora"]
+    },
+    {
+      "id": "ln_river_musician",
+      "language": "lingala",
+      "persona_title": "The River Musician",
+      "historical_setting": "Kinshasa riverside",
+      "user_setting_options": ["evening concert", "recording session", "street dance"],
+      "steps": [
+        {"step": 1, "title": "Mbote", "vocab": ["Mbote", "Boni?", "Malamu"], "polie_prompt": "Greet with musical energy."},
+        {"step": 2, "title": "Invite dance", "vocab": ["Bilei", "Matondi", "Nalingi"], "polie_prompt": "Invite the learner to respond to a lyric."},
+        {"step": 3, "title": "Close", "vocab": ["Malamu", "Matondi", "Mbote"], "polie_prompt": "End on a high note."}
+      ],
+      "cultural_focus": ["music", "urban_culture", "joy"]
+    },
+    {
+      "id": "sn_grain_farmer",
+      "language": "shona",
+      "persona_title": "The Grain Farmer",
+      "historical_setting": "Zimbabwe countryside",
+      "user_setting_options": ["planting season", "harvest day", "rain prayer"],
+      "steps": [
+        {"step": 1, "title": "Mhoro", "vocab": ["Mangwanani", "Makadii?", "Ndiri zvakanaka"], "polie_prompt": "Greet at the field."},
+        {"step": 2, "title": "Share harvest", "vocab": ["Chikafu", "Mvura", "Ndatenda"], "polie_prompt": "Talk about the crop and community."},
+        {"step": 3, "title": "Farewell", "vocab": ["Sara zvakanaka", "Ndatenda", "Mhoro"], "polie_prompt": "Bless the learner's path."}
+      ],
+      "cultural_focus": ["agriculture", "proverbs", "community"]
+    }
+  ]
+}

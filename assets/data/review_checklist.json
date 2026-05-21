@@ -1,0 +1,29 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "description": "Native reviewer sign-off checklist before marking content certified"
+  },
+  "languages": {
+    "yoruba": { "status": "pending", "reviewer": "", "signed_at": "" },
+    "hausa": { "status": "pending", "reviewer": "", "signed_at": "" },
+    "igbo": { "status": "pending", "reviewer": "", "signed_at": "" },
+    "swahili": { "status": "pending", "reviewer": "", "signed_at": "" },
+    "zulu": { "status": "pending", "reviewer": "", "signed_at": "" },
+    "xhosa": { "status": "pending", "reviewer": "", "signed_at": "" },
+    "wolof": { "status": "pending", "reviewer": "", "signed_at": "" },
+    "pidgin": { "status": "pending", "reviewer": "", "signed_at": "" },
+    "afrikaans": { "status": "pending", "reviewer": "", "signed_at": "" },
+    "amharic": { "status": "pending", "reviewer": "", "signed_at": "" },
+    "twi": { "status": "pending", "reviewer": "", "signed_at": "" },
+    "somali": { "status": "pending", "reviewer": "", "signed_at": "" },
+    "lingala": { "status": "pending", "reviewer": "", "signed_at": "" },
+    "shona": { "status": "pending", "reviewer": "", "signed_at": "" }
+  },
+  "checks": [
+    "Orthography and diacritics verified by native speaker",
+    "Dialogue scripts sound natural in context",
+    "MCQ distractors are plausible, not placeholders",
+    "Cultural notes accurate and respectful",
+    "Audio manifest keys present for all lesson vocab"
+  ]
+}

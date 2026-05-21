@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
+import '../../../models/game/game_content_models.dart';
 import '../../../services/polie_content_generator.dart';
+import '../game_scenario_loader.dart';
 import '../../../widgets/error_boundary.dart';
 import '../../loading/dynamic_loading_screen.dart';
 import '../base_game_screen.dart';
@@ -55,8 +57,16 @@ class _TongueTwisterGameState extends BaseGameScreenState<TongueTwisterGame>
   bool _hasCompleted = false;
   int _attempts = 0;
 
+  List<GameProverb> _bundledProverbs = [];
+
   @override
   Future<void> onGameInitialized() async {
+    _bundledProverbs = loadBundledProverbs(
+      ref,
+      language: widget.language,
+      gameTag: 'ProverbUnlocker',
+      max: 12,
+    );
     await _loadNewTwister();
   }
 
@@ -71,6 +81,17 @@ class _TongueTwisterGameState extends BaseGameScreenState<TongueTwisterGame>
       _hasCompleted = false;
       _attempts = 0;
     });
+
+    if (_bundledProverbs.isNotEmpty) {
+      final p = _bundledProverbs[_round % _bundledProverbs.length];
+      setState(() {
+        _round++;
+        _currentTwister = p.original;
+        _pronunciationGuide = p.meaning ?? p.translation;
+        setLoading(false);
+      });
+      return;
+    }
 
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);

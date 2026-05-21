@@ -10,6 +10,7 @@ import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 
 import '../models/word_correction_model.dart';
 import '../widgets/points_and_profile_image_builder.dart';
+import 'package:lingafriq/widgets/content/vocab_audio_controls.dart';
 
 class ChoicesNotifier extends Notifier<List<String>> {
   @override
@@ -32,6 +33,7 @@ class CorrectionScreen extends StatefulHookConsumerWidget {
   final bool isTakeQuiz;
   final int score;
   final bool isCompleted;
+  final String? audioLanguage;
 
   const CorrectionScreen({
     super.key,
@@ -41,6 +43,7 @@ class CorrectionScreen extends StatefulHookConsumerWidget {
     required this.score,
     this.isTakeQuiz = false,
     this.isCompleted = false,
+    this.audioLanguage,
   });
 
   @override
@@ -120,6 +123,20 @@ class _CorrectionScreenState extends ConsumerState<CorrectionScreen> {
                 top: false,
                 child: Column(
                   children: [
+                    if (widget.audioLanguage != null &&
+                        widget.audioLanguage!.trim().isNotEmpty &&
+                        jsonStructure.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: VocabAudioControls(
+                            language: widget.audioLanguage!,
+                            text: jsonStructure.first.answer,
+                            compact: true,
+                          ),
+                        ),
+                      ),
                     Card(
                       color: context.isDarkMode ? context.cardColor : Theme.of(context).colorScheme.surface,
                       elevation: 12,

@@ -3,8 +3,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lingafriq/content/lingafriq_ux_voice.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/audio_player_widget.dart';
+import 'package:lingafriq/widgets/content/vocab_audio_controls.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/portrait_video_player.dart';
 import '../models/lesson_content.dart';
@@ -17,6 +19,8 @@ class QuizSectionWidget extends StatefulWidget {
   final VoidCallback onFinish;
   final bool Function(int questionId)? isAnswerChecked;
   final bool Function(int questionId, String option)? isAnswerCorrect;
+  final String? vocabAudioLanguage;
+  final String? vocabAudioText;
 
   const QuizSectionWidget({
     super.key,
@@ -26,6 +30,8 @@ class QuizSectionWidget extends StatefulWidget {
     required this.onFinish,
     this.isAnswerChecked,
     this.isAnswerCorrect,
+    this.vocabAudioLanguage,
+    this.vocabAudioText,
   });
 
   @override
@@ -96,6 +102,15 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
     }
 
     if (!mounted) return;
+    final feedback = LingAfriqUxVoice.quizFeedback(isCorrect: isCorrect);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(feedback),
+        backgroundColor: isCorrect ? PanAfricanColors.success : PanAfricanColors.secondary,
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 3),
+      ),
+    );
     widget.onCheckAnswer(questionId, answer);
   }
 
@@ -313,9 +328,24 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
               gradientStart: PanAfricanColors.secondary,
               gradientEnd: PanAfricanColors.tertiary,
               padding: EdgeInsets.all(20.w),
-              child: Text(
-                question.question,
-                style: PanAfricanTypography.headlineSmall(context),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    question.question,
+                    style: PanAfricanTypography.headlineSmall(context),
+                  ),
+                  if (widget.vocabAudioLanguage != null &&
+                      widget.vocabAudioText != null &&
+                      widget.vocabAudioText!.trim().isNotEmpty) ...[
+                    SizedBox(height: 12.h),
+                    VocabAudioControls(
+                      language: widget.vocabAudioLanguage!,
+                      text: widget.vocabAudioText!,
+                      compact: true,
+                    ),
+                  ],
+                ],
               ),
             ),
           ),

@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart'
     show languagesProvider;
+import 'package:lingafriq/navigation/learning_experience_navigation.dart';
 import 'package:lingafriq/screens/tabs_view/home/language_detail_screen.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/adaptive_progress_indicator.dart';
@@ -54,13 +55,27 @@ class LessonsMapEntryScreen extends ConsumerWidget {
                         style: PanAfricanTypography.headlineSmall(context),
                       ),
                     ),
+                    IconButton(
+                      tooltip: 'Authentic Path (A1–C1)',
+                      icon: const Icon(Icons.auto_awesome_rounded),
+                      onPressed: () =>
+                          LearningExperienceNavigation.openAuthenticPath(context),
+                    ),
+                    IconButton(
+                      tooltip: 'Native content review',
+                      icon: const Icon(Icons.verified_user_outlined),
+                      onPressed: () => LearningExperienceNavigation.openNativeContentReview(
+                        context,
+                      ),
+                    ),
                   ],
                 ),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
                 child: Text(
-                  'Choose a language to open the map, learning path, mannerisms, history, and quiz.',
+                  'API lessons: map, path, guided flow, mannerisms & quiz. '
+                  'For bundled A1–C1 curriculum, open Authentic Path.',
                   style: PanAfricanTypography.bodyMedium(context).copyWith(
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
