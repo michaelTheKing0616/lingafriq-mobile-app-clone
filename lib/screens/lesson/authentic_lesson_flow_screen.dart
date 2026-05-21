@@ -100,7 +100,7 @@ class AuthenticLessonFlowScreen extends HookConsumerWidget {
           ? LessonCompleteWidget(
               totalXP: 100,
               accuracy: practiceScore.value,
-              timeTaken: (lesson.durationMin > 0 ? lesson.durationMin : 12) * 60,
+              timeTaken: ((lesson.durationMin ?? 0) > 0 ? (lesson.durationMin ?? 12) : 12) * 60,
               onContinue: next,
             )
           : PageView(

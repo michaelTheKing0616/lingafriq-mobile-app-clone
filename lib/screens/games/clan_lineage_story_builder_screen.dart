@@ -11,7 +11,7 @@ import '../../models/game/game_content_models.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
-import 'cultural/game_scenario_loader.dart';
+import 'game_scenario_loader.dart';
 import 'base_game_screen.dart';
 
 class ClanStoryGame extends BaseGameScreen {

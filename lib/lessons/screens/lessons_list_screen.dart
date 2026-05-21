@@ -109,6 +109,7 @@ class LessonsListScreen extends ConsumerWidget {
                         }).call();
                         return _LessonItem(
                           lesson: lesson,
+                          language: language,
                           enabled: kDebugMode ? true : isEnabled,
                           index: index,
                         )
@@ -139,10 +140,12 @@ class LessonsListScreen extends ConsumerWidget {
 
 class _LessonItem extends ConsumerWidget {
   final Lesson lesson;
+  final Language language;
   final bool enabled;
   final int index;
   const _LessonItem({
     required this.lesson,
+    required this.language,
     required this.enabled,
     required this.index,
   });

@@ -9,7 +9,7 @@ import 'speed_round_game.dart';
 import 'story_builder_game.dart';
 import 'roleplay_adventure_game.dart';
 import 'grammar_detective_game.dart';
-import 'game_templates.dart' hide PictureWordGame, MemoryMapGame, PronunciationKaraokeGame, GrammarJamGame;
+import 'game_templates.dart' hide PictureWordGame, MemoryMapGame, PronunciationKaraokeGame;
 import 'picture_word_association_screen.dart';
 import 'memory_map_screen.dart';
 import 'pronunciation_karaoke_screen.dart';

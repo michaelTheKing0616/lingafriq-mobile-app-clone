@@ -1618,6 +1618,7 @@ Language: $targetLanguage
                     modeName,
                   };
                 },
+                streakBannerText: streakBannerText(),
               ),
             ),
           ),
@@ -1682,6 +1683,7 @@ Language: $targetLanguage
     required Future<void> Function() onLoadReview,
     required Set<String> introDismissed,
     required void Function(String modeName) onDismissIntro,
+    required String streakBannerText,
   }) {
     final screenWidth = MediaQuery.sizeOf(context).width;
     final isPhone = screenWidth < 700;
@@ -2366,7 +2368,7 @@ Language: $targetLanguage
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              streakBannerText(),
+                              streakBannerText,
                               style: GoogleFonts.nunito(
                                 color: const Color(0xFFE8DAC5),
                                 fontWeight: FontWeight.w700,
@@ -4663,6 +4665,7 @@ _ConversationPayload _enforceConversationDiacritics(
     messageTarget: enforce(payload.messageTarget),
     englishTranslation: payload.englishTranslation,
     correction: _ConversationCorrection(
+      tier: payload.correction.tier,
       hasCorrection: payload.correction.hasCorrection,
       wasCorrect: payload.correction.wasCorrect,
       correction: payload.correction.correction == null

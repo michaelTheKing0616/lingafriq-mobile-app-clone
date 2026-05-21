@@ -143,7 +143,7 @@ class _CallResponseGameState extends BaseGameScreenState<CallResponseGame>
       setState(() {
         _currentPattern = gameContent;
         _round++;
-        _callPhrase = _extractCall(content);
+        _callPhrase = _extractCallFromPolieContent(content);
         _correctResponse = responses.isNotEmpty ? responses.first : null;
         _responseOptions = List<String>.from(responses)..shuffle(Random());
         setLoading(false);
@@ -190,7 +190,7 @@ class _CallResponseGameState extends BaseGameScreenState<CallResponseGame>
     return allResponses[widget.language] ?? ['Good', 'Fine', 'Well', 'Thanks'];
   }
 
-  String _extractCall(String content) {
+  String _extractCallFromPolieContent(String content) {
     final lines = content.split('\n');
     for (var line in lines) {
       if (line.toLowerCase().contains('call:') || 
