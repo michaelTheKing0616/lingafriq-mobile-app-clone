@@ -4,7 +4,7 @@ Sync authentic curriculum JSON to backend content-pack / lesson CMS shape.
 
 Reads: assets/data/lingafriq_authentic_curriculum_a1_a2_b1.json (or A1-only)
 Writes: output/cms_manifests/{language_id}/manifest.json
-Optional POST: --upload with BACKEND_API_URL and BACKEND_API_TOKEN env vars.
+Optional PUT: --upload with BACKEND_API_URL and BACKEND_API_TOKEN (admin JWT) env vars.
 
 Manifest lessons match offline download expectations:
   { id, title, assets[], lesson: { sections: [Tutorial|Instant Quiz|Word Quiz] } }
