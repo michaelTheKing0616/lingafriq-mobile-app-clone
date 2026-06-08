@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.lingafriq.com/v2/curriculum_bundle.schema.json",
+  "title": "LingAfriq Authentic Curriculum Bundle",
+  "description": "Top-level bundled curriculum file shipped under assets/data (e.g. lingafriq_authentic_curriculum_a1_c1.json).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["meta", "languages"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["title", "languages", "levels"],
+      "properties": {
+        "title": { "type": "string", "minLength": 1 },
+        "generated_at": { "type": "string", "format": "date-time" },
+        "languages": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        },
+        "levels": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["A1", "A2", "B1", "B2", "C1", "C2"] },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "bundleVersion": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        }
+      }
+    },
+    "languages": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "minProperties": 1,
+        "additionalProperties": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/unit" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "unit": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["unit", "title", "lessons"],
+      "properties": {
+        "unit": { "type": "integer", "minimum": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "lessons": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/lesson" }
+        },
+        "unit_quiz": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "items": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/mcqItem" }
+            }
+          }
+        }
+      }
+    },
+    "lesson": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "title"],
+      "properties": {
+        "id": { "type": "string", "minLength": 3 },
+        "title": { "type": "string", "minLength": 1 },
+        "objective": { "type": "string" },
+        "cultural_notes": { "type": "string" },
+        "duration_min": { "type": "integer", "minimum": 1, "maximum": 240 },
+        "vocab": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              { "$ref": "#/$defs/vocabObject" }
+            ]
+          }
+        },
+        "exercises": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/exercise" }
+        },
+        "grammar": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "dialogue": { "$ref": "#/$defs/dialogue" },
+        "polie_roleplay": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "prompt": { "type": "string", "minLength": 1 },
+            "persona": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    },
+    "vocabObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["word", "meaning"],
+      "properties": {
+        "word": { "type": "string", "minLength": 1 },
+        "meaning": { "type": "string", "minLength": 1 },
+        "pos": { "type": "string" },
+        "example": { "type": "string" },
+        "pronunciation": { "type": "string" }
+      }
+    },
+    "exercise": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "items"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "mcq",
+            "fill_blank",
+            "match",
+            "order",
+            "translate",
+            "listen_choose",
+            "speak_repeat",
+            "drill",
+            "comprehension",
+            "free_response",
+            "flashcards",
+            "listening",
+            "speaking",
+            "reading",
+            "writing"
+          ]
+        },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "mcqItem": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "question", "options", "answer"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "question": { "type": "string", "minLength": 1 },
+        "options": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "answer": { "type": "string", "minLength": 1 },
+        "explanation": { "type": "string" }
+      }
+    },
+    "dialogue": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "script": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": { "type": "string" }
+          }
+        },
+        "scenes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["label", "script"],
+            "properties": {
+              "label": { "type": "string", "minLength": 1 },
+              "script": {
+                "type": "array",
+                "minItems": 2,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "scene": { "type": "string" },
+        "turn_count": { "type": "integer", "minimum": 0 },
+        "notes": { "type": "string" },
+        "cultural_context": { "type": "string" }
+      }
+    }
+  }
+}

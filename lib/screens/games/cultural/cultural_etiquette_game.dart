@@ -64,6 +64,9 @@ class _CulturalEtiquetteGameState extends BaseGameScreenState<CulturalEtiquetteG
   List<GameScenario> _bundledScenarios = [];
 
   @override
+  bool get requiresPhraseCards => false;
+
+  @override
   Future<void> onGameInitialized() async {
     _bundledScenarios = loadBundledGameScenarios(
       ref,

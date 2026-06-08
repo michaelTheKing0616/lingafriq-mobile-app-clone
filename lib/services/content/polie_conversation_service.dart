@@ -41,9 +41,10 @@ Speak boldly before speaking perfectly. Never shame the learner.
     String responseStyle = 'natural',
     bool wantsEnglish = false,
     int nonce = 0,
+    List<PolieConversationTurnContext> history = const [],
   }) {
     final builder = PolieConversationPromptBuilder();
-    final styleInstruction = 'Stay in scene; teach through dialogue.';
+    const styleInstruction = 'Stay in scene; teach through dialogue.';
     return builder.buildConversationJsonPrompt(
       targetLanguage: targetLanguage,
       userMessage: userMessage,
@@ -52,6 +53,7 @@ Speak boldly before speaking perfectly. Never shame the learner.
       wantsEnglish: wantsEnglish,
       personaSystemPrefix: personaPrefix,
       nonce: nonce,
+      history: history,
     );
   }
 }

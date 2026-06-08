@@ -44,6 +44,9 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
   int getCardCount() => 5;
 
   @override
+  bool get requiresPhraseCards => false;
+
+  @override
   Future<void> onGameInitialized() async {
     final gameProv = ref.read(gameProvider.notifier);
     final cards = gameProv.availableCards;

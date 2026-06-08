@@ -3,9 +3,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/errors/app_exceptions.dart';
+import '../../services/audio/african_tts_bootstrap.dart';
+import '../../services/audio/african_tts_service.dart';
 import '../../services/backend_health_service.dart';
 import '../../services/lazy_game_loader.dart';
 import '../../services/polie_cache_service.dart';
+import '../../services/telemetry_service.dart';
 import '../../utils/games_prefetch_language.dart';
 
 /// App Initialization Service
@@ -22,6 +25,25 @@ class AppInitializer {
     final results = <String, bool>{};
 
     try {
+      // Wire African TTS tier metrics into telemetry (gold/silver/bronze hit rate).
+      await AfricanTtsBootstrap.ensureManifestLoaded();
+
+      AfricanTtsService.onResolution = ({
+        required language,
+        required tier,
+        required playbackOk,
+        engineLabel,
+        required textLength,
+      }) {
+        _ref.read(telemetryServiceProvider).trackTtsResolution(
+              language: language,
+              tier: tier.name,
+              playbackOk: playbackOk,
+              engineLabel: engineLabel,
+              textLength: textLength,
+            );
+      };
+
       // 1. Check backend health
       debugPrint('🔍 Checking backend health...');
       final healthService = _ref.read(backendHealthServiceProvider);

@@ -8,6 +8,7 @@ import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
 import '../../providers/game_content_provider.dart';
 import '../../models/game/game_content_models.dart';
+import '../../services/games/game_image_service.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
@@ -45,28 +46,6 @@ class _PictureWordGameState extends BaseGameScreenState<PictureWordGame> {
   List<_ImageOption> _options = [];
   double _shakeOffset = 0;
 
-  static const List<Color> _placeholderColors = [
-    Color(0xFFE88B4D),
-    Color(0xFF7B9E42),
-    Color(0xFFC26E4A),
-    Color(0xFF6B8E7B),
-    Color(0xFFD4956B),
-    Color(0xFF8B6F47),
-    Color(0xFFA3C27F),
-    Color(0xFFCC8855),
-  ];
-
-  static const List<IconData> _placeholderIcons = [
-    Icons.restaurant_rounded,
-    Icons.pets_rounded,
-    Icons.place_rounded,
-    Icons.park_rounded,
-    Icons.directions_car_rounded,
-    Icons.shopping_bag_rounded,
-    Icons.music_note_rounded,
-    Icons.emoji_nature_rounded,
-  ];
-
   @override
   int getCardCount() => 10;
 
@@ -98,11 +77,16 @@ class _PictureWordGameState extends BaseGameScreenState<PictureWordGame> {
 
     _options = all.asMap().entries.map((e) {
       final c = e.value;
-      final hash = c.cardId.hashCode.abs();
+      final visual = GameImageService.instance.resolveForGloss(
+        c.gloss,
+        seed: c.cardId.hashCode,
+      );
       return _ImageOption(
         meaning: c.gloss,
-        color: _placeholderColors[hash % _placeholderColors.length],
-        icon: _placeholderIcons[hash % _placeholderIcons.length],
+        emoji: visual.emoji,
+        color: visual.background,
+        foreground: visual.foreground,
+        icon: visual.icon,
         isCorrect: c.cardId == card.cardId,
       );
     }).toList();
@@ -336,22 +320,27 @@ class _PictureWordGameState extends BaseGameScreenState<PictureWordGame> {
             fit: StackFit.expand,
             children: [
               Container(
-                color: option.color.withAlpha(wrong ? 90 : 180),
+                color: option.color.withAlpha(wrong ? 90 : 220),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    Text(
+                      option.emoji,
+                      style: TextStyle(fontSize: 48.sp),
+                    ),
+                    SizedBox(height: 6.h),
                     Icon(
                       option.icon,
-                      size: 44.sp,
-                      color: Colors.white.withAlpha(210),
+                      size: 22.sp,
+                      color: option.foreground.withAlpha(220),
                     ),
-                    SizedBox(height: 10.h),
+                    SizedBox(height: 8.h),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8.w),
                       child: Text(
                         option.meaning,
                         style: ModernGriotTypography.titleSmall(
-                          color: Colors.white,
+                          color: option.foreground,
                         ),
                         textAlign: TextAlign.center,
                         maxLines: 2,
@@ -393,13 +382,17 @@ class _PictureWordGameState extends BaseGameScreenState<PictureWordGame> {
 
 class _ImageOption {
   final String meaning;
+  final String emoji;
   final Color color;
+  final Color foreground;
   final IconData icon;
   final bool isCorrect;
 
   const _ImageOption({
     required this.meaning,
+    required this.emoji,
     required this.color,
+    required this.foreground,
     required this.icon,
     required this.isCorrect,
   });

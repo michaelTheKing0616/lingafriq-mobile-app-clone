@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/core/content/content_validation_hooks.dart';
 import 'package:lingafriq/models/curriculum_model.dart';
 import 'package:lingafriq/services/curriculum_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,7 +34,10 @@ class CurriculumProvider extends Notifier<BaseProviderState> with BaseProviderMi
       
       // First, try to load from saved preferences (cached)
       final prefs = await SharedPreferences.getInstance();
-      const bundleVersion = '3.0.0';
+      // Bumped to 4.0.0 with the C2 mastery track + traditional games rollout.
+      // Bumping the version forces a cache invalidation so existing installs
+      // discard their 3.x curriculum cache and reload the bundled v4 JSON.
+      const bundleVersion = '4.0.0';
       final cachedVersion = prefs.getString('curriculum_bundle_version');
       final versionOk = cachedVersion == bundleVersion;
       if (!versionOk) {
@@ -45,6 +49,23 @@ class CurriculumProvider extends Notifier<BaseProviderState> with BaseProviderMi
       if (cachedCurriculum != null && cachedCurriculum.isNotEmpty && versionOk) {
         try {
           _curriculum = Curriculum.fromJson(cachedCurriculum);
+          // Debug-only structural validation against schemas/v2. Production
+          // builds short-circuit inside ContentValidationHooks.
+          if (ContentValidationHooks.isEnabled) {
+            try {
+              final decoded = jsonDecode(cachedCurriculum);
+              if (decoded is Map<String, dynamic>) {
+                unawaited(
+                  ContentValidationHooks.validateCurriculumBundle(
+                    decoded,
+                    label: 'cached curriculum bundle',
+                  ),
+                );
+              }
+            } catch (_) {
+              // Validation is best-effort; never block hot path.
+            }
+          }
           state = state.copyWith(isLoading: false);
           state = state.copyWith(); // Trigger rebuild
           return;
@@ -64,7 +85,7 @@ class CurriculumProvider extends Notifier<BaseProviderState> with BaseProviderMi
 
       final languages = List<String>.from(masterIndex['languages'] ?? []);
       final levels = List<String>.from(
-        masterIndex['levels'] ?? ['A1', 'A2', 'B1', 'B2', 'C1'],
+        masterIndex['levels'] ?? ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'],
       );
       
       // Build curriculum from all languages and levels

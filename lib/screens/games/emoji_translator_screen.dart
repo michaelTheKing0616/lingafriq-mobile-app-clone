@@ -50,6 +50,9 @@ class _EmojiTranslatorGameState
   }
 
   @override
+  bool get requiresPhraseCards => false;
+
+  @override
   Future<void> onGameInitialized() async {
     final words = ref.read(
       gameWordsProvider(GameContentFilter(language: widget.language)),

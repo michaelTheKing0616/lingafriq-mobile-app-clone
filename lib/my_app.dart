@@ -10,6 +10,7 @@ import 'package:lingafriq/l10n/generated/app_localizations.dart';
 
 import 'app_theme.dart';
 import 'providers/dio_provider.dart';
+import 'providers/game_content_provider.dart';
 import 'providers/navigation_provider.dart';
 import 'services/offline/persisted_outbox_service.dart';
 import 'utils/api_service.dart';
@@ -166,6 +167,9 @@ class MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
       if (!mounted) return;
       unawaited(PersistedOutboxService.instance.ensureOpen());
       unawaited(PersistedOutboxService.instance.flushPending());
+      // Warm bundled game content so cultural games can render scenarios
+      // synchronously on first launch (eliminates the empty-state race).
+      unawaited(ref.read(gameContentProvider.future));
     });
   }
 

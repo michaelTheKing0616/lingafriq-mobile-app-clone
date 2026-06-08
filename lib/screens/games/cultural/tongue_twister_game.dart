@@ -60,6 +60,9 @@ class _TongueTwisterGameState extends BaseGameScreenState<TongueTwisterGame>
   List<GameProverb> _bundledProverbs = [];
 
   @override
+  bool get requiresPhraseCards => false;
+
+  @override
   Future<void> onGameInitialized() async {
     _bundledProverbs = loadBundledProverbs(
       ref,

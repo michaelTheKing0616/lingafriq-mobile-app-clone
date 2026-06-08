@@ -7,6 +7,66 @@ import 'package:lingafriq/providers/game_content_provider.dart';
 export 'package:lingafriq/models/game/game_content_models.dart'
     show GameScenario, GameWord, GameProverb;
 
+/// Ensures `game_content.json` has been parsed before consumers read derived
+/// providers. Safe to call multiple times; the underlying `FutureProvider`
+/// caches the result for the rest of the app lifecycle.
+Future<GameContentData> ensureGameContentReady(WidgetRef ref) {
+  return ref.read(gameContentProvider.future);
+}
+
+/// Async, race-safe variant of [loadBundledGameScenarios].
+///
+/// Awaits the bundled content future first, then applies the same shuffling
+/// and slicing logic. Use this from `onGameInitialized()` hooks where the
+/// app may have just been launched and the content provider may not yet be
+/// in its `data` state.
+Future<List<GameScenario>> loadBundledGameScenariosAsync(
+  WidgetRef ref, {
+  required String language,
+  required String game,
+  int max = 10,
+}) async {
+  await ensureGameContentReady(ref);
+  return loadBundledGameScenarios(
+    ref,
+    language: language,
+    game: game,
+    max: max,
+  );
+}
+
+/// Async, race-safe variant of [loadBundledGameWords].
+Future<List<GameWord>> loadBundledGameWordsAsync(
+  WidgetRef ref, {
+  required String language,
+  required String gameTag,
+  int max = 24,
+}) async {
+  await ensureGameContentReady(ref);
+  return loadBundledGameWords(
+    ref,
+    language: language,
+    gameTag: gameTag,
+    max: max,
+  );
+}
+
+/// Async, race-safe variant of [loadBundledProverbs].
+Future<List<GameProverb>> loadBundledProverbsAsync(
+  WidgetRef ref, {
+  required String language,
+  String? gameTag,
+  int max = 8,
+}) async {
+  await ensureGameContentReady(ref);
+  return loadBundledProverbs(
+    ref,
+    language: language,
+    gameTag: gameTag,
+    max: max,
+  );
+}
+
 /// Loads bundled [game_content.json] scenarios for a Polie-driven game.
 List<GameScenario> loadBundledGameScenarios(
   WidgetRef ref, {

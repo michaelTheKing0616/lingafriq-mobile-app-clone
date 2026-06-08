@@ -7,7 +7,7 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 
-/// Entry hub for the bundled A1–C1 authentic curriculum (14 languages).
+/// Entry hub for the bundled A1–C2 authentic curriculum (14 languages).
 /// Separate from the original API lessons map ([LearningPathScreen]).
 class AuthenticCurriculumEntryScreen extends StatelessWidget {
   const AuthenticCurriculumEntryScreen({
@@ -86,8 +86,8 @@ class AuthenticCurriculumEntryScreen extends StatelessWidget {
                       SizedBox(height: PanAfricanSpacing.sm),
                       Text(
                         langLabel != null
-                            ? 'Bundled lessons for $langLabel — levels A1 through C1, with Polie, culture, and offline content.'
-                            : 'Bundled lessons for 14 African languages — levels A1 through C1. This is separate from your original Lessons map on the home language screen.',
+                            ? 'Bundled lessons for $langLabel — levels A1 through C2, with Polie, culture, and offline content.'
+                            : 'Bundled lessons for 14 African languages — levels A1 through C2. This is separate from your original Lessons map on the home language screen.',
                         style: PanAfricanTypography.bodyMedium(context),
                         textAlign: TextAlign.center,
                       ),

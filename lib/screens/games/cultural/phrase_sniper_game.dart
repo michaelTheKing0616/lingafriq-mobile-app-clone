@@ -64,6 +64,9 @@ class _PhraseSniperGameState extends BaseGameScreenState<PhraseSniperGame>
   List<GameScenario> _scenarios = [];
 
   @override
+  bool get requiresPhraseCards => false;
+
+  @override
   Future<void> onGameInitialized() async {
     _scenarios = loadBundledGameScenarios(
       ref,

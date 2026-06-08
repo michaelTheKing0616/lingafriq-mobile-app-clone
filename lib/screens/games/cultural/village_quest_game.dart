@@ -65,6 +65,9 @@ class _VillageQuestGameState extends BaseGameScreenState<VillageQuestGame>
   List<GameScenario> _scenarios = [];
 
   @override
+  bool get requiresPhraseCards => false;
+
+  @override
   Future<void> onGameInitialized() async {
     _scenarios = loadBundledGameScenarios(
       ref,

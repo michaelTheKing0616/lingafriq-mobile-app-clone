@@ -2,7 +2,7 @@ import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/services/curriculum_service.dart';
 import 'package:lingafriq/utils/supported_languages.dart';
 
-/// Languages present in [lingafriq_authentic_curriculum_a1_c1.json] / game bundles.
+/// Languages present in [lingafriq_authentic_curriculum_a1_c2.json] / game bundles.
 class CurriculumLanguages {
   CurriculumLanguages._();
 

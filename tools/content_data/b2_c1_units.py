@@ -515,3 +515,181 @@ _EXTENDED_B1: dict[str, list] = {
 # Export merged A2/B1 for extended langs (imported by packs.py)
 EXTENDED_A2_UNITS = _EXTENDED_A2
 EXTENDED_B1_UNITS = _EXTENDED_B1
+
+# ---------------------------------------------------------------------------
+# C2 — Mastery / Near-native fluency
+#
+# C2 lessons emphasise advanced register, rhetoric, idioms and abstract
+# discourse. Each language ships two units of three lessons covering
+# (1) mastery rhetoric / public speaking, and (2) cultural literacy / nuance.
+# ---------------------------------------------------------------------------
+C2_UNITS: dict[str, list] = {
+    "yoruba": [
+        ("Mastery rhetoric", "Ọ̀rọ̀ jíjinlẹ̀", [
+            ("Hedge & nuance", ["Bí ó tilẹ̀ jẹ́ pé", "Lẹ́yìn àyẹ̀wò", "Ó ṣe é ṣe pé"], "Hedge claims like a native speaker.", "C2 speakers signal uncertainty politely."),
+            ("Public address", ["Ẹ̀yin ọ̀wọ́", "Mo dúpẹ́ lọ́wọ́ yín", "Lẹ́yìn òwò àjọ"], "Open and close formal addresses.", "Public speech follows a kɔn-pó-án arc."),
+            ("Rhetorical force", ["Báwo ni kò ṣe le jẹ́ pé", "Ìbéèrè ni pé", "Èyí ni mo fẹ́ tẹnumọ́"], "Drive a point with rhetorical questions.", ""),
+        ]),
+        ("Cultural literacy", "Ọgbọ́n àti àṣà", [
+            ("Idioms in argument", ["Ọwọ́ ti kọ́ ní eégún", "Bí omi ṣe ń tú yìnyín", "Ẹnu ti àgbà"], "Wield idioms in advanced discourse.", "Idioms persuade more than facts."),
+            ("Code-switching", ["Mo máa fi èdè Gẹ̀ẹ́sì", "Padà sí Yorùbá", "Ó dára ká kọ́"], "Manage register shifts intentionally.", "Code-switching marks identity."),
+            ("Subtle persuasion", ["Bí a bá rò ó", "Kì í ṣe ìrọ̀rùn", "Mo nírètí pé"], "Persuade with measured language.", ""),
+        ]),
+    ],
+    "hausa": [
+        ("Mastery rhetoric", "Magana mai zurfi", [
+            ("Hedge", ["Watakila", "Bayan an duba", "Yana yiwuwa"], "Hedge complex claims.", ""),
+            ("Address", ["Manyan jama'a", "Na gode da", "Bayan duka"], "Formal address.", ""),
+            ("Force", ["Yaya zai yiwu", "Tambaya ita ce", "Ina son in karfafa"], "Rhetorical force.", ""),
+        ]),
+        ("Cultural literacy", "Al'ada", [
+            ("Idioms", ["Hannu ya san karfi", "Kamar ruwa", "Bakin dattijo"], "Idioms in argument.", ""),
+            ("Code-switching", ["Zan yi da Turanci", "Komawa Hausa", "Yana da kyau"], "Code-switching.", ""),
+            ("Persuasion", ["In muka yi tunani", "Ba abu ne mai sauki ba", "Ina fata"], "Subtle persuasion.", ""),
+        ]),
+    ],
+    "igbo": [
+        ("Mastery rhetoric", "Okwu miri emi", [
+            ("Hedge", ["Eleghi anya", "Mgbe e leworo", "Ọ ga-ekwe omume"], "Hedge claims.", ""),
+            ("Address", ["Ndị ọha", "Daalụ maka", "N'ọnụ ụzọ"], "Formal address.", ""),
+            ("Force", ["Kedu ka ọ ga-esi", "Ajụjụ bụ", "Achọrọ m ime ka"], "Rhetorical force.", ""),
+        ]),
+        ("Cultural literacy", "Omenala", [
+            ("Idioms", ["Aka mụtara olu", "Dị ka mmiri", "Ọnụ okenye"], "Use idioms.", ""),
+            ("Code-switching", ["Aga m eji Bekee", "Laghachi Igbo", "Ọ dị mma"], "Code-switching.", ""),
+            ("Persuasion", ["Ọ bụrụ na anyị echere", "Ọ bụghị ihe dị mfe", "Atụrụ m anya"], "Subtle persuasion.", ""),
+        ]),
+    ],
+    "swahili": [
+        ("Mastery rhetoric", "Hotuba ya kiwango", [
+            ("Hedge", ["Huenda", "Baada ya uchunguzi", "Inawezekana"], "Hedge.", ""),
+            ("Address", ["Waheshimiwa", "Asante kwa", "Baada ya yote"], "Address.", ""),
+            ("Force", ["Inawezekanaje", "Swali ni", "Nataka kusisitiza"], "Rhetorical force.", ""),
+        ]),
+        ("Cultural literacy", "Utamaduni", [
+            ("Idioms", ["Mkono umejifunza", "Kama maji", "Mdomo wa mzee"], "Idioms.", ""),
+            ("Code-switching", ["Nitatumia Kiingereza", "Kurudi Kiswahili", "Ni vyema"], "Code-switching.", ""),
+            ("Persuasion", ["Tukifikiri", "Si jambo rahisi", "Ninatumaini"], "Persuasion.", ""),
+        ]),
+    ],
+    "zulu": [
+        ("Mastery rhetoric", "Inkulumo ephakeme", [
+            ("Hedge", ["Mhlawumbe", "Ngemuva kokuhlola", "Kungenzeka"], "Hedge.", ""),
+            ("Address", ["Bahlonishwayo", "Ngiyabonga", "Ekugcineni"], "Address.", ""),
+            ("Force", ["Kungenzeka kanjani", "Umbuzo uthi", "Ngifuna ukugcizelela"], "Force.", ""),
+        ]),
+        ("Cultural literacy", "Amasiko", [
+            ("Idioms", ["Isandla siyazi", "Njengamanzi", "Umlomo womdala"], "Idioms.", ""),
+            ("Code-switching", ["Ngizosebenzisa isiNgisi", "Buyela isiZulu", "Kulungile"], "Code-switching.", ""),
+            ("Persuasion", ["Uma sicabanga", "Akulula", "Ngithemba"], "Persuasion.", ""),
+        ]),
+    ],
+    "xhosa": [
+        ("Mastery rhetoric", "Intetho ephakamileyo", [
+            ("Hedge", ["Mhlawumbi", "Emva kokuhlola", "Kungenzeka"], "Hedge.", ""),
+            ("Address", ["Bahlonelwa", "Ndiyabulela", "Ekugqibeleni"], "Address.", ""),
+            ("Force", ["Kungenzeka njani", "Umbuzo uthi", "Ndifuna ukugxininisa"], "Force.", ""),
+        ]),
+        ("Cultural literacy", "Isiko", [
+            ("Idioms", ["Isandla siyazi", "Njengamanzi", "Umlomo wabadala"], "Idioms.", ""),
+            ("Code-switching", ["Ndizakusebenzisa isiNgesi", "Buyela isiXhosa", "Kulungile"], "Code-switching.", ""),
+            ("Persuasion", ["Ukuba siyacinga", "Akulula", "Ndinethemba"], "Persuasion.", ""),
+        ]),
+    ],
+    "wolof": [
+        ("Mastery rhetoric", "Waxtaan bu xóot", [
+            ("Hedge", ["Xanaa", "Sopplu ko", "Mën nañu ko jëf"], "Hedge.", ""),
+            ("Address", ["Yéen waa", "Jërejëf ci", "Ci dénd la"], "Address.", ""),
+            ("Force", ["Naka la mën a ame", "Laaj la", "Damay bëgg a wone"], "Force.", ""),
+        ]),
+        ("Cultural literacy", "Cosaan", [
+            ("Idioms", ["Loxo dafa xam", "Mel ni ndox", "Géwél gu mag"], "Idioms.", ""),
+            ("Code-switching", ["Maa ngi jëfandikoo Anglais", "Dellu ci Wolof", "Baax na"], "Code-switching.", ""),
+            ("Persuasion", ["Bu ñu xalaate", "Du yomb", "Yaakaar naa ne"], "Persuasion.", ""),
+        ]),
+    ],
+    "pidgin": [
+        ("Mastery rhetoric", "Big-big sabi talk", [
+            ("Hedge", ["E fit be say", "After we don check", "E possible"], "Hedge.", ""),
+            ("Address", ["Una well well", "I dey thank una", "After everything"], "Address.", ""),
+            ("Force", ["How e go take be", "The question be say", "I wan emphasize"], "Force.", ""),
+        ]),
+        ("Cultural literacy", "Wisdom for street", [
+            ("Idioms", ["Hand don sabi", "Like water", "Mouth of elder"], "Idioms.", ""),
+            ("Code-switching", ["I go use English", "Come back to Pidgin", "E dey alright"], "Code-switching.", ""),
+            ("Persuasion", ["If we think am", "E no easy", "I dey hope"], "Persuasion.", ""),
+        ]),
+    ],
+    "afrikaans": [
+        ("Mastery rhetoric", "Hoë register", [
+            ("Hedge", ["Moontlik", "Ná oorweging", "Dit kan wees"], "Hedge.", ""),
+            ("Address", ["Geagte gehoor", "Dankie vir", "Ná alles"], "Address.", ""),
+            ("Force", ["Hoe kan dit wees", "Die vraag is", "Ek wil beklemtoon"], "Force.", ""),
+        ]),
+        ("Cultural literacy", "Kultuur", [
+            ("Idioms", ["Die hand weet", "Soos water", "Die mond van die oue"], "Idioms.", ""),
+            ("Code-switching", ["Ek sal Engels gebruik", "Terug na Afrikaans", "Dis goed"], "Code-switching.", ""),
+            ("Persuasion", ["As ons dink", "Dis nie maklik nie", "Ek hoop"], "Persuasion.", ""),
+        ]),
+    ],
+    "amharic": [
+        ("Mastery rhetoric", "ጥልቅ ንግግር", [
+            ("Hedge", ["ምናልባት", "ከመመርመር በኋላ", "ሊሆን ይችላል"], "Hedge.", ""),
+            ("Address", ["የተከበራችሁ", "አመሰግናለሁ ስለ", "ከሁሉም በኋላ"], "Address.", ""),
+            ("Force", ["እንዴት ሊሆን ይችላል", "ጥያቄው ነው", "አጽንኦት መስጠት እፈልጋለሁ"], "Force.", ""),
+        ]),
+        ("Cultural literacy", "ባህል", [
+            ("Idioms", ["እጅ አወቀ", "እንደ ውሃ", "የሽማግሌ አፍ"], "Idioms.", ""),
+            ("Code-switching", ["እንግሊዝኛ እጠቀማለሁ", "ወደ አማርኛ ተመለስ", "ጥሩ ነው"], "Code-switching.", ""),
+            ("Persuasion", ["ካሰብን", "ቀላል አይደለም", "ተስፋ አደርጋለሁ"], "Persuasion.", ""),
+        ]),
+    ],
+    "twi": [
+        ("Mastery rhetoric", "Kasa a emu yɛ duru", [
+            ("Hedge", ["Ebia", "Akyiri yi a", "Ebetumi aba"], "Hedge.", ""),
+            ("Address", ["Mo nyinaa", "Meda mo ase", "Akyiri biara"], "Address.", ""),
+            ("Force", ["Ɛbɛyɛ dɛn", "Asɛm no ne sɛ", "Mepɛ sɛ meka"], "Force.", ""),
+        ]),
+        ("Cultural literacy", "Amammerɛ", [
+            ("Idioms", ["Nsa nim", "Sɛ nsuo", "Opanyin ano"], "Idioms.", ""),
+            ("Code-switching", ["Mede Borɔfo bɛyɛ", "San kɔ Twi", "Ɛyɛ"], "Code-switching.", ""),
+            ("Persuasion", ["Sɛ yɛsusu a", "Ɛnyɛ mmerɛ", "Mewɔ anidasoɔ"], "Persuasion.", ""),
+        ]),
+    ],
+    "somali": [
+        ("Mastery rhetoric", "Hadal sare", [
+            ("Hedge", ["Waxaa laga yaabaa", "Ka dib eegista", "Way suurtagal tahay"], "Hedge.", ""),
+            ("Address", ["Mudaneyaal", "Waan idinku mahadinayaa", "Ka dib dhammaan"], "Address.", ""),
+            ("Force", ["Sidee bay u dhici kartaa", "Su'aashu waxay tahay", "Waxaan rabaa inaan xoojiyo"], "Force.", ""),
+        ]),
+        ("Cultural literacy", "Dhaqan", [
+            ("Idioms", ["Gacanta way taqaan", "Sida biyo", "Afka odayga"], "Idioms.", ""),
+            ("Code-switching", ["Waan isticmaali doonaa Ingiriis", "Dib ugu noqo Soomaali", "Way fiicantahay"], "Code-switching.", ""),
+            ("Persuasion", ["Haddaan ka fikirno", "Ma sahlana", "Waan rajeyaa"], "Persuasion.", ""),
+        ]),
+    ],
+    "lingala": [
+        ("Mastery rhetoric", "Lokota ya monene", [
+            ("Hedge", ["Tango mosusu", "Sima ya kotala", "Ekoki kosalema"], "Hedge.", ""),
+            ("Address", ["Bino banso", "Natondi bino", "Sima ya nyonso"], "Address.", ""),
+            ("Force", ["Ndenge nini ekosalema", "Motuna ezali", "Nalingi kotia mboka"], "Force.", ""),
+        ]),
+        ("Cultural literacy", "Bonkoko", [
+            ("Idioms", ["Loboko eyebi", "Lokola mai", "Monoko ya mokóló"], "Idioms.", ""),
+            ("Code-switching", ["Nakosalela Lingelesi", "Zonga na Lingala", "Ezali malamu"], "Code-switching.", ""),
+            ("Persuasion", ["Soki tokanisi", "Ezali pasi te", "Nazali na elikya"], "Persuasion.", ""),
+        ]),
+    ],
+    "shona": [
+        ("Mastery rhetoric", "Hurukuro yepamusoro", [
+            ("Hedge", ["Pamwe", "Mushure mokuongorora", "Zvinogona kuitika"], "Hedge.", ""),
+            ("Address", ["Imi mose", "Ndinotenda nezve", "Mushure mezvose"], "Address.", ""),
+            ("Force", ["Zvingaita sei", "Mubvunzo unoti", "Ndinoda kusimbisa"], "Force.", ""),
+        ]),
+        ("Cultural literacy", "Tsika", [
+            ("Idioms", ["Ruoko runoziva", "Semvura", "Muromo wevakuru"], "Idioms.", ""),
+            ("Code-switching", ["Ndichashandisa chiNgezi", "Dzokera kuChishona", "Zvakanaka"], "Code-switching.", ""),
+            ("Persuasion", ["Kana tichifunga", "Hazvisi nyore", "Ndinotarisira"], "Persuasion.", ""),
+        ]),
+    ],
+}

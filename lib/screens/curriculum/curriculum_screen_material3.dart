@@ -44,7 +44,7 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
     final error = useState<String?>(null);
 
     final languages = CurriculumLanguages.pickerKeys(fromMeta: curriculum?.meta.languages);
-    const fallbackLevels = ['A1', 'A2', 'B1', 'B2', 'C1'];
+    const fallbackLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
     final levels = curriculum != null && curriculum.meta.levels.isNotEmpty
         ? curriculum.meta.levels

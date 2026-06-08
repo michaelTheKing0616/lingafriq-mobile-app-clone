@@ -13,7 +13,7 @@ void main() {
     expect(assetPath.existsSync(), isTrue, reason: 'Run tools/generate_lingafriq_content.py');
     final raw = assetPath.readAsStringSync();
     final data = GameContentData.fromRawJson(raw);
-    expect(data.words.length, greaterThan(400));
+    expect(data.words.length, greaterThan(1200));
     expect(data.proverbs.length, greaterThan(40));
     expect(data.scenarios.length, greaterThan(100));
     expect(data.grammarDrills.length, greaterThan(80));
@@ -30,7 +30,7 @@ void main() {
     ]) {
       expect(
         data.words.where((w) => w.language == lang).length,
-        greaterThan(20),
+        greaterThan(80),
         reason: 'words for $lang',
       );
       expect(
@@ -67,12 +67,12 @@ void main() {
     expect((script[1] as Map)['translation'], isNot('Response'));
   });
 
-  test('A1–C1 curriculum bundle parses', () {
-    final path = File('assets/data/lingafriq_authentic_curriculum_a1_c1.json');
+  test('A1–C2 curriculum bundle parses', () {
+    final path = File('assets/data/lingafriq_authentic_curriculum_a1_c2.json');
     expect(path.existsSync(), isTrue);
     final json = jsonDecode(path.readAsStringSync()) as Map<String, dynamic>;
     final levels = List<String>.from((json['meta'] as Map)['levels'] as List);
-    expect(levels, containsAll(['A1', 'A2', 'B1', 'B2', 'C1']));
+    expect(levels, containsAll(['A1', 'A2', 'B1', 'B2', 'C1', 'C2']));
     for (final lang in [
       'yoruba',
       'hausa',
@@ -84,7 +84,7 @@ void main() {
     ]) {
       final block = json['languages'][lang] as Map<String, dynamic>?;
       expect(block, isNotNull, reason: lang);
-      for (final level in ['A2', 'B1', 'B2', 'C1']) {
+      for (final level in ['A2', 'B1', 'B2', 'C1', 'C2']) {
         expect((block![level] as List).length, greaterThanOrEqualTo(2), reason: '$lang $level');
       }
     }

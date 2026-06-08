@@ -89,24 +89,69 @@ class CurriculumVocab {
   };
 }
 
+/// A single scene inside a dialogue (e.g. "At the market", "Closing the deal").
+class CurriculumDialogueScene {
+  final String label;
+  final List<Map<String, String>> script;
+
+  CurriculumDialogueScene({required this.label, required this.script});
+
+  factory CurriculumDialogueScene.fromMap(Map<String, dynamic> map) =>
+      CurriculumDialogueScene(
+        label: (map['label'] as String?) ?? '',
+        script: ((map['script'] as List<dynamic>?) ?? [])
+            .map((e) => Map<String, String>.from((e is Map) ? Map.from(e) : {}))
+            .toList(),
+      );
+}
+
 class CurriculumDialogue {
-  final List<Map<String, String>> script; // [{speaker: 'A', text: '...'}]
+  /// Flat script across all scenes (kept for backward compatibility with older
+  /// renderers and v3 bundles which only shipped a flat list).
+  final List<Map<String, String>> script;
+
+  /// Optional structured scenes (v4 bundles). May be empty for legacy bundles,
+  /// in which case the flat [script] is the single source of truth.
+  final List<CurriculumDialogueScene> scenes;
+
+  /// Optional summary label for the dialogue's primary scene/setting.
+  final String? scene;
+
+  /// Convenience: total number of turns across all scenes.
+  final int turnCount;
+
   final String? notes;
   final String? culturalContext;
 
   CurriculumDialogue({
     required this.script,
+    this.scenes = const [],
+    this.scene,
     this.notes,
     this.culturalContext,
-  });
+    int? turnCount,
+  }) : turnCount = turnCount ?? script.length;
 
-  factory CurriculumDialogue.fromMap(Map<String, dynamic> map) => CurriculumDialogue(
-    script: ((map['script'] as List<dynamic>?) ?? [])
+  factory CurriculumDialogue.fromMap(Map<String, dynamic> map) {
+    final scenesRaw = (map['scenes'] as List<dynamic>?) ?? const [];
+    final scenes = scenesRaw
+        .whereType<Map>()
+        .map((m) => CurriculumDialogueScene.fromMap(Map<String, dynamic>.from(m)))
+        .toList();
+    final script = ((map['script'] as List<dynamic>?) ?? [])
         .map((e) => Map<String, String>.from((e is Map) ? Map.from(e) : {}))
-        .toList(),
-    notes: map['notes'] as String?,
-    culturalContext: (map['cultural_context'] as String?) ?? (map['culturalContext'] as String?),
-  );
+        .toList();
+    final emittedTurnCount = map['turn_count'];
+    return CurriculumDialogue(
+      script: script,
+      scenes: scenes,
+      scene: map['scene'] as String?,
+      notes: map['notes'] as String?,
+      culturalContext: (map['cultural_context'] as String?) ??
+          (map['culturalContext'] as String?),
+      turnCount: emittedTurnCount is int ? emittedTurnCount : script.length,
+    );
+  }
 }
 
 class CurriculumLesson {

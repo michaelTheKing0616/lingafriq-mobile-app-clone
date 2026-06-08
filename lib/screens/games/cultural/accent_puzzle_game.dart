@@ -62,6 +62,9 @@ class _AccentPuzzleGameState extends BaseGameScreenState<AccentPuzzleGame>
   List<GameWord> _bundledWords = [];
 
   @override
+  bool get requiresPhraseCards => false;
+
+  @override
   Future<void> onGameInitialized() async {
     _bundledWords = loadBundledGameWords(
       ref,

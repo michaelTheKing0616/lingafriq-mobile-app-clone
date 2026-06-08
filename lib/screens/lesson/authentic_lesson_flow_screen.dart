@@ -11,6 +11,7 @@ import 'package:lingafriq/screens/games/tone_trainer_game.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen_enhanced.dart';
 import 'package:lingafriq/screens/lesson/lesson_flow_stages.dart';
 import 'package:lingafriq/screens/lesson/widgets/lesson_complete_widget.dart';
+import 'package:lingafriq/services/audio/tts_prefetch_service.dart';
 import 'package:lingafriq/services/content/bundled_lesson_content_service.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/content/vocab_audio_controls.dart';
@@ -55,6 +56,28 @@ class AuthenticLessonFlowScreen extends HookConsumerWidget {
     final grammar = lesson.grammar ?? const <String>[];
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final isVictory = stageIndex.value >= _stages.length - 1;
+
+    // Prefetch authentic-accent audio for vocab + dialogue on first build so
+    // the user's first tap on "▶" plays instantly. Best-effort.
+    useEffect(() {
+      () async {
+        final vocabTexts = vocab
+            .map((v) => v.word.trim())
+            .where((t) => t.isNotEmpty)
+            .toList();
+        final dialogueTexts = (dialogue?.script ?? const <Map<String, String>>[])
+            .map((d) => (d['text'] ?? '').toString().trim())
+            .where((t) => t.isNotEmpty)
+            .toList();
+        await TtsPrefetchService().prefetchLessonContent(
+          language: language,
+          vocab: vocabTexts,
+          dialogueLines: dialogueTexts,
+          exercisePrompts: const [],
+        );
+      }();
+      return null;
+    }, const []);
 
     void next() {
       if (isVictory) {

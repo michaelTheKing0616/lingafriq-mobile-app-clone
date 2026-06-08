@@ -45,6 +45,9 @@ class _TaxiSurvivalGameState extends BaseGameScreenState<TaxiSurvivalGame> {
   int getCardCount() => 5;
 
   @override
+  bool get requiresPhraseCards => false;
+
+  @override
   Future<void> onGameInitialized() async {
     final loaded = ref.read(
       gameScenariosProvider(GameContentFilter(

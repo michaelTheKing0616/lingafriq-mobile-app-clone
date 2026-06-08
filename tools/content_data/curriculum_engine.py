@@ -8,96 +8,276 @@ from typing import Any
 
 from .native_review import NATIVE_REVIEW_META
 
-# Dialogue templates keyed by lesson title keywords (first match wins)
-_DIALOGUE_PATTERNS: list[tuple[str, list[tuple[str, str, str]]]] = [
+# --- Multi-scene dialogue templates --------------------------------------------
+# Each pattern lists 2-3 scenes. Every scene has:
+#   - label: short English description of the setting/beat
+#   - script: list of (speaker, target_template, english_template)
+# Templates index vocab as {v0}..{vN} and meanings as {m0}..{mN}; cycling is
+# applied if the vocab list is shorter than the highest index referenced.
+# We deliberately keep templates "vocab-pure" (each utterance is one or two
+# vocab tokens) so they remain safe across all 14 languages without producing
+# ungrammatical sentences. The downstream LLM authoring pipeline replaces these
+# with fully natural multi-turn dialogues per language as content matures.
+_DIALOGUE_PATTERNS: list[tuple[str, list[dict]]] = [
     (
-        "greet",
+        "greet|hello|welcome|introduction",
         [
-            ("A", "{v0}", "{m0}"),
-            ("B", "{v1}", "{m1}"),
-            ("A", "{v2}", "{m2}"),
+            {
+                "label": "First meeting on the street",
+                "script": [
+                    ("A", "{v0}", "{m0}"),
+                    ("B", "{v0}, {v1}", "{m0}. {m1}"),
+                    ("A", "{v2}", "{m2}"),
+                    ("B", "{v1}", "{m1}"),
+                ],
+            },
+            {
+                "label": "Continuing the introduction",
+                "script": [
+                    ("A", "{v0} — {v2}", "{m0} — {m2}"),
+                    ("B", "{v1}", "{m1}"),
+                    ("A", "{v2}", "{m2}"),
+                ],
+            },
         ],
     ),
     (
-        "thank",
+        "thank|courtesy|polite|please",
         [
-            ("A", "{v0}", "{m0}"),
-            ("B", "{v1}", "{m1}"),
-            ("A", "{v2}", "{m2}"),
+            {
+                "label": "Saying thanks after help",
+                "script": [
+                    ("A", "{v0}", "{m0}"),
+                    ("B", "{v1}", "{m1}"),
+                    ("A", "{v2}", "{m2}"),
+                    ("B", "{v0}", "{m0}"),
+                ],
+            },
+            {
+                "label": "Closing the exchange warmly",
+                "script": [
+                    ("A", "{v1}", "{m1}"),
+                    ("B", "{v2}", "{m2}"),
+                    ("A", "{v0}", "{m0}"),
+                ],
+            },
         ],
     ),
     (
-        "market|price|food|buy",
+        "market|price|food|buy|bargain|shop",
         [
-            ("A", "{v0}", "{m0}"),
-            ("B", "{v1}", "{m1}"),
-            ("A", "{v2}", "{m2}"),
+            {
+                "label": "Approaching the stall",
+                "script": [
+                    ("A", "{v0}", "{m0}"),
+                    ("B", "{v1}", "{m1}"),
+                    ("A", "{v2}", "{m2}"),
+                ],
+            },
+            {
+                "label": "Negotiating the price",
+                "script": [
+                    ("A", "{v1}", "{m1}"),
+                    ("B", "{v0}, {v2}", "{m0}. {m2}"),
+                    ("A", "{v2}", "{m2}"),
+                    ("B", "{v0}", "{m0}"),
+                ],
+            },
         ],
     ),
     (
-        "transport|motor|direction|place",
+        "transport|motor|direction|place|taxi|travel",
         [
-            ("A", "{v0}", "{m0}"),
-            ("B", "{v1}", "{m1}"),
-            ("A", "{v2}", "{m2}"),
+            {
+                "label": "Hailing a ride",
+                "script": [
+                    ("A", "{v0}", "{m0}"),
+                    ("B", "{v1}", "{m1}"),
+                    ("A", "{v2}", "{m2}"),
+                ],
+            },
+            {
+                "label": "Arriving and paying",
+                "script": [
+                    ("A", "{v1}", "{m1}"),
+                    ("B", "{v2}", "{m2}"),
+                    ("A", "{v0}", "{m0}"),
+                    ("B", "{v2}", "{m2}"),
+                ],
+            },
         ],
     ),
     (
-        "family|kin|elder|home",
+        "family|kin|elder|home|community",
         [
-            ("A", "{v0}", "{m0}"),
-            ("B", "{v1}", "{m1}"),
-            ("A", "{v2}", "{m2}"),
+            {
+                "label": "Welcoming a visitor",
+                "script": [
+                    ("A", "{v0}", "{m0}"),
+                    ("B", "{v1}", "{m1}"),
+                    ("A", "{v2}", "{m2}"),
+                ],
+            },
+            {
+                "label": "Family table conversation",
+                "script": [
+                    ("A", "{v1}", "{m1}"),
+                    ("B", "{v0}", "{m0}"),
+                    ("A", "{v2}", "{m2}"),
+                    ("B", "{v0}, {v1}", "{m0}. {m1}"),
+                ],
+            },
         ],
     ),
     (
-        "past|story|yesterday",
+        "past|story|yesterday|memory",
         [
-            ("A", "{v0}", "{m0}"),
-            ("B", "{v1}", "{m1}"),
-            ("A", "{v2}", "{m2}"),
+            {
+                "label": "Sharing what happened",
+                "script": [
+                    ("A", "{v0}", "{m0}"),
+                    ("B", "{v1}", "{m1}"),
+                    ("A", "{v2}", "{m2}"),
+                ],
+            },
+            {
+                "label": "Reflecting on the story",
+                "script": [
+                    ("A", "{v1}", "{m1}"),
+                    ("B", "{v2}", "{m2}"),
+                    ("A", "{v0}", "{m0}"),
+                    ("B", "{v2}", "{m2}"),
+                ],
+            },
         ],
     ),
     (
-        "work|office|plan|future",
+        "work|office|plan|future|career|job",
         [
-            ("A", "{v0}", "{m0}"),
-            ("B", "{v1}", "{m1}"),
-            ("A", "{v2}", "{m2}"),
+            {
+                "label": "Morning check-in",
+                "script": [
+                    ("A", "{v0}", "{m0}"),
+                    ("B", "{v1}", "{m1}"),
+                    ("A", "{v2}", "{m2}"),
+                ],
+            },
+            {
+                "label": "Planning the week",
+                "script": [
+                    ("A", "{v1}", "{m1}"),
+                    ("B", "{v2}", "{m2}"),
+                    ("A", "{v0}", "{m0}"),
+                    ("B", "{v1}, {v2}", "{m1}. {m2}"),
+                ],
+            },
         ],
     ),
     (
-        "opinion|debate|news|health|community",
+        "opinion|debate|news|health|community|values",
         [
-            ("A", "{v0}", "{m0}"),
-            ("B", "{v1}", "{m1}"),
-            ("A", "{v2}", "{m2}"),
+            {
+                "label": "Opening a conversation",
+                "script": [
+                    ("A", "{v0}", "{m0}"),
+                    ("B", "{v1}", "{m1}"),
+                    ("A", "{v2}", "{m2}"),
+                ],
+            },
+            {
+                "label": "Sharing a view",
+                "script": [
+                    ("A", "{v1}", "{m1}"),
+                    ("B", "{v2}", "{m2}"),
+                    ("A", "{v0}", "{m0}"),
+                ],
+            },
+            {
+                "label": "Finding common ground",
+                "script": [
+                    ("A", "{v2}", "{m2}"),
+                    ("B", "{v0}", "{m0}"),
+                ],
+            },
         ],
     ),
     (
-        "professional|meeting|media|formal|office",
+        "professional|meeting|media|formal",
         [
-            ("A", "{v0}", "{m0}"),
-            ("B", "{v1}", "{m1}"),
-            ("A", "{v2}", "{m2}"),
-            ("B", "{v0}", "{m0}"),
+            {
+                "label": "Opening the meeting",
+                "script": [
+                    ("A", "{v0}", "{m0}"),
+                    ("B", "{v1}", "{m1}"),
+                    ("A", "{v2}", "{m2}"),
+                ],
+            },
+            {
+                "label": "Discussion",
+                "script": [
+                    ("A", "{v1}", "{m1}"),
+                    ("B", "{v2}", "{m2}"),
+                    ("A", "{v0}", "{m0}"),
+                    ("B", "{v2}", "{m2}"),
+                ],
+            },
+            {
+                "label": "Closing remarks",
+                "script": [
+                    ("A", "{v0}", "{m0}"),
+                    ("B", "{v1}", "{m1}"),
+                ],
+            },
         ],
     ),
     (
-        "idiom|proverb|rhetoric|monologue|certification|rebuttal|abstract",
+        "idiom|proverb|rhetoric|monologue|certification|rebuttal|abstract|mastery",
         [
-            ("A", "{v0}", "{m0}"),
-            ("B", "{v1}", "{m1}"),
-            ("A", "{v2}", "{m2}"),
-            ("A", "{v0}", "{m0}"),
+            {
+                "label": "Setting up the argument",
+                "script": [
+                    ("A", "{v0}", "{m0}"),
+                    ("B", "{v1}", "{m1}"),
+                    ("A", "{v2}", "{m2}"),
+                ],
+            },
+            {
+                "label": "Counter and refinement",
+                "script": [
+                    ("A", "{v1}", "{m1}"),
+                    ("B", "{v2}", "{m2}"),
+                    ("A", "{v0}", "{m0}"),
+                    ("B", "{v1}, {v2}", "{m1}. {m2}"),
+                ],
+            },
+            {
+                "label": "Closing with conviction",
+                "script": [
+                    ("A", "{v0}", "{m0}"),
+                    ("B", "{v2}", "{m2}"),
+                ],
+            },
         ],
     ),
 ]
 
-_DEFAULT_DIALOGUE = [
-    ("A", "{v0}", "{m0}"),
-    ("B", "{v1}", "{m1}"),
-    ("A", "{v2}", "{m2}"),
+_DEFAULT_DIALOGUE: list[dict] = [
+    {
+        "label": "Daily exchange",
+        "script": [
+            ("A", "{v0}", "{m0}"),
+            ("B", "{v1}", "{m1}"),
+            ("A", "{v2}", "{m2}"),
+        ],
+    },
+    {
+        "label": "Following up",
+        "script": [
+            ("A", "{v1}", "{m1}"),
+            ("B", "{v2}", "{m2}"),
+            ("A", "{v0}", "{m0}"),
+        ],
+    },
 ]
 
 _EXAMPLE_TEMPLATES = [
@@ -136,7 +316,7 @@ def _example_sentence(pack: dict, word: str, lesson_title: str) -> str:
     return tmpl.format(word=word, meaning=meaning, context=ctx)
 
 
-def _pick_dialogue_pattern(lesson_title: str) -> list[tuple[str, str, str]]:
+def _pick_dialogue_pattern(lesson_title: str) -> list[dict]:
     t = lesson_title.lower()
     for key, pattern in _DIALOGUE_PATTERNS:
         if any(k in t for k in key.split("|")):
@@ -145,25 +325,156 @@ def _pick_dialogue_pattern(lesson_title: str) -> list[tuple[str, str, str]]:
 
 
 def _build_dialogue(pack: dict, vocab_list: list[str], lesson_title: str) -> dict:
-    pattern = _pick_dialogue_pattern(lesson_title)
-    while len(vocab_list) < 3:
-        vocab_list = vocab_list + vocab_list
-    vals = {
-        f"v{i}": vocab_list[i] for i in range(3)
-    } | {
-        f"m{i}": _meaning(pack, vocab_list[i]) for i in range(3)
-    }
-    script = []
-    for speaker, text_t, trans_t in pattern:
-        script.append({
-            "speaker": speaker,
-            "text": text_t.format(**vals),
-            "translation": trans_t.format(**vals),
+    """Build a multi-scene dialogue (6-10 turns) for a lesson.
+
+    The dialogue payload is intentionally backward compatible:
+    - `script` is a flat array of turns across all scenes (old consumers).
+    - `scene` is a single human-readable label (old consumers).
+    - `scenes` is the new structured array of {label, script} (new consumers).
+    """
+    scenes_template = _pick_dialogue_pattern(lesson_title)
+
+    # Ensure we have at least 3 vocab tokens by cycling.
+    vocab = list(vocab_list)
+    while len(vocab) < 3:
+        vocab = vocab + vocab
+
+    # Build value map for v0..v9 by cycling through vocab.
+    max_refs = 10
+    vals: dict[str, str] = {}
+    for i in range(max_refs):
+        token = vocab[i % len(vocab)]
+        vals[f"v{i}"] = token
+        vals[f"m{i}"] = _meaning(pack, token)
+
+    structured_scenes: list[dict] = []
+    flat_script: list[dict] = []
+
+    for scene in scenes_template:
+        scene_script: list[dict] = []
+        for speaker, text_t, trans_t in scene["script"]:
+            turn = {
+                "speaker": speaker,
+                "text": text_t.format(**vals),
+                "translation": trans_t.format(**vals),
+            }
+            scene_script.append(turn)
+            flat_script.append(turn)
+        structured_scenes.append({
+            "label": scene["label"],
+            "script": scene_script,
         })
+
+    primary_label = structured_scenes[0]["label"] if structured_scenes else lesson_title
     return {
-        "script": script,
-        "scene": f"Real-life {lesson_title} — {pack['display']}",
+        "script": flat_script,
+        "scene": f"{primary_label} — {pack['display']} ({lesson_title})",
+        "scenes": structured_scenes,
+        "turn_count": len(flat_script),
     }
+
+
+# --- Grammar notes -------------------------------------------------------------
+# Lightweight, language-agnostic grammar/pattern notes selected per lesson.
+# Real per-language grammar will come from the LLM authoring pipeline; until
+# then these give learners structural anchors instead of dumping pure vocab.
+_GRAMMAR_NOTES: list[tuple[str, list[str]]] = [
+    (
+        "greet|hello|welcome|introduction",
+        [
+            "Pattern: greeting → reply → follow-up question.",
+            "Always greet before asking anything else.",
+            "Use the polite/elder form when in doubt.",
+        ],
+    ),
+    (
+        "thank|courtesy|polite|please",
+        [
+            "Pattern: request softener + verb (please-style construction).",
+            "Reply to thanks with a short acknowledgement, not silence.",
+        ],
+    ),
+    (
+        "market|price|food|buy|bargain|shop",
+        [
+            "Pattern: greet → ask price → compliment goods → counter-offer.",
+            "Numbers often follow the noun in African languages; learn the noun first.",
+            "Bargaining is dialogue, not a single offer.",
+        ],
+    ),
+    (
+        "transport|motor|direction|place|taxi|travel",
+        [
+            "Pattern: destination first, then ask the price/route.",
+            "Use 'where is …?' frames instead of long descriptions.",
+        ],
+    ),
+    (
+        "family|kin|elder|home|community",
+        [
+            "Pattern: respect title + name (e.g. mama, baba, anty).",
+            "Elders use the plural/honorific form even when addressed alone.",
+        ],
+    ),
+    (
+        "past|story|yesterday|memory",
+        [
+            "Pattern: time marker first, then verb in past form.",
+            "Stories often open with a fixed phrase ('once upon a time…').",
+        ],
+    ),
+    (
+        "work|office|plan|future|career|job",
+        [
+            "Pattern: subject + future marker + verb.",
+            "Polite agreements close with a confirmation phrase.",
+        ],
+    ),
+    (
+        "opinion|debate|news|health|community|values",
+        [
+            "Pattern: 'I think that…' frame to introduce an opinion.",
+            "Agree first, then nuance, then disagree if needed.",
+        ],
+    ),
+    (
+        "professional|meeting|media|formal",
+        [
+            "Use formal register: full sentences, no slang.",
+            "Pattern: state purpose → discuss → summarise → close.",
+        ],
+    ),
+    (
+        "idiom|proverb|rhetoric|monologue|certification|rebuttal|abstract|mastery",
+        [
+            "Idioms are non-literal — learn the meaning whole, not word-by-word.",
+            "Pattern: claim → evidence → proverb-style summary.",
+        ],
+    ),
+]
+
+
+def _grammar_notes_for(title: str, level: str) -> list[str]:
+    t = title.lower()
+    notes: list[str] = []
+    for key, items in _GRAMMAR_NOTES:
+        if any(k in t for k in key.split("|")):
+            notes.extend(items)
+            break
+    if not notes:
+        notes = [
+            "Pattern: subject → verb → object (default sentence order).",
+            "Listen for the verb stem; affixes carry tense and person.",
+        ]
+    if level in {"B2", "C1", "C2"}:
+        notes.append(
+            "Aim for natural rhythm: vary sentence length and use connectors."
+        )
+    if level in {"C1", "C2"}:
+        notes.append(
+            "Register: switch between formal and informal as the audience shifts."
+        )
+    return notes[:4]
 
 
 def _unit_vocab_pool(lessons: list) -> list[str]:
@@ -261,6 +572,7 @@ def lesson_from_block(
             "ai_readiness": "beginner_slow" if level == "A1" else "intermediate",
         },
         "vocab": vocab_objs,
+        "grammar": _grammar_notes_for(title, level),
         "dialogue": _build_dialogue(pack, list(vocab_list), title),
         "polie_roleplay": {
             "persona": "Encouraging Mentor",
@@ -312,7 +624,7 @@ def _build_level_units(
 
 
 def build_curriculum_for_pack(lang_key: str, pack: dict) -> dict[str, list]:
-    """Returns {A1, A2, B1, B2, C1} unit arrays when present in pack."""
+    """Returns {A1, A2, B1, B2, C1, C2} unit arrays when present in pack."""
     levels: dict[str, list] = {"A1": _build_level_units(lang_key, pack, pack["units"], "A1")}
     if pack.get("units_a2"):
         levels["A2"] = _build_level_units(lang_key, pack, pack["units_a2"], "A2")
@@ -322,6 +634,8 @@ def build_curriculum_for_pack(lang_key: str, pack: dict) -> dict[str, list]:
         levels["B2"] = _build_level_units(lang_key, pack, pack["units_b2"], "B2")
     if pack.get("units_c1"):
         levels["C1"] = _build_level_units(lang_key, pack, pack["units_c1"], "C1")
+    if pack.get("units_c2"):
+        levels["C2"] = _build_level_units(lang_key, pack, pack["units_c2"], "C2")
     return levels
 
 
@@ -335,10 +649,10 @@ def build_curriculum_a1(lang_packs: dict[str, dict]) -> dict:
             languages_out["pidgin"] = levels
     return {
         "meta": {
-            "title": "LingAfriq Authentic Curriculum A1–C1",
-            "version": "3.0.0",
+            "title": "LingAfriq Authentic Curriculum A1–C2",
+            "version": "4.0.0",
             "languages": list(languages_out.keys()),
-            "levels": ["A1", "A2", "B1", "B2", "C1"],
+            "levels": ["A1", "A2", "B1", "B2", "C1", "C2"],
             "lessons_per_language_full_track": 30,
             "pedagogy": "Understand → imitate → respond → converse",
             "native_review": NATIVE_REVIEW_META,

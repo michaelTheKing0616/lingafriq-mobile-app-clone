@@ -232,6 +232,8 @@ def main() -> None:
 
     write_json(ASSETS / "lingafriq_authentic_curriculum_a1_c1.json", curriculum_full)
 
+    write_json(ASSETS / "lingafriq_authentic_curriculum_a1_c2.json", curriculum_full)
+
     write_json(ASSETS / "lingafriq_authentic_curriculum_a1_a2_b1.json", curriculum_full)
 
     write_json(

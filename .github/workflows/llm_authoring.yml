@@ -1,0 +1,52 @@
+name: LLM Authoring
+
+on:
+  pull_request:
+    paths:
+      - "tools/llm_authoring/**"
+      - "tools/content_data/**"
+      - "assets/data/**"
+  push:
+    branches: [main, master, develop]
+    paths:
+      - "tools/llm_authoring/**"
+
+jobs:
+  review-checks:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install authoring dependencies
+        run: pip install requests
+
+      - name: Run review_checks on draft directories
+        working-directory: mobile-app-safe-push-michael
+        run: |
+          set -e
+          shopt -s nullglob
+          found=0
+          for f in $(find tools/llm_authoring/drafts -name '*.json' -type f 2>/dev/null); do
+            echo "Checking $f"
+            python -m tools.llm_authoring.review_checks "$f" --strict
+            found=1
+          done
+          if [ "$found" -eq 0 ]; then
+            echo "No draft JSON in PR — review_checks module OK"
+            python -c "from tools.llm_authoring import review_checks; print('import ok')"
+          fi
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Validate content schemas
+        working-directory: mobile-app-safe-push-michael
+        run: dart run tool/validate_content_schemas.dart

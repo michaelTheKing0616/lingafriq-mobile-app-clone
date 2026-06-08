@@ -114,6 +114,82 @@ class TelemetryService {
     );
   }
 
+  /// Polie AI Chat conversation turn (streaming or JSON fallback).
+  Future<void> trackPolieConversationTurn({
+    required String language,
+    required bool success,
+    required bool usedStreaming,
+    required int durationMs,
+    String? errorCode,
+    int? messageLength,
+  }) async {
+    try {
+      await trackEngagement(
+        eventType: success ? 'polie_conversation_success' : 'polie_conversation_error',
+        feature: 'polie_conversation',
+        metadata: {
+          'language': language,
+          'used_streaming': usedStreaming,
+          'duration_ms': durationMs,
+          if (errorCode != null) 'error_code': errorCode,
+          if (messageLength != null) 'message_length': messageLength,
+        },
+      );
+    } catch (e) {
+      debugPrint('Error tracking Polie conversation: $e');
+    }
+  }
+
+  /// African TTS resolver tier hit (gold/silver/bronze/device/unavailable).
+  Future<void> trackTtsResolution({
+    required String language,
+    required String tier,
+    required bool playbackOk,
+    String? engineLabel,
+    int? textLength,
+  }) async {
+    try {
+      await trackEngagement(
+        eventType: 'tts_resolution',
+        feature: 'african_tts',
+        metadata: {
+          'language': language,
+          'tier': tier,
+          'playback_ok': playbackOk,
+          if (engineLabel != null) 'engine': engineLabel,
+          if (textLength != null) 'text_length': textLength,
+        },
+      );
+    } catch (e) {
+      debugPrint('Error tracking TTS resolution: $e');
+    }
+  }
+
+  /// Authentic Path lesson completed (section or full lesson).
+  Future<void> trackLessonCompletion({
+    required String language,
+    required String level,
+    required String lessonId,
+    required int durationMs,
+    required bool offline,
+  }) async {
+    try {
+      await trackEngagement(
+        eventType: 'lesson_complete',
+        feature: 'authentic_path',
+        metadata: {
+          'language': language,
+          'level': level,
+          'lesson_id': lessonId,
+          'duration_ms': durationMs,
+          'offline': offline,
+        },
+      );
+    } catch (e) {
+      debugPrint('Error tracking lesson completion: $e');
+    }
+  }
+
   /// Track game session metrics
   Future<void> trackGameSession({
     required String gameType,

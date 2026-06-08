@@ -59,6 +59,9 @@ class _LiarLiarGameState extends BaseGameScreenState<LiarLiarGame>
   bool _userSelected = false;
 
   @override
+  bool get requiresPhraseCards => false;
+
+  @override
   Future<void> onGameInitialized() async {
     await _loadNewSentence();
   }

@@ -18,6 +18,8 @@ import '../../utils/pan_african_design_system.dart';
 import '../../widgets/gamification/gamification_widgets.dart';
 import '../../widgets/gamification/combo_tracker.dart';
 import '../../widgets/gamification/combo_display_widget.dart';
+import '../../services/audio/african_tts_service.dart';
+import '../../services/audio/african_tts_bootstrap.dart';
 import '../../services/sound_effects_service.dart';
 import '../../widgets/pan_african_components.dart';
 import '../../widgets/rive_global_guide.dart';
@@ -62,8 +64,44 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
   bool _isLoading = true;
   String? _error;
   bool _isFinishingGame = false;
+
+  /// Plays [text] in the game's [widget.language] using the unified African
+  /// TTS stack (CDN → MMS → XTTS). Safe to call from any game screen.
+  Future<void> speakGameText(String text, {bool slow = false}) async {
+    final trimmed = text.trim();
+    if (trimmed.isEmpty) return;
+    await AfricanTtsBootstrap.ensureManifestLoaded();
+    await AfricanTtsService().speak(
+      language: widget.language,
+      text: trimmed,
+      slow: slow,
+    );
+  }
   bool _hasShownCompletionDialog = false;
+  /// Set when the requested language had no curated content and the game was
+  /// transparently started in a fallback language. Surfaces a banner so the
+  /// user can one-tap switch to the fully-supported language.
+  bool _emptyLanguageFallbackUsed = false;
   late final ComboTracker _comboTracker;
+
+  /// Lowercase set of languages for which `_generateFallbackCards` in
+  /// `game_provider.dart` ships a guaranteed curated deck. Keep in sync with
+  /// the fallback bank — these are the safe destinations for the empty-content
+  /// fallback path. Other languages may still load via backend or the asset
+  /// word repo, but if all of those fail we route here.
+  static const Set<String> _supportedFallbackLanguages = {
+    'yoruba', 'swahili', 'kiswahili', 'hausa', 'igbo', 'amharic',
+  };
+
+  /// Picks a deterministic fallback language for users whose requested
+  /// language has no curated content. We use the first supported language
+  /// that's lexicographically related to the requested label, then default
+  /// to Yoruba which has the deepest curated bank.
+  String _fallbackLanguageForUnsupported(String requested) {
+    final norm = requested.trim().toLowerCase();
+    if (_supportedFallbackLanguages.contains(norm)) return requested;
+    return 'Yoruba';
+  }
 
   GameSession? get session => _session;
   DateTime? get startTime => _startTime;
@@ -79,6 +117,16 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
 
   /// e.g. "12 pts" — override when the game tracks a numeric score.
   String? get shellScoreLabel => null;
+
+  /// Set to `false` for scenario- or word-only games that source their content
+  /// from `assets/data/game_content.json` (via `loadBundledGameScenarios`)
+  /// rather than the network/asset PhraseCard pipeline.
+  ///
+  /// When `false`, the base screen will still open a `GameSession`, but it
+  /// will not block on an empty PhraseCard list. The subclass takes full
+  /// responsibility for surfacing an empty/loading state inside
+  /// [buildGameContent].
+  bool get requiresPhraseCards => true;
 
   // Protected setter for error - allows subclasses to set error
   void setError(String? error) {
@@ -145,17 +193,34 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
       );
 
       if (gameProv.availableCards.isEmpty) {
-        setState(() {
-          _error = 'No content available for ${widget.language} yet.\n'
-              'Try selecting another language from the games hub (e.g. Hausa, Igbo, or Kiswahili).';
-          _isLoading = false;
-        });
-        unawaited(
-          _emitGameLoadFailureTelemetry(
-            'no_cards_available:${widget.language}',
-          ),
-        );
-        return;
+        if (requiresPhraseCards) {
+          // Final safety net: re-run with the universal English-anchored
+          // fallback deck so the user can ALWAYS play. We surface a friendly
+          // banner via [_emptyLanguageFallbackUsed] so the in-game UI can offer
+          // a one-tap switch to a fully-supported language.
+          _emptyLanguageFallbackUsed = true;
+          _session = await gameProv.startGame(
+            userId: userId,
+            gameType: widget.getGameType(),
+            language: _fallbackLanguageForUnsupported(widget.language),
+            level: widget.level,
+            cardCount: getCardCount(),
+          );
+          unawaited(
+            _emitGameLoadFailureTelemetry(
+              'no_cards_available_used_fallback:${widget.language}',
+            ),
+          );
+        } else {
+          // Scenario/word-only games proceed without PhraseCards; their
+          // onGameInitialized() hook is expected to load bundled content and
+          // surface an in-game empty state if it too is unavailable.
+          unawaited(
+            _emitGameLoadFailureTelemetry(
+              'no_cards_available_soft:${widget.language}',
+            ),
+          );
+        }
       }
 
       _startTime = DateTime.now();
@@ -621,6 +686,15 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
       debugPrint('buildGameContent error: $e $st');
       bodyContent = _buildGameLoadError(context, e);
     }
+    if (_emptyLanguageFallbackUsed) {
+      bodyContent = Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _buildLanguageFallbackBanner(context),
+          Expanded(child: bodyContent),
+        ],
+      );
+    }
 
     return GameTemplateShell(
       title: appBarTitle ?? widget.getGameType().displayName,
@@ -719,6 +793,50 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
   /// Return the body widget (e.g. [Padding], [Column], [ListView]).
   /// Do NOT return a [Scaffold]; [BaseGameScreen] provides the Scaffold, AppBar, and overlays.
   Widget buildGameContent(BuildContext context);
+
+  /// Sticky banner shown when we transparently substituted a supported
+  /// language so the game could still launch. Tapping the action chip restarts
+  /// the experience in that supported language (avoiding a full navigation
+  /// round-trip back to the games hub).
+  Widget _buildLanguageFallbackBanner(BuildContext context) {
+    final substituted = _fallbackLanguageForUnsupported(widget.language);
+    return Material(
+      color: PanAfricanColors.accent.withOpacity(0.10),
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: PanAfricanSpacing.md,
+          vertical: PanAfricanSpacing.sm,
+        ),
+        child: Row(
+          children: [
+            Icon(Icons.translate_rounded,
+                size: 18.sp, color: PanAfricanColors.accent),
+            SizedBox(width: PanAfricanSpacing.xs),
+            Expanded(
+              child: Text(
+                'No curated content for ${formatGameLanguageLabel(widget.language) ?? widget.language} yet. '
+                'Playing in $substituted instead — your progress still counts.',
+                style: PanAfricanTypography.bodySmall(context),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Change',
+                style: PanAfricanTypography.labelMedium(
+                  context,
+                  color: PanAfricanColors.accent,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class _GameHud extends StatelessWidget {

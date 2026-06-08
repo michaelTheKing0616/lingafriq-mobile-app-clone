@@ -47,6 +47,9 @@ class _MarketBargainingGameState
   int getCardCount() => 5;
 
   @override
+  bool get requiresPhraseCards => false;
+
+  @override
   Future<void> onGameInitialized() async {
     final loaded = ref.read(
       gameScenariosProvider(GameContentFilter(

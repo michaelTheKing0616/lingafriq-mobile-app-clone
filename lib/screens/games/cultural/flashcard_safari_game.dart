@@ -54,6 +54,9 @@ class _FlashcardSafariGameState extends BaseGameScreenState<FlashcardSafariGame>
   String? _correctTranslation;
 
   @override
+  bool get requiresPhraseCards => false;
+
+  @override
   Future<void> onGameInitialized() async {
     _bundledWords = loadBundledGameWords(
       ref,

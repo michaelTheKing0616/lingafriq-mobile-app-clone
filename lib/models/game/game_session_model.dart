@@ -177,6 +177,11 @@ enum GameType {
   drumToWordMatching,
   marketMonopolyChallenge,
   scrabbleSprintArena,
+  ayoMancala,
+  suweHopscotch,
+  ludoLanguage,
+  snakesAndLaddersCultural,
+  whotCardGame,
 }
 
 extension GameTypeExtension on GameType {
@@ -256,6 +261,16 @@ extension GameTypeExtension on GameType {
         return 'market_monopoly_challenge';
       case GameType.scrabbleSprintArena:
         return 'scrabble_sprint_arena';
+      case GameType.ayoMancala:
+        return 'ayo_mancala';
+      case GameType.suweHopscotch:
+        return 'suwe_hopscotch';
+      case GameType.ludoLanguage:
+        return 'ludo_language';
+      case GameType.snakesAndLaddersCultural:
+        return 'snakes_and_ladders_cultural';
+      case GameType.whotCardGame:
+        return 'whot_card_game';
     }
   }
 
@@ -335,6 +350,16 @@ extension GameTypeExtension on GameType {
         return 'Market Monopoly Challenge';
       case GameType.scrabbleSprintArena:
         return 'Scrabble Sprint Arena';
+      case GameType.ayoMancala:
+        return 'Ayo (Mancala)';
+      case GameType.suweHopscotch:
+        return 'Suwe (Hopscotch)';
+      case GameType.ludoLanguage:
+        return 'Ludo Language';
+      case GameType.snakesAndLaddersCultural:
+        return 'Snakes & Ladders';
+      case GameType.whotCardGame:
+        return 'Whot!';
     }
   }
 

@@ -9,11 +9,16 @@ import 'speed_round_game.dart';
 import 'story_builder_game.dart';
 import 'roleplay_adventure_game.dart';
 import 'grammar_detective_game.dart';
-import 'game_templates.dart' hide PictureWordGame, MemoryMapGame, PronunciationKaraokeGame;
+// game_templates.dart now contains a single concrete game (ListenSketchGame)
+// plus the shared _GameTileVisual helper. The previously-shipped duplicate
+// PictureWordGame / MemoryMapGame / PronunciationKaraokeGame classes were
+// removed (single source of truth lives in their dedicated *_screen.dart
+// files imported below).
+import 'game_templates.dart';
 import 'picture_word_association_screen.dart';
 import 'memory_map_screen.dart';
 import 'pronunciation_karaoke_screen.dart';
-import 'cultural_games.dart' hide ClanStoryGame, FolktaleGame, MarketBargainingGame, TaxiSurvivalGame, GreetingDiplomacyGame, EmojiTranslatorGame, EldersBlessingsGame;
+import 'cultural_games.dart';
 import 'market_bargaining_screen.dart';
 import 'taxi_survival_screen.dart';
 import 'greeting_diplomacy_screen.dart';
@@ -26,6 +31,11 @@ import 'clan_lineage_story_builder_screen.dart';
 import 'grammar_jam_screen.dart';
 import 'quiz_chef_screen.dart';
 import 'conversation_relay_screen.dart';
+import 'traditional/ayo_mancala_screen.dart';
+import 'traditional/suwe_hopscotch_screen.dart';
+import 'traditional/language_ludo_screen.dart';
+import 'traditional/cultural_snakes_ladders_screen.dart';
+import 'traditional/whot_card_screen.dart';
 
 /// Game Router - Routes to appropriate game screen based on GameType
 Widget buildGameScreen({
@@ -149,6 +159,36 @@ Widget buildGameScreen({
         level: userLevel,
         onBack: onBack,
       );
+    case GameType.ayoMancala:
+      return AyoMancalaGame(
+        language: language,
+        level: userLevel,
+        onBack: onBack,
+      );
+    case GameType.suweHopscotch:
+      return SuweHopscotchGame(
+        language: language,
+        level: userLevel,
+        onBack: onBack,
+      );
+    case GameType.ludoLanguage:
+      return LanguageLudoGame(
+        language: language,
+        level: userLevel,
+        onBack: onBack,
+      );
+    case GameType.snakesAndLaddersCultural:
+      return CulturalSnakesLaddersGame(
+        language: language,
+        level: userLevel,
+        onBack: onBack,
+      );
+    case GameType.whotCardGame:
+      return WhotCardGame(
+        language: language,
+        level: userLevel,
+        onBack: onBack,
+      );
   }
 }
 
@@ -191,5 +231,10 @@ const Set<GameType> kRoutedGameTypes = {
   GameType.drumToWordMatching,
   GameType.marketMonopolyChallenge,
   GameType.scrabbleSprintArena,
+  GameType.ayoMancala,
+  GameType.suweHopscotch,
+  GameType.ludoLanguage,
+  GameType.snakesAndLaddersCultural,
+  GameType.whotCardGame,
 };
 

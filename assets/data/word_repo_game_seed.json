@@ -8519,6 +8519,50 @@
           "MarketBargaining",
           "FoodQuest"
         ]
+      },
+      {
+        "id": "9002",
+        "language": "Lingala",
+        "text": "S'il vous plaît",
+        "gloss": "Please",
+        "ascii": "S'il vous plaît",
+        "part_of_speech": "expression",
+        "cefr": "A1",
+        "topic": "Please",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound",
+          "PronunciationDuel",
+          "ToneTrainer",
+          "FlashcardSafari",
+          "GreetingDiplomacy",
+          "MarketBargaining",
+          "FoodQuest"
+        ]
+      },
+      {
+        "id": "9003",
+        "language": "Lingala",
+        "text": "Nkombo na ngai…",
+        "gloss": "My name is",
+        "ascii": "Nkombo na ngai…",
+        "part_of_speech": "phrase",
+        "cefr": "A1",
+        "topic": "My name is",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound",
+          "PronunciationDuel",
+          "ToneTrainer",
+          "FlashcardSafari",
+          "GreetingDiplomacy",
+          "MarketBargaining",
+          "FoodQuest"
+        ]
       }
     ],
     "xhosa": [
@@ -10048,6 +10092,28 @@
         "part_of_speech": "noun",
         "cefr": "A1",
         "topic": "Community",
+        "tonal_note": "",
+        "cultural_note": "",
+        "game_tags": [
+          "WordMatch",
+          "SpeedRound",
+          "PronunciationDuel",
+          "ToneTrainer",
+          "FlashcardSafari",
+          "GreetingDiplomacy",
+          "MarketBargaining",
+          "FoodQuest"
+        ]
+      },
+      {
+        "id": "9018",
+        "language": "Shona",
+        "text": "Hofisi",
+        "gloss": "Office",
+        "ascii": "Hofisi",
+        "part_of_speech": "noun",
+        "cefr": "A1",
+        "topic": "Office",
         "tonal_note": "",
         "cultural_note": "",
         "game_tags": [

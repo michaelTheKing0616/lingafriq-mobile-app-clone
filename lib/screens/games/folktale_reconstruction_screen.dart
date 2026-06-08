@@ -54,6 +54,9 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
   int getCardCount() => 6;
 
   @override
+  bool get requiresPhraseCards => false;
+
+  @override
   Future<void> onGameInitialized() async {
     _cards = ref.read(gameProvider.notifier).availableCards;
     _prepareRound();

@@ -1,28 +1,29 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_tts/flutter_tts.dart';
+
+import 'package:lingafriq/services/audio/african_tts_service.dart';
 
 /// Resolves slow/native audio for curriculum and game vocabulary.
+///
+/// In v4 this service no longer talks to on-device flutter_tts directly. All
+/// playback goes through [AfricanTtsService] (Gold → Silver → Bronze) so we
+/// guarantee authentic African-accented audio across all 14 languages.
 class CurriculumAudioService {
   static const _manifestPath = 'assets/data/audio_manifest.json';
 
   Map<String, dynamic>? _manifest;
-  final FlutterTts _tts = FlutterTts();
-  bool _ttsReady = false;
-
-  Future<void> _ensureTts() async {
-    if (_ttsReady) return;
-    await _tts.setVolume(1.0);
-    _ttsReady = true;
-  }
+  bool _manifestRegisteredWithTts = false;
 
   Future<Map<String, dynamic>> _loadManifest() async {
     if (_manifest != null) return _manifest!;
     final raw = await rootBundle.loadString(_manifestPath);
     _manifest = jsonDecode(raw) as Map<String, dynamic>;
+    if (!_manifestRegisteredWithTts) {
+      AfricanTtsService().setManifest(_manifest!);
+      _manifestRegisteredWithTts = true;
+    }
     return _manifest!;
   }
 
@@ -40,58 +41,32 @@ class CurriculumAudioService {
     return null;
   }
 
-  /// Speaks [text] using bundled CDN path when recorded audio exists on device,
-  /// otherwise TTS at slow or native rate from manifest.
+  /// Speaks [text] in [language] using the Gold → Silver → Bronze resolver.
+  /// [slow] selects the slow variant from the audio manifest (Gold) or scales
+  /// the synthesis speed for Silver/Bronze.
   Future<void> speakPhrase({
     required String language,
     required String text,
     required bool slow,
   }) async {
-    await _ensureTts();
-    final entry = await entryFor(language, text);
-    final variant = slow ? 'slow' : 'native';
-    final block = entry?[variant] as Map<String, dynamic>?;
-    final rate = (block?['tts_rate'] as num?)?.toDouble() ?? (slow ? 0.52 : 0.95);
-    await _tts.setSpeechRate(rate);
-    await _tts.setLanguage(_ttsLanguageCode(language));
-    await _tts.speak(text);
+    await _loadManifest();
+    await AfricanTtsService().speak(
+      language: language,
+      text: text,
+      slow: slow,
+      speed: slow ? 0.7 : 1.0,
+    );
   }
 
   String? nativeCdnUrl(String language, String text) {
     final entries = _manifest?['entries'] as List<dynamic>?;
     if (entries == null) return null;
     for (final e in entries) {
-      if (e is Map &&
-          e['language'] == language &&
-          e['text'] == text) {
+      if (e is Map && e['language'] == language && e['text'] == text) {
         return (e['native'] as Map?)?['cdn_url']?.toString();
       }
     }
     return null;
-  }
-
-  String _ttsLanguageCode(String language) {
-    switch (language.toLowerCase()) {
-      case 'yoruba':
-        return 'yo-NG';
-      case 'hausa':
-        return 'ha-NG';
-      case 'igbo':
-        return 'ig';
-      case 'swahili':
-        return 'sw-KE';
-      case 'zulu':
-        return 'zu-ZA';
-      case 'xhosa':
-        return 'xh-ZA';
-      case 'wolof':
-        return 'fr-FR'; // Wolof TTS fallback
-      case 'pidgin':
-      case 'nigerian_pidgin':
-        return 'en-NG';
-      default:
-        return 'en-US';
-    }
   }
 }
 

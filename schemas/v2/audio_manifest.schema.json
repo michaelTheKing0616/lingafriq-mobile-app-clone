@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.lingafriq.com/v2/audio_manifest.schema.json",
+  "title": "LingAfriq Audio Asset Manifest",
+  "description": "Per-entry curriculum/game vocabulary audio manifest. Each entry ships a slow + native pair (Yoruba: tonal training requires both rates). cdn_url is the primary load path; asset_path is the bundled fallback.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["meta", "entries"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["version"],
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "description": { "type": "string" },
+        "recording_spec": { "type": "string" },
+        "entry_count": { "type": "integer", "minimum": 0 },
+        "generated_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "entries": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/entry" }
+    }
+  },
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "language", "text"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "language": { "type": "string", "minLength": 1 },
+        "text": { "type": "string", "minLength": 1 },
+        "meaning": { "type": "string" },
+        "source": {
+          "type": "string",
+          "enum": [
+            "curriculum_vocab",
+            "curriculum_dialogue",
+            "game_vocab",
+            "game_proverb",
+            "ugc",
+            "human_studio",
+            "tts_mms",
+            "tts_xtts"
+          ]
+        },
+        "cefr": {
+          "type": "string",
+          "enum": ["A1", "A2", "B1", "B2", "C1", "C2"]
+        },
+        "slow": { "$ref": "#/$defs/variant" },
+        "native": { "$ref": "#/$defs/variant" },
+        "english": { "$ref": "#/$defs/variant" },
+        "premium": { "$ref": "#/$defs/variant" }
+      }
+    },
+    "variant": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "asset_path": { "type": "string", "minLength": 1 },
+        "cdn_url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https?://"
+        },
+        "tts_rate": { "type": "number", "minimum": 0.1, "maximum": 3.0 },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "duration_ms": { "type": "integer", "minimum": 0 },
+        "engine": {
+          "type": "string",
+          "enum": ["mms", "xtts", "human", "cdn_static"]
+        },
+        "voice_id": { "type": "string" },
+        "bytes": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}

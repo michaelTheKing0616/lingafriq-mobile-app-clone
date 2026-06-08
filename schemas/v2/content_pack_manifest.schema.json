@@ -1,0 +1,219 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.lingafriq.com/v2/content_pack_manifest.schema.json",
+  "title": "LingAfriq Content Pack Manifest",
+  "description": "Per-language manifest of bundled assets and lessons served by the backend and bundled on-device. Used by AuthenticPath and the CDN audio pipeline.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["manifest"],
+  "properties": {
+    "manifest": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "language",
+        "language_name",
+        "schemaVersion",
+        "checksumSha256",
+        "totalLessons",
+        "levels",
+        "source",
+        "lessons"
+      ],
+      "properties": {
+        "language": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Numeric language id used by the picker (1..14) or string identifier."
+        },
+        "language_name": {
+          "type": "string",
+          "minLength": 2,
+          "description": "Lowercase canonical language name (e.g. 'yoruba', 'igbo')."
+        },
+        "schemaVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 99
+        },
+        "bundleVersion": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "Optional semver of the content bundle (e.g. '4.0.0')."
+        },
+        "checksumSha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "totalLessons": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "levels": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": ["A1", "A2", "B1", "B2", "C1", "C2"]
+          },
+          "uniqueItems": true
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "generatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lessons": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/lesson"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "lesson": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "title", "level", "unit"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 3
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "level": {
+          "type": "string",
+          "enum": ["A1", "A2", "B1", "B2", "C1", "C2"]
+        },
+        "unit": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "assets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/asset"
+          }
+        },
+        "lesson": {
+          "$ref": "#/$defs/lessonDetail"
+        }
+      }
+    },
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "url", "sha256", "label"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["audio", "image", "video"]
+        },
+        "variant": {
+          "type": "string",
+          "enum": ["native", "slow", "english", "premium", "alt", "thumbnail"]
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https?://"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "durationMs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "voiceId": {
+          "type": "string"
+        }
+      }
+    },
+    "lessonDetail": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "title", "sections"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "objective": {
+          "type": "string"
+        },
+        "cultural_notes": {
+          "type": "string"
+        },
+        "sections": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/section"
+          }
+        },
+        "grammar": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "section": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "type"],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "title": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "Tutorial",
+            "Vocabulary",
+            "Dialogue",
+            "Exercise",
+            "Quiz",
+            "Instant Quiz",
+            "Word Quiz",
+            "Reading",
+            "Listening",
+            "Speaking",
+            "Cultural"
+          ]
+        },
+        "text": {
+          "type": "string"
+        },
+        "score": {
+          "type": "number"
+        },
+        "items": {
+          "type": "array"
+        }
+      }
+    }
+  }
+}

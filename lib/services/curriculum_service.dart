@@ -30,6 +30,7 @@ class CurriculumService {
   /// Authentic LingAfriq A1–B1 curriculum (preferred over legacy placeholders).
   Future<Map<String, dynamic>?> _loadAuthenticCurriculum() async {
     return _loadJsonAsset(const [
+      'assets/data/lingafriq_authentic_curriculum_a1_c2.json',
       'assets/data/lingafriq_authentic_curriculum_a1_c1.json',
       'assets/data/lingafriq_authentic_curriculum_a1_a2_b1.json',
       'assets/data/lingafriq_authentic_curriculum_a1.json',

@@ -7,8 +7,11 @@ const String kGameContentAssetPath = 'assets/data/game_content.json';
 
 /// Optional criteria for slicing [GameContentData] lists.
 ///
-/// Not every field applies to every entity type; see
-/// [_matchesWord], [_matchesProverb], and [_matchesScenario].
+/// Language values are normalised to lowercase so that callers passing
+/// `Yoruba`, `yoruba`, or `YORUBA` all match the same bundled entries.
+/// `cefr`, `game`, `gameTag`, and `topic` keep their original casing because
+/// the bundled JSON uses PascalCase for game ids (e.g. `"MarketBargaining"`)
+/// and uppercase CEFR codes (e.g. `"A1"`).
 class GameContentFilter {
   final String? language;
   final String? cefr;
@@ -18,13 +21,13 @@ class GameContentFilter {
   /// Scenario game id ([GameScenario.game]); ignored for words/proverbs.
   final String? game;
 
-  const GameContentFilter({
-    this.language,
+  GameContentFilter({
+    String? language,
     this.cefr,
     this.gameTag,
     this.topic,
     this.game,
-  });
+  }) : language = language?.trim().toLowerCase();
 
   @override
   bool operator ==(Object other) =>
@@ -39,6 +42,8 @@ class GameContentFilter {
   @override
   int get hashCode => Object.hash(language, cefr, gameTag, topic, game);
 }
+
+String _normLang(String value) => value.trim().toLowerCase();
 
 /// Loads and parses [GameContentData] from the app bundle.
 ///
@@ -110,20 +115,20 @@ final liarLiarRoundsProvider =
 });
 
 bool _matchesGrammarDrill(GrammarDrill drill, GameContentFilter f) {
-  if (f.language != null && drill.language != f.language) return false;
+  if (f.language != null && _normLang(drill.language) != f.language) return false;
   if (f.cefr != null && drill.cefr != f.cefr) return false;
   if (f.game != null && drill.game != f.game) return false;
   return true;
 }
 
 bool _matchesLiarRound(LiarLiarRound round, GameContentFilter f) {
-  if (f.language != null && round.language != f.language) return false;
+  if (f.language != null && _normLang(round.language) != f.language) return false;
   if (f.cefr != null && round.cefr != f.cefr) return false;
   return true;
 }
 
 bool _matchesWord(GameWord word, GameContentFilter f) {
-  if (f.language != null && word.language != f.language) return false;
+  if (f.language != null && _normLang(word.language) != f.language) return false;
   if (f.cefr != null && word.cefr != f.cefr) return false;
   if (f.gameTag != null && !word.gameTags.contains(f.gameTag!)) {
     return false;
@@ -133,7 +138,7 @@ bool _matchesWord(GameWord word, GameContentFilter f) {
 }
 
 bool _matchesProverb(GameProverb proverb, GameContentFilter f) {
-  if (f.language != null && proverb.language != f.language) return false;
+  if (f.language != null && _normLang(proverb.language) != f.language) return false;
   if (f.cefr != null && proverb.cefr != f.cefr) return false;
   if (f.gameTag != null && !proverb.gameTags.contains(f.gameTag!)) {
     return false;
@@ -142,7 +147,9 @@ bool _matchesProverb(GameProverb proverb, GameContentFilter f) {
 }
 
 bool _matchesScenario(GameScenario scenario, GameContentFilter f) {
-  if (f.language != null && scenario.language != f.language) return false;
+  if (f.language != null && _normLang(scenario.language) != f.language) {
+    return false;
+  }
   if (f.cefr != null && scenario.cefr != f.cefr) return false;
   if (f.game != null && scenario.game != f.game) return false;
   return true;

@@ -140,6 +140,9 @@ jobs:
       - name: i18n literal gate
         run: dart run tool/i18n_gate.dart
 
+      - name: TTS purity gate (no flutter_tts outside AfricanTtsService)
+        run: dart run tool/tts_purity_gate.dart
+
       - name: Flutter test (with coverage)
         run: |
           echo "🧪 Running Flutter tests with coverage..."
@@ -306,6 +309,9 @@ jobs:
 
       - name: i18n literal gate
         run: dart run tool/i18n_gate.dart
+
+      - name: TTS purity gate (no flutter_tts outside AfricanTtsService)
+        run: dart run tool/tts_purity_gate.dart
 
       - name: Flutter test (with coverage)
         run: |

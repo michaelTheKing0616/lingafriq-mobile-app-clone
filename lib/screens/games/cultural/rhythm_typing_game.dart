@@ -65,6 +65,9 @@ class _RhythmTypingGameState extends BaseGameScreenState<RhythmTypingGame>
   }
 
   @override
+  bool get requiresPhraseCards => false;
+
+  @override
   Future<void> onGameInitialized() async {
     _bundledWords = loadBundledGameWords(
       ref,

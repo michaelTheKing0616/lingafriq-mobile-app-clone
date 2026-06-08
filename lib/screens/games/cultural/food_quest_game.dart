@@ -66,6 +66,9 @@ class _FoodQuestGameState extends BaseGameScreenState<FoodQuestGame>
   List<GameScenario> _scenarios = [];
 
   @override
+  bool get requiresPhraseCards => false;
+
+  @override
   Future<void> onGameInitialized() async {
     _scenarios = loadBundledGameScenarios(
       ref,

@@ -44,6 +44,9 @@ class _EldersBlessingsGameState
   int getCardCount() => 8;
 
   @override
+  bool get requiresPhraseCards => false;
+
+  @override
   Future<void> onGameInitialized() async {
     final loaded = ref.read(
       gameScenariosProvider(GameContentFilter(

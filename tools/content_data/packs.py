@@ -868,6 +868,7 @@ from .a2_b1_units import A2_UNITS, B1_UNITS  # noqa: E402
 from .b2_c1_units import (  # noqa: E402
     B2_UNITS,
     C1_UNITS,
+    C2_UNITS,
     EXTENDED_A2_UNITS,
     EXTENDED_B1_UNITS,
 )
@@ -886,18 +887,30 @@ for _lang in CURRICULUM_LANGUAGES:
     LANG_PACKS[_lang]["units_b1"] = _B1_ALL.get(_lang, [])
     LANG_PACKS[_lang]["units_b2"] = B2_UNITS.get(_lang, [])
     LANG_PACKS[_lang]["units_c1"] = C1_UNITS.get(_lang, [])
+    LANG_PACKS[_lang]["units_c2"] = C2_UNITS.get(_lang, [])
 
 LANG_PACKS = apply_native_review(LANG_PACKS)
 
+from .game_vocab_expansion import augment_curriculum_units, merge_expansion_words  # noqa: E402
+
+for _lang in CURRICULUM_LANGUAGES:
+    _pack = LANG_PACKS.get(_lang)
+    if not _pack:
+        continue
+    # Two passes: first harvests cross-level pool; second tops up thin levels.
+    augment_curriculum_units(_pack)
+    augment_curriculum_units(_pack)
+
 
 def _word_entry(lang_key: str, idx: int, pack: dict, row: tuple) -> dict:
-    text, gloss, pos, tonal, cultural = row
+    text, gloss, pos, tonal, cultural = row[:5]
     display = pack["display"]
     tags = list(_COMMON_TAGS)
     if "greeting" in pos or "Greeting" in gloss:
         tags.append("GreetingDiplomacy")
     if pos in ("noun",) and ("food" in gloss.lower() or "market" in text.lower()):
         tags.append("FoodQuest")
+    cefr = row[5] if len(row) > 5 and row[5] in ("A1", "A2", "B1", "B2", "C1", "C2") else "A1"
     return {
         "id": idx,
         "language": lang_key,
@@ -905,7 +918,7 @@ def _word_entry(lang_key: str, idx: int, pack: dict, row: tuple) -> dict:
         "english_meaning": gloss,
         "phonetic_guide": tonal or None,
         "part_of_speech": pos,
-        "cefr": "A1",
+        "cefr": cefr,
         "topic": gloss.split("/")[0].strip()[:40] if gloss else "General",
         "tonal_note": tonal or None,
         "cultural_note": cultural or None,
@@ -948,7 +961,7 @@ def build_game_content() -> dict:
         pack = LANG_PACKS.get(lang_key)
         if not pack:
             continue
-        for row in pack["words"]:
+        for row in merge_expansion_words(pack):
             words.append(_word_entry(lang_key, wid, pack, row))
             wid += 1
         for orig, trans, meaning in pack["proverbs"]:
@@ -1018,9 +1031,10 @@ def build_game_content() -> dict:
     liar_liar_rounds = build_liar_liar_rounds(CURRICULUM_LANGUAGES)
     return {
         "meta": {
-            "version": "3.0.0",
+            "version": "4.0.0",
             "languages": CURRICULUM_LANGUAGES,
-            "description": "LingAfriq authentic game content — words, proverbs, scenarios, Polie drills",
+            "description": "LingAfriq authentic game content — expanded vocab pool for 37 games",
+            "min_words_per_language": 80,
             "native_review": NATIVE_REVIEW_META,
         },
         "words": words,

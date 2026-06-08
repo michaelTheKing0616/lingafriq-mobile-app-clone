@@ -192,7 +192,7 @@ class LessonItemService {
     List<String>? categories,
     Function(int current, int total)? onProgress,
   }) async {
-    final levelsToLoad = levels ?? ['A0', 'A1', 'A2', 'B1', 'B2', 'C1'];
+    final levelsToLoad = levels ?? ['A0', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
     int total = 0;
     int current = 0;
 

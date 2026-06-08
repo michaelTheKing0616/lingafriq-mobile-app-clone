@@ -53,6 +53,8 @@ dependencies:
   url_launcher: ^6.3.2
   app_links: ^6.0.0
   share_plus: ^10.1.2
+  # Markdown rendering for AI Chat conversation bubbles
+  flutter_markdown: ^0.7.4
   firebase_core: ^4.2.1
   firebase_messaging: ^16.0.4
   flutter_local_notifications: ^19.5.0
@@ -166,6 +168,7 @@ flutter:
     - assets/fonts/
     - assets/data/
     - assets/rive/
+    - schemas/v2/
     - curriculum_bundle/
     - lingafriq_FINAL_curriculum/
     - lingafriq_full_curriculum_bundle/

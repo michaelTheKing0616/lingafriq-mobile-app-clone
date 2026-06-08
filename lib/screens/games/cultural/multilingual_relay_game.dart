@@ -62,6 +62,9 @@ class _MultilingualRelayGameState extends BaseGameScreenState<MultilingualRelayG
   List<GameScenario> _bundledScenarios = [];
 
   @override
+  bool get requiresPhraseCards => false;
+
+  @override
   Future<void> onGameInitialized() async {
     _bundledScenarios = loadBundledGameScenarios(
       ref,

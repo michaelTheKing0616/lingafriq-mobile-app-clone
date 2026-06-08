@@ -4,13 +4,17 @@ on:
   push:
     paths:
       - 'tools/**'
+      - 'tool/**'
       - 'assets/data/**'
+      - 'schemas/**'
       - 'test/**'
       - '.github/workflows/content-assets.yml'
   pull_request:
     paths:
       - 'tools/**'
+      - 'tool/**'
       - 'assets/data/**'
+      - 'schemas/**'
       - 'test/**'
       - '.github/workflows/content-assets.yml'
   workflow_dispatch:
@@ -43,6 +47,9 @@ jobs:
 
       - name: Flutter pub get
         run: flutter pub get
+
+      - name: Content schema gate
+        run: dart run tool/validate_content_schemas.dart
 
       - name: Content asset tests
         run: flutter test test/games/game_content_asset_test.dart test/content/

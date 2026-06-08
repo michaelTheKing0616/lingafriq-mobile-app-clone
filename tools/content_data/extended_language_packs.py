@@ -359,15 +359,30 @@ EXTENDED_LANG_PACKS: dict[str, dict[str, Any]] = {
             "MarketBargaining": [("Price", "Nini? Ezali monene.", "Price", "")],
         },
         "units": [
-            ("Mbote", "Hello", [
-                ("Hi", ["Mbote", "Boni?", "Malamu"], "Greet.", ""),
-                ("Thanks", ["Matondi", "Svp", "Malamu"], "Thanks.", ""),
-                ("Intro", ["Nkombo na ngai", "Nalingi", "Malamu"], "Intro.", ""),
+            ("Discovery & Sound", "Welcome to Lingala", [
+                ("Greet by time", ["Mbote", "Boni?", "Malamu"], "Open every conversation with a greeting.", "Lingala greetings carry warmth — never skip them."),
+                ("Introduce yourself", ["Nkombo na ngai", "Nalingi", "Malamu"], "Say your name and what you want.", "Names often signal home village — share yours."),
+                ("Courtesy basics", ["Matondi", "Svp", "Mbote"], "Thanks, please, and welcome.", "Politeness opens doors in Kinshasa and Brazzaville alike."),
             ]),
-            ("Ndako", "Home", [
-                ("Home", ["Ndako", "Mai", "Bilei"], "Home.", ""),
-                ("Talk", ["Malamu", "Matondi", "Mbote"], "Chat.", ""),
-                ("Close", ["Malamu", "Matondi", "Mbote"], "Bye.", ""),
+            ("Home & Family", "Daily home life", [
+                ("Around the house", ["Ndako", "Mai", "Bilei"], "Name what is in the home.", "Hospitality starts with offering water and food."),
+                ("Family talk", ["Lisanga", "Bizaleli", "Sango"], "Community, culture, news.", "Family extends to neighbours in Lingala-speaking life."),
+                ("Closing visits", ["Malamu", "Matondi", "Mbote"], "End your visit politely.", "Always thank the host before leaving."),
+            ]),
+            ("Market Survival", "At zando (the market)", [
+                ("Walk into the market", ["Zando", "Mbongo", "Bilei"], "Market basics.", "Greet the seller first, then ask."),
+                ("Asking prices", ["Nini?", "Nalingi", "Ezali monene"], "Ask how much and react.", "Saying 'ezali monene' invites a friendlier price."),
+                ("Closing the deal", ["Matondi", "Malamu", "Svp"], "Thank and leave.", "Even when you don't buy, thank and smile."),
+            ]),
+            ("City & Work", "Getting around", [
+                ("Finding places", ["Wapi", "Bureau", "Moto"], "Ask where and how.", "Landmarks beat street names in many neighbourhoods."),
+                ("Working life", ["Mosala", "Nasalaka", "Mbongo"], "Talk about your job.", "Work talk often opens new friendships."),
+                ("Checking in", ["Mbote", "Boni?", "Malamu"], "Quick check-ins.", "Brief greetings carry sincerity."),
+            ]),
+            ("Time, News & Culture", "Speak about life", [
+                ("Time markers", ["Lobi", "Lobi eleki", "Malaki"], "Talk about today and yesterday.", "Lingala blends time and storytelling."),
+                ("Sharing opinions", ["Nakanisi ete", "Nandimi", "Nandimi te"], "Agree, disagree, reflect.", "Discussion is communal — invite others in."),
+                ("Cultural pulse", ["Sango", "Bizaleli", "Lisanga"], "News, culture, community.", "End every lesson by listening to a Lingala song."),
             ]),
         ],
     },
@@ -412,15 +427,30 @@ EXTENDED_LANG_PACKS: dict[str, dict[str, Any]] = {
             "MarketBargaining": [("Price", "Zvakadini?", "Price", "")],
         },
         "units": [
-            ("Mhoro", "Greetings", [
-                ("Hi", ["Mangwanani", "Mhoro", "Makadii?"], "Greet.", ""),
-                ("Thanks", ["Ndatenda", "Ndapota", "Ndiri zvakanaka"], "Thanks.", ""),
-                ("Intro", ["Zita rangu ndini", "Ndinoda", "Ndiri zvakanaka"], "Intro.", ""),
+            ("Discovery & Sound", "Welcome to Shona", [
+                ("Greet by time", ["Mangwanani", "Mhoro", "Makadii?"], "Greet morning and any time.", "Shona greetings open every interaction with care."),
+                ("Introduce yourself", ["Zita rangu ndini", "Ndinoda", "Ndiri zvakanaka"], "Say who you are and how you feel.", "Names in Shona often carry meaning — share yours."),
+                ("Courtesy basics", ["Ndatenda", "Ndapota", "Mhoro"], "Thanks, please, hello.", "Polite words make space for warm conversation."),
             ]),
-            ("Imba", "Home", [
-                ("Home", ["Imba", "Mvura", "Chikafu"], "Home.", ""),
-                ("Talk", ["Ndiri zvakanaka", "Ndatenda", "Mhoro"], "Chat.", ""),
-                ("Close", ["Ndiri zvakanaka", "Ndatenda", "Mhoro"], "Bye.", ""),
+            ("Home & Family", "Daily home life", [
+                ("Around the house", ["Imba", "Mvura", "Chikafu"], "Name what is at home.", "Hospitality begins with water and food in Shona culture."),
+                ("Family talk", ["Nharaunda", "Tsika", "Nhau"], "Community, culture, news.", "Family extends to clan and neighbours."),
+                ("Closing visits", ["Ndiri zvakanaka", "Ndatenda", "Mhoro"], "End the visit politely.", "Always greet again on the way out."),
+            ]),
+            ("Market Survival", "At musika (the market)", [
+                ("Walk into the market", ["Musika", "Mari", "Chikafu"], "Market basics.", "Greet the vendor warmly before any price talk."),
+                ("Asking prices", ["Zvakadini?", "Ndinoda", "Zvakadaro"], "Ask how much and react.", "Calling something 'zvakadaro' (too costly) invites bargaining."),
+                ("Closing the deal", ["Ndatenda", "Ndapota", "Mhoro"], "Thank and leave.", "Thanking the vendor builds trust for next time."),
+            ]),
+            ("City & Work", "Getting around", [
+                ("Finding places", ["Kupi?", "Ophisi", "Mota"], "Ask where and how.", "Public transport is the heartbeat of Harare."),
+                ("Working life", ["Basa", "Ndinoshanda", "Mari"], "Talk about your job.", "Work talk often becomes social talk in Shona."),
+                ("Checking in", ["Mhoro", "Makadii?", "Ndiri zvakanaka"], "Quick check-ins.", "Brief greetings still need a polite reply."),
+            ]),
+            ("Time, News & Culture", "Speak about life", [
+                ("Time markers", ["Mangwana", "Nezuro", "Ndadya"], "Talk about today and yesterday.", "Time and story are woven together in Shona."),
+                ("Sharing opinions", ["Ndinofunga", "Ndinobvuma", "Handibvumi"], "Think, agree, disagree.", "Discussion is communal — listen as much as you speak."),
+                ("Cultural pulse", ["Nhau", "Tsika", "Nharaunda"], "News, culture, community.", "Close lessons by listening to mbira music."),
             ]),
         ],
     },

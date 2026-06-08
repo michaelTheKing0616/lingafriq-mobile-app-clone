@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/content/lingafriq_ux_voice.dart';
@@ -13,6 +15,9 @@ import 'package:lingafriq/models/tutor_progress_model.dart';
 import 'package:lingafriq/models/vocabulary_progress_model.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/content/polie_conversation_prompt_builder.dart';
+import 'package:lingafriq/services/ai/conversation_persistence_service.dart';
+import 'package:lingafriq/services/ai/polie_conversation_stream_service.dart';
+import 'package:lingafriq/services/ai/polie_voice_input_service.dart';
 import 'package:lingafriq/services/content/polie_prompt_service.dart';
 import 'package:lingafriq/services/content/polie_conversation_service.dart';
 import 'package:lingafriq/services/review_progress_service.dart';
@@ -22,6 +27,7 @@ import 'package:lingafriq/services/vocabulary/vocabulary_service.dart';
 import 'package:lingafriq/services/vocabulary_progress_service.dart';
 import 'package:lingafriq/services/hybrid_polie/translation_service.dart';
 import 'package:lingafriq/services/polie_tutor_saved_cards_service.dart';
+import 'package:lingafriq/services/telemetry_service.dart';
 import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
 import 'package:lingafriq/providers/tts_provider.dart';
 import 'package:lingafriq/utils/diacritics_enforcer.dart';
@@ -91,6 +97,13 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
     final activeMode = useState<PolieMode>(
       conversationOnly ? PolieMode.conversation : initialMode,
     );
+    // Live target language. Initialized from the constructor and switchable at
+    // runtime via the AppBar language pill. We shadow the constructor field
+    // [targetLanguage] below so all build-scope code automatically picks up
+    // the active value without a wide refactor.
+    final activeTargetLanguage = useState<String>(targetLanguage);
+    // ignore: non_constant_identifier_names
+    final String targetLanguage = activeTargetLanguage.value;
     final isBusy = useState<bool>(false);
     final modeResponse = useState<String>('');
     final modeError = useState<String?>(null);
@@ -132,6 +145,98 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
     final languageRatio = useState<double>(0);
     final conversationIncludeEnglishTranslations = useState<bool>(false);
     final conversationResponseStyle = useState<String>('lengthy');
+    // Live streaming state: holds the active in-flight assistant message so we
+    // can render token-by-token while the SSE stream is open. Cleared once the
+    // 'final' event lands or the stream errors.
+    final conversationStreamingTarget = useState<String>('');
+    final conversationStreamingActive = useState<bool>(false);
+    final conversationId = useState<String?>(null);
+    // Voice input (mic-to-text). Built once and disposed with the widget.
+    final voiceService = useMemoized(() => PolieVoiceInputService(), const []);
+    useEffect(() {
+      return () => voiceService.dispose();
+    }, const []);
+    final voiceListening = useState<bool>(false);
+    final voiceErrorMessage = useState<String?>(null);
+    final persistence = useMemoized(
+      () => ConversationPersistenceService(),
+      const [],
+    );
+    final conversationRestored = useRef<bool>(false);
+    // Restore the most-recent persisted conversation on first build so the UI
+    // boots with continuity across app restarts. Cancelled if the user has
+    // already begun typing in this session.
+    useEffect(() {
+      if (conversationRestored.value) return null;
+      conversationRestored.value = true;
+      () async {
+        try {
+          final doc = await persistence.restoreMostRecent();
+          if (doc == null || doc.turns.isEmpty) return;
+          // Only restore if the user hasn't started a fresh conversation.
+          if (conversationMessages.value.isNotEmpty) return;
+          final restored = <_ConversationTurn>[];
+          for (final t in doc.turns) {
+            if (t.role == 'user') {
+              if (t.text.trim().isNotEmpty) {
+                restored.add(_ConversationTurn.user(t.text));
+              }
+            } else {
+              if (t.isError) {
+                restored.add(
+                  _ConversationTurn.aiError(
+                    t.errorMessage ??
+                        'Polie could not generate a reply just now. Tap retry to try again.',
+                  ),
+                );
+              } else if (t.text.trim().isNotEmpty) {
+                restored.add(
+                  _ConversationTurn.ai(
+                    _ConversationPayload(
+                      messageTarget: t.text,
+                      englishTranslation: t.englishTranslation,
+                      correction: t.correction != null
+                          ? _ConversationCorrection(
+                              tier: t.correction!.tier,
+                              hasCorrection: t.correction!.hasCorrection,
+                              wasCorrect: t.correction!.wasCorrect,
+                              correction: t.correction!.correction,
+                              note: t.correction!.note,
+                            )
+                          : const _ConversationCorrection(
+                              tier: 'correct',
+                              hasCorrection: false,
+                              wasCorrect: true,
+                              correction: null,
+                              note: '',
+                            ),
+                      suggestedReplies: t.suggestedReplies,
+                      newVocab: t.newVocab
+                          .map(
+                            (v) => _ConversationVocab(
+                              word: v.word,
+                              meaning: v.meaning,
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ),
+                );
+              }
+            }
+          }
+          conversationMessages.value = restored;
+          conversationId.value = doc.conversationId;
+          if (doc.language.isNotEmpty &&
+              doc.language != activeTargetLanguage.value) {
+            activeTargetLanguage.value = doc.language;
+          }
+        } catch (e) {
+          debugPrint('[Polie] conversation restore failed: $e');
+        }
+      }();
+      return null;
+    }, const []);
 
     final vocabCard = useState<_VocabPayload?>(null);
     final vocabReveal = useState<bool>(false);
@@ -894,6 +999,49 @@ Stay in character. Respond naturally for the scene.
       }
     }
 
+    Future<void> toggleConversationVoiceInput() async {
+      voiceErrorMessage.value = null;
+      if (voiceListening.value) {
+        await voiceService.stop();
+        voiceListening.value = false;
+        return;
+      }
+      try {
+        // Subscribe before starting so we don't miss the first transcript.
+        late StreamSubscription<PolieVoiceTranscript> sub;
+        sub = voiceService.transcripts.listen(
+          (t) {
+            conversationInput.text = t.text;
+            conversationInput.selection = TextSelection.fromPosition(
+              TextPosition(offset: conversationInput.text.length),
+            );
+            if (t.isFinal) {
+              voiceListening.value = false;
+              sub.cancel();
+              if (t.text.trim().isNotEmpty) {
+                // Auto-send the final transcription so voice ↔ AI chat is
+                // a true conversational loop.
+                sendConversation();
+              }
+            }
+          },
+          onError: (e) {
+            voiceErrorMessage.value = e.toString();
+            voiceListening.value = false;
+            sub.cancel();
+          },
+          onDone: () {
+            sub.cancel();
+          },
+        );
+        voiceListening.value = true;
+        await voiceService.start(language: targetLanguage);
+      } catch (e) {
+        voiceErrorMessage.value = e.toString();
+        voiceListening.value = false;
+      }
+    }
+
     Future<void> sendConversation([String? prefilledText]) async {
       final text = (prefilledText ?? conversationInput.text).trim();
       if (text.isEmpty) return;
@@ -921,6 +1069,214 @@ Stay in character. Respond naturally for the scene.
       ];
       if (prefilledText == null) conversationInput.clear();
       isBusy.value = true;
+      final turnStarted = DateTime.now();
+
+      // Ensure conversationId is set for persistence + sync.
+      conversationId.value ??= const uuid.Uuid().v4();
+      final activeConversationId = conversationId.value!;
+
+      // Persist user turn locally; non-blocking.
+      unawaited(
+        persistence.appendTurn(
+          conversationId: activeConversationId,
+          language: targetLanguage,
+          persona: 'encouraging_mentor',
+          titleHint: text,
+          turn: PersistedTurn(
+            role: 'user',
+            text: text,
+            language: targetLanguage,
+            createdAt: DateTime.now(),
+          ),
+        ),
+      );
+
+      // ---------------------------------------------------------------------
+      // Primary path: streaming SSE conversation.
+      //
+      // We attempt the new /api/v2/polie/conversation/stream endpoint first so
+      // the user sees token-by-token output (p50 first token < 1.2s). If the
+      // stream returns a server error OR yields no meaningful text, we fall
+      // through to the legacy JSON-only path below.
+      // ---------------------------------------------------------------------
+      bool streamingSucceeded = false;
+      try {
+        final streamService = PolieConversationStreamService();
+        final streamHistory = <PolieConversationTurnInput>[];
+        for (final turn in conversationMessages.value) {
+          if (turn.userText != null && turn.userText!.trim().isNotEmpty) {
+            streamHistory.add(
+              PolieConversationTurnInput(
+                role: 'user',
+                text: turn.userText!.trim(),
+              ),
+            );
+          } else if (turn.ai != null &&
+              !turn.ai!.isError &&
+              turn.ai!.messageTarget.trim().isNotEmpty) {
+            streamHistory.add(
+              PolieConversationTurnInput(
+                role: 'assistant',
+                text: turn.ai!.messageTarget.trim(),
+              ),
+            );
+          }
+        }
+        // Pop the just-appended current user message — it's passed separately.
+        if (streamHistory.isNotEmpty &&
+            streamHistory.last.role == 'user' &&
+            streamHistory.last.text == text) {
+          streamHistory.removeLast();
+        }
+
+        conversationStreamingTarget.value = '';
+        conversationStreamingActive.value = true;
+
+        PolieConversationStreamFinalEvent? finalEvent;
+        String? streamError;
+
+        await for (final evt in streamService.sendConversationTurn(
+          language: targetLanguage,
+          userMessage: text,
+          conversationId: conversationId.value,
+          responseStyle: conversationResponseStyle.value,
+          wantsEnglish: wantsEnglish,
+          history: streamHistory,
+        )) {
+          if (evt is PolieConversationStreamMetaEvent) {
+            conversationId.value = evt.conversationId;
+          } else if (evt is PolieConversationStreamDeltaEvent) {
+            conversationStreamingTarget.value =
+                '${conversationStreamingTarget.value}${evt.text}';
+          } else if (evt is PolieConversationStreamFinalEvent) {
+            finalEvent = evt;
+          } else if (evt is PolieConversationStreamErrorEvent) {
+            streamError = evt.error;
+          } else if (evt is PolieConversationStreamDoneEvent) {
+            break;
+          }
+        }
+
+        conversationStreamingActive.value = false;
+        conversationStreamingTarget.value = '';
+        streamService.dispose();
+
+        if (streamError == null &&
+            finalEvent != null &&
+            finalEvent.messageTarget.trim().isNotEmpty) {
+          final payload = _enforceConversationDiacritics(
+            _ConversationPayload(
+              messageTarget: finalEvent.messageTarget,
+              englishTranslation: finalEvent.englishTranslation,
+              correction: _ConversationCorrection(
+                tier: finalEvent.correction.tier,
+                hasCorrection: finalEvent.correction.hasCorrection,
+                wasCorrect: finalEvent.correction.wasCorrect,
+                correction: finalEvent.correction.correction,
+                note: finalEvent.correction.note,
+              ),
+              suggestedReplies: finalEvent.suggestedReplies,
+              newVocab: finalEvent.newVocab
+                  .map(
+                    (v) => _ConversationVocab(
+                      word: v.word,
+                      meaning: v.meaning,
+                    ),
+                  )
+                  .toList(),
+            ),
+            targetLanguage,
+          );
+          conversationMessages.value = [
+            ...conversationMessages.value,
+            _ConversationTurn.ai(payload),
+          ];
+          // Update language ratio for the in-app progress bar.
+          final targetLetters = RegExp(r'[^\x00-\x7F]').hasMatch(text);
+          final oldRatio = languageRatio.value;
+          languageRatio.value =
+              ((oldRatio * (conversationMessages.value.length - 1)) +
+                      (targetLetters ? 1 : 0)) /
+                  conversationMessages.value.length;
+          // Persist assistant turn (server already saved its copy, this is
+          // the local cache for offline resilience).
+          unawaited(
+            persistence.appendTurn(
+              conversationId: activeConversationId,
+              language: targetLanguage,
+              persona: 'encouraging_mentor',
+              turn: PersistedTurn(
+                role: 'assistant',
+                text: payload.messageTarget,
+                language: targetLanguage,
+                englishTranslation: payload.englishTranslation,
+                correction: PersistedCorrection(
+                  tier: payload.correction.tier,
+                  hasCorrection: payload.correction.hasCorrection,
+                  wasCorrect: payload.correction.wasCorrect,
+                  correction: payload.correction.correction,
+                  note: payload.correction.note,
+                ),
+                suggestedReplies: payload.suggestedReplies,
+                newVocab: payload.newVocab
+                    .map(
+                      (v) => PersistedVocab(
+                        word: v.word,
+                        meaning: v.meaning,
+                      ),
+                    )
+                    .toList(),
+                createdAt: DateTime.now(),
+              ),
+            ),
+          );
+          streamingSucceeded = true;
+          unawaited(
+            ref.read(telemetryServiceProvider).trackPolieConversationTurn(
+              language: targetLanguage,
+              success: true,
+              usedStreaming: true,
+              durationMs:
+                  DateTime.now().difference(turnStarted).inMilliseconds,
+              messageLength: payload.messageTarget.length,
+            ),
+          );
+        } else {
+          // Streaming failed: fall through to legacy JSON path.
+          debugPrint(
+            '[Polie] stream failed; falling back to JSON path: $streamError',
+          );
+          unawaited(
+            ref.read(telemetryServiceProvider).trackPolieConversationTurn(
+              language: targetLanguage,
+              success: false,
+              usedStreaming: true,
+              durationMs:
+                  DateTime.now().difference(turnStarted).inMilliseconds,
+              errorCode: streamError ?? 'empty_stream',
+            ),
+          );
+        }
+      } catch (e) {
+        conversationStreamingActive.value = false;
+        conversationStreamingTarget.value = '';
+        debugPrint('[Polie] streaming threw $e; using JSON fallback');
+        unawaited(
+          ref.read(telemetryServiceProvider).trackPolieConversationTurn(
+            language: targetLanguage,
+            success: false,
+            usedStreaming: true,
+            durationMs: DateTime.now().difference(turnStarted).inMilliseconds,
+            errorCode: 'stream_exception',
+          ),
+        );
+      }
+
+      if (streamingSucceeded) {
+        isBusy.value = false;
+        return;
+      }
+
       try {
         bool _userAskedForGreeting(String userText) {
           final t = userText.toLowerCase();
@@ -997,17 +1353,25 @@ Stay in character. Respond naturally for the scene.
           return false;
         }
 
+        // Relaxed gate (v4): only reject clearly broken outputs. Previously this
+        // gate enforced an 80-char minimum + sentence-richness which caused
+        // valid short, idiomatic replies to be discarded. We now accept any
+        // reasonable answer and only retry when:
+        //   - The response is empty after cleaning, OR
+        //   - It looks like raw JSON or markdown fences leaked through, OR
+        //   - It is a bare greeting when the user did not ask for one, OR
+        //   - It is severely truncated mid-word (no terminal punctuation AND
+        //     ends with a partial token).
         bool _isMissingOrWeakMessageTarget(Map<String, dynamic> obj) {
           final raw = (obj['message_target'] ?? obj['message'] ?? '').toString();
           final cleaned = _cleanAiText(raw, fallback: '').trim();
           if (cleaned.isEmpty) return true;
-          // Hard floor: avoid 1–2 word outputs like "Báwo ni".
+          if (cleaned.startsWith('{') || cleaned.startsWith('[')) return true;
           if (!_userAskedForGreeting(text) && _looksLikeGreetingOnly(cleaned)) {
             return true;
           }
-          if (cleaned.length < 80) return true;
-          if (_looksTruncated(cleaned)) return true;
-          if (!_isConversationResponseRich(cleaned)) return true;
+          // Severe truncation: very short AND no terminal punctuation.
+          if (cleaned.length < 12 && _looksTruncated(cleaned)) return true;
           return false;
         }
 
@@ -1040,6 +1404,39 @@ Stay in character. Respond naturally for the scene.
           targetLanguage,
         );
 
+        // Build the rolling multi-turn history buffer from the in-memory
+        // conversation. We include the most recent turns (up to
+        // [PolieConversationPromptBuilder.maxHistoryTurns]) so the LLM has
+        // proper context for coreference, follow-ups, and topic continuity.
+        final history = <PolieConversationTurnContext>[];
+        for (final turn in conversationMessages.value) {
+          if (turn.userText != null && turn.userText!.trim().isNotEmpty) {
+            // Skip the just-appended current user message (added at line ~920).
+            history.add(
+              PolieConversationTurnContext(
+                role: 'user',
+                text: turn.userText!.trim(),
+              ),
+            );
+          } else if (turn.ai != null &&
+              !turn.ai!.isError &&
+              turn.ai!.messageTarget.trim().isNotEmpty) {
+            history.add(
+              PolieConversationTurnContext(
+                role: 'assistant',
+                text: turn.ai!.messageTarget.trim(),
+              ),
+            );
+          }
+        }
+        // Pop the current user message off the tail — it's passed separately
+        // via [userMessage] in the prompt. This avoids the LLM seeing it twice.
+        if (history.isNotEmpty &&
+            history.last.role == 'user' &&
+            history.last.text == text) {
+          history.removeLast();
+        }
+
         Map<String, dynamic>? json = await askForJson(
           convBuilder.buildConversationJsonPrompt(
             targetLanguage: targetLanguage,
@@ -1049,6 +1446,7 @@ Stay in character. Respond naturally for the scene.
             wantsEnglish: wantsEnglish,
             personaSystemPrefix: personaPrefix,
             nonce: nonce,
+            history: history,
           ),
         );
 
@@ -1064,6 +1462,7 @@ Stay in character. Respond naturally for the scene.
               personaSystemPrefix: personaPrefix,
               nonce: DateTime.now().microsecondsSinceEpoch,
               strict: true,
+              history: history,
             ),
           );
           if (strictJson != null && !_isMissingOrWeakMessageTarget(strictJson)) {
@@ -1141,16 +1540,45 @@ User message: "$text"
             }
           }
 
+          if (targetReply.isEmpty) {
+            // Generation failed end-to-end. Surface a real error turn so the
+            // user can retry instead of seeing a meaningless "-" placeholder.
+            conversationMessages.value = [
+              ...conversationMessages.value,
+              _ConversationTurn.aiError(
+                'Polie could not generate a reply just now. Tap retry to try again.',
+                retryUserText: text,
+              ),
+            ];
+            unawaited(
+              persistence.appendTurn(
+                conversationId: activeConversationId,
+                language: targetLanguage,
+                persona: 'encouraging_mentor',
+                turn: PersistedTurn(
+                  role: 'assistant',
+                  text: '',
+                  language: targetLanguage,
+                  isError: true,
+                  errorMessage:
+                      'Polie could not generate a reply just now. Tap retry to try again.',
+                  createdAt: DateTime.now(),
+                ),
+              ),
+            );
+            return;
+          }
+
           final fallbackPayload = _enforceConversationDiacritics(
             _ConversationPayload(
-              messageTarget: targetReply.isEmpty ? '-' : targetReply,
+              messageTarget: targetReply,
               englishTranslation: englishTranslation,
               correction: const _ConversationCorrection(
                 tier: 'correct',
                 hasCorrection: false,
                 wasCorrect: true,
                 correction: null,
-                note: '-',
+                note: '',
               ),
               suggestedReplies: const [],
               newVocab: const [],
@@ -1162,6 +1590,20 @@ User message: "$text"
             ...conversationMessages.value,
             _ConversationTurn.ai(fallbackPayload),
           ];
+          unawaited(
+            persistence.appendTurn(
+              conversationId: activeConversationId,
+              language: targetLanguage,
+              persona: 'encouraging_mentor',
+              turn: PersistedTurn(
+                role: 'assistant',
+                text: fallbackPayload.messageTarget,
+                language: targetLanguage,
+                englishTranslation: fallbackPayload.englishTranslation,
+                createdAt: DateTime.now(),
+              ),
+            ),
+          );
           return;
         }
 
@@ -1184,10 +1626,59 @@ User message: "$text"
               ((oldRatio * (conversationMessages.value.length - 1)) +
                   (targetLetters ? 1 : 0)) /
               conversationMessages.value.length;
+          unawaited(
+            persistence.appendTurn(
+              conversationId: activeConversationId,
+              language: targetLanguage,
+              persona: 'encouraging_mentor',
+              turn: PersistedTurn(
+                role: 'assistant',
+                text: payload.messageTarget,
+                language: targetLanguage,
+                englishTranslation: payload.englishTranslation,
+                correction: PersistedCorrection(
+                  tier: payload.correction.tier,
+                  hasCorrection: payload.correction.hasCorrection,
+                  wasCorrect: payload.correction.wasCorrect,
+                  correction: payload.correction.correction,
+                  note: payload.correction.note,
+                ),
+                suggestedReplies: payload.suggestedReplies,
+                newVocab: payload.newVocab
+                    .map(
+                      (v) => PersistedVocab(
+                        word: v.word,
+                        meaning: v.meaning,
+                      ),
+                    )
+                    .toList(),
+                createdAt: DateTime.now(),
+              ),
+            ),
+          );
+          unawaited(
+            ref.read(telemetryServiceProvider).trackPolieConversationTurn(
+              language: targetLanguage,
+              success: true,
+              usedStreaming: false,
+              durationMs:
+                  DateTime.now().difference(turnStarted).inMilliseconds,
+              messageLength: payload.messageTarget.length,
+            ),
+          );
         }
       } catch (e) {
         modeError.value =
             'Conversation error: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
+        unawaited(
+          ref.read(telemetryServiceProvider).trackPolieConversationTurn(
+            language: targetLanguage,
+            success: false,
+            usedStreaming: false,
+            durationMs: DateTime.now().difference(turnStarted).inMilliseconds,
+            errorCode: 'conversation_exception',
+          ),
+        );
       } finally {
         isBusy.value = false;
       }
@@ -1441,25 +1932,108 @@ Language: $targetLanguage
           ),
         ),
         actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 8),
-            padding: EdgeInsets.symmetric(
-              horizontal: isCompactTopBar ? 8 : 12,
-              vertical: 8,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: modeTheme.border),
-              color: modeTheme.card,
-            ),
-            child: Row(
-              children: [
-                if (!isCompactTopBar) const Text('NG'),
-                if (!isCompactTopBar) const SizedBox(width: 6),
-                Text(targetLanguage),
-                const SizedBox(width: 4),
-                const Icon(Icons.keyboard_arrow_down_rounded, size: 18),
-              ],
+          InkWell(
+            borderRadius: BorderRadius.circular(12),
+            onTap: isBusy.value
+                ? null
+                : () async {
+                    final selected = await showModalBottomSheet<String>(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.white,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20),
+                        ),
+                      ),
+                      builder: (sheetCtx) {
+                        final options = kPolieTranslateLanguageOptions
+                            .where((o) => o.displayName != 'Auto Detect')
+                            .toList()
+                          ..sort((a, b) =>
+                              a.displayName.compareTo(b.displayName));
+                        return SafeArea(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: ListView(
+                              shrinkWrap: true,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(
+                                    16,
+                                    8,
+                                    16,
+                                    12,
+                                  ),
+                                  child: Text(
+                                    'Choose conversation language',
+                                    style: GoogleFonts.playfairDisplay(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                                for (final o in options)
+                                  ListTile(
+                                    dense: true,
+                                    leading: Text(
+                                      o.flag,
+                                      style: const TextStyle(fontSize: 20),
+                                    ),
+                                    title: Text(o.displayName),
+                                    trailing: o.displayName == targetLanguage
+                                        ? const Icon(
+                                            Icons.check_rounded,
+                                            color: Color(0xFFD4822A),
+                                          )
+                                        : null,
+                                    onTap: () => Navigator.of(sheetCtx)
+                                        .pop(o.displayName),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                    if (selected != null && selected != targetLanguage) {
+                      activeTargetLanguage.value = selected;
+                      try {
+                        await chat.setModeAndLanguage(
+                          mode: activeMode.value,
+                          targetLanguage: selected,
+                        );
+                      } catch (e) {
+                        debugPrint(
+                          '[Polie] setModeAndLanguage failed: $e',
+                        );
+                      }
+                    }
+                  },
+            child: Container(
+              margin: const EdgeInsets.only(right: 8),
+              padding: EdgeInsets.symmetric(
+                horizontal: isCompactTopBar ? 8 : 12,
+                vertical: 8,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: modeTheme.border),
+                color: modeTheme.card,
+              ),
+              child: Row(
+                children: [
+                  if (!isCompactTopBar)
+                    Text(
+                      (polieOptionForDisplayName(targetLanguage)?.flag ??
+                          '🌍'),
+                    ),
+                  if (!isCompactTopBar) const SizedBox(width: 6),
+                  Text(targetLanguage),
+                  const SizedBox(width: 4),
+                  const Icon(Icons.keyboard_arrow_down_rounded, size: 18),
+                ],
+              ),
             ),
           ),
           if (!isCompactTopBar)
@@ -1593,6 +2167,13 @@ Language: $targetLanguage
                 languageRatio: languageRatio.value,
                 onSendConversation: sendConversation,
                 onSpeakText: speakText,
+                conversationStreamingActive:
+                    conversationStreamingActive.value,
+                conversationStreamingTarget:
+                    conversationStreamingTarget.value,
+                conversationVoiceListening: voiceListening.value,
+                onToggleConversationVoiceInput:
+                    toggleConversationVoiceInput,
                 // vocab
                 vocabCard: vocabCard.value,
                 vocabReveal: vocabReveal,
@@ -1670,6 +2251,10 @@ Language: $targetLanguage
     required Future<void> Function([String?]) onSendConversation,
     required Future<void> Function(String text, {String? languageName})
         onSpeakText,
+    required bool conversationStreamingActive,
+    required String conversationStreamingTarget,
+    required bool conversationVoiceListening,
+    required Future<void> Function() onToggleConversationVoiceInput,
     required _VocabPayload? vocabCard,
     required ValueNotifier<bool> vocabReveal,
     required ValueNotifier<String> vocabSetName,
@@ -3159,8 +3744,47 @@ Language: $targetLanguage
                   horizontal: 12,
                   vertical: 8,
                 ),
-                itemCount: conversationMessages.length,
+                // +1 slot reserved for the live streaming bubble when active.
+                itemCount: conversationMessages.length +
+                    (conversationStreamingActive ? 1 : 0),
                 itemBuilder: (context, index) {
+                  // Render the live streaming bubble as the last slot.
+                  if (conversationStreamingActive &&
+                      index == conversationMessages.length) {
+                    final preview = conversationStreamingTarget.trim();
+                    return Align(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(
+                            color: theme.border.withOpacity(0.45),
+                          ),
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                preview.isEmpty
+                                    ? 'Polie is typing…'
+                                    : '$preview▎',
+                                style: bodyStyle.copyWith(
+                                  color: const Color(0xFF2D1B0E),
+                                  fontStyle: preview.isEmpty
+                                      ? FontStyle.italic
+                                      : FontStyle.normal,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
                   final item = conversationMessages[index];
                   if (item.userText != null) {
                     return Align(
@@ -3180,6 +3804,68 @@ Language: $targetLanguage
                     );
                   }
                   final ai = item.ai!;
+                  // Render dedicated error bubble with retry CTA when an AI
+                  // turn represents a failed generation.
+                  if (ai.isError) {
+                    return Align(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFFF4EC),
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(
+                            color: const Color(0xFFD4822A).withOpacity(0.5),
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.error_outline,
+                                  size: 18,
+                                  color: Color(0xFFD4822A),
+                                ),
+                                const SizedBox(width: 6),
+                                Expanded(
+                                  child: Text(
+                                    ai.errorMessage ??
+                                        'Something went wrong. Try again.',
+                                    style: bodyStyle.copyWith(
+                                      color: const Color(0xFF2D1B0E),
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              children: [
+                                FilledButton.tonalIcon(
+                                  onPressed: isBusy
+                                      ? null
+                                      : () {
+                                          final retryText =
+                                              item.userMessageForRetry;
+                                          if (retryText != null &&
+                                              retryText.trim().isNotEmpty) {
+                                            onSendConversation(retryText);
+                                          }
+                                        },
+                                  icon: const Icon(Icons.refresh, size: 18),
+                                  label: const Text('Retry'),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
                   return Align(
                     alignment: Alignment.centerLeft,
                     child: Container(
@@ -3199,10 +3885,31 @@ Language: $targetLanguage
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
-                                child: Text(
-                                  ai.messageTarget,
-                                  style: bodyStyle.copyWith(
-                                    color: const Color(0xFF2D1B0E),
+                                child: MarkdownBody(
+                                  data: ai.messageTarget,
+                                  selectable: true,
+                                  styleSheet: MarkdownStyleSheet(
+                                    p: bodyStyle.copyWith(
+                                      color: const Color(0xFF2D1B0E),
+                                    ),
+                                    strong: bodyStyle.copyWith(
+                                      color: const Color(0xFF2D1B0E),
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    em: bodyStyle.copyWith(
+                                      color: const Color(0xFF2D1B0E),
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                    listBullet: bodyStyle.copyWith(
+                                      color: const Color(0xFF2D1B0E),
+                                    ),
+                                    code: bodyStyle.copyWith(
+                                      color: const Color(0xFF7A4A20),
+                                      backgroundColor:
+                                          const Color(0xFFF5E5D0),
+                                      fontFamily: 'monospace',
+                                    ),
+                                    blockSpacing: 6,
                                   ),
                                 ),
                               ),
@@ -3269,6 +3976,63 @@ Language: $targetLanguage
                                 ],
                               ),
                             ),
+                          if (ai.newVocab.isNotEmpty) ...[
+                            const SizedBox(height: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 8,
+                              ),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF5E5D0),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'New words',
+                                    style: bodyStyle.copyWith(
+                                      color: const Color(0xFF7A4A20),
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Wrap(
+                                    spacing: 6,
+                                    runSpacing: 6,
+                                    children: ai.newVocab.take(6).map((v) {
+                                      return Tooltip(
+                                        message: v.meaning.isEmpty
+                                            ? v.word
+                                            : '${v.word} — ${v.meaning}',
+                                        child: InputChip(
+                                          label: Text(
+                                            v.word,
+                                            style: TextStyle(
+                                              fontSize:
+                                                  isTinyPhone ? 11 : 13,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                          backgroundColor: Colors.white,
+                                          side: BorderSide(
+                                            color: const Color(0xFFD4822A)
+                                                .withOpacity(0.5),
+                                          ),
+                                          visualDensity: VisualDensity.compact,
+                                          onPressed: isBusy
+                                              ? null
+                                              : () => onSpeakText(v.word),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                           if (ai.suggestedReplies.isNotEmpty) ...[
                             const SizedBox(height: 6),
                             Wrap(
@@ -3302,6 +4066,86 @@ Language: $targetLanguage
                                   .toList(),
                             ),
                           ],
+                          const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              IconButton(
+                                visualDensity: VisualDensity.compact,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                ),
+                                constraints: const BoxConstraints(
+                                  minWidth: 30,
+                                  minHeight: 30,
+                                ),
+                                tooltip: 'Copy',
+                                onPressed: () async {
+                                  await Clipboard.setData(
+                                    ClipboardData(text: ai.messageTarget),
+                                  );
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        duration: Duration(seconds: 1),
+                                        content: Text('Copied'),
+                                      ),
+                                    );
+                                  }
+                                },
+                                icon: const Icon(
+                                  Icons.copy_rounded,
+                                  size: 16,
+                                ),
+                              ),
+                              IconButton(
+                                visualDensity: VisualDensity.compact,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                ),
+                                constraints: const BoxConstraints(
+                                  minWidth: 30,
+                                  minHeight: 30,
+                                ),
+                                tooltip: 'Share',
+                                onPressed: () async {
+                                  await Share.share(ai.messageTarget);
+                                },
+                                icon: const Icon(
+                                  Icons.ios_share_rounded,
+                                  size: 16,
+                                ),
+                              ),
+                              IconButton(
+                                visualDensity: VisualDensity.compact,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                ),
+                                constraints: const BoxConstraints(
+                                  minWidth: 30,
+                                  minHeight: 30,
+                                ),
+                                tooltip: 'Regenerate',
+                                onPressed: isBusy
+                                    ? null
+                                    : () {
+                                        // Locate the immediately preceding
+                                        // user message and resend it.
+                                        for (var i = index - 1; i >= 0; i--) {
+                                          final prev =
+                                              conversationMessages[i];
+                                          if (prev.userText != null) {
+                                            onSendConversation(prev.userText);
+                                            return;
+                                          }
+                                        }
+                                      },
+                                icon: const Icon(
+                                  Icons.refresh_rounded,
+                                  size: 16,
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -3402,9 +4246,26 @@ Language: $targetLanguage
                       ),
                       const SizedBox(width: 8),
                       IconButton(
-                        onPressed: () {},
-                        style: IconButton.styleFrom(backgroundColor: Colors.white),
-                        icon: const Icon(Icons.mic_none_rounded, size: 20),
+                        onPressed: isBusy
+                            ? null
+                            : () => onToggleConversationVoiceInput(),
+                        style: IconButton.styleFrom(
+                          backgroundColor: conversationVoiceListening
+                              ? const Color(0xFFD4822A)
+                              : Colors.white,
+                          foregroundColor: conversationVoiceListening
+                              ? Colors.white
+                              : null,
+                        ),
+                        tooltip: conversationVoiceListening
+                            ? 'Stop listening'
+                            : 'Speak in $targetLanguage',
+                        icon: Icon(
+                          conversationVoiceListening
+                              ? Icons.stop_rounded
+                              : Icons.mic_none_rounded,
+                          size: 20,
+                        ),
                       ),
                       const SizedBox(width: 6),
                       FilledButton(
@@ -4520,7 +5381,10 @@ Map<String, dynamic>? _tryParseJson(String raw) {
 dynamic _n(Map<String, dynamic>? map, String key, dynamic fallback) =>
     map?[key] ?? fallback;
 
-String _cleanAiText(String input, {String fallback = '-'}) {
+/// Cleans LLM output for safe display. Default fallback is empty string so the
+/// UI can render a proper empty/error state instead of a meaningless "-".
+/// Callers that need a placeholder must pass it explicitly.
+String _cleanAiText(String input, {String fallback = ''}) {
   var out = input.trim();
   if (out.isEmpty) return fallback;
   out = out
@@ -4531,6 +5395,8 @@ String _cleanAiText(String input, {String fallback = '-'}) {
       .replaceAll(RegExp(r'"\s*\}\s*$', multiLine: true), '')
       .replaceAll(RegExp(r'\s+'), ' ')
       .trim();
+  if (out.isEmpty) return fallback;
+  if (out == '-' || out == '--') return fallback;
   if (out.startsWith('{') || out.startsWith('[')) return fallback;
   return out;
 }
@@ -4997,13 +5863,40 @@ class _ConversationPayload {
   final _ConversationCorrection correction;
   final List<String> suggestedReplies;
   final List<_ConversationVocab> newVocab;
+  /// When true, this turn represents a failed generation. UI shows a retry CTA.
+  final bool isError;
+  /// User-facing error message when [isError] is true.
+  final String? errorMessage;
   const _ConversationPayload({
     required this.messageTarget,
     required this.englishTranslation,
     required this.correction,
     required this.suggestedReplies,
     required this.newVocab,
+    this.isError = false,
+    this.errorMessage,
   });
+
+  /// Constructs an error payload for failed generations so the UI can render a
+  /// proper retry state instead of the legacy "-" placeholder.
+  factory _ConversationPayload.error(String message) {
+    return _ConversationPayload(
+      messageTarget: '',
+      englishTranslation: null,
+      correction: const _ConversationCorrection(
+        tier: 'correct',
+        hasCorrection: false,
+        wasCorrect: true,
+        correction: null,
+        note: '',
+      ),
+      suggestedReplies: const [],
+      newVocab: const [],
+      isError: true,
+      errorMessage: message,
+    );
+  }
+
   factory _ConversationPayload.fromJson(
     Map<String, dynamic> json,
     String fallback,
@@ -5016,10 +5909,12 @@ class _ConversationPayload {
         .map((e) => e is Map<String, dynamic> ? e : <String, dynamic>{})
         .toList();
     final rawEnglish = json['message_english'];
+    // Fallback chain prefers the raw model text (cleaned) over a literal "-".
+    final cleanedFallback = _cleanAiText(fallback);
     return _ConversationPayload(
       messageTarget: _cleanAiText(
-        (_n(json, 'message_target', _n(json, 'message', fallback)) as String),
-        fallback: _cleanAiText(fallback),
+        (_n(json, 'message_target', _n(json, 'message', cleanedFallback)) as String),
+        fallback: cleanedFallback,
       ),
       englishTranslation: (rawEnglish is String && rawEnglish.trim().isNotEmpty)
           ? _cleanAiText(rawEnglish)
@@ -5031,7 +5926,7 @@ class _ConversationPayload {
         correction: (_n(c, 'correction', '') as String?)?.trim().isEmpty ?? true
             ? null
             : (_n(c, 'correction', '') as String),
-        note: _cleanAiText((_n(c, 'note', '-') as String)),
+        note: _cleanAiText((_n(c, 'note', '') as String)),
       ),
       suggestedReplies: replies
           .map((e) => _cleanAiText(e, fallback: ''))
@@ -5084,11 +5979,23 @@ class _ConversationVocab {
 class _ConversationTurn {
   final String? userText;
   final _ConversationPayload? ai;
-  const _ConversationTurn._({this.userText, this.ai});
+  /// Indicates the user message that should be re-sent if this is an AI error
+  /// turn. Used to power the "Retry" CTA in the conversation bubble.
+  final String? userMessageForRetry;
+  const _ConversationTurn._({
+    this.userText,
+    this.ai,
+    this.userMessageForRetry,
+  });
   factory _ConversationTurn.user(String text) =>
       _ConversationTurn._(userText: text);
   factory _ConversationTurn.ai(_ConversationPayload ai) =>
       _ConversationTurn._(ai: ai);
+  factory _ConversationTurn.aiError(String message, {String? retryUserText}) =>
+      _ConversationTurn._(
+        ai: _ConversationPayload.error(message),
+        userMessageForRetry: retryUserText,
+      );
 }
 
 class _VocabPayload {

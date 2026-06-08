@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.lingafriq.com/v2/game_content.schema.json",
+  "title": "LingAfriq Game Content Bundle",
+  "description": "Bundled game content shipped as assets/data/game_content.json. Used by GameScenarioLoader and traditional games.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["meta", "scenarios", "words"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["version"],
+      "properties": {
+        "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "generated_at": { "type": "string", "format": "date-time" },
+        "description": { "type": "string" },
+        "languages": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "scenarios": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/scenario" }
+    },
+    "words": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/word" }
+    },
+    "proverbs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/proverb" }
+    },
+    "grammar_drills": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/grammarDrill" }
+    },
+    "liar_liar_rounds": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/liarLiarRound" }
+    }
+  },
+  "$defs": {
+    "scenario": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "game", "language", "cefr", "title", "prompt", "expected_response"],
+      "properties": {
+        "id": {
+          "oneOf": [
+            { "type": "integer", "minimum": 1 },
+            { "type": "string", "minLength": 1 }
+          ]
+        },
+        "game": { "type": "string", "minLength": 1 },
+        "language": { "type": "string", "minLength": 1 },
+        "cefr": { "type": "string", "enum": ["A1", "A2", "B1", "B2", "C1", "C2"] },
+        "difficulty": { "type": "string", "enum": ["intro", "easy", "medium", "hard", "expert"] },
+        "title": { "type": "string", "minLength": 1 },
+        "prompt": { "type": "string", "minLength": 1 },
+        "expected_response": { "type": "string", "minLength": 1 },
+        "alternate_responses": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "cultural_note": { "type": "string" },
+        "audio_url": { "type": "string", "format": "uri" }
+      }
+    },
+    "word": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "language", "word"],
+      "properties": {
+        "id": {
+          "oneOf": [
+            { "type": "integer", "minimum": 1 },
+            { "type": "string", "minLength": 1 }
+          ]
+        },
+        "language": { "type": "string", "minLength": 1 },
+        "word": { "type": "string", "minLength": 1 },
+        "term": { "type": "string", "minLength": 1 },
+        "english": { "type": "string", "minLength": 1 },
+        "english_meaning": { "type": "string", "minLength": 1 },
+        "phonetic_guide": { "type": ["string", "null"] },
+        "part_of_speech": { "type": "string" },
+        "pos": { "type": "string" },
+        "cefr": {
+          "type": "string",
+          "enum": ["A1", "A2", "B1", "B2", "C1", "C2"]
+        },
+        "topic": { "type": "string" },
+        "category": { "type": "string" },
+        "tonal_note": { "type": ["string", "null"] },
+        "cultural_note": { "type": ["string", "null"] },
+        "image_url": { "type": "string", "format": "uri" },
+        "audio_url": { "type": "string", "format": "uri" },
+        "synonyms": { "type": "array", "items": { "type": "string" } },
+        "game_tags": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "proverb": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "language", "original"],
+      "properties": {
+        "id": {
+          "oneOf": [
+            { "type": "integer", "minimum": 1 },
+            { "type": "string", "minLength": 1 }
+          ]
+        },
+        "language": { "type": "string", "minLength": 1 },
+        "original": { "type": "string", "minLength": 1 },
+        "text": { "type": "string", "minLength": 1 },
+        "translation": { "type": "string" },
+        "english": { "type": "string" },
+        "meaning": { "type": "string" },
+        "cefr": {
+          "type": "string",
+          "enum": ["A1", "A2", "B1", "B2", "C1", "C2"]
+        },
+        "occasion": { "type": "string" },
+        "game_tags": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "grammarDrill": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "language", "cefr"],
+      "properties": {
+        "id": {
+          "oneOf": [
+            { "type": "integer", "minimum": 1 },
+            { "type": "string", "minLength": 1 }
+          ]
+        },
+        "language": { "type": "string", "minLength": 1 },
+        "cefr": { "type": "string", "enum": ["A1", "A2", "B1", "B2", "C1", "C2"] },
+        "game": { "type": "string" },
+        "phrase": { "type": "string" },
+        "prompt": { "type": "string" },
+        "correct": { "type": "string" },
+        "answer": { "type": "string" },
+        "options": { "type": "array", "items": { "type": "string" } },
+        "distractors": { "type": "array", "items": { "type": "string" } },
+        "tip": { "type": "string" },
+        "explanation": { "type": "string" }
+      }
+    },
+    "liarLiarRound": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "language"],
+      "properties": {
+        "id": {
+          "oneOf": [
+            { "type": "integer", "minimum": 1 },
+            { "type": "string", "minLength": 1 }
+          ]
+        },
+        "language": { "type": "string", "minLength": 1 },
+        "sentence": { "type": "string" },
+        "statement": { "type": "string" },
+        "english": { "type": "string" },
+        "has_error": { "type": "boolean" },
+        "is_true": { "type": "boolean" },
+        "cefr": {
+          "type": "string",
+          "enum": ["A1", "A2", "B1", "B2", "C1", "C2"]
+        },
+        "explanation": { "type": "string" }
+      }
+    }
+  }
+}

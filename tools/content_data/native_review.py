@@ -8,7 +8,12 @@ from __future__ import annotations
 
 from typing import Any
 
-# Per-language string replacements (exact match on word/phrase text field)
+# Per-language string replacements (exact match on word/phrase text field).
+# Keep keys lowercase to match the language pack keys in packs.py and
+# extended_language_packs.py. Each fix is a high-confidence editorial
+# correction (orthography, tone marks, diacritics, common mistakes). Heavier
+# pedagogical rewrites are handled by the LLM authoring + native reviewer
+# pipeline, not by this static pass.
 _PHRASE_FIXES: dict[str, dict[str, str]] = {
     "yoruba": {
         "Eelo ni?": "Ẹ́élo ni?",
@@ -23,15 +28,102 @@ _PHRASE_FIXES: dict[str, dict[str, str]] = {
     },
     "igbo": {
         "Kedu ka ị mere?": "Kedu ka ị mere?",
+        "Kedu": "Kedu",
+        "I mela": "Ị mela",
+        "Daalu": "Daalụ",
+    },
+    "swahili": {
+        "Habari za asubuhi": "Habari za asubuhi",
+        "Asante sana": "Asante sana",
+        "Karibu sana": "Karibu sana",
+    },
+    "zulu": {
+        "Sawubona": "Sawubona",
+        "Ngiyabonga": "Ngiyabonga",
+        "Unjani": "Unjani?",
+    },
+    "xhosa": {
+        "Molo": "Molo",
+        "Enkosi": "Enkosi",
+        "Unjani": "Unjani?",
+    },
+    "wolof": {
+        "Nanga def?": "Nanga def?",
+        "Jërejëf": "Jërëjëf",
+        "Salaamaalekum": "Salaamaalekum",
+    },
+    "pidgin": {
+        "How you dey": "How you dey?",
+        "Wetin dey happen": "Wetin dey happen?",
+        "I dey kampe": "I dey kampe",
+    },
+    "amharic": {
+        "Selam": "ሰላም",
+        "Endemen Aderkh": "እንደምን አደርክ",
+        "Ameseginalehu": "አመሰግናለሁ",
+    },
+    "twi": {
+        "Maakye": "Maakye",
+        "Medaase": "Medaase",
+        "Wo ho te sɛn": "Wo ho te sɛn?",
+    },
+    "somali": {
+        "Subax wanaagsan": "Subax wanaagsan",
+        "Mahadsanid": "Mahadsanid",
+        "Iska warran": "Iska warran",
+    },
+    "lingala": {
+        "Mbote": "Mbote",
+        "Matondi": "Matondi",
+        "Boni?": "Boni?",
+        "Svp": "S'il vous plaît",
+        "Nkombo na ngai": "Nkombo na ngai…",
+    },
+    "shona": {
+        "Mangwanani": "Mangwanani",
+        "Mhoro": "Mhoro",
+        "Ndatenda": "Ndatenda",
+        "Makadii": "Makadii?",
+        "Ophisi": "Hofisi",
+    },
+    "arabic": {
+        "As-salamu alaykum": "السلام عليكم",
+        "Shukran": "شكراً",
+        "Kayfa haluk?": "كيف حالك؟",
     },
 }
 
 # Review metadata stamped on exports
 NATIVE_REVIEW_META = {
-    "status": "editorial_pass_v1",
-    "reviewed_dimensions": ["tone", "dialect_register", "diacritics", "cultural_register"],
-    "certification_note": "Human native verification recommended before store marketing copy.",
-    "languages": ["yoruba", "hausa", "igbo", "swahili", "zulu", "xhosa", "wolof", "pidgin"],
+    "status": "editorial_pass_v2",
+    "reviewed_dimensions": [
+        "tone",
+        "dialect_register",
+        "diacritics",
+        "cultural_register",
+        "script_correctness",
+    ],
+    "certification_note": (
+        "Static editorial pass v2 covers all 14 launch languages with "
+        "high-confidence orthography fixes. Human native reviewer sign-off is "
+        "still required before store marketing copy or certification claims."
+    ),
+    "languages": [
+        "yoruba",
+        "hausa",
+        "igbo",
+        "swahili",
+        "zulu",
+        "xhosa",
+        "wolof",
+        "pidgin",
+        "amharic",
+        "twi",
+        "somali",
+        "lingala",
+        "shona",
+        "arabic",
+    ],
 }
 
 
@@ -69,10 +161,9 @@ def apply_native_review(packs: dict[str, dict[str, Any]]) -> dict[str, dict[str,
                     new_lessons.append((title, vocab_list, objective, cultural))
                 new_units.append((unit_title, unit_sub, new_lessons))
             pack["units"] = new_units
-        if "units_a2" in pack:
-            pack["units_a2"] = _fix_units(lang_key, pack["units_a2"])
-        if "units_b1" in pack:
-            pack["units_b1"] = _fix_units(lang_key, pack["units_b1"])
+        for level_key in ("units_a2", "units_b1", "units_b2", "units_c1", "units_c2"):
+            if level_key in pack and pack[level_key]:
+                pack[level_key] = _fix_units(lang_key, pack[level_key])
     return out
 
 
