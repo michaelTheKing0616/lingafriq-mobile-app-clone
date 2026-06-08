@@ -12,6 +12,50 @@ class PolieTranslateLanguageOption {
 
   final String displayName;
   final String backendKey;
+
+  /// Emoji flag for language picker UI (falls back to globe).
+  String get flag => polieLanguageFlagEmoji(backendKey);
+}
+
+/// Display emoji for Polie translation / conversation language pickers.
+String polieLanguageFlagEmoji(String backendKey) {
+  switch (backendKey) {
+    case 'eng_Latn':
+      return '🇬🇧';
+    case 'fra_Latn':
+      return '🇫🇷';
+    case 'spa_Latn':
+      return '🇪🇸';
+    case 'por_Latn':
+      return '🇵🇹';
+    case 'arb_Arab':
+      return '🇸🇦';
+    case 'deu_Latn':
+      return '🇩🇪';
+    case 'zho_Hans':
+      return '🇨🇳';
+    case 'yor_Latn':
+    case 'hau_Latn':
+    case 'ibo_Latn':
+    case 'pcm_Latn':
+      return '🇳🇬';
+    case 'swh_Latn':
+      return '🇰🇪';
+    case 'zul_Latn':
+    case 'xho_Latn':
+    case 'afr_Latn':
+      return '🇿🇦';
+    case 'amh_Ethi':
+      return '🇪🇹';
+    case 'twi_Latn':
+      return '🇬🇭';
+    case 'wol_Latn':
+      return '🇸🇳';
+    case 'som_Latn':
+      return '🇸🇴';
+    default:
+      return '🌍';
+  }
 }
 
 /// Route / deep-link keys from older builds → FLORES codes in [kPolieTranslateLanguageOptions].

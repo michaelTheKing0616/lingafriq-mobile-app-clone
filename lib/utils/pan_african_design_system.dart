@@ -59,6 +59,9 @@ class PanAfricanColors {
   
   /// Kente Red
   static const Color kenteRed = Color(0xFFC4413A);
+
+  /// Kente-inspired gold accent (alias of [gold] for game/traditional UI).
+  static const Color kenteGold = gold;
   /// Kente Blue
   static const Color kenteBlue = Color(0xFF1CB0F6);
   /// Ankara Purple

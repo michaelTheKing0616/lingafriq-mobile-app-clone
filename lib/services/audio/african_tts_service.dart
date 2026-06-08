@@ -18,6 +18,7 @@
 // TtsAudioCache so subsequent plays are zero-latency and offline-safe.
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -29,7 +30,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:lingafriq/services/env_config.dart';
-import 'package:lingafriq/services/voice/voice_api_service.dart';
 import 'package:lingafriq/services/audio/tts_audio_cache.dart';
 
 enum TtsEngineTier { gold, silver, bronze, deviceFallback, unavailable }
@@ -57,7 +57,6 @@ class AfricanTtsService {
   final TtsAudioCache _cache = TtsAudioCache();
   final AudioPlayer _player = AudioPlayer();
   final FlutterTts _fallbackTts = FlutterTts();
-  final VoiceApiService _voice = VoiceApiService();
   bool _fallbackInitialized = false;
 
   /// In-memory lookup populated by [setManifest] to enable Gold tier resolution.
@@ -69,7 +68,7 @@ class AfricanTtsService {
     required TtsEngineTier tier,
     required bool playbackOk,
     String? engineLabel,
-    int textLength,
+    required int textLength,
   })? onResolution;
 
   /// Stats counters used by [telemetrySnapshot]; instrumentation only.
@@ -344,7 +343,7 @@ class AfricanTtsService {
       );
     }
 
-    final bytes = await _voice.synthesizeSpeech(
+    final bytes = await _fetchBronzeAudioBytes(
       text: text,
       language: language,
       voice: voice,
@@ -357,6 +356,43 @@ class AfricanTtsService {
         localFile: saved,
         engineLabel: 'xtts_v2',
       );
+    }
+    return null;
+  }
+
+  Future<Uint8List?> _fetchBronzeAudioBytes({
+    required String text,
+    required String language,
+    String? voice,
+    double speed = 1.0,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token =
+        prefs.getString('auth_token') ?? prefs.getString('access_token');
+    final base = EnvConfig.backendBaseUrl.replaceFirst(RegExp(r'/+$'), '');
+    final clipped = text.length > 500 ? text.substring(0, 500) : text;
+    final headers = <String, String>{
+      'Content-Type': 'application/json',
+      if (token != null && token.isNotEmpty) 'Authorization': 'Bearer $token',
+    };
+    try {
+      final synth = await http
+          .post(
+            Uri.parse('$base/api/voice/tts/synthesize'),
+            headers: headers,
+            body: jsonEncode({
+              'text': clipped,
+              'language': language,
+              if (voice != null && voice.trim().isNotEmpty) 'voice': voice.trim(),
+              'speed': speed,
+            }),
+          )
+          .timeout(const Duration(seconds: 45));
+      if (synth.statusCode == 200 && synth.bodyBytes.isNotEmpty) {
+        return synth.bodyBytes;
+      }
+    } catch (e) {
+      debugPrint('[AfricanTts] bronze synth failed: $e');
     }
     return null;
   }

@@ -97,13 +97,9 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
     final activeMode = useState<PolieMode>(
       conversationOnly ? PolieMode.conversation : initialMode,
     );
-    // Live target language. Initialized from the constructor and switchable at
-    // runtime via the AppBar language pill. We shadow the constructor field
-    // [targetLanguage] below so all build-scope code automatically picks up
-    // the active value without a wide refactor.
-    final activeTargetLanguage = useState<String>(targetLanguage);
-    // ignore: non_constant_identifier_names
-    final String targetLanguage = activeTargetLanguage.value;
+    // Live target language — switchable via the AppBar language pill.
+    final activeTargetLanguage = useState<String>(this.targetLanguage);
+    final targetLanguage = activeTargetLanguage.value;
     final isBusy = useState<bool>(false);
     final modeResponse = useState<String>('');
     final modeError = useState<String?>(null);
@@ -158,6 +154,7 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
     }, const []);
     final voiceListening = useState<bool>(false);
     final voiceErrorMessage = useState<String?>(null);
+    final pendingVoiceConversationText = useState<String?>(null);
     final persistence = useMemoized(
       () => ConversationPersistenceService(),
       const [],
@@ -1019,9 +1016,8 @@ Stay in character. Respond naturally for the scene.
               voiceListening.value = false;
               sub.cancel();
               if (t.text.trim().isNotEmpty) {
-                // Auto-send the final transcription so voice ↔ AI chat is
-                // a true conversational loop.
-                sendConversation();
+                // Auto-send after [sendConversation] is defined (see effect below).
+                pendingVoiceConversationText.value = t.text.trim();
               }
             }
           },
@@ -1683,6 +1679,14 @@ User message: "$text"
         isBusy.value = false;
       }
     }
+
+    useEffect(() {
+      final pending = pendingVoiceConversationText.value;
+      if (pending == null || pending.isEmpty) return null;
+      pendingVoiceConversationText.value = null;
+      unawaited(sendConversation(pending));
+      return null;
+    }, [pendingVoiceConversationText.value]);
 
     Future<void> loadVocabCard() async {
       isBusy.value = true;
