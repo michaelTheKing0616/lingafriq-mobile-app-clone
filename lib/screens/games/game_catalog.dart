@@ -358,6 +358,71 @@ class GameCatalog {
       icon: Icons.storefront,
       section: GameCatalogSection.cultural,
     ),
+    GameCatalogEntry(
+      type: GameType.ayoMancala,
+      name: 'Ayo (Mancala)',
+      description: 'Traditional board game with vocab triggers',
+      category: 'Traditional',
+      icon: Icons.grid_view_rounded,
+      section: GameCatalogSection.cultural,
+      rules: [
+        'Capture seeds by landing in your store.',
+        'Answer vocabulary prompts to earn extra moves.',
+        'Beat the AI by emptying their side first.',
+      ],
+    ),
+    GameCatalogEntry(
+      type: GameType.suweHopscotch,
+      name: 'Suwe (Hopscotch)',
+      description: 'Stone toss and tone patterns on the grid',
+      category: 'Traditional',
+      icon: Icons.apps_rounded,
+      section: GameCatalogSection.cultural,
+      rules: [
+        'Toss the stone onto the correct square.',
+        'Hop the grid and speak the phrase aloud.',
+        'Match tone patterns to advance.',
+      ],
+    ),
+    GameCatalogEntry(
+      type: GameType.ludoLanguage,
+      name: 'Language Ludo',
+      description: 'African Ludo with MCQ-gated moves',
+      category: 'Traditional',
+      icon: Icons.casino_outlined,
+      section: GameCatalogSection.cultural,
+      rules: [
+        'Roll the dice and answer a language question to move.',
+        'Land safely on marked squares.',
+        'First player to bring all tokens home wins.',
+      ],
+    ),
+    GameCatalogEntry(
+      type: GameType.snakesAndLaddersCultural,
+      name: 'Snakes & Ladders (Cultural)',
+      description: 'Proverb ladders and mistake-correction snakes',
+      category: 'Traditional',
+      icon: Icons.timeline,
+      section: GameCatalogSection.cultural,
+      rules: [
+        'Climb ladders when you recall proverbs correctly.',
+        'Snakes send you back when you miss a correction.',
+        'Reach the top to win the round.',
+      ],
+    ),
+    GameCatalogEntry(
+      type: GameType.whotCardGame,
+      name: 'Whot (Nigerian Cards)',
+      description: 'Full Whot rules with vocab per card',
+      category: 'Traditional',
+      icon: Icons.style_outlined,
+      section: GameCatalogSection.cultural,
+      rules: [
+        'Match suit or number to play a card.',
+        'Speak the vocab phrase on special cards.',
+        'Empty your hand first to win.',
+      ],
+    ),
   ];
 
   static final Map<GameType, GameCatalogEntry> byType = {
