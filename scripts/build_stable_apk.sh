@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # Build a sideloadable Flutter *release* APK (stable channel / production backend).
 #
-# Output:
-#   build/app/outputs/flutter-apk/app-release.apk
-#   dist/lingafriq-<version>-release.apk  (copy)
+# Output (arm64-v8a split APK — typical phones; much smaller than a fat APK):
+#   build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+#   dist/lingafriq-<version>-arm64-v8a-release.apk
 #
 # Signing:
 #   Uses android/key.properties + a JKS if present (Play upload key).
@@ -94,7 +94,8 @@ flutter pub get
 BUILD_ARGS=(
   apk
   --release
-  --target-platform=android-arm,android-arm64
+  --split-per-abi
+  --target-platform=android-arm64
   --split-debug-info=build/symbols
   --build-name="$VERSION_NAME"
   --build-number="$BUILD_NUMBER"
@@ -111,18 +112,19 @@ fi
 echo "==> flutter build ${BUILD_ARGS[*]}"
 flutter build "${BUILD_ARGS[@]}"
 
-APK_SRC="build/app/outputs/flutter-apk/app-release.apk"
+APK_SRC="build/app/outputs/flutter-apk/app-arm64-v8a-release.apk"
 if [ ! -f "$APK_SRC" ]; then
   echo "ERROR: APK not produced at $APK_SRC" >&2
+  ls -la build/app/outputs/flutter-apk 2>/dev/null || true
   exit 1
 fi
 
 mkdir -p dist
-APK_DST="dist/lingafriq-${VERSION_NAME}+${BUILD_NUMBER}-release.apk"
+APK_DST="dist/lingafriq-${VERSION_NAME}+${BUILD_NUMBER}-arm64-v8a-release.apk"
 cp -f "$APK_SRC" "$APK_DST"
 
 echo
-echo "✅ Stable release APK"
+echo "✅ Stable release APK (arm64-v8a)"
 echo "   $APK_DST"
 ls -lh "$APK_SRC" "$APK_DST"
 aapt dump badging "$APK_SRC" 2>/dev/null | head -n 8 || \
