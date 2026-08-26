@@ -66,7 +66,7 @@ if [ ! -f android/key.properties ]; then
   if [ ! -f "$KEYSTORE_PATH" ]; then
     echo "==> Generating gitignored sideload keystore (not the Play Store key)"
     mkdir -p android/app
-    keytool -genkeypair -batch \
+    keytool -genkeypair -noprompt \
       -keystore "$KEYSTORE_PATH" \
       -storetype JKS \
       -keyalg RSA -keysize 2048 -validity 10000 \
