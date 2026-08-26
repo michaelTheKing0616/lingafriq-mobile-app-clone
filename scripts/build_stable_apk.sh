@@ -91,10 +91,13 @@ chmod +x android/gradlew || true
 echo "==> flutter pub get"
 flutter pub get
 
+# Restrict native libs to arm64 so the APK stays sideload-sized.
+# Default abiFilters in android/app/build.gradle still include all ABIs for Play AAB.
+export ORG_GRADLE_PROJECT_lingafriqAbiFilters="${LINGAFRIQ_ABI_FILTERS:-arm64-v8a}"
+
 BUILD_ARGS=(
   apk
   --release
-  --split-per-abi
   --target-platform=android-arm64
   --split-debug-info=build/symbols
   --build-name="$VERSION_NAME"
@@ -112,7 +115,7 @@ fi
 echo "==> flutter build ${BUILD_ARGS[*]}"
 flutter build "${BUILD_ARGS[@]}"
 
-APK_SRC="build/app/outputs/flutter-apk/app-arm64-v8a-release.apk"
+APK_SRC="build/app/outputs/flutter-apk/app-release.apk"
 if [ ! -f "$APK_SRC" ]; then
   echo "ERROR: APK not produced at $APK_SRC" >&2
   ls -la build/app/outputs/flutter-apk 2>/dev/null || true
