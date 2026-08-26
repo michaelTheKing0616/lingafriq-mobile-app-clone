@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 # Build a sideloadable Flutter *release* APK (stable channel / production backend).
 #
-# Output (arm64-v8a split APK — typical phones; much smaller than a fat APK):
-#   build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+# Output:
+#   build/app/outputs/flutter-apk/app-release.apk
 #   dist/lingafriq-<version>-arm64-v8a-release.apk
+#
+# Default is arm64-v8a (typical phones). Override with:
+#   LINGAFRIQ_ABI_FILTERS=armeabi-v7a,arm64-v8a
 #
 # Signing:
 #   Uses android/key.properties + a JKS if present (Play upload key).
@@ -15,6 +18,7 @@
 #
 # Optional env:
 #   BACKEND_URL, CDN_URL, WS_URL, APP_WEB_URL, CERTIFICATE_PIN_HASHES
+#   LINGAFRIQ_ABI_FILTERS (default: arm64-v8a)
 #   ANDROID_HOME / ANDROID_SDK_ROOT, FLUTTER_HOME, JAVA_HOME
 
 set -euo pipefail
@@ -124,11 +128,45 @@ fi
 
 mkdir -p dist
 APK_DST="dist/lingafriq-${VERSION_NAME}+${BUILD_NUMBER}-arm64-v8a-release.apk"
-cp -f "$APK_SRC" "$APK_DST"
+
+# Plugin AARs can still pack extra ABIs. Strip them and re-sign so the
+# sideload APK is arm64-only (and small enough to share).
+KEEP_ABI="${LINGAFRIQ_ABI_FILTERS:-arm64-v8a}"
+BUILD_TOOLS="$ANDROID_HOME/build-tools/35.0.0"
+if [ ! -x "$BUILD_TOOLS/apksigner" ]; then
+  BUILD_TOOLS="$ANDROID_HOME/build-tools/36.0.0"
+fi
+
+STORE_FILE="$(grep '^storeFile=' android/key.properties | cut -d= -f2-)"
+STORE_PASS="$(grep '^storePassword=' android/key.properties | cut -d= -f2-)"
+KEY_PASS="$(grep '^keyPassword=' android/key.properties | cut -d= -f2-)"
+KEY_ALIAS="$(grep '^keyAlias=' android/key.properties | cut -d= -f2-)"
+if [[ "$STORE_FILE" != /* ]]; then
+  STORE_FILE="android/${STORE_FILE}"
+fi
+
+WORK="$(mktemp -d)"
+cp -f "$APK_SRC" "$WORK/in.apk"
+# Delete non-kept ABI trees without recompressing the rest of the APK.
+for abi in armeabi armeabi-v7a arm64-v8a x86 x86_64; do
+  if [ "$abi" != "$KEEP_ABI" ] && [[ ",$KEEP_ABI," != *",$abi,"* ]]; then
+    zip -d "$WORK/in.apk" "lib/${abi}/*" >/dev/null 2>&1 || true
+  fi
+done
+zip -d "$WORK/in.apk" "META-INF/*.SF" "META-INF/*.RSA" "META-INF/*.DSA" >/dev/null 2>&1 || true
+"$BUILD_TOOLS/zipalign" -f -p 4 "$WORK/in.apk" "$WORK/aligned.apk"
+"$BUILD_TOOLS/apksigner" sign \
+  --ks "$STORE_FILE" \
+  --ks-pass "pass:${STORE_PASS}" \
+  --key-pass "pass:${KEY_PASS}" \
+  --ks-key-alias "$KEY_ALIAS" \
+  --out "$APK_DST" \
+  "$WORK/aligned.apk"
+"$BUILD_TOOLS/apksigner" verify --verbose "$APK_DST" >/dev/null
+rm -rf "$WORK"
 
 echo
 echo "✅ Stable release APK (arm64-v8a)"
 echo "   $APK_DST"
 ls -lh "$APK_SRC" "$APK_DST"
-aapt dump badging "$APK_SRC" 2>/dev/null | head -n 8 || \
-  "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$APK_SRC" 2>/dev/null | head -n 8 || true
+"$BUILD_TOOLS/aapt" dump badging "$APK_DST" | head -n 8 || true

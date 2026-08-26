@@ -68,6 +68,16 @@ android {
     packagingOptions {
         jniLibs {
             useLegacyPackaging = false
+            // When building a phone sideload APK, drop unused ABI .so files from plugin AARs.
+            def abiProp = project.findProperty('lingafriqAbiFilters')
+            if (abiProp) {
+                def keep = abiProp.split(',').collect { it.trim() } as Set
+                ['armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'].each { abi ->
+                    if (!keep.contains(abi)) {
+                        excludes += ["lib/${abi}/**"]
+                    }
+                }
+            }
         }
     }
 
