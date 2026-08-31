@@ -57,6 +57,9 @@ keystore_base64.txt
 # CI logs / local artifacts (do not commit)
 logs_*/
 output/
+tool/stt_bakeoff/audio/*
+!tool/stt_bakeoff/audio/.gitkeep
+tool/stt_bakeoff/results/
 
 # Cursor / IDE artifacts
 Curosr_Chat_History/
