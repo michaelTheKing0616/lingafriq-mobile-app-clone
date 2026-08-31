@@ -55,9 +55,12 @@ android {
         
         // Support 16KB page size (required for Android 15+)
         // Configure NDK ABI filters - this is safe even if NDK isn't installed
-        // Flutter plugins will handle native library inclusion if needed
+        // Flutter plugins will handle native library inclusion if needed.
+        // Override for a phone-only sideload APK:
+        //   ORG_GRADLE_PROJECT_lingafriqAbiFilters=arm64-v8a
         ndk {
-            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+            def abiProp = project.findProperty('lingafriqAbiFilters') ?: 'armeabi-v7a,arm64-v8a,x86,x86_64'
+            abiFilters(*abiProp.split(',').collect { it.trim() })
         }
     }
     
@@ -65,6 +68,16 @@ android {
     packagingOptions {
         jniLibs {
             useLegacyPackaging = false
+            // When building a phone sideload APK, drop unused ABI .so files from plugin AARs.
+            def abiProp = project.findProperty('lingafriqAbiFilters')
+            if (abiProp) {
+                def keep = abiProp.split(',').collect { it.trim() } as Set
+                ['armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'].each { abi ->
+                    if (!keep.contains(abi)) {
+                        excludes += ["lib/${abi}/**"]
+                    }
+                }
+            }
         }
     }
 
@@ -129,9 +142,15 @@ android {
 
     buildTypes {
         release {
-            // Enable minification to generate mapping.txt for crash analysis
-            minifyEnabled true
-            shrinkResources true
+            // Play / CI default: minify on. Sideload tester builds can disable via:
+            //   ORG_GRADLE_PROJECT_lingafriqSideloadNoMinify=true
+            // to avoid R8 stripping crashes that are hard to diagnose in external QA.
+            def sideloadNoMinify = project.findProperty('lingafriqSideloadNoMinify') == 'true'
+            minifyEnabled !sideloadNoMinify
+            shrinkResources !sideloadNoMinify
+            if (sideloadNoMinify) {
+                println("⚠️ Sideload mode: minify/shrink disabled for tester stability")
+            }
 
             // Use signing config if it's properly configured
             if (keystorePropertiesFile.exists() && signingConfigs.release.storeFile != null) {

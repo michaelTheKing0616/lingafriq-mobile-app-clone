@@ -53,6 +53,12 @@ android/key.properties
 *.jks
 upload-keystore.jks
 keystore_base64.txt
+android/app/sideload-release.jks
+
+# Sideload / local APK outputs (share via CI artifacts, not git)
+dist/
+*.apk
+*.apk.sha256
 
 # CI logs / local artifacts (do not commit)
 logs_*/
