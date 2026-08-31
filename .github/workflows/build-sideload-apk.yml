@@ -1,0 +1,110 @@
+name: Build Sideload Tester APK
+
+# Manual-only workflow for external QA. Does NOT bump version or touch Play signing.
+on:
+  workflow_dispatch:
+    inputs:
+      backend_url:
+        description: Backend base URL
+        required: true
+        default: https://admin.lingafriq.com
+      abi_filters:
+        description: Comma-separated ABI filters
+        required: true
+        default: armeabi-v7a,arm64-v8a
+
+permissions:
+  contents: read
+
+jobs:
+  build-sideload-apk:
+    name: Build dual-ABI sideload APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Ensure Gradle wrapper is executable
+        run: chmod +x android/gradlew || true
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.35.0"
+          channel: stable
+          cache: true
+
+      - name: Install CMake
+        run: sudo apt-get update && sudo apt-get install -y cmake zip unzip
+
+      - name: Configure Android SDK env
+        run: |
+          echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> "$GITHUB_ENV"
+          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT" >> "$GITHUB_ENV"
+          echo "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin" >> "$GITHUB_PATH"
+          echo "$ANDROID_SDK_ROOT/platform-tools" >> "$GITHUB_PATH"
+
+      - name: Install Android SDK components
+        run: |
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager \
+            "platforms;android-35" \
+            "platforms;android-36" \
+            "build-tools;35.0.0" \
+            "ndk;27.0.12077973" \
+            "cmake;3.22.1"
+
+      - name: Build sideload APK
+        env:
+          BACKEND_URL: ${{ inputs.backend_url }}
+          CDN_URL: ${{ inputs.backend_url }}
+          APP_WEB_URL: https://lingafriq.com
+          LINGAFRIQ_ABI_FILTERS: ${{ inputs.abi_filters }}
+          LINGAFRIQ_SIDELOAD_NO_MINIFY: "true"
+          ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
+          ANDROID_SDK_ROOT: ${{ env.ANDROID_SDK_ROOT }}
+          FLUTTER_HOME: ${{ env.FLUTTER_ROOT }}
+        run: |
+          if [ "$BACKEND_URL" = "https://admin.lingafriq.com" ]; then
+            export WS_URL="wss://admin.lingafriq.com"
+          else
+            host="${BACKEND_URL#https://}"
+            host="${host#http://}"
+            export WS_URL="wss://${host}"
+          fi
+          export PATH="$FLUTTER_HOME/bin:$PATH"
+          chmod +x scripts/build_stable_apk.sh
+          ./scripts/build_stable_apk.sh
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lingafriq-sideload-apk
+          path: |
+            dist/*.apk
+            dist/*.sha256
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Summarize
+        run: |
+          {
+            echo "## Sideload tester APK"
+            echo
+            ls -lh dist/*.apk
+            echo
+            echo 'Download the **lingafriq-sideload-apk** artifact from this run.'
+            echo
+            echo '### Install notes'
+            echo '1. Uninstall any existing LingAfriq (Play signature differs).'
+            echo '2. Enable Install unknown apps.'
+            echo '3. Install the APK (armeabi-v7a + arm64-v8a).'
+          } >> "$GITHUB_STEP_SUMMARY"
