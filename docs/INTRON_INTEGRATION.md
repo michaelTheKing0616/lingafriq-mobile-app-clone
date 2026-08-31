@@ -3,6 +3,8 @@
 Recommendation for **Sahara Voice AI / Intron** against the stack that is already
 in this Flutter app. This is an architecture plan, not an implementation.
 
+See also: [world-class tech stack per feature](WORLD_CLASS_TECH_STACK.md).
+
 Related bake-off harness (PR #87): `tool/stt_bakeoff/`. Do not flip production
 defaults until that probe has real WAVs.
 
