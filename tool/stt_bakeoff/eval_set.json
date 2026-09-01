@@ -1,0 +1,368 @@
+{
+  "name": "lingafriq-stt-bakeoff-v1",
+  "purpose": "Compare Intron Sahara, Sunbird faster-Whisper, and LingAfriq Whisper sidecar on the same clips.",
+  "sample_rate_hz": 16000,
+  "channels": 1,
+  "audio_root": "audio",
+  "decision_thresholds": {
+    "isolated_word_max_wer": 0.15,
+    "short_phrase_max_wer": 0.20,
+    "code_switch_max_wer": 0.35,
+    "comment": "Isolated-word WER above 15% is too noisy for pronunciation scoring. Code-switch WER of ~35% matches Intron's published Sahara v2.5 average and is acceptable for live roleplay, not for phone scoring."
+  },
+  "providers": {
+    "intron": {
+      "stt_codes": {
+        "yoruba": "yo",
+        "hausa": "ha",
+        "igbo": "ig",
+        "pidgin": "pcm",
+        "swahili": "sw",
+        "zulu": "zu",
+        "xhosa": "xh",
+        "amharic": "am",
+        "twi": "tw",
+        "wolof": "wo",
+        "afrikaans": "af"
+      }
+    },
+    "sunbird": {
+      "stt_codes": {
+        "yoruba": "yor",
+        "hausa": "hau",
+        "igbo": "ibo",
+        "pidgin": "pcm",
+        "swahili": "swa",
+        "zulu": "zul",
+        "xhosa": "xho",
+        "amharic": "amh",
+        "twi": "aka",
+        "wolof": "wol",
+        "afrikaans": "afr"
+      }
+    },
+    "whisper": {
+      "stt_codes": {
+        "yoruba": "yo",
+        "hausa": "ha",
+        "igbo": "ig",
+        "pidgin": "en",
+        "swahili": "sw",
+        "zulu": "zu",
+        "xhosa": "xh",
+        "amharic": "am",
+        "twi": "en",
+        "wolof": "wo",
+        "afrikaans": "af"
+      },
+      "lingafriq_language_field": {
+        "yoruba": "yoruba",
+        "hausa": "hausa",
+        "igbo": "igbo",
+        "pidgin": "pidgin",
+        "swahili": "swahili",
+        "zulu": "zulu",
+        "xhosa": "xhosa",
+        "amharic": "amharic",
+        "twi": "twi",
+        "wolof": "wolof",
+        "afrikaans": "afrikaans"
+      }
+    }
+  },
+  "clips": [
+    {
+      "id": "yo-word-01",
+      "language": "yoruba",
+      "scenario": "isolated_word",
+      "priority": "core",
+      "speaker": "native",
+      "reference": "omo",
+      "gloss": "child",
+      "audio": "yo-word-01.wav",
+      "notes": "Pronunciation-game token. Tone is ọmọ; keep orthography as recorded."
+    },
+    {
+      "id": "yo-phrase-01",
+      "language": "yoruba",
+      "scenario": "short_phrase",
+      "priority": "core",
+      "speaker": "native",
+      "reference": "E kaaro, bawo ni",
+      "gloss": "Good morning, how are you",
+      "audio": "yo-phrase-01.wav"
+    },
+    {
+      "id": "yo-cs-01",
+      "language": "yoruba",
+      "scenario": "code_switch",
+      "priority": "core",
+      "speaker": "native",
+      "reference": "Please wait, e joor, I am coming",
+      "gloss": "Please wait, please, I am coming",
+      "audio": "yo-cs-01.wav"
+    },
+    {
+      "id": "yo-learner-01",
+      "language": "yoruba",
+      "scenario": "learner",
+      "priority": "core",
+      "speaker": "learner",
+      "reference": "Mo n fe omi",
+      "gloss": "I want water (detoned learner attempt of Mo n fẹ́ omi)",
+      "audio": "yo-learner-01.wav",
+      "notes": "Must transcribe the attempt, not auto-correct to textbook Yoruba."
+    },
+    {
+      "id": "ha-word-01",
+      "language": "hausa",
+      "scenario": "isolated_word",
+      "priority": "core",
+      "speaker": "native",
+      "reference": "ruwa",
+      "gloss": "water",
+      "audio": "ha-word-01.wav"
+    },
+    {
+      "id": "ha-phrase-01",
+      "language": "hausa",
+      "scenario": "short_phrase",
+      "priority": "core",
+      "speaker": "native",
+      "reference": "Sannu da zuwa",
+      "gloss": "Welcome",
+      "audio": "ha-phrase-01.wav"
+    },
+    {
+      "id": "ha-cs-01",
+      "language": "hausa",
+      "scenario": "code_switch",
+      "priority": "core",
+      "speaker": "native",
+      "reference": "Ina so in check my balance",
+      "gloss": "I want to check my balance",
+      "audio": "ha-cs-01.wav"
+    },
+    {
+      "id": "ha-learner-01",
+      "language": "hausa",
+      "scenario": "learner",
+      "priority": "core",
+      "speaker": "learner",
+      "reference": "Na gode sosai",
+      "gloss": "Thank you very much",
+      "audio": "ha-learner-01.wav"
+    },
+    {
+      "id": "ig-word-01",
+      "language": "igbo",
+      "scenario": "isolated_word",
+      "priority": "core",
+      "speaker": "native",
+      "reference": "mmiri",
+      "gloss": "water",
+      "audio": "ig-word-01.wav"
+    },
+    {
+      "id": "ig-phrase-01",
+      "language": "igbo",
+      "scenario": "short_phrase",
+      "priority": "core",
+      "speaker": "native",
+      "reference": "Kedu ka i mere",
+      "gloss": "How are you",
+      "audio": "ig-phrase-01.wav"
+    },
+    {
+      "id": "ig-cs-01",
+      "language": "igbo",
+      "scenario": "code_switch",
+      "priority": "core",
+      "speaker": "native",
+      "reference": "Biko wait, ana m abia",
+      "gloss": "Please wait, I am coming",
+      "audio": "ig-cs-01.wav"
+    },
+    {
+      "id": "ig-learner-01",
+      "language": "igbo",
+      "scenario": "learner",
+      "priority": "core",
+      "speaker": "learner",
+      "reference": "A na m agụ akwụkwọ",
+      "gloss": "I am studying",
+      "audio": "ig-learner-01.wav"
+    },
+    {
+      "id": "pcm-word-01",
+      "language": "pidgin",
+      "scenario": "isolated_word",
+      "priority": "core",
+      "speaker": "native",
+      "reference": "wahala",
+      "gloss": "trouble",
+      "audio": "pcm-word-01.wav"
+    },
+    {
+      "id": "pcm-phrase-01",
+      "language": "pidgin",
+      "scenario": "short_phrase",
+      "priority": "core",
+      "speaker": "native",
+      "reference": "How you dey",
+      "gloss": "How are you",
+      "audio": "pcm-phrase-01.wav"
+    },
+    {
+      "id": "pcm-cs-01",
+      "language": "pidgin",
+      "scenario": "code_switch",
+      "priority": "core",
+      "speaker": "native",
+      "reference": "Abeg hold on, I wan send the money now",
+      "gloss": "Please hold on, I want to send the money now",
+      "audio": "pcm-cs-01.wav"
+    },
+    {
+      "id": "pcm-learner-01",
+      "language": "pidgin",
+      "scenario": "learner",
+      "priority": "core",
+      "speaker": "learner",
+      "reference": "I dey go market",
+      "gloss": "I am going to the market",
+      "audio": "pcm-learner-01.wav"
+    },
+    {
+      "id": "sw-word-01",
+      "language": "swahili",
+      "scenario": "isolated_word",
+      "priority": "core",
+      "speaker": "native",
+      "reference": "maji",
+      "gloss": "water",
+      "audio": "sw-word-01.wav"
+    },
+    {
+      "id": "sw-phrase-01",
+      "language": "swahili",
+      "scenario": "short_phrase",
+      "priority": "core",
+      "speaker": "native",
+      "reference": "Habari yako",
+      "gloss": "How are you",
+      "audio": "sw-phrase-01.wav"
+    },
+    {
+      "id": "sw-cs-01",
+      "language": "swahili",
+      "scenario": "code_switch",
+      "priority": "core",
+      "speaker": "native",
+      "reference": "Tafadhali wait, ninaenda hospital",
+      "gloss": "Please wait, I am going to the hospital",
+      "audio": "sw-cs-01.wav"
+    },
+    {
+      "id": "sw-learner-01",
+      "language": "swahili",
+      "scenario": "learner",
+      "priority": "core",
+      "speaker": "learner",
+      "reference": "Nataka maji tafadhali",
+      "gloss": "I want water please",
+      "audio": "sw-learner-01.wav"
+    },
+    {
+      "id": "zu-word-01",
+      "language": "zulu",
+      "scenario": "isolated_word",
+      "priority": "core",
+      "speaker": "native",
+      "reference": "amanzi",
+      "gloss": "water",
+      "audio": "zu-word-01.wav"
+    },
+    {
+      "id": "zu-phrase-01",
+      "language": "zulu",
+      "scenario": "short_phrase",
+      "priority": "core",
+      "speaker": "native",
+      "reference": "Sawubona, unjani",
+      "gloss": "Hello, how are you",
+      "audio": "zu-phrase-01.wav"
+    },
+    {
+      "id": "zu-cs-01",
+      "language": "zulu",
+      "scenario": "code_switch",
+      "priority": "core",
+      "speaker": "native",
+      "reference": "Ngicela you wait, ngiyeza now",
+      "gloss": "Please wait, I am coming now",
+      "audio": "zu-cs-01.wav"
+    },
+    {
+      "id": "zu-learner-01",
+      "language": "zulu",
+      "scenario": "learner",
+      "priority": "core",
+      "speaker": "learner",
+      "reference": "Ngiyabonga kakhulu",
+      "gloss": "Thank you very much",
+      "audio": "zu-learner-01.wav"
+    },
+    {
+      "id": "xh-phrase-01",
+      "language": "xhosa",
+      "scenario": "short_phrase",
+      "priority": "stretch",
+      "speaker": "native",
+      "reference": "Molo, unjani",
+      "gloss": "Hello, how are you",
+      "audio": "xh-phrase-01.wav"
+    },
+    {
+      "id": "am-phrase-01",
+      "language": "amharic",
+      "scenario": "short_phrase",
+      "priority": "stretch",
+      "speaker": "native",
+      "reference": "selam new",
+      "gloss": "Hello (latinized; replace with Fidel if the recording uses Ethiopic)",
+      "audio": "am-phrase-01.wav",
+      "script": "latinized"
+    },
+    {
+      "id": "tw-phrase-01",
+      "language": "twi",
+      "scenario": "short_phrase",
+      "priority": "stretch",
+      "speaker": "native",
+      "reference": "Wo ho te sen",
+      "gloss": "How are you",
+      "audio": "tw-phrase-01.wav"
+    },
+    {
+      "id": "wo-phrase-01",
+      "language": "wolof",
+      "scenario": "short_phrase",
+      "priority": "stretch",
+      "speaker": "native",
+      "reference": "Na nga def",
+      "gloss": "How are you",
+      "audio": "wo-phrase-01.wav"
+    },
+    {
+      "id": "af-phrase-01",
+      "language": "afrikaans",
+      "scenario": "short_phrase",
+      "priority": "stretch",
+      "speaker": "native",
+      "reference": "Goeie more, hoe gaan dit",
+      "gloss": "Good morning, how is it going",
+      "audio": "af-phrase-01.wav"
+    }
+  ]
+}
