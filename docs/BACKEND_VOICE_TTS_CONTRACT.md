@@ -1,5 +1,9 @@
 # Voice / TTS contract (Node gateway → Python services)
 
+See also: [Intron integration plan](INTRON_INTEGRATION.md) (live STT vs this TTS stack);
+[world-class tech stack](WORLD_CLASS_TECH_STACK.md).
+
+
 ## Primary: device-independent MMS-TTS (`GET /api/tts`)
 
 **Production path for lesson/pronunciation audio:** the Flutter app uses **server-only** synthesis. No `flutter_tts` or system voices.
