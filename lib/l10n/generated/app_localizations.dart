@@ -793,6 +793,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This is an AI recreation based on sources.'**
   String get persona_ai_disclosure;
+
+  /// Shown when a persona mission reply fails; paired with a Retry action
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t reach the persona. Retry when you\'re ready.'**
+  String get persona_error_retry;
 }
 
 class _AppLocalizationsDelegate

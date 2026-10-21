@@ -1,9 +1,8 @@
-import 'package:dio/dio.dart';
-
 import 'package:lingafriq/ai/personas/historical_persona_registry.dart';
 import 'package:lingafriq/ai/validation/response_validator.dart';
 import 'package:lingafriq/learning/learner_model/learner_model_service.dart';
 import 'package:lingafriq/learning/learner_model/learner_skill_state.dart';
+import 'package:lingafriq/services/ai_gateway_client.dart';
 
 /// Engagement type for historical roleplay sessions.
 enum HistoricalEngagementType {
@@ -114,9 +113,7 @@ class HistoricalRoleplayReport {
 /// opinion inference matrix into prompts. Enforces JSON response schema
 /// and updates learner model after each turn.
 class HistoricalRoleplayController {
-  final Dio _dio;
-  final String _apiKey;
-  final String _apiUrl;
+  final AiGatewayClient _gateway;
   final String _model;
   final LearnerModelService _learnerModel;
 
@@ -126,14 +123,10 @@ class HistoricalRoleplayController {
   static const int _maxTurnsBeforeClosure = 25;
 
   HistoricalRoleplayController({
-    required Dio dio,
-    required String apiKey,
-    required String apiUrl,
+    required AiGatewayClient gateway,
     String model = 'llama-3.3-70b-versatile',
     LearnerModelService? learnerModel,
-  })  : _dio = dio,
-        _apiKey = apiKey,
-        _apiUrl = apiUrl,
+  })  : _gateway = gateway,
         _model = model,
         _learnerModel = learnerModel ?? LearnerModelService.instance;
 
@@ -199,8 +192,6 @@ class HistoricalRoleplayController {
       throw StateError('Persona not found: ${session.personaId}');
     }
 
-    _addToContextMemory(session, response);
-
     final language = persona.primaryLanguages.isNotEmpty
         ? persona.primaryLanguages.first
         : session.languageCode;
@@ -215,6 +206,7 @@ class HistoricalRoleplayController {
       isOpening: false,
       userMessage: response,
     );
+    _addToContextMemory(session, response);
     session.turns.add(turn);
     session.currentNodeId = turn.nextState;
 
@@ -270,65 +262,42 @@ class HistoricalRoleplayController {
     final messages =
         _buildMessages(session, persona, state, isOpening, userMessage);
 
-    try {
-      final response = await _dio.post(
-        _apiUrl,
-        options: Options(headers: {
-          'Authorization': 'Bearer $_apiKey',
-          'Content-Type': 'application/json',
-        }),
-        data: {
-          'model': _model,
-          'messages': messages,
-          'temperature': 0.35,
-          'max_tokens': 500,
-          'response_format': {'type': 'json_object'},
-        },
-      );
+    final data = await _gateway.completeChat(
+      messages: messages,
+      mode: 'roleplay',
+      temperature: 0.35,
+      maxTokens: 500,
+      model: _model,
+    );
+    final content = _gateway.extractContent(data);
+    final parsed = ResponseValidator.validateHistoricalRoleplayResponse(content);
 
-      final content =
-          response.data['choices'][0]['message']['content'] as String;
-      final parsed = ResponseValidator.validateHistoricalRoleplayResponse(content);
+    final teachingPoints = (parsed['teaching_points'] as List<dynamic>?)
+            ?.map((e) => TeachingPoint.fromJson(e as Map<String, dynamic>))
+            .toList() ??
+        [];
+    final citations = (parsed['historical_citations'] as List<dynamic>?)
+            ?.map((e) => HistoricalCitation.fromJson(e as Map<String, dynamic>))
+            .toList() ??
+        [];
+    final closureOptions = (parsed['closure_options'] as List<dynamic>?)
+            ?.map((e) => e as String)
+            .toList() ??
+        [];
 
-      final teachingPoints = (parsed['teaching_points'] as List<dynamic>?)
-              ?.map((e) => TeachingPoint.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [];
-      final citations =
-          (parsed['historical_citations'] as List<dynamic>?)
-              ?.map((e) =>
-                  HistoricalCitation.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [];
-      final closureOptions =
-          (parsed['closure_options'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList() ??
-          [];
+    final nextState = parsed['next_state'] as String? ??
+        parsed['conversation_state'] as String? ??
+        'turn_${session.turns.length + 1}';
 
-      final nextState = parsed['next_state'] as String? ??
-          parsed['conversation_state'] as String? ??
-          'turn_${session.turns.length + 1}';
-
-      return HistoricalRoleplayTurn(
-        speechText: parsed['speech_text'] as String,
-        teachingPoints: teachingPoints,
-        emotionTone: parsed['emotion_tone'] as String? ?? 'calm',
-        historicalCitations: citations,
-        nextState: nextState,
-        closureOptions: closureOptions,
-        detectedErrors: _parseDetectedErrors(parsed),
-      );
-    } catch (e) {
-      final fallback = isOpening
-          ? '${persona.displayName} greets you. (Response unavailable; please try again.)'
-          : 'I hear you. Let us continue.';
-      return HistoricalRoleplayTurn(
-        speechText: fallback,
-        nextState: session.currentNodeId,
-        detectedErrors: [],
-      );
-    }
+    return HistoricalRoleplayTurn(
+      speechText: parsed['speech_text'] as String,
+      teachingPoints: teachingPoints,
+      emotionTone: parsed['emotion_tone'] as String? ?? 'calm',
+      historicalCitations: citations,
+      nextState: nextState,
+      closureOptions: closureOptions,
+      detectedErrors: _parseDetectedErrors(parsed),
+    );
   }
 
   List<String> _parseDetectedErrors(Map<String, dynamic> parsed) {

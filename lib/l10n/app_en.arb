@@ -545,5 +545,9 @@
   "persona_ai_disclosure": "This is an AI recreation based on sources.",
   "@persona_ai_disclosure": {
     "description": "Persistent disclosure that the historical persona chat is an AI recreation based on sources"
+  },
+  "persona_error_retry": "Couldn't reach the persona. Retry when you're ready.",
+  "@persona_error_retry": {
+    "description": "Shown when a persona mission reply fails; paired with a Retry action"
   }
 }

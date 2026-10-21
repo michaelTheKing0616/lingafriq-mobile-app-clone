@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/content/lingafriq_ux_voice.dart';
-import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
+import 'package:lingafriq/providers/dio_provider.dart';
+import 'package:lingafriq/services/ai_gateway_client.dart';
 import 'package:lingafriq/services/content/persona_mission_service.dart';
 import 'package:lingafriq/services/content/polie_conversation_service.dart';
 import 'package:lingafriq/widgets/content/vocab_audio_controls.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+
+enum _MissionSendState { idle, sending, error }
 
 /// Step-by-step persona mission with Polie roleplay prompts.
 class PersonaMissionSessionScreen extends ConsumerStatefulWidget {
@@ -20,11 +23,17 @@ class PersonaMissionSessionScreen extends ConsumerStatefulWidget {
 
 class _PersonaMissionSessionScreenState
     extends ConsumerState<PersonaMissionSessionScreen> {
+  static const _personaErrorRetryKey = 'persona_error_retry';
+  static const _personaErrorRetryCopy =
+      "Couldn't reach the persona. Retry when you're ready.";
+
   final _input = TextEditingController();
   final List<_Turn> _turns = [];
-  bool _busy = false;
+  _MissionSendState _sendState = _MissionSendState.idle;
+  String? _pendingText;
 
   PersonaMissionSession get _session => widget.session;
+  bool get _isSending => _sendState == _MissionSendState.sending;
 
   @override
   void dispose() {
@@ -32,23 +41,28 @@ class _PersonaMissionSessionScreenState
     super.dispose();
   }
 
-  Future<void> _send() async {
-    final text = _input.text.trim();
-    if (text.isEmpty || _busy || _session.isComplete) return;
-    setState(() {
-      _busy = true;
-      _turns.add(_Turn.user(text));
-      _input.clear();
-    });
+  Future<void> _send({bool retry = false}) async {
+    final text = retry ? _pendingText?.trim() : _input.text.trim();
+    if (text == null ||
+        text.isEmpty ||
+        _isSending ||
+        _session.isComplete) {
+      return;
+    }
 
-    final chat = ref.read(groqChatProvider.notifier);
+    if (!retry) {
+      setState(() {
+        _pendingText = text;
+        _turns.add(_Turn.user(text));
+        _input.clear();
+      });
+    }
+
+    setState(() => _sendState = _MissionSendState.sending);
+
+    final gateway = AiGatewayClient(ref.read(client));
     final polie = ref.read(polieConversationServiceProvider);
     final lang = _session.mission.language;
-    await chat.setModeAndLanguage(
-      mode: PolieMode.roleplay,
-      sourceLanguage: 'English',
-      targetLanguage: lang,
-    );
 
     try {
       final step = _session.currentStep!;
@@ -57,48 +71,52 @@ class _PersonaMissionSessionScreenState
         targetLanguage: lang,
         roleplayScene: '${_session.selectedSetting}: ${step.poliePrompt}',
       );
-      final systemContext = '${personaPrefix.trim()}\n\n${_session.buildPolieSystemContext()}';
+      final systemContext =
+          '${personaPrefix.trim()}\n\n${_session.buildPolieSystemContext()}';
       final jsonPrompt = polie.buildRoleplayJsonPrompt(
         targetLanguage: lang,
         userMessage: text,
         personaPrefix: systemContext,
         responseStyle: 'natural',
       );
-      final reply = await chat.sendMessage(
-        jsonPrompt,
-        systemPromptOverride: systemContext,
+      final data = await gateway.completeChat(
+        mode: 'roleplay',
+        messages: [
+          {'role': 'system', 'content': systemContext},
+          {'role': 'user', 'content': jsonPrompt},
+        ],
       );
+      final reply = gateway.extractContent(data);
       final complete = reply.contains('[STEP_COMPLETE]');
       final clean = reply.replaceAll('[STEP_COMPLETE]', '').trim();
+      if (!mounted) return;
       setState(() {
+        _sendState = _MissionSendState.idle;
+        _pendingText = null;
         _turns.add(_Turn.polie(clean));
         if (complete) {
           _session.currentStepIndex++;
           ref.read(personaMissionServiceProvider).saveMissionProgress(
-            _session.mission.id,
-            _session.currentStepIndex,
-          );
+                _session.mission.id,
+                _session.currentStepIndex,
+              );
         }
       });
       if (_session.isComplete && mounted) {
         ref.read(personaMissionServiceProvider).saveMissionProgress(
-          _session.mission.id,
-          _session.mission.steps.length,
-        );
+              _session.mission.id,
+              _session.mission.steps.length,
+            );
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(LingAfriqUxVoice.lessonCompleteMessage(88)),
           ),
         );
       }
-    } catch (e) {
+    } catch (_) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Mission error: $e')),
-        );
+        setState(() => _sendState = _MissionSendState.error);
       }
-    } finally {
-      if (mounted) setState(() => _busy = false);
     }
   }
 
@@ -147,7 +165,9 @@ class _PersonaMissionSessionScreenState
                       return Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Chip(label: Text(v, style: const TextStyle(fontSize: 12))),
+                          Chip(
+                            label: Text(v, style: const TextStyle(fontSize: 12)),
+                          ),
                           VocabAudioControls(
                             language: _session.mission.language,
                             text: v,
@@ -158,7 +178,10 @@ class _PersonaMissionSessionScreenState
                     }).toList(),
                   ),
                   const SizedBox(height: 8),
-                  Text(step.poliePrompt, style: Theme.of(context).textTheme.bodyMedium),
+                  Text(
+                    step.poliePrompt,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
                 ],
               ],
             ),
@@ -190,6 +213,31 @@ class _PersonaMissionSessionScreenState
               },
             ),
           ),
+          if (_sendState == _MissionSendState.error)
+            Semantics(
+              liveRegion: true,
+              child: Material(
+                color: Theme.of(context).colorScheme.errorContainer,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          _personaErrorRetryCopy,
+                          key: const Key(_personaErrorRetryKey),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => _send(retry: true),
+                        child: const Text('Retry'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           if (!_session.isComplete)
             SafeArea(
               child: Padding(
@@ -199,6 +247,7 @@ class _PersonaMissionSessionScreenState
                     Expanded(
                       child: TextField(
                         controller: _input,
+                        enabled: !_isSending,
                         decoration: const InputDecoration(
                           hintText: 'Reply in character…',
                           border: OutlineInputBorder(),
@@ -208,8 +257,8 @@ class _PersonaMissionSessionScreenState
                     ),
                     const SizedBox(width: 8),
                     IconButton.filled(
-                      onPressed: _busy ? null : _send,
-                      icon: _busy
+                      onPressed: _isSending ? null : _send,
+                      icon: _isSending
                           ? const SizedBox(
                               width: 20,
                               height: 20,

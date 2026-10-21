@@ -1,7 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'package:lingafriq/services/env_config.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/providers/dio_provider.dart';
+import 'package:lingafriq/services/ai_gateway_client.dart';
 
 import 'package:lingafriq/ai/persona_cognition/persona_cognition_engine.dart';
 import 'package:lingafriq/ai/personas/historical_persona_registry.dart';
@@ -13,8 +14,6 @@ import 'package:lingafriq/services/classroom/classroom_persona_service.dart';
 import 'package:lingafriq/services/classroom/cross_class_persona_memory.dart';
 import 'package:lingafriq/learning/pronunciation/persona_pronunciation_service.dart';
 
-const _groqUrl = 'https://api.groq.com/openai/v1/chat/completions';
-
 // ---------------------------------------------------------------------------
 // Singleton service providers
 // ---------------------------------------------------------------------------
@@ -22,17 +21,15 @@ const _groqUrl = 'https://api.groq.com/openai/v1/chat/completions';
 final personaCognitionEngineProvider = Provider<PersonaCognitionEngine>((ref) {
   return PersonaCognitionEngine(
     dio: ref.watch(client),
-    apiKey: EnvConfig.groqApiKey,
-    apiUrl: _groqUrl,
+    apiKey: '',
+    apiUrl: ApiContract.ai.chatCompletion,
   );
 });
 
 final historicalRoleplayControllerProvider =
     Provider<HistoricalRoleplayController>((ref) {
   return HistoricalRoleplayController(
-    dio: ref.watch(client),
-    apiKey: EnvConfig.groqApiKey,
-    apiUrl: _groqUrl,
+    gateway: AiGatewayClient(ref.watch(client)),
   );
 });
 
@@ -40,8 +37,8 @@ final roleplayAssessmentEngineProvider =
     Provider<RoleplayAssessmentEngine>((ref) {
   return RoleplayAssessmentEngine(
     dio: ref.watch(client),
-    apiKey: EnvConfig.groqApiKey,
-    apiUrl: _groqUrl,
+    apiKey: '',
+    apiUrl: ApiContract.ai.chatCompletion,
   );
 });
 

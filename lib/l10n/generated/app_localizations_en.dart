@@ -362,4 +362,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get persona_ai_disclosure =>
       'This is an AI recreation based on sources.';
+
+  @override
+  String get persona_error_retry =>
+      'Couldn\'t reach the persona. Retry when you\'re ready.';
 }
