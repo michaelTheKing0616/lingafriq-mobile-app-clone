@@ -166,7 +166,18 @@ flutter:
     - assets/images/
     - assets/alphabets/
     - assets/fonts/
-    - assets/data/
+    - assets/data/audio_manifest.json
+    - assets/data/cms_manifests/
+    - assets/data/game_content.json
+    - assets/data/lingafriq_authentic_curriculum_a1.json
+    - assets/data/lingafriq_authentic_curriculum_a1_a2_b1.json
+    - assets/data/lingafriq_authentic_curriculum_a1_c1.json
+    - assets/data/lingafriq_authentic_curriculum_a1_c2.json
+    - assets/data/magazine_articles_seed.json
+    - assets/data/persona_missions.json
+    - assets/data/polie_prompt_snippets.json
+    - assets/data/review_checklist.json
+    - assets/data/word_repo_game_seed.json
     - assets/rive/
     - schemas/v2/
 
