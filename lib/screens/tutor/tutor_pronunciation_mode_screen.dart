@@ -1,8 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lingafriq/config/api_contract.dart';
+import 'package:lingafriq/providers/dio_provider.dart';
 import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:lingafriq/utils/error_handler.dart';
@@ -21,6 +24,8 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
     final isRecording = useState(false);
     final recorder = useMemoized(() => AudioRecordingService());
     final recordingPath = useState<String?>(null);
+    final analyzeStatus = useState<int?>(null);
+    final analyzeBody = useState<Map<String, dynamic>?>(null);
     final useRegionalPronunciation = useState(false);
     final audioPlayer = useMemoized(() => AudioPlayer());
 
@@ -57,8 +62,46 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
           throw Exception('Failed to stop recording.');
         }
         recordingPath.value = path;
+
+        final response = await ref.read(client).post(
+          ApiContract.pronunciation.advancedAnalyze,
+          data: FormData.fromMap({
+            'audio': await MultipartFile.fromFile(
+              path,
+              filename: 'pronunciation_audio.wav',
+            ),
+            'expected_text': textController.text,
+            'language': selectedLanguage.value.name,
+          }),
+          options: Options(
+            validateStatus: (status) => status != null && status < 600,
+          ),
+        );
+        final raw = response.data;
+        final body = raw is Map ? Map<String, dynamic>.from(raw) : <String, dynamic>{};
+        analyzeStatus.value = response.statusCode;
+        analyzeBody.value = body;
+        final unavailable =
+            response.statusCode == 503 || body['retryable'] == true;
+        if (!unavailable && response.statusCode != 200) {
+          throw DioException(
+            requestOptions: response.requestOptions,
+            response: response,
+            type: DioExceptionType.badResponse,
+          );
+        }
       } catch (e) {
         isRecording.value = false;
+        if (e is DioException) {
+          final status = e.response?.statusCode;
+          final raw = e.response?.data;
+          final body = raw is Map ? Map<String, dynamic>.from(raw) : null;
+          if (status != null) analyzeStatus.value = status;
+          if (body != null) analyzeBody.value = body;
+          if (status == 503 || body?['retryable'] == true) {
+            return;
+          }
+        }
         if (context.mounted) {
           ErrorHandler.showError(context, e);
         }
@@ -84,7 +127,10 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const _PronPracticeBanner(),
+                  _PronPracticeBanner(
+                    analyzeStatus: analyzeStatus.value,
+                    analyzeBody: analyzeBody.value,
+                  ),
                   SizedBox(height: PolieSpacing.md),
                   PolieGlassCard(
                     padding: EdgeInsets.all(PolieSpacing.md),
@@ -275,21 +321,33 @@ class _ReplayButtons extends StatelessWidget {
 }
 
 class _PronPracticeBanner extends StatelessWidget {
-  const _PronPracticeBanner();
+  const _PronPracticeBanner({this.analyzeStatus, this.analyzeBody});
+
+  final int? analyzeStatus;
+  final Map<String, dynamic>? analyzeBody;
 
   static const _copy = <String, String>{
     'pron.practice_mode': 'Practice mode',
     'pron.scoring_soon': 'Scoring coming soon',
+    'pron.unavailable': 'The scoring service is unavailable. No score is shown.',
   };
+
+  bool get _isUnavailable {
+    if (analyzeStatus == 503) return true;
+    if (analyzeBody != null && analyzeBody!['retryable'] == true) return true;
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
     final practiceMode = _copy['pron.practice_mode']!;
-    final scoringSoon = _copy['pron.scoring_soon']!;
+    final subtitle = _isUnavailable
+        ? _copy['pron.unavailable']!
+        : _copy['pron.scoring_soon']!;
     return Semantics(
       liveRegion: true,
       excludeSemantics: true,
-      label: '$practiceMode. $scoringSoon',
+      label: '$practiceMode. $subtitle',
       child: PolieGlassCard(
         padding: EdgeInsets.all(PolieSpacing.md),
         child: Column(
@@ -301,7 +359,7 @@ class _PronPracticeBanner extends StatelessWidget {
             ),
             SizedBox(height: PolieSpacing.xs),
             Text(
-              scoringSoon,
+              subtitle,
               style: PolieTypography.bodySmall(context).copyWith(color: PolieColors.textSecondary),
               textAlign: TextAlign.center,
             ),

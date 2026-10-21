@@ -781,6 +781,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Scoring coming soon'**
   String get pron_scoring_soon;
+
+  /// Shown when pronunciation scoring returns 503/retryable; no numeric score is displayed
+  ///
+  /// In en, this message translates to:
+  /// **'The scoring service is unavailable. No score is shown.'**
+  String get pron_unavailable;
 }
 
 class _AppLocalizationsDelegate

@@ -354,4 +354,8 @@ class AppLocalizationsPcm extends AppLocalizations {
 
   @override
   String get pron_scoring_soon => 'Scoring coming soon';
+
+  @override
+  String get pron_unavailable =>
+      'The scoring service is unavailable. No score is shown.';
 }

@@ -537,5 +537,9 @@
   "pron_scoring_soon": "Scoring coming soon",
   "@pron_scoring_soon": {
     "description": "States that pronunciation scoring is not available yet"
+  },
+  "pron_unavailable": "The scoring service is unavailable. No score is shown.",
+  "@pron_unavailable": {
+    "description": "Shown when pronunciation scoring returns 503/retryable; no numeric score is displayed"
   }
 }
