@@ -83,6 +83,11 @@ jobs:
           ref: main
           fetch-depth: 0
 
+      - name: Placeholder / template bundle linter
+        run: |
+          python3 scripts/ci/placeholder_linter.py assets/data
+          python3 scripts/ci/placeholder_linter.py schemas/v2
+
       - name: 🔧 Ensure Gradle wrapper is executable
         run: |
           chmod +x android/gradlew || true
@@ -284,6 +289,11 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
+
+      - name: Placeholder / template bundle linter
+        run: |
+          python3 scripts/ci/placeholder_linter.py assets/data
+          python3 scripts/ci/placeholder_linter.py schemas/v2
 
       - name: 🐦 Setup Flutter
         uses: subosito/flutter-action@v2

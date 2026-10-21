@@ -169,9 +169,6 @@ flutter:
     - assets/data/
     - assets/rive/
     - schemas/v2/
-    - curriculum_bundle/
-    - lingafriq_FINAL_curriculum/
-    - lingafriq_full_curriculum_bundle/
 
 
 

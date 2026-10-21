@@ -45,6 +45,11 @@ jobs:
       - name: TTS purity gate (no flutter_tts outside AfricanTtsService)
         run: dart run tool/tts_purity_gate.dart
 
+      - name: Placeholder / template bundle linter
+        run: |
+          python3 scripts/ci/placeholder_linter.py assets/data
+          python3 scripts/ci/placeholder_linter.py schemas/v2
+
       - name: Flutter test
         run: |
           echo "🧪 Running Flutter tests..."
