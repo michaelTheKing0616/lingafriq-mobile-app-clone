@@ -18,6 +18,7 @@ import 'package:lingafriq/screens/feed/x_profile_screen.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/providers/chat_socket_provider.dart';
+import 'package:lingafriq/screens/chat/report_block_sheet.dart';
 import 'package:lingafriq/widgets/empty_state_widget.dart';
 import 'package:lingafriq/widgets/error_state_widget.dart';
 import 'package:lingafriq/widgets/lingafriq_scaffold.dart';
@@ -790,6 +791,21 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
   }
 }
 
+String _blockedPersonId(Object? user) {
+  if (user is Map) {
+    return (user['_id'] ?? user['id'] ?? '').toString();
+  }
+  return user?.toString() ?? '';
+}
+
+String _blockedPersonName(Object? user) {
+  if (user is Map) {
+    final name = (user['username'] ?? user['first_name'] ?? '').toString();
+    if (name.isNotEmpty) return name;
+  }
+  return 'Blocked person';
+}
+
 void _showMessageActions(
   BuildContext context,
   WidgetRef ref,
@@ -813,64 +829,52 @@ void _showMessageActions(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
     ),
-    builder: (ctx) => SafeArea(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            leading: const Icon(
-              Icons.flag_outlined,
-              color: PanAfricanColors.warning,
-            ),
-            title: const Text('Report Message'),
-            onTap: () async {
-              Navigator.pop(ctx);
-              if (messageId.isEmpty) return;
-              try {
-                await ApiService.post(
-                  'chat/messages/$messageId/report',
-                  data: {'reason': 'inappropriate'},
-                );
-                if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Message reported. Thank you.'),
-                    ),
-                  );
-                }
-              } catch (_) {
-                if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                        'Could not report message. Try again later.',
-                      ),
-                    ),
-                  );
-                }
-              }
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.block, color: PanAfricanColors.error),
-            title: const Text('Block User'),
-            onTap: () {
-              Navigator.pop(ctx);
-              if (senderUserId.isEmpty) return;
-              ref
-                  .read(chatSocketProvider.notifier)
-                  .markUserBlocked(senderUserId);
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('User blocked for this session.'),
-                  ),
-                );
-              }
-            },
-          ),
-        ],
-      ),
+    builder: (_) => ReportBlockSheet(
+      onReport: (reason) async {
+        if (messageId.isEmpty) {
+          throw StateError('missing message');
+        }
+        final response = await ApiService.post(
+          'chat/messages/$messageId/report',
+          data: {'reason': reason},
+        );
+        final body = response.data;
+        final referenceId = body is Map ? body['referenceId']?.toString() ?? '' : '';
+        if (referenceId.isEmpty) {
+          throw StateError('missing reference');
+        }
+        return referenceId;
+      },
+      onBlock: () async {
+        if (senderUserId.isEmpty) {
+          throw StateError('missing user');
+        }
+        await ApiService.post(
+          Api.connectionBlock(),
+          data: {'targetUserId': senderUserId},
+        );
+        ref.read(chatSocketProvider.notifier).markUserBlocked(senderUserId);
+      },
+      onLoadBlocked: () async {
+        final response = await ApiService.get(Api.connectionsBlocked);
+        final body = response.data;
+        final rows = body is Map && body['data'] is List ? body['data'] as List : const [];
+        return [
+          for (final row in rows)
+            if (row is Map)
+              BlockedPerson(
+                id: _blockedPersonId(row['connected_user_id']),
+                name: _blockedPersonName(row['connected_user_id']),
+              ),
+        ].where((person) => person.id.isNotEmpty).toList();
+      },
+      onUnblock: (userId) async {
+        await ApiService.post(
+          Api.connectionUnblock(),
+          data: {'targetUserId': userId},
+        );
+        ref.read(chatSocketProvider.notifier).markUserUnblocked(userId);
+      },
     ),
   );
 }

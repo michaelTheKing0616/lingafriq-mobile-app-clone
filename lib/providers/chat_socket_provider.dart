@@ -577,6 +577,17 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
     logger.info('User blocked', tag: 'chat-socket', context: {'userId': userId});
   }
 
+  /// Drop the session hide so messages sent after an unblock can show.
+  void markUserUnblocked(String userId) {
+    final normalizedUserId = userId.trim();
+    if (normalizedUserId.isEmpty) return;
+    _blockedUserIds.remove(normalizedUserId);
+    state = state.copyWith(
+      messages: List.from(_messages),
+      onlineUsers: List.from(_onlineUsers),
+    );
+  }
+
   /// React to a message
   void reactToMessage(String messageId, String emoji) {
     if (!_isConnected || _socket == null) {
