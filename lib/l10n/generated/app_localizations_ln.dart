@@ -358,4 +358,8 @@ class AppLocalizationsLn extends AppLocalizations {
   @override
   String get pron_unavailable =>
       'The scoring service is unavailable. No score is shown.';
+
+  @override
+  String get persona_ai_disclosure =>
+      'This is an AI recreation based on sources.';
 }

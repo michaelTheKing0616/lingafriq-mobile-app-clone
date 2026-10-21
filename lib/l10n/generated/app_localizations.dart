@@ -787,6 +787,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The scoring service is unavailable. No score is shown.'**
   String get pron_unavailable;
+
+  /// Persistent disclosure that the historical persona chat is an AI recreation based on sources
+  ///
+  /// In en, this message translates to:
+  /// **'This is an AI recreation based on sources.'**
+  String get persona_ai_disclosure;
 }
 
 class _AppLocalizationsDelegate

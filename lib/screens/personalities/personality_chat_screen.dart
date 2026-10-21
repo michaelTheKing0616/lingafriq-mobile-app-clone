@@ -12,6 +12,8 @@ import '../../utils/error_handler.dart';
 import '../../services/monitoring/sentry_service.dart';
 import '../../providers/user_provider.dart';
 
+const _personaAiDisclosure = 'This is an AI recreation based on sources.';
+
 class PersonalityChatScreen extends HookConsumerWidget {
   final HistoricalPersonality personality;
 
@@ -132,6 +134,14 @@ class PersonalityChatScreen extends HookConsumerWidget {
       ),
       body: Column(
         children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            child: Text(
+              _personaAiDisclosure,
+              semanticsLabel: _personaAiDisclosure,
+              textAlign: TextAlign.center,
+            ),
+          ),
           if (isInitializingSession.value || sessionError.value != null)
             Container(
               width: double.infinity,

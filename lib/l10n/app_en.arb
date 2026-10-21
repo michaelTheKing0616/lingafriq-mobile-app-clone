@@ -541,5 +541,9 @@
   "pron_unavailable": "The scoring service is unavailable. No score is shown.",
   "@pron_unavailable": {
     "description": "Shown when pronunciation scoring returns 503/retryable; no numeric score is displayed"
+  },
+  "persona_ai_disclosure": "This is an AI recreation based on sources.",
+  "@persona_ai_disclosure": {
+    "description": "Persistent disclosure that the historical persona chat is an AI recreation based on sources"
   }
 }
