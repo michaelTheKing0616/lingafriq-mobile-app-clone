@@ -211,6 +211,27 @@ void main() {
       filter = RoleplaySafetyFilter();
     });
 
+    test('mandela_words_skill_whatever_and_discrimination_are_allowed', () {
+      for (final message in [
+        'I want to improve my skill',
+        'whatever you think is fine',
+        'Tell me about discrimination',
+      ]) {
+        final result = filter.checkInput(message, 'nelson_mandela');
+        expect(result.isAllowed, isTrue, reason: message);
+      }
+    });
+
+    test('historical_violence_question_is_not_a_substring_block', () {
+      for (final message in [
+        'What happened when the police fired on the crowd at Sharpeville?',
+        'Tell me about the killing at Sharpeville',
+      ]) {
+        final result = filter.checkInput(message, 'nelson_mandela');
+        expect(result.isAllowed, isTrue, reason: message);
+      }
+    });
+
     test('safe_input_is_allowed', () {
       final result = filter.checkInput(
         'Tell me about your childhood',

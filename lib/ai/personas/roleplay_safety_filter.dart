@@ -21,13 +21,10 @@ class SafetyCheckResult {
 /// Detects and rejects harmful requests, anachronisms, and position
 /// contradictions; adds uncertainty indicators when inference is required.
 class RoleplaySafetyFilter {
-  static const _violencePatterns = [
-    'kill', 'violence', 'attack', 'hurt', 'endorse war', 'support violence',
-    'approve murder', 'condone harm', 'weapon', 'destroy',
-  ];
-
-  static const _harmfulPatterns = [
-    'hate', 'offensive', 'slur', 'discriminat', 'abuse',
+  static final _endorsementRequests = <RegExp>[
+    RegExp(r'\bendorse violence\b', caseSensitive: false),
+    RegExp(r'\bsupport violence\b', caseSensitive: false),
+    RegExp(r'\bsay something discriminatory\b', caseSensitive: false),
   ];
 
   RoleplaySafetyFilter();
@@ -37,17 +34,10 @@ class RoleplaySafetyFilter {
   SafetyCheckResult checkInput(String userMessage, String personaId) {
     final lower = userMessage.toLowerCase().trim();
 
-    if (_matchesAny(lower, _violencePatterns)) {
+    if (_endorsementRequests.any((pattern) => pattern.hasMatch(lower))) {
       return const SafetyCheckResult(
         isAllowed: false,
-        reason: 'Requests for the persona to endorse or discuss violence are not allowed.',
-      );
-    }
-
-    if (_matchesAny(lower, _harmfulPatterns)) {
-      return const SafetyCheckResult(
-        isAllowed: false,
-        reason: 'Harmful or offensive content is not allowed.',
+        reason: 'persona_rule: this persona will not endorse harm.',
       );
     }
 
