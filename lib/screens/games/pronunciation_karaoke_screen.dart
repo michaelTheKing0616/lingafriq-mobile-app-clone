@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -15,11 +14,10 @@ import '../../widgets/game/game_widgets.dart';
 import 'base_game_screen.dart';
 
 /// Pronunciation Karaoke — follow along with advancing words and hold
-/// the mic button to "sing" each phrase.
+/// the mic button to speak each phrase in practice mode.
 ///
 /// Words auto-advance on a 1.5-second timer. The active word is enlarged
-/// and highlighted; completed words dim and upcoming words fade. A
-/// hold-to-record button shows a simulated waveform while held.
+/// and highlighted; completed words dim and upcoming words fade.
 class PronunciationKaraokeGame extends BaseGameScreen {
   const PronunciationKaraokeGame({
     super.key,
@@ -44,18 +42,12 @@ class _PronunciationKaraokeGameState
   int _currentWordIndex = -1;
   bool _isRecording = false;
   bool _karaokeStarted = false;
-  int _rhythmHits = 0;
-  int _totalWords = 0;
-  int _phrasesCompleted = 0;
+  bool _practiceComplete = false;
+  int _waveformTick = 0;
   Timer? _wordTimer;
   Timer? _waveformTimer;
   List<double> _waveformAmplitudes = List.filled(24, 0.08);
   final ScrollController _lyricScroll = ScrollController();
-  final Random _rng = Random();
-
-  bool _showScorePopup = false;
-  String _scorePopupText = '';
-  int _pitchScore = 0;
 
   @override
   int getCardCount() => 3;
@@ -73,7 +65,7 @@ class _PronunciationKaraokeGameState
 
   void _loadPhrase() {
     if (_currentPhraseIndex >= _cards.length) {
-      finishGame();
+      setState(() => _practiceComplete = true);
       return;
     }
 
@@ -87,7 +79,6 @@ class _PronunciationKaraokeGameState
       _words = words;
       _currentWordIndex = -1;
       _karaokeStarted = false;
-      _showScorePopup = false;
     });
   }
 
@@ -106,15 +97,8 @@ class _PronunciationKaraokeGameState
         return;
       }
 
-      final wasRecording = _isRecording;
-      if (wasRecording && _currentWordIndex >= 0) {
-        _rhythmHits++;
-        _triggerScorePopup();
-      }
-
       setState(() {
         _currentWordIndex++;
-        _totalWords++;
       });
 
       _scrollToCurrentWord();
@@ -123,16 +107,6 @@ class _PronunciationKaraokeGameState
         t.cancel();
         _onPhraseComplete();
       }
-    });
-  }
-
-  void _triggerScorePopup() {
-    setState(() {
-      _showScorePopup = true;
-      _scorePopupText = '+10 XP';
-    });
-    Future.delayed(const Duration(milliseconds: 1100), () {
-      if (mounted) setState(() => _showScorePopup = false);
     });
   }
 
@@ -149,31 +123,9 @@ class _PronunciationKaraokeGameState
   Future<void> _onPhraseComplete() async {
     _wordTimer?.cancel();
     _stopWaveform();
+    setState(() => _isRecording = false);
 
-    final rhythmPct =
-        _totalWords > 0 ? ((_rhythmHits / _totalWords) * 100).round() : 0;
-    _pitchScore = 60 + _rng.nextInt(35);
-
-    _phrasesCompleted++;
-
-    final durationMs = startTime != null
-        ? DateTime.now().difference(startTime!).inMilliseconds
-        : 0;
-
-    await completeTurn(
-      cardId: _cards[_currentPhraseIndex].cardId,
-      result: rhythmPct >= 60 ? GameResult.correct : GameResult.partial,
-      durationMs: durationMs,
-      confidence: rhythmPct / 100.0,
-      feedback: {
-        'rhythm_score': rhythmPct,
-        'pitch_score': _pitchScore,
-        'phrase': _cards[_currentPhraseIndex].text,
-        'phrase_index': _currentPhraseIndex + 1,
-      },
-    );
-
-    await Future.delayed(const Duration(milliseconds: 1200));
+    await Future.delayed(const Duration(milliseconds: 400));
     if (!mounted) return;
 
     _currentPhraseIndex++;
@@ -186,10 +138,11 @@ class _PronunciationKaraokeGameState
     _waveformTimer = Timer.periodic(const Duration(milliseconds: 80), (_) {
       if (!mounted || !_isRecording) return;
       setState(() {
-        _waveformAmplitudes = List.generate(
-          24,
-          (_) => _rng.nextDouble() * 0.7 + 0.2,
-        );
+        _waveformTick++;
+        _waveformAmplitudes = List.generate(24, (i) {
+          final phase = ((_waveformTick + i) % 12) / 12.0;
+          return 0.2 + phase * 0.6;
+        });
       });
     });
 
@@ -217,9 +170,6 @@ class _PronunciationKaraokeGameState
     super.dispose();
   }
 
-  int get _rhythmPercent =>
-      _totalWords > 0 ? ((_rhythmHits / _totalWords) * 100).round() : 0;
-
   @override
   String? get appBarTitle => _cards.isEmpty
       ? null
@@ -227,6 +177,12 @@ class _PronunciationKaraokeGameState
 
   @override
   Widget buildGameContent(BuildContext context) {
+    if (_practiceComplete) {
+      return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+        child: const Center(child: _PronPracticeBanner()),
+      );
+    }
     if (_cards.isEmpty || _currentPhraseIndex >= _cards.length) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -241,53 +197,17 @@ class _PronunciationKaraokeGameState
         GameTopBar(
           onClose: () => (widget.onBack ?? () => Navigator.pop(context))(),
           progress: phraseProgress.clamp(0.0, 1.0),
-          streak: _phrasesCompleted,
-          xp: _rhythmHits * 10,
         ),
 
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-          child: GriotBentoGrid(
-            gap: 10,
-            items: [
-              GriotBentoItem(
-                span: 4,
-                child: GriotStatCard(
-                  icon: Icons.music_note_rounded,
-                  iconColor: cs.primary,
-                  value: '$_rhythmPercent%',
-                  label: 'Rhythm',
-                ),
-              ),
-              GriotBentoItem(
-                span: 4,
-                child: GriotStatCard(
-                  icon: Icons.graphic_eq_rounded,
-                  iconColor: ModernGriotColors.tertiary,
-                  value: '${_pitchScore > 0 ? _pitchScore : '—'}%',
-                  label: 'Pitch',
-                ),
-              ),
-              GriotBentoItem(
-                span: 4,
-                child: GriotStatCard(
-                  icon: Icons.flag_rounded,
-                  iconColor: ModernGriotColors.secondary,
-                  value: '$_phrasesCompleted/${_cards.length}',
-                  label: 'Milestone',
-                ),
-              ),
-            ],
-          ),
+          child: const _PronPracticeBanner(),
         ),
 
         Expanded(
-          child: Stack(
-            alignment: Alignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
                   if (!_karaokeStarted) ...[
                     Text(
                       'Hold the mic to start',
@@ -394,20 +314,6 @@ class _PronunciationKaraokeGameState
                         ),
                       ),
                     ),
-                ],
-              ),
-
-              if (_showScorePopup)
-                Positioned(
-                  top: 20.h,
-                  child: GameScorePopup(
-                    text: _scorePopupText,
-                    color: ModernGriotColors.secondary,
-                    onComplete: () {
-                      if (mounted) setState(() => _showScorePopup = false);
-                    },
-                  ),
-                ),
             ],
           ),
         ),
@@ -464,6 +370,56 @@ class _PronunciationKaraokeGameState
           ),
         ),
       ],
+    );
+  }
+}
+
+class _PronPracticeBanner extends StatelessWidget {
+  const _PronPracticeBanner();
+
+  static const _copy = <String, String>{
+    'pron.practice_mode': 'Practice mode',
+    'pron.scoring_soon': 'Scoring coming soon',
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final practiceMode = _copy['pron.practice_mode']!;
+    final scoringSoon = _copy['pron.scoring_soon']!;
+    final cs = Theme.of(context).colorScheme;
+    return Semantics(
+      liveRegion: true,
+      excludeSemantics: true,
+      label: '$practiceMode. $scoringSoon',
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+        decoration: BoxDecoration(
+          color: cs.secondaryContainer,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          children: [
+            Text(
+              practiceMode,
+              style: ModernGriotTypography.labelLarge(
+                context: context,
+                color: cs.onSecondaryContainer,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 4.h),
+            Text(
+              scoringSoon,
+              style: ModernGriotTypography.bodySmall(
+                context: context,
+                color: cs.onSecondaryContainer,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

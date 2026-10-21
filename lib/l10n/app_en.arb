@@ -516,5 +516,26 @@
   "gameWordMatchEnglishLabel": "English",
   "@gameWordMatchEnglishLabel": {
     "description": "Right-column header label for meanings in Word Match Audio game."
+  },
+
+  "content_coming_soon": "Coming Soon",
+  "@content_coming_soon": {
+    "description": "Empty state when a language or level has no verified curriculum content"
+  },
+  "content_not_available_yet": "This content is not available yet.",
+  "@content_not_available_yet": {
+    "description": "Subtitle under the coming-soon state; states only that verified content is not available"
+  },
+  "content_coming_soon_badge": "Soon",
+  "@content_coming_soon_badge": {
+    "description": "Short badge on a language or level row that has no verified curriculum content"
+  },
+  "pron_practice_mode": "Practice mode",
+  "@pron_practice_mode": {
+    "description": "Label for pronunciation practice when no numeric score is shown"
+  },
+  "pron_scoring_soon": "Scoring coming soon",
+  "@pron_scoring_soon": {
+    "description": "States that pronunciation scoring is not available yet"
   }
 }

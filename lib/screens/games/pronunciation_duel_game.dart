@@ -38,7 +38,7 @@ class _PronunciationDuelGameState
   int _currentIndex = 0;
   bool _isRecording = false;
   bool _isPlayingNative = false;
-  int? _pronunciationScore;
+  bool _practiceComplete = false;
   late final AnimationController _pulseController;
   late final Animation<double> _pulseAnim;
 
@@ -97,17 +97,10 @@ class _PronunciationDuelGameState
   void _startRecording() {
     setState(() {
       _isRecording = true;
-      _pronunciationScore = null;
       _userAmplitudes = List.generate(16, (_) => 0.05);
     });
     _pulseController.repeat(reverse: true);
 
-    // Simulate recording for 3 seconds, gradually building waveform
-    Future.delayed(const Duration(seconds: 3), () {
-      if (mounted && _isRecording) _stopRecording();
-    });
-
-    // Simulate growing amplitudes during recording
     for (int i = 0; i < 6; i++) {
       Future.delayed(Duration(milliseconds: 500 * i), () {
         if (mounted && _isRecording) {
@@ -124,40 +117,18 @@ class _PronunciationDuelGameState
   void _stopRecording() {
     _pulseController.stop();
     _pulseController.value = 0;
-
-    final rng = Random();
-    final score = 75 + rng.nextInt(21); // 75-95% range
-
-    setState(() {
-      _isRecording = false;
-      _pronunciationScore = score;
-    });
-
-    if (_currentCard != null) {
-      final duration = startTime != null
-          ? DateTime.now().difference(startTime!).inMilliseconds
-          : 0;
-      completeTurn(
-        cardId: _currentCard!.cardId,
-        result: score >= 85 ? GameResult.correct : GameResult.partial,
-        durationMs: duration,
-        confidence: score / 100.0,
-        feedback: {'score': score},
-        userAction: 'pronounced',
-      );
-    }
+    setState(() => _isRecording = false);
   }
 
   void _nextCard() {
     if (_currentIndex < _cards.length - 1) {
       setState(() {
         _currentIndex++;
-        _pronunciationScore = null;
         _userAmplitudes = [];
         _generateNativeAmplitudes();
       });
     } else {
-      finishGame();
+      setState(() => _practiceComplete = true);
     }
   }
 
@@ -173,6 +144,14 @@ class _PronunciationDuelGameState
 
   @override
   Widget buildGameContent(BuildContext context) {
+    if (_practiceComplete) {
+      return SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
+          child: const Center(child: _PronPracticeBanner()),
+        ),
+      );
+    }
     if (_cards.isEmpty) {
       return Center(
         child: Text('No cards available',
@@ -192,6 +171,8 @@ class _PronunciationDuelGameState
           children: [
             SizedBox(height: PanAfricanSpacing.sm),
             GriotProgressBar(value: progress, height: 6, showGlowTip: true),
+            SizedBox(height: PanAfricanSpacing.sm),
+            const _PronPracticeBanner(),
             SizedBox(height: PanAfricanSpacing.lg),
             // Word display
             Text(card.text,
@@ -304,52 +285,41 @@ class _PronunciationDuelGameState
               ),
             ),
             SizedBox(height: PanAfricanSpacing.lg),
-            // Pronunciation score gauge
-            if (_pronunciationScore != null) ...[
-              GriotMasteryRing(
-                value: _pronunciationScore! / 100.0,
-                size: 100,
-                label: 'Accuracy',
+            AnimatedBuilder(
+              animation: _pulseAnim,
+              builder: (context, child) => Transform.scale(
+                scale: _isRecording ? _pulseAnim.value : 1.0,
+                child: child,
               ),
-              SizedBox(height: PanAfricanSpacing.md),
-            ],
-            // Record button
-            if (_pronunciationScore == null)
-              AnimatedBuilder(
-                animation: _pulseAnim,
-                builder: (context, child) => Transform.scale(
-                  scale: _isRecording ? _pulseAnim.value : 1.0,
-                  child: child,
-                ),
-                child: GestureDetector(
-                  onTap: _toggleRecording,
-                  child: Container(
-                    width: 72.w,
-                    height: 72.w,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: _isRecording
-                          ? null
-                          : ModernGriotGradients.signatureGradient,
-                      color: _isRecording ? ModernGriotColors.error : null,
-                      boxShadow: ModernGriotShadows.fab,
-                    ),
-                    child: Icon(
-                      _isRecording ? Icons.stop_rounded : Icons.mic_rounded,
-                      color: ModernGriotColors.onPrimary,
-                      size: 32.sp,
-                    ),
+              child: GestureDetector(
+                onTap: _toggleRecording,
+                child: Container(
+                  width: 72.w,
+                  height: 72.w,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: _isRecording
+                        ? null
+                        : ModernGriotGradients.signatureGradient,
+                    color: _isRecording ? ModernGriotColors.error : null,
+                    boxShadow: ModernGriotShadows.fab,
+                  ),
+                  child: Icon(
+                    _isRecording ? Icons.stop_rounded : Icons.mic_rounded,
+                    color: ModernGriotColors.onPrimary,
+                    size: 32.sp,
                   ),
                 ),
-              )
-            else
-              GriotGradientButton(
-                label: _currentIndex < _cards.length - 1
-                    ? 'Next Word'
-                    : 'Finish Game',
-                icon: Icons.arrow_forward_rounded,
-                onPressed: _nextCard,
               ),
+            ),
+            SizedBox(height: PanAfricanSpacing.md),
+            GriotGradientButton(
+              label: _currentIndex < _cards.length - 1
+                  ? 'Next Word'
+                  : 'Finish Game',
+              icon: Icons.arrow_forward_rounded,
+              onPressed: _isRecording ? null : _nextCard,
+            ),
             SizedBox(height: PanAfricanSpacing.lg),
             // Cultural note
             if (card.contextExamples.isNotEmpty)
@@ -359,6 +329,56 @@ class _PronunciationDuelGameState
                 icon: Icons.tips_and_updates_rounded,
               ),
             SizedBox(height: PanAfricanSpacing.xl),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PronPracticeBanner extends StatelessWidget {
+  const _PronPracticeBanner();
+
+  static const _copy = <String, String>{
+    'pron.practice_mode': 'Practice mode',
+    'pron.scoring_soon': 'Scoring coming soon',
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final practiceMode = _copy['pron.practice_mode']!;
+    final scoringSoon = _copy['pron.scoring_soon']!;
+    final cs = Theme.of(context).colorScheme;
+    return Semantics(
+      liveRegion: true,
+      excludeSemantics: true,
+      label: '$practiceMode. $scoringSoon',
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.all(PanAfricanSpacing.md),
+        decoration: BoxDecoration(
+          color: cs.secondaryContainer,
+          borderRadius: ModernGriotRadius.borderXl,
+        ),
+        child: Column(
+          children: [
+            Text(
+              practiceMode,
+              style: ModernGriotTypography.labelLarge(
+                context: context,
+                color: cs.onSecondaryContainer,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: PanAfricanSpacing.xxs),
+            Text(
+              scoringSoon,
+              style: ModernGriotTypography.bodySmall(
+                context: context,
+                color: cs.onSecondaryContainer,
+              ),
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),

@@ -339,4 +339,19 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get gameWordMatchEnglishLabel => 'English';
+
+  @override
+  String get content_coming_soon => 'Coming Soon';
+
+  @override
+  String get content_not_available_yet => 'This content is not available yet.';
+
+  @override
+  String get content_coming_soon_badge => 'Soon';
+
+  @override
+  String get pron_practice_mode => 'Practice mode';
+
+  @override
+  String get pron_scoring_soon => 'Scoring coming soon';
 }

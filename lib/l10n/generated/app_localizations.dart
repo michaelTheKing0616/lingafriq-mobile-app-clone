@@ -751,6 +751,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'English'**
   String get gameWordMatchEnglishLabel;
+
+  /// Empty state when a language or level has no verified curriculum content
+  ///
+  /// In en, this message translates to:
+  /// **'Coming Soon'**
+  String get content_coming_soon;
+
+  /// Subtitle under the coming-soon state; states only that verified content is not available
+  ///
+  /// In en, this message translates to:
+  /// **'This content is not available yet.'**
+  String get content_not_available_yet;
+
+  /// Short badge on a language or level row that has no verified curriculum content
+  ///
+  /// In en, this message translates to:
+  /// **'Soon'**
+  String get content_coming_soon_badge;
+
+  /// Label for pronunciation practice when no numeric score is shown
+  ///
+  /// In en, this message translates to:
+  /// **'Practice mode'**
+  String get pron_practice_mode;
+
+  /// States that pronunciation scoring is not available yet
+  ///
+  /// In en, this message translates to:
+  /// **'Scoring coming soon'**
+  String get pron_scoring_soon;
 }
 
 class _AppLocalizationsDelegate
