@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/services/offline/local_database_service.dart';
+import 'package:lingafriq/services/local_schema_migrator.dart';
 
 import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -48,9 +49,13 @@ void main() async {
 
   runZonedGuarded(() async {
   // Initialize local database for offline mode
+  SchemaMigrationFailure? schemaRecovery;
   try {
     await LocalDatabaseService().init();
     logger.info('Local database initialized');
+  } on SchemaMigrationFailure catch (failure) {
+    schemaRecovery = failure;
+    logger.warning('Local schema migration needs recovery', error: failure);
   } catch (e) {
     logger.warning('Failed to initialize local database: $e');
   }
@@ -168,6 +173,11 @@ void main() async {
   } catch (e) {
     logger.error('Error initializing deep link service', error: e);
   }
+
+    if (schemaRecovery != null) {
+      runApp(SchemaRecoveryApp(failure: schemaRecovery));
+      return;
+    }
 
     runApp(ProviderScope(
       overrides: [

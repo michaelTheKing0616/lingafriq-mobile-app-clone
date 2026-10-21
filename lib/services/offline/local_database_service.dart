@@ -6,6 +6,7 @@ import '../../models/offline/local_vocabulary.dart';
 import '../../models/offline/local_progress.dart';
 import '../../models/offline/local_media_cache.dart';
 import '../../models/offline/hive_adapters.dart';
+import '../local_schema_migrator.dart';
 
 /// LocalDatabaseService - Manages local Hive database for offline mode
 /// Provides CRUD operations, batch operations, and database utilities
@@ -68,6 +69,8 @@ class LocalDatabaseService {
       await _migrateSchemaIfNeeded();
 
       _isInitialized = true;
+    } on SchemaMigrationFailure {
+      rethrow;
     } catch (e) {
       throw Exception('Failed to initialize LocalDatabaseService: $e');
     }
@@ -79,39 +82,17 @@ class LocalDatabaseService {
   /// Get current schema version
   int get schemaVersion => _schemaVersion;
 
-  /// Migrate schema if needed
   Future<void> _migrateSchemaIfNeeded() async {
-    final storedVersion = _metadataBox?.get('schemaVersion') as int? ?? 0;
-    if (storedVersion < _schemaVersion) {
-      await _performMigration(storedVersion, _schemaVersion);
-      await _metadataBox?.put('schemaVersion', _schemaVersion);
-    }
-  }
-
-  /// Perform migration between schema versions
-  Future<void> _performMigration(int fromVersion, int toVersion) async {
-    // v2: LocalVocabulary now includes optional source media pointers (id + start/end ms).
-    if (fromVersion < 2) {
-      // Ensure existing vocab rows are re-written with the new fields present (null defaults),
-      // so subsequent reads/writes are consistent across devices.
-      final box = _vocabularyBox;
-      if (box != null && box.isOpen) {
-        final keys = box.keys.toList();
-        for (final k in keys) {
-          final v = box.get(k);
-          if (v == null) continue;
-          // Write back with explicit null defaults for new fields.
-          await box.put(
-            k,
-            v.copyWith(
-              sourceMediaId: v.sourceMediaId,
-              sourceStartMs: v.sourceStartMs,
-              sourceEndMs: v.sourceEndMs,
-            ),
-          );
-        }
-      }
-    }
+    final metadata = _metadataBox;
+    if (metadata == null) return;
+    final store = _HiveSchemaStore(metadata, _vocabularyBox);
+    await LocalSchemaMigrator(
+      targetVersion: _schemaVersion,
+      steps: {
+        1: (_) async {},
+        2: (store) => (store as _HiveSchemaStore).rewriteVocabularyPointers(),
+      },
+    ).migrate(store);
   }
 
   // ============================================================================
@@ -546,6 +527,61 @@ class LocalDatabaseService {
     if (!_isInitialized) {
       throw Exception(
         'LocalDatabaseService not initialized. Call init() first.',
+      );
+    }
+  }
+}
+
+class _HiveSchemaStore implements SchemaStore {
+  _HiveSchemaStore(this._metadata, this._vocabulary);
+
+  final Box _metadata;
+  final Box<LocalVocabulary>? _vocabulary;
+  Map<dynamic, LocalVocabulary> _backup = {};
+
+  @override
+  int get schemaVersion => _metadata.get('schemaVersion') as int? ?? 0;
+
+  @override
+  Future<void> setSchemaVersion(int version) async {
+    await _metadata.put('schemaVersion', version);
+  }
+
+  @override
+  Map<String, Object?> snapshot() {
+    final box = _vocabulary;
+    _backup = {
+      for (final key in box?.keys ?? const <dynamic>[])
+        if (box!.get(key) != null) key: box.get(key)!,
+    };
+    return {'schemaVersion': schemaVersion};
+  }
+
+  @override
+  Future<void> restore(Map<String, Object?> snapshot) async {
+    final box = _vocabulary;
+    if (box != null && box.isOpen) {
+      await box.clear();
+      for (final entry in _backup.entries) {
+        await box.put(entry.key, entry.value);
+      }
+    }
+    await setSchemaVersion(snapshot['schemaVersion'] as int? ?? 0);
+  }
+
+  Future<void> rewriteVocabularyPointers() async {
+    final box = _vocabulary;
+    if (box == null || !box.isOpen) return;
+    for (final key in box.keys.toList()) {
+      final value = box.get(key);
+      if (value == null) continue;
+      await box.put(
+        key,
+        value.copyWith(
+          sourceMediaId: value.sourceMediaId,
+          sourceStartMs: value.sourceStartMs,
+          sourceEndMs: value.sourceEndMs,
+        ),
       );
     }
   }
