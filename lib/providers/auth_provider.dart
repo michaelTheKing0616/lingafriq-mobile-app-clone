@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' show VoidCallback;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/config/api_contract.dart';
-import 'package:lingafriq/models/profile_model.dart';
+import 'package:lingafriq/models/onboarding_answers.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
 import 'package:lingafriq/utils/utils.dart';
@@ -79,6 +79,19 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       await prefs.setBool('onboarding_seen', false);
       await prefs.remove('onboarding_complete');
       await prefs.remove('onboarding_data');
+      ref.read(navigationProvider).navigateOffAll(const OnboardingScreenMaterial3());
+      return;
+    }
+
+    final migration = await OnboardingAnswers.migrate(prefs);
+    if (migration.error != null) {
+      logger.error(
+        'Onboarding answers could not be read',
+        tag: 'auth',
+        error: migration.error,
+      );
+    }
+    if (migration.reask.isNotEmpty) {
       ref.read(navigationProvider).navigateOffAll(const OnboardingScreenMaterial3());
       return;
     }

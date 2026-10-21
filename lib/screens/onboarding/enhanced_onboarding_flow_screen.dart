@@ -12,6 +12,7 @@ import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/screens/auth/world_class_login_screen.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
+import 'package:lingafriq/models/onboarding_answers.dart';
 import 'placement_test_screen.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/services/games_learning_language_preload.dart';
@@ -325,7 +326,11 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
     // Save all onboarding data locally
     try {
       await prefs.setString('onboarding_complete', 'true');
-      await prefs.setString('onboarding_data', data.toString());
+      await prefs.setString(
+        'onboarding_data',
+        OnboardingAnswers.encodeStored(prefs.getString('onboarding_data'), data),
+      );
+      await prefs.remove('onboarding_reask');
       // This is the flag the splash/auth router actually uses.
       await prefs.setBool('onboarding_seen', true);
     } catch (e) {

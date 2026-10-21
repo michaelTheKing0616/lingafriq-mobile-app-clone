@@ -1,5 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/onboarding_data_model.dart';
+import 'package:lingafriq/models/onboarding_answers.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/providers/backend_sync_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
@@ -493,15 +494,23 @@ class OnboardingNotifier extends Notifier<OnboardingData> {
   }
   
   Future<void> _loadOnboardingData() async {
-    final data = _prefs.prefs.getString('onboarding_data');
-    if (data != null) {
-      try {
-        state = OnboardingData.fromJson(data);
-      } catch (e) {
-        // If parsing fails, start fresh
-        state = OnboardingData();
-      }
+    final migration = await OnboardingAnswers.migrate(_prefs.prefs);
+    if (migration.error != null) {
+      logger.error(
+        'Onboarding answers could not be read',
+        tag: 'onboarding',
+        error: migration.error,
+      );
+      return;
     }
+    final data = _prefs.prefs.getString('onboarding_data');
+    if (data == null || data.isEmpty) return;
+    final loaded = OnboardingAnswers.read(data);
+    if (loaded.legacyProvider) {
+      state = OnboardingData.fromJson(data);
+      return;
+    }
+    state = loaded.answers.toOnboardingData();
   }
 }
 

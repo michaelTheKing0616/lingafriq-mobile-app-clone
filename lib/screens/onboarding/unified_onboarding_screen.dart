@@ -25,6 +25,7 @@ import 'package:lingafriq/services/games_learning_language_preload.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:lingafriq/avatars/avatars.dart';
+import 'package:lingafriq/models/onboarding_answers.dart';
 import 'placement_test_screen.dart';
 
 /// Unified Onboarding: "Kijiji cha Lugha" - The Language Village
@@ -42,6 +43,10 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
     final pageController = usePageController();
     final currentStep = useState(0);
     final onboardingData = useState<Map<String, dynamic>>({});
+    final reask =
+        ref.read(sharedPreferencesProvider).prefs.getStringList('onboarding_reask') ??
+            const <String>[];
+    bool ask(Iterable<String> keys) => reask.isEmpty || keys.any(reask.contains);
     final isCompleting = useState(false);
 
     // Animation controller for character entrances
@@ -55,75 +60,125 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
     }, []);
 
     // Village characters guide the journey
-    final steps = [
-      // Step 0: Welcome to the Village
-      _VillageWelcomeStep(
-        onNext: () =>
-            _goToNext(pageController, currentStep, animationController),
-      ),
-      // Step 1: Meet the Elder (What language do you speak?)
-      _ElderStep(
-        onNext: (data) {
-          onboardingData.value = {...onboardingData.value, ...data};
-          _goToNext(pageController, currentStep, animationController);
-        },
-      ),
-      // Step 2: The Weaver (What language to learn?)
-      _WeaverStep(
-        onNext: (data) {
-          onboardingData.value = {...onboardingData.value, ...data};
-          _goToNext(pageController, currentStep, animationController);
-        },
-      ),
-      // Step 3: The Elder's Question (Age & Why learning?)
-      _ElderQuestionStep(
-        onNext: (data) {
-          onboardingData.value = {...onboardingData.value, ...data};
-          _goToNext(pageController, currentStep, animationController);
-        },
-      ),
-      // Step 4: The Path Chooser (Primary goal)
-      _PathChooserStep(
-        onNext: (data) {
-          onboardingData.value = {...onboardingData.value, ...data};
-          _goToNext(pageController, currentStep, animationController);
-        },
-      ),
-      // Step 5: The Rhythm Master (Learning style)
-      _RhythmMasterStep(
-        onNext: (data) {
-          onboardingData.value = {...onboardingData.value, ...data};
-          _goToNext(pageController, currentStep, animationController);
-        },
-      ),
-      // Step 6: The Timekeeper (Schedule)
-      _TimekeeperStep(
-        onNext: (data) {
-          onboardingData.value = {...onboardingData.value, ...data};
-          _goToNext(pageController, currentStep, animationController);
-        },
-      ),
-      // Step 7: The Griot (Tone & gamification)
-      _GriotStep(
-        onNext: (data) {
-          onboardingData.value = {...onboardingData.value, ...data};
-          _goToNext(pageController, currentStep, animationController);
-        },
-      ),
-      // Step 8: The Naming Ceremony (Profile setup)
-      _NamingCeremonyStep(
-        onboardingData: onboardingData.value,
-        onComplete: () async {
-          if (isCompleting.value) return;
-          isCompleting.value = true;
-          try {
-            await _completeOnboarding(onboardingData.value, context, ref);
-          } finally {
-            isCompleting.value = false;
-          }
-        },
-      ),
+    final stepCount = <int>[0];
+    final steps = <Widget>[
+      if (reask.isEmpty)
+        _VillageWelcomeStep(
+          onNext: () => _goToNext(pageController, currentStep, animationController),
+        ),
+      if (ask(const ['proficiency_language']))
+        _ElderStep(
+          onNext: (data) => _captureOnboardingAnswer(
+            data,
+            onboardingData,
+            pageController,
+            currentStep,
+            animationController,
+            stepsLength: () => stepCount[0],
+            reask: reask,
+            context: context,
+            ref: ref,
+          ),
+        ),
+      if (ask(const ['learning_language']))
+        _WeaverStep(
+          onNext: (data) => _captureOnboardingAnswer(
+            data,
+            onboardingData,
+            pageController,
+            currentStep,
+            animationController,
+            stepsLength: () => stepCount[0],
+            reask: reask,
+            context: context,
+            ref: ref,
+          ),
+        ),
+      if (ask(const ['age_category', 'learning_reasons']))
+        _ElderQuestionStep(
+          onNext: (data) => _captureOnboardingAnswer(
+            data,
+            onboardingData,
+            pageController,
+            currentStep,
+            animationController,
+            stepsLength: () => stepCount[0],
+            reask: reask,
+            context: context,
+            ref: ref,
+          ),
+        ),
+      if (ask(const ['primary_goal']))
+        _PathChooserStep(
+          onNext: (data) => _captureOnboardingAnswer(
+            data,
+            onboardingData,
+            pageController,
+            currentStep,
+            animationController,
+            stepsLength: () => stepCount[0],
+            reask: reask,
+            context: context,
+            ref: ref,
+          ),
+        ),
+      if (ask(const ['learning_style']))
+        _RhythmMasterStep(
+          onNext: (data) => _captureOnboardingAnswer(
+            data,
+            onboardingData,
+            pageController,
+            currentStep,
+            animationController,
+            stepsLength: () => stepCount[0],
+            reask: reask,
+            context: context,
+            ref: ref,
+          ),
+        ),
+      if (ask(const ['daily_duration_minutes', 'preferred_time_of_day', 'reminders_enabled']))
+        _TimekeeperStep(
+          onNext: (data) => _captureOnboardingAnswer(
+            data,
+            onboardingData,
+            pageController,
+            currentStep,
+            animationController,
+            stepsLength: () => stepCount[0],
+            reask: reask,
+            context: context,
+            ref: ref,
+          ),
+        ),
+      if (ask(const ['app_tone', 'gamification_level']))
+        _GriotStep(
+          onNext: (data) => _captureOnboardingAnswer(
+            data,
+            onboardingData,
+            pageController,
+            currentStep,
+            animationController,
+            stepsLength: () => stepCount[0],
+            reask: reask,
+            context: context,
+            ref: ref,
+          ),
+        ),
+      if (reask.isEmpty)
+        _NamingCeremonyStep(
+          onboardingData: onboardingData.value,
+          onComplete: () async {
+            if (isCompleting.value) return;
+            isCompleting.value = true;
+            try {
+              await _completeOnboarding(onboardingData.value, context, ref);
+            } finally {
+              isCompleting.value = false;
+            }
+          },
+        ),
     ];
+    stepCount[0] = steps.length;
 
     final totalSteps = steps.length;
 
@@ -305,6 +360,25 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
     );
   }
 
+  Future<void> _captureOnboardingAnswer(
+    Map<String, dynamic> data,
+    ValueNotifier<Map<String, dynamic>> onboardingData,
+    PageController pageController,
+    ValueNotifier<int> currentStep,
+    AnimationController animationController, {
+    required int Function() stepsLength,
+    required List<String> reask,
+    required BuildContext context,
+    required WidgetRef ref,
+  }) async {
+    onboardingData.value = {...onboardingData.value, ...data};
+    if (reask.isNotEmpty && currentStep.value + 1 >= stepsLength()) {
+      await _completeOnboarding(onboardingData.value, context, ref);
+      return;
+    }
+    _goToNext(pageController, currentStep, animationController);
+  }
+
   void _goToPrevious(
     PageController controller,
     ValueNotifier<int> step,
@@ -351,7 +425,11 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
     // Save all onboarding data locally
     try {
       await prefs.setString('onboarding_complete', 'true');
-      await prefs.setString('onboarding_data', data.toString());
+      await prefs.setString(
+        'onboarding_data',
+        OnboardingAnswers.encodeStored(prefs.getString('onboarding_data'), data),
+      );
+      await prefs.remove('onboarding_reask');
       await prefs.setBool('onboarding_seen', true);
     } catch (e) {
       logger.error('Error saving onboarding completion locally', error: e);
