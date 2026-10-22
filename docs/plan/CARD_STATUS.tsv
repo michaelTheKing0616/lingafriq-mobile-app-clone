@@ -469,7 +469,7 @@ P13-011	Draft	Design verified native teacher marketplace	P13/P13-011.yaml
 P2-001	Done	Make flutter analyze fatal on warnings for new code	P2/P2-001.yaml
 P2-002	Done	Add placeholder and claim linters over source and content	P2/P2-002.yaml
 P2-003	Done	Run gitleaks in pre-commit and CI	P2/P2-003.yaml
-P2-004	Draft	Build content schema validator as blocking CI job	P2/P2-004.yaml
+P2-004	Done	Build content schema validator as blocking CI job	P2/P2-004.yaml
 P2-005	Draft	Block merges on prompt or model changes without AI eval	P2/P2-005.yaml
 P2-006	Draft	Block on high-severity dependency audit findings	P2/P2-006.yaml
 P2-007	Draft	Generate SBOM, pin Actions by SHA, drop auto-commit step	P2/P2-007.yaml

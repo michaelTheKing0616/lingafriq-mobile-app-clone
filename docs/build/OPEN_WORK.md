@@ -77,3 +77,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-065 | open | P2-002 | Placeholder and generic-claim hits in the four legacy bundles, shipped assets, lib, and node-backend stay at the recorded counts. The mobile CI job does not check out node-backend, so that tree is scanned only when it is present. |
 | OW-066 | open | P2-003 | Gitleaks scans the new commits, not full history. JWT_SECRET_EXPLANATION.md stays a known redacted hygiene finding until the end-of-build purge. |
 | OW-067 | open | P2-002, P7-960 | Bundled lessons without a source stay at the recorded counts. Import Media lessons are runtime-only and tag generated checks as unreviewed. The builder does not invent a gloss or a tone pattern. |
+| OW-068 | open | P2-004 | The four legacy bundles are not v1. The content job stays green only while accepted stays 0. Tone is checked on the lexeme lemma, not on every string. |

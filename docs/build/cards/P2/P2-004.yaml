@@ -67,10 +67,12 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "Legacy bundles stay rejected. The job exits 0 only while accepted is 0. A file that validates as v1 fails the job."
+- "The tone check covers a lexeme lemma in yo, ig, ha, tw, zu, and xh. NFC applies to every string in a v1 pack."
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging
