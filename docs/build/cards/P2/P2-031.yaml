@@ -25,10 +25,11 @@ tiers:
   justification: 'score 7: blast 3, coupling 1, depth 1'
 token_budget: 70000
 file_allowlist:
-- node-backend/src/routes/health.routes.ts
+- node-backend/src/controllers/health.controller.ts
 - node-backend/src/app.ts
 - node-backend/src/server.ts
-- infra/lb/README.md
+- node-backend/src/__test__/health.probes.test.ts
+- node-backend/infra/lb/README.md
 context_anchors:
 - ELEVATION.md#§13.4:L1903
 - ELEVATION.md#§13.4:L1903-L1904
@@ -61,10 +62,13 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "/health stays 200 when MongoDB is down. /ready returns 503 and names the database. SIGTERM drains in-flight requests."
+- "Two API instances behind the live load balancer have not been inspected."
 gate: G2
-external_blockers: []
-status: Draft
+external_blockers:
+- "The live host has not been checked for two API instances."
+status: Ready
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes

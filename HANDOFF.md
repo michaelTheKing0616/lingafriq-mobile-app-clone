@@ -11,11 +11,11 @@ Work is continuous on `cloud-handoff`. Do not pause between cards. The key files
 - Mobile: `cloud-handoff`. Latest card push is P2-013.
 - Backend: `cloud-handoff`. Latest card push is P2-013, the OpenAPI contract suite.
 - The key files are still tracked. Copies also exist in `~/.lingafriq/secrets/` (mode 600). History was not rewritten.
-- Next card is P2-014. P7-961 is the full Import Media lesson and does not jump this queue.
+- Next unblocked card is P2-031. The probes are in and the card stays open until the live host is seen running two API instances. P2-014 through P2-030 wait on ADR-004. P7-961 does not jump this queue.
 
 ## Next 3 steps
 
-1. Finish P2-014 and keep going in plan order.
+1. Finish the cards that are not waiting on ADR-004. P2-031 still needs the live two-instance check.
 2. Do not stop to ask what is next.
 3. Do not remove the Firebase service account, the Apple `.p8`, or the five client AI keys. Intron stays off until its flag and server key are set.
 
@@ -97,3 +97,5 @@ Nothing new is blocked on a decision in this run. Still waiting, and not being r
 - P1-025: where signed snap URLs come from. No bucket exists yet.
 - D12–D19 remain unsigned. D11 is already decided: do not block under-13 sign-up.
 - Key cleanup stays at the end of the build. Do not delete the Firebase account, the Apple `.p8`, or the five client AI keys.
+- ADR-004: sign Drift/SQLite or Isar as the one local database. Hive is what the app uses today. P2-014 through P2-030 wait on this.
+- P2-031: confirm the live host runs at least two API instances behind the load balancer.

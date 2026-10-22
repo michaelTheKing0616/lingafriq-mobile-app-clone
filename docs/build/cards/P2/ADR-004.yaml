@@ -41,7 +41,8 @@ dod_evidence:
 - signed decision recorded in DECISIONS.md
 risks: []
 gate: G2
-external_blockers: []
+external_blockers:
+- "Tope has not signed the local-database choice. Hive is already in the app. Drift/SQLite and Isar are the options in the elevation."
 status: Draft
 skills:
   worker:

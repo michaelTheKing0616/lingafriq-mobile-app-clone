@@ -18914,6 +18914,19 @@
         }
       }
     },
+    "/ready": {
+      "get": {
+        "operationId": "get_ready",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Authentication is required"
+          }
+        }
+      }
+    },
     "/scraper/articles/bulk": {
       "post": {
         "operationId": "post_scraper_articles_bulk",

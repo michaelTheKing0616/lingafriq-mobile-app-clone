@@ -65,7 +65,8 @@ dod_evidence:
 - ledger row
 risks: []
 gate: G2
-external_blockers: []
+external_blockers:
+- "ADR-004 needs Tope's signature before the local database is chosen."
 status: Draft
 skills:
   worker:

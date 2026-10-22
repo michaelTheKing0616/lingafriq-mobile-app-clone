@@ -544,6 +544,7 @@ const Map<String, ApiOperation> apiOperations = {
   'GET /openapi.json': ApiOperation('GET', '/openapi.json'),
   'GET /personalization': ApiOperation('GET', '/personalization'),
   'GET /random_quiz/{languageId}/all': ApiOperation('GET', '/random_quiz/{languageId}/all'),
+  'GET /ready': ApiOperation('GET', '/ready'),
   'GET /scraper/health': ApiOperation('GET', '/scraper/health'),
   'GET /store': ApiOperation('GET', '/store'),
   'OPTIONS *': ApiOperation('OPTIONS', '*'),
