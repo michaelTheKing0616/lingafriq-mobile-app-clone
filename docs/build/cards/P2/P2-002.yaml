@@ -29,8 +29,10 @@ token_budget: 70000
 file_allowlist:
 - scripts/ci/placeholder_lint.py
 - scripts/ci/claim_lint.py
-- .github/workflows/build.yml
 - scripts/ci/lint_patterns.yaml
+- scripts/ci/lint_baseline.tsv
+- .github/workflows/build.yml
+- .github/workflows/build-and-release.yml
 - test/ci/lint_fixtures_test.py
 context_anchors:
 - ELEVATION.md#§6.5:L1318-L1319
@@ -73,10 +75,13 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "Legacy matches are recorded in scripts/ci/lint_baseline.tsv. A file passes while its count does not rise."
+- "Lockfiles and dependency folders are not scanned. An empty field is a blank JSON or YAML content value. A tone line passes when a lexicon source is within 40 lines."
+- "build.yml is workflow_dispatch only. Pull requests run the content-lint job. The mobile job scans node-backend only when that checkout is present."
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging

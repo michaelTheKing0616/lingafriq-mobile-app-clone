@@ -1,0 +1,29 @@
+# charter: v2
+# Patterns for placeholder_lint.py and claim_lint.py. Matching is case-insensitive.
+# An allowlist entry suppresses one span only when it has a reason and an owner.
+
+placeholder_rules:
+  - id: placeholder.word
+    pattern: word\d+
+  - id: placeholder.example
+    pattern: example
+  - id: placeholder.sample
+    pattern: sample
+  - id: placeholder.lorem
+    pattern: lorem
+
+empty_field_id: empty_field
+empty_field_keys: question, answer, prompt, text, meaning, word, translation, title, gloss
+
+claim_rules:
+  - id: claim.affix_tense
+    pattern: affixes carry tense and person
+  - id: claim.svo_default
+    pattern: subject\s*(?:→|->)\s*verb\s*(?:→|->)\s*object
+
+tone_id: claim.tone_without_source
+tone_statement: high tone|low tone|tone mark
+tone_source: lexicon[_ ]source
+tone_window_lines: 40
+
+allowlist: []

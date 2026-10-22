@@ -74,3 +74,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-062 | open | P1-061, commit `a2c6603` | REVENUECAT_WEBHOOK_SECRET is unset in the repo. The webhook is not deployed (EXT-23). |
 | OW-063 | open | P1-062 | Entitlement decisions are cached for 60 seconds. A subscriber who exists only on the old Subscription collection has no entitlement row and is denied. |
 | OW-064 | open | P2-001 | Infos are not fatal. Legacy warning counts stay until the file is edited. Android and iOS jobs still check out main, so a pull request is enforced by the analyze-new-code job. |
+| OW-065 | open | P2-002 | Placeholder and generic-claim hits in the four legacy bundles, shipped assets, lib, and node-backend stay at the recorded counts. The mobile CI job does not check out node-backend, so that tree is scanned only when it is present. |

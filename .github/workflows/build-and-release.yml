@@ -834,3 +834,16 @@ jobs:
 
       - name: Analyze changed Dart
         run: bash scripts/ci/analyze_new_code.sh
+
+  content-lint:
+    name: Content lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Placeholder and claim linters
+        run: |
+          python3 scripts/ci/placeholder_lint.py --baseline scripts/ci/lint_baseline.tsv
+          python3 scripts/ci/claim_lint.py --baseline scripts/ci/lint_baseline.tsv
+          python3 test/ci/lint_fixtures_test.py

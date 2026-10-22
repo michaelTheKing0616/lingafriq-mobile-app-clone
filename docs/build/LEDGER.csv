@@ -71,3 +71,4 @@ P1-060,verification,T1,grok-4.7,n/a,n/a,1,pass,Scope lists API mounts, socket ev
 P1-061,build,T3,grok-4.7,n/a,n/a,1,pass,A bad webhook secret returns 401; purchase renewal cancellation and expiry update the row; a repeated or older event does not roll it back; a write failure returns 500
 P1-062,build,T3,grok-4.7,n/a,n/a,1,pass,A missing entitlement returns 403 premium_required; an active row is allowed; a client premium claim is ignored; expiry is denied after the 60 second cache
 P2-001,build,T1,grok-4.7,n/a,n/a,1,pass,A new Dart file with a warning fails and names file:line; a legacy file with the same count passes and reports the baseline unchanged; a higher count fails with the delta
+P2-002,build,T2,grok-4.7,n/a,n/a,1,pass,A new placeholder or empty field fails with path:line and a rule id; Sample MCQ fails; a generic claim fails with its span; a tone line without a lexicon source fails; an allowlist entry passes only with a reason and an owner
