@@ -61,3 +61,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-049 | open | P1-047 | Logout and password change revoke refresh tokens only. An unexpired access JWT stays valid until it expires. A second refresh inside 10 seconds is invalid and does not revoke the family. |
 | OW-050 | open | P1-048 | Phone passkeys need the Apple associated-domain file and the Android signing-cert origin for lingafriq.com. |
 | OW-051 | open | P1-049 | Android Sign in with Apple has no Services ID in the repo, so that button stays unavailable there. New provider accounts store nationality unspecified. The app pastes a magic-link token until a universal link exists. Tests replace the Google and Apple key fetch and do not call those hosts. |
+| OW-052 | open | P1-050 | Auth bodies are schemed. Other POST, PUT, and PATCH routes are listed as an exemption until each handler's body is specified. A route that is not in the inventory fails the test. |

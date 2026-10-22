@@ -57,3 +57,4 @@ P1-046,build,T3,grok-4.7,n/a,n/a,1,pass,One loader trims JWT_SECRET and still ac
 P1-047,build,T3,grok-4.7,n/a,n/a,1,pass,New logins issue a 15-minute access token and a hashed rotating refresh token; replay after 10 seconds revokes the family; installed 7-day tokens still refresh until they expire
 P1-048,build,T3,grok-4.7,n/a,n/a,1,pass,A signed-in user registers a passkey that signs in with a 15-minute session; replay and a foreign origin are rejected; removing the passkey blocks the next sign-in
 P1-049,build,T2,grok-4.7,n/a,n/a,1,pass,A verified Google or Apple token links the account and issues a 15-minute session; an unverified email does not; a magic link is single-use and an unknown email returns the same body
+P1-050,build,T3,grok-4.7,n/a,n/a,1,pass,Every route is inventoried with a Joi schema or an explicit exemption; normal JSON is capped at 256 KiB and an invalid auth body returns 400 without a stack

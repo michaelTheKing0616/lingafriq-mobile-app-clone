@@ -29,6 +29,9 @@ file_allowlist:
 - node-backend/src/middleware/validate.middleware.ts
 - node-backend/src/middleware/bodyLimit.middleware.ts
 - node-backend/src/validators/index.ts
+- node-backend/src/validators/discoverRoutes.ts
+- node-backend/src/validators/routeContracts.generated.ts
+- node-backend/src/__test__/P1-050.validation.test.ts
 context_anchors:
 - ELEVATION.md#§13.1:L1857
 - ELEVATION.md#§13.1:L1858
@@ -68,10 +71,12 @@ dod_evidence:
 - coverage on touched domain code
 - ledger row
 risks:
-- Large surface; split by route group at implementation if over budget
+- "Normal JSON defaults to 256 KiB. Offline sync stays 2 MiB, outbox and passport submit stay 5 MiB, and a content-pack manifest stays 12 MiB. Voice, media, and snap prefixes stay at 10 MiB."
+- "Auth register, login, refresh, logout, verification, OAuth, and magic link have Joi schemas. Other mutating routes are an explicit exemption until that handler's body is specified. A route missing from the inventory fails the test."
+- "The first parser is the one that enforces the limit. A later express.json on the same route does not read the body again."
 gate: G1
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes
