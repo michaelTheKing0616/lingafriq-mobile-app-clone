@@ -77,3 +77,4 @@ P2-002,build,T2,grok-4.7,n/a,n/a,1,pass,A lesson or tone note passes with a lexi
 P7-960,build,T2,grok-4.7,n/a,n/a,1,pass,Import Media builds a lesson whose model line is the media text, with at most 10 flashcards, a from your media tag, and an unreviewed tag on the generated check
 P2-004,build,T2,grok-4.7,n/a,n/a,1,pass,A v1 pack missing lemma fails with the item id and /items/0/lemma; non-NFC names the field; a tonal lemma without a tone mark fails; the four legacy bundles are rejected and the migration report records accepted 0
 P2-005,build,T2,grok-4.7,n/a,n/a,1,pass,A prompt or model-identifier change without eval outputs fails loud; a score under the threshold is blocked; a change that touches neither prints skipped with that reason
+P2-006,build,T1,grok-4.7,n/a,n/a,1,pass,A seeded high lodash advisory fails npm audit --omit=dev; Dependabot is weekly for npm, pub, and GitHub Actions; the monthly pub outdated report is uploaded as an artifact

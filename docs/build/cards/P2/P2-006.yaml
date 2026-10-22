@@ -29,6 +29,7 @@ file_allowlist:
 - .github/dependabot.yml
 - scripts/ci/dep_audit.sh
 - .github/workflows/pub-outdated.yml
+- .github/workflows/audit.yml
 context_anchors:
 - ELEVATION.md#§13.1:L1874
 - ELEVATION.md#§13.1:L1874-L1875
@@ -58,10 +59,13 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "This repo has no package-lock.json. The seeded lodash 4.17.20 high advisory is what fails the job. The API lockfile stays in node-backend."
+- "Dependabot is already weekly for pub, npm under chat_bundle/frontend, and GitHub Actions. This card does not wait for the next scheduled pull request."
+- "build.yml is workflow_dispatch only. Pull requests run the same script from the audit workflow. The monthly pub outdated report is uploaded as an artifact."
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging

@@ -15,6 +15,16 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+
+      - name: Dependency audit
+        run: |
+          bash scripts/ci/dep_audit.sh --self-test
+          bash scripts/ci/dep_audit.sh
+
       - name: 🔧 Ensure Gradle wrapper is executable
         run: |
           chmod +x android/gradlew || true

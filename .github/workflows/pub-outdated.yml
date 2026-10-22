@@ -29,6 +29,12 @@ jobs:
           flutter pub outdated --no-dependency-overrides > outdated.txt
           echo "exit:$?" >> outdated.txt
 
+      - name: Attach the outdated report
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: pub-outdated
+          path: outdated.txt
+
       - name: Open an issue
         env:
           GH_TOKEN: ${{ github.token }}
