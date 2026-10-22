@@ -24,9 +24,18 @@ tiers:
   justification: score 7; blast 3; security/crypto tester
 token_budget: 70000
 file_allowlist:
-- node-backend/src/controllers/
-- node-backend/src/validators/index.ts
 - node-backend/src/middleware/auth.middleware.ts
+- node-backend/src/controllers/chat.controller.ts
+- node-backend/src/controllers/vocabulary.controller.ts
+- node-backend/src/controllers/sync.controller.ts
+- node-backend/src/controllers/admin/pointAndSay.admin.controller.ts
+- node-backend/src/controllers/admin/livingDictionary.admin.controller.ts
+- node-backend/src/controllers/socialAudio.controller.ts
+- node-backend/src/controllers/admin/accounts.admin.controller.ts
+- node-backend/src/routes/gamification/badges.route.ts
+- node-backend/src/routes/subscription.route.ts
+- node-backend/src/routes/polie/riveState.ts
+- node-backend/src/__test__/P1-051.identity.test.ts
 context_anchors:
 - ELEVATION.md#§13.1:L1858
 acceptance_criteria:
@@ -59,10 +68,13 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "Admin subscription, badge, suspend, message, and dictionary routes still name a target user in the body. Those lines are marked identity-target. The actor is the admin token."
+- "Classroom promote and demote accept targetUserId and ignore a body userId."
+- "GET /rive-state still reads user_id from the query. Object-level checks are P1-052."
 gate: G1
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes
