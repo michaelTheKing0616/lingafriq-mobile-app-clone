@@ -334,7 +334,7 @@ P1-056	Done	Obfuscate release builds	P1/P1-056.yaml
 P1-057	Done	Enable dependency update bot, audit gate and monthly pub check	P1/P1-057.yaml
 P1-058	Done	Generate SBOM and pin GitHub Actions by SHA	P1/P1-058.yaml
 P1-059	Done	Upgrade admin panel React and Vite	P1/P1-059.yaml
-P1-060	Draft	Prepare penetration test scope document	P1/P1-060.yaml
+P1-060	Done	Prepare penetration test scope document	P1/P1-060.yaml
 P1-061	Draft	Add RevenueCat webhook receiver and entitlement table	P1/P1-061.yaml
 P1-062	Draft	Enforce premium gates server-side from entitlements	P1/P1-062.yaml
 P10-900	Draft	Verify every reward on the server	P10/P10-900.yaml

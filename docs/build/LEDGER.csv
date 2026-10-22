@@ -67,3 +67,4 @@ P1-056,build,T1,grok-4.7,n/a,n/a,1,pass,Release builds pass --obfuscate and uplo
 P1-057,build,T1,grok-4.7,n/a,n/a,1,pass,Dependabot covers pub, npm, and GitHub Actions; a high production advisory fails npm audit; pub outdated is posted monthly
 P1-058,build,T1,grok-4.7,n/a,n/a,1,pass,Mobile action refs are full SHAs; an unpinned ref fails the lint; the app SBOM is attached to the release and the API SBOM is an artifact
 P1-059,build,T2,grok-4.7,n/a,n/a,1,pass,Admin builds on React 19.3.1 and Vite 8.3.5; production npm audit has 0 high
+P1-060,verification,T1,grok-4.7,n/a,n/a,1,pass,Scope lists API mounts, socket events, auth flows, minor-reachable surfaces, test-account roles, and exclusions for EXT-17

@@ -22,7 +22,8 @@ tiers:
   reviewer: T2
   justification: score 2; blast 1
 token_budget: 25000
-file_allowlist: []
+file_allowlist:
+- docs/security/PENTEST_SCOPE.md
 context_anchors:
 - ELEVATION.md#§13.1:L1877
 acceptance_criteria:
@@ -47,11 +48,12 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "Test account passwords are not in this repo. EXT-17 stays open until Tope books the vendor."
 gate: G1
 external_blockers:
 - EXT-17
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/07-research-and-fact-checking
