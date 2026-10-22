@@ -8,15 +8,6 @@ Format: `ID | date | decision | options considered | chosen | signed by | affect
 
 | ID | Decision | Options | Recommended | Source | Blocks |
 |---|---|---|---|---|---|
-| D11 | Under-13 sign-up before the guardian stack exists | (a) block with neutral wording until G9; (b) allow with no social and no data retention | **(a)** — smallest legal surface | ELEVATION §1:L195-L206 | P1-020, P3-082 |
-| D12 | "Trusted user" for auto-hide on one flag | (a) verified native + reputation ≥ threshold; (b) stewards only | **(a)**, threshold set in config, stewards always count | CURRICULUM L616 | P5-013, P9-951 |
-| D13 | Tone-accuracy gate threshold per tonal voice (source says "judged by natives", gives no number) | (a) ≥90% native-judged tone correct on a 100-item set; (b) ≥85% | **(a)** as config default, per-language override | ELEVATION L1460; CURRICULUM L660 (learner baseline 62%) | E-P6-TTS, P6-050, tts_tonal consumers |
-| D14 | Historical persona roster (ADR-031 proposes Yaa Asantewaa, Nkrumah, Shaka, Ahmed Baba, Mofolo) | accept / amend | **accept**, subject to historian review (EXT-15) | ELEVATION §8 | P11-001 (ADR-031), P11-016…018, P1-028 |
-| D15 | Wave 2–4 language rosters incl. a deliberate Egyptian Arabic / Moroccan Darija call | (a) include in Wave 4 as Afro-Asiatic; (b) exclude for now | **(a)**, content waits on licence + natives as every language does | ELEVATION L1247 | P4-111 |
-| D16 | Dialect policy per language (which variety is "standard" for scoring and voice) | (a) one reference variety + labelled variants; (b) multi-variety scoring | **(a)** for Stage 1; (b) revisited at G13 (Grandma Mode) | ELEVATION §6; P4-115 | P4-115, P4-116 |
-| D17 | Release guardrail numbers as config: crash-free sessions, ANR rate, Heritage Fund %, marketplace revenue share | set defaults: crash-free ≥99.5%, ANR <0.47%, fund/marketplace % left blank until EXT-03 | **as listed**, all config not code | ELEVATION L1957, L1992 | P12-016, P13-010, P13-011 |
-| D18 | UI-translation sign-off owner (EXT-24) | Tope / named native per locale | **named native per locale**, Tope approves the list | ELEVATION §13.8 | P3-097 |
-| D19 | Offline sync harvest pair: `selective_sync.dart` and `offline_service.dart` consolidate into one outbox | confirm the harvest list | **confirm** | ELEVATION §13.5 | P2-016 |
 | D20 | Curriculum UI while no language is verified | (a) coming-soon and no lesson list for every language until E-P4/E-P5 fills the verified set; (b) keep showing bundled lessons with a banner | **(a)** — AC4 plus the marketing freeze | P1-029 | P1-029 |
 
 D1–D10 signed 2026-10-21 ("approve all as recommended").
@@ -43,5 +34,19 @@ D1–D10 signed 2026-10-21 ("approve all as recommended").
 | D11 | Under-13 sign-up. Tope 2026-10-22 | **Do not block sign-up. Flag the age. Protect them from harmful content. Social messages stay readable by the platform (not end-to-end encrypted). Transport stays HTTPS.** | Tope, this session |
 | D25 | JWT rotation. Tope 2026-10-22: no revocation | **Keep accepting the current HS256 secret. Do not wait on key revocation. A later asymmetric key must not reject installed sessions.** | Tope, this session |
 | D26 | Certificate pinning (P1-054). Tope 2026-10-22 | **Leaf DER SHA-256 on iOS and Android. CERTIFICATE_PIN_HASHES holds the current pin and the next pin. A release with pins fails closed. A build with no pins stays open.** | Tope, this session |
+| ADR-004 | Local database. Tope 2026-10-22, owner-approved | **Drift (SQLite). Not Isar.** Hive is what the app uses today. Drift has ordered SQL migrations, encryption through SQLCipher, and current Flutter support. Isar is faster for some document reads and its maintenance has stalled. P2-014 through P2-030 are unblocked. | Tope, this session |
+| D12 | Trusted user for auto-hide. Tope 2026-10-22, owner-approved | **(a)** Verified native and reputation at or above a config threshold. Stewards always count. | CURRICULUM L616 |
+| D13 | Tone-accuracy gate. Tope 2026-10-22, owner-approved | **(a)** At least 90% native-judged tone accuracy on a 100-item set. Config default, with a per-language override. | ELEVATION L1460 |
+| D14 | Historical persona roster. Tope 2026-10-22, owner-approved | **Accept** the curated roster: Yaa Asantewaa, Nkrumah, Shaka, Ahmed Baba, Mofolo. Subject to historian review (EXT-15). This is the curated set only. Free open-ended chat with any African historical figure stays and is not removed or gated off. | ELEVATION §8 |
+| D15 | Egyptian Arabic and Moroccan Darija. Tope 2026-10-22, owner-approved | **(a)** Include both in Wave 4. Content waits on a licence and native speakers, as every language does. | ELEVATION L1247 |
+| D16 | Dialect policy. Tope 2026-10-22, owner-approved | **(a)** One reference variety plus labelled variants for Stage 1. Multi-variety scoring is revisited at G13. | ELEVATION §6 |
+| D17 | Release guardrails. Tope 2026-10-22, owner-approved | **Crash-free users at least 99.5%. ANR rate under 0.47%.** Heritage Fund percent and marketplace share stay blank config until EXT-03. | ELEVATION L1957 |
+| D18 | UI translation sign-off. Tope 2026-10-22, owner-approved | **A named native reviewer per locale signs off.** Tope approves the list. | ELEVATION §13.8 |
+| D19 | Offline sync. Tope 2026-10-22, owner-approved | **Confirm.** Merge `selective_sync.dart` and `offline_service.dart` into one outbox. | ELEVATION §13.5 |
+| P2-031 | Live API. Tope 2026-10-22, owner-approved | **Minimum two replicas, health checks, and rolling deploys.** | Tope, this session |
+| P2-032 | Atlas backups. Tope 2026-10-22, owner-approved | **Continuous backup with point-in-time restore, and one documented test restore.** | Tope, this session |
+| P1-004 | Secrets manager. Tope 2026-10-22, owner-approved | **The hosting provider's native secret manager. No secrets in the repo or the client.** Key migration stays at the end of the build. | Tope, this session |
+| P1-010 | App integrity. Tope 2026-10-22, owner-approved | **Play Integrity on Android and App Attest on iOS. Log-only first.** Enforce on sensitive routes after the false-positive rate is reviewed. | Tope, this session |
+| P1-025 | Snap storage. Tope 2026-10-22, owner-approved | **Private Cloudflare R2 bucket. Signed short-lived URLs only. No public listing.** | Tope, this session |
 
 Affects: D1/D6 → CONFLICTS C1–C3 closed, ADR-001…003; D2–D5 → EXTERNAL EXT-04/05/06/11/12, P4 studio cards; D7 → 04_ROUTING.md locked pending 10-card calibration; D8 → 05_UX_DESIGN_BAR.md targets; D9 → EXT-01 stays Open until the file arrives; D10 → P3 typography cards.

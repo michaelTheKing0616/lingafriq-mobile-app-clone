@@ -88,3 +88,5 @@ P2-012,build,T2,grok-4.7,n/a,n/a,1,pass,The Dart client is generated from the Op
 P2-013,build,T2,grok-4.7,n/a,n/a,1,pass,Mounted routes must be in the OpenAPI spec, and an empty body on a schema route returns 400 naming the missing field
 P2-036,build,T3,grok-4.7,n/a,n/a,1,pass,Request logs are JSON with a request id. Secret keys and secret-shaped strings are scrubbed before the line is written. Login does not record the password or its length
 P2-033,build,T3,grok-4.7,n/a,n/a,1,pass,One W3C trace id links the app header, the API span, the AI gateway span, and the speech span. Prompt text and email addresses are not span attributes. A failed export increments the drop counter and the request still returns
+ADR-004,adr,T4,grok-4.7,n/a,n/a,1,pass,Tope chose Drift (SQLite), not Isar. Hive stays until the migration card moves the local data. P2-014 through P2-030 are unblocked
+P2-034,build,T2,grok-4.7,n/a,n/a,1,pass,Rate, errors and duration are recorded per route. OpenAI and Groq stamp first-token time from the stream. A five-minute window above 300 ms, 500 ms or 400 ms raises the matching alert

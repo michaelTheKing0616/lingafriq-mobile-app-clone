@@ -8,14 +8,15 @@ The Firebase service account, the Apple `.p8`, and the five client AI keys stay 
 
 Work is continuous on `cloud-handoff`. Do not pause between cards. The key files remain tracked.
 
-- Mobile: `cloud-handoff`. Latest card push is P2-034.
-- Backend: `cloud-handoff`. Latest card push is P2-034, RED metrics and SLO alerts.
+- Mobile: `cloud-handoff`. Latest card push is ADR-004. Drift is the local database.
+- Backend: `cloud-handoff`. Latest card push is P2-034. OpenAI and Groq stamp first-token time.
 - The key files are still tracked. Copies also exist in `~/.lingafriq/secrets/` (mode 600). History was not rewritten.
-- Next unblocked card is P2-037. P2-034 stays open until AI responses stamp a first-token time. P2-014 through P2-030 wait on ADR-004. P2-031 stays open until two live API instances are confirmed. P2-032 waits on Atlas. P7-961 does not jump this queue.
+- Admin gamification edits were not part of this build. They are in git stash `admin-gamification-wip-not-this-build` on `lingafriq-admin` `cloud-handoff`.
+- Next build card is P2-014. ADR-004 is signed: Drift, not Isar. P2-014 through P2-030 are unblocked. P2-031 and P2-032 stay behind the host switches above. P7-961 does not jump this queue.
 
 ## Next 3 steps
 
-1. Continue at P2-037. P2-034 still needs a first-token stamp on AI responses. P2-031 still needs the live two-instance check. P2-032 needs Atlas access.
+1. Build P2-014 on Drift. The host switches above do not stop the queue.
 2. Do not stop to ask what is next.
 3. Do not remove the Firebase service account, the Apple `.p8`, or the five client AI keys. Intron stays off until its flag and server key are set.
 
@@ -88,15 +89,14 @@ Copies are in `docs/plan/`. Originals:
 
 Intron is set up and not connected. Do not put `INTRON_API_KEY` in the client.
 
-## Pending decisions
+## Tope to switch on
 
-Nothing new is blocked on a decision in this run. Still waiting, and not being re-asked mid-card:
+Decisions for 2026-10-22 are signed in `docs/build/DECISIONS.md`. These still need the live account. None of them stops the build.
 
-- P1-004: which secrets manager, if any, replaces the local secret folder.
-- P1-010: turn on Play Integrity and App Attest for the existing app ids.
-- P1-025: where signed snap URLs come from. No bucket exists yet.
-- D12–D19 remain unsigned. D11 is already decided: do not block under-13 sign-up.
-- Key cleanup stays at the end of the build. Do not delete the Firebase account, the Apple `.p8`, or the five client AI keys.
-- ADR-004: sign Drift/SQLite or Isar as the one local database. Hive is what the app uses today. P2-014 through P2-030 wait on this.
-- P2-031: confirm the live host runs at least two API instances behind the load balancer.
-- P2-032: enable Atlas continuous backup with point-in-time restore, and name the scratch cluster for the quarterly restore drill.
+- Tope to switch on: two API replicas with health checks and a rolling reload, using `node-backend/infra/pm2/ecosystem.config.cjs`.
+- Tope to switch on: Atlas continuous backup with point-in-time restore, then `ATLAS_URI`, `ATLAS_SCRATCH_URI`, and `ATLAS_RESTORE_CONFIRMED=1` for `scripts/ops/atlas_restore_drill.sh`.
+- Tope to switch on: the host secret manager. Key migration stays at the end of the build. Do not delete the Firebase account, the Apple `.p8`, or the five client AI keys.
+- Tope to switch on: Play Integrity and App Attest credentials. `INTEGRITY_MODE` stays `log` until the false-positive review.
+- Tope to switch on: the private Cloudflare R2 bucket (`SNAP_STORAGE=r2` plus `R2_ACCOUNT_ID`, `R2_BUCKET`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`).
+- Tope to switch on: the named native reviewer for each locale (D18).
+- Heritage Fund percent and marketplace share stay blank until EXT-03.

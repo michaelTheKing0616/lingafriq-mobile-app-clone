@@ -88,4 +88,5 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-076 | open | P2-031 | /health stays 200 when MongoDB is down and /ready returns 503. Two API instances behind the live load balancer have not been inspected. |
 | OW-077 | open | P2-036 | Winston scrubs secret keys and secret-shaped strings. A log written with console.log does not pass through that scrub. |
 | OW-078 | open | P2-033 | Spans are accepted in-process. No collector URL is set, so they are not shipped off the machine. |
-| OW-079 | open | P2-034 | Read and chat durations are recorded. AI chat completion returns the whole body, so a first-token time is not stamped yet. |
+| OW-079 | open | P2-034 | OpenAI and Groq stamp first-token time from the stream. Gemini and Hugging Face still return one finished body, so those calls do not stamp it. |
+| OW-080 | open | P2-037 | The rollout gate uses crash-free users 0.995 and ANR rate 0.0047. An Android ANR exit is not read from the OS yet. |

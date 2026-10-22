@@ -39,11 +39,11 @@ security_dsp_crypto: false
 visual_evidence_required: false
 dod_evidence:
 - signed decision recorded in DECISIONS.md
-risks: []
+risks:
+- "Hive remains in the app until P2-014 moves the local data to Drift. Isar is not the choice."
 gate: G2
-external_blockers:
-- "Tope has not signed the local-database choice. Hive is already in the app. Drift/SQLite and Isar are the options in the elevation."
-status: Draft
+external_blockers: []
+status: Done
 skills:
   worker:
   - adaptive/10-analysis-and-decision-support
