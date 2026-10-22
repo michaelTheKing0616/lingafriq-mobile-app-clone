@@ -67,3 +67,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-055 | open | P1-053 | The per-IP limiter still skips itself in tests until the suite installs the fake clock. A limiter error in production still allows the request. |
 | OW-056 | open | P1-055 | The Android network config does not embed a pin. The Dart client is the check on both platforms. No device proxy test was run. |
 | OW-057 | open | P1-056 | The manual sideload tester workflow does not pass --obfuscate. build.yml is disabled and is not the release path. |
+| OW-058 | open | P1-057 | The API production audit reports 43 high and 5 critical advisories, so the backend audit workflow fails until those are upgraded. Dev dependencies are omitted. chat_bundle/frontend has no lockfile yet. |

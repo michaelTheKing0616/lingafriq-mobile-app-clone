@@ -28,6 +28,8 @@ file_allowlist:
 - .github/dependabot.yml
 - .github/workflows/audit.yml
 - .github/workflows/pub-outdated.yml
+- node-backend/.github/dependabot.yml
+- node-backend/.github/workflows/audit.yml
 context_anchors:
 - ELEVATION.md#§13.1:L1874
 - ELEVATION.md#§13.1:L1874-L1875
@@ -57,10 +59,12 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "The API production audit currently reports 43 high and 5 critical advisories, so the backend audit workflow fails until those are upgraded. Dev dependencies are omitted."
+- "chat_bundle/frontend has no lockfile yet. Dependabot covers that npm directory."
 gate: G1
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging

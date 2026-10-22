@@ -1,0 +1,45 @@
+name: Audit
+
+on:
+  pull_request:
+  push:
+    branches: [main, cloud-handoff]
+
+jobs:
+  npm-audit:
+    name: npm audit production dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: A seeded high advisory fails the gate
+        run: |
+          set -euo pipefail
+          work="$(mktemp -d)"
+          cd "$work"
+          npm init -y >/dev/null
+          npm install lodash@4.17.20 --save --ignore-scripts
+          if npm audit --omit=dev --audit-level=high; then
+            echo "expected the seeded high advisory to fail npm audit"
+            exit 1
+          fi
+
+      - name: Audit lockfiles in this repo
+        run: |
+          set -euo pipefail
+          found=0
+          while IFS= read -r lock; do
+            found=1
+            dir="$(dirname "$lock")"
+            echo "npm audit --omit=dev --audit-level=high in $dir"
+            npm audit --omit=dev --audit-level=high --prefix "$dir"
+          done < <(find . -name package-lock.json -not -path '*/node_modules/*')
+          if [ "$found" -eq 0 ]; then
+            echo "No package-lock.json in this repo. The API lockfile is audited in node-backend."
+          fi

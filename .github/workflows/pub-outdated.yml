@@ -1,0 +1,45 @@
+name: Pub outdated
+
+on:
+  schedule:
+    - cron: '0 9 1 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  outdated:
+    name: Post flutter pub outdated
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.0'
+          channel: stable
+
+      - name: Collect outdated packages
+        run: |
+          set +e
+          flutter pub outdated --no-dependency-overrides > outdated.txt
+          echo "exit:$?" >> outdated.txt
+
+      - name: Open an issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          {
+            echo '```'
+            head -c 60000 outdated.txt
+            echo
+            echo '```'
+          } > issue.md
+          gh issue create \
+            --title "flutter pub outdated $(date -u +%Y-%m)" \
+            --body-file issue.md
