@@ -1,0 +1,73 @@
+charter: v2
+id: P7-961
+kind: build
+title: Build the full Import Media lesson
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- F-054
+- F-054.E
+depends_on:
+- E-P1-CONTAINMENT
+- P7-960
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, coupling 1, depth 1'
+token_budget: 50000
+file_allowlist:
+- lib/content/import_media/media_learning_pipeline.dart
+- test/content/import_media_lesson_test.dart
+context_anchors:
+- ELEVATION.md#§18.4:L4264-L4275
+acceptance_criteria:
+- id: AC1
+  text: Given a transcript of two sentences, a media id, and a span, when the builder runs, then the model is the first sentence, that sentence occurs verbatim in the transcript, and the shadowing text equals the model.
+- id: AC2
+  text: Given that lesson, when the guided step is read, then one word is hidden, that word occurs in the model, and the rest of the sentence stays visible.
+- id: AC3
+  text: Given that lesson, when the flashcards are read, then there are at most 10, the answers are distinct, each answer occurs verbatim in the transcript, and each card stores the media id and the span.
+- id: AC4
+  text: Given that lesson, when glosses and the tone step are read, then no gloss uses the word itself as its meaning, an uncited gloss is tagged AI-generated, unreviewed, and the tone step quotes the model without naming what a tone means.
+- id: AC5
+  text: Given empty text, a blank media id, or a blank span, when the builder runs, then it refuses to return a lesson.
+- id: AC6
+  text: Given the same transcript, when the existing extraction runs, then vocabulary and review items are still produced.
+test_plan:
+  unit:
+  - import_media_lesson_test.dart
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - verbatim model, one hidden word, cited or unreviewed gloss
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "This card does not call a live model and does not invent a dictionary meaning. A gloss without a lexicon citation stays unreviewed."
+- "It does not jump ahead of the open P2 queue. F-054 still draws the lesson on the Import screen."
+gate: G7
+external_blockers: []
+status: Ready
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

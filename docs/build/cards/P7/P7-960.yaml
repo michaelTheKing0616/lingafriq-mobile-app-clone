@@ -58,6 +58,7 @@ dod_evidence:
 - ledger row
 risks:
 - "The check question is tagged AI-generated, unreviewed. The builder does not invent a gloss or a tone pattern."
+- "This card is the shell: one quoted line and a cloze. The full lesson is P7-961, and the screen is F-054."
 gate: G7
 external_blockers: []
 status: Done

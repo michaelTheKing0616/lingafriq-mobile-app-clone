@@ -1088,4 +1088,5 @@ P7-947	Draft	Fine-tune the Point and Say classifier on a licensed dataset	P7/P7-
 P7-949	Draft	Adapt lesson length and difficulty to mastery	P7/P7-949.yaml
 P7-950	Draft	Fall back from MobileNetV4 to the SigLIP gateway	P7/P7-950.yaml
 P7-960	Done	Build a structured lesson from Import Media	P7/P7-960.yaml
+P7-961	Ready	Build the full Import Media lesson	P7/P7-961.yaml
 P8-934	Draft	Add a camera word hunt on the Point and Say pipeline	P8/P8-934.yaml

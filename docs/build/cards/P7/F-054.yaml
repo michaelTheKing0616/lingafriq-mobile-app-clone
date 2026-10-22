@@ -14,7 +14,9 @@ dod_evidence:
 - goldens diff
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "P7-960 is the shell. This card is the lesson the learner sees, and it stays Draft until P7-961 has built the full lesson object."
+- "A pronunciation result may be unsure. The screen must not show a made-up score."
 tags: []
 token_budget: 80000
 size: M
@@ -43,6 +45,7 @@ depends_on:
 - E-P3-DESIGN-SYSTEM
 - E-P1-CONTAINMENT
 - E-P5-CONTENT-REAL
+- P7-961
 file_allowlist:
 - lib/screens/media/import_media_screen.dart
 - lib/screens/media/media_clip_player_screen.dart
@@ -54,10 +57,14 @@ delta:
   defects_to_fix:
   - Latin OCR mangles stacked tone marks.
   - Generated learning content lacks review status.
+  - A gloss can answer with the word itself, which is not a meaning.
+  - Shadowing is text only and is not the audio span of the import.
   elevation_to_build:
-  - Import songs, voice notes, or photos into personal lessons with transcript, glosses, Tone Lens, flashcards, and shadowing
-    clip.
-  - Server diacritic-aware OCR; private by default with copyright notice on share.
+  - One saved lesson from one verbatim sentence of the import. The guided blank hides that one word and leaves the rest of the sentence visible.
+  - Tone Lens shows the marks in the transcript and does not explain a tone it cannot cite.
+  - A gloss is cited to a lexicon or tagged AI-generated, unreviewed. At most 10 flashcards, each taken from the source, each storing the media id and span.
+  - Shadowing speaks that same sentence. When the import has no audio for the span, the step says the clip is missing and does not play device speech in its place.
+  - Private by default. A share shows a copyright notice. Processing steps name what actually ran, including low-confidence OCR.
   ux_and_render:
   - Import sheet with honest processing steps beyond shared bar.
   hub_placement: Global Lens → Import; share-sheet target.
@@ -67,10 +74,15 @@ acceptance_criteria:
   text: Given an imported image with tone marks, when OCR completes, then diacritic-aware server pass preserves stacked marks
     or shows honest low-confidence state.
 - id: AC2
-  text: Given imported audio, when lesson generation finishes, then flashcards and shadowing clip carry content labels and
-    review state from E-P5-CONTENT-REAL.
+  text: Given a transcript and a span, when the lesson opens, then the learner sees that verbatim sentence under Tone Lens, shadows that same sentence, and sees at most 10 flashcards whose targets occur in the transcript.
 - id: AC3
-  text: Given share attempt, when user confirms, then copyright notice appears and default remains private.
+  text: Given a share attempt, when the learner confirms, then a copyright notice appears and the lesson stays private until that confirmation.
+- id: AC4
+  text: Given a generated gloss or check, when it is shown, then it is labelled AI-generated, unreviewed, it offers Report a mistake, and it does not present the word itself as the meaning.
+- id: AC5
+  text: Given an import with no audio for the span, when the shadowing step is shown, then the step says the clip is not available and does not substitute device speech.
+- id: AC6
+  text: Given a lesson step, when feedback is shown, then the feedback repeats the verbatim sentence and does not introduce a new sentence.
 test_plan:
   unit:
   - import pipeline steps UI
