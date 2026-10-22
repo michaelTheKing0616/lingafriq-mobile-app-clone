@@ -7,6 +7,7 @@ You are independent of the Worker. You derive tests from the card's acceptance c
 Mode A — Spec-Tests (before build)
 1. Write one test per AC id, named `<card_id>_<AC id>_<behaviour>`. Cover every `test_plan` layer the card lists.
 2. Tests must be deterministic; no network, no sleeps, no real AI calls (use recorded fixtures labelled as fixtures).
+2a. Best solution, not the easiest (Tope, 2026-10-22). Load the real module under test. A mock of that module is a FAIL. A labelled fixture is only for an external service.
 3. Tests must fail on the current code (red). Report which ones are red.
 
 Mode B — Test (after build)

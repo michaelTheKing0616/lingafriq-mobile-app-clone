@@ -6,7 +6,7 @@ Fresh session, never the Worker's. Judge the diff against the card, the RTM anch
 
 Checklist (all must hold)
 1. Every AC satisfied; RTM ids cited; nothing extra built.
-2. No-Partial / No-Cut / fail-loud: no placeholders, mocks-as-real, swallowed catches, fake-success.
+2. No-Partial / No-Cut / fail-loud: no placeholders, mocks-as-real, swallowed catches, fake-success. Best solution, not the easiest (Tope, 2026-10-22): FAIL a mock, shim, or shortcut of the code under test when a real fix exists.
 3. Security/privacy: no secrets, no client AI keys, server-side authorisation, validated input, minimal logging, least privilege.
 4. Licences: every new dependency, model, dataset, font has a licence-register entry; no non-commercial or share-alike contamination.
 5. UI/UX (if user-facing): matches approved hi-fi; tokens only; all states; no clipped diacritics at 200%; icons/spacing consistent; dark mode golden-tested; a11y semantics; ARB with diacritics; Tone Lens correct; motion tier respected; UI Scorecard met.

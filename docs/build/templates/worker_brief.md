@@ -9,6 +9,7 @@ Rules
 2. Read source anchors only from the excerpts below; never open `docs/source/*.md` beyond them.
 3. Satisfy every acceptance criterion literally. Build nothing extra.
 4. No placeholders, stubs, TODOs, "for now", "simulate", mock data presented as real, swallowed catches, or fake-success paths. If something cannot be done inside the allowlist, stop and report it as a blocker.
+4a. Best solution, not the easiest (Tope, 2026-10-22). Do not mock, shim, or shortcut the code under test when a real fix exists. A labelled fixture is only for an external service.
 5. Typed errors and visible states only. Server-side authority for rewards, entitlements and AI calls.
 6. Tokens only in UI (no hard-coded colours/sizes/fonts/strings). Target-language text through the Tone Lens component.
 7. Spec-first cards: do not write or modify tests. S/low-blast cards: you may write tests named after the AC ids.

@@ -18,4 +18,6 @@ Every agent, subagent, background agent and future bot in this repository is bou
 
 Rules that bind code work (see 00_README_PLAN.md §3): No-Cut · No-Partial · No-Loss · Fail loud · Honest by design · Spec before code · Source-anchored · Hard-stop ordering.
 
+**Best solution, not the easiest.** Tope, 2026-10-22. A mock, shim, pin, or shortcut is a defect when the real module, dependency, or runtime can be fixed. Tests load the real code under test. External services may use a labelled fixture. If the real path cannot be reached, stop and say why. Orchestrator: every worker, tester, and reviewer packet includes this rule.
+
 CI/pre-commit: `python3 scripts/check_agent_files.py` fails on any agent-facing file without `charter: v2`.

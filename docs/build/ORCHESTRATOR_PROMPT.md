@@ -16,7 +16,7 @@ Never open `docs/source/*.md` except to paste the `context_anchors` line ranges 
 ## Loop (WIP = 3 cards; background subagents; one `Task` per role per card)
 For each card in the current phase, in dependency order (`depends_on` Done; hard-stop providers Done, not merely referenced):
 1. **DoR check** (you): status Draft → Ready; `external_blockers` all closed or card stays Blocked-External and you move on.
-2. **Tester, Mode A** (`tiers.tester` slug): packet = `templates/tester_brief.md` + card YAML + test paths + anchor excerpts + `adaptive/06-execution-and-verification` path. Must report red tests.
+2. **Tester, Mode A** (`tiers.tester` slug): packet = `templates/tester_brief.md` + card YAML + test paths + anchor excerpts + `adaptive/06-execution-and-verification` path. Must report red tests. Every worker, tester, and reviewer packet includes the best-solution rule in those briefs (Tope, 2026-10-22): do not tell them to mock, shim, or shortcut a real fix.
 3. **Worker** (`tiers.worker` slug): packet = `templates/worker_brief.md` + card + allowlist + anchor excerpts + `skills.worker` paths + `adaptive/08-coding-and-debugging`. Diff only.
 4. **Tester, Mode B**: same packet + diff path. Coverage on touched domain files.
 5. **Reviewer** (`tiers.reviewer` slug; `reviewer: T4` = a *fresh* `grok-4.7-high` subagent, never your own context): packet = `templates/reviewer_brief.md` + card + diff + tester report + anchors + skill paths (+ `skills.reviewer_extra` when `visual_evidence_required`). Verdict PASS | FIX | BLOCK.
