@@ -24,7 +24,9 @@ tiers:
   reviewer: T4
   justification: 'score 3; blast 1; gate-critical (security / child safety / legal / design direction): Fable reviews'
 token_budget: 25000
-file_allowlist: []
+file_allowlist:
+- docs/build/adr/P1-054.md
+- docs/build/DECISIONS.md
 context_anchors:
 - ELEVATION.md#§13.1:L1863-L1865
 - ELEVATION.md#§13.1:L1864-L1865
@@ -51,10 +53,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "The Android network config does not embed the pin. The hashes stay in the build secret, and the Dart client enforces them on both platforms."
 gate: G1
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/10-analysis-and-decision-support

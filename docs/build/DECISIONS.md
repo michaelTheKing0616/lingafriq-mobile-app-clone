@@ -42,5 +42,6 @@ D1–D10 signed 2026-10-21 ("approve all as recommended").
 | D24 | Secrets already in the tree. Tope 2026-10-22: no deletion during the build | **Leave the Firebase service account, the Apple .p8, and the five client AI keys in place. Cleanup or restructuring waits until the end of the build and does not block cards.** | Tope, this session |
 | D11 | Under-13 sign-up. Tope 2026-10-22 | **Do not block sign-up. Flag the age. Protect them from harmful content. Social messages stay readable by the platform (not end-to-end encrypted). Transport stays HTTPS.** | Tope, this session |
 | D25 | JWT rotation. Tope 2026-10-22: no revocation | **Keep accepting the current HS256 secret. Do not wait on key revocation. A later asymmetric key must not reject installed sessions.** | Tope, this session |
+| D26 | Certificate pinning (P1-054). Tope 2026-10-22 | **Leaf DER SHA-256 on iOS and Android. CERTIFICATE_PIN_HASHES holds the current pin and the next pin. A release with pins fails closed. A build with no pins stays open.** | Tope, this session |
 
 Affects: D1/D6 → CONFLICTS C1–C3 closed, ADR-001…003; D2–D5 → EXTERNAL EXT-04/05/06/11/12, P4 studio cards; D7 → 04_ROUTING.md locked pending 10-card calibration; D8 → 05_UX_DESIGN_BAR.md targets; D9 → EXT-01 stays Open until the file arrives; D10 → P3 typography cards.

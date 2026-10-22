@@ -10,9 +10,9 @@ charter: v2
 | RTM | `RTM.csv` 2,960 rows · unmapped 0 · Blocked-External 5 · `check_rtm_coverage.py --write` applied |
 | Cards | 1,079 in `cards/` (build 695 · feature 151 · verification 78 · epic 57 · adr 38 · external 31 · design 29); `validate_cards.py` OK · `check_dependencies.py` OK |
 | Docs | 00–08 written; `ORCHESTRATOR_PROMPT.md`; `skills:` on every card (`assign_skills.py`); `COVERAGE_REPORT.md`; templates ×8; `CARD_BRIEF.md`, `FEATURE_CARD_BRIEF.md` |
-| Decisions | D1–D10, D11, D21–D25 signed. D12–D19 still awaiting. Key cleanup is deferred (D24) and does not block the build. |
+| Decisions | D1–D10, D11, D21–D26 signed. D12–D19 still awaiting. Key cleanup is deferred (D24) and does not block the build. |
 | Conflicts | C1–C5 resolved (ADR-001…003) |
 | External | EXT-01…30 open (`EXTERNAL.md`); EXT-01 companion doc still missing |
 | Benchmark | UI phases: `docs/build/benchmark/duolingo/` holds the 12 picks; `all/` holds the other 48; `README.md` has source, date, and size. Do not open the images until a card sets `visual_evidence_required`. |
 | Audit | `check_agent_files.py` OK (1,092 files) |
-| Next | Work stays on the Mac on `cloud-handoff`. Key cleanup is end-of-build (D24). P1-053 is Done: the 11th login from one IP returns 429, and one account's backoff grows across IPs on a fake clock. Next build card is P1-054. R1 model update is carded (P4-168, P6-086, P7-945, P7-950, P7-947) and does not jump ahead of P1. Curriculum wiring stays paused. Live PM2 stays unverified (EXT-23). |
+| Next | Work stays on the Mac on `cloud-handoff`. Key cleanup is end-of-build (D24). P1-054 is Done: leaf DER SHA-256, current pin plus next pin, open only when no pin is set (D26). Next build card is P1-055. R1 model update is carded (P4-168, P6-086, P7-945, P7-950, P7-947) and does not jump ahead of P1. Curriculum wiring stays paused. Live PM2 stays unverified (EXT-23). |
