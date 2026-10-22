@@ -161,6 +161,10 @@ jobs:
             exit 1
           fi
 
+      - name: Domain coverage gate
+        if: success()
+        run: python3 scripts/ci/coverage_gate.py coverage/lcov.info
+
       - name: Upload coverage artifact
         if: success()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

@@ -92,8 +92,11 @@ jobs:
       - name: Flutter test
         run: |
           echo "🧪 Running Flutter tests..."
-          flutter test
+          flutter test --coverage
           echo "✅ Flutter tests passed"
+
+      - name: Domain coverage gate
+        run: python3 scripts/ci/coverage_gate.py coverage/lcov.info
 
       - name: 🧹 Comprehensive Cache Clearing (Before Build)
         run: |

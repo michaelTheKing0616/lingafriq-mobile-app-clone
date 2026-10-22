@@ -1,0 +1,7 @@
+threshold: 0.70
+paths:
+  - lib/learning
+status_inputs:
+  elevation_flutter_test_files: 64
+  elevation_source_lines: 306000
+  flutter_test_files_at_landing: 88

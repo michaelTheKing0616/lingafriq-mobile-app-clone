@@ -28,6 +28,8 @@ file_allowlist:
 - .github/workflows/build.yml
 - scripts/ci/coverage_gate.py
 - coverage_domain_paths.yaml
+- test/ci/coverage_gate_test.py
+- .github/workflows/build-and-release.yml
 context_anchors:
 - ELEVATION.md#§13.9:L1954
 - ELEVATION.md#§13.9:L1954-L1955
@@ -59,10 +61,13 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "lib/learning measured 0.0% (0/2895) with no tests, so this gate fails the Android job until that tree reaches 70%. A file missing from lcov counts as uncovered."
+- "build.yml is workflow_dispatch only. Pull requests are gated on the Android coverage step. The iOS job still only prints the lcov summary."
+- "The elevation baseline is 64 Flutter test files. The tree had 88 when this gate landed."
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging
