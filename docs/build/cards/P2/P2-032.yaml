@@ -55,7 +55,8 @@ dod_evidence:
 - ledger row
 risks: []
 gate: G2
-external_blockers: []
+external_blockers:
+- "Atlas continuous backup and a scratch cluster need Tope's Atlas access. This machine cannot enable them."
 status: Draft
 skills:
   worker:

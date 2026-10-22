@@ -85,3 +85,5 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-073 | open | P2-009 | Catalog and shared reads stay allowed. They must not return another user's private payload. The mobile workflow does not run the API suite. |
 | OW-074 | open | P2-011 | Exempt routes are in the spec without a body schema. A body schema has to be registered before the spec can describe that body. |
 | OW-075 | open | P2-013 | A full unauthenticated sweep of every route waits on Mongo for about 10 seconds on handlers that then return 500. The blocking suite covers the route inventory and every operation that declares a body schema. |
+| OW-076 | open | P2-031 | /health stays 200 when MongoDB is down and /ready returns 503. Two API instances behind the live load balancer have not been inspected. |
+| OW-077 | open | P2-036 | Winston scrubs secret keys and secret-shaped strings. A log written with console.log does not pass through that scrub. |

@@ -86,3 +86,4 @@ P2-059,build,T2,grok-4.7,n/a,n/a,1,pass,Learning behaviour tests raise lib/learn
 P2-011,build,T2,grok-4.7,n/a,n/a,1,pass,The OpenAPI spec is generated from the route inventory and Joi schemas at version 1.0.0; drift fails CI and a breaking diff fails unless the major version increases
 P2-012,build,T2,grok-4.7,n/a,n/a,1,pass,The Dart client is generated from the OpenAPI spec; personality calls use one contract path and a failed call throws ApiError
 P2-013,build,T2,grok-4.7,n/a,n/a,1,pass,Mounted routes must be in the OpenAPI spec, and an empty body on a schema route returns 400 naming the missing field
+P2-036,build,T3,grok-4.7,n/a,n/a,1,pass,Request logs are JSON with a request id. Secret keys and secret-shaped strings are scrubbed before the line is written. Login does not record the password or its length
