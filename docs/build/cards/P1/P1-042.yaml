@@ -26,7 +26,8 @@ token_budget: 25000
 file_allowlist:
 - node-backend/src/services/freeGoogleTranslate.service.ts
 - node-backend/package.json
-- lib/screens/live_translate_screen.dart
+- lib/screens/live_translate/live_translate_screen.dart
+- node-backend/src/__test__/P1-042.translate.test.ts
 context_anchors:
 - ELEVATION.md#§1:L388-L396
 - ELEVATION.md#§16.1:L2054-L2056
@@ -58,11 +59,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "Google Cloud Translation still runs when GOOGLE_CLOUD_API_KEY is set. Without it, translate calls return translation_unavailable and do not scrape."
 gate: G1
-external_blockers:
-- EXT-01
-status: Draft
+external_blockers: []
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes

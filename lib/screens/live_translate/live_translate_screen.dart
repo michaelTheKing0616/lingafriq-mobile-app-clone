@@ -257,8 +257,11 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
     final type = e['type']?.toString() ?? '';
     if (type == 'session.error') {
       setState(() {
-        _error = e['message']?.toString() ??
-            AppLocalizations.of(context)!.liveTranslateSessionError;
+        final code = e['code']?.toString();
+        _error = code == 'translation_unavailable'
+            ? 'Translation is unavailable'
+            : (e['message']?.toString() ??
+                AppLocalizations.of(context)!.liveTranslateSessionError);
         _phase = LiveTranslatePhase.error;
       });
       return;

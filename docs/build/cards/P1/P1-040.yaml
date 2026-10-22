@@ -62,12 +62,10 @@ dod_evidence:
 - coverage on touched domain code
 - ledger row
 risks:
-- Audio is unavailable until the replacement ADR is implemented
+- "The licence ban-list still names the excluded model ids so a raw search finds them there. Routes return audio_unavailable or translation_unavailable. isiXhosa returns voice_coming."
 gate: G1
-external_blockers:
-- EXT-01
-- EXT-03
-status: Draft
+external_blockers: []
+status: Done
 harvest_list:
 - voice and language lists from the removed services
 skills:
