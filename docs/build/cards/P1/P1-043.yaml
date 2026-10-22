@@ -27,7 +27,14 @@ tiers:
 token_budget: 25000
 file_allowlist:
 - node-backend/src/controllers/auth.controller.ts
+- node-backend/src/controllers/v1/auth.controller.ts
+- node-backend/src/controllers/admin/auth.admin.controller.ts
+- node-backend/src/controllers/language.controller.ts
+- node-backend/src/controllers/lessons.controller.ts
 - node-backend/src/middleware/requestLogger.middleware.ts
+- node-backend/src/middleware/auth.middleware.ts
+- node-backend/src/utils/loginCredentials.ts
+- node-backend/src/__test__/P1-043.login.test.ts
 context_anchors:
 - ELEVATION.md#§1:L377-L386
 - ELEVATION.md#§13.1:L1853
@@ -65,10 +72,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "A correct password on a non-admin account still returns User is not an admin. Unknown accounts and wrong passwords share one 401 body."
 gate: G1
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes

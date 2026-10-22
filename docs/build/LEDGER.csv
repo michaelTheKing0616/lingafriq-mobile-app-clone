@@ -50,3 +50,4 @@ P1-037,build,T3,grok-4.7-xhigh,n/a,n/a,3,pass,API process starts no scheduler; o
 P1-038,build,T2,grok-4.7,n/a,n/a,1,pass,One local-day cap across jobs; quiet hours unchanged; unknown timezone logs UTC
 P1-040,build,T2,grok-4.7,n/a,n/a,1,pass,Non-commercial TTS and NLLB routes return typed unavailable; the ban-list still names the excluded ids
 P1-042,build,T2,grok-4.7,n/a,n/a,1,pass,Scraper package and service removed; translate returns translation_unavailable with retryable false
+P1-043,build,T2,grok-4.7,n/a,n/a,1,pass,Unknown email and wrong password share one 401 body and a pbkdf2 verify; logs omit the header and password length
