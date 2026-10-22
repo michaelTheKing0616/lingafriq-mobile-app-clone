@@ -27,6 +27,7 @@ file_allowlist:
 - .github/workflows/llm_authoring.yml
 - evals/README.md
 - evals/thresholds.yaml
+- test/ci/ai_eval_gate_test.py
 context_anchors:
 - ELEVATION.md#§13.9:L1952-L1953
 acceptance_criteria:
@@ -57,10 +58,13 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "The gate scores labelled outputs for the changed bytes. It does not call a live model and does not set AI_EVALS_PASSED."
+- "cloud-handoff differs from main in docs/plan/LINGAFRIQ_AI_MODEL_STACK.md, so the open pull request stays blocked until eval outputs for that file meet the thresholds."
+- "A missing output file, a hash mismatch, or a git failure exits 2 and does not print skipped."
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/11-data-and-quantitative-work
