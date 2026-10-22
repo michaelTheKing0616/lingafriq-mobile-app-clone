@@ -4,8 +4,6 @@ import 'dart:convert';
 
 import 'package:lingafriq/config/api_contract.dart';
 
-import '../services/env_config.dart';
-
 class ProfileModel {
   final int id;
   final String email;
@@ -209,15 +207,19 @@ class ProfileModel {
 
   String get fullName => "$first_name $last_name";
 
-  //Support for old server urls (migrate legacy avatar URLs to current backend)
+  /// Rewrites an http avatar onto the current API host.
   String get avatarUrl {
     final a = avatar;
-    if (a == null) return '';
-    for (final prefix in EnvConfig.legacyBackendUrlPrefixes) {
-      if (a.contains(prefix)) {
-        return a.replaceAll(prefix, ApiContract.baseUrl);
-      }
-    }
-    return a;
+    if (a == null || a.isEmpty) return '';
+    final parsed = Uri.tryParse(a);
+    if (parsed == null || parsed.scheme != 'http' || parsed.host.isEmpty) return a;
+    final base = Uri.parse(ApiContract.baseUrl);
+    return Uri(
+      scheme: base.scheme,
+      host: base.host,
+      port: base.hasPort ? base.port : null,
+      path: parsed.path,
+      query: parsed.query.isEmpty ? null : parsed.query,
+    ).toString();
   }
 }

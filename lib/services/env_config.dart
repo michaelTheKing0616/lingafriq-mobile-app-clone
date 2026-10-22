@@ -30,15 +30,6 @@ class EnvConfig {
     return url;
   }
 
-  /// Legacy backend URL prefixes to migrate in avatar/profile URLs.
-  /// Historical server URLs that may appear in stored profile data.
-  static const List<String> legacyBackendUrlPrefixes = [
-    'http://34.121.156.251:8000/',
-    'http://34.67.162.25:8000/',
-    'http://64.227.113.179:8000/',
-    'https://api.lingafriq.com/',
-  ];
-
   /// Groq API Key for LLaMA access
   /// Set via: --dart-define=GROQ_API_KEY=xxx during build
   static String get groqApiKey {

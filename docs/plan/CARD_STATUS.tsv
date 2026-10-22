@@ -477,7 +477,7 @@ P2-008	Done	Gate 70% coverage on domain logic	P2/P2-008.yaml
 P2-009	Done	Add object-level authorisation test suite for /:id routes	P2/P2-009.yaml
 P2-010	Done	Add golden test harness for design system and Rive chips	P2/P2-010.yaml
 P2-011	Done	Generate versioned OpenAPI spec from backend code	P2/P2-011.yaml
-P2-012	Draft	Generate Dart client and delete multi-path guessing	P2/P2-012.yaml
+P2-012	Done	Generate Dart client and delete multi-path guessing	P2/P2-012.yaml
 P2-013	Draft	Add backend contract tests from OpenAPI spec	P2/P2-013.yaml
 P2-014	Draft	Add schema-versioned local migrations without logout on update	P2/P2-014.yaml
 P2-015	Draft	Build one durable outbox with idempotency keys and backoff	P2/P2-015.yaml

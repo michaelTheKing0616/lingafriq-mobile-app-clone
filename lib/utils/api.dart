@@ -9,10 +9,6 @@ class Api {
     return envUrl.endsWith('/') ? envUrl : '$envUrl/';
   }
   
-  // Legacy commented URLs for reference
-  // static const String baseurl = "http://34.121.156.251:8000/";
-  // static const String baseurl = "http://34.67.162.25:8000/";
-  // static const String baseurl = "http://64.227.113.179:8000/";
   // Auth endpoints
   //
   // IMPORTANT:

@@ -30,6 +30,10 @@ file_allowlist:
 - lib/api/generated/
 - tool/gen_api_client.sh
 - lib/services/api_retry_service.dart
+- lib/services/ai/historical_personality_service.dart
+- lib/models/profile_model.dart
+- lib/utils/api.dart
+- test/api/generated_client_test.dart
 context_anchors:
 - ELEVATION.md#§13.4:L1909
 - ELEVATION.md#§13.4:L1910-L1911
@@ -64,10 +68,12 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "The client is one send method over the generated operation map. Personality chat failures throw ApiError from the single contract path."
+- "An http avatar is rewritten onto the current API host. The old IP addresses are not stored in the app."
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging

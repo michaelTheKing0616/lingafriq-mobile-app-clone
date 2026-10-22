@@ -12,6 +12,7 @@
 
 import 'dart:math';
 import 'package:dio/dio.dart';
+import 'package:lingafriq/api/generated/api_error.dart';
 import 'package:lingafriq/services/connectivity_service.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:lingafriq/utils/transport_error_policy.dart';
@@ -90,7 +91,7 @@ class ApiRetryService {
             'error': error.toString(),
             'willRetry': false,
           });
-          rethrow;
+          throw _asApiError(error);
         }
 
         // Calculate delay with exponential backoff
@@ -113,17 +114,25 @@ class ApiRetryService {
         final hasConnection = await _checkConnectivity();
         if (!hasConnection) {
           logger.warn('No internet connection, aborting retry');
-          throw DioException(
-            requestOptions: RequestOptions(path: ''),
-            error: 'No internet connection',
-            type: DioExceptionType.connectionError,
-          );
+          throw ApiError(method: '', path: '', message: 'No internet connection', cause: error);
         }
       }
     }
 
-    // This should never be reached, but just in case
-    throw lastError;
+    throw _asApiError(lastError);
+  }
+
+  ApiError _asApiError(Object? error) {
+    if (error is ApiError) return error;
+    if (error is DioException) {
+      return ApiError(
+        method: error.requestOptions.method,
+        path: error.requestOptions.path,
+        statusCode: error.response?.statusCode,
+        cause: error,
+      );
+    }
+    return ApiError(method: '', path: '', cause: error);
   }
 
   /// Check if error is retryable using unified TransportErrorPolicy

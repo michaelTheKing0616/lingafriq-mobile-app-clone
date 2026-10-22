@@ -84,3 +84,4 @@ P2-009,build,T2,grok-4.7,n/a,n/a,1,pass,User B is denied on user A's private obj
 P2-010,build,T1,grok-4.7,n/a,n/a,1,pass,A selected design-system chip and the Rive CharacterChip at frame zero match stored goldens; a pixel diff above 0.01 fails and the diff is written for upload
 P2-059,build,T2,grok-4.7,n/a,n/a,1,pass,Learning behaviour tests raise lib/learning to 83.3 percent (1058/1270); the 70 percent gate exits 0 and the threshold file is unchanged
 P2-011,build,T2,grok-4.7,n/a,n/a,1,pass,The OpenAPI spec is generated from the route inventory and Joi schemas at version 1.0.0; drift fails CI and a breaking diff fails unless the major version increases
+P2-012,build,T2,grok-4.7,n/a,n/a,1,pass,The Dart client is generated from the OpenAPI spec; personality calls use one contract path and a failed call throws ApiError
