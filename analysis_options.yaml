@@ -33,6 +33,10 @@ analyzer:
     # Use explicit paths (not **) so analyzer globs cannot over-match app lib/ files.
     - lingafriq_full_curriculum_bundle/curriculum_expanded_bundle/curriculum_expanded/patched_provider/ai_chat_provider_patched.dart
     - curriculum_expanded_bundle/curriculum_expanded/patched_provider/ai_chat_provider_patched.dart
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
 
 linter:
   # The lint rules applied to this project can be customized in the

@@ -50,6 +50,14 @@ jobs:
           python3 scripts/ci/placeholder_linter.py assets/data
           python3 scripts/ci/placeholder_linter.py schemas/v2
 
+      - name: Prepare Rive native runtime
+        run: |
+          dart run rive_native:setup --platform linux
+          echo "LD_LIBRARY_PATH=$PWD/build/rive_native/native/build/linux/bin/lib/debug_shared" >> $GITHUB_ENV
+
+      - name: Avatar contract
+        run: flutter test test/avatar/contract_test.dart
+
       - name: Flutter test
         run: |
           echo "🧪 Running Flutter tests..."

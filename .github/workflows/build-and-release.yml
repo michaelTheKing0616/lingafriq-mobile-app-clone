@@ -148,6 +148,18 @@ jobs:
       - name: TTS purity gate (no flutter_tts outside AfricanTtsService)
         run: dart run tool/tts_purity_gate.dart
 
+      - name: Prepare Rive native runtime
+        run: |
+          if [ "$(uname)" = "Darwin" ]; then
+            dart run rive_native:setup --platform macos
+          else
+            dart run rive_native:setup --platform linux
+            echo "LD_LIBRARY_PATH=$PWD/build/rive_native/native/build/linux/bin/lib/debug_shared" >> $GITHUB_ENV
+          fi
+
+      - name: Avatar contract
+        run: flutter test test/avatar/contract_test.dart
+
       - name: Flutter test (with coverage)
         run: |
           echo "🧪 Running Flutter tests with coverage..."
@@ -322,6 +334,18 @@ jobs:
 
       - name: TTS purity gate (no flutter_tts outside AfricanTtsService)
         run: dart run tool/tts_purity_gate.dart
+
+      - name: Prepare Rive native runtime
+        run: |
+          if [ "$(uname)" = "Darwin" ]; then
+            dart run rive_native:setup --platform macos
+          else
+            dart run rive_native:setup --platform linux
+            echo "LD_LIBRARY_PATH=$PWD/build/rive_native/native/build/linux/bin/lib/debug_shared" >> $GITHUB_ENV
+          fi
+
+      - name: Avatar contract
+        run: flutter test test/avatar/contract_test.dart
 
       - name: Flutter test (with coverage)
         run: |
