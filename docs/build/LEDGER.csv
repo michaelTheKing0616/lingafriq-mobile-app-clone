@@ -59,3 +59,4 @@ P1-048,build,T3,grok-4.7,n/a,n/a,1,pass,A signed-in user registers a passkey tha
 P1-049,build,T2,grok-4.7,n/a,n/a,1,pass,A verified Google or Apple token links the account and issues a 15-minute session; an unverified email does not; a magic link is single-use and an unknown email returns the same body
 P1-050,build,T3,grok-4.7,n/a,n/a,1,pass,Every route is inventoried with a Joi schema or an explicit exemption; normal JSON is capped at 256 KiB and an invalid auth body returns 400 without a stack
 P1-051,build,T3,grok-4.7,n/a,n/a,1,pass,A body that names another user does not become the actor; Rive state is stored for the JWT subject, and an unmarked body actor-id read fails the scan
+P1-052,build,T3,grok-4.7,n/a,n/a,1,pass,User B is denied on user A's private, self, and admin id routes; a new id route missing from the inventory fails the suite

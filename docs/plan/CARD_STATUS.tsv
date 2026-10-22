@@ -326,7 +326,7 @@ P1-048	Done	Add passkey sign-in	P1/P1-048.yaml
 P1-049	Done	Add Google and Apple sign-in and email magic link	P1/P1-049.yaml
 P1-050	Done	Apply schema validation and per-route size limits on every route	P1/P1-050.yaml
 P1-051	Done	Remove client-supplied identity fields across the API	P1/P1-051.yaml
-P1-052	Draft	Build IDOR authorisation suite over every id route	P1/P1-052.yaml
+P1-052	Done	Build IDOR authorisation suite over every id route	P1/P1-052.yaml
 P1-053	Draft	Build rate-limit and lockout test suite	P1/P1-053.yaml
 P1-054	Draft	Decide certificate pinning approach	P1/P1-054.yaml
 P1-055	Draft	Implement certificate pinning consistently per ADR	P1/P1-055.yaml

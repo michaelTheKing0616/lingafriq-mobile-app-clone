@@ -25,6 +25,11 @@ tiers:
     Fable reviews'
 token_budget: 160000
 file_allowlist:
+- node-backend/src/middleware/idorGuard.middleware.ts
+- node-backend/src/middleware/idRoutePatterns.generated.ts
+- node-backend/src/middleware/auth.middleware.ts
+- node-backend/src/app.ts
+- node-backend/jest.config.cjs
 - node-backend/src/tests/security/idor.spec.ts
 - node-backend/src/tests/security/routeInventory.ts
 - node-backend/src/tests/security/fixtures.ts
@@ -61,10 +66,14 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "Published curriculum, magazine, and lesson reads stay open. PATCH marks a lesson section complete. PUT and DELETE on those paths require an admin, except a learner ending their own progress session."
+- "Unfollow, opening a private chat, classroom, tribe, and room routes stay allowed for the signed-in user. The response must not be the other person's private record."
+- "Group chat messages with a room and a chat type other than private are not denied by the guard. The handler checks membership."
+- "A route whose mongoose model is missing fails open. GET rive state still takes user_id from the query."
 gate: G1
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes
