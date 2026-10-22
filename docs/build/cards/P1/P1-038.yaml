@@ -28,6 +28,7 @@ file_allowlist:
 - node-backend/src/workers/notificationScheduler.ts
 - node-backend/src/services/notificationWindow.service.ts
 - node-backend/src/models/notificationLog.model.ts
+- node-backend/src/__test__/P1-038.scheduler.test.ts
 context_anchors:
 - ELEVATION.md#§1:L344-L357
 - ELEVATION.md#§16.1:L2051-L2053
@@ -63,10 +64,10 @@ dod_evidence:
 - coverage on touched domain code
 - ledger row
 risks:
-- Window hours and quiet hours are product defaults to record in DECISIONS.md
+- "Daily and weekly still follow their cron hours plus quiet hours. The streak job is the one tied to reminderHour. One local day still caps every job together."
 gate: G1
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes

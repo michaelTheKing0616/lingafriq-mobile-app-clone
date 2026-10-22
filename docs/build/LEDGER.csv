@@ -47,3 +47,4 @@ P1-034,build,T2,grok-4.7-xhigh,n/a,n/a,2,pass,startup migrates Map.toString befo
 P1-035,build,T3,grok-4.7-xhigh,n/a,n/a,1,pass,simulate-sync queue deleted; rows delete only after ok true; failures keep attempts and backoff; Hive box is the only queue; lesson progress uses progress_metrics_merge
 P1-036,build,T4,grok-4.7-xhigh,n/a,n/a,1,pass,AES-GCM with a fresh nonce; a flipped bit throws cache_integrity_failed and returns no data; legacy records are discarded and not decrypted
 P1-037,build,T3,grok-4.7-xhigh,n/a,n/a,3,pass,API process starts no scheduler; one lock holder sends; a waiter follows the renewed lease; user reads are one query per collection
+P1-038,build,T2,grok-4.7,n/a,n/a,1,pass,One local-day cap across jobs; quiet hours unchanged; unknown timezone logs UTC

@@ -14,7 +14,7 @@ This file is the pause point for a cloud agent. The key files remain tracked.
 
 ## Next 3 steps
 
-1. Resume at P1-040. The router is written and its unit tests passed. It is not reviewed. It stays off until `AI_INTRON_ENABLED` and `INTRON_API_KEY` are set. Intron is set up and not connected.
+1. P1-038 is done. Resume at P1-040. The router stays off until `AI_INTRON_ENABLED` and `INTRON_API_KEY` are set. Intron is set up and not connected. Key cleanup waits until the end of the build.
 2. Do not remove the Firebase service account, the Apple `.p8`, or the five client AI keys.
 3. Record Tope's 2026-10-22 age-gate and JWT decisions in `docs/build/DECISIONS.md` before building P1-020 or P1-046.
 
