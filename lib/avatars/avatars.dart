@@ -1,11 +1,11 @@
 /// LingAfriq Avatar Intelligence System
-/// 
-/// A comprehensive avatar system that brings LingAfriq to life with 
-/// African-themed animated characters across onboarding, Polie AI, 
+///
+/// A comprehensive avatar system that brings LingAfriq to life with
+/// African-themed animated characters across onboarding, Polie AI,
 /// 37+ games, gamification, and social/multiplayer experiences.
-/// 
+///
 /// ## Features
-/// 
+///
 /// - **Polie AI Avatar**: Afro-futurist AI companion with lip-sync
 /// - **Game Avatars**: 4 category-specific characters (Malaika, Baba, Okonkwo, Nneka)
 /// - **Onboarding Avatars**: 5 village characters (Elder, Weaver, Griot, Timekeeper, Pathfinder)
@@ -13,25 +13,25 @@
 /// - **Social Avatars**: Customizable user avatars, tribe avatars, battle avatars
 /// - **Lip-Sync Engine**: Phoneme mapping for African languages
 /// - **Avatar Intelligence**: Contextual responses and cross-system synergy
-/// 
+///
 /// ## Quick Start
-/// 
+///
 /// ```dart
 /// import 'package:lingafriq/avatars/avatars.dart';
-/// 
+///
 /// // Get the Polie AI avatar
 /// final polieController = await AvatarEngine().getController(AvatarType.polie);
-/// 
+///
 /// // Use in widget
 /// PolieAvatar(controller: polieController)
-/// 
+///
 /// // React to events
 /// polieController.celebrate();
 /// polieController.setEmotion(AvatarEmotion.proud);
-/// 
+///
 /// // Use with Riverpod
 /// final controller = ref.watch(polieControllerProvider);
-/// 
+///
 /// // Handle events
 /// ref.read(avatarEventHandlerProvider).handleEvent(AvatarEvent.levelUp);
 /// ```
@@ -64,3 +64,6 @@ export 'gamification/gamification_avatar_overlay.dart';
 // Social/Multiplayer
 export 'social/user_avatar_customizer.dart';
 export 'social/tribe_avatar_widget.dart';
+export 'cast/avatar_director.dart';
+export 'cast/cast_builder.dart';
+export 'cast/cast_stage.dart';

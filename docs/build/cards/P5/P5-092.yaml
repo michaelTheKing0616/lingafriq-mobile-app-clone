@@ -1,0 +1,55 @@
+charter: v2
+id: P5-092
+kind: verification
+title: Verify data licence costs
+phase: P5
+epic: E-P5-A1
+req_ids:
+- CP-§9.4-10
+- CP-§9.4-11
+- CP-§9.4-12
+depends_on:
+- P5-076
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T0
+  tester: T0
+  reviewer: T1
+  justification: verification only; no code
+token_budget: 20000
+file_allowlist: []
+context_anchors:
+- CURRICULUM.md#§9.4:L841-L842
+acceptance_criteria:
+- id: AC1
+  text: Given quotes for Oxford, IgboAPI, Zulu dictionary, NaijaVoices waiver ($5k+/yr) and optional HCS (€15k), when summed,
+    then they are compared with $15k-60k one-off/annual [quote]
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G5
+external_blockers:
+- EXT-04
+- EXT-05
+- EXT-06
+- EXT-08
+- EXT-09
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

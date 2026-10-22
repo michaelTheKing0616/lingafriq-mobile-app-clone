@@ -1,0 +1,68 @@
+charter: v2
+id: P4-045
+kind: build
+title: Check Zulu and Xhosa concords and conjunctive writing
+phase: P4
+epic: E-P4-LINTERS
+req_ids:
+- CP-§3.3-11
+- CP-§3.3-12
+- CP-§3.3-14
+- CP-§2.4-xh-05
+depends_on:
+- P4-039
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- tools/content_engine/linters/concord_zux.py
+- tools/content_engine/tests/test_concord_zux.py
+context_anchors:
+- CURRICULUM.md#§3.3:L529-L533
+- CURRICULUM.md#§2.4:L458-L461
+acceptance_criteria:
+- id: AC1
+  text: Given a Zulu or Xhosa noun class, when subject, object or adjectival concord disagrees with the class table, then
+    it fails with ZX_CONCORD
+- id: AC2
+  text: Given a verb with prefixes, when written disjunctively against PanSALB rules, then it fails with ZX_CONJUNCTIVE
+- id: AC3
+  text: 'Given Xhosa, when no open analyser exists, then only the rule-based check runs and the report states analyser: none'
+test_plan:
+  unit:
+  - pass and fail fixtures
+  integration:
+  - CI blocks merge on failure
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,75 @@
+charter: v2
+id: P1-043
+kind: build
+title: Return generic login errors and stop logging credentials metadata
+phase: P1
+epic: E-P1-AUTH
+req_ids:
+- P0-25
+- EP-§13.1-10
+- EP-§13.1-20
+- EP-§13.1-21
+depends_on:
+- E-P0-INTAKE
+size: S
+difficulty:
+  score: 3
+  blast: 2
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T3
+  reviewer: T2
+  justification: score 3; blast 2; security/crypto tester
+token_budget: 25000
+file_allowlist:
+- node-backend/src/controllers/auth.controller.ts
+- node-backend/src/middleware/requestLogger.middleware.ts
+context_anchors:
+- ELEVATION.md#§1:L377-L386
+- ELEVATION.md#§13.1:L1853
+- ELEVATION.md#§13.1:L1860-L1861
+- ELEVATION.md#§13.1:L1861-L1862
+acceptance_criteria:
+- id: AC1
+  text: Given an unknown email and a wrong password for a known email, when login fails, then both return the identical status,
+    body and similar timing (within 50 ms median)
+- id: AC2
+  text: Given any request, when logged, then no part of the Authorization header is written to logs
+- id: AC3
+  text: Given a login attempt, when logged, then password length and any password-derived value are absent from logs
+- id: AC4
+  text: Given a log-capture test, when run across login success and failure, then 0 matches for a seeded token or password
+test_plan:
+  unit:
+  - error mapping
+  integration:
+  - identical-response test
+  - log capture
+  security:
+  - timing difference test
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G1
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

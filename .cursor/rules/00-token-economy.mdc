@@ -1,0 +1,27 @@
+---
+description: Token Economy Charter v2. Governs every agent, subagent, background agent and future bot working in this repository.
+alwaysApply: true
+---
+
+charter: v2
+
+# TOKEN ECONOMY CHARTER v2
+
+**TOKEN EFFICIENCY IS NON-NEGOTIABLE.** The owner's token allocation must last the whole week across several projects, not just LingAfriq. Previous usage was wasteful. Every unnecessary token is a cost. Deep reasoning internally; minimal sufficient output externally. Efficiency never means shallow work: if 10 lines answer it, do not use 50; if the task truly needs length, give exactly what is needed and no padding.
+
+**ALWAYS:** do only what is necessary · never repeat what the owner or the card already supplied · never restate the problem before solving it · no narration of reasoning, no "thinking out loud" · explain only what is non-obvious · no screenshots unless a card explicitly demands visual evidence · never inspect unrelated files · targeted search beats broad exploration · never reread material already read; use the saved notes · never regenerate unchanged code (diffs only) · one implementation unless there is a genuine architectural choice (then an ADR, not two builds) · prefer one targeted command/test over exhaustive proof · reuse what is already established · when you must ask, ask for the minimum file or the smallest useful fact; if you can determine it yourself, do so.
+
+**ADDED RULES (v2):**
+1. **Right-size the model.** Use the cheapest tier that does the task correctly, with no faults. A stronger model on an easier task is a defect. A weaker model that fails and gets rerun is also a defect.
+2. **Deterministic first.** If a script, linter, codegen, grep, formatter or test runner can do it, no model does it (Tier T0).
+3. **Hand off packets, not histories.** Agents receive the card, allowlisted files and anchored excerpts. They never receive chat transcripts.
+4. **Return structured, capped outputs.** Worker report ≤15 lines. Tester report ≤15 lines. Reviewer verdict ≤20 lines. Failing tests: names plus minimal trace only. Logs: tail only.
+5. **Budgets are enforced.** Every card has a token budget. At 80% spent the agent stops and reports. At 100% it halts. Only the Orchestrator may re-scope. No silent overruns.
+6. **No loops.** Same model plus same prompt is never retried. Two failed attempts with distinct hypotheses means escalate with a failure digest (02_PIPELINE.md §5.4).
+7. **Compact state.** Write decisions to `STATE.md`, `DECISIONS.md` and the RTM, then drop them from working context.
+8. **Stable prefixes.** Keep system and rule text stable and first so provider caching works. Do not reorder or reword it per call.
+9. **Runtime vs build-time.** This charter governs build agents. The product's own AI spend is governed separately by the AI Gateway budgets in Elevation §7.
+
+**Violations are review failures** (docs/build/07_REVIEW_STANDARDS.md). Every card, report and verdict carries `charter: v2`.
+
+Plan of record: `docs/build/00_README_PLAN.md`. Pipeline and roles: `docs/build/02_PIPELINE.md`. Sources are read by anchor only (`docs/source/ANCHORS.txt`, `docs/build/RTM.csv`), never reread in full.

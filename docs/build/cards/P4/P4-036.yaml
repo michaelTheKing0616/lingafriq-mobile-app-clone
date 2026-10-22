@@ -1,0 +1,72 @@
+charter: v2
+id: P4-036
+kind: build
+title: Populate kits for yo, ig and ha
+phase: P4
+epic: E-P4-LANGUAGE-KITS
+req_ids:
+- CP-§3.1-01
+- CP-§3.1-10
+- CP-§3.1-11
+depends_on:
+- P4-021
+- P4-022
+- P4-024
+- P4-026
+- P4-038
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 2, coupling 1, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- tools/content_engine/kits/yo/kit.yaml
+- tools/content_engine/kits/ig/kit.yaml
+- tools/content_engine/kits/ha/kit.yaml
+- tools/content_engine/tests/test_kits_a.py
+context_anchors:
+- CURRICULUM.md#§3.1:L469-L471
+acceptance_criteria:
+- id: AC1
+  text: Given the yo, ig and ha kits, when validated, then each has allowed code points, tone policy, phone inventory, G2P
+    rules, dialect standard and honorifics register with no empty sections
+- id: AC2
+  text: Given Hausa, when validated, then display (standard, unmarked) and teaching (marked) code-point sets are both defined
+- id: AC3
+  text: Given Igbo, when validated, then the tone policy equals the decided marking convention from the Igbo ADR
+test_plan:
+  unit:
+  - schema valid per kit
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - linguist signs kit
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

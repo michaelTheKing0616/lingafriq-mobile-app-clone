@@ -1,0 +1,17 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+EP-§13.6-01,ELEVATION,§13.6:L1925,requirement,remove the duplicated curriculum JSONs,P1,agent,,Open
+EP-§13.6-02,ELEVATION,§13.6:L1925,metric,about 34 MB of identical files,P1,agent,,Open
+EP-§13.6-03,ELEVATION,§13.6:L1925-L1926,requirement,"duplicated bundles, Python and Dart files shipped as assets",P1,agent,,Open
+EP-§13.6-04,ELEVATION,§13.6:L1926,requirement,the unused fonts,P1,agent,,Open
+EP-§13.6-05,ELEVATION,§13.6:L1926-L1927,requirement,the 3 developer example files (move to dev/),P1,agent,,Open
+EP-§13.6-06,ELEVATION,§13.6:L1927-L1928,requirement,older duplicate screens shrink the build as they are consolidated into their,P1,agent,,Open
+EP-§13.6-07,ELEVATION,§13.6:L1928,requirement,Ship large content as downloadable language packs.,P1,agent,,Open
+EP-§13.6-08,ELEVATION,§13.6:L1928-L1929,metric,Target under 40 MB download.,P1,agent,,Open
+EP-§13.6-09,ELEVATION,§13.6:L1930,requirement,"Split the god files (polie_workspace_screen.dart 6,485 lines",P1,agent,,Open
+EP-§13.6-10,ELEVATION,§13.6:L1930,requirement,"ai_chat_provider_groq.dart 2,516",P1,agent,,Open
+EP-§13.6-11,ELEVATION,§13.6:L1931,requirement,"api_provider.dart 2,468",P1,agent,,Open
+EP-§13.6-12,ELEVATION,§13.6:L1931,requirement,"game_provider.dart 2,139) into feature modules with clear boundaries.",P1,agent,,Open
+EP-§13.6-13,ELEVATION,§13.6:L1932,requirement,Image and Rive budgets,P1,agent,,Open
+EP-§13.6-14,ELEVATION,§13.6:L1932,requirement,const widgets,P1,agent,,Open
+EP-§13.6-15,ELEVATION,§13.6:L1932,requirement,list virtualisation,P1,agent,,Open
+EP-§13.6-16,ELEVATION,§13.6:L1932-L1933,requirement,avoid rebuild storms from large Riverpod providers,P1,agent,,Open

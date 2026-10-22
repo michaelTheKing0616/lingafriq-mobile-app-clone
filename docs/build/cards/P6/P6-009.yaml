@@ -1,0 +1,66 @@
+charter: v2
+id: P6-009
+kind: build
+title: Build persona source index retrieval
+phase: P6
+epic: E-P6-GATEWAY
+req_ids:
+- EP-§7.2-14
+depends_on:
+- P6-003
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/grounding/personaIndex.ts
+context_anchors:
+- ELEVATION.md#§7.2:L1367-L1387
+acceptance_criteria:
+- id: AC1
+  text: Given an approved persona dossier set, when indexed, then each chunk carries source id and licence status and unapproved
+    sources are excluded
+- id: AC2
+  text: Given a persona query with no supporting chunk, when retrieved, then typed result no_source is returned and the persona
+    must decline rather than invent
+- id: AC3
+  text: Given retrieval, when it returns chunks, then every chunk id is passed through to the response for citation
+test_plan:
+  unit:
+  - chunk filter
+  integration:
+  - dossier fixture
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - every indexed chunk has source id
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/11-data-and-quantitative-work
+  - adaptive/07-research-and-fact-checking

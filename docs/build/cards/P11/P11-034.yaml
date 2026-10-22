@@ -1,0 +1,70 @@
+charter: v2
+id: P11-034
+kind: design
+title: Write avatar cultural design bible
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§4.2-31
+- EP-§4.2-32
+- EP-§4.2-33
+- EP-§4.2-34
+- EP-§4.2-35
+- EP-§4.2-36
+- EP-§4.2-38
+- EP-§4.4-09
+depends_on:
+- E-P3-DESIGN-SYSTEM
+size: M
+difficulty:
+  score: 2
+  blast: 1
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 1, ambiguity 1, coupling 0, depth 0'
+token_budget: 70000
+file_allowlist:
+- docs/build/avatars/cultural_design_bible.md
+context_anchors:
+- ELEVATION.md#§4.2:L899-L905
+- ELEVATION.md#§4.4:L967-L969
+acceptance_criteria:
+- id: AC1
+  text: Given the bible, when complete, then it names regional hair styles (Fulani braids, Shuku, Bantu knots, Irun kiko threading,
+    cornrows) and headwear (gele, fila, kufi, tignon, duku, Maasai beadwork, Hausa hula) plus textiles.
+- id: AC2
+  text: Given the skin-tone system, when specified, then it defines ≥10 tones with undertones and lighting rules.
+- id: AC3
+  text: Given disability representation, when specified, then glasses, hearing aids, wheelchair-seated pose, vitiligo and
+    albinism are covered.
+- id: AC4
+  text: Given region-authentic outfits, when proposed, then each has consultant review and a one-line cultural note.
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: true
+dod_evidence:
+- reviewer verdict
+- ledger row
+risks: []
+gate: G11
+external_blockers:
+- EXT-14
+status: Draft
+skills:
+  worker:
+  - prime/rive
+  - prime/illustration-style
+  - prime/conversational-ux
+  reviewer_extra:
+  - prime/critique-visual-hierarchy
+  - prime/critique-typography
+  - prime/design-to-code-check

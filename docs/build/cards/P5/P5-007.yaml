@@ -1,0 +1,53 @@
+charter: v2
+id: P5-007
+kind: verification
+title: Send sample label errors to native review
+phase: P5
+epic: E-P5-A1
+req_ids:
+- EP-§6.1-23
+- EP-§6.1-24
+depends_on:
+- E-P4-CONTENT-ENGINE
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T0
+  tester: T0
+  reviewer: T1
+  justification: verification only; no code
+token_budget: 20000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§6.1:L1124-L1126
+acceptance_criteria:
+- id: AC1
+  text: Given the sample list (including Twi A1 Akyiade labelled for Greetings), when sent to a native reviewer, then each
+    is marked correct, wrong or unsure with reviewer name and date
+- id: AC2
+  text: Given reviewer replies, when received, then confirmed errors become RTM-linked fixes in the quarantine card and unresolved
+    items stay Open
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G5
+external_blockers:
+- EXT-13
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

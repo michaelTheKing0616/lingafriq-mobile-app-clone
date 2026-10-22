@@ -1,0 +1,63 @@
+charter: v2
+id: P3-089
+kind: build
+title: Enforce WCAG 2.2 AA contrast in CI
+phase: P3
+epic: E-P3-A11Y-I18N
+req_ids:
+- EP-§13.7-05
+depends_on:
+- P3-008
+size: S
+difficulty:
+  score: 2
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 0, ambiguity 1, coupling 1'
+token_budget: 25000
+file_allowlist:
+- scripts/lint/contrast_check.py
+- test/design/color_contrast_test.dart
+context_anchors:
+- ELEVATION.md#§13.7:L1937
+acceptance_criteria:
+- id: AC1
+  text: Given the generated tokens, when CI runs, then every foreground and background role pair meets AA in light and dark
+- id: AC2
+  text: Given a golden screen, when sampled, then text over images or patterns has a scrim reaching AA
+- id: AC3
+  text: Given a failing pair, when reported, then the role names and ratio are printed
+test_plan:
+  unit:
+  - ratio math
+  integration:
+  - CI
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - AA
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

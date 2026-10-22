@@ -1,0 +1,106 @@
+charter: v2
+id: P9-913
+kind: build
+title: Link guardian accounts and collect verifiable consent
+phase: P9
+epic: E-P9-GUARDIAN
+req_ids:
+- EP-§13.3-02
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+- P9-912
+size: L
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T4
+  justification: 'score 7: blast 3, ambiguity 1, coupling 2, depth 0; gate-critical (security / child safety / legal / design
+    direction): Fable reviews'
+token_budget: 200000
+file_allowlist:
+- node-backend/src/services/guardianLink.service.ts
+- node-backend/src/models/guardianConsent.ts
+- lib/screens/guardian/guardian_link_screen.dart
+- lib/screens/guardian/consent_screen.dart
+context_anchors:
+- ELEVATION.md#§13.3:L1892-L1893
+acceptance_criteria:
+- id: AC1
+  text: Given a child in pending-guardian state, when a guardian is invited, then the child account stays inert until the
+    guardian completes an identity-verified consent step recorded with timestamp, policy version and jurisdiction regime (NDPA
+    2023, GDPR Art. 8 or COPPA)
+- id: AC2
+  text: Given a guardian, when linking multiple children, then each child has an independent consent record that can be reviewed
+    and withdrawn
+- id: AC3
+  text: Given consent withdrawal, when confirmed, then the child's social capabilities are disabled within 60 s and a data
+    deletion or retention decision is queued per policy
+- id: AC4
+  text: Given an unverified or expired guardian link, when the child attempts any gated action, then it fails with GUARDIAN_CONSENT_REQUIRED
+    and no partial access
+- id: AC5
+  text: Given a guardian with no link, when opening the hub, then an honest empty state explains what the hub does
+test_plan:
+  unit:
+  - consent state machine
+  integration:
+  - link and withdraw flows
+  security:
+  - guardian impersonation
+  - invite link replay
+  e2e: []
+  perf: []
+  a11y:
+  - consent screens
+  content:
+  - consent text per regime
+user_facing: true
+ux_spec:
+  states:
+  - empty
+  - invited
+  - verifying
+  - consented
+  - withdrawn
+  - error
+  copy_keys:
+  - guardian.link.title
+  - guardian.consent.body
+  - guardian.withdraw.confirm
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - guardian_default
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- verification method for guardians needs a vendor or card-based check; decide with counsel
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

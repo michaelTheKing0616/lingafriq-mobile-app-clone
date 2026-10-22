@@ -1,0 +1,66 @@
+charter: v2
+id: P4-131
+kind: build
+title: Enforce human drafting with grounded LLM variants only
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.6-02
+- EP-§6.6-08
+- EP-§6.6-09
+depends_on:
+- P4-121
+size: M
+difficulty:
+  score: 6
+  blast: 1
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 1, ambiguity 2, coupling 1'
+token_budget: 60000
+file_allowlist:
+- tools/content_pipeline/drafting_policy.py
+- tools/content_pipeline/grounded_prompt.py
+- test/content/test_drafting_policy.py
+context_anchors:
+- ELEVATION.md#§6.6:L1321-L1337
+acceptance_criteria:
+- id: AC1
+  text: Given a draft, when the LLM generates it, then only variants and distractors are accepted and any LLM-authored core
+    item is rejected DRAFT_SOURCE_FORBIDDEN
+- id: AC2
+  text: Given an LLM request, when built, then the prompt is grounded on the approved lexicon and tokens outside it are flagged
+- id: AC3
+  text: Given an AI-drafted string, when saved, then ai_assisted true is set and removing it is rejected
+test_plan:
+  unit:
+  - test_drafting_policy
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

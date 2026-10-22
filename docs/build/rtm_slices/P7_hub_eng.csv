@@ -1,0 +1,106 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+EP-§11.2-01,ELEVATION,§11.2:L1787,requirement,"Tutorials that teach (micro-lessons with a ""learn it, see it, try it""",P1,agent,,Open
+EP-§11.2-02,ELEVATION,§11.2:L1788,requirement,Sound tutorials per language,P1,agent,,Open
+EP-§11.2-03,ELEVATION,§11.2:L1788,metric,60–90 s each,P1,agent,,Open
+EP-§11.2-04,ELEVATION,§11.2:L1788,requirement,with native video of the mouth,P1,agent,,Open
+EP-§11.2-05,ELEVATION,§11.2:L1788-L1789,requirement,Yoruba tones and the subdot vowels,P1,agent,,Open
+EP-§11.2-06,ELEVATION,§11.2:L1789,requirement,gb/kp,P1,agent,,Open
+EP-§11.2-07,ELEVATION,§11.2:L1789,requirement,Igbo vowel harmony and the dotted vowels,P1,agent,,Open
+EP-§11.2-08,ELEVATION,§11.2:L1789-L1790,requirement,Hausa implosives ɓ/ɗ and ejective ƙ,P1,agent,,Open
+EP-§11.2-09,ELEVATION,§11.2:L1790,requirement,Zulu/Xhosa clicks c/q/x with the slow-motion mouth view,P1,agent,,Open
+EP-§11.2-10,ELEVATION,§11.2:L1790,requirement,Amharic ejectives and gemination,P1,agent,,Open
+EP-§11.2-11,ELEVATION,§11.2:L1791,requirement,"Swahili noun classes (as a visual ""class wheel"")",P1,agent,,Open
+EP-§11.2-12,ELEVATION,§11.2:L1791,requirement,Each ends with a 30-second perception check,P1,agent,,Open
+EP-§11.2-13,ELEVATION,§11.2:L1791,metric,30-second perception check,P1,agent,,Open
+EP-§11.2-14,ELEVATION,§11.2:L1791-L1792,requirement,and a speaking try,P1,agent,,Open
+EP-§11.2-15,ELEVATION,§11.2:L1793,requirement,Orthography tutorials: typing diacritics with the LingAfriq keyboard bar,P1,agent,,Open
+EP-§11.2-16,ELEVATION,§11.2:L1793-L1794,requirement,why tone marks matter (the minimal-pair demo),P1,agent,,Open
+EP-§11.2-17,ELEVATION,§11.2:L1795,requirement,"Culture tutorials: greeting choreography (who greets first,",P1,agent,,Open
+EP-§11.2-18,ELEVATION,§11.2:L1795-L1796,requirement,naming customs,P1,agent,,Open
+EP-§11.2-19,ELEVATION,§11.2:L1796,requirement,taboo topics,P1,agent,,Open
+EP-§11.2-20,ELEVATION,§11.2:L1797,requirement,Just-in-time coaching: tips appear the first time a learner hits a pattern,P1,agent,,Open
+EP-§11.2-21,ELEVATION,§11.2:L1797,constraint,not in a tour at install,P1,agent,,Open
+EP-§17.6-01,ELEVATION,§17.6:L2344-L2345,informational,"Point the camera at an object or a sign, learn the word",P1,agent,,Open
+EP-§17.6-02,ELEVATION,§17.6:L2346-L2347,informational,"screens/ar/point_and_say_screen.dart (982 lines), route point-and-say",P1,agent,,Open
+EP-§17.6-03,ELEVATION,§17.6:L2349-L2350,informational,"Object labels come from on-device google_mlkit_object_detection, best effort",P1,agent,,Open
+EP-§17.6-04,ELEVATION,§17.6:L2350-L2351,informational,Text comes from ML Kit's Latin TextRecognizer via media_import_service.dart:89-93.,P1,agent,,Open
+EP-§17.6-05,ELEVATION,§17.6:L2352,informational,English labels are translated through hybrid_polie/translation_service.dart.,P1,agent,,Open
+EP-§17.6-06,ELEVATION,§17.6:L2353,informational,"Hugging Face NLLB-200 (:32, CC-BY-NC, not licensed for commercial use, P0-24)",P1,agent,,Open
+EP-§17.6-07,ELEVATION,§17.6:L2353-L2354,informational,the free MyMemory API (:280-290),P1,agent,,Open
+EP-§17.6-08,ELEVATION,§17.6:L2355-L2356,informational,PointAndSayQueueService (153 lines; an offline queue with optional tone evaluation,P1,agent,,Open
+EP-§17.6-09,ELEVATION,§17.6:L2358-L2359,informational,"The target language is typed as free text (""Enter a language",P1,agent,,Open
+EP-§17.6-10,ELEVATION,§17.6:L2360-L2361,informational,"ML Kit's generic labels are English, coarse (""Food"", ""Home good"") and",P1,agent,,Open
+EP-§17.6-11,ELEVATION,§17.6:L2362-L2363,informational,"Translation is word-level with a non-commercial model and an anonymous free API,",P1,agent,,Open
+EP-§17.6-12,ELEVATION,§17.6:L2364,informational,"There's no native audio for the word, so the learner imitates nothing.",P1,agent,,Open
+EP-§17.6-13,ELEVATION,§17.6:L2365,informational,The scoring path depends on a placeholder tone endpoint (§1 P0-18/19).,P1,agent,,Open
+EP-§17.6-14,ELEVATION,§17.6:L2366,informational,Latin-only OCR mangles stacked diacritics [Unverified on device] and cannot,P1,agent,,Open
+EP-§17.6-15,ELEVATION,§17.6:L2367,decision,"Elevation: ""Lens"".",P1,Tope,,Open
+EP-§17.6-16,ELEVATION,§17.6:L2368-L2371,requirement,"server vision model (multimodal Gemini 3 Flash; AI stack §3.1, with",P1,agent,,Open
+EP-§17.6-17,ELEVATION,§17.6:L2369,external,"companion: AI stack §3.1, with §3.13 for OCR",P1,agent,,Open
+EP-§17.6-18,ELEVATION,§17.6:L2372-L2374,requirement,"Teach. Each tag becomes a Word Card: word with tones, native audio",P1,agent,,Open
+EP-§17.6-19,ELEVATION,§17.6:L2375,requirement,"Say. Hold to speak. Real GOP plus tone scoring (§7.4),",P1,agent,,Open
+EP-§17.6-20,ELEVATION,§17.6:L2376,requirement,Collect. Words go to a personal Lens collection and into FSRS review.,P1,agent,,Open
+EP-§17.6-21,ELEVATION,§17.6:L2376-L2377,metric,"Weekly ""Home Safari"" quests: find 5 kitchen items.",P1,agent,,Open
+EP-§17.6-22,ELEVATION,§17.6:L2378,requirement,Share. Optionally turn the photo into a Clip with the phrase overlay,P1,agent,,Open
+EP-§17.6-23,ELEVATION,§17.6:L2378-L2379,constraint,Faces are blurred before sharing.,P1,agent,,Open
+EP-§17.6-24,ELEVATION,§17.6:L2380,requirement,"Signs and menus. OCR mode translates signs, menus and labels",P1,agent,,Open
+EP-§17.6-25,ELEVATION,§17.6:L2380-L2381,requirement,A diacritic-restoring pass handles stacked tone marks.,P1,agent,,Open
+EP-§17.6-26,ELEVATION,§17.6:L2382,requirement,Offline. An offline pack of the top 300 objects per language,P1,agent,,Open
+EP-§17.6-27,ELEVATION,§17.6:L2382,metric,the top 300 objects per language,P1,agent,,Open
+EP-§17.6-28,ELEVATION,§17.6:L2382-L2383,requirement,The existing queue service syncs scores when back online (after,P1,agent,,Open
+EP-§17.6-29,ELEVATION,§17.6:L2384,constraint,Privacy. Photos are processed then deleted unless saved.,P1,agent,,Open
+EP-§17.6-30,ELEVATION,§17.6:L2384-L2385,constraint,Minors' photos never leave the device without consent.,P1,agent,,Open
+EP-§17.6-31,ELEVATION,§17.6:L2386,requirement,"Full-screen camera with soft rounded boxes that ""breathe"".",P1,agent,,Open
+EP-§17.6-32,ELEVATION,§17.6:L2386-L2387,requirement,Tapping a box flips it into a Word Card,P1,agent,,Open
+EP-§17.6-33,ELEVATION,§17.6:L2387,metric,target word at 28 sp,P1,agent,,Open
+EP-§17.6-34,ELEVATION,§17.6:L2387,requirement,a tone contour line under the syllables,P1,agent,,Open
+EP-§17.6-35,ELEVATION,§17.6:L2387,requirement,a large mic button.,P1,agent,,Open
+EP-§17.6-36,ELEVATION,§17.6:L2388,requirement,"The language comes from the learner profile (no text box), with",P1,agent,,Open
+EP-§17.6-37,ELEVATION,§17.6:L2388-L2389,requirement,Haptics on a successful pronunciation;,P1,agent,,Open
+EP-§17.6-38,ELEVATION,§17.6:L2389,requirement,the avatar appears in the corner to celebrate.,P1,agent,,Open
+EP-§17.6-39,ELEVATION,§17.6:L2389,requirement,A reduced-motion variant is included.,P1,agent,,Open
+EP-§17.6-40,ELEVATION,§17.6:L2390,requirement,The Lens button in the top bar on every tab;,P1,agent,,Open
+EP-§17.6-41,ELEVATION,§17.6:L2390,requirement,"Learn (object lessons: ""find these at home"");",P1,agent,,Open
+EP-§17.6-42,ELEVATION,§17.6:L2390-L2391,requirement,Today (Home Safari challenge);,P1,agent,,Open
+EP-§17.6-43,ELEVATION,§17.6:L2391,requirement,Play (Flashcard Safari uses the same pipeline);,P1,agent,,Open
+EP-§17.6-44,ELEVATION,§17.6:L2391,requirement,"Word Card → ""see it in the wild"".",P1,agent,,Open
+EP-§17.7-01,ELEVATION,§17.7:L2393,informational,"The app's word store, which learners can add to.",P1,agent,,Open
+EP-§17.7-02,ELEVATION,§17.7:L2396-L2397,informational,screens/vocabulary/living_dictionary_screen.dart (620 lines) with,P1,agent,,Open
+EP-§17.7-03,ELEVATION,§17.7:L2397-L2399,informational,"It does GET/POST/DELETE on ApiContract.learningV2.livingDictionaryEntries, caches in SharedPreferences,",P1,agent,,Open
+EP-§17.7-04,ELEVATION,§17.7:L2398-L2399,informational,shows an offline banner (:390),P1,agent,,Open
+EP-§17.7-05,ELEVATION,§17.7:L2400-L2403,informational,"listLivingDictionary queries {userId} and creates LivingLexemeModel entries with that userId,",P1,agent,,Open
+EP-§17.7-06,ELEVATION,§17.7:L2404-L2405,informational,"Admin: a separate CRUD/import exists (routes/admin/livingDictionary.admin.route.ts:13-18,",P1,agent,,Open
+EP-§17.7-07,ELEVATION,§17.7:L2405,informational,User entries have no review status.,P1,agent,,Open
+EP-§17.7-08,ELEVATION,§17.7:L2407,informational,"The name promises a living, shared lexicon; the product is a private",P1,agent,,Open
+EP-§17.7-09,ELEVATION,§17.7:L2408,informational,"Learner-entered words have no verification, so if they were shared they",P1,agent,,Open
+EP-§17.7-10,ELEVATION,§17.7:L2409,informational,"There are no audio, tone, dialect or example fields in the",P1,agent,,Open
+EP-§17.7-11,ELEVATION,§17.7:L2410,informational,"It is not linked from lessons, chat or games, so words have",P1,agent,,Open
+EP-§17.7-12,ELEVATION,§17.7:L2411,informational,The admin lexicon and user entries are separate stores with no,P1,agent,,Open
+EP-§17.7-13,ELEVATION,§17.7:L2412,decision,Elevation: a two-layer living lexicon.,P1,Tope,,Open
+EP-§17.7-14,ELEVATION,§17.7:L2413-L2416,requirement,"Verified Lexicon (shared). Every entry has a lemma with full tone marks,",P1,agent,,Open
+EP-§17.7-15,ELEVATION,§17.7:L2414,metric,2–3 native audio recordings (age and gender spread),P1,agent,,Open
+EP-§17.7-16,ELEVATION,§17.7:L2416,requirement,Each entry carries a status: AI-drafted → native-verified,P1,agent,,Open
+EP-§17.7-17,ELEVATION,§17.7:L2417-L2418,metric,one schema for all 7 Stage-1 languages and then every wave.,P1,agent,,Open
+EP-§17.7-18,ELEVATION,§17.7:L2419-L2420,requirement,"My Words (personal). What the current endpoint already does, kept:",P1,agent,,Open
+EP-§17.7-19,ELEVATION,§17.7:L2420,requirement,Each saved word links to its verified entry when one exists.,P1,agent,,Open
+EP-§17.7-20,ELEVATION,§17.7:L2421-L2422,requirement,Living loop. A learner suggests a word or meaning → it,P1,agent,,Open
+EP-§17.7-21,ELEVATION,§17.7:L2422-L2423,requirement,it is promoted into the Verified Lexicon with credit to the suggester,P1,agent,,Open
+EP-§17.7-22,ELEVATION,§17.7:L2423-L2424,requirement,Corrections from Native Corrections and the Square,P1,agent,,Open
+EP-§17.7-23,ELEVATION,§17.7:L2425,requirement,"Everywhere. Long-press any word in a lesson, chat, feed, status, game",P1,agent,,Open
+EP-§17.7-24,ELEVATION,§17.7:L2426,requirement,Global Search starts with words.,P1,agent,,Open
+EP-§17.7-25,ELEVATION,§17.7:L2426,requirement,"A daily ""word of the day"" with its story appears in Today.",P1,agent,,Open
+EP-§17.7-26,ELEVATION,§17.7:L2427,requirement,"Pan-African view. ""Same idea in other languages"": water = omi / mmiri",P1,agent,,Open
+EP-§17.7-27,ELEVATION,§17.7:L2428,requirement,It powers Multilingual Relay.,P1,agent,,Open
+EP-§17.7-28,ELEVATION,§17.7:L2429,requirement,Offline. A per-language lexicon pack (top 5k entries plus audio) syncs the,P1,agent,,Open
+EP-§17.7-29,ELEVATION,§17.7:L2429,metric,top 5k entries plus audio,P1,agent,,Open
+EP-§17.7-30,ELEVATION,§17.7:L2430,requirement,The Word Card is a bottom sheet with a large lemma,P1,agent,,Open
+EP-§17.7-31,ELEVATION,§17.7:L2430-L2431,requirement,tone marks never clipped; Noto Sans with diacritic-safe line height,P1,agent,,Open
+EP-§17.7-32,ELEVATION,§17.7:L2431,requirement,"a Tone Lens contour, play buttons for each speaker, dialect chips,",P1,agent,,Open
+EP-§17.7-33,ELEVATION,§17.7:L2431-L2432,requirement,"examples with audio, and Save and Practise buttons.",P1,agent,,Open
+EP-§17.7-34,ELEVATION,§17.7:L2432-L2433,requirement,"The full entry page adds proverbs, culture and the ""same idea in",P1,agent,,Open
+EP-§17.7-35,ELEVATION,§17.7:L2433,requirement,"Verification badges are honest (""AI draft, awaiting native check"").",P1,agent,,Open
+EP-§17.7-36,ELEVATION,§17.7:L2434,requirement,Global Search (first result type);,P1,agent,,Open
+EP-§17.7-37,ELEVATION,§17.7:L2434,requirement,long-press on any word;,P1,agent,,Open
+EP-§17.7-38,ELEVATION,§17.7:L2434-L2435,requirement,Learn → Words (My Words and Review);,P1,agent,,Open
+EP-§17.7-39,ELEVATION,§17.7:L2435,requirement,Lens results;,P1,agent,,Open
+EP-§17.7-40,ELEVATION,§17.7:L2435,requirement,Village → Contribute → Verify.,P1,agent,,Open

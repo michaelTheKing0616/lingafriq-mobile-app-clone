@@ -1,0 +1,89 @@
+charter: v2
+id: P7-916
+kind: build
+title: Define Verified Lexicon schema and shared store
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§17.7-08
+- EP-§17.7-10
+- EP-§17.7-14
+- EP-§17.7-16
+- EP-§17.7-17
+depends_on:
+- P7-901
+- E-P2-PLATFORM
+- E-P4-CONTENT-ENGINE
+size: L
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 3, coupling 2, depth 2'
+token_budget: 150000
+file_allowlist:
+- node-backend/src/models/verifiedLexicon.model.ts
+- node-backend/src/services/verifiedLexicon.service.ts
+- node-backend/src/routes/verifiedLexicon.route.ts
+- schemas/verified_lexicon.schema.json
+- lib/models/verified_lexeme.dart
+- test/models/verified_lexeme_test.dart
+context_anchors:
+- ELEVATION.md#§17.7:L2407-L2411
+- ELEVATION.md#§17.7:L2413-L2418
+acceptance_criteria:
+- id: AC1
+  text: Given a lexicon entry, when it is stored, then it holds a lemma with full tone marks, IPA, part of speech, noun class,
+    senses, dialect variants and audio references
+- id: AC2
+  text: Given the schema, when any of the 7 Stage-1 languages or a later wave language is stored, then one schema validates
+    all of them with no per-language fork
+- id: AC3
+  text: Given an entry, when its status is set, then only the transitions AI-drafted to native-verified are accepted and any
+    other raises a typed error
+- id: AC4
+  text: Given a client read, when an entry is returned, then its verification status is included so the UI can label it honestly
+- id: AC5
+  text: Given a lemma without tone marks for a tonal language, when it is saved, then validation fails loudly
+- id: AC6
+  text: Given any caller, when they write a verified entry directly, then the write is rejected and only the Verify queue
+    can promote
+test_plan:
+  unit:
+  - schema validation
+  - status transitions
+  integration:
+  - read/write API
+  security:
+  - only promotion path writes verified
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - fixtures for 7 languages
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- fixes the shared-name-private-product mismatch and the missing audio, tone, dialect and example fields
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

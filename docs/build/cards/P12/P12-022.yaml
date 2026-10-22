@@ -1,0 +1,75 @@
+charter: v2
+id: P12-022
+kind: verification
+title: Complete release-readiness checklist and generated status
+phase: P12
+epic: E-P12-RELEASE
+req_ids:
+- EP-§13.9-18
+- RM-STOP-03
+depends_on:
+- P12-004
+- P12-012
+- P12-013
+- P12-014
+- P12-015
+- P12-016
+- P12-017
+- P12-018
+- P12-019
+- P12-020
+- P12-021
+size: S
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: 'score 4: blast 2, ambiguity 1, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§13.9:L1961-L1962
+- ELEVATION.md#§16.5:L2157
+acceptance_criteria:
+- id: AC1
+  text: Given the P12 gates, when the checklist generator runs, then it emits pass, fail or blocked per item from CI results
+    and never from hand-written claims
+- id: AC2
+  text: Given any item is fail or blocked (including external a11y audit and DPIA), when the checklist is read, then overall
+    status is NOT READY and lists each blocker
+- id: AC3
+  text: Given all items pass, when Tope signs off, then the checklist, evidence links and the ledger row are stored with the
+    release tag
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks:
+- Includes external items EXT-18 (DPIA) and EXT-20 (efficacy) as read-only blockers
+gate: G12
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

@@ -1,0 +1,52 @@
+charter: v2
+id: P0-VER-21
+kind: verification
+title: Re-estimate Curriculum Studio effort from cards
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- UNV-C08
+depends_on:
+- E-P0-INTAKE
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: verification only; result recorded, never inferred
+token_budget: 20000
+file_allowlist:
+- docs/build/verification/P0-VER-21.md
+- docs/build/UNVERIFIED.md
+context_anchors:
+- CURRICULUM.md#§9.1:L789
+acceptance_criteria:
+- id: AC1
+  text: Given the Studio cards once drafted, when their sizes are summed with the S/M/L token and week conversions from 04_ROUTING.md,
+    then the effort range in engineering weeks is written next to the source figure 10 to 14
+- id: AC2
+  text: Given a difference greater than 25%, when found, then it is raised to the Orchestrator as a re-plan item
+user_facing: false
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- docs/build/verification/P0-VER-21.md
+- UNVERIFIED.md row updated
+risks: []
+gate: G4
+external_blockers: []
+owner: agent
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

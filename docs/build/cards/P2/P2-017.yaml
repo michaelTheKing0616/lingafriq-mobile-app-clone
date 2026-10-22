@@ -1,0 +1,89 @@
+charter: v2
+id: P2-017
+kind: build
+title: Show a visible sync state
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.5-04
+depends_on:
+- E-P1-CONTAINMENT
+- P2-015
+- P2-010
+size: S
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 0
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 2, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist:
+- lib/widgets/sync_status_chip.dart
+- lib/services/sync/outbox_service.dart
+- test/golden/sync_status_chip_test.dart
+context_anchors:
+- ELEVATION.md#§13.5:L1915
+acceptance_criteria:
+- id: AC1
+  text: Given pending items, when the user views the sync chip, then it shows the pending count
+- id: AC2
+  text: Given dead-lettered items, when shown, then it displays a failed state with a retry action
+- id: AC3
+  text: Given no connectivity, when shown, then it reads offline and never shows synced
+test_plan:
+  unit:
+  - state mapping
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - semantics labels
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - synced
+  - pending
+  - syncing
+  - failed
+  - offline
+  copy_keys:
+  - sync.synced
+  - sync.pending
+  - sync.failed
+  - sync.offline
+  - sync.retry
+  tokens:
+  - color.status.*
+  - space.2
+  motion_tier: product
+  a11y:
+  - state announced by screen reader
+  - retry target >=48dp
+  goldens:
+  - sync_status_chip_states
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/error-handling-ux
+  - prime/feedback-patterns
+  - prime/state-machine

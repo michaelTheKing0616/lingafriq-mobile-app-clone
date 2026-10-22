@@ -1,0 +1,62 @@
+charter: v2
+id: P5-076
+kind: verification
+title: Verify Phase 0 foundations exit
+phase: P5
+epic: E-P5-A1
+req_ids:
+- CP-§9.2-01
+- CP-§9.2-06
+- CP-§9.2-07
+- CP-§9.2-08
+depends_on:
+- E-P4-CONTENT-ENGINE
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T0
+  tester: T0
+  reviewer: T1
+  justification: verification only; no code
+token_budget: 20000
+file_allowlist: []
+context_anchors:
+- CURRICULUM.md#§9.2:L792-L797
+acceptance_criteria:
+- id: AC1
+  text: Given Weeks 0-4, when closed, then the licence register is signed by counsel and licences for Oxford, IgboAPI, Zulu
+    dictionary, PanLex and NaijaVoices waiver (if needed) are requested
+- id: AC2
+  text: Given the reviewer panels, when checked, then 2 linguists per language are contracted
+- id: AC3
+  text: Given the exit, when checked, then 7 language kits, linters, Studio MVP and legacy quarantine exist
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G5
+external_blockers:
+- EXT-03
+- EXT-04
+- EXT-05
+- EXT-06
+- EXT-07
+- EXT-08
+- EXT-11
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

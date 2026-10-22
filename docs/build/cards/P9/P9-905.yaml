@@ -1,0 +1,72 @@
+charter: v2
+id: P9-905
+kind: build
+title: Version and validate socket events with zod on both sides
+phase: P9
+epic: E-P9-REALTIME
+req_ids:
+- EP-§9.5-06
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+- P9-904
+size: M
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 0
+  coupling: 2
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 4: blast 2, ambiguity 0, coupling 2, depth 0'
+token_budget: 80000
+file_allowlist:
+- node-backend/src/socket/events.schema.ts
+- lib/services/socket/socket_event_schemas.dart
+- node-backend/src/services/socket.service.ts
+context_anchors:
+- ELEVATION.md#§9.5:L1658
+acceptance_criteria:
+- id: AC1
+  text: Given an inbound event that fails its zod schema, when received, then the server drops it, emits a typed EVENT_INVALID
+    error to the sender and increments a metric
+- id: AC2
+  text: Given an event with an unknown schema version, when received, then the server replies UNSUPPORTED_VERSION with the
+    minimum supported version
+- id: AC3
+  text: Given the Dart client, when it receives an event failing its schema, then it discards it and records a visible diagnostic
+    instead of rendering partial data
+test_plan:
+  unit:
+  - schema parse
+  - version negotiation
+  integration:
+  - client-server contract test
+  security:
+  - oversized/malformed payloads
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

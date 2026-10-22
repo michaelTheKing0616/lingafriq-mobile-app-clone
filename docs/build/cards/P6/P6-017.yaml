@@ -1,0 +1,71 @@
+charter: v2
+id: P6-017
+kind: build
+title: Stream all chat with first token under 400 ms
+phase: P6
+epic: E-P6-GATEWAY
+req_ids:
+- EP-§7.6-25
+- EP-§7.6-27
+- EP-§7.1-08
+depends_on:
+- P6-002
+- P6-011
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/stream.ts
+- node-backend/src/ai-gateway/routes/chat.route.ts
+context_anchors:
+- ELEVATION.md#§7.6:L1462-L1475
+- ELEVATION.md#§7.1:L1349-L1366
+acceptance_criteria:
+- id: AC1
+  text: Given a chat request, when it streams, then every chat mode returns incremental tokens and the backend fallback path
+    also streams
+- id: AC2
+  text: Given the p50 benchmark on staging, when measured over 200 requests, then time to first text token is under 400 ms
+- id: AC3
+  text: Given a mid-stream provider error, when it occurs, then a typed error frame ends the stream with no partial success
+    marker
+test_plan:
+  unit:
+  - frame encoder
+  integration:
+  - fallback stream
+  security: []
+  e2e: []
+  perf:
+  - first token p50 under 400 ms
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

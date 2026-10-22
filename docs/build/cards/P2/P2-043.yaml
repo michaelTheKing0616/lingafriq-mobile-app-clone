@@ -1,0 +1,72 @@
+charter: v2
+id: P2-043
+kind: build
+title: Implement FSRS-6 scheduler on device
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§6.2-03
+- EP-§6.3-04
+depends_on:
+- E-P1-CONTAINMENT
+- P2-042
+size: L
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 3, coupling 2, depth 2'
+token_budget: 150000
+file_allowlist:
+- lib/services/learning/fsrs6_scheduler.dart
+- lib/services/learning/memory_state.dart
+- test/learning/fsrs6_test.dart
+- test/learning/fsrs6_property_test.dart
+context_anchors:
+- ELEVATION.md#§6.2:L1145-L1150
+- ELEVATION.md#§6.3:L1214-L1215
+acceptance_criteria:
+- id: AC1
+  text: Given a review rating, when scheduled, then stability, difficulty and retrievability update per the FSRS-6 reference
+    implementation within 1e-6 on published vectors
+- id: AC2
+  text: Given random rating sequences, when property tests run, then retrievability stays in [0,1], stability stays positive
+    and the schedule is monotone in rating
+- id: AC3
+  text: Given the same event sequence, when replayed in any batching, then the final state is identical
+- id: AC4
+  text: Given the four legacy SRS implementations, when replaced, then none remains reachable
+test_plan:
+  unit:
+  - reference vectors
+  integration:
+  - replay determinism
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

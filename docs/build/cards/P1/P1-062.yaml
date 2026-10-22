@@ -1,0 +1,85 @@
+charter: v2
+id: P1-062
+kind: build
+title: Enforce premium gates server-side from entitlements
+phase: P1
+epic: E-P1-PAYMENTS
+req_ids:
+- P0-27
+- RM-P0-13
+depends_on:
+- E-P0-INTAKE
+- P1-061
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T3
+  justification: score 7; blast 3; security/crypto tester
+token_budget: 70000
+file_allowlist:
+- node-backend/src/middleware/requireEntitlement.middleware.ts
+- node-backend/src/routes/subscription.route.ts
+- lib/services/revenuecat_service.dart
+context_anchors:
+- ELEVATION.md#§1:L398-L409
+- ELEVATION.md#§16.1:L2058
+acceptance_criteria:
+- id: AC1
+  text: Given a user without an active entitlement, when they call a premium endpoint, then it returns 403 premium_required
+- id: AC2
+  text: Given a user with an active entitlement, when they call it, then it succeeds
+- id: AC3
+  text: Given a client claiming premium status in a request, when processed, then the claim is ignored
+- id: AC4
+  text: Given an expired entitlement, when called after expiry, then access is denied within the cache TTL set in the card
+- id: AC5
+  text: Given the client, when an entitlement check returns 403, then it shows the upgrade state rather than failing silently
+test_plan:
+  unit:
+  - gate
+  integration:
+  - 403 matrix for premium routes
+  security:
+  - claim tamper
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - upgrade-prompt
+  copy_keys:
+  - premium.required
+  tokens:
+  - design-system info tokens
+  motion_tier: product
+  a11y:
+  - prompt announced
+  goldens:
+  - premium_required
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G1
+external_blockers:
+- EXT-19
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

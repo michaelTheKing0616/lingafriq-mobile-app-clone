@@ -1,0 +1,75 @@
+charter: v2
+id: P8-906
+kind: build
+title: 'GameKit: match multiplayer opponents by level'
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.2-11
+depends_on:
+- E-P8-PLAY
+- P8-901
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, coupling 2; P0 area'
+token_budget: 60000
+file_allowlist:
+- lib/games/gamekit/game_engine_service.dart
+- node-backend/src/services/game_matchmaking.service.ts
+- node-backend/src/services/socket.service.ts
+- lib/games/gamekit/game_session.dart
+context_anchors:
+- ELEVATION.md#§10.2:L1674
+acceptance_criteria:
+- id: AC1
+  text: Given a learner requests a duel, when the matchmaker pairs, then the two learners' level difference in the target
+    skill is within the configured band and the band is stored in config, not code
+- id: AC2
+  text: Given no human is within the band after the wait limit, when the match times out, then the learner is offered a labelled
+    bot or a retry and is never silently paired out of band
+- id: AC3
+  text: Given two learners in the same language, when paired, then both see the other's level label before the round starts
+- id: AC4
+  text: Given a request with a forged level, when the server matches, then the server uses its own learner-model level and
+    ignores the client value
+test_plan:
+  unit:
+  - band matching
+  - timeout path
+  integration:
+  - socket pairing
+  security:
+  - forged level ignored
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- sockets are a P0 area
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

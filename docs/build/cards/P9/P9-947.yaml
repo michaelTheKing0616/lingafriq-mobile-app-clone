@@ -1,0 +1,105 @@
+charter: v2
+id: P9-947
+kind: build
+title: Build Practice Rooms with host, topic, level and AI facilitator
+phase: P9
+epic: E-P9-VILLAGE
+req_ids:
+- EP-§9.2-16
+- EP-§9.2-17
+- EP-§9.2-18
+- EP-§9.2-19
+- EP-§9.2-20
+depends_on:
+- E-P9-SAFETY
+- P9-904
+- P9-930
+- P9-943
+size: L
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, ambiguity 1, coupling 2, depth 0'
+token_budget: 200000
+file_allowlist:
+- lib/screens/social_audio/create_room_screen.dart
+- lib/screens/social_audio/room_detail_screen.dart
+- node-backend/src/services/practiceRoom.service.ts
+context_anchors:
+- ELEVATION.md#§9.2:L1590-L1597
+acceptance_criteria:
+- id: AC1
+  text: Given a host, when creating a room, then topic, level and either a schedule or drop-in mode are required
+- id: AC2
+  text: Given a room, when running, then speaking follows a structured turn order and an uninvited member cannot open the
+    mic
+- id: AC3
+  text: Given the AI facilitator, when enabled, then it suggests prompts and vocabulary labelled as AI and the host can mute
+    it
+- id: AC4
+  text: Given a minor, when joining a room, then only rooms in guardian-approved circles or classrooms are listed
+- id: AC5
+  text: Given Village Radio rooms, when migrated, then they continue to work alongside Practice Rooms
+test_plan:
+  unit: []
+  integration:
+  - turn order
+  - minor listing
+  security:
+  - mic takeover
+  e2e: []
+  perf: []
+  a11y:
+  - room controls
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - scheduled
+  - live
+  - ended
+  - muted
+  - denied
+  copy_keys:
+  - room.create.title
+  - room.turn.yours
+  - room.ai.label
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - room_default
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+harvest_list:
+- Village Radio audio rooms
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

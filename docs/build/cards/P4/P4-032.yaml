@@ -1,0 +1,80 @@
+charter: v2
+id: P4-032
+kind: build
+title: Record isiZulu source stack in kit
+phase: P4
+epic: E-P4-LANGUAGE-KITS
+req_ids:
+- CP-§2.4-zu-01
+- CP-§2.4-zu-02
+- CP-§2.4-zu-03
+- CP-§2.4-zu-04
+- CP-§2.4-zu-05
+- CP-§2.4-zu-06
+- CP-§2.4-zu-07
+- CP-§2.4-zu-08
+depends_on:
+- P4-021
+- P4-001
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- tools/content_engine/kits/zu/sources.yaml
+- tools/content_engine/tests/test_stack_zu.py
+context_anchors:
+- CURRICULUM.md#§2.4:L410-L442
+acceptance_criteria:
+- id: AC1
+  text: Given the Zulu kit, when loaded, then orthography authority is the PanSALB revised spelling and orthography rules
+    (Gazette, 6 Jul 2023)
+- id: AC2
+  text: Given no Oxford API Zulu, when the lexicon is listed, then a commercial Zulu dictionary licence is pending with the
+    Doke–Vilakazi publisher approach recorded under EXT-06
+- id: AC3
+  text: Given corpora, when listed, then SADiLaR annotated corpus (45,933 tokens, CC BY 4.0), NCHLT (CC BY 2.5 ZA), FLEURS,
+    WAXAL and African Storybook are registered
+- id: AC4
+  text: Given ZulMorph, when listed as the tool, then the SADiLaR record licence Apache-2.0 is stored and Peace Corps Zulu
+    and Poulos & Msimang are marked purchase
+test_plan:
+  unit:
+  - every stack source id exists in register
+  - stack lists orthography, lexicon, grammar, corpora, tools
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-06
+- EXT-22
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

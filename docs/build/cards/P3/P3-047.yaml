@@ -1,0 +1,96 @@
+charter: v2
+id: P3-047
+kind: build
+title: Build long-press Word Card on every target word
+phase: P3
+epic: E-P3-SHELL
+req_ids:
+- EP-§3.3-12
+- EP-§17.1-11
+- EP-§17.2-54
+- EP-§17.2-56
+- EP-§17.2-57
+- EP-§17.2-58
+depends_on:
+- P3-035
+- P3-034
+- P3-039
+size: L
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 4: blast 0, ambiguity 1, coupling 2'
+token_budget: 150000
+file_allowlist:
+- lib/design/word_card/word_card.dart
+- lib/design/text/target_text.dart
+- lib/services/word_card_service.dart
+context_anchors:
+- ELEVATION.md#§17.1:L2222-L2228
+acceptance_criteria:
+- id: AC1
+  text: Given a target-language word in lesson, chat, game, persona or dictionary, when long-pressed, then the Word Card opens
+    showing meaning, dialect audio and Tone Lens
+- id: AC2
+  text: Given a Word Card, when Save is tapped, then the word enters My Words and Review and a failed save shows a retry state
+- id: AC3
+  text: Given audio for a dialect is missing, when the card opens, then it shows an unavailable label and no synthetic audio
+    plays
+- id: AC4
+  text: Given a plain Text widget, when long-pressed, then it does nothing and the lint blocks plain Text for target words
+test_plan:
+  unit:
+  - save flow
+  integration:
+  - five host long-press
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - semantics
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - loaded
+  - audio_missing
+  - save_failed
+  copy_keys:
+  - wordcard.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

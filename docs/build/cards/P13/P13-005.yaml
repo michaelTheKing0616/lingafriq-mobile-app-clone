@@ -1,0 +1,72 @@
+charter: v2
+id: P13-005
+kind: design
+title: Design Living Archive path to 95+ languages
+phase: P13
+epic: E-P13-SCALE
+req_ids:
+- RM-MS-01
+- RM-MS-08
+depends_on:
+- E-P12-RELEASE
+- P13-004
+- E-P4-CONTENT-ENGINE
+- P13-001
+- P13-003
+size: S
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 2, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§16.4:L2115-L2119
+acceptance_criteria:
+- id: AC1
+  text: Given the design doc, when reviewed, then it defines community starter admission for Wave 4 using the P13-001 template
+    and the P13-003 lexicon gate
+- id: AC2
+  text: Given a community language, when it has no native reviewers, then the design states it stays at L0 and shows an honest
+    label to learners
+- id: AC3
+  text: Given the design, when read, then it lists contributor credit, licence handling and a target of 95+ languages as a
+    goal, not as a claim
+- id: AC4
+  text: Given the design, when complete, then it names the build cards to be created and their sizes
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- uses_source
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks:
+- Wave 4 contributor model overlaps RM-P2-04
+- Priority MS; design and ADR only, no build before P13-004 gate passes
+gate: G13
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - adaptive/09-writing-and-communication

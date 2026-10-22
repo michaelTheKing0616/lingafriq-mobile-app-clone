@@ -1,0 +1,33 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+EP-§5.1-01,ELEVATION,§5.1:L1027-L1028,informational,"splash (1.2 s forced delay) → 9-step ""village"" questionnaire → placement dialog",P1,agent,,Open
+EP-§5.1-02,ELEVATION,§5.1:L1027,metric,splash (1.2 s forced delay),P1,agent,,Open
+EP-§5.1-03,ELEVATION,§5.1:L1028-L1029,informational,creates an account before hearing one word of the language,P1,agent,,Open
+EP-§5.1-04,ELEVATION,§5.1:L1030-L1032,informational,"Welcome, Elder (native language), Weaver (target language), Elder's Question",P1,agent,,Open
+EP-§5.1-05,ELEVATION,§5.1:L1033,informational,answers serialised with Map.toString() (P0-21),P1,agent,,Open
+EP-§5.1-06,ELEVATION,§5.1:L1033-L1035,informational,"""learning styles"" have no evidence base",P1,agent,,Open
+EP-§5.1-07,ELEVATION,§5.1:L1035-L1036,informational,age is collected with no consequence (P0-10),P1,agent,,Open
+EP-§5.1-08,ELEVATION,§5.1:L1036,informational,every release resets onboarding (P0-20),P1,agent,,Open
+EP-§5.1-09,ELEVATION,§5.1:L1036-L1037,informational,three alternative onboarding flows sit in the repo unused,P1,agent,,Open
+OB-step1,ELEVATION,§5.2:L1039-L1040,requirement,Show the languages with a native speaker greeting audio on each tile,P1,agent,,Open
+OB-step1-b,ELEVATION,§5.2:L1040-L1041,requirement,"Detect a heritage link with one optional chip: ""My family speaks this""",P1,agent,,Open
+OB-step2,ELEVATION,§5.2:L1042-L1045,requirement,Polie greets the learner in the language with the Tone Lens visible,P1,agent,,Open
+OB-step2-b,ELEVATION,§5.2:L1042,metric,Instant first win ( ≤ 60 s).,P1,agent,,Open
+OB-step2-c,ELEVATION,§5.2:L1043-L1044,requirement,"The real scorer gives honest, encouraging feedback on the one syllable",P1,agent,,Open
+OB-step3,ELEVATION,§5.2:L1047-L1049,requirement,"Micro-placement, adaptive and disguised as a conversation",P1,agent,,Open
+OB-step3-b,ELEVATION,§5.2:L1047,metric,"(2–3 min, skippable)",P1,agent,,Open
+OB-step3-c,ELEVATION,§5.2:L1048,metric,Three or four items selected by item response theory (IRT),P1,agent,,Open
+OB-step3-d,ELEVATION,§5.2:L1049-L1050,requirement,so measure listening and speaking separately,P1,agent,,Open
+OB-step4,ELEVATION,§5.2:L1051-L1053,requirement,"Goal and time, one screen. ""Why?"" (heritage/family, travel, partner, work",P1,agent,,Open
+OB-step4-b,ELEVATION,§5.2:L1052,metric,"""How much time a day?"" (5/10/15/20)",P1,agent,,Open
+OB-step4-c,ELEVATION,§5.2:L1052-L1053,requirement,The why drives content themes (family vocabulary first for heritage learners),P1,agent,,Open
+OB-step5,ELEVATION,§5.2:L1054,requirement,Age assurance before anything social (neutral date-of-birth picker,P1,agent,,Open
+OB-step5-b,ELEVATION,§5.2:L1054-L1055,requirement,Under-13 goes to the guardian flow (§13.3),P1,agent,,Open
+OB-step6,ELEVATION,§5.2:L1056,requirement,"Save progress = create account (passkey, Google, Apple or email magic link)",P1,agent,,Open
+OB-step6-b,ELEVATION,§5.2:L1056-L1057,requirement,Prompt only after the first lesson is finished,P1,agent,,Open
+OB-step7,ELEVATION,§5.2:L1058-L1059,requirement,Notifications ask in context after lesson 1,P1,agent,,Open
+OB-step8,ELEVATION,§5.2:L1060,requirement,Avatar creation is optional and later (unlocked after lesson 2),P1,agent,,Open
+EP-§5.3-01,ELEVATION,§5.3:L1062-L1063,requirement,"Persist every step locally (typed, jsonEncode)",P1,agent,,Open
+EP-§5.3-02,ELEVATION,§5.3:L1064-L1065,requirement,"Replace ""Who are you, and why do you seek knowledge?"" (:774) with plain questions",P1,agent,,Open
+EP-§5.3-03,ELEVATION,§5.3:L1065,metric,Grade-7 reading level (Playbook §15.4),P1,agent,,Open
+EP-§5.3-04,ELEVATION,§5.3:L1066-L1067,requirement,"French, Portuguese, Arabic and Swahili UI for continental learners",P1,agent,,Open
+EP-§5.3-05,ELEVATION,§5.3:L1068-L1069,requirement,"funnel events per step, time-to-first-spoken-word, D1/D7 retention by entry path",P1,agent,,Open

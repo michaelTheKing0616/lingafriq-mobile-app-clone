@@ -1,0 +1,78 @@
+charter: v2
+id: P1-050
+kind: build
+title: Apply schema validation and per-route size limits on every route
+phase: P1
+epic: E-P1-AUTH
+req_ids:
+- EP-§13.1-15
+- EP-§13.1-18
+- EP-§13.1-19
+depends_on:
+- E-P0-INTAKE
+size: L
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: score 7; blast 2
+token_budget: 160000
+file_allowlist:
+- node-backend/src/app.ts
+- node-backend/src/middleware/validate.middleware.ts
+- node-backend/src/middleware/bodyLimit.middleware.ts
+- node-backend/src/validators/index.ts
+context_anchors:
+- ELEVATION.md#§13.1:L1857
+- ELEVATION.md#§13.1:L1858
+- ELEVATION.md#§13.1:L1859
+acceptance_criteria:
+- id: AC1
+  text: Given the route inventory, when a script lists every route, then each has a zod or Joi schema or an explicit documented
+    exemption
+- id: AC2
+  text: Given the global 10 MB JSON limit in app.ts, when changed, then the default is a small limit and only upload-style
+    routes set a larger explicit limit
+- id: AC3
+  text: Given an oversize body on a normal route, when posted, then it returns 413
+- id: AC4
+  text: Given an invalid body, when posted, then it returns 400 with a typed validation error and no stack trace
+- id: AC5
+  text: Given CI, when a new route lacks a schema, then the route-inventory test fails
+test_plan:
+  unit:
+  - schema
+  integration:
+  - 413 and 400 per route group
+  security:
+  - mass-assignment fuzz
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Large surface; split by route group at implementation if over budget
+gate: G1
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

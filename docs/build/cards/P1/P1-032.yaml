@@ -1,0 +1,84 @@
+charter: v2
+id: P1-032
+kind: build
+title: Return 503 retryable from pronunciation backend and fall back
+phase: P1
+epic: E-P1-CONTENT-HONESTY
+req_ids:
+- P0-19
+- RM-P0-08
+depends_on:
+- E-P0-INTAKE
+size: S
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 5; blast 2
+token_budget: 25000
+file_allowlist:
+- node-backend/src/services/advancedPronunciation.service.ts
+- node-backend/src/routes/pronunciation.route.ts
+- lib/screens/tutor/tutor_pronunciation_mode_screen.dart
+- lib/l10n/app_en.arb
+context_anchors:
+- ELEVATION.md#§1:L302-L313
+- ELEVATION.md#§16.1:L2042-L2047
+acceptance_criteria:
+- id: AC1
+  text: Given the pronunciation microservice is unreachable, when the API is called, then it returns 503 with retryable true
+    and never a 200 with zero scores
+- id: AC2
+  text: Given the 503 response, when the client handles it, then it runs the Whisper fallback or shows an unavailable state
+    and shows no score
+- id: AC3
+  text: Given default localhost:8001-8003 URLs, when the backend boots without configured URLs in production, then it fails
+    fast with a typed config error
+test_plan:
+  unit:
+  - error mapping
+  integration:
+  - service-down test
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - unavailable-retry
+  copy_keys:
+  - pron.unavailable
+  tokens:
+  - design-system error tokens
+  motion_tier: product
+  a11y:
+  - error announced
+  goldens:
+  - pron_unavailable
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "wav2vec 200 with omitted fields still fills overall_score 0.0; not the unreachable path"
+
+gate: G1
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

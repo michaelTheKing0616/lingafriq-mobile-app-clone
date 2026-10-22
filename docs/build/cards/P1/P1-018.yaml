@@ -1,0 +1,76 @@
+charter: v2
+id: P1-018
+kind: build
+title: Compute XP server-side with idempotency keys and daily caps
+phase: P1
+epic: E-P1-ECONOMY
+req_ids:
+- P0-8
+- RM-P0-04
+depends_on:
+- E-P0-INTAKE
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 1
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T3
+  justification: score 7; blast 3; security/crypto tester
+token_budget: 70000
+file_allowlist:
+- node-backend/src/routes/gamification/xp.route.ts
+- node-backend/src/controllers/accounts.controller.ts
+- node-backend/src/services/xpService.ts
+- node-backend/src/models/gamification/xpLedger.model.ts
+context_anchors:
+- ELEVATION.md#§1:L172-L180
+- ELEVATION.md#§16.1:L2030-L2032
+acceptance_criteria:
+- id: AC1
+  text: Given the XP route and accounts controller, when a client posts a points or XP amount, then the amount is ignored
+    or rejected and XP derives only from verified events
+- id: AC2
+  text: Given the same sourceId submitted twice by one user, when processed, then XP is awarded once (unique index per user
+    and sourceId)
+- id: AC3
+  text: Given a user at the daily XP cap, when further verified events arrive, then no XP is added and the response states
+    cap_reached
+- id: AC4
+  text: Given parallel duplicate requests, when 20 are fired concurrently, then exactly 1 award is recorded
+test_plan:
+  unit:
+  - cap and idempotency logic
+  integration:
+  - duplicate and concurrent request tests
+  security:
+  - client amount tamper test
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "D23 signed 2026-10-21: default daily cap is 500 XP, admin-editable from 50 to 5000. Allowlist corrected to xpService.ts and xpLedger.model.ts; the drafted xp.service.ts and xpEvent.model.ts paths do not exist."
+- "A client can still post a new lesson sourceId and receive 30 XP until the daily cap. The route does not verify that the lesson happened. quiz, event, tribe, daily_checkin, and badge return 400 because they have no server amount."
+gate: G1
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

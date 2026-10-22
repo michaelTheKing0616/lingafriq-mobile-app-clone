@@ -1,0 +1,77 @@
+charter: v2
+id: P4-028
+kind: build
+title: Record Nigerian Pidgin source stack in kit
+phase: P4
+epic: E-P4-LANGUAGE-KITS
+req_ids:
+- CP-§2.4-pcm-01
+- CP-§2.4-pcm-02
+- CP-§2.4-pcm-03
+- CP-§2.4-pcm-04
+- CP-§2.4-pcm-05
+- CP-§2.4-pcm-06
+depends_on:
+- P4-021
+- P4-001
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 0
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 3: blast 1, ambiguity 1, coupling 0, depth 1, size 0'
+token_budget: 25000
+file_allowlist:
+- tools/content_engine/kits/pcm/sources.yaml
+- tools/content_engine/tests/test_stack_pcm.py
+context_anchors:
+- CURRICULUM.md#§2.4:L370-L389
+acceptance_criteria:
+- id: AC1
+  text: Given the Pidgin kit, when loaded, then orthography authority is the Naija Langwej Akademi standard (IFRA guide) with
+    phonetic Latin and high tone marked
+- id: AC2
+  text: Given no commercial dictionary exists, when the lexicon is built, then sources are UD-Naija and Faraclas Nigerian
+    Pidgin (1996) with the purchase flagged, and UD-Naija-NSC is treated as CC BY-SA evidence only
+- id: AC3
+  text: Given the NSC speech corpus licence is unverified, when registered, then its uses are false until verified, and Intron
+    for ASR cites the companion AI stack doc EXT-01
+- id: AC4
+  text: Given the LLM anglicisation detector, when listed as a tool, then it points to the Pidgin detector card
+test_plan:
+  unit:
+  - every stack source id exists in register
+  - stack lists orthography, lexicon, grammar, corpora, tools
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-01
+- EXT-22
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

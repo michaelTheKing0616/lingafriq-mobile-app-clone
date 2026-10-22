@@ -1,0 +1,93 @@
+charter: v2
+id: P9-918
+kind: build
+title: 'Enforce child capability policy: no outside DMs, snaps, ads, purchases'
+phase: P9
+epic: E-P9-GUARDIAN
+req_ids:
+- EP-§13.3-07
+- EP-§13.3-08
+- EP-§13.3-09
+- EP-§13.3-10
+depends_on:
+- E-P9-GUARDIAN
+- P9-912
+- P9-917
+size: M
+difficulty:
+  score: 5
+  blast: 3
+  ambiguity: 0
+  coupling: 2
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 3, ambiguity 0, coupling 2, depth 0'
+token_budget: 80000
+file_allowlist:
+- node-backend/src/middleware/minorPolicy.ts
+- node-backend/src/services/capabilities.service.ts
+- lib/services/capability_gate.dart
+context_anchors:
+- ELEVATION.md#§13.3:L1894-L1895
+acceptance_criteria:
+- id: AC1
+  text: Given a minor, when sending a DM to anyone outside a guardian-approved circle or classroom, then the server rejects
+    with DM_NOT_ALLOWED_FOR_MINOR
+- id: AC2
+  text: Given a minor, when creating a snap, clip for public posting or reading the public feed, then the capability is absent
+    in the UI and denied by the API
+- id: AC3
+  text: Given a minor, when any ad slot loads, then no ad request is made
+- id: AC4
+  text: Given a minor, when a purchase flow is opened, then it is blocked with PURCHASE_NOT_ALLOWED_FOR_MINOR and routes to
+    the guardian hub
+test_plan:
+  unit:
+  - capability matrix
+  integration:
+  - API matrix by tier
+  security:
+  - client capability bypass
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - blocked-with-reason
+  copy_keys:
+  - capability.blocked.dm
+  - capability.blocked.purchase
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - capability_default
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

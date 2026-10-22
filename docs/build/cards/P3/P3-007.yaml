@@ -1,0 +1,81 @@
+charter: v2
+id: P3-007
+kind: build
+title: Generate Dart, CSS and Rive tokens from one JSON
+phase: P3
+epic: E-P3-TOKENS
+req_ids:
+- EP-§3.4-01
+- EP-§3.4-08
+- EP-§3.4-09
+depends_on:
+- P3-004
+- P3-005
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- design/tokens/tokens.json
+- tool/design/gen_tokens.dart
+- lib/design/tokens.g.dart
+- lib/design/design.dart
+- design/tokens/admin.css
+- design/tokens/rive_tokens.json
+- test/design/tokens_generator_test.dart
+context_anchors:
+- ELEVATION.md#§3.4:L825-L828
+acceptance_criteria:
+- id: AC1
+  text: Given design/tokens/tokens.json, when the generator runs, then lib/design/tokens.g.dart, design/tokens/admin.css and
+    design/tokens/rive_tokens.json are written byte-identically on a second run
+- id: AC2
+  text: Given a token that references an unknown token, when the generator runs, then it exits non-zero with a typed error
+    naming the token
+- id: AC3
+  text: Given the Rive colour names, when rive_tokens.json is read, then each maps 1:1 to a Rive data-binding colour property
+    and a missing mapping fails CI
+- id: AC4
+  text: Given the admin panel, when it imports admin.css, then it reads the same colour and spacing values as the app (diff
+    test equals 0)
+- id: AC5
+  text: Given lib/design/, when app code needs a value, then it imports the single package lib/design/design.dart
+test_plan:
+  unit:
+  - generator determinism
+  - unknown reference error
+  - rive mapping
+  integration:
+  - admin.css diff test
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

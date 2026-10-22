@@ -1,0 +1,71 @@
+charter: v2
+id: P5-016
+kind: build
+title: Select frequency-ranked A1 lexicon, 600-800 lexemes per language
+phase: P5
+epic: E-P5-A1
+req_ids:
+- CP-§4-04
+- CP-§4-05
+depends_on:
+- E-P4-CONTENT-ENGINE
+size: L
+difficulty:
+  score: 8
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T1
+  reviewer: T3
+  justification: 'score 8: blast 2, ambiguity 1, coupling 2, depth 2'
+token_budget: 150000
+file_allowlist:
+- tools/content/lexicon_select.py
+- assets/data/lexicon/a1/
+- test/content/lexicon_a1_test.py
+context_anchors:
+- CURRICULUM.md#§4:L558-L559
+acceptance_criteria:
+- id: AC1
+  text: Given a Stage-1 language (yo, ig, ha, pcm, sw, zu, xh), when the A1 lexicon is built, then it has 600 to 800 lexemes
+    ranked from CC-BY corpora and adjusted for learner needs
+- id: AC2
+  text: Given a lexeme, when stored, then it records frequency source, licence id from the register and lexicon anchor; a
+    lexeme with an unregistered source fails with LicenceUnregistered
+- id: AC3
+  text: Given tonal languages, when a lexeme lacks a tone-marked anchor, then it goes to linguist review and is excluded from
+    Beta
+- id: AC4
+  text: Given the build, when counting, then any language outside 600-800 fails the gate
+test_plan:
+  unit:
+  - ranking
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - count per language 600-800
+user_facing: false
+ux_spec: null
+tags:
+- uses_source
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

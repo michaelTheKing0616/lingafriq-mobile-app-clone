@@ -1,0 +1,75 @@
+charter: v2
+id: P4-001
+kind: build
+title: Define licence register schema and validator
+phase: P4
+epic: E-P4-LICENCES
+req_ids:
+- CP-§2.1-08
+- CP-§2.1-09
+- CP-§2.1-10
+depends_on:
+- E-P4-CONTENT-ENGINE
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- tools/content_engine/licences/register_schema.py
+- tools/content_engine/licences/register.csv
+- tools/content_engine/licences/check_register.py
+- tools/content_engine/tests/test_register_schema.py
+context_anchors:
+- CURRICULUM.md#§2.1:L117-L118
+acceptance_criteria:
+- id: AC1
+  text: Given a register row, when any of url, licence, version_or_date, allowed_uses.display, allowed_uses.evidence, allowed_uses.training,
+    attribution_text or owner_signoff is absent, then validation fails with typed error LICENCE_FIELD_MISSING naming the field
+- id: AC2
+  text: Given allowed_uses, when a use flag is not boolean, then validation fails with LICENCE_USE_INVALID
+- id: AC3
+  text: Given a lexicon, corpus or audio item citing a source id, when the id has no register row, then CI fails with LICENCE_UNREGISTERED
+- id: AC4
+  text: Given a row whose owner_signoff is empty, when display or training is true, then CI fails with LICENCE_UNSIGNED (no
+    silent default)
+test_plan:
+  unit:
+  - missing-field matrix per column
+  - non-boolean use flag
+  - unsigned row with display true
+  integration:
+  - unregistered source id fails CI
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-03
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

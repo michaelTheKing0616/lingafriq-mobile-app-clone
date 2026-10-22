@@ -1,0 +1,71 @@
+charter: v2
+id: P4-153
+kind: build
+title: Move lesson drafts to server and remove dead native-verification code
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§14.1-07
+- EP-§14.1-08
+depends_on:
+- P4-151
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- lingafriq-admin/src/pages/LessonBuilder.tsx
+- node-backend/src/routes/draft.routes.ts
+- node-backend/src/models/draft.model.ts
+- lib/services/native_verification
+- test/backend/draft.test.ts
+context_anchors:
+- ELEVATION.md#§14.1:L1965-L1968
+acceptance_criteria:
+- id: AC1
+  text: Given a lesson draft, when edited, then it autosaves to the server with version and author and no draft content is
+    written to localStorage
+- id: AC2
+  text: Given an existing localStorage draft, when the studio opens, then it is offered for import once and then cleared
+- id: AC3
+  text: Given the unused app-side native verification tools, when removed or wired into the workflow, then no unreferenced
+    code remains and the decision is logged
+- id: AC4
+  text: Given an autosave failure, when it occurs, then a visible unsaved state shows and edits are not lost
+test_plan:
+  unit:
+  - draft.test
+  integration: []
+  security: []
+  e2e:
+  - autosave offline
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

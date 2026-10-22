@@ -1,0 +1,81 @@
+charter: v2
+id: P11-051
+kind: build
+title: Add avatar reduced motion and screen-reader semantics
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§4.2-52
+- EP-§4.2-53
+- EP-§4.3-23
+- EP-§4.6-22
+- EP-§4.6-23
+- EP-§4.6-26
+depends_on:
+- P11-049
+size: S
+difficulty:
+  score: 2
+  blast: 1
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 1, ambiguity 0, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist:
+- lib/avatars/a11y/avatar_semantics.dart
+- lib/l10n/app_en.arb
+context_anchors:
+- ELEVATION.md#§4.2:L912-L913
+- ELEVATION.md#§4.6:L1018-L1021
+acceptance_criteria:
+- id: AC1
+  text: Given reducedMotion is true, when running, then idle loops stop but blinking continues.
+- id: AC2
+  text: Given an expression change, when announced, then the label reads like "Polie looks proud".
+- id: AC3
+  text: Given a screen reader, when expression changes, then it is announced once per change.
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - semantics label
+  - reduced-motion path
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - default
+  - reduced_motion
+  copy_keys:
+  - avatar.semantics.expression
+  tokens: []
+  motion_tier: product
+  a11y:
+  - announce once per change
+  goldens: []
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/motion-system
+  - prime/rive
+  - prime/animation-principles

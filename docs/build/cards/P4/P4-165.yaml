@@ -1,0 +1,69 @@
+charter: v2
+id: P4-165
+kind: build
+title: Upgrade studio to current React and Vite with typed API client
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§14.2-52
+- EP-§14.2-53
+depends_on:
+- P4-150
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 2, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lingafriq-admin/src/package.json
+- lingafriq-admin/vite.config.ts
+- lingafriq-admin/src/api/generated
+- lingafriq-admin/openapi-codegen.config.ts
+context_anchors:
+- ELEVATION.md#§14.2:L1970-L1989
+acceptance_criteria:
+- id: AC1
+  text: Given the admin app, when built, then it runs on the current stable React and Vite versions verified from the registry
+    at card time
+- id: AC2
+  text: Given the backend OpenAPI document, when codegen runs, then a typed client is generated and CI fails if the generated
+    client is stale
+- id: AC3
+  text: Given a call whose response type does not match the spec, when tested, then the typed client test fails
+test_plan:
+  unit:
+  - client contract test
+  integration:
+  - build
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- 33 existing pages must still build
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

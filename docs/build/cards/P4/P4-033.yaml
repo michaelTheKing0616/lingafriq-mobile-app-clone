@@ -1,0 +1,51 @@
+charter: v2
+id: P4-033
+kind: verification
+title: Verify Zulu dictionary licensor and purchase grammars
+phase: P4
+epic: E-P4-LANGUAGE-KITS
+req_ids:
+- CP-§2.4-zu-02
+- CP-§2.4-zu-03
+- CP-§2.4-zu-06
+depends_on:
+- P4-032
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: 'score 1: blast 0, ambiguity 1, coupling 0, depth 0, size 0'
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- CURRICULUM.md#§2.4:L414-L425
+acceptance_criteria:
+- id: AC1
+  text: Given the Zulu dictionary licence is unverified, when the Doke–Vilakazi publisher is contacted, then a dated note
+    records the licensor and terms on EXT-06, and the Poulos & Msimang purchase is logged on EXT-22
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- dated evidence note
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-06
+- EXT-22
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

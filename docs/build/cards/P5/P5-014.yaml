@@ -1,0 +1,71 @@
+charter: v2
+id: P5-014
+kind: build
+title: Map every unit to CEFR and ACTFL can-dos
+phase: P5
+epic: E-P5-A1
+req_ids:
+- CP-§4-01
+- CP-§4-02
+- CP-§4-03
+- EP-§6.2-17
+- EP-§6.2-18
+depends_on:
+- E-P4-CONTENT-ENGINE
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- schemas/v2/cando.schema.json
+- assets/data/cando_map.json
+- tools/content/cando_linter.py
+- test/content/cando_test.py
+context_anchors:
+- CURRICULUM.md#§4:L556-L557
+- ELEVATION.md#§6.2:L1184-L1188
+acceptance_criteria:
+- id: AC1
+  text: Given a unit, when linted, then it has 2 to 4 can-do statements, each with a CEFR level (A1 to B1 first) and an ACTFL
+    equivalent
+- id: AC2
+  text: Given a unit objective equal to the legacy template objective, when linted, then CD-001 fails it
+- id: AC3
+  text: Given the map, when queried per level, then A1, A2 and B1 each have a complete CEFR to ACTFL row or a typed MappingGap
+test_plan:
+  unit:
+  - linter
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - all A1 units mapped
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

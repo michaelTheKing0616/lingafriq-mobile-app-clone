@@ -1,0 +1,98 @@
+charter: v2
+id: P10-905
+kind: build
+title: Build ethical streaks with weekly option and freezes
+phase: P10
+epic: E-P10-GAMIFICATION
+req_ids:
+- EP-§12.2-12
+- EP-§12.2-13
+- EP-§12.2-14
+depends_on:
+- P10-900
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 2
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 5; blast 1
+token_budget: 60000
+file_allowlist:
+- node-backend/src/services/streak.service.ts
+- lib/models/game_streak.dart
+- lib/widgets/gamification/streak_display_widget.dart
+- lib/providers/gamification_provider.dart
+context_anchors:
+- ELEVATION.md#§12.2:L1823-L1824
+acceptance_criteria:
+- id: AC1
+  text: Given a learner picks the weekly streak, when they practise on at least the weekly target days, then the streak continues
+    and missing a single day does not break it.
+- id: AC2
+  text: Given a learner completes a set amount of practice, when the server awards a freeze token, then the token count rises
+    by one up to a stored maximum.
+- id: AC3
+  text: Given a missed day with a freeze token, when the day rolls over in the learner's timezone, then a token is spent automatically
+    and the streak holds.
+- id: AC4
+  text: Given a broken streak, when the learner opens the app inside the repair window, then repair is offered and the window
+    length is read from config.
+- id: AC5
+  text: Given a streak is lost, when copy is shown, then it is neutral and offers repair and never uses guilt or loss framing.
+test_plan:
+  unit:
+  - weekly rule
+  - freeze spend
+  - timezone rollover
+  integration:
+  - repair window
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - streak copy review
+user_facing: true
+ux_spec:
+  states:
+  - daily
+  - weekly
+  - frozen
+  - repair-offer
+  - broken
+  copy_keys:
+  - streak_weekly_option
+  tokens:
+  - color.semantic
+  - type.scale
+  - space.scale
+  motion_tier: product
+  a11y:
+  - screen reader labels
+  - 48dp touch targets
+  - reduced motion honoured
+  goldens:
+  - streak_weekly_option_golden
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

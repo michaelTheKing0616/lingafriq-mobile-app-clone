@@ -1,0 +1,39 @@
+charter: v2
+id: E-P1-CONTENT-HONESTY
+kind: epic
+title: 'Content honesty: persona, scoring, placeholders'
+phase: P1
+epic: E-P1-CONTAINMENT
+req_ids:
+- RM-P0-07
+- RM-P0-08
+depends_on:
+- E-P0-INTAKE
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T4
+  tester: T0
+  reviewer: T4
+  justification: epic gate owned by the Orchestrator; no implementation
+token_budget: 10000
+file_allowlist: []
+context_anchors: []
+acceptance_criteria:
+- id: AC1
+  text: Every member card of this epic is Done with Tester evidence and Reviewer PASS
+- id: AC2
+  text: No fabricated score or placeholder content ships; persona disclosure visible; 503 path green
+tags: []
+gate: G1
+status: Draft
+skills:
+  worker:
+  - adaptive/13-agent-teams
+  - adaptive/06-execution-and-verification

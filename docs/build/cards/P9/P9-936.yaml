@@ -1,0 +1,88 @@
+charter: v2
+id: P9-936
+kind: verification
+title: Verify G9 guardian and moderation gate for under-18 social
+phase: P9
+epic: E-P9-MODERATION
+req_ids:
+- RM-P1-08
+- RM-P2-08
+depends_on:
+- P9-903
+- P9-904
+- P9-907
+- P9-912
+- P9-913
+- P9-914
+- P9-917
+- P9-918
+- P9-919
+- P9-920
+- P9-927
+- P9-928
+- P9-930
+- P9-931
+- P9-933
+- P9-934
+- P9-935
+size: S
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T4
+  justification: 'score 6: blast 3, ambiguity 1, coupling 2, depth 0'
+token_budget: 30000
+file_allowlist:
+- docs/build/external/G9_gate_packet.md
+context_anchors:
+- ELEVATION.md#§9.4:L1642-L1653
+- ELEVATION.md#§13.3:L1892-L1896
+acceptance_criteria:
+- id: AC1
+  text: Given a minor test account, when exercised against every social endpoint and surface, then no public profile, outside
+    DM, snap, public feed, ad, purchase, location or contact discovery is reachable
+- id: AC2
+  text: Given the report and block actions, when counted on every message and profile surface, then each takes at most two
+    taps
+- id: AC3
+  text: Given an uploaded test image on an unencrypted surface, when scanned, then the CSAM adapter and perceptual hash run
+    before visibility
+- id: AC4
+  text: Given the packet, when assembled, then it links the evaluation report, load test, safety lead record and pen-test
+    status and any open high finding keeps the gate closed
+test_plan:
+  unit: []
+  integration: []
+  security:
+  - policy matrix
+  e2e:
+  - minor journey
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- guardian_moderation
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

@@ -1,0 +1,90 @@
+charter: v2
+id: P9-932
+kind: build
+title: Offer appeals and publish periodic transparency reports
+phase: P9
+epic: E-P9-MODERATION
+req_ids:
+- EP-§9.4-27
+- EP-§9.4-28
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+- P9-931
+size: M
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 4: blast 2, ambiguity 1, coupling 1, depth 0'
+token_budget: 80000
+file_allowlist:
+- node-backend/src/services/moderation/appeals.service.ts
+- node-backend/src/jobs/transparencyReport.job.ts
+- lib/screens/safety/appeal_screen.dart
+context_anchors:
+- ELEVATION.md#§9.4:L1653
+acceptance_criteria:
+- id: AC1
+  text: Given a moderation action against a user, when notified, then it includes the reason and an appeal button that opens
+    a case reviewed by a different moderator within 72 hours
+- id: AC2
+  text: Given the reporting period ends, when the job runs, then it publishes counts of reports, actions, appeals and median
+    response time by category with no personal data
+- id: AC3
+  text: Given counts under a privacy threshold, when published, then they are shown as '<10' and not exact
+test_plan:
+  unit:
+  - aggregation
+  integration:
+  - appeal flow
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - appeal screen
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - default
+  - submitted
+  - decided
+  copy_keys:
+  - appeal.title
+  - appeal.submitted
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - appeal_default
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

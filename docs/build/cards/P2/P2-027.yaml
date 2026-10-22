@@ -1,0 +1,68 @@
+charter: v2
+id: P2-027
+kind: build
+title: Add email magic link sign-in
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.1-06
+depends_on:
+- E-P1-CONTAINMENT
+- P2-024
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T3
+  justification: 'score 7: blast 3, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/controllers/auth.controller.ts
+- node-backend/src/middleware/auth.middleware.ts
+- node-backend/src/services/magicLink.service.ts
+- lib/services/auth/magic_link_service.dart
+context_anchors:
+- ELEVATION.md#§13.1:L1851
+acceptance_criteria:
+- id: AC1
+  text: Given an email, when requested, then a single-use link valid 15 minutes is sent and the response never reveals account
+    existence
+- id: AC2
+  text: Given a used or expired link, when opened, then it is rejected with a typed error
+- id: AC3
+  text: Given repeated requests, when the rate limit is hit, then a typed 429 is returned
+test_plan:
+  unit:
+  - token single-use
+  integration: []
+  security:
+  - enumeration and rate limit
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

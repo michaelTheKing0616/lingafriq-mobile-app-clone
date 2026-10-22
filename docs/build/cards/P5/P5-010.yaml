@@ -1,0 +1,95 @@
+charter: v2
+id: P5-010
+kind: build
+title: Show label badges, Beta copy and Synthetic voice tag
+phase: P5
+epic: E-P5-QUALITY
+req_ids:
+- CP-§5-22
+- CP-§5-23
+depends_on:
+- P5-009
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/widgets/content_label_badge.dart
+- lib/l10n/app_en.arb
+- test/widgets/content_label_badge_test.dart
+context_anchors:
+- CURRICULUM.md#§5:L629-L629
+acceptance_criteria:
+- id: AC1
+  text: Given a Beta item, when rendered, then the amber label shows exactly "AI-assisted, machine-checked. Spotted a problem?
+    Tell us."
+- id: AC2
+  text: Given Native-verified or Expert-reviewed items, when rendered, then they show green or blue labels respectively with
+    accessible names
+- id: AC3
+  text: Given audio with audio.kind tts, when played or shown, then a Synthetic voice tag is visible; human audio shows none
+- id: AC4
+  text: Given a label chip, when tapped, then it opens Report a mistake for that item
+test_plan:
+  unit:
+  - label to badge mapping
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - screen reader names
+  - contrast
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - beta
+  - expert
+  - native
+  - synthetic-voice
+  - under-review
+  copy_keys:
+  - label.beta.copy
+  - label.native
+  - label.expert
+  - audio.synthetic
+  tokens:
+  - color.label.native
+  - color.label.expert
+  - color.label.beta
+  - type.body
+  - space.4
+  motion_tier: product
+  a11y:
+  - screen-reader announces label name and meaning
+  - touch targets >=48dp
+  - contrast >=4.5:1 on label chips
+  goldens:
+  - label_badge_all_states
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/ux-writing
+  - prime/localization-design

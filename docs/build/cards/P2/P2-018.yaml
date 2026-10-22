@@ -1,0 +1,78 @@
+charter: v2
+id: P2-018
+kind: build
+title: Replace fake-success paths with typed errors and visible states
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.4-01
+- EP-§13.4-02
+- EP-§13.4-03
+- EP-§13.4-04
+- EP-§13.4-05
+depends_on:
+- E-P1-CONTAINMENT
+- P2-015
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/services/pronunciation_scoring_service.dart
+- lib/services/hybrid_polie/
+- lib/services/offline/offline_service.dart
+- lib/services/error/typed_errors.dart
+- node-backend/src/controllers/pronunciation.controller.ts
+context_anchors:
+- ELEVATION.md#§13.4:L1898
+- ELEVATION.md#§13.4:L1899
+acceptance_criteria:
+- id: AC1
+  text: Given the scorer is unavailable, when a pronunciation request is made, then the API returns a non-2xx typed error
+    and no zero score is stored or shown
+- id: AC2
+  text: Given the persona backend fails, when the user sends a message, then a visible failed state shows and no canned reply
+    such as I hear you is produced
+- id: AC3
+  text: Given the offline queue stub path, when invoked, then it routes to the outbox or raises a typed error and never returns
+    success without persisting
+- id: AC4
+  text: Given each replaced path, when tests run, then a regression test asserts the typed error
+test_plan:
+  unit:
+  - typed error mapping
+  integration:
+  - scorer down, persona down
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,43 @@
+charter: v2
+id: E-P4-CONTENT-ENGINE
+kind: epic
+title: 'Content engine: licence register, language kits, linters, Studio, pipeline'
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- RM-P1-01
+depends_on:
+- E-P2-PLATFORM
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T4
+  tester: T0
+  reviewer: T4
+  justification: epic gate owned by the Orchestrator; no implementation
+token_budget: 10000
+file_allowlist: []
+context_anchors: []
+acceptance_criteria:
+- id: AC1
+  text: Every member card of this epic is Done with Tester evidence and Reviewer PASS
+- id: AC2
+  text: The epic integration test(s) are green in CI
+- id: AC3
+  text: All RTM rows owned by member cards are Verified-Done, Blocked-External or Waived-by-Tope
+- id: AC4
+  text: LEDGER.csv shows the epic within budget; routing notes written to 04_ROUTING.md
+tags:
+- licence_register
+gate: G4
+status: Draft
+skills:
+  worker:
+  - adaptive/13-agent-teams
+  - adaptive/06-execution-and-verification

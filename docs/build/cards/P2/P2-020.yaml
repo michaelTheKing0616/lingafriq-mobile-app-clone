@@ -1,0 +1,85 @@
+charter: v2
+id: P2-020
+kind: build
+title: Add low-bandwidth mode honouring Android Data Saver
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.5-13
+- EP-§13.5-14
+depends_on:
+- E-P1-CONTAINMENT
+- P2-017
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 3, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/services/connectivity_service.dart
+- lib/services/performance/low_bandwidth_mode.dart
+- lib/services/media_import_service.dart
+- android/app/src/main/kotlin/DataSaverChannel.kt
+context_anchors:
+- ELEVATION.md#§13.5:L1923
+acceptance_criteria:
+- id: AC1
+  text: Given Android Data Saver is on, when the app launches, then low-bandwidth mode is enabled and shown in settings
+- id: AC2
+  text: Given low-bandwidth mode, when AI chat is used, then replies are text-first and audio loads only on tap
+- id: AC3
+  text: Given low-bandwidth mode, when images load, then image-light variants are requested
+- id: AC4
+  text: Given the user toggles the mode manually, when saved, then the manual choice overrides detection
+test_plan:
+  unit:
+  - mode resolution
+  integration:
+  - Data Saver channel
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - 'off'
+  - auto-on
+  - manual-on
+  copy_keys:
+  - lowbw.title
+  - lowbw.auto
+  - lowbw.manual
+  tokens:
+  - space.*
+  motion_tier: product
+  a11y:
+  - toggle labelled
+  goldens:
+  - lowbw_settings
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

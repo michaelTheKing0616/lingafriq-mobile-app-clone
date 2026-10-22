@@ -1,0 +1,106 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P10
+epic: E-P10-ME
+hub: Me
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: Me hub screen revive or consolidation; no real-time audio
+token_budget: 80000
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f_138.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+test_plan:
+  unit:
+  - handle validation rules
+  - suggestion generator hooks
+  integration:
+  - onboarding and profile routes to edit screen
+  e2e:
+  - claim handle end-to-end
+  a11y:
+  - availability status semantics
+  content: []
+tags: []
+id: F-138
+title: Elevate Global Handle (@id)
+req_ids:
+- F-138
+- F-138.D
+- F-138.E
+- F-138.U
+- F-138.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P1-AUTH
+file_allowlist:
+- screens/profile/global_handle_edit_screen.dart
+- screens/profile/profile_global_id_section.dart
+context_anchors:
+- ELEVATION.md#§18.7:L5449-L5463
+delta:
+  current_state: Handle UI unrouted; chat search already uses global IDs.
+  defects_to_fix:
+  - Users can be found by global ID but cannot set their own handle
+  elevation_to_build:
+  - Revive handle picker in onboarding after account creation and in profile
+  - Target-language handle suggestions with safety checks
+  ux_and_render:
+  - Inline availability check while typing
+  hub_placement: Me → Profile → Handle; onboarding
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given a signed-in user without a handle, when they open profile or post-signup onboarding, then handle setup is offered
+    and routable.
+- id: AC2
+  text: Given a taken handle, when the user types it, then inline check shows unavailable before submit.
+- id: AC3
+  text: Given a reserved or unsafe handle, when validation runs, then server rejects with generic safe messaging.
+- id: AC4
+  text: Given handle saved, when chat search runs, then the user's @handle resolves consistently.
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

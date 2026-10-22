@@ -1,0 +1,67 @@
+charter: v2
+id: P2-003
+kind: build
+title: Run gitleaks in pre-commit and CI
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.1-30
+- EP-§13.1-33
+depends_on:
+- E-P1-CONTAINMENT
+size: S
+difficulty:
+  score: 3
+  blast: 2
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T2
+  justification: 'score 3: blast 2, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist:
+- .pre-commit-config.yaml
+- .gitleaks.toml
+- .github/workflows/build.yml
+- scripts/secrets-hygiene-check.mjs
+context_anchors:
+- ELEVATION.md#§13.1:L1871
+- ELEVATION.md#§13.1:L1872-L1873
+acceptance_criteria:
+- id: AC1
+  text: Given a staged file containing a seeded fake credential, when pre-commit runs, then the commit is blocked
+- id: AC2
+  text: Given a PR with a leaked key pattern, when CI runs, then the secrets job fails and the log redacts the secret value
+- id: AC3
+  text: Given secrets-hygiene-check.mjs, when CI runs, then it executes as a blocking step
+test_plan:
+  unit: []
+  integration: []
+  security:
+  - seeded fake secrets in a throwaway branch are detected
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,68 @@
+charter: v2
+id: P10-928
+kind: verification
+title: Verify POPIA and other jurisdiction duties with counsel
+phase: P10
+epic: E-P10-PRIVACY
+req_ids:
+- EP-§13.2-05
+- EP-§13.2-06
+- EP-§13.2-07
+- EP-§13.2-09
+- EP-§13.2-10
+depends_on:
+- P10-919
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 2
+  coupling: 0
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T2
+  justification: score 4; blast 1
+token_budget: 60000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§13.2:L1881-L1883
+acceptance_criteria:
+- id: AC1
+  text: Given POPIA applies to South African users, when counsel reviews, then each duty maps to a control or an open item.
+- id: AC2
+  text: Given Kenya DPA 2019 and Ghana DPA 2012, when counsel reviews, then each registration or transfer duty is marked required
+    or not required.
+- id: AC3
+  text: Given COPPA and the UK Age Appropriate Design Code, when counsel reviews, then each is marked in scope or not with
+    the trigger condition.
+- id: AC4
+  text: Given counsel has not responded, when the item is stored, then it remains open and is not marked compliant.
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- reviewer verdict
+- DECISIONS.md or ledger row
+risks: []
+gate: G12
+external_blockers:
+- EXT-18
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

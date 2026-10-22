@@ -1,0 +1,82 @@
+charter: v2
+id: P4-022
+kind: build
+title: Record Yoruba source stack in kit
+phase: P4
+epic: E-P4-LANGUAGE-KITS
+req_ids:
+- CP-§2.4-yo-01
+- CP-§2.4-yo-02
+- CP-§2.4-yo-03
+- CP-§2.4-yo-04
+- CP-§2.4-yo-05
+- CP-§2.4-yo-06
+- CP-§2.4-yo-07
+- CP-§2.4-yo-08
+- CP-§2.4-yo-09
+depends_on:
+- P4-021
+- P4-001
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- tools/content_engine/kits/yo/sources.yaml
+- tools/content_engine/tests/test_stack_yo.py
+context_anchors:
+- CURRICULUM.md#§2.4:L281-L310
+acceptance_criteria:
+- id: AC1
+  text: Given the Yoruba kit, when sources.yaml loads, then orthography authority is standard Yoruba with full tone marking
+    for pedagogy and lexicon order is Oxford (licensed) then Wiktionary then Abraham (reference)
+- id: AC2
+  text: Given grammar evidence, when listed, then FSI Basic and Intermediate (public domain) and a modern reference grammar
+    are recorded, and corpora and audio are Leipzig, Biblica open Bible, Common Voice, FLEURS
+- id: AC3
+  text: Given the NaijaML diacritiser (Apache-2.0), when registered as a tool, then its accuracy is stored as 80.3% full-tone
+    word and 93.3% dot-below, and used only as an independent check
+- id: AC4
+  text: Given Spitch tone marking, when listed, then it cites the companion AI stack doc as pending EXT-01 and is not enabled
+    until that doc is received
+test_plan:
+  unit:
+  - every stack source id exists in register
+  - stack lists orthography, lexicon, grammar, corpora, tools
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-01
+- EXT-04
+- EXT-22
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

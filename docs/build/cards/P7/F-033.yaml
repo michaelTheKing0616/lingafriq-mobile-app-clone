@@ -1,0 +1,106 @@
+charter: v2
+id: F-033
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Passport (proctored test & credential)
+phase: P7
+epic: E-P7-HUBS
+hub: Learn
+req_ids:
+- F-033
+- F-033.D
+- F-033.E
+- F-033.U
+- F-033.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P5-CONTENT-REAL
+- E-P6-SCORER
+size: L
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T4
+  justification: 'score 8: hub feature delta spec; gate-critical (security / child safety / legal / design direction): Fable
+    reviews'
+token_budget: 200000
+file_allowlist:
+- lib/screens/passport/passport_proctored_session_screen.dart
+- lib/screens/passport/passport_credential_screen.dart
+context_anchors:
+- ELEVATION.md#§18.3:L3951-L3964
+delta:
+  current_state: Passport UI routes work; scoring and content not yet valid.
+  defects_to_fix:
+  - Invalid scoring/content; unclear proctoring privacy terms.
+  elevation_to_build:
+  - Evidence portfolio plus adaptive proctored test mapped to CEFR with published methodology and verifiable credential.
+  ux_and_render:
+  - Formal calm UI; privacy explanation before camera activates.
+  hub_placement: Me → Credentials (unlocks at A2).
+  unlock_stage: A2
+acceptance_criteria:
+- id: AC1
+  text: Given learner below A2, when opening Passport, then feature stays locked with honest criteria.
+- id: AC2
+  text: Given proctoring start, when camera requested, then privacy copy must be acknowledged first.
+- id: AC3
+  text: Given real scoring unavailable, when test ends, then no credential is issued and UI states why.
+test_plan:
+  unit:
+  - domain rules for feature delta
+  integration:
+  - navigation and data wiring from hub placement
+  e2e:
+  - primary happy path from Lives in entry
+  a11y:
+  - goldens at 100%/200% text
+  - semantics order
+  content:
+  - honest labels on shown curriculum or media
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - learn.f_033.*
+tags:
+- issues_credential
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

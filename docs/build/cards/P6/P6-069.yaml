@@ -1,0 +1,62 @@
+charter: v2
+id: P6-069
+kind: build
+title: Add persona fidelity metric
+phase: P6
+epic: E-P6-EVALS
+req_ids:
+- EP-§7.6-21
+depends_on:
+- P6-056
+- P6-070
+size: S
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 2, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist:
+- evals/metrics/personaFidelity.ts
+context_anchors:
+- ELEVATION.md#§7.6:L1471-L1472
+acceptance_criteria:
+- id: AC1
+  text: Given persona turns and dossier facts, when scored, then fidelity against the dossier is reported per persona
+- id: AC2
+  text: Given a turn asserting a fact absent from the dossier, when scored, then it counts as a fidelity failure
+test_plan:
+  unit:
+  - scoring
+  integration:
+  - harness wiring
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/11-data-and-quantitative-work
+  - adaptive/07-research-and-fact-checking

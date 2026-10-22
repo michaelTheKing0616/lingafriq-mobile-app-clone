@@ -1,0 +1,92 @@
+charter: v2
+id: P7-927
+kind: build
+title: Build pan-African same-idea view
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§17.7-26
+- EP-§17.7-27
+depends_on:
+- P7-916
+- E-P3-DESIGN-SYSTEM
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, coupling 1, depth 1'
+token_budget: 60000
+file_allowlist:
+- node-backend/src/services/lexiconConcept.service.ts
+- lib/widgets/same_idea_view.dart
+- lib/services/multilingual_relay_lexicon.dart
+- test/widgets/same_idea_view_test.dart
+context_anchors:
+- ELEVATION.md#§17.7:L2427-L2428
+acceptance_criteria:
+- id: AC1
+  text: Given a verified entry with a concept link, when the view opens, then it lists the same idea in other languages, such
+    as water in Yoruba and Igbo
+- id: AC2
+  text: Given a language with no verified entry for the concept, when listed, then it is omitted or marked not yet available
+    and no machine guess is shown as verified
+- id: AC3
+  text: Given Multilingual Relay, when it needs equivalents, then it reads them from the same concept links
+- id: AC4
+  text: Given a concept link is wrong, when a native reviewer rejects it, then it is removed through the Verify queue
+test_plan:
+  unit:
+  - concept link lookup
+  integration:
+  - Relay reads concept links
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - list
+  - partial
+  - empty
+  copy_keys:
+  - sameidea.title
+  - sameidea.unavailable
+  tokens:
+  - type.sameidea
+  - space.list
+  motion_tier: product
+  a11y:
+  - screen-reader labels on every control
+  - touch targets >=48dp
+  - reduced-motion variant
+  goldens:
+  - default
+  - loading
+  - error
+  - offline
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

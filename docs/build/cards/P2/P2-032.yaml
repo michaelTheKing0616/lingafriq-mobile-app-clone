@@ -1,0 +1,62 @@
+charter: v2
+id: P2-032
+kind: build
+title: Configure Atlas backups and quarterly restore drill
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.4-16
+depends_on:
+- E-P1-CONTAINMENT
+size: S
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 2, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist:
+- infra/runbooks/atlas_restore_drill.md
+- scripts/ops/restore_drill_report.sh
+context_anchors:
+- ELEVATION.md#§13.4:L1904-L1905
+acceptance_criteria:
+- id: AC1
+  text: Given Atlas, when configured, then continuous backup with point-in-time restore is enabled
+- id: AC2
+  text: Given each quarter, when the drill runs, then a restore to a scratch cluster is verified and a dated report is stored
+- id: AC3
+  text: Given a missed drill, when the quarter ends, then an alert is raised
+test_plan:
+  unit: []
+  integration:
+  - drill script against a staging cluster
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

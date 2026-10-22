@@ -1,0 +1,73 @@
+charter: v2
+id: P9-922
+kind: build
+title: Integrate hosted moderation API for text toxicity
+phase: P9
+epic: E-P9-MODERATION
+req_ids:
+- EP-§9.4-08
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+- P9-921
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 80000
+file_allowlist:
+- node-backend/src/services/moderation/hostedApi.adapter.ts
+- node-backend/src/config/moderation.ts
+context_anchors:
+- ELEVATION.md#§9.4:L1644-L1647
+acceptance_criteria:
+- id: AC1
+  text: Given text in a supported language, when sent to the hosted moderation API, then categories and scores map into the
+    internal verdict schema without loss of category
+- id: AC2
+  text: Given text in a language the API does not list as supported, when checked, then the verdict is 'unsure' with reason
+    LANGUAGE_UNSUPPORTED and it enters the human queue rather than being allowed
+- id: AC3
+  text: Given the vendor is down, when the circuit breaker opens after 5 failures in 60 s, then pipeline fallback rules from
+    P9-921 apply and an alert fires
+- id: AC4
+  text: Given logs, when request payloads are logged, then no message text or user identifiers are persisted by the adapter
+    beyond the moderation case
+test_plan:
+  unit:
+  - category mapping
+  integration:
+  - vendor outage
+  security:
+  - PII in logs
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

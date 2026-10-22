@@ -1,0 +1,66 @@
+charter: v2
+id: P2-011
+kind: build
+title: Generate versioned OpenAPI spec from backend code
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.4-24
+depends_on:
+- E-P1-CONTAINMENT
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/openapi/generate.ts
+- node-backend/src/app.ts
+- docs/api/openapi.v1.json
+- .github/workflows/build.yml
+context_anchors:
+- ELEVATION.md#§13.4:L1909
+acceptance_criteria:
+- id: AC1
+  text: Given route definitions with zod schemas, when the generator runs, then docs/api/openapi.v1.json is produced with
+    version info
+- id: AC2
+  text: Given a route change without regenerating the spec, when CI runs, then it fails on spec drift
+- id: AC3
+  text: Given a breaking spec diff, when CI runs, then it fails unless the major version is bumped
+test_plan:
+  unit:
+  - generator snapshot
+  integration:
+  - spec lint in CI
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

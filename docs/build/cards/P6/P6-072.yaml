@@ -1,0 +1,73 @@
+charter: v2
+id: P6-072
+kind: build
+title: Evaluate frontier and open models per language
+phase: P6
+epic: E-P6-EVALS
+req_ids:
+- EP-§7.6-01
+- EP-§7.6-04
+- EP-§7.6-05
+- EP-§7.6-10
+depends_on:
+- P6-056
+- P6-058
+- P6-012
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 2, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- evals/bakeoff/run.ts
+- docs/build/bakeoff_report.md
+context_anchors:
+- ELEVATION.md#§7.6:L1462-L1475
+acceptance_criteria:
+- id: AC1
+  text: Given Gemini, GPT and Claude plus Gemma 3 or AfriqueGemma and Qwen3, when run on every Stage-1 language set, then
+    a per-language score table is produced
+- id: AC2
+  text: Given the report, when accepted, then the routing table in the router is updated with the winner per language and
+    task
+- id: AC3
+  text: Given only commercially licensed models, when included, then Aya is excluded by licence
+test_plan:
+  unit:
+  - table build
+  integration:
+  - fixture run
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Model stack doc EXT-01
+gate: G8
+external_blockers:
+- EXT-01
+status: Draft
+skills:
+  worker:
+  - adaptive/11-data-and-quantitative-work
+  - adaptive/07-research-and-fact-checking

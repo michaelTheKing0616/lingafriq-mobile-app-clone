@@ -1,0 +1,72 @@
+charter: v2
+id: P2-042
+kind: build
+title: Build idempotent learning event log
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§6.3-06
+- EP-§6.3-07
+depends_on:
+- E-P1-CONTAINMENT
+- P2-015
+- P2-041
+size: L
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 2
+  coupling: 1
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 3, coupling 1, depth 2'
+token_budget: 150000
+file_allowlist:
+- lib/services/learning/learning_event_log.dart
+- node-backend/src/models/learningEvent.model.ts
+- node-backend/src/controllers/learningEvent.controller.ts
+- test/learning/event_log_test.dart
+context_anchors:
+- ELEVATION.md#§6.3:L1216-L1217
+- ELEVATION.md#§6.3:L1217-L1218
+acceptance_criteria:
+- id: AC1
+  text: Given an event with a client_event_id, when submitted twice, then it is stored and applied once
+- id: AC2
+  text: Given events from lesson items, games, Polie graded turns, persona missions and pronunciation attempts, when logged,
+    then each carries a typed source
+- id: AC3
+  text: Given offline capture, when synced via the outbox, then ordering is deterministic by event time and client_event_id
+- id: AC4
+  text: Given audio evidence, when logged, then no raw audio is stored without opt-in
+test_plan:
+  unit:
+  - idempotency property tests
+  integration:
+  - replay of duplicated batches
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

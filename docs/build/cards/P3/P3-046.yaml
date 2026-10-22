@@ -1,0 +1,96 @@
+charter: v2
+id: P3-046
+kind: build
+title: Add Lens entry with Point & Say, Translate, Import
+phase: P3
+epic: E-P3-SHELL
+req_ids:
+- EP-§3.3-10
+- EP-§3.3-11
+- EP-§17.1-10
+- EP-§17.2-49
+- EP-§17.2-50
+- EP-§17.2-51
+- EP-§17.2-52
+- EP-§17.2-53
+- EP-§17.2-54
+depends_on:
+- P3-037
+size: M
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 4: blast 0, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/navigation/lens_entry.dart
+- lib/screens/snap/
+- lib/screens/live_translate/
+context_anchors:
+- ELEVATION.md#§17.1:L2213-L2219
+- ELEVATION.md#§17.2:L2284-L2289
+acceptance_criteria:
+- id: AC1
+  text: Given any tab, when the camera button is tapped, then the Lens sheet offers Point & Say, Live Translate, Import Media
+    and Conversation Bridge
+- id: AC2
+  text: Given camera permission is denied, when Lens opens, then a state explains why and links to settings
+- id: AC3
+  text: Given offline, when Live Translate opens, then the offline state shows and Point & Say falls back to on-device recognition
+    if present
+- id: AC4
+  text: Given Living Dictionary, when reached from Lens, then it opens the same screen as Search words
+test_plan:
+  unit:
+  - entry routing
+  integration:
+  - permission denied
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - idle
+  - permission_denied
+  - offline
+  copy_keys:
+  - lens.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/ux-writing
+  - prime/localization-design

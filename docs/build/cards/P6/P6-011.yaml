@@ -1,0 +1,78 @@
+charter: v2
+id: P6-011
+kind: build
+title: Route model per language, task and tier with fallbacks
+phase: P6
+epic: E-P6-GATEWAY
+req_ids:
+- EP-§7.2-15
+- EP-§7.2-16
+- EP-§7.6-02
+- EP-§7.6-03
+- EP-§7.6-24
+- EP-§7.2-01
+depends_on:
+- P6-002
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 2
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 2, ambiguity 2, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/router.ts
+- node-backend/src/ai-gateway/routes.config.ts
+- node-backend/src/ai-gateway/providers/
+context_anchors:
+- ELEVATION.md#§7.2:L1367-L1387
+- ELEVATION.md#§7.6:L1462-L1475
+acceptance_criteria:
+- id: AC1
+  text: Given a routing table keyed by language, task and tier, when a request is made, then the frontier model handles reasoning
+    and English explanation and the per-language best model handles generation
+- id: AC2
+  text: Given a primary provider timeout or 5xx, when the call fails, then the next fallback is tried and the response records
+    which route served it
+- id: AC3
+  text: Given all fallbacks failing, when exhausted, then typed error all_routes_failed is returned with no fabricated text
+- id: AC4
+  text: Given classification and grading tasks, when routed, then a small model route is selected by config
+test_plan:
+  unit:
+  - table lookup
+  - fallback order
+  integration:
+  - provider outage simulation
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Model choices wait on AI model stack doc (EXT-01)
+gate: G8
+external_blockers:
+- EXT-01
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,75 @@
+charter: v2
+id: P8-905
+kind: build
+title: 'GameKit: adaptive difficulty targeting 80–85% success'
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.2-09
+- EP-§10.2-10
+depends_on:
+- E-P8-PLAY
+- P8-901
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 2
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T1
+  justification: 'score 5: blast 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- lib/games/gamekit/game_difficulty.dart
+- lib/games/gamekit/game_engine.dart
+- lib/games/gamekit/game_session.dart
+- lib/games/gamekit/game_scoring.dart
+context_anchors:
+- ELEVATION.md#§10.2:L1674
+acceptance_criteria:
+- id: AC1
+  text: Given a rolling window of the learner's last 10 turns in a game, when success is below 80%, then the next difficulty
+    step is lowered by one level
+- id: AC2
+  text: Given a rolling window of 10 turns, when success is above 85%, then the next difficulty step is raised by one level
+- id: AC3
+  text: Given success is within 80–85%, when the next turn is chosen, then difficulty is unchanged
+- id: AC4
+  text: Given fewer than 10 turns of history, when a session starts, then difficulty starts from the learner's skill level
+    in the learner model and the adapter does not adjust until 5 turns have resolved
+- id: AC5
+  text: Given simulated learners of fixed ability over 1000 sessions, when the adapter runs, then the mean success rate lands
+    in 80–85% for every ability band
+test_plan:
+  unit:
+  - step up/down/hold thresholds
+  - cold start
+  integration: []
+  security: []
+  e2e: []
+  perf:
+  - 1000-session simulation
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

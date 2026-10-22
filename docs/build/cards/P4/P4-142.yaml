@@ -1,0 +1,68 @@
+charter: v2
+id: P4-142
+kind: build
+title: Implement level-aware lenient diacritic grading
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.7-08
+- EP-§6.7-09
+depends_on:
+- P4-103
+- P4-140
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- lib/services/learning/answer_matcher.dart
+- test/answer_matcher_test.dart
+context_anchors:
+- ELEVATION.md#§6.7:L1339-L1346
+- ELEVATION.md#§6.5:L1293-L1320
+acceptance_criteria:
+- id: AC1
+  text: Given an early-level answer missing tone marks, when graded, then it is accepted under the item's tone_lenient rule
+- id: AC2
+  text: Given any graded answer, when shown, then the correct form with marks is displayed after submission
+- id: AC3
+  text: Given higher levels, when graded, then tone marks are required per the item's diacritic_matching rule and the tolerance
+    tightens by level
+- id: AC4
+  text: Given an ascii_fallback answer, when graded, then it matches only if the item allows diacritic_insensitive
+test_plan:
+  unit:
+  - answer_matcher_test
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

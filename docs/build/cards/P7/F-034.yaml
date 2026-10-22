@@ -1,0 +1,108 @@
+charter: v2
+id: F-034
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Lesson Recap
+phase: P7
+epic: E-P7-HUBS
+hub: Learn
+req_ids:
+- F-034
+- F-034.D
+- F-034.E
+- F-034.U
+- F-034.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P5-CONTENT-REAL
+- E-P6-SCORER
+size: S
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: hub feature delta spec'
+token_budget: 30000
+file_allowlist:
+- lib/screens/learning/lesson_recap_screen.dart
+context_anchors:
+- ELEVATION.md#§18.3:L3965-L3978
+delta:
+  current_state: Lesson recap screen exists unrouted.
+  defects_to_fix:
+  - Lessons end without consolidation or retrieval moment.
+  elevation_to_build:
+  - '60-second post-lesson recap: three retrieval questions, new words with audio/Tone Lens, scored aloud sentence, what''s
+    next; auto FSRS enqueue.'
+  ux_and_render:
+  - Card stack, large type, one celebratory moment without confetti spam.
+  hub_placement: End of every lesson (Learn → lesson → recap).
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given lesson completion, when flow ends, then recap route opens automatically.
+- id: AC2
+  text: Given recap speak prompt, when learner responds, then scored result uses real scorer only.
+- id: AC3
+  text: Given new words in recap, when finished, then words enter FSRS queue once.
+- id: AC4
+  text: Given the scorer is unavailable or its confidence is below the gate threshold, when a score would be shown, then the
+    UI shows the 'unsure' state, stores no number and never shows a fabricated score.
+test_plan:
+  unit:
+  - domain rules for feature delta
+  integration:
+  - navigation and data wiring from hub placement
+  e2e:
+  - primary happy path from Lives in entry
+  a11y:
+  - goldens at 100%/200% text
+  - semantics order
+  content:
+  - honest labels on shown curriculum or media
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - learn.f_034.*
+tags:
+- shows_score
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

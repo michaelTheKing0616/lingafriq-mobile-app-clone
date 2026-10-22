@@ -1,0 +1,75 @@
+charter: v2
+id: P1-025
+kind: build
+title: Hard-delete expired snaps and require signed upload URLs
+phase: P1
+epic: E-P1-MINORS
+req_ids:
+- P0-12
+- RM-P0-06
+depends_on:
+- E-P0-INTAKE
+- P1-021
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T3
+  justification: score 7; blast 3; security/crypto tester
+token_budget: 70000
+file_allowlist:
+- node-backend/src/controllers/snap.controller.ts
+- node-backend/src/services/snapStorage.service.ts
+- node-backend/src/workers/snapExpiry.worker.ts
+- node-backend/src/routes/snap.route.ts
+context_anchors:
+- ELEVATION.md#§1:L221-L231
+- ELEVATION.md#§16.1:L2036-L2038
+acceptance_criteria:
+- id: AC1
+  text: Given a snap past its expiry, when the expiry worker runs, then the blob is deleted from the bucket and the record
+    is hard-deleted, verified by a 404 on the old URL
+- id: AC2
+  text: Given a snap create request with an external media_url, when processed, then it returns 400 external_url_rejected
+- id: AC3
+  text: Given an upload, when requested, then the server issues a signed URL to the own bucket valid for a short set window
+    and only that object key is accepted afterwards
+- id: AC4
+  text: Given an under-18 or unknown-age user, when they create a snap, then it is rejected (see P1-021)
+test_plan:
+  unit:
+  - signed URL validation
+  integration:
+  - expiry worker deletes blob and row
+  - external URL rejection
+  security:
+  - URL swap and path-traversal attempts
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G1
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

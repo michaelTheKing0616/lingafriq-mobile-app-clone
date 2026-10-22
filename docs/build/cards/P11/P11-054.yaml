@@ -1,0 +1,74 @@
+charter: v2
+id: P11-054
+kind: build
+title: Verify avatar unlocks on the server
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§4.4-06
+- EP-§4.4-07
+- EP-§4.4-08
+- EP-§4.4-11
+- EP-§4.4-12
+- EP-§4.4-13
+depends_on:
+- P11-030
+- E-P6-SCORER
+- E-P2-PLATFORM
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 3, ambiguity 1, coupling 2, depth 0'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/services/avatarEntitlements.service.ts
+- lib/avatars/customisation/unlock_client.dart
+context_anchors:
+- ELEVATION.md#§4.4:L965-L971
+acceptance_criteria:
+- id: AC1
+  text: Given a Yoruba "Greetings & respect" can-do completed, when verified server-side, then fila and gele unlock; client
+    claims alone never unlock.
+- id: AC2
+  text: Given a passed tone checkpoint, when verified, then the Talking Drum prop unlocks.
+- id: AC3
+  text: Given a minor, when purchase is attempted, then it is denied; real-money cosmetics are adult-only and no loot boxes
+    exist.
+test_plan:
+  unit:
+  - entitlement rules
+  integration: []
+  security:
+  - client forgery denied
+  - minor purchase denied
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

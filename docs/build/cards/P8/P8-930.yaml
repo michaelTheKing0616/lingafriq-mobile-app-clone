@@ -1,0 +1,111 @@
+charter: v2
+id: P8-930
+kind: build
+title: 'Word Forge: Yoruba serial-verb variant'
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.3-07b
+depends_on:
+- P8-900
+- P8-901
+- P8-909
+- P8-912
+- P8-926
+- E-P4-CONTENT-ENGINE
+- E-P3-DESIGN-SYSTEM
+size: M
+difficulty:
+  score: 6
+  blast: 1
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T1
+  justification: 'score 6: blast 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- lib/games/word_forge/yoruba_serial_verbs.dart
+- lib/games/word_forge/word_forge_screen.dart
+- lib/games/word_forge/morphology_slots.dart
+context_anchors:
+- ELEVATION.md#§10.3:L1744-L1745
+acceptance_criteria:
+- id: AC1
+  text: Given Yoruba is the language, when Word Forge opens, then the variant builds serial verb sequences instead of noun-class
+    prefixes
+- id: AC2
+  text: Given a serial verb combination, when checked, then validity and meaning come from lexicon grammar records and unverified
+    combinations are excluded
+- id: AC3
+  text: Given tone marks on the verbs, when displayed, then they are the lexicon tone-marked forms and are never auto-generated
+- id: AC4
+  text: Given an invalid sequence, when submitted, then the explanation states the rule with audio per P8-904
+test_plan:
+  unit:
+  - serial verb rules
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - Yoruba serial verb fixtures
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - ready
+  - playing
+  - correct
+  - wrong
+  - why_wrong
+  - results
+  - error
+  - offline
+  - practice_mode
+  - invalid_form
+  copy_keys:
+  - games.word_forge_yoruba.title
+  - games.word_forge_yoruba.instructions
+  - games.word_forge_yoruba.why_wrong
+  - games.word_forge_yoruba.practice_label
+  - games.word_forge_yoruba.error
+  tokens:
+  - color.surface.game
+  - color.feedback.correct
+  - color.feedback.wrong
+  - space.4
+  - radius.card
+  - type.title
+  motion_tier: product
+  a11y:
+  - screen-reader labels on every answer control
+  - reduced-motion variant
+  - correctness shown by icon and text not colour alone
+  - touch targets ≥48dp
+  goldens:
+  - word_forge_yoruba_playing
+  - word_forge_yoruba_why_wrong
+  - word_forge_yoruba_results
+tags:
+- uses_source
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

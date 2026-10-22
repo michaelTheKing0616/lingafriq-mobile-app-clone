@@ -1,0 +1,87 @@
+charter: v2
+id: P4-150
+kind: build
+title: Implement studio roles with server-side least privilege
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§14.2-01
+- EP-§14.2-02
+- EP-§14.2-03
+- EP-§14.2-04
+- EP-§14.2-05
+- EP-§14.2-06
+- EP-§14.2-07
+- EP-§14.2-08
+- EP-§14.2-09
+- EP-§14.2-10
+- EP-§14.2-11
+- EP-§14.1-03
+depends_on:
+- E-P2-PLATFORM
+size: L
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: auth area, role matrix coupling'
+token_budget: 150000
+file_allowlist:
+- node-backend/src/middleware/rbac.middleware.ts
+- node-backend/src/models/staff_role.model.ts
+- node-backend/src/routes/admin_staff.routes.ts
+- lingafriq-admin/src/auth/permissions.ts
+- test/backend/rbac.test.ts
+context_anchors:
+- ELEVATION.md#§14.2:L1970-L1989
+- ELEVATION.md#§14.1:L1965-L1968
+acceptance_criteria:
+- id: AC1
+  text: Given the ten roles (Owner, Content Lead per language, Writer, Native Reviewer, Linguist, Audio Producer, Historian,
+    Moderator, Support, Analyst), when seeded, then each has an explicit permission set
+- id: AC2
+  text: Given a request to any studio API, when the caller's role lacks the permission, then the server returns 403 regardless
+    of client UI
+- id: AC3
+  text: Given a Content Lead, when acting, then permissions are scoped to their languages and a different language returns
+    403
+- id: AC4
+  text: Given a role change, when saved, then it is audit-logged and takes effect on the next request
+- id: AC5
+  text: Given a Writer, when approving their own draft, then the action is refused SELF_APPROVAL_FORBIDDEN
+test_plan:
+  unit:
+  - rbac matrix
+  integration: []
+  security:
+  - IDOR across languages
+  - privilege escalation
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

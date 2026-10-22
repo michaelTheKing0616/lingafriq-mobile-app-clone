@@ -1,0 +1,42 @@
+charter: v2
+id: EXT-21
+kind: external
+title: 'Obtain: Key revocation (Firebase SA, Apple .p8, 5 AI keys) and history purge — human-run'
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- P0-1
+- P0-2
+- P0-3
+depends_on: []
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T2
+  justification: agent prepares the artefact; a human completes the item
+token_budget: 20000
+file_allowlist: []
+context_anchors: []
+acceptance_criteria:
+- id: AC1
+  text: 'Artefact prepared and stored under docs/build/external/EXT-21/: `scripts/security/purge_history.sh` (filter-repo
+    plan), revocation checklist, gitleaks config'
+- id: AC2
+  text: Owner (Tope) has the artefact and a one-line status in EXTERNAL.md; due gate G1, day 1
+owner: Tope
+due_gate: G1
+external_blockers:
+- EXT-21
+gate: G1
+status: Blocked-External
+skills:
+  worker:
+  - adaptive/09-writing-and-communication

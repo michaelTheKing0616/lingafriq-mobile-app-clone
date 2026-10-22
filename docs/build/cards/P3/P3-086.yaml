@@ -1,0 +1,65 @@
+charter: v2
+id: P3-086
+kind: build
+title: Track onboarding funnel and time to first word
+phase: P3
+epic: E-P3-ONBOARDING
+req_ids:
+- EP-§5.3-05
+depends_on:
+- P3-076
+- P3-083
+size: M
+difficulty:
+  score: 3
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 3: blast 0, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- lib/services/onboarding_metrics.dart
+- lib/services/analytics_service.dart
+context_anchors:
+- ELEVATION.md#§5.3:L1068-L1069
+acceptance_criteria:
+- id: AC1
+  text: Given each onboarding step, when entered or left, then a typed funnel event is recorded
+- id: AC2
+  text: Given the first spoken word, when completed, then time-to-first-spoken-word in seconds is recorded
+- id: AC3
+  text: Given D1 and D7 retention, when reported, then they are split by entry path
+- id: AC4
+  text: Given the user declined analytics, when events fire, then none are sent
+test_plan:
+  unit:
+  - event schema
+  - consent respected
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

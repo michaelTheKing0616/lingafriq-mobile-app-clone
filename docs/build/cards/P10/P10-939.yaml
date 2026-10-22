@@ -1,0 +1,72 @@
+charter: v2
+id: P10-939
+kind: build
+title: Gate copy at grade-7 reading with name continuity
+phase: P10
+epic: E-P10-ANALYTICS
+req_ids:
+- EP-§15-25
+- EP-§15-26
+- EP-§15-28
+depends_on:
+- P10-938
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: score 4; blast 1
+token_budget: 60000
+file_allowlist:
+- scripts/copy/readability_gate.py
+- scripts/copy/name_continuity.py
+- lib/l10n/app_en.arb
+context_anchors:
+- ELEVATION.md#§15:L2003-L2004
+acceptance_criteria:
+- id: AC1
+  text: Given English UI strings of 8 words or more, when the gate runs, then each scores at or below grade 7 or the build
+    fails with the key.
+- id: AC2
+  text: Given a flow names an action (Publish), when the result state is checked, then it uses the same word in past form
+    (Published).
+- id: AC3
+  text: Given copy is warm, clear and specific, when a reviewer samples 20 strings, then each passes the checklist and fails
+    are listed.
+- id: AC4
+  text: Given the gate reads a string, when it is not English, then it is skipped and reported as skipped, not passed.
+test_plan:
+  unit:
+  - grade calc
+  - continuity pairs
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - 20-string sample review
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

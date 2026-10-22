@@ -1,0 +1,71 @@
+charter: v2
+id: P11-024
+kind: build
+title: Build 50-probe scripted eval harness per persona
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§8.4-19
+- EP-§8.4-20
+depends_on:
+- E-P1-CONTAINMENT
+- P11-010
+- P11-003
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/evals/persona/probes/
+- node-backend/src/evals/persona/run.ts
+context_anchors:
+- ELEVATION.md#§8.4:L1545-L1546
+acceptance_criteria:
+- id: AC1
+  text: Given each v1 persona, when the suite runs, then it executes exactly 50 scripted probes with expected answer properties.
+- id: AC2
+  text: Given a probe, when scored, then pass/fail uses the answer contract, source citation and horizon checks.
+- id: AC3
+  text: Given historian-rated fidelity, when a rating is below the agreed bar, then the persona stays disabled.
+- id: AC4
+  text: Given a CI run, when any persona fails its threshold, then CI fails with persona and probe ids.
+test_plan:
+  unit:
+  - probe count = 50
+  integration:
+  - CI fail on threshold
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- enables_persona
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers:
+- EXT-15
+status: Draft
+skills:
+  worker:
+  - adaptive/11-data-and-quantitative-work
+  - adaptive/07-research-and-fact-checking

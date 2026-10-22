@@ -1,0 +1,96 @@
+charter: v2
+id: P11-007
+kind: build
+title: Make AI disclosure always visible on personas
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§8.3-33
+- EP-§8.3-34
+- EP-§8.4-04
+- EP-§8.1-12
+depends_on:
+- E-P1-CONTAINMENT
+- E-P3-DESIGN-SYSTEM
+size: S
+difficulty:
+  score: 3
+  blast: 2
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 3: blast 2, ambiguity 0, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist:
+- lib/ai/personas/persona_disclosure_badge.dart
+- lib/ai/personas/historical_roleplay_controller.dart
+- lib/l10n/app_en.arb
+context_anchors:
+- ELEVATION.md#§8.3:L1532-L1533
+- ELEVATION.md#§8.4:L1536
+- ELEVATION.md#§8.1:L1498
+acceptance_criteria:
+- id: AC1
+  text: Given any persona surface (chat, mission, bust, share card), when shown, then a persistent "AI recreation" badge is
+    visible and cannot be dismissed.
+- id: AC2
+  text: Given a persona session start, when the first line plays, then it states how the persona was built (dossier sources,
+    AI-generated) before any in-character line.
+- id: AC3
+  text: Given a synthesised voice, when audio plays, then it is labelled as synthesised.
+- id: AC4
+  text: Given persona prompts, when scanned, then none instructs the model to hide being an AI and a test fails the build
+    if one does.
+test_plan:
+  unit:
+  - prompt scan for deny-AI phrases
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - badge semantics
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - default
+  - narrated_mode
+  - synth_voice_playing
+  copy_keys:
+  - persona.badge.ai_recreation
+  - persona.opening.how_built
+  - persona.voice.synthesised
+  tokens:
+  - badge.surface
+  - badge.text
+  motion_tier: product
+  a11y:
+  - badge announced at session start
+  - contrast ≥4.5:1
+  goldens:
+  - badge_chat
+  - badge_bust
+tags:
+- ai_disclosure
+- enables_persona
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

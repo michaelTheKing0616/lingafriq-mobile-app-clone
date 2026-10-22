@@ -1,0 +1,77 @@
+charter: v2
+id: P4-030
+kind: build
+title: Record Swahili source stack in kit
+phase: P4
+epic: E-P4-LANGUAGE-KITS
+req_ids:
+- CP-§2.4-sw-01
+- CP-§2.4-sw-02
+- CP-§2.4-sw-03
+- CP-§2.4-sw-04
+- CP-§2.4-sw-05
+depends_on:
+- P4-021
+- P4-001
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 0
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 3: blast 1, ambiguity 1, coupling 0, depth 1, size 0'
+token_budget: 25000
+file_allowlist:
+- tools/content_engine/kits/sw/sources.yaml
+- tools/content_engine/tests/test_stack_sw.py
+context_anchors:
+- CURRICULUM.md#§2.4:L390-L409
+acceptance_criteria:
+- id: AC1
+  text: Given the Swahili kit, when loaded, then orthography is Kiswahili Sanifu (BAKITA, Tanzania) marked unverified with
+    Kenyan notes
+- id: AC2
+  text: Given lexicon order, when listed, then Oxford API Swahili precedes Wiktionary and Kamusi is optional and excluded
+    until licensed
+- id: AC3
+  text: Given grammar evidence, when listed, then FSI Swahili Basic (public domain, 150 units), Peace Corps Kiswahili and
+    Ashton Swahili Grammar are recorded, with Leipzig, Common Voice (1,065 h), FLEURS and African Storybook as corpora
+- id: AC4
+  text: Given the tools list, when read, then it names the noun-class concord checker card
+test_plan:
+  unit:
+  - every stack source id exists in register
+  - stack lists orthography, lexicon, grammar, corpora, tools
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-04
+- EXT-10
+- EXT-22
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

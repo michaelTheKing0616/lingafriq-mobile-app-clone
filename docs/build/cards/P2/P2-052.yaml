@@ -1,0 +1,89 @@
+charter: v2
+id: P2-052
+kind: build
+title: Add dictation and sentence-building item types
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§11.3-09
+- EP-§11.3-10
+depends_on:
+- E-P1-CONTAINMENT
+- P2-047
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 3, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/screens/quiz/items/dictation_item.dart
+- lib/screens/quiz/items/sentence_build_item.dart
+- lib/services/quiz/diacritic_grader.dart
+- test/quiz/diacritic_grader_test.dart
+context_anchors:
+- ELEVATION.md#§11.3:L1802-L1803
+- ELEVATION.md#§11.3:L1803
+acceptance_criteria:
+- id: AC1
+  text: Given a dictation answer, when graded, then missing tone marks are reported as a diacritic error, not marked fully
+    correct
+- id: AC2
+  text: Given an accepted ASCII-fallback variant, when matched per the item rules, then it passes with a diacritic hint
+- id: AC3
+  text: Given a sentence-building item, when words are ordered, then accepted orderings from the item spec pass and others
+    fail
+test_plan:
+  unit:
+  - NFC and diacritic grading
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - semantics
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - idle
+  - typing
+  - diacritic-hint
+  - correct
+  - wrong
+  copy_keys:
+  - item.dictation
+  - item.build
+  - item.diacritic_hint
+  tokens:
+  - color.*
+  - space.*
+  motion_tier: product
+  a11y:
+  - keyboard input with diacritics
+  goldens:
+  - item_types_2
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

@@ -1,0 +1,70 @@
+charter: v2
+id: P2-049
+kind: build
+title: Calibrate IRT parameters from pilot responses
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§11.3-02
+- EP-§11.1-07
+depends_on:
+- E-P1-CONTAINMENT
+- P2-047
+size: L
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 3, coupling 2, depth 2'
+token_budget: 150000
+file_allowlist:
+- scripts/psychometrics/calibrate_irt.py
+- node-backend/src/services/irtCalibration.service.ts
+- test/psychometrics/irt_recovery_test.py
+context_anchors:
+- ELEVATION.md#§11.3:L1799
+- ELEVATION.md#§11.1:L1785-L1786
+acceptance_criteria:
+- id: AC1
+  text: Given simulated responses from known a and b, when calibrated, then recovered b has correlation at least 0.9 with
+    truth
+- id: AC2
+  text: Given an item with fewer responses than the configured minimum, when calibration runs, then its parameters stay flagged
+    uncalibrated and are not used for scoring
+- id: AC3
+  text: Given pilot data, when calibration completes, then the report lists fit and sample size per item
+test_plan:
+  unit:
+  - parameter recovery
+  integration:
+  - calibration job on seeded responses
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/11-data-and-quantitative-work
+  - adaptive/07-research-and-fact-checking

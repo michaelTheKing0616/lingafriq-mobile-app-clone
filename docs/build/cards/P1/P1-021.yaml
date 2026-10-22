@@ -1,0 +1,80 @@
+charter: v2
+id: P1-021
+kind: build
+title: Enforce DM, call, snap and feed restrictions for under-18 and unknown age
+phase: P1
+epic: E-P1-MINORS
+req_ids:
+- P0-10
+- P0-12
+- RM-P0-05
+depends_on:
+- E-P0-INTAKE
+- P1-020
+- P1-014
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T4
+  justification: 'score 7; blast 3; security/crypto tester; gate-critical (security / child safety / legal / design direction):
+    Fable reviews'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/middleware/ageRestriction.middleware.ts
+- node-backend/src/routes/chat.route.ts
+- node-backend/src/routes/snap.route.ts
+- node-backend/src/services/socket.service.ts
+- node-backend/src/routes/feed.route.ts
+context_anchors:
+- ELEVATION.md#§1:L195-L206
+- ELEVATION.md#§1:L221-L231
+- ELEVATION.md#§16.1:L2033-L2035
+acceptance_criteria:
+- id: AC1
+  text: Given a user whose ageBand is under-18 or unknown, when they call a DM, call, snap or public-feed endpoint, then it
+    returns 403 age_restricted
+- id: AC2
+  text: Given the same user over sockets, when they emit a DM, call or snap event, then it is rejected with a typed ack and
+    no event is delivered
+- id: AC3
+  text: Given an existing user with no recorded age, when they open the app, then they are treated as unknown and restricted
+    until age is provided
+- id: AC4
+  text: Given an adult user, when they call the same endpoints, then behaviour is unchanged (regression test)
+test_plan:
+  unit:
+  - band policy table
+  integration:
+  - 403 matrix over every restricted route and socket event
+  security:
+  - band tamper and token reuse
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G1
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

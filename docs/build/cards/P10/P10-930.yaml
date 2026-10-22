@@ -1,0 +1,70 @@
+charter: v2
+id: P10-930
+kind: build
+title: Define the versioned analytics event schema
+phase: P10
+epic: E-P10-ANALYTICS
+req_ids:
+- EP-§15-07
+depends_on: []
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 5; blast 2; p0 area
+token_budget: 60000
+file_allowlist:
+- schemas/analytics/events.v1.json
+- node-backend/src/services/analytics-schema.service.ts
+- scripts/analytics/lint_schema.py
+context_anchors:
+- ELEVATION.md#§15:L1994-L1994
+acceptance_criteria:
+- id: AC1
+  text: Given an event is sent, when the server validates it, then it must match a versioned schema and unknown events or
+    fields are rejected with a typed error.
+- id: AC2
+  text: Given a schema field name matches a PII pattern (email, name, phone, free text, audio), when CI lints the schema,
+    then the build fails.
+- id: AC3
+  text: Given a schema changes, when it is merged, then the version increments and old versions still validate.
+- id: AC4
+  text: Given an event carries a user, when it is stored, then it uses a pseudonymous id that is not the account id.
+test_plan:
+  unit:
+  - schema validation
+  - PII lint
+  integration:
+  - reject unknown field
+  security:
+  - no PII in events
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

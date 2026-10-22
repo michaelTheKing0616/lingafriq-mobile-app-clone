@@ -1,0 +1,86 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+F-103,ELEVATION,§18.6:L4972-L4986,requirement,Villages hub & Language Villages,P1,agent,,Open
+F-103.D,ELEVATION,§18.6:L4978,requirement,[6] Places are static screens; little living activity; hard-coded strings.,P1,agent,,Open
+F-103.E,ELEVATION,§18.6:L4979,requirement,[6] The Village is the community home: an illustrated map per language,P1,agent,,Open
+F-103.U,ELEVATION,§18.6:L4983,requirement,[6] Hand-illustrated map per region (not one generic village); tap-to-enter places;,P1,agent,,Open
+F-103.L,ELEVATION,§18.6:L4986,requirement,[6] Village tab (root).,P1,agent,,Open
+F-104,ELEVATION,§18.6:L4987-L4998,requirement,Swahili Village Map,P1,agent,,Open
+F-104.D,ELEVATION,§18.6:L4993,requirement,[6] The only language with a map; others are generic.,P1,agent,,Open
+F-104.E,ELEVATION,§18.6:L4994,requirement,"[6] The template for every language: Yoruba compound, Igbo obi, Hausa birni,",P1,agent,,Open
+F-104.U,ELEVATION,§18.6:L4996,requirement,"[6] Same map engine, regional art direction. Rendered on the single unified",P1,agent,,Open
+F-104.L,ELEVATION,§18.6:L4998,requirement,[6] Village → map (per language).,P1,agent,,Open
+F-105,ELEVATION,§18.6:L4999-L5009,requirement,Village Market,P1,agent,,Open
+F-105.D,ELEVATION,§18.6:L5004,requirement,[6] Mostly static.,P1,agent,,Open
+F-105.E,ELEVATION,§18.6:L5005,requirement,"[6] Live Market Haggle stall, price and number drills, and the Magic",P1,agent,,Open
+F-105.U,ELEVATION,§18.6:L5007,requirement,[6] Stalls as cards; trader NPC avatar. Rendered on the single unified,P1,agent,,Open
+F-105.L,ELEVATION,§18.6:L5009,requirement,[6] Village → map → Market.,P1,agent,,Open
+F-106,ELEVATION,§18.6:L5010-L5020,requirement,Village Café,P1,agent,,Open
+F-106.D,ELEVATION,§18.6:L5015,requirement,[6] Little actual activity.,P1,agent,,Open
+F-106.E,ELEVATION,§18.6:L5016,requirement,"[6] Doorway to Practice Rooms and audio rooms: ""3 tables open in",P1,agent,,Open
+F-106.U,ELEVATION,§18.6:L5018,requirement,[6] Tables showing level and topic; join button. Rendered on the single,P1,agent,,Open
+F-106.L,ELEVATION,§18.6:L5020,requirement,[6] Village → map → Café.,P1,agent,,Open
+F-107,ELEVATION,§18.6:L5021-L5032,requirement,Elder Hut,P1,agent,,Open
+F-107.D,ELEVATION,§18.6:L5026,requirement,[6] Static content.,P1,agent,,Open
+F-107.E,ELEVATION,§18.6:L5027,requirement,[6] Home of Micro-Mentors and proverbs: book a 10-minute session with a,P1,agent,,Open
+F-107.U,ELEVATION,§18.6:L5030,requirement,[6] Warm interior art; mentor cards with verified badge. Rendered on the,P1,agent,,Open
+F-107.L,ELEVATION,§18.6:L5032,requirement,[6] Village → map → Elder Hut.,P1,agent,,Open
+F-108,ELEVATION,§18.6:L5033-L5050,requirement,Practice Rooms & Sessions,P1,agent,,Open
+F-108.D,ELEVATION,§18.6:L5043,requirement,[6] Fake activity; no real matching; no safety controls.,P1,agent,,Open
+F-108.E,ELEVATION,§18.6:L5044,requirement,[6] Real small-group rooms (2–6 learners at the same level) with a,P1,agent,,Open
+F-108.U,ELEVATION,§18.6:L5047,requirement,[6] Video/audio tiles; speaking-time meter to encourage balance; report and block in,P1,agent,,Open
+F-108.L,ELEVATION,§18.6:L5050,requirement,[6] Village → Café → Practice Rooms; Today when a room matches.,P1,agent,,Open
+F-109,ELEVATION,§18.6:L5051-L5062,requirement,Flashcard Focus (group),P1,agent,,Open
+F-109.D,ELEVATION,§18.6:L5057,requirement,[6] Fake participants.,P1,agent,,Open
+F-109.E,ELEVATION,§18.6:L5058,requirement,[6] Replace the mocks with real matched learners or clearly labelled practice,P1,agent,,Open
+F-109.U,ELEVATION,§18.6:L5060,requirement,"[6] Participant avatars with ""bot"" labels where applicable. Rendered on the single",P1,agent,,Open
+F-109.L,ELEVATION,§18.6:L5062,requirement,[6] Village → Café → Study together.,P1,agent,,Open
+F-110,ELEVATION,§18.6:L5063-L5073,requirement,Matching Pairs (group),P1,agent,,Open
+F-110.D,ELEVATION,§18.6:L5068,requirement,[6] Duplicates Memory Map mechanics.,P1,agent,,Open
+F-110.E,ELEVATION,§18.6:L5069,requirement,"[6] Becomes the multiplayer mode of Memory Map: turn-based with friends, audio",P1,agent,,Open
+F-110.U,ELEVATION,§18.6:L5071,requirement,[6] Shared board; turn indicator. Rendered on the single unified design system,P1,agent,,Open
+F-110.L,ELEVATION,§18.6:L5073,requirement,[6] Village → Café; Play → Words.,P1,agent,,Open
+F-111,ELEVATION,§18.6:L5074-L5091,requirement,Tribes,P1,agent,,Open
+F-111.D,ELEVATION,§18.6:L5083,requirement,"[6] ""Tribe"" naming can read as ethnic grouping in an African context;",P1,agent,,Open
+F-111.E,ELEVATION,§18.6:L5085,requirement,"[6] Keep the feature, rename to Circles (study teams of 5–30) with",P1,agent,,Open
+F-111.U,ELEVATION,§18.6:L5088,requirement,"[6] Circle crest builder (patterns from adire, kente, kanga, Ndebele — reviewed);",P1,agent,,Open
+F-111.L,ELEVATION,§18.6:L5091,requirement,[6] Village → Circles.,P1,agent,,Open
+F-112,ELEVATION,§18.6:L5092-L5104,requirement,"Tribe vs Tribe, Tribal Duel & Inter-tribe Leaderboard",P1,agent,,Open
+F-112.D,ELEVATION,§18.6:L5099,requirement,[6] Cheatable scoring; competition without learning value.,P1,agent,,Open
+F-112.E,ELEVATION,§18.6:L5100,requirement,[6] Circle Clash: weekend team events where points come only from verified,P1,agent,,Open
+F-112.U,ELEVATION,§18.6:L5102,requirement,"[6] Event banner, live team bars, highlights reel at the end. Rendered",P1,agent,,Open
+F-112.L,ELEVATION,§18.6:L5104,requirement,[6] Village → Circles → Clash; Today → Events.,P1,agent,,Open
+F-113,ELEVATION,§18.6:L5105-L5120,requirement,Global Chat,P1,agent,,Open
+F-113.D,ELEVATION,§18.6:L5114,requirement,[6] P0-4/5/6 socket flaws; moderation cosmetic (P0-11); open to minors (P0-10).,P1,agent,,Open
+F-113.E,ELEVATION,§18.6:L5115,requirement,"[6] Language Squares: public rooms per language and level with a ""target-language",P1,agent,,Open
+F-113.U,ELEVATION,§18.6:L5118,requirement,[6] Chat with level badges and pinned daily topic. Rendered on the,P1,agent,,Open
+F-113.L,ELEVATION,§18.6:L5120,requirement,[6] Village → Square → Rooms.,P1,agent,,Open
+F-114,ELEVATION,§18.6:L5121-L5140,requirement,Private Chat (DMs) (revived),P1,agent,,Open
+F-114.D,ELEVATION,§18.6:L5132,requirement,[6] P0-4/5/6; no reachable block/report UI; open to minors.,P1,agent,,Open
+F-114.E,ELEVATION,§18.6:L5133,requirement,[6] Language-exchange DMs: each message can be written in the target language,P1,agent,,Open
+F-114.U,ELEVATION,§18.6:L5137,requirement,[6] WhatsApp-familiar layout made learning-native; correction bubbles in a distinct,P1,agent,,Open
+F-114.L,ELEVATION,§18.6:L5140,requirement,[6] Village → Chats.,P1,agent,,Open
+F-115,ELEVATION,§18.6:L5141-L5151,requirement,Call History,P1,agent,,Open
+F-115.D,ELEVATION,§18.6:L5146,requirement,[6] Calls carry no learning value afterwards.,P1,agent,,Open
+F-115.E,ELEVATION,§18.6:L5147,requirement,[6] Each call entry shows minutes spoken in the target language and,P1,agent,,Open
+F-115.U,ELEVATION,§18.6:L5149,requirement,[6] List with minutes chip. Rendered on the single unified design system,P1,agent,,Open
+F-115.L,ELEVATION,§18.6:L5151,requirement,[6] Village → Chats → Calls.,P1,agent,,Open
+F-116,ELEVATION,§18.6:L5152-L5162,requirement,Chat Welcome & Community Guidelines (revived),P1,agent,,Open
+F-116.D,ELEVATION,§18.6:L5157,requirement,[6] Community norms never shown.,P1,agent,,Open
+F-116.E,ELEVATION,§18.6:L5158,requirement,"[6] Revive as the first-entry pledge: 3 friendly rules (be kind, help",P1,agent,,Open
+F-116.U,ELEVATION,§18.6:L5160,requirement,[6] Short illustrated cards; one-tap agree. Rendered on the single unified design,P1,agent,,Open
+F-116.L,ELEVATION,§18.6:L5162,requirement,[6] Village first entry; Me → Safety.,P1,agent,,Open
+F-117,ELEVATION,§18.6:L5163-L5176,requirement,Moderation Tools (revived),P1,agent,,Open
+F-117.D,ELEVATION,§18.6:L5170,requirement,[6] No moderation surface for chat.,P1,agent,,Open
+F-117.E,ELEVATION,§18.6:L5171,requirement,[6] Revive as Community Stewards tools for circle leaders and trusted volunteers:,P1,agent,,Open
+F-117.U,ELEVATION,§18.6:L5173,requirement,[6] Queue cards with context and quick actions. Rendered on the single,P1,agent,,Open
+F-117.L,ELEVATION,§18.6:L5176,requirement,[6] Village → Circles → Steward tools (role-gated).,P1,agent,,Open
+F-118,ELEVATION,§18.6:L5177-L5192,requirement,Social Hub & Connections,P1,agent,,Open
+F-118.D,ELEVATION,§18.6:L5186,requirement,[6] Find-anyone search with no age or privacy controls.,P1,agent,,Open
+F-118.E,ELEVATION,§18.6:L5187,requirement,[6] Language partners: suggested partners who speak the language you learn and,P1,agent,,Open
+F-118.U,ELEVATION,§18.6:L5190,requirement,"[6] Partner cards with ""speaks / learns"" pills. Rendered on the single",P1,agent,,Open
+F-118.L,ELEVATION,§18.6:L5192,requirement,[6] Village → People.,P1,agent,,Open
+F-119,ELEVATION,§18.6:L5193-L5204,requirement,Friend Quests & Challenge a Friend,P1,agent,,Open
+F-119.D,ELEVATION,§18.6:L5199,requirement,"[6] Challenges are score-only, and scores can be faked (P0-8, P0-18).",P1,agent,,Open
+F-119.E,ELEVATION,§18.6:L5200,requirement,"[6] Buddy quests: shared weekly goals (both practise five days), async challenges",P1,agent,,Open
+F-119.U,ELEVATION,§18.6:L5202,requirement,[6] Paired progress bars; challenge cards in chat. Rendered on the single,P1,agent,,Open
+F-119.L,ELEVATION,§18.6:L5204,requirement,[6] Village → People → Quests; Today.,P1,agent,,Open

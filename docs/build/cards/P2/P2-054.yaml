@@ -1,0 +1,85 @@
+charter: v2
+id: P2-054
+kind: build
+title: Add conversation tasks scored against can-dos
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§11.3-12
+depends_on:
+- E-P1-CONTAINMENT
+- P2-047
+- E-P6-SCORER
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/screens/quiz/items/conversation_task_item.dart
+- lib/services/quiz/can_do_grader.dart
+- test/quiz/can_do_grader_test.dart
+context_anchors:
+- ELEVATION.md#§11.3:L1803-L1804
+acceptance_criteria:
+- id: AC1
+  text: Given a conversation task mapped to can-do statements, when completed, then each can-do is marked met, not met or
+    unsure with evidence turns
+- id: AC2
+  text: Given insufficient evidence, when graded, then the can-do is unsure and not counted as met
+- id: AC3
+  text: Given the scorer is unavailable, when graded, then a visible unavailable state shows and no score is stored
+test_plan:
+  unit:
+  - can-do mapping
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - task
+  - in-progress
+  - graded
+  - unsure
+  - unavailable
+  copy_keys:
+  - item.conv
+  - item.candos
+  tokens:
+  - color.*
+  - space.*
+  motion_tier: product
+  a11y:
+  - can-do list readable
+  goldens:
+  - item_conv
+tags:
+- shows_score
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

@@ -1,0 +1,79 @@
+charter: v2
+id: P4-024
+kind: build
+title: Record Igbo source stack in kit
+phase: P4
+epic: E-P4-LANGUAGE-KITS
+req_ids:
+- CP-§2.4-ig-01
+- CP-§2.4-ig-02
+- CP-§2.4-ig-03
+- CP-§2.4-ig-04
+- CP-§2.4-ig-05
+- CP-§2.4-ig-06
+- CP-§2.4-ig-07
+- CP-§2.4-ig-08
+depends_on:
+- P4-021
+- P4-001
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 2, coupling 1, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- tools/content_engine/kits/ig/sources.yaml
+- tools/content_engine/tests/test_stack_ig.py
+context_anchors:
+- CURRICULUM.md#§2.4:L311-L333
+acceptance_criteria:
+- id: AC1
+  text: Given the Igbo kit, when loaded, then orthography is Standard Igbo (Ọnwụ) marked unverified, with a dialect policy
+    of Central Igbo plus Onitsha and Owerri notes
+- id: AC2
+  text: Given lexicon order, when listed, then IgboAPI (licensed) and Oxford Igbo come before Wiktionary, and grammar evidence
+    is FSI Igbo Basic (public domain, tape 1 missing) plus Emenanjo
+- id: AC3
+  text: Given the Igbo tone restorer has 61.6% tone-mark accuracy, when configured, then it is advisory only and every Igbo
+    tone mark requires a lexicon match plus human check
+- id: AC4
+  text: Given Leipzig, Common Voice and FLEURS, when listed, then they are corpora and audio sources in the register
+test_plan:
+  unit:
+  - every stack source id exists in register
+  - stack lists orthography, lexicon, grammar, corpora, tools
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-05
+- EXT-22
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

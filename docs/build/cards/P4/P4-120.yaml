@@ -1,0 +1,82 @@
+charter: v2
+id: P4-120
+kind: build
+title: Build language kit generator (week 0-1)
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.4-44
+- EP-§6.4-51
+- EP-§6.4-52
+- EP-§6.4-53
+- EP-§6.4-54
+depends_on:
+- P4-110
+- P4-112
+- E-P4-LICENCES
+size: L
+difficulty:
+  score: 7
+  blast: 1
+  ambiguity: 2
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 1, ambiguity 2, coupling 2'
+token_budget: 150000
+file_allowlist:
+- tools/content_pipeline/language_kit.py
+- schemas/v2/language_kit.schema.json
+- assets/content/kits/README.md
+- test/content/test_language_kit.py
+context_anchors:
+- ELEVATION.md#§6.4.1:L1264-L1292
+acceptance_criteria:
+- id: AC1
+  text: Given a language id, when a kit is created, then it contains an orthography spec (Unicode, NFC, diacritics, keyboard
+    layout), dialect standard, phone inventory, tone system, phoneme-to-viseme table and seed lexicon, with each missing part
+    listed as an open task
+- id: AC2
+  text: Given the seed lexicon, when imported, then every entry has provenance.sources[] with a licence from the register
+    and unlicensed sources are rejected SOURCE_UNLICENSED
+- id: AC3
+  text: Given the reviewer panel, when the kit is marked complete, then ≥3 paid native reviewers with signed consent and licence
+    terms are recorded, else the kit stays open
+- id: AC4
+  text: Given a kit, when week 1 ends, then the kit status shows days elapsed against the week 0-1 target and overdue kits
+    are flagged
+- id: AC5
+  text: Given a tonal language, when the kit lacks a tone system, then the kit cannot start AI bootstrap
+test_plan:
+  unit:
+  - test_language_kit
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- uses_source
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- licence register is counsel-gated (EXT-03)
+gate: G4
+external_blockers:
+- EXT-13
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

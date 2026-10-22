@@ -1,0 +1,118 @@
+charter: v2
+id: F-102
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Tone Forge (revived)
+phase: P8
+epic: E-P8-PLAY
+hub: Play
+req_ids:
+- F-102
+- F-102.D
+- F-102.E
+- F-102.U
+- F-102.L
+depends_on:
+- P8-900
+- E-P8-PLAY
+- P8-912
+- E-P6-SCORER
+size: L
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: score 7 game elevation on GameKit
+token_budget: 200000
+file_allowlist:
+- lib/games/tone_forge/tone_forge_screen.dart
+- lib/games/tone_forge/tone_forge_game.dart
+context_anchors:
+- ELEVATION.md#§18.5:L4958-L4971
+delta:
+  current_state: Unrouted GameKit flagship; not reachable from app shell
+  defects_to_fix:
+  - Flagship tone game unreachable from Play routing
+  elevation_to_build:
+  - 'Headline Tone & Sound game: forge pitch contours on Tone Lens then speak'
+  - Meaning shifts with contour (ọkọ/ọkọ̀/ọkọ́) paired with Tone Gym
+  - Register in Arcade routing and featured shelf slot
+  ux_and_render:
+  - Tactile contour editor with blacksmith-forge art direction (Ogun smithing nod)
+  hub_placement: Play → Tone & Sound (featured)
+  unlock_stage: per §17.4
+  harvest_list:
+  - lib/games/tone_forge/* wired via game_router and Play featured shelf
+acceptance_criteria:
+- id: AC1
+  text: Given a completed session, when results render, then layout matches P8-900 GameKit results and posts learner-model
+    events
+- id: AC2
+  text: Given target-language prompts, when displayed, then each item plays bundled audio and uses ARB strings only
+- id: AC3
+  text: Given Scorer unavailable, when a scored round ends, then UI shows honest unavailable state without Random or client
+    fake scores
+test_plan:
+  unit:
+  - turn queue respects due items
+  - l10n keys resolve
+  integration:
+  - GameKit session end writes learner model
+  - audio playback
+  e2e:
+  - launch from Play shelf
+  - complete round
+  - results navigation
+  a11y:
+  - goldens at 100%/200% text
+  - semantics order
+  - reduced motion
+  content:
+  - word pool items carry content labels
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - play.102.title
+  - play.102.results
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+tags:
+- shows_score
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers:
+- EXT-16
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

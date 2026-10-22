@@ -1,0 +1,74 @@
+charter: v2
+id: P11-004
+kind: build
+title: Enforce knowledge horizon with a classifier
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§8.3-20
+- EP-§8.3-21
+- EP-§8.3-22
+- EP-§8.3-23
+depends_on:
+- E-P1-CONTAINMENT
+- P11-002
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 2, ambiguity 2, coupling 1, depth 2'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/services/persona/knowledgeHorizon.ts
+- lib/ai/persona_cognition/epistemic_classifier.dart
+context_anchors:
+- ELEVATION.md#§8.3:L1524-L1526
+acceptance_criteria:
+- id: AC1
+  text: Given a question about an event after the persona's death date, when classified, then the reply stays in character,
+    shows curiosity and states no knowledge of it.
+- id: AC2
+  text: Given the horizon decision, when implemented, then a classifier model decides post-death vs in-scope; no keyword list
+    gates the decision.
+- id: AC3
+  text: Given the anachronism probe set in the adversarial suite, when run, then no reply asserts post-death facts as known.
+- id: AC4
+  text: Given classifier failure or timeout, when a turn is served, then a typed HorizonCheckFailed error is returned and
+    the turn is withheld.
+test_plan:
+  unit:
+  - horizon decision fixtures
+  integration:
+  - classifier timeout path
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - anachronism probes
+user_facing: false
+ux_spec: null
+tags:
+- enables_persona
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

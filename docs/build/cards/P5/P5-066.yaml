@@ -1,0 +1,61 @@
+charter: v2
+id: P5-066
+kind: build
+title: Wire Swahili TTS and Common Voice audio
+phase: P5
+epic: E-P5-AUDIO
+req_ids:
+- CP-§7-sw-02
+- CP-§7-sw-03
+depends_on:
+- P5-065
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/services/tts/sw_tts.dart
+- test/audio/sw_tts_test.dart
+context_anchors:
+- CURRICULUM.md#§7:L736-L737
+acceptance_criteria:
+- id: AC1
+  text: Given the chosen vendor, when Swahili is synthesised, then ASR round-trip and listen-check pass
+- id: AC2
+  text: Given Common Voice (1,065 h) and FLEURS, when used, then only for their own sentences
+test_plan:
+  unit:
+  - vendor selection
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

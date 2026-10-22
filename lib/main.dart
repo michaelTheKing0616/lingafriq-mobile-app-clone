@@ -31,12 +31,14 @@ import 'services/advanced/smart_recommendations.dart';
 import 'services/monitoring/sentry_service.dart';
 import 'services/deep_link_service.dart';
 import 'config/secrets_manager.dart';
+import 'package:rive/rive.dart';
 import 'utils/performance_utils.dart';
 import 'utils/structured_logger.dart';
 import 'utils/polie_design_tokens.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await RiveNative.init();
 
   FlutterError.onError = (details) {
     logger.error(

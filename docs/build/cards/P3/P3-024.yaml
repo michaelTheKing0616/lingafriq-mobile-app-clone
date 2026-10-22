@@ -1,0 +1,84 @@
+charter: v2
+id: P3-024
+kind: build
+title: Ship a custom icon set with no emoji icons
+phase: P3
+epic: E-P3-COMPONENTS
+req_ids:
+- EP-§3.4-36
+depends_on:
+- P3-020
+size: M
+difficulty:
+  score: 3
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 3: blast 0, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- lib/design/icons/lingafriq_icons.dart
+- assets/icons/
+- scripts/lint/no_emoji_icons.py
+context_anchors:
+- ELEVATION.md#§3.4:L850
+acceptance_criteria:
+- id: AC1
+  text: Given the icon inventory, when built, then every tab, Me, Search, Lens, Word Card, shelf and state has an SVG-based
+    icon at 24 dp
+- id: AC2
+  text: Given an emoji character in an icon position, when the lint scans, then it fails with file and line
+- id: AC3
+  text: Given icons in the catalogue, when rendered, then goldens exist in light, dark and with a semantics label
+test_plan:
+  unit:
+  - emoji lint
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - icon semantics
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - default
+  - selected
+  - disabled
+  copy_keys:
+  - icon.label.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

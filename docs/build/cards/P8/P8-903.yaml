@@ -1,0 +1,110 @@
+charter: v2
+id: P8-903
+kind: build
+title: 'GameKit: feedback within 160 ms and brief celebration'
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.2-06
+- EP-§10.2-07
+depends_on:
+- E-P8-PLAY
+- E-P3-DESIGN-SYSTEM
+size: M
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 0
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 3: blast 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- lib/games/gamekit/game_feedback.dart
+- lib/games/gamekit/game_animation_bridge.dart
+- lib/games/gamekit/universal_game_screen.dart
+- lib/games/widgets/game_answer_tile.dart
+- lib/games/widgets/streak_indicator.dart
+context_anchors:
+- ELEVATION.md#§10.2:L1672
+acceptance_criteria:
+- id: AC1
+  text: Given a learner taps an answer, when the answer is locally verifiable, then correct/wrong feedback is visible within
+    160 ms at p95 on the reference low-end device
+- id: AC2
+  text: Given an answer that needs a server or scorer round trip, when 160 ms passes, then a visible pending state shows and
+    the final verdict replaces it without layout shift
+- id: AC3
+  text: Given a correct streak milestone, when celebration plays, then it lasts at most 1.5 s, is skippable by tap, and never
+    blocks the next turn
+- id: AC4
+  text: Given reduced-motion is on, when celebration would play, then a static confirmation replaces it
+test_plan:
+  unit:
+  - feedback timing budget
+  integration: []
+  security: []
+  e2e: []
+  perf:
+  - p95 tap-to-feedback on reference device
+  a11y:
+  - reduced motion
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - ready
+  - playing
+  - correct
+  - wrong
+  - why_wrong
+  - results
+  - error
+  - offline
+  - practice_mode
+  copy_keys:
+  - games.gamekit_feedback.title
+  - games.gamekit_feedback.instructions
+  - games.gamekit_feedback.why_wrong
+  - games.gamekit_feedback.practice_label
+  - games.gamekit_feedback.error
+  tokens:
+  - color.surface.game
+  - color.feedback.correct
+  - color.feedback.wrong
+  - space.4
+  - radius.card
+  - type.title
+  motion_tier: rare
+  a11y:
+  - screen-reader labels on every answer control
+  - reduced-motion variant
+  - correctness shown by icon and text not colour alone
+  - touch targets ≥48dp
+  goldens:
+  - gamekit_feedback_playing
+  - gamekit_feedback_why_wrong
+  - gamekit_feedback_results
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/motion-system
+  - prime/rive
+  - prime/animation-principles

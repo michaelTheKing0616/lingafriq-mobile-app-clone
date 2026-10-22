@@ -1,0 +1,100 @@
+charter: v2
+id: P9-931
+kind: build
+title: Build moderator console with queues, evidence and SLAs
+phase: P9
+epic: E-P9-MODERATION
+req_ids:
+- EP-§9.4-19
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+- P9-921
+size: L
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T4
+  justification: 'score 7: blast 3, ambiguity 1, coupling 2, depth 0; gate-critical (security / child safety / legal / design
+    direction): Fable reviews'
+token_budget: 200000
+file_allowlist:
+- admin/moderation/console/queue.tsx
+- node-backend/src/routes/moderation.routes.ts
+- node-backend/src/services/moderation/sla.service.ts
+context_anchors:
+- ELEVATION.md#§9.4:L1648-L1649
+acceptance_criteria:
+- id: AC1
+  text: Given cases, when listed, then queues are separated by severity (child safety, harassment, spam) and each shows time
+    remaining against its SLA
+- id: AC2
+  text: Given a child-safety case, when created, then the SLA clock starts and a breach at 1 hour pages the safety lead
+- id: AC3
+  text: Given a moderator opening evidence, when viewed, then access is logged with moderator id and purpose and content is
+    blurred by default
+- id: AC4
+  text: Given role permissions, when a non-moderator calls the routes, then they return 403 and no case data
+- id: AC5
+  text: Given a decision, when taken, then the console records action, policy clause and notifies the reporter and user in
+    plain language
+test_plan:
+  unit:
+  - SLA math
+  integration:
+  - queue flow
+  security:
+  - role access
+  - evidence logging
+  e2e: []
+  perf: []
+  a11y:
+  - console keyboard flow
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - empty
+  - queue
+  - case
+  - breached
+  - error
+  copy_keys:
+  - mod.queue.title
+  - mod.case.blurred
+  - mod.sla.breached
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - mod_default
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

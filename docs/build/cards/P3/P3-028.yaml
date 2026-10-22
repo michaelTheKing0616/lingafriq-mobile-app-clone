@@ -1,0 +1,84 @@
+charter: v2
+id: P3-028
+kind: build
+title: Build answer feedback helper under 160 ms
+phase: P3
+epic: E-P3-COMPONENTS
+req_ids:
+- EP-§3.4-34
+depends_on:
+- P3-020
+- P3-010
+size: S
+difficulty:
+  score: 2
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 0, ambiguity 1, coupling 1'
+token_budget: 25000
+file_allowlist:
+- lib/design/feedback/answer_feedback.dart
+- test/perf/answer_feedback_test.dart
+context_anchors:
+- ELEVATION.md#§3.4:L848-L849
+acceptance_criteria:
+- id: AC1
+  text: Given an answer tap, when feedback fires, then haptic and sound start within 160 ms measured on the lowest test device
+- id: AC2
+  text: Given haptics or sound are off, when feedback fires, then a visual cue still shows
+- id: AC3
+  text: Given a timing breach, when measured in the perf test, then it fails with the measured ms
+test_plan:
+  unit:
+  - fallback visual
+  integration: []
+  security: []
+  e2e: []
+  perf:
+  - 160 ms budget
+  a11y:
+  - non-sound alternative
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - correct
+  - incorrect
+  - muted
+  copy_keys:
+  - feedback.answer.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

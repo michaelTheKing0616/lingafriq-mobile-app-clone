@@ -1,0 +1,91 @@
+charter: v2
+id: P10-911
+kind: build
+title: Replace fake co-learners and friend pushes
+phase: P10
+epic: E-P10-GAMIFICATION
+req_ids:
+- EP-§12.3-04
+- EP-§12.3-05
+- EP-§12.3-06
+- EP-§12.3-07
+- EP-§12.3-08
+depends_on: []
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T2
+  justification: score 4; blast 1; p0 area
+token_budget: 60000
+file_allowlist:
+- lib/screens/village/flashcard_focus_screen.dart
+- node-backend/src/services/reminders.service.ts
+context_anchors:
+- ELEVATION.md#§12.3:L1837-L1840
+acceptance_criteria:
+- id: AC1
+  text: Given the flashcard focus screen, when it renders, then no hard-coded co-learner name or avatar exists in the code.
+- id: AC2
+  text: Given a group-study session, when other learners are shown, then each is a real matched learner or carries a visible
+    Practice bot label.
+- id: AC3
+  text: Given no real learner is available, when the session starts, then the learner sees a Practice bot label or a solo
+    state and never a fake person.
+- id: AC4
+  text: Given a push about friends, when the server sends it, then it is sent only if a real friend is actually waiting.
+- id: AC5
+  text: Given the group-study feature, when this card ships, then it stays available and its tests pass.
+test_plan:
+  unit:
+  - bot label present
+  integration:
+  - push needs real waiting friend
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - no mock names grep
+user_facing: true
+ux_spec:
+  states:
+  - matched
+  - bot-labelled
+  - solo
+  copy_keys:
+  - practice_bot_label
+  tokens:
+  - color.semantic
+  - type.scale
+  - space.scale
+  motion_tier: product
+  a11y:
+  - screen reader labels
+  - 48dp touch targets
+  - reduced motion honoured
+  goldens:
+  - practice_bot_label_golden
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

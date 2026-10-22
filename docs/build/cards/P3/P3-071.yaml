@@ -1,0 +1,67 @@
+charter: v2
+id: P3-071
+kind: build
+title: Move developer examples to dev/ outside the app build
+phase: P3
+epic: E-P3-REVIVE
+req_ids:
+- DEV-01
+- DEV-02
+- DEV-03
+- EP-§17.5-07
+- EP-§17.5-08
+depends_on:
+- P3-037
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 1: file move, T0/T1'
+token_budget: 25000
+file_allowlist:
+- dev/examples/
+- lib/screens/ai_chat/polie_tsx_flutter_mapping.dart
+- lib/examples/
+context_anchors:
+- ELEVATION.md#§17.5:L2340-L2342
+acceptance_criteria:
+- id: AC1
+  text: Given examples/errorhandler_integration_example.dart, examples/performance_utilities_example.dart and polie_tsx_flutter_mapping.dart,
+    when moved, then they live under dev/ and not under lib/
+- id: AC2
+  text: Given the release build, when compiled, then none of the three files is included
+- id: AC3
+  text: Given nothing user-facing, when the app runs, then behaviour is unchanged and the build passes
+test_plan:
+  unit: []
+  integration:
+  - build passes
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,90 @@
+charter: v2
+id: P10-904
+kind: build
+title: Add the language-preservation fund donation sink
+phase: P10
+epic: E-P10-GAMIFICATION
+req_ids:
+- EP-§12.2-11
+depends_on:
+- ADR-020
+- P10-902
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 5; blast 1
+token_budget: 60000
+file_allowlist:
+- node-backend/src/services/preservation-fund.service.ts
+- lib/screens/village/preservation_fund_screen.dart
+context_anchors:
+- ELEVATION.md#§12.2:L1821-L1822
+acceptance_criteria:
+- id: AC1
+  text: Given a learner donates Cowries, when the donation completes, then one ledger debit and one fund credit are written
+    together or neither is.
+- id: AC2
+  text: Given the fund page shows impact, when it renders, then every figure comes from recorded fund records and no figure
+    is invented.
+- id: AC3
+  text: Given no impact has been recorded yet, when the page renders, then it states that nothing has been funded yet.
+- id: AC4
+  text: Given a donation fails, when the learner is shown the result, then a typed error and a retry action appear and no
+    Cowries are lost.
+test_plan:
+  unit:
+  - atomic debit and credit
+  integration:
+  - failed donation rollback
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - idle
+  - confirm
+  - success
+  - empty-impact
+  - error
+  copy_keys:
+  - fund_donate
+  tokens:
+  - color.semantic
+  - type.scale
+  - space.scale
+  motion_tier: product
+  a11y:
+  - screen reader labels
+  - 48dp touch targets
+  - reduced motion honoured
+  goldens:
+  - fund_donate_golden
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Impact data source must exist before launch
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

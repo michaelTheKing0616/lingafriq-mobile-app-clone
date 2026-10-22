@@ -1,0 +1,74 @@
+charter: v2
+id: P5-011
+kind: build
+title: Add CI content tests for label exclusion rules
+phase: P5
+epic: E-P5-QUALITY
+req_ids:
+- CP-§5-24
+- CP-§5-25
+- CP-§5-26
+- CP-§6-31
+depends_on:
+- P5-009
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T1
+  reviewer: T3
+  justification: 'score 7: blast 3, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- test/content/label_rules_test.py
+- tools/content/label_rules.py
+- .github/workflows/content_ci.yml
+context_anchors:
+- CURRICULUM.md#§5:L630-L631
+- CURRICULUM.md#§6:L701-L701
+acceptance_criteria:
+- id: AC1
+  text: Given the content build, when checkpoints, placement tests or credential pools are assembled, then any Beta item fails
+    CI with LabelRuleViolation naming the item
+- id: AC2
+  text: Given grammar or culture explanation items, when any has label beta, then CI fails
+- id: AC3
+  text: Given children's mode content pools, when any item is below Expert-reviewed, then CI fails; children's content minimum
+    is Expert-reviewed
+- id: AC4
+  text: Given a violating fixture per rule, when the suite runs, then each rule has a failing test proving it can detect the
+    violation
+test_plan:
+  unit:
+  - rule functions
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - pool assembly checks across all languages
+user_facing: false
+ux_spec: null
+tags:
+- native_verified_rule
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

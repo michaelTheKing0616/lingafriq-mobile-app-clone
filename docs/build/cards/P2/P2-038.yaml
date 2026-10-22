@@ -1,0 +1,70 @@
+charter: v2
+id: P2-038
+kind: build
+title: Add feature flags and staged rollout stages
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.9-11
+- EP-§13.9-12
+depends_on:
+- E-P1-CONTAINMENT
+- P2-037
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/models/featureFlag.model.ts
+- node-backend/src/services/featureFlag.service.ts
+- lib/services/feature_flag_service.dart
+- docs/ops/rollout.md
+context_anchors:
+- ELEVATION.md#§13.9:L1956
+- ELEVATION.md#§13.9:L1956-L1957
+acceptance_criteria:
+- id: AC1
+  text: Given a flag with a percentage, when users are bucketed, then assignment is stable per user and respects 1, 10, 50,
+    100 stages
+- id: AC2
+  text: Given a flag evaluation failure, when the client asks, then it uses the documented safe default and logs a visible
+    error
+- id: AC3
+  text: Given a kill switch, when toggled, then clients stop the feature within the cache TTL
+test_plan:
+  unit:
+  - bucketing stability
+  integration:
+  - client refresh
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

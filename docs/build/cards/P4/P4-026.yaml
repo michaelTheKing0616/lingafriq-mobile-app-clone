@@ -1,0 +1,74 @@
+charter: v2
+id: P4-026
+kind: build
+title: Record Hausa source stack in kit
+phase: P4
+epic: E-P4-LANGUAGE-KITS
+req_ids:
+- CP-§2.4-ha-01
+- CP-§2.4-ha-02
+- CP-§2.4-ha-03
+- CP-§2.4-ha-04
+- CP-§2.4-ha-05
+- CP-§2.4-ha-06
+depends_on:
+- P4-021
+- P4-001
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 0
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 3: blast 1, ambiguity 1, coupling 0, depth 1, size 0'
+token_budget: 25000
+file_allowlist:
+- tools/content_engine/kits/ha/sources.yaml
+- tools/content_engine/tests/test_stack_ha.py
+context_anchors:
+- CURRICULUM.md#§2.4:L334-L358
+acceptance_criteria:
+- id: AC1
+  text: Given the Hausa kit, when loaded, then orthography is standard Boko with ɓ ɗ ƙ ƴ ʼ in the allowed set
+- id: AC2
+  text: Given tone and length marks, when needed, then pedagogical marking comes only from dictionary lookup (Oxford Hausa,
+    then Wiktionary, Bargery as reference), never from model generation
+- id: AC3
+  text: Given grammar evidence, when listed, then FSI Hausa Basic (public domain), Peace Corps Hausa and Newman The Hausa
+    Language are recorded, with Leipzig, Biblica open Bible, Common Voice and FLEURS as corpora
+test_plan:
+  unit:
+  - every stack source id exists in register
+  - stack lists orthography, lexicon, grammar, corpora, tools
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-04
+- EXT-22
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

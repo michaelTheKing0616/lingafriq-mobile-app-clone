@@ -1,0 +1,102 @@
+charter: v2
+id: P8-918
+kind: build
+title: 'Play hub: headliner row of the ten flagship games'
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.3-12
+depends_on:
+- E-P8-PLAY
+- P8-917
+- E-P3-DESIGN-SYSTEM
+size: S
+difficulty:
+  score: 2
+  blast: 1
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 1, coupling 1'
+token_budget: 25000
+file_allowlist:
+- lib/screens/games/games_screen.dart
+- lib/games/gamekit/all_games_registry.dart
+context_anchors:
+- ELEVATION.md#§10.3:L1769
+acceptance_criteria:
+- id: AC1
+  text: Given the Arcade home, when it loads, then a Headliners row shows the ten flagship games in registry order with a
+    Featured badge on Tone Forge
+- id: AC2
+  text: Given a flagship whose card is not Done, when the row renders, then it shows 'Coming soon' and is not tappable
+- id: AC3
+  text: Given the headliner list, when it is defined, then it lives in config and not in widget code
+test_plan:
+  unit:
+  - row from config
+  integration: []
+  security: []
+  e2e:
+  - tap headliner
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - ready
+  - playing
+  - correct
+  - wrong
+  - why_wrong
+  - results
+  - error
+  - offline
+  - practice_mode
+  - coming_soon
+  copy_keys:
+  - games.arcade_headliners.title
+  - games.arcade_headliners.instructions
+  - games.arcade_headliners.why_wrong
+  - games.arcade_headliners.practice_label
+  - games.arcade_headliners.error
+  tokens:
+  - color.surface.game
+  - color.feedback.correct
+  - color.feedback.wrong
+  - space.4
+  - radius.card
+  - type.title
+  motion_tier: product
+  a11y:
+  - screen-reader labels on every answer control
+  - reduced-motion variant
+  - correctness shown by icon and text not colour alone
+  - touch targets ≥48dp
+  goldens:
+  - arcade_headliners_playing
+  - arcade_headliners_why_wrong
+  - arcade_headliners_results
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/navigation-patterns
+  - prime/mobile-app-ui-design

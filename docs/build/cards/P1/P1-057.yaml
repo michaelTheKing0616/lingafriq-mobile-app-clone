@@ -1,0 +1,66 @@
+charter: v2
+id: P1-057
+kind: build
+title: Enable dependency update bot, audit gate and monthly pub check
+phase: P1
+epic: E-P1-AUTH
+req_ids:
+- EP-§13.1-34
+- EP-§13.1-35
+- EP-§13.1-36
+depends_on:
+- E-P0-INTAKE
+size: S
+difficulty:
+  score: 2
+  blast: 1
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: score 2; blast 1
+token_budget: 25000
+file_allowlist:
+- .github/dependabot.yml
+- .github/workflows/audit.yml
+- .github/workflows/pub-outdated.yml
+context_anchors:
+- ELEVATION.md#§13.1:L1874
+- ELEVATION.md#§13.1:L1874-L1875
+acceptance_criteria:
+- id: AC1
+  text: Given the config, when Dependabot or Renovate runs, then npm, pub and GitHub Actions ecosystems are covered
+- id: AC2
+  text: Given npm audit --omit=dev, when a high severity finding exists, then CI fails
+- id: AC3
+  text: Given the monthly schedule, when it fires, then flutter pub outdated output is posted as an issue
+test_plan:
+  unit: []
+  integration:
+  - workflow dry run with seeded advisory
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G1
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

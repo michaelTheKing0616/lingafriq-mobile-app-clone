@@ -1,0 +1,108 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P10
+epic: E-P10-ME
+hub: Me
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: Me hub screen revive or consolidation; no real-time audio
+token_budget: 80000
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f_140.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+p0_area: true
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+test_plan:
+  unit:
+  - badge eligibility from verified events
+  integration:
+  - achievements screen loads server awards
+  e2e:
+  - view cabinet after server-triggered badge
+  a11y:
+  - cabinet grid semantics
+  content:
+  - badge artwork labels
+tags: []
+id: F-140
+title: Elevate Achievements & Badges
+req_ids:
+- F-140
+- F-140.D
+- F-140.E
+- F-140.U
+- F-140.L
+- P0-8
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P6-SCORER
+- E-P1-ECONOMY
+file_allowlist:
+- screens/achievements/achievements_screen.dart
+- screens/gamification/badge_collection_screen_material3.dart
+- screens/gamification/badge_collection_screen.dart
+context_anchors:
+- ELEVATION.md#§18.7:L5478-L5491
+delta:
+  current_state: Achievements and badge routes work.
+  defects_to_fix:
+  - XP can be self-awarded
+  - Badges reward volume not mastery
+  elevation_to_build:
+  - Cultural badges for real milestones such as proverb use, tones, first native conversation
+  - Regional craft-inspired artwork with review
+  - Server-verified award only
+  ux_and_render:
+  - Badge cabinet with story behind each design
+  hub_placement: Me → Achievements
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given a milestone event on server, when criteria met, then badge unlocks without any client-side XP minting.
+- id: AC2
+  text: Given P0-8 self-award paths, when achievements refresh, then no local-only unlock buttons remain.
+- id: AC3
+  text: Given a badge, when the user opens detail, then cultural story and verification label are shown.
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/hooked-ux
+  - prime/feedback-patterns

@@ -1,0 +1,58 @@
+charter: v2
+id: P3-006
+kind: adr
+title: 'ADR-011: ratify five tabs, Me and three global tools'
+phase: P3
+epic: E-P3-SHELL
+req_ids:
+- EP-§3.3-01
+- EP-§3.3-02
+- EP-§17.1-01
+- EP-§17-01
+depends_on:
+- P3-002
+size: S
+difficulty:
+  score: 2
+  blast: 1
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T4
+  tester: T0
+  reviewer: T4
+  justification: ADR owned by T4
+token_budget: 25000
+file_allowlist:
+- docs/build/design/ADR-011.md
+context_anchors:
+- ELEVATION.md#§3.3:L790-L822
+- ELEVATION.md#§17.1:L2169
+acceptance_criteria:
+- id: AC1
+  text: Given the target IA, when the ADR is written, then it fixes five tabs (Today, Learn, Speak, Play, Village), Me top-left
+    and global Search, Lens and Word Card
+- id: AC2
+  text: Given the no-cut rule, when accepted, then the ADR states that every route keeps a home and the drawer is replaced
+    only after the route map is 100% mapped
+- id: AC3
+  text: Given Tope owns the decision, when drafted, then the ADR status is Proposed until Tope accepts
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - prime/diagram-design

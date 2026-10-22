@@ -1,0 +1,49 @@
+card_id,role,model_tier,model_slug,tokens_in,tokens_out,attempts,outcome,note
+P0-INT-RTM-02,extract,T1,composer-2.5-fast,n/a,n/a,1,pass,§2 inventory 54 rows
+P0-INT-RTM-03,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§3 76 rows
+P0-INT-RTM-04,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§4 163 rows
+P0-INT-RTM-05,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§5 32 rows
+P0-INT-RTM-06,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§6 202 rows
+P0-INT-RTM-07,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§7 168 rows
+P0-INT-RTM-08,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§8 94 rows
+P0-INT-RTM-09,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§9 129 rows
+P0-INT-RTM-10,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§10 76 rows
+P0-INT-RTM-11,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§11-12 104 rows
+P0-INT-RTM-13,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§13 169 rows
+P0-INT-RTM-14,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§14-15 97 rows
+P0-INT-RTM-16,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§0+§16 129 rows
+P0-INT-RTM-17,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,§17 226 rows
+P0-INT-RTM-C02,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,CP §0-2 168 rows
+P0-INT-RTM-C39,extract,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,CP §3-9 263 rows
+P0-INT-SKELETON,orchestrate,T4,claude-fable-5-1,n/a,n/a,1,pass,Stage A+B: scripts + 00-04 docs + templates + state files
+P0-INT-CARDS-ENG,draft,T2,claude-sonnet-5-5-high,n/a,n/a,1,pass,"14 engineering slices → 928 cards (P0–P6, P7–P13 eng, epics)"
+P0-INT-CARDS-FEAT,draft,T1,composer-2.5-fast,n/a,n/a,1,pass,8 feature slices → F-001…F-151
+P0-INT-FIXES,orchestrate,T4,claude-fable-5-1,n/a,n/a,1,pass,"script fixes (relative paths, epic ships-after rule), EXT-24…30, harvest lists, honest-state + minor-gate ACs, 42 gate-critical reviewer→T4"
+P0-INT-DOCS-05-07,write,T4,claude-fable-5-1,n/a,n/a,1,pass,"05_UX_DESIGN_BAR, 06_TEST_STRATEGY, 07_REVIEW_STANDARDS"
+P0-INT-AUDIT,audit,T0,scripts,0,0,1,pass,validate 1079 OK · deps OK · coverage unmapped 0 · charter 1092 OK
+P0-INT-G0,gate,T4,claude-fable-5-1,n/a,n/a,1,pass,COVERAGE_REPORT.md + gates/G0_PACKET.md; D11–D19 raised
+P0-INT-SKILLS,orchestrate,T4,claude-fable-5-1,n/a,n/a,1,pass,08_SKILLS_MAP + assign_skills.py (1079 cards) + brief SKILLS slot + ORCHESTRATOR_PROMPT; G0 signed
+P1-007,build,T3,grok-4.7-xhigh,n/a,n/a,2,pass,controller 100/100 lines and branches; promptTemplates.ts:30 unreachable empty-template throw
+P1-031,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,2,pass,practice banner replaces finishGame; source-scan tests only
+P1-029,build,T3,grok-4.7-xhigh,n/a,n/a,3,pass,placeholder bundles out of pubspec; linter gates release and sideload builds
+P1-030,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,false tone and grammar quarantined; greeting cites elevation audit
+P1-032,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,2,pass,503 retryable on analyze/quick/batch; tutor banner shows pron.unavailable; omitted 200 fields still default overall_score 0.0
+P1-008,build,T3,grok-4.7-xhigh,n/a,n/a,2,pass,D21 clamps and quotas; provider rejection releases the reservation before 500
+P1-026,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,deny-AI instruction removed; persistent AI-recreation label; identity question answered before the model
+P1-012,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,2,pass,missions POST gateway mode roleplay with no client key; errors retry without a canned reply
+P1-014,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,socket identity is handshake.auth.token only; user_connected cannot rebind off the JWT subject
+P1-017,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,2,pass,ordinary user award is 403; lesson_completed credits rule table 25; is_admin JWT can grant and is audit-logged
+P1-013,build,T3,grok-4.7-xhigh,n/a,n/a,1,pass,non-member join is 403 with no room event; private rooms emit a server UUIDv7; REST still uses private_* ids
+P1-018,build,T3,grok-4.7-xhigh,n/a,n/a,2,pass,client points are 403; lesson amount and metadata stay at server base 30; cap is 500; sourceId is not a verified lesson event
+P1-015,build,T3,grok-4.7-xhigh,n/a,n/a,1,pass,room events use io.to(roomId); presence requires mutual share_presence; client roomId is not membership-checked
+P1-016,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,suite covers non-member join, JWT identity, and bystander leaks; onlineUsers map is not asserted
+P1-019,build,T3,grok-4.7-xhigh,n/a,n/a,1,pass,dry-run flags and writes nothing; apply stores the prior; second run writes 0; a crash before the adjustment row drops that prior
+P1-023,build,T3,grok-4.7-xhigh,n/a,n/a,1,pass,hosted moderation runs before chat delivery; substring filter is deleted; threshold is 0.8; no provider is signed; lesson options still skip the gate
+P1-027,build,T3,grok-4.7-xhigh,n/a,n/a,3,pass,skill whatever discrimination and killing are not substring-blocked; historical violence uses the server reply; an allow plus historical_violence is not overridden
+P1-028,build,T1,grok-4.7-xhigh,n/a,n/a,1,pass,Nzema not Twi; 1957 is Britain's first African majority-rule independence not the first sub-Saharan; historian review pending; Yankah's Fante is omitted
+P1-033,build,T3,grok-4.7-xhigh,n/a,n/a,1,pass,semver logout deleted; schema steps run once to version 2; failure shows SchemaRecoveryApp; Hive restore clears the box before rewrite and tests do not open Hive
+P1-024,build,T2,grok-4.7-xhigh,n/a,n/a,2,pass,reports return a reference id from the JWT subject; blocked private snap and global socket delivery are suppressed; a thrown block lookup fail-opens
+P1-034,build,T2,grok-4.7-xhigh,n/a,n/a,2,pass,startup migrates Map.toString before the reask gate; invalid JSON is a typed error; a no-quote heuristic can re-ask every field
+P1-035,build,T3,grok-4.7-xhigh,n/a,n/a,1,pass,simulate-sync queue deleted; rows delete only after ok true; failures keep attempts and backoff; Hive box is the only queue; lesson progress uses progress_metrics_merge
+P1-036,build,T4,grok-4.7-xhigh,n/a,n/a,1,pass,AES-GCM with a fresh nonce; a flipped bit throws cache_integrity_failed and returns no data; legacy records are discarded and not decrypted
+P1-037,build,T3,grok-4.7-xhigh,n/a,n/a,3,pass,API process starts no scheduler; one lock holder sends; a waiter follows the renewed lease; user reads are one query per collection

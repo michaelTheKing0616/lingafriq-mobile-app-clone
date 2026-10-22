@@ -1,0 +1,72 @@
+charter: v2
+id: P12-001
+kind: build
+title: Remove duplicated curriculum JSONs from the bundle
+phase: P12
+epic: E-P12-RELEASE
+req_ids:
+- EP-§13.6-01
+- EP-§13.6-02
+depends_on:
+- E-P10-ME
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 3: blast 1, ambiguity 1, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist:
+- pubspec.yaml
+- assets/data/lingafriq_authentic_curriculum_a1.json
+- assets/data/lingafriq_authentic_curriculum_a1_a2_b1.json
+- assets/data/lingafriq_authentic_curriculum_a1_c1.json
+- assets/data/lingafriq_authentic_curriculum_a1_c2.json
+- scripts/ci/dedupe_assets_check.py
+context_anchors:
+- ELEVATION.md#§13.6:L1925
+acceptance_criteria:
+- id: AC1
+  text: Given the four assets/data/lingafriq_authentic_curriculum_*.json files, when the dedupe script hashes them, then it
+    lists every byte-identical group and fails the build if a group has more than one member still declared in pubspec.yaml
+- id: AC2
+  text: Given the release APK is built after removal, when asset sizes are compared with the pre-removal build, then the reported
+    saving is the measured byte delta (target ~34 MB per the source) and no number is hard-coded
+- id: AC3
+  text: Given a removed JSON is still referenced by code, when the app analyzer runs, then it fails loud with the referencing
+    path and the build is blocked
+test_plan:
+  unit:
+  - dedupe_assets_check hash grouping
+  integration:
+  - flutter build apk asset listing
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Content must stay reachable via the item bank in E-P4-CONTENT-ENGINE before removal
+gate: G12
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

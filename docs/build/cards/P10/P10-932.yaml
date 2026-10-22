@@ -1,0 +1,69 @@
+charter: v2
+id: P10-932
+kind: build
+title: Emit speech and AI turn events
+phase: P10
+epic: E-P10-ANALYTICS
+req_ids:
+- EP-§15-10
+- EP-§15-12
+depends_on:
+- E-P6-SCORER
+- P10-930
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: score 4; blast 1
+token_budget: 60000
+file_allowlist:
+- lib/services/analytics_service.dart
+- node-backend/src/services/ai-gateway.analytics.ts
+context_anchors:
+- ELEVATION.md#§15:L1995-L1996
+acceptance_criteria:
+- id: AC1
+  text: Given a speech attempt is scored, when it ends, then speech_attempt_scored carries phones_ok, tone_ok and confidence
+    and no audio.
+- id: AC2
+  text: Given a scorer returns unsure, when the event is sent, then it records the unsure state and does not fill a score.
+- id: AC3
+  text: Given an AI turn completes, when it ends, then ai_turn carries mode, tokens, latency and fallback_used.
+- id: AC4
+  text: Given an AI turn used a fallback, when the event is sent, then fallback_used is true.
+test_plan:
+  unit:
+  - unsure recorded
+  integration:
+  - ai_turn fields
+  security:
+  - no audio or text
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

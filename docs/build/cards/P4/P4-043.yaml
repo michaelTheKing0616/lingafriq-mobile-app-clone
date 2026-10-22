@@ -1,0 +1,64 @@
+charter: v2
+id: P4-043
+kind: build
+title: Lint Hausa hooked letters, display versus teaching text
+phase: P4
+epic: E-P4-LINTERS
+req_ids:
+- CP-§3.3-09
+- CP-§3.3-10
+depends_on:
+- P4-039
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 0
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 3: blast 1, ambiguity 1, coupling 0, depth 1, size 0'
+token_budget: 25000
+file_allowlist:
+- tools/content_engine/linters/hausa.py
+- tools/content_engine/tests/test_hausa.py
+context_anchors:
+- CURRICULUM.md#§3.3:L527-L528
+acceptance_criteria:
+- id: AC1
+  text: Given Hausa text, when ɓ ɗ ƙ ƴ or ʼ are replaced by plain letters, then it fails with HA_HOOKED_LETTER
+- id: AC2
+  text: Given display text, when it contains tone or length marks, then it fails with HA_DISPLAY_MARKED
+- id: AC3
+  text: Given teaching text, when a mark has no dictionary-sourced form, then it fails with HA_MARK_NO_DICT
+test_plan:
+  unit:
+  - pass and fail fixtures
+  integration:
+  - CI blocks merge on failure
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

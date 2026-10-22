@@ -1,0 +1,69 @@
+charter: v2
+id: P3-074
+kind: build
+title: Persist onboarding steps with typed JSON
+phase: P3
+epic: E-P3-ONBOARDING
+req_ids:
+- EP-§5.1-05
+- EP-§5.1-08
+- EP-§5.3-01
+depends_on:
+- P3-067
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- lib/services/onboarding_state_service.dart
+- lib/models/onboarding_state.dart
+- test/services/onboarding_state_test.dart
+context_anchors:
+- ELEVATION.md#§5.1:L1033-L1036
+- ELEVATION.md#§5.3:L1062-L1063
+acceptance_criteria:
+- id: AC1
+  text: Given each onboarding step, when completed, then its answer saves as typed jsonEncode and no Map.toString is used
+- id: AC2
+  text: Given an app update, when it launches, then onboarding is not reset
+- id: AC3
+  text: Given the app is killed mid-flow, when reopened, then it resumes at the last completed step
+- id: AC4
+  text: Given a corrupted saved state, when read, then a typed error shows and the flow restarts from step 1 with an explanation
+test_plan:
+  unit:
+  - round trip
+  - corrupt state
+  integration:
+  - upgrade keeps state
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

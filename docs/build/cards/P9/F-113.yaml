@@ -1,0 +1,120 @@
+charter: v2
+id: F-113
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Global Chat as Language Squares
+phase: P9
+epic: E-P9-SAFETY
+hub: Village
+req_ids:
+- F-113
+- F-113.D
+- F-113.E
+- F-113.U
+- F-113.L
+- P0-4
+- P0-5
+- P0-6
+- P0-10
+- P0-11
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P9-SAFETY
+- P9-936
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: social/village feature complexity and coupling'
+token_budget: 80000
+file_allowlist:
+- lib/screens/chat/global_chat_screen_material3.dart
+- lib/screens/chat/global_chat_screen.dart
+- lib/screens/chat/community_chat_screen.dart
+- lib/screens/chat/community_chat_screen_material3.dart
+context_anchors:
+- ELEVATION.md#§18.6:L5105-L5120
+delta:
+  current_state: Global chat route works; legacy community variants unrouted.
+  defects_to_fix:
+  - P0-4/5/6 socket flaws
+  - Moderation cosmetic (P0-11)
+  - Open to minors without gates (P0-10)
+  elevation_to_build:
+  - 'Language Squares: public rooms by language and level'
+  - Target-language-only mode, Tone Lens, tap-to-translate, correct-me requests
+  - Real moderation and slow-mode
+  ux_and_render:
+  - Level badges and pinned daily topic in chat
+  hub_placement: Village → Square → Rooms
+  unlock_stage: per §17.4
+  harvest_list:
+  - Merge unrouted global and community chat screens into the Squares experience
+acceptance_criteria:
+- id: AC1
+  text: Given a public Square room, when a minor attempts entry, then guardian tier rules block or restrict per P0-10
+- id: AC2
+  text: Given messaging, when sent, then socket layer satisfies P0-4/5/6 identity and metadata controls
+- id: AC3
+  text: Given moderation actions, when applied, then they are functional not cosmetic and respect P0-11
+- id: AC4
+  text: Given legacy chat files, when built, then only the consolidated Squares routes ship
+test_plan:
+  unit:
+  - delta defects covered
+  - routing and state transitions
+  integration:
+  - hub navigation and backend contracts
+  e2e:
+  - primary user journey on device
+  a11y:
+  - semantics
+  - 200% text scale goldens
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f-113.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+tags:
+- under18_social
+p0_area: true
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux
+  - adaptive/14-safety-and-high-stakes

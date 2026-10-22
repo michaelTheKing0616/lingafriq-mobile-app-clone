@@ -1,0 +1,70 @@
+charter: v2
+id: P4-125
+kind: build
+title: Build pilot cohort and promotion gate runner
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.4-49
+- EP-§6.4-65
+depends_on:
+- P4-110
+- P4-134
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 2, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- tools/content_pipeline/pilot_gate.py
+- tools/content_pipeline/readiness.py
+- test/content/test_pilot_gate.py
+context_anchors:
+- ELEVATION.md#§6.4.1:L1264-L1292
+acceptance_criteria:
+- id: AC1
+  text: Given a language at L(n), when a beta cohort of declared size has run for the pilot window, then item statistics are
+    attached to the promotion request
+- id: AC2
+  text: Given the promotion request, when evaluated, then all gates for L(n+1) are checked and the result lists each gate
+    pass or fail
+- id: AC3
+  text: Given any failing gate, when promotion is attempted, then it is refused PROMOTION_BLOCKED and the level does not change
+- id: AC4
+  text: Given pilot week 6-8 timing, when exceeded, then the report flags overdue
+test_plan:
+  unit:
+  - test_pilot_gate
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- native_verified_rule
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

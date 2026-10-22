@@ -1,0 +1,70 @@
+charter: v2
+id: P6-032
+kind: build
+title: Fine-tune Omnilingual CTC per language, not MMS weights
+phase: P6
+epic: E-P6-SCORING
+req_ids:
+- EP-§7.4-06
+- EP-§7.4-07
+depends_on:
+- P6-021
+size: L
+difficulty:
+  score: 8
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T3
+  justification: 'score 8: blast 2, ambiguity 2, coupling 1, depth 2; DSP tester T3'
+token_budget: 160000
+file_allowlist:
+- speech-service/scorer/acoustic/finetune.py
+- speech-service/scorer/acoustic/licence_check.py
+context_anchors:
+- ELEVATION.md#§7.4:L1430-L1434
+acceptance_criteria:
+- id: AC1
+  text: Given Omnilingual wav2vec2/CTC (Apache-2.0) and native recordings, when fine-tuned per Stage-1 language, then a checkpoint
+    and training report exist per language
+- id: AC2
+  text: Given any checkpoint, when the licence check runs, then MMS (CC-BY-NC) derived weights fail the build with typed error
+    licence_blocked
+- id: AC3
+  text: Given the recordings used, when training starts, then each has a consent and commercial-use licence row
+test_plan:
+  unit:
+  - licence check
+  integration:
+  - tiny fixture train
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Native recordings depend on EXT-13
+gate: G8
+external_blockers:
+- EXT-13
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

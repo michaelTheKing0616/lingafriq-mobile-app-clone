@@ -1,0 +1,83 @@
+charter: v2
+id: P1-008
+kind: build
+title: Enforce token clamps, per-user quotas and cost budgets in gateway
+phase: P1
+epic: E-P1-AI-GATEWAY
+req_ids:
+- P0-9
+- P0-3
+- RM-P0-02
+depends_on:
+- E-P0-INTAKE
+- P1-007
+size: M
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T3
+  justification: score 8; blast 3; security/crypto tester
+token_budget: 70000
+file_allowlist:
+- node-backend/src/services/aiGateway/quota.service.ts
+- node-backend/src/services/aiGateway/costBudget.service.ts
+- node-backend/src/services/aiGateway/limits.ts
+- node-backend/src/controllers/aiCompletion.controller.ts
+- node-backend/src/__test__/P1-007.aiGateway.test.ts
+- node-backend/src/__test__/P1-008.gatewayLimits.test.ts
+context_anchors:
+- ELEVATION.md#§1:L182-L193
+- ELEVATION.md#§1:L114-L129
+- ELEVATION.md#§16.1:L2022-L2025
+acceptance_criteria:
+- id: AC1
+  text: Given a request asking max_tokens above the per-mode cap, when processed, then the value is clamped to the cap and
+    the response reports the clamped value
+- id: AC2
+  text: Given a user at their daily quota, when they call the gateway again, then it returns 429 quota_exceeded with a reset
+    time and makes no provider call
+- id: AC3
+  text: Given the global monthly cost budget reaches 100 percent, when a request arrives, then it returns 503 budget_exhausted
+    and an alert is emitted at 80 percent
+- id: AC4
+  text: Given concurrent requests from one user, when the quota counter is incremented, then no request exceeds the quota
+    (atomic counter test)
+test_plan:
+  unit:
+  - clamp, quota, budget math
+  integration:
+  - 429 and 503 paths with Redis
+  security:
+  - race on quota counter
+  e2e: []
+  perf:
+  - gateway overhead p95 under 20 ms excluding provider
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Quota and budget values signed as D21 (cap 256, default 128, 20 requests and 4000 tokens per user per day, $20 monthly)
+- "A reserve and a provider failure that cross UTC midnight can skip rollback, because release reads a fresh Date"
+gate: G1
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

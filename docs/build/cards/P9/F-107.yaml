@@ -1,0 +1,102 @@
+charter: v2
+id: F-107
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Elder Hut
+phase: P9
+epic: E-P9-SAFETY
+hub: Village
+req_ids:
+- F-107
+- F-107.D
+- F-107.E
+- F-107.U
+- F-107.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P9-SAFETY
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: social/village feature complexity and coupling'
+token_budget: 80000
+file_allowlist:
+- lib/screens/village/elder_hut_screen.dart
+context_anchors:
+- ELEVATION.md#§18.6:L5021-L5032
+delta:
+  current_state: Elder Hut route works with static wisdom content.
+  defects_to_fix:
+  - Static content without bookable mentor flows
+  elevation_to_build:
+  - Micro-mentor booking for short verified native-speaker sessions
+  - Proverb of the day with story and labelled human cultural Q&A
+  ux_and_render:
+  - Warm interior art and mentor cards with verified badge
+  hub_placement: Village → map → Elder Hut
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given Elder Hut, when booking, then only verified mentors appear and sessions respect minor safety tiers
+- id: AC2
+  text: Given cultural Q&A, when answered, then responses are human-authored and clearly labelled
+test_plan:
+  unit:
+  - delta defects covered
+  - routing and state transitions
+  integration:
+  - hub navigation and backend contracts
+  e2e:
+  - primary user journey on device
+  a11y:
+  - semantics
+  - 200% text scale goldens
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f-107.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+tags:
+- under18_social
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux
+  - adaptive/14-safety-and-high-stakes

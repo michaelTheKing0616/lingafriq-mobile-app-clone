@@ -1,0 +1,64 @@
+charter: v2
+id: P5-067
+kind: build
+title: Wire isiZulu TTS with Azure zu-ZA Thando and Themba
+phase: P5
+epic: E-P5-AUDIO
+req_ids:
+- CP-§7-zu-01
+- CP-§7-zu-02
+- CP-§7-zu-03
+depends_on:
+- P5-058
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/services/tts/zu_tts.dart
+- test/audio/zu_tts_test.dart
+context_anchors:
+- CURRICULUM.md#§7:L738-L741
+acceptance_criteria:
+- id: AC1
+  text: Given isiZulu text, when synthesised, then Azure zu-ZA Thando or Themba is used
+- id: AC2
+  text: Given FLEURS and WAXAL, when used, then the subset licence is checked
+- id: AC3
+  text: Given a batch, when approved, then ASR round-trip (Intron or Lelapa) plus listen pass and clicks are checked
+test_plan:
+  unit:
+  - voices
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

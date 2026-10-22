@@ -1,0 +1,102 @@
+charter: v2
+id: P9-951
+kind: build
+title: Build Native Corrections with verified natives and reputation
+phase: P9
+epic: E-P9-VILLAGE
+req_ids:
+- EP-§9.2-29
+- EP-§9.2-30
+- EP-§9.2-31
+- EP-§9.2-32
+depends_on:
+- E-P9-SAFETY
+- P9-945
+- P9-930
+size: L
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 0'
+token_budget: 200000
+file_allowlist:
+- lib/screens/social/community_corrections_screen.dart
+- node-backend/src/services/nativeCorrections.service.ts
+- node-backend/src/models/correctorReputation.ts
+context_anchors:
+- ELEVATION.md#§9.2:L1612-L1615
+acceptance_criteria:
+- id: AC1
+  text: Given a learner posting a phrase or voice note, when submitted, then it appears in the corrections queue for verified
+    natives of that language
+- id: AC2
+  text: Given a verified native, when correcting, then the correction is labelled with their verification and reputation score
+    and the learner can mark it helpful
+- id: AC3
+  text: Given reputation, when computed, then it uses helpful marks and moderator reviews and is not shown for fewer than
+    5 corrections
+- id: AC4
+  text: Given an accepted correction, when it conflicts with the content store, then it is routed to the content QA queue
+    and nothing is auto-published
+- id: AC5
+  text: Given the account is under 18 or age-unknown, when this surface is opened, then it is hidden or guardian-gated until
+    E-P9-SAFETY is Done, and the restriction is enforced server-side.
+test_plan:
+  unit:
+  - reputation math
+  integration:
+  - correction to QA queue
+  security:
+  - fake native verification
+  e2e: []
+  perf: []
+  a11y:
+  - corrections screen
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - empty
+  - queue
+  - answered
+  - disputed
+  copy_keys:
+  - corrections.title
+  - corrections.native.badge
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - corrections_default
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

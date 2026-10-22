@@ -1,0 +1,70 @@
+charter: v2
+id: P11-052
+kind: build
+title: Expand cast to archetypes and per-language hosts
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- AV-step7
+- EP-§4.4-01
+- EP-§4.4-02
+- EP-§4.4-03
+- EP-§4.6-27
+depends_on:
+- P11-041
+- P11-045
+- P11-043
+size: L
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1, depth 0'
+token_budget: 150000
+file_allowlist:
+- assets/rive/avatars/lingafriq_cast.riv
+- docs/build/avatars/character_bible.md
+context_anchors:
+- ELEVATION.md#§4.4:L961-L964
+- ELEVATION.md#§4.6:L1022
+acceptance_criteria:
+- id: AC1
+  text: Given the Elder, Weaver, Griot and Timekeeper archetypes, when added, then each passes steps 3–6.
+- id: AC2
+  text: Given Lagos, Accra and Nairobi hosts, when added, then each has voice, personality bible and passes steps 3–6.
+- id: AC3
+  text: Given each added character, when CI runs, then the budgets and contract tests pass.
+test_plan:
+  unit: []
+  integration:
+  - budgets and contract per character
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers:
+- EXT-16
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

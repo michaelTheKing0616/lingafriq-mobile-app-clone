@@ -1,0 +1,76 @@
+charter: v2
+id: P2-004
+kind: build
+title: Build content schema validator as blocking CI job
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.9-07
+- EP-§6.5-01
+- EP-§6.5-22
+- EP-§6.5-23
+depends_on:
+- E-P1-CONTAINMENT
+- P2-002
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- scripts/content/validate_content.py
+- content/schema/v1.json
+- .github/workflows/content-assets.yml
+- test/content/validator_test.py
+context_anchors:
+- ELEVATION.md#§13.9:L1952
+- ELEVATION.md#§6.5:L1293
+- ELEVATION.md#§6.5:L1317
+- ELEVATION.md#§6.5:L1317-L1318
+acceptance_criteria:
+- id: AC1
+  text: Given a content item failing the §6.5 JSON Schema, when the validator job runs, then CI fails with item id and JSON
+    pointer
+- id: AC2
+  text: Given text not in NFC, when the validator runs, then it fails naming the field
+- id: AC3
+  text: Given a tonal-language lemma missing tone marks, when the validator runs, then it fails
+- id: AC4
+  text: Given all four legacy bundles, when the validator runs, then none is accepted as the new schema and a migration report
+    is emitted
+test_plan:
+  unit:
+  - schema fixtures
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - legacy bundle rejection report
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

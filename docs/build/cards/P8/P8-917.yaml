@@ -1,0 +1,121 @@
+charter: v2
+id: P8-917
+kind: build
+title: 'Play hub: every existing game stays on a skill shelf'
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.3-11
+- EP-§10.3-13
+- EP-§10.3-14
+- EP-§10.1-01
+depends_on:
+- E-P8-PLAY
+- E-P7-HUBS
+- E-P3-DESIGN-SYSTEM
+size: L
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, coupling 2'
+token_budget: 150000
+file_allowlist:
+- lib/screens/games/games_screen.dart
+- lib/screens/games/games_screen_enhanced_with_all_games.dart
+- lib/games/gamekit/all_games_registry.dart
+- lib/games/gamekit/universal_game_screen.dart
+- test/games/arcade_shelf_coverage_test.dart
+context_anchors:
+- ELEVATION.md#§10.1:L1662
+- ELEVATION.md#§10.3:L1677
+- ELEVATION.md#§10.3:L1772
+acceptance_criteria:
+- id: AC1
+  text: Given the registry of every existing game screen (about 45 plus those under lib/screens/games), when the Arcade builds,
+    then each game appears on exactly one skill shelf and none is removed
+- id: AC2
+  text: Given a game id in the registry with no shelf, when CI runs, then arcade_shelf_coverage_test fails naming the game
+- id: AC3
+  text: Given a flagship that harvests an older game, when the shelf renders, then the older game is still listed until P8-916
+    parity is recorded
+- id: AC4
+  text: Given a game's shelf entry, when opened, then the entry links to its §18.5 elevation card id and shows 'elevation
+    pending' if not yet shipped
+- id: AC5
+  text: Given the Arcade home, when it loads, then shelves load lazily and the first shelf is interactive in under 1 s on
+    the reference device
+test_plan:
+  unit:
+  - shelf assignment
+  integration:
+  - registry vs shelf coverage
+  security: []
+  e2e:
+  - open any game from its shelf
+  perf:
+  - first shelf TTI
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - ready
+  - playing
+  - correct
+  - wrong
+  - why_wrong
+  - results
+  - error
+  - offline
+  - practice_mode
+  - empty_shelf
+  - elevation_pending
+  copy_keys:
+  - games.arcade_shelves.title
+  - games.arcade_shelves.instructions
+  - games.arcade_shelves.why_wrong
+  - games.arcade_shelves.practice_label
+  - games.arcade_shelves.error
+  tokens:
+  - color.surface.game
+  - color.feedback.correct
+  - color.feedback.wrong
+  - space.4
+  - radius.card
+  - type.title
+  motion_tier: product
+  a11y:
+  - screen-reader labels on every answer control
+  - reduced-motion variant
+  - correctness shown by icon and text not colour alone
+  - touch targets ≥48dp
+  goldens:
+  - arcade_shelves_playing
+  - arcade_shelves_why_wrong
+  - arcade_shelves_results
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- §18.5 elevation cards are written elsewhere; link by id only
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/navigation-patterns
+  - prime/mobile-app-ui-design

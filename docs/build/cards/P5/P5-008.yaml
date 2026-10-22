@@ -1,0 +1,73 @@
+charter: v2
+id: P5-008
+kind: build
+title: Define item schema v2 with provenance, label and audio kind
+phase: P5
+epic: E-P5-QUALITY
+req_ids:
+- CP-§4-20
+- CP-§4-21
+- CP-§4-22
+- CP-§4-31
+depends_on:
+- E-P4-CONTENT-ENGINE
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- schemas/v2/item.schema.json
+- tools/content/item_validator.py
+- test/content/item_schema_test.py
+context_anchors:
+- CURRICULUM.md#§4:L570-L571
+acceptance_criteria:
+- id: AC1
+  text: Given an item, when validated, then it contains the elevation §6.5 fields plus provenance.sources[], claims[{text,
+    source_id, locator}], confidence, risk_tags[]
+- id: AC2
+  text: Given label, when set, then it is one of beta|expert|native and audio.kind is tts|human; any other value fails with
+    SchemaError
+- id: AC3
+  text: Given an item without sources or with a claim lacking source_id or locator, when validated, then it fails and cannot
+    publish
+- id: AC4
+  text: Given the schema, when versioned, then item version increments on every content or audio change
+test_plan:
+  unit:
+  - schema valid/invalid fixtures
+  integration:
+  - validator in CI
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Elevation plan §6.5 text is the companion doc already superseded by _3.pdf (EXT-02 resolved)
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

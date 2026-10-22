@@ -1,0 +1,75 @@
+charter: v2
+id: P4-061
+kind: build
+title: Gate tone and diacritics by three-way agreement
+phase: P4
+epic: E-P4-PIPELINE
+req_ids:
+- CP-§3.1-07
+- CP-§3.1-22
+- CP-§3.1-24
+- CP-§3.2-02
+- CP-§3.2-09
+depends_on:
+- P4-053
+- P4-041
+- P4-042
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 2, coupling 1, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- tools/content_engine/pipeline/tone_agreement.py
+- tools/content_engine/tests/test_tone_agreement.py
+context_anchors:
+- CURRICULUM.md#§3.1:L493-L496
+- CURRICULUM.md#§3.2:L503-L503
+acceptance_criteria:
+- id: AC1
+  text: Given every token, when matched to a lexicon entry, then the item passes only if lexicon form, generator form and
+    restorer form agree
+- id: AC2
+  text: Given any disagreement or an unmatched tone-marked token, when evaluated, then the item goes to a linguist (100% where
+    unmatched)
+- id: AC3
+  text: 'Given no restoration model exists for the language, when evaluated, then agreement uses lexicon plus generator and
+    the report states restorer: none'
+test_plan:
+  unit:
+  - happy path
+  - typed error path
+  integration:
+  - stage contract with fixtures
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- tone_accuracy_gate
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

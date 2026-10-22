@@ -1,0 +1,67 @@
+charter: v2
+id: P4-008
+kind: build
+title: Gate register rows on counsel and owner sign-off
+phase: P4
+epic: E-P4-LICENCES
+req_ids:
+- CP-§2.1-03
+depends_on:
+- P4-001
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 0
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 3: blast 1, ambiguity 1, coupling 0, depth 1, size 0'
+token_budget: 25000
+file_allowlist:
+- tools/content_engine/licences/check_register.py
+- tools/content_engine/tests/test_signoff.py
+context_anchors:
+- CURRICULUM.md#§2.1:L108-L109
+acceptance_criteria:
+- id: AC1
+  text: Given a source row, when counsel_status is not confirmed, then allowed_uses.display and training cannot be set true
+    and the register command exits non-zero with COUNSEL_PENDING
+- id: AC2
+  text: Given a verbatim-copy source, when copying text, then the item must carry a register id and attribution_text or the
+    build fails with ATTRIBUTION_MISSING
+- id: AC3
+  text: Given counsel sign-off is outstanding at G4, when the gate runs, then the card reports Blocked-External EXT-03 instead
+    of passing
+test_plan:
+  unit:
+  - pending counsel blocks display
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-03
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

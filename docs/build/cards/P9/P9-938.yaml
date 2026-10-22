@@ -1,0 +1,74 @@
+charter: v2
+id: P9-938
+kind: build
+title: Run MLS delivery service storing ciphertext and key packages only
+phase: P9
+epic: E-P9-E2EE
+req_ids:
+- EP-§9.3-03
+- EP-§9.3-01
+depends_on:
+- E-P9-SAFETY
+- P9-937
+- P9-908
+size: L
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T3
+  justification: 'score 8: blast 3, ambiguity 1, coupling 2, depth 2'
+token_budget: 200000
+file_allowlist:
+- node-backend/src/services/mls/deliveryService.ts
+- node-backend/src/services/mls/keyPackages.ts
+context_anchors:
+- ELEVATION.md#§9.3:L1629-L1630
+acceptance_criteria:
+- id: AC1
+  text: Given an E2EE conversation, when the server stores or relays a message, then it holds ciphertext only and a test asserts
+    no plaintext field exists in storage or logs
+- id: AC2
+  text: Given a user, when uploading key packages, then packages are single-use, signed and replenished with a low-watermark
+    alert
+- id: AC3
+  text: Given a member removal, when committed, then the removed member's device cannot decrypt any later message
+- id: AC4
+  text: Given a replayed or out-of-order commit, when received, then it is rejected with MLS_COMMIT_INVALID
+test_plan:
+  unit:
+  - key package lifecycle
+  integration:
+  - add remove member
+  - multi-device
+  security:
+  - plaintext leak scan
+  - replay
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

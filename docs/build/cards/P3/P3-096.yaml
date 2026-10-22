@@ -1,0 +1,81 @@
+charter: v2
+id: P3-096
+kind: build
+title: Support RTL layouts for Arabic and Ajami
+phase: P3
+epic: E-P3-A11Y-I18N
+req_ids:
+- EP-§13.8-06
+depends_on:
+- P3-094
+- P3-020
+size: M
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 4: blast 0, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/design/a11y/rtl_support.dart
+- test/goldens/rtl_test.dart
+context_anchors:
+- ELEVATION.md#§13.8:L1945
+acceptance_criteria:
+- id: AC1
+  text: Given Arabic locale, when the shell renders, then layout mirrors and tab order mirrors
+- id: AC2
+  text: Given Ajami target text, when rendered, then it flows right to left and Tone Lens mirrors correctly
+- id: AC3
+  text: Given directional icons, when mirrored, then non-directional icons stay unmirrored per list
+test_plan:
+  unit: []
+  integration:
+  - rtl goldens
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - ltr
+  - rtl
+  copy_keys:
+  - rtl.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - rtl
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

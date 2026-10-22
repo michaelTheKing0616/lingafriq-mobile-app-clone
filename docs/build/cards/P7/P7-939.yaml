@@ -1,0 +1,66 @@
+charter: v2
+id: P7-939
+kind: build
+title: Build Swahili noun class wheel tutorial
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§11.2-11
+depends_on:
+- P7-933
+- E-P5-CONTENT-REAL
+size: S
+difficulty:
+  score: 2
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 0, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist:
+- assets/tutorials/p7_939.json
+- test/content/p7_939_test.dart
+context_anchors:
+- ELEVATION.md#§11.2:L1791
+acceptance_criteria:
+- id: AC1
+  text: Given the Swahili noun class tutorial, when it runs, then noun classes are shown as a visual class wheel
+- id: AC2
+  text: Given a class on the wheel, when tapped, then its prefix and example nouns with audio are shown
+- id: AC3
+  text: Given reduced motion, when the wheel is shown, then it does not rotate and classes are chosen by tapping
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - native review sign-off
+  - 60-90 s runtime
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- content needs native review
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/conversational-ux
+  - adaptive/08-coding-and-debugging

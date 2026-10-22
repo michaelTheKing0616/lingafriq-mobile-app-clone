@@ -1,0 +1,37 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+RM-P1-01,ELEVATION,§16.2:L2061-L2065,requirement,"Content studio and language factory (§6.4.1, §14): schema, validators, two-native review, [XL/L]",P1,agent,,Open
+RM-P1-13,ELEVATION,§16.2:L2062-L2063,external,"seven Stage-1 languages (Yoruba, Igbo, Hausa, Pidgin, Swahili, isiXhosa, isiZulu) at L1",P1,external,,Open
+RM-P1-14,ELEVATION,§16.2:L2063,external,with native audio for every item,P1,external,,Open
+RM-P1-15,ELEVATION,§16.2:L2063,external,start Wave 2 at L0,P1,external,,Open
+RM-P1-02,ELEVATION,§16.2:L2066-L2068,requirement,Learner model + FSRS-6 scheduling + one item bank; adaptive placement [L],P1,agent,,Open
+RM-P1-03,ELEVATION,§16.2:L2069-L2075,requirement,New IA (Today / Learn / Speak / Play / Village [L],P1,agent,,Open
+RM-P1-18,ELEVATION,§16.2:L2070,metric,revive the 25 unreachable features,P1,agent,,Open
+RM-P1-19,ELEVATION,§16.2:L2071-L2072,requirement,"retire the six extra design systems (code, not features)",P1,agent,,Open
+RM-P1-04,ELEVATION,§16.2:L2076,requirement,"Onboarding v2: speak in 60 seconds, account later, guardian path [M]",P1,agent,,Open
+RM-P1-16,ELEVATION,§16.2:L2076,metric,speak in 60 seconds,P1,agent,,Open
+RM-P1-05,ELEVATION,§16.2:L2077-L2079,requirement,Real pronunciation and tone scoring v1 (GOP + F0 contour against [L],P1,agent,,Open
+RM-P1-20,ELEVATION,§16.2:L2078,requirement,"with confidence and an ""unsure"" state",P1,agent,,Open
+RM-P1-06,ELEVATION,§16.2:L2080-L2083,requirement,"Avatar v1 (first build; avatars don't exist yet): character bible, [L]",P1,agent,,Open
+RM-P1-21,ELEVATION,§16.2:L2081-L2082,requirement,verified on device,P1,agent,,Open
+RM-P1-07,ELEVATION,§16.2:L2086,requirement,"Personas v1: five rigorously sourced personas with dossiers, citations, historian review, [L]",P1,agent,,Open
+RM-P1-17,ELEVATION,§16.2:L2086,metric,five rigorously sourced personas with dossiers,P1,agent,,Open
+RM-P1-22,ELEVATION,§16.2:L2086,external,"citations, historian review, eval suite",P1,external,,Open
+RM-P1-08,ELEVATION,§16.2:L2087,requirement,"Village v1 for adults: circles and classrooms with moderation, report/block, server-authorised [L]",P1,agent,,Open
+RM-P1-09,ELEVATION,§16.2:L2088-L2090,requirement,"Observability, SLOs, OpenAPI contract with a generated Dart client, CI gates, [M]",P1,agent,,Open
+RM-P1-10,ELEVATION,§16.2:L2091-L2093,external,"Privacy programme: DPIA, data map, retention, export/delete in-app, NDPC registration check, [M]",P1,external,,Open
+RM-P1-11,ELEVATION,§16.2:L2094,requirement,UI string extraction to ARB and native-reviewed translations with diacritics [M],P1,agent,,Open
+RM-P1-12,ELEVATION,§16.2:L2095,requirement,"Gamification rebalance: one currency, ethical streaks, hearts moved to opt-in Challenge [M]",P1,agent,,Open
+RM-P2-01,ELEVATION,§16.3:L2098,requirement,Stage 1 to L2 (L3 where evals pass).,P2,external,,Open
+RM-P2-02,ELEVATION,§16.3:L2098-L2099,requirement,"Wave 2 (14 languages: Amharic, Twi, Somali, Kinyarwanda, Afrikaans, Shona,",P2,external,,Open
+RM-P2-14,ELEVATION,§16.3:L2098-L2099,metric,Wave 2 (14 languages,P2,external,,Open
+RM-P2-03,ELEVATION,§16.3:L2099-L2100,requirement,Wave 3 L0 kits begin.,P2,external,,Open
+RM-P2-04,ELEVATION,§16.3:L2100-L2101,external,"Community contributor programme with paid, credited native speakers [XL]",P2,external,,Open
+RM-P2-05,ELEVATION,§16.3:L2102-L2104,external,"Custom TTS voices for languages without vendor voices (isiXhosa first, then [L]",P2,external,,Open
+RM-P2-06,ELEVATION,§16.3:L2105,requirement,"Realtime voice tutor (speech-to-speech with barge-in) on the gateway, with tone-aware [L]",P2,agent,,Open
+RM-P2-07,ELEVATION,§16.3:L2106,requirement,"Flagship games from §10 on real scoring (Tone Lens duels, Market [L]",P2,agent,,Open
+RM-P2-08,ELEVATION,§16.3:L2107,requirement,"Guardian and school accounts, teacher dashboards, curriculum alignment for schools [L]",P2,agent,,Open
+RM-P2-09,ELEVATION,§16.3:L2108,requirement,"E2EE for private messages (MLS), group calls, Stories for circles [L]",P2,agent,,Open
+RM-P2-10,ELEVATION,§16.3:L2109,requirement,Offline-first content packs with downloadable units and offline review [M–L],P2,agent,,Open
+RM-P2-11,ELEVATION,§16.3:L2110,requirement,"Passport credential v1 with verifiable credentials, published methodology [M]",P2,agent,,Open
+RM-P2-12,ELEVATION,§16.3:L2111,external,Efficacy study design and recruitment [M],P2,external,,Open
+RM-P2-13,ELEVATION,§16.3:L2112,external,Accessibility audit with disabled users and fixes to WCAG 2.2 AA [M],P2,external,,Open

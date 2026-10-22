@@ -1,0 +1,110 @@
+charter: v2
+id: P7-912
+kind: build
+title: Build Lens signs and menus OCR with read-aloud
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§17.6-04
+- EP-§17.6-14
+- EP-§17.6-24
+- EP-§17.6-25
+depends_on:
+- P7-904
+- P7-944
+- E-P5-CONTENT-REAL
+- E-P6-SCORER
+size: L
+difficulty:
+  score: 9
+  blast: 2
+  ambiguity: 2
+  coupling: 2
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 9: blast 2, coupling 2, depth 2'
+token_budget: 150000
+file_allowlist:
+- lib/services/media_import_service.dart
+- lib/services/lens/ocr_mode_service.dart
+- lib/services/lens/diacritic_restorer.dart
+- node-backend/src/services/lens/ocr.service.ts
+- test/services/lens/diacritic_restorer_test.dart
+context_anchors:
+- ELEVATION.md#§17.6:L2350-L2351
+- ELEVATION.md#§17.6:L2366
+- ELEVATION.md#§17.6:L2380-L2381
+acceptance_criteria:
+- id: AC1
+  text: Given a photo of a sign, menu or label, when OCR mode runs, then the text is translated and each phrase is listed
+    with the source text
+- id: AC2
+  text: Given stacked tone marks, when a diacritic-restoring pass runs, then marks lost by Latin-only OCR are restored and
+    a restored marker is shown on each changed character
+- id: AC3
+  text: Given restoration confidence is low, when text is shown, then it is marked Unsure and not presented as verified
+- id: AC4
+  text: Given a translated phrase, when the learner taps Read it aloud, then audio plays from the lexicon or labelled TTS
+- id: AC5
+  text: Given the on-device device check outcome from the verification card, when OCR mode is configured, then the pipeline
+    choice follows that outcome
+- id: AC6
+  text: Given OCR fails or the model is unavailable, when the learner scans, then a typed visible error is shown
+test_plan:
+  unit:
+  - restorer
+  - unsure gate
+  integration:
+  - OCR failure path
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - tone-mark fixtures for yo, ig, ha
+user_facing: true
+ux_spec:
+  states:
+  - scanning
+  - result
+  - unsure
+  - error
+  copy_keys:
+  - lens.ocr.read_aloud
+  - lens.ocr.unsure
+  tokens:
+  - type.lens.ocr
+  - color.restored
+  motion_tier: product
+  a11y:
+  - restored characters announced
+  - touch targets >=48dp
+  - reduced-motion variant
+  goldens:
+  - default
+  - loading
+  - error
+  - offline
+tags:
+- tts_tonal
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- model per AI stack §3.13 (EXT-01)
+gate: HUB
+external_blockers:
+- EXT-01
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

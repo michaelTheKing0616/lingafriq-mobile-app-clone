@@ -1,0 +1,71 @@
+charter: v2
+id: P4-005
+kind: build
+title: Seed Common Voice audio entries with hours
+phase: P4
+epic: E-P4-LICENCES
+req_ids:
+- CP-§2.2-05
+- CP-§2.2-16
+- CP-§2.2-17
+- CP-§2.2-18
+- CP-§2.2-19
+depends_on:
+- P4-001
+size: S
+difficulty:
+  score: 2
+  blast: 1
+  ambiguity: 0
+  coupling: 0
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: 'score 2: blast 1, ambiguity 0, coupling 0, depth 1, size 0'
+token_budget: 25000
+file_allowlist:
+- tools/content_engine/licences/register.csv
+- tools/content_engine/tests/test_seed_cv.py
+context_anchors:
+- CURRICULUM.md#§2.2:L170-L177
+acceptance_criteria:
+- id: AC1
+  text: Given Mozilla Common Voice, when seeded, then the row is CC0 with display, evidence and training allowed and attribution
+    optional
+- id: AC2
+  text: Given the register, when recorded hours are stored, then Yoruba 8.3, Hausa 12.6, Igbo 18.9 and Swahili 1,065 are recorded
+    with a dataset version
+- id: AC3
+  text: Given Zulu or Xhosa hours are unknown, when queried, then the value is null with status verify and not zero
+test_plan:
+  unit:
+  - hours values
+  - unknown zu/xh is null not zero
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-03
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

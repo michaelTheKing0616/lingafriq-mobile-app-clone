@@ -1,0 +1,68 @@
+charter: v2
+id: P2-009
+kind: build
+title: Add object-level authorisation test suite for /:id routes
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.9-06
+- EP-§13.1-16
+depends_on:
+- E-P1-CONTAINMENT
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T3
+  reviewer: T4
+  justification: 'score 6: blast 3, coupling 1, depth 1; gate-critical (security / child safety / legal / design direction):
+    Fable reviews'
+token_budget: 70000
+file_allowlist:
+- node-backend/test/authz/idor.test.ts
+- node-backend/test/authz/route_inventory.ts
+- .github/workflows/build.yml
+context_anchors:
+- ELEVATION.md#§13.9:L1951-L1952
+- ELEVATION.md#§13.1:L1857-L1858
+acceptance_criteria:
+- id: AC1
+  text: Given every route with an :id param in the route inventory, when user B requests user A's resource, then the response
+    is 403 or 404 and never the resource
+- id: AC2
+  text: Given a new /:id route absent from the inventory, when CI runs, then the suite fails listing the route
+- id: AC3
+  text: Given the suite, when it runs in CI, then it is a blocking job
+test_plan:
+  unit: []
+  integration: []
+  security:
+  - IDOR matrix across all inventoried routes
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,82 @@
+charter: v2
+id: P2-047
+kind: build
+title: Build item bank schema and storage
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§11.3-01
+- EP-§11.1-06
+- EP-§11.1-08
+- EP-§11.1-09
+- EP-§6.5-17
+- EP-§6.5-18
+- EP-§6.5-19
+depends_on:
+- E-P1-CONTAINMENT
+- P2-004
+- P2-045
+size: L
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, coupling 2, depth 1'
+token_budget: 150000
+file_allowlist:
+- content/schema/item.v1.json
+- node-backend/src/models/item.model.ts
+- lib/models/item.dart
+- node-backend/src/controllers/item.controller.ts
+- test/content/item_schema_test.py
+context_anchors:
+- ELEVATION.md#§11.3:L1799
+- ELEVATION.md#§11.1:L1785
+- ELEVATION.md#§11.1:L1786
+- ELEVATION.md#§6.5:L1313-L1314
+- ELEVATION.md#§6.5:L1314
+acceptance_criteria:
+- id: AC1
+  text: Given an item, when stored, then it has type, stimulus refs, answer spec with diacritic-insensitive variants, IRT
+    a and b and skill tags
+- id: AC2
+  text: Given an item linked to a graph node via skill tags, when answered, then the event links item id and node ids
+- id: AC3
+  text: Given a multiple-choice item, when validated, then every distractor has a rationale field and missing rationale fails
+    validation
+- id: AC4
+  text: Given an unreviewed item, when served to learners, then it is excluded
+test_plan:
+  unit:
+  - schema
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - validator over seed items
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

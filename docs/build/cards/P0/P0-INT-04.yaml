@@ -1,0 +1,70 @@
+charter: v2
+id: P0-INT-04
+kind: build
+title: Add gate-time routing review over LEDGER.csv
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- RM-STOP-01
+depends_on:
+- E-P0-INTAKE
+- P0-INT-01
+size: S
+difficulty:
+  score: 2
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: ledger exists; a small report script and notes routine remain
+token_budget: 25000
+file_allowlist:
+- scripts/plan/routing_review.py
+- docs/build/LEDGER.csv
+- docs/build/04_ROUTING.md
+context_anchors:
+- docs/build/04_ROUTING.md#escalation
+acceptance_criteria:
+- id: AC1
+  text: Given docs/build/LEDGER.csv with header card_id,role,model_tier,model_slug,tokens_in,tokens_out,attempts,outcome,note,
+    when it is read, then the header matches exactly (file part already satisfied)
+- id: AC2
+  text: 'Given LEDGER rows for one gate, when `python3 scripts/plan/routing_review.py --gate G<n>` runs, then it prints per
+    tier: cards, attempts>1, escalations, tokens vs card token_budget'
+- id: AC3
+  text: Given a card whose summed tokens exceed 100% of its token_budget, when the review runs, then the card is listed under
+    OVERRUN and the script exits 1
+- id: AC4
+  text: Given a ledger row with tokens_in or tokens_out equal to `n/a`, when the review runs, then the row is counted as unmeasured
+    and reported, never as zero
+- id: AC5
+  text: Given the review output, when a gate closes, then a dated routing-notes block is appended to docs/build/04_ROUTING.md
+test_plan:
+  unit:
+  - 'fixture ledger: overrun, n/a tokens, retries'
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- unit test output
+- ledger row
+risks: []
+gate: G0
+external_blockers: []
+status: Ready
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

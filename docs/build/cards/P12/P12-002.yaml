@@ -1,0 +1,73 @@
+charter: v2
+id: P12-002
+kind: build
+title: Strip bundled code files and dev examples from assets
+phase: P12
+epic: E-P12-RELEASE
+req_ids:
+- EP-§13.6-03
+- EP-§13.6-04
+- EP-§13.6-05
+depends_on:
+- E-P10-ME
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 3: blast 1, ambiguity 1, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist:
+- pubspec.yaml
+- assets/fonts
+- lib/examples
+- dev
+- scripts/ci/asset_audit.py
+context_anchors:
+- ELEVATION.md#§13.6:L1925-L1928
+acceptance_criteria:
+- id: AC1
+  text: Given the built APK asset list, when scanned for .py, .dart and duplicate bundle files, then zero such files are present
+- id: AC2
+  text: Given the fonts declared in pubspec.yaml, when each family is checked against code references, then every unreferenced
+    font file is removed and the check lists none remaining
+- id: AC3
+  text: Given the 3 developer example files, when the change lands, then they live under dev/ and are excluded from the release
+    build, proven by the APK listing
+- id: AC4
+  text: Given a font family is removed but still referenced, when the analyzer runs, then the build fails with the reference
+    path
+test_plan:
+  unit:
+  - asset_audit extension scan
+  integration:
+  - APK listing contains no .py/.dart assets
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G12
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

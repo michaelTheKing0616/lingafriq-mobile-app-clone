@@ -1,0 +1,203 @@
+[
+ {
+  "id": "leipzig",
+  "source": "Leipzig Corpora Collection (yor/ibo/hau/pcm/swa/zul/xho corpora)",
+  "url": "https://wortschatz.uni-leipzig.de/en/download",
+  "licence": "CC BY (downloadable corpora; site itself CC BY-NC)",
+  "use": "ship",
+  "checked": "2026-10-21",
+  "attribution": "Leipzig Corpora Collection, Universität Leipzig. D. Goldhahn, T. Eckart & U. Quasthoff (2012): Building Large Monolingual Dictionaries at the Leipzig Corpora Collection. LREC 2012. CC BY.",
+  "notes": "Licence page bot-walled (403); verified via Terms of Usage text in search index. Sentences from *.wikipedia.org (CC BY-SA) and Bible/JW domains excluded from shipped examples; frequencies use all."
+ },
+ {
+  "id": "asp",
+  "source": "African Storybook / Global-ASP asp-source",
+  "url": "https://github.com/global-asp/asp-source",
+  "licence": "Per story: CC BY 4.0 (shipped) / CC BY-NC (excluded)",
+  "use": "ship (CC BY stories only)",
+  "checked": "2026-10-21",
+  "attribution": "Story credits (author, illustrator, translator) as listed per story; African Storybook Initiative, www.africanstorybook.org, CC BY 4.0."
+ },
+ {
+  "id": "sadilar_morph",
+  "source": "SADiLaR NCHLT morphologically annotated corpora isiZulu/isiXhosa (SADII-Ext 2023)",
+  "url": "https://repo.sadilar.org",
+  "licence": "CC BY 4.0",
+  "use": "ship",
+  "checked": "2026-10-21",
+  "attribution": "SADiLaR / NCHLT Morphologically annotated corpora (isiZulu, isiXhosa), 2023, CC BY 4.0."
+ },
+ {
+  "id": "sadilar_xhmono",
+  "source": "SADiLaR English-isiXhosa Drop monolingual isiXhosa corpus 1.0.0",
+  "url": "https://repo.sadilar.org",
+  "licence": "CC BY 4.0",
+  "use": "ship",
+  "checked": "2026-10-21",
+  "attribution": "SADiLaR, English–isiXhosaDrop Monolingual Corpus 1.0.0 (2019), CC BY 4.0."
+ },
+ {
+  "id": "fsi",
+  "source": "FSI Basic Courses (Yoruba, Hausa, Swahili, Igbo) student texts",
+  "url": "https://www.fsi-language-courses.org/",
+  "licence": "Public domain (US Government work)",
+  "use": "ship (grammar evidence/locators)",
+  "checked": "2026-10-21",
+  "attribution": "Foreign Service Institute, US Department of State. Public domain.",
+  "notes": "Scanned images; OCR with English model, target-language diacritics unreliable -> used for grammar-topic locators only."
+ },
+ {
+  "id": "cv_sentences",
+  "source": "Mozilla Common Voice sentence-collector text (yo, ig, ha, zu, xh; repo server/data/<lang>/sentence-collector.txt)",
+  "url": "https://github.com/common-voice/common-voice/tree/main/server/data",
+  "licence": "CC0 / public domain (Sentence Collector accepts only public-domain sentences; Common Voice dataset CC0)",
+  "use": "ship",
+  "checked": "2026-10-21",
+  "attribution": "Mozilla Common Voice contributors (CC0; attribution not required, given as courtesy).",
+  "notes": "No pcm file exists in the repo; the 987 pcm sentences are only in the dataset download (MDC account). wiki.ig.txt / wiki.sw.txt (Wikipedia-extracted) not used. PD status is contributor-asserted."
+ },
+ {
+  "id": "synth-v2",
+  "source": "LingAfriq original synthesized B2–C2 items (AI-drafted, unattested forms allowed)",
+  "url": "synth/v2/*.tsv",
+  "licence": "original (LingAfriq)",
+  "use": "ship after review only (all needs-review)",
+  "checked": "2026-10-21",
+  "attribution": "LingAfriq"
+ },
+ {
+  "id": "kaikki",
+  "source": "Kaikki.org Wiktionary extracts",
+  "url": "https://kaikki.org/dictionary/",
+  "licence": "CC BY-SA 4.0 + GFDL",
+  "use": "cross-check only",
+  "checked": "2026-10-21",
+  "attribution": "n/a (not shipped)",
+  "notes": "No Igbo or Nigerian Pidgin files."
+ },
+ {
+  "id": "fleurs",
+  "source": "Google FLEURS",
+  "url": "https://huggingface.co/datasets/google/fleurs",
+  "licence": "Card CC BY 4.0; transcripts from FLoRes-101 (CC BY-SA 4.0)",
+  "use": "cross-check only",
+  "checked": "2026-10-21",
+  "attribution": "n/a"
+ },
+ {
+  "id": "masakhaner2",
+  "source": "MasakhaNER 2.0",
+  "url": "https://github.com/masakhane-io/masakhane-ner",
+  "licence": "CC BY-NC 4.0",
+  "use": "excluded",
+  "checked": "2026-10-21"
+ },
+ {
+  "id": "masakhapos",
+  "source": "MasakhaPOS",
+  "url": "https://github.com/masakhane-io/masakhane-pos",
+  "licence": "README: CC BY-4.0-NC (HF card afl-3.0 conflicts)",
+  "use": "excluded",
+  "checked": "2026-10-21"
+ },
+ {
+  "id": "nla_orthography",
+  "source": "Naija Langwej Akademi orthography / Naijá spelling guidance",
+  "url": "(no licensed text located)",
+  "licence": "Not stated",
+  "use": "excluded as text; spelling conventions may be cited as facts by a reviewer only",
+  "checked": "2026-10-21"
+ },
+ {
+  "id": "cv_pcm",
+  "source": "Mozilla Common Voice Nigerian Pidgin v27.0 (2026-09-11)",
+  "url": "https://datacollective.mozillafoundation.org",
+  "licence": "CC0",
+  "use": "qualifies; NOT downloaded (needs MDC account); link-only, no re-hosting",
+  "checked": "2026-10-21",
+  "notes": "8,964 clips, 12.5 h validated, 60 speakers, 987 sentences."
+ },
+ {
+  "id": "cv27_pcm",
+  "source": "Mozilla Common Voice 27.0 Nigerian Pidgin: validated_sentences.tsv (987 sentences) + validated.tsv (clip refs)",
+  "url": "https://datacollective.mozillafoundation.org",
+  "licence": "CC0",
+  "use": "ship sentences; audio link-only (no re-hosting per MDC terms)",
+  "checked": "2026-10-21",
+  "attribution": "Mozilla Common Voice contributors (CC0)",
+  "notes": "Downloaded by user to ~/Downloads 2026-10-21; only sentence TSVs extracted."
+ },
+ {
+  "id": "cv27_xh",
+  "source": "Mozilla Common Voice 27.0 isiXhosa: validated_sentences.tsv + validated.tsv",
+  "url": "https://datacollective.mozillafoundation.org",
+  "licence": "CC0",
+  "use": "ship sentences; clip refs link-only",
+  "checked": "2026-10-21",
+  "attribution": "Mozilla Common Voice contributors (CC0)"
+ },
+ {
+  "id": "cv_xh",
+  "source": "Mozilla Common Voice isiXhosa v27.0",
+  "url": "https://datacollective.mozillafoundation.org",
+  "licence": "CC0",
+  "use": "qualifies but negligible (35 clips, 0.02 h validated); not downloaded",
+  "checked": "2026-10-21"
+ },
+ {
+  "id": "naija_tts",
+  "source": "Naija-TTS-Dataset (MDC)",
+  "url": "https://datacollective.mozillafoundation.org",
+  "licence": "NOODL-1.0 (research only, no redistribution, no voice cloning)",
+  "use": "excluded",
+  "checked": "2026-10-21"
+ },
+ {
+  "id": "hf_pcm_asr",
+  "source": "asr-nigerian-pidgin/nigerian-pidgin-1.0 (Hugging Face)",
+  "url": "https://huggingface.co/datasets/asr-nigerian-pidgin/nigerian-pidgin-1.0",
+  "licence": "cc-by-4.0 (card); transcripts crawled text of undocumented origin",
+  "use": "conditional: audio only after provenance confirmed; text cross-check only; not used",
+  "checked": "2026-10-21"
+ },
+ {
+  "id": "slr32",
+  "source": "OpenSLR SLR32 (isiXhosa etc. TTS)",
+  "url": "https://openslr.org/32/",
+  "licence": "CC BY-SA 4.0",
+  "use": "cross-check / ASR-eval only (shipping audio or derived models would impose share-alike)",
+  "checked": "2026-10-21"
+ },
+ {
+  "id": "vixsd",
+  "source": "Vukuzenzele ViXSD isiXhosa speech (Esethu)",
+  "url": "https://huggingface.co/datasets/Esethu/ViXSD",
+  "licence": "Open release CC BY-NC-SA 4.0; commercial needs signed agreement (fee waiver for African entities)",
+  "use": "not usable until agreement signed",
+  "checked": "2026-10-21"
+ },
+ {
+  "id": "african_voices",
+  "source": "African Voices (Data Science Nigeria)",
+  "url": "https://africanvoices.ai",
+  "licence": "ToS licence; CC BY 4.0 by default, commercial + derivatives with attribution",
+  "use": "qualifies (ha/ig/pcm/yo); NOT downloaded (needs registration)",
+  "checked": "2026-10-21"
+ },
+ {
+  "id": "tonative",
+  "source": "Tonative datasets (XNLI adaptation, MRL-Benchmark incl. Pidgin)",
+  "url": "https://tonative.org",
+  "licence": "Not stated",
+  "use": "excluded (unclear)",
+  "checked": "2026-10-21"
+ },
+ {
+  "id": "peace_corps",
+  "source": "Peace Corps language manuals",
+  "url": "various",
+  "licence": "Public-domain status unclear",
+  "use": "excluded (unclear)",
+  "checked": "2026-10-21"
+ }
+]

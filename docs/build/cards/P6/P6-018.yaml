@@ -1,0 +1,71 @@
+charter: v2
+id: P6-018
+kind: build
+title: Move persona cognition and persona chat to gateway
+phase: P6
+epic: E-P6-GATEWAY
+req_ids:
+- EP-§7.1-03
+- EP-§7.1-07
+depends_on:
+- P6-003
+- P6-009
+- E-P1-CONTAINMENT
+size: L
+difficulty:
+  score: 9
+  blast: 3
+  ambiguity: 2
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 9: blast 3, ambiguity 2, coupling 2, depth 2'
+token_budget: 160000
+file_allowlist:
+- node-backend/src/ai-gateway/persona/orchestrator.ts
+- node-backend/src/ai-gateway/persona/selfCritique.ts
+- lib/ai/persona_cognition/
+context_anchors:
+- ELEVATION.md#§7.1:L1349-L1366
+acceptance_criteria:
+- id: AC1
+  text: Given the two-pass self-critique orchestrator, when a persona turn runs, then both passes execute server-side and
+    the client calls one endpoint
+- id: AC2
+  text: Given the backend persona chat route, when it runs, then it uses the registry prompt and persona retrieval only
+- id: AC3
+  text: Given lib/ai/persona_cognition, when migration completes, then it contains no prompts or model calls
+test_plan:
+  unit:
+  - orchestrator passes
+  integration:
+  - persona turn end to end
+  security:
+  - persona prompt injection
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Persona enablement stays gated by containment epic
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,66 @@
+charter: v2
+id: P2-022
+kind: build
+title: Add integration test for onboarding, first lesson and sync
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.9-04
+depends_on:
+- E-P1-CONTAINMENT
+- P2-015
+- P2-042
+- P2-025
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- integration_test/onboarding_first_lesson_sync_test.dart
+- integration_test/helpers/mock_backend.dart
+- .github/workflows/build.yml
+context_anchors:
+- ELEVATION.md#§13.9:L1950-L1951
+acceptance_criteria:
+- id: AC1
+  text: Given a fresh install, when the user completes onboarding and the first lesson offline, then progress persists locally
+- id: AC2
+  text: Given connectivity returns, when the outbox drains, then the backend holds the lesson events exactly once
+- id: AC3
+  text: Given the test fails on any step, when CI runs, then the job fails with the failing step name
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e:
+  - onboarding to first lesson to sync
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

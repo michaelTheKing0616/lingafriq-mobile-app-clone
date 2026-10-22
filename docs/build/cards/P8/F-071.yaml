@@ -1,0 +1,112 @@
+id: F-071
+kind: feature
+title: Elevate Taxi Survival
+phase: P8
+epic: E-P8-PLAY
+hub: Play
+req_ids:
+- F-071
+- F-071.D
+- F-071.E
+- F-071.U
+- F-071.L
+depends_on:
+- P8-900
+- P8-912
+- E-P8-PLAY
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+size: M
+difficulty:
+  score: 6
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: 1 blast, coupling 2'
+token_budget: 80000
+file_allowlist:
+- lib/screens/games/taxi_survival_screen.dart
+context_anchors:
+- ELEVATION.md#§18.5:L4535-L4550
+delta:
+  current_state: Routed from Arcade via game_router; content still uses the legacy 85–118 word pool without audio.
+  defects_to_fix:
+  - Thin static word pool without reliable audio.
+  - No learner-model writeback after play.
+  - Legacy per-game results instead of GameKit mastery.
+  - Hard-coded UI strings bypass l10n.
+  elevation_to_build:
+  - Rebrand as Danfo or Matatu Rush with native-speed conductor calls.
+  - Learner boards the correct bus from recorded announcements.
+  ux_and_render:
+  - GameKit frame with unified illustration style and audio on every target-language item.
+  - Reduced-motion variant respects system setting.
+  hub_placement: Play → Tone & Sound shelf.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given a rush scenario, when conductor audio plays, then clips are native-speed recordings tagged by route.
+- id: AC2
+  text: Given multiple bus options, when the learner selects, then correctness uses announcement content not random success.
+- id: AC3
+  text: Given completion, when results show, then listening skills update via GameKit.
+test_plan:
+  unit:
+  - game rules
+  - content binding
+  integration:
+  - GameKit session
+  - learner model writeback
+  e2e:
+  - Play shelf launch to results
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content:
+  - lexicon pool has audio for target language
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - 071.*
+tags: []
+p0_area: false
+external_blockers:
+- EXT-13
+charter: v2
+inherits: FEATURE_BASE
+gate: HUB
+status: Draft
+user_facing: true
+risks: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

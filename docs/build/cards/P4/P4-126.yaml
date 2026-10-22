@@ -1,0 +1,68 @@
+charter: v2
+id: P4-126
+kind: build
+title: Build squad capacity planner for throughput target
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.4-50
+- EP-§6.4-66
+- EP-§6.4-67
+- EP-§6.4-68
+depends_on:
+- P4-112
+size: S
+difficulty:
+  score: 3
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 3: blast 0, ambiguity 1, coupling 1'
+token_budget: 25000
+file_allowlist:
+- tools/content_pipeline/squad_capacity.py
+- test/content/test_squad_capacity.py
+context_anchors:
+- ELEVATION.md#§6.4.1:L1264-L1292
+acceptance_criteria:
+- id: AC1
+  text: Given squads (lead, 2 writers, linguist time, reviewer panels), when planned, then each squad is capped at 4-6 parallel
+    languages and above 6 raises OVERCOMMITTED
+- id: AC2
+  text: Given a wave of 14 and 2-3 squads, when projected, then the report shows ETA against the two-quarter target labelled
+    planning assumption
+- id: AC3
+  text: Given shared tooling (studio, validators, eval harness), when a language is added, then the planner counts reviewer
+    and voice time only and not new tooling
+test_plan:
+  unit:
+  - test_squad_capacity
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

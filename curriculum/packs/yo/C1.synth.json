@@ -1,0 +1,2224 @@
+{
+"lang": "yo",
+"level": "C1",
+"built": "2026-10-21",
+"source_type": "synthesized",
+"items": [
+{
+"id": "yo.syn.5a4dee80c34b",
+"lang": "yo",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.PROD: Produce argumentative text"
+],
+"text": "Ọ̀pọ̀lọpọ̀ ènìyàn gbàgbọ́ pé ẹ̀kọ́ ni ọ̀nà sí ìlọsíwájú.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Many people believe that education is the road to progress.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "gbàgbọ́ pé = believe that.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Ọ̀pọ̀lọpọ̀",
+"count": 197,
+"locator": "leipzig:yor_community_2017#s430"
+},
+{
+"token": "ènìyàn",
+"count": 939,
+"locator": "leipzig:yor_community_2017#s69"
+},
+{
+"token": "gbàgbọ́",
+"count": 25,
+"locator": "leipzig:yor_community_2017#s2405"
+},
+{
+"token": "pé",
+"count": 2260,
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"token": "ẹ̀kọ́",
+"count": 330,
+"locator": "leipzig:yor_community_2017#s1549"
+},
+{
+"token": "ni",
+"count": 13853,
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"token": "ọ̀nà",
+"count": 212,
+"locator": "leipzig:yor_community_2017#s179"
+},
+{
+"token": "sí",
+"count": 3363,
+"locator": "leipzig:yor_community_2017#s48"
+},
+{
+"token": "ìlọsíwájú",
+"count": 14,
+"locator": "leipzig:yor_community_2017#s419"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:yor_community_2017#s430",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Ọ̀pọ̀lọpọ̀' attested 197x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s430"
+},
+{
+"text": "token 'ènìyàn' attested 939x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s69"
+},
+{
+"text": "token 'gbàgbọ́' attested 25x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s2405"
+},
+{
+"text": "token 'pé' attested 2260x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"text": "token 'ẹ̀kọ́' attested 330x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s1549"
+},
+{
+"text": "token 'ni' attested 13853x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"text": "token 'ọ̀nà' attested 212x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s179"
+},
+{
+"text": "token 'sí' attested 3363x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s48"
+},
+{
+"text": "token 'ìlọsíwájú' attested 14x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s419"
+}
+],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"tone_pattern_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": true,
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.9df30eddab87",
+"lang": "yo",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.PROD: Produce narrative text"
+],
+"text": "Nígbà tí ó dé ilé, ó rí i pé ilẹ̀kùn ti ṣí sílẹ̀.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "When he got home, he saw that the door had been opened.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Nígbà tí = when; perfect ti.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Nígbà",
+"count": 821,
+"locator": "leipzig:yor_community_2017#s57"
+},
+{
+"token": "tí",
+"count": 8778,
+"locator": "leipzig:yor_community_2017#s46"
+},
+{
+"token": "ó",
+"count": 7754,
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"token": "dé",
+"count": 502,
+"locator": "leipzig:yor_community_2017#s75"
+},
+{
+"token": "ilé",
+"count": 1228,
+"locator": "leipzig:yor_community_2017#s59"
+},
+{
+"token": "ó",
+"count": 7754,
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"token": "rí",
+"count": 892,
+"locator": "leipzig:yor_community_2017#s69"
+},
+{
+"token": "i",
+"count": 548,
+"locator": "leipzig:yor_community_2017#s64"
+},
+{
+"token": "pé",
+"count": 2260,
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"token": "ilẹ̀kùn",
+"count": 4,
+"locator": "asp:0005_anansi-ati-ijapa.md"
+},
+{
+"token": "ti",
+"count": 9833,
+"locator": "leipzig:yor_community_2017#s1"
+},
+{
+"token": "ṣí",
+"count": 30,
+"locator": "leipzig:yor_community_2017#s5290"
+},
+{
+"token": "sílẹ̀",
+"count": 284,
+"locator": "leipzig:yor_community_2017#s2257"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:yor_community_2017#s57",
+"role": "anchor"
+},
+{
+"source_id": "asp",
+"licence": "Per story: CC BY 4.0",
+"locator": "asp:0005_anansi-ati-ijapa.md",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Nígbà' attested 821x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s57"
+},
+{
+"text": "token 'tí' attested 8778x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s46"
+},
+{
+"text": "token 'ó' attested 7754x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"text": "token 'dé' attested 502x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s75"
+},
+{
+"text": "token 'ilé' attested 1228x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s59"
+},
+{
+"text": "token 'ó' attested 7754x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"text": "token 'rí' attested 892x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s69"
+},
+{
+"text": "token 'i' attested 548x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s64"
+},
+{
+"text": "token 'pé' attested 2260x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"text": "token 'ilẹ̀kùn' attested 4x",
+"source_id": "asp",
+"locator": "asp:0005_anansi-ati-ijapa.md"
+},
+{
+"text": "token 'ti' attested 9833x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s1"
+},
+{
+"text": "token 'ṣí' attested 30x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s5290"
+}
+],
+"confidence": 0.35,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"tone_pattern_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": false,
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.16eddc54aa35",
+"lang": "yo",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULT: Understand a cultural practice"
+],
+"text": "Ẹ kú iṣẹ́.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "(Greeting to someone at work.)",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Yoruba greets people by their activity or situation with 'ẹ kú …'; plural ẹ shows respect.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Ẹ",
+"count": 187,
+"locator": "leipzig:yor_community_2017#s490"
+},
+{
+"token": "kú",
+"count": 331,
+"locator": "leipzig:yor_community_2017#s64"
+},
+{
+"token": "iṣẹ́",
+"count": 651,
+"locator": "leipzig:yor_community_2017#s482"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:yor_community_2017#s490",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Ẹ' attested 187x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s490"
+},
+{
+"text": "token 'kú' attested 331x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s64"
+},
+{
+"text": "token 'iṣẹ́' attested 651x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s482"
+}
+],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"tone_pattern_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.culture_note"
+],
+"games": [],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": true,
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 4,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.143c431372f0",
+"lang": "yo",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Bí ó tilẹ̀ jẹ́ pé ètò náà dára, ìmúṣẹ rẹ̀ kò lágbára.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Although the plan is good, its implementation is weak.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.131aa1913b08",
+"lang": "yo",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Ó hàn gbangba pé láìsí ẹ̀kọ́, ìlọsíwájú kò lè wà.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It is clear that without education there can be no progress.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.e37eb35dce33",
+"lang": "yo",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Ìbéèrè pàtàkì kì í ṣe bóyá a nílò àyípadà, bí kò ṣe bí a ó ṣe mú un wá.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The key question is not whether we need change but how to bring it.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.99b4a3cbe30c",
+"lang": "yo",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Bí ìjọba kò bá dẹ́kun ìwà ìbàjẹ́, àwọn aráàlú kò ní gbẹ́kẹ̀lé e mọ́.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "If the government does not stop corruption, citizens will no longer trust it.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.c4abacbf3355",
+"lang": "yo",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Pẹ̀lú gbogbo akitiyan tí a ti ṣe, èsì rẹ̀ kò tíì tẹ́ wa lọ́rùn.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Despite all the efforts made, the results have not yet satisfied us.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.f53596122297",
+"lang": "yo",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Ní èrò tèmi, ojútùú tó máa wà pẹ́ nílò ìfọwọ́sowọ́pọ̀ gbogbo ènìyàn.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "In my view, a lasting solution needs everyone's cooperation.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.ea2a6a922c6b",
+"lang": "yo",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Bí o ṣe ń kàwé tó, bẹ́ẹ̀ ni òye rẹ yóò ṣe pọ̀ tó.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The more you read, the more your understanding grows.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.340252e37dde",
+"lang": "yo",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "A gbọ́dọ̀ kúrò kí òjò tó bẹ̀rẹ̀.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "We must leave before the rain starts.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.f291328a6194",
+"lang": "yo",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Wọ́n ní olóṣèlú náà fẹ́ kọ̀wé fipò sílẹ̀.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "They say the politician wants to resign.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.56989f651515",
+"lang": "yo",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Kò sí ẹni tí ó mọ ohun tí ó ṣẹlẹ̀.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "No one knew what had happened.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.e6930e772b2f",
+"lang": "yo",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Ó ń sọ̀rọ̀ bí ẹni pé ọ̀mọ̀wé ni.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He talks as though he were an expert.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.48fb2fa4f775",
+"lang": "yo",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Ìgbà náà ni mo tó mọ̀ pé mo ti ṣàṣìṣe.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It was then I realised I had made a mistake.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.a771a8e04a8d",
+"lang": "yo",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "Pẹ̀lú ọ̀wọ̀ àti ìtẹríba, mo fẹ́ fi ẹ̀bẹ̀ mi síwájú yín.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "With respect and humility, I wish to present my request to you.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.b57eabca6ddf",
+"lang": "yo",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "À ń fi tó yín létí pé ọ́fíìsì yóò wà ní títì ní ọjọ́ Ajé.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "We hereby inform you that the office will be closed on Monday.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.e3aaafd2e88f",
+"lang": "yo",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "Lórúkọ ìgbìmọ̀, mo dúpẹ́ lọ́wọ́ yín tọkàntọkàn.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "On behalf of the committee, I thank you sincerely.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.bb575e281b93",
+"lang": "yo",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "Ẹ̀yin ọmọ ìlú, a péjọ síbí nítorí ọ̀rọ̀ pàtàkì kan.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Fellow citizens, we are gathered here for an important matter.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.bbf553d03cd0",
+"lang": "yo",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Ní òru ọjọ́ náà, gbogbo abúlé dákẹ́ rọ́rọ́.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "That night, the whole village was completely silent.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.895fb81eba1c",
+"lang": "yo",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Bàbá àgbà jókòó sí ìloro, ó ń ronú nípa ìgbà èwe rẹ̀.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The old man sat on the porch thinking about his youth.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.839360006a1a",
+"lang": "yo",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Ó rántí bí ó ṣe kúrò ní abúlé láìní nǹkan kan.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He remembered how he left the village with nothing.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.741fea872639",
+"lang": "yo",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Ó wá mọ̀ pé owó kò lè ra àkókò tí ó ti sọnù.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He realised that money cannot buy lost time.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.ac46391ab943",
+"lang": "yo",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Òwe ni ẹṣin ọ̀rọ̀; bí ọ̀rọ̀ bá sọnù, òwe la fi ń wá a.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Proverbs are the horse of speech; when speech is lost, we use proverbs to find it.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.7d6ae9d1ef25",
+"lang": "yo",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Oríkì jẹ́ ewì tí a fi ń yin ènìyàn tàbí ìdílé.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Oríkì is praise poetry for a person or lineage.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.eaa98dd07a29",
+"lang": "yo",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Ìyàwó tuntun kì í pe àwọn ẹbí ọkọ rẹ̀ ní orúkọ wọn.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "A new wife does not call her husband's relatives by their names.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.746f535058e9",
+"lang": "yo",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Àṣà ìrẹ́pọ̀ àti àjọṣe ṣe pàtàkì nínú ìgbésí ayé Yorùbá.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Communal solidarity is central in Yoruba life.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.aa04e26607ef",
+"lang": "yo",
+"type": "sentence",
+"category": "idiom",
+"cefr": "C1",
+"can_do": [
+"C1.IDIOM"
+],
+"text": "Ó fi orí kó.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He was lucky (lit. he escaped by his head).",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.idiom"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 4,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.8f09abe1480e",
+"lang": "yo",
+"type": "sentence",
+"category": "idiom",
+"cefr": "C1",
+"can_do": [
+"C1.IDIOM"
+],
+"text": "Ó gbé omi mì.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He kept quiet about it (lit. he swallowed water).",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.idiom"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.prv.7135f097e5bb",
+"lang": "yo",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.PROVERB"
+],
+"text": "Àgbà kì í wà lọ́jà kí orí ọmọ tuntun wọ́.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "An elder is not in the market while a baby's head is placed awry.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 3,
+"crosscheck_ok": false,
+"text_original": "Àgbà kì í wà lọ́jà kí orí ọmọ títún wọ́.",
+"fix_source": "sonnet",
+"native_check_priority": true
+},
+{
+"id": "yo.prv.71b53c8c5582",
+"lang": "yo",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.PROVERB"
+],
+"text": "Bí ọmọdé bá mọ ọwọ́ wẹ̀, á bá àgbà jẹun.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "If a child knows how to wash his hands, he eats with elders.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.prv.64a0e4c3ddc0",
+"lang": "yo",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.PROVERB"
+],
+"text": "Ọ̀rọ̀ púpọ̀ kì í kún agbọ̀n.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Many words do not fill a basket.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.prv.4d67c6f13a6d",
+"lang": "yo",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.PROVERB"
+],
+"text": "Ilé la ti ń kẹ́kọ̀ọ́ ṣe ròde.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Good conduct starts from home.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 3,
+"crosscheck_ok": false,
+"text_original": "Ilé la ti ń kẹ́ṣọ̀ ròde.",
+"fix_source": "sonnet",
+"native_check_priority": true
+}
+]
+}

@@ -1,0 +1,64 @@
+charter: v2
+id: P3-030
+kind: design
+title: Write copy deck and voice guide
+phase: P3
+epic: E-P3-DESIGN-WORKFLOW
+req_ids:
+- EP-§5.3-02
+- EP-§5.3-03
+- EP-§3.4-38
+- EP-§5.1-04
+depends_on:
+- P3-029
+size: M
+difficulty:
+  score: 3
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 3: blast 0, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- docs/build/design/COPY_DECK.md
+- docs/build/design/VOICE_GUIDE.md
+context_anchors:
+- ELEVATION.md#§5.3:L1064-L1065
+- ELEVATION.md#§3.4:L850-L851
+acceptance_criteria:
+- id: AC1
+  text: Given the deck, when every string is scored, then grade level is <=7 and a failing string is listed with a fix
+- id: AC2
+  text: Given every button, when read, then it starts with a verb and no em dash appears
+- id: AC3
+  text: Given the banned list, when searched, then World-class, Elite and Seamless appear 0 times and no emoji is used as
+    an icon
+- id: AC4
+  text: Given the onboarding questions, when rewritten, then the old village phrasing is replaced and each new string has
+    an ARB key
+- id: AC5
+  text: Given the voice guide, when written, then it has tone rules, 10 do-and-dont pairs and error copy patterns
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/ux-writing
+  - prime/antislop-copywriting
+  - prime/localization-design

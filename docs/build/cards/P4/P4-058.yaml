@@ -1,0 +1,67 @@
+charter: v2
+id: P4-058
+kind: build
+title: Check each citation entails its claim
+phase: P4
+epic: E-P4-PIPELINE
+req_ids:
+- CP-§3.1-20
+- CP-§3.2-06
+- CP-§3.2-10
+depends_on:
+- P4-057
+size: S
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1, depth 1, size 0'
+token_budget: 25000
+file_allowlist:
+- tools/content_engine/pipeline/entailment.py
+- tools/content_engine/tests/test_entailment.py
+context_anchors:
+- CURRICULUM.md#§3.1:L484-L486
+- CURRICULUM.md#§3.2:L512-L513
+acceptance_criteria:
+- id: AC1
+  text: Given a claim and its retrieved passage, when entailment is checked, then unsupported claims fail with CLAIM_NOT_ENTAILED
+- id: AC2
+  text: Given grammar or culture claims, when checked, then 100% of them also route to a linguist or cultural reviewer
+- id: AC3
+  text: Given a missing passage, when retrieval fails, then the claim fails with PASSAGE_NOT_FOUND
+test_plan:
+  unit:
+  - happy path
+  - typed error path
+  integration:
+  - stage contract with fixtures
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

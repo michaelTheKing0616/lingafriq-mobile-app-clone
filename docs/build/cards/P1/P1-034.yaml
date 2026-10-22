@@ -1,0 +1,76 @@
+charter: v2
+id: P1-034
+kind: build
+title: Add typed onboarding model and corrupted-value migration
+phase: P1
+epic: E-P1-OFFLINE-DATA
+req_ids:
+- P0-21
+- RM-P0-09
+depends_on:
+- E-P0-INTAKE
+size: S
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 5; blast 2
+token_budget: 25000
+file_allowlist:
+- lib/models/onboarding_answers.dart
+- lib/providers/onboarding_provider.dart
+- lib/providers/auth_provider.dart
+- lib/screens/onboarding/unified_onboarding_screen.dart
+- lib/screens/onboarding/enhanced_onboarding_flow_screen.dart
+- test/models/onboarding_answers_test.dart
+context_anchors:
+- ELEVATION.md#§1:L322-L331
+- ELEVATION.md#§16.1:L2048-L2050
+acceptance_criteria:
+- id: AC1
+  text: Given onboarding answers, when persisted, then they are stored as jsonEncode of a typed model and not Map.toString
+- id: AC2
+  text: Given previously stored Map.toString values, when the app starts, then a migration converts parseable values and flags
+    unparseable ones for re-asking
+- id: AC3
+  text: Given invalid stored JSON, when read, then fromJson raises a typed error that is logged and the user is asked again
+    for only the affected answers
+- id: AC4
+  text: Given a round-trip test, when run over all answer types, then decode(encode(x)) equals x
+test_plan:
+  unit:
+  - model round-trip
+  - corrupted-value parser
+  integration:
+  - migration fixtures
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "The drafted path lib/screens/unified_onboarding_screen.dart did not exist. enhanced_onboarding_flow_screen.dart and auth_provider.dart were added because they also wrote or routed onboarding. Legacy camelCase provider JSON is left unchanged. Map.toString detection depends on a no-quotes heuristic, so an odd leftover token can be treated as invalid JSON and re-asked in full (OW-039)."
+gate: G1
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,60 @@
+charter: v2
+id: P3-025
+kind: design
+title: Specify the illustration system
+phase: P3
+epic: E-P3-COMPONENTS
+req_ids:
+- EP-§3.4-22
+depends_on:
+- P3-004
+size: M
+difficulty:
+  score: 3
+  blast: 0
+  ambiguity: 2
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T4
+  justification: 'score 3: blast 0, ambiguity 2, coupling 1'
+token_budget: 60000
+file_allowlist:
+- docs/build/design/ILLUSTRATION.md
+context_anchors:
+- ELEVATION.md#§3.4:L840-L843
+acceptance_criteria:
+- id: AC1
+  text: Given the chosen direction, when ILLUSTRATION.md is written, then it fixes line weight, palette use, subject rules
+    and 3 sample frames in light and dark
+- id: AC2
+  text: Given the artist brief, when written, then it lists chip sizes and file budgets for EXT-16
+- id: AC3
+  text: Given a culture motif, when used, then the sparing-use and credit rules from ADR-010 are cited
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: true
+dod_evidence:
+- tester report
+- ledger row
+- T4 visual approval with exported frames
+risks: []
+gate: G3
+external_blockers:
+- EXT-16
+status: Draft
+skills:
+  worker:
+  - prime/illustration-style
+  - prime/design-dna
+  - prime/rive
+  reviewer_extra:
+  - prime/critique-visual-hierarchy
+  - prime/critique-typography
+  - prime/design-to-code-check

@@ -1,0 +1,395 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+EP-§6.4-01,ELEVATION,§6.4:L1222,requirement,breadth is a first-class goal,P1,agent,,Open
+EP-§6.4-02,ELEVATION,§6.4:L1222-L1223,metric,teach dozens of African languages within two years,P1,agent,,Open
+EP-§6.4-03,ELEVATION,§6.4:L1223,constraint,without ever shipping unvalidated content,P1,agent,,Open
+EP-§6.4-04,ELEVATION,§6.4:L1223-L1224,requirement,a repeatable content and QA pipeline,P1,agent,,Open
+EP-§6.4-05,ELEVATION,§6.4:L1224-L1225,requirement,so a language can go live early at a small but correct,P1,agent,,Open
+EP-§6.4-06,ELEVATION,§6.4:L1225,requirement,an AI stack chosen for long-tail coverage,P1,agent,,Open
+EP-§6.4-07,ELEVATION,§6.4:L1225-L1226,external,companion: LINGAFRIQ_AI_MODEL_STACK.md §2 and §4,P1,external,,Open
+EP-§6.4-08,ELEVATION,§6.4:L1227,requirement,each language moves up independently,P1,agent,,Open
+EP-§6.4-09,ELEVATION,§6.4:L1227-L1228,requirement,"L0 ""Taste"": greetings, numbers, 50–100 words, a culture card",P1,agent,,Open
+EP-§6.4-10,ELEVATION,§6.4:L1227-L1228,metric,50–100 words,P1,agent,,Open
+EP-§6.4-11,ELEVATION,§6.4:L1228-L1229,requirement,"L1 ""Starter"": A1 with native audio for every item and ASR",P1,agent,,Open
+EP-§6.4-12,ELEVATION,§6.4:L1229-L1230,requirement,"L2 ""Core"": A1–A2 with tone and pronunciation scoring, dynamic TTS,",P1,agent,,Open
+EP-§6.4-13,ELEVATION,§6.4:L1230-L1231,requirement,"L3 ""Full"": A1–B1, realtime voice conversation, personas, and checkpoints",P1,agent,,Open
+EP-§6.4-14,ELEVATION,§6.4:L1232-L1233,requirement,"Stage 1 (Wave 1, building now): 7 languages. Yoruba, Igbo, Hausa, Nigerian",P1,agent,,Open
+EP-§6.4-15,ELEVATION,§6.4:L1233,metric,Target: all seven at L1 within the first quarter of the,P1,agent,,Open
+EP-§6.4-16,ELEVATION,§6.4:L1233-L1234,metric,L2 within two quarters,P1,agent,,Open
+EP-§6.4-17,ELEVATION,§6.4:L1234,requirement,with L3 first for whichever languages pass the realtime and persona evals,P1,agent,,Open
+EP-§6.4-18,ELEVATION,§6.4:L1235,requirement,ASR: Intron covers all seven (code-switching in six),P1,agent,,Open
+EP-§6.4-19,ELEVATION,§6.4:L1235-L1236,requirement,"Dynamic TTS: - Intron covers yo, ig, ha, pcm and sw",P1,agent,,Open
+EP-§6.4-20,ELEVATION,§6.4:L1236,requirement,Azure covers isiZulu,P1,agent,,Open
+EP-§6.4-21,ELEVATION,§6.4:L1236-L1237,external,isiXhosa needs a commissioned custom voice,P1,external,,Open
+EP-§6.4-22,ELEVATION,§6.4:L1237,requirement,"Realtime native audio: Gemini Live covers yo, ha, sw and zu",P1,agent,,Open
+EP-§6.4-23,ELEVATION,§6.4:L1237-L1238,requirement,"ig, pcm and xh use the cascade",P1,agent,,Open
+EP-§6.4-24,ELEVATION,§6.4:L1238,requirement,"Tone scoring: in-house. It matters most for yo, ig and ha.",P1,agent,,Open
+EP-§6.4-25,ELEVATION,§6.4:L1239-L1242,requirement,"Wave 2 (next, about 14 languages; start L0 once Stage 1 reaches",P1,agent,,Open
+EP-§6.4-26,ELEVATION,§6.4:L1241-L1242,decision,"They were chosen for speaker numbers, diaspora demand, and existing vendor coverage",P1,agent,,Open
+EP-§6.4-27,ELEVATION,§6.4:L1244-L1248,requirement,"Wave 3 (about 25 languages; L0 → L1): Tigrinya, Ewe, Fon, Fula/Fulfulde",P1,agent,,Open
+EP-§6.4-28,ELEVATION,§6.4:L1244-L1245,requirement,"Fula/Fulfulde (Latin + Adlam), Bambara (Latin + N'Ko)",P1,agent,,Open
+EP-§6.4-29,ELEVATION,§6.4:L1247-L1248,decision,Make a deliberate decision on Egyptian Arabic and Moroccan Darija,P1,Tope,,Open
+EP-§6.4-30,ELEVATION,§6.4:L1249-L1254,requirement,"Wave 4, the ""Living Archive"" (50+ languages, community-built L0 starter kits",P1,agent,,Open
+EP-§6.4-31,ELEVATION,§6.4:L1253-L1254,external,only with community consent and benefit-sharing,P1,external,,Open
+EP-§6.4-32,ELEVATION,§6.4:L1254,requirement,"plus Ajami, N'Ko, Adlam, Tifinagh and Ge'ez script tracks",P1,agent,,Open
+EP-§6.4-33,ELEVATION,§6.4:L1255,external,"Partner with Masakhane, Lanfrica/NaijaVoices, African Next Voices, Lelapa, Intron",P1,external,,Open
+EP-§6.4-34,ELEVATION,§6.4:L1255-L1257,external,"university linguistics departments (UNILAG, UI Ibadan, UNN, ABU Zaria, Makerere",P1,external,,Open
+EP-§6.4-35,ELEVATION,§6.4:L1257,external,community and diaspora associations,P1,external,,Open
+EP-§6.4-36,ELEVATION,§6.4:L1258,metric,Running total: 7 → about 21 → about 46 → 95+ languages,P1,agent,,Open
+EP-§6.4-37,ELEVATION,§6.4:L1258-L1259,constraint,"treat these as planning targets, not promises",P1,agent,,Open
+EP-§6.4-38,ELEVATION,§6.4:L1260,requirement,"How to pick the next language (score 1–5 each, revisit quarterly)",P1,Tope,,Open
+EP-§6.4-39,ELEVATION,§6.4:L1260-L1261,requirement,"speakers (L1+L2) and diaspora demand (waitlist, search data)",P1,Tope,,Open
+EP-§6.4-40,ELEVATION,§6.4:L1261,requirement,availability of paid native reviewers and voice talent,P1,Tope,,Open
+EP-§6.4-41,ELEVATION,§6.4:L1261-L1262,requirement,AI coverage (ASR/TTS/MT/LLM eval results from the AI stack doc),P1,Tope,,Open
+EP-§6.4-42,ELEVATION,§6.4:L1262,requirement,partner support,P1,Tope,,Open
+EP-§6.4-43,ELEVATION,§6.4:L1262,requirement,mission value (endangerment),P1,Tope,,Open
+EP-§6.4-44,ELEVATION,§6.4.1:L1264-L1266,requirement,"Language kit (week 0–1): orthography spec (Unicode, NFC, diacritics, keyboard layout)",P1,agent,,Open
+EP-§6.4-51,ELEVATION,§6.4.1:L1265,requirement,"dialect standard, phone inventory and tone system",P1,external,,Open
+EP-§6.4-52,ELEVATION,§6.4.1:L1265,requirement,a phoneme-to-viseme table,P1,agent,,Open
+EP-§6.4-53,ELEVATION,§6.4.1:L1265-L1266,requirement,a seed lexicon from licensed corpora,P1,external,,Open
+EP-§6.4-54,ELEVATION,§6.4.1:L1266,metric,"a native reviewer panel ( ≥ 3, paid, contracts with consent",P1,external,,Open
+EP-§6.4-45,ELEVATION,§6.4.1:L1267-L1270,requirement,"AI bootstrap (week 1–3): LLM and MT draft the frequency lexicon, glosses,",P1,agent,,Open
+EP-§6.4-55,ELEVATION,§6.4.1:L1268-L1269,requirement,Spitch handles tone-mark suggestions for Yoruba,P1,agent,,Open
+EP-§6.4-56,ELEVATION,§6.4.1:L1269,requirement,an LLM with validators handles other languages,P1,agent,,Open
+EP-§6.4-57,ELEVATION,§6.4.1:L1270,requirement,Everything is tagged ai_assisted: true,P1,agent,,Open
+EP-§6.4-46,ELEVATION,§6.4.1:L1271-L1273,requirement,Native validation (week 2–6): two independent natives plus linguist adjudication,P1,external,,Open
+EP-§6.4-58,ELEVATION,§6.4.1:L1272,constraint,"Tone marks, cultural claims and audio are never AI-only",P1,agent,,Open
+EP-§6.4-59,ELEVATION,§6.4.1:L1272-L1273,requirement,Disagreements become dialect notes,P1,agent,,Open
+EP-§6.4-47,ELEVATION,§6.4.1:L1274-L1275,requirement,Audio (week 3–6): native recordings of every item,P1,external,,Open
+EP-§6.4-60,ELEVATION,§6.4.1:L1274,metric,"native recordings of every item ( ≥ 2 voices at L0/L1,",P1,external,,Open
+EP-§6.4-61,ELEVATION,§6.4.1:L1274-L1275,requirement,"forced alignment for highlighting, scoring references and lip-sync",P1,agent,,Open
+EP-§6.4-48,ELEVATION,§6.4.1:L1276-L1278,requirement,Speech enablement (parallel): ASR via Intron or Omnilingual,P1,agent,,Open
+EP-§6.4-62,ELEVATION,§6.4.1:L1276,metric,evaluated on a 300-utterance set,P1,agent,,Open
+EP-§6.4-63,ELEVATION,§6.4.1:L1277,requirement,"TTS via vendor or custom voice, gated on native MOS and tone-error",P1,agent,,Open
+EP-§6.4-64,ELEVATION,§6.4.1:L1277-L1278,requirement,Tone-scoring calibration with native judges,P1,external,,Open
+EP-§6.4-49,ELEVATION,§6.4.1:L1279-L1280,requirement,"Pilot and stats (week 6–8): a beta cohort, item statistics",P1,agent,,Open
+EP-§6.4-65,ELEVATION,§6.4.1:L1280,constraint,Promote to the next readiness level only when the gates pass,P1,agent,,Open
+EP-§6.4-50,ELEVATION,§6.4.1:L1281-L1284,requirement,"Throughput target: one content squad (lead, 2 writers, linguist time",P1,agent,,Open
+EP-§6.4-66,ELEVATION,§6.4.1:L1282,metric,runs 4–6 languages in parallel,P1,agent,,Open
+EP-§6.4-67,ELEVATION,§6.4.1:L1282-L1283,metric,so 2–3 squads clear a wave of 14 within about two quarters,P1,agent,,Open
+EP-§6.4-68,ELEVATION,§6.4.1:L1283-L1284,requirement,"Tooling (content studio §14, validators §6.5, eval harness) is shared",P1,agent,,Open
+EP-§6.4-69,ELEVATION,§6.4.1:L1285-L1286,external,companion: LINGAFRIQ_AI_MODEL_STACK.md §7,P1,external,,Open
+EP-§6.4-70,ELEVATION,§6.4.1:L1286-L1287,requirement,"AI drafts word lists, glosses, examples, dialogues, distractors, explanations and UI translations",P1,agent,,Open
+EP-§6.4-71,ELEVATION,§6.4.1:L1287,constraint,"Natives must approve every learner-facing string, all tone and diacritic marks",P1,external,,Open
+EP-§6.4-72,ELEVATION,§6.4.1:L1287-L1288,constraint,cultural notes and persona facts,P1,external,,Open
+EP-§6.4-73,ELEVATION,§6.4.1:L1288,constraint,Curriculum audio is always human-recorded,P1,external,,Open
+EP-§6.4-74,ELEVATION,§6.4.1:L1290-L1291,decision,"Dialect policy: declare the standard taught (Standard Yoruba, Central Igbo",P1,Tope,,Open
+EP-§6.4-75,ELEVATION,§6.4.1:L1292,requirement,mark regional variants explicitly,P1,agent,,Open
+EP-§6.4-76,ELEVATION,§6.4.1:L1292,informational,The existing dialectPreference model is a good hook,P1,agent,,Open
+EP-§6.5-01,ELEVATION,§6.5:L1293,requirement,Content schema (replace all four bundles),P1,agent,,Open
+EP-§6.5-02,ELEVATION,§6.5:L1295,requirement,"id: yo.lex.ọkọ.vehicle # stable, language-scoped",P1,agent,,Open
+EP-§6.5-03,ELEVATION,§6.5:L1296,requirement,"lemma: ""ọkọ̀"" # NFC-normalised, full diacritics",P1,agent,,Open
+EP-§6.5-04,ELEVATION,§6.5:L1297,requirement,"orthography: {standard: ""ọkọ̀"", ascii_fallback: ""oko"", script: Latn}",P1,agent,,Open
+EP-§6.5-05,ELEVATION,§6.5:L1298,requirement,"ipa: ""/ɔ̄kɔ̀/"" # with tone diacritics or Chao numbers",P1,agent,,Open
+EP-§6.5-06,ELEVATION,§6.5:L1299,requirement,"tone_pattern: [M, L]",P1,agent,,Open
+EP-§6.5-07,ELEVATION,§6.5:L1300,requirement,"syllables: [""ọ"", ""kọ̀""]",P1,agent,,Open
+EP-§6.5-08,ELEVATION,§6.5:L1301,requirement,"senses: [{gloss_en: ""vehicle"", gloss_fr: ""véhicule"", domain: transport,",P1,agent,,Open
+EP-§6.5-09,ELEVATION,§6.5:L1302,requirement,"minimal_pairs: [yo.lex.ọkọ.husband, yo.lex.ọkọ.hoe]",P1,agent,,Open
+EP-§6.5-10,ELEVATION,§6.5:L1303-L1304,requirement,"audio: [{voice_id: yo_f_lagos_01, speed: natural, uri: audio/yo/9f2c...ogg",P1,agent,,Open
+EP-§6.5-11,ELEVATION,§6.5:L1305,requirement,"image: {uri, alt_text, cultural_review: approved}",P1,agent,,Open
+EP-§6.5-12,ELEVATION,§6.5:L1306,requirement,cefr: A1; frequency_rank: 812,P1,agent,,Open
+EP-§6.5-13,ELEVATION,§6.5:L1307,requirement,"provenance: {author, source, licence, created_at}",P1,agent,,Open
+EP-§6.5-14,ELEVATION,§6.5:L1308-L1309,requirement,"review: {status: approved, reviewers: [native_1, linguist_1], tone_checked: true,",P1,agent,,Open
+EP-§6.5-15,ELEVATION,§6.5:L1310,requirement,"Pattern (grammar): id, description_l1, form, examples[], contrasts[], common_errors[], cefr",P1,agent,,Open
+EP-§6.5-16,ELEVATION,§6.5:L1311-L1312,requirement,"Dialogue: id, scene, roles, turns[{speaker, text, gloss, audio, tone_pattern}],",P1,agent,,Open
+EP-§6.5-17,ELEVATION,§6.5:L1313-L1314,requirement,"Item (exercise): id, type, stimulus refs, answer spec",P1,agent,,Open
+EP-§6.5-18,ELEVATION,§6.5:L1313-L1314,requirement,accepted variants incl. diacritic-insensitive matching rules,P1,agent,,Open
+EP-§6.5-19,ELEVATION,§6.5:L1314,requirement,"IRT params (a, b), skill tags",P1,agent,,Open
+EP-§6.5-20,ELEVATION,§6.5:L1315-L1316,requirement,"Unit: id, can_do_ids[], input (story/dialogue), patterns[], lexemes[],",P1,agent,,Open
+EP-§6.5-21,ELEVATION,§6.5:L1317,constraint,"file names are content hashes (ASCII), never orthography",P1,agent,,Open
+EP-§6.5-22,ELEVATION,§6.5:L1317,constraint,All text is NFC,P1,agent,,Open
+EP-§6.5-23,ELEVATION,§6.5:L1317-L1318,requirement,The validator rejects missing tone marks for tonal languages,P1,agent,,Open
+EP-§6.5-24,ELEVATION,§6.5:L1318,requirement,mismatched audio,P1,agent,,Open
+EP-§6.5-25,ELEVATION,§6.5:L1318,requirement,unreviewed items,P1,agent,,Open
+EP-§6.5-26,ELEVATION,§6.5:L1318-L1319,requirement,placeholder patterns (/word\d|example|sample|lorem/i) in CI,P1,agent,,Open
+EP-§6.6-01,ELEVATION,§6.6:L1321-L1323,requirement,Syllabus design by an applied linguist per language,P1,external,,Open
+EP-§6.6-07,ELEVATION,§6.6:L1321-L1322,external,"corpora such as JW300 alternatives with clear licences, Masakhane datasets",P1,external,,Open
+EP-§6.6-02,ELEVATION,§6.6:L1324-L1325,requirement,"Drafting: human writers, with LLMs allowed for variants and distractors only",P1,external,,Open
+EP-§6.6-08,ELEVATION,§6.6:L1325,requirement,on a grounded prompt with the approved lexicon,P1,agent,,Open
+EP-§6.6-09,ELEVATION,§6.6:L1325,requirement,Every AI-drafted string is tagged ai_assisted: true,P1,agent,,Open
+EP-§6.6-03,ELEVATION,§6.6:L1326-L1327,requirement,"Native review, two independent reviewers (different regions where dialects differ)",P1,external,,Open
+EP-§6.6-10,ELEVATION,§6.6:L1327-L1328,requirement,"Checks: orthography and tone, naturalness, register, cultural appropriateness,",P1,external,,Open
+EP-§6.6-11,ELEVATION,§6.6:L1328,requirement,Track inter-reviewer agreement,P1,agent,,Open
+EP-§6.6-12,ELEVATION,§6.6:L1328-L1329,requirement,"disagreement becomes dialect notes, not silent edits",P1,agent,,Open
+EP-§6.6-04,ELEVATION,§6.6:L1330-L1333,requirement,Audio production: studio or high-quality remote recording with ≥ 2 voices,P1,external,,Open
+EP-§6.6-13,ELEVATION,§6.6:L1330-L1331,metric,recording with ≥ 2 voices per language at L0/L1,P1,external,,Open
+EP-§6.6-14,ELEVATION,§6.6:L1331,metric,"≥ 4 at L2+ (gender, age, region)",P1,external,,Open
+EP-§6.6-15,ELEVATION,§6.6:L1331-L1332,requirement,"natural and slow takes, forced alignment for word and phone",P1,external,,Open
+EP-§6.6-16,ELEVATION,§6.6:L1332,requirement,QA listen-through,P1,external,,Open
+EP-§6.6-17,ELEVATION,§6.6:L1332,external,Contributors sign clear licence and consent forms,P1,external,,Open
+EP-§6.6-18,ELEVATION,§6.6:L1333,external,revenue share or fair payment,P1,external,,Open
+EP-§6.6-19,ELEVATION,§6.6:L1333,requirement,the UGC voice contribution feature becomes this pipeline,P1,agent,,Open
+EP-§6.6-05,ELEVATION,§6.6:L1334-L1335,requirement,Pilot: release to a beta cohort; collect item statistics,P1,agent,,Open
+EP-§6.6-20,ELEVATION,§6.6:L1334,requirement,"item statistics (p-value, discrimination, time, hint use)",P1,agent,,Open
+EP-§6.6-21,ELEVATION,§6.6:L1335,requirement,"""this is wrong"" button on every item, routed to reviewers",P1,agent,,Open
+EP-§6.6-06,ELEVATION,§6.6:L1336-L1337,requirement,Versioning: content packs are semver'd and signed; the app downloads diffs,P1,agent,,Open
+EP-§6.6-22,ELEVATION,§6.6:L1336-L1337,requirement,every item keeps its history,P1,agent,,Open
+EP-§14.1-01,ELEVATION,§14.1:L1965-L1966,metric,lingafriq-admin has 33 pages,P1,agent,,Open
+EP-§14.1-02,ELEVATION,§14.1:L1966,informational,but no review workflow,P1,agent,,Open
+EP-§14.1-03,ELEVATION,§14.1:L1966,informational,no roles beyond admin,P1,agent,,Open
+EP-§14.1-04,ELEVATION,§14.1:L1967,informational,no content versioning,P1,agent,,Open
+EP-§14.1-05,ELEVATION,§14.1:L1967,informational,no audit trail UI,P1,agent,,Open
+EP-§14.1-06,ELEVATION,§14.1:L1967,metric,and 0 tests,P1,agent,,Open
+EP-§14.1-07,ELEVATION,§14.1:L1967-L1968,informational,Lesson drafts autosave to localStorage,P1,agent,,Open
+EP-§14.1-08,ELEVATION,§14.1:L1968,informational,The app-side native verification tools are dead code.,P1,agent,,Open
+EP-§14.2-01,ELEVATION,§14.2:L1970,requirement,Roles: Owner,P1,agent,,Open
+EP-§14.2-02,ELEVATION,§14.2:L1970,requirement,Content Lead (per language),P1,agent,,Open
+EP-§14.2-03,ELEVATION,§14.2:L1970,requirement,Writer,P1,agent,,Open
+EP-§14.2-04,ELEVATION,§14.2:L1970,requirement,Native Reviewer,P1,agent,,Open
+EP-§14.2-05,ELEVATION,§14.2:L1970,requirement,Linguist,P1,agent,,Open
+EP-§14.2-06,ELEVATION,§14.2:L1970,requirement,Audio Producer,P1,agent,,Open
+EP-§14.2-07,ELEVATION,§14.2:L1971,requirement,Historian (personas),P1,agent,,Open
+EP-§14.2-08,ELEVATION,§14.2:L1971,requirement,Moderator,P1,agent,,Open
+EP-§14.2-09,ELEVATION,§14.2:L1971,requirement,Support,P1,agent,,Open
+EP-§14.2-10,ELEVATION,§14.2:L1971,requirement,Analyst.,P1,agent,,Open
+EP-§14.2-11,ELEVATION,§14.2:L1971,constraint,Least privilege enforced on the server.,P1,agent,,Open
+EP-§14.2-12,ELEVATION,§14.2:L1972,requirement,Workflow: Draft,P1,agent,,Open
+EP-§14.2-13,ELEVATION,§14.2:L1972,requirement,"AI-assist (optional, flagged)",P1,agent,,Open
+EP-§14.2-14,ELEVATION,§14.2:L1972,requirement,Native review ×2,P1,agent,,Open
+EP-§14.2-15,ELEVATION,§14.2:L1972,requirement,Linguist approve,P1,agent,,Open
+EP-§14.2-16,ELEVATION,§14.2:L1972-L1973,requirement,Audio recorded and aligned,P1,agent,,Open
+EP-§14.2-17,ELEVATION,§14.2:L1973,requirement,QA,P1,agent,,Open
+EP-§14.2-18,ELEVATION,§14.2:L1973,requirement,Scheduled publish,P1,agent,,Open
+EP-§14.2-19,ELEVATION,§14.2:L1973,requirement,Monitor item stats,P1,agent,,Open
+EP-§14.2-20,ELEVATION,§14.2:L1973,requirement,Revise.,P1,agent,,Open
+EP-§14.2-21,ELEVATION,§14.2:L1973-L1974,constraint,Every state change is audited.,P1,agent,,Open
+EP-§14.2-22,ELEVATION,§14.2:L1976,requirement,a tone-aware text field,P1,agent,,Open
+EP-§14.2-23,ELEVATION,§14.2:L1976,requirement,diacritic palette,P1,agent,,Open
+EP-§14.2-24,ELEVATION,§14.2:L1976,requirement,NFC enforcement,P1,agent,,Open
+EP-§14.2-25,ELEVATION,§14.2:L1977,requirement,live Tone Lens preview,P1,agent,,Open
+EP-§14.2-26,ELEVATION,§14.2:L1977,requirement,audio waveform with alignment view,P1,agent,,Open
+EP-§14.2-27,ELEVATION,§14.2:L1977,requirement,minimal-pair linker,P1,agent,,Open
+EP-§14.2-28,ELEVATION,§14.2:L1977-L1978,requirement,dialogue editor with per-turn audio,P1,agent,,Open
+EP-§14.2-29,ELEVATION,§14.2:L1978,requirement,can-do mapper,P1,agent,,Open
+EP-§14.2-30,ELEVATION,§14.2:L1978,requirement,an item preview that renders exactly like the app.,P1,agent,,Open
+EP-§14.2-31,ELEVATION,§14.2:L1979,requirement,Quality dashboards: item difficulty and discrimination,P1,agent,,Open
+EP-§14.2-32,ELEVATION,§14.2:L1979,requirement,report a problem queue,P1,agent,,Open
+EP-§14.2-33,ELEVATION,§14.2:L1979-L1980,requirement,reviewer agreement,P1,agent,,Open
+EP-§14.2-34,ELEVATION,§14.2:L1980,requirement,audio coverage per language and level,P1,agent,,Open
+EP-§14.2-35,ELEVATION,§14.2:L1980,requirement,placeholder detector,P1,agent,,Open
+EP-§14.2-36,ELEVATION,§14.2:L1980-L1981,requirement,untranslated UI string count.,P1,agent,,Open
+EP-§14.2-37,ELEVATION,§14.2:L1982,requirement,Moderation console: report queues with evidence,P1,agent,,Open
+EP-§14.2-38,ELEVATION,§14.2:L1982,requirement,user history,P1,agent,,Open
+EP-§14.2-39,ELEVATION,§14.2:L1982,requirement,"actions (warn, mute, suspend, ban)",P1,agent,,Open
+EP-§14.2-40,ELEVATION,§14.2:L1983,requirement,appeals,P1,agent,,Open
+EP-§14.2-41,ELEVATION,§14.2:L1983,requirement,law-enforcement escalation workflow,P1,agent,,Open
+EP-§14.2-42,ELEVATION,§14.2:L1983,constraint,CSAM handling restricted to trained staff.,P1,agent,,Open
+EP-§14.2-43,ELEVATION,§14.2:L1984,requirement,Persona console: source dossiers,P1,agent,,Open
+EP-§14.2-44,ELEVATION,§14.2:L1984,requirement,claims audit,P1,agent,,Open
+EP-§14.2-45,ELEVATION,§14.2:L1984,requirement,eval results per persona,P1,agent,,Open
+EP-§14.2-46,ELEVATION,§14.2:L1984,requirement,kill switch.,P1,agent,,Open
+EP-§14.2-47,ELEVATION,§14.2:L1985,requirement,AI ops: prompt registry with versions and diffs,P1,agent,,Open
+EP-§14.2-48,ELEVATION,§14.2:L1985,requirement,eval runs,P1,agent,,Open
+EP-§14.2-49,ELEVATION,§14.2:L1985,requirement,cost per feature,P1,agent,,Open
+EP-§14.2-50,ELEVATION,§14.2:L1985,requirement,model routing table,P1,agent,,Open
+EP-§14.2-51,ELEVATION,§14.2:L1986,requirement,incident switches.,P1,agent,,Open
+EP-§14.2-52,ELEVATION,§14.2:L1987,requirement,Tech: upgrade to current React and Vite,P1,agent,,Open
+EP-§14.2-53,ELEVATION,§14.2:L1987,requirement,typed API client generated from OpenAPI,P1,agent,,Open
+EP-§14.2-54,ELEVATION,§14.2:L1987,requirement,SSO for staff,P1,agent,,Open
+EP-§14.2-55,ELEVATION,§14.2:L1987-L1988,constraint,mandatory 2FA,P1,agent,,Open
+EP-§14.2-56,ELEVATION,§14.2:L1988,requirement,server-side sessions or httpOnly cookies instead of sessionStorage tokens,P1,agent,,Open
+EP-§14.2-57,ELEVATION,§14.2:L1989,requirement,Playwright tests on critical flows.,P1,agent,,Open
+CP-§2.1-01,CURRICULUM,§2.1:L107,requirement,Learner-facing text is written fresh by the pipeline and cites sources,P1,agent,,Open
+CP-§2.1-02,CURRICULUM,§2.1:L107-L108,constraint,"Copy verbatim only from public-domain or compatible-licence sources, with attribution",P1,agent,,Open
+CP-§2.1-03,CURRICULUM,§2.1:L108-L109,external,counsel should confirm per source,P1,external,,Open
+CP-§2.1-04,CURRICULUM,§2.1:L110-L112,constraint,"is used as verification evidence, or kept in a clearly separated, attributed",P1,agent,,Open
+CP-§2.1-05,CURRICULUM,§2.1:L112-L113,constraint,It is not mixed into LingAfriq's proprietary lexicon text,P1,agent,,Open
+CP-§2.1-06,CURRICULUM,§2.1:L114-L115,constraint,Non-commercial means not usable in a paid app without a written licence,P1,agent,,Open
+CP-§2.1-07,CURRICULUM,§2.1:L115-L116,constraint,treat it as excluded unless licensed,P1,agent,,Open
+CP-§2.1-08,CURRICULUM,§2.1:L117-L118,requirement,Every source gets a licence register entry,P1,agent,,Open
+CP-§2.1-09,CURRICULUM,§2.1:L117-L118,requirement,"URL, licence, version/date, allowed uses (display, evidence, training)",P1,agent,,Open
+CP-§2.1-10,CURRICULUM,§2.1:L118,requirement,"attribution text, and owner sign-off",P1,Tope,,Open
+CP-§2.2-01,CURRICULUM,§2.2:L124-L134,requirement,"US government work, public domain",P1,agent,,Open
+CP-§2.2-13,CURRICULUM,§2.2:L133-L134,requirement,"Language is 1960s, so modernise vocabulary.",P1,agent,,Open
+CP-§2.2-14,CURRICULUM,§2.2:L135,informational,No FSI Zulu or Xhosa course found,P1,agent,,Open
+CP-§2.2-02,CURRICULUM,§2.2:L136-L146,constraint,"Often US-gov public domain, but not established for every item",P1,external,,Open
+CP-§2.2-03,CURRICULUM,§2.2:L147-L157,constraint,CC BY-SA 4.0 + GFDL; wiktextract code is MIT,P1,agent,,Open
+CP-§2.2-15,CURRICULUM,§2.2:L155-L157,constraint,do not copy into the proprietary lexicon,P1,agent,,Open
+CP-§2.2-04,CURRICULUM,§2.2:L158-L169,requirement,Downloadable corpora CC BY; web services and applications CC BY-NC,P1,agent,,Open
+CP-§2.2-05,CURRICULUM,§2.2:L170-L177,requirement,CC0 Yes Read-speech audio for listening examples and TTS/ASR evaluation,P1,agent,,Open
+CP-§2.2-16,CURRICULUM,§2.2:L174,metric,Recorded hours: Yoruba 8.3,P1,agent,,Open
+CP-§2.2-17,CURRICULUM,§2.2:L175,metric,Hausa 12.6,P1,agent,,Open
+CP-§2.2-18,CURRICULUM,§2.2:L175,metric,Igbo 18.9,P1,agent,,Open
+CP-§2.2-19,CURRICULUM,§2.2:L175-L176,metric,"Swahili 1,065",P1,agent,,Open
+CP-§2.2-06,CURRICULUM,§2.2:L178-L180,requirement,Google FLEURS (card) CC BY 4.0 Yes Parallel sentences plus audio,P1,agent,,Open
+CP-§2.2-07,CURRICULUM,§2.2:L181-L187,constraint,"Mixed: University of Ghana subsets CC BY 4.0, most others CC BY-SA",P1,agent,,Open
+CP-§2.2-08,CURRICULUM,§2.2:L188-L194,constraint,Per story: CC BY or CC BY-NC,P1,agent,,Open
+CP-§2.2-20,CURRICULUM,§2.2:L193-L194,constraint,Filter to CC BY; attribute authors,P1,agent,,Open
+CP-§2.2-21,CURRICULUM,§2.2:L194,requirement,check for Igbo,P1,agent,,Open
+CP-§2.2-09,CURRICULUM,§2.2:L195-L198,constraint,"CC BY-SA 4.0 Yes, share-alike Parsed sentences as grammar evidence",P1,agent,,Open
+CP-§2.2-10,CURRICULUM,§2.2:L199-L206,constraint,CC BY-SA 4.0 (Biblica trademark removed from derivatives),P1,agent,,Open
+CP-§2.2-22,CURRICULUM,§2.2:L203-L204,constraint,Corpus and frequency evidence only; religious register,P1,agent,,Open
+CP-§2.2-11,CURRICULUM,§2.2:L207-L210,requirement,Discovery only; always verify the licence at the source,P1,agent,,Open
+CP-§2.2-12,CURRICULUM,§2.2:L211-L214,requirement,Use its compatibility matrix as a checklist for the register,P1,agent,,Open
+CP-§2.3-01,CURRICULUM,§2.3:L217-L221,external,"JW300 Built in breach of jw.org terms, which prohibit text and data",P1,agent,,Open
+CP-§2.3-16,CURRICULUM,§2.3:L220-L221,requirement,"Declare ""no JW300-derived data"" in the register",P1,agent,,Open
+CP-§2.3-02,CURRICULUM,§2.3:L224-L227,external,"MAFAND-MT (README), MasakhaNER 2.0 (repo) CC BY-NC 4.0",P1,external,,Open
+CP-§2.3-23,CURRICULUM,§2.3:L226-L227,decision,"Exclude, or request a commercial licence from Masakhane",P1,Tope,,Open
+CP-§2.3-03,CURRICULUM,§2.3:L228-L233,external,"AfriSenti (HF, paper) HF card says CC BY 4.0, but the paper",P1,external,,Open
+CP-§2.3-24,CURRICULUM,§2.3:L231-L232,external,Treat as non-commercial; ask the creators.,P1,external,,Open
+CP-§2.3-04,CURRICULUM,§2.3:L234-L238,external,PanLex (licence) CC BY-NC-SA 4.0; commercial use needs written permission,P1,external,,Open
+CP-§2.3-17,CURRICULUM,§2.3:L237-L238,external,Request permission (info@panlex.org) before any use,P1,external,,Open
+CP-§2.3-05,CURRICULUM,§2.3:L239-L243,external,"NaijaVoices (HF, licence, membership) CC BY-NC-SA 4.0; commercial waiver via",P1,external,,Open
+CP-§2.3-12,CURRICULUM,§2.3:L240,metric,"membership ($5,000+ tier",P1,agent,,Open
+CP-§2.3-13,CURRICULUM,§2.3:L240-L241,metric,12 months,P1,agent,,Open
+CP-§2.3-21,CURRICULUM,§2.3:L242-L243,decision,Buy the waiver if you need Igbo/Hausa/Yoruba speech at scale,P1,Tope,,Open
+CP-§2.3-06,CURRICULUM,§2.3:L244-L245,external,IgboAPI dataset (paper) Data CC BY-NC-SA 4.0 (code Apache-2.0),P1,external,,Open
+CP-§2.3-19,CURRICULUM,§2.3:L245,external,license it from Nkọwa okwu,P1,external,,Open
+CP-§2.3-07,CURRICULUM,§2.3:L246-L249,external,Kamusi (policy) CC BY-NC-SA; commercial licence on request,P1,external,,Open
+CP-§2.3-20,CURRICULUM,§2.3:L248-L249,decision,License it if a Swahili gap remains after Oxford,P1,Tope,,Open
+CP-§2.3-08,CURRICULUM,§2.3:L250-L256,external,"Helsinki Corpus of Swahili 2.0 (Kielipankki, ELRA) CLARIN ACA (academic only)",P1,external,,Open
+CP-§2.3-14,CURRICULUM,§2.3:L253,metric,"€7,500 (member)",P1,agent,,Open
+CP-§2.3-15,CURRICULUM,§2.3:L253-L254,metric,"€15,000",P1,agent,,Open
+CP-§2.3-22,CURRICULUM,§2.3:L255-L256,decision,Optional; Leipzig CC BY plus Common Voice may suffice for frequency,P1,Tope,,Open
+CP-§2.3-09,CURRICULUM,§2.3:L257-L264,external,"Oxford Languages datasets (datasets, API languages) Commercial licence",P1,external,,Open
+CP-§2.3-11,CURRICULUM,§2.3:L262-L264,external,"Get a quote covering tone-marked headwords, examples and the right to display",P1,external,,Open
+CP-§2.3-18,CURRICULUM,§2.3:L262,decision,Buy (top pick for accuracy),P1,Tope,,Open
+CP-§2.3-10,CURRICULUM,§2.3:L265-L272,external,"Bargery, Hausa–English, 1934, online) Copyright status unconfirmed",P1,external,,Open
+CP-§2.4-yo-01,CURRICULUM,§2.4:L281-L286,constraint,Standard Yoruba orthography (Nigerian standard; full tone marking for pedagogy),P1,agent,,Open
+CP-§2.4-yo-02,CURRICULUM,§2.4:L287-L289,external,"Oxford Yoruba dataset (licensed) → Wiktionary, Abraham (reference)",P1,external,,Open
+CP-§2.4-yo-03,CURRICULUM,§2.4:L290-L297,external,"FSI Basic + Intermediate (PD); a modern reference grammar, e.g. Bámgbóṣé",P1,external,,Open
+CP-§2.4-yo-04,CURRICULUM,§2.4:L298-L303,requirement,"Leipzig, Biblica open Bible, Common Voice, FLEURS",P1,agent,,Open
+CP-§2.4-yo-05,CURRICULUM,§2.4:L304-L310,requirement,"NaijaML diacritizer, Apache-2.0: 80.3% full-tone word accuracy, 93.3% dot-below",P1,agent,,Open
+CP-§2.4-yo-06,CURRICULUM,§2.4:L305-L307,metric,80.3% full-tone word accuracy,P1,agent,,Open
+CP-§2.4-yo-07,CURRICULUM,§2.4:L307-L308,metric,93.3% dot-below,P1,agent,,Open
+CP-§2.4-yo-08,CURRICULUM,§2.4:L308-L310,requirement,Spitch tone marking (AI stack),P1,agent,,Open
+CP-§2.4-yo-09,CURRICULUM,§2.4:L308-L310,external,companion: Spitch tone marking (AI stack),P1,agent,,Open
+CP-§2.4-ig-01,CURRICULUM,§2.4:L311-L312,constraint,Standard Igbo (Ọnwụ orthography) [verify],P1,agent,,Open
+CP-§2.4-ig-06,CURRICULUM,§2.4:L312-L315,constraint,dialect policy: Central Igbo plus Onitsha/Owerri notes,P1,agent,,Open
+CP-§2.4-ig-02,CURRICULUM,§2.4:L316-L318,external,IgboAPI (license) + Oxford Igbo → Wiktionary,P1,external,,Open
+CP-§2.4-ig-03,CURRICULUM,§2.4:L319-L323,external,"FSI Igbo Basic (PD, tone drills; tape 1 missing); Emenanjo's Igbo grammar",P1,external,,Open
+CP-§2.4-ig-04,CURRICULUM,§2.4:L324-L327,requirement,"Leipzig, Common Voice, FLEURS",P1,agent,,Open
+CP-§2.4-ig-05,CURRICULUM,§2.4:L328-L333,risk,Igbo tone restorer only 61.6% tone-mark accuracy (model),P1,agent,,Open
+CP-§2.4-ig-08,CURRICULUM,§2.4:L329-L330,metric,61.6% tone-mark accuracy,P1,agent,,Open
+CP-§2.4-ig-07,CURRICULUM,§2.4:L331-L333,constraint,"so Igbo tone is lexicon-first, human-checked",P1,agent,,Open
+CP-§2.4-ha-01,CURRICULUM,§2.4:L334-L335,constraint,Standard Boko orthography (ɓ ɗ ƙ ƴ ʼ).,P1,agent,,Open
+CP-§2.4-ha-06,CURRICULUM,§2.4:L338-L341,requirement,so pedagogical marking comes from dictionaries,P1,agent,,Open
+CP-§2.4-ha-02,CURRICULUM,§2.4:L342-L344,external,"Oxford Hausa → Wiktionary, Bargery (reference)",P1,external,,Open
+CP-§2.4-ha-03,CURRICULUM,§2.4:L345-L349,external,FSI Hausa Basic (PD); Peace Corps Hausa; Newman The Hausa Language,P1,external,,Open
+CP-§2.4-ha-04,CURRICULUM,§2.4:L350-L355,requirement,"Leipzig, Biblica open Bible, Common Voice, FLEURS",P1,agent,,Open
+CP-§2.4-ha-05,CURRICULUM,§2.4:L356-L358,requirement,Lexicon lookup for tone and length marks,P1,agent,,Open
+CP-§2.4-pcm-01,CURRICULUM,§2.4:L370-L375,constraint,"Naija Langwej Akademi standard orthography (IFRA guide): phonetic Latin, high tone marked",P1,agent,,Open
+CP-§2.4-pcm-02,CURRICULUM,§2.4:L376-L380,external,"No commercial dictionary found; build from UD-Naija, Faraclas Nigerian Pidgin (1996) [purchase]",P1,external,,Open
+CP-§2.4-pcm-03,CURRICULUM,§2.4:L381-L382,requirement,UD-Naija-NSC (CC BY-SA),P1,agent,,Open
+CP-§2.4-pcm-04,CURRICULUM,§2.4:L383-L385,requirement,NSC speech corpus [verify licence],P1,agent,,Open
+CP-§2.4-pcm-06,CURRICULUM,§2.4:L386-L387,external,Intron for ASR,P1,external,,Open
+CP-§2.4-pcm-05,CURRICULUM,§2.4:L388-L389,requirement,"LLM ""anglicisation"" detector (§3.4)",P1,agent,,Open
+CP-§2.4-sw-01,CURRICULUM,§2.4:L390-L393,constraint,"Kiswahili Sanifu (BAKITA, Tanzania) [verify citation] + Kenyan notes",P1,agent,,Open
+CP-§2.4-sw-02,CURRICULUM,§2.4:L394-L396,external,"Oxford API Swahili → Wiktionary; Kamusi (license, optional)",P1,external,,Open
+CP-§2.4-sw-03,CURRICULUM,§2.4:L397-L401,external,"FSI Swahili Basic (PD, 150 units); Peace Corps Kiswahili; Ashton Swahili Grammar",P1,external,,Open
+CP-§2.4-sw-04,CURRICULUM,§2.4:L402-L407,requirement,"Leipzig, Common Voice (1,065 h), FLEURS, African Storybook",P1,agent,,Open
+CP-§2.4-sw-05,CURRICULUM,§2.4:L408-L409,requirement,Noun-class concord checker (§3.3),P1,agent,,Open
+CP-§2.4-zu-01,CURRICULUM,§2.4:L410-L413,constraint,"PanSALB revised spelling and orthography rules (Gazette, 6 Jul 2023)",P1,agent,,Open
+CP-§2.4-zu-02,CURRICULUM,§2.4:L414-L422,external,Commercial Zulu dictionary licence [Oxford API doesn't list Zulu;,P1,external,,Open
+CP-§2.4-zu-06,CURRICULUM,§2.4:L417-L419,external,approach the publisher of the Doke–Vilakazi dictionary,P1,external,,Open
+CP-§2.4-zu-03,CURRICULUM,§2.4:L423-L425,external,Peace Corps Zulu; Poulos & Msimang [purchase],P1,external,,Open
+CP-§2.4-zu-07,CURRICULUM,§2.4:L425-L429,requirement,"SADiLaR morphologically annotated corpus, 45,933 tokens, CC BY 4.0 (repo)",P1,agent,,Open
+CP-§2.4-zu-08,CURRICULUM,§2.4:L428,metric,"45,933 tokens",P1,agent,,Open
+CP-§2.4-zu-04,CURRICULUM,§2.4:L430-L436,requirement,"NCHLT corpora (CC BY 2.5 ZA), FLEURS, WAXAL, African Storybook",P1,agent,,Open
+CP-§2.4-zu-05,CURRICULUM,§2.4:L437-L442,requirement,ZulMorph finite-state analyser; the SADiLaR record lists Apache-2.0,P1,agent,,Open
+CP-§2.4-xh-01,CURRICULUM,§2.4:L443-L444,constraint,PanSALB revised rules (same Gazette),P1,agent,,Open
+CP-§2.4-xh-02,CURRICULUM,§2.4:L445-L446,external,Oxford isiXhosa dataset (license) → Wiktionary,P1,external,,Open
+CP-§2.4-xh-06,CURRICULUM,§2.4:L447-L449,requirement,"SADiLaR annotated corpus, 46,465 tokens, CC BY 4.0 (repo)",P1,agent,,Open
+CP-§2.4-xh-07,CURRICULUM,§2.4:L448,metric,"46,465 tokens",P1,agent,,Open
+CP-§2.4-xh-03,CURRICULUM,§2.4:L449-L452,external,a standard Xhosa reference grammar [linguist to choose],P1,external,,Open
+CP-§2.4-xh-04,CURRICULUM,§2.4:L453-L457,requirement,"NCHLT, FLEURS, WAXAL, African Storybook",P1,agent,,Open
+CP-§2.4-xh-05,CURRICULUM,§2.4:L458-L461,requirement,Concord checker; no mature open Xhosa,P1,agent,,Open
+CP-§2.4-xh-08,CURRICULUM,§2.4:L458-L460,risk,no mature open Xhosa analyser confirmed,P1,agent,,Open
+CP-§3.1-01,CURRICULUM,§3.1:L469-L471,requirement,Language kit (once per language). Allowed character set and Unicode rules (NFC),P1,agent,,Open
+CP-§3.1-10,CURRICULUM,§3.1:L469-L471,requirement,tone-marking policy for pedagogy; phone inventory; G2P rules; noun-class and concord tables,P1,agent,,Open
+CP-§3.1-11,CURRICULUM,§3.1:L470-L471,requirement,dialect standard; a register of honorifics.,P1,agent,,Open
+CP-§3.1-02,CURRICULUM,§3.1:L472-L476,requirement,Lexicon first. Build the frequency list from Leipzig and other CC-BY corpora,P1,agent,,Open
+CP-§3.1-12,CURRICULUM,§3.1:L473-L475,requirement,"Each lexeme stores tone pattern, IPA from G2P, POS, noun class, plural",P1,agent,,Open
+CP-§3.1-13,CURRICULUM,§3.1:L474-L475,constraint,"A lexeme with two agreeing sources is ""anchored""",P1,agent,,Open
+CP-§3.1-14,CURRICULUM,§3.1:L475-L476,constraint,single-source (held for linguist review if high-frequency),P1,agent,,Open
+CP-§3.1-03,CURRICULUM,§3.1:L477-L481,requirement,Grounded generation. Gemini 3.1 Pro (AI stack §3.1/§3.9) receives the can-do target,P1,agent,,Open
+CP-§3.1-25,CURRICULUM,§3.1:L477-L478,external,companion: LINGAFRIQ_AI_MODEL_STACK.md §3.1/§3.9 (Gemini 3.1 Pro),P1,Tope,,Open
+CP-§3.1-15,CURRICULUM,§3.1:L478,constraint,allowed lexicon (anchored lexemes only),P1,agent,,Open
+CP-§3.1-16,CURRICULUM,§3.1:L479-L480,requirement,structured JSON with a citation per claim (source id plus locator),P1,agent,,Open
+CP-§3.1-17,CURRICULUM,§3.1:L480-L481,constraint,Forbidden: any word outside the allowed lexicon,P1,agent,,Open
+CP-§3.1-18,CURRICULUM,§3.1:L481,constraint,any culture or grammar claim without a citation.,P1,agent,,Open
+CP-§3.1-04,CURRICULUM,§3.1:L483-L486,requirement,Independent cross-check. A different model family (GPT-5 class; a third model as,P1,agent,,Open
+CP-§3.1-19,CURRICULUM,§3.1:L484-L486,requirement,receives the item without the generator's reasoning,P1,agent,,Open
+CP-§3.1-20,CURRICULUM,§3.1:L484-L486,requirement,checks each citation supports its claim (entailment against the retrieved passage),P1,agent,,Open
+CP-§3.1-05,CURRICULUM,§3.1:L487-L490,requirement,Back-translation. Independent MT (Google Cloud Translation; MADLAD-400 for the long tail,P1,agent,,Open
+CP-§3.1-26,CURRICULUM,§3.1:L487-L488,external,companion: LINGAFRIQ_AI_MODEL_STACK.md §3.7 (MADLAD-400),P1,Tope,,Open
+CP-§3.1-21,CURRICULUM,§3.1:L488-L490,constraint,Disagreement flags the item; it doesn't auto-reject it,P1,agent,,Open
+CP-§3.1-06,CURRICULUM,§3.1:L491-L492,requirement,Deterministic linters (§3.3) and analysers (ZulMorph for Zulu; rule-based concord checkers,P1,agent,,Open
+CP-§3.1-07,CURRICULUM,§3.1:L493-L496,requirement,Tone and diacritic consistency. Every token is matched to a lexicon entry,P1,agent,,Open
+CP-§3.1-22,CURRICULUM,§3.1:L493-L496,constraint,"the item passes only if the lexicon form, the generator's form and",P1,agent,,Open
+CP-§3.1-23,CURRICULUM,§3.1:L494-L496,requirement,"Where a restoration model exists (NaijaML for Yoruba), it is run as",P1,agent,,Open
+CP-§3.1-24,CURRICULUM,§3.1:L496,constraint,Any disagreement goes to a linguist.,P1,agent,,Open
+CP-§3.1-08,CURRICULUM,§3.1:L497,requirement,Confidence scoring and routing (§3.4).,P1,agent,,Open
+CP-§3.1-09,CURRICULUM,§3.1:L498,requirement,"Human review where routed (§5), then publishing with a label.",P1,agent,,Open
+CP-§3.2-01,CURRICULUM,§3.2:L501-L502,requirement,Wrong word or meaning Lexicon anchoring + back-translation Cross-check model; linguist sample,P1,agent,,Open
+CP-§3.2-02,CURRICULUM,§3.2:L503,requirement,"Missing or wrong tone marks (yo, ig) Lexicon tone match + restorer",P1,agent,,Open
+CP-§3.2-09,CURRICULUM,§3.2:L503,metric,Linguist (100% where unmatched),P1,external,,Open
+CP-§3.2-03,CURRICULUM,§3.2:L504,requirement,Hausa tone and vowel length (pedagogical) Dictionary-sourced marked forms only Linguist,P1,agent,,Open
+CP-§3.2-04,CURRICULUM,§3.2:L505,requirement,"Noun-class or concord errors (sw, zu, xh) Concord linter + ZulMorph parse",P1,agent,,Open
+CP-§3.2-05,CURRICULUM,§3.2:L506-L511,requirement,Unnatural or anglicised phrasing (esp. Pidgin) Cross-check naturalness rating + anglicisation detector,P1,agent,,Open
+CP-§3.2-12,CURRICULUM,§3.2:L510-L511,requirement,Learner flags; native validators later,P2,agent,,Open
+CP-§3.2-06,CURRICULUM,§3.2:L512-L513,requirement,False grammar or culture claims Claim-level citation + entailment check,P1,agent,,Open
+CP-§3.2-10,CURRICULUM,§3.2:L512-L513,metric,Linguist or cultural reviewer (100%),P1,external,,Open
+CP-§3.2-07,CURRICULUM,§3.2:L514-L516,requirement,"Wrong register or honorifics (Yoruba ẹ/ọ, Zulu hlonipha) Honorific register list +",P1,agent,,Open
+CP-§3.2-11,CURRICULUM,§3.2:L515-L516,metric,Linguist (100% for respect-sensitive units),P1,external,,Open
+CP-§3.2-08,CURRICULUM,§3.2:L517,requirement,"Placeholders, empty fields, broken JSON Schema validator + placeholder regex CI blocks",P1,agent,,Open
+CP-§3.3-20,CURRICULUM,§3.3:L518,requirement,"Linters (deterministic, in CI and in the studio)",P1,agent,,Open
+CP-§3.3-01,CURRICULUM,§3.3:L520,requirement,Unicode: NFC only; allowed code points per language; no look-alike characters,P1,agent,,Open
+CP-§3.3-02,CURRICULUM,§3.3:L521-L522,requirement,Yoruba: dot-below vowels and ṣ; tone policy (high ́ and low `,P1,agent,,Open
+CP-§3.3-03,CURRICULUM,§3.3:L522,requirement,syllabic nasals carry tone,P1,agent,,Open
+CP-§3.3-04,CURRICULUM,§3.3:L522-L523,requirement,every token's diacritics equal its lexicon form,P1,agent,,Open
+CP-§3.3-05,CURRICULUM,§3.3:L523,requirement,flags unmarked tokens in learner-facing text.,P1,agent,,Open
+CP-§3.3-06,CURRICULUM,§3.3:L524-L526,requirement,Igbo: dotted vowels i ̣ ọ ụ and ṅ ; pedagogical tone,P1,agent,,Open
+CP-§3.3-07,CURRICULUM,§3.3:L525-L526,decision,Igbo marking conventions vary; decide once,P1,Tope,,Open
+CP-§3.3-08,CURRICULUM,§3.3:L526,requirement,Igbo: ... lexicon match.,P1,agent,,Open
+CP-§3.3-09,CURRICULUM,§3.3:L527-L528,requirement,Hausa: hooked letters ɓ ɗ ƙ ƴ and ʼ; pedagogical marks only,P1,agent,,Open
+CP-§3.3-10,CURRICULUM,§3.3:L528,requirement,"distinguishes display text (standard, unmarked) from teaching text (marked).",P1,agent,,Open
+CP-§3.3-11,CURRICULUM,§3.3:L529-L531,requirement,"Swahili, Zulu, Xhosa concords: a noun's class prefix determines the subject, object,",P1,agent,,Open
+CP-§3.3-12,CURRICULUM,§3.3:L530-L531,requirement,"checked against class tables (Swahili m/wa, ki/vi ... Zulu and Xhosa classes",P1,agent,,Open
+CP-§3.3-13,CURRICULUM,§3.3:L531-L532,constraint,Zulu forms are additionally parsed by ZulMorph; parse failure means human review.,P1,agent,,Open
+CP-§3.3-14,CURRICULUM,§3.3:L532-L533,requirement,Conjunctive orthography follows the PanSALB rules (Zulu and Xhosa write verbal,P1,agent,,Open
+CP-§3.3-15,CURRICULUM,§3.3:L534,requirement,Pidgin: NLA spelling normalisation table; flags English spellings where an NLA form,P1,agent,,Open
+CP-§3.3-16,CURRICULUM,§3.3:L536-L538,requirement,Claims: any sentence in an explanation or culture note that states a,P1,agent,,Open
+CP-§3.3-17,CURRICULUM,§3.3:L537-L538,constraint,"Generic templates (""affixes carry tense and person"", ""Pattern: subject → verb →",P1,agent,,Open
+CP-§3.3-18,CURRICULUM,§3.3:L539,requirement,/word\d|example meaning|sample|lorem|TODO/i,P1,agent,,Open
+CP-§3.3-19,CURRICULUM,§3.3:L539-L540,requirement,duplicate-content detection (near-identical dialogues and repeated lines).,P1,agent,,Open
+CP-§3.4-01,CURRICULUM,§3.4:L541-L542,requirement,"Score = a weighted blend, calibrated on the linguist-reviewed pilot set.",P1,agent,,Open
+CP-§3.4-02,CURRICULUM,§3.4:L542-L543,requirement,lexicon coverage (% of tokens anchored),P1,agent,,Open
+CP-§3.4-03,CURRICULUM,§3.4:L543,requirement,"tone agreement (lexicon, generator and restorer)",P1,agent,,Open
+CP-§3.4-04,CURRICULUM,§3.4:L543,requirement,cross-model agreement and naturalness,P1,agent,,Open
+CP-§3.4-05,CURRICULUM,§3.4:L543-L544,requirement,back-translation similarity,P1,agent,,Open
+CP-§3.4-06,CURRICULUM,§3.4:L544,requirement,linter results,P1,agent,,Open
+CP-§3.4-07,CURRICULUM,§3.4:L544,requirement,citation entailment,P1,agent,,Open
+CP-§3.4-08,CURRICULUM,§3.4:L544-L545,requirement,source tier (licensed dictionary or PD course > CC-BY corpus > Wiktionary-only),P1,agent,,Open
+CP-§3.4-09,CURRICULUM,§3.4:L546,requirement,"Auto-Beta Score ≥ 0.90, all linters pass, no high-risk tag Publish Beta;",P1,agent,,Open
+CP-§3.4-12,CURRICULUM,§3.4:L546,metric,Score ≥ 0.90,P1,agent,,Open
+CP-§3.4-10,CURRICULUM,§3.4:L547-L548,requirement,"Review 0.70–0.90, or any high-risk tag regardless of score Linguist queue",P1,agent,,Open
+CP-§3.4-13,CURRICULUM,§3.4:L547,metric,0.70–0.90,P1,agent,,Open
+CP-§3.4-11,CURRICULUM,§3.4:L549-L550,requirement,Reject < 0.70 or any hard linter failure Regenerate (max 2 attempts),P1,agent,,Open
+CP-§3.4-14,CURRICULUM,§3.4:L549,metric,< 0.70,P1,agent,,Open
+CP-§3.4-15,CURRICULUM,§3.4:L550,metric,"Regenerate (max 2 attempts), then park for a human",P1,agent,,Open
+CP-§3.4-16,CURRICULUM,§3.4:L551,constraint,High-risk tags (never AI-only): tone-marked tokens without a lexicon match,P1,agent,,Open
+CP-§3.4-17,CURRICULUM,§3.4:L551,constraint,idioms and proverbs,P1,agent,,Open
+CP-§3.4-18,CURRICULUM,§3.4:L551-L552,constraint,"culture, history and religion claims",P1,agent,,Open
+CP-§3.4-19,CURRICULUM,§3.4:L552,constraint,honorifics and respect forms,P1,agent,,Open
+CP-§3.4-20,CURRICULUM,§3.4:L552,constraint,grammar explanations,P1,agent,,Open
+CP-§3.4-21,CURRICULUM,§3.4:L552,constraint,anything shown to children.,P1,agent,,Open
+CP-§3.4-22,CURRICULUM,§3.4:L553-L554,requirement,Thresholds are starting points; tune them so that the measured error rate,P1,agent,,Open
+CP-§8-01,CURRICULUM,§8:L755-L757,requirement,Quarantine. Move the three placeholder bundles and the duplicated expanded bundle,P1,agent,,Open
+CP-§8-02,CURRICULUM,§8:L758-L760,requirement,Salvage. Extract every real phrase from lingafriq_authentic_curriculum_a1_c2.json,P1,agent,,Open
+CP-§8-03,CURRICULUM,§8:L761-L762,requirement,"Grammar. Delete the two generic sentences from all 1,546 lessons",P1,agent,,Open
+CP-§8-04,CURRICULUM,§8:L763-L767,requirement,Tone claims. Every legacy tonal_note is re-derived from the lexicon's tone pattern.,P1,agent,,Open
+CP-§8-05,CURRICULUM,§8:L768-L769,requirement,Dialogues. Regenerate from can-do targets with the anti-repetition linter,P1,agent,,Open
+CP-§8-06,CURRICULUM,§8:L770-L771,requirement,Structure. Rebuild units against the CEFR map. One signed content pack per,P1,agent,,Open
+CP-§8-07,CURRICULUM,§8:L772-L773,requirement,UI strings and phrase packs. Run app_*.arb and offline phrase packs through,P1,agent,,Open
+CP-§8-08,CURRICULUM,§8:L774-L775,requirement,Report. Produce a before/after dashboard: items salvaged versus rebuilt,P1,agent,,Open
+CP-§9.1-01,CURRICULUM,§9.1:L778-L779,constraint,"Build it on the existing admin (33 pages, React/Vite), with a new",P1,agent,,Open
+CP-§9.1-02,CURRICULUM,§9.1:L779-L780,requirement,"Source library and licence register: upload, licence fields, allowed-use flags, attribution text.",P1,agent,,Open
+CP-§9.1-03,CURRICULUM,§9.1:L780-L781,requirement,"Lexicon editor: sources side by side, tone pattern, G2P preview, minimal pairs",P1,agent,,Open
+CP-§9.1-04,CURRICULUM,§9.1:L782,requirement,"Generation jobs: per can-do or unit, with prompt templates versioned in git.",P1,agent,,Open
+CP-§9.1-05,CURRICULUM,§9.1:L782-L784,requirement,"Verification report per item: every model's opinion, back-translation, linter results, citations",P1,agent,,Open
+CP-§9.1-06,CURRICULUM,§9.1:L784-L785,requirement,"Review queues: high-risk, sample, flagged; keyboard-first, 1-click approve/fix/reject",P1,agent,,Open
+CP-§9.1-07,CURRICULUM,§9.1:L785-L786,requirement,"Label and publish: semver content packs, signing, staged rollout, rollback.",P1,agent,,Open
+CP-§9.1-08,CURRICULUM,§9.1:L786-L787,requirement,"Quality dashboard: sample error rate per language and label, flags, item statistics",P1,agent,,Open
+CP-§9.1-09,CURRICULUM,§9.1:L788,requirement,Payments export for reviewers (items reviewed per person).,P1,agent,,Open
+CP-§9.1-10,CURRICULUM,§9.1:L788-L789,metric,10–14 engineer-weeks for the MVP (2 engineers × 6 weeks),P1,agent,,Open
+CP-§9.1-11,CURRICULUM,§9.1:L789,metric,plus a pipeline service of about 4–6 weeks [estimate].,P1,agent,,Open

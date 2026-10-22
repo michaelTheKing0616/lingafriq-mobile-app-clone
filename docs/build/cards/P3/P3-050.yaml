@@ -1,0 +1,72 @@
+charter: v2
+id: P3-050
+kind: build
+title: 'Add contextual surfacing rules: scenarios, events, social, reminder'
+phase: P3
+epic: E-P3-SHELL
+req_ids:
+- EP-§17.3-05
+- EP-§17.3-06
+- EP-§17.3-07
+- EP-§17.3-08
+- EP-§17.3-09
+depends_on:
+- P3-049
+size: M
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 4: blast 0, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/navigation/surfacing_rules.dart
+- assets/config/surfacing_rules.json
+- lib/services/reminder_service.dart
+context_anchors:
+- ELEVATION.md#§17.3:L2301-L2307
+acceptance_criteria:
+- id: AC1
+  text: Given a scenario unit like market, when reached, then Scenario Theatre and Market Haggle are offered
+- id: AC2
+  text: Given a weekend, when open, then Circle Clash, a Radio show and festival events are offered
+- id: AC3
+  text: Given an adult at A2 or above and active, when rules run, then Native Corrections and Post a Status prompts are offered
+- id: AC4
+  text: Given inactivity, when the reminder runs, then exactly one reminder is sent per inactivity episode and it opens a
+    2-minute session
+- id: AC5
+  text: Given a minor account, when social prompts evaluate, then none are offered
+test_plan:
+  unit:
+  - one reminder cap
+  integration:
+  - minor excluded
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

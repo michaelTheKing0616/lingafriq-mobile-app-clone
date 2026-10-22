@@ -1,0 +1,67 @@
+charter: v2
+id: P2-005
+kind: build
+title: Block merges on prompt or model changes without AI eval
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.9-08
+depends_on:
+- E-P1-CONTAINMENT
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- scripts/ci/ai_eval_gate.py
+- .github/workflows/llm_authoring.yml
+- evals/README.md
+- evals/thresholds.yaml
+context_anchors:
+- ELEVATION.md#§13.9:L1952-L1953
+acceptance_criteria:
+- id: AC1
+  text: Given a PR changing a prompt file or a model identifier, when CI runs, then the AI eval suite executes and the PR
+    is blocked below configured thresholds
+- id: AC2
+  text: Given a PR changing neither, when CI runs, then the eval job is skipped with an explicit reason
+- id: AC3
+  text: Given eval infrastructure failure, when the job runs, then CI fails loud and never passes as skipped
+test_plan:
+  unit:
+  - changed-path detector
+  integration:
+  - gate against stub eval results
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/11-data-and-quantitative-work
+  - adaptive/07-research-and-fact-checking

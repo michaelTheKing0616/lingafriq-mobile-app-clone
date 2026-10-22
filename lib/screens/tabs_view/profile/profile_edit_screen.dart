@@ -25,9 +25,15 @@ class ProfileEditScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final firstnameController = useTextEditingController(text: user?.first_name ?? '');
-    final lastNameController = useTextEditingController(text: user?.last_name ?? '');
-    final globalIdController = useTextEditingController(text: user?.global_id ?? user?.username ?? '');
+    final firstnameController = useTextEditingController(
+      text: user?.first_name ?? '',
+    );
+    final lastNameController = useTextEditingController(
+      text: user?.last_name ?? '',
+    );
+    final globalIdController = useTextEditingController(
+      text: user?.global_id ?? user?.username ?? '',
+    );
     final selectedCountry = useState<String?>(user?.nationality);
     final isLoading = ref.watch(apiProvider.select((value) => value.isLoading));
     final handleError = useState<String?>(null);
@@ -46,54 +52,68 @@ class ProfileEditScreen extends HookConsumerWidget {
                   label: 'Profile avatar. Tap to customize.',
                   button: true,
                   child: LingAfriqAvatar(
-                  size: 100,
-                  showBorder: true,
-                  onTap: () {
-                    // Open avatar customizer
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      builder: (context) => DraggableScrollableSheet(
-                        initialChildSize: 0.85,
-                        maxChildSize: 0.95,
-                        minChildSize: 0.5,
-                        builder: (context, scrollController) => Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                            borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(24),
+                    size: 100,
+                    showBorder: true,
+                    onTap: () {
+                      // Open avatar customizer
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (context) => DraggableScrollableSheet(
+                          initialChildSize: 0.85,
+                          maxChildSize: 0.95,
+                          minChildSize: 0.5,
+                          builder: (context, scrollController) => Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                              borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(24),
+                              ),
                             ),
-                          ),
-                          child: SingleChildScrollView(
-                            controller: scrollController,
-                            child: UserAvatarCustomizer(
-                              initialConfig: avatarConfig,
-                              onConfigChanged: (config) {
-                                ref.read(userAvatarConfigProvider.notifier).setConfig(config);
-                              },
+                            child: SingleChildScrollView(
+                              controller: scrollController,
+                              child: Column(
+                                children: [
+                                  const SizedBox(
+                                    height: 560,
+                                    child: CastBuilder(),
+                                  ),
+                                  UserAvatarCustomizer(
+                                    initialConfig: avatarConfig,
+                                    onConfigChanged: (config) {
+                                      ref
+                                          .read(
+                                            userAvatarConfigProvider.notifier,
+                                          )
+                                          .setConfig(config);
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                ),
+                      );
+                    },
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Semantics(
                   label: 'Tap to customize your avatar',
                   child: Text(
-                  'Tap to customize',
-                  style: PanAfricanTypography.labelSmall(context).copyWith(
-                    color: PanAfricanColors.neutralMedium,
+                    'Tap to customize',
+                    style: PanAfricanTypography.labelSmall(
+                      context,
+                    ).copyWith(color: PanAfricanColors.neutralMedium),
                   ),
-                ),
                 ),
               ],
             ).centered(),
             24.heightBox,
-            const ProfileDetailsBuilder(crossAxisAlignment: CrossAxisAlignment.center).centered(),
+            const ProfileDetailsBuilder(
+              crossAxisAlignment: CrossAxisAlignment.center,
+            ).centered(),
             16.heightBox,
 
             // ✅ Input fields
@@ -113,47 +133,53 @@ class ProfileEditScreen extends HookConsumerWidget {
               label: 'Last name',
               textField: true,
               child: PrimaryTextField(
-              controller: lastNameController,
-              title: "Last name",
-              hintText: "Enter your Last name",
-              validator: Validators.emptyValidator,
-              textInputAction: TextInputAction.next,
-            ),
+                controller: lastNameController,
+                title: "Last name",
+                hintText: "Enter your Last name",
+                validator: Validators.emptyValidator,
+                textInputAction: TextInputAction.next,
+              ),
             ),
             12.heightBox,
-            
+
             // Global ID / Handle Editor
             Semantics(
               label: 'Your handle, unique identifier for chat',
               textField: true,
               child: PanAfricanTextField(
-              controller: globalIdController,
-              label: 'Your Handle (global_id)',
-              hint: 'e.g., your_handle',
-              prefixIcon: Icons.alternate_email,
-              helperText: 'This is your unique identifier. Use it to find you in chat (@your_handle).',
-              errorText: handleError.value,
-              onChanged: (value) {
-                handleError.value = null;
-                // Remove @ if user types it
-                if (value.startsWith('@')) {
-                  globalIdController.value = TextEditingValue(
-                    text: value.substring(1),
-                    selection: TextSelection.collapsed(offset: value.length - 1),
-                  );
-                }
-                // Validate format: alphanumeric and underscore only, 3-30 chars
-                if (value.isNotEmpty) {
-                  if (value.length < 3) {
-                    handleError.value = 'Handle must be at least 3 characters';
-                  } else if (value.length > 30) {
-                    handleError.value = 'Handle must be 30 characters or less';
-                  } else if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(value)) {
-                    handleError.value = 'Handle can only contain letters, numbers, and underscores';
+                controller: globalIdController,
+                label: 'Your Handle (global_id)',
+                hint: 'e.g., your_handle',
+                prefixIcon: Icons.alternate_email,
+                helperText:
+                    'This is your unique identifier. Use it to find you in chat (@your_handle).',
+                errorText: handleError.value,
+                onChanged: (value) {
+                  handleError.value = null;
+                  // Remove @ if user types it
+                  if (value.startsWith('@')) {
+                    globalIdController.value = TextEditingValue(
+                      text: value.substring(1),
+                      selection: TextSelection.collapsed(
+                        offset: value.length - 1,
+                      ),
+                    );
                   }
-                }
-              },
-            ),
+                  // Validate format: alphanumeric and underscore only, 3-30 chars
+                  if (value.isNotEmpty) {
+                    if (value.length < 3) {
+                      handleError.value =
+                          'Handle must be at least 3 characters';
+                    } else if (value.length > 30) {
+                      handleError.value =
+                          'Handle must be 30 characters or less';
+                    } else if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(value)) {
+                      handleError.value =
+                          'Handle can only contain letters, numbers, and underscores';
+                    }
+                  }
+                },
+              ),
             ),
             12.heightBox,
             IgnorePointer(
@@ -173,30 +199,32 @@ class ProfileEditScreen extends HookConsumerWidget {
               label: 'Save profile',
               button: true,
               child: PanAfricanButton(
-              width: 0.6.sw,
-              onPressed: () async {
-                final user = ref.read(userProvider);
-                if (user == null) return;
+                width: 0.6.sw,
+                onPressed: () async {
+                  final user = ref.read(userProvider);
+                  if (user == null) return;
 
-                final updatedUser = user.copyWith(
-                  first_name: firstnameController.text.trim(),
-                  last_name: lastNameController.text.trim(),
-                  nationality: selectedCountry.value,
-                );
+                  final updatedUser = user.copyWith(
+                    first_name: firstnameController.text.trim(),
+                    last_name: lastNameController.text.trim(),
+                    nationality: selectedCountry.value,
+                  );
 
-                final ok = await ref.read(apiProvider.notifier).updateProfile(updatedUser.toMap());
-                if (!ok || !context.mounted) return;
+                  final ok = await ref
+                      .read(apiProvider.notifier)
+                      .updateProfile(updatedUser.toMap());
+                  if (!ok || !context.mounted) return;
 
-                // Server is source of truth for learningLanguage and prefs sync + games preload.
-                await ref.read(userProvider.notifier).refreshUser();
+                  // Server is source of truth for learningLanguage and prefs sync + games preload.
+                  await ref.read(userProvider.notifier).refreshUser();
 
-                if (!context.mounted) return;
-                Navigator.of(context).pop();
-                HapticFeedback.lightImpact();
-                VxToast.show(context, msg: 'Success');
-              },
-              label: "Save",
-            ),
+                  if (!context.mounted) return;
+                  Navigator.of(context).pop();
+                  HapticFeedback.lightImpact();
+                  VxToast.show(context, msg: 'Success');
+                },
+                label: "Save",
+              ),
             ),
             24.heightBox,
 
@@ -205,34 +233,42 @@ class ProfileEditScreen extends HookConsumerWidget {
               label: 'Delete account',
               button: true,
               child: PanAfricanButton(
-              width: 0.6.sw,
-              label: "Delete Account",
-              backgroundColor: PanAfricanColors.error,
-              foregroundColor: Theme.of(context).colorScheme.onError,
-              onPressed: () async {
-                final confirm = await DeleteAccountDialog.showDeleteAccountDialog(context);
-                if (confirm == true) {
-                  final password = await EnterPasswordDialog.show(context);
-                  if (password != null && password.isNotEmpty) {
-                    try {
-                      final svc = AccountService(ref);
-                      final msg = await svc.deleteAccount(password);
-
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text(msg)));
-
-                      // ✅ Proper logout and navigation
-                      await ref.read(authProvider.notifier).signOut(deleteAccount: true);
-                      Navigator.of(context).popUntil((route) => route.isFirst);
-                    } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Error: $e")),
+                width: 0.6.sw,
+                label: "Delete Account",
+                backgroundColor: PanAfricanColors.error,
+                foregroundColor: Theme.of(context).colorScheme.onError,
+                onPressed: () async {
+                  final confirm =
+                      await DeleteAccountDialog.showDeleteAccountDialog(
+                        context,
                       );
+                  if (confirm == true) {
+                    final password = await EnterPasswordDialog.show(context);
+                    if (password != null && password.isNotEmpty) {
+                      try {
+                        final svc = AccountService(ref);
+                        final msg = await svc.deleteAccount(password);
+
+                        ScaffoldMessenger.of(
+                          context,
+                        ).showSnackBar(SnackBar(content: Text(msg)));
+
+                        // ✅ Proper logout and navigation
+                        await ref
+                            .read(authProvider.notifier)
+                            .signOut(deleteAccount: true);
+                        Navigator.of(
+                          context,
+                        ).popUntil((route) => route.isFirst);
+                      } catch (e) {
+                        ScaffoldMessenger.of(
+                          context,
+                        ).showSnackBar(SnackBar(content: Text("Error: $e")));
+                      }
                     }
                   }
-                }
-              },
-            ),
+                },
+              ),
             ),
           ],
         ).p16().scrollVertical(),

@@ -1,0 +1,81 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+P0-1,ELEVATION,§1:L84-L102,requirement,Firebase Admin SDK private key,P0,agent,,Open
+P0-2,ELEVATION,§1:L104-L112,requirement,Apple .p8 key in repo root,P0,agent,,Open
+P0-3,ELEVATION,§1:L114-L129,requirement,Paid AI keys compiled into,P0,agent,,Open
+P0-4,ELEVATION,§1:L131-L140,requirement,Any user can listen to any,P0,agent,,Open
+P0-5,ELEVATION,§1:L142-L149,requirement,Socket identity spoofing,P0,agent,,Open
+P0-6,ELEVATION,§1:L151-L160,requirement,Global metadata leak,P0,agent,,Open
+P0-7,ELEVATION,§1:L162-L170,requirement,Self-mint currency,P0,agent,,Open
+P0-8,ELEVATION,§1:L172-L180,requirement,Self-award points/XP,P0,agent,,Open
+P0-9,ELEVATION,§1:L182-L193,requirement,Open LLM proxy,P0,agent,,Open
+P0-10,ELEVATION,§1:L195-L206,requirement,No child safety or age,P0,agent,,Open
+P0-11,ELEVATION,§1:L208-L219,requirement,Moderation is cosmetic,P0,agent,,Open
+P0-12,ELEVATION,§1:L221-L231,requirement,"""Disappearing"" snaps never",P0,agent,,Open
+P0-13,ELEVATION,§1:L233-L242,requirement,Persona missions silently,P0,agent,,Open
+P0-14,ELEVATION,§1:L244-L256,requirement,Persona safety filter blocks,P0,agent,,Open
+P0-15,ELEVATION,§1:L258-L268,requirement,Persona told to deny being AI,P0,agent,,Open
+P0-16,ELEVATION,§1:L270-L276,requirement,Curriculum is placeholder or,P0,agent,,Open
+P0-17,ELEVATION,§1:L278-L288,requirement,False tone and grammar,P0,agent,,Open
+P0-18,ELEVATION,§1:L290-L300,requirement,Fake pronunciation,P0,agent,,Open
+P0-19,ELEVATION,§1:L302-L313,requirement,Pronunciation backend lies,P0,agent,,Open
+P0-20,ELEVATION,§1:L315-L320,requirement,Every release logs everyone,P0,agent,,Open
+P0-21,ELEVATION,§1:L322-L331,requirement,Onboarding answers,P0,agent,,Open
+P0-22,ELEVATION,§1:L333-L342,requirement,Offline queue drops data,P0,agent,,Open
+P0-23,ELEVATION,§1:L344-L357,requirement,"Push spam, duplicated",P0,agent,,Open
+P0-24,ELEVATION,§1:L359-L375,requirement,Non- commercial,P0,agent,,Open
+P0-25,ELEVATION,§1:L377-L386,requirement,"Login enumeration,",P0,agent,,Open
+P0-26,ELEVATION,§1:L388-L396,requirement,Unofficial Google,P0,agent,,Open
+P0-27,ELEVATION,§1:L398-L409,requirement,Purchases not verified server-,P0,agent,,Open
+EP-§13.1-01,ELEVATION,§13.1:L1849,requirement,short-lived access tokens (10–15 min),P1,agent,,Open
+EP-§13.1-02,ELEVATION,§13.1:L1849,metric,access tokens (10–15 min),P1,agent,,Open
+EP-§13.1-03,ELEVATION,§13.1:L1849-L1850,requirement,"rotating refresh tokens stored server-side (revocable, reuse-detected)",P1,agent,,Open
+EP-§13.1-04,ELEVATION,§13.1:L1850,requirement,move from HS256 shared secrets to asymmetric keys (EdDSA/RS256),P1,agent,,Open
+EP-§13.1-05,ELEVATION,§13.1:L1850-L1851,requirement,with kid rotation,P1,agent,,Open
+EP-§13.1-06,ELEVATION,§13.1:L1851,requirement,"passkeys first, then Google/Apple sign-in, then email magic link",P1,agent,,Open
+EP-§13.1-07,ELEVATION,§13.1:L1851-L1852,requirement,drop the legacy Django password hash on next login (rehash with Argon2id),P1,agent,,Open
+EP-§13.1-08,ELEVATION,§13.1:L1852-L1853,requirement,enforce at least 8 characters with a breached-password check,P1,agent,,Open
+EP-§13.1-09,ELEVATION,§13.1:L1852,metric,at least 8 characters,P1,agent,,Open
+EP-§13.1-10,ELEVATION,§13.1:L1853,informational,"login accepts anything of 6+ characters, auth.controller.ts:107",P1,agent,,Open
+EP-§13.1-11,ELEVATION,§13.1:L1853-L1854,informational,the sign-up rule is unverified,P1,agent,,Open
+EP-§13.1-12,ELEVATION,§13.1:L1854,informational,The controller trims JWT_SECRET (auth.controller.ts:23),P1,agent,,Open
+EP-§13.1-13,ELEVATION,§13.1:L1854-L1855,requirement,middleware and socket do not (middleware/auth.middleware.ts:20-27),P1,agent,,Open
+EP-§13.1-14,ELEVATION,§13.1:L1855-L1856,risk,a trailing newline in the env var would make every token fail,P1,agent,,Open
+EP-§13.1-15,ELEVATION,§13.1:L1857,requirement,zod/Joi validation on every route (some exist),P1,agent,,Open
+EP-§13.1-16,ELEVATION,§13.1:L1857-L1858,requirement,object-level authorisation tests for every /:id route (IDOR suite),P1,agent,,Open
+EP-§13.1-17,ELEVATION,§13.1:L1858,requirement,remove client-supplied identity fields everywhere,P1,agent,,Open
+EP-§13.1-18,ELEVATION,§13.1:L1858,requirement,request size limits per route,P1,agent,,Open
+EP-§13.1-19,ELEVATION,§13.1:L1859,informational,"the global 10 MB JSON limit, app.ts:162, is too generous",P1,agent,,Open
+EP-§13.1-20,ELEVATION,§13.1:L1860-L1861,requirement,stop logging the first 40 characters of the Authorization header (middleware/requestLogger.middleware.ts:26),P1,agent,,Open
+EP-§13.1-21,ELEVATION,§13.1:L1861-L1862,requirement,the password length at login (auth.controller.ts:108-113),P1,agent,,Open
+EP-§13.1-22,ELEVATION,§13.1:L1863-L1865,informational,certificate pinning is passed as a dart-define but the Android network config,P1,agent,,Open
+EP-§13.1-23,ELEVATION,§13.1:L1864-L1865,informational,YOUR_CERTIFICATE_PIN_HERE placeholders (android/app/src/main/res/xml/network_security_config.xml:17-26),P1,agent,,Open
+EP-§13.1-24,ELEVATION,§13.1:L1865-L1866,decision,decide and implement consistently,P1,Tope,,Open
+EP-§13.1-25,ELEVATION,§13.1:L1866,requirement,Use authenticated encryption (AES-GCM) for cached data,P1,agent,,Open
+EP-§13.1-26,ELEVATION,§13.1:L1867-L1868,informational,"lib/services/offline/cache_encryption.dart:28 uses Encrypter(AES(key)), the encrypt package's default SIC/CTR mode, with no MAC",P1,agent,,Open
+EP-§13.1-27,ELEVATION,§13.1:L1868-L1869,requirement,Play Integrity / App Attest on the AI gateway and reward endpoints,P1,agent,,Open
+EP-§13.1-28,ELEVATION,§13.1:L1869-L1870,requirement,Obfuscate release builds (--obfuscate --split-debug-info,P1,agent,,Open
+EP-§13.1-29,ELEVATION,§13.1:L1870,informational,"the release workflow has split-debug-info, add obfuscate",P1,agent,,Open
+EP-§13.1-30,ELEVATION,§13.1:L1871,requirement,gitleaks in pre-commit and CI,P1,agent,,Open
+EP-§13.1-31,ELEVATION,§13.1:L1871-L1872,decision,"a secrets manager (Doppler, 1Password, GCP Secret Manager)",P1,Tope,,Open
+EP-§13.1-32,ELEVATION,§13.1:L1872,requirement,a quarterly rotation calendar,P1,agent,,Open
+EP-§13.1-33,ELEVATION,§13.1:L1872-L1873,requirement,scripts/secrets-hygiene-check.mjs exists; wire it into CI as a blocking step,P1,agent,,Open
+EP-§13.1-34,ELEVATION,§13.1:L1874,requirement,Dependabot/Renovate,P1,agent,,Open
+EP-§13.1-35,ELEVATION,§13.1:L1874,requirement,npm audit --omit=dev blocking on high,P1,agent,,Open
+EP-§13.1-36,ELEVATION,§13.1:L1874-L1875,requirement,flutter pub outdated monthly,P1,agent,,Open
+EP-§13.1-37,ELEVATION,§13.1:L1875,requirement,SBOM generation,P1,agent,,Open
+EP-§13.1-38,ELEVATION,§13.1:L1875,requirement,pinned GitHub Actions by SHA,P1,agent,,Open
+EP-§13.1-39,ELEVATION,§13.1:L1875-L1876,requirement,The admin panel runs React 18 + Vite 4 (2023-era); upgrade.,P1,agent,,Open
+EP-§13.1-40,ELEVATION,§13.1:L1877,external,Pen test by a third party before any school or child-focused launch,P1,external,,Open
+RM-P0-01,ELEVATION,§16.1:L2016-L2021,external,"Revoke and rotate the Firebase service-account key (firebase-adminsdk-us33e, plus the [S]",P0,external,,Open
+RM-P0-02,ELEVATION,§16.1:L2022-L2025,requirement,"Stand up a server-side AI gateway (auth, quotas, server-owned prompts, [M]",P0,agent,,Open
+RM-P0-03,ELEVATION,§16.1:L2026-L2029,requirement,"Socket lockdown: identity only from the verified JWT, server-authorised join_room, [M]",P0,agent,,Open
+RM-P0-04,ELEVATION,§16.1:L2030-L2032,requirement,Make reward endpoints server-only; compute XP from verified events; reconcile balances [S–M],P0,agent,,Open
+RM-P0-05,ELEVATION,§16.1:L2033-L2035,requirement,"Turn off DMs, snaps, calls and the public feed for under-18s [S]",P0,agent,,Open
+RM-P0-06,ELEVATION,§16.1:L2036-L2038,requirement,Replace the toxicity filter with a hosted moderation API plus report/block [M],P0,agent,,Open
+RM-P0-07,ELEVATION,§16.1:L2039-L2041,requirement,"Persona fixes: AI disclosure, remove ""don't mention being an AI"", [S]",P0,agent,,Open
+RM-P0-08,ELEVATION,§16.1:L2042-L2047,requirement,"Remove fake scoring (random scores, zero-on-failure HTTP 200s) and keep those [S]",P0,agent,,Open
+RM-P0-09,ELEVATION,§16.1:L2048-L2050,requirement,"Delete the semver logout, fix onboarding persistence, replace the stub offline [M]",P0,agent,,Open
+RM-P0-10,ELEVATION,§16.1:L2051-L2053,requirement,"Notification dedupe (one per user per day, local timezone, quiet hours) [S]",P0,agent,,Open
+RM-P0-11,ELEVATION,§16.1:L2054-L2056,external,"Swap out non-commercial models (MMS-TTS, XTTS-v2, NLLB) and the unofficial [M]",P0,external,,Open
+RM-P0-12,ELEVATION,§16.1:L2057,requirement,"Generic login errors, per-account lockout and backoff, shorter tokens [S]",P0,agent,,Open
+RM-P0-13,ELEVATION,§16.1:L2058,requirement,RevenueCat webhooks and server-side entitlement checks. [S–M],P0,agent,,Open

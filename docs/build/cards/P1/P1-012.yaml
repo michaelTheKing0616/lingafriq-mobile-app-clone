@@ -1,0 +1,92 @@
+charter: v2
+id: P1-012
+kind: build
+title: Route persona missions through gateway with honest error state
+phase: P1
+epic: E-P1-AI-GATEWAY
+req_ids:
+- P0-13
+- RM-P0-07
+depends_on:
+- E-P0-INTAKE
+- P1-007
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 6; blast 3
+token_budget: 70000
+file_allowlist:
+- lib/providers/persona_providers.dart
+- lib/ai/personas/historical_roleplay_controller.dart
+- lib/services/ai_gateway_client.dart
+- lib/screens/persona_missions/persona_mission_session_screen.dart
+- lib/l10n/app_en.arb
+- test/persona/p1_012_mission_gateway_test.dart
+context_anchors:
+- ELEVATION.md#§1:L233-L242
+- ELEVATION.md#§16.1:L2039-L2041
+acceptance_criteria:
+- id: AC1
+  text: Given a persona mission in a release build, when the user sends a message, then the request goes through the gateway
+    and no client AI key is read
+- id: AC2
+  text: Given any gateway or network error, when the mission reply fails, then the screen shows an error state with a Retry
+    action and the canned fallback reply is never shown
+- id: AC3
+  text: Given Retry is tapped after recovery, when the request succeeds, then the reply replaces the error state without duplicating
+    the user message
+- id: AC4
+  text: Given a release-mode integration test without any injected AI key, when a mission starts, then it works end to end
+test_plan:
+  unit:
+  - controller error mapping
+  integration:
+  - release-config mission test
+  security: []
+  e2e:
+  - mission error then retry
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - error-retryable
+  copy_keys:
+  - persona.error.retry
+  tokens:
+  - design-system error tokens
+  motion_tier: product
+  a11y:
+  - error announced
+  - retry focusable
+  goldens:
+  - persona_error_retry
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "Client still requests 500 tokens; the gateway clamps that to 256 and replaces the client system text with the roleplay template"
+gate: G1
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - prime/error-handling-ux
+  - prime/feedback-patterns
+  - prime/state-machine

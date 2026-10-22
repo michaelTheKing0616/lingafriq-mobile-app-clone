@@ -1,0 +1,67 @@
+charter: v2
+id: P4-134
+kind: build
+title: Compute pilot item statistics
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.6-05
+- EP-§6.6-20
+depends_on:
+- P4-103
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- tools/content_pipeline/item_stats.py
+- node-backend/src/services/item_stats.service.ts
+- test/content/test_item_stats.py
+context_anchors:
+- ELEVATION.md#§6.6:L1321-L1337
+acceptance_criteria:
+- id: AC1
+  text: Given pilot responses, when aggregated, then each item has p-value, discrimination, median time and hint-use rate
+- id: AC2
+  text: Given fewer responses than the configured minimum, when computed, then the item shows insufficient_data and no estimate
+    is produced
+- id: AC3
+  text: Given an item with p-value or discrimination outside the configured bounds, when computed, then it is flagged for
+    revision in the studio
+test_plan:
+  unit:
+  - test_item_stats
+  integration:
+  - stats to studio feed
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

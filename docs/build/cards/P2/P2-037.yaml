@@ -1,0 +1,66 @@
+charter: v2
+id: P2-037
+kind: build
+title: Report crashes and ANRs with release gates
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.9-13
+depends_on:
+- E-P1-CONTAINMENT
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 3, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/services/monitoring/crash_reporter.dart
+- android/app/src/main/AndroidManifest.xml
+- docs/ops/release_gates.md
+- scripts/ci/crash_gate.py
+context_anchors:
+- ELEVATION.md#§13.9:L1957
+acceptance_criteria:
+- id: AC1
+  text: Given an uncaught error or ANR, when it occurs, then it is reported with release and device context and no PII
+- id: AC2
+  text: Given a staged rollout, when crash-free users fall below the configured threshold or ANR rate exceeds it, then the
+    gate script blocks promotion
+- id: AC3
+  text: Given the reporter fails to initialise, when the app starts, then a visible diagnostic is logged and startup continues
+test_plan:
+  unit:
+  - gate script thresholds
+  integration:
+  - forced crash on debug build
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

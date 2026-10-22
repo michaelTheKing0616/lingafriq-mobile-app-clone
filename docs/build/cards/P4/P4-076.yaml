@@ -1,0 +1,91 @@
+charter: v2
+id: P4-076
+kind: build
+title: Build and sign semver content packs
+phase: P4
+epic: E-P4-STUDIO
+req_ids:
+- CP-§9.1-07
+depends_on:
+- P4-067
+- P4-074
+- P4-050
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- lingafriq-admin/src/pages/CurriculumStudio/contentPacks.tsx
+- node-backend/src/routes/contentPacks.routes.ts
+- tools/content_engine/tests/studio_contentPacks.test.ts
+- node-backend/src/services/packSigning.service.ts
+context_anchors:
+- CURRICULUM.md#§9.1:L785-L786
+acceptance_criteria:
+- id: AC1
+  text: Given reviewed items, when a pack is built, then it has a semver version, a manifest of item ids and labels, and a
+    signature
+- id: AC2
+  text: Given an item without a label or failing a linter, when building, then the build fails with PACK_ITEM_INVALID
+- id: AC3
+  text: Given a tampered pack, when verified, then verification fails with PACK_SIGNATURE_INVALID
+test_plan:
+  unit:
+  - component states
+  integration:
+  - admin route contract
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - keyboard navigation
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - empty
+  - error
+  - ready
+  copy_keys:
+  - packs.title
+  - packs.signature
+  - packs.invalid
+  tokens:
+  - admin.surface
+  - admin.text
+  - admin.status
+  motion_tier: product
+  a11y:
+  - keyboard operable
+  - focus visible
+  - labelled controls
+  goldens:
+  - contentPacks-ready
+  - contentPacks-empty
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

@@ -1,0 +1,117 @@
+charter: v2
+id: F-090
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Multilingual Relay
+phase: P8
+epic: E-P8-PLAY
+hub: Play
+req_ids:
+- F-090
+- F-090.D
+- F-090.E
+- F-090.U
+- F-090.L
+depends_on:
+- P8-900
+- E-P8-PLAY
+- P8-912
+- E-P9-SAFETY
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 5 game elevation on GameKit
+token_budget: 80000
+file_allowlist:
+- lib/screens/games/cultural/multilingual_relay_game.dart
+context_anchors:
+- ELEVATION.md#§18.5:L4790-L4803
+delta:
+  current_state: Playable from Arcade via game_router using shared 85–118-word pool without audio (§10.1); Random drives shuffle
+    and effects
+  defects_to_fix:
+  - Thin shared word-pool content without rich media
+  - No learner-model writes after sessions
+  - Results screen inconsistent with GameKit standard
+  - Hard-coded UI strings bypass ARB l10n
+  elevation_to_build:
+  - Pan-African word relay across languages highlighting cognates and loans
+  ux_and_render:
+  - []
+  hub_placement: Play → Words shelf
+  unlock_stage: per §17.4
+  harvest_list: []
+acceptance_criteria:
+- id: AC1
+  text: Given a completed session, when results render, then layout matches P8-900 GameKit results and posts learner-model
+    events
+- id: AC2
+  text: Given target-language prompts, when displayed, then each item plays bundled audio and uses ARB strings only
+- id: AC3
+  text: Given the account is under 18 or age-unknown, when this surface is opened, then it is hidden or guardian-gated until
+    E-P9-SAFETY is Done, and the restriction is enforced server-side.
+test_plan:
+  unit:
+  - turn queue respects due items
+  - l10n keys resolve
+  integration:
+  - GameKit session end writes learner model
+  - audio playback
+  e2e:
+  - launch from Play shelf
+  - complete round
+  - results navigation
+  a11y:
+  - goldens at 100%/200% text
+  - semantics order
+  - reduced motion
+  content:
+  - word pool items carry content labels
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - play.090.title
+  - play.090.results
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+tags:
+- under18_social
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux
+  - adaptive/14-safety-and-high-stakes

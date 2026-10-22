@@ -1,0 +1,107 @@
+charter: v2
+id: F-110
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Matching Pairs (group)
+phase: P9
+epic: E-P9-SAFETY
+hub: Village
+req_ids:
+- F-110
+- F-110.D
+- F-110.E
+- F-110.U
+- F-110.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P9-SAFETY
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: social/village feature complexity and coupling'
+token_budget: 80000
+file_allowlist:
+- lib/screens/village/matching_pairs_screen.dart
+context_anchors:
+- ELEVATION.md#§18.6:L5063-L5073
+delta:
+  current_state: Village matching pairs route works but duplicates solo Memory Map.
+  defects_to_fix:
+  - Duplicates Memory Map mechanics without multiplayer value
+  elevation_to_build:
+  - 'Multiplayer Memory Map mode: turn-based with friends and audio cards'
+  - Keep Village café and Play → Words entry points
+  ux_and_render:
+  - Shared board with visible turn indicator
+  hub_placement: Village → Café; Play → Words
+  unlock_stage: per §17.4
+  harvest_list:
+  - Village matching-pairs route and assets fold into Memory Map multiplayer mode; café entry retained
+acceptance_criteria:
+- id: AC1
+  text: Given friends in a room, when playing matching pairs, then turns alternate on a shared board with audio cards
+- id: AC2
+  text: Given either entry point, when launched, then the same multiplayer session contract is used
+- id: AC3
+  text: Given the account is under 18 or age-unknown, when this surface is opened, then it is hidden or guardian-gated until
+    E-P9-SAFETY is Done, and the restriction is enforced server-side.
+test_plan:
+  unit:
+  - delta defects covered
+  - routing and state transitions
+  integration:
+  - hub navigation and backend contracts
+  e2e:
+  - primary user journey on device
+  a11y:
+  - semantics
+  - 200% text scale goldens
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f-110.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+tags:
+- under18_social
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux
+  - adaptive/14-safety-and-high-stakes

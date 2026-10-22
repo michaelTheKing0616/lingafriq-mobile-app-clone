@@ -1,0 +1,108 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P10
+epic: E-P10-ME
+hub: Me
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: Me hub screen revive or consolidation; no real-time audio
+token_budget: 80000
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f_142.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+p0_area: true
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers:
+- EXT-16
+status: Draft
+test_plan:
+  unit:
+  - purchase flow events
+  - try-on state
+  integration:
+  - shop with economy service
+  e2e:
+  - browse and try-on cosmetic
+  a11y:
+  - shop grid targets 48dp
+  content: []
+tags:
+- enables_persona
+id: F-142
+title: Elevate Magic Items
+req_ids:
+- F-142
+- F-142.D
+- F-142.E
+- F-142.U
+- F-142.L
+- P0-7
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P11-PERSONAS-AVATARS
+- E-P1-ECONOMY
+file_allowlist:
+- screens/gamification/magic_items_screen.dart
+context_anchors:
+- ELEVATION.md#§18.7:L5505-L5515
+delta:
+  current_state: Magic items route works.
+  defects_to_fix:
+  - Economy can be self-minted on client
+  elevation_to_build:
+  - Cosmetic and helper shop with regional designer outfits
+  - Streak freezes and hint tokens
+  - Server-validated currency; no pay-to-win
+  ux_and_render:
+  - Shop grid with avatar try-on
+  hub_placement: Me → Wardrobe & Shop; Village → Market
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given shop inventory from server, when user purchases, then balance updates only after server receipt validation.
+- id: AC2
+  text: Given P0-7 mint paths, when shop opens, then no client-side currency increment controls exist.
+- id: AC3
+  text: Given an outfit selected, when try-on runs, then avatar preview uses persona wardrobe without blocking on missing
+    art.
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

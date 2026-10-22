@@ -1,0 +1,65 @@
+charter: v2
+id: P2-046
+kind: build
+title: Expose graph queries for session builder and Polie context
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§6.3-08
+depends_on:
+- E-P1-CONTAINMENT
+- P2-045
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 3, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/services/learning/knowledge_graph_queries.dart
+- lib/services/hybrid_polie/polie_context_builder.dart
+- lib/services/learning/session_builder.dart
+context_anchors:
+- ELEVATION.md#§6.3:L1218-L1219
+acceptance_criteria:
+- id: AC1
+  text: Given a learner, when the session builder asks for due and weak nodes, then results are ranked by retrievability and
+    error counts
+- id: AC2
+  text: Given Polie context, when built, then it includes at most the configured number of weak items and no personal details
+- id: AC3
+  text: Given an empty graph, when queried, then an explicit empty result is returned
+test_plan:
+  unit:
+  - ranking
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

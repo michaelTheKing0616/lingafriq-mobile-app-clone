@@ -1,0 +1,68 @@
+charter: v2
+id: P10-938
+kind: build
+title: Lint UI strings for dashes, banned words and verbs
+phase: P10
+epic: E-P10-ANALYTICS
+req_ids:
+- EP-§15-27
+- EP-§15-29
+- EP-§15-30
+depends_on: []
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: score 4; blast 1
+token_budget: 60000
+file_allowlist:
+- scripts/copy/lint_ui_strings.py
+- scripts/copy/banned_words.txt
+- lib/l10n/app_en.arb
+context_anchors:
+- ELEVATION.md#§15:L2003-L2005
+acceptance_criteria:
+- id: AC1
+  text: Given any UI string, when the linter runs, then a string with an em dash fails the build.
+- id: AC2
+  text: Given product copy, when it contains World-class, Elite or Seamless (case-insensitive), then the build fails.
+- id: AC3
+  text: Given a button label, when it is checked, then it starts with a verb (Start lesson, Hear it again) or fails with the
+    key listed.
+- id: AC4
+  text: Given the banned list lives in a file, when a word is added, then no code change is needed.
+test_plan:
+  unit:
+  - each rule has pass and fail case
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - run on full arb
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

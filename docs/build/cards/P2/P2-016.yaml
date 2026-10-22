@@ -1,0 +1,79 @@
+charter: v2
+id: P2-016
+kind: build
+title: Consolidate competing offline systems into the outbox
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.5-05
+- EP-§13.5-06
+depends_on:
+- E-P1-CONTAINMENT
+- P2-015
+size: L
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 2
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 3, coupling 2, depth 1'
+token_budget: 150000
+file_allowlist:
+- lib/services/offline/offline_handler.dart
+- lib/services/offline/background_sync_service.dart
+- lib/services/offline/sync_v2_service.dart
+- lib/services/offline/persisted_outbox_service.dart
+- lib/providers/backend_sync_provider.dart
+- lib/services/offline/selective_sync.dart
+context_anchors:
+- ELEVATION.md#§13.5:L1915-L1917
+acceptance_criteria:
+- id: AC1
+  text: Given the harvest_list, when each system is merged, then every distinct capability is ported into the outbox or recorded
+    as deliberately dropped with reason
+- id: AC2
+  text: Given the merge completes, when the repo is searched, then only the outbox service remains as a sync path and the
+    other six are deleted
+- id: AC3
+  text: Given Downloads, Point & Say queue, tone trainer queue and offline review, when used offline, then each still works
+    and syncs through the outbox
+test_plan:
+  unit: []
+  integration:
+  - offline Downloads, Point & Say, tone trainer, review flows
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+harvest_list:
+- lib/services/offline/offline_handler.dart
+- lib/services/offline/background_sync_service.dart
+- lib/services/offline/sync_v2_service.dart
+- lib/services/offline/persisted_outbox_service.dart
+- lib/providers/backend_sync_provider.dart
+- lib/services/offline/selective_sync.dart
+- lib/services/offline/offline_service.dart
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

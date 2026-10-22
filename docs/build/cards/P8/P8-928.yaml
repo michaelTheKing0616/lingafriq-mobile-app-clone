@@ -1,0 +1,124 @@
+charter: v2
+id: P8-928
+kind: build
+title: 'Flagship: Greeting Gauntlet'
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.3-09
+- EP-§10.3-09a
+- EP-§10.3-09b
+- EP-§10.3-09c
+depends_on:
+- P8-900
+- P8-901
+- P8-909
+- P8-912
+- P8-916
+- E-P4-CONTENT-ENGINE
+- E-P3-DESIGN-SYSTEM
+size: M
+difficulty:
+  score: 6
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T1
+  justification: 'score 6: blast 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/games/greeting_gauntlet/greeting_gauntlet_game.dart
+- lib/games/greeting_gauntlet/greeting_gauntlet_screen.dart
+- lib/games/greeting_gauntlet/scenario_matrix.dart
+- lib/avatars/games/game_avatar_widget.dart
+- lib/screens/games/greeting_diplomacy_screen.dart
+- lib/games/gamekit/all_games_registry.dart
+context_anchors:
+- ELEVATION.md#§10.3:L1754-L1760
+- ELEVATION.md#§10.3:L1771
+acceptance_criteria:
+- id: AC1
+  text: Given a scenario generated from time of day × person (elder, peer, child) × setting, when a turn starts, then the
+    learner picks the right greeting and gesture within the round timer
+- id: AC2
+  text: Given a correct choice, when feedback shows, then the avatar performs the matching gesture (kneel, bow or handshake
+    style) for the language's culture
+- id: AC3
+  text: Given a scenario without a culturally verified answer, when the matrix builds, then it is excluded
+- id: AC4
+  text: Given a wrong choice, when the explanation shows, then it states why the greeting or gesture does not fit with audio
+- id: AC5
+  text: Given Greeting Diplomacy, when this card completes, then every item in its harvest list is carried or waived
+test_plan:
+  unit:
+  - scenario matrix
+  - gesture mapping
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - cultural review flag per scenario
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - ready
+  - playing
+  - correct
+  - wrong
+  - why_wrong
+  - results
+  - error
+  - offline
+  - practice_mode
+  - gesture_playing
+  copy_keys:
+  - games.greeting_gauntlet.title
+  - games.greeting_gauntlet.instructions
+  - games.greeting_gauntlet.why_wrong
+  - games.greeting_gauntlet.practice_label
+  - games.greeting_gauntlet.error
+  tokens:
+  - color.surface.game
+  - color.feedback.correct
+  - color.feedback.wrong
+  - space.4
+  - radius.card
+  - type.title
+  motion_tier: product
+  a11y:
+  - screen-reader labels on every answer control
+  - reduced-motion variant
+  - correctness shown by icon and text not colour alone
+  - touch targets ≥48dp
+  goldens:
+  - greeting_gauntlet_playing
+  - greeting_gauntlet_why_wrong
+  - greeting_gauntlet_results
+tags:
+- uses_source
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- gesture animations need EXT-14 review; no card owns it here
+gate: HUB
+external_blockers: []
+status: Draft
+harvest_list:
+- 'Greeting Diplomacy: lib/screens/games/greeting_diplomacy_screen.dart'
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

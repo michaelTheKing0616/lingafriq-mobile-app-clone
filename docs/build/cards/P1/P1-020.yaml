@@ -1,0 +1,99 @@
+charter: v2
+id: P1-020
+kind: build
+title: Add age gate before account creation
+phase: P1
+epic: E-P1-MINORS
+req_ids:
+- P0-10
+- RM-P0-05
+depends_on:
+- E-P0-INTAKE
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T4
+  justification: 'score 7; blast 3; gate-critical (security / child safety / legal / design direction): Fable reviews'
+token_budget: 70000
+file_allowlist:
+- lib/screens/unified_onboarding_screen.dart
+- lib/providers/onboarding_provider.dart
+- node-backend/src/controllers/auth.controller.ts
+- node-backend/src/models/user.model.ts
+context_anchors:
+- ELEVATION.md#§1:L195-L206
+- ELEVATION.md#§16.1:L2033-L2035
+acceptance_criteria:
+- id: AC1
+  text: Given a new user in onboarding, when they have not provided a date of birth, then account creation is blocked and
+    the age gate is shown first
+- id: AC2
+  text: Given an entered age under 13, when submitted, then sign-up is blocked with a state explaining that guardian consent
+    is not yet available, and no account or personal data is stored
+- id: AC3
+  text: Given an entered age of 13 to 17, when submitted, then the account is created with ageBand teen and restricted defaults
+- id: AC4
+  text: Given a client posting ageBand or dateOfBirth to the API, when validated, then the server computes the band itself
+    and rejects an inconsistent value
+- id: AC5
+  text: Given an under-13 result, when the user returns to the gate on the same device, then the gate does not invite re-entry
+    of a different birth date (neutral wording, device-local cooldown) and the blocked state is not bypassable by restarting
+    onboarding
+test_plan:
+  unit:
+  - age band computation
+  integration:
+  - sign-up API band tests
+  security:
+  - client-supplied band tamper
+  e2e:
+  - sign-up under-13 blocked
+  perf: []
+  a11y:
+  - date input labelled
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - age-entry
+  - blocked-under-13
+  - teen-restricted
+  - error
+  copy_keys:
+  - age.gate.title
+  - age.blocked.guardian
+  tokens:
+  - design-system form tokens
+  motion_tier: product
+  a11y:
+  - labelled inputs
+  - error announced
+  goldens:
+  - age_gate
+  - age_blocked
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Under-13 outcome (block until E-P9 guardian stack) is an assumption to confirm with Tope
+- Existing users have unknown age (handled by P1-021)
+gate: G1
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

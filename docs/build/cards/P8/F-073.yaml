@@ -1,0 +1,120 @@
+id: F-073
+kind: feature
+title: Elevate Pronunciation Duel
+phase: P8
+epic: E-P8-PLAY
+hub: Play
+req_ids:
+- F-073
+- F-073.D
+- F-073.E
+- F-073.U
+- F-073.L
+- P0-18
+depends_on:
+- P8-900
+- P8-912
+- E-P8-PLAY
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P6-SCORER
+- E-P9-SAFETY
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: 2 blast, coupling 2'
+token_budget: 80000
+file_allowlist:
+- lib/screens/games/pronunciation_duel_game.dart
+context_anchors:
+- ELEVATION.md#§18.5:L4566-L4580
+delta:
+  current_state: Routed from Arcade via game_router; content still uses the legacy 85–118 word pool without audio.
+  defects_to_fix:
+  - Thin static word pool without reliable audio.
+  - No learner-model writeback after play.
+  - Legacy per-game results instead of GameKit mastery.
+  - Hard-coded UI strings bypass l10n.
+  elevation_to_build:
+  - Real mic capture and scorer-backed duels on minimal pairs.
+  - Async friend duels; practice mode without score until scorer ships.
+  ux_and_render:
+  - GameKit frame with unified illustration style and audio on every target-language item.
+  - Reduced-motion variant respects system setting.
+  hub_placement: Play → Speaking shelf.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given duel mode before scorer ready, when the learner finishes, then no random 75–95% score appears and practice mode
+    copy is shown.
+- id: AC2
+  text: Given scorer ready, when both players submit recordings, then winner uses verified pronunciation scores only.
+- id: AC3
+  text: Given under-18 account, when inviting a friend duel, then safety policies gate matchmaking before the invite sends.
+- id: AC4
+  text: Given the scorer is unavailable or its confidence is below the gate threshold, when a score would be shown, then the
+    UI shows the 'unsure' state, stores no number and never shows a fabricated score.
+test_plan:
+  unit:
+  - game rules
+  - content binding
+  integration:
+  - GameKit session
+  - learner model writeback
+  e2e:
+  - Play shelf launch to results
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content:
+  - lexicon pool has audio for target language
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - 073.*
+tags:
+- shows_score
+- under18_social
+p0_area: true
+charter: v2
+inherits: FEATURE_BASE
+gate: HUB
+status: Draft
+user_facing: true
+risks: []
+external_blockers: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux
+  - adaptive/14-safety-and-high-stakes

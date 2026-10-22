@@ -1,0 +1,63 @@
+charter: v2
+id: P5-073
+kind: build
+title: Export top 2,000 items per language as recording scripts
+phase: P5
+epic: E-P5-AUDIO
+req_ids:
+- CP-§7-04
+- CP-§7-05
+depends_on:
+- P5-072
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- tools/audio/export_scripts.py
+- test/audio/export_scripts_test.py
+context_anchors:
+- CURRICULUM.md#§7:L749-L751
+acceptance_criteria:
+- id: AC1
+  text: Given exposure rank, when exported, then the top 2,000 most-exposed items per language (A1 lexicon and dialogues first)
+    are in the script
+- id: AC2
+  text: Given contracted validators, when scripts are handed over, then each has consent and IP template ids
+test_plan:
+  unit:
+  - export
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G6
+external_blockers:
+- EXT-13
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

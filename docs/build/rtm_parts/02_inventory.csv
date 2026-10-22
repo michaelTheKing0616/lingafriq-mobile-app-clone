@@ -1,0 +1,55 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+EP-§2-01,ELEVATION,§2:L416-L424,informational,Partial About 15 sequential awaited inits,P1,agent,,Open
+EP-§2-02,ELEVATION,§2:L425-L434,informational,Partial 9 question screens before any,P1,agent,,Open
+EP-§2-03,ELEVATION,§2:L435-L440,informational,Partial Offered in an AlertDialog after,P1,agent,,Open
+EP-§2-04,ELEVATION,§2:L443-L453,informational,Partial Enumeration (P0-25); 7-day HS256 token,P1,agent,,Open
+EP-§2-05,ELEVATION,§2:L454-L460,informational,Partial Feature dump IA; two dashboards,P1,agent,,Open
+EP-§2-06,ELEVATION,§2:L461-L474,informational,Partial Master index is loaded first,P1,agent,,Open
+EP-§2-07,ELEVATION,§2:L477-L478,informational,"Partial 10 declared stages, but content is",P1,agent,,Open
+EP-§2-08,ELEVATION,§2:L479-L482,informational,Partial Grammar copy is generic (§6),P1,agent,,Open
+EP-§2-09,ELEVATION,§2:L483-L494,informational,Partial Four separate memory models: SM-2,P1,agent,,Open
+EP-§2-10,ELEVATION,§2:L495-L499,informational,Partial No audio corpus ships (§6),P1,agent,,Open
+EP-§2-11,ELEVATION,§2:L500-L505,informational,Partial Feature tours rather than skill,P1,agent,,Open
+EP-§2-12,ELEVATION,§2:L506-L514,informational,Partial Unit quizzes in placeholder bundles,P1,agent,,Open
+EP-§2-13,ELEVATION,§2:L515-L525,informational,Partial/Fake Random pronunciation scores; tone trainer,P1,agent,,Open
+EP-§2-14,ELEVATION,§2:L526-L538,informational,Fake/Broken P0-18/19; tone service falls,P1,agent,,Open
+EP-§2-15,ELEVATION,§2:L541-L547,informational,Partial Direct Groq calls with a client,P1,agent,,Open
+EP-§2-16,ELEVATION,§2:L553-L554,informational,"Partial Prompt-only, with no grounding in curriculum",P1,agent,,Open
+EP-§2-17,ELEVATION,§2:L556-L560,informational,Partial Same client-key issue,P1,agent,,Open
+EP-§2-18,ELEVATION,§2:L561-L578,informational,Partial/Broken Two persona systems (27 client,P1,agent,,Open
+EP-§2-19,ELEVATION,§2:L579-L583,informational,Partial Built on the unofficial Google,P1,agent,,Open
+EP-§2-20,ELEVATION,§2:L584-L587,informational,Partial ML Kit labels are English; the,P1,agent,,Open
+EP-§2-21,ELEVATION,§2:L588-L598,informational,Partial culture_magazine_screen.dart is an unreachable,P1,agent,,Open
+EP-§2-22,ELEVATION,§2:L603-L604,informational,"Partial Duplicate routes (tribe, tribe-hub, tribe-",P1,agent,,Open
+EP-§2-23,ELEVATION,§2:L612-L616,informational,Partial/Fake flashcard_focus_screen.dart:26-34 shows mock,P1,agent,,Open
+EP-§2-24,ELEVATION,§2:L617-L625,informational,Partial live_classroom_screen.dart and classroom_chat_livekit_screen.dart,P1,agent,,Open
+EP-§2-25,ELEVATION,§2:L626-L629,informational,Partial No moderation (P0-11); rooms by,P1,agent,,Open
+EP-§2-26,ELEVATION,§2:L632-L640,informational,Broken (privacy) P0-4/5/6; no E2EE;,P1,agent,,Open
+EP-§2-27,ELEVATION,§2:L641-L646,informational,Broken (safety) P0-12; streak counts are,P1,agent,,Open
+EP-§2-28,ELEVATION,§2:L647-L648,informational,Partial Public by default (feed.route.ts:23); no,P1,agent,,Open
+EP-§2-29,ELEVATION,§2:L649-L652,informational,Partial No recording consent or moderation,P1,agent,,Open
+EP-§2-30,ELEVATION,§2:L653-L659,informational,Partial friendQuest.controller.ts:325 takes amount from,P1,agent,,Open
+EP-§2-31,ELEVATION,§2:L660-L663,informational,Partial Paid/peer tutoring without safeguarding,P1,agent,,Open
+EP-§2-32,ELEVATION,§2:L664-L671,informational,Partial native_speaker_contribution_screen.dart and lesson_item_verification_screen.dart,P1,agent,,Open
+EP-§2-33,ELEVATION,§2:L672-L683,informational,Broken (integrity) P0-7/8; 3 currencies (ngwenya,P1,agent,,Open
+EP-§2-34,ELEVATION,§2:L684-L690,informational,"Partial A ""credential"" built on template",P1,agent,,Open
+EP-§2-35,ELEVATION,§2:L691-L702,informational,Not built yet The Rive avatars have,P1,agent,,Open
+EP-§2-36,ELEVATION,§2:L703-L705,informational,Partial Not audited line by line,P1,agent,,Open
+EP-§2-37,ELEVATION,§2:L706-L710,informational,"Broken P0-23; streak-loss copy (""Your N-day",P1,agent,,Open
+EP-§2-38,ELEVATION,§2:L711-L714,informational,Partial P0-27,P1,agent,,Open
+EP-§2-39,ELEVATION,§2:L715-L725,informational,Broken P0-22; AES via the encrypt,P1,agent,,Open
+EP-§2-40,ELEVATION,§2:L728-L729,informational,"Partial Only 103 keys exist; 1,104 hard-coded",P1,agent,,Open
+EP-§2-41,ELEVATION,§2:L733-L735,informational,Partial 471 Semantics( uses (good start); no,P1,agent,,Open
+EP-§2-42,ELEVATION,§2:L738-L739,informational,"Partial No native-review workflow, no content versioning,",P1,agent,,Open
+EP-§2-43,ELEVATION,§2:L742-L752,informational,Partial No auth on the voice service,P1,agent,,Open
+EP-§2-44,ELEVATION,§2:L753-L760,informational,Partial flutter analyze --no-fatal-warnings; 64 Flutter,P1,agent,,Open
+EP-§2-45,ELEVATION,§2:L758,metric,64 Flutter test files for 306k,P1,agent,,Open
+EP-§2-46,ELEVATION,§2:L758,metric,52 backend tests,P1,agent,,Open
+EP-§2-47,ELEVATION,§2:L761,metric,Feature areas audited: 44 (this table),P1,agent,,Open
+EP-§2-48,ELEVATION,§2:L762,informational,151 user-facing features each with its,P1,agent,,Open
+EP-§2-49,ELEVATION,§2:L762-L763,metric,"183 Dart files / 49,074 lines are",P1,agent,,Open
+EP-§2-50,ELEVATION,§2:L762-L763,metric,"49,074 lines are never imported by",P1,agent,,Open
+EP-§2-51,ELEVATION,§2:L763,metric,330 unreachable files,P1,agent,,Open
+EP-§2-52,ELEVATION,§2:L763,metric,88 of them screens,P1,agent,,Open
+EP-§2-53,ELEVATION,§2:L764-L765,informational,§17.5 revives 25 screen-level features,P1,agent,,Open
+EP-§2-54,ELEVATION,§2:L765,metric,moves 3 developer examples out of,P1,agent,,Open

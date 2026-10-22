@@ -1,0 +1,52 @@
+charter: v2
+id: P2-041
+kind: adr
+title: 'ADR: Single Learner Knowledge Graph replaces four learner models'
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§6.3-01
+- EP-§6.3-09
+- EP-§6.3-10
+depends_on:
+- E-P1-CONTAINMENT
+size: S
+difficulty:
+  score: 2
+  blast: 1
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T4
+  tester: T0
+  reviewer: T4
+  justification: ADR; no code
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§6.3:L1211
+- ELEVATION.md#§6.3:L1220
+acceptance_criteria:
+- id: AC1
+  text: Given the existing learner models, when the ADR is written, then it names each, the single graph that replaces it
+    and the migration order
+- id: AC2
+  text: Given the privacy rule, when decided, then on-device first and no raw audio storage without opt-in are stated as constraints
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- signed decision recorded in DECISIONS.md
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - prime/diagram-design

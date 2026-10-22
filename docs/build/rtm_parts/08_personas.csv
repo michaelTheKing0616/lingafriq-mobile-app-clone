@@ -1,0 +1,95 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+EP-§8.1-01,ELEVATION,§8.1:L1485-L1486,informational,Two independent systems. Client registry: 27 personas,P1,agent,,Open
+EP-§8.1-02,ELEVATION,§8.1:L1487,informational,scenario templates whose branches: {} are empty,P1,agent,,Open
+EP-§8.1-03,ELEVATION,§8.1:L1488-L1489,informational,chat uses a plain system prompt with no retrieval,P1,agent,,Open
+EP-§8.1-04,ELEVATION,§8.1:L1489-L1490,informational,responses are stored with sources: [] and a hard-coded confidence: 0.9,P1,agent,,Open
+EP-§8.1-05,ELEVATION,§8.1:L1491-L1492,informational,tries four URL variants per call,P1,agent,,Open
+EP-§8.1-06,ELEVATION,§8.1:L1493,informational,Persona missions use the client Groq key and fail silently in release builds,P1,agent,,Open
+EP-§8.1-07,ELEVATION,§8.1:L1494,informational,Safety is a substring blocklist that blocks the core content of these personas,P1,agent,,Open
+EP-§8.1-08,ELEVATION,§8.1:L1494-L1495,informational,anti-colonial war (Yaa Asantewaa),P1,agent,,Open
+EP-§8.1-09,ELEVATION,§8.1:L1495,informational,apartheid discrimination (Mandela),P1,agent,,Open
+EP-§8.1-10,ELEVATION,§8.1:L1495,informational,the Zulu kingdom's military history (Shaka),P1,agent,,Open
+EP-§8.1-11,ELEVATION,§8.1:L1495-L1497,informational,"It also blocks ""skill"" and ""whatever""",P1,agent,,Open
+EP-§8.1-12,ELEVATION,§8.1:L1498,informational,"Do not mention... being an AI model",P1,agent,,Open
+EP-§8.1-13,ELEVATION,§8.1:L1499-L1500,informational,Nkrumah's languages English/Twi,P1,agent,,Open
+EP-§8.1-14,ELEVATION,§8.1:L1500-L1501,informational,First sub-Saharan colony to reach independence,P1,agent,,Open
+EP-§8.2-01,ELEVATION,§8.2:L1503-L1504,requirement,"a narrative quest, a language lesson, and a history lesson",P1,agent,,Open
+EP-§8.2-02,ELEVATION,§8.2:L1503-L1504,requirement,"short, authored, replayable experience",P1,agent,,Open
+EP-§8.2-03,ELEVATION,§8.2:L1505,metric,"Twi, A2–B1",P1,agent,,Open
+EP-§8.2-04,ELEVATION,§8.2:L1505,metric,25 min,P1,agent,,Open
+EP-§8.2-05,ELEVATION,§8.2:L1505,metric,4 chapters,P1,agent,,Open
+EP-§8.2-06,ELEVATION,§8.2:L1505-L1506,requirement,era-accurate illustrated scene with ambient sound (talking drums,P1,agent,,Open
+EP-§8.2-07,ELEVATION,§8.2:L1506-L1507,requirement,The learner is a young messenger,P1,agent,,Open
+EP-§8.2-08,ELEVATION,§8.2:L1507,requirement,Objective: greet the Queen Mother correctly (honorifics,P1,agent,,Open
+EP-§8.2-09,ELEVATION,§8.2:L1507-L1508,requirement,The Tone Lens is on,P1,agent,,Open
+EP-§8.2-10,ELEVATION,§8.2:L1508,requirement,the avatar kneels if the learner chooses the respectful option,P1,agent,,Open
+EP-§8.2-11,ELEVATION,§8.2:L1508-L1509,requirement,The British governor's demand for the Golden Stool is read in English,P1,agent,,Open
+EP-§8.2-12,ELEVATION,§8.2:L1509-L1510,requirement,Yaa Asantewaa responds in Twi with subtitles toggled by level,P1,agent,,Open
+EP-§8.2-13,ELEVATION,§8.2:L1510,requirement,must understand three key sentences (comprehension checkpoint),P1,agent,,Open
+EP-§8.2-14,ELEVATION,§8.2:L1510,metric,three key sentences,P1,agent,,Open
+EP-§8.2-15,ELEVATION,§8.2:L1511,requirement,argues a position in simplified Twi (scaffolded sentence builders),P1,agent,,Open
+EP-§8.2-16,ELEVATION,§8.2:L1511-L1512,requirement,The persona answers in character,P1,agent,,Open
+EP-§8.2-17,ELEVATION,§8.2:L1512,requirement,grounded in sources,P1,agent,,Open
+EP-§8.2-18,ELEVATION,§8.2:L1512-L1513,requirement,marks clearly when something is inferred,P1,agent,,Open
+EP-§8.2-19,ELEVATION,§8.2:L1513,requirement,A historian's note (human-written),P1,external,,Open
+EP-§8.2-20,ELEVATION,§8.2:L1513,requirement,and a mini-quiz,P1,agent,,Open
+EP-§8.2-21,ELEVATION,§8.2:L1514,requirement,"""Primary source"" card (photo of an archival document or museum object with attribution)",P1,agent,,Open
+EP-§8.2-22,ELEVATION,§8.2:L1515,requirement,vocabulary set added to the learner's deck,P1,agent,,Open
+EP-§8.3-01,ELEVATION,§8.3:L1517,requirement,Source dossier per persona,P1,agent,,Open
+EP-§8.3-02,ELEVATION,§8.3:L1517,requirement,curated by a historian,P1,external,,Open
+EP-§8.3-03,ELEVATION,§8.3:L1517-L1518,requirement,"primary sources (speeches, letters, court records, oral histories)",P1,agent,,Open
+EP-§8.3-04,ELEVATION,§8.3:L1518,requirement,reputable secondary sources,P1,agent,,Open
+EP-§8.3-05,ELEVATION,§8.3:L1518,requirement,contested points,P1,agent,,Open
+EP-§8.3-06,ELEVATION,§8.3:L1518,requirement,known myths,P1,agent,,Open
+EP-§8.3-07,ELEVATION,§8.3:L1518-L1519,external,respectful-portrayal guidance from descendants or community bodies,P1,external,,Open
+EP-§8.3-08,ELEVATION,§8.3:L1519-L1520,requirement,Store it as a retrieval index,P1,agent,,Open
+EP-§8.3-09,ELEVATION,§8.3:L1520,requirement,every persona turn retrieves from it,P1,agent,,Open
+EP-§8.3-10,ELEVATION,§8.3:L1521,requirement,Answer contract: {speech_text,P1,agent,,Open
+EP-§8.3-11,ELEVATION,§8.3:L1521,requirement,language_teaching_points[],P1,agent,,Open
+EP-§8.3-12,ELEVATION,§8.3:L1521,requirement,"claims:[{text,",P1,agent,,Open
+EP-§8.3-13,ELEVATION,§8.3:L1521-L1522,requirement,support: documented|inferred|legend,P1,agent,,Open
+EP-§8.3-14,ELEVATION,§8.3:L1522,requirement,source_ids[]}],P1,agent,,Open
+EP-§8.3-15,ELEVATION,§8.3:L1522,requirement,emotion,P1,agent,,Open
+EP-§8.3-16,ELEVATION,§8.3:L1522,requirement,next_beat},P1,agent,,Open
+EP-§8.3-17,ELEVATION,§8.3:L1522,requirement,validated server-side,P1,agent,,Open
+EP-§8.3-18,ELEVATION,§8.3:L1522-L1523,requirement,"shows a small ""Source"" chip on documented claims",P1,agent,,Open
+EP-§8.3-19,ELEVATION,§8.3:L1523,requirement,"an ""Inferred"" label on speculation",P1,agent,,Open
+EP-§8.3-20,ELEVATION,§8.3:L1524,requirement,the persona knows nothing after their death,P1,agent,,Open
+EP-§8.3-21,ELEVATION,§8.3:L1524-L1525,requirement,answers in character with curiosity,P1,agent,,Open
+EP-§8.3-22,ELEVATION,§8.3:L1525-L1526,requirement,A classifier decides this,P1,agent,,Open
+EP-§8.3-23,ELEVATION,§8.3:L1526,constraint,not keyword lists,P1,agent,,Open
+EP-§8.3-24,ELEVATION,§8.3:L1527,requirement,Sensitivity rules written with historians,P1,external,,Open
+EP-§8.3-25,ELEVATION,§8.3:L1527-L1528,constraint,violence is discussed historically and age-appropriately,P1,agent,,Open
+EP-§8.3-26,ELEVATION,§8.3:L1528,constraint,never glorified,P1,agent,,Open
+EP-§8.3-27,ELEVATION,§8.3:L1528,constraint,no slurs reproduced even if in sources,P1,agent,,Open
+EP-§8.3-28,ELEVATION,§8.3:L1528,requirement,paraphrase with a note,P1,agent,,Open
+EP-§8.3-29,ELEVATION,§8.3:L1528-L1529,external,"living-memory figures (Mandela, Sankara, Lumumba)",P1,external,,Open
+EP-§8.3-30,ELEVATION,§8.3:L1529,external,handled with family/estate guidance,P1,external,,Open
+EP-§8.3-31,ELEVATION,§8.3:L1529-L1530,decision,"possibly limited to narrated ""as told by"" modes",P1,Tope,,Open
+EP-§8.3-32,ELEVATION,§8.3:L1531,decision,Some figures should get a narrator rather than first person,P1,Tope,,Open
+EP-§8.3-33,ELEVATION,§8.3:L1532,requirement,"a persistent ""AI recreation"" badge",P1,agent,,Open
+EP-§8.3-34,ELEVATION,§8.3:L1532-L1533,requirement,an opening line that explains how the persona was built,P1,agent,,Open
+EP-§8.4-01,ELEVATION,§8.4:L1535,requirement,a voice actor per persona,P1,external,,Open
+EP-§8.4-02,ELEVATION,§8.4:L1535,requirement,speaking the target language with appropriate regional accent,P1,external,,Open
+EP-§8.4-03,ELEVATION,§8.4:L1536,constraint,cloned only with consent and a licence,P1,external,,Open
+EP-§8.4-04,ELEVATION,§8.4:L1536,constraint,synthesised voices clearly labelled as such,P1,agent,,Open
+EP-§8.4-05,ELEVATION,§8.4:L1536,requirement,Avatar busts with era-accurate dress,P1,agent,,Open
+EP-§8.4-06,ELEVATION,§8.4:L1536,requirement,reviewed,P1,external,,Open
+EP-§8.4-07,ELEVATION,§8.4:L1537,requirement,fill the empty branches with authored beats,P1,agent,,Open
+EP-§8.4-08,ELEVATION,§8.4:L1537,requirement,let the model improvise between beats,P1,agent,,Open
+EP-§8.4-09,ELEVATION,§8.4:L1537-L1538,constraint,keep the story on rails,P1,agent,,Open
+EP-§8.4-10,ELEVATION,§8.4:L1539,requirement,teachers assign a persona chapter,P1,agent,,Open
+EP-§8.4-11,ELEVATION,§8.4:L1539,requirement,students' turns are graded against can-dos,P1,agent,,Open
+EP-§8.4-12,ELEVATION,§8.4:L1539-L1540,requirement,a debrief sheet is generated for the teacher,P1,agent,,Open
+EP-§8.4-13,ELEVATION,§8.4:L1542,requirement,"""Queens of Africa""",P1,agent,,Open
+EP-§8.4-14,ELEVATION,§8.4:L1542,requirement,"""Scholars of Timbuktu""",P1,agent,,Open
+EP-§8.4-15,ELEVATION,§8.4:L1542,requirement,"""Independence Generation""",P1,agent,,Open
+EP-§8.4-16,ELEVATION,§8.4:L1542-L1543,requirement,"""Writers & Thinkers""",P1,agent,,Open
+EP-§8.4-17,ELEVATION,§8.4:L1543,informational,"Thomas Mofolo, Ahmed Baba, Cheikh Anta Diop",P1,agent,,Open
+EP-§8.4-18,ELEVATION,§8.4:L1543-L1544,requirement,each pairing figures with the languages they spoke,P1,agent,,Open
+EP-§8.4-19,ELEVATION,§8.4:L1545,requirement,historian-rated fidelity,P1,external,,Open
+EP-§8.4-20,ELEVATION,§8.4:L1545,metric,50 scripted probes per persona,P1,agent,,Open
+EP-§8.4-21,ELEVATION,§8.4:L1545-L1546,requirement,an adversarial suite (jailbreaks,P1,agent,,Open
+EP-§8.4-22,ELEVATION,§8.4:L1546,requirement,anachronism traps,P1,agent,,Open
+EP-§8.4-23,ELEVATION,§8.4:L1546,requirement,attempts to make the persona endorse atrocities,P1,agent,,Open
+EP-§8.4-24,ELEVATION,§8.4:L1547,requirement,language-quality checks by natives,P1,external,,Open

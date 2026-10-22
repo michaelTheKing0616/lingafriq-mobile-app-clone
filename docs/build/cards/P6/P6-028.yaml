@@ -1,0 +1,100 @@
+charter: v2
+id: P6-028
+kind: build
+title: Build Shadowing coach on real scorer, replace fake toneScore
+phase: P6
+epic: E-P6-MODES
+req_ids:
+- EP-§7.3-06
+- EP-§7.3-23
+- EP-§7.1-17
+depends_on:
+- P6-003
+- P6-008
+- P6-011
+- P6-014
+- P6-056
+- P6-038
+- P6-043
+- P6-042
+- E-P6-SCORER
+size: M
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 2
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 3, ambiguity 2, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/screens/tutor/tutor_pronunciation_mode_screen.dart
+- node-backend/src/ai-gateway/modes/shadowing.ts
+context_anchors:
+- ELEVATION.md#§7.3:L1416-L1421
+acceptance_criteria:
+- id: AC1
+  text: Given a model utterance, when the learner listens and repeats, then the screen shows the pitch contour and scorer
+    results from the real scorer
+- id: AC2
+  text: Given tutor_pronunciation_mode_screen.dart toneScore computed from transcript diacritics, when migrated, then that
+    computation is removed
+- id: AC3
+  text: Given the scorer returns unsure, when shown, then no number is displayed and a retry prompt appears
+- id: AC9
+  text: Given the mode eval set in CI, when run on a prompt or model change, then the mode meets the thresholds in the eval
+    config or the deploy is blocked
+test_plan:
+  unit:
+  - no fake score
+  integration:
+  - scorer response mapping
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - screen reader summary
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - listening
+  - recording
+  - scoring
+  - scored
+  - unsure
+  - error
+  copy_keys:
+  - shadow.retry_noise
+  - shadow.unsure
+  tokens:
+  - color.pitch_native
+  - color.pitch_learner
+  motion_tier: product
+  a11y:
+  - contour has text summary
+  goldens:
+  - shadow_scored
+  - shadow_unsure
+tags:
+- shows_score
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

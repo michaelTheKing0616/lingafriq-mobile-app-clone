@@ -1,0 +1,70 @@
+charter: v2
+id: P10-921
+kind: build
+title: Run logged purge jobs per retention schedule
+phase: P10
+epic: E-P10-PRIVACY
+req_ids:
+- EP-§13.2-21
+depends_on:
+- P10-920
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 2
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 6; blast 2; p0 area
+token_budget: 60000
+file_allowlist:
+- node-backend/src/jobs/retention-purge.job.ts
+- node-backend/src/models/PurgeLog.ts
+- docs/privacy/RETENTION.yaml
+context_anchors:
+- ELEVATION.md#§13.2:L1889-L1889
+acceptance_criteria:
+- id: AC1
+  text: Given data past its retention period, when the purge job runs, then it deletes it and writes one log row per collection
+    with counts and time.
+- id: AC2
+  text: Given a purge error, when the job fails on a collection, then it logs the error, continues others and exits non-zero.
+- id: AC3
+  text: Given a dry-run flag, when it is used, then it reports counts and deletes nothing.
+- id: AC4
+  text: Given the log, when it is read, then it holds counts only and no personal data.
+test_plan:
+  unit:
+  - period calc
+  integration:
+  - purge fixture
+  - dry run
+  security:
+  - log has no PII
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G12
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

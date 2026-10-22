@@ -1,0 +1,67 @@
+charter: v2
+id: P13-003
+kind: build
+title: Block later-wave languages beyond L0 without a lexicon
+phase: P13
+epic: E-P13-SCALE
+req_ids:
+- CP-§2.4-later-08
+depends_on:
+- P13-001
+size: S
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 0
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 2, ambiguity 0, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist:
+- scripts/content/lexicon_gate.py
+- test/content/lexicon_gate_test.py
+context_anchors:
+- CURRICULUM.md#§2.4:L462-L465
+acceptance_criteria:
+- id: AC1
+  text: Given a language with no lexicon source in its admission file, when a lesson above L0 is promoted, then the gate rejects
+    it with a typed error naming the language
+- id: AC2
+  text: Given a language with a licensed or PD lexicon, when promoted above L0, then the lexicon check passes and other gates
+    still run
+- id: AC3
+  text: Given a lexicon licence expires or is removed, when the gate re-runs, then the language is demoted to L0 status and
+    flagged
+test_plan:
+  unit:
+  - lexicon_gate rules
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - gate against sample admission files
+user_facing: false
+ux_spec: null
+tags:
+- uses_source
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G13
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

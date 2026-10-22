@@ -1,0 +1,64 @@
+charter: v2
+id: P1-058
+kind: build
+title: Generate SBOM and pin GitHub Actions by SHA
+phase: P1
+epic: E-P1-AUTH
+req_ids:
+- EP-§13.1-37
+- EP-§13.1-38
+depends_on:
+- E-P0-INTAKE
+size: S
+difficulty:
+  score: 2
+  blast: 1
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: score 2; blast 1
+token_budget: 25000
+file_allowlist:
+- .github/workflows/build.yml
+- .github/workflows/build-and-release.yml
+- .github/workflows/sbom.yml
+context_anchors:
+- ELEVATION.md#§13.1:L1875
+acceptance_criteria:
+- id: AC1
+  text: Given the workflows, when scanned, then every uses reference is pinned to a full commit SHA
+- id: AC2
+  text: Given a release, when built, then an SBOM for the backend and the app is produced and attached
+- id: AC3
+  text: Given an unpinned action in a PR, when CI runs, then a lint step fails
+test_plan:
+  unit: []
+  integration:
+  - pin lint
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G1
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

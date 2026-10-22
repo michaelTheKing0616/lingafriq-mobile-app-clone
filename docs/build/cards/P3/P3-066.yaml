@@ -1,0 +1,75 @@
+charter: v2
+id: P3-066
+kind: build
+title: Consolidate four classroom variants into live classroom
+phase: P3
+epic: E-P3-REVIVE
+req_ids:
+- CON-02
+depends_on:
+- P3-037
+size: M
+difficulty:
+  score: 6
+  blast: 1
+  ambiguity: 2
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: ambiguity from merge choices, coupling across variants'
+token_budget: 60000
+file_allowlist:
+- lib/screens/classroom/live_classroom_screen.dart
+- lib/screens/classroom/classroom_session_screen.dart
+- lib/screens/classroom/classroom_lobby_screen.dart
+- lib/screens/classroom/live_classroom_mobile_screen.dart
+context_anchors:
+- ELEVATION.md#§17.5:L2333-L2338
+acceptance_criteria:
+- id: AC1
+  text: Given the variants, when compared, then each is audited and harvest_list items are moved into the surviving feature
+    or listed as dropped with a reason
+- id: AC2
+  text: Given the surviving feature, when tested, then it passes the golden and behaviour tests of the replaced variants
+- id: AC3
+  text: Given the old variant files, when consolidation ends, then they are deleted or moved under legacy/ and no route points
+    to them
+- id: AC4
+  text: Given any harvested item is missing at review, when checked, then the card fails (No-Cut rule)
+test_plan:
+  unit:
+  - parity tests
+  integration:
+  - route check
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+harvest_list:
+- classroom_session_screen.dart
+- classroom_lobby_screen.dart
+- live_classroom_mobile_screen.dart
+- classroom_v2_route_args.dart
+- roster, notes, assignments, privacy and speaker queue ideas from the variants
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks:
+- harvest drift; keep list authoritative
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

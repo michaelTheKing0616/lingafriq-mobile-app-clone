@@ -1,0 +1,79 @@
+charter: v2
+id: P6-042
+kind: build
+title: Calibrate scorer to native ratings and publish method
+phase: P6
+epic: E-P6-SCORING
+req_ids:
+- EP-§7.4-04
+- EP-§7.4-25
+- EP-§7.4-26
+depends_on:
+- P6-041
+- P6-033
+- P6-035
+- P6-040
+size: M
+difficulty:
+  score: 9
+  blast: 3
+  ambiguity: 2
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T3
+  justification: 'score 9: blast 3, ambiguity 2, coupling 2, depth 2; DSP tester T3'
+token_budget: 70000
+file_allowlist:
+- speech-service/scorer/calibration.py
+- docs/methodology/scorer_calibration.md
+- release-gates/scorer_real.yaml
+context_anchors:
+- ELEVATION.md#§7.4:L1442-L1444
+acceptance_criteria:
+- id: AC1
+  text: Given the rated attempts per language, when the composite score is calibrated, then Pearson r between score and native
+    mean rating is computed on a held-out split
+- id: AC2
+  text: Given r below 0.7 for a language, when the gate runs, then scorer_real stays false for that language and the score
+    is not shown
+- id: AC3
+  text: Given r at or above 0.7, when inter-rater correlation is also reported, then the gate passes and the inter-rater value
+    is recorded as the ceiling
+- id: AC4
+  text: Given the gate result, when published, then the methodology document lists data size, rater counts, split and r per
+    language
+test_plan:
+  unit:
+  - pearson
+  - split
+  integration:
+  - gate flips
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- scorer_real
+p0_area: false
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Gate needs real rater data
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

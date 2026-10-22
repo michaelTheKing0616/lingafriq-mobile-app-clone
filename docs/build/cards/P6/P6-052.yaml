@@ -1,0 +1,68 @@
+charter: v2
+id: P6-052
+kind: build
+title: Ship Nigerian Pidgin TTS voice behind tone-accuracy gate
+phase: P6
+epic: E-P6-TTS
+req_ids:
+- EP-§7.5-12
+depends_on:
+- P6-046
+- P6-047
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 2, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/tts/providers/pcm.ts
+- node-backend/src/ai-gateway/tts/voiceGate.ts
+context_anchors:
+- ELEVATION.md#§7.5:L1449-L1460
+acceptance_criteria:
+- id: AC1
+  text: Given Intron and Spitch voices, when Nigerian Pidgin TTS is requested, then the gateway routes to the primary voice
+    and falls back to the next approved voice on error
+- id: AC2
+  text: Given the Nigerian Pidgin voice has no passing gate record, when requested, then typed error voice_not_gated is returned
+- id: AC3
+  text: Given a tone-marked test sentence set for Nigerian Pidgin, when synthesised, then audio and alignments are returned
+    in the shared schema
+test_plan:
+  unit:
+  - provider adapter
+  integration:
+  - gate refusal
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - Nigerian Pidgin tone sentence set
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

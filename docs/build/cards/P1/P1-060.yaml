@@ -1,0 +1,58 @@
+charter: v2
+id: P1-060
+kind: verification
+title: Prepare penetration test scope document
+phase: P1
+epic: E-P1-AUTH
+req_ids:
+- EP-§13.1-40
+depends_on:
+- E-P0-INTAKE
+size: S
+difficulty:
+  score: 2
+  blast: 1
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T2
+  justification: score 2; blast 1
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§13.1:L1877
+acceptance_criteria:
+- id: AC1
+  text: Given the final P1 route inventory, socket events, auth flows and minors' surfaces, when the scope doc is complete,
+    then it lists each in scope with test accounts and exclusions and is ready to send for EXT-17
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G1
+external_blockers:
+- EXT-17
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

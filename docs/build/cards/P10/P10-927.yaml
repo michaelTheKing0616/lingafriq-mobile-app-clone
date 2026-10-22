@@ -1,0 +1,88 @@
+charter: v2
+id: P10-927
+kind: build
+title: Rewrite the privacy policy in plain words
+phase: P10
+epic: E-P10-PRIVACY
+req_ids:
+- EP-§13.2-01
+- EP-§13.2-02
+- EP-§13.2-08
+depends_on:
+- P10-919
+- P10-920
+- P10-922
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T4
+  justification: 'score 4; blast 1; gate-critical (security / child safety / legal / design direction): Fable reviews'
+token_budget: 60000
+file_allowlist:
+- docs/privacy/PRIVACY_POLICY.md
+- lib/screens/settings/privacy_policy_screen.dart
+context_anchors:
+- ELEVATION.md#§13.2:L1879-L1882
+acceptance_criteria:
+- id: AC1
+  text: Given the data map, when the policy is written, then it lists what is collected, why, how long it is kept and who
+    sees it for each category.
+- id: AC2
+  text: Given the policy text, when readability is measured, then it scores at grade 8 or lower and each legal term is explained.
+- id: AC3
+  text: Given voice data and minors, when the policy is read, then it states the opt-in, default deletion and guardian rules.
+- id: AC4
+  text: Given the policy is published, when a learner opens it in the app, then the version and date show and a change prompts
+    re-acknowledgement.
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - readability
+  - coverage of data map
+user_facing: true
+ux_spec:
+  states:
+  - loaded
+  - new-version
+  copy_keys:
+  - privacy_policy_title
+  tokens:
+  - color.semantic
+  - type.scale
+  - space.scale
+  motion_tier: product
+  a11y:
+  - screen reader labels
+  - 48dp touch targets
+  - reduced motion honoured
+  goldens:
+  - privacy_policy_title_golden
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G12
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

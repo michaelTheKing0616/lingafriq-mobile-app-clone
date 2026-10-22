@@ -1,0 +1,90 @@
+charter: v2
+id: P3-075
+kind: build
+title: 'Build onboarding step 1: language tiles with greeting audio'
+phase: P3
+epic: E-P3-ONBOARDING
+req_ids:
+- OB-step1
+- OB-step1-b
+- EP-§5.1-03
+depends_on:
+- P3-074
+- P3-039
+size: M
+difficulty:
+  score: 3
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 3: blast 0, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- lib/screens/onboarding/unified_onboarding_screen.dart
+- lib/screens/onboarding/steps/language_step.dart
+context_anchors:
+- ELEVATION.md#§5.2:L1039-L1041
+acceptance_criteria:
+- id: AC1
+  text: Given the language list, when it shows, then each tile plays a native speaker greeting on tap
+- id: AC2
+  text: Given a language with no recorded greeting, when shown, then the tile has no audio button and a label says audio coming,
+    with no synthetic voice
+- id: AC3
+  text: Given the heritage chip, when tapped, then My family speaks this saves as an optional flag
+- id: AC4
+  text: Given step 1, when completed, then no account is requested
+test_plan:
+  unit:
+  - flag save
+  integration:
+  - audio missing
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - semantics
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - default
+  - no_audio
+  - offline
+  copy_keys:
+  - onboarding.language.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers:
+- EXT-13
+status: Draft
+skills:
+  worker:
+  - prime/onboarding-ux
+  - prime/form-design

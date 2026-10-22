@@ -1,0 +1,57 @@
+charter: v2
+id: P0-VER-19
+kind: verification
+title: Purchase and confirm Zulu references and SADiLaR terms
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- UNV-C06
+depends_on:
+- E-P0-INTAKE
+- EXT-22
+- EXT-06
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: verification only; result recorded, never inferred
+token_budget: 20000
+file_allowlist:
+- docs/build/verification/P0-VER-19.md
+- docs/build/UNVERIFIED.md
+context_anchors:
+- CURRICULUM.md#§2.4:L425
+acceptance_criteria:
+- id: AC1
+  text: Given the purchase list and the Zulu dictionary RFQ (EXT-06), when the references are obtained, then edition and licence
+    terms are recorded
+- id: AC2
+  text: Given the SADiLaR resource named in the source, when its licence is read, then the terms are recorded in the register
+    with the access date
+user_facing: false
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- docs/build/verification/P0-VER-19.md
+- UNVERIFIED.md row updated
+risks: []
+gate: G4
+external_blockers:
+- EXT-22
+- EXT-06
+owner: external
+status: Blocked-External
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

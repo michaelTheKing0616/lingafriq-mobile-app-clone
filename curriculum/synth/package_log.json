@@ -1,0 +1,45 @@
+{
+ "accepted": {
+  "sw": 31,
+  "yo": 13,
+  "ha": 11,
+  "ig": 9,
+  "zu": 13,
+  "xh": 11
+ },
+ "rejected": [
+  {
+   "lang": "sw",
+   "level": "B2",
+   "text": "Kama ningejua mapema, ningekuja.",
+   "unattested": [
+    "ningejua",
+    "ningekuja"
+   ]
+  },
+  {
+   "lang": "sw",
+   "level": "B2",
+   "text": "Mama alimpikia mtoto chakula.",
+   "unattested": [
+    "alimpikia"
+   ]
+  },
+  {
+   "lang": "sw",
+   "level": "C1",
+   "text": "Usipofanya kazi kwa bidii, hutafaulu.",
+   "unattested": [
+    "hutafaulu"
+   ]
+  },
+  {
+   "lang": "ig",
+   "level": "C1",
+   "text": "N'agbanyeghị na akụ na ụba etoola, ọtụtụ mmadụ ka nọ n'ụbịam.",
+   "unattested": [
+    "n'ụbịam"
+   ]
+  }
+ ]
+}

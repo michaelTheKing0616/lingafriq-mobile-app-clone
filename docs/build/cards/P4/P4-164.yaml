@@ -1,0 +1,84 @@
+charter: v2
+id: P4-164
+kind: build
+title: Build AI ops cost, routing table and incident switches
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§14.2-49
+- EP-§14.2-50
+- EP-§14.2-51
+depends_on:
+- P4-163
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 2, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lingafriq-admin/src/pages/AiOps.tsx
+- node-backend/src/services/ai_routing_admin.service.ts
+- node-backend/src/services/ai_cost_report.service.ts
+- test/backend/ai_routing_admin.test.ts
+context_anchors:
+- ELEVATION.md#§14.2:L1970-L1989
+acceptance_criteria:
+- id: AC1
+  text: Given usage logs, when reported, then cost per feature is shown for a selected period and unknown cost is shown as
+    unknown
+- id: AC2
+  text: Given the routing table, when edited by an authorised role, then the change is versioned, audit-logged and applied
+    on next request
+- id: AC3
+  text: Given an incident switch, when toggled, then the named feature degrades to its fallback and the switch state is visible
+    and audit-logged
+test_plan:
+  unit:
+  - ai_routing_admin.test
+  integration: []
+  security:
+  - role scope
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - data
+  - toggle_pending
+  - error
+  copy_keys:
+  - aiops.incident
+  tokens:
+  - admin.panel
+  motion_tier: product
+  a11y:
+  - toggle labels
+  goldens: []
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/navigation-patterns
+  - prime/mobile-app-ui-design

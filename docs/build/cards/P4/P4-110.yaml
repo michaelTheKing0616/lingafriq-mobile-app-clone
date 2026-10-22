@@ -1,0 +1,88 @@
+charter: v2
+id: P4-110
+kind: build
+title: Implement readiness levels L0-L3 with promotion gates
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.4-03
+- EP-§6.4-04
+- EP-§6.4-05
+- EP-§6.4-08
+- EP-§6.4-09
+- EP-§6.4-10
+- EP-§6.4-11
+- EP-§6.4-12
+- EP-§6.4-13
+- EP-§6.4-65
+depends_on:
+- P4-106
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 2, ambiguity 2, coupling 1'
+token_budget: 60000
+file_allowlist:
+- tools/content_pipeline/readiness.py
+- schemas/v2/language_readiness.schema.json
+- test/content/test_readiness.py
+context_anchors:
+- ELEVATION.md#§6.4:L1221-L1262
+- ELEVATION.md#§6.4.1:L1264-L1292
+- DECISIONS.md#D6
+acceptance_criteria:
+- id: AC1
+  text: Given a language manifest, when gated for L0 Taste, then it passes only with greetings, numbers, 50-100 words, ≥1
+    culture card and ≥2 voices of recorded audio, else READINESS_L0_FAIL with the missing items
+- id: AC2
+  text: Given a manifest, when gated for L1 Starter, then A1 coverage is complete, every item has audio that is human or labelled
+    tts_synthetic passing its gate (C3/D6), and ASR "were you understood" feedback is enabled
+- id: AC3
+  text: Given a manifest, when gated for L2 Core, then A1-A2 is complete, tone and pronunciation scoring and dynamic TTS are
+    enabled, AI tutor modes are enabled and ≥4 voices exist
+- id: AC4
+  text: Given a manifest, when gated for L3 Full, then A1-B1, realtime voice, personas and credential checkpoints are enabled
+    with realtime and persona evals passing
+- id: AC5
+  text: Given a language, when promotion is requested, then it moves one level only when all gates for the next level pass,
+    and failure leaves the level unchanged with the failing gate listed
+- id: AC6
+  text: Given native-recorded audio for every item and two-native approval, when the Native-verified promotion runs, then
+    objects move from beta/expert_reviewed to native_verified, and no content ships unvalidated
+test_plan:
+  unit:
+  - test_readiness
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - manifest fixtures per level
+user_facing: false
+ux_spec: null
+tags:
+- native_verified_rule
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

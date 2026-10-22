@@ -1,0 +1,87 @@
+charter: v2
+id: P4-160
+kind: build
+title: Build moderation console with queues and actions
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§14.2-37
+- EP-§14.2-38
+- EP-§14.2-39
+- EP-§14.2-40
+depends_on:
+- P4-150
+size: L
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 2, ambiguity 1, coupling 2'
+token_budget: 150000
+file_allowlist:
+- lingafriq-admin/src/pages/ModerationConsole.tsx
+- node-backend/src/services/moderation_actions.service.ts
+- node-backend/src/models/appeal.model.ts
+- test/backend/moderation_actions.test.ts
+context_anchors:
+- ELEVATION.md#§14.2:L1970-L1989
+acceptance_criteria:
+- id: AC1
+  text: Given a report, when opened, then its queue entry shows evidence and the reported user's history
+- id: AC2
+  text: Given a moderator, when acting, then warn, mute, suspend and ban are available with a mandatory reason and each is
+    audit-logged
+- id: AC3
+  text: Given an appeal, when filed, then it is queued to a different moderator than the original and its outcome is recorded
+- id: AC4
+  text: Given a role other than Moderator or Owner, when requesting the console API, then the server returns 403
+test_plan:
+  unit:
+  - moderation_actions.test
+  integration: []
+  security:
+  - role scope
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - empty
+  - queue
+  - action_pending
+  - error
+  copy_keys:
+  - mod.action.reason
+  tokens:
+  - admin.table
+  motion_tier: product
+  a11y:
+  - keyboard actions
+  goldens: []
+tags:
+- guardian_moderation
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

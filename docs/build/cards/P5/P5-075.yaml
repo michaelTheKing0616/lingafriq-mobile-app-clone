@@ -1,0 +1,60 @@
+charter: v2
+id: P5-075
+kind: build
+title: Keep and label TTS for dynamic content
+phase: P5
+epic: E-P5-AUDIO
+req_ids:
+- CP-§7-08
+depends_on:
+- P5-010
+size: S
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist:
+- lib/services/tts/dynamic_tts_label.dart
+- test/audio/dynamic_tts_label_test.dart
+context_anchors:
+- CURRICULUM.md#§7:L753-L753
+acceptance_criteria:
+- id: AC1
+  text: Given Polie or persona speech, when played, then it uses TTS permanently
+- id: AC2
+  text: Given that speech, when shown, then the Synthetic voice tag is visible
+test_plan:
+  unit:
+  - label
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

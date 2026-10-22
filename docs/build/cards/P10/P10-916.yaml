@@ -1,0 +1,101 @@
+charter: v2
+id: P10-916
+kind: build
+title: Add a proctored CAT to the Passport
+phase: P10
+epic: E-P10-CREDENTIALS
+req_ids:
+- EP-§12.4-03
+depends_on:
+- E-P5-CONTENT-REAL
+- E-P6-SCORER
+- P10-915
+size: L
+difficulty:
+  score: 8
+  blast: 2
+  ambiguity: 2
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T4
+  justification: 'score 8; blast 2; p0 area; crypto; gate-critical (security / child safety / legal / design direction): Fable
+    reviews'
+token_budget: 150000
+file_allowlist:
+- node-backend/src/services/passport-cat.service.ts
+- lib/screens/passport/passport_proctored_session_screen.dart
+- lib/services/passport/passport_service.dart
+context_anchors:
+- ELEVATION.md#§12.4:L1843-L1843
+acceptance_criteria:
+- id: AC1
+  text: Given a learner starts the CAT, when the session opens, then the server issues a one-time session and proctoring rules
+    are shown before start.
+- id: AC2
+  text: Given a proctoring rule is broken (app left, second voice, lost audio), when it is detected, then the session is flagged
+    with a reason and held for review.
+- id: AC3
+  text: Given recordings are captured, when the session ends, then they are handled under the voice consent and retention
+    rules and deleted by default after scoring.
+- id: AC4
+  text: Given the CAT ends, when the result is computed, then it combines with the portfolio and a result below confidence
+    returns unsure, not a level.
+- id: AC5
+  text: Given a network failure mid-test, when the learner reconnects within the stored limit, then the session resumes and
+    otherwise ends with a typed error.
+test_plan:
+  unit:
+  - adaptive stop rule
+  - unsure result
+  integration:
+  - flag and hold
+  security:
+  - session replay blocked
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - rules
+  - active
+  - flagged
+  - resumed
+  - result
+  copy_keys:
+  - cat_rules
+  - cat_flagged
+  tokens:
+  - color.semantic
+  - type.scale
+  - space.scale
+  motion_tier: product
+  a11y:
+  - screen reader labels
+  - 48dp touch targets
+  - reduced motion honoured
+  goldens:
+  - cat_rules_golden
+tags:
+- issues_credential
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Proctoring depends on voice consent and DPIA outcomes
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

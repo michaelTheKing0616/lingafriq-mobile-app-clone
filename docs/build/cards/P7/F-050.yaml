@@ -1,0 +1,108 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P7
+epic: E-P7-HUBS
+hub: Village
+gate: HUB
+status: Draft
+user_facing: true
+p0_area: true
+external_blockers: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+tags: []
+token_budget: 30000
+size: S
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 4: thin chat entry reusing Polie engine'
+id: F-050
+title: Elevate LingChat AI conversation entry
+req_ids:
+- F-050
+- F-050.D
+- F-050.E
+- F-050.U
+- F-050.L
+- P0-3
+depends_on:
+- E-P2-PLATFORM
+- E-P3-DESIGN-SYSTEM
+- E-P1-CONTAINMENT
+- F-035
+file_allowlist:
+- lib/screens/chat/lingchat_ai_conversation_screen.dart
+context_anchors:
+- ELEVATION.md#§18.4:L4212-L4223
+delta:
+  current_state: Thin routed wrapper duplicating Polie modes from Village chats.
+  defects_to_fix:
+  - Duplicate Polie surface separate from consolidated engine.
+  elevation_to_build:
+  - Practice with Polie pinned DM from chat list reusing consolidated Polie engine.
+  - Optional persona practice entry from chats.
+  ux_and_render:
+  - Pinned chat contact with AI label beyond shared bar.
+  hub_placement: Village → Chats → pinned Polie (AI).
+  unlock_stage: per §17.4
+  harvest_list:
+  - Retire duplicate logic in lingchat wrapper in favor of F-035 engine routes.
+acceptance_criteria:
+- id: AC1
+  text: Given Village → Chats, when Polie (AI) pinned contact opens, then session uses F-035 Polie engine not a separate Groq
+    client wrapper.
+- id: AC2
+  text: Given release build, when chat practice starts, then no client API keys are bundled in lingchat_ai route.
+- id: AC3
+  text: Given persona practice from chat, when selected, then navigation lands in contained persona or Polie mode without
+    duplicate transcripts.
+test_plan:
+  unit:
+  - chat deeplink to Polie
+  integration:
+  - pinned contact routing
+  e2e:
+  - Village → Polie AI chat
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content: []
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - f-050.*
+skills:
+  worker:
+  - prime/conversational-ux
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux

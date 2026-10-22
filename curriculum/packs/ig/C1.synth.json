@@ -1,0 +1,1301 @@
+{
+"lang": "ig",
+"level": "C1",
+"built": "2026-10-21",
+"source_type": "synthesized",
+"items": [
+{
+"id": "ig.syn.e153d129edd0",
+"lang": "ig",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.PROD: Produce narrative text"
+],
+"text": "Mgbe o ruru n'ụlọ, ọ hụrụ na ụzọ mepere emepe.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "When he reached home, he saw the door was open.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Mgbe = when.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Mgbe",
+"count": 2859,
+"locator": "leipzig:ibo_wikipedia_2021_10K#s1"
+},
+{
+"token": "o",
+"count": 3745,
+"locator": "leipzig:ibo_wikipedia_2021_10K#s3"
+},
+{
+"token": "ruru",
+"count": 339,
+"locator": "leipzig:ibo_wikipedia_2021_10K#s136"
+},
+{
+"token": "n'ụlọ",
+"count": 239,
+"locator": "leipzig:ibo_wikipedia_2021_10K#s4"
+},
+{
+"token": "ọ",
+"count": 7066,
+"locator": "leipzig:ibo_wikipedia_2021_10K#s4"
+},
+{
+"token": "hụrụ",
+"count": 203,
+"locator": "leipzig:ibo_wikipedia_2021_10K#s15"
+},
+{
+"token": "na",
+"count": 29215,
+"locator": "leipzig:ibo_wikipedia_2021_10K#s1"
+},
+{
+"token": "ụzọ",
+"count": 529,
+"locator": "leipzig:ibo_wikipedia_2021_10K#s23"
+},
+{
+"token": "mepere",
+"count": 33,
+"locator": "leipzig:ibo_wikipedia_2021_10K#s1997"
+},
+{
+"token": "emepe",
+"count": 31,
+"locator": "leipzig:ibo_wikipedia_2021_10K#s439"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:ibo_wikipedia_2021_10K#s1",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Mgbe' attested 2859x",
+"source_id": "leipzig",
+"locator": "leipzig:ibo_wikipedia_2021_10K#s1"
+},
+{
+"text": "token 'o' attested 3745x",
+"source_id": "leipzig",
+"locator": "leipzig:ibo_wikipedia_2021_10K#s3"
+},
+{
+"text": "token 'ruru' attested 339x",
+"source_id": "leipzig",
+"locator": "leipzig:ibo_wikipedia_2021_10K#s136"
+},
+{
+"text": "token 'n'ụlọ' attested 239x",
+"source_id": "leipzig",
+"locator": "leipzig:ibo_wikipedia_2021_10K#s4"
+},
+{
+"text": "token 'ọ' attested 7066x",
+"source_id": "leipzig",
+"locator": "leipzig:ibo_wikipedia_2021_10K#s4"
+},
+{
+"text": "token 'hụrụ' attested 203x",
+"source_id": "leipzig",
+"locator": "leipzig:ibo_wikipedia_2021_10K#s15"
+},
+{
+"text": "token 'na' attested 29215x",
+"source_id": "leipzig",
+"locator": "leipzig:ibo_wikipedia_2021_10K#s1"
+},
+{
+"text": "token 'ụzọ' attested 529x",
+"source_id": "leipzig",
+"locator": "leipzig:ibo_wikipedia_2021_10K#s23"
+},
+{
+"text": "token 'mepere' attested 33x",
+"source_id": "leipzig",
+"locator": "leipzig:ibo_wikipedia_2021_10K#s1997"
+},
+{
+"text": "token 'emepe' attested 31x",
+"source_id": "leipzig",
+"locator": "leipzig:ibo_wikipedia_2021_10K#s439"
+}
+],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"tone_pattern_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ig.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": false,
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ig.syn.40d524efe091",
+"lang": "ig",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULT: Understand a cultural practice"
+],
+"text": "Ọjị bụ ihe dị mkpa n'omenala Igbo.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Kola nut is important in Igbo custom.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Kola presentation opens gatherings; blessed and shared by the eldest man.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Ọjị",
+"count": 32,
+"locator": "leipzig:ibo_wikipedia_2021_10K#s3103"
+},
+{
+"token": "bụ",
+"count": 6101,
+"locator": "leipzig:ibo_wikipedia_2021_10K#s9"
+},
+{
+"token": "ihe",
+"count": 6190,
+"locator": "leipzig:ibo_wikipedia_2021_10K#s10"
+},
+{
+"token": "dị",
+"count": 3540,
+"locator": "leipzig:ibo_wikipedia_2021_10K#s12"
+},
+{
+"token": "mkpa",
+"count": 216,
+"locator": "leipzig:ibo_wikipedia_2021_10K#s13"
+},
+{
+"token": "n'omenala",
+"count": 4,
+"locator": "leipzig:ibo_wikipedia_2021_10K#s2071"
+},
+{
+"token": "Igbo",
+"count": 1099,
+"locator": "leipzig:ibo_wikipedia_2021_10K#s17"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:ibo_wikipedia_2021_10K#s3103",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Ọjị' attested 32x",
+"source_id": "leipzig",
+"locator": "leipzig:ibo_wikipedia_2021_10K#s3103"
+},
+{
+"text": "token 'bụ' attested 6101x",
+"source_id": "leipzig",
+"locator": "leipzig:ibo_wikipedia_2021_10K#s9"
+},
+{
+"text": "token 'ihe' attested 6190x",
+"source_id": "leipzig",
+"locator": "leipzig:ibo_wikipedia_2021_10K#s10"
+},
+{
+"text": "token 'dị' attested 3540x",
+"source_id": "leipzig",
+"locator": "leipzig:ibo_wikipedia_2021_10K#s12"
+},
+{
+"text": "token 'mkpa' attested 216x",
+"source_id": "leipzig",
+"locator": "leipzig:ibo_wikipedia_2021_10K#s13"
+},
+{
+"text": "token 'n'omenala' attested 4x",
+"source_id": "leipzig",
+"locator": "leipzig:ibo_wikipedia_2021_10K#s2071"
+},
+{
+"text": "token 'Igbo' attested 1099x",
+"source_id": "leipzig",
+"locator": "leipzig:ibo_wikipedia_2021_10K#s17"
+}
+],
+"confidence": 0.35,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"tone_pattern_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ig.C1.culture_note"
+],
+"games": [],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": true,
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ig.prv.86c4d12de88e",
+"lang": "ig",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.IDIOM: Understand and use proverbs in context"
+],
+"text": "Egbe bere, ugo bere",
+"source_type": "attested",
+"translation_en": {
+"text": "Let the kite perch and let the eagle perch.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"token_evidence": [
+{
+"token": "Egbe",
+"count": 87,
+"locator": "leipzig:ibo_wikipedia_2021_10K#s467"
+},
+{
+"token": "bere",
+"count": 20,
+"locator": "leipzig:ibo_wikipedia_2021_10K#s1807"
+},
+{
+"token": "ugo",
+"count": 87,
+"locator": "leipzig:ibo_wikipedia_2021_10K#s344"
+},
+{
+"token": "bere",
+"count": 20,
+"locator": "leipzig:ibo_wikipedia_2021_10K#s1807"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:ibo_community_2017#s1688 :: Egbe bere, ugo bere, nke sị ibe ya ebela, ka nku kwapụ ya”.",
+"role": "shipped_text"
+},
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:ibo_wikipedia_2021_10K#s467",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Egbe' attested 87x",
+"source_id": "leipzig",
+"locator": "leipzig:ibo_wikipedia_2021_10K#s467"
+},
+{
+"text": "token 'bere' attested 20x",
+"source_id": "leipzig",
+"locator": "leipzig:ibo_wikipedia_2021_10K#s1807"
+},
+{
+"text": "token 'ugo' attested 87x",
+"source_id": "leipzig",
+"locator": "leipzig:ibo_wikipedia_2021_10K#s344"
+},
+{
+"text": "token 'bere' attested 20x",
+"source_id": "leipzig",
+"locator": "leipzig:ibo_wikipedia_2021_10K#s1807"
+}
+],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"idiom_or_formula",
+"meaning_gloss_unverified",
+"tone_pattern_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ig.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"register_model": false,
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 4,
+"crosscheck_ok": true
+},
+{
+"id": "ig.syn.b7036177a333",
+"lang": "ig",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Ọ bụ ezie na atụmatụ ahụ dị mma, mmejuputa ya adịghị ike.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Although the plan is good, its implementation is weak.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ig.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ig.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ig.syn.09fb8a7d1179",
+"lang": "ig",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "O doro anya na enweghị agụmakwụkwọ, ọganihu agaghị ekwe omume.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Clearly, without education, progress is impossible.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ig.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ig.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ig.syn.297b63b105ff",
+"lang": "ig",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Ọ bụrụ na gọọmentị emeghị ihe gbasara nrụrụaka, ndị mmadụ agaghị atụkwasị ya obi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "If the government does nothing about corruption, people will not trust it.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ig.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ig.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ig.syn.dc11d4097e2d",
+"lang": "ig",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Ka ị na-agụkwu akwụkwọ, ka ị na-aghọtakwu ihe.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The more you read, the more you understand.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ig.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ig.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ig.syn.98380a92dcba",
+"lang": "ig",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Ọ dịghị onye maara ihe mere.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "No one knew what happened.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ig.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ig.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ig.syn.4ba0197ffa2d",
+"lang": "ig",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Ọ na-ekwu okwu ka à ga-asị na ọ bụ ọkachamara.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He speaks as if he were an expert.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ig.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ig.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ig.syn.0fc28d0c877f",
+"lang": "ig",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "N'aha kọmitii, ana m ekele unu nke ukwuu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "On behalf of the committee, I thank you greatly.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ig.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ig.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ig.syn.ab3acbe41d1c",
+"lang": "ig",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "Ụmụnna m, anyị zukọrọ ebe a maka okwu dị mkpa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "My kinsmen, we have gathered here for an important matter.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ig.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ig.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ig.syn.ebeb717291ea",
+"lang": "ig",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "N'abalị ahụ, obodo ahụ niile dara jụụ.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "That night, the whole town fell silent.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ig.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ig.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ig.syn.eeb6b9d8becb",
+"lang": "ig",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Agadi nwoke ahụ nọdụrụ n'obi na-echeta oge ntorobịa ya.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The old man sat in his compound recalling his youth.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ig.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ig.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ig.syn.c17bbb6b086a",
+"lang": "ig",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Ilu bụ mmanụ e ji eri okwu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Proverbs are the palm oil with which words are eaten.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ig.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ig.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ig.syn.c94563c10c41",
+"lang": "ig",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Ụmụnna bụ otu ezinụlọ sitere n'otu nna nna.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Umunna is the patrilineage descended from one ancestor.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ig.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ig.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 3,
+"crosscheck_ok": false,
+"text_original": "Umunna bụ otu ezinụlọ sitere n'otu nna nna.",
+"fix_source": "sonnet"
+},
+{
+"id": "ig.prv.fc5998b4e521",
+"lang": "ig",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.PROVERB"
+],
+"text": "Egbe bere, ugo bere.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Let the kite perch, let the eagle perch.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ig.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ig.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ig.prv.abe42eca4f9a",
+"lang": "ig",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.PROVERB"
+],
+"text": "Onye wetara ọjị wetara ndụ.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Whoever brings kola brings life.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ig.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ig.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ig.prv.aa87df014a70",
+"lang": "ig",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.PROVERB"
+],
+"text": "Aka nri kwọọ aka ekpe, aka ekpe akwọọ aka nri.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The right hand washes the left, the left washes the right.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ig.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ig.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+}
+]
+}

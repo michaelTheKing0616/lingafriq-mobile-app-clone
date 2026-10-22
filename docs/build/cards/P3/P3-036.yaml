@@ -1,0 +1,76 @@
+charter: v2
+id: P3-036
+kind: build
+title: Generate route-to-hub map from existing routes
+phase: P3
+epic: E-P3-SHELL
+req_ids:
+- EP-§3.2-01
+- EP-§3.2-02
+- EP-§3.2-03
+- EP-§3.2-04
+- EP-§3.2-05
+- EP-§3.2-06
+- EP-§17-02
+- EP-§17-03
+depends_on:
+- P3-006
+size: M
+difficulty:
+  score: 3
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 3: script plus table, T0-style parse'
+token_budget: 60000
+file_allowlist:
+- scripts/nav/route_map.py
+- docs/build/design/ROUTE_MAP.csv
+- test/scripts/route_map_test.py
+context_anchors:
+- ELEVATION.md#§3.2:L774-L778
+- ELEVATION.md#§17:L2163-L2167
+acceptance_criteria:
+- id: AC1
+  text: Given lib/my_app.dart, when the script runs, then it prints the registered route count (about 120 to 125) and writes
+    ROUTE_MAP.csv
+- id: AC2
+  text: Given every route and every drawer item, when mapped, then each has exactly one home hub, job and unlock stage
+- id: AC3
+  text: Given a route or drawer item without a home, when CI runs, then it fails and lists it
+- id: AC4
+  text: Given social-style surfaces (chat, status, clips), when mapped, then each sits in Village and feeds one learning loop
+    with the loop named
+test_plan:
+  unit:
+  - route parse
+  - unmapped fails
+  integration:
+  - CI
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

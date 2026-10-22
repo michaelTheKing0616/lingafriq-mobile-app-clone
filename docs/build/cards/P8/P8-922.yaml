@@ -1,0 +1,141 @@
+charter: v2
+id: P8-922
+kind: build
+title: 'Flagship: Market Haggle voice roleplay'
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.3-03
+- EP-§10.3-03a
+- EP-§10.3-03b
+- EP-§10.3-03c
+- EP-§10.3-03d
+depends_on:
+- P8-900
+- P8-901
+- P8-909
+- P8-910
+- P8-912
+- P8-916
+- E-P6-SCORER
+- E-P4-CONTENT-ENGINE
+- E-P3-DESIGN-SYSTEM
+size: L
+difficulty:
+  score: 10
+  blast: 3
+  ambiguity: 2
+  coupling: 2
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 10: blast 3, coupling 2; P0 area'
+token_budget: 150000
+file_allowlist:
+- lib/games/market_haggle/market_haggle_game.dart
+- lib/games/market_haggle/market_haggle_screen.dart
+- lib/games/market_haggle/trader_personalities.dart
+- lib/games/market_haggle/haggle_rubric.dart
+- lib/screens/games/market_bargaining_screen.dart
+- lib/games/gamekit/all_games_registry.dart
+context_anchors:
+- ELEVATION.md#§10.3:L1702-L1711
+- ELEVATION.md#§10.3:L1770
+acceptance_criteria:
+- id: AC1
+  text: Given a trader with a scripted goal, when the round starts, then the learner must lower the price using numbers, politeness
+    and bargaining phrases from the lexicon
+- id: AC2
+  text: 'Given a finished round, when scored, then the result shows three components: goal achieved, politeness, correctness,
+    each from its own rubric'
+- id: AC3
+  text: Given a spoken turn, when pronunciation feedback is shown, then it comes only from the real scorer; otherwise the
+    game is in practice mode
+- id: AC4
+  text: Given several trader personalities, when a learner replays, then a different or same trader can be chosen and each
+    personality changes accepted prices and tone
+- id: AC5
+  text: Given the AI trader, when it speaks, then it is labelled as AI and routed through the AI gateway with budget limits
+- id: AC6
+  text: Given an impolite phrase, when detected by the rubric, then politeness drops and the explanation names the phrase
+- id: AC7
+  text: Given Market Bargaining, when this card completes, then every item in its harvest list is carried or waived
+- id: AC8
+  text: Given the scorer is unavailable or its confidence is below the gate threshold, when a score would be shown, then the
+    UI shows the 'unsure' state, stores no number and never shows a fabricated score.
+test_plan:
+  unit:
+  - rubric scoring
+  - price state machine
+  integration:
+  - AI gateway fake
+  - scorer fake
+  security:
+  - prompt injection from learner speech
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - number and politeness phrase lists
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - ready
+  - playing
+  - correct
+  - wrong
+  - why_wrong
+  - results
+  - error
+  - offline
+  - practice_mode
+  - trader_thinking
+  - scorer_unsure
+  copy_keys:
+  - games.market_haggle.title
+  - games.market_haggle.instructions
+  - games.market_haggle.why_wrong
+  - games.market_haggle.practice_label
+  - games.market_haggle.error
+  tokens:
+  - color.surface.game
+  - color.feedback.correct
+  - color.feedback.wrong
+  - space.4
+  - radius.card
+  - type.title
+  motion_tier: product
+  a11y:
+  - screen-reader labels on every answer control
+  - reduced-motion variant
+  - correctness shown by icon and text not colour alone
+  - touch targets ≥48dp
+  goldens:
+  - market_haggle_playing
+  - market_haggle_why_wrong
+  - market_haggle_results
+tags:
+- shows_score
+- uses_source
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- AI gateway is a P0 area
+gate: HUB
+external_blockers: []
+status: Draft
+harvest_list:
+- 'Market Bargaining: lib/screens/games/market_bargaining_screen.dart'
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

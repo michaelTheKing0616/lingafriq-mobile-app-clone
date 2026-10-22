@@ -1,0 +1,50 @@
+charter: v2
+id: P5-068
+kind: adr
+title: 'Decide isiXhosa voice: Option B custom voice, Option A interim'
+phase: P5
+epic: E-P5-AUDIO
+req_ids:
+- CP-§7-xh-03
+depends_on:
+- P5-058
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T0
+  reviewer: T2
+  justification: decision record; judgment, no code
+token_budget: 20000
+file_allowlist: []
+context_anchors:
+- CURRICULUM.md#§7:L744-L746
+acceptance_criteria:
+- id: AC1
+  text: Given the options, when decided, then Option B (custom voice, commission now) is recorded as the path with Option
+    A as the interim
+- id: AC2
+  text: Given the decision, when recorded, then it is signed by Tope in DECISIONS.md
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - prime/diagram-design

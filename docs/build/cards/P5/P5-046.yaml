@@ -1,0 +1,72 @@
+charter: v2
+id: P5-046
+kind: build
+title: Sample live items weekly for blind review
+phase: P5
+epic: E-P5-QUALITY
+req_ids:
+- CP-§5-09
+- CP-§5-11
+- CP-§6-01
+- CP-§6-02
+depends_on:
+- P5-044
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- tools/content/blind_sampler.py
+- test/content/blind_sampler_test.py
+context_anchors:
+- CURRICULUM.md#§5:L604-L611
+- CURRICULUM.md#§6:L633-L636
+acceptance_criteria:
+- id: AC1
+  text: Given live items, when sampling, then a stratified random sample is blind-reviewed weekly, about 200 items per language
+    per month
+- id: AC2
+  text: Given the review, when scoring, then error means a learner-visible mistake that changes meaning, misspells, mis-marks
+    tone or is clearly unnatural
+- id: AC3
+  text: Given the tier targets, when reported, then they are labelled as targets until measured in the pilot
+- id: AC4
+  text: Given an under-filled stratum, when sampling, then a typed SampleShortfall is reported
+test_plan:
+  unit:
+  - stratification
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - sampling run
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers:
+- EXT-11
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,93 @@
+charter: v2
+id: P4-069
+kind: build
+title: Scaffold Curriculum Studio module in admin
+phase: P4
+epic: E-P4-STUDIO
+req_ids:
+- CP-§9.1-01
+depends_on:
+- P4-001
+- P4-021
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- lingafriq-admin/src/pages/CurriculumStudio/index.tsx
+- lingafriq-admin/src/pages/CurriculumStudio/routes.tsx
+- lingafriq-admin/src/App.tsx
+- node-backend/src/routes/studio.routes.ts
+- node-backend/src/middleware/studioAuth.ts
+- tools/content_engine/tests/studio_core.test.ts
+context_anchors:
+- CURRICULUM.md#§9.1:L778-L779
+acceptance_criteria:
+- id: AC1
+  text: Given the existing React/Vite admin, when the module mounts, then Curriculum Studio appears as a new route group and
+    existing admin pages are unchanged
+- id: AC2
+  text: Given a user without the content-admin role, when opening Studio routes, then the API returns 403 and the UI shows
+    a denied state
+- id: AC3
+  text: Given the backend job service, when the admin starts, then the Studio API base is configured and unreachable service
+    shows an error state
+test_plan:
+  unit:
+  - route registration
+  integration: []
+  security:
+  - 403 without role
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - empty
+  - error
+  - ready
+  copy_keys:
+  - studio.title
+  - studio.denied
+  - studio.error
+  tokens:
+  - admin.surface
+  - admin.text
+  - admin.status
+  motion_tier: product
+  a11y:
+  - keyboard operable
+  - focus visible
+  - labelled controls
+  goldens:
+  - studio-core-ready
+  - studio-core-empty
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

@@ -1,0 +1,53 @@
+charter: v2
+id: P4-111
+kind: adr
+title: Decide Wave 2-4 rosters and Arabic/Darija inclusion
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.4-26
+- EP-§6.4-29
+depends_on: []
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 2
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 3: blast 1, ambiguity 2, coupling 0'
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§6.4:L1221-L1262
+acceptance_criteria:
+- id: AC1
+  text: 'Decision recorded: Wave 2 roster, Wave 3 roster and Wave 4 start rule, each language scored per the selection criteria
+    with scores attached'
+- id: AC2
+  text: 'Decision recorded: Egyptian Arabic and Moroccan Darija included or excluded with reason, owner Tope, date and revisit
+    trigger'
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- planning targets, not promises
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - prime/diagram-design

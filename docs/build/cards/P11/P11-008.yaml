@@ -1,0 +1,72 @@
+charter: v2
+id: P11-008
+kind: build
+title: Route persona turns through AI gateway with typed errors
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§8.1-05
+- EP-§8.1-06
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+- P11-002
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/ai/personas/historical_roleplay_controller.dart
+- lib/ai/persona_cognition/groq_two_pass_orchestrator.dart
+- node-backend/src/routes/persona.routes.ts
+context_anchors:
+- ELEVATION.md#§8.1:L1491-L1494
+acceptance_criteria:
+- id: AC1
+  text: Given a persona turn or mission, when sent, then the client calls exactly one gateway endpoint; the four-URL-variant
+    retry loop is removed.
+- id: AC2
+  text: Given the client build, when scanned, then no Groq or other provider key exists in persona code.
+- id: AC3
+  text: Given a gateway failure in release, when a mission turn fails, then a visible typed error state with retry is shown;
+    no silent fallback.
+test_plan:
+  unit:
+  - no key in bundle scan
+  integration:
+  - gateway failure surfaces typed error
+  security:
+  - key absent from client
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- enables_persona
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

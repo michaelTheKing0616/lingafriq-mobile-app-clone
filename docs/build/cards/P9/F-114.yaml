@@ -1,0 +1,127 @@
+charter: v2
+id: F-114
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Private Chat (DMs)
+phase: P9
+epic: E-P9-SAFETY
+hub: Village
+req_ids:
+- F-114
+- F-114.D
+- F-114.E
+- F-114.U
+- F-114.L
+- P0-4
+- P0-5
+- P0-6
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P1-CONTAINMENT
+- E-P9-SAFETY
+- P9-939
+- P9-936
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T4
+  justification: 'score 7: social/village feature complexity and coupling; gate-critical (security / child safety / legal
+    / design direction): Fable reviews'
+token_budget: 80000
+file_allowlist:
+- lib/screens/chat/private_chat_list_screen.dart
+- lib/screens/chat/private_chat_screen.dart
+- lib/screens/chat/private_chat_screen_material3.dart
+- lib/screens/chat/chat_search_screen.dart
+- lib/screens/chat/contact_info_screen.dart
+context_anchors:
+- ELEVATION.md#§18.6:L5121-L5140
+delta:
+  current_state: Inbox and chat work; search, contact safety, and M3 variant unrouted.
+  defects_to_fix:
+  - P0-4/5/6 socket issues
+  - No reachable block or report UI
+  - Open to minors without exchange safeguards
+  elevation_to_build:
+  - Language-exchange DMs with pre-send AI check and partner corrections
+  - Revive search across words and media
+  - Contact info with block, report, mute, shared-words history
+  ux_and_render:
+  - Learning-native chat layout with distinct correction bubbles
+  hub_placement: Village → Chats
+  unlock_stage: per §17.4
+  harvest_list:
+  - Route chat search and contact info safety surfaces
+  - Consolidate Material3 private chat into one shipped variant
+acceptance_criteria:
+- id: AC1
+  text: Given an adult DM thread, when opened, then E2EE defaults on per MLS gate and encryption state is visible
+- id: AC2
+  text: Given contact info, when block or report is chosen, then actions complete in-app without unrouted dead ends
+- id: AC3
+  text: Given a composed message, when user requests check, then AI suggestion runs via gateway before send
+- id: AC4
+  text: Given messaging transport, when connected, then P0-4/5/6 socket defects are not present
+- id: AC5
+  text: Given the account is under 18 or age-unknown, when this surface is opened, then it is hidden or guardian-gated until
+    E-P9-SAFETY is Done, and the restriction is enforced server-side.
+test_plan:
+  unit:
+  - delta defects covered
+  - routing and state transitions
+  integration:
+  - hub navigation and backend contracts
+  e2e:
+  - primary user journey on device
+  a11y:
+  - semantics
+  - 200% text scale goldens
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f-114.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+tags:
+- under18_social
+p0_area: true
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+security_dsp_crypto: true
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux
+  - adaptive/14-safety-and-high-stakes

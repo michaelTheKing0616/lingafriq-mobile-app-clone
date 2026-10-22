@@ -1,0 +1,64 @@
+charter: v2
+id: P5-062
+kind: build
+title: 'Wire Hausa TTS: Intron, Spitch, ElevenLabs v3'
+phase: P5
+epic: E-P5-AUDIO
+req_ids:
+- CP-§7-ha-01
+- CP-§7-ha-03
+depends_on:
+- P5-059
+- E-P6-SCORER
+size: M
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 2
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T1
+  reviewer: T3
+  justification: 'score 8: blast 3, ambiguity 2, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/services/tts/ha_tts.dart
+- test/audio/ha_tts_test.dart
+context_anchors:
+- CURRICULUM.md#§7:L727-L730
+acceptance_criteria:
+- id: AC1
+  text: Given Hausa text, when synthesised, then Intron, Spitch and ElevenLabs v3 are tried in the documented order
+- id: AC2
+  text: Given the Yoruba gates, when run for Hausa, then the same gates apply
+test_plan:
+  unit:
+  - order
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- tts_tonal
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers:
+- EXT-01
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

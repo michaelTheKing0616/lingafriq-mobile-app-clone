@@ -1,0 +1,66 @@
+charter: v2
+id: P2-007
+kind: build
+title: Generate SBOM, pin Actions by SHA, drop auto-commit step
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.1-37
+- EP-§13.1-38
+- EP-§13.9-15
+depends_on:
+- E-P1-CONTAINMENT
+size: S
+difficulty:
+  score: 3
+  blast: 2
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 3: blast 2, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist:
+- .github/workflows/build-and-release.yml
+- .github/workflows/build.yml
+- scripts/ci/check_pinned_actions.py
+context_anchors:
+- ELEVATION.md#§13.1:L1875
+- ELEVATION.md#§13.9:L1958-L1959
+acceptance_criteria:
+- id: AC1
+  text: Given a release build, when CI completes, then an SBOM (CycloneDX) is attached as an artifact for app and backend
+- id: AC2
+  text: Given any workflow using an action by tag or branch, when the pin check runs, then CI fails naming the action
+- id: AC3
+  text: Given build-and-release.yml, when it runs, then no step commits or pushes a version bump to the repository
+test_plan:
+  unit:
+  - pin checker fixtures
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

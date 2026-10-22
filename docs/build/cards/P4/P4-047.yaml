@@ -1,0 +1,62 @@
+charter: v2
+id: P4-047
+kind: build
+title: Lint Pidgin against NLA spelling table
+phase: P4
+epic: E-P4-LINTERS
+req_ids:
+- CP-§3.3-15
+depends_on:
+- P4-039
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 0
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 3: blast 1, ambiguity 1, coupling 0, depth 1, size 0'
+token_budget: 25000
+file_allowlist:
+- tools/content_engine/linters/pidgin_nla.py
+- tools/content_engine/tests/test_pidgin_nla.py
+context_anchors:
+- CURRICULUM.md#§3.3:L534-L534
+acceptance_criteria:
+- id: AC1
+  text: Given Pidgin text, when a token is an English spelling where an NLA form exists in the normalisation table, then it
+    is flagged PCM_ENGLISH_SPELLING with the NLA form
+- id: AC2
+  text: Given a token present in the table, when spelled in NLA form, then no flag is raised
+test_plan:
+  unit:
+  - pass and fail fixtures
+  integration:
+  - CI blocks merge on failure
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

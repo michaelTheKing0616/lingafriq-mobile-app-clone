@@ -1,0 +1,67 @@
+charter: v2
+id: P6-080
+kind: build
+title: Gate realtime latency budgets in CI
+phase: P6
+epic: E-P6-REALTIME
+req_ids:
+- EP-§7.6-26
+- EP-§7.6-27
+depends_on:
+- P6-078
+- P6-017
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/realtime/latencyProbe.ts
+- .github/workflows/ai_latency.yml
+context_anchors:
+- ELEVATION.md#§7.6:L1462-L1475
+acceptance_criteria:
+- id: AC1
+  text: Given a staging benchmark of 100 voice turns, when measured, then time to first audio is under 800 ms at p50
+- id: AC2
+  text: Given the same run, when measured for text turns, then first text token is under 400 ms at p50
+- id: AC3
+  text: Given either budget missed, when CI finishes, then the latency job fails and reports the stage that exceeded
+test_plan:
+  unit: []
+  integration:
+  - probe
+  security: []
+  e2e: []
+  perf:
+  - TTFA p50 under 800 ms
+  - first token p50 under 400 ms
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

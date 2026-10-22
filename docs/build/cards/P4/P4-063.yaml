@@ -1,0 +1,79 @@
+charter: v2
+id: P4-063
+kind: build
+title: Compute weighted confidence score
+phase: P4
+epic: E-P4-PIPELINE
+req_ids:
+- CP-§3.4-01
+- CP-§3.4-02
+- CP-§3.4-03
+- CP-§3.4-04
+- CP-§3.4-05
+- CP-§3.4-06
+- CP-§3.4-07
+- CP-§3.4-08
+- CP-§3.1-08
+depends_on:
+- P4-058
+- P4-059
+- P4-060
+- P4-061
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- tools/content_engine/pipeline/scoring.py
+- tools/content_engine/tests/test_scoring.py
+context_anchors:
+- CURRICULUM.md#§3.4:L541-L545
+- CURRICULUM.md#§3.1:L497-L497
+acceptance_criteria:
+- id: AC1
+  text: Given an item, when scored, then the weighted blend uses lexicon anchored coverage, tone agreement, cross-model agreement
+    and naturalness, back-translation similarity, linter results, citation entailment and source tier
+- id: AC2
+  text: Given source tiers, when ranked, then licensed dictionary or public-domain course outranks CC-BY corpus which outranks
+    Wiktionary-only
+- id: AC3
+  text: Given weights, when stored, then they are config calibrated on the linguist-reviewed pilot set and each score stores
+    its feature breakdown
+test_plan:
+  unit:
+  - happy path
+  - typed error path
+  integration:
+  - stage contract with fixtures
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

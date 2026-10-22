@@ -1,0 +1,91 @@
+charter: v2
+id: P4-071
+kind: build
+title: Build source library and licence register UI
+phase: P4
+epic: E-P4-STUDIO
+req_ids:
+- CP-§9.1-02
+depends_on:
+- P4-001
+- P4-010
+- P4-069
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- lingafriq-admin/src/pages/CurriculumStudio/sourceLibrary.tsx
+- node-backend/src/routes/sourceLibrary.routes.ts
+- tools/content_engine/tests/studio_sourceLibrary.test.ts
+context_anchors:
+- CURRICULUM.md#§9.1:L779-L780
+acceptance_criteria:
+- id: AC1
+  text: Given the source library, when a source is uploaded, then licence fields, allowed-use flags (display, evidence, training),
+    attribution text and owner sign-off are required before save
+- id: AC2
+  text: Given an NC or excluded licence, when saved, then the UI shows the exclusion state and blocks enabling any use
+- id: AC3
+  text: Given a source with sign-off pending, when listed, then it shows Pending and cannot be selected by a generation job
+test_plan:
+  unit:
+  - required fields
+  - excluded blocks use
+  integration:
+  - register API contract
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - form labels
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - empty
+  - error
+  - ready
+  copy_keys:
+  - sources.title
+  - sources.excluded
+  - sources.pending
+  tokens:
+  - admin.surface
+  - admin.text
+  - admin.status
+  motion_tier: product
+  a11y:
+  - keyboard operable
+  - focus visible
+  - labelled controls
+  goldens:
+  - sourceLibrary-ready
+  - sourceLibrary-empty
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

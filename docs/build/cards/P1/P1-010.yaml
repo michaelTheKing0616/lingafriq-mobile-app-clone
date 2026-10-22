@@ -1,0 +1,74 @@
+charter: v2
+id: P1-010
+kind: build
+title: Verify Play Integrity and App Attest on gateway and reward calls
+phase: P1
+epic: E-P1-AI-GATEWAY
+req_ids:
+- EP-§13.1-27
+depends_on:
+- E-P0-INTAKE
+- P1-007
+- P1-017
+- P1-018
+size: M
+difficulty:
+  score: 8
+  blast: 2
+  ambiguity: 2
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T3
+  justification: score 8; blast 2; security/crypto tester
+token_budget: 70000
+file_allowlist:
+- node-backend/src/middleware/attestation.middleware.ts
+- lib/services/integrity/app_attest_service.dart
+- android/app/build.gradle
+- node-backend/src/routes/ai.route.ts
+context_anchors:
+- ELEVATION.md#§13.1:L1868-L1869
+acceptance_criteria:
+- id: AC1
+  text: Given a gateway request without a valid attestation token, when processed in enforce mode, then it returns 403 attestation_failed
+- id: AC2
+  text: Given a genuine device build, when it calls the gateway, then the attestation passes and the request proceeds
+- id: AC3
+  text: Given an attestation provider outage, when a request arrives, then it fails closed with 503 retryable and never silently
+    passes
+- id: AC4
+  text: Given the reward endpoints from P1-017/018, when called without attestation, then they return 403
+test_plan:
+  unit:
+  - token verification
+  integration:
+  - enforce and monitor modes
+  security:
+  - replayed token rejected
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Needs Play and Apple developer config; staged monitor-then-enforce rollout
+gate: G1
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,84 @@
+charter: v2
+id: P3-044
+kind: build
+title: Surface games as practice formats in Today and Path
+phase: P3
+epic: E-P3-SHELL
+req_ids:
+- EP-§3.3-14
+- EP-§3.3-15
+depends_on:
+- P3-038
+- P3-041
+size: M
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 4: blast 0, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/navigation/practice_formats.dart
+- lib/games/learning_game_adapter.dart
+context_anchors:
+- ELEVATION.md#§3.3:L821-L822
+acceptance_criteria:
+- id: AC1
+  text: Given a plan item of type game, when played from Today or Path, then it opens the same GameKit game as Play
+- id: AC2
+  text: Given a game ends, when results save, then a typed learner-model event is written to the outbox with item ids and
+    outcome
+- id: AC3
+  text: Given the outbox write fails, when the game ends, then a visible retry state shows and no success is claimed
+test_plan:
+  unit:
+  - event schema
+  integration:
+  - outbox write
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - default
+  - save_failed
+  copy_keys:
+  - practice.game.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

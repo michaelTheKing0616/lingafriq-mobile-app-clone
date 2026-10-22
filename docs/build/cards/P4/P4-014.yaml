@@ -1,0 +1,66 @@
+charter: v2
+id: P4-014
+kind: build
+title: Exclude NaijaVoices unless waiver purchased
+phase: P4
+epic: E-P4-LICENCES
+req_ids:
+- CP-§2.3-05
+- CP-§2.3-12
+- CP-§2.3-13
+depends_on:
+- P4-010
+size: S
+difficulty:
+  score: 2
+  blast: 1
+  ambiguity: 0
+  coupling: 0
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: 'score 2: blast 1, ambiguity 0, coupling 0, depth 1, size 0'
+token_budget: 25000
+file_allowlist:
+- tools/content_engine/licences/exclusions.yaml
+- tools/content_engine/tests/test_excl_x_naija.py
+context_anchors:
+- CURRICULUM.md#§2.3:L239-L243
+acceptance_criteria:
+- id: AC1
+  text: Given NaijaVoices (CC BY-NC-SA 4.0), when read, then status is excluded unless a commercial waiver via membership
+    is recorded
+- id: AC2
+  text: Given the waiver terms, when recorded, then the register stores the $5,000+ tier and 12-month term as unverified quote
+    values
+test_plan:
+  unit:
+  - table row present with status excluded
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-08
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

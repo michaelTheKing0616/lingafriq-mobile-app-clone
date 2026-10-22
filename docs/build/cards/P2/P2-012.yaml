@@ -1,0 +1,73 @@
+charter: v2
+id: P2-012
+kind: build
+title: Generate Dart client and delete multi-path guessing
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.4-24
+- EP-§13.4-25
+- EP-§13.4-26
+depends_on:
+- E-P1-CONTAINMENT
+- P2-011
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 3, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/services/env_config.dart
+- lib/api/generated/
+- tool/gen_api_client.sh
+- lib/services/api_retry_service.dart
+context_anchors:
+- ELEVATION.md#§13.4:L1909
+- ELEVATION.md#§13.4:L1910-L1911
+- ELEVATION.md#§13.4:L1911-L1912
+acceptance_criteria:
+- id: AC1
+  text: Given openapi.v1.json, when tool/gen_api_client.sh runs, then a Dart client is generated reproducibly
+- id: AC2
+  text: Given env_config.dart, when the app starts, then it uses exactly one base URL and no multi-path fallback list
+- id: AC3
+  text: Given legacyBackendUrlPrefixes with raw http:// IPs, when the change lands, then no http:// IP literal remains in
+    lib/
+- id: AC4
+  text: Given an unreachable backend, when a call fails, then a typed ApiError surfaces and no alternate path is attempted
+test_plan:
+  unit:
+  - env_config single-URL test
+  integration:
+  - generated client against mock server
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

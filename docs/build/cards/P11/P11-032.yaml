@@ -1,0 +1,49 @@
+charter: v2
+id: P11-032
+kind: adr
+title: Decide avatar renderer (ADR-034)
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§4.2-49
+depends_on:
+- P11-029
+size: S
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 2
+  coupling: 0
+  depth: 1
+  size: 0
+tiers:
+  worker: T4
+  tester: T0
+  reviewer: T4
+  justification: 'score 4: blast 1, ambiguity 2, coupling 0, depth 1'
+token_budget: 25000
+file_allowlist:
+- docs/build/adr/ADR-034.md
+context_anchors:
+- ELEVATION.md#§4.2:L911
+acceptance_criteria:
+- id: AC1
+  text: Given Rive Renderer and Flutter/Impeller, when ADR-034 is accepted, then the chosen renderer is justified by a device
+    measurement against the 2 ms/frame budget.
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- reviewer verdict
+- ledger row
+risks: []
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - prime/diagram-design

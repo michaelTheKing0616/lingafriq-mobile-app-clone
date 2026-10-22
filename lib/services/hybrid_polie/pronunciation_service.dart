@@ -111,9 +111,19 @@ class PronunciationService {
           contentType: 'multipart/form-data',
           receiveTimeout: const Duration(seconds: 45),
           sendTimeout: const Duration(seconds: 30),
+          validateStatus: (status) => status == 200 || status == 503,
         ),
       );
-      
+
+      if (response.statusCode == 503) {
+        final body = response.data;
+        final code = body is Map ? body['code']?.toString() : null;
+        return TranscriptionResult(
+          transcription: '',
+          confidence: 0.0,
+          error: code ?? 'stt_unavailable',
+        );
+      }
       if (response.statusCode == 200) {
         final data = response.data['data'] ?? response.data;
         return TranscriptionResult(

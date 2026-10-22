@@ -1,0 +1,65 @@
+charter: v2
+id: P0-INT-05
+kind: build
+title: Convert source PDFs to anchored text
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- CP-§pre-11
+depends_on:
+- E-P0-INTAKE
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T0
+  tester: T0
+  reviewer: T1
+  justification: deterministic conversion script already run
+token_budget: 25000
+file_allowlist:
+- scripts/plan/convert_sources.py
+- docs/source/ANCHORS.txt
+- docs/source/ELEVATION.md
+- docs/source/CURRICULUM.md
+context_anchors:
+- docs/source/ANCHORS.txt
+acceptance_criteria:
+- id: AC1
+  text: Given the two source PDFs, when `python3 scripts/plan/convert_sources.py` runs, then docs/source/ELEVATION.md and
+    CURRICULUM.md exist
+- id: AC2
+  text: Given docs/source/ANCHORS.txt, when an anchor `§x.y:Lstart-Lend` is read against the matching .md, then the lines
+    at that range begin with the anchored heading text
+- id: AC3
+  text: Given the superseding Elevation plan 3 PDF, when converted, then section numbers match the earlier companion so CP-§pre-11
+    needs no separate file
+test_plan:
+  unit:
+  - anchor resolution spot-check
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- scripts/plan/convert_sources.py
+- docs/source/ANCHORS.txt
+risks: []
+gate: G0
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

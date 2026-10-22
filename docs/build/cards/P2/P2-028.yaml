@@ -1,0 +1,81 @@
+charter: v2
+id: P2-028
+kind: build
+title: Rehash legacy passwords with Argon2id and enforce password rules
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.1-07
+- EP-§13.1-08
+- EP-§13.1-09
+- EP-§13.1-10
+- EP-§13.1-11
+depends_on:
+- E-P1-CONTAINMENT
+- P2-023
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T3
+  justification: 'score 7: blast 3, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/controllers/auth.controller.ts
+- node-backend/src/middleware/auth.middleware.ts
+- node-backend/src/services/password.service.ts
+- node-backend/test/auth/password.test.ts
+context_anchors:
+- ELEVATION.md#§13.1:L1851-L1852
+- ELEVATION.md#§13.1:L1852-L1853
+- ELEVATION.md#§13.1:L1852
+- ELEVATION.md#§13.1:L1853
+- ELEVATION.md#§13.1:L1853-L1854
+acceptance_criteria:
+- id: AC1
+  text: Given a user with a legacy Django hash, when they log in successfully, then the hash is replaced by Argon2id
+- id: AC2
+  text: Given sign-up or reset, when the password is under 8 characters or in a breached-password check, then it is rejected
+    with a typed error
+- id: AC3
+  text: Given login, when a short password is submitted, then it is evaluated against the stored hash and the 6-character
+    acceptance rule is removed
+- id: AC4
+  text: Given the sign-up rule is unverified, when the card starts, then the current rule is read from code and recorded before
+    change
+test_plan:
+  unit:
+  - rehash on login
+  - policy
+  integration: []
+  security:
+  - breached password check offline-safe
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

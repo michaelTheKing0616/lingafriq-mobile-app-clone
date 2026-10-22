@@ -1,0 +1,80 @@
+charter: v2
+id: P11-037
+kind: build
+title: Integrate Polie rig spike with Character and chip artboards
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- AV-step2
+- EP-§4-01
+- EP-§4.1-01
+- EP-§4.2-25
+- EP-§4.2-26
+- EP-§4.3-02
+- EP-§4.3-05
+- EP-§4.3-06
+- EP-§4.3-07
+- EP-§4.3-08
+- EP-§4.3-09
+- EP-§4.3-10
+- EP-§4.6-05
+- EP-§4.6-06
+depends_on:
+- P11-035
+- P11-028
+- P11-036
+size: L
+difficulty:
+  score: 7
+  blast: 1
+  ambiguity: 2
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T2
+  justification: 'score 7: blast 1, ambiguity 2, coupling 2, depth 1'
+token_budget: 150000
+file_allowlist:
+- assets/rive/avatars/lingafriq_cast.riv
+context_anchors:
+- ELEVATION.md#§4.6:L994-L1000
+- ELEVATION.md#§4.3:L918-L926
+acceptance_criteria:
+- id: AC1
+  text: Given the Polie file, when opened, then artboards Character, CharacterChip and Bust exist with a modular head, face,
+    hair, body and clothing hierarchy.
+- id: AC2
+  text: Given CharacterSM, when inspected, then layers L1 body, L2 expression plus intensity, L3 gaze/head, L4 autonomous
+    blink and L5 mouth exist in one machine.
+- id: AC3
+  text: Given the contract test, when run, then every §4.3 View Model property exists and is bound with enums, not 0–100 codes.
+test_plan:
+  unit: []
+  integration:
+  - contract test passes
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers:
+- EXT-16
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

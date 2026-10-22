@@ -1,0 +1,91 @@
+charter: v2
+id: P3-097
+kind: build
+title: Import reviewed UI translations in nine languages
+phase: P3
+epic: E-P3-A11Y-I18N
+req_ids:
+- EP-§13.8-03
+- EP-§13.8-04
+- EP-§5.3-04
+depends_on:
+- P3-094
+- P3-096
+size: M
+difficulty:
+  score: 3
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 3: blast 0, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- lib/l10n/
+- scripts/i18n/import_translations.py
+context_anchors:
+- ELEVATION.md#§13.8:L1943-L1945
+- ELEVATION.md#§5.3:L1066-L1067
+acceptance_criteria:
+- id: AC1
+  text: Given reviewed translations for French, Portuguese, Arabic, Swahili, Amharic, Hausa and the other languages named
+    in the source, when imported, then each locale has ARB files
+- id: AC2
+  text: Given a locale missing keys, when built, then CI lists missing keys and the app falls back to English with a visible
+    log
+- id: AC3
+  text: Given diacritics, when imported, then NFC is enforced and a native reviewer sign-off is recorded per locale
+- id: AC4
+  text: Given no sign-off for a locale, when released, then that locale stays hidden from the picker
+test_plan:
+  unit:
+  - NFC
+  - missing keys
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - native review
+user_facing: true
+ux_spec:
+  states:
+  - available
+  - hidden
+  copy_keys:
+  - settings.language.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers:
+- EXT-24
+status: Draft
+skills:
+  worker:
+  - prime/ux-writing
+  - prime/localization-design

@@ -1,0 +1,53 @@
+charter: v2
+id: P4-115
+kind: adr
+title: Decide dialect policy per Stage 1 language
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.4-74
+- EP-§6.4-75
+- EP-§6.4-76
+depends_on: []
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 2
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 3: blast 1, ambiguity 2, coupling 0'
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§6.4.1:L1264-L1292
+acceptance_criteria:
+- id: AC1
+  text: 'Decision recorded: standard taught per language (Standard Yoruba, Central Igbo, Kano Hausa, Asante Twi, Kiswahili
+    Sanifu, plus Igbo Onitsha/Owerri audio variants, Sheng as optional side track)'
+- id: AC2
+  text: 'Decision recorded: regional variants are marked explicitly and the existing dialectPreference model is the hook,
+    with its mapping owner and review date'
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - prime/diagram-design

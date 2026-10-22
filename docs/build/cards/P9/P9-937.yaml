@@ -1,0 +1,60 @@
+charter: v2
+id: P9-937
+kind: adr
+title: Decide MLS versus Signal protocol for private messaging
+phase: P9
+epic: E-P9-E2EE
+req_ids:
+- EP-§9.3-02
+depends_on:
+- E-P9-SAFETY
+size: S
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 2
+  coupling: 0
+  depth: 1
+  size: 0
+tiers:
+  worker: T4
+  tester: T1
+  reviewer: T4
+  justification: 'score 5: blast 2, ambiguity 2, coupling 0, depth 1'
+token_budget: 30000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§9.3:L1629-L1630
+acceptance_criteria:
+- id: AC1
+  text: Given MLS (RFC 9420) and the Signal protocol, when compared, then the ADR covers group size, multi-device, library
+    maturity for Dart and Node, server cost and key-recovery UX
+- id: AC2
+  text: Given the decision, when recorded in DECISIONS.md, then it names the chosen library, version and review plan for crypto
+    audit
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - prime/diagram-design

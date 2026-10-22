@@ -1,0 +1,80 @@
+charter: v2
+id: P4-034
+kind: build
+title: Record isiXhosa source stack in kit
+phase: P4
+epic: E-P4-LANGUAGE-KITS
+req_ids:
+- CP-§2.4-xh-01
+- CP-§2.4-xh-02
+- CP-§2.4-xh-03
+- CP-§2.4-xh-04
+- CP-§2.4-xh-05
+- CP-§2.4-xh-06
+- CP-§2.4-xh-07
+- CP-§2.4-xh-08
+depends_on:
+- P4-021
+- P4-001
+size: S
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 2
+  coupling: 0
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 2, coupling 0, depth 1, size 0'
+token_budget: 25000
+file_allowlist:
+- tools/content_engine/kits/xh/sources.yaml
+- tools/content_engine/tests/test_stack_xh.py
+context_anchors:
+- CURRICULUM.md#§2.4:L443-L461
+acceptance_criteria:
+- id: AC1
+  text: Given the Xhosa kit, when loaded, then orthography is the PanSALB revised rules (same Gazette) and the lexicon is
+    Oxford isiXhosa (licensed) then Wiktionary
+- id: AC2
+  text: Given corpora, when listed, then the SADiLaR annotated corpus (46,465 tokens, CC BY 4.0), NCHLT, FLEURS, WAXAL and
+    African Storybook are registered
+- id: AC3
+  text: Given no mature open Xhosa analyser is confirmed, when the checker is configured, then only the rule-based concord
+    checker is enabled and the gap is recorded as a risk
+- id: AC4
+  text: Given the Xhosa reference grammar is not chosen, when the kit is built, then the field is pending-linguist-choice
+    and not guessed
+test_plan:
+  unit:
+  - every stack source id exists in register
+  - stack lists orthography, lexicon, grammar, corpora, tools
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-04
+- EXT-11
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

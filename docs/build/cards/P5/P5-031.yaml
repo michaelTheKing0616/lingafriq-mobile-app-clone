@@ -1,0 +1,68 @@
+charter: v2
+id: P5-031
+kind: build
+title: Mix item types and hold 80-85% success
+phase: P5
+epic: E-P5-A1
+req_ids:
+- EP-§6.2-06
+- EP-§6.2-08
+- EP-§6.2-09
+- EP-§6.2-10
+depends_on:
+- P5-018
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/learning/adaptive/difficulty_controller.dart
+- test/learning/difficulty_test.dart
+context_anchors:
+- ELEVATION.md#§6.2:L1153-L1160
+acceptance_criteria:
+- id: AC1
+  text: Given a session, when items are chosen, then they mix listen, say, choose, build and translate types and multiple
+    voices
+- id: AC2
+  text: Given a recent success rate below 80% or above 85%, when the next item is chosen, then difficulty adapts toward the
+    80-85% band
+- id: AC3
+  text: Given the legacy fixed difficulty, when found, then it is removed
+test_plan:
+  unit:
+  - controller
+  integration:
+  - session simulation
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

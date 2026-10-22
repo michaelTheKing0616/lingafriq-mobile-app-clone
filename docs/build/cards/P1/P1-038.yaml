@@ -1,0 +1,73 @@
+charter: v2
+id: P1-038
+kind: build
+title: Send one reminder per day in local time with quiet hours
+phase: P1
+epic: E-P1-OFFLINE-DATA
+req_ids:
+- P0-23
+- RM-P0-10
+depends_on:
+- E-P0-INTAKE
+- P1-037
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 5; blast 2
+token_budget: 70000
+file_allowlist:
+- node-backend/src/workers/notificationScheduler.ts
+- node-backend/src/services/notificationWindow.service.ts
+- node-backend/src/models/notificationLog.model.ts
+context_anchors:
+- ELEVATION.md#§1:L344-L357
+- ELEVATION.md#§16.1:L2051-L2053
+acceptance_criteria:
+- id: AC1
+  text: Given a user who already received a reminder today in their local timezone, when the scheduler runs again, then no
+    second reminder is sent (maximum 1 per user per day)
+- id: AC2
+  text: Given a user's timezone, when the window is evaluated, then reminders are sent only within their local-time window
+    and never in quiet hours
+- id: AC3
+  text: Given 24 scheduler runs in a day, when simulated, then each user receives at most 1 streak-at-risk push
+- id: AC4
+  text: Given a user with unknown timezone, when evaluated, then a safe default window applies and the decision is logged
+test_plan:
+  unit:
+  - window and dedupe logic
+  integration:
+  - 24-run simulation across timezones
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Window hours and quiet hours are product defaults to record in DECISIONS.md
+gate: G1
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

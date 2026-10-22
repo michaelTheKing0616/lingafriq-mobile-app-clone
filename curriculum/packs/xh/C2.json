@@ -1,0 +1,527 @@
+{
+"lang": "xh",
+"level": "C2",
+"built": "2026-10-21",
+"items": [
+{
+"id": "xh.sen.281b7161bbcb",
+"lang": "xh",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Le nkqubo yezifundo inikezelwa kwindawo Yokuqeqeshela ukwenza iwayini yase-Elsenburg, apho abafundi bafumana khona izifundo ngeencwadi kwanoqeqesho apho abafundi bangena kanye ekwenzeni iwayini ngezandla zabo kwanezinye izakhono zokulawula amashishini enza iwayini.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "sadilar_xhmono",
+"licence": "CC BY 4.0",
+"locator": "SADILAR_XHMONO line 72456",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "sadilar_xhmono",
+"locator": "SADILAR_XHMONO line 72456"
+}
+],
+"confidence": 0.74,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"xh.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "xh.sen.dd0ff3f775fc",
+"lang": "xh",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Uluhlu: imiqobo ibhekisele kwizinto ezibambekayo ( ezangaphandle ), ezomzimba, ezengqondo, ezicingelwayo ( imvelaphi, imfundo, uhlakanipho, umsebenzi, izinto ezingumdla nezithandwayo, imfuno, isimilo, uluvo, ubudala, ubuni, inkcubeko, inkolo, ukubona into ngeliso elinye ), ezoganyamelo ngokobuhlanga nangentsingiselo.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "sadilar_xhmono",
+"licence": "CC BY 4.0",
+"locator": "SADILAR_XHMONO line 85554",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "sadilar_xhmono",
+"locator": "SADILAR_XHMONO line 85554"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"xh.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "xh.sen.2d902cd7e9ab",
+"lang": "xh",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Uluhlu: Ubuchule obu buquka ubume, ulwakhiwo nocwangciso lomxholo, uluvo, ukuphawulwa kwenjongo, udidi lwabaphulaphuli, uvakalelo, ukhetho lolwimi olungacikivi, intetho efanelekileyo, ubuciko, isihlekiso nokusebenzisa umzimba nezinye iindlela zokuphuhlisa loo nto kuthethwa ngayo.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "sadilar_xhmono",
+"licence": "CC BY 4.0",
+"locator": "SADILAR_XHMONO line 87603",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "sadilar_xhmono",
+"locator": "SADILAR_XHMONO line 87603"
+}
+],
+"confidence": 0.74,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"xh.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "xh.sen.cba34f397d0c",
+"lang": "xh",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Amashishini amaninzi anezinto eziliqela ezisetyenziswayo - imithombo yemali ( imali yokuqhuba ishishini ), imithombo yobutyebi bendalo ( umhlaba, imilambo, iintaba ), izinto ezisetyenziselwa uphuhliso ( iindlela, izakhiwo, iishedi ), izinto eziphathekayo zokusebenza ( iitrektara, izixhobo zokusebenza noomatshini ) kunye nabasebenzi - xa kukhankanywa ezimbalwa kuphela.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "sadilar_xhmono",
+"licence": "CC BY 4.0",
+"locator": "SADILAR_XHMONO line 112860",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "sadilar_xhmono",
+"locator": "SADILAR_XHMONO line 112860"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"xh.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "xh.sen.8270d1b9c36a",
+"lang": "xh",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Eli ziko liya kusilungisa esi sicelo kwisithuba seentsuku ezingama-30, ngaphandle kokuba owenza isicelo abe ubeke izizathu ezikhethekileyo, eziya kwanelisa igosa lolwazi, zokuba iimeko zinyanzelisa ukuba la maxesha angasentla angananzwa.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "sadilar_xhmono",
+"licence": "CC BY 4.0",
+"locator": "SADILAR_XHMONO line 128925",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "sadilar_xhmono",
+"locator": "SADILAR_XHMONO line 128925"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"xh.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "xh.sen.8f6e570263ec",
+"lang": "xh",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Imibuzo ejoliswe kwingcombolo yolwazi ecaciswe gca kwitekisi. Nika amagama ezinto / abantu / eendawo / eempawu ezithile... Xela izinto eziyinyaniso / izizathu / iingongoma / iimbono... Chonga izizathu / abantu / oonobangela... Xela izinto eziyinyaniso / izizathu / iingongoma / amagama abantu... Chaza indawo / umntu / umlinganiswa..... Balisa isiganeko / isenzeko / amavo...",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "sadilar_xhmono",
+"licence": "CC BY 4.0",
+"locator": "SADILAR_XHMONO line 134493",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "sadilar_xhmono",
+"locator": "SADILAR_XHMONO line 134493"
+}
+],
+"confidence": 0.76,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"xh.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "xh.sen.043c50d362d0",
+"lang": "xh",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Xa uTersia van Rooyen esithi la maziko awayijongi indlela abantu abahlawula ngayo amatyala, ngaphandle kwabantu abenze izicelo zokuthenga ngetyala, kuthiwani kubo xa kujongwa indlela aba bantu abahlawula ngayo amatyala abo?",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "sadilar_xhmono",
+"licence": "CC BY 4.0",
+"locator": "SADILAR_XHMONO line 153198",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "sadilar_xhmono",
+"locator": "SADILAR_XHMONO line 153198"
+}
+],
+"confidence": 0.74,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"xh.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "xh.sen.a701a699c0d8",
+"lang": "xh",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Umzekelo 3: Xa umntu ezo kwenza idinga negosa laseburhulumenteni, masithi umzekelo ezo kufuna iinkcukacha ngokuyimfuneko ukuze abe unokufumana isibonelelo sendlu sika Rhulumente, elo gosa kufuneka lizame kanga ngoko limnike ixesha elinokudibana naye ngokukhawuleza.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "sadilar_xhmono",
+"licence": "CC BY 4.0",
+"locator": "SADILAR_XHMONO line 157085",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "sadilar_xhmono",
+"locator": "SADILAR_XHMONO line 157085"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"xh.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "xh.sen.aeb729d21e49",
+"lang": "xh",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Umzekelo woku kukudityaniswa komhlaba, imbewu, isichumiso, i-diesel, amanzi, imichiza, isondlo, amayeza, abasebenzi, izithuthi, oomatshini kunye nezixhobo zokusebenza ukuze kuveliswe ingqolowa, ihabile, umbona, inyama, uboya, amaqanda, uboya beebhokhwe nezinye iimveliso.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "sadilar_xhmono",
+"licence": "CC BY 4.0",
+"locator": "SADILAR_XHMONO line 203992",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "sadilar_xhmono",
+"locator": "SADILAR_XHMONO line 203992"
+}
+],
+"confidence": 0.74,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"xh.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+},
+{
+"id": "xh.sen.7d9636623f8a",
+"lang": "xh",
+"type": "sentence",
+"cefr": "C2",
+"can_do": [
+"C2.READ: Understand authentic sentences of level C2"
+],
+"text": "Ulwimi olusetyenziselwa ukuthetha ngolunye ulwimi - kukho isigama esisetyenziswayo xa sithetha ngolwimi; oku kubandakanya isigama esifana nala magama asetyenziswa ngabantu abafundisa ulwimi: \" imeko \", \" isimbo sombhali \", \" isakhiwo sebali \", \" ingxoxo yababini \" nesinye isigama.",
+"translation_en": null,
+"provenance": {
+"sources": [
+{
+"source_id": "sadilar_xhmono",
+"licence": "CC BY 4.0",
+"locator": "SADILAR_XHMONO line 205827",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": false
+},
+"claims": [
+{
+"text": "verbatim source sentence",
+"source_id": "sadilar_xhmono",
+"locator": "SADILAR_XHMONO line 205827"
+}
+],
+"confidence": 0.72,
+"risk_tags": [
+"web_text_unreviewed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"xh.C2.reading"
+],
+"games": [
+"word_order",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"example_bank": false,
+"level": "C2"
+}
+}
+}
+]
+}

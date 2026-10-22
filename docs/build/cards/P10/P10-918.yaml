@@ -1,0 +1,92 @@
+charter: v2
+id: P10-918
+kind: build
+title: Revoke credentials and publish status
+phase: P10
+epic: E-P10-CREDENTIALS
+req_ids:
+- EP-§12.4-07
+depends_on:
+- E-P5-CONTENT-REAL
+- E-P6-SCORER
+- P10-917
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 2
+  size: 0
+tiers:
+  worker: T2
+  tester: T3
+  reviewer: T4
+  justification: 'score 6; blast 2; p0 area; crypto; gate-critical (security / child safety / legal / design direction): Fable
+    reviews'
+token_budget: 60000
+file_allowlist:
+- node-backend/src/services/credential-status.service.ts
+- node-backend/src/routes/credentials.routes.ts
+- lib/screens/passport/passport_credential_screen.dart
+context_anchors:
+- ELEVATION.md#§12.4:L1845-L1845
+acceptance_criteria:
+- id: AC1
+  text: Given an admin revokes a credential with a reason, when the status list updates, then verification returns revoked
+    within 1 minute.
+- id: AC2
+  text: Given a revoked credential, when its holder opens it, then the screen shows a revoked state with the reason and the
+    next step.
+- id: AC3
+  text: Given a revocation, when it is stored, then an audit row records who, when and why.
+- id: AC4
+  text: Given an unrevoked credential, when status is fetched, then it returns valid and a failed status fetch shows a visible
+    unknown state, never valid.
+test_plan:
+  unit:
+  - status list
+  integration:
+  - revoke then verify
+  security:
+  - only admin can revoke
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - valid
+  - revoked
+  - unknown
+  copy_keys:
+  - credential_revoked
+  tokens:
+  - color.semantic
+  - type.scale
+  - space.scale
+  motion_tier: product
+  a11y:
+  - screen reader labels
+  - 48dp touch targets
+  - reduced motion honoured
+  goldens:
+  - credential_revoked_golden
+tags:
+- issues_credential
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

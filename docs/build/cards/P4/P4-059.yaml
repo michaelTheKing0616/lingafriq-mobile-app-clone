@@ -1,0 +1,68 @@
+charter: v2
+id: P4-059
+kind: build
+title: Back-translate with Google Cloud Translation and MADLAD-400
+phase: P4
+epic: E-P4-PIPELINE
+req_ids:
+- CP-§3.1-05
+- CP-§3.1-26
+- CP-§3.1-21
+depends_on:
+- P4-056
+size: S
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 2, depth 1, size 0'
+token_budget: 25000
+file_allowlist:
+- tools/content_engine/pipeline/backtranslate.py
+- tools/content_engine/tests/test_backtranslate.py
+context_anchors:
+- CURRICULUM.md#§3.1:L487-L490
+acceptance_criteria:
+- id: AC1
+  text: Given an item, when back-translated, then Google Cloud Translation is used for supported languages and MADLAD-400
+    for the long tail, citing EXT-01 for the AI stack doc
+- id: AC2
+  text: Given the back-translation differs from the source meaning, when scored, then the item is flagged and not auto-rejected
+- id: AC3
+  text: Given the MT service is unavailable, when run, then the item is marked BT_UNAVAILABLE and cannot auto-publish
+test_plan:
+  unit:
+  - happy path
+  - typed error path
+  integration:
+  - stage contract with fixtures
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-01
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

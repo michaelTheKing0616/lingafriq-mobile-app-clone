@@ -1,0 +1,113 @@
+charter: v2
+id: F-112
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Circle Clash competitions
+phase: P9
+epic: E-P9-SAFETY
+hub: Village
+req_ids:
+- F-112
+- F-112.D
+- F-112.E
+- F-112.U
+- F-112.L
+- P0-8
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P9-SAFETY
+- E-P6-SCORER
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: social/village feature complexity and coupling'
+token_budget: 80000
+file_allowlist:
+- lib/screens/social/tribe_vs_tribe_screen.dart
+- lib/screens/village/tribal_duel_screen.dart
+- lib/screens/village/inter_tribe_leaderboard_screen.dart
+context_anchors:
+- ELEVATION.md#§18.6:L5092-L5104
+delta:
+  current_state: Competition UI works but points can be self-awarded.
+  defects_to_fix:
+  - Cheatable scoring
+  - Competition without verified learning value
+  elevation_to_build:
+  - Circle Clash weekend events scoring only verified learning actions
+  - Server-side scoring with fair leagues by circle size
+  ux_and_render:
+  - Event banner, live team bars, end highlights reel
+  hub_placement: Village → Circles → Clash; Today → Events
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given Circle Clash, when points accrue, then only server-verified reviews, lessons, and scored speaking count
+- id: AC2
+  text: Given a client attempt to self-award points, when submitted, then the server rejects and UI shows honest zero gain
+- id: AC3
+  text: Given event end, when highlights reel plays, then it reflects verified team totals only
+- id: AC4
+  text: Given the account is under 18 or age-unknown, when this surface is opened, then it is hidden or guardian-gated until
+    E-P9-SAFETY is Done, and the restriction is enforced server-side.
+test_plan:
+  unit:
+  - delta defects covered
+  - routing and state transitions
+  integration:
+  - hub navigation and backend contracts
+  e2e:
+  - primary user journey on device
+  a11y:
+  - semantics
+  - 200% text scale goldens
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f-112.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+tags:
+- under18_social
+- shows_score
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux
+  - adaptive/14-safety-and-high-stakes

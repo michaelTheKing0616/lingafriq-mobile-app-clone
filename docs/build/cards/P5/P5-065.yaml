@@ -1,0 +1,50 @@
+charter: v2
+id: P5-065
+kind: adr
+title: 'Decide Swahili TTS by blind test: Intron, Chirp 3 HD, Azure'
+phase: P5
+epic: E-P5-AUDIO
+req_ids:
+- CP-§7-sw-01
+depends_on:
+- P5-058
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T0
+  reviewer: T2
+  justification: decision record; judgment, no code
+token_budget: 20000
+file_allowlist: []
+context_anchors:
+- CURRICULUM.md#§7:L734-L736
+acceptance_criteria:
+- id: AC1
+  text: Given Intron, Google Chirp 3 HD sw-KE and Azure sw-KE samples, when blind-tested, then the winner is recorded with
+    scores and reviewers
+- id: AC2
+  text: Given a tie or poor results, when decided, then the fallback is documented
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - prime/diagram-design

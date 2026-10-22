@@ -1,0 +1,103 @@
+charter: v2
+id: F-013
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Grammar Hub
+phase: P7
+epic: E-P7-HUBS
+hub: Learn
+req_ids:
+- F-013
+- F-013.D
+- F-013.E
+- F-013.U
+- F-013.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P5-CONTENT-REAL
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: hub feature delta spec'
+token_budget: 80000
+file_allowlist:
+- lib/screens/grammar/grammar_hub_screen.dart
+- lib/screens/grammar/grammar_lesson_screen.dart
+- lib/screens/grammar/grammar_exercise_screen.dart
+context_anchors:
+- ELEVATION.md#§18.3:L3679-L3694
+delta:
+  current_state: Grammar routes work with repeated template grammar lines.
+  defects_to_fix:
+  - Grammar content repeats thin template lines from §6.
+  elevation_to_build:
+  - Pattern Library cards with plain-language explanation, audio examples, contrasts, errors, and interactive builders.
+  - Linked from lessons and Polie explanations.
+  ux_and_render:
+  - Colour-coded morphology (not colour-only); swipeable examples.
+  hub_placement: Learn → Patterns.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given a pattern card, when opened, then five audio examples and common-error contrast render.
+- id: AC2
+  text: Given lesson link, when tapped from a lesson, then matching pattern opens in hub.
+test_plan:
+  unit:
+  - domain rules for feature delta
+  integration:
+  - navigation and data wiring from hub placement
+  e2e:
+  - primary happy path from Lives in entry
+  a11y:
+  - goldens at 100%/200% text
+  - semantics order
+  content:
+  - honest labels on shown curriculum or media
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - learn.f_013.*
+tags: []
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

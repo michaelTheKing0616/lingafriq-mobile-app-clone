@@ -1,8 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:rive/rive.dart' hide LinearGradient, RadialGradient;
 import '../avatar_engine.dart';
+import '../cast/cast_stage.dart';
 import '../personality_system.dart';
 
 /// Onboarding Avatar Widget - Animated guide for onboarding steps
@@ -66,8 +66,7 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
     try {
       _controller = await AvatarEngine().getOnboardingAvatar(widget.step);
       if (mounted) {
-        final hasArtboard = _controller?.artboard != null;
-        setState(() => _hasRiveArtboard = hasArtboard);
+        setState(() => _hasRiveArtboard = _controller != null);
         _controller?.wave();
         if (widget.showDialogue && widget.dialogue != null) {
           Future.delayed(const Duration(milliseconds: 500), () {
@@ -159,13 +158,13 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
   // ─── Avatar (Rive or Fallback) ────────────────────────────────────────
   Widget _buildAvatar(OnboardingAvatarInfo info) {
     return SlideTransition(
-      position: Tween<Offset>(
-        begin: const Offset(0, 0.5),
-        end: Offset.zero,
-      ).animate(CurvedAnimation(
-        parent: _entranceController,
-        curve: Curves.elasticOut,
-      )),
+      position: Tween<Offset>(begin: const Offset(0, 0.5), end: Offset.zero)
+          .animate(
+            CurvedAnimation(
+              parent: _entranceController,
+              curve: Curves.elasticOut,
+            ),
+          ),
       child: FadeTransition(
         opacity: _entranceController,
         child: SizedBox(
@@ -191,12 +190,7 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
           ),
         ],
       ),
-      child: ClipOval(
-        child: Rive(
-          artboard: _controller!.artboard!,
-          fit: BoxFit.cover,
-        ),
-      ),
+      child: ClipOval(child: CastStage(session: _controller!.session)),
     );
   }
 
@@ -262,7 +256,9 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
                 stops: const [0.0, 0.6, 1.0],
               ),
               border: Border.all(
-                color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.35),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onPrimary.withOpacity(0.35),
                 width: 2.5,
               ),
               boxShadow: [
@@ -347,10 +343,7 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: info.primaryColor.withOpacity(0.3),
-          width: 2,
-        ),
+        border: Border.all(color: info.primaryColor.withOpacity(0.3), width: 2),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
@@ -419,11 +412,7 @@ class _TypewriterText extends StatefulWidget {
   final TextStyle? style;
   final VoidCallback? onComplete;
 
-  const _TypewriterText({
-    required this.text,
-    this.style,
-    this.onComplete,
-  });
+  const _TypewriterText({required this.text, this.style, this.onComplete});
 
   @override
   State<_TypewriterText> createState() => _TypewriterTextState();
@@ -486,6 +475,7 @@ class OnboardingAvatarInfo {
   final Color primaryColor;
   final Color secondaryColor;
   final IconData icon;
+
   /// Rich emoji representing the character visually
   final String characterEmoji;
   final List<String> defaultDialogues;
@@ -622,7 +612,8 @@ class OnboardingAvatarInfo {
 
   String getRandomDialogue() {
     if (defaultDialogues.isEmpty) return '';
-    final index = DateTime.now().millisecondsSinceEpoch % defaultDialogues.length;
+    final index =
+        DateTime.now().millisecondsSinceEpoch % defaultDialogues.length;
     return defaultDialogues[index];
   }
 }

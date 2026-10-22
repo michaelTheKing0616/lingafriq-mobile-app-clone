@@ -1,0 +1,62 @@
+charter: v2
+id: P2-044
+kind: build
+title: Add mutation testing gate on FSRS
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.9-02
+depends_on:
+- E-P1-CONTAINMENT
+- P2-043
+size: S
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 0
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 2, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist:
+- tool/mutation/fsrs_mutation.yaml
+- scripts/ci/mutation_gate.sh
+- .github/workflows/build.yml
+context_anchors:
+- ELEVATION.md#§13.9:L1949-L1950
+acceptance_criteria:
+- id: AC1
+  text: Given the FSRS module, when the mutation run executes, then the mutation score is at least 80% with survivors listed
+- id: AC2
+  text: Given a PR lowering the score below threshold, when CI runs, then it fails
+test_plan:
+  unit:
+  - gate script
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

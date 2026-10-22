@@ -1,0 +1,74 @@
+charter: v2
+id: P4-068
+kind: build
+title: Write what-catches-what matrix test plan
+phase: P4
+epic: E-P4-PIPELINE
+req_ids:
+- CP-§3.2-01
+- CP-§3.2-03
+- CP-§3.2-04
+depends_on:
+- P4-060
+- P4-057
+- P4-059
+- P4-061
+- P4-058
+- P4-052
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- tools/content_engine/tests/matrix/test_what_catches_what.py
+- tools/content_engine/tests/matrix/fixtures.yaml
+context_anchors:
+- CURRICULUM.md#§3.2:L501-L505
+acceptance_criteria:
+- id: AC1
+  text: Given the eight failure types (wrong word, tone marks, Hausa tone and length, concord, naturalness, false claims,
+    register, placeholders), when the matrix is executed, then each has a seeded fixture caught by its primary check and by
+    the stated second check
+- id: AC2
+  text: Given a Hausa tone or length error, when seeded, then only dictionary-sourced marked forms pass and a linguist is
+    the residual catch
+- id: AC3
+  text: Given a seeded failure is missed by every automatic check, when the matrix runs, then the test fails and names the
+    type
+test_plan:
+  unit: []
+  integration:
+  - seeded fault per failure type
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - linguist confirms residual catches
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

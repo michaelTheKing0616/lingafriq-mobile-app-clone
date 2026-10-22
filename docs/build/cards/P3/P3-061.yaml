@@ -1,0 +1,90 @@
+charter: v2
+id: P3-061
+kind: build
+title: Revive Global Handle edit and About Us
+phase: P3
+epic: E-P3-REVIVE
+req_ids:
+- REV-18
+- REV-24
+depends_on:
+- P3-043
+size: M
+difficulty:
+  score: 3
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 3: blast 0, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- lib/screens/profile/global_handle_edit_screen.dart
+- lib/screens/tabs_view/profile/about_us_screen.dart
+context_anchors:
+- ELEVATION.md#§17.5:L2325-L2332
+acceptance_criteria:
+- id: AC1
+  text: Given the hub Me, when the learner opens it, then the entry point leads to /me/handle, /me/about and each route is
+    registered in my_app.dart
+- id: AC2
+  text: Given the screen has no data, when it opens, then the empty state shows; given a load error, then the error state
+    shows and no stale data renders
+- id: AC3
+  text: Given the reachability scan from lib/main.dart, when it runs, then every revived screen is reachable from the shell
+- id: AC4
+  text: Given a handle edit, when saved, then uniqueness and profanity checks run server-side and a rejected handle shows
+    the reason
+test_plan:
+  unit:
+  - route registered
+  integration:
+  - entry from hub
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - semantics
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - default
+  - empty
+  - error
+  - offline
+  copy_keys:
+  - rev.rv_me.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

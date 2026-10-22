@@ -1,0 +1,103 @@
+charter: v2
+id: P9-953
+kind: build
+title: Assign work, auto-grade speaking with override, show can-do progress
+phase: P9
+epic: E-P9-VILLAGE
+req_ids:
+- EP-§9.2-35
+- EP-§9.2-36
+- EP-§9.2-37
+depends_on:
+- E-P9-SAFETY
+- P9-952
+- E-P6-SCORER
+size: L
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 3, ambiguity 1, coupling 2, depth 1'
+token_budget: 200000
+file_allowlist:
+- web/teacher/assignments.tsx
+- node-backend/src/services/assignments.service.ts
+- lib/screens/classroom/classroom_assignments_screen.dart
+context_anchors:
+- ELEVATION.md#§9.2:L1617-L1620
+acceptance_criteria:
+- id: AC1
+  text: Given an assignment of a lesson, persona chapter or speaking task, when published, then each student sees it with
+    a due date and class progress updates by can-do
+- id: AC2
+  text: Given a speaking submission, when auto-graded, then the score shows the scorer confidence and a visible 'unsure' state
+    and never a fabricated number
+- id: AC3
+  text: Given a teacher override, when saved, then the override replaces the auto-grade, records the teacher and reason and
+    the student sees both
+- id: AC4
+  text: Given progress by can-do, when shown, then it uses can-do statements and not raw minutes
+- id: AC5
+  text: Given the account is under 18 or age-unknown, when this surface is opened, then it is hidden or guardian-gated until
+    E-P9-SAFETY is Done, and the restriction is enforced server-side.
+test_plan:
+  unit:
+  - override logic
+  integration:
+  - assignment lifecycle
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - assignment screens
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - draft
+  - published
+  - submitted
+  - graded
+  - overridden
+  - unsure
+  copy_keys:
+  - assign.title
+  - assign.grade.unsure
+  - assign.override
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - assign_default
+tags:
+- under18_social
+- shows_score
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

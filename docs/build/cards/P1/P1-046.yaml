@@ -1,0 +1,82 @@
+charter: v2
+id: P1-046
+kind: build
+title: Fix JWT secret handling and move to asymmetric keys with kid rotation
+phase: P1
+epic: E-P1-AUTH
+req_ids:
+- EP-§13.1-04
+- EP-§13.1-05
+- EP-§13.1-12
+- EP-§13.1-13
+- EP-§13.1-14
+depends_on:
+- E-P0-INTAKE
+size: M
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T4
+  justification: 'score 8; blast 3; security/crypto tester; gate-critical (security / child safety / legal / design direction):
+    Fable reviews'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/controllers/auth.controller.ts
+- node-backend/src/middleware/auth.middleware.ts
+- node-backend/src/services/jwtKeys.service.ts
+- node-backend/src/services/socket.service.ts
+context_anchors:
+- ELEVATION.md#§13.1:L1850
+- ELEVATION.md#§13.1:L1850-L1851
+- ELEVATION.md#§13.1:L1854
+- ELEVATION.md#§13.1:L1854-L1855
+- ELEVATION.md#§13.1:L1855-L1856
+acceptance_criteria:
+- id: AC1
+  text: Given a JWT_SECRET with a trailing newline, when the controller, middleware and socket verify tokens, then all three
+    behave identically through one shared key loader
+- id: AC2
+  text: Given tokens signed with EdDSA or RS256, when verified, then the kid header selects the key and unknown kids are rejected
+- id: AC3
+  text: Given a key rotation, when a new key becomes active, then tokens signed by the previous key verify until their expiry
+    and then fail
+- id: AC4
+  text: Given an HS256 token, when presented after the cutover date, then it is rejected
+test_plan:
+  unit:
+  - key loader
+  integration:
+  - rotation test across API and socket
+  security:
+  - alg confusion and none-algorithm tests
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- HS256 dual-accept window needed for installed apps
+- Deferred by Tope 2026-10-21: key rotation work held until revocations are resumed
+gate: G1
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

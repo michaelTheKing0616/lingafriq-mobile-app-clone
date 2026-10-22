@@ -1,0 +1,72 @@
+charter: v2
+id: P4-116
+kind: build
+title: Add dialect and variant marking to content and settings
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.4-75
+- EP-§6.4-76
+depends_on:
+- P4-101
+- P4-115
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- schemas/v2/content/lexeme.schema.json
+- schemas/v2/content/common.schema.json
+- lib/models/dialect_preference.dart
+- lib/services/content/dialect_resolver.dart
+- test/content/test_dialect_marking.py
+- test/dialect_resolver_test.dart
+context_anchors:
+- ELEVATION.md#§6.4.1:L1264-L1292
+acceptance_criteria:
+- id: AC1
+  text: Given a lexeme or audio take, when it is a regional variant, then dialect and region fields are set and an unmarked
+    variant fails validation VARIANT_UNMARKED
+- id: AC2
+  text: Given dialectPreference set to a region, when content is resolved, then the matching variant is returned and the standard
+    form is the fallback with the dialect shown in the UI label
+- id: AC3
+  text: Given the existing dialectPreference model, when migrated, then stored user values map to the new dialect ids without
+    loss
+test_plan:
+  unit:
+  - test_dialect_marking
+  - dialect_resolver_test
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

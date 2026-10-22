@@ -1,0 +1,79 @@
+charter: v2
+id: P4-124
+kind: build
+title: Build speech enablement evaluation gates
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.4-48
+- EP-§6.4-62
+- EP-§6.4-63
+- EP-§6.4-64
+depends_on:
+- P4-113
+- E-P6-SCORER
+size: M
+difficulty:
+  score: 8
+  blast: 2
+  ambiguity: 2
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 2, ambiguity 2, coupling 2'
+token_budget: 60000
+file_allowlist:
+- tools/content_pipeline/speech_eval.py
+- assets/content/eval/README.md
+- test/content/test_speech_eval.py
+context_anchors:
+- ELEVATION.md#§6.4.1:L1264-L1292
+acceptance_criteria:
+- id: AC1
+  text: Given a language, when ASR (Intron or Omnilingual) is evaluated, then a 300-utterance set is scored and the WER is
+    recorded with set id and date
+- id: AC2
+  text: Given a vendor or custom TTS voice, when gated, then native MOS and tone-error rate must pass the thresholds set in
+    the eval config or enablement fails TTS_GATE_FAIL
+- id: AC3
+  text: Given tone-scoring calibration, when run, then native judge ratings are stored per judge and agreement is reported
+    before scoring is enabled for that language
+- id: AC4
+  text: Given a gate failure or missing eval set, when enablement is requested, then the feature stays off with a visible
+    reason and no placeholder score is produced
+- id: AC5
+  text: Given yo, ig or ha TTS, when enabled, then enablement requires the tone-accuracy gate
+test_plan:
+  unit:
+  - test_speech_eval
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- tts_tonal
+- tone_accuracy_gate
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- thresholds set by P6 scorer cards
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/11-data-and-quantitative-work
+  - adaptive/07-research-and-fact-checking

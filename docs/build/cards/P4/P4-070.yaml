@@ -1,0 +1,72 @@
+charter: v2
+id: P4-070
+kind: build
+title: Build backend job service for pipeline runs
+phase: P4
+epic: E-P4-STUDIO
+req_ids:
+- CP-§9.1-11
+depends_on:
+- P4-064
+- P4-069
+size: L
+difficulty:
+  score: 8
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 2, ambiguity 1, coupling 2, depth 2, size 1'
+token_budget: 150000
+file_allowlist:
+- node-backend/src/services/contentEngineJob.service.ts
+- node-backend/src/models/contentJob.model.ts
+- node-backend/src/workers/contentEngine.worker.ts
+- node-backend/src/routes/contentJobs.routes.ts
+- tools/content_engine/tests/job_service.test.ts
+context_anchors:
+- CURRICULUM.md#§9.1:L789-L789
+acceptance_criteria:
+- id: AC1
+  text: Given a generation job request, when accepted, then it is queued with an id and persisted so a restart resumes it
+- id: AC2
+  text: Given a stage fails, when the job runs, then the job state records the stage and typed error and does not report success
+- id: AC3
+  text: Given job concurrency, when configured, then the cap is read from config and exceeding it queues, not drops
+- id: AC4
+  text: Given the pipeline service estimate of 4–6 weeks is unverified, when planning, then the estimate is tracked on the
+    estimate verification card
+test_plan:
+  unit:
+  - state machine
+  integration:
+  - restart resumes queued job
+  security:
+  - role check on job routes
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

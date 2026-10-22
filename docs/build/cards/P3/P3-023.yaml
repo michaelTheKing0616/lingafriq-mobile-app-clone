@@ -1,0 +1,84 @@
+charter: v2
+id: P3-023
+kind: build
+title: Build AI-unavailable and content-under-review states
+phase: P3
+epic: E-P3-COMPONENTS
+req_ids:
+- EP-§3.4-31
+- EP-§3.4-32
+depends_on:
+- P3-022
+size: S
+difficulty:
+  score: 2
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 0, ambiguity 1, coupling 1'
+token_budget: 25000
+file_allowlist:
+- lib/design/states/ai_unavailable_state.dart
+- lib/design/states/under_review_state.dart
+context_anchors:
+- ELEVATION.md#§3.4:L846-L847
+acceptance_criteria:
+- id: AC1
+  text: Given the AI gateway returns unavailable, when a screen renders, then the AI-unavailable state shows a non-AI next
+    step
+- id: AC2
+  text: Given content flagged under review, when a screen renders, then the under-review state shows and the item is not playable
+- id: AC3
+  text: Given both states, when listed in the catalogue, then goldens exist in light, dark and 200% text
+test_plan:
+  unit:
+  - state rendering
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - state.ai_unavailable.*
+  - state.under_review.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/error-handling-ux
+  - prime/feedback-patterns
+  - prime/state-machine

@@ -1,0 +1,304 @@
+{
+ "errors": {},
+ "warnings": {
+  "noun_class_prefix": 357,
+  "yo_tone_not_in_lexicon": 2323,
+  "orthography_beta_sentence": 1
+ },
+ "stats": {
+  "ha/A1": {
+   "items": 963,
+   "Beta": 685,
+   "needs-review": 278,
+   "sent_foreign_char_items": 20
+  },
+  "ha/A2": {
+   "items": 329,
+   "Beta": 127,
+   "needs-review": 202,
+   "sent_foreign_char_items": 23
+  },
+  "ha/B1": {
+   "items": 1519,
+   "needs-review": 1511,
+   "sent_foreign_char_items": 28,
+   "Beta": 8
+  },
+  "ha/B2": {
+   "items": 1557,
+   "needs-review": 1549,
+   "sent_foreign_char_items": 13,
+   "Beta": 8
+  },
+  "ha/C1": {
+   "items": 492,
+   "needs-review": 492,
+   "sent_foreign_char_items": 9
+  },
+  "ha/C2": {
+   "items": 293,
+   "needs-review": 293,
+   "sent_foreign_char_items": 5
+  },
+  "ig/A1": {
+   "items": 1436,
+   "needs-review": 1436,
+   "sent_foreign_char_items": 9
+  },
+  "ig/A2": {
+   "items": 1731,
+   "needs-review": 1731,
+   "sent_foreign_char_items": 17
+  },
+  "ig/B1": {
+   "items": 3120,
+   "needs-review": 3120,
+   "sent_foreign_char_items": 43
+  },
+  "ig/B2": {
+   "items": 2053,
+   "needs-review": 2053,
+   "sent_foreign_char_items": 22
+  },
+  "ig/C1": {
+   "items": 1517,
+   "needs-review": 1517,
+   "sent_foreign_char_items": 28
+  },
+  "ig/C2": {
+   "items": 1506,
+   "needs-review": 1506,
+   "sent_foreign_char_items": 9
+  },
+  "pcm/A1": {
+   "items": 1163,
+   "needs-review": 1163
+  },
+  "pcm/A2": {
+   "items": 1600,
+   "needs-review": 1600,
+   "sent_foreign_char_items": 2
+  },
+  "pcm/B1": {
+   "items": 1500,
+   "needs-review": 1500,
+   "sent_foreign_char_items": 2
+  },
+  "pcm/B2": {
+   "items": 1498,
+   "needs-review": 1498
+  },
+  "pcm/C1": {
+   "items": 1498,
+   "needs-review": 1498
+  },
+  "pcm/C2": {
+   "items": 1498,
+   "needs-review": 1498
+  },
+  "sw/A1": {
+   "items": 1483,
+   "needs-review": 627,
+   "Beta": 856,
+   "nc_prefix_ok": 375,
+   "nc_prefix_bad": 13,
+   "sent_foreign_char_items": 18
+  },
+  "sw/A2": {
+   "items": 1756,
+   "Beta": 810,
+   "nc_prefix_ok": 392,
+   "needs-review": 946,
+   "nc_prefix_bad": 18,
+   "sent_foreign_char_items": 8
+  },
+  "sw/B1": {
+   "items": 3121,
+   "needs-review": 2098,
+   "nc_prefix_bad": 37,
+   "Beta": 1023,
+   "nc_prefix_ok": 812,
+   "sent_foreign_char_items": 15
+  },
+  "sw/B2": {
+   "items": 3643,
+   "needs-review": 2553,
+   "Beta": 1090,
+   "nc_prefix_ok": 1015,
+   "nc_prefix_bad": 39,
+   "sent_foreign_char_items": 8
+  },
+  "sw/C1": {
+   "items": 4568,
+   "Beta": 1461,
+   "nc_prefix_ok": 1458,
+   "needs-review": 3107,
+   "nc_prefix_bad": 34,
+   "sent_foreign_char_items": 18
+  },
+  "sw/C2": {
+   "items": 4067,
+   "Beta": 867,
+   "nc_prefix_ok": 1139,
+   "needs-review": 3200,
+   "nc_prefix_bad": 9,
+   "sent_foreign_char_items": 24
+  },
+  "xh/A1": {
+   "items": 1222,
+   "Beta": 643,
+   "needs-review": 579,
+   "nc_prefix_ok": 583,
+   "nc_sadilar_agree": 295,
+   "nc_sadilar_disagree": 9
+  },
+  "xh/A2": {
+   "items": 862,
+   "Beta": 687,
+   "nc_prefix_ok": 580,
+   "nc_sadilar_agree": 45,
+   "needs-review": 175,
+   "nc_prefix_bad": 2
+  },
+  "xh/B1": {
+   "items": 2345,
+   "needs-review": 2140,
+   "Beta": 205,
+   "nc_prefix_ok": 566,
+   "nc_sadilar_agree": 441,
+   "nc_prefix_bad": 89,
+   "sent_foreign_char_items": 1
+  },
+  "xh/B2": {
+   "items": 1247,
+   "needs-review": 1247
+  },
+  "xh/C1": {
+   "items": 294,
+   "needs-review": 294
+  },
+  "xh/C2": {
+   "items": 282,
+   "needs-review": 282
+  },
+  "yo/A1": {
+   "items": 1070,
+   "needs-review": 658,
+   "tone_lexicon_match": 800,
+   "Beta": 412,
+   "sent_foreign_char_items": 33
+  },
+  "yo/A2": {
+   "items": 1713,
+   "needs-review": 913,
+   "tone_lexicon_match": 475,
+   "Beta": 800,
+   "tone_lexicon_nomatch": 325,
+   "sent_foreign_char_items": 10
+  },
+  "yo/B1": {
+   "items": 3114,
+   "needs-review": 1687,
+   "tone_lexicon_nomatch": 1600,
+   "Beta": 1427,
+   "sent_foreign_char_items": 11
+  },
+  "yo/B2": {
+   "items": 1981,
+   "needs-review": 507,
+   "tone_lexicon_nomatch": 398,
+   "Beta": 1474
+  },
+  "yo/C1": {
+   "items": 1533,
+   "Beta": 455,
+   "needs-review": 1078,
+   "sent_foreign_char_items": 112
+  },
+  "yo/C2": {
+   "items": 1513,
+   "Beta": 20,
+   "sent_foreign_char_items": 113,
+   "needs-review": 1493
+  },
+  "zu/A1": {
+   "items": 1437,
+   "Beta": 523,
+   "needs-review": 914,
+   "nc_prefix_ok": 592,
+   "nc_sadilar_agree": 230,
+   "nc_sadilar_disagree": 8,
+   "nc_prefix_bad": 8
+  },
+  "zu/A2": {
+   "items": 922,
+   "needs-review": 433,
+   "nc_prefix_ok": 517,
+   "Beta": 489,
+   "nc_sadilar_agree": 20,
+   "nc_prefix_bad": 21,
+   "nc_sadilar_disagree": 1
+  },
+  "zu/B1": {
+   "items": 2194,
+   "Beta": 63,
+   "nc_prefix_ok": 510,
+   "needs-review": 2131,
+   "nc_prefix_bad": 87,
+   "nc_sadilar_agree": 434,
+   "nc_sadilar_disagree": 2,
+   "sent_foreign_char_items": 1
+  },
+  "zu/B2": {
+   "items": 1558,
+   "needs-review": 1558,
+   "sent_foreign_char_items": 2
+  },
+  "zu/C1": {
+   "items": 1518,
+   "needs-review": 1518
+  },
+  "zu/C2": {
+   "items": 574,
+   "needs-review": 574
+  },
+  "zu/_concord": {
+   "noun_verb_pairs_checked": 8000,
+   "subject_concord_consistent": 4833
+  },
+  "xh/_concord": {
+   "noun_verb_pairs_checked": 3708,
+   "subject_concord_consistent": 2254
+  }
+ },
+ "error_samples": {},
+ "warning_samples": {
+  "noun_class_prefix": [
+   "sw/A1/sw.lex.af632608af09: nchini class 16",
+   "sw/A1/sw.lex.0a6d9fd24430: mujibu class 11",
+   "sw/A1/sw.lex.e64976de79d2: mjini class 16",
+   "sw/A1/sw.lex.3ffcd09c2402: duniani class 16",
+   "sw/A1/sw.lex.759e97247710: nyumbani class 16",
+   "sw/A1/sw.lex.b1c8f1308211: jijini class 16",
+   "sw/A1/sw.lex.9dd60eb2c836: mkoani class 16",
+   "sw/A1/sw.lex.3e3e29cce1e2: bungeni class 16",
+   "sw/A1/sw.lex.81003332f1b7: pwani class 16",
+   "sw/A1/sw.lex.2faeaca22399: kijijini class 16"
+  ],
+  "yo_tone_not_in_lexicon": [
+   "yo/A2/yo.lex.fc0911d31b6e: tí",
+   "yo/A2/yo.lex.942eb9deb046: àwọn",
+   "yo/A2/yo.lex.fabab214ced0: ní",
+   "yo/A2/yo.lex.ae3c0a68202b: tó",
+   "yo/A2/yo.lex.a003b282594d: fún",
+   "yo/A2/yo.lex.ce3af247c3d8: náà",
+   "yo/A2/yo.lex.2bb3b1fa1bd8: sí",
+   "yo/A2/yo.lex.f42a1a31682a: láti",
+   "yo/A2/yo.lex.9434cc46ddc6: pé",
+   "yo/A2/yo.lex.beeabba8b17e: wọ́n"
+  ],
+  "orthography_beta_sentence": [
+   "yo/C2/yo.sen.29ea2ba8de9f: ['Peace']"
+  ]
+ }
+}

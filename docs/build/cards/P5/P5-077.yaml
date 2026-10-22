@@ -1,0 +1,55 @@
+charter: v2
+id: P5-077
+kind: verification
+title: Verify Phase 1 A1 Beta exit
+phase: P5
+epic: E-P5-A1
+req_ids:
+- CP-§9.2-02
+- CP-§9.2-09
+depends_on:
+- P5-016
+- P5-010
+- P5-046
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T0
+  tester: T0
+  reviewer: T1
+  justification: verification only; no code
+token_budget: 20000
+file_allowlist: []
+context_anchors:
+- CURRICULUM.md#§9.2:L798-L803
+acceptance_criteria:
+- id: AC1
+  text: Given Weeks 4-12, when closed, then the A1 lexicon (600-800), A1 units, A1 Pattern Library and culture cards (Expert-reviewed)
+    are anchored
+- id: AC2
+  text: Given audio, when checked, then TTS passes the gates
+- id: AC3
+  text: Given labels, when checked, then Beta labels are live and weekly blind sampling is running
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

@@ -1,0 +1,101 @@
+charter: v2
+id: P9-917
+kind: build
+title: Default minors to private profiles, no location, no contact discovery
+phase: P9
+epic: E-P9-GUARDIAN
+req_ids:
+- EP-§9.4-01
+- EP-§9.4-03
+- EP-§9.4-04
+- EP-§9.4-05
+- EP-§9.1-24
+- EP-§13.3-06
+depends_on:
+- E-P9-GUARDIAN
+- P9-912
+size: M
+difficulty:
+  score: 5
+  blast: 3
+  ambiguity: 0
+  coupling: 2
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T4
+  justification: 'score 5: blast 3, ambiguity 0, coupling 2, depth 0; gate-critical (security / child safety / legal / design
+    direction): Fable reviews'
+token_budget: 80000
+file_allowlist:
+- node-backend/src/services/privacyDefaults.service.ts
+- node-backend/src/middleware/minorPolicy.ts
+- lib/screens/profile/privacy_settings_screen.dart
+context_anchors:
+- ELEVATION.md#§9.4:L1642-L1643
+- ELEVATION.md#§13.3:L1894
+- ELEVATION.md#§9.1:L1567-L1568
+acceptance_criteria:
+- id: AC1
+  text: Given a minor account, when created, then the profile is private, not searchable, and has no public feed presence,
+    enforced server-side
+- id: AC2
+  text: Given a minor, when any API returns profile or post data, then it contains no location, no precise timezone and no
+    contact-derived suggestions
+- id: AC3
+  text: Given a minor, when contact upload or phone-number lookup is called, then the endpoint returns CONTACT_DISCOVERY_DISABLED_FOR_MINORS
+- id: AC4
+  text: Given a minor trying to switch privacy to public, when submitted, then it is refused and the settings screen shows
+    the locked state with a reason
+test_plan:
+  unit:
+  - policy middleware
+  integration:
+  - every social endpoint as minor
+  security:
+  - location leak via metadata
+  - enumeration
+  e2e: []
+  perf: []
+  a11y:
+  - privacy settings
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - locked
+  - adult-editable
+  - error
+  copy_keys:
+  - privacy.minor.locked
+  - privacy.public.refused
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - privacy_default
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

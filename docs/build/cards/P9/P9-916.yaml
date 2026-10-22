@@ -1,0 +1,90 @@
+charter: v2
+id: P9-916
+kind: build
+title: Provision school accounts through teachers with school consent
+phase: P9
+epic: E-P9-GUARDIAN
+req_ids:
+- EP-§13.3-05
+depends_on:
+- E-P9-GUARDIAN
+- P9-913
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 3, ambiguity 1, coupling 2, depth 0'
+token_budget: 80000
+file_allowlist:
+- node-backend/src/services/schoolAccount.service.ts
+- node-backend/src/models/schoolConsent.ts
+- lib/screens/classroom/school_provisioning_screen.dart
+context_anchors:
+- ELEVATION.md#§13.3:L1893
+acceptance_criteria:
+- id: AC1
+  text: Given a teacher, when creating student accounts, then the school consent record (signed by a named school authority)
+    is required before any account is activated
+- id: AC2
+  text: Given a school-provisioned student, when active, then the account has classroom-only capabilities and no public profile,
+    circle discovery or direct messages
+- id: AC3
+  text: Given school consent revocation, when recorded, then all provisioned accounts are disabled within 60 s and the school
+    is told what data is retained or deleted
+test_plan:
+  unit:
+  - capability set
+  integration:
+  - provision and revoke
+  security:
+  - teacher privilege escalation
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - empty
+  - provisioning
+  - consent-missing
+  - active
+  copy_keys:
+  - school.provision.title
+  - school.consent.missing
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - school_default
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

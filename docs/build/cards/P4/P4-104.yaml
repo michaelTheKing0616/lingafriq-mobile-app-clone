@@ -1,0 +1,71 @@
+charter: v2
+id: P4-104
+kind: build
+title: Define culture card schema with claims and review gate
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.4-09
+- EP-§6.4-72
+depends_on:
+- P4-100
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 3: blast 1, ambiguity 1, coupling 1'
+token_budget: 25000
+file_allowlist:
+- schemas/v2/content/culture_card.schema.json
+- test/content/test_culture_card_schema.py
+context_anchors:
+- ELEVATION.md#§6.4:L1221-L1262
+- ELEVATION.md#§6.4.1:L1264-L1292
+- CURRICULUM.md#§10:L852
+acceptance_criteria:
+- id: AC1
+  text: Given a culture card, when validated, then title, body, image with alt_text and cultural_review, provenance.sources[]
+    and claims[] each with source_ref are required
+- id: AC2
+  text: 'Given a culture card with label beta, when validated, then it fails CULTURE_NEVER_BETA (C1: culture never Beta)'
+- id: AC3
+  text: Given a claim without a citation or with confidence below the declared floor, when validated, then it is rejected
+    CLAIM_UNSOURCED
+- id: AC4
+  text: Given a card carrying risk_tags, when published, then it requires approval by two natives and a linguist, never AI-only
+test_plan:
+  unit:
+  - test_culture_card_schema
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - fixtures
+user_facing: false
+ux_spec: null
+tags:
+- native_verified_rule
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

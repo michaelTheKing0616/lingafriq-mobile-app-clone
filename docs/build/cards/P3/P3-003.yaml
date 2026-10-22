@@ -1,0 +1,69 @@
+charter: v2
+id: P3-003
+kind: design
+title: Design three art directions with hero screens
+phase: P3
+epic: E-P3-DESIGN-WORKFLOW
+req_ids:
+- EP-§3.4-22
+- EP-§3.4-24
+depends_on:
+- P3-002
+size: L
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 2
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T4
+  justification: 'score 5: ambiguity 2, taste-heavy, reviewed by T4'
+token_budget: 150000
+file_allowlist:
+- docs/build/design/ART_DIRECTIONS.md
+- docs/build/design/ART_CREDITS.md
+context_anchors:
+- ELEVATION.md#§3.4:L825-L851
+acceptance_criteria:
+- id: AC1
+  text: Given three directions, when ART_DIRECTIONS.md is written, then each has a moodboard, OKLCH palette ramps, type pairing
+    on Andika and Noto, icon language and illustration language
+- id: AC2
+  text: Given each direction, when the hero screen is drawn, then the Today screen exists in light and dark with exports in
+    docs/build/design/art/
+- id: AC3
+  text: Given African craft motifs, when used on a screen, then they appear on at most one surface per screen as unit or region
+    identity and never as stripes on every card
+- id: AC4
+  text: Given each motif, when shown, then the credit line for the artist or source is recorded in ART_CREDITS.md
+- id: AC5
+  text: Given the cultural consultant, when the review checklist is sent, then the sign-off state per direction is recorded
+    as Pending until EXT-14 returns
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: true
+dod_evidence:
+- tester report
+- ledger row
+- T4 visual approval with exported frames
+risks: []
+gate: G3
+external_blockers:
+- EXT-14
+status: Draft
+skills:
+  worker:
+  - prime/design-dna
+  - prime/illustration-style
+  - prime/no-ai-slop
+  reviewer_extra:
+  - prime/critique-visual-hierarchy
+  - prime/critique-typography
+  - prime/design-to-code-check

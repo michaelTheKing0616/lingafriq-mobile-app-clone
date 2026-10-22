@@ -1,0 +1,120 @@
+id: F-056
+kind: feature
+title: Elevate Game shell, guides & results (revived)
+phase: P8
+epic: E-P8-PLAY
+hub: Play
+req_ids:
+- F-056
+- F-056.D
+- F-056.E
+- F-056.U
+- F-056.L
+depends_on:
+- P8-900
+- E-P8-PLAY
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: 1 blast, coupling 2'
+token_budget: 80000
+file_allowlist:
+- lib/screens/games/templates/game_template_shell.dart
+- lib/screens/games/game_onboarding_overlay.dart
+- lib/screens/games/game_start_guide_screen.dart
+- lib/screens/games/game_mastery_results_screen.dart
+- lib/screens/games/victory_results_screen.dart
+- lib/screens/games/universal_loading_screen.dart
+- lib/screens/games/universal_game_screen.dart
+- lib/screens/games/templates/template_timed_quiz.dart
+context_anchors:
+- ELEVATION.md#§18.5:L4303-L4322
+delta:
+  current_state: Overlay and shell work; mastery results exist but start guide, victory, universal screens and templates are
+    unrouted.
+  defects_to_fix:
+  - Results screens differ per game with no shared mastery feedback.
+  elevation_to_build:
+  - One GameKit frame with ~10s first-play how-to from the start guide.
+  - Mastery results show improved words and skills, mistake replay with audio, add-to-review, replay; every game reports to
+    the learner model.
+  ux_and_render:
+  - Consistent header with timer, score, quit; skill bars on results; confetti only on personal bests.
+  hub_placement: Inside every game.
+  unlock_stage: per §17.4
+  harvest_list:
+  - Wire game_start_guide_screen, victory_results, universal_loading, universal_game_screen and timed quiz template into GameKit.
+  - Standardize on game_mastery_results_screen for all games.
+acceptance_criteria:
+- id: AC1
+  text: Given first launch of any game, when the session starts, then a skippable how-to plays once and routes through GameKit.
+- id: AC2
+  text: Given a finished round, when results appear, then the mastery screen lists skill deltas, mistakes with audio, and
+    add-to-review actions.
+- id: AC3
+  text: Given any game completion, when the session ends, then learner model receives a verified play event without swallowed
+    errors.
+test_plan:
+  unit:
+  - game rules
+  - content binding
+  integration:
+  - GameKit session
+  - learner model writeback
+  e2e:
+  - Play shelf launch to results
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content:
+  - lexicon pool has audio for target language
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - 056.*
+tags: []
+p0_area: false
+charter: v2
+inherits: FEATURE_BASE
+gate: HUB
+status: Draft
+user_facing: true
+risks: []
+external_blockers: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/microinteractions
+  - prime/feedback-patterns

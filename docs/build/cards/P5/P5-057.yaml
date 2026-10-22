@@ -1,0 +1,87 @@
+charter: v2
+id: P5-057
+kind: build
+title: Route community fixes into the Verify queue
+phase: P5
+epic: E-P5-A2
+req_ids:
+- CP-§5-17
+- CP-§5-18
+- CP-§5-28
+depends_on:
+- P5-012
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 2, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/screens/suggest_fix_sheet.dart
+- node-backend/src/services/verify_queue.service.ts
+- test/content/suggest_fix_test.ts
+context_anchors:
+- CURRICULUM.md#§5:L621-L625
+acceptance_criteria:
+- id: AC1
+  text: Given a heritage learner, when they propose a correction, then it enters the Verify queue and the item stays unchanged
+- id: AC2
+  text: Given the queue, when native validators adjudicate, then accepted fixes bump the item version
+- id: AC3
+  text: Given the Village → Contribute path, when linked, then it stays free of charge
+test_plan:
+  unit:
+  - queue
+  integration: []
+  security:
+  - abuse limits
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - idle
+  - submitted
+  - error
+  copy_keys:
+  - fix.title
+  tokens:
+  - color.label.native
+  - color.label.expert
+  - color.label.beta
+  - type.body
+  - space.4
+  motion_tier: product
+  a11y:
+  - screen-reader announces label name and meaning
+  - touch targets >=48dp
+  - contrast >=4.5:1 on label chips
+  goldens:
+  - suggest_fix
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G6
+external_blockers:
+- EXT-13
+status: Draft
+skills:
+  worker:
+  - prime/navigation-patterns
+  - prime/mobile-app-ui-design

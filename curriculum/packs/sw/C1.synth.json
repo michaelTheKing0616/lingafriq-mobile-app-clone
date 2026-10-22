@@ -1,0 +1,4856 @@
+{
+"lang": "sw",
+"level": "C1",
+"built": "2026-10-21",
+"source_type": "synthesized",
+"items": [
+{
+"id": "sw.syn.23e6069034f8",
+"lang": "sw",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.PROD: Produce argumentative text"
+],
+"text": "Ingawa uchumi umekua, bado wananchi wengi wanakabiliwa na umaskini.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Although the economy has grown, many citizens still face poverty.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Ingawa (although) + bado (still) concessive frame.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Ingawa",
+"count": 3499,
+"locator": "leipzig:swa_community_2017#s527"
+},
+{
+"token": "uchumi",
+"count": 3378,
+"locator": "leipzig:swa_community_2017#s151"
+},
+{
+"token": "umekua",
+"count": 41,
+"locator": "leipzig:swa_community_2017#s12490"
+},
+{
+"token": "bado",
+"count": 5142,
+"locator": "leipzig:swa_community_2017#s5"
+},
+{
+"token": "wananchi",
+"count": 8809,
+"locator": "leipzig:swa_community_2017#s372"
+},
+{
+"token": "wengi",
+"count": 10116,
+"locator": "leipzig:swa_community_2017#s21"
+},
+{
+"token": "wanakabiliwa",
+"count": 134,
+"locator": "leipzig:swa_community_2017#s2353"
+},
+{
+"token": "na",
+"count": 357506,
+"locator": "leipzig:swa_community_2017#s6"
+},
+{
+"token": "umaskini",
+"count": 756,
+"locator": "leipzig:swa_community_2017#s1689"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:swa_community_2017#s527",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Ingawa' attested 3499x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s527"
+},
+{
+"text": "token 'uchumi' attested 3378x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s151"
+},
+{
+"text": "token 'umekua' attested 41x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s12490"
+},
+{
+"text": "token 'bado' attested 5142x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s5"
+},
+{
+"text": "token 'wananchi' attested 8809x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s372"
+},
+{
+"text": "token 'wengi' attested 10116x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s21"
+},
+{
+"text": "token 'wanakabiliwa' attested 134x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s2353"
+},
+{
+"text": "token 'na' attested 357506x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s6"
+},
+{
+"text": "token 'umaskini' attested 756x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s1689"
+}
+],
+"confidence": 0.7,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": true,
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.db4c279c9196",
+"lang": "sw",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.PROD: Produce argumentative text"
+],
+"text": "Kwa upande mmoja elimu ni haki ya kila mtoto; kwa upande mwingine, shule nyingi hazina walimu wa kutosha.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "On the one hand education is every child's right; on the other, many schools lack enough teachers.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Balanced argument frame kwa upande mmoja / mwingine.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Kwa",
+"count": 170361,
+"locator": "leipzig:swa_community_2017#s2"
+},
+{
+"token": "upande",
+"count": 5662,
+"locator": "leipzig:swa_community_2017#s554"
+},
+{
+"token": "mmoja",
+"count": 7682,
+"locator": "leipzig:swa_community_2017#s33"
+},
+{
+"token": "elimu",
+"count": 6226,
+"locator": "leipzig:swa_community_2017#s356"
+},
+{
+"token": "ni",
+"count": 94601,
+"locator": "leipzig:swa_community_2017#s3"
+},
+{
+"token": "haki",
+"count": 4324,
+"locator": "leipzig:swa_community_2017#s168"
+},
+{
+"token": "ya",
+"count": 380334,
+"locator": "leipzig:swa_community_2017#s2"
+},
+{
+"token": "kila",
+"count": 13466,
+"locator": "leipzig:swa_community_2017#s329"
+},
+{
+"token": "mtoto",
+"count": 4360,
+"locator": "leipzig:swa_community_2017#s37"
+},
+{
+"token": "kwa",
+"count": 170361,
+"locator": "leipzig:swa_community_2017#s2"
+},
+{
+"token": "upande",
+"count": 5662,
+"locator": "leipzig:swa_community_2017#s554"
+},
+{
+"token": "mwingine",
+"count": 4239,
+"locator": "leipzig:swa_community_2017#s73"
+},
+{
+"token": "shule",
+"count": 6557,
+"locator": "leipzig:swa_community_2017#s2"
+},
+{
+"token": "nyingi",
+"count": 10427,
+"locator": "leipzig:swa_community_2017#s40"
+},
+{
+"token": "hazina",
+"count": 719,
+"locator": "leipzig:swa_community_2017#s1775"
+},
+{
+"token": "walimu",
+"count": 2052,
+"locator": "leipzig:swa_community_2017#s586"
+},
+{
+"token": "wa",
+"count": 263973,
+"locator": "leipzig:swa_community_2017#s2"
+},
+{
+"token": "kutosha",
+"count": 1624,
+"locator": "leipzig:swa_community_2017#s502"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:swa_community_2017#s2",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Kwa' attested 170361x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s2"
+},
+{
+"text": "token 'upande' attested 5662x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s554"
+},
+{
+"text": "token 'mmoja' attested 7682x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s33"
+},
+{
+"text": "token 'elimu' attested 6226x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s356"
+},
+{
+"text": "token 'ni' attested 94601x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s3"
+},
+{
+"text": "token 'haki' attested 4324x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s168"
+},
+{
+"text": "token 'ya' attested 380334x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s2"
+},
+{
+"text": "token 'kila' attested 13466x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s329"
+},
+{
+"text": "token 'mtoto' attested 4360x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s37"
+},
+{
+"text": "token 'kwa' attested 170361x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s2"
+},
+{
+"text": "token 'upande' attested 5662x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s554"
+},
+{
+"text": "token 'mwingine' attested 4239x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s73"
+}
+],
+"confidence": 0.7,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": true,
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.ad3b922139f0",
+"lang": "sw",
+"type": "pattern",
+"category": "verbal_extension",
+"cefr": "C1",
+"can_do": [
+"C1.GRAM: Use complex grammar (verbal extension)"
+],
+"text": "Kazi hii haifanyiki kwa siku moja.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "This work cannot be done in one day.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Stative -ik- (fanya → fanyika) with negation = 'not doable'.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Kazi",
+"count": 15424,
+"locator": "leipzig:swa_community_2017#s11"
+},
+{
+"token": "hii",
+"count": 20639,
+"locator": "leipzig:swa_community_2017#s17"
+},
+{
+"token": "haifanyiki",
+"count": 2,
+"locator": "leipzig:swa_community_2017#s36587"
+},
+{
+"token": "kwa",
+"count": 170361,
+"locator": "leipzig:swa_community_2017#s2"
+},
+{
+"token": "siku",
+"count": 10292,
+"locator": "leipzig:swa_community_2017#s329"
+},
+{
+"token": "moja",
+"count": 13301,
+"locator": "leipzig:swa_community_2017#s5"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:swa_community_2017#s11",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Kazi' attested 15424x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s11"
+},
+{
+"text": "token 'hii' attested 20639x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s17"
+},
+{
+"text": "token 'haifanyiki' attested 2x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s36587"
+},
+{
+"text": "token 'kwa' attested 170361x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s2"
+},
+{
+"text": "token 'siku' attested 10292x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s329"
+},
+{
+"text": "token 'moja' attested 13301x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s5"
+}
+],
+"confidence": 0.45,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.verbal_extension"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": false,
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.7fd8d3e3f9f6",
+"lang": "sw",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.PROD: Produce narrative text"
+],
+"text": "Alipofika nyumbani, aligundua kwamba mlango ulikuwa wazi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "When he arrived home, he discovered that the door was open.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "-po- temporal relative (when).",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Alipofika",
+"count": 134,
+"locator": "leipzig:swa_community_2017#s2504"
+},
+{
+"token": "nyumbani",
+"count": 2847,
+"locator": "leipzig:swa_community_2017#s131"
+},
+{
+"token": "aligundua",
+"count": 136,
+"locator": "leipzig:swa_community_2017#s2254"
+},
+{
+"token": "kwamba",
+"count": 19833,
+"locator": "leipzig:swa_community_2017#s10"
+},
+{
+"token": "mlango",
+"count": 457,
+"locator": "leipzig:swa_community_2017#s2750"
+},
+{
+"token": "ulikuwa",
+"count": 2244,
+"locator": "leipzig:swa_community_2017#s418"
+},
+{
+"token": "wazi",
+"count": 2598,
+"locator": "leipzig:swa_community_2017#s10"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:swa_community_2017#s2504",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Alipofika' attested 134x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s2504"
+},
+{
+"text": "token 'nyumbani' attested 2847x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s131"
+},
+{
+"text": "token 'aligundua' attested 136x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s2254"
+},
+{
+"text": "token 'kwamba' attested 19833x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s10"
+},
+{
+"text": "token 'mlango' attested 457x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s2750"
+},
+{
+"text": "token 'ulikuwa' attested 2244x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s418"
+},
+{
+"text": "token 'wazi' attested 2598x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s10"
+}
+],
+"confidence": 0.7,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": false,
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.76ab2a1e72e2",
+"lang": "sw",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULT: Understand a cultural practice"
+],
+"text": "Shikamoo, mzee.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "(Respectful greeting to an elder.)",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Younger people greet elders with 'Shikamoo'; the elder replies 'Marahaba'. Register: deference by age.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Shikamoo",
+"count": 20,
+"locator": "leipzig:swa_community_2017#s886"
+},
+{
+"token": "mzee",
+"count": 1077,
+"locator": "leipzig:swa_community_2017#s389"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:swa_community_2017#s886",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Shikamoo' attested 20x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s886"
+},
+{
+"text": "token 'mzee' attested 1077x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s389"
+}
+],
+"confidence": 0.7,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.culture_note"
+],
+"games": [],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": true,
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 4,
+"crosscheck_ok": true
+},
+{
+"id": "sw.prv.f259a8b3fc61",
+"lang": "sw",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.IDIOM: Understand and use proverbs in context"
+],
+"text": "Usipoziba ufa utajenga ukuta",
+"source_type": "attested",
+"translation_en": {
+"text": "If you don't fill a crack you will build a wall.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"token_evidence": [
+{
+"token": "Usipoziba",
+"count": 1,
+"locator": "leipzig:swa_community_2017#s246564"
+},
+{
+"token": "ufa",
+"count": 146,
+"locator": "leipzig:swa_community_2017#s21063"
+},
+{
+"token": "utajenga",
+"count": 10,
+"locator": "leipzig:swa_community_2017#s18382"
+},
+{
+"token": "ukuta",
+"count": 433,
+"locator": "leipzig:swa_community_2017#s938"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:swa_community_2017#s246564 :: Tukumbuke kuwa Wahenga walisema: “Cheleachelea Mwana Kulia Huja Kulia Wewe”; na “Usipoziba Ufa Utajenga Ukuta”; au “Majuto ni Mjukuu mwishowe huja kinyume”.",
+"role": "shipped_text"
+},
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:swa_community_2017#s246564",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Usipoziba' attested 1x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s246564"
+},
+{
+"text": "token 'ufa' attested 146x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s21063"
+},
+{
+"text": "token 'utajenga' attested 10x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s18382"
+},
+{
+"text": "token 'ukuta' attested 433x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s938"
+}
+],
+"confidence": 0.45,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"idiom_or_formula",
+"meaning_gloss_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"register_model": false,
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 4,
+"crosscheck_ok": true
+},
+{
+"id": "sw.prv.83eb32fbae62",
+"lang": "sw",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.IDIOM: Understand and use proverbs in context"
+],
+"text": "mwenye macho haambiwi tazama",
+"source_type": "attested",
+"translation_en": {
+"text": "One with eyes need not be told to look.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"token_evidence": [
+{
+"token": "mwenye",
+"count": 3018,
+"locator": "leipzig:swa_community_2017#s294"
+},
+{
+"token": "macho",
+"count": 1119,
+"locator": "leipzig:swa_community_2017#s886"
+},
+{
+"token": "haambiwi",
+"count": 5,
+"locator": "leipzig:swa_community_2017#s83693"
+},
+{
+"token": "tazama",
+"count": 254,
+"locator": "leipzig:swa_community_2017#s1057"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:swa_community_2017#s83693 :: Ingawa hawakusema waziwazi kwamba watachagua kiongozi gani au chama gani, lakini mwenye macho haambiwi tazama na dalili ya mvua ni mawingu.",
+"role": "shipped_text"
+},
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:swa_community_2017#s294",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'mwenye' attested 3018x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s294"
+},
+{
+"text": "token 'macho' attested 1119x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s886"
+},
+{
+"text": "token 'haambiwi' attested 5x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s83693"
+},
+{
+"text": "token 'tazama' attested 254x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s1057"
+}
+],
+"confidence": 0.7,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"idiom_or_formula",
+"meaning_gloss_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"register_model": false,
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 4,
+"crosscheck_ok": true
+},
+{
+"id": "sw.prv.55e06828e000",
+"lang": "sw",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.IDIOM: Understand and use proverbs in context"
+],
+"text": "kidole kimoja hakivunji chawa",
+"source_type": "attested",
+"translation_en": {
+"text": "One finger cannot crush a louse.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"token_evidence": [
+{
+"token": "kidole",
+"count": 201,
+"locator": "leipzig:swa_community_2017#s899"
+},
+{
+"token": "kimoja",
+"count": 980,
+"locator": "leipzig:swa_community_2017#s378"
+},
+{
+"token": "hakivunji",
+"count": 2,
+"locator": "leipzig:swa_community_2017#s233097"
+},
+{
+"token": "chawa",
+"count": 34,
+"locator": "leipzig:swa_community_2017#s25575"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:swa_community_2017#s233097 :: Silalamiki bali nataka kuwatia moyo Watanzania na wengineo kwamba wakati umefika wa kutafuta suluhu ya matatizo yao kwani inaonekana wazi kwamba kidole kimoja h",
+"role": "shipped_text"
+},
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:swa_community_2017#s899",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'kidole' attested 201x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s899"
+},
+{
+"text": "token 'kimoja' attested 980x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s378"
+},
+{
+"text": "token 'hakivunji' attested 2x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s233097"
+},
+{
+"text": "token 'chawa' attested 34x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s25575"
+}
+],
+"confidence": 0.45,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"idiom_or_formula",
+"meaning_gloss_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"register_model": false,
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 4,
+"crosscheck_ok": true
+},
+{
+"id": "sw.prv.d744d54cf248",
+"lang": "sw",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.IDIOM: Understand and use proverbs in context"
+],
+"text": "maji yakimwagika hayazoleki",
+"source_type": "attested",
+"translation_en": {
+"text": "Spilt water cannot be gathered.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"token_evidence": [
+{
+"token": "maji",
+"count": 6103,
+"locator": "leipzig:swa_community_2017#s2"
+},
+{
+"token": "yakimwagika",
+"count": 3,
+"locator": "leipzig:swa_community_2017#s83750"
+},
+{
+"token": "hayazoleki",
+"count": 2,
+"locator": "leipzig:swa_community_2017#s83750"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:swa_community_2017#s83750 :: Ingawaje alipinga vikali hatua hiyo baada ya kurejea, ilikuwa kazi bure kwani maji yakimwagika hayazoleki.",
+"role": "shipped_text"
+},
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:swa_community_2017#s2",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'maji' attested 6103x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s2"
+},
+{
+"text": "token 'yakimwagika' attested 3x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s83750"
+},
+{
+"text": "token 'hayazoleki' attested 2x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s83750"
+}
+],
+"confidence": 0.45,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"idiom_or_formula",
+"meaning_gloss_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"register_model": false,
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 4,
+"crosscheck_ok": true
+},
+{
+"id": "sw.prv.5d335ca2a718",
+"lang": "sw",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.IDIOM: Understand and use proverbs in context"
+],
+"text": "siku za mwizi ni arobaini",
+"source_type": "attested",
+"translation_en": {
+"text": "A thief's days are forty.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"token_evidence": [
+{
+"token": "siku",
+"count": 10292,
+"locator": "leipzig:swa_community_2017#s329"
+},
+{
+"token": "za",
+"count": 74966,
+"locator": "leipzig:swa_community_2017#s11"
+},
+{
+"token": "mwizi",
+"count": 93,
+"locator": "leipzig:swa_community_2017#s4179"
+},
+{
+"token": "ni",
+"count": 94601,
+"locator": "leipzig:swa_community_2017#s3"
+},
+{
+"token": "arobaini",
+"count": 93,
+"locator": "leipzig:swa_community_2017#s5814"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:swa_community_2017#s59792 :: Hata hivyo siku za mwizi ni arobaini na ndege mjanja hunaswa kwenye tundu bovu.",
+"role": "shipped_text"
+},
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:swa_community_2017#s329",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'siku' attested 10292x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s329"
+},
+{
+"text": "token 'za' attested 74966x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s11"
+},
+{
+"text": "token 'mwizi' attested 93x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s4179"
+},
+{
+"text": "token 'ni' attested 94601x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s3"
+},
+{
+"text": "token 'arobaini' attested 93x",
+"source_id": "leipzig",
+"locator": "leipzig:swa_community_2017#s5814"
+}
+],
+"confidence": 0.7,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"idiom_or_formula",
+"meaning_gloss_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"register_model": false,
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 4,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.d01813b90869",
+"lang": "sw",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Ingawa sera hii ina nia njema, utekelezaji wake umekuwa dhaifu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Although this policy is well-intentioned, its implementation has been weak.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.5dd043245ce0",
+"lang": "sw",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Ni dhahiri kwamba bila uwekezaji katika elimu, maendeleo endelevu hayatawezekana.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Clearly, without investment in education, sustainable development will be impossible.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.f276361057f7",
+"lang": "sw",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Wapo wanaodai kwamba utandawazi umeleta faida kubwa, lakini ukweli ni kwamba umeongeza pengo kati ya matajiri na maskini.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Some claim globalisation has brought great benefits, but in truth it has widened the gap between rich and poor.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.8650178d7ff6",
+"lang": "sw",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Swali la msingi si kama tunahitaji mabadiliko, bali ni jinsi ya kuyaleta.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The basic question is not whether we need change, but how to bring it about.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.900e12ead1da",
+"lang": "sw",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Kwa kuzingatia takwimu hizi, ni vigumu kukubali kwamba umaskini umepungua.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Considering these statistics, it is hard to accept that poverty has fallen.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.ebe54936c3ae",
+"lang": "sw",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Hoja hii, ingawa inavutia, haizingatii hali halisi ya vijijini.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "This argument, though attractive, ignores the reality in rural areas.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.2ebad45d14be",
+"lang": "sw",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Ikiwa serikali itashindwa kudhibiti rushwa, imani ya wananchi itazidi kupungua.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "If the government fails to control corruption, public trust will keep falling.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.38661300560e",
+"lang": "sw",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Licha ya juhudi zilizofanywa, matokeo bado hayaridhishi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Despite the efforts made, the results are still unsatisfactory.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.63a350f60da2",
+"lang": "sw",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Kwa mtazamo wangu, suluhisho la kudumu linahitaji ushirikiano wa pande zote.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "In my view, a lasting solution requires cooperation from all sides.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.36492d86c8de",
+"lang": "sw",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Haiwezekani kutenganisha maendeleo ya kiuchumi na haki za kijamii.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Economic development cannot be separated from social justice.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.952343719e15",
+"lang": "sw",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Wakosoaji wanasema mpango huo ni ghali mno ukilinganisha na faida zake.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Critics say the plan is far too costly compared to its benefits.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.133e0ae48cc8",
+"lang": "sw",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Jambo hili linazua maswali mengi kuliko majibu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "This matter raises more questions than answers.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.14d6d35109d9",
+"lang": "sw",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Ni wazi kuwa tatizo hili lina mizizi mirefu katika historia.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It is clear that this problem has deep roots in history.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.f5df022008e8",
+"lang": "sw",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Tukilitazama suala hili kwa undani, tutagundua kwamba lina pande nyingi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "If we look at this issue closely, we will find it has many sides.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.937561f78f29",
+"lang": "sw",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Pamoja na kwamba teknolojia imerahisisha maisha, imeleta changamoto mpya za faragha.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Although technology has made life easier, it has brought new privacy challenges.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.ff7eb8269ec1",
+"lang": "sw",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Kadiri unavyosoma zaidi, ndivyo unavyoelewa zaidi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The more you read, the more you understand.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.e2139d256459",
+"lang": "sw",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Ilibidi tuondoke kabla mvua haijaanza.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "We had to leave before the rain started.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.cdd72281ded0",
+"lang": "sw",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Asingeweza kufanya hivyo bila kusaidiwa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He could not have done that without being helped.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.c19e098598ba",
+"lang": "sw",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Inasemekana kwamba mwanasiasa huyo atajiuzulu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It is said that the politician will resign.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.e5619688ba96",
+"lang": "sw",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Hakuna aliyejua kilichokuwa kimetokea.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "No one knew what had happened.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.eda95270d798",
+"lang": "sw",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Alizungumza kana kwamba alikuwa mtaalamu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He spoke as though he were an expert.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.1b9d72414b77",
+"lang": "sw",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Wanafunzi walitakiwa wawe wamewasilisha kazi zao jana.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The students were required to have submitted their work yesterday.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.044af13b6835",
+"lang": "sw",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Ndipo nilipogundua kwamba nilikuwa nimekosea.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It was then that I realised I had been wrong.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.78c88661b532",
+"lang": "sw",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Hata kama angejitahidi vipi, asingeweza kushinda.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "However hard he tried, he could not have won.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.f2d00c568817",
+"lang": "sw",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Kitabu hicho kinasomwa na wengi kuliko kilivyotarajiwa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "That book is read by more people than expected.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.1a767587bd37",
+"lang": "sw",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Walilazimika kuuza ardhi yao ili walipe madeni.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "They were forced to sell their land to pay their debts.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.a3e147d39852",
+"lang": "sw",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Amezoea kuamka alfajiri.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He is used to waking at dawn.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.094b9bb1f61a",
+"lang": "sw",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Tulijikuta tukicheka bila sababu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "We found ourselves laughing for no reason.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.77dd379ba9ee",
+"lang": "sw",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Maji yaliyomwagika hayazoleki.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Spilt water cannot be gathered up.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.b44c7d787d7e",
+"lang": "sw",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Mambo yanavyokwenda, huenda tukachelewa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The way things are going, we may be late.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.7a4caced13ce",
+"lang": "sw",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "Kwa heshima na taadhima, napenda kuwasilisha ombi langu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "With all due respect, I would like to submit my request.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.cbc811732b96",
+"lang": "sw",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "Tunapenda kuwajulisha kwamba ofisi itafungwa siku ya Jumatatu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "We wish to inform you that the office will be closed on Monday.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.0a507176a041",
+"lang": "sw",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "Kwa niaba ya kamati, natoa shukrani za dhati.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "On behalf of the committee, I extend sincere thanks.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.55a865c819eb",
+"lang": "sw",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "Ndugu wananchi, tumekusanyika hapa kwa jambo zito.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Fellow citizens, we have gathered here for a serious matter.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.15b290629b04",
+"lang": "sw",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "Mheshimiwa Spika, naunga mkono hoja.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Honourable Speaker, I support the motion.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.922a2896bc5a",
+"lang": "sw",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "Mambo vipi mzee? — Poa tu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "What's up, man? — Just fine. (casual)",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 4,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.729c7e6bec09",
+"lang": "sw",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "Husika na barua yako ya tarehe kumi mwezi huu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Reference is made to your letter of the tenth of this month.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 4,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.84e3d0e71d87",
+"lang": "sw",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "Natumaini ombi langu litapata kibali chako.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "I hope my request will meet with your approval.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.5a4c2a8c52c6",
+"lang": "sw",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Usiku ule, kijiji kizima kilikuwa kimya kama kaburi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "That night, the whole village was as silent as a grave.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.c46cbb3377db",
+"lang": "sw",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Mzee Hamisi aliketi barazani akitafakari maisha yake ya ujanani.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Old Hamisi sat on the porch reflecting on his youth.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.22d9d08cd206",
+"lang": "sw",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Alikumbuka jinsi alivyoondoka kijijini akiwa kijana asiye na kitu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He remembered how he had left the village as a young man with nothing.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.d1399946b752",
+"lang": "sw",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Miaka ishirini baadaye, alirudi akiwa tajiri lakini mpweke.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Twenty years later, he returned rich but lonely.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.d0cad2562132",
+"lang": "sw",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Watu waliomjua zamani walikuwa wamekwisha kufariki.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The people who had known him were already dead.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.01865eca1547",
+"lang": "sw",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Alitambua kwamba utajiri hauwezi kununua muda uliopotea.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He realised that wealth cannot buy back lost time.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.052414e5590f",
+"lang": "sw",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Machozi yalimtoka bila kujua.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Tears flowed from him without his noticing.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.35c5ab2bead0",
+"lang": "sw",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Methali hutumika katika mazungumzo ili kutoa ushauri bila kumkosea mtu moja kwa moja.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Proverbs are used in conversation to give advice without offending someone directly.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.122b9ec227b5",
+"lang": "sw",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Katika jamii nyingi za pwani, mahari hujadiliwa na wazee wa pande zote mbili.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "In many coastal communities, bride wealth is negotiated by elders of both sides.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.845eeefa2986",
+"lang": "sw",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Utenzi ni aina ya ushairi wa Kiswahili wenye historia ndefu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Utenzi is a form of Swahili poetry with a long history.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.3678a9700320",
+"lang": "sw",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Kiswahili kina maneno mengi yenye asili ya Kiarabu kutokana na biashara ya zamani.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Swahili has many words of Arabic origin due to old trade.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.a5d003bed43a",
+"lang": "sw",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Siku ya Mashujaa huadhimishwa kwa kuwakumbuka waliopigania uhuru.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Heroes' Day is marked by remembering those who fought for independence.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.b7bae36d29c2",
+"lang": "sw",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Ni kawaida kumtembelea mgonjwa na kumletea zawadi ndogo.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It is customary to visit a sick person and bring a small gift.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.259ecab98875",
+"lang": "sw",
+"type": "sentence",
+"category": "idiom",
+"cefr": "C1",
+"can_do": [
+"C1.IDIOM"
+],
+"text": "Amekuwa kikaragosi cha wenye nguvu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He has become a puppet of the powerful.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.idiom"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.24530bde6251",
+"lang": "sw",
+"type": "sentence",
+"category": "idiom",
+"cefr": "C1",
+"can_do": [
+"C1.IDIOM"
+],
+"text": "Walimtia kitanzini kwa maswali magumu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "They put him in a tight spot with hard questions.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.idiom"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.ab161b6b675c",
+"lang": "sw",
+"type": "sentence",
+"category": "idiom",
+"cefr": "C1",
+"can_do": [
+"C1.IDIOM"
+],
+"text": "Siasa za nchi hiyo ni mchezo wa paka na panya.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "That country's politics is a cat-and-mouse game.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.idiom"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.ea7f92f27e44",
+"lang": "sw",
+"type": "sentence",
+"category": "idiom",
+"cefr": "C1",
+"can_do": [
+"C1.IDIOM"
+],
+"text": "Mipango yake iliambulia patupu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "His plans came to nothing.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.idiom"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.b4c06c208720",
+"lang": "sw",
+"type": "sentence",
+"category": "idiom",
+"cefr": "C1",
+"can_do": [
+"C1.IDIOM"
+],
+"text": "Usitie chumvi habari hii.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Don't exaggerate this news.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.idiom"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.syn.9971d13902ac",
+"lang": "sw",
+"type": "sentence",
+"category": "idiom",
+"cefr": "C1",
+"can_do": [
+"C1.IDIOM"
+],
+"text": "Alibaki akipiga miayo kwa uchovu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He stayed yawning with fatigue.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.idiom"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.prv.b733cb328f8e",
+"lang": "sw",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.PROVERB"
+],
+"text": "Haba na haba hujaza kibaba.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Little by little fills the measure.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.prv.c120642883de",
+"lang": "sw",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.PROVERB"
+],
+"text": "Mtaka cha mvunguni sharti ainame.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Whoever wants what is under the bed must bend down.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.prv.bd763ef80bb3",
+"lang": "sw",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.PROVERB"
+],
+"text": "Asiyesikia la mkuu huvunjika guu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Whoever ignores the elder breaks a leg.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.prv.4220acafbe63",
+"lang": "sw",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.PROVERB"
+],
+"text": "Pole pole ndio mwendo.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Slowly, slowly is the way to go.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "sw.prv.4612cea3035f",
+"lang": "sw",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.PROVERB"
+],
+"text": "Bandu bandu huisha gogo.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Chip by chip finishes the log.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/sw.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"sw.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+}
+]
+}

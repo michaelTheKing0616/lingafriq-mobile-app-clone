@@ -1,0 +1,64 @@
+charter: v2
+id: P4-012
+kind: build
+title: Exclude AfriSenti pending creator confirmation
+phase: P4
+epic: E-P4-LICENCES
+req_ids:
+- CP-§2.3-03
+- CP-§2.3-24
+depends_on:
+- P4-010
+size: S
+difficulty:
+  score: 2
+  blast: 1
+  ambiguity: 0
+  coupling: 0
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: 'score 2: blast 1, ambiguity 0, coupling 0, depth 1, size 0'
+token_budget: 25000
+file_allowlist:
+- tools/content_engine/licences/exclusions.yaml
+- tools/content_engine/tests/test_excl_x_afrisenti.py
+context_anchors:
+- CURRICULUM.md#§2.3:L228-L233
+acceptance_criteria:
+- id: AC1
+  text: Given AfriSenti, when read, then status is excluded as non-commercial because the paper and the HF card conflict,
+    with a creator-query action recorded
+- id: AC2
+  text: Given the HF card says CC BY 4.0, when the register is built, then the conflict is stored and the card value is not
+    used to allow any use
+test_plan:
+  unit:
+  - table row present with status excluded
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

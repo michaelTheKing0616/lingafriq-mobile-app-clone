@@ -1,0 +1,65 @@
+charter: v2
+id: P4-044
+kind: build
+title: Check Swahili noun-class concords
+phase: P4
+epic: E-P4-LINTERS
+req_ids:
+- CP-§3.3-11
+- CP-§3.3-12
+- CP-§2.4-sw-05
+depends_on:
+- P4-039
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 0
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 3: blast 1, ambiguity 1, coupling 0, depth 1, size 0'
+token_budget: 25000
+file_allowlist:
+- tools/content_engine/linters/concord_sw.py
+- tools/content_engine/tests/test_concord_sw.py
+context_anchors:
+- CURRICULUM.md#§3.3:L529-L531
+- CURRICULUM.md#§2.4:L408-L409
+acceptance_criteria:
+- id: AC1
+  text: Given a Swahili noun with a class prefix (e.g. m/wa, ki/vi), when its verb subject or object marker or adjective prefix
+    disagrees with the class table, then it fails with SW_CONCORD
+- id: AC2
+  text: Given a noun missing from the lexicon, when checked, then the item flags SW_NOUN_UNKNOWN and does not pass silently
+test_plan:
+  unit:
+  - pass and fail fixtures
+  integration:
+  - CI blocks merge on failure
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

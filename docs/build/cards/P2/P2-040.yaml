@@ -1,0 +1,71 @@
+charter: v2
+id: P2-040
+kind: build
+title: Archive status docs and generate honest STATUS.md
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.9-16
+- EP-§13.9-17
+- EP-§13.9-18
+depends_on:
+- E-P1-CONTAINMENT
+size: M
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 0
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 2, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- README.md
+- ARCHITECTURE.md
+- STATUS.md
+- scripts/docs/archive_status_md.py
+- scripts/docs/gen_status.py
+context_anchors:
+- ELEVATION.md#§13.9:L1960-L1961
+- ELEVATION.md#§13.9:L1961
+- ELEVATION.md#§13.9:L1961-L1962
+acceptance_criteria:
+- id: AC1
+  text: Given the status Markdown files, when the archive script runs, then they move to docs/archive with a manifest and
+    no file is deleted
+- id: AC2
+  text: Given README.md and ARCHITECTURE.md, when written, then each states only verified current behaviour
+- id: AC3
+  text: Given STATUS.md, when generated, then it derives only from test results and feature flags and states unknown when
+    data is missing
+test_plan:
+  unit:
+  - status generator fixtures
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

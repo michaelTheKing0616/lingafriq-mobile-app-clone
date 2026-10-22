@@ -1,0 +1,71 @@
+charter: v2
+id: P3-019
+kind: build
+title: Create isolated Widgetbook catalogue with golden harness
+phase: P3
+epic: E-P3-COMPONENTS
+req_ids:
+- EP-§3.2-14
+depends_on:
+- P3-018
+- P3-014
+size: L
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 4: blast 0, ambiguity 1, coupling 2'
+token_budget: 150000
+file_allowlist:
+- widgetbook/pubspec.yaml
+- widgetbook/lib/main.dart
+- test/goldens/golden_harness.dart
+- lib/design/catalogue/registry.dart
+context_anchors:
+- ELEVATION.md#§3.2:L787-L789
+- ELEVATION.md#§3.4:L845-L847
+acceptance_criteria:
+- id: AC1
+  text: Given widgetbook/, when built, then it is a separate app target excluded from the release build
+- id: AC2
+  text: Given each component use-case, when registered, then it declares its state list and a missing state fails CI
+- id: AC3
+  text: Given each component, when goldens run, then images exist at 100% and 200% text in light and dark
+- id: AC4
+  text: Given each component, when documented, then a pixel spec sheet lists size, spacing and token ids
+- id: AC5
+  text: Given a golden diff, when CI runs, then any pixel change fails until re-approved
+test_plan:
+  unit:
+  - state registry check
+  integration:
+  - golden run 100% and 200%
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - 200% text
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

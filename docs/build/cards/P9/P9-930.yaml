@@ -1,0 +1,104 @@
+charter: v2
+id: P9-930
+kind: build
+title: Provide block, mute and report on every message and profile in two taps
+phase: P9
+epic: E-P9-MODERATION
+req_ids:
+- EP-§9.4-16
+- EP-§9.4-17
+- EP-§9.4-18
+- EP-§9.1-20
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+- P9-921
+- P9-905
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 3, ambiguity 1, coupling 2, depth 0'
+token_budget: 80000
+file_allowlist:
+- lib/widgets/safety/safety_actions_sheet.dart
+- node-backend/src/services/userSafety.service.ts
+- lib/screens/chat/moderation_tools_screen.dart
+context_anchors:
+- ELEVATION.md#§9.4:L1648
+- ELEVATION.md#§9.1:L1566
+acceptance_criteria:
+- id: AC1
+  text: Given any message, profile, clip, room or comment, when the user opens its menu, then block, mute and report are each
+    reachable in at most two taps, verified by an integration test that counts taps
+- id: AC2
+  text: Given a block, when confirmed, then the blocked user cannot message, see presence, or find the blocker, and existing
+    shared-circle messages are hidden for the blocker
+- id: AC3
+  text: Given a report, when submitted, then it creates a moderation case with the content snapshot and reason and the reporter
+    sees a confirmation with a case id
+- id: AC4
+  text: Given offline state, when the user reports, then the report queues locally with a visible 'will send' state and is
+    delivered on reconnect
+test_plan:
+  unit:
+  - tap counter
+  integration:
+  - block effects across surfaces
+  - report to case
+  security:
+  - report spam abuse
+  e2e: []
+  perf: []
+  a11y:
+  - safety sheet
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - default
+  - confirm
+  - done
+  - offline
+  - error
+  copy_keys:
+  - safety.block
+  - safety.mute
+  - safety.report
+  - safety.reported
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - safety_default
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

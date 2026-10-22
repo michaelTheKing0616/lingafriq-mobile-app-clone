@@ -1,0 +1,70 @@
+charter: v2
+id: P6-075
+kind: build
+title: Run LiveKit Agents cascaded session per turn
+phase: P6
+epic: E-P6-REALTIME
+req_ids:
+- EP-§7.2-02
+- EP-§7.7-01
+depends_on:
+- P6-002
+- P6-017
+- P6-020
+size: L
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 3, ambiguity 1, coupling 2, depth 2'
+token_budget: 160000
+file_allowlist:
+- node-backend/src/ai-gateway/realtime/agent.ts
+- node-backend/src/ai-gateway/realtime/session.ts
+- lib/services/realtime_voice_client.dart
+context_anchors:
+- ELEVATION.md#§7.7:L1477-L1482
+acceptance_criteria:
+- id: AC1
+  text: Given the livekit_client already shipped, when a user starts a voice session, then a LiveKit agent runs VAD, streaming
+    STT, streaming LLM and streaming TTS per turn
+- id: AC2
+  text: Given an unauthenticated join, when attempted, then the token is refused
+- id: AC3
+  text: Given the session budget, when exceeded, then it ends with typed error quota_exceeded
+test_plan:
+  unit:
+  - turn state machine
+  integration:
+  - agent round trip
+  security:
+  - room token scope
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

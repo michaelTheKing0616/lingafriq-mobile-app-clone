@@ -1,0 +1,125 @@
+charter: v2
+id: P8-923
+kind: build
+title: 'Flagship: Danfo/Matatu Rush listening game'
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.3-04
+- EP-§10.3-04a
+- EP-§10.3-04b
+- EP-§10.3-04c
+depends_on:
+- P8-900
+- P8-901
+- P8-909
+- P8-912
+- P8-916
+- E-P4-CONTENT-ENGINE
+- E-P3-DESIGN-SYSTEM
+size: M
+difficulty:
+  score: 6
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T1
+  justification: 'score 6: blast 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/games/danfo_rush/danfo_rush_game.dart
+- lib/games/danfo_rush/danfo_rush_screen.dart
+- lib/games/danfo_rush/speed_curve.dart
+- lib/screens/games/taxi_survival_screen.dart
+- lib/games/gamekit/all_games_registry.dart
+context_anchors:
+- ELEVATION.md#§10.3:L1712-L1719
+- ELEVATION.md#§10.3:L1770
+acceptance_criteria:
+- id: AC1
+  text: Given rapid conductor calls, when a stop name plays, then the learner taps to board the matching bus before the departure
+    timer ends
+- id: AC2
+  text: Given the difficulty curve, when level rises, then call speed increases per speed_curve config and accents vary
+- id: AC3
+  text: Given audio for a call, when it is chosen, then it is a real recording with a speaker and accent tag; any item without
+    a recording is excluded and TTS is never substituted
+- id: AC4
+  text: Given the recordings are not yet delivered, when the game opens, then it shows 'recordings coming' and is not in the
+    headliner row
+- id: AC5
+  text: Given Taxi Survival, when this card completes, then every mechanic in its harvest list is carried or waived
+test_plan:
+  unit:
+  - speed curve
+  - audio filter
+  integration:
+  - content pool with accent tags
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - stop-name lexicon fixtures
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - ready
+  - playing
+  - correct
+  - wrong
+  - why_wrong
+  - results
+  - error
+  - offline
+  - practice_mode
+  - recordings_pending
+  copy_keys:
+  - games.danfo_rush.title
+  - games.danfo_rush.instructions
+  - games.danfo_rush.why_wrong
+  - games.danfo_rush.practice_label
+  - games.danfo_rush.error
+  tokens:
+  - color.surface.game
+  - color.feedback.correct
+  - color.feedback.wrong
+  - space.4
+  - radius.card
+  - type.title
+  motion_tier: product
+  a11y:
+  - screen-reader labels on every answer control
+  - reduced-motion variant
+  - correctness shown by icon and text not colour alone
+  - touch targets ≥48dp
+  goldens:
+  - danfo_rush_playing
+  - danfo_rush_why_wrong
+  - danfo_rush_results
+tags:
+- uses_source
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers:
+- EXT-13
+status: Draft
+harvest_list:
+- 'Taxi Survival: lib/screens/games/taxi_survival_screen.dart'
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

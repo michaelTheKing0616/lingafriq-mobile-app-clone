@@ -1,0 +1,68 @@
+charter: v2
+id: P13-009
+kind: design
+title: Design Ajami, Nsibidi, Adinkra and Ge'ez script journeys
+phase: P13
+epic: E-P13-SCALE
+req_ids:
+- RM-MS-05
+depends_on:
+- E-P12-RELEASE
+- P13-004
+- E-P4-CONTENT-ENGINE
+size: S
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 2, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§16.4:L2139-L2141
+acceptance_criteria:
+- id: AC1
+  text: Given each of the 4 scripts, when the design is reviewed, then it names an authority or cultural reviewer, glyph source
+    and licence
+- id: AC2
+  text: Given Nsibidi and Adinkra, when specified, then the design states they are symbol systems with cultural-context requirements,
+    not alphabets
+- id: AC3
+  text: Given script rendering and input, when specified, then fallback fonts and an accessibility path are defined
+- id: AC4
+  text: Given the doc, when complete, then build cards and sizes per script are listed
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- uses_source
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks:
+- Cultural review required before any build
+- Priority MS; design and ADR only, no build before P13-004 gate passes
+gate: G13
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - adaptive/09-writing-and-communication

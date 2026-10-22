@@ -1,0 +1,71 @@
+charter: v2
+id: P2-030
+kind: build
+title: Split worker service on BullMQ with leader-elected cron
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.4-11
+- EP-§13.4-12
+depends_on:
+- E-P1-CONTAINMENT
+- P2-031
+size: L
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 2
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 3, coupling 2, depth 1'
+token_budget: 150000
+file_allowlist:
+- node-backend/src/worker.ts
+- node-backend/src/queues/index.ts
+- node-backend/src/services/leader.service.ts
+- node-backend/src/app.ts
+- ecosystem.config.js
+context_anchors:
+- ELEVATION.md#§13.4:L1902-L1903
+- ELEVATION.md#§13.4:L1903
+acceptance_criteria:
+- id: AC1
+  text: Given background jobs, when enqueued, then a separate worker process consumes them from BullMQ and the API process
+    runs none
+- id: AC2
+  text: Given several instances, when cron fires, then exactly one leader runs each job
+- id: AC3
+  text: Given the leader dies, when its lease expires, then another instance takes over within the lease period
+test_plan:
+  unit: []
+  integration:
+  - two instances, one cron execution
+  - leader failover
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

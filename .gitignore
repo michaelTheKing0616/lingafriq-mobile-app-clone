@@ -66,7 +66,9 @@ output/
 
 # Cursor / IDE artifacts
 Curosr_Chat_History/
-.cursor/
+.cursor/*
+# Keep shared agent rules versioned so every clone inherits the Token Economy Charter (charter: v2)
+!.cursor/rules/
 # Secrets / sensitive config
 lib/config/secrets_manager.dart
 *.env

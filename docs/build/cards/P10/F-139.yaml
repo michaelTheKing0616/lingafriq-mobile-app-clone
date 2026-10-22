@@ -1,0 +1,110 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P10
+epic: E-P10-ME
+hub: Me
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: Me hub screen revive or consolidation; no real-time audio
+token_budget: 80000
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f_139.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+test_plan:
+  unit:
+  - radar mapping from scorer payload
+  - forecast copy thresholds
+  integration:
+  - progress tabs and evidence deep links
+  e2e:
+  - Progress from Me tab
+  a11y:
+  - chart semantics and 200% text
+  content: []
+tags:
+- shows_score
+id: F-139
+title: Elevate Progress Dashboard
+req_ids:
+- F-139
+- F-139.D
+- F-139.E
+- F-139.U
+- F-139.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P6-SCORER
+file_allowlist:
+- screens/progress/progress_dashboard_screen.dart
+- screens/global/global_progress_screen.dart
+context_anchors:
+- ELEVATION.md#§18.7:L5464-L5477
+delta:
+  current_state: Progress route works; global progress screen unrouted duplicate.
+  defects_to_fix:
+  - Dashboard highlights vanity XP instead of ability
+  elevation_to_build:
+  - CEFR can-do statements with evidence links
+  - Skill radar for listen, speak, read, write, tone
+  - Words known, speaking minutes, and pace forecast
+  - Tabs for Me, Languages, and Global views
+  ux_and_render:
+  - Calm charts with links to evidence recordings
+  hub_placement: Me → Progress
+  unlock_stage: per §17.4
+  harvest_list:
+  - Consolidate global_progress_screen as Progress tab
+acceptance_criteria:
+- id: AC1
+  text: Given scorer data, when Progress loads, then can-do ticks reflect server-computed ability not client XP.
+- id: AC2
+  text: Given a can-do item, when the user taps evidence, then they reach the linked recording or honest unavailable state.
+- id: AC3
+  text: Given duplicate global progress file, when navigation runs, then one Progress surface serves Me and Global tabs.
+- id: AC4
+  text: Given insufficient history, when forecast is shown, then copy states uncertainty instead of a fake date.
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

@@ -1,0 +1,71 @@
+charter: v2
+id: P2-034
+kind: build
+title: Emit RED metrics and alert on latency SLOs
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.4-18
+- EP-§13.4-19
+- EP-§13.4-20
+- EP-§13.4-21
+depends_on:
+- E-P1-CONTAINMENT
+- P2-033
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 3, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/telemetry/red_metrics.ts
+- infra/alerts/slo_rules.yaml
+- infra/dashboards/red.json
+context_anchors:
+- ELEVATION.md#§13.4:L1906-L1907
+- ELEVATION.md#§13.4:L1907
+acceptance_criteria:
+- id: AC1
+  text: Given each route, when requests are served, then rate, errors and duration metrics are emitted
+- id: AC2
+  text: Given read endpoints, when measured over 5 minutes, then p95 is under 300 ms and an alert fires above it
+- id: AC3
+  text: Given chat delivery, when measured, then p95 is under 500 ms and an alert fires above it
+- id: AC4
+  text: Given AI responses, when measured, then first-token latency is under 400 ms and an alert fires above it
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf:
+  - load test against p95 targets
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/11-data-and-quantitative-work
+  - adaptive/07-research-and-fact-checking

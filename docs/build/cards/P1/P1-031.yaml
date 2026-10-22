@@ -1,0 +1,87 @@
+charter: v2
+id: P1-031
+kind: build
+title: Replace fake pronunciation scores with honest practice mode
+phase: P1
+epic: E-P1-CONTENT-HONESTY
+req_ids:
+- P0-18
+- RM-P0-08
+depends_on:
+- E-P0-INTAKE
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 5; blast 2
+token_budget: 70000
+file_allowlist:
+- lib/screens/games/pronunciation_duel_game.dart
+- lib/screens/games/pronunciation_karaoke_screen.dart
+- lib/screens/tutor/tutor_pronunciation_mode_screen.dart
+- lib/l10n/app_en.arb
+context_anchors:
+- ELEVATION.md#§1:L290-L300
+- ELEVATION.md#§16.1:L2042-L2047
+acceptance_criteria:
+- id: AC1
+  text: Given the three pronunciation surfaces, when a user finishes an attempt, then no numeric score or grade is shown and
+    the screen states practice mode, scoring coming soon
+- id: AC2
+  text: Given a code scan of the three files, when run, then no random-number generator feeds a displayed score
+- id: AC3
+  text: Given a pronunciation attempt, when completed, then XP or streaks are not credited from a fake score
+- id: AC4
+  text: Given the screens still open, when used, then games stay visible and playable as practice without recording-less scoring
+test_plan:
+  unit:
+  - no-score state
+  integration:
+  - widget tests asserting no score text
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - practice label announced
+  content:
+  - copy review
+user_facing: true
+ux_spec:
+  states:
+  - practice-mode
+  copy_keys:
+  - pron.practice_mode
+  - pron.scoring_soon
+  tokens:
+  - design-system info tokens
+  motion_tier: product
+  a11y:
+  - label read before controls
+  goldens:
+  - pron_practice_mode
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Allowlist paths corrected to lib/screens/games and lib/screens/tutor; the drafted paths did not exist
+- "PASS 2026-10-21: no finishGame or awardXP. Residual: tests are source scans, not widget pumps. Duel waveform Random() is not a score."
+gate: G1
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

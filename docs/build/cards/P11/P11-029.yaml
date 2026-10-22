@@ -1,0 +1,67 @@
+charter: v2
+id: P11-029
+kind: adr
+title: Decide CharacterVM production contract (ADR-030)
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§4.2-01
+- EP-§4.2-16
+- EP-§4.2-12
+- EP-§4.2-13
+- EP-§4.2-14
+- EP-§4.2-15
+- EP-§4.2-11
+- EP-§4.2-17
+- EP-§4.2-18
+- EP-§4.2-19
+- EP-§4.3-12
+- EP-§4.3-13
+- EP-§4.3-15
+depends_on: []
+size: S
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T4
+  tester: T0
+  reviewer: T4
+  justification: 'score 5: blast 2, ambiguity 2, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist:
+- docs/build/adr/ADR-030.md
+context_anchors:
+- ELEVATION.md#§4.2:L867-L885
+- ELEVATION.md#§4.3:L927-L942
+acceptance_criteria:
+- id: AC1
+  text: 'Given the two source expression enums, when ADR-030 is accepted, then the production expression enum is their union:
+    neutral, happy, proud, curious, concerned, surprised, thinking, encouraging, playful, focused (CONFLICTS C5).'
+- id: AC2
+  text: Given the legacy specs (README 0–5, plan 0–100, engine mouthOpenness/lipRounding), when ADR-030 is accepted, then
+    all are superseded by the §4.3 contract with enums, 0..1 numbers and gazeX/Y in −1..1.
+- id: AC3
+  text: Given the deprecated state-machine input contract, when ADR-030 is accepted, then the Rive data-binding View Model
+    is the only contract and no new SMI wiring is allowed.
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- reviewer verdict
+- ledger row
+risks: []
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - prime/diagram-design

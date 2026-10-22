@@ -1,0 +1,71 @@
+charter: v2
+id: P9-906
+kind: build
+title: Add per-socket rate limits and backpressure
+phase: P9
+epic: E-P9-REALTIME
+req_ids:
+- EP-§9.5-07
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+- P9-905
+size: M
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 0
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 4: blast 2, ambiguity 0, coupling 1, depth 1'
+token_budget: 80000
+file_allowlist:
+- node-backend/src/services/socket.service.ts
+- node-backend/src/socket/rateLimit.ts
+context_anchors:
+- ELEVATION.md#§9.5:L1658-L1659
+acceptance_criteria:
+- id: AC1
+  text: Given a socket exceeding its per-event rate limit, when it emits again, then it receives RATE_LIMITED with a retry-after
+    value and the event is not processed
+- id: AC2
+  text: Given a slow consumer whose outbound buffer exceeds the configured cap, when more events are queued, then the server
+    drops non-critical events, keeps message events, and disconnects the socket if the cap is exceeded for 10 s
+- id: AC3
+  text: Given repeated violations, when the threshold is crossed, then the socket is disconnected and the account flagged
+    for the moderation queue
+test_plan:
+  unit:
+  - token bucket
+  integration:
+  - slow consumer
+  security:
+  - flood from one account across sockets
+  e2e: []
+  perf:
+  - flood test
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

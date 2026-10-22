@@ -1,0 +1,92 @@
+charter: v2
+id: P3-035
+kind: build
+title: Build the single text renderer and diacritic keyboard
+phase: P3
+epic: E-P3-TOKENS
+req_ids:
+- EP-§3.4-11
+- EP-§3.4-17
+depends_on:
+- P3-011
+- P3-012
+size: L
+difficulty:
+  score: 5
+  blast: 0
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 0, ambiguity 1, coupling 2'
+token_budget: 150000
+file_allowlist:
+- lib/design/text/target_text.dart
+- lib/design/text/diacritic_keyboard.dart
+- scripts/lint/target_text_only.py
+context_anchors:
+- ELEVATION.md#§3.4:L829-L837
+acceptance_criteria:
+- id: AC1
+  text: Given the glyph test string, when rendered by TargetText at 200%, then no diacritic is clipped (golden)
+- id: AC2
+  text: Given any target-language text in new code, when it uses plain Text, then the lint fails
+- id: AC3
+  text: Given the diacritic keyboard, when a key is long-pressed, then the accent variants for yo, ig, ha, zu, xh and sw show
+    and the input is NFC normalised
+- id: AC4
+  text: Given a language with no keyboard layout, when opened, then a typed error state shows and the system keyboard stays
+    available
+test_plan:
+  unit:
+  - NFC normalisation
+  - variant map
+  integration:
+  - golden 200%
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - semantics
+  content:
+  - diacritics
+user_facing: true
+ux_spec:
+  states:
+  - default
+  - long_press
+  - no_layout
+  copy_keys:
+  - keyboard.label.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

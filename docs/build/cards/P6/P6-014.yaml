@@ -1,0 +1,70 @@
+charter: v2
+id: P6-014
+kind: build
+title: Add input and output safety classifiers with age-tier policy
+phase: P6
+epic: E-P6-GATEWAY
+req_ids:
+- EP-§7.2-18
+- EP-§7.2-19
+depends_on:
+- P6-002
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, ambiguity 2, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/safety/classifiers.ts
+- node-backend/src/ai-gateway/safety/agePolicy.ts
+context_anchors:
+- ELEVATION.md#§7.2:L1367-L1387
+acceptance_criteria:
+- id: AC1
+  text: Given a flagged input, when classified, then the request is refused with typed error safety_input_blocked and no model
+    call
+- id: AC2
+  text: Given a flagged model output, when classified, then it is withheld and typed error safety_output_blocked is returned
+- id: AC3
+  text: Given an under-13 or under-18 tier, when a mode runs, then the stricter policy for that tier is applied from config
+- id: AC4
+  text: Given a classifier outage, when it occurs, then the gateway fails closed
+test_plan:
+  unit:
+  - policy select
+  integration:
+  - fail closed
+  security:
+  - jailbreak corpus
+  - minor tier escalation
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

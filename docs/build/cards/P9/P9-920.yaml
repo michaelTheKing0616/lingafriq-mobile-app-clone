@@ -1,0 +1,94 @@
+charter: v2
+id: P9-920
+kind: build
+title: Keep minors' messages moderated and explain the E2EE trade-off to families
+phase: P9
+epic: E-P9-GUARDIAN
+req_ids:
+- EP-§9.3-06
+- EP-§9.3-07
+- EP-§9.3-08
+- EP-§9.3-09
+depends_on:
+- E-P9-GUARDIAN
+- P9-908
+- P9-912
+- P9-914
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T4
+  justification: 'score 6: blast 3, ambiguity 1, coupling 2, depth 0; gate-critical (security / child safety / legal / design
+    direction): Fable reviews'
+token_budget: 80000
+file_allowlist:
+- node-backend/src/services/messagingPolicy.service.ts
+- lib/screens/guardian/messaging_explainer_screen.dart
+context_anchors:
+- ELEVATION.md#§9.3:L1632-L1634
+acceptance_criteria:
+- id: AC1
+  text: Given an under-18 account, when a DM thread is created, then it is allowed only inside a guardian-approved circle
+    or classroom and with E2EE disabled
+- id: AC2
+  text: Given an under-18 account and an unknown adult, when an E2EE DM is attempted, then the server refuses with E2EE_NOT_ALLOWED_FOR_MINOR
+- id: AC3
+  text: Given a minor's messages, when sent, then they pass through the moderation pipeline before delivery
+- id: AC4
+  text: Given a guardian, when viewing the hub, then plain-language copy explains that child messages are not E2EE so they
+    can be moderated and what the moderators see
+test_plan:
+  unit:
+  - policy
+  integration:
+  - thread creation by tier
+  security:
+  - E2EE downgrade bypass
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - explainer in supported UI languages
+user_facing: true
+ux_spec:
+  states:
+  - default
+  copy_keys:
+  - guardian.messaging.explainer.title
+  - guardian.messaging.explainer.body
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - guardian_default
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

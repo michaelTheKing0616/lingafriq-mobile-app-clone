@@ -1,0 +1,92 @@
+charter: v2
+id: P3-045
+kind: build
+title: Build global Search for words and features
+phase: P3
+epic: E-P3-SHELL
+req_ids:
+- EP-§17.1-09
+- EP-§17.1-16
+- EP-§17.2-55
+depends_on:
+- P3-037
+- P3-035
+size: M
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 4: blast 0, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/navigation/global_search.dart
+- lib/services/search_index_service.dart
+context_anchors:
+- ELEVATION.md#§17.1:L2207-L2212
+- ELEVATION.md#§17.1:L2231
+acceptance_criteria:
+- id: AC1
+  text: Given a query in the top bar, when typed, then results group into Words, Features and Content and a word opens its
+    Word Card
+- id: AC2
+  text: Given a feature name such as Tone Forge, when searched, then the feature appears and opens its route or its unlock
+    preview
+- id: AC3
+  text: Given no match, when searched, then the empty state offers the directory
+- id: AC4
+  text: Given offline, when searched, then local results show with an offline label
+test_plan:
+  unit:
+  - ranking
+  - feature index
+  integration:
+  - word to Word Card
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - idle
+  - results
+  - empty
+  - offline
+  copy_keys:
+  - search.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

@@ -1,0 +1,77 @@
+charter: v2
+id: P3-016
+kind: design
+title: Design hi-fi Tone Lens, Word Card and Lens camera
+phase: P3
+epic: E-P3-DESIGN-WORKFLOW
+req_ids:
+- EP-§3.4-18
+- EP-§3.4-19
+- EP-§3.3-10
+- EP-§3.3-12
+- EP-§17.1-10
+- EP-§17.1-11
+depends_on:
+- P3-015
+size: L
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 2
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T4
+  justification: 'score 4: blast 0, ambiguity 2, coupling 1'
+token_budget: 150000
+file_allowlist:
+- docs/build/design/screens/tone_wordcard_lens.md
+context_anchors:
+- ELEVATION.md#§3.4:L835-L839
+- ELEVATION.md#§17.1:L2213-L2228
+acceptance_criteria:
+- id: AC1
+  text: Given the Tone Lens, when drawn, then H, M, L, rising, falling and downstep contours are distinct in greyscale and
+    colour is optional
+- id: AC2
+  text: Given pronunciation feedback, when drawn, then it includes an unsure state and uses sample data labelled as sample
+    with no invented precision number
+- id: AC3
+  text: Given Word Card and Lens camera, when drawn, then the Word Card opens from a long-press on any word and the Lens shows
+    Point & Say, Live Translate and Import Media
+- id: AC4
+  text: Given the screen, when drawn, then light and dark frames exist at 390 px width and a 200% text frame, exported to
+    docs/build/design/screens/
+- id: AC5
+  text: Given every colour, size, font and radius, when audited, then each references a token and none is hard-coded
+- id: AC6
+  text: Given the state kit, when the screen has data, then skeleton, empty, error, offline and reduced-motion frames are
+    included
+- id: AC7
+  text: Given the T4 reviewer, when the visual evidence is checked, then the approval is recorded in the card report
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: true
+dod_evidence:
+- tester report
+- ledger row
+- T4 visual approval with exported frames
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/antislop-ui
+  - prime/platform-conventions
+  reviewer_extra:
+  - prime/critique-visual-hierarchy
+  - prime/critique-typography
+  - prime/design-to-code-check

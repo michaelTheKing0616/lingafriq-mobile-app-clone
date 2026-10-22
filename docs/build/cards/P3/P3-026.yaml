@@ -1,0 +1,86 @@
+charter: v2
+id: P3-026
+kind: build
+title: Integrate credited culture pattern library
+phase: P3
+epic: E-P3-COMPONENTS
+req_ids:
+- EP-§3.4-23
+- EP-§3.4-26
+depends_on:
+- P3-025
+size: M
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 2
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 4: blast 0, ambiguity 2, coupling 1'
+token_budget: 60000
+file_allowlist:
+- assets/patterns/
+- lib/design/patterns/pattern_library.dart
+- lib/design/patterns/credits.dart
+context_anchors:
+- ELEVATION.md#§3.4:L841-L843
+acceptance_criteria:
+- id: AC1
+  text: Given the commissioned patterns, when integrated, then each is stored with artist credit metadata and is shown in
+    an About credits screen
+- id: AC2
+  text: Given a pattern, when placed, then it is used as unit or region identity only and a lint blocks use on generic cards
+- id: AC3
+  text: Given no consultant sign-off, when the build runs, then patterns stay behind a flag and the build reports Blocked-External
+test_plan:
+  unit:
+  - credit metadata required
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - credit present
+user_facing: true
+ux_spec:
+  states:
+  - default
+  - flag_off
+  copy_keys:
+  - credits.pattern.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers:
+- EXT-14
+- EXT-16
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

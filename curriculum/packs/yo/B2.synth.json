@@ -1,0 +1,5492 @@
+{
+"lang": "yo",
+"level": "B2",
+"built": "2026-10-21",
+"source_type": "synthesized",
+"items": [
+{
+"id": "yo.syn.28ab001adbff",
+"lang": "yo",
+"type": "pattern",
+"category": "relative_clause",
+"cefr": "B2",
+"can_do": [
+"B2.GRAM: Use complex grammar (relative clause)"
+],
+"text": "Ọkùnrin tí mo rí lánàá ni olùkọ́ wa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The man I saw yesterday is our teacher.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Relative marker tí follows the head noun.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Ọkùnrin",
+"count": 146,
+"locator": "leipzig:yor_community_2017#s383"
+},
+{
+"token": "tí",
+"count": 8778,
+"locator": "leipzig:yor_community_2017#s46"
+},
+{
+"token": "mo",
+"count": 1852,
+"locator": "leipzig:yor_community_2017#s7"
+},
+{
+"token": "rí",
+"count": 892,
+"locator": "leipzig:yor_community_2017#s69"
+},
+{
+"token": "lánàá",
+"count": 55,
+"locator": "leipzig:yor_community_2017#s9582"
+},
+{
+"token": "ni",
+"count": 13853,
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"token": "olùkọ́",
+"count": 86,
+"locator": "leipzig:yor_community_2017#s2106"
+},
+{
+"token": "wa",
+"count": 1939,
+"locator": "leipzig:yor_community_2017#s29"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:yor_community_2017#s383",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Ọkùnrin' attested 146x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s383"
+},
+{
+"text": "token 'tí' attested 8778x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s46"
+},
+{
+"text": "token 'mo' attested 1852x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s7"
+},
+{
+"text": "token 'rí' attested 892x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s69"
+},
+{
+"text": "token 'lánàá' attested 55x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s9582"
+},
+{
+"text": "token 'ni' attested 13853x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"text": "token 'olùkọ́' attested 86x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s2106"
+},
+{
+"text": "token 'wa' attested 1939x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s29"
+}
+],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"tone_pattern_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.relative_clause"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": false,
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.731dac0c5545",
+"lang": "yo",
+"type": "pattern",
+"category": "serial_verb",
+"cefr": "B2",
+"can_do": [
+"B2.GRAM: Use complex grammar (serial verb)"
+],
+"text": "Ó mú ìwé wá.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He/she brought the book.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Serial verb mú … wá (take … come) = bring.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Ó",
+"count": 7754,
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"token": "mú",
+"count": 596,
+"locator": "leipzig:yor_community_2017#s57"
+},
+{
+"token": "ìwé",
+"count": 422,
+"locator": "leipzig:yor_community_2017#s178"
+},
+{
+"token": "wá",
+"count": 1010,
+"locator": "leipzig:yor_community_2017#s115"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:yor_community_2017#s4",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Ó' attested 7754x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"text": "token 'mú' attested 596x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s57"
+},
+{
+"text": "token 'ìwé' attested 422x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s178"
+},
+{
+"text": "token 'wá' attested 1010x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s115"
+}
+],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"tone_pattern_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.serial_verb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": false,
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.5d9182e46029",
+"lang": "yo",
+"type": "pattern",
+"category": "serial_verb",
+"cefr": "B2",
+"can_do": [
+"B2.GRAM: Use complex grammar (serial verb)"
+],
+"text": "Mo gbé àpótí náà lọ sí ilé.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "I carried the box to the house.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "gbé … lọ (carry … go) = take away.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Mo",
+"count": 1852,
+"locator": "leipzig:yor_community_2017#s7"
+},
+{
+"token": "gbé",
+"count": 905,
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"token": "àpótí",
+"count": 13,
+"locator": "leipzig:yor_community_2017#s995"
+},
+{
+"token": "náà",
+"count": 2744,
+"locator": "leipzig:yor_community_2017#s48"
+},
+{
+"token": "lọ",
+"count": 1082,
+"locator": "leipzig:yor_community_2017#s3"
+},
+{
+"token": "sí",
+"count": 3363,
+"locator": "leipzig:yor_community_2017#s48"
+},
+{
+"token": "ilé",
+"count": 1228,
+"locator": "leipzig:yor_community_2017#s59"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:yor_community_2017#s7",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Mo' attested 1852x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s7"
+},
+{
+"text": "token 'gbé' attested 905x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"text": "token 'àpótí' attested 13x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s995"
+},
+{
+"text": "token 'náà' attested 2744x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s48"
+},
+{
+"text": "token 'lọ' attested 1082x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s3"
+},
+{
+"text": "token 'sí' attested 3363x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s48"
+},
+{
+"text": "token 'ilé' attested 1228x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s59"
+}
+],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"tone_pattern_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.serial_verb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": false,
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.e0634ab64108",
+"lang": "yo",
+"type": "pattern",
+"category": "focus",
+"cefr": "B2",
+"can_do": [
+"B2.GRAM: Use complex grammar (focus)"
+],
+"text": "Ìwé ni mo rà, kì í ṣe aṣọ.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It was a book I bought, not clothes.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Focus with ni; contrastive negation kì í ṣe.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Ìwé",
+"count": 422,
+"locator": "leipzig:yor_community_2017#s178"
+},
+{
+"token": "ni",
+"count": 13853,
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"token": "mo",
+"count": 1852,
+"locator": "leipzig:yor_community_2017#s7"
+},
+{
+"token": "rà",
+"count": 37,
+"locator": "leipzig:yor_community_2017#s295"
+},
+{
+"token": "kì",
+"count": 236,
+"locator": "leipzig:yor_community_2017#s2"
+},
+{
+"token": "í",
+"count": 421,
+"locator": "leipzig:yor_community_2017#s254"
+},
+{
+"token": "ṣe",
+"count": 2300,
+"locator": "leipzig:yor_community_2017#s152"
+},
+{
+"token": "aṣọ",
+"count": 86,
+"locator": "leipzig:yor_community_2017#s1152"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:yor_community_2017#s178",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Ìwé' attested 422x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s178"
+},
+{
+"text": "token 'ni' attested 13853x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"text": "token 'mo' attested 1852x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s7"
+},
+{
+"text": "token 'rà' attested 37x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s295"
+},
+{
+"text": "token 'kì' attested 236x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s2"
+},
+{
+"text": "token 'í' attested 421x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s254"
+},
+{
+"text": "token 'ṣe' attested 2300x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s152"
+},
+{
+"text": "token 'aṣọ' attested 86x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s1152"
+}
+],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"tone_pattern_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.focus"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": false,
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.ed8cbd80fdab",
+"lang": "yo",
+"type": "pattern",
+"category": "politeness",
+"cefr": "B2",
+"can_do": [
+"B2.GRAM: Use complex grammar (politeness)"
+],
+"text": "Ẹ jọ̀wọ́, ẹ ràn mí lọ́wọ́.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Please, help me.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Plural/honorific ẹ used for elders and strangers.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Ẹ",
+"count": 187,
+"locator": "leipzig:yor_community_2017#s490"
+},
+{
+"token": "jọ̀wọ́",
+"count": 8,
+"locator": "leipzig:yor_community_2017#s2994"
+},
+{
+"token": "ẹ",
+"count": 187,
+"locator": "leipzig:yor_community_2017#s490"
+},
+{
+"token": "ràn",
+"count": 79,
+"locator": "leipzig:yor_community_2017#s349"
+},
+{
+"token": "mí",
+"count": 141,
+"locator": "leipzig:yor_community_2017#s1495"
+},
+{
+"token": "lọ́wọ́",
+"count": 277,
+"locator": "leipzig:yor_community_2017#s430"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:yor_community_2017#s490",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Ẹ' attested 187x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s490"
+},
+{
+"text": "token 'jọ̀wọ́' attested 8x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s2994"
+},
+{
+"text": "token 'ẹ' attested 187x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s490"
+},
+{
+"text": "token 'ràn' attested 79x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s349"
+},
+{
+"text": "token 'mí' attested 141x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s1495"
+},
+{
+"text": "token 'lọ́wọ́' attested 277x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s430"
+}
+],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"tone_pattern_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.politeness"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": true,
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.4b3052aaccd3",
+"lang": "yo",
+"type": "pattern",
+"category": "ideophone",
+"cefr": "B2",
+"can_do": [
+"B2.GRAM: Use complex grammar (ideophone)"
+],
+"text": "Aṣọ rẹ̀ funfun báláú.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "His/her cloth is spotlessly white.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Ideophone báláú intensifies funfun (white).",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Aṣọ",
+"count": 86,
+"locator": "leipzig:yor_community_2017#s1152"
+},
+{
+"token": "rẹ̀",
+"count": 1849,
+"locator": "leipzig:yor_community_2017#s5"
+},
+{
+"token": "funfun",
+"count": 95,
+"locator": "leipzig:yor_community_2017#s332"
+},
+{
+"token": "báláú",
+"count": 2,
+"locator": "leipzig:yor_community_2017#s6774"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:yor_community_2017#s1152",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Aṣọ' attested 86x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s1152"
+},
+{
+"text": "token 'rẹ̀' attested 1849x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s5"
+},
+{
+"text": "token 'funfun' attested 95x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s332"
+},
+{
+"text": "token 'báláú' attested 2x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s6774"
+}
+],
+"confidence": 0.35,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"tone_pattern_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.ideophone"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": false,
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 4,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.da658d7c799c",
+"lang": "yo",
+"type": "pattern",
+"category": "conditional",
+"cefr": "B2",
+"can_do": [
+"B2.GRAM: Use complex grammar (conditional)"
+],
+"text": "Bí òjò bá rọ̀, a ò ní lọ.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "If it rains, we will not go.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Bí … bá conditional; future negative ò ní.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Bí",
+"count": 2081,
+"locator": "leipzig:yor_community_2017#s124"
+},
+{
+"token": "òjò",
+"count": 32,
+"locator": "leipzig:yor_community_2017#s241"
+},
+{
+"token": "bá",
+"count": 1644,
+"locator": "leipzig:yor_community_2017#s61"
+},
+{
+"token": "rọ̀",
+"count": 35,
+"locator": "leipzig:yor_community_2017#s1886"
+},
+{
+"token": "a",
+"count": 3951,
+"locator": "leipzig:yor_community_2017#s43"
+},
+{
+"token": "ò",
+"count": 1655,
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"token": "ní",
+"count": 8456,
+"locator": "leipzig:yor_community_2017#s2"
+},
+{
+"token": "lọ",
+"count": 1082,
+"locator": "leipzig:yor_community_2017#s3"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:yor_community_2017#s124",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Bí' attested 2081x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s124"
+},
+{
+"text": "token 'òjò' attested 32x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s241"
+},
+{
+"text": "token 'bá' attested 1644x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s61"
+},
+{
+"text": "token 'rọ̀' attested 35x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s1886"
+},
+{
+"text": "token 'a' attested 3951x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s43"
+},
+{
+"text": "token 'ò' attested 1655x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"text": "token 'ní' attested 8456x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s2"
+},
+{
+"text": "token 'lọ' attested 1082x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s3"
+}
+],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"tone_pattern_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.conditional"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": false,
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.bd7b8cc3be2a",
+"lang": "yo",
+"type": "pattern",
+"category": "discourse_marker",
+"cefr": "B2",
+"can_do": [
+"B2.GRAM: Use complex grammar (discourse marker)"
+],
+"text": "Ṣùgbọ́n ó yẹ kí a ṣe iṣẹ́ náà dáadáa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "But we ought to do the work well.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "ó yẹ kí = it is fitting that.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Ṣùgbọ́n",
+"count": 233,
+"locator": "leipzig:yor_community_2017#s70"
+},
+{
+"token": "ó",
+"count": 7754,
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"token": "yẹ",
+"count": 158,
+"locator": "leipzig:yor_community_2017#s62"
+},
+{
+"token": "kí",
+"count": 1612,
+"locator": "leipzig:yor_community_2017#s103"
+},
+{
+"token": "a",
+"count": 3951,
+"locator": "leipzig:yor_community_2017#s43"
+},
+{
+"token": "ṣe",
+"count": 2300,
+"locator": "leipzig:yor_community_2017#s152"
+},
+{
+"token": "iṣẹ́",
+"count": 651,
+"locator": "leipzig:yor_community_2017#s482"
+},
+{
+"token": "náà",
+"count": 2744,
+"locator": "leipzig:yor_community_2017#s48"
+},
+{
+"token": "dáadáa",
+"count": 59,
+"locator": "leipzig:yor_community_2017#s899"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:yor_community_2017#s70",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Ṣùgbọ́n' attested 233x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s70"
+},
+{
+"text": "token 'ó' attested 7754x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s4"
+},
+{
+"text": "token 'yẹ' attested 158x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s62"
+},
+{
+"text": "token 'kí' attested 1612x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s103"
+},
+{
+"text": "token 'a' attested 3951x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s43"
+},
+{
+"text": "token 'ṣe' attested 2300x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s152"
+},
+{
+"text": "token 'iṣẹ́' attested 651x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s482"
+},
+{
+"text": "token 'náà' attested 2744x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s48"
+},
+{
+"text": "token 'dáadáa' attested 59x",
+"source_id": "leipzig",
+"locator": "leipzig:yor_community_2017#s899"
+}
+],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"tone_pattern_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.discourse_marker"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": false,
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.918842546407",
+"lang": "yo",
+"type": "sentence",
+"category": "opinion",
+"cefr": "B2",
+"can_do": [
+"B2.OPINION"
+],
+"text": "Lérò tèmi, ẹ̀kọ́ ọ̀fẹ́ ti ran ọ̀pọ̀lọpọ̀ ọmọdé lọ́wọ́.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "In my opinion, free education has helped many children.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.opinion"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.91513b7f2d3a",
+"lang": "yo",
+"type": "sentence",
+"category": "opinion",
+"cefr": "B2",
+"can_do": [
+"B2.OPINION"
+],
+"text": "Mi ò rò pé ètò yìí máa ṣàṣeyọrí láìsí àtìlẹ́yìn àwọn aráàlú.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "I don't think this plan will succeed without the citizens' support.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.opinion"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.0c9181742e5a",
+"lang": "yo",
+"type": "sentence",
+"category": "opinion",
+"cefr": "B2",
+"can_do": [
+"B2.OPINION"
+],
+"text": "Mo fara mọ́ ọ̀rọ̀ rẹ díẹ̀, ṣùgbọ́n kì í ṣe pátápátá.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "I agree with you a little, but not completely.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.opinion"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.5a041f7bab4d",
+"lang": "yo",
+"type": "sentence",
+"category": "opinion",
+"cefr": "B2",
+"can_do": [
+"B2.OPINION"
+],
+"text": "Ó dàbí ẹni pé owó oúnjẹ yóò máa lọ sókè lọ́dún yìí.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It seems food prices will keep rising this year.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.opinion"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.e6a3dcd0da08",
+"lang": "yo",
+"type": "sentence",
+"category": "opinion",
+"cefr": "B2",
+"can_do": [
+"B2.OPINION"
+],
+"text": "Ó ṣe pàtàkì láti gbọ́ ẹ̀gbẹ́ méjèèjì kí a tó pinnu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It is important to hear both sides before we decide.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.opinion"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.3a9946031193",
+"lang": "yo",
+"type": "sentence",
+"category": "opinion",
+"cefr": "B2",
+"can_do": [
+"B2.OPINION"
+],
+"text": "Mo gbà pé ó yẹ kí àwọn ọ̀dọ́ ní àǹfààní púpọ̀ sí i nínú ìṣèjọba.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "I believe young people should have more opportunity in governance.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.opinion"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.94d37d7cbe22",
+"lang": "yo",
+"type": "sentence",
+"category": "opinion",
+"cefr": "B2",
+"can_do": [
+"B2.OPINION"
+],
+"text": "Kì í ṣe òótọ́ pé ẹ̀rọ ìgbàlódé ń ba àṣà wa jẹ́.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It is not true that modern technology is ruining our culture.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.opinion"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.d8cbaaadc6fa",
+"lang": "yo",
+"type": "sentence",
+"category": "opinion",
+"cefr": "B2",
+"can_do": [
+"B2.OPINION"
+],
+"text": "Ọ̀rọ̀ rẹ yé mi, àmọ́ ó nílò ẹ̀rí sí i.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "I understand your point, but it needs more evidence.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.opinion"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.26edf2cd79b4",
+"lang": "yo",
+"type": "pattern",
+"category": "relative_clause",
+"cefr": "B2",
+"can_do": [
+"B2.RELATIVE_CLAUSE"
+],
+"text": "Akẹ́kọ̀ọ́ tí ó gba ẹ̀bùn ni àbúrò mi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The student who won the prize is my younger sibling.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.relative_clause"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.842c77f63d7c",
+"lang": "yo",
+"type": "pattern",
+"category": "relative_clause",
+"cefr": "B2",
+"can_do": [
+"B2.RELATIVE_CLAUSE"
+],
+"text": "Wọ́n ti ta ilé tí a kọ́ lọ́dún tó kọjá.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The house we built last year has been sold.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.relative_clause"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 3,
+"crosscheck_ok": false,
+"text_original": "Ilé tí a kọ́ lọ́dún tó kọjá ti di títà.",
+"fix_source": "sonnet"
+},
+{
+"id": "yo.syn.676b6c1f0870",
+"lang": "yo",
+"type": "pattern",
+"category": "relative_clause",
+"cefr": "B2",
+"can_do": [
+"B2.RELATIVE_CLAUSE"
+],
+"text": "Àwọn tí ń gbé ìlú ńlá ń san owó ilé púpọ̀.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Those who live in the city pay a lot of rent.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.relative_clause"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.5c98070cbd36",
+"lang": "yo",
+"type": "pattern",
+"category": "relative_clause",
+"cefr": "B2",
+"can_do": [
+"B2.RELATIVE_CLAUSE"
+],
+"text": "Ìwé tí o yá mi dùn ún kà gan-an.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The book you lent me is very enjoyable to read.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.relative_clause"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.ca46f73f5d36",
+"lang": "yo",
+"type": "pattern",
+"category": "relative_clause",
+"cefr": "B2",
+"can_do": [
+"B2.RELATIVE_CLAUSE"
+],
+"text": "Ibi tí a ti pàdé lákọ̀ọ́kọ́ ti yí padà.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The place where we first met has changed.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.relative_clause"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.563ea42cc623",
+"lang": "yo",
+"type": "pattern",
+"category": "relative_clause",
+"cefr": "B2",
+"can_do": [
+"B2.RELATIVE_CLAUSE"
+],
+"text": "Olùkọ́ tí ń kọ́ wa ní ìṣirò le díẹ̀.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The teacher who teaches us maths is a bit strict.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.relative_clause"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.06b197e8e0f6",
+"lang": "yo",
+"type": "pattern",
+"category": "relative_clause",
+"cefr": "B2",
+"can_do": [
+"B2.RELATIVE_CLAUSE"
+],
+"text": "Ọjọ́ tí wọ́n bí i, òjò rọ̀ gan-an.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The day he was born, it rained heavily.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.relative_clause"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.3a6ad467069a",
+"lang": "yo",
+"type": "pattern",
+"category": "serial_verb",
+"cefr": "B2",
+"can_do": [
+"B2.SERIAL_VERB"
+],
+"text": "Ó gbé àga wá fún mi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He brought a chair for me.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.serial_verb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.561853bab396",
+"lang": "yo",
+"type": "pattern",
+"category": "serial_verb",
+"cefr": "B2",
+"can_do": [
+"B2.SERIAL_VERB"
+],
+"text": "Mo ra ẹja jẹ.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "I bought fish and ate it.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.serial_verb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.acd06073cec4",
+"lang": "yo",
+"type": "pattern",
+"category": "serial_verb",
+"cefr": "B2",
+"can_do": [
+"B2.SERIAL_VERB"
+],
+"text": "Wọ́n sáré lọ sí ọjà.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "They ran to the market.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.serial_verb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.67bbef1ea6ce",
+"lang": "yo",
+"type": "pattern",
+"category": "serial_verb",
+"cefr": "B2",
+"can_do": [
+"B2.SERIAL_VERB"
+],
+"text": "Ó fi ọ̀bẹ gé iṣu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "She cut the yam with a knife.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.serial_verb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.1ddd4f4521eb",
+"lang": "yo",
+"type": "pattern",
+"category": "serial_verb",
+"cefr": "B2",
+"can_do": [
+"B2.SERIAL_VERB"
+],
+"text": "Ẹ bá mi gbé e lọ sílé.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Help me carry it home.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.serial_verb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.c61b4e78c4af",
+"lang": "yo",
+"type": "pattern",
+"category": "serial_verb",
+"cefr": "B2",
+"can_do": [
+"B2.SERIAL_VERB"
+],
+"text": "Ó mú ọmọ náà lọ sí ilé ìwòsàn.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "She took the child to the hospital.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.serial_verb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.5c4aa3da4803",
+"lang": "yo",
+"type": "pattern",
+"category": "serial_verb",
+"cefr": "B2",
+"can_do": [
+"B2.SERIAL_VERB"
+],
+"text": "A fi owó náà ra ilẹ̀.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "We used the money to buy land.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.serial_verb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.b4c1a53e8427",
+"lang": "yo",
+"type": "pattern",
+"category": "conditional",
+"cefr": "B2",
+"can_do": [
+"B2.CONDITIONAL"
+],
+"text": "Tí o bá wá ní kùtùkùtù, a ó jọ lọ.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "If you come early, we will go together.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.conditional"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.99014165f37e",
+"lang": "yo",
+"type": "pattern",
+"category": "conditional",
+"cefr": "B2",
+"can_do": [
+"B2.CONDITIONAL"
+],
+"text": "Bí mo bá ní owó, màá ra oko.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "If I have money, I will buy a farm.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.conditional"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.0571ac79b6d2",
+"lang": "yo",
+"type": "pattern",
+"category": "conditional",
+"cefr": "B2",
+"can_do": [
+"B2.CONDITIONAL"
+],
+"text": "Ká ní mo mọ̀ pé ara rẹ ò yá ni, ǹ bá wá kí ọ.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Had I known you were ill, I would have come to greet you.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.conditional"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.8fdeac90357b",
+"lang": "yo",
+"type": "pattern",
+"category": "conditional",
+"cefr": "B2",
+"can_do": [
+"B2.CONDITIONAL"
+],
+"text": "Bí òjò bá rọ̀ lónìí, wọn ó sún ìpàdé síwájú.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "If it rains today, the meeting will be postponed.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.conditional"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.dfcfc4e7b611",
+"lang": "yo",
+"type": "pattern",
+"category": "conditional",
+"cefr": "B2",
+"can_do": [
+"B2.CONDITIONAL"
+],
+"text": "Tí o kò bá jẹun dáadáa, ara rẹ ò ní le.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "If you don't eat well, you won't be strong.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.conditional"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.43bd3a790b8b",
+"lang": "yo",
+"type": "pattern",
+"category": "tense_aspect",
+"cefr": "B2",
+"can_do": [
+"B2.TENSE_ASPECT"
+],
+"text": "Nígbà tí mo dé, wọ́n ti lọ.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "When I arrived, they had gone.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.tense_aspect"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.e37e0e4250d7",
+"lang": "yo",
+"type": "pattern",
+"category": "tense_aspect",
+"cefr": "B2",
+"can_do": [
+"B2.TENSE_ASPECT"
+],
+"text": "Ó ń kàwé nígbà tí iná lọ.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He was reading when the power went off.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.tense_aspect"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.a9fcea14f66a",
+"lang": "yo",
+"type": "pattern",
+"category": "tense_aspect",
+"cefr": "B2",
+"can_do": [
+"B2.TENSE_ASPECT"
+],
+"text": "Kò tíì dé ilé.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He hasn't got home yet.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.tense_aspect"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.ff11b234d439",
+"lang": "yo",
+"type": "pattern",
+"category": "tense_aspect",
+"cefr": "B2",
+"can_do": [
+"B2.TENSE_ASPECT"
+],
+"text": "Mi ò tíì dé Ìbàdàn rí.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "I have never been to Ibadan.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.tense_aspect"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.903c4fb92938",
+"lang": "yo",
+"type": "pattern",
+"category": "tense_aspect",
+"cefr": "B2",
+"can_do": [
+"B2.TENSE_ASPECT"
+],
+"text": "Àwọn àgbà máa ń jókòó sábẹ́ igi yìí nírọ̀lẹ́.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The elders usually sit under this tree in the evening.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.tense_aspect"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.337b647f996c",
+"lang": "yo",
+"type": "pattern",
+"category": "tense_aspect",
+"cefr": "B2",
+"can_do": [
+"B2.TENSE_ASPECT"
+],
+"text": "A ti ń dúró fún wákàtí méjì.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "We have been waiting for two hours.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.tense_aspect"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.979857987b9d",
+"lang": "yo",
+"type": "pattern",
+"category": "focus",
+"cefr": "B2",
+"can_do": [
+"B2.FOCUS"
+],
+"text": "Ìwọ ni mo ń wá.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It is you I am looking for.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.focus"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.067a4ff83e01",
+"lang": "yo",
+"type": "pattern",
+"category": "focus",
+"cefr": "B2",
+"can_do": [
+"B2.FOCUS"
+],
+"text": "Lánàá ni wọ́n dé.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It was yesterday that they arrived.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.focus"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.7acc0862158e",
+"lang": "yo",
+"type": "pattern",
+"category": "focus",
+"cefr": "B2",
+"can_do": [
+"B2.FOCUS"
+],
+"text": "Owó ni ó fa ìjà náà.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It was money that caused the quarrel.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.focus"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.eb864fb0d026",
+"lang": "yo",
+"type": "pattern",
+"category": "ideophone",
+"cefr": "B2",
+"can_do": [
+"B2.IDEOPHONE"
+],
+"text": "Ilé náà mọ́ tónítóní.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The house is spotlessly clean.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.ideophone"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.84387fc19a8e",
+"lang": "yo",
+"type": "pattern",
+"category": "ideophone",
+"cefr": "B2",
+"can_do": [
+"B2.IDEOPHONE"
+],
+"text": "Aṣọ rẹ̀ pupa fòò.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Her cloth is bright red.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.ideophone"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.efca59dd01ff",
+"lang": "yo",
+"type": "pattern",
+"category": "ideophone",
+"cefr": "B2",
+"can_do": [
+"B2.IDEOPHONE"
+],
+"text": "Ojú ọ̀run dúdú kirikiri.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The sky is pitch dark.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.ideophone"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.d67ba3c125ec",
+"lang": "yo",
+"type": "pattern",
+"category": "ideophone",
+"cefr": "B2",
+"can_do": [
+"B2.IDEOPHONE"
+],
+"text": "Ó ga gogoro.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He is very tall.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.ideophone"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.974badd7816a",
+"lang": "yo",
+"type": "pattern",
+"category": "ideophone",
+"cefr": "B2",
+"can_do": [
+"B2.IDEOPHONE"
+],
+"text": "Omi náà tutù nini.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The water is ice cold.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.ideophone"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.d1328fa523f6",
+"lang": "yo",
+"type": "pattern",
+"category": "discourse_marker",
+"cefr": "B2",
+"can_do": [
+"B2.DISCOURSE_MARKER"
+],
+"text": "Lákọ̀ọ́kọ́, ẹ jẹ́ ká wo ìṣòro náà.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "First, let us look at the problem.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.discourse_marker"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.e93bd10dc0d3",
+"lang": "yo",
+"type": "pattern",
+"category": "discourse_marker",
+"cefr": "B2",
+"can_do": [
+"B2.DISCOURSE_MARKER"
+],
+"text": "Yàtọ̀ sí ìyẹn, owó ọkọ̀ ti lọ sókè.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Besides that, transport fares have gone up.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.discourse_marker"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.9611c521bc97",
+"lang": "yo",
+"type": "pattern",
+"category": "discourse_marker",
+"cefr": "B2",
+"can_do": [
+"B2.DISCOURSE_MARKER"
+],
+"text": "Nítorí náà, a nílò ètò tuntun.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Therefore, we need a new plan.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.discourse_marker"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.45540290c03a",
+"lang": "yo",
+"type": "pattern",
+"category": "discourse_marker",
+"cefr": "B2",
+"can_do": [
+"B2.DISCOURSE_MARKER"
+],
+"text": "Fún àpẹẹrẹ, ọ̀pọ̀ ilé ìwé kò ní ilé ìkàwé.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "For example, many schools have no library.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.discourse_marker"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.43069fe9adbf",
+"lang": "yo",
+"type": "pattern",
+"category": "discourse_marker",
+"cefr": "B2",
+"can_do": [
+"B2.DISCOURSE_MARKER"
+],
+"text": "Ní ọ̀nà mìíràn, àwọn òbí náà ní ojúṣe.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "On the other hand, parents also have a responsibility.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.discourse_marker"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.7dbac68b580c",
+"lang": "yo",
+"type": "pattern",
+"category": "discourse_marker",
+"cefr": "B2",
+"can_do": [
+"B2.DISCOURSE_MARKER"
+],
+"text": "Níkẹyìn, ìpàdé náà parí ní àlàáfíà.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Finally, the meeting ended peacefully.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.discourse_marker"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.97c5e0a7865b",
+"lang": "yo",
+"type": "pattern",
+"category": "politeness",
+"cefr": "B2",
+"can_do": [
+"B2.POLITENESS"
+],
+"text": "Ẹ jọ̀wọ́, ẹ dákun, ẹ fún mi ní omi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Please, kindly give me water.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.politeness"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.bae04c2284ab",
+"lang": "yo",
+"type": "pattern",
+"category": "politeness",
+"cefr": "B2",
+"can_do": [
+"B2.POLITENESS"
+],
+"text": "Ẹ má bínú pé mo pẹ́.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Sorry that I am late.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.politeness"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.4dbb47dbd512",
+"lang": "yo",
+"type": "pattern",
+"category": "politeness",
+"cefr": "B2",
+"can_do": [
+"B2.POLITENESS"
+],
+"text": "Ẹ káàbọ̀, ẹ jókòó.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Welcome, please sit down.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.politeness"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.15635baf84ff",
+"lang": "yo",
+"type": "pattern",
+"category": "politeness",
+"cefr": "B2",
+"can_do": [
+"B2.POLITENESS"
+],
+"text": "Ẹ kú àṣẹ̀ṣẹ̀yọ ọdún.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Compliments on the new year.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.politeness"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.359f5a1d5ed1",
+"lang": "yo",
+"type": "pattern",
+"category": "politeness",
+"cefr": "B2",
+"can_do": [
+"B2.POLITENESS"
+],
+"text": "Ẹ ṣé púpọ̀ fún ìtọ́jú yín.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Thank you very much for your care.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.politeness"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.7478cb5fc506",
+"lang": "yo",
+"type": "pattern",
+"category": "politeness",
+"cefr": "B2",
+"can_do": [
+"B2.POLITENESS"
+],
+"text": "Ẹ kú ìrọ́jú, ẹ ò ní rí irú rẹ̀ mọ́.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Sorry for your loss; may you not see such again.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.politeness"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 4,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.d7be0428aa5f",
+"lang": "yo",
+"type": "sentence",
+"category": "work",
+"cefr": "B2",
+"can_do": [
+"B2.WORK"
+],
+"text": "Mo fẹ́ béèrè fún iṣẹ́ tí wọ́n polówó rẹ̀ nínú ìwé ìròyìn.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "I want to apply for the job advertised in the newspaper.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.work"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.e2b333ab9b65",
+"lang": "yo",
+"type": "sentence",
+"category": "work",
+"cefr": "B2",
+"can_do": [
+"B2.WORK"
+],
+"text": "Mo ti ṣiṣẹ́ fún ọdún márùn-ún gẹ́gẹ́ bí akọ̀wé.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "I have worked for five years as a clerk.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.work"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.81469570a878",
+"lang": "yo",
+"type": "sentence",
+"category": "work",
+"cefr": "B2",
+"can_do": [
+"B2.WORK"
+],
+"text": "Owó oṣù mi kò tó láti san gbogbo owó tí mo jẹ.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "My salary isn't enough to pay all my debts.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.work"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.c17d52c477b0",
+"lang": "yo",
+"type": "sentence",
+"category": "health",
+"cefr": "B2",
+"can_do": [
+"B2.HEALTH"
+],
+"text": "Ibà ti ń ṣe mí láti àná.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "I have had a fever since yesterday.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.health"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.cd70f65858ee",
+"lang": "yo",
+"type": "sentence",
+"category": "health",
+"cefr": "B2",
+"can_do": [
+"B2.HEALTH"
+],
+"text": "Ẹ̀fọn ni ó ń fa àrùn ibà.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Mosquitoes cause malaria.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.health"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.3c2022ce48b9",
+"lang": "yo",
+"type": "sentence",
+"category": "health",
+"cefr": "B2",
+"can_do": [
+"B2.HEALTH"
+],
+"text": "Ó dára láti máa mu omi púpọ̀ lójoojúmọ́.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It is good to drink plenty of water daily.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.health"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.cd6da204d6c1",
+"lang": "yo",
+"type": "sentence",
+"category": "environment",
+"cefr": "B2",
+"can_do": [
+"B2.ENVIRONMENT"
+],
+"text": "Gígé igi ti fa ọ̀gbẹlẹ̀ ní agbègbè yìí.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Tree felling has caused drought in this area.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.environment"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.cfa67df320ab",
+"lang": "yo",
+"type": "sentence",
+"category": "environment",
+"cefr": "B2",
+"can_do": [
+"B2.ENVIRONMENT"
+],
+"text": "Àgbàrá ti ba ọ̀pọ̀lọpọ̀ oko jẹ́ lọ́dún yìí.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Floods have destroyed many farms this year.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.environment"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.1a73615338ef",
+"lang": "yo",
+"type": "sentence",
+"category": "narrative",
+"cefr": "B2",
+"can_do": [
+"B2.NARRATIVE"
+],
+"text": "Ní ọjọ́ kan, ọdẹ kan lọ sínú igbó ní òun nìkan.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "One day, a hunter went into the forest alone.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.e8cc8759e498",
+"lang": "yo",
+"type": "sentence",
+"category": "narrative",
+"cefr": "B2",
+"can_do": [
+"B2.NARRATIVE"
+],
+"text": "Lójijì, ó gbọ́ ohùn àjèjì kan.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Suddenly, he heard a strange voice.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.c71140ff5dce",
+"lang": "yo",
+"type": "sentence",
+"category": "narrative",
+"cefr": "B2",
+"can_do": [
+"B2.NARRATIVE"
+],
+"text": "Ó gbìyànjú láti padà sílé ṣùgbọ́n ó ti sọnù.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He tried to go home but he was already lost.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.d928e2616d7c",
+"lang": "yo",
+"type": "sentence",
+"category": "narrative",
+"cefr": "B2",
+"can_do": [
+"B2.NARRATIVE"
+],
+"text": "Níkẹyìn, àwọn ará abúlé rí i.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "In the end, the villagers found him.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.73f7e26d7740",
+"lang": "yo",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "B2",
+"can_do": [
+"B2.CULTURE_NOTE"
+],
+"text": "Àwọn ọmọkùnrin máa ń dọ̀bálẹ̀ láti kí àgbà.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Boys prostrate to greet elders.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.5f7d454431f3",
+"lang": "yo",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "B2",
+"can_do": [
+"B2.CULTURE_NOTE"
+],
+"text": "Àwọn ọmọbìnrin máa ń kúnlẹ̀ láti kí àgbà.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Girls kneel to greet elders.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.b720ef11e9b1",
+"lang": "yo",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "B2",
+"can_do": [
+"B2.CULTURE_NOTE"
+],
+"text": "A kì í fi ọwọ́ òsì gba nǹkan lọ́wọ́ àgbà.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "One does not receive things from an elder with the left hand.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.c7350dad4f40",
+"lang": "yo",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "B2",
+"can_do": [
+"B2.CULTURE_NOTE"
+],
+"text": "Ìsọmọlórúkọ máa ń wáyé ní ọjọ́ kẹjọ lẹ́yìn ìbí.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The naming ceremony takes place on the eighth day after birth.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.994366ada897",
+"lang": "yo",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "B2",
+"can_do": [
+"B2.CULTURE_NOTE"
+],
+"text": "A máa ń pe àgbà ní \"ẹ\" dípò \"o\".",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Elders are addressed with \"ẹ\" instead of \"o\".",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.02cb08418702",
+"lang": "yo",
+"type": "sentence",
+"category": "idiom",
+"cefr": "B2",
+"can_do": [
+"B2.IDIOM"
+],
+"text": "Ó fi ẹsẹ̀ fẹ.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He took to his heels.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.idiom"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.e8398d035ad6",
+"lang": "yo",
+"type": "sentence",
+"category": "idiom",
+"cefr": "B2",
+"can_do": [
+"B2.IDIOM"
+],
+"text": "Ọ̀rọ̀ náà wọ̀ ọ́ lára.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The words touched him deeply.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.idiom"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.07e56ae92325",
+"lang": "yo",
+"type": "sentence",
+"category": "idiom",
+"cefr": "B2",
+"can_do": [
+"B2.IDIOM"
+],
+"text": "Ó ṣe ojú mi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It was done/happened before my eyes (Ó ṣẹlẹ̀ lójú mi).",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.idiom"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 3,
+"crosscheck_ok": false,
+"fix_source": "sonnet",
+"native_check_priority": true
+},
+{
+"id": "yo.syn.c241183558e6",
+"lang": "yo",
+"type": "sentence",
+"category": "idiom",
+"cefr": "B2",
+"can_do": [
+"B2.IDIOM"
+],
+"text": "Inú rẹ̀ dùn.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He is happy (lit. his inside is sweet).",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.idiom"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "yo.syn.6be956f69fac",
+"lang": "yo",
+"type": "sentence",
+"category": "idiom",
+"cefr": "B2",
+"can_do": [
+"B2.IDIOM"
+],
+"text": "Ó fojú tẹ́ḿbẹ́lú mi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He looked down on me.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/yo.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.5,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed",
+"tone_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"yo.B2.idiom"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "B2"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 3,
+"crosscheck_ok": false,
+"text_original": "Ó fi ojú di mí.",
+"fix_source": "sonnet",
+"native_check_priority": true
+}
+]
+}

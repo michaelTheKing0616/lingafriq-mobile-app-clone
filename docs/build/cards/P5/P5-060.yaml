@@ -1,0 +1,69 @@
+charter: v2
+id: P5-060
+kind: build
+title: 'Wire Yoruba TTS: Intron with Spitch fallback'
+phase: P5
+epic: E-P5-AUDIO
+req_ids:
+- CP-§7-yo-01
+- CP-§7-yo-02
+- CP-§7-yo-07
+depends_on:
+- P5-059
+- E-P6-SCORER
+size: M
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 2
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T1
+  reviewer: T3
+  justification: 'score 8: blast 3, ambiguity 2, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/services/tts/yo_tts.dart
+- tools/audio/yo_listen_check.py
+- test/audio/yo_tts_test.dart
+context_anchors:
+- CURRICULUM.md#§7:L707-L719
+acceptance_criteria:
+- id: AC1
+  text: Given Yoruba text, when sent to TTS, then it is fully tone-marked or the call fails with ToneMarksMissing
+- id: AC2
+  text: Given Intron failure, when synthesising, then Spitch is used as fallback
+- id: AC3
+  text: Given a batch, when approved, then a linguist listen-check of 100 samples passes before use
+test_plan:
+  unit:
+  - fallback
+  integration:
+  - vendor stubs
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- tts_tonal
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers:
+- EXT-01
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

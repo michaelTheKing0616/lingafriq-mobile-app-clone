@@ -1,0 +1,86 @@
+charter: v2
+id: P5-047
+kind: build
+title: Publish error rate per language and label
+phase: P5
+epic: E-P5-QUALITY
+req_ids:
+- CP-§5-10
+depends_on:
+- P5-046
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/screens/quality_report_screen.dart
+- node-backend/src/routes/quality.routes.ts
+- test/screens/quality_report_test.dart
+context_anchors:
+- CURRICULUM.md#§5:L609-L610
+acceptance_criteria:
+- id: AC1
+  text: Given blind-sample results, when published, then error rate is shown per language and label
+- id: AC2
+  text: Given insufficient data, when shown, then the screen says not enough data instead of a number
+- id: AC3
+  text: Given a number, when shown, then sample size and date appear
+test_plan:
+  unit:
+  - aggregation
+  integration:
+  - route
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - data
+  - not-enough-data
+  copy_keys:
+  - quality.title
+  - quality.no_data
+  tokens:
+  - color.label.native
+  - color.label.expert
+  - color.label.beta
+  - type.body
+  - space.4
+  motion_tier: product
+  a11y:
+  - screen-reader announces label name and meaning
+  - touch targets >=48dp
+  - contrast >=4.5:1 on label chips
+  goldens:
+  - quality_report
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/error-handling-ux
+  - prime/feedback-patterns
+  - prime/state-machine

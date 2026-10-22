@@ -1,0 +1,1080 @@
+id	status	title	path
+ADR-001	Ready	'ADR: Three-label interim content policy (D1)'	P0/ADR-001.yaml
+ADR-002	Ready	'ADR: Lexicon-anchored tone Beta rule and verification principles'	P0/ADR-002.yaml
+ADR-003	Ready	'ADR: L1 audio readiness definition and Xhosa voice path'	P0/ADR-003.yaml
+ADR-004	Draft	'ADR-004: Choose Drift/SQLite or Isar as the one local database'	P2/ADR-004.yaml
+ADR-020	Draft	'Decide one soft currency: keep Cowries'	P10/ADR-020.yaml
+ADR-021	Draft	Decide north-star metric and guardrails	P10/ADR-021.yaml
+E-P0-INTAKE	Draft	'Intake: RTM, charter enforcement, repo map, verification cards'	P0/E-P0-INTAKE.yaml
+E-P1-AI-GATEWAY	Draft	'AI gateway: auth, quotas, server-owned prompts'	P1/E-P1-AI-GATEWAY.yaml
+E-P1-AUTH	Draft	Auth, API hardening and supply chain	P1/E-P1-AUTH.yaml
+E-P1-CONTAINMENT	Draft	'Containment: close all 27 P0s with evidence'	P1/E-P1-CONTAINMENT.yaml
+E-P1-CONTENT-HONESTY	Draft	'Content honesty: persona, scoring, placeholders'	P1/E-P1-CONTENT-HONESTY.yaml
+E-P1-ECONOMY	Draft	'Economy: server-only rewards and reconciliation'	P1/E-P1-ECONOMY.yaml
+E-P1-LICENCES	Draft	'Licences: remove non-commercial models and scraper'	P1/E-P1-LICENCES.yaml
+E-P1-MINORS	Draft	Minors and moderation containment	P1/E-P1-MINORS.yaml
+E-P1-OFFLINE-DATA	Draft	Offline, onboarding and notification data integrity	P1/E-P1-OFFLINE-DATA.yaml
+E-P1-PAYMENTS	Draft	'Payments: server-side entitlements'	P1/E-P1-PAYMENTS.yaml
+E-P1-SECRETS	Draft	'Secrets: purge, revoke, gate'	P1/E-P1-SECRETS.yaml
+E-P1-SOCKETS	Draft	'Sockets: ACL, identity, scoped emits'	P1/E-P1-SOCKETS.yaml
+E-P10-ANALYTICS	Draft	Analytics, experiments and copy rules	P10/E-P10-ANALYTICS.yaml
+E-P10-CREDENTIALS	Draft	Passport credentials	P10/E-P10-CREDENTIALS.yaml
+E-P10-GAMIFICATION	Draft	Ethical gamification and rewards	P10/E-P10-GAMIFICATION.yaml
+E-P10-ME	Draft	Me hub, monetisation, credentials, offline packs	P10/E-P10-ME.yaml
+E-P10-PRIVACY	Draft	Privacy and compliance programme	P10/E-P10-PRIVACY.yaml
+E-P11-PERSONAS-AVATARS	Draft	Personas v1 and Avatar v1	P11/E-P11-PERSONAS-AVATARS.yaml
+E-P12-RELEASE	Draft	Hardening, privacy programme, a11y audit, release readiness	P12/E-P12-RELEASE.yaml
+E-P13-SCALE	Draft	'Scale: Waves 2–4, contributor programme, moonshots'	P13/E-P13-SCALE.yaml
+E-P2-PLATFORM	Draft	'Platform foundation: CI gates, OpenAPI client, outbox, auth v2, observability, learner model'	P2/E-P2-PLATFORM.yaml
+E-P3-A11Y-I18N	Draft	Accessibility baseline and localisation	P3/E-P3-A11Y-I18N.yaml
+E-P3-COMPONENTS	Draft	Component library with every state	P3/E-P3-COMPONENTS.yaml
+E-P3-DESIGN-SYSTEM	Draft	Design system, IA shell, onboarding v2	P3/E-P3-DESIGN-SYSTEM.yaml
+E-P3-DESIGN-WORKFLOW	Draft	'Design workflow: benchmark to hi-fi screens'	P3/E-P3-DESIGN-WORKFLOW.yaml
+E-P3-ONBOARDING	Draft	Onboarding v2 in eight steps	P3/E-P3-ONBOARDING.yaml
+E-P3-REVIVE	Draft	Revive, consolidate, dev move	P3/E-P3-REVIVE.yaml
+E-P3-SHELL	Draft	Five-tab shell, search, lens, directory	P3/E-P3-SHELL.yaml
+E-P3-TOKENS	Draft	Tokens, type and compliance lint	P3/E-P3-TOKENS.yaml
+E-P4-CONTENT-ENGINE	Draft	'Content engine: licence register, language kits, linters, Studio, pipeline'	P4/E-P4-CONTENT-ENGINE.yaml
+E-P4-LANGUAGE-KITS	Draft	'Sub-epic: Language Kits'	P4/E-P4-LANGUAGE-KITS.yaml
+E-P4-LEGACY-REBUILD	Draft	'Sub-epic: Legacy Rebuild'	P4/E-P4-LEGACY-REBUILD.yaml
+E-P4-LICENCES	Draft	'Sub-epic: Licences'	P4/E-P4-LICENCES.yaml
+E-P4-LINTERS	Draft	'Sub-epic: Linters'	P4/E-P4-LINTERS.yaml
+E-P4-PIPELINE	Draft	'Sub-epic: Pipeline'	P4/E-P4-PIPELINE.yaml
+E-P4-STUDIO	Draft	'Sub-epic: Studio'	P4/E-P4-STUDIO.yaml
+E-P5-A1	Draft	A1 Beta content wave	P5/E-P5-A1.yaml
+E-P5-A2	Draft	A2 content wave and promotion	P5/E-P5-A2.yaml
+E-P5-AUDIO	Draft	Audio policy, TTS gates and replacement	P5/E-P5-AUDIO.yaml
+E-P5-B1	Draft	B1 content wave and Wave 2 L0	P5/E-P5-B1.yaml
+E-P5-CONTENT-REAL	Draft	Stage-1 content waves A1→A2→B1 with honest labels	P5/E-P5-CONTENT-REAL.yaml
+E-P5-QUALITY	Draft	Quality mechanisms, labels and accuracy tiers	P5/E-P5-QUALITY.yaml
+E-P6-EVALS	Draft	Per-language eval sets, ASR evals and CI blocker	P6/E-P6-EVALS.yaml
+E-P6-GATEWAY	Draft	'Gateway: modes, prompts, quotas, grounding, speech stack'	P6/E-P6-GATEWAY.yaml
+E-P6-MODES	Draft	Eight server-owned AI modes with grounding and evals	P6/E-P6-MODES.yaml
+E-P6-REALTIME	Draft	Realtime speech-to-speech with barge-in	P6/E-P6-REALTIME.yaml
+E-P6-SCORER	Draft	'Speech and AI: real scorer, gated TTS, realtime voice, gateway modes'	P6/E-P6-SCORER.yaml
+E-P6-SCORING	Draft	Pronunciation and tone scorer parts and calibration	P6/E-P6-SCORING.yaml
+E-P6-TTS	Draft	TTS strategy, tone-accuracy gate and per-language voices	P6/E-P6-TTS.yaml
+E-P7-HUBS	Draft	'Today, Learn and Speak hubs: every feature kept, wired and elevated'	P7/E-P7-HUBS.yaml
+E-P8-PLAY	Draft	'Play hub: flagship games on real scoring, every game on a shelf'	P8/E-P8-PLAY.yaml
+E-P9-E2EE	Draft	MLS end-to-end encrypted adult messaging and group calls	P9/E-P9-E2EE.yaml
+E-P9-GUARDIAN	Draft	Guardian hub, age tiers, consent and minor defaults	P9/E-P9-GUARDIAN.yaml
+E-P9-MODERATION	Draft	'Moderation stack: prevention, detection, response, transparency'	P9/E-P9-MODERATION.yaml
+E-P9-REALTIME	Draft	'Realtime infra: Redis scale-out, room authz, schemas, rate limits, messaging core'	P9/E-P9-REALTIME.yaml
+E-P9-SAFETY	Draft	'Safety and social: guardian hub, age tiers, moderation, E2EE, pen test'	P9/E-P9-SAFETY.yaml
+E-P9-VILLAGE	Draft	'Village social engines: circles, chat, rooms, clips, classrooms, events'	P9/E-P9-VILLAGE.yaml
+EXT-01	Blocked-External	'Obtain: Companion doc `LINGAFRIQ_AI_MODEL_STACK.md` (model/vendor choices, licences, pricing) — not in repo or Downloads'	EXT/EXT-01.yaml
+EXT-03	Blocked-External	'Obtain: Counsel sign-off on the licence register'	EXT/EXT-03.yaml
+EXT-04	Blocked-External	'Obtain: Oxford Languages datasets (yo, ig, ha, xh; sw via API) quote + licence'	EXT/EXT-04.yaml
+EXT-05	Blocked-External	'Obtain: IgboAPI dataset licence (Nkọwa okwu)'	EXT/EXT-05.yaml
+EXT-06	Blocked-External	'Obtain: isiZulu dictionary licence (Doke–Vilakazi publisher / isiZulu NLU) [verify]'	EXT/EXT-06.yaml
+EXT-07	Blocked-External	'Obtain: PanLex written permission'	EXT/EXT-07.yaml
+EXT-08	Blocked-External	'Obtain: NaijaVoices commercial waiver ($5k+/yr) — optional'	EXT/EXT-08.yaml
+EXT-09	Blocked-External	'Obtain: Helsinki Corpus of Swahili (ELRA €7.5k/15k) — optional'	EXT/EXT-09.yaml
+EXT-10	Blocked-External	'Obtain: Kamusi licence — optional'	EXT/EXT-10.yaml
+EXT-11	Blocked-External	'Obtain: 2 part-time linguists per Stage-1 language (14), consent + IP clause'	EXT/EXT-11.yaml
+EXT-12	Blocked-External	'Obtain: isiXhosa custom voice commission (2 actors, 5–10 h, buy-out) [quote]'	EXT/EXT-12.yaml
+EXT-13	Blocked-External	'Obtain: Native validators and voice talent (≥2 voices L0/L1, ≥4 L2 per language)'	EXT/EXT-13.yaml
+EXT-14	Blocked-External	'Obtain: Cultural consultant (patterns, avatars, imagery)'	EXT/EXT-14.yaml
+EXT-15	Blocked-External	'Obtain: Historians per persona (5 at v1)'	EXT/EXT-15.yaml
+EXT-16	Blocked-External	'Obtain: Rive / illustration artists (`.riv`, illustration packs, music, sounds)'	EXT/EXT-16.yaml
+EXT-17	Blocked-External	'Obtain: Third-party penetration test'	EXT/EXT-17.yaml
+EXT-18	Blocked-External	'Obtain: NDPC registration check + DPIA (incl. voice data thresholds [verify with counsel])'	EXT/EXT-18.yaml
+EXT-19	Blocked-External	'Obtain: App-store and payment set-up (RevenueCat webhooks secret, Play/App Store)'	EXT/EXT-19.yaml
+EXT-20	Blocked-External	'Obtain: Efficacy-study partner'	EXT/EXT-20.yaml
+EXT-21	Blocked-External	'Obtain: Key revocation (Firebase SA, Apple .p8, 5 AI keys) and history purge — human-run'	EXT/EXT-21.yaml
+EXT-22	Blocked-External	'Obtain: Reference grammars/dictionaries [purchase]: Bámgbóṣé, Emenanjo, Newman, Faraclas, Ashton, Poulos & Msimang'	EXT/EXT-22.yaml
+EXT-23	Blocked-External	'Obtain: Live-server facts marked [Unverified]: PM2 double scheduler, RevenueCat key injection, live translate path'	EXT/EXT-23.yaml
+EXT-24	Blocked-External	'Obtain: Professional UI translation + native sign-off of ARB strings with diacritics (20 locales)'	EXT/EXT-24.yaml
+EXT-25	Blocked-External	'Obtain: CSAM hash-matching vendor account (e.g. PhotoDNA/Safer-class) and hotline / law-enforcement reporting contacts'	EXT/EXT-25.yaml
+EXT-26	Blocked-External	'Obtain: Native-moderator lexicons and moderator panel per Stage-1 language'	EXT/EXT-26.yaml
+EXT-27	Blocked-External	'Obtain: Accessibility audit with disabled users (WCAG 2.2 AA)'	EXT/EXT-27.yaml
+EXT-28	Blocked-External	'Obtain: Paid contributors for the open tone corpus (moonshot)'	EXT/EXT-28.yaml
+EXT-29	Blocked-External	'Obtain: Museum / university partners for living history and AR scenes (moonshot)'	EXT/EXT-29.yaml
+EXT-30	Blocked-External	'Obtain: Verified native tutors for the teacher marketplace (moonshot)'	EXT/EXT-30.yaml
+F-001	Draft	Elevate Home / Today session	P7/F-001.yaml
+F-002	Draft	Elevate Daily Goals	P7/F-002.yaml
+F-003	Draft	Elevate Daily Challenges (revived)	P7/F-003.yaml
+F-004	Draft	Elevate Quests	P7/F-004.yaml
+F-005	Draft	Elevate Seasonal Events / Village Festival	P7/F-005.yaml
+F-006	Draft	Elevate Streaks & reminders	P7/F-006.yaml
+F-007	Draft	Elevate Lessons map / Courses	P7/F-007.yaml
+F-008	Draft	Elevate Authentic Path (A1–C1)	P7/F-008.yaml
+F-009	Draft	Elevate Lesson Flow	P7/F-009.yaml
+F-010	Draft	Elevate Lesson detail & Level certificate	P7/F-010.yaml
+F-011	Draft	Elevate Learning Path (personal plan)	P7/F-011.yaml
+F-012	Draft	Elevate Placement test	P7/F-012.yaml
+F-013	Draft	Elevate Grammar Hub	P7/F-013.yaml
+F-014	Draft	Elevate Vocabulary Builder	P7/F-014.yaml
+F-015	Draft	Elevate My Words & Review (SRS)	P7/F-015.yaml
+F-016	Draft	Elevate Review Rush (gamified review)	P7/F-016.yaml
+F-017	Draft	Elevate Listening Practice	P7/F-017.yaml
+F-018	Draft	Elevate Writing Practice	P7/F-018.yaml
+F-019	Draft	Elevate Phrase DNA	P7/F-019.yaml
+F-020	Draft	Elevate Tone & Rhythm Trainer	P7/F-020.yaml
+F-021	Draft	Elevate Tonal Lesson (Village)	P7/F-021.yaml
+F-022	Draft	Elevate Language Quiz	P7/F-022.yaml
+F-023	Draft	Elevate History & History Quiz	P7/F-023.yaml
+F-024	Draft	Elevate Mannerisms & etiquette	P7/F-024.yaml
+F-025	Draft	Elevate Cultural Hub	P7/F-025.yaml
+F-026	Draft	Elevate Culture Magazine	P7/F-026.yaml
+F-027	Draft	Elevate Heritage Milestones	P7/F-027.yaml
+F-028	Draft	Elevate FLB Heritage Archive	P7/F-028.yaml
+F-029	Draft	Elevate Dialect Preference	P7/F-029.yaml
+F-030	Draft	Elevate Living Dictionary	P7/F-030.yaml
+F-031	Draft	Elevate Offline Downloads	P7/F-031.yaml
+F-032	Draft	Elevate Language detail & Suggest a language	P7/F-032.yaml
+F-033	Draft	Elevate Passport (proctored test & credential)	P7/F-033.yaml
+F-034	Draft	Elevate Lesson Recap	P7/F-034.yaml
+F-035	Draft	Elevate Polie AI Tutor workspace	P7/F-035.yaml
+F-036	Draft	Elevate Tutor Dialogue mode	P7/F-036.yaml
+F-037	Draft	Elevate Tutor Grammar mode	P7/F-037.yaml
+F-038	Draft	Elevate Tutor Story mode	P7/F-038.yaml
+F-039	Draft	Elevate Tutor Translation mode	P7/F-039.yaml
+F-040	Draft	Elevate Tutor Pronunciation mode	P7/F-040.yaml
+F-041	Draft	Elevate Tutor Assess mode	P7/F-041.yaml
+F-042	Draft	Elevate Tutor dashboard	P7/F-042.yaml
+F-043	Draft	Elevate Shadowing (revived)	P7/F-043.yaml
+F-044	Draft	Elevate Conversation Scenarios and Roleplay	P7/F-044.yaml
+F-045	Draft	Elevate Conversation Analytics	P7/F-045.yaml
+F-046	Draft	Elevate Speak Engine Lab coaches	P7/F-046.yaml
+F-047	Draft	Elevate Speak Missions	P7/F-047.yaml
+F-048	Draft	Elevate Historical Personas	P7/F-048.yaml
+F-049	Draft	Elevate Persona Missions	P7/F-049.yaml
+F-050	Draft	Elevate LingChat AI conversation entry	P7/F-050.yaml
+F-051	Draft	Elevate Synthetic Voice Styles	P7/F-051.yaml
+F-052	Draft	Elevate Point and Say Lens	P7/F-052.yaml
+F-053	Draft	Elevate Live Translate Bridge	P7/F-053.yaml
+F-054	Draft	Elevate Import Media OCR and clips	P7/F-054.yaml
+F-055	Draft	Elevate Games Arcade (hub & catalogue)	P8/F-055.yaml
+F-056	Draft	Elevate Game shell, guides & results (revived)	P8/F-056.yaml
+F-057	Draft	Elevate Word Match	P8/F-057.yaml
+F-058	Draft	Elevate Word Match (audio)	P8/F-058.yaml
+F-059	Draft	Elevate Fill in the Blank	P8/F-059.yaml
+F-060	Draft	Elevate Picture–Word Association	P8/F-060.yaml
+F-061	Draft	Elevate Memory Map	P8/F-061.yaml
+F-062	Draft	Elevate Speed Challenge	P8/F-062.yaml
+F-063	Draft	Elevate Speed Round	P8/F-063.yaml
+F-064	Draft	Elevate Story Builder	P8/F-064.yaml
+F-065	Draft	Elevate Grammar Detective	P8/F-065.yaml
+F-066	Draft	Elevate Grammar Jam	P8/F-066.yaml
+F-067	Draft	Elevate Greeting Diplomacy	P8/F-067.yaml
+F-068	Draft	Elevate Market Bargaining	P8/F-068.yaml
+F-069	Draft	Elevate Quiz Chef	P8/F-069.yaml
+F-070	Draft	Elevate Roleplay Adventure	P8/F-070.yaml
+F-071	Draft	Elevate Taxi Survival	P8/F-071.yaml
+F-072	Draft	Elevate Tone Trainer	P8/F-072.yaml
+F-073	Draft	Elevate Pronunciation Duel	P8/F-073.yaml
+F-074	Draft	Elevate Pronunciation Game	P8/F-074.yaml
+F-075	Draft	Elevate Pronunciation Karaoke	P8/F-075.yaml
+F-076	Draft	Elevate Emoji Translator	P8/F-076.yaml
+F-077	Draft	Elevate Elders' Blessings	P8/F-077.yaml
+F-078	Draft	Elevate Folktale Reconstruction	P8/F-078.yaml
+F-079	Draft	Elevate Clan Lineage Story Builder	P8/F-079.yaml
+F-080	Draft	Elevate Conversation Relay	P8/F-080.yaml
+F-081	Draft	Elevate Board Word Games	P8/F-081.yaml
+F-082	Draft	Elevate Cultural Games collection	P8/F-082.yaml
+F-083	Draft	Elevate Accent Puzzle	P8/F-083.yaml
+F-084	Draft	Elevate Call & Response	P8/F-084.yaml
+F-085	Draft	Elevate Cultural Etiquette	P8/F-085.yaml
+F-086	Draft	Elevate Drum Word	P8/F-086.yaml
+F-087	Draft	Elevate Flashcard Safari	P8/F-087.yaml
+F-088	Draft	Elevate Food Quest	P8/F-088.yaml
+F-089	Draft	Elevate Liar Liar	P8/F-089.yaml
+F-090	Draft	Elevate Multilingual Relay	P8/F-090.yaml
+F-091	Draft	Elevate Phrase Sniper	P8/F-091.yaml
+F-092	Draft	Elevate Proverb Unlocker	P8/F-092.yaml
+F-093	Draft	Elevate Rhythm Typing	P8/F-093.yaml
+F-094	Draft	Elevate Tongue Twister Race	P8/F-094.yaml
+F-095	Draft	Elevate Village Quest	P8/F-095.yaml
+F-096	Draft	Elevate Ayo (mancala)	P8/F-096.yaml
+F-097	Draft	Elevate Snakes & Ladders (cultural)	P8/F-097.yaml
+F-098	Draft	Elevate Language Ludo	P8/F-098.yaml
+F-099	Draft	Elevate Suwe (hopscotch)	P8/F-099.yaml
+F-100	Draft	Elevate Whot!	P8/F-100.yaml
+F-101	Draft	Elevate Drum Rhythm	P8/F-101.yaml
+F-102	Draft	Elevate Tone Forge (revived)	P8/F-102.yaml
+F-103	Draft	Elevate Villages hub and Language Villages	P9/F-103.yaml
+F-104	Draft	Elevate Swahili Village Map template	P9/F-104.yaml
+F-105	Draft	Elevate Village Market	P9/F-105.yaml
+F-106	Draft	Elevate Village Café	P9/F-106.yaml
+F-107	Draft	Elevate Elder Hut	P9/F-107.yaml
+F-108	Draft	Elevate Practice Rooms and Sessions	P9/F-108.yaml
+F-109	Draft	Elevate Flashcard Focus (group)	P9/F-109.yaml
+F-110	Draft	Elevate Matching Pairs (group)	P9/F-110.yaml
+F-111	Draft	Elevate Tribes as Circles	P9/F-111.yaml
+F-112	Draft	Elevate Circle Clash competitions	P9/F-112.yaml
+F-113	Draft	Elevate Global Chat as Language Squares	P9/F-113.yaml
+F-114	Draft	Elevate Private Chat (DMs)	P9/F-114.yaml
+F-115	Draft	Elevate Call History	P9/F-115.yaml
+F-116	Draft	Elevate Chat Welcome and Community Guidelines	P9/F-116.yaml
+F-117	Draft	Elevate Moderation Tools for Community Stewards	P9/F-117.yaml
+F-118	Draft	Elevate Social Hub and Connections	P9/F-118.yaml
+F-119	Draft	Elevate Friend Quests and Challenge a Friend	P9/F-119.yaml
+F-120	Draft	Elevate Share Progress	P9/F-120.yaml
+F-121	Draft	Elevate Social Gifting	P9/F-121.yaml
+F-122	Draft	Elevate Community Corrections	P9/F-122.yaml
+F-123	Draft	Elevate Ancestral Tree	P9/F-123.yaml
+F-124	Draft	Elevate Micro-Mentors	P9/F-124.yaml
+F-125	Draft	Elevate Live Classroom	P9/F-125.yaml
+F-126	Draft	Elevate Teacher Classroom Dashboard	P9/F-126.yaml
+F-127	Draft	Elevate Social Audio Rooms	P9/F-127.yaml
+F-128	Draft	Elevate Status (WhatsApp-style)	P9/F-128.yaml
+F-129	Draft	Elevate Starred Messages and Media Gallery	P9/F-129.yaml
+F-130	Draft	Elevate Snaps and Streaks	P9/F-130.yaml
+F-131	Draft	Elevate Community Feed	P9/F-131.yaml
+F-132	Draft	Elevate Explore, Search and Community Profile	P9/F-132.yaml
+F-133	Draft	Elevate Create Content (UGC)	P9/F-133.yaml
+F-134	Draft	Elevate Voice Contribution	P9/F-134.yaml
+F-135	Draft	Elevate Native Speaker Verification Queue	P9/F-135.yaml
+F-136	Draft	Elevate Native Content Review	P9/F-136.yaml
+F-137	Draft	Elevate Profile	P10/F-137.yaml
+F-138	Draft	Elevate Global Handle (@id)	P10/F-138.yaml
+F-139	Draft	Elevate Progress Dashboard	P10/F-139.yaml
+F-140	Draft	Elevate Achievements & Badges	P10/F-140.yaml
+F-141	Draft	Elevate Leaderboards	P10/F-141.yaml
+F-142	Draft	Elevate Magic Items	P10/F-142.yaml
+F-143	Draft	Elevate Settings, Privacy & Appearance	P10/F-143.yaml
+F-144	Draft	Elevate Subscription & Plans	P10/F-144.yaml
+F-145	Draft	Elevate Family / Guardian Dashboard	P10/F-145.yaml
+F-146	Draft	Elevate About & Policy	P10/F-146.yaml
+F-147	Draft	Elevate Sign in, Sign up & Email Verification	P10/F-147.yaml
+F-148	Draft	Elevate Onboarding & Placement	P10/F-148.yaml
+F-149	Draft	Elevate Splash	P10/F-149.yaml
+F-150	Draft	Elevate Features Guide & First-use Tips	P10/F-150.yaml
+F-151	Draft	Elevate Staff & Micro-mentor Reports	P10/F-151.yaml
+P0-INT-01	Done	Install token-economy charter rule and root AGENTS.md	P0/P0-INT-01.yaml
+P0-INT-02	Ready	Wire agent-file charter check into pre-commit and CI	P0/P0-INT-02.yaml
+P0-INT-03	Done	Add charter prefixes to worker, tester, reviewer briefs	P0/P0-INT-03.yaml
+P0-INT-04	Ready	Add gate-time routing review over LEDGER.csv	P0/P0-INT-04.yaml
+P0-INT-05	Done	Convert source PDFs to anchored text	P0/P0-INT-05.yaml
+P0-INT-06	Done	Build RTM from segmented extraction parts	P0/P0-INT-06.yaml
+P0-INT-07	Done	Provide card validation and coverage tooling	P0/P0-INT-07.yaml
+P0-INT-08	Draft	Generate REPO_MAP.md with routes, screens, reachability	P0/P0-INT-08.yaml
+P0-INT-09	Draft	Archive root status Markdown files with manifest	P0/P0-INT-09.yaml
+P0-INT-10	Draft	Create containment evidence index for G1	P0/P0-INT-10.yaml
+P0-VER-01	Blocked-External	Verify which live-translate path runs in production	P0/P0-VER-01.yaml
+P0-VER-02	Draft	Verify social audio rooms status on staging	P0/P0-VER-02.yaml
+P0-VER-03	Draft	Verify Yoruba diacritics render in fallback fonts	P0/P0-VER-03.yaml
+P0-VER-04	Draft	Verify assets/audio is absent from pubspec	P0/P0-VER-04.yaml
+P0-VER-05	Draft	Benchmark Omnilingual 300M on mid-range Android	P0/P0-VER-05.yaml
+P0-VER-06	Blocked-External	Confirm DPIA thresholds for voice data with counsel	P0/P0-VER-06.yaml
+P0-VER-07	Draft	Test Latin-only OCR on stacked diacritics	P0/P0-VER-07.yaml
+P0-VER-08	Draft	Confirm Point and Say OCR mangles tone marks	P0/P0-VER-08.yaml
+P0-VER-09	Draft	Trace whether Pronunciation Game records audio	P0/P0-VER-09.yaml
+P0-VER-10	Draft	Inspect micro-mentor verification, safeguarding and payment flow	P0/P0-VER-10.yaml
+P0-VER-11	Blocked-External	Check consent and licensing of recorded UGC	P0/P0-VER-11.yaml
+P0-VER-12	Draft	Read the wait and loading screen content	P0/P0-VER-12.yaml
+P0-VER-13	Draft	Test role checks on staff tooling in consumer app	P0/P0-VER-13.yaml
+P0-VER-14	Blocked-External	Verify Igbo Ọnwụ orthography citation	P0/P0-VER-14.yaml
+P0-VER-15	Blocked-External	Purchase and confirm first reference grammar	P0/P0-VER-15.yaml
+P0-VER-16	Blocked-External	Purchase and confirm grammar and corpora set	P0/P0-VER-16.yaml
+P0-VER-17	Blocked-External	Verify BAKITA Kiswahili Sanifu citation	P0/P0-VER-17.yaml
+P0-VER-18	Blocked-External	Purchase and confirm Emenanjo reference	P0/P0-VER-18.yaml
+P0-VER-19	Blocked-External	Purchase and confirm Zulu references and SADiLaR terms	P0/P0-VER-19.yaml
+P0-VER-20	Draft	Scan for a mature open Xhosa morphological analyser	P0/P0-VER-20.yaml
+P0-VER-21	Draft	Re-estimate Curriculum Studio effort from cards	P0/P0-VER-21.yaml
+P0-VER-22	Blocked-External	Obtain isiXhosa custom voice quote	P0/P0-VER-22.yaml
+P0-VER-23	Blocked-External	Obtain data licence cost quotes	P0/P0-VER-23.yaml
+P1-001	Blocked-External	Write history-purge script and key revocation checklist	P1/P1-001.yaml
+P1-002	Blocked-External	Remove committed credentials and load Firebase key from secret store	P1/P1-002.yaml
+P1-003	Draft	Add gitleaks config, pre-commit hook and blocking CI gate	P1/P1-003.yaml
+P1-004	Draft	Decide secrets manager (Doppler, 1Password or GCP)	P1/P1-004.yaml
+P1-005	Draft	Add quarterly secret-rotation calendar and reminder workflow	P1/P1-005.yaml
+P1-006	Draft	Strip AI provider keys from client builds and add guard	P1/P1-006.yaml
+P1-007	Done	Build authenticated AI gateway with server-owned prompt templates	P1/P1-007.yaml
+P1-008	Done	Enforce token clamps, per-user quotas and cost budgets in gateway	P1/P1-008.yaml
+P1-009	Draft	Move Groq, HF, Stability, Replicate and Leonardo calls server-side	P1/P1-009.yaml
+P1-010	Draft	Verify Play Integrity and App Attest on gateway and reward calls	P1/P1-010.yaml
+P1-011	Draft	Route client AI chat providers through the gateway	P1/P1-011.yaml
+P1-012	Done	Route persona missions through gateway with honest error state	P1/P1-012.yaml
+P1-013	Done	Add server-side room membership ACL and opaque room ids	P1/P1-013.yaml
+P1-014	Done	Derive socket identity only from verified JWT	P1/P1-014.yaml
+P1-015	Done	Scope all socket emits to rooms and friend-only presence	P1/P1-015.yaml
+P1-016	Done	Build socket authorisation test suite	P1/P1-016.yaml
+P1-017	Done	Make currency grants server-only via event rules	P1/P1-017.yaml
+P1-018	Done	Compute XP server-side with idempotency keys and daily caps	P1/P1-018.yaml
+P1-019	Done	Reconcile and remove fraudulent currency and XP balances	P1/P1-019.yaml
+P1-020	Draft	Add age gate before account creation	P1/P1-020.yaml
+P1-021	Draft	Enforce DM, call, snap and feed restrictions for under-18 and unknown age	P1/P1-021.yaml
+P1-022	Draft	Hide social surfaces for under-18 and unknown age in app	P1/P1-022.yaml
+P1-023	Done	Replace toxicity filter with hosted moderation API	P1/P1-023.yaml
+P1-024	Done	Add report and block endpoints and UX	P1/P1-024.yaml
+P1-025	Draft	Hard-delete expired snaps and require signed upload URLs	P1/P1-025.yaml
+P1-026	Done	Disclose AI persona and remove deny-being-AI instruction	P1/P1-026.yaml
+P1-027	Done	Replace persona substring filter with policy classifier	P1/P1-027.yaml
+P1-028	Done	Correct Nkrumah persona data and independence claim	P1/P1-028.yaml
+P1-029	Done	Pull placeholder bundles from build and add placeholder linter	P1/P1-029.yaml
+P1-030	Done	Pull false tone and grammar teaching from game content	P1/P1-030.yaml
+P1-031	Done	Replace fake pronunciation scores with honest practice mode	P1/P1-031.yaml
+P1-032	Done	Return 503 retryable from pronunciation backend and fall back	P1/P1-032.yaml
+P1-033	Done	Delete semver logout and add schema-versioned local migrations	P1/P1-033.yaml
+P1-034	Done	Add typed onboarding model and corrupted-value migration	P1/P1-034.yaml
+P1-035	Done	Consolidate to one durable outbox and delete the stub	P1/P1-035.yaml
+P1-036	Done	Use authenticated encryption for cached data	P1/P1-036.yaml
+P1-037	Done	Run one leader-elected notification scheduler	P1/P1-037.yaml
+P1-038	Draft	Send one reminder per day in local time with quiet hours	P1/P1-038.yaml
+P1-039	Draft	Verify live scheduler count and RevenueCat key injection	P1/P1-039.yaml
+P1-040	Draft	Remove MMS-TTS, XTTS-v2 and NLLB services and config	P1/P1-040.yaml
+P1-041	Draft	Choose commercial TTS and MT replacements named in source	P1/P1-041.yaml
+P1-042	Draft	Remove unofficial Google Translate scraper	P1/P1-042.yaml
+P1-043	Draft	Return generic login errors and stop logging credentials metadata	P1/P1-043.yaml
+P1-044	Draft	Add per-account progressive lockout and backoff	P1/P1-044.yaml
+P1-045	Draft	Enforce 8-char password with breached check and Argon2id rehash	P1/P1-045.yaml
+P1-046	Draft	Fix JWT secret handling and move to asymmetric keys with kid rotation	P1/P1-046.yaml
+P1-047	Draft	Issue short-lived access tokens with rotating revocable refresh tokens	P1/P1-047.yaml
+P1-048	Draft	Add passkey sign-in	P1/P1-048.yaml
+P1-049	Draft	Add Google and Apple sign-in and email magic link	P1/P1-049.yaml
+P1-050	Draft	Apply schema validation and per-route size limits on every route	P1/P1-050.yaml
+P1-051	Draft	Remove client-supplied identity fields across the API	P1/P1-051.yaml
+P1-052	Draft	Build IDOR authorisation suite over every id route	P1/P1-052.yaml
+P1-053	Draft	Build rate-limit and lockout test suite	P1/P1-053.yaml
+P1-054	Draft	Decide certificate pinning approach	P1/P1-054.yaml
+P1-055	Draft	Implement certificate pinning consistently per ADR	P1/P1-055.yaml
+P1-056	Draft	Obfuscate release builds	P1/P1-056.yaml
+P1-057	Draft	Enable dependency update bot, audit gate and monthly pub check	P1/P1-057.yaml
+P1-058	Draft	Generate SBOM and pin GitHub Actions by SHA	P1/P1-058.yaml
+P1-059	Draft	Upgrade admin panel React and Vite	P1/P1-059.yaml
+P1-060	Draft	Prepare penetration test scope document	P1/P1-060.yaml
+P1-061	Draft	Add RevenueCat webhook receiver and entitlement table	P1/P1-061.yaml
+P1-062	Draft	Enforce premium gates server-side from entitlements	P1/P1-062.yaml
+P10-900	Draft	Verify every reward on the server	P10/P10-900.yaml
+P10-901	Draft	Compute XP from evidence with diminishing returns	P10/P10-901.yaml
+P10-902	Draft	Migrate all balances to the single Cowries currency	P10/P10-902.yaml
+P10-903	Draft	'Add Cowries sinks: cosmetics, repair, persona access'	P10/P10-903.yaml
+P10-904	Draft	Add the language-preservation fund donation sink	P10/P10-904.yaml
+P10-905	Draft	Build ethical streaks with weekly option and freezes	P10/P10-905.yaml
+P10-906	Draft	Limit reminders to one a day in quiet hours	P10/P10-906.yaml
+P10-907	Draft	Move hearts into opt-in Challenge Mode	P10/P10-907.yaml
+P10-908	Draft	Make leagues opt-in and learning-ranked	P10/P10-908.yaml
+P10-909	Draft	Build circle quests, family challenges and Heritage Tree	P10/P10-909.yaml
+P10-910	Draft	Issue shareable can-do badges after checkpoints	P10/P10-910.yaml
+P10-911	Draft	Replace fake co-learners and friend pushes	P10/P10-911.yaml
+P10-912	Draft	Enforce monetisation guardrails in code	P10/P10-912.yaml
+P10-913	Draft	Verify all gamification guardrails hold	P10/P10-913.yaml
+P10-914	Draft	Publish the Passport CEFR methodology	P10/P10-914.yaml
+P10-915	Draft	Build an evidence portfolio of passed can-do tasks	P10/P10-915.yaml
+P10-916	Draft	Add a proctored CAT to the Passport	P10/P10-916.yaml
+P10-917	Draft	Issue signed Verifiable Credentials in Open Badges 3.0	P10/P10-917.yaml
+P10-918	Draft	Revoke credentials and publish status	P10/P10-918.yaml
+P10-919	Draft	Write the DPIA for voice data and minors	P10/P10-919.yaml
+P10-920	Draft	Build the data map and retention schedule	P10/P10-920.yaml
+P10-921	Draft	Run logged purge jobs per retention schedule	P10/P10-921.yaml
+P10-922	Draft	Gate voice recordings on opt-in with delete-after-scoring	P10/P10-922.yaml
+P10-923	Draft	Ask separate consent for model-training contributions	P10/P10-923.yaml
+P10-924	Draft	Decide contributor payment or benefit-sharing	P10/P10-924.yaml
+P10-925	Draft	Expose in-app data export and account deletion	P10/P10-925.yaml
+P10-926	Draft	Verify NDPC data-controller registration need	P10/P10-926.yaml
+P10-927	Draft	Rewrite the privacy policy in plain words	P10/P10-927.yaml
+P10-928	Draft	Verify POPIA and other jurisdiction duties with counsel	P10/P10-928.yaml
+P10-929	Draft	Label AI content and personas under EU AI Act Art. 50	P10/P10-929.yaml
+P10-930	Draft	Define the versioned analytics event schema	P10/P10-930.yaml
+P10-931	Draft	Emit learning events from the app	P10/P10-931.yaml
+P10-932	Draft	Emit speech and AI turn events	P10/P10-932.yaml
+P10-933	Draft	Send on-device aggregates where possible	P10/P10-933.yaml
+P10-934	Draft	Build the north-star and guardrail metrics dashboard	P10/P10-934.yaml
+P10-935	Draft	Add feature-flag experiments with pre-registration	P10/P10-935.yaml
+P10-936	Draft	Prepare the efficacy study design brief	P10/P10-936.yaml
+P10-937	Draft	Decide the two efficacy-study languages	P10/P10-937.yaml
+P10-938	Draft	Lint UI strings for dashes, banned words and verbs	P10/P10-938.yaml
+P10-939	Draft	Gate copy at grade-7 reading with name continuity	P10/P10-939.yaml
+P10-940	Draft	Standardise error copy and village voice scope	P10/P10-940.yaml
+P11-001	Draft	Decide persona delivery modes and v1 roster (ADR-031)	P11/P11-001.yaml
+P11-002	Draft	Define persona dossier schema and retrieval index	P11/P11-002.yaml
+P11-003	Draft	Validate persona answer contract server-side	P11/P11-003.yaml
+P11-004	Draft	Enforce knowledge horizon with a classifier	P11/P11-004.yaml
+P11-005	Draft	Show Source and Inferred chips on persona claims	P11/P11-005.yaml
+P11-006	Draft	Replace persona blocklist with sensitivity classifier and age tiers	P11/P11-006.yaml
+P11-007	Draft	Make AI disclosure always visible on personas	P11/P11-007.yaml
+P11-008	Draft	Route persona turns through AI gateway with typed errors	P11/P11-008.yaml
+P11-009	Draft	Add per-persona and global persona kill switch	P11/P11-009.yaml
+P11-010	Draft	Author Yaa Asantewaa persona dossier and prompts	P11/P11-010.yaml
+P11-011	Draft	Author Kwame Nkrumah persona dossier and prompts	P11/P11-011.yaml
+P11-012	Draft	Author Shaka kaSenzangakhona persona dossier and prompts	P11/P11-012.yaml
+P11-013	Draft	Author Ahmed Baba persona dossier and prompts	P11/P11-013.yaml
+P11-014	Draft	Author Thomas Mofolo persona dossier and prompts	P11/P11-014.yaml
+P11-015	Draft	Define four persona packs pairing figures with languages	P11/P11-015.yaml
+P11-016	Draft	Author Yaa Asantewaa quest chapter structure	P11/P11-016.yaml
+P11-017	Draft	Build quest scenes, ambient sound and Tone Lens moment	P11/P11-017.yaml
+P11-018	Draft	Build bilingual quest dialogue and comprehension checkpoint	P11/P11-018.yaml
+P11-019	Draft	Add historian note, mini-quiz and primary-source card to quest	P11/P11-019.yaml
+P11-020	Draft	Author branch beats; keep model improvisation on rails	P11/P11-020.yaml
+P11-021	Draft	Add teacher persona-chapter assignment and debrief sheet	P11/P11-021.yaml
+P11-022	Draft	Specify persona voice casting, consent and labelling	P11/P11-022.yaml
+P11-023	Draft	Create era-accurate persona bust artboards	P11/P11-023.yaml
+P11-024	Draft	Build 50-probe scripted eval harness per persona	P11/P11-024.yaml
+P11-025	Draft	Build adversarial persona suite with age-tier policy	P11/P11-025.yaml
+P11-026	Draft	Verify persona language quality with native reviewers	P11/P11-026.yaml
+P11-027	Draft	Verify historian review for all five personas	P11/P11-027.yaml
+P11-028	Draft	Write one-page character bible per v1 character	P11/P11-028.yaml
+P11-029	Draft	Decide CharacterVM production contract (ADR-030)	P11/P11-029.yaml
+P11-030	Draft	Decide avatar economy and identity rules (ADR-032)	P11/P11-030.yaml
+P11-031	Draft	Decide forced aligner (ADR-033)	P11/P11-031.yaml
+P11-032	Draft	Decide avatar renderer (ADR-034)	P11/P11-032.yaml
+P11-033	Draft	Decide scarification and tribal marks policy (ADR-035)	P11/P11-033.yaml
+P11-034	Draft	Write avatar cultural design bible	P11/P11-034.yaml
+P11-035	Draft	Generate CharacterVM bindings and CI contract test	P11/P11-035.yaml
+P11-036	Draft	Version-control single .riv source with changelog	P11/P11-036.yaml
+P11-037	Draft	Integrate Polie rig spike with Character and chip artboards	P11/P11-037.yaml
+P11-038	Draft	Add layer isolation check for L1–L5	P11/P11-038.yaml
+P11-039	Draft	Design chip artboard for 32, 48 and 64 px	P11/P11-039.yaml
+P11-040	Draft	Add golden chip render tests at 32/48/64 px	P11/P11-040.yaml
+P11-041	Draft	Build Polie states, idle micro-motion and transitions	P11/P11-041.yaml
+P11-042	Draft	Define viseme enum, sidecar JSON and phoneme map	P11/P11-042.yaml
+P11-043	Draft	Schedule visemes on audio clock with RMS jaw fallback	P11/P11-043.yaml
+P11-044	Draft	Verify lip-sync rated natural by native viewers	P11/P11-044.yaml
+P11-045	Draft	Build nested artboard customisation for hair, headwear, garments	P11/P11-045.yaml
+P11-046	Draft	Build skin-tone and colour properties across ≥10 tones	P11/P11-046.yaml
+P11-047	Draft	Enforce avatar size, frame-cost and draw-call budgets	P11/P11-047.yaml
+P11-048	Draft	Upgrade to rive 0.14.11 with rive_native and controller cache	P11/P11-048.yaml
+P11-049	Draft	Build AvatarDirector and retire scaffolding engines	P11/P11-049.yaml
+P11-050	Draft	Pause offscreen avatars and use static chips in lists	P11/P11-050.yaml
+P11-051	Draft	Add avatar reduced motion and screen-reader semantics	P11/P11-051.yaml
+P11-052	Draft	Expand cast to archetypes and per-language hosts	P11/P11-052.yaml
+P11-053	Draft	Build learner avatar editor on the shared rig	P11/P11-053.yaml
+P11-054	Draft	Verify avatar unlocks on the server	P11/P11-054.yaml
+P11-055	Draft	Generate stickers, reactions and speaking share cards	P11/P11-055.yaml
+P12-001	Draft	Remove duplicated curriculum JSONs from the bundle	P12/P12-001.yaml
+P12-002	Draft	Strip bundled code files and dev examples from assets	P12/P12-002.yaml
+P12-003	Draft	Deliver large content as downloadable language packs	P12/P12-003.yaml
+P12-004	Draft	Gate release APK download size under 40 MB in CI	P12/P12-004.yaml
+P12-005	Draft	Split polie_workspace_screen into feature modules	P12/P12-005.yaml
+P12-006	Draft	Split ai_chat_provider_groq and api_provider	P12/P12-006.yaml
+P12-007	Draft	Split game_provider and enforce module boundaries	P12/P12-007.yaml
+P12-008	Draft	Delete superseded duplicate screens after consolidation	P12/P12-008.yaml
+P12-009	Draft	Enforce image and Rive asset budgets in CI	P12/P12-009.yaml
+P12-010	Draft	Enforce const widgets and list virtualisation lints	P12/P12-010.yaml
+P12-011	Draft	Remove rebuild storms from large Riverpod providers	P12/P12-011.yaml
+P12-012	Draft	Gate cold start under 2 s on Tecno/Infinix-class device	P12/P12-012.yaml
+P12-013	Draft	Enforce frame-cost budget on the reference device	P12/P12-013.yaml
+P12-014	Draft	Add API read load test with p95 under 300 ms	P12/P12-014.yaml
+P12-015	Draft	Add chat delivery load test with p95 under 500 ms	P12/P12-015.yaml
+P12-016	Draft	Automate staged rollout 1/10/50/100% with crash-free and ANR gates	P12/P12-016.yaml
+P12-017	Draft	Run rollback drill on a staged release	P12/P12-017.yaml
+P12-018	Draft	Execute quarterly MongoDB point-in-time restore test	P12/P12-018.yaml
+P12-019	Draft	Add chaos and offline resilience test suite	P12/P12-019.yaml
+P12-020	Draft	Rehearse schema-versioned local migrations drill	P12/P12-020.yaml
+P12-021	Draft	Conduct accessibility audit with disabled users	P12/P12-021.yaml
+P12-022	Draft	Complete release-readiness checklist and generated status	P12/P12-022.yaml
+P13-001	Draft	Create later-wave language admission template	P13/P13-001.yaml
+P13-002	Draft	Add Lanfrica source discovery and FSI/Peace Corps cross-check	P13/P13-002.yaml
+P13-003	Draft	Block later-wave languages beyond L0 without a lexicon	P13/P13-003.yaml
+P13-004	Draft	Decide moonshot start gate respecting new-breadth stop	P13/P13-004.yaml
+P13-005	Draft	Design Living Archive path to 95+ languages	P13/P13-005.yaml
+P13-006	Draft	Design open tone corpus and on-device tone model	P13/P13-006.yaml
+P13-007	Draft	Design Grandma Mode family dialect recordings	P13/P13-007.yaml
+P13-008	Draft	Design living history and AR grounded in archives	P13/P13-008.yaml
+P13-009	Draft	Design Ajami, Nsibidi, Adinkra and Ge'ez script journeys	P13/P13-009.yaml
+P13-010	Draft	Decide Heritage Language Fund mechanics and in-app progress	P13/P13-010.yaml
+P13-011	Draft	Design verified native teacher marketplace	P13/P13-011.yaml
+P2-001	Draft	Make flutter analyze fatal on warnings for new code	P2/P2-001.yaml
+P2-002	Draft	Add placeholder and claim linters over source and content	P2/P2-002.yaml
+P2-003	Draft	Run gitleaks in pre-commit and CI	P2/P2-003.yaml
+P2-004	Draft	Build content schema validator as blocking CI job	P2/P2-004.yaml
+P2-005	Draft	Block merges on prompt or model changes without AI eval	P2/P2-005.yaml
+P2-006	Draft	Block on high-severity dependency audit findings	P2/P2-006.yaml
+P2-007	Draft	Generate SBOM, pin Actions by SHA, drop auto-commit step	P2/P2-007.yaml
+P2-008	Draft	Gate 70% coverage on domain logic	P2/P2-008.yaml
+P2-009	Draft	Add object-level authorisation test suite for /:id routes	P2/P2-009.yaml
+P2-010	Draft	Add golden test harness for design system and Rive chips	P2/P2-010.yaml
+P2-011	Draft	Generate versioned OpenAPI spec from backend code	P2/P2-011.yaml
+P2-012	Draft	Generate Dart client and delete multi-path guessing	P2/P2-012.yaml
+P2-013	Draft	Add backend contract tests from OpenAPI spec	P2/P2-013.yaml
+P2-014	Draft	Add schema-versioned local migrations without logout on update	P2/P2-014.yaml
+P2-015	Draft	Build one durable outbox with idempotency keys and backoff	P2/P2-015.yaml
+P2-016	Draft	Consolidate competing offline systems into the outbox	P2/P2-016.yaml
+P2-017	Draft	Show a visible sync state	P2/P2-017.yaml
+P2-018	Draft	Replace fake-success paths with typed errors and visible states	P2/P2-018.yaml
+P2-019	Draft	Manage downloadable units, storage and Wi-Fi-only default	P2/P2-019.yaml
+P2-020	Draft	Add low-bandwidth mode honouring Android Data Saver	P2/P2-020.yaml
+P2-021	Draft	Specify on-device tone feedback hook for offline practice	P2/P2-021.yaml
+P2-022	Draft	Add integration test for onboarding, first lesson and sync	P2/P2-022.yaml
+P2-023	Draft	Issue short-lived asymmetric access tokens with kid rotation	P2/P2-023.yaml
+P2-024	Draft	Add rotating revocable refresh tokens with reuse detection	P2/P2-024.yaml
+P2-025	Draft	Add passkey sign-in and sign-up	P2/P2-025.yaml
+P2-026	Draft	Add Google and Apple sign-in	P2/P2-026.yaml
+P2-027	Draft	Add email magic link sign-in	P2/P2-027.yaml
+P2-028	Draft	Rehash legacy passwords with Argon2id and enforce password rules	P2/P2-028.yaml
+P2-029	Draft	Start Sentry first and cut cold start under 2 s	P2/P2-029.yaml
+P2-030	Draft	Split worker service on BullMQ with leader-elected cron	P2/P2-030.yaml
+P2-031	Draft	Add health, readiness probes and graceful shutdown	P2/P2-031.yaml
+P2-032	Draft	Configure Atlas backups and quarterly restore drill	P2/P2-032.yaml
+P2-033	Draft	Add OpenTelemetry traces across app, API, AI gateway and speech	P2/P2-033.yaml
+P2-034	Draft	Emit RED metrics and alert on latency SLOs	P2/P2-034.yaml
+P2-035	Draft	Add per-feature AI cost dashboards and fallback-rate alert	P2/P2-035.yaml
+P2-036	Draft	Emit structured logs without PII or credentials	P2/P2-036.yaml
+P2-037	Draft	Report crashes and ANRs with release gates	P2/P2-037.yaml
+P2-038	Draft	Add feature flags and staged rollout stages	P2/P2-038.yaml
+P2-039	Draft	'ADR: Decide on Shorebird Dart patching'	P2/P2-039.yaml
+P2-040	Draft	Archive status docs and generate honest STATUS.md	P2/P2-040.yaml
+P2-041	Draft	'ADR: Single Learner Knowledge Graph replaces four learner models'	P2/P2-041.yaml
+P2-042	Draft	Build idempotent learning event log	P2/P2-042.yaml
+P2-043	Draft	Implement FSRS-6 scheduler on device	P2/P2-043.yaml
+P2-044	Draft	Add mutation testing gate on FSRS	P2/P2-044.yaml
+P2-045	Draft	Model Learner Knowledge Graph nodes and error counts	P2/P2-045.yaml
+P2-046	Draft	Expose graph queries for session builder and Polie context	P2/P2-046.yaml
+P2-047	Draft	Build item bank schema and storage	P2/P2-047.yaml
+P2-048	Draft	Consolidate four quiz systems into the item bank	P2/P2-048.yaml
+P2-049	Draft	Calibrate IRT parameters from pilot responses	P2/P2-049.yaml
+P2-050	Draft	Build CAT placement engine with reported confidence	P2/P2-050.yaml
+P2-051	Draft	Add listening, tone and picture item types	P2/P2-051.yaml
+P2-052	Draft	Add dictation and sentence-building item types	P2/P2-052.yaml
+P2-053	Draft	Add speaking prompt items scored by the real scorer	P2/P2-053.yaml
+P2-054	Draft	Add conversation tasks scored against can-dos	P2/P2-054.yaml
+P2-055	Draft	Show correct form with audio and a one-sentence reason	P2/P2-055.yaml
+P2-056	Draft	Map unit checkpoints to can-dos and credential evidence	P2/P2-056.yaml
+P2-057	Draft	Revive preloader help screens as contextual first-use tips	P2/P2-057.yaml
+P3-001	Draft	Benchmark Duolingo and three rivals into baselines	P3/P3-001.yaml
+P3-002	Draft	Write design principles and three job journey maps	P3/P3-002.yaml
+P3-003	Draft	Design three art directions with hero screens	P3/P3-003.yaml
+P3-004	Draft	'ADR-010: choose the art direction'	P3/P3-004.yaml
+P3-005	Draft	'ADR-012: choose typography (Andika, Noto, display face)'	P3/P3-005.yaml
+P3-006	Draft	'ADR-011: ratify five tabs, Me and three global tools'	P3/P3-006.yaml
+P3-007	Draft	Generate Dart, CSS and Rive tokens from one JSON	P3/P3-007.yaml
+P3-008	Draft	Define OKLCH colour ramps with one accent and dark mode	P3/P3-008.yaml
+P3-009	Draft	Add 4-pt spacing, radius, elevation and stroke tokens	P3/P3-009.yaml
+P3-010	Draft	Add motion tokens with the ease-out curve	P3/P3-010.yaml
+P3-011	Draft	Bundle Andika and Noto, drop runtime font fetch	P3/P3-011.yaml
+P3-012	Draft	Define type scale with 18 sp floor and 1.5 leading	P3/P3-012.yaml
+P3-013	Draft	Add token-compliance lint for colours, sizes, fonts, strings	P3/P3-013.yaml
+P3-014	Draft	Retire six design systems behind token shims	P3/P3-014.yaml
+P3-015	Draft	Design hi-fi Today, Path map and Lesson player	P3/P3-015.yaml
+P3-016	Draft	Design hi-fi Tone Lens, Word Card and Lens camera	P3/P3-016.yaml
+P3-017	Draft	Design hi-fi Village map, Arcade shelf and Polie voice	P3/P3-017.yaml
+P3-018	Draft	Design hi-fi Profile, level-up and first spoken word	P3/P3-018.yaml
+P3-019	Draft	Create isolated Widgetbook catalogue with golden harness	P3/P3-019.yaml
+P3-020	Draft	'Build core components: buttons, cards, inputs, sheets'	P3/P3-020.yaml
+P3-021	Draft	Build skeleton and forward-pointing empty states	P3/P3-021.yaml
+P3-022	Draft	Build error anatomy and offline state, stop swallowed errors	P3/P3-022.yaml
+P3-023	Draft	Build AI-unavailable and content-under-review states	P3/P3-023.yaml
+P3-024	Draft	Ship a custom icon set with no emoji icons	P3/P3-024.yaml
+P3-025	Draft	Specify the illustration system	P3/P3-025.yaml
+P3-026	Draft	Integrate credited culture pattern library	P3/P3-026.yaml
+P3-027	Draft	Lint banned words and fake-precision chips	P3/P3-027.yaml
+P3-028	Draft	Build answer feedback helper under 160 ms	P3/P3-028.yaml
+P3-029	Draft	Specify motion, sound palette and haptic map	P3/P3-029.yaml
+P3-030	Draft	Write copy deck and voice guide	P3/P3-030.yaml
+P3-031	Draft	Draw wireflows for Today, Learn and Speak	P3/P3-031.yaml
+P3-032	Draft	Draw wireflows for Play, Village and Me	P3/P3-032.yaml
+P3-033	Draft	Write usability-test protocol with success targets	P3/P3-033.yaml
+P3-034	Draft	Build the Tone Lens renderer, never colour-only	P3/P3-034.yaml
+P3-035	Draft	Build the single text renderer and diacritic keyboard	P3/P3-035.yaml
+P3-036	Draft	Generate route-to-hub map from existing routes	P3/P3-036.yaml
+P3-037	Draft	Build five-tab shell with Me and global top bar	P3/P3-037.yaml
+P3-038	Draft	Wire Today hub destinations	P3/P3-038.yaml
+P3-039	Draft	Wire Learn hub destinations	P3/P3-039.yaml
+P3-040	Draft	Wire Speak hub destinations	P3/P3-040.yaml
+P3-041	Draft	Wire Play hub and Arcade shelves	P3/P3-041.yaml
+P3-042	Draft	Wire Village hub destinations	P3/P3-042.yaml
+P3-043	Draft	Wire Me hub destinations	P3/P3-043.yaml
+P3-044	Draft	Surface games as practice formats in Today and Path	P3/P3-044.yaml
+P3-045	Draft	Build global Search for words and features	P3/P3-045.yaml
+P3-046	Draft	Add Lens entry with Point & Say, Translate, Import	P3/P3-046.yaml
+P3-047	Draft	Build long-press Word Card on every target word	P3/P3-047.yaml
+P3-048	Draft	Replace drawer with All features directory	P3/P3-048.yaml
+P3-049	Draft	'Add contextual surfacing rules: lesson, word, camera, tones'	P3/P3-049.yaml
+P3-050	Draft	'Add contextual surfacing rules: scenarios, events, social, reminder'	P3/P3-050.yaml
+P3-051	Draft	Implement progressive unlocking stages with open-anyway	P3/P3-051.yaml
+P3-052	Draft	Enforce minor safety gates in Village	P3/P3-052.yaml
+P3-053	Draft	Revive Words & Review dashboards, Recap, Rush, Downloads	P3/P3-053.yaml
+P3-054	Draft	Revive Daily Challenges and first-use tips	P3/P3-054.yaml
+P3-055	Draft	Revive Conversation Analytics and Roleplay summaries	P3/P3-055.yaml
+P3-056	Draft	Revive Shadowing exercise	P3/P3-056.yaml
+P3-057	Draft	Revive Tone Forge and Game Mastery Results	P3/P3-057.yaml
+P3-058	Draft	Revive Chat Search, Contact Info, Moderation, Welcome	P3/P3-058.yaml
+P3-059	Draft	Revive Social Audio Following and Scheduled Sessions	P3/P3-059.yaml
+P3-060	Draft	Revive Verification, Contribution and Teacher dashboard	P3/P3-060.yaml
+P3-061	Draft	Revive Global Handle edit and About Us	P3/P3-061.yaml
+P3-062	Draft	Revive Subscription screen behind payments flag	P3/P3-062.yaml
+P3-063	Draft	Revive Family and Guardian dashboard	P3/P3-063.yaml
+P3-064	Draft	Verify all 25 revived features are reachable	P3/P3-064.yaml
+P3-065	Draft	Consolidate five AI chat variants into Polie workspace	P3/P3-065.yaml
+P3-066	Draft	Consolidate four classroom variants into live classroom	P3/P3-066.yaml
+P3-067	Draft	Consolidate onboarding variants into unified onboarding	P3/P3-067.yaml
+P3-068	Draft	Consolidate game templates, loaders and results into GameKit	P3/P3-068.yaml
+P3-069	Draft	Replace live proverb unlocker with the GameKit rewrite	P3/P3-069.yaml
+P3-070	Draft	Fold enhanced variants into live counterparts	P3/P3-070.yaml
+P3-071	Draft	Move developer examples to dev/ outside the app build	P3/P3-071.yaml
+P3-072	Draft	Verify consolidation harvest lists are complete	P3/P3-072.yaml
+P3-073	Draft	Remove forced splash delay	P3/P3-073.yaml
+P3-074	Draft	Persist onboarding steps with typed JSON	P3/P3-074.yaml
+P3-075	Draft	'Build onboarding step 1: language tiles with greeting audio'	P3/P3-075.yaml
+P3-076	Draft	'Build onboarding step 2: first spoken word screen'	P3/P3-076.yaml
+P3-077	Draft	Give honest scorer feedback on the first syllable	P3/P3-077.yaml
+P3-078	Draft	'Build onboarding step 3: disguised micro-placement'	P3/P3-078.yaml
+P3-079	Draft	'Build onboarding step 4: goal and daily time'	P3/P3-079.yaml
+P3-080	Draft	Replace village questionnaire copy with grade-7 strings	P3/P3-080.yaml
+P3-081	Draft	'Build onboarding step 5: neutral age assurance'	P3/P3-081.yaml
+P3-082	Draft	Route under-13 learners to the guardian flow	P3/P3-082.yaml
+P3-083	Draft	'Build step 6: account later after lesson 1'	P3/P3-083.yaml
+P3-084	Draft	Ask for notifications in context after lesson 1	P3/P3-084.yaml
+P3-085	Draft	Unlock optional avatar creation after lesson 2	P3/P3-085.yaml
+P3-086	Draft	Track onboarding funnel and time to first word	P3/P3-086.yaml
+P3-087	Draft	Audit screen-reader labels and switch or keyboard navigation	P3/P3-087.yaml
+P3-088	Draft	Support 200% text without clipping	P3/P3-088.yaml
+P3-089	Draft	Enforce WCAG 2.2 AA contrast in CI	P3/P3-089.yaml
+P3-090	Draft	Add captions and transcripts for audio and video	P3/P3-090.yaml
+P3-091	Draft	Add haptic and visual alternatives and visual pitch path	P3/P3-091.yaml
+P3-092	Draft	Honour reduced motion with gentler animation	P3/P3-092.yaml
+P3-093	Draft	Offer a dyslexia-friendly reading option on Andika	P3/P3-093.yaml
+P3-094	Draft	Extract 1,104 hard-coded strings to ARB	P3/P3-094.yaml
+P3-095	Draft	Add pseudo-localisation to CI	P3/P3-095.yaml
+P3-096	Draft	Support RTL layouts for Arabic and Ajami	P3/P3-096.yaml
+P3-097	Draft	Import reviewed UI translations in nine languages	P3/P3-097.yaml
+P3-098	Draft	Deliver explanations in the learner's L1	P3/P3-098.yaml
+P3-099	Draft	Review G3 design gate with UX and UI Scorecards	P3/P3-099.yaml
+P4-001	Draft	Define licence register schema and validator	P4/P4-001.yaml
+P4-002	Draft	Seed register with US-government public-domain courses	P4/P4-002.yaml
+P4-003	Draft	Seed share-alike evidence sources in register	P4/P4-003.yaml
+P4-004	Draft	Seed CC BY corpora and storybook entries	P4/P4-004.yaml
+P4-005	Draft	Seed Common Voice audio entries with hours	P4/P4-005.yaml
+P4-006	Draft	Verify African Storybook has Igbo titles	P4/P4-006.yaml
+P4-007	Draft	Add discovery-only sources and compatibility checklist	P4/P4-007.yaml
+P4-008	Draft	Gate register rows on counsel and owner sign-off	P4/P4-008.yaml
+P4-009	Draft	Lint share-alike containment of evidence layer	P4/P4-009.yaml
+P4-010	Draft	Enforce non-commercial exclusion rule and exclusion table	P4/P4-010.yaml
+P4-011	Draft	Declare JW300, MAFAND-MT and MasakhaNER excluded	P4/P4-011.yaml
+P4-012	Draft	Exclude AfriSenti pending creator confirmation	P4/P4-012.yaml
+P4-013	Draft	Exclude PanLex pending written permission	P4/P4-013.yaml
+P4-014	Draft	Exclude NaijaVoices unless waiver purchased	P4/P4-014.yaml
+P4-015	Draft	Exclude IgboAPI data pending licence from Nkọwa okwu	P4/P4-015.yaml
+P4-016	Draft	Exclude Kamusi pending commercial licence	P4/P4-016.yaml
+P4-017	Draft	Exclude Helsinki Corpus of Swahili without ELRA licence	P4/P4-017.yaml
+P4-018	Draft	Record Oxford datasets as licence-required sources	P4/P4-018.yaml
+P4-019	Draft	Verify copyright status of Bargery and classic dictionaries	P4/P4-019.yaml
+P4-020	Draft	Decide buy-or-exclude for each restricted source	P4/P4-020.yaml
+P4-021	Draft	Define language kit schema and loader	P4/P4-021.yaml
+P4-022	Draft	Record Yoruba source stack in kit	P4/P4-022.yaml
+P4-023	Draft	Verify and purchase Yoruba reference grammar	P4/P4-023.yaml
+P4-024	Draft	Record Igbo source stack in kit	P4/P4-024.yaml
+P4-025	Draft	Verify Ọnwụ orthography and purchase Igbo grammar	P4/P4-025.yaml
+P4-026	Draft	Record Hausa source stack in kit	P4/P4-026.yaml
+P4-027	Draft	Verify and purchase Hausa grammar and dictionary status	P4/P4-027.yaml
+P4-028	Draft	Record Nigerian Pidgin source stack in kit	P4/P4-028.yaml
+P4-029	Draft	Verify NSC licence and purchase Faraclas Pidgin grammar	P4/P4-029.yaml
+P4-030	Draft	Record Swahili source stack in kit	P4/P4-030.yaml
+P4-031	Draft	Verify BAKITA citation and purchase Ashton grammar	P4/P4-031.yaml
+P4-032	Draft	Record isiZulu source stack in kit	P4/P4-032.yaml
+P4-033	Draft	Verify Zulu dictionary licensor and purchase grammars	P4/P4-033.yaml
+P4-034	Draft	Record isiXhosa source stack in kit	P4/P4-034.yaml
+P4-035	Draft	Choose Xhosa reference grammar with linguist	P4/P4-035.yaml
+P4-036	Draft	Populate kits for yo, ig and ha	P4/P4-036.yaml
+P4-037	Draft	Populate kits for pcm, sw, zu and xh	P4/P4-037.yaml
+P4-038	Draft	Decide Igbo tone-marking convention once	P4/P4-038.yaml
+P4-039	Draft	Build linter runner for CI and Studio	P4/P4-039.yaml
+P4-040	Draft	Lint Unicode NFC, code points and look-alikes	P4/P4-040.yaml
+P4-041	Draft	Lint Yoruba dot-below, tone and lexicon diacritics	P4/P4-041.yaml
+P4-042	Draft	Lint Igbo dotted vowels and lexicon tone	P4/P4-042.yaml
+P4-043	Draft	Lint Hausa hooked letters, display versus teaching text	P4/P4-043.yaml
+P4-044	Draft	Check Swahili noun-class concords	P4/P4-044.yaml
+P4-045	Draft	Check Zulu and Xhosa concords and conjunctive writing	P4/P4-045.yaml
+P4-046	Draft	Integrate ZulMorph parse for Zulu forms	P4/P4-046.yaml
+P4-047	Draft	Lint Pidgin against NLA spelling table	P4/P4-047.yaml
+P4-048	Draft	Detect anglicised Pidgin with LLM rating	P4/P4-048.yaml
+P4-049	Draft	Lint claims and banned generic grammar strings	P4/P4-049.yaml
+P4-050	Draft	Lint placeholders, empty fields and broken JSON	P4/P4-050.yaml
+P4-051	Draft	Detect near-identical dialogues and repeated lines	P4/P4-051.yaml
+P4-052	Draft	Check honorific register and respect-sensitive units	P4/P4-052.yaml
+P4-053	Draft	Build lexicon store with frequency list	P4/P4-053.yaml
+P4-054	Draft	Compute anchored and single-source lexeme status	P4/P4-054.yaml
+P4-055	Draft	Generate grounded items with Gemini 3.1 Pro	P4/P4-055.yaml
+P4-056	Draft	Reject out-of-lexicon words and uncited claims	P4/P4-056.yaml
+P4-057	Draft	Run independent cross-check with a second model	P4/P4-057.yaml
+P4-058	Draft	Check each citation entails its claim	P4/P4-058.yaml
+P4-059	Draft	Back-translate with Google Cloud Translation and MADLAD-400	P4/P4-059.yaml
+P4-060	Draft	Run linters and morphological analysers as a stage	P4/P4-060.yaml
+P4-061	Draft	Gate tone and diacritics by three-way agreement	P4/P4-061.yaml
+P4-062	Draft	Run NaijaML restorer as tone check for Yoruba	P4/P4-062.yaml
+P4-063	Draft	Compute weighted confidence score	P4/P4-063.yaml
+P4-064	Draft	Route items by threshold and regeneration cap	P4/P4-064.yaml
+P4-065	Draft	Enforce high-risk tags as never AI-only	P4/P4-065.yaml
+P4-066	Draft	Calibrate thresholds against pilot error rate	P4/P4-066.yaml
+P4-067	Draft	Publish reviewed items with a quality label	P4/P4-067.yaml
+P4-068	Draft	Write what-catches-what matrix test plan	P4/P4-068.yaml
+P4-069	Draft	Scaffold Curriculum Studio module in admin	P4/P4-069.yaml
+P4-070	Draft	Build backend job service for pipeline runs	P4/P4-070.yaml
+P4-071	Draft	Build source library and licence register UI	P4/P4-071.yaml
+P4-072	Draft	Build lexicon editor with side-by-side sources	P4/P4-072.yaml
+P4-073	Draft	Build generation jobs UI with versioned prompts	P4/P4-073.yaml
+P4-074	Draft	Build per-item verification report	P4/P4-074.yaml
+P4-075	Draft	Build keyboard-first review queues	P4/P4-075.yaml
+P4-076	Draft	Build and sign semver content packs	P4/P4-076.yaml
+P4-077	Draft	Add staged rollout and rollback for packs	P4/P4-077.yaml
+P4-078	Draft	Build quality dashboard	P4/P4-078.yaml
+P4-079	Draft	Export reviewer payments by items reviewed	P4/P4-079.yaml
+P4-080	Draft	Verify Studio effort estimate	P4/P4-080.yaml
+P4-081	Draft	Quarantine placeholder and duplicate legacy bundles	P4/P4-081.yaml
+P4-082	Draft	Salvage real phrases from authentic curriculum JSON	P4/P4-082.yaml
+P4-083	Draft	Delete generic grammar sentences from all lessons	P4/P4-083.yaml
+P4-084	Draft	Re-derive legacy tonal notes from lexicon tone patterns	P4/P4-084.yaml
+P4-085	Draft	Regenerate dialogues from can-do targets	P4/P4-085.yaml
+P4-086	Draft	Rebuild units against CEFR map as signed packs	P4/P4-086.yaml
+P4-087	Draft	Run UI strings and phrase packs through pipeline	P4/P4-087.yaml
+P4-088	Draft	Produce before/after legacy rebuild dashboard	P4/P4-088.yaml
+P4-100	Draft	Define shared provenance, label and audio-kind envelope	P4/P4-100.yaml
+P4-101	Draft	Define lexeme schema with tone, audio and review fields	P4/P4-101.yaml
+P4-102	Draft	Define pattern, dialogue and unit schemas	P4/P4-102.yaml
+P4-103	Draft	Define exercise item schema with matching rules and IRT params	P4/P4-103.yaml
+P4-104	Draft	Define culture card schema with claims and review gate	P4/P4-104.yaml
+P4-105	Draft	Build signed semver content packs with hash filenames	P4/P4-105.yaml
+P4-106	Draft	Build content validator and CI linters	P4/P4-106.yaml
+P4-107	Draft	Migrate four legacy bundles into v2 schema	P4/P4-107.yaml
+P4-110	Draft	Implement readiness levels L0-L3 with promotion gates	P4/P4-110.yaml
+P4-111	Draft	Decide Wave 2-4 rosters and Arabic/Darija inclusion	P4/P4-111.yaml
+P4-112	Draft	Build language registry with waves, scripts and consent flags	P4/P4-112.yaml
+P4-113	Draft	Encode Stage 1 vendor coverage and level targets	P4/P4-113.yaml
+P4-114	Draft	Build quarterly next-language scoring tool	P4/P4-114.yaml
+P4-115	Draft	Decide dialect policy per Stage 1 language	P4/P4-115.yaml
+P4-116	Draft	Add dialect and variant marking to content and settings	P4/P4-116.yaml
+P4-120	Draft	Build language kit generator (week 0-1)	P4/P4-120.yaml
+P4-121	Draft	Build AI bootstrap stage with grounding and flags	P4/P4-121.yaml
+P4-122	Draft	Enforce two-native plus linguist validation stage	P4/P4-122.yaml
+P4-123	Draft	Build native recording ingest and forced alignment	P4/P4-123.yaml
+P4-124	Draft	Build speech enablement evaluation gates	P4/P4-124.yaml
+P4-125	Draft	Build pilot cohort and promotion gate runner	P4/P4-125.yaml
+P4-126	Draft	Build squad capacity planner for throughput target	P4/P4-126.yaml
+P4-127	Blocked-External	Secure partner and university linguist agreements	P4/P4-127.yaml
+P4-128	Blocked-External	Secure contributor licence, consent and payment terms	P4/P4-128.yaml
+P4-130	Draft	Build per-language syllabus spec and corpora licence check	P4/P4-130.yaml
+P4-131	Draft	Enforce human drafting with grounded LLM variants only	P4/P4-131.yaml
+P4-132	Draft	Implement two-reviewer native review with agreement tracking	P4/P4-132.yaml
+P4-133	Draft	Enforce voice-count gates and QA listen-through	P4/P4-133.yaml
+P4-134	Draft	Compute pilot item statistics	P4/P4-134.yaml
+P4-135	Draft	Add "this is wrong" button routed to reviewers	P4/P4-135.yaml
+P4-136	Draft	Add pack diff download and per-item history	P4/P4-136.yaml
+P4-140	Draft	Build single target-language text renderer	P4/P4-140.yaml
+P4-141	Draft	Build diacritic keyboard bar per language	P4/P4-141.yaml
+P4-142	Draft	Implement level-aware lenient diacritic grading	P4/P4-142.yaml
+P4-150	Draft	Implement studio roles with server-side least privilege	P4/P4-150.yaml
+P4-151	Draft	Implement content review workflow state machine	P4/P4-151.yaml
+P4-152	Draft	Add audit trail for every state change with viewer	P4/P4-152.yaml
+P4-153	Draft	Move lesson drafts to server and remove dead native-verification code	P4/P4-153.yaml
+P4-154	Draft	Build tone-aware text field with diacritic palette and Tone Lens	P4/P4-154.yaml
+P4-155	Draft	Build audio waveform alignment view and dialogue editor	P4/P4-155.yaml
+P4-156	Draft	Build minimal-pair linker and can-do mapper	P4/P4-156.yaml
+P4-157	Draft	Build item preview that renders exactly like the app	P4/P4-157.yaml
+P4-158	Draft	Build quality dashboards for items, agreement and audio coverage	P4/P4-158.yaml
+P4-159	Draft	Build report-a-problem queue, placeholder detector and untranslated count	P4/P4-159.yaml
+P4-160	Draft	Build moderation console with queues and actions	P4/P4-160.yaml
+P4-161	Draft	Build law-enforcement escalation with restricted CSAM handling	P4/P4-161.yaml
+P4-162	Draft	Build persona console with dossiers, evals and kill switch	P4/P4-162.yaml
+P4-163	Draft	Build AI ops prompt registry and eval runs	P4/P4-163.yaml
+P4-164	Draft	Build AI ops cost, routing table and incident switches	P4/P4-164.yaml
+P4-165	Draft	Upgrade studio to current React and Vite with typed API client	P4/P4-165.yaml
+P4-166	Draft	Add staff SSO, mandatory 2FA and cookie sessions	P4/P4-166.yaml
+P4-167	Draft	Add Playwright tests for critical studio flows	P4/P4-167.yaml
+P5-001	Draft	Reproduce legacy curriculum audit counts by script	P5/P5-001.yaml
+P5-002	Draft	Quarantine template curriculum behind placeholder linter	P5/P5-002.yaml
+P5-003	Draft	Block generic grammar templates; record per-language word order	P5/P5-003.yaml
+P5-004	Draft	Rebuild legacy Word Card fields and drop false tone rule	P5/P5-004.yaml
+P5-005	Draft	Rebuild audio manifest NFC-normalised, hash-keyed and deduplicated	P5/P5-005.yaml
+P5-006	Draft	Complete Yoruba ARB with tone marks to 103 keys	P5/P5-006.yaml
+P5-007	Draft	Send sample label errors to native review	P5/P5-007.yaml
+P5-008	Draft	Define item schema v2 with provenance, label and audio kind	P5/P5-008.yaml
+P5-009	Draft	Enforce label state machine with two-native rule	P5/P5-009.yaml
+P5-010	Draft	Show label badges, Beta copy and Synthetic voice tag	P5/P5-010.yaml
+P5-011	Draft	Add CI content tests for label exclusion rules	P5/P5-011.yaml
+P5-012	Draft	Add Report a mistake to every item and Word Card	P5/P5-012.yaml
+P5-013	Draft	Auto-hide flagged items to Under review	P5/P5-013.yaml
+P5-014	Draft	Map every unit to CEFR and ACTFL can-dos	P5/P5-014.yaml
+P5-015	Draft	Mark units mastered by can-do evidence and fix unlock rule	P5/P5-015.yaml
+P5-016	Draft	Select frequency-ranked A1 lexicon, 600-800 lexemes per language	P5/P5-016.yaml
+P5-017	Draft	Restrict tonal Beta to lexicon-anchored tokens	P5/P5-017.yaml
+P5-018	Draft	'Plan spiral exposures: at least 6 per lexeme across units'	P5/P5-018.yaml
+P5-019	Draft	Unify review scheduling on FSRS-6	P5/P5-019.yaml
+P5-020	Draft	Create Pattern Library schema and linter	P5/P5-020.yaml
+P5-021	Draft	'Author Yoruba A1 patterns: ń, ti, máa'	P5/P5-021.yaml
+P5-022	Draft	Author Swahili A1 tense-marker patterns	P5/P5-022.yaml
+P5-023	Draft	Author isiZulu A1 subject-concord patterns by class	P5/P5-023.yaml
+P5-024	Draft	Author A1 patterns for ig, ha, pcm and xh	P5/P5-024.yaml
+P5-025	Draft	Render grammar aha cards with contrastive examples	P5/P5-025.yaml
+P5-026	Draft	Build tone perception drills from sourced minimal pairs	P5/P5-026.yaml
+P5-027	Draft	Replace global 3-tone model with per-language tone models	P5/P5-027.yaml
+P5-028	Draft	Add click and vowel/stress drills for xh, zu, sw	P5/P5-028.yaml
+P5-029	Draft	Give specific feedback on tone production drills	P5/P5-029.yaml
+P5-030	Draft	Author dialogues and scenes at i+1 with unique lines	P5/P5-030.yaml
+P5-031	Draft	Mix item types and hold 80-85% success	P5/P5-031.yaml
+P5-032	Draft	Map content graph to features, one source per surface	P5/P5-032.yaml
+P5-033	Draft	Limit historical personas to cited cards	P5/P5-033.yaml
+P5-034	Draft	Author cited culture cards with no Beta label	P5/P5-034.yaml
+P5-035	Draft	Publish proverbs only after linguist review	P5/P5-035.yaml
+P5-036	Draft	Author register and honorific units, Expert-reviewed only	P5/P5-036.yaml
+P5-037	Draft	Design autonomy, competence and relatedness without streak pressure	P5/P5-037.yaml
+P5-038	Draft	Design speaking-first flow with recasts, not text-heavy	P5/P5-038.yaml
+P5-039	Draft	Add declared standard and per-item dialect tags	P5/P5-039.yaml
+P5-040	Draft	Add Pidgin corpus anchoring and anglicisation detector	P5/P5-040.yaml
+P5-041	Draft	Build the unified target-language text renderer	P5/P5-041.yaml
+P5-042	Draft	Provide diacritic-aware keyboard bars per language	P5/P5-042.yaml
+P5-043	Draft	Grade leniently on missing tone marks in early levels	P5/P5-043.yaml
+P5-044	Draft	Route items to paid linguist review by risk	P5/P5-044.yaml
+P5-045	Draft	Run 300-item calibration sets and compute Cohen kappa	P5/P5-045.yaml
+P5-046	Draft	Sample live items weekly for blind review	P5/P5-046.yaml
+P5-047	Draft	Publish error rate per language and label	P5/P5-047.yaml
+P5-048	Draft	Compute IRT item statistics and flag abnormal items	P5/P5-048.yaml
+P5-049	Draft	Verify Tier A Beta error ≤3% for Swahili	P5/P5-049.yaml
+P5-050	Draft	Verify Tier B Beta error ≤5% for zu, xh, ha, pcm	P5/P5-050.yaml
+P5-051	Draft	Verify Tier C Beta error ≤5% for Yoruba and Igbo	P5/P5-051.yaml
+P5-052	Draft	Verify Tier A Expert error ≤1% for Swahili	P5/P5-052.yaml
+P5-053	Draft	Verify Tier B Expert error ≤1.5%	P5/P5-053.yaml
+P5-054	Draft	Verify Tier C Expert error ≤1.5%	P5/P5-054.yaml
+P5-055	Draft	Enforce Waves 2-4 label rules and Expert L0	P5/P5-055.yaml
+P5-056	Draft	Promote high-exposure A1 items to Expert-reviewed	P5/P5-056.yaml
+P5-057	Draft	Route community fixes into the Verify queue	P5/P5-057.yaml
+P5-058	Draft	Gate every item on audio and labelled synthetic voice	P5/P5-058.yaml
+P5-059	Draft	'Build TTS gate runner: ASR round-trip and F0 tone proxy'	P5/P5-059.yaml
+P5-060	Draft	'Wire Yoruba TTS: Intron with Spitch fallback'	P5/P5-060.yaml
+P5-061	Draft	Wire Igbo TTS with 200-sample linguist check	P5/P5-061.yaml
+P5-062	Draft	'Wire Hausa TTS: Intron, Spitch, ElevenLabs v3'	P5/P5-062.yaml
+P5-063	Draft	Register licensed human audio for yo, ig, ha	P5/P5-063.yaml
+P5-064	Draft	Wire Nigerian Pidgin TTS with round-trip and listen gate	P5/P5-064.yaml
+P5-065	Draft	'Decide Swahili TTS by blind test: Intron, Chirp 3 HD, Azure'	P5/P5-065.yaml
+P5-066	Draft	Wire Swahili TTS and Common Voice audio	P5/P5-066.yaml
+P5-067	Draft	Wire isiZulu TTS with Azure zu-ZA Thando and Themba	P5/P5-067.yaml
+P5-068	Draft	'Decide isiXhosa voice: Option B custom voice, Option A interim'	P5/P5-068.yaml
+P5-069	Draft	Ship isiXhosa interim audio from FLEURS and WAXAL	P5/P5-069.yaml
+P5-070	Draft	Commission isiXhosa custom voice and confirm quote	P5/P5-070.yaml
+P5-071	Draft	Obtain Intron TTS quote and AI-stack interim TTS section	P5/P5-071.yaml
+P5-072	Draft	Rank items by exposure to order native re-recording	P5/P5-072.yaml
+P5-073	Draft	Export top 2,000 items per language as recording scripts	P5/P5-073.yaml
+P5-074	Draft	Bump item version and drop Synthetic tag on replacement	P5/P5-074.yaml
+P5-075	Draft	Keep and label TTS for dynamic content	P5/P5-075.yaml
+P5-076	Draft	Verify Phase 0 foundations exit	P5/P5-076.yaml
+P5-077	Draft	Verify Phase 1 A1 Beta exit	P5/P5-077.yaml
+P5-078	Draft	Verify Phase 2 A2 and promotion exit	P5/P5-078.yaml
+P5-079	Draft	Verify Phase 3 B1 and Wave 2 L0 exit	P5/P5-079.yaml
+P5-080	Draft	Decide Phase 4 scale plan for months 9-24	P5/P5-080.yaml
+P5-081	Draft	Select A2 lexicon to about 1,500 cumulative lexemes	P5/P5-081.yaml
+P5-082	Draft	Select B1 lexicon to about 2,500-3,000 cumulative lexemes	P5/P5-082.yaml
+P5-083	Draft	Build script learning tracks for Fidel, N'Ko, Adlam, Tifinagh, Ajami	P5/P5-083.yaml
+P5-084	Draft	Add stroke-order animation and handwriting practice	P5/P5-084.yaml
+P5-085	Draft	Measure machine pipeline throughput in Phase 1	P5/P5-085.yaml
+P5-086	Draft	Measure linguist review throughput	P5/P5-086.yaml
+P5-087	Draft	Measure publishable items per week and A1 and A1-B1 timelines	P5/P5-087.yaml
+P5-088	Draft	Verify LLM generation cost against AI-stack pricing	P5/P5-088.yaml
+P5-089	Draft	Verify linguist review cost	P5/P5-089.yaml
+P5-090	Draft	Verify calibration and sampling cost	P5/P5-090.yaml
+P5-091	Draft	Verify interim TTS cost	P5/P5-091.yaml
+P5-092	Draft	Verify data licence costs	P5/P5-092.yaml
+P5-093	Draft	Verify reference books and engineering estimates	P5/P5-093.yaml
+P5-094	Draft	Verify all-in Stage 1 content cost rollup	P5/P5-094.yaml
+P6-001	Draft	Decide AI Gateway runtime language and transports	P6/P6-001.yaml
+P6-002	Draft	Build gateway core with mode enum and authN/Z	P6/P6-002.yaml
+P6-003	Draft	Build server-owned versioned prompt registry	P6/P6-003.yaml
+P6-004	Draft	Add JSON-schema structured output with retries	P6/P6-004.yaml
+P6-005	Draft	Enforce per-user quotas and daily budgets by tier	P6/P6-005.yaml
+P6-006	Draft	Enforce cost budgets per mode	P6/P6-006.yaml
+P6-007	Draft	Add kill switches and feature flags per mode	P6/P6-007.yaml
+P6-008	Draft	Ground prompts in curriculum KG and learner model	P6/P6-008.yaml
+P6-009	Draft	Build persona source index retrieval	P6/P6-009.yaml
+P6-010	Draft	Constrain generation to approved lexicon at lower levels	P6/P6-010.yaml
+P6-011	Draft	Route model per language, task and tier with fallbacks	P6/P6-011.yaml
+P6-012	Draft	Enforce model licence allowlist in router	P6/P6-012.yaml
+P6-013	Draft	Cache deterministic outputs in gateway	P6/P6-013.yaml
+P6-014	Draft	Add input and output safety classifiers with age-tier policy	P6/P6-014.yaml
+P6-015	Draft	Scrub PII and log without PII	P6/P6-015.yaml
+P6-016	Draft	Emit traces, token cost, latency and eval samples	P6/P6-016.yaml
+P6-017	Draft	Stream all chat with first token under 400 ms	P6/P6-017.yaml
+P6-018	Draft	Move persona cognition and persona chat to gateway	P6/P6-018.yaml
+P6-019	Draft	Migrate client to gateway and remove keys and mode logic	P6/P6-019.yaml
+P6-020	Draft	Serve authenticated STT via gateway with Intron primary	P6/P6-020.yaml
+P6-021	Draft	Self-host Omnilingual ASR fine-tuned for Stage-1 languages	P6/P6-021.yaml
+P6-022	Draft	Provide forced aligner service	P6/P6-022.yaml
+P6-023	Draft	Build Polie Conversation mode with level grounding	P6/P6-023.yaml
+P6-024	Draft	Build Scenario Roleplay mode over human-authored scripts	P6/P6-024.yaml
+P6-025	Draft	Build Tutor Explain mode with pattern-library RAG	P6/P6-025.yaml
+P6-026	Draft	Build Tutor Correct-my-writing hybrid with uncertainty	P6/P6-026.yaml
+P6-027	Draft	Build Story Mode from approved lexicon with AI labels	P6/P6-027.yaml
+P6-028	Draft	Build Shadowing coach on real scorer, replace fake toneScore	P6/P6-028.yaml
+P6-029	Draft	Build Translator-with-teaching behind per-pair quality gate	P6/P6-029.yaml
+P6-030	Draft	Build Live Translate with visible confidence indicator	P6/P6-030.yaml
+P6-031	Draft	Stand up server-side scorer service	P6/P6-031.yaml
+P6-032	Draft	Fine-tune Omnilingual CTC per language, not MMS weights	P6/P6-032.yaml
+P6-033	Draft	Compute GOP segmental scores with learner advice	P6/P6-033.yaml
+P6-034	Draft	Extract F0 and normalise per speaker in semitones	P6/P6-034.yaml
+P6-035	Draft	Compare per-syllable contour to native reference	P6/P6-035.yaml
+P6-036	Draft	Support Yoruba H/M/L with glides and Twi H/L	P6/P6-036.yaml
+P6-037	Draft	Support Igbo downstep, Hausa falling and Zulu depressors	P6/P6-037.yaml
+P6-038	Draft	Return per-syllable tone correctness with confidence	P6/P6-038.yaml
+P6-039	Draft	Show learner contour overlaid on native contour	P6/P6-039.yaml
+P6-040	Draft	'Score fluency: rate, pauses, self-repairs'	P6/P6-040.yaml
+P6-041	Draft	Collect native 1-5 rating data per language	P6/P6-041.yaml
+P6-042	Draft	Calibrate scorer to native ratings and publish method	P6/P6-042.yaml
+P6-043	Draft	'Enforce honesty rules: unsure state and retry'	P6/P6-043.yaml
+P6-044	Draft	Verify Omnilingual 300M for offline on-device scoring	P6/P6-044.yaml
+P6-045	Draft	Decide TTS vendors per language and licence exclusions	P6/P6-045.yaml
+P6-046	Draft	Gate each voice on native tone-accuracy threshold	P6/P6-046.yaml
+P6-047	Draft	Route recorded audio first, TTS for dynamic turns only	P6/P6-047.yaml
+P6-048	Draft	Build commissioned-voice fine-tune pipeline	P6/P6-048.yaml
+P6-049	Draft	Ship Yoruba TTS voice behind tone-accuracy gate	P6/P6-049.yaml
+P6-050	Draft	Ship Igbo TTS voice behind tone-accuracy gate	P6/P6-050.yaml
+P6-051	Draft	Ship Hausa TTS voice behind tone-accuracy gate	P6/P6-051.yaml
+P6-052	Draft	Ship Nigerian Pidgin TTS voice behind tone-accuracy gate	P6/P6-052.yaml
+P6-053	Draft	Ship Swahili TTS voice behind tone-accuracy gate	P6/P6-053.yaml
+P6-054	Draft	Ship isiZulu TTS voice behind tone-accuracy gate	P6/P6-054.yaml
+P6-055	Draft	Ship isiXhosa TTS voice behind tone-accuracy gate	P6/P6-055.yaml
+P6-056	Draft	Build eval harness with CI deploy blocker	P6/P6-056.yaml
+P6-057	Draft	Define eval set schema requiring 300 items per language	P6/P6-057.yaml
+P6-058	Draft	Author Yoruba eval set of at least 300 items	P6/P6-058.yaml
+P6-059	Draft	Author Igbo eval set of at least 300 items	P6/P6-059.yaml
+P6-060	Draft	Author Hausa eval set of at least 300 items	P6/P6-060.yaml
+P6-061	Draft	Author Nigerian Pidgin eval set of at least 300 items	P6/P6-061.yaml
+P6-062	Draft	Author Swahili eval set of at least 300 items	P6/P6-062.yaml
+P6-063	Draft	Author isiZulu eval set of at least 300 items	P6/P6-063.yaml
+P6-064	Draft	Author isiXhosa eval set of at least 300 items	P6/P6-064.yaml
+P6-065	Draft	Add diacritic completeness metric	P6/P6-065.yaml
+P6-066	Draft	Add out-of-level vocabulary rate metric	P6/P6-066.yaml
+P6-067	Draft	Add culture factuality metric	P6/P6-067.yaml
+P6-068	Draft	Add refusal correctness metric	P6/P6-068.yaml
+P6-069	Draft	Add persona fidelity metric	P6/P6-069.yaml
+P6-070	Draft	Build native-rater scoring workflow for evals	P6/P6-070.yaml
+P6-071	Draft	Gate each language before it reaches L2	P6/P6-071.yaml
+P6-072	Draft	Evaluate frontier and open models per language	P6/P6-072.yaml
+P6-073	Draft	Fine-tune licensed open model on licensed data	P6/P6-073.yaml
+P6-074	Draft	Evaluate ASR on 300-utterance sets	P6/P6-074.yaml
+P6-075	Draft	Run LiveKit Agents cascaded session per turn	P6/P6-075.yaml
+P6-076	Draft	Tune VAD and end-of-turn per language prosody	P6/P6-076.yaml
+P6-077	Draft	Stream STT inside realtime pipeline	P6/P6-077.yaml
+P6-078	Draft	Stream LLM output into streaming TTS to client	P6/P6-078.yaml
+P6-079	Draft	Support barge-in during agent speech	P6/P6-079.yaml
+P6-080	Draft	Gate realtime latency budgets in CI	P6/P6-080.yaml
+P6-081	Draft	Drive avatar lip-sync from TTS alignments	P6/P6-081.yaml
+P6-082	Draft	Allow speech-native realtime models only after blind tests	P6/P6-082.yaml
+P6-083	Draft	Add push-to-talk fallback for noise and low bandwidth	P6/P6-083.yaml
+P6-084	Draft	Use Opus at 16-24 kbps with text fallback on 2G/3G	P6/P6-084.yaml
+P7-900	Draft	Decide Lens as the name and shape of Point & Say	P7/P7-900.yaml
+P7-901	Draft	Decide the two-layer living lexicon architecture	P7/P7-901.yaml
+P7-902	Draft	Build Lens full-screen camera with breathing boxes	P7/P7-902.yaml
+P7-903	Draft	Build on-device detection mapped to a curated African object set	P7/P7-903.yaml
+P7-904	Draft	Build server vision recognition via the AI gateway	P7/P7-904.yaml
+P7-905	Draft	Replace NLLB and MyMemory with lexicon-grounded word lookup	P7/P7-905.yaml
+P7-906	Draft	Build Word Card content for Lens tags with native audio	P7/P7-906.yaml
+P7-907	Draft	Build Lens Word Card flip with tone contour and mic	P7/P7-907.yaml
+P7-908	Draft	Build Lens hold-to-speak with GOP and tone scoring	P7/P7-908.yaml
+P7-909	Draft	Build Lens personal collection feeding FSRS review	P7/P7-909.yaml
+P7-910	Draft	Build weekly Home Safari quests	P7/P7-910.yaml
+P7-911	Draft	Build Lens Clip sharing with face blur	P7/P7-911.yaml
+P7-912	Draft	Build Lens signs and menus OCR with read-aloud	P7/P7-912.yaml
+P7-913	Draft	Build offline Lens pack of top 300 objects with queue sync	P7/P7-913.yaml
+P7-914	Draft	Enforce Lens photo privacy and minor consent	P7/P7-914.yaml
+P7-915	Draft	Wire Lens entry points across tabs and lessons	P7/P7-915.yaml
+P7-916	Draft	Define Verified Lexicon schema and shared store	P7/P7-916.yaml
+P7-917	Draft	Attach 2-3 native recordings per lexicon entry	P7/P7-917.yaml
+P7-918	Draft	Merge admin lexicon and user entries into the two layers	P7/P7-918.yaml
+P7-919	Draft	Keep My Words personal layer and link to verified entries	P7/P7-919.yaml
+P7-920	Draft	Build suggest-and-verify loop with native approvals	P7/P7-920.yaml
+P7-921	Draft	Route corrections from Native Corrections and the Square	P7/P7-921.yaml
+P7-922	Draft	Build Word Card bottom sheet	P7/P7-922.yaml
+P7-923	Draft	Build long-press Word Card on every text surface	P7/P7-923.yaml
+P7-924	Draft	Build full lexicon entry page	P7/P7-924.yaml
+P7-925	Draft	Make Global Search lead with lexicon words	P7/P7-925.yaml
+P7-926	Draft	Show word of the day with its story in Today	P7/P7-926.yaml
+P7-927	Draft	Build pan-African same-idea view	P7/P7-927.yaml
+P7-928	Draft	Build offline lexicon pack of top 5k entries with audio	P7/P7-928.yaml
+P7-929	Draft	Wire lexicon entry points in Learn, Lens and Village	P7/P7-929.yaml
+P7-930	Draft	'Build micro-lesson shape: learn it, see it, try it'	P7/P7-930.yaml
+P7-931	Draft	Build 30-second perception check for tutorials	P7/P7-931.yaml
+P7-932	Draft	Build speaking try step with real scoring	P7/P7-932.yaml
+P7-933	Draft	Build sound tutorial catalogue with native mouth video	P7/P7-933.yaml
+P7-934	Draft	Author Yoruba tone and subdot tutorials	P7/P7-934.yaml
+P7-935	Draft	Author Igbo vowel harmony tutorial	P7/P7-935.yaml
+P7-936	Draft	Author Hausa implosive and ejective tutorial	P7/P7-936.yaml
+P7-937	Draft	Author Zulu and Xhosa click tutorials	P7/P7-937.yaml
+P7-938	Draft	Author Amharic ejective and gemination tutorial	P7/P7-938.yaml
+P7-939	Draft	Build Swahili noun class wheel tutorial	P7/P7-939.yaml
+P7-940	Draft	Build diacritic typing tutorial for the keyboard bar	P7/P7-940.yaml
+P7-941	Draft	Build minimal-pair demo on why tone marks matter	P7/P7-941.yaml
+P7-942	Draft	Author culture tutorials on greetings, names and taboos	P7/P7-942.yaml
+P7-943	Draft	Build just-in-time coaching tips on first pattern hit	P7/P7-943.yaml
+P7-944	Draft	Verify ML Kit Latin OCR on stacked diacritics on device	P7/P7-944.yaml
+P8-900	Draft	'GameKit: schedule due items first'	P8/P8-900.yaml
+P8-901	Draft	'GameKit: write results to learner graph and SRS'	P8/P8-901.yaml
+P8-902	Draft	'GameKit: enforce session length and one core verb'	P8/P8-902.yaml
+P8-903	Draft	'GameKit: feedback within 160 ms and brief celebration'	P8/P8-903.yaml
+P8-904	Draft	'GameKit: ''why was I wrong'' explanation with audio'	P8/P8-904.yaml
+P8-905	Draft	'GameKit: adaptive difficulty targeting 80–85% success'	P8/P8-905.yaml
+P8-906	Draft	'GameKit: match multiplayer opponents by level'	P8/P8-906.yaml
+P8-907	Draft	'GameKit: ban dark patterns with a CI lint'	P8/P8-907.yaml
+P8-908	Draft	'GameKit: label bots as bots in every multiplayer surface'	P8/P8-908.yaml
+P8-909	Draft	'GameKit: server-verified rewards'	P8/P8-909.yaml
+P8-910	Draft	'GameKit: real-scorer adapter for speaking games'	P8/P8-910.yaml
+P8-911	Draft	'GameKit: honest practice mode until real scoring ships'	P8/P8-911.yaml
+P8-912	Draft	'GameKit: draw game word pools from the lexicon with audio'	P8/P8-912.yaml
+P8-913	Draft	'GameKit: per-language tone inventories in tone games'	P8/P8-913.yaml
+P8-914	Draft	Revive Tone Forge as a featured tone game	P8/P8-914.yaml
+P8-915	Draft	Revive the game mastery results screen	P8/P8-915.yaml
+P8-916	Draft	Decide consolidation of six games into flagships	P8/P8-916.yaml
+P8-917	Draft	'Play hub: every existing game stays on a skill shelf'	P8/P8-917.yaml
+P8-918	Draft	'Play hub: headliner row of the ten flagship games'	P8/P8-918.yaml
+P8-920	Draft	'Flagship: Talking Drum tone perception and production'	P8/P8-920.yaml
+P8-921	Draft	'Flagship: Minimal Pair Duel'	P8/P8-921.yaml
+P8-922	Draft	'Flagship: Market Haggle voice roleplay'	P8/P8-922.yaml
+P8-923	Draft	'Flagship: Danfo/Matatu Rush listening game'	P8/P8-923.yaml
+P8-924	Draft	'Flagship: Proverb Weaver'	P8/P8-924.yaml
+P8-925	Draft	'Flagship: Griot''s Story Chain'	P8/P8-925.yaml
+P8-926	Draft	'Flagship: Word Forge morphology (Swahili and Zulu)'	P8/P8-926.yaml
+P8-927	Draft	'Flagship: Fidel Flight / Script Sprint'	P8/P8-927.yaml
+P8-928	Draft	'Flagship: Greeting Gauntlet'	P8/P8-928.yaml
+P8-929	Draft	'Flagship: Echo Karaoke with live pitch line'	P8/P8-929.yaml
+P8-930	Draft	'Word Forge: Yoruba serial-verb variant'	P8/P8-930.yaml
+P8-931	Draft	Weekly Village Festival themes rotating game content	P8/P8-931.yaml
+P8-932	Draft	Mastery Map showing skills improved per game	P8/P8-932.yaml
+P8-933	Draft	Circle co-op goals for the game meta-layer	P8/P8-933.yaml
+P9-900	Draft	'Decide realtime stack: self-hosted Socket.IO+Redis vs managed'	P9/P9-900.yaml
+P9-901	Draft	Scale sockets horizontally with Redis adapter and sticky sessions	P9/P9-901.yaml
+P9-902	Draft	Move presence to Redis TTL with scoped delivery	P9/P9-902.yaml
+P9-903	Draft	'Harden socket handshake: origins, token transport, single server'	P9/P9-903.yaml
+P9-904	Draft	Authorise every room join and emit per room	P9/P9-904.yaml
+P9-905	Draft	Version and validate socket events with zod on both sides	P9/P9-905.yaml
+P9-906	Draft	Add per-socket rate limits and backpressure	P9/P9-906.yaml
+P9-907	Draft	Load-test 10k concurrent sockets per node	P9/P9-907.yaml
+P9-908	Draft	Build durable message log with per-device cursors and idempotent ids	P9/P9-908.yaml
+P9-909	Draft	Queue messages offline and send data-only pushes	P9/P9-909.yaml
+P9-910	Draft	'Process chat media: signed uploads, transcode, size limits, EXIF strip'	P9/P9-910.yaml
+P9-911	Draft	Hard-delete expiring media and make disappearing content real	P9/P9-911.yaml
+P9-912	Draft	Assess age at sign-up and enforce age tiers	P9/P9-912.yaml
+P9-913	Draft	Link guardian accounts and collect verifiable consent	P9/P9-913.yaml
+P9-914	Draft	Let guardians approve circles and classrooms for children	P9/P9-914.yaml
+P9-915	Draft	Offer guardian time limits and child progress view	P9/P9-915.yaml
+P9-916	Draft	Provision school accounts through teachers with school consent	P9/P9-916.yaml
+P9-917	Draft	Default minors to private profiles, no location, no contact discovery	P9/P9-917.yaml
+P9-918	Draft	'Enforce child capability policy: no outside DMs, snaps, ads, purchases'	P9/P9-918.yaml
+P9-919	Draft	Apply stricter AI conversation policy and no memory for children	P9/P9-919.yaml
+P9-920	Draft	Keep minors' messages moderated and explain the E2EE trade-off to families	P9/P9-920.yaml
+P9-921	Draft	Build moderation pipeline orchestrator for all social surfaces	P9/P9-921.yaml
+P9-922	Draft	Integrate hosted moderation API for text toxicity	P9/P9-922.yaml
+P9-923	Draft	Evaluate toxicity detection on African languages and code-switching	P9/P9-923.yaml
+P9-924	Draft	Match word-boundary-aware moderator lexicons per language	P9/P9-924.yaml
+P9-925	Draft	Detect grooming patterns in conversations	P9/P9-925.yaml
+P9-926	Draft	Classify images and video and compute perceptual hashes	P9/P9-926.yaml
+P9-927	Draft	Integrate known-CSAM hash matching on unencrypted uploads	P9/P9-927.yaml
+P9-928	Draft	Escalate to law enforcement and hotlines through the safety lead	P9/P9-928.yaml
+P9-929	Draft	Rate-limit new accounts and add friction to first DMs	P9/P9-929.yaml
+P9-930	Draft	Provide block, mute and report on every message and profile in two taps	P9/P9-930.yaml
+P9-931	Draft	Build moderator console with queues, evidence and SLAs	P9/P9-931.yaml
+P9-932	Draft	Offer appeals and publish periodic transparency reports	P9/P9-932.yaml
+P9-933	Draft	Publish plain-language community guidelines in supported UI languages	P9/P9-933.yaml
+P9-934	Draft	Verify safety lead, incident response and moderator training exist	P9/P9-934.yaml
+P9-935	Draft	Remediate pen-test findings on sockets, auth and minors' surfaces	P9/P9-935.yaml
+P9-936	Draft	Verify G9 guardian and moderation gate for under-18 social	P9/P9-936.yaml
+P9-937	Draft	Decide MLS versus Signal protocol for private messaging	P9/P9-937.yaml
+P9-938	Draft	Run MLS delivery service storing ciphertext and key packages only	P9/P9-938.yaml
+P9-939	Draft	Enable MLS E2EE for adult 1:1 and small-group chats by default	P9/P9-939.yaml
+P9-940	Draft	Run learning overlays on device and gate server models per message	P9/P9-940.yaml
+P9-941	Draft	Send content-free pushes for E2EE chats	P9/P9-941.yaml
+P9-942	Draft	Add group calls for adult and approved-circle members	P9/P9-942.yaml
+P9-943	Draft	Build Circles engine for small groups of 5 to 50	P9/P9-943.yaml
+P9-944	Draft	Build Chat engine for 1:1 and group text and voice notes	P9/P9-944.yaml
+P9-945	Draft	Add Language Status, Tone Lens, tap-to-gloss and message check to chat	P9/P9-945.yaml
+P9-946	Draft	Offer opt-in transcription of voice notes with gloss	P9/P9-946.yaml
+P9-947	Draft	Build Practice Rooms with host, topic, level and AI facilitator	P9/P9-947.yaml
+P9-948	Draft	Build Clips capture and post flow for 15 to 60 second video or audio	P9/P9-948.yaml
+P9-949	Draft	'Provide clip templates: phrase of the day, proverbs, tongue twisters'	P9/P9-949.yaml
+P9-950	Draft	Add duets and stitch-style native corrections to clips	P9/P9-950.yaml
+P9-951	Draft	Build Native Corrections with verified natives and reputation	P9/P9-951.yaml
+P9-952	Draft	Build teacher dashboard with roster import for Classrooms	P9/P9-952.yaml
+P9-953	Draft	Assign work, auto-grade speaking with override, show can-do progress	P9/P9-953.yaml
+P9-954	Draft	Run live class sessions on LiveKit with recording consent	P9/P9-954.yaml
+P9-955	Draft	'Build Events: festivals and live cultural sessions'	P9/P9-955.yaml
+P9-956	Draft	Build the Square feed with Tone Lens	P9/P9-956.yaml
+P9-957	Draft	Add Stories for circles	P9/P9-957.yaml
+P9-958	Draft	Replace mock co-learners in Village flashcards with real or empty state	P9/P9-958.yaml
+P9-959	Draft	Verify every Village surface creates language practice	P9/P9-959.yaml

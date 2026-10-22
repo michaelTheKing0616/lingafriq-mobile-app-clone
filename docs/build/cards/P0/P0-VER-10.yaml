@@ -1,0 +1,52 @@
+charter: v2
+id: P0-VER-10
+kind: verification
+title: Inspect micro-mentor verification, safeguarding and payment flow
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- UNV-E10
+depends_on:
+- E-P0-INTAKE
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: verification only; result recorded, never inferred
+token_budget: 20000
+file_allowlist:
+- docs/build/verification/P0-VER-10.md
+- docs/build/UNVERIFIED.md
+context_anchors:
+- ELEVATION.md#§18.6:L5260
+acceptance_criteria:
+- id: AC1
+  text: Given routes and models for micro-mentors, when inspected, then the card lists whether verification, safeguarding
+    checks and a payment flow exist, each with file and line or ABSENT
+- id: AC2
+  text: Given any ABSENT item, when recorded, then it is linked to the P9 safety gate as a blocker for minors
+user_facing: false
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- docs/build/verification/P0-VER-10.md
+- UNVERIFIED.md row updated
+risks: []
+gate: G9
+external_blockers: []
+owner: agent
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

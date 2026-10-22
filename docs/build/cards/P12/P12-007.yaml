@@ -1,0 +1,67 @@
+charter: v2
+id: P12-007
+kind: build
+title: Split game_provider and enforce module boundaries
+phase: P12
+epic: E-P12-RELEASE
+req_ids:
+- EP-§13.6-12
+depends_on:
+- P12-005
+- P12-006
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 60000
+file_allowlist:
+- lib/providers/game_provider.dart
+- lib/features/games/providers
+- analysis_options.yaml
+- test/providers/game_provider_test.dart
+context_anchors:
+- ELEVATION.md#§13.6:L1930-L1931
+acceptance_criteria:
+- id: AC1
+  text: Given game_provider.dart (2,139 lines), when the split lands, then no resulting file exceeds 500 lines
+- id: AC2
+  text: Given the module layout, when the boundary lint runs in CI, then a cross-feature import outside a public barrel fails
+    the build with the offending path
+- id: AC3
+  text: Given the existing game tests, when run after the split, then they pass unchanged
+test_plan:
+  unit:
+  - game state parity
+  integration:
+  - game session smoke path
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G12
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

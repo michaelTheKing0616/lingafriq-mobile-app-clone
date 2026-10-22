@@ -1,0 +1,82 @@
+charter: v2
+id: P6-023
+kind: build
+title: Build Polie Conversation mode with level grounding
+phase: P6
+epic: E-P6-MODES
+req_ids:
+- EP-§7.3-01
+- EP-§7.3-09
+- EP-§7.3-10
+- EP-§7.3-11
+- EP-§7.3-12
+depends_on:
+- P6-003
+- P6-008
+- P6-011
+- P6-014
+- P6-056
+size: M
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 2
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 3, ambiguity 2, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/modes/conversation.ts
+- node-backend/src/ai-gateway/prompts/templates/conversation.md
+context_anchors:
+- ELEVATION.md#§7.3:L1390-L1395
+acceptance_criteria:
+- id: AC1
+  text: Given a learner level and known words, when a turn is generated, then vocabulary stays within the CEFR-controlled
+    lexicon and target due words are favoured
+- id: AC2
+  text: Given out-of-level words in the output, when the validator runs, then they are flagged and the turn is regenerated
+    once
+- id: AC3
+  text: Given a learner error, when the turn replies, then it uses a recast and a hint ladder step and offers a say-it-better
+    suggestion
+- id: AC4
+  text: Given each turn, when stored, then it is tagged with the skills practised
+- id: AC9
+  text: Given the mode eval set in CI, when run on a prompt or model change, then the mode meets the thresholds in the eval
+    config or the deploy is blocked
+test_plan:
+  unit:
+  - hint ladder
+  - skill tags
+  integration:
+  - level grounding
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - recast fixtures
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

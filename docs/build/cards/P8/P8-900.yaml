@@ -1,0 +1,75 @@
+charter: v2
+id: P8-900
+kind: build
+title: 'GameKit: schedule due items first'
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.2-01
+- EP-§10.2-03
+depends_on:
+- E-P8-PLAY
+size: M
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 0
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 2, coupling 1'
+token_budget: 60000
+file_allowlist:
+- lib/games/gamekit/game_engine.dart
+- lib/games/gamekit/game_turn_context.dart
+- lib/games/gamekit/game_session.dart
+- lib/learning/learner_model/learner_model_service.dart
+- lib/services/learning/spaced_repetition_service.dart
+context_anchors:
+- ELEVATION.md#§10.2:L1670-L1676
+acceptance_criteria:
+- id: AC1
+  text: Given any GameKit game and a learner with N due items, when a session builds its turn queue, then due items fill the
+    queue before any non-due item and the number of due items served is min(N, queue length)
+- id: AC2
+  text: Given a game with no retrieval or perception target declared in its manifest, when the game registers with GameKit,
+    then registration fails with a typed GameManifestError and the game is not listed
+- id: AC3
+  text: Given a learner with zero due items, when a session starts, then items come from the learner's lowest-mastery skills
+    and the session records source=fallback
+- id: AC4
+  text: Given the due-item query fails, when a session starts, then the game shows a visible retry state and never serves
+    a hardcoded list
+test_plan:
+  unit:
+  - due-first ordering
+  - manifest validation
+  - fallback source
+  integration:
+  - session start against learner_model_service fake
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

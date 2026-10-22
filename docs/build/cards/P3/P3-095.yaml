@@ -1,0 +1,63 @@
+charter: v2
+id: P3-095
+kind: build
+title: Add pseudo-localisation to CI
+phase: P3
+epic: E-P3-A11Y-I18N
+req_ids:
+- EP-§13.8-05
+depends_on:
+- P3-094
+- P3-088
+size: S
+difficulty:
+  score: 2
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 0, ambiguity 1, coupling 1'
+token_budget: 25000
+file_allowlist:
+- scripts/i18n/pseudo_locale.py
+- test/goldens/pseudo_locale_test.dart
+context_anchors:
+- ELEVATION.md#§13.8:L1945
+acceptance_criteria:
+- id: AC1
+  text: Given a pseudo locale, when generated, then strings expand by 40% with accents and brackets
+- id: AC2
+  text: Given shell and onboarding in pseudo locale, when goldens run, then no overflow or clipping appears
+- id: AC3
+  text: Given an overflow, when found, then CI fails with the key
+test_plan:
+  unit:
+  - expansion
+  integration:
+  - goldens
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

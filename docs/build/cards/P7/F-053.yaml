@@ -1,0 +1,109 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P7
+epic: E-P7-HUBS
+hub: Speak
+gate: HUB
+status: Draft
+user_facing: true
+p0_area: true
+external_blockers:
+- EXT-13
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+tags: []
+token_budget: 80000
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: two-party live ASR/MT bridge'
+id: F-053
+title: Elevate Live Translate Bridge
+req_ids:
+- F-053
+- F-053.D
+- F-053.E
+- F-053.U
+- F-053.L
+- P0-4
+- P0-5
+depends_on:
+- E-P2-PLATFORM
+- E-P3-DESIGN-SYSTEM
+- E-P1-CONTAINMENT
+file_allowlist:
+- lib/screens/live_translate/live_translate_screen.dart
+- lib/services/live_translate/live_translate_client.dart
+context_anchors:
+- ELEVATION.md#§18.4:L4246-L4263
+delta:
+  current_state: Drawer live translate UI streaming on-device STT over Socket.IO.
+  defects_to_fix:
+  - On-device STT fails for major African source languages.
+  - Socket inherits P0-4/5 auth weaknesses.
+  elevation_to_build:
+  - 'Conversation Bridge: turn-taking two-language session with server ASR and commercial MT.'
+  - Tone Lens per turn and saved mini-lesson transcript.
+  ux_and_render:
+  - Split-screen facing layout, large mic buttons, confidence indicator beyond shared bar.
+  hub_placement: Global Lens → Bridge; Speak → Practice.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given Yoruba or Igbo as a source language, when a turn is recorded, then server ASR transcribes instead of unsupported
+    on-device recognizer.
+- id: AC2
+  text: Given each translated turn, when text displays, then Tone Lens and learn-this-phrase actions appear and transcript
+    saves as a lesson.
+- id: AC3
+  text: Given socket connection, when live translate runs, then P0-4/5 hardened auth is enforced without silent mock transcripts.
+test_plan:
+  unit:
+  - turn state machine
+  integration:
+  - live_translate_client gateway ASR
+  e2e:
+  - Lens Bridge two-party flow
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content: []
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - f-053.*
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

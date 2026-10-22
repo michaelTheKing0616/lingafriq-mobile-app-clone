@@ -1,0 +1,83 @@
+charter: v2
+id: P3-021
+kind: build
+title: Build skeleton and forward-pointing empty states
+phase: P3
+epic: E-P3-COMPONENTS
+req_ids:
+- EP-§3.4-27
+- EP-§3.4-28
+depends_on:
+- P3-020
+size: M
+difficulty:
+  score: 3
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 3: blast 0, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- lib/design/states/skeleton.dart
+- lib/design/states/empty_state.dart
+context_anchors:
+- ELEVATION.md#§3.4:L845
+acceptance_criteria:
+- id: AC1
+  text: Given a list or card loading, when the skeleton renders, then its layout matches the loaded layout within 4 dp
+- id: AC2
+  text: Given an empty list, when the empty state renders, then it has a message and one action that leads to a next step
+- id: AC3
+  text: Given reduced motion, when a skeleton shows, then the shimmer is replaced by a static tone
+test_plan:
+  unit:
+  - layout match
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - reduced motion
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  copy_keys:
+  - state.empty.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/error-handling-ux
+  - prime/feedback-patterns
+  - prime/state-machine

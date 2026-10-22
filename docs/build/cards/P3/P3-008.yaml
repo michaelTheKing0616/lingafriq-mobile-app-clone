@@ -1,0 +1,74 @@
+charter: v2
+id: P3-008
+kind: build
+title: Define OKLCH colour ramps with one accent and dark mode
+phase: P3
+epic: E-P3-TOKENS
+req_ids:
+- EP-§3.4-02
+- EP-§3.4-03
+depends_on:
+- P3-007
+size: M
+difficulty:
+  score: 5
+  blast: 0
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 0, ambiguity 2, coupling 1'
+token_budget: 60000
+file_allowlist:
+- design/tokens/tokens.json
+- design/tokens/color_roles.md
+- test/design/color_contrast_test.dart
+context_anchors:
+- ELEVATION.md#§3.4:L825-L826
+acceptance_criteria:
+- id: AC1
+  text: Given the roles, when ramps are authored, then neutral, accent and four meaning ramps each have 11 OKLCH steps and
+    sRGB gamut clamping is logged
+- id: AC2
+  text: Given the accent, when the role map is checked, then there is exactly one accent and it carries exactly one meaning
+    (primary action)
+- id: AC3
+  text: Given dark mode, when surfaces are defined, then they use their own ramp steps and not an inverted light palette,
+    verified by a role-by-role table
+- id: AC4
+  text: Given every foreground and background role pair in both modes, when contrast is computed, then body pairs are >=4.5:1
+    and large or icon pairs >=3:1 and a lower pair fails the test
+- id: AC5
+  text: Given a meaning colour, when it conveys state, then a non-colour cue is listed beside it in the role table
+test_plan:
+  unit:
+  - ramp step count
+  - one accent rule
+  - contrast matrix both modes
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - contrast WCAG 2.2 AA
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

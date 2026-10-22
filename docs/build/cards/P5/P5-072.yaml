@@ -1,0 +1,63 @@
+charter: v2
+id: P5-072
+kind: build
+title: Rank items by exposure to order native re-recording
+phase: P5
+epic: E-P5-AUDIO
+req_ids:
+- CP-§7-03
+- CP-§7-06
+depends_on:
+- P5-058
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- tools/audio/exposure_rank.py
+- test/audio/exposure_rank_test.py
+context_anchors:
+- CURRICULUM.md#§7:L705-L752
+acceptance_criteria:
+- id: AC1
+  text: Given usage logs, when ranked, then items are ordered by exposure
+- id: AC2
+  text: Given the ranking, when recording is planned, then recording proceeds by rank after the top set
+- id: AC3
+  text: Given missing logs, when ranking, then ExposureDataMissing is raised
+test_plan:
+  unit:
+  - ranking
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G6
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

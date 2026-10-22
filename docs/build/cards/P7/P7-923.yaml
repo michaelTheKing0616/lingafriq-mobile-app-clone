@@ -1,0 +1,103 @@
+charter: v2
+id: P7-923
+kind: build
+title: Build long-press Word Card on every text surface
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§17.7-11
+- EP-§17.7-23
+- EP-§17.7-37
+depends_on:
+- P7-922
+- E-P3-DESIGN-SYSTEM
+size: L
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 3, coupling 2, depth 2'
+token_budget: 150000
+file_allowlist:
+- lib/widgets/lexicon_selectable_text.dart
+- lib/services/lexicon_lookup_service.dart
+- lib/screens/chat/message_bubble.dart
+- lib/screens/lesson/lesson_text.dart
+- lib/screens/feed/feed_text.dart
+- lib/screens/games/game_prompt_text.dart
+- test/widgets/lexicon_selectable_text_test.dart
+context_anchors:
+- ELEVATION.md#§17.7:L2409-L2411
+- ELEVATION.md#§17.7:L2425
+- ELEVATION.md#§17.7:L2434
+acceptance_criteria:
+- id: AC1
+  text: Given a word in a lesson, chat, feed, status or game, when the learner long-presses it, then the Word Card opens for
+    that word
+- id: AC2
+  text: Given a word not in the lexicon, when long-pressed, then a visible not-found state offers to suggest it
+- id: AC3
+  text: Given an inflected form, when long-pressed, then it resolves to its lemma entry or shows the not-found state
+- id: AC4
+  text: Given a long-press, when the lookup runs offline, then it uses the offline pack and shows an offline state if the
+    word is absent
+- id: AC5
+  text: Given a screen reader, when a word is focused, then a custom action opens the Word Card
+- id: AC6
+  text: Given each of the listed surfaces, when tested, then the shared widget is used and no surface has its own copy
+test_plan:
+  unit:
+  - lemma resolution
+  integration:
+  - each surface opens the sheet
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - custom accessibility action
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - pressed
+  - opening
+  - not_found
+  - offline
+  copy_keys:
+  - wordcard.notfound
+  tokens:
+  - motion.sheet
+  motion_tier: product
+  a11y:
+  - custom action to open Word Card
+  - touch targets >=48dp
+  - reduced-motion variant
+  goldens:
+  - default
+  - loading
+  - error
+  - offline
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- fixes lexicon not linked from lessons, chat or games
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

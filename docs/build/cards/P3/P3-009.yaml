@@ -1,0 +1,64 @@
+charter: v2
+id: P3-009
+kind: build
+title: Add 4-pt spacing, radius, elevation and stroke tokens
+phase: P3
+epic: E-P3-TOKENS
+req_ids:
+- EP-§3.4-04
+- EP-§3.4-05
+depends_on:
+- P3-007
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 1: blast 0, ambiguity 1, coupling 0'
+token_budget: 25000
+file_allowlist:
+- design/tokens/tokens.json
+- test/design/spacing_scale_test.dart
+context_anchors:
+- ELEVATION.md#§3.4:L826
+acceptance_criteria:
+- id: AC1
+  text: Given the spacing scale, when tokens are generated, then every spacing value is a multiple of 4 and a non-multiple
+    fails the generator
+- id: AC2
+  text: Given radius, elevation and stroke tokens, when generated, then each has named steps and a dark-mode elevation variant
+- id: AC3
+  text: Given a widget uses a numeric padding literal, when the compliance lint runs, then it reports file and line
+test_plan:
+  unit:
+  - multiple-of-4 rule
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

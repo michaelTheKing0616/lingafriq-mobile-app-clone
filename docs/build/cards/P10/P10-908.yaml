@@ -1,0 +1,95 @@
+charter: v2
+id: P10-908
+kind: build
+title: Make leagues opt-in and learning-ranked
+phase: P10
+epic: E-P10-GAMIFICATION
+req_ids:
+- EP-§12.2-24
+- EP-§12.2-25
+- EP-§12.2-26
+- EP-§12.2-27
+depends_on:
+- E-P9-SAFETY
+- P10-901
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 6; blast 2; p0 area
+token_budget: 60000
+file_allowlist:
+- node-backend/src/services/leagues.service.ts
+- lib/providers/leaderboard_provider.dart
+- lib/screens/village/leagues_screen.dart
+context_anchors:
+- ELEVATION.md#§12.2:L1830-L1831
+acceptance_criteria:
+- id: AC1
+  text: Given a new learner, when they open leagues, then they are not enrolled until they opt in.
+- id: AC2
+  text: Given enrolled learners, when matching runs, then each league groups learners by time zone and activity level.
+- id: AC3
+  text: Given a league ranking, when it is computed, then it uses learning XP only and ignores raw taps and purchased items.
+- id: AC4
+  text: Given a learner under 18, when leagues are listed, then only circle or class leagues appear and public leagues return
+    a typed error.
+- id: AC5
+  text: Given a learner opts out, when the next ranking runs, then they are removed and their data is not shown to others.
+test_plan:
+  unit:
+  - matching
+  - XP-only rank
+  integration:
+  - minor sees circle leagues only
+  security:
+  - minor cannot join public league
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - not-enrolled
+  - enrolled
+  - minor-circle-only
+  - opted-out
+  copy_keys:
+  - leagues_join
+  tokens:
+  - color.semantic
+  - type.scale
+  - space.scale
+  motion_tier: product
+  a11y:
+  - screen reader labels
+  - 48dp touch targets
+  - reduced motion honoured
+  goldens:
+  - leagues_join_golden
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

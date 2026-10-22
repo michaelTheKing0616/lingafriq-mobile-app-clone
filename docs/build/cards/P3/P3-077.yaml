@@ -1,0 +1,89 @@
+charter: v2
+id: P3-077
+kind: build
+title: Give honest scorer feedback on the first syllable
+phase: P3
+epic: E-P3-ONBOARDING
+req_ids:
+- OB-step2-c
+depends_on:
+- P3-076
+- E-P6-SCORER
+size: M
+difficulty:
+  score: 6
+  blast: 1
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: depends on real scorer'
+token_budget: 60000
+file_allowlist:
+- lib/screens/onboarding/steps/first_word_feedback.dart
+- lib/services/first_word_feedback_service.dart
+context_anchors:
+- ELEVATION.md#§5.2:L1043-L1044
+acceptance_criteria:
+- id: AC1
+  text: Given the real scorer returns a result, when shown, then the feedback is encouraging and honest and names the one
+    syllable
+- id: AC2
+  text: Given the scorer is unsure, when shown, then an unsure state appears and no score number is invented
+- id: AC3
+  text: Given the scorer is unavailable, when the step runs, then the AI-unavailable state shows and the learner can continue
+- id: AC4
+  text: Given feedback text, when scored, then grade level is <=7
+test_plan:
+  unit:
+  - unsure branch
+  integration:
+  - scorer unavailable
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - visual pitch feedback
+  content:
+  - grade-7
+user_facing: true
+ux_spec:
+  states:
+  - result
+  - unsure
+  - unavailable
+  copy_keys:
+  - onboarding.feedback.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags:
+- shows_score
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

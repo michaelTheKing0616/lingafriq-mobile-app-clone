@@ -1,0 +1,70 @@
+charter: v2
+id: P6-008
+kind: build
+title: Ground prompts in curriculum KG and learner model
+phase: P6
+epic: E-P6-GATEWAY
+req_ids:
+- EP-§7.2-12
+- EP-§7.2-13
+depends_on:
+- P6-003
+- P6-001
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 2
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 2, ambiguity 2, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/grounding/curriculumKg.ts
+- node-backend/src/ai-gateway/grounding/learnerModel.ts
+context_anchors:
+- ELEVATION.md#§7.2:L1367-L1387
+acceptance_criteria:
+- id: AC1
+  text: Given a learner with known and due words, when a grounded mode builds its request, then the prompt context includes
+    level-capped lexicon ids and due-word ids from the learner model
+- id: AC2
+  text: Given the KG has no entry for a requested topic, when retrieval runs, then typed result no_grounding is returned and
+    the mode refuses rather than improvising facts
+- id: AC3
+  text: Given a retrieval, when logged, then only item ids are logged and no learner free text
+test_plan:
+  unit:
+  - lexicon cap
+  - no_grounding path
+  integration:
+  - KG fixture retrieval
+  security:
+  - learner data minimisation
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

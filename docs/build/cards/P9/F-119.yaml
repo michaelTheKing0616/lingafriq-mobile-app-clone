@@ -1,0 +1,114 @@
+charter: v2
+id: F-119
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Friend Quests and Challenge a Friend
+phase: P9
+epic: E-P9-SAFETY
+hub: Village
+req_ids:
+- F-119
+- F-119.D
+- F-119.E
+- F-119.U
+- F-119.L
+- P0-8
+- P0-18
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P9-SAFETY
+- E-P6-SCORER
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: social/village feature complexity and coupling'
+token_budget: 80000
+file_allowlist:
+- lib/screens/social/friend_quests_screen.dart
+- lib/screens/social/create_friend_quest_screen.dart
+- lib/screens/social/challenge_friend_screen.dart
+context_anchors:
+- ELEVATION.md#§18.6:L5193-L5204
+delta:
+  current_state: Quest and challenge routes work with client-trusted scores.
+  defects_to_fix:
+  - Challenges are score-only and scores can be faked (P0-8, P0-18)
+  elevation_to_build:
+  - Buddy quests with shared weekly practice goals
+  - Async challenges on real skills (tone duel, review race)
+  - Non-nagging nudges
+  ux_and_render:
+  - Paired progress bars and challenge cards in chat
+  hub_placement: Village → People → Quests; Today
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given a buddy quest, when progress updates, then both bars move only from server-verified practice events
+- id: AC2
+  text: Given a skill challenge, when completed, then outcome uses scored speaking or review data not client-only counters
+- id: AC3
+  text: Given a fake score submission, when sent, then UI shows honest failure and no reward issues
+- id: AC4
+  text: Given the account is under 18 or age-unknown, when this surface is opened, then it is hidden or guardian-gated until
+    E-P9-SAFETY is Done, and the restriction is enforced server-side.
+test_plan:
+  unit:
+  - delta defects covered
+  - routing and state transitions
+  integration:
+  - hub navigation and backend contracts
+  e2e:
+  - primary user journey on device
+  a11y:
+  - semantics
+  - 200% text scale goldens
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f-119.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+tags:
+- under18_social
+- shows_score
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux
+  - adaptive/14-safety-and-high-stakes

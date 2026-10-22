@@ -1,0 +1,70 @@
+charter: v2
+id: P6-031
+kind: build
+title: Stand up server-side scorer service
+phase: P6
+epic: E-P6-SCORING
+req_ids:
+- EP-§7.4-29
+- EP-§7.2-32
+depends_on:
+- P6-001
+- P6-002
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- speech-service/scorer/api.py
+- speech-service/scorer/schema.py
+- node-backend/src/ai-gateway/routes/score.route.ts
+context_anchors:
+- ELEVATION.md#§7.2:L1367-L1387
+- ELEVATION.md#§7.4:L1445-L1447
+acceptance_criteria:
+- id: AC1
+  text: Given an authenticated scoring request with audio and expected text, when submitted, then the scorer service runs
+    on the server and returns a typed result schema
+- id: AC2
+  text: Given a request without a token, when received, then HTTP 401 is returned
+- id: AC3
+  text: Given the result schema, when defined, then every score field is optional-with-reason so the unsure state can be expressed
+test_plan:
+  unit:
+  - schema
+  integration:
+  - auth
+  security:
+  - unauthenticated scorer
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

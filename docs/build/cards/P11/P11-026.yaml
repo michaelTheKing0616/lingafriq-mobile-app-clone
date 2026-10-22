@@ -1,0 +1,50 @@
+charter: v2
+id: P11-026
+kind: verification
+title: Verify persona language quality with native reviewers
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§8.4-24
+depends_on:
+- E-P1-CONTAINMENT
+- P11-024
+size: S
+difficulty:
+  score: 2
+  blast: 1
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T2
+  justification: 'score 2: blast 1, ambiguity 1, coupling 0, depth 0'
+token_budget: 25000
+file_allowlist: []
+context_anchors: []
+acceptance_criteria:
+- id: AC1
+  text: Given each persona language, when ≥2 native reviewers rate the sample, then results and reviewer ids are recorded.
+- id: AC2
+  text: Given a rating below the agreed bar, when recorded, then the persona is flagged and stays disabled.
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- reviewer verdict
+- ledger row
+risks: []
+gate: G11
+external_blockers:
+- EXT-13
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

@@ -1,0 +1,70 @@
+charter: v2
+id: P1-055
+kind: build
+title: Implement certificate pinning consistently per ADR
+phase: P1
+epic: E-P1-AUTH
+req_ids:
+- EP-§13.1-23
+- EP-§13.1-24
+depends_on:
+- E-P0-INTAKE
+- P1-054
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T3
+  reviewer: T4
+  justification: 'score 6; blast 2; security/crypto tester; gate-critical (security / child safety / legal / design direction):
+    Fable reviews'
+token_budget: 70000
+file_allowlist:
+- android/app/src/main/res/xml/network_security_config.xml
+- lib/services/network/pinning_client.dart
+- ios/Runner/Info.plist
+context_anchors:
+- ELEVATION.md#§13.1:L1864-L1865
+- ELEVATION.md#§13.1:L1865-L1866
+acceptance_criteria:
+- id: AC1
+  text: Given the Android network config, when built, then no YOUR_CERTIFICATE_PIN_HERE placeholder remains
+- id: AC2
+  text: Given a connection to a host with a non-pinned certificate, when attempted on each platform, then it fails with a
+    typed pin error
+- id: AC3
+  text: Given the backup pin, when the primary rotates, then connections continue
+test_plan:
+  unit:
+  - pin check
+  integration:
+  - MITM proxy test on both platforms
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G1
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

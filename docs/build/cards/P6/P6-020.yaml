@@ -1,0 +1,84 @@
+charter: v2
+id: P6-020
+kind: build
+title: Serve authenticated STT via gateway with Intron primary
+phase: P6
+epic: E-P6-GATEWAY
+req_ids:
+- EP-§7.2-26
+- EP-§7.2-27
+- EP-§7.2-30
+- EP-§7.1-11
+- EP-§7.1-12
+- EP-§7.1-15
+- EP-§7.1-16
+- EP-§7.5-16
+depends_on:
+- P6-002
+- P6-011
+size: M
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 3, ambiguity 1, coupling 2, depth 2'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/routes/stt.route.ts
+- node-backend/src/routes/intron.route.ts
+- node-backend/src/utils/intronLanguageMap.ts
+- node-backend/src/ai-gateway/providers/stt/
+context_anchors:
+- ELEVATION.md#§7.2:L1367-L1387
+- ELEVATION.md#§7.1:L1349-L1366
+- ELEVATION.md#§7.5:L1449-L1460
+acceptance_criteria:
+- id: AC1
+  text: Given the Intron proxy, when the client requests STT, then the call goes through the authenticated gateway route and
+    covers all seven Stage-1 languages
+- id: AC2
+  text: Given the unauthenticated Hugging Face and Groq Whisper STT paths, when migration lands, then they are removed and
+    requests without a token get HTTP 401
+- id: AC3
+  text: Given Yoruba, Igbo or Hausa audio, when routed, then Whisper-family models are never selected because they drop tone
+    diacritics
+- id: AC4
+  text: Given Intron failure, when it occurs, then the configured vendor fallback is tried and failure surfaces as typed error
+    stt_unavailable
+test_plan:
+  unit:
+  - language map
+  integration:
+  - fallback
+  security:
+  - unauthenticated STT
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - tone diacritics preserved in transcript samples
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

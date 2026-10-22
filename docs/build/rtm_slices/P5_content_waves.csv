@@ -1,0 +1,233 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+EP-§6.1-01,ELEVATION,§6.1:L1073-L1084,informational,"1 lesson per level, ""vocab"": [{""word"":""example"",""meaning"":""sample""}",P1,agent,,Open
+EP-§6.1-02,ELEVATION,§6.1:L1085-L1090,informational,"""word1a"", ""example meaning"", ""Sample MCQ"", answer ""a""",P1,agent,,Open
+EP-§6.1-03,ELEVATION,§6.1:L1091-L1099,informational,"""Yor_word1a"", ""Example sentence with Yor_word1a.""",P1,agent,,Open
+EP-§6.1-04,ELEVATION,§6.1:L1100-L1107,informational,"Real phrases with correct-looking diacritics, but see below",P1,agent,,Open
+EP-§6.1-05,ELEVATION,§6.1:L1108,metric,126 lessons per language,P1,agent,,Open
+EP-§6.1-06,ELEVATION,§6.1:L1108-L1109,metric,only 85 (Lingala) to 111 (Yoruba) unique vocabulary items per language,P1,agent,,Open
+EP-§6.1-07,ELEVATION,§6.1:L1109,metric,A real A1 alone needs about 500–800 items,P1,agent,,Open
+EP-§6.1-08,ELEVATION,§6.1:L1109-L1110,metric,"B2 needs about 4,000",P1,agent,,Open
+EP-§6.1-09,ELEVATION,§6.1:L1110,metric,"C2 is beyond 10,000 word families",P1,agent,,Open
+EP-§6.1-10,ELEVATION,§6.1:L1110-L1111,informational,Every dialogue repeats lines (126/126 for each language),P1,agent,,Open
+EP-§6.1-11,ELEVATION,§6.1:L1112-L1114,informational,"Grammar is two generic sentences pasted into 1,546 lessons",P1,agent,,Open
+EP-§6.1-12,ELEVATION,§6.1:L1115,informational,Somali and Amharic are SOV,P1,agent,,Open
+EP-§6.1-13,ELEVATION,§6.1:L1115-L1116,informational,"mark tense and aspect with preverbal particles, not affixes",P1,agent,,Open
+EP-§6.1-14,ELEVATION,§6.1:L1116-L1117,risk,Teaching this is actively harmful,P1,agent,,Open
+EP-§6.1-15,ELEVATION,§6.1:L1117-L1118,informational,cultural_notes at unit level is a template,P1,agent,,Open
+EP-§6.1-16,ELEVATION,§6.1:L1118-L1119,metric,Three identical 11.3 MB copies,P1,agent,,Open
+EP-§6.1-17,ELEVATION,§6.1:L1118-L1119,metric,about 34 MB of APK bloat,P1,agent,,Open
+EP-§6.1-18,ELEVATION,§6.1:L1119-L1120,informational,Zero audio references in any curriculum file,P1,agent,,Open
+EP-§6.1-19,ELEVATION,§6.1:L1120-L1121,metric,"audio_manifest.json lists 1,363 entries pointing at assets/audio/...",P1,agent,,Open
+EP-§6.1-20,ELEVATION,§6.1:L1121-L1122,risk,That breaks across NFC/NFD normalisation,P1,agent,,Open
+EP-§6.1-21,ELEVATION,§6.1:L1122-L1123,informational,the file name drops the tone mark on kọ́ while the text,P1,agent,,Open
+EP-§6.1-22,ELEVATION,§6.1:L1124,informational,assets/audio is not in pubspec.yaml assets,P1,agent,,Open
+EP-§6.1-23,ELEVATION,§6.1:L1124-L1125,requirement,Sample label errors to send to native review,P1,external,,Open
+EP-§6.1-24,ELEVATION,§6.1:L1126,requirement,"Twi A1 Akyiade for ""Greetings""",P1,external,,Open
+EP-§6.1-25,ELEVATION,§6.1:L1128,metric,"1,409 words across 14 languages, about 85–118 each",P1,agent,,Open
+EP-§6.1-26,ELEVATION,§6.1:L1128-L1129,informational,"phonetic_guide is a copy of tonal_note for all 1,409",P1,agent,,Open
+EP-§6.1-27,ELEVATION,§6.1:L1129-L1130,informational,entry teaches a false tone rule (P0-17),P1,agent,,Open
+EP-§6.1-28,ELEVATION,§6.1:L1130,informational,3 topics are truncated mid-parenthesis,P1,agent,,Open
+EP-§6.1-29,ELEVATION,§6.1:L1131,metric,app_yo.arb has 62 of 103 keys,P1,agent,,Open
+EP-§6.1-30,ELEVATION,§6.1:L1131-L1133,informational,no Yoruba tone marks or subdots,P1,agent,,Open
+EP-§6.1-31,ELEVATION,§6.1:L1134-L1136,informational,"""Omo"", ""Eniyan"", ""Okunrin"" without diacritics",P1,agent,,Open
+EP-§6.2-01,ELEVATION,§6.2:L1139-L1143,requirement,Every unit is anchored in authentic-style audio stories and dialogues at i+1,P1,agent,,Open
+EP-§6.2-02,ELEVATION,§6.2:L1144,informational,Template dialogues,P1,agent,,Open
+EP-§6.2-03,ELEVATION,§6.2:L1145-L1150,requirement,"FSRS-6 scheduler (open-source, benchmarked well ahead of SM-2) running on device",P1,agent,,Open
+EP-§6.2-04,ELEVATION,§6.2:L1149-L1150,metric,"parameters optimised per learner after about 1,000 reviews",P1,agent,,Open
+EP-§6.2-05,ELEVATION,§6.2:L1151-L1152,informational,4 competing SRS models,P1,agent,,Open
+EP-§6.2-06,ELEVATION,§6.2:L1153-L1156,requirement,"Mix item types (listen, say, choose, build, translate), voices",P1,agent,,Open
+EP-§6.2-07,ELEVATION,§6.2:L1157,informational,Each game is siloed,P1,agent,,Open
+EP-§6.2-08,ELEVATION,§6.2:L1158-L1159,requirement,Desirable difficulty with high success,P1,agent,,Open
+EP-§6.2-09,ELEVATION,§6.2:L1160,metric,Aim for about 80–85% success; adapt in real time,P1,agent,,Open
+EP-§6.2-10,ELEVATION,§6.2:L1160,informational,Fixed,P1,agent,,Open
+EP-§6.2-11,ELEVATION,§6.2:L1161-L1165,requirement,Speaking from session 1; negotiated meaning with Polie; recasts rather,P1,agent,,Open
+EP-§6.2-12,ELEVATION,§6.2:L1166,informational,Text-heavy,P1,agent,,Open
+EP-§6.2-13,ELEVATION,§6.2:L1167-L1170,requirement,"Short grammar ""aha"" cards with contrastive examples, then practice.",P1,agent,,Open
+EP-§6.2-14,ELEVATION,§6.2:L1171,informational,Generic sentences,P1,agent,,Open
+EP-§6.2-15,ELEVATION,§6.2:L1172-L1178,requirement,Tone perception (minimal pairs: Yoruba ọkọ́ hoe / ọkọ̀ vehicle,P1,agent,,Open
+EP-§6.2-16,ELEVATION,§6.2:L1179-L1183,informational,Tone trainer forces a 3-tone model on all languages,P1,agent,,Open
+EP-§6.2-17,ELEVATION,§6.2:L1184-L1186,requirement,Every unit maps to CEFR / ACTFL can-do statements,P1,agent,,Open
+EP-§6.2-18,ELEVATION,§6.2:L1187-L1188,informational,Objectives are templates,P1,agent,,Open
+EP-§6.2-19,ELEVATION,§6.2:L1191-L1193,requirement,"A unit is ""mastered"" when its can-dos are demonstrated",P1,agent,,Open
+EP-§6.2-20,ELEVATION,§6.2:L1194-L1196,informational,Unlock rule previous_lesson_completed,P1,agent,,Open
+EP-§6.2-21,ELEVATION,§6.2:L1197-L1198,requirement,"Immediate, specific, actionable (""lower the second syllable"")",P1,agent,,Open
+EP-§6.2-22,ELEVATION,§6.2:L1199,informational,Random scores in places,P1,agent,,Open
+EP-§6.2-23,ELEVATION,§6.2:L1200-L1202,requirement,"Greetings by time and status, honorifics (Yoruba ẹ vs o), kinship terms",P1,agent,,Open
+EP-§6.2-24,ELEVATION,§6.2:L1203,informational,Mostly notes,P1,agent,,Open
+EP-§6.2-25,ELEVATION,§6.2:L1204-L1209,requirement,"Autonomy (choose themes), competence (visible skill growth), relatedness",P1,agent,,Open
+EP-§6.2-26,ELEVATION,§6.2:L1210,informational,Streak pressure,P1,agent,,Open
+EP-§6.7-01,ELEVATION,§6.7:L1340-L1341,requirement,"One renderer for target-language text (Tone Lens, tap-to-hear, long-press for gloss/IPA/minimal",P1,agent,,Open
+EP-§6.7-02,ELEVATION,§6.7:L1341,requirement,"used by lessons, chat, Polie, personas, games, the magazine and the dictionary",P1,agent,,Open
+EP-§6.7-03,ELEVATION,§6.7:L1342,requirement,Diacritic-aware input: a custom keyboard bar for each language,P1,agent,,Open
+EP-§6.7-04,ELEVATION,§6.7:L1342,requirement,ẹ ọ ṣ + tone keys for Yoruba,P1,agent,,Open
+EP-§6.7-05,ELEVATION,§6.7:L1342-L1343,requirement,ṅ for Igbo,P1,agent,,Open
+EP-§6.7-06,ELEVATION,§6.7:L1343,requirement,ɓ ɗ ƙ ƴ for Hausa,P1,agent,,Open
+EP-§6.7-07,ELEVATION,§6.7:L1343,requirement,ɛ ɔ for Twi,P1,agent,,Open
+EP-§6.7-08,ELEVATION,§6.7:L1343-L1344,requirement,"""lenient"" grading that accepts missing tone marks in early levels",P1,agent,,Open
+EP-§6.7-09,ELEVATION,§6.7:L1344,requirement,"always shows the correct form, then tightens with level",P1,agent,,Open
+EP-§6.7-10,ELEVATION,§6.7:L1345,requirement,"Script learning tracks for Ge'ez/Fidel (Amharic, Tigrinya), N'Ko, Adlam, Tifinagh and Ajami",P1,agent,,Open
+EP-§6.7-11,ELEVATION,§6.7:L1345-L1346,requirement,stroke-order animation and handwriting recognition practice,P1,agent,,Open
+CP-§4-01,CURRICULUM,§4:L556,requirement,Outcomes: CEFR can-do statements (A1–B1 first),P1,agent,,Open
+CP-§4-02,CURRICULUM,§4:L556-L557,requirement,mapped to ACTFL levels for US diaspora and schools.,P1,agent,,Open
+CP-§4-03,CURRICULUM,§4:L557,metric,Each unit targets 2–4 can-dos,P1,agent,,Open
+CP-§4-04,CURRICULUM,§4:L558-L559,requirement,"Vocabulary: frequency-ranked from CC-BY corpora, adjusted for learner needs",P1,agent,,Open
+CP-§4-05,CURRICULUM,§4:L559,metric,A1 about 600–800 lexemes,P1,agent,,Open
+CP-§4-06,CURRICULUM,§4:L559,metric,"A2 about 1,500",P1,agent,,Open
+CP-§4-07,CURRICULUM,§4:L559-L560,metric,"B1 about 2,500–3,000 cumulative.",P1,agent,,Open
+CP-§4-08,CURRICULUM,§4:L561-L562,metric,reappears at least 6 times across units in new contexts,P1,agent,,Open
+CP-§4-09,CURRICULUM,§4:L561-L562,requirement,(input → controlled practice → speaking → review). FSRS schedules review.,P1,agent,,Open
+CP-§4-10,CURRICULUM,§4:L563-L565,requirement,Pattern Library: one entry per real grammatical pattern per language,P1,agent,,Open
+CP-§4-12,CURRICULUM,§4:L563-L564,requirement,"Yoruba preverbal ń (progressive), ti (perfect), máa (future)",P1,agent,,Open
+CP-§4-11,CURRICULUM,§4:L564,requirement,"with examples, contrasts, common learner errors and citations.",P1,agent,,Open
+CP-§4-13,CURRICULUM,§4:L565,requirement,Swahili tense markers -na-/-li-/-ta-/-me-,P1,agent,,Open
+CP-§4-14,CURRICULUM,§4:L565,requirement,Zulu subject concords by class.,P1,agent,,Open
+CP-§4-15,CURRICULUM,§4:L566-L567,requirement,Tone and sound strand: perception and production drills from the lexicon's minimal,P1,agent,,Open
+CP-§4-16,CURRICULUM,§4:L566-L567,requirement,"plus FSI tone drills as references (yo, ig, ha)",P1,agent,,Open
+CP-§4-17,CURRICULUM,§4:L567,requirement,clicks for xh/zu; vowel purity and stress for sw.,P1,agent,,Open
+CP-§4-18,CURRICULUM,§4:L568,requirement,"Culture strand: short, cited culture cards (greetings, kinship, food, festivals).",P1,agent,,Open
+CP-§4-19,CURRICULUM,§4:L568-L569,constraint,Proverbs only after linguist review.,P1,external,,Open
+CP-§4-20,CURRICULUM,§4:L570-L571,requirement,Item schema: the elevation plan §6.5 schema plus provenance.sources[],P1,agent,,Open
+CP-§4-21,CURRICULUM,§4:L570-L571,requirement,"claims[{text, source_id, locator}], confidence, risk_tags[]",P1,agent,,Open
+CP-§4-31,CURRICULUM,§4:L570-L571,external,companion: LINGAFRIQ_ELEVATION_PLAN.md §6.5 (item schema),P1,Tope,,Open
+CP-§4-22,CURRICULUM,§4:L571,requirement,label (beta | expert | native) and audio.kind (tts | human).,P1,agent,,Open
+CP-§4-23,CURRICULUM,§4:L572,requirement,"How items feed every feature (one content graph, many surfaces)",P1,agent,,Open
+CP-§4-24,CURRICULUM,§4:L574-L579,requirement,"Lexeme (lemma, tone, IPA, senses, audio, image, dialect variants)",P1,agent,,Open
+CP-§4-25,CURRICULUM,§4:L582-L583,requirement,Pattern Grammar hub; Polie's grammar mode (answers only from patterns),P1,agent,,Open
+CP-§4-26,CURRICULUM,§4:L584-L586,requirement,Dialogue and scene Lessons; Scenario Theatre; Market Haggle and Greeting Gauntlet scripts,P1,agent,,Open
+CP-§4-27,CURRICULUM,§4:L586-L587,requirement,"Exercise items (IRT-calibrated) Lessons, Lesson Recap, checkpoints, placement test",P1,agent,,Open
+CP-§4-28,CURRICULUM,§4:L587-L588,requirement,"Culture card (cited) Culture shelf, Magazine, Heritage, Elders' Blessings",P1,agent,,Open
+CP-§4-29,CURRICULUM,§4:L588,constraint,Historical Personas answer only from cited cards,P1,agent,,Open
+CP-§4-30,CURRICULUM,§4:L589-L590,requirement,"Can-do map Path, Passport evidence, Progress, teacher dashboard",P1,agent,,Open
+CP-§5-01,CURRICULUM,§5:L592-L600,requirement,Paid linguist reviewers (academics or postgrads in African-language linguistics,P1,external,,Open
+CP-§5-27,CURRICULUM,§5:L592-L594,external,companion: LINGAFRIQ_ELEVATION_PLAN.md §6.4 (linguist universities),P1,Tope,,Open
+CP-§5-02,CURRICULUM,§5:L595-L596,metric,100% of high-risk items,P1,external,,Open
+CP-§5-03,CURRICULUM,§5:L596,metric,"100% of the A1–A2 core lexicon ( ≈ 1,500 headwords",P1,external,,Open
+CP-§5-04,CURRICULUM,§5:L597,metric,a random 10–15% sample of Auto-Beta items,P1,external,,Open
+CP-§5-05,CURRICULUM,§5:L599-L600,metric,"Per item, about 60–150 items/hour depending on type",P1,external,,Open
+CP-§5-06,CURRICULUM,§5:L601-L603,requirement,Two-reviewer agreement on a calibration set,P1,external,,Open
+CP-§5-07,CURRICULUM,§5:L601-L603,metric,( ≈ 300 items per language),P1,external,,Open
+CP-§5-08,CURRICULUM,§5:L602,requirement,Measures reviewer reliability (Cohen's κ) and calibrates the confidence score,P1,agent,,Open
+CP-§5-09,CURRICULUM,§5:L604-L610,requirement,A/B accuracy sampling Each week a stratified random sample of live items,P1,agent,,Open
+CP-§5-10,CURRICULUM,§5:L609-L610,requirement,the publicly reported error rate per language and label comes from this,P1,agent,,Open
+CP-§5-11,CURRICULUM,§5:L610-L611,metric,"Ongoing, ≈ 200 items per language per month",P1,external,,Open
+CP-§5-12,CURRICULUM,§5:L611-L616,requirement,"Report a mistake"" on every item and Word Card",P1,agent,,Open
+CP-§5-13,CURRICULUM,§5:L612-L613,requirement,"(category: wrong meaning, tone/spelling, audio, unnatural, offensive)",P1,agent,,Open
+CP-§5-14,CURRICULUM,§5:L614-L616,metric,"Three or more flags, or one flag from a trusted user, auto-hides",P1,agent,,Open
+CP-§5-15,CURRICULUM,§5:L616,requirement,"auto-hides the item to ""Under review""",P1,agent,,Open
+CP-§5-16,CURRICULUM,§5:L618-L620,requirement,Item statistics IRT difficulty and discrimination; abnormal patterns,P1,agent,,Open
+CP-§5-17,CURRICULUM,§5:L621-L624,requirement,"Community ""suggest a fix"" Heritage learners propose corrections that feed the Verify",P2,agent,,Open
+CP-§5-28,CURRICULUM,§5:L621-L624,external,companion: LINGAFRIQ_ELEVATION_PLAN.md §18 (Village → Contribute),P2,Tope,,Open
+CP-§5-18,CURRICULUM,§5:L624-L625,external,Free; later native validators adjudicate,P2,external,,Open
+CP-§5-19,CURRICULUM,§5:L626-L627,requirement,Native-verified (green): approved by ≥ 2 native validators.,P1,agent,,Open
+CP-§5-20,CURRICULUM,§5:L627-L628,requirement,Expert-reviewed (blue): approved by a linguist.,P1,agent,,Open
+CP-§5-21,CURRICULUM,§5:L628-L629,requirement,Beta (amber): passed all machine checks and sampling,P1,agent,,Open
+CP-§5-22,CURRICULUM,§5:L629,requirement,"AI-assisted, machine-checked. Spotted a problem? Tell us.",P1,agent,,Open
+CP-§5-23,CURRICULUM,§5:L629,requirement,Synthetic voice tag on all TTS audio.,P1,agent,,Open
+CP-§5-24,CURRICULUM,§5:L630,constraint,"Beta items never appear in checkpoints, placement or credentials.",P1,agent,,Open
+CP-§5-25,CURRICULUM,§5:L630-L631,constraint,Grammar and culture explanations are never Beta.,P1,agent,,Open
+CP-§5-26,CURRICULUM,§5:L631,constraint,Children's mode shows Expert-reviewed or better only.,P1,agent,,Open
+CP-§6-01,CURRICULUM,§6:L633-L636,constraint,"Measure, don't assert: ""error"" means a learner-visible mistake",P1,agent,,Open
+CP-§6-02,CURRICULUM,§6:L634-L636,constraint,The figures below are targets to verify in the pilot,P1,agent,,Open
+CP-§6-03,CURRICULUM,§6:L640-L644,constraint,"A (lower risk) Swahili Large corpora, strong MT and LLM quality",P1,agent,,Open
+CP-§6-08,CURRICULUM,§6:L641,metric,Tier A Beta error target ≤ 3% of items,P1,agent,,Open
+CP-§6-09,CURRICULUM,§6:L642,metric,Tier A Expert-reviewed target ≤ 1%,P1,agent,,Open
+CP-§6-04,CURRICULUM,§6:L645-L654,constraint,"B (medium) isiZulu, isiXhosa, Hausa, Nigerian Pidgin",P1,agent,,Open
+CP-§6-10,CURRICULUM,§6:L654,metric,Tier B Beta error target ≤ 5%,P1,agent,,Open
+CP-§6-11,CURRICULUM,§6:L654,metric,Tier B Expert-reviewed target ≤ 1.5%,P1,agent,,Open
+CP-§6-05,CURRICULUM,§6:L655-L664,constraint,"C (high tone risk) Yoruba, Igbo Meaning-bearing written tone marks",P1,agent,,Open
+CP-§6-16,CURRICULUM,§6:L658-L660,informational,restorers reach about 80% (Yoruba) and about 62% (Igbo),P1,agent,,Open
+CP-§6-12,CURRICULUM,§6:L661-L663,metric,"Tier C Beta error target ≤ 5%, achieved only by restricting Beta",P1,agent,,Open
+CP-§6-13,CURRICULUM,§6:L661-L663,constraint,restricting Beta to lexicon-anchored tokens; anything else goes to review,P1,agent,,Open
+CP-§6-14,CURRICULUM,§6:L664,metric,Tier C Expert-reviewed target ≤ 1.5%,P1,agent,,Open
+CP-§6-06,CURRICULUM,§6:L665-L670,constraint,Waves 2–4 Varies Fewer sources No Beta below L0 unless a lexicon,P2,agent,,Open
+CP-§6-07,CURRICULUM,§6:L669-L670,constraint,"L0 ""Taste"" must be Expert-reviewed",P2,agent,,Open
+CP-§6-15,CURRICULUM,§6:L670,metric,Waves 2–4 Expert-reviewed target ≤ 2%,P2,agent,,Open
+CP-§6-17,CURRICULUM,§6:L673-L679,risk,"Tone marks (yo, ig; Hausa pedagogical marks) LLMs and restorers are unreliable",P1,agent,,Open
+CP-§6-18,CURRICULUM,§6:L677-L679,constraint,Lexicon-anchored only; three-way agreement; linguist for every unmatched token,P1,agent,,Open
+CP-§6-19,CURRICULUM,§6:L679,constraint,tone teaching uses sourced minimal pairs only,P1,agent,,Open
+CP-§6-20,CURRICULUM,§6:L680-L683,risk,Idioms and proverbs Plausible fakes are easy to generate,P1,agent,,Open
+CP-§6-21,CURRICULUM,§6:L682-L683,constraint,"Only from cited collections; linguist review; ""Expert-reviewed"" minimum",P1,agent,,Open
+CP-§6-22,CURRICULUM,§6:L684-L689,risk,"Culture, history and religion claims Hallucinated or reductive claims, and sensitivity",P1,agent,,Open
+CP-§6-23,CURRICULUM,§6:L687-L689,constraint,Claim-level citations to reputable sources; cultural reviewer; no Beta,P1,agent,,Open
+CP-§6-24,CURRICULUM,§6:L690-L691,risk,Honorifics and register Social harm (addressing an elder with ọ),P1,agent,,Open
+CP-§6-25,CURRICULUM,§6:L691,constraint,Respect-sensitive units are Expert-reviewed only,P1,agent,,Open
+CP-§6-26,CURRICULUM,§6:L692-L696,risk,Pidgin authenticity Models write English with Pidgin spelling,P1,agent,,Open
+CP-§6-27,CURRICULUM,§6:L693-L696,constraint,"Corpus-anchored phrasing (UD-Naija, NSC); anglicisation detector; early native validation priority",P1,agent,,Open
+CP-§6-28,CURRICULUM,§6:L697-L700,risk,"Dialect mixing (Igbo, Yoruba) Models blend dialects",P1,agent,,Open
+CP-§6-29,CURRICULUM,§6:L698-L700,constraint,Declared standard in the language kit; dialect tag per item,P1,agent,,Open
+CP-§6-30,CURRICULUM,§6:L700,constraint,variants only from sourced entries,P1,agent,,Open
+CP-§6-31,CURRICULUM,§6:L701,risk,Children's content Higher duty of care Expert-reviewed minimum,P1,agent,,Open
+CP-§7-01,CURRICULUM,§7:L703-L705,constraint,Every item has audio. Interim audio is synthetic and labelled,P1,agent,,Open
+CP-§7-02,CURRICULUM,§7:L704-L705,constraint,except where licensed human audio already exists for that exact text.,P1,external,,Open
+CP-§7-03,CURRICULUM,§7:L705,requirement,Native recordings replace TTS in order of exposure.,P1,external,,Open
+CP-§7-09,CURRICULUM,§7:L706-L709,external,companion: LINGAFRIQ_AI_MODEL_STACK.md §3.5 (interim TTS),P1,Tope,,Open
+CP-§7-yo-01,CURRICULUM,§7:L707-L710,requirement,Yoruba Intron TTS (by quote) → Spitch fallback,P1,agent,,Open
+CP-§7-yo-08,CURRICULUM,§7:L707-L709,external,Intron TTS (by quote),P1,external,,Open
+CP-§7-yo-02,CURRICULUM,§7:L708-L709,constraint,always send fully tone-marked text,P1,agent,,Open
+CP-§7-yo-03,CURRICULUM,§7:L710-L713,requirement,"FSI Yoruba tapes (PD, dated quality) for tone drills",P1,agent,,Open
+CP-§7-yo-04,CURRICULUM,§7:L712-L714,requirement,Common Voice and FLEURS for their own sentences,P1,agent,,Open
+CP-§7-yo-05,CURRICULUM,§7:L714-L716,requirement,(1) ASR round-trip: synthesise → Intron ASR → text match,P1,agent,,Open
+CP-§7-yo-06,CURRICULUM,§7:L716-L718,requirement,(2) F0 contour versus the lexicon tone pattern (automated tone proxy),P1,agent,,Open
+CP-§7-yo-07,CURRICULUM,§7:L718-L719,metric,(3) linguist listen-check of 100 samples,P1,external,,Open
+CP-§7-ig-01,CURRICULUM,§7:L720,requirement,Igbo Intron → Spitch,P1,agent,,Open
+CP-§7-ig-02,CURRICULUM,§7:L720-L721,requirement,"FSI Igbo tapes (PD); Common Voice, FLEURS",P1,agent,,Open
+CP-§7-ig-03,CURRICULUM,§7:L721-L722,requirement,Same; Igbo tone proxy is weaker,P1,agent,,Open
+CP-§7-ig-04,CURRICULUM,§7:L722,metric,so the linguist sample rises to 200,P1,external,,Open
+CP-§7-ha-01,CURRICULUM,§7:L727-L729,requirement,Hausa Intron → Spitch / ElevenLabs v3,P1,agent,,Open
+CP-§7-ha-02,CURRICULUM,§7:L728-L729,requirement,"FSI Hausa (PD); Common Voice, FLEURS",P1,agent,,Open
+CP-§7-ha-03,CURRICULUM,§7:L730,requirement,Same,P1,agent,,Open
+CP-§7-pcm-01,CURRICULUM,§7:L731-L732,requirement,Nigerian Pidgin Intron → Spitch,P1,agent,,Open
+CP-§7-pcm-02,CURRICULUM,§7:L732,informational,Licensed human audio usable now: n/a,P1,agent,,Open
+CP-§7-pcm-03,CURRICULUM,§7:L732-L733,requirement,ASR round-trip + linguist listen,P1,agent,,Open
+CP-§7-sw-01,CURRICULUM,§7:L734-L736,decision,Blind-test Intron vs Google Chirp 3 HD sw-KE vs Azure sw-KE,P1,Tope,,Open
+CP-§7-sw-02,CURRICULUM,§7:L736-L737,requirement,"Common Voice (1,065 h), FLEURS",P1,agent,,Open
+CP-§7-sw-03,CURRICULUM,§7:L737,requirement,ASR round-trip + listen,P1,agent,,Open
+CP-§7-zu-01,CURRICULUM,§7:L738-L739,requirement,isiZulu Azure zu-ZA (Thando/Themba),P1,agent,,Open
+CP-§7-zu-02,CURRICULUM,§7:L739-L740,requirement,"FLEURS, WAXAL (check subset licence)",P1,external,,Open
+CP-§7-zu-03,CURRICULUM,§7:L740-L741,requirement,ASR round-trip (Intron/Lelapa) + listen; check clicks,P1,agent,,Open
+CP-§7-xh-01,CURRICULUM,§7:L742-L746,informational,isiXhosa No commercial voice found.,P1,agent,,Open
+CP-§7-xh-02,CURRICULUM,§7:L743-L744,requirement,Option A: text plus FLEURS/WAXAL audio where sentences match.,P1,agent,,Open
+CP-§7-xh-03,CURRICULUM,§7:L744-L746,decision,Option B (recommended): commission a custom voice now,P1,Tope,,Open
+CP-§7-xh-04,CURRICULUM,§7:L745-L746,metric,"2 actors, 5–10 h each, buy-out",P1,external,,Open
+CP-§7-xh-05,CURRICULUM,§7:L747-L748,requirement,"FLEURS, WAXAL Listen-check; clicks",P1,agent,,Open
+CP-§7-04,CURRICULUM,§7:L749-L750,requirement,"As soon as native validators are contracted, record the top 2,000 most-exposed",P1,external,,Open
+CP-§7-05,CURRICULUM,§7:L749-L751,metric,"top 2,000 most-exposed items per language first (A1 lexicon and dialogues)",P1,external,,Open
+CP-§7-06,CURRICULUM,§7:L752,requirement,Then record by exposure rank.,P2,external,,Open
+CP-§7-07,CURRICULUM,§7:L752-L753,requirement,"Each replacement bumps the item version and removes the ""Synthetic voice"" tag.",P1,agent,,Open
+CP-§7-08,CURRICULUM,§7:L753,requirement,"Keep TTS for dynamic content (Polie, personas) permanently, labelled.",P1,agent,,Open
+CP-§9.2-01,CURRICULUM,§9.2:L792-L797,requirement,0. Foundations Weeks 0–4 Licence register signed by counsel,P1,agent,,Open
+CP-§9.2-06,CURRICULUM,§9.2:L793-L797,external,"Licence register signed by counsel; licences requested (Oxford, IgboAPI, Zulu dictionary, PanLex",P1,external,,Open
+CP-§9.2-07,CURRICULUM,§9.2:L796-L797,external,"reviewer panels contracted (2 linguists per language, part-time)",P1,external,,Open
+CP-§9.2-08,CURRICULUM,§9.2:L796-L797,requirement,7 language kits; linters; Studio MVP; quarantine and salvage of legacy data,P1,agent,,Open
+CP-§9.2-02,CURRICULUM,§9.2:L798-L803,requirement,1. Stage-1 A1 Beta Weeks 4–12 A1 lexicon (600–800) anchored,P1,agent,,Open
+CP-§9.2-09,CURRICULUM,§9.2:L800-L802,requirement,Beta labels live; weekly blind sampling,P1,agent,,Open
+CP-§9.2-03,CURRICULUM,§9.2:L804-L808,requirement,2. Stage-1 A2 + promotion Weeks 12–24 A2 units,P1,agent,,Open
+CP-§9.2-10,CURRICULUM,§9.2:L806-L808,requirement,A1 high-exposure items promoted to Expert-reviewed; native validators onboard,P1,external,,Open
+CP-§9.2-04,CURRICULUM,§9.2:L809-L812,requirement,3. Stage-1 B1 + Wave 2 L0 Months 6–9 B1 units,P2,agent,,Open
+CP-§9.2-05,CURRICULUM,§9.2:L813-L815,requirement,4. Scale Months 9–24 Wave 2 to A1 Beta; Wave 3 L0;,P2,agent,,Open
+CP-§9.3-01,CURRICULUM,§9.3:L818-L819,requirement,"planning estimates, to measure in Phase 1",P1,agent,,Open
+CP-§9.3-02,CURRICULUM,§9.3:L820,metric,"Machine pipeline: 2,000–4,000 items generated and verified per week",P1,agent,,Open
+CP-§9.3-03,CURRICULUM,§9.3:L821,metric,one part-time linguist (20 h/week),P1,external,,Open
+CP-§9.3-04,CURRICULUM,§9.3:L821-L822,metric,"clears about 1,000–1,500 items/week",P1,external,,Open
+CP-§9.3-05,CURRICULUM,§9.3:L822,metric,"roughly 60–150 items/hour across lexicon checks, samples and high-risk items",P1,external,,Open
+CP-§9.3-06,CURRICULUM,§9.3:L823,metric,"Publishable: about 800–1,500 items/week per language.",P1,agent,,Open
+CP-§9.3-07,CURRICULUM,§9.3:L823-L824,metric,"A1 ( ≈ 3,000–4,000 items, including exercises) takes about 3–4 weeks",P1,agent,,Open
+CP-§9.3-08,CURRICULUM,§9.3:L825-L826,metric,"A1–B1 ( ≈ 10,000–12,000 items) takes about 10–14 weeks of review",P1,agent,,Open
+CP-§9.3-09,CURRICULUM,§9.3:L826,metric,The seven run in parallel.,P1,agent,,Open
+CP-§9.4-01,CURRICULUM,§9.4:L830-L832,external,LLM generation + cross-checks + back-translation ( ≈ 10–12k items × ~4,P1,external,,Open
+CP-§9.4-17,CURRICULUM,§9.4:L831,external,companion: LINGAFRIQ_AI_MODEL_STACK.md pricing (AI stack pricing),P1,Tope,,Open
+CP-§9.4-02,CURRICULUM,§9.4:L832,metric,"$500–1,500 $4k–10k",P1,external,,Open
+CP-§9.4-03,CURRICULUM,§9.4:L833,external,Linguist review ( ≈ 150–300 h at $20–40/h local academic rates),P1,external,,Open
+CP-§9.4-04,CURRICULUM,§9.4:L833,metric,$3k–12k $21k–84k,P1,external,,Open
+CP-§9.4-05,CURRICULUM,§9.4:L834,external,"Calibration and blind sampling (ongoing, ≈ 200 items/month)",P1,external,,Open
+CP-§9.4-06,CURRICULUM,§9.4:L834,metric,$100–200/month ≈ $1k/month,P1,external,,Open
+CP-§9.4-07,CURRICULUM,§9.4:L835,external,Interim TTS ( ≈ 1–2 M characters; Azure $16/M chars; Intron by,P1,external,,Open
+CP-§9.4-08,CURRICULUM,§9.4:L840,external,"isiXhosa custom voice (2 actors, buy-out, training)",P1,external,,Open
+CP-§9.4-09,CURRICULUM,§9.4:L840,metric,$10k–25k [quote],P1,external,,Open
+CP-§9.4-10,CURRICULUM,§9.4:L841-L842,external,"Data licences: Oxford datasets, IgboAPI, Zulu dictionary, NaijaVoices waiver",P1,external,,Open
+CP-§9.4-11,CURRICULUM,§9.4:L842,metric,$15k–60k one-off/annual [quotes],P1,external,,Open
+CP-§9.4-12,CURRICULUM,§9.4:L842,external,optional HCS (€15k),P2,external,,Open
+CP-§9.4-13,CURRICULUM,§9.4:L843,external,Reference grammars and dictionaries (print/ebook purchases) $200–600 $2k–4k,P1,external,,Open
+CP-§9.4-14,CURRICULUM,§9.4:L844,external,Curriculum Studio + pipeline engineering n/a 14–20 engineer-weeks,P1,external,,Open
+CP-§9.4-15,CURRICULUM,§9.4:L846-L848,metric,Stage 1 to A1–B1 Expert-reviewed for about $65k–195k all-in content cost,P1,Tope,,Open
+CP-§9.4-16,CURRICULUM,§9.4:L849-L850,metric,Each later language costs about $4k–15k to A1–B1,P2,Tope,,Open

@@ -1,0 +1,90 @@
+charter: v2
+id: P11-015
+kind: build
+title: Define four persona packs pairing figures with languages
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§8.4-13
+- EP-§8.4-14
+- EP-§8.4-15
+- EP-§8.4-16
+- EP-§8.4-17
+- EP-§8.4-18
+depends_on:
+- E-P1-CONTAINMENT
+- P11-001
+- P11-002
+size: S
+difficulty:
+  score: 2
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 0, ambiguity 1, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist:
+- node-backend/src/services/persona/packs.ts
+- lib/ai/personas/personas.dart
+context_anchors:
+- ELEVATION.md#§8.4:L1542-L1544
+acceptance_criteria:
+- id: AC1
+  text: Given the packs Queens of Africa, Scholars of Timbuktu, Independence Generation and Writers & Thinkers, when loaded,
+    then each lists its figures and the languages each figure spoke.
+- id: AC2
+  text: Given Thomas Mofolo, Ahmed Baba and Cheikh Anta Diop, when the pack config is validated, then each is assigned to
+    a pack with a dossier status of authored or planned.
+- id: AC3
+  text: Given a figure with no dossier, when the pack renders, then the figure shows a visible Coming-soon state and cannot
+    be started.
+test_plan:
+  unit:
+  - pack schema
+  - planned-state gating
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - available
+  - coming_soon
+  copy_keys:
+  - persona.pack.queens
+  - persona.pack.timbuktu
+  - persona.pack.independence
+  - persona.pack.writers
+  tokens:
+  - card.surface
+  motion_tier: product
+  a11y:
+  - pack and language announced
+  goldens:
+  - pack_card
+tags:
+- enables_persona
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

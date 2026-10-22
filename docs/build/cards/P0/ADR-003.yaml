@@ -1,0 +1,65 @@
+charter: v2
+id: ADR-003
+kind: adr
+title: 'ADR: L1 audio readiness definition and Xhosa voice path'
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- D3
+- CP-§0-24
+depends_on:
+- E-P0-INTAKE
+- ADR-001
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T4
+  tester: T0
+  reviewer: T4
+  justification: ADR authored by the Orchestrator tier; conflict resolution already signed
+token_budget: 25000
+file_allowlist:
+- docs/build/adr/ADR-003.md
+- docs/build/DECISIONS.md
+- docs/build/CONFLICTS.md
+context_anchors:
+- CURRICULUM.md#§10:L859
+- docs/build/CONFLICTS.md#C3
+acceptance_criteria:
+- id: AC1
+  text: Given conflict C3, when ADR-003 is written, then L1 readiness is defined as every item having audio that is human-recorded
+    or gated labelled TTS
+- id: AC2
+  text: Given the Elevation "native audio for every item" wording, when the ADR is read, then it moves to the Native-verified
+    promotion criterion (G6/G7) and the TTS replacement plan
+- id: AC3
+  text: Given tonal languages (Yoruba, Igbo, Hausa), when TTS is considered, then TTS ships only after the tone-accuracy gate
+- id: AC4
+  text: Given isiXhosa, when D3 is recorded, then the custom voice is commissioned now with matched corpus audio as the interim
+    option, owned by EXT-12
+- id: AC5
+  text: Given synthetic audio, when played, then the "Synthetic voice" tag from ADR-001 applies without exception
+user_facing: false
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- docs/build/adr/ADR-003.md
+- DECISIONS.md line
+- CONFLICTS.md row closed
+risks: []
+gate: G0
+external_blockers:
+- EXT-12
+status: Ready
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - prime/diagram-design

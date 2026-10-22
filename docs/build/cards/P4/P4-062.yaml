@@ -1,0 +1,65 @@
+charter: v2
+id: P4-062
+kind: build
+title: Run NaijaML restorer as tone check for Yoruba
+phase: P4
+epic: E-P4-PIPELINE
+req_ids:
+- CP-§3.1-23
+depends_on:
+- P4-061
+size: S
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1, depth 1, size 0'
+token_budget: 25000
+file_allowlist:
+- tools/content_engine/pipeline/restorer.py
+- tools/content_engine/tests/test_restorer.py
+context_anchors:
+- CURRICULUM.md#§3.1:L494-L496
+acceptance_criteria:
+- id: AC1
+  text: Given a Yoruba item, when the NaijaML restorer runs, then its output is passed to the three-way agreement as an independent
+    form
+- id: AC2
+  text: Given the restorer is unavailable, when running Yoruba, then the item is marked RESTORER_UNAVAILABLE and routes to
+    a linguist
+test_plan:
+  unit:
+  - happy path
+  - typed error path
+  integration:
+  - stage contract with fixtures
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-01
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

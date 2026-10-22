@@ -1,0 +1,69 @@
+charter: v2
+id: P2-026
+kind: build
+title: Add Google and Apple sign-in
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.1-06
+depends_on:
+- E-P1-CONTAINMENT
+- P2-024
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T3
+  justification: 'score 7: blast 3, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/controllers/auth.controller.ts
+- node-backend/src/middleware/auth.middleware.ts
+- node-backend/src/services/oidc.service.ts
+- lib/services/auth/social_sign_in_service.dart
+context_anchors:
+- ELEVATION.md#§13.1:L1851
+acceptance_criteria:
+- id: AC1
+  text: Given a Google or Apple identity token, when verified server-side, then an account is created or linked and a token
+    pair issued
+- id: AC2
+  text: Given an invalid audience, issuer or expired token, when presented, then login fails with a typed 401
+- id: AC3
+  text: Given an existing email account, when the same verified email signs in via a provider, then accounts link only after
+    email verification
+test_plan:
+  unit:
+  - claim validation
+  integration: []
+  security:
+  - audience and nonce checks
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

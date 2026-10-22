@@ -1,0 +1,71 @@
+charter: v2
+id: P4-010
+kind: build
+title: Enforce non-commercial exclusion rule and exclusion table
+phase: P4
+epic: E-P4-LICENCES
+req_ids:
+- CP-§2.1-06
+- CP-§2.1-07
+depends_on:
+- P4-001
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- tools/content_engine/licences/exclusions.yaml
+- tools/content_engine/linters/exclusion_enforce.py
+- tools/content_engine/tests/test_exclusion_enforce.py
+context_anchors:
+- CURRICULUM.md#§2.1:L114-L116
+acceptance_criteria:
+- id: AC1
+  text: Given a source with an NC licence, when it has no written commercial licence recorded, then status is excluded and
+    every allowed use is false
+- id: AC2
+  text: Given an excluded source id, when it appears in lexicon, corpus, training or evidence manifests, then CI fails with
+    EXCLUDED_SOURCE_USED
+- id: AC3
+  text: Given a commercial licence is added with a document reference, when counsel confirms, then the exclusion lifts only
+    through a reviewed change to the exclusion table
+test_plan:
+  unit:
+  - NC without licence excluded
+  - manifest scan finds excluded id
+  integration:
+  - CI blocks merge
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-03
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

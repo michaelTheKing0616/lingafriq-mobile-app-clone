@@ -1,0 +1,85 @@
+charter: v2
+id: P1-022
+kind: build
+title: Hide social surfaces for under-18 and unknown age in app
+phase: P1
+epic: E-P1-MINORS
+req_ids:
+- P0-10
+- RM-P0-05
+depends_on:
+- E-P0-INTAKE
+- P1-021
+size: S
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T4
+  justification: 'score 4; blast 2; gate-critical (security / child safety / legal / design direction): Fable reviews'
+token_budget: 25000
+file_allowlist:
+- lib/screens/home_screen.dart
+- lib/providers/age_policy_provider.dart
+- lib/screens/chat/chat_list_screen.dart
+context_anchors:
+- ELEVATION.md#§1:L195-L206
+- ELEVATION.md#§16.1:L2033-L2035
+acceptance_criteria:
+- id: AC1
+  text: Given a user with ageBand under-18 or unknown, when the app renders navigation, then DMs, calls, snaps and the public
+    feed entries are absent
+- id: AC2
+  text: Given a restricted user deep-linking to a social route, when navigated, then a restricted-surface screen explains
+    why and offers the learning home
+- id: AC3
+  text: Given the server returns 403 age_restricted, when the client receives it, then it shows the same explanation and never
+    a generic crash
+test_plan:
+  unit:
+  - policy provider
+  integration:
+  - widget tests per band
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - restricted screen semantics
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - restricted-explainer
+  copy_keys:
+  - age.restricted.title
+  - age.restricted.body
+  tokens:
+  - design-system info tokens
+  motion_tier: product
+  a11y:
+  - heading semantics
+  - back action labelled
+  goldens:
+  - age_restricted
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G1
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

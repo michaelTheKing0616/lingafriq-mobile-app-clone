@@ -1,0 +1,227 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+EP-§17-01,ELEVATION,§17:L2163,constraint,Tope's rule: no feature is lost or cut.,P1,agent,,Open
+EP-§17-02,ELEVATION,§17:L2163-L2164,informational,"about 125 named routes (my_app.dart:278-627), a 35-item drawer",P1,agent,,Open
+EP-§17-03,ELEVATION,§17:L2166-L2167,requirement,"gives every feature a home, a reason to appear, and a level",P1,agent,,Open
+EP-§17.1-01,ELEVATION,§17.1:L2169,decision,Five tabs + Me + three global tools.,P1,agent,,Open
+EP-§17.1-02,ELEVATION,§17.1:L2171-L2174,requirement,"Today (tab 1) One 10-minute plan: due reviews, next lesson,",P1,agent,,Open
+EP-§17.1-03,ELEVATION,§17.1:L2171,metric,One 10-minute plan,P1,agent,,Open
+EP-§17.1-04,ELEVATION,§17.1:L2175-L2182,requirement,"Learn (tab 2) The Path (units by CEFR level), lessons, Words &",P1,agent,,Open
+EP-§17.1-05,ELEVATION,§17.1:L2183-L2189,requirement,"Speak (tab 3) Polie (all tutor modes as chips), Scenarios,",P1,agent,,Open
+EP-§17.1-06,ELEVATION,§17.1:L2190-L2194,requirement,Play (tab 4) The Arcade: every game on skill shelves (Tone &,P1,agent,,Open
+EP-§17.1-07,ELEVATION,§17.1:L2195-L2201,requirement,"Village (tab 5) Map of places, Circles (tribes), Square (feed,",P1,agent,,Open
+EP-§17.1-08,ELEVATION,§17.1:L2202-L2206,requirement,"Me (avatar, top-left) Profile, avatar wardrobe, Progress, Achievements,",P1,agent,,Open
+EP-§17.1-09,ELEVATION,§17.1:L2207-L2212,requirement,"Search (top bar, global) Words ( → Word Card / Living Dictionary),",P1,agent,,Open
+EP-§17.1-10,ELEVATION,§17.1:L2213-L2219,requirement,"Lens (top bar camera button, global) Point & Say, Live Translate",P1,agent,,Open
+EP-§17.1-11,ELEVATION,§17.1:L2222-L2228,requirement,"Word Card (long- press any target- language word, anywhere) Meaning, audio (dialects),",P1,agent,,Open
+EP-§17.1-12,ELEVATION,§17.1:L2229,constraint,Nothing is lost when the drawer goes.,P1,agent,,Open
+EP-§17.1-13,ELEVATION,§17.1:L2229,requirement,The drawer is replaced by Me → All features:,P1,agent,,Open
+EP-§17.1-14,ELEVATION,§17.1:L2229-L2230,requirement,"an A–Z, searchable directory of every feature in §18, grouped by hub,",P1,agent,,Open
+EP-§17.1-15,ELEVATION,§17.1:L2230,requirement,"with locked ones showing ""unlocks at..."" and a preview.",P1,agent,,Open
+EP-§17.1-16,ELEVATION,§17.1:L2231,requirement,Global Search also finds features by name,P1,agent,,Open
+EP-§17.2-01,ELEVATION,§17.2:L2234,requirement,Today,P1,agent,,Open
+EP-§17.2-02,ELEVATION,§17.2:L2235,requirement,Daily plan,P1,agent,,Open
+EP-§17.2-03,ELEVATION,§17.2:L2236,requirement,Daily Challenges,P1,agent,,Open
+EP-§17.2-04,ELEVATION,§17.2:L2237,requirement,Quests,P1,agent,,Open
+EP-§17.2-05,ELEVATION,§17.2:L2238,requirement,Events & Festivals,P1,agent,,Open
+EP-§17.2-06,ELEVATION,§17.2:L2239,requirement,Streaks,P1,agent,,Open
+EP-§17.2-07,ELEVATION,§17.2:L2240,requirement,Learn,P1,agent,,Open
+EP-§17.2-08,ELEVATION,§17.2:L2241,requirement,Path & Lessons,P1,agent,,Open
+EP-§17.2-09,ELEVATION,§17.2:L2242,requirement,Lesson Recap,P1,agent,,Open
+EP-§17.2-10,ELEVATION,§17.2:L2243,requirement,Words & Review,P1,agent,,Open
+EP-§17.2-11,ELEVATION,§17.2:L2244,requirement,Review Rush,P1,agent,,Open
+EP-§17.2-12,ELEVATION,§17.2:L2245-L2246,requirement,Grammar · Phrase DNA,P1,agent,,Open
+EP-§17.2-13,ELEVATION,§17.2:L2247,requirement,Listening · Writing,P1,agent,,Open
+EP-§17.2-14,ELEVATION,§17.2:L2248,requirement,Tone Gym,P1,agent,,Open
+EP-§17.2-15,ELEVATION,§17.2:L2249,requirement,Culture shelf,P1,agent,,Open
+EP-§17.2-16,ELEVATION,§17.2:L2250,requirement,Passport · Downloads,P1,agent,,Open
+EP-§17.2-17,ELEVATION,§17.2:L2251,requirement,Speak,P1,agent,,Open
+EP-§17.2-18,ELEVATION,§17.2:L2252,requirement,Polie + 6 tutor modes,P1,agent,,Open
+EP-§17.2-19,ELEVATION,§17.2:L2253,requirement,Scenarios,P1,agent,,Open
+EP-§17.2-20,ELEVATION,§17.2:L2254,requirement,Personas & Missions,P1,agent,,Open
+EP-§17.2-21,ELEVATION,§17.2:L2255,requirement,Shadowing,P1,agent,,Open
+EP-§17.2-22,ELEVATION,§17.2:L2256-L2257,requirement,Code-Switch / Respect,P1,agent,,Open
+EP-§17.2-23,ELEVATION,§17.2:L2258,requirement,Speak Missions,P1,agent,,Open
+EP-§17.2-24,ELEVATION,§17.2:L2259,requirement,Coach insights,P1,agent,,Open
+EP-§17.2-25,ELEVATION,§17.2:L2260,requirement,Play,P1,agent,,Open
+EP-§17.2-26,ELEVATION,§17.2:L2261,requirement,Arcade shelves:,P1,agent,,Open
+EP-§17.2-27,ELEVATION,§17.2:L2262,requirement,Tone & Sound,P1,agent,,Open
+EP-§17.2-28,ELEVATION,§17.2:L2263,requirement,Words · Grammar,P1,agent,,Open
+EP-§17.2-29,ELEVATION,§17.2:L2264,requirement,Speaking · Culture,P1,agent,,Open
+EP-§17.2-30,ELEVATION,§17.2:L2265,requirement,Traditional,P1,agent,,Open
+EP-§17.2-31,ELEVATION,§17.2:L2266,requirement,Multiplayer,P1,agent,,Open
+EP-§17.2-32,ELEVATION,§17.2:L2267,requirement,Tone Forge,P1,agent,,Open
+EP-§17.2-33,ELEVATION,§17.2:L2268,requirement,Village,P1,agent,,Open
+EP-§17.2-34,ELEVATION,§17.2:L2269,requirement,Village map,P1,agent,,Open
+EP-§17.2-35,ELEVATION,§17.2:L2270,requirement,Circles · Square,P1,agent,,Open
+EP-§17.2-36,ELEVATION,§17.2:L2271,requirement,Chats · Status,P1,agent,,Open
+EP-§17.2-37,ELEVATION,§17.2:L2272,requirement,Clips · Radio,P1,agent,,Open
+EP-§17.2-38,ELEVATION,§17.2:L2273,requirement,School · Elder Hut,P1,agent,,Open
+EP-§17.2-39,ELEVATION,§17.2:L2274,requirement,Corrections,P1,agent,,Open
+EP-§17.2-40,ELEVATION,§17.2:L2275,requirement,Create · Verify,P1,agent,,Open
+EP-§17.2-41,ELEVATION,§17.2:L2276,requirement,Me,P1,agent,,Open
+EP-§17.2-42,ELEVATION,§17.2:L2277,requirement,Profile & avatar,P1,agent,,Open
+EP-§17.2-43,ELEVATION,§17.2:L2278,requirement,Progress,P1,agent,,Open
+EP-§17.2-44,ELEVATION,§17.2:L2279,requirement,Achievements,P1,agent,,Open
+EP-§17.2-45,ELEVATION,§17.2:L2280,requirement,Leagues · Family,P1,agent,,Open
+EP-§17.2-46,ELEVATION,§17.2:L2281,requirement,Plus · Settings,P1,agent,,Open
+EP-§17.2-47,ELEVATION,§17.2:L2282,requirement,All features,P1,agent,,Open
+EP-§17.2-48,ELEVATION,§17.2:L2283,requirement,About,P1,agent,,Open
+EP-§17.2-49,ELEVATION,§17.2:L2284,requirement,"Global tools, available on every tab:",P1,agent,,Open
+EP-§17.2-50,ELEVATION,§17.2:L2285,requirement,Lens camera,P1,agent,,Open
+EP-§17.2-51,ELEVATION,§17.2:L2286,requirement,Point & Say,P1,agent,,Open
+EP-§17.2-52,ELEVATION,§17.2:L2287,requirement,Conversation Bridge,P1,agent,,Open
+EP-§17.2-53,ELEVATION,§17.2:L2288,requirement,Import Media,P1,agent,,Open
+EP-§17.2-54,ELEVATION,§17.2:L2289,requirement,Living Dictionary,P1,agent,,Open
+EP-§17.2-55,ELEVATION,§17.2:L2289,requirement,Search,P1,agent,,Open
+EP-§17.2-56,ELEVATION,§17.2:L2290,requirement,Word Card,P1,agent,,Open
+EP-§17.2-57,ELEVATION,§17.2:L2291,requirement,long-press any word,P1,agent,,Open
+EP-§17.2-58,ELEVATION,§17.2:L2292,requirement,My Words & Review,P1,agent,,Open
+EP-§17.3-01,ELEVATION,§17.3:L2295,requirement,"Learner finishes a lesson Lesson Recap → ""say it"" → a matching",P1,agent,,Open
+EP-§17.3-02,ELEVATION,§17.3:L2296-L2298,requirement,"Long-press → Word Card → Living Dictionary, save, practise",P1,agent,,Open
+EP-§17.3-03,ELEVATION,§17.3:L2299,requirement,Camera button or a lesson about objects Lens → Point & Say;,P1,agent,,Open
+EP-§17.3-04,ELEVATION,§17.3:L2300,requirement,Learner struggles with tones Tone Gym drill in Today; Tone Forge,P1,agent,,Open
+EP-§17.3-05,ELEVATION,§17.3:L2301,requirement,Learner reaches a scenario unit (market) Scenario Theatre → Market Haggle game,P1,agent,,Open
+EP-§17.3-06,ELEVATION,§17.3:L2302,requirement,"Weekend Circle Clash, Village Radio show, Festival event",P1,agent,,Open
+EP-§17.3-07,ELEVATION,§17.3:L2305,requirement,"Learner is A2+ and active ""Try Native Corrections"", ""Post a Status",P1,agent,,Open
+EP-§17.3-08,ELEVATION,§17.3:L2306-L2307,requirement,Inactivity One honest reminder with a 2-minute session (not 12 pushes,P1,agent,,Open
+EP-§17.3-09,ELEVATION,§17.3:L2306,metric,One honest reminder with a 2-minute session,P1,agent,,Open
+EP-§17.4-01,ELEVATION,§17.4:L2309,requirement,"Adults are never hard-blocked: a locked feature shows ""unlocks at...""",P1,agent,,Open
+EP-§17.4-02,ELEVATION,§17.4:L2309-L2310,requirement,"with a Preview and an ""Open anyway"" option.",P1,agent,,Open
+EP-§17.4-03,ELEVATION,§17.4:L2310,constraint,"The exception is safety gates for minors (§13), which are enforced",P1,agent,,Open
+EP-§17.4-04,ELEVATION,§17.4:L2312-L2314,requirement,"Day 1 (no account needed) Today, first unit, Polie basic, Lens",P1,agent,,Open
+EP-§17.4-05,ELEVATION,§17.4:L2314,metric,"3 games, Word Card, read-only Magazine and Events",P1,agent,,Open
+EP-§17.4-06,ELEVATION,§17.4:L2315,requirement,"Account created Streaks, all games, Circles (join), Square (read), Global handle",P1,agent,,Open
+EP-§17.4-07,ELEVATION,§17.4:L2316,requirement,"Week 1 / A1 unit 3 Personas, Scenarios, Chats (adults), Status, Practice",P1,agent,,Open
+EP-§17.4-08,ELEVATION,§17.4:L2317,requirement,"A2 Clips, Native Corrections (post), Passport, Code-Switch and Respect coaches, Radio (speak)",P1,agent,,Open
+EP-§17.4-09,ELEVATION,§17.4:L2318,requirement,"B1 Create (UGC), Contribute/Verify (native speakers at any level), host rooms, mentoring",P1,agent,,Open
+EP-§17.4-10,ELEVATION,§17.4:L2319,constraint,Under 18 Circles only with guardian-approved contacts,P1,agent,,Open
+EP-§17.4-11,ELEVATION,§17.4:L2319,constraint,no public feed posting,P1,agent,,Open
+EP-§17.4-12,ELEVATION,§17.4:L2319,constraint,no DMs with adults,P1,agent,,Open
+EP-§17.4-13,ELEVATION,§17.4:L2319,constraint,no calls,P1,agent,,Open
+EP-§17.4-14,ELEVATION,§17.4:L2320,requirement,School and games fully open,P1,agent,,Open
+EP-§17.5-01,ELEVATION,§17.5:L2321,constraint,"Re-audit of unreachable code: revive, consolidate, never cut",P1,agent,,Open
+EP-§17.5-02,ELEVATION,§17.5:L2322,informational,"The earlier ""183 unused files"" figure counted Dart files that no",P1,agent,,Open
+EP-§17.5-03,ELEVATION,§17.5:L2322-L2323,informational,"A stricter reachability scan from lib/main.dart finds 330 files unreachable,",P1,agent,,Open
+EP-§17.5-04,ELEVATION,§17.5:L2323,metric,88 of them screens,P1,agent,,Open
+EP-§17.5-05,ELEVATION,§17.5:L2325,metric,"Revive (25 screen-level features, wired into the new IA)",P1,agent,,Open
+REV-01,ELEVATION,§17.5:L2325,requirement,Tone Forge,P1,agent,,Open
+REV-02,ELEVATION,§17.5:L2325,requirement,Conversation Analytics,P1,agent,,Open
+REV-03,ELEVATION,§17.5:L2326,requirement,Review Dashboard and vocabulary dashboard (Words & Review),P1,agent,,Open
+REV-04,ELEVATION,§17.5:L2326,requirement,Roleplay Completion Summary,P1,agent,,Open
+REV-05,ELEVATION,§17.5:L2327,requirement,Roleplay Progress Dashboard,P1,agent,,Open
+REV-06,ELEVATION,§17.5:L2327,requirement,Chat Search,P1,agent,,Open
+REV-07,ELEVATION,§17.5:L2327,requirement,Contact Info (block/report),P1,agent,,Open
+REV-08,ELEVATION,§17.5:L2327,requirement,Moderation Tools,P1,agent,,Open
+REV-09,ELEVATION,§17.5:L2327-L2328,requirement,Chat Welcome & Guidelines,P1,agent,,Open
+REV-10,ELEVATION,§17.5:L2328,requirement,Lesson Item Verification,P1,agent,,Open
+REV-11,ELEVATION,§17.5:L2328,requirement,Native Speaker Contribution,P1,agent,,Open
+REV-12,ELEVATION,§17.5:L2328-L2329,requirement,Game Mastery Results,P1,agent,,Open
+REV-13,ELEVATION,§17.5:L2329,requirement,Teacher Classroom Dashboard,P1,agent,,Open
+REV-14,ELEVATION,§17.5:L2329,requirement,Daily Challenges,P1,agent,,Open
+REV-15,ELEVATION,§17.5:L2329,requirement,help preloaders ×4 → first-use tips,P1,agent,,Open
+REV-16,ELEVATION,§17.5:L2329-L2330,requirement,Lesson Recap,P1,agent,,Open
+REV-17,ELEVATION,§17.5:L2330,requirement,Offline Downloads,P1,agent,,Open
+REV-18,ELEVATION,§17.5:L2330,requirement,Global Handle edit,P1,agent,,Open
+REV-19,ELEVATION,§17.5:L2330,requirement,Review Rush (gamified review),P1,agent,,Open
+REV-20,ELEVATION,§17.5:L2330-L2331,requirement,Social Audio Following,P1,agent,,Open
+REV-21,ELEVATION,§17.5:L2331,requirement,Scheduled Sessions,P1,agent,,Open
+REV-22,ELEVATION,§17.5:L2331,requirement,Family/Guardian Dashboard,P1,agent,,Open
+REV-23,ELEVATION,§17.5:L2331,requirement,Subscription (no live paywall exists today),P1,agent,,Open
+REV-24,ELEVATION,§17.5:L2331-L2332,requirement,About Us,P1,agent,,Open
+REV-25,ELEVATION,§17.5:L2332,requirement,Shadowing,P1,agent,,Open
+EP-§17.5-06,ELEVATION,§17.5:L2333,requirement,Consolidate (an older or parallel version of a feature that survives;,P1,agent,,Open
+CON-01,ELEVATION,§17.5:L2333-L2334,requirement,5 AI chat variants → Polie workspace,P1,agent,,Open
+CON-02,ELEVATION,§17.5:L2334,requirement,4 classroom variants → live classroom,P1,agent,,Open
+CON-03,ELEVATION,§17.5:L2334-L2335,requirement,placement quiz → unified onboarding (Kijiji's village story kept),P1,agent,,Open
+CON-04,ELEVATION,§17.5:L2335-L2336,requirement,"game templates, universal loading/game screens, start guide and victory results → GameKit",P1,agent,,Open
+CON-05,ELEVATION,§17.5:L2336-L2337,requirement,games/proverb_unlocker GameKit rewrite replaces the live random-logic version,P1,agent,,Open
+CON-06,ELEVATION,§17.5:L2337-L2338,requirement,"translation, practice and UGC ""enhanced"" variants → their live counterparts",P1,agent,,Open
+EP-§17.5-07,ELEVATION,§17.5:L2340,informational,"Developer artefacts (not features, so nothing user-facing is lost):",P1,agent,,Open
+DEV-01,ELEVATION,§17.5:L2341,requirement,examples/errorhandler_integration_example.dart,P1,agent,,Open
+DEV-02,ELEVATION,§17.5:L2341,requirement,examples/performance_utilities_example.dart,P1,agent,,Open
+DEV-03,ELEVATION,§17.5:L2342,requirement,ai_chat/polie_tsx_flutter_mapping.dart,P1,agent,,Open
+EP-§17.5-08,ELEVATION,§17.5:L2342,requirement,Move them to a dev/ folder outside the app build.,P1,agent,,Open
+EP-§17.6-01,ELEVATION,§17.6:L2344-L2345,informational,"Point the camera at an object or a sign, learn the word",P1,agent,,Open
+EP-§17.6-02,ELEVATION,§17.6:L2346-L2347,informational,"screens/ar/point_and_say_screen.dart (982 lines), route point-and-say",P1,agent,,Open
+EP-§17.6-03,ELEVATION,§17.6:L2349-L2350,informational,"Object labels come from on-device google_mlkit_object_detection, best effort",P1,agent,,Open
+EP-§17.6-04,ELEVATION,§17.6:L2350-L2351,informational,Text comes from ML Kit's Latin TextRecognizer via media_import_service.dart:89-93.,P1,agent,,Open
+EP-§17.6-05,ELEVATION,§17.6:L2352,informational,English labels are translated through hybrid_polie/translation_service.dart.,P1,agent,,Open
+EP-§17.6-06,ELEVATION,§17.6:L2353,informational,"Hugging Face NLLB-200 (:32, CC-BY-NC, not licensed for commercial use, P0-24)",P1,agent,,Open
+EP-§17.6-07,ELEVATION,§17.6:L2353-L2354,informational,the free MyMemory API (:280-290),P1,agent,,Open
+EP-§17.6-08,ELEVATION,§17.6:L2355-L2356,informational,PointAndSayQueueService (153 lines; an offline queue with optional tone evaluation,P1,agent,,Open
+EP-§17.6-09,ELEVATION,§17.6:L2358-L2359,informational,"The target language is typed as free text (""Enter a language",P1,agent,,Open
+EP-§17.6-10,ELEVATION,§17.6:L2360-L2361,informational,"ML Kit's generic labels are English, coarse (""Food"", ""Home good"") and",P1,agent,,Open
+EP-§17.6-11,ELEVATION,§17.6:L2362-L2363,informational,"Translation is word-level with a non-commercial model and an anonymous free API,",P1,agent,,Open
+EP-§17.6-12,ELEVATION,§17.6:L2364,informational,"There's no native audio for the word, so the learner imitates nothing.",P1,agent,,Open
+EP-§17.6-13,ELEVATION,§17.6:L2365,informational,The scoring path depends on a placeholder tone endpoint (§1 P0-18/19).,P1,agent,,Open
+EP-§17.6-14,ELEVATION,§17.6:L2366,informational,Latin-only OCR mangles stacked diacritics [Unverified on device] and cannot,P1,agent,,Open
+EP-§17.6-15,ELEVATION,§17.6:L2367,decision,"Elevation: ""Lens"".",P1,Tope,,Open
+EP-§17.6-16,ELEVATION,§17.6:L2368-L2371,requirement,"server vision model (multimodal Gemini 3 Flash; AI stack §3.1, with",P1,agent,,Open
+EP-§17.6-17,ELEVATION,§17.6:L2369,external,"companion: AI stack §3.1, with §3.13 for OCR",P1,agent,,Open
+EP-§17.6-18,ELEVATION,§17.6:L2372-L2374,requirement,"Teach. Each tag becomes a Word Card: word with tones, native audio",P1,agent,,Open
+EP-§17.6-19,ELEVATION,§17.6:L2375,requirement,"Say. Hold to speak. Real GOP plus tone scoring (§7.4),",P1,agent,,Open
+EP-§17.6-20,ELEVATION,§17.6:L2376,requirement,Collect. Words go to a personal Lens collection and into FSRS review.,P1,agent,,Open
+EP-§17.6-21,ELEVATION,§17.6:L2376-L2377,metric,"Weekly ""Home Safari"" quests: find 5 kitchen items.",P1,agent,,Open
+EP-§17.6-22,ELEVATION,§17.6:L2378,requirement,Share. Optionally turn the photo into a Clip with the phrase overlay,P1,agent,,Open
+EP-§17.6-23,ELEVATION,§17.6:L2378-L2379,constraint,Faces are blurred before sharing.,P1,agent,,Open
+EP-§17.6-24,ELEVATION,§17.6:L2380,requirement,"Signs and menus. OCR mode translates signs, menus and labels",P1,agent,,Open
+EP-§17.6-25,ELEVATION,§17.6:L2380-L2381,requirement,A diacritic-restoring pass handles stacked tone marks.,P1,agent,,Open
+EP-§17.6-26,ELEVATION,§17.6:L2382,requirement,Offline. An offline pack of the top 300 objects per language,P1,agent,,Open
+EP-§17.6-27,ELEVATION,§17.6:L2382,metric,the top 300 objects per language,P1,agent,,Open
+EP-§17.6-28,ELEVATION,§17.6:L2382-L2383,requirement,The existing queue service syncs scores when back online (after,P1,agent,,Open
+EP-§17.6-29,ELEVATION,§17.6:L2384,constraint,Privacy. Photos are processed then deleted unless saved.,P1,agent,,Open
+EP-§17.6-30,ELEVATION,§17.6:L2384-L2385,constraint,Minors' photos never leave the device without consent.,P1,agent,,Open
+EP-§17.6-31,ELEVATION,§17.6:L2386,requirement,"Full-screen camera with soft rounded boxes that ""breathe"".",P1,agent,,Open
+EP-§17.6-32,ELEVATION,§17.6:L2386-L2387,requirement,Tapping a box flips it into a Word Card,P1,agent,,Open
+EP-§17.6-33,ELEVATION,§17.6:L2387,metric,target word at 28 sp,P1,agent,,Open
+EP-§17.6-34,ELEVATION,§17.6:L2387,requirement,a tone contour line under the syllables,P1,agent,,Open
+EP-§17.6-35,ELEVATION,§17.6:L2387,requirement,a large mic button.,P1,agent,,Open
+EP-§17.6-36,ELEVATION,§17.6:L2388,requirement,"The language comes from the learner profile (no text box), with",P1,agent,,Open
+EP-§17.6-37,ELEVATION,§17.6:L2388-L2389,requirement,Haptics on a successful pronunciation;,P1,agent,,Open
+EP-§17.6-38,ELEVATION,§17.6:L2389,requirement,the avatar appears in the corner to celebrate.,P1,agent,,Open
+EP-§17.6-39,ELEVATION,§17.6:L2389,requirement,A reduced-motion variant is included.,P1,agent,,Open
+EP-§17.6-40,ELEVATION,§17.6:L2390,requirement,The Lens button in the top bar on every tab;,P1,agent,,Open
+EP-§17.6-41,ELEVATION,§17.6:L2390,requirement,"Learn (object lessons: ""find these at home"");",P1,agent,,Open
+EP-§17.6-42,ELEVATION,§17.6:L2390-L2391,requirement,Today (Home Safari challenge);,P1,agent,,Open
+EP-§17.6-43,ELEVATION,§17.6:L2391,requirement,Play (Flashcard Safari uses the same pipeline);,P1,agent,,Open
+EP-§17.6-44,ELEVATION,§17.6:L2391,requirement,"Word Card → ""see it in the wild"".",P1,agent,,Open
+EP-§17.7-01,ELEVATION,§17.7:L2393,informational,"The app's word store, which learners can add to.",P1,agent,,Open
+EP-§17.7-02,ELEVATION,§17.7:L2396-L2397,informational,screens/vocabulary/living_dictionary_screen.dart (620 lines) with,P1,agent,,Open
+EP-§17.7-03,ELEVATION,§17.7:L2397-L2399,informational,"It does GET/POST/DELETE on ApiContract.learningV2.livingDictionaryEntries, caches in SharedPreferences,",P1,agent,,Open
+EP-§17.7-04,ELEVATION,§17.7:L2398-L2399,informational,shows an offline banner (:390),P1,agent,,Open
+EP-§17.7-05,ELEVATION,§17.7:L2400-L2403,informational,"listLivingDictionary queries {userId} and creates LivingLexemeModel entries with that userId,",P1,agent,,Open
+EP-§17.7-06,ELEVATION,§17.7:L2404-L2405,informational,"Admin: a separate CRUD/import exists (routes/admin/livingDictionary.admin.route.ts:13-18,",P1,agent,,Open
+EP-§17.7-07,ELEVATION,§17.7:L2405,informational,User entries have no review status.,P1,agent,,Open
+EP-§17.7-08,ELEVATION,§17.7:L2407,informational,"The name promises a living, shared lexicon; the product is a private",P1,agent,,Open
+EP-§17.7-09,ELEVATION,§17.7:L2408,informational,"Learner-entered words have no verification, so if they were shared they",P1,agent,,Open
+EP-§17.7-10,ELEVATION,§17.7:L2409,informational,"There are no audio, tone, dialect or example fields in the",P1,agent,,Open
+EP-§17.7-11,ELEVATION,§17.7:L2410,informational,"It is not linked from lessons, chat or games, so words have",P1,agent,,Open
+EP-§17.7-12,ELEVATION,§17.7:L2411,informational,The admin lexicon and user entries are separate stores with no,P1,agent,,Open
+EP-§17.7-13,ELEVATION,§17.7:L2412,decision,Elevation: a two-layer living lexicon.,P1,Tope,,Open
+EP-§17.7-14,ELEVATION,§17.7:L2413-L2416,requirement,"Verified Lexicon (shared). Every entry has a lemma with full tone marks,",P1,agent,,Open
+EP-§17.7-15,ELEVATION,§17.7:L2414,metric,2–3 native audio recordings (age and gender spread),P1,agent,,Open
+EP-§17.7-16,ELEVATION,§17.7:L2416,requirement,Each entry carries a status: AI-drafted → native-verified,P1,agent,,Open
+EP-§17.7-17,ELEVATION,§17.7:L2417-L2418,metric,one schema for all 7 Stage-1 languages and then every wave.,P1,agent,,Open
+EP-§17.7-18,ELEVATION,§17.7:L2419-L2420,requirement,"My Words (personal). What the current endpoint already does, kept:",P1,agent,,Open
+EP-§17.7-19,ELEVATION,§17.7:L2420,requirement,Each saved word links to its verified entry when one exists.,P1,agent,,Open
+EP-§17.7-20,ELEVATION,§17.7:L2421-L2422,requirement,Living loop. A learner suggests a word or meaning → it,P1,agent,,Open
+EP-§17.7-21,ELEVATION,§17.7:L2422-L2423,requirement,it is promoted into the Verified Lexicon with credit to the suggester,P1,agent,,Open
+EP-§17.7-22,ELEVATION,§17.7:L2423-L2424,requirement,Corrections from Native Corrections and the Square,P1,agent,,Open
+EP-§17.7-23,ELEVATION,§17.7:L2425,requirement,"Everywhere. Long-press any word in a lesson, chat, feed, status, game",P1,agent,,Open
+EP-§17.7-24,ELEVATION,§17.7:L2426,requirement,Global Search starts with words.,P1,agent,,Open
+EP-§17.7-25,ELEVATION,§17.7:L2426,requirement,"A daily ""word of the day"" with its story appears in Today.",P1,agent,,Open
+EP-§17.7-26,ELEVATION,§17.7:L2427,requirement,"Pan-African view. ""Same idea in other languages"": water = omi / mmiri",P1,agent,,Open
+EP-§17.7-27,ELEVATION,§17.7:L2428,requirement,It powers Multilingual Relay.,P1,agent,,Open
+EP-§17.7-28,ELEVATION,§17.7:L2429,requirement,Offline. A per-language lexicon pack (top 5k entries plus audio) syncs the,P1,agent,,Open
+EP-§17.7-29,ELEVATION,§17.7:L2429,metric,top 5k entries plus audio,P1,agent,,Open
+EP-§17.7-30,ELEVATION,§17.7:L2430,requirement,The Word Card is a bottom sheet with a large lemma,P1,agent,,Open
+EP-§17.7-31,ELEVATION,§17.7:L2430-L2431,requirement,tone marks never clipped; Noto Sans with diacritic-safe line height,P1,agent,,Open
+EP-§17.7-32,ELEVATION,§17.7:L2431,requirement,"a Tone Lens contour, play buttons for each speaker, dialect chips,",P1,agent,,Open
+EP-§17.7-33,ELEVATION,§17.7:L2431-L2432,requirement,"examples with audio, and Save and Practise buttons.",P1,agent,,Open
+EP-§17.7-34,ELEVATION,§17.7:L2432-L2433,requirement,"The full entry page adds proverbs, culture and the ""same idea in",P1,agent,,Open
+EP-§17.7-35,ELEVATION,§17.7:L2433,requirement,"Verification badges are honest (""AI draft, awaiting native check"").",P1,agent,,Open
+EP-§17.7-36,ELEVATION,§17.7:L2434,requirement,Global Search (first result type);,P1,agent,,Open
+EP-§17.7-37,ELEVATION,§17.7:L2434,requirement,long-press on any word;,P1,agent,,Open
+EP-§17.7-38,ELEVATION,§17.7:L2434-L2435,requirement,Learn → Words (My Words and Review);,P1,agent,,Open
+EP-§17.7-39,ELEVATION,§17.7:L2435,requirement,Lens results;,P1,agent,,Open
+EP-§17.7-40,ELEVATION,§17.7:L2435,requirement,Village → Contribute → Verify.,P1,agent,,Open

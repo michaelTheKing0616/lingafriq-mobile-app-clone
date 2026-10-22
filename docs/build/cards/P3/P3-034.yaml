@@ -1,0 +1,101 @@
+charter: v2
+id: P3-034
+kind: build
+title: Build the Tone Lens renderer, never colour-only
+phase: P3
+epic: E-P3-TOKENS
+req_ids:
+- EP-§3.4-18
+- EP-§3.4-19
+- EP-§3.4-20
+- EP-§3.4-21
+- EP-§13.7-08
+depends_on:
+- P3-033
+- P3-012
+- P3-020
+size: L
+difficulty:
+  score: 5
+  blast: 0
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 0, ambiguity 2, coupling 1'
+token_budget: 150000
+file_allowlist:
+- lib/design/tone_lens/tone_lens.dart
+- lib/design/tone_lens/tone_contour.dart
+- test/design/tone_lens_test.dart
+context_anchors:
+- ELEVATION.md#§3.4:L835-L839
+acceptance_criteria:
+- id: AC1
+  text: Given the contours H, M, L, rising, falling and downstep, when rendered in greyscale, then each pair differs in shape
+    (golden pairwise test)
+- id: AC2
+  text: Given a ToneContour input, when built, then its source is orthography or validated_audio and an unvalidated word renders
+    with the unverified style
+- id: AC3
+  text: Given lesson, chat, game, persona and dictionary hosts, when each renders the same word, then the contour pixels are
+    identical
+- id: AC4
+  text: Given the renderer, when used, then it accepts no numeric score and renders no number
+- id: AC5
+  text: Given a screen reader, when focused, then the semantics label reads the tone sequence in words
+test_plan:
+  unit:
+  - shape distinctness
+  - input contract
+  integration:
+  - five host goldens
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - not colour-only
+  - semantics label
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - contour
+  - unverified
+  - colour_off
+  copy_keys:
+  - tonelens.label.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - greyscale
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/token-compliance
+  - prime/theme-audit
+  - prime/typography-scale

@@ -1,0 +1,59 @@
+charter: v2
+id: P11-001
+kind: adr
+title: Decide persona delivery modes and v1 roster (ADR-031)
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§8.3-29
+- EP-§8.3-30
+- EP-§8.3-31
+- EP-§8.3-32
+depends_on:
+- E-P1-CONTAINMENT
+size: S
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 2
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T4
+  tester: T0
+  reviewer: T4
+  justification: 'score 4: blast 2, ambiguity 2, coupling 0, depth 0'
+token_budget: 25000
+file_allowlist:
+- docs/build/adr/ADR-031.md
+context_anchors: []
+acceptance_criteria:
+- id: AC1
+  text: 'Given the five v1 candidates (Yaa Asantewaa, Nkrumah, Shaka, Ahmed Baba, Mofolo), when ADR-031 is accepted by Tope,
+    then it records the final roster of 5 and one mode per persona: first_person or narrated_as_told_by.'
+- id: AC2
+  text: Given a living-memory figure (Mandela, Sankara, Lumumba), when a mode is chosen, then first_person is disallowed unless
+    family/estate guidance is recorded under EXT-15; otherwise narrated mode applies.
+- id: AC3
+  text: Given a persona in narrated mode, when a turn renders, then the narrator is labelled and no first-person text is emitted
+    (contract test specified in the ADR).
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- reviewer verdict
+- ledger row
+risks:
+- v1 roster is an agent proposal drawn from §8.2/8.4 named figures; Tope must confirm
+gate: G11
+external_blockers:
+- EXT-15
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - prime/diagram-design

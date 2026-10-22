@@ -1,0 +1,57 @@
+charter: v2
+id: P3-033
+kind: design
+title: Write usability-test protocol with success targets
+phase: P3
+epic: E-P3-DESIGN-WORKFLOW
+req_ids:
+- EP-§3.1-01
+- EP-§13.7-12
+depends_on:
+- P3-032
+size: M
+difficulty:
+  score: 3
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 3: blast 0, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- docs/build/design/USABILITY_PROTOCOL.md
+context_anchors:
+- ELEVATION.md#§13.7:L1936-L1941
+acceptance_criteria:
+- id: AC1
+  text: Given the protocol, when written, then it defines >=8 tasks with pass rules and a target of task success >=90%
+- id: AC2
+  text: Given the questionnaire, when scored, then the System Usability Scale target is >=85
+- id: AC3
+  text: Given the sample, when planned, then it covers low-end Android in Nigeria, Kenya and South Africa with >=5 participants
+    each and >=2 hearing-impaired users
+- id: AC4
+  text: Given consent and minors, when planned, then the consent form and no-minor-sessions rule are included
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/test-scenario
+  - prime/click-test-plan
+  - prime/accessibility-test-plan

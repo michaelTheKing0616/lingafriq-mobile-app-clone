@@ -1,0 +1,75 @@
+charter: v2
+id: P4-004
+kind: build
+title: Seed CC BY corpora and storybook entries
+phase: P4
+epic: E-P4-LICENCES
+req_ids:
+- CP-§2.2-04
+- CP-§2.2-06
+- CP-§2.2-07
+- CP-§2.2-08
+- CP-§2.2-20
+depends_on:
+- P4-001
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 0
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 3: blast 1, ambiguity 1, coupling 0, depth 1, size 0'
+token_budget: 25000
+file_allowlist:
+- tools/content_engine/licences/register.csv
+- tools/content_engine/tests/test_seed_cc.py
+context_anchors:
+- CURRICULUM.md#§2.2:L158-L194
+acceptance_criteria:
+- id: AC1
+  text: Given Leipzig Corpora, when seeded, then downloads are allowed with attribution and web services and applications
+    (CC BY-NC) are recorded as excluded
+- id: AC2
+  text: Given FLEURS (CC BY 4.0), when seeded, then it is registered for parallel sentences and audio for yo, ig, ha, sw,
+    xh, zu
+- id: AC3
+  text: Given WAXAL, when seeded, then one row exists per subset with its own licence (Ghana subsets CC BY 4.0, most others
+    CC BY-SA 4.0) and CC BY-SA subsets inherit the share-alike rule
+- id: AC4
+  text: Given African Storybook, when ingested, then only CC BY stories pass, CC BY-NC stories are rejected with LICENCE_NC_EXCLUDED,
+    and author attribution is stored
+test_plan:
+  unit:
+  - per-subset WAXAL rows
+  - storybook NC story rejected
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-03
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

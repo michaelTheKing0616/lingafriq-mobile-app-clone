@@ -1,0 +1,108 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+EP-§12.1-01,ELEVATION,§12.1:L1812-L1813,informational,"XP, three currencies (ngwenya, cowries, ancestral_beads), leagues, hearts",P1,agent,,Open
+EP-§12.1-02,ELEVATION,§12.1:L1813,informational,"badges, streaks, magic items, ancestral tree, heritage milestones, competitions, gifting",P1,agent,,Open
+EP-§12.1-03,ELEVATION,§12.1:L1814,informational,The integrity layer is broken (P0-7/8),P1,agent,,Open
+EP-§12.1-04,ELEVATION,§12.1:L1814,informational,currency and points can be self-minted,P1,agent,,Open
+EP-§12.1-05,ELEVATION,§12.1:L1814-L1815,informational,Push reminders spam and guilt-trip (P0-23,P1,agent,,Open
+EP-§12.1-06,ELEVATION,§12.1:L1815,informational,Three currencies with unclear sinks inflate and confuse,P1,agent,,Open
+EP-§12.2-01,ELEVATION,§12.2:L1817,requirement,"Reward learning, not tapping.",P1,agent,,Open
+EP-§12.2-02,ELEVATION,§12.2:L1817-L1818,requirement,XP is computed server-side from evidence of learning,P1,agent,,Open
+EP-§12.2-03,ELEVATION,§12.2:L1818,requirement,items recalled at spaced intervals,P1,agent,,Open
+EP-§12.2-04,ELEVATION,§12.2:L1818,requirement,speaking tasks passed,P1,agent,,Open
+EP-§12.2-05,ELEVATION,§12.2:L1818,requirement,can-dos demonstrated,P1,agent,,Open
+EP-§12.2-06,ELEVATION,§12.2:L1818-L1819,requirement,with diminishing returns for grinding easy items,P1,agent,,Open
+EP-§12.2-07,ELEVATION,§12.2:L1820,decision,One soft currency (keep Cowries: culturally resonant and historically real as money),P1,Tope,,Open
+EP-§12.2-08,ELEVATION,§12.2:L1820-L1821,requirement,with clear sinks: cosmetic avatar items,P1,agent,,Open
+EP-§12.2-09,ELEVATION,§12.2:L1821,requirement,streak repair,P1,agent,,Open
+EP-§12.2-10,ELEVATION,§12.2:L1821,requirement,persona chapters early access,P1,agent,,Open
+EP-§12.2-11,ELEVATION,§12.2:L1821-L1822,requirement,donating to a community language-preservation fund (visible impact),P1,agent,,Open
+EP-§12.2-12,ELEVATION,§12.2:L1823,requirement,"Streaks that respect life: ""weekly streak"" option",P1,agent,,Open
+EP-§12.2-13,ELEVATION,§12.2:L1823,requirement,freeze tokens earned by practice,P1,agent,,Open
+EP-§12.2-14,ELEVATION,§12.2:L1823-L1824,requirement,a forgiving repair window,P1,agent,,Open
+EP-§12.2-15,ELEVATION,§12.2:L1824,constraint,no loss-aversion copy at night,P1,agent,,Open
+EP-§12.2-16,ELEVATION,§12.2:L1824,metric,Reminders at most once a day,P1,agent,,Open
+EP-§12.2-17,ELEVATION,§12.2:L1824-L1825,requirement,within the learner's chosen window and timezone,P1,agent,,Open
+EP-§12.2-18,ELEVATION,§12.2:L1825,requirement,quiet hours by default,P1,agent,,Open
+EP-§12.2-19,ELEVATION,§12.2:L1825-L1826,requirement,Celebrate milestones rather than threatening losses,P1,agent,,Open
+EP-§12.2-20,ELEVATION,§12.2:L1827,requirement,"Hearts: keep the feature, but move it out of core lessons",P1,agent,,Open
+EP-§12.2-21,ELEVATION,§12.2:L1827-L1828,requirement,into an opt-in Challenge Mode,P1,agent,,Open
+EP-§12.2-22,ELEVATION,§12.2:L1828,requirement,"lessons and games played ""on hearts"" for bragging rights and a badge",P1,agent,,Open
+EP-§12.2-23,ELEVATION,§12.2:L1828-L1829,constraint,punishing them in core lessons is a Duolingo pattern,P1,agent,,Open
+EP-§12.2-24,ELEVATION,§12.2:L1830,requirement,Leagues: opt-in,P1,agent,,Open
+EP-§12.2-25,ELEVATION,§12.2:L1830,requirement,matched by time zone and activity level,P1,agent,,Open
+EP-§12.2-26,ELEVATION,§12.2:L1830,requirement,ranked on learning XP,P1,agent,,Open
+EP-§12.2-27,ELEVATION,§12.2:L1830-L1831,constraint,minors see only circle or class leagues,P1,agent,,Open
+EP-§12.2-28,ELEVATION,§12.2:L1832,requirement,Collaborative goals: circle and classroom quests,P1,agent,,Open
+EP-§12.2-29,ELEVATION,§12.2:L1832-L1833,requirement,"family challenges (""teach grandma's phrase of the week back to her"")",P1,agent,,Open
+EP-§12.2-30,ELEVATION,§12.2:L1833,requirement,"a ""Heritage Tree"" that grows as family members learn",P1,agent,,Open
+EP-§12.2-31,ELEVATION,§12.2:L1834,requirement,"Meaningful status: ""Can-do badges"" verified by checkpoints",P1,agent,,Open
+EP-§12.2-32,ELEVATION,§12.2:L1834-L1835,requirement,"are shareable and valuable, unlike generic badges",P1,agent,,Open
+EP-§12.3-01,ELEVATION,§12.3:L1837,constraint,No loot boxes.,P1,agent,,Open
+EP-§12.3-02,ELEVATION,§12.3:L1837,constraint,No real-money purchases by minors.,P1,agent,,Open
+EP-§12.3-03,ELEVATION,§12.3:L1837,constraint,No fake scarcity timers.,P1,agent,,Open
+EP-§12.3-04,ELEVATION,§12.3:L1837-L1838,constraint,"No fake ""friends are waiting"" pushes.",P1,agent,,Open
+EP-§12.3-05,ELEVATION,§12.3:L1838,constraint,No mock participants presented as real,P1,agent,,Open
+EP-§12.3-06,ELEVATION,§12.3:L1838-L1839,requirement,replace the hard-coded co-learners in flashcard_focus_screen.dart:26-34,P1,agent,,Open
+EP-§12.3-07,ELEVATION,§12.3:L1839,requirement,with real matched learners or clearly labelled practice bots,P1,agent,,Open
+EP-§12.3-08,ELEVATION,§12.3:L1839-L1840,constraint,the group-study feature stays,P1,agent,,Open
+EP-§12.3-09,ELEVATION,§12.3:L1840,constraint,Every monetised item states exactly what it does.,P1,agent,,Open
+EP-§12.4-01,ELEVATION,§12.4:L1842,constraint,Rebuild the Passport only after content and scoring are real,P1,agent,,Open
+EP-§12.4-02,ELEVATION,§12.4:L1842-L1843,requirement,evidence-based (a portfolio of passed can-do tasks,P1,agent,,Open
+EP-§12.4-03,ELEVATION,§12.4:L1843,requirement,plus a proctored CAT),P1,agent,,Open
+EP-§12.4-04,ELEVATION,§12.4:L1843,requirement,aligned to CEFR descriptors with a published methodology,P1,agent,,Open
+EP-§12.4-05,ELEVATION,§12.4:L1843-L1845,requirement,signed and verifiable (W3C Verifiable Credentials,P1,agent,,Open
+EP-§12.4-06,ELEVATION,§12.4:L1845,requirement,or Open Badges 3.0),P1,agent,,Open
+EP-§12.4-07,ELEVATION,§12.4:L1845,requirement,revocable.,P1,agent,,Open
+EP-§13.2-01,ELEVATION,§13.2:L1879,constraint,NDPA 2023 (it superseded the NDPR as the primary law),P1,external,,Open
+EP-§13.2-02,ELEVATION,§13.2:L1879-L1880,constraint,the NDPC's implementation directive,P1,external,,Open
+EP-§13.2-03,ELEVATION,§13.2:L1880-L1881,external,register with the NDPC as a data controller of major importance if,P1,external,,Open
+EP-§13.2-04,ELEVATION,§13.2:L1881,requirement,DPIA for voice data and minors,P1,agent,,Open
+EP-§13.2-05,ELEVATION,§13.2:L1881,constraint,Kenya Data Protection Act 2019,P1,external,,Open
+EP-§13.2-06,ELEVATION,§13.2:L1882,constraint,South Africa POPIA,P1,external,,Open
+EP-§13.2-07,ELEVATION,§13.2:L1882,constraint,Ghana Data Protection Act 2012,P1,external,,Open
+EP-§13.2-08,ELEVATION,§13.2:L1882,constraint,EU/UK GDPR (diaspora users),P1,external,,Open
+EP-§13.2-09,ELEVATION,§13.2:L1882-L1883,constraint,US COPPA if any US children use it,P1,external,,Open
+EP-§13.2-10,ELEVATION,§13.2:L1883,constraint,the UK Age Appropriate Design Code if marketing there,P1,external,,Open
+EP-§13.2-11,ELEVATION,§13.2:L1884,constraint,Voice data is biometric-adjacent,P1,agent,,Open
+EP-§13.2-12,ELEVATION,§13.2:L1884,requirement,explicit opt-in to store recordings,P1,agent,,Open
+EP-§13.2-13,ELEVATION,§13.2:L1884,requirement,default deletion after scoring,P1,agent,,Open
+EP-§13.2-14,ELEVATION,§13.2:L1885,requirement,separate consent for contributing recordings to model training,P1,agent,,Open
+EP-§13.2-15,ELEVATION,§13.2:L1885-L1886,decision,payment or benefit-sharing for contributors,P1,Tope,,Open
+EP-§13.2-16,ELEVATION,§13.2:L1886-L1887,requirement,data-subject export and deletion (the backend has userExport.ts and deleteUserAccount; expose both,P1,agent,,Open
+EP-§13.2-17,ELEVATION,§13.2:L1888,requirement,label AI-generated content and personas,P1,agent,,Open
+EP-§13.2-18,ELEVATION,§13.2:L1888,constraint,EU AI Act Art. 50,P1,external,,Open
+EP-§13.2-19,ELEVATION,§13.2:L1889,requirement,Data map and retention schedule per collection,P1,agent,,Open
+EP-§13.2-20,ELEVATION,§13.2:L1889,informational,107 Mongo models today,P1,agent,,Open
+EP-§13.2-21,ELEVATION,§13.2:L1889,requirement,"purge jobs, logged",P1,agent,,Open
+EP-§15-01,ELEVATION,§15:L1991-L1992,decision,North-star metric: weekly learners who demonstrated a new can-do,P1,Tope,,Open
+EP-§15-02,ELEVATION,§15:L1992,metric,guardrails on D1/D7/D30 retention,P1,agent,,Open
+EP-§15-03,ELEVATION,§15:L1992,metric,minutes practised,P1,agent,,Open
+EP-§15-04,ELEVATION,§15:L1992,metric,speaking minutes,P1,agent,,Open
+EP-§15-05,ELEVATION,§15:L1992,metric,crash-free sessions,P1,agent,,Open
+EP-§15-06,ELEVATION,§15:L1993,constraint,Do not optimise on streak length alone.,P1,agent,,Open
+EP-§15-07,ELEVATION,§15:L1994,requirement,"Event taxonomy (one schema, versioned)",P1,agent,,Open
+EP-§15-08,ELEVATION,§15:L1994,requirement,session_started,P1,agent,,Open
+EP-§15-09,ELEVATION,§15:L1994-L1995,requirement,"item_answered{item_id, correct, latency, hints}",P1,agent,,Open
+EP-§15-10,ELEVATION,§15:L1995,requirement,"speech_attempt_scored{phones_ok, tone_ok, confidence}",P1,agent,,Open
+EP-§15-11,ELEVATION,§15:L1995,requirement,cando_demonstrated,P1,agent,,Open
+EP-§15-12,ELEVATION,§15:L1996,requirement,"ai_turn{mode, tokens, latency, fallback_used}",P1,agent,,Open
+EP-§15-13,ELEVATION,§15:L1996,requirement,content_reported.,P1,agent,,Open
+EP-§15-14,ELEVATION,§15:L1996-L1997,constraint,Send on-device aggregates where possible (privacy).,P1,agent,,Open
+EP-§15-15,ELEVATION,§15:L1998,requirement,Experimentation: feature-flag-based A/B,P1,agent,,Open
+EP-§15-16,ELEVATION,§15:L1998-L1999,constraint,pre-registered hypotheses and minimum detectable effects,P1,agent,,Open
+EP-§15-17,ELEVATION,§15:L1999,constraint,never experiment on minors' safety settings.,P1,agent,,Open
+EP-§15-18,ELEVATION,§15:L2000,external,an external efficacy study,P1,external,,Open
+EP-§15-19,ELEVATION,§15:L2000-L2001,requirement,pre/post oral proficiency interview with blinded raters,P1,external,,Open
+EP-§15-20,ELEVATION,§15:L2000-L2001,metric,for two Stage-1 languages,P1,Tope,,Open
+EP-§15-21,ELEVATION,§15:L2001,decision,one tonal West African language such as Yoruba,P1,Tope,,Open
+EP-§15-22,ELEVATION,§15:L2001,decision,one Bantu language such as isiZulu,P1,Tope,,Open
+EP-§15-23,ELEVATION,§15:L2001,metric,within a year.,P1,external,,Open
+EP-§15-24,ELEVATION,§15:L2001-L2002,constraint,it must be real (no invented stats; Playbook §9),P1,agent,,Open
+EP-§15-25,ELEVATION,§15:L2003,requirement,"Copy: warm, clear, specific",P1,agent,,Open
+EP-§15-26,ELEVATION,§15:L2003,metric,grade-7 reading level,P1,agent,,Open
+EP-§15-27,ELEVATION,§15:L2003,requirement,"verb-first buttons (""Start lesson"", ""Hear it again"")",P1,agent,,Open
+EP-§15-28,ELEVATION,§15:L2004,requirement,"name continuity (""Publish"" → ""Published"")",P1,agent,,Open
+EP-§15-29,ELEVATION,§15:L2004,constraint,no em dashes in UI strings,P1,agent,,Open
+EP-§15-30,ELEVATION,§15:L2004-L2005,constraint,"no ""World-class/Elite/Seamless"" in product copy",P1,agent,,Open
+EP-§15-31,ELEVATION,§15:L2005-L2006,constraint,"The village voice lives in characters, not in every label.",P1,agent,,Open
+EP-§15-32,ELEVATION,§15:L2006-L2007,requirement,"Error copy follows ""what happened, why, what next""",P1,agent,,Open

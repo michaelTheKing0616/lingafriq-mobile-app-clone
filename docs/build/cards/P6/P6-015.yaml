@@ -1,0 +1,67 @@
+charter: v2
+id: P6-015
+kind: build
+title: Scrub PII and log without PII
+phase: P6
+epic: E-P6-GATEWAY
+req_ids:
+- EP-§7.2-20
+depends_on:
+- P6-002
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 1
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, ambiguity 1, coupling 1, depth 2'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/pii/scrub.ts
+- node-backend/src/ai-gateway/logging.ts
+context_anchors:
+- ELEVATION.md#§7.2:L1367-L1387
+acceptance_criteria:
+- id: AC1
+  text: Given text containing email, phone or names, when scrubbed before logging or third-party calls, then placeholders
+    replace them
+- id: AC2
+  text: Given any gateway log line, when CI runs the log-schema test, then no field named prompt, transcript or user_text
+    is present
+- id: AC3
+  text: Given audio uploads, when processed, then raw audio is not logged and its retention follows the configured schedule
+test_plan:
+  unit:
+  - scrub patterns
+  integration:
+  - log schema test
+  security:
+  - log secret and PII grep
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

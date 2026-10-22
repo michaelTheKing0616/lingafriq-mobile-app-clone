@@ -1,0 +1,1256 @@
+{
+"lang": "zu",
+"level": "C1",
+"built": "2026-10-21",
+"source_type": "synthesized",
+"items": [
+{
+"id": "zu.syn.57243fda5917",
+"lang": "zu",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.PROD: Produce argumentative text"
+],
+"text": "Yize umnotho ukhulile, abantu abaningi basaphila ebuphofini.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Although the economy has grown, many people still live in poverty.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Yize = although; persistive -sa-.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Yize",
+"count": 1437,
+"locator": "leipzig:zul_community_2017#s1472"
+},
+{
+"token": "umnotho",
+"count": 439,
+"locator": "leipzig:zul_community_2017#s2410"
+},
+{
+"token": "ukhulile",
+"count": 4,
+"locator": "leipzig:zul_community_2017#s134423"
+},
+{
+"token": "abantu",
+"count": 13472,
+"locator": "leipzig:zul_community_2017#s13"
+},
+{
+"token": "abaningi",
+"count": 2055,
+"locator": "leipzig:zul_community_2017#s43"
+},
+{
+"token": "basaphila",
+"count": 6,
+"locator": "leipzig:zul_community_2017#s17017"
+},
+{
+"token": "ebuphofini",
+"count": 9,
+"locator": "leipzig:zul_community_2017#s17088"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:zul_community_2017#s1472",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Yize' attested 1437x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s1472"
+},
+{
+"text": "token 'umnotho' attested 439x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s2410"
+},
+{
+"text": "token 'ukhulile' attested 4x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s134423"
+},
+{
+"text": "token 'abantu' attested 13472x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s13"
+},
+{
+"text": "token 'abaningi' attested 2055x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s43"
+},
+{
+"text": "token 'basaphila' attested 6x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s17017"
+},
+{
+"text": "token 'ebuphofini' attested 9x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s17088"
+}
+],
+"confidence": 0.45,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": true,
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.ef43875e6db9",
+"lang": "zu",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.PROD: Produce narrative text"
+],
+"text": "Ngesikhathi efika ekhaya, wathola ukuthi umnyango uvuliwe.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "When he arrived home, he found the door open.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Participial efika; remote past wa-.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Ngesikhathi",
+"count": 6928,
+"locator": "leipzig:zul_community_2017#s129"
+},
+{
+"token": "efika",
+"count": 255,
+"locator": "leipzig:zul_community_2017#s165"
+},
+{
+"token": "ekhaya",
+"count": 1804,
+"locator": "leipzig:zul_community_2017#s11"
+},
+{
+"token": "wathola",
+"count": 326,
+"locator": "leipzig:zul_community_2017#s2005"
+},
+{
+"token": "ukuthi",
+"count": 55452,
+"locator": "leipzig:zul_community_2017#s7"
+},
+{
+"token": "umnyango",
+"count": 1728,
+"locator": "leipzig:zul_community_2017#s119"
+},
+{
+"token": "uvuliwe",
+"count": 5,
+"locator": "leipzig:zul_community_2017#s40996"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:zul_community_2017#s129",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Ngesikhathi' attested 6928x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s129"
+},
+{
+"text": "token 'efika' attested 255x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s165"
+},
+{
+"text": "token 'ekhaya' attested 1804x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s11"
+},
+{
+"text": "token 'wathola' attested 326x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s2005"
+},
+{
+"text": "token 'ukuthi' attested 55452x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s7"
+},
+{
+"text": "token 'umnyango' attested 1728x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s119"
+},
+{
+"text": "token 'uvuliwe' attested 5x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s40996"
+}
+],
+"confidence": 0.7,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": false,
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.1ce573884507",
+"lang": "zu",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULT: Understand a cultural practice"
+],
+"text": "Sawubona baba.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Hello, father/sir.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Elders addressed with kin terms (baba, mama); hlonipha respect register.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Sawubona",
+"count": 30,
+"locator": "leipzig:zul_community_2017#s54104"
+},
+{
+"token": "baba",
+"count": 674,
+"locator": "leipzig:zul_community_2017#s307"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:zul_community_2017#s54104",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Sawubona' attested 30x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s54104"
+},
+{
+"text": "token 'baba' attested 674x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s307"
+}
+],
+"confidence": 0.7,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C1.culture_note"
+],
+"games": [],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": true,
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 4,
+"crosscheck_ok": true
+},
+{
+"id": "zu.prv.cc0388aa3681",
+"lang": "zu",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.IDIOM: Understand and use proverbs in context"
+],
+"text": "Inkunzi isematholeni",
+"source_type": "attested",
+"translation_en": {
+"text": "The bull is among the calves.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"token_evidence": [
+{
+"token": "Inkunzi",
+"count": 164,
+"locator": "leipzig:zul_community_2017#s460"
+},
+{
+"token": "isematholeni",
+"count": 4,
+"locator": "leipzig:zul_community_2017#s29032"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:zul_community_2017#s29032 :: Eminye yemiklomelo aseke wayizuza singabala lena: Nasionale Boekhandel Award of African Language Literature ngencwadi yakhe ethi: Inkunzi Isematholeni ngonyaka ",
+"role": "shipped_text"
+},
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:zul_community_2017#s460",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Inkunzi' attested 164x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s460"
+},
+{
+"text": "token 'isematholeni' attested 4x",
+"source_id": "leipzig",
+"locator": "leipzig:zul_community_2017#s29032"
+}
+],
+"confidence": 0.45,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"idiom_or_formula",
+"meaning_gloss_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"register_model": false,
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 4,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.1553022c16ab",
+"lang": "zu",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Yize lolu hlelo lunenhloso enhle, ukusetshenziswa kwalo kubuthakathaka.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Although this plan has good intentions, its implementation is weak.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.343d65dedc67",
+"lang": "zu",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Kusobala ukuthi ngaphandle kwemfundo, intuthuko ngeke yenzeke.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It is clear that without education, progress will not happen.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.4509af79217f",
+"lang": "zu",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Uma uhulumeni ehluleka ukulwa nenkohlakalo, abantu bazoyeka ukuwethemba.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "If the government fails to fight corruption, people will stop trusting it.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.2cc3991466bc",
+"lang": "zu",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Lapho ufunda kakhulu, uqonda kakhulu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The more you read, the more you understand.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 4,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.a334aaa6dd88",
+"lang": "zu",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Akekho owayazi ukuthi kwenzekeni.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "No one knew what had happened.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.417dbfbbf80b",
+"lang": "zu",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Ukhuluma sengathi uyingcweti.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He talks as though he were an expert.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.d9129097783c",
+"lang": "zu",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "Egameni lekomiti, ngidlulisa ukubonga okukhulu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "On behalf of the committee, I extend great thanks.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.0e58b6d9d6f6",
+"lang": "zu",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "Bakwethu, sihlangene lapha ngendaba ebalulekile.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Friends, we have gathered here for an important matter.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.74c32883c095",
+"lang": "zu",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Ngalobo busuku, isigodi sonke sasithule du.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "That night, the whole village was completely silent.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.c23aad10b871",
+"lang": "zu",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Ubuntu buyisisekelo sobudlelwano emphakathini.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Ubuntu is the foundation of relationships in the community.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.syn.679084285824",
+"lang": "zu",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Izibongo zisetshenziselwa ukudumisa abantu nemindeni.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Praise poems are used to honour people and clans.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.prv.aaf7c01aac02",
+"lang": "zu",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.PROVERB"
+],
+"text": "Izandla ziyagezana.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Hands wash each other.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.prv.8fbf9c735dc8",
+"lang": "zu",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.PROVERB"
+],
+"text": "Umuntu ngumuntu ngabantu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "A person is a person through other people.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "zu.prv.7794cd9af014",
+"lang": "zu",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.PROVERB"
+],
+"text": "Indlela ibuzwa kwabaphambili.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The way is asked from those who have gone before.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/zu.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"zu.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+}
+]
+}

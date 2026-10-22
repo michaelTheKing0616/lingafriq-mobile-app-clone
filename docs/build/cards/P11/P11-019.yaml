@@ -1,0 +1,91 @@
+charter: v2
+id: P11-019
+kind: build
+title: Add historian note, mini-quiz and primary-source card to quest
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§8.2-19
+- EP-§8.2-20
+- EP-§8.2-21
+- EP-§8.2-22
+depends_on:
+- E-P1-CONTAINMENT
+- P11-018
+- P11-010
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1, depth 0'
+token_budget: 70000
+file_allowlist:
+- lib/ai/personas/quests/yaa_asantewaa/debrief.dart
+- lib/ai/personas/quests/yaa_asantewaa/primary_source.json
+context_anchors:
+- ELEVATION.md#§8.2:L1513-L1515
+acceptance_criteria:
+- id: AC1
+  text: Given the quest ends, when the debrief opens, then the human-written historian note is shown and is blocked from release
+    if absent.
+- id: AC2
+  text: Given the mini-quiz, when completed, then results are stored against the quest chapter.
+- id: AC3
+  text: Given the Primary source card, when shown, then it has an archival image or museum object, caption, provenance and
+    licence.
+- id: AC4
+  text: Given the quest vocabulary set, when the quest completes, then its words are added to the learner's review deck once.
+test_plan:
+  unit:
+  - deck insertion idempotent
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - historian note present
+user_facing: true
+ux_spec:
+  states:
+  - note
+  - quiz
+  - primary_source
+  - missing_note_error
+  copy_keys:
+  - quest.debrief.note
+  - quest.quiz.title
+  - quest.primary.source
+  tokens:
+  - card.surface
+  motion_tier: product
+  a11y:
+  - image alt text
+  goldens:
+  - primary_source_card
+tags:
+- enables_persona
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers:
+- EXT-15
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

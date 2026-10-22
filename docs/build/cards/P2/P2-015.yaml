@@ -1,0 +1,75 @@
+charter: v2
+id: P2-015
+kind: build
+title: Build one durable outbox with idempotency keys and backoff
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.5-02
+- EP-§13.5-03
+depends_on:
+- E-P1-CONTAINMENT
+- ADR-004
+- P2-014
+size: L
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 3, coupling 2, depth 2'
+token_budget: 150000
+file_allowlist:
+- lib/services/sync/outbox_service.dart
+- lib/services/sync/outbox_worker.dart
+- lib/config/sync_outbox_operation_types.dart
+- test/sync/outbox_test.dart
+context_anchors:
+- ELEVATION.md#§13.5:L1914
+- ELEVATION.md#§13.5:L1915
+acceptance_criteria:
+- id: AC1
+  text: Given an offline write, when it is enqueued, then it persists with a client-generated idempotency key surviving app
+    restart
+- id: AC2
+  text: Given a transient failure, when the worker retries, then delay grows exponentially with jitter up to a documented
+    cap
+- id: AC3
+  text: Given the server receives the same key twice, when processing, then the effect is applied once
+- id: AC4
+  text: Given a permanent 4xx, when the worker sees it, then the item moves to a visible dead-letter state and is never dropped
+    silently
+test_plan:
+  unit:
+  - backoff schedule
+  - idempotency
+  integration:
+  - kill-and-restart replay
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

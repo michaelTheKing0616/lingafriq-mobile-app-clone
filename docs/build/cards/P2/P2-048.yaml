@@ -1,0 +1,77 @@
+charter: v2
+id: P2-048
+kind: build
+title: Consolidate four quiz systems into the item bank
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§11.1-03
+- EP-§11.1-04
+- EP-§11.1-05
+depends_on:
+- E-P1-CONTAINMENT
+- P2-047
+- P2-002
+size: L
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 2
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 3, coupling 2, depth 1'
+token_budget: 150000
+file_allowlist:
+- lib/models/quiz_model.dart
+- lib/screens/tabs_view/home/take_quiz_screen.dart
+- lib/screens/lesson/widgets/quiz_section_widget.dart
+- lib/screens/games/quiz_chef_screen.dart
+- node-backend/src/models/languageQuiz.model.ts
+context_anchors:
+- ELEVATION.md#§11.1:L1783
+- ELEVATION.md#§11.1:L1784
+- ELEVATION.md#§11.1:L1785
+acceptance_criteria:
+- id: AC1
+  text: Given the harvest_list, when each quiz system is merged, then each distinct capability is ported to the item bank
+    or dropped with reason
+- id: AC2
+  text: Given placeholder bundles containing Sample MCQ items, when migrated, then they are excluded and not imported
+- id: AC3
+  text: Given the merge completes, when searched, then only item-bank-backed quiz paths remain
+test_plan:
+  unit: []
+  integration:
+  - each former quiz entry point runs from the item bank
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+harvest_list:
+- languageQuiz (backend + Flutter)
+- historyQuiz (backend + Flutter)
+- randomQuiz (backend + Flutter)
+- curriculum unit_quiz
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

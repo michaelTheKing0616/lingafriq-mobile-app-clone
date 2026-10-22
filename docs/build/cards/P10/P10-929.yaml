@@ -1,0 +1,92 @@
+charter: v2
+id: P10-929
+kind: build
+title: Label AI content and personas under EU AI Act Art. 50
+phase: P10
+epic: E-P10-PRIVACY
+req_ids:
+- EP-§13.2-17
+- EP-§13.2-18
+depends_on:
+- E-P1-CONTAINMENT
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 5; blast 2
+token_budget: 60000
+file_allowlist:
+- lib/widgets/ai/ai_disclosure_label.dart
+- lib/screens/ai_chat/conversation_analytics_screen.dart
+- node-backend/src/services/ai-disclosure.service.ts
+context_anchors:
+- ELEVATION.md#§13.2:L1888-L1888
+acceptance_criteria:
+- id: AC1
+  text: Given any AI-generated message, voice or image, when it is shown, then a visible AI label appears with it.
+- id: AC2
+  text: Given a persona, when a learner starts a chat or call, then it states in plain words that it is an AI persona and
+    not a person.
+- id: AC3
+  text: Given AI-generated audio or media is exported or shared, when it leaves the app, then a machine-readable AI marker
+    is attached.
+- id: AC4
+  text: Given an AI response arrives without the disclosure flag, when it would render, then the app blocks the render and
+    shows an error state.
+test_plan:
+  unit:
+  - label always present
+  integration:
+  - missing flag blocked
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - label announced
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - labelled
+  - persona-intro
+  - blocked
+  copy_keys:
+  - ai_label
+  - ai_persona_intro
+  tokens:
+  - color.semantic
+  - type.scale
+  - space.scale
+  motion_tier: product
+  a11y:
+  - screen reader labels
+  - 48dp touch targets
+  - reduced motion honoured
+  goldens:
+  - ai_label_golden
+tags:
+- ai_disclosure
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G12
+external_blockers:
+- EXT-18
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

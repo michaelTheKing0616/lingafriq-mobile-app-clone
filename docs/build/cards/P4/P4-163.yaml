@@ -1,0 +1,80 @@
+charter: v2
+id: P4-163
+kind: build
+title: Build AI ops prompt registry and eval runs
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§14.2-47
+- EP-§14.2-48
+depends_on:
+- P4-150
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- lingafriq-admin/src/pages/PromptRegistry.tsx
+- node-backend/src/services/prompt_registry.service.ts
+- node-backend/src/models/prompt_version.model.ts
+- test/backend/prompt_registry.test.ts
+context_anchors:
+- ELEVATION.md#§14.2:L1970-L1989
+acceptance_criteria:
+- id: AC1
+  text: Given a prompt, when edited, then a new version is stored with author, reason and a diff against the previous version
+- id: AC2
+  text: Given an eval run, when started on a prompt version, then results are linked to that version and shown side by side
+    with the prior version
+- id: AC3
+  text: Given a production prompt id, when resolved, then the pinned version is returned and unpinned edits do not go live
+test_plan:
+  unit:
+  - prompt_registry.test
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - list
+  - diff
+  - error
+  copy_keys:
+  - prompts.diff
+  tokens:
+  - admin.diff
+  motion_tier: product
+  a11y:
+  - diff text alternative
+  goldens: []
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

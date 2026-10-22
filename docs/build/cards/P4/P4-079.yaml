@@ -1,0 +1,87 @@
+charter: v2
+id: P4-079
+kind: build
+title: Export reviewer payments by items reviewed
+phase: P4
+epic: E-P4-STUDIO
+req_ids:
+- CP-§9.1-09
+depends_on:
+- P4-075
+size: S
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1, depth 1, size 0'
+token_budget: 25000
+file_allowlist:
+- lingafriq-admin/src/pages/CurriculumStudio/paymentsExport.tsx
+- node-backend/src/routes/paymentsExport.routes.ts
+- tools/content_engine/tests/studio_paymentsExport.test.ts
+context_anchors:
+- CURRICULUM.md#§9.1:L788-L788
+acceptance_criteria:
+- id: AC1
+  text: Given a date range, when exported, then each reviewer row shows items reviewed per person and the export is a downloadable
+    CSV
+- id: AC2
+  text: Given an item reviewed twice, when counted, then it counts once for the final reviewer and the rule is documented
+    in the export header
+test_plan:
+  unit:
+  - component states
+  integration:
+  - admin route contract
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - keyboard navigation
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - empty
+  - error
+  - ready
+  copy_keys:
+  - payments.title
+  - payments.empty
+  - payments.error
+  tokens:
+  - admin.surface
+  - admin.text
+  - admin.status
+  motion_tier: product
+  a11y:
+  - keyboard operable
+  - focus visible
+  - labelled controls
+  goldens:
+  - paymentsExport-ready
+  - paymentsExport-empty
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

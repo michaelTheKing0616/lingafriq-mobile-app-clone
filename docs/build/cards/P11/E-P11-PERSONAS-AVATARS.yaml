@@ -1,0 +1,47 @@
+charter: v2
+id: E-P11-PERSONAS-AVATARS
+kind: epic
+title: Personas v1 and Avatar v1
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- RM-P1-06
+- RM-P1-21
+- RM-P1-07
+- RM-P1-17
+- RM-P1-22
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P1-CONTAINMENT
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T4
+  tester: T0
+  reviewer: T4
+  justification: epic gate owned by the Orchestrator; no implementation
+token_budget: 10000
+file_allowlist: []
+context_anchors: []
+acceptance_criteria:
+- id: AC1
+  text: Every member card of this epic is Done with Tester evidence and Reviewer PASS
+- id: AC2
+  text: The epic integration test(s) are green in CI
+- id: AC3
+  text: All RTM rows owned by member cards are Verified-Done, Blocked-External or Waived-by-Tope
+- id: AC4
+  text: LEDGER.csv shows the epic within budget; routing notes written to 04_ROUTING.md
+tags: []
+gate: G11
+status: Draft
+skills:
+  worker:
+  - adaptive/13-agent-teams
+  - adaptive/06-execution-and-verification

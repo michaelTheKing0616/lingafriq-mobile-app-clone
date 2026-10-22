@@ -1,0 +1,87 @@
+charter: v2
+id: P3-087
+kind: build
+title: Audit screen-reader labels and switch or keyboard navigation
+phase: P3
+epic: E-P3-A11Y-I18N
+req_ids:
+- EP-§13.7-01
+- EP-§13.7-02
+- EP-§13.7-09
+depends_on:
+- P3-020
+size: M
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 4: blast 0, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- scripts/lint/semantics_audit.py
+- lib/design/a11y/focus_order.dart
+context_anchors:
+- ELEVATION.md#§13.7:L1936-L1939
+acceptance_criteria:
+- id: AC1
+  text: Given the 471 existing Semantics wrappers, when audited, then the report lists coverage per screen and each interactive
+    element lacks no label in shell and onboarding
+- id: AC2
+  text: Given a new interactive widget without a label, when linted, then CI fails
+- id: AC3
+  text: Given a tablet or web build, when navigated by keyboard or switch, then focus order follows reading order and no focus
+    trap exists in shell and onboarding
+test_plan:
+  unit:
+  - lint
+  integration:
+  - focus order
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - TalkBack
+  - VoiceOver
+  - keyboard
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - default
+  copy_keys:
+  - a11y.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/navigation-patterns
+  - prime/mobile-app-ui-design

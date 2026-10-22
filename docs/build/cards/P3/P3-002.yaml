@@ -1,0 +1,67 @@
+charter: v2
+id: P3-002
+kind: design
+title: Write design principles and three job journey maps
+phase: P3
+epic: E-P3-DESIGN-WORKFLOW
+req_ids:
+- EP-§3.1-02
+- EP-§3.1-03
+- EP-§3.1-04
+- EP-§3.1-05
+- EP-§3.1-06
+- EP-§3.1-07
+depends_on:
+- P3-001
+size: M
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 2
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T4
+  justification: 'score 4: blast 0, ambiguity 2, coupling 1; gate-critical (security / child safety / legal / design direction):
+    Fable reviews'
+token_budget: 60000
+file_allowlist:
+- docs/build/design/PRINCIPLES.md
+- docs/build/design/JOURNEYS.md
+- docs/build/design/JOB_MAP.csv
+context_anchors:
+- ELEVATION.md#§3.1:L768-L772
+acceptance_criteria:
+- id: AC1
+  text: Given the three jobs learn it, say it and live it, when PRINCIPLES.md is written, then it holds <=10 principles and
+    each one names the job it serves
+- id: AC2
+  text: Given each job, when JOURNEYS.md is written, then it has one journey map with entry, steps, emotion, failure state
+    and exit metric
+- id: AC3
+  text: Given the route map from the shell cards, when every existing feature is checked, then each maps to >=1 job in docs/build/design/JOB_MAP.csv
+- id: AC4
+  text: Given a feature that serves no job, when found, then it is listed as a redesign item with an owner card and is not
+    removed
+- id: AC5
+  text: Given the principles, when a later screen card cites them, then the citation resolves to a principle id
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/design-everyday-things
+  - prime/design-brief

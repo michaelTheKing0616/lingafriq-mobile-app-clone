@@ -1,0 +1,88 @@
+charter: v2
+id: P10-923
+kind: build
+title: Ask separate consent for model-training contributions
+phase: P10
+epic: E-P10-PRIVACY
+req_ids:
+- EP-§13.2-14
+depends_on:
+- P10-922
+- P10-924
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T4
+  justification: 'score 5; blast 2; p0 area; gate-critical (security / child safety / legal / design direction): Fable reviews'
+token_budget: 60000
+file_allowlist:
+- node-backend/src/services/training-consent.service.ts
+- lib/screens/settings/privacy_settings_screen.dart
+context_anchors:
+- ELEVATION.md#§13.2:L1885-L1885
+acceptance_criteria:
+- id: AC1
+  text: Given storage consent is on, when training contribution is not separately agreed, then no recording enters any training
+    set.
+- id: AC2
+  text: Given a learner agrees to contribute, when they accept, then a distinct consent record is stored with scope, version
+    and time.
+- id: AC3
+  text: Given a learner withdraws, when they confirm, then their recordings are excluded from future training sets and listed
+    for removal.
+- id: AC4
+  text: Given a minor, when contribution is offered, then it is not offered.
+test_plan:
+  unit:
+  - scope check
+  integration:
+  - withdraw excludes
+  security:
+  - minor never offered
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - 'off'
+  - 'on'
+  - withdrawn
+  copy_keys:
+  - training_consent
+  tokens:
+  - color.semantic
+  - type.scale
+  - space.scale
+  motion_tier: product
+  a11y:
+  - screen reader labels
+  - 48dp touch targets
+  - reduced motion honoured
+  goldens:
+  - training_consent_golden
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G12
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

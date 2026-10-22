@@ -1,0 +1,49 @@
+charter: v2
+id: ADR-004
+kind: adr
+title: 'ADR-004: Choose Drift/SQLite or Isar as the one local database'
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.5-01
+depends_on:
+- E-P1-CONTAINMENT
+size: S
+difficulty:
+  score: 2
+  blast: 1
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T4
+  tester: T0
+  reviewer: T4
+  justification: ADR with recommendation; no code
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§13.5:L1914
+acceptance_criteria:
+- id: AC1
+  text: Given Drift/SQLite and Isar, when the ADR is written, then it compares migrations, encryption, query power, maintenance
+    status and Flutter support with a recommendation
+- id: AC2
+  text: Given the recommendation, when Tope signs it, then DECISIONS.md records the choice and the migration card unblocks
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- signed decision recorded in DECISIONS.md
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - prime/diagram-design

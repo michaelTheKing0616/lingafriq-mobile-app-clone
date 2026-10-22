@@ -1,0 +1,104 @@
+charter: v2
+id: F-012
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Placement test
+phase: P7
+epic: E-P7-HUBS
+hub: Learn
+req_ids:
+- F-012
+- F-012.D
+- F-012.E
+- F-012.U
+- F-012.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P5-CONTENT-REAL
+size: M
+difficulty:
+  score: 6
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: hub feature delta spec'
+token_budget: 80000
+file_allowlist:
+- lib/screens/onboarding/placement_test_screen.dart
+- lib/screens/onboarding/placement_quiz_screen.dart
+context_anchors:
+- ELEVATION.md#§18.3:L3666-L3678
+delta:
+  current_state: Placement works on primary screen; quiz variant is unrouted duplicate.
+  defects_to_fix:
+  - Not adaptive; no speaking component.
+  elevation_to_build:
+  - Adaptive ~3-minute CAT with listening, reading, and one speaking prompt; retakeable placement on Path.
+  ux_and_render:
+  - Calm one item per screen with clear "skip, I'm a beginner" option.
+  hub_placement: Onboarding; Learn → Path → "Retake placement".
+  unlock_stage: per §17.4
+  harvest_list:
+  - lib/screens/onboarding/placement_quiz_screen.dart
+acceptance_criteria:
+- id: AC1
+  text: Given onboarding, when placement runs, then listening, reading, and speaking items adapt within ~3 minutes.
+- id: AC2
+  text: Given beginner skip, when chosen, then learner lands on A1 start without fake scores.
+- id: AC3
+  text: Given retake from Path, when completed, then Path position updates from server-validated results.
+test_plan:
+  unit:
+  - domain rules for feature delta
+  integration:
+  - navigation and data wiring from hub placement
+  e2e:
+  - primary happy path from Lives in entry
+  a11y:
+  - goldens at 100%/200% text
+  - semantics order
+  content:
+  - honest labels on shown curriculum or media
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - learn.f_012.*
+tags: []
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/onboarding-ux
+  - prime/mobile-app-ui-design

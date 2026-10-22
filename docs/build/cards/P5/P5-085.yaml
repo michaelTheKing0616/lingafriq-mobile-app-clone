@@ -1,0 +1,51 @@
+charter: v2
+id: P5-085
+kind: verification
+title: Measure machine pipeline throughput in Phase 1
+phase: P5
+epic: E-P5-A1
+req_ids:
+- CP-§9.3-01
+- CP-§9.3-02
+depends_on:
+- P5-077
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T0
+  tester: T0
+  reviewer: T1
+  justification: verification only; no code
+token_budget: 20000
+file_allowlist: []
+context_anchors:
+- CURRICULUM.md#§9.3:L818-L820
+acceptance_criteria:
+- id: AC1
+  text: Given Phase 1, when measured, then items generated and verified per week are recorded against the 2,000-4,000 estimate
+    [estimate]
+- id: AC2
+  text: Given a result outside the range, when reported, then the plan is updated, not the data
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

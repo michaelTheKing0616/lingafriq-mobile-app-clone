@@ -1,0 +1,100 @@
+charter: v2
+id: P10-909
+kind: build
+title: Build circle quests, family challenges and Heritage Tree
+phase: P10
+epic: E-P10-GAMIFICATION
+req_ids:
+- EP-§12.2-28
+- EP-§12.2-29
+- EP-§12.2-30
+depends_on:
+- E-P9-SAFETY
+- P10-901
+size: L
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: score 7; blast 2; p0 area
+token_budget: 150000
+file_allowlist:
+- node-backend/src/services/quests.service.ts
+- lib/screens/village/circle_quest_screen.dart
+- lib/screens/village/heritage_tree_screen.dart
+- lib/providers/gamification_provider.dart
+context_anchors:
+- ELEVATION.md#§12.2:L1832-L1833
+acceptance_criteria:
+- id: AC1
+  text: Given a circle or classroom, when a quest goal is set, then progress is the sum of server-verified learning XP from
+    members only.
+- id: AC2
+  text: Given a family challenge phrase of the week, when a learner teaches it back, then a member confirms and the server
+    records completion once.
+- id: AC3
+  text: Given family members learn, when the Heritage Tree renders, then growth equals the count of verified can-dos across
+    linked members.
+- id: AC4
+  text: Given a minor is a member, when any quest or tree is shown, then it is visible only inside the circle or class and
+    shows no public identity.
+- id: AC5
+  text: Given a member leaves, when progress is recalculated, then their contribution is removed and the change is logged.
+test_plan:
+  unit:
+  - goal sum
+  - tree growth
+  integration:
+  - minor visibility
+  security:
+  - no public minor data
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - empty
+  - in-progress
+  - complete
+  - minor-private
+  copy_keys:
+  - quest_progress
+  - heritage_tree_title
+  tokens:
+  - color.semantic
+  - type.scale
+  - space.scale
+  motion_tier: rare
+  a11y:
+  - screen reader labels
+  - 48dp touch targets
+  - reduced motion honoured
+  goldens:
+  - quest_progress_golden
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Family-link consent flow depends on P9 safety work
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

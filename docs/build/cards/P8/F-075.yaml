@@ -1,0 +1,115 @@
+id: F-075
+kind: feature
+title: Elevate Pronunciation Karaoke
+phase: P8
+epic: E-P8-PLAY
+hub: Play
+req_ids:
+- F-075
+- F-075.D
+- F-075.E
+- F-075.U
+- F-075.L
+- P0-18
+depends_on:
+- P8-900
+- P8-912
+- E-P8-PLAY
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P6-SCORER
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: 2 blast, coupling 2'
+token_budget: 80000
+file_allowlist:
+- lib/screens/games/pronunciation_karaoke_screen.dart
+context_anchors:
+- ELEVATION.md#§18.5:L4581-L4596
+delta:
+  current_state: Routed from Arcade via game_router; content still uses the legacy 85–118 word pool without audio.
+  defects_to_fix:
+  - Thin static word pool without reliable audio.
+  - No learner-model writeback after play.
+  - Legacy per-game results instead of GameKit mastery.
+  - Hard-coded UI strings bypass l10n.
+  elevation_to_build:
+  - Echo Karaoke with real F0 contour overlay.
+  - Licensed songs plus children's rhymes and praise phrases.
+  ux_and_render:
+  - GameKit frame with unified illustration style and audio on every target-language item.
+  - Reduced-motion variant respects system setting.
+  hub_placement: Play → Speaking shelf.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given karaoke mode before pitch analysis ships, when the learner sings, then no 60–95 random pitch score displays.
+- id: AC2
+  text: Given scorer available, when performance completes, then F0 line compares learner trace to reference honestly.
+- id: AC3
+  text: Given licensed track selected, when playback starts, then only licensed assets play or content-under-review shows.
+test_plan:
+  unit:
+  - game rules
+  - content binding
+  integration:
+  - GameKit session
+  - learner model writeback
+  e2e:
+  - Play shelf launch to results
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content:
+  - lexicon pool has audio for target language
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - 075.*
+tags:
+- shows_score
+p0_area: true
+external_blockers:
+- EXT-13
+charter: v2
+inherits: FEATURE_BASE
+gate: HUB
+status: Draft
+user_facing: true
+risks: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

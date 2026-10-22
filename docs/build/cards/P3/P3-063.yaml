@@ -1,0 +1,91 @@
+charter: v2
+id: P3-063
+kind: build
+title: Revive Family and Guardian dashboard
+phase: P3
+epic: E-P3-REVIVE
+req_ids:
+- REV-22
+depends_on:
+- P3-043
+- P3-052
+- E-P9-SAFETY
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/screens/subscription/family_dashboard_screen.dart
+context_anchors:
+- ELEVATION.md#§17.5:L2325-L2332
+acceptance_criteria:
+- id: AC1
+  text: Given the hub Me, when the learner opens it, then the entry point leads to /me/family and each route is registered
+    in my_app.dart
+- id: AC2
+  text: Given the screen has no data, when it opens, then the empty state shows; given a load error, then the error state
+    shows and no stale data renders
+- id: AC3
+  text: Given the reachability scan from lib/main.dart, when it runs, then every revived screen is reachable from the shell
+- id: AC4
+  text: Given a guardian, when the dashboard opens, then it lists linked child accounts and approvals; given a non-guardian,
+    then access is denied with a typed error
+test_plan:
+  unit:
+  - route registered
+  integration:
+  - entry from hub
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - semantics
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - default
+  - empty
+  - error
+  - offline
+  copy_keys:
+  - rev.rv_family.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

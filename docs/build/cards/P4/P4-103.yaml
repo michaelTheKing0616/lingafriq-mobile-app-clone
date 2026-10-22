@@ -1,0 +1,75 @@
+charter: v2
+id: P4-103
+kind: build
+title: Define exercise item schema with matching rules and IRT params
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.5-17
+- EP-§6.5-18
+- EP-§6.5-19
+depends_on:
+- P4-100
+- P4-101
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- schemas/v2/content/item.schema.json
+- test/content/test_item_schema.py
+context_anchors:
+- ELEVATION.md#§6.5:L1293-L1320
+- CURRICULUM.md#§10:L852
+acceptance_criteria:
+- id: AC1
+  text: Given an item, when validated, then id, type, stimulus refs, answer spec, distractor rationale, skill tags and IRT
+    a and b (floats) are present
+- id: AC2
+  text: Given an answer spec, when validated, then accepted variants and a diacritic_matching rule in strict|tone_lenient|diacritic_insensitive
+    are declared, else MATCH_RULE_MISSING
+- id: AC3
+  text: Given an item with label beta, when assembled into a checkpoint, placement test, credential or children's-mode pack,
+    then pack build fails BETA_FORBIDDEN_CONTEXT (D1)
+- id: AC4
+  text: Given a distractor lacking a rationale, when validated, then DISTRACTOR_RATIONALE_MISSING is raised
+- id: AC5
+  text: Given IRT params absent on a new item, when validated, then the item is accepted only with irt_status uncalibrated
+    and never silently defaulted
+test_plan:
+  unit:
+  - test_item_schema
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - fixtures
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

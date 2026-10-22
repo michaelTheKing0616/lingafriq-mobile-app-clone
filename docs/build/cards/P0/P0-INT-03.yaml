@@ -1,0 +1,61 @@
+charter: v2
+id: P0-INT-03
+kind: build
+title: Add charter prefixes to worker, tester, reviewer briefs
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- RM-STOP-03
+depends_on:
+- E-P0-INTAKE
+- P0-INT-01
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T0
+  tester: T0
+  reviewer: T1
+  justification: template files exist; marker check is deterministic
+token_budget: 25000
+file_allowlist:
+- docs/build/templates/worker_brief.md
+- docs/build/templates/tester_brief.md
+- docs/build/templates/reviewer_brief.md
+context_anchors:
+- docs/build/02_PIPELINE.md#briefs
+acceptance_criteria:
+- id: AC1
+  text: 'Given docs/build/templates/{worker,tester,reviewer}_brief.md, when each is read, then its first line carries `charter:
+    v2` and the stable prefix text is identical across the three'
+- id: AC2
+  text: Given the three briefs, when `python3 scripts/check_agent_files.py` runs, then it exits 0
+test_plan:
+  unit:
+  - check_agent_files.py exit 0
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- docs/build/templates/*_brief.md
+- python3 scripts/check_agent_files.py OK
+risks: []
+gate: G0
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

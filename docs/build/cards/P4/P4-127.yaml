@@ -1,0 +1,51 @@
+charter: v2
+id: P4-127
+kind: external
+title: Secure partner and university linguist agreements
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.4-33
+- EP-§6.4-34
+- EP-§6.4-35
+depends_on: []
+size: S
+difficulty:
+  score: 2
+  blast: 0
+  ambiguity: 2
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 0, ambiguity 2, coupling 0'
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§6.4:L1221-L1262
+acceptance_criteria:
+- id: AC1
+  text: Agreements or written responses obtained for the partner list (Masakhane, Lanfrica/NaijaVoices, African Next Voices,
+    Lelapa, Intron), the named universities and community or diaspora associations, each stored with scope and benefit terms
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-11
+- EXT-13
+status: Blocked-External
+skills:
+  worker:
+  - adaptive/09-writing-and-communication

@@ -1,0 +1,83 @@
+charter: v2
+id: P1-045
+kind: build
+title: Enforce 8-char password with breached check and Argon2id rehash
+phase: P1
+epic: E-P1-AUTH
+req_ids:
+- P0-25
+- EP-§13.1-07
+- EP-§13.1-08
+- EP-§13.1-09
+- EP-§13.1-11
+depends_on:
+- E-P0-INTAKE
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T3
+  reviewer: T2
+  justification: score 6; blast 3; security/crypto tester
+token_budget: 70000
+file_allowlist:
+- node-backend/src/controllers/auth.controller.ts
+- node-backend/src/services/password.service.ts
+- node-backend/src/services/breachedPassword.service.ts
+- node-backend/src/validators/auth.schema.ts
+context_anchors:
+- ELEVATION.md#§1:L377-L386
+- ELEVATION.md#§13.1:L1851-L1852
+- ELEVATION.md#§13.1:L1852-L1853
+- ELEVATION.md#§13.1:L1852
+- ELEVATION.md#§13.1:L1853-L1854
+acceptance_criteria:
+- id: AC1
+  text: Given sign-up, change-password or reset, when the password is under 8 characters, then it is rejected with a typed
+    validation error
+- id: AC2
+  text: Given a password found in the breached-password check, when set, then it is rejected, and the check sends only a hash
+    prefix so the password never leaves the server
+- id: AC3
+  text: Given the breach service is down, when a password is set, then it is accepted only if it passes local checks and the
+    miss is logged
+- id: AC4
+  text: Given a user with a legacy Django hash, when they log in successfully, then the hash is replaced with Argon2id
+- id: AC5
+  text: Given the current sign-up rule is unverified, when the card starts, then the actual rule is read from code and recorded
+    in the report
+test_plan:
+  unit:
+  - policy and rehash
+  integration:
+  - legacy-hash login
+  security:
+  - k-anonymity prefix only
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G1
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

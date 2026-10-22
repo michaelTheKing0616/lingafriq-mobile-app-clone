@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:rive/rive.dart' hide LinearGradient;
 import '../avatar_engine.dart';
+import '../cast/cast_stage.dart';
 
 /// Polie Avatar Colors - Afro-futurist palette
 class PolieAvatarColors {
@@ -14,21 +14,17 @@ class PolieAvatarColors {
   static const Color ancestralGold = Color(0xFFD4AF37);
   static const Color deepSpace = Color(0xFF1A1A2E);
   static const Color nebulaPurple = Color(0xFF6B5B95);
-  
+
   static const LinearGradient glowGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [electricTeal, cosmicBlue, royalAmethyst],
   );
-  
+
   static const LinearGradient auraGradient = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [
-      Color(0x4000D4AA),
-      Color(0x209B59B6),
-      Color(0x00000000),
-    ],
+    colors: [Color(0x4000D4AA), Color(0x209B59B6), Color(0x00000000)],
   );
 }
 
@@ -40,7 +36,7 @@ class PolieAvatar extends StatefulWidget {
   final bool interactive;
   final VoidCallback? onTap;
   final AvatarController? controller;
-  
+
   const PolieAvatar({
     super.key,
     this.size = 200,
@@ -50,53 +46,53 @@ class PolieAvatar extends StatefulWidget {
     this.onTap,
     this.controller,
   });
-  
+
   @override
   State<PolieAvatar> createState() => _PolieAvatarState();
 }
 
-class _PolieAvatarState extends State<PolieAvatar> 
+class _PolieAvatarState extends State<PolieAvatar>
     with TickerProviderStateMixin {
   AvatarController? _controller;
   late AnimationController _pulseController;
   late AnimationController _glowController;
   late AnimationController _particleController;
   bool _isLoaded = false;
-  
+
   @override
   void initState() {
     super.initState();
-    
+
     _pulseController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 2000),
     )..repeat(reverse: true);
-    
+
     _glowController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 3000),
     )..repeat(reverse: true);
-    
+
     _particleController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 5000),
     )..repeat();
-    
+
     _initializeController();
   }
-  
+
   Future<void> _initializeController() async {
     if (widget.controller != null) {
       _controller = widget.controller;
     } else {
       _controller = await AvatarEngine().getController(AvatarType.polie);
     }
-    
+
     if (mounted) {
       setState(() => _isLoaded = true);
     }
   }
-  
+
   @override
   void dispose() {
     _pulseController.dispose();
@@ -104,7 +100,7 @@ class _PolieAvatarState extends State<PolieAvatar>
     _particleController.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -117,13 +113,13 @@ class _PolieAvatarState extends State<PolieAvatar>
           children: [
             // Aura effect
             if (widget.showAura) _buildAura(),
-            
+
             // Particles
             if (widget.showParticles) _buildParticles(),
-            
+
             // Main avatar
             _buildAvatar(),
-            
+
             // Glow ring
             _buildGlowRing(),
           ],
@@ -131,7 +127,7 @@ class _PolieAvatarState extends State<PolieAvatar>
       ),
     );
   }
-  
+
   Widget _buildAura() {
     return AnimatedBuilder(
       animation: _pulseController,
@@ -151,7 +147,7 @@ class _PolieAvatarState extends State<PolieAvatar>
       },
     );
   }
-  
+
   Widget _buildParticles() {
     return AnimatedBuilder(
       animation: _particleController,
@@ -166,12 +162,12 @@ class _PolieAvatarState extends State<PolieAvatar>
       },
     );
   }
-  
+
   Widget _buildAvatar() {
-    if (!_isLoaded || _controller?.artboard == null) {
+    if (!_isLoaded || _controller == null) {
       return _buildFallbackAvatar();
     }
-    
+
     return Container(
       width: widget.size * 0.8,
       height: widget.size * 0.8,
@@ -186,40 +182,44 @@ class _PolieAvatarState extends State<PolieAvatar>
         ],
       ),
       child: ClipOval(
-        child: Rive(
-          artboard: _controller!.artboard!,
-          fit: BoxFit.cover,
+        child: CastStage(
+          session: _controller!.session,
+          onTap: widget.interactive ? _handleTap : null,
         ),
       ),
     );
   }
-  
+
   Widget _buildFallbackAvatar() {
     return Container(
-      width: widget.size * 0.8,
-      height: widget.size * 0.8,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        gradient: PolieAvatarColors.glowGradient,
-        boxShadow: [
-          BoxShadow(
-            color: PolieAvatarColors.electricTeal.withOpacity(0.4),
-            blurRadius: 30,
-            spreadRadius: 10,
+          width: widget.size * 0.8,
+          height: widget.size * 0.8,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: PolieAvatarColors.glowGradient,
+            boxShadow: [
+              BoxShadow(
+                color: PolieAvatarColors.electricTeal.withOpacity(0.4),
+                blurRadius: 30,
+                spreadRadius: 10,
+              ),
+            ],
           ),
-        ],
-      ),
-      child: Center(
-        child: Icon(
-          Icons.auto_awesome,
-          size: widget.size * 0.4,
-          color: Theme.of(context).colorScheme.onPrimary,
-        ),
-      ),
-    ).animate(onPlay: (c) => c.repeat(reverse: true))
-      .shimmer(duration: 2.seconds, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.24));
+          child: Center(
+            child: Icon(
+              Icons.auto_awesome,
+              size: widget.size * 0.4,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
+        )
+        .animate(onPlay: (c) => c.repeat(reverse: true))
+        .shimmer(
+          duration: 2.seconds,
+          color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.24),
+        );
   }
-  
+
   Widget _buildGlowRing() {
     return AnimatedBuilder(
       animation: _glowController,
@@ -239,7 +239,7 @@ class _PolieAvatarState extends State<PolieAvatar>
       },
     );
   }
-  
+
   void _handleTap() {
     HapticFeedback.lightImpact();
     _controller?.wave();
@@ -251,50 +251,47 @@ class _PolieAvatarState extends State<PolieAvatar>
 class _ParticlePainter extends CustomPainter {
   final double progress;
   final Color color;
-  
-  _ParticlePainter({
-    required this.progress,
-    required this.color,
-  });
-  
+
+  _ParticlePainter({required this.progress, required this.color});
+
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
       ..color = color.withOpacity(0.6)
       ..style = PaintingStyle.fill;
-    
+
     final center = Offset(size.width / 2, size.height / 2);
     final radius = size.width / 2;
-    
+
     // Draw orbiting particles
     for (int i = 0; i < 8; i++) {
       final angle = (progress * 2 * 3.14159) + (i * 3.14159 / 4);
       final particleRadius = radius * (0.7 + (i % 3) * 0.1);
       final x = center.dx + particleRadius * _cos(angle);
       final y = center.dy + particleRadius * _sin(angle);
-      
+
       final particleSize = 2.0 + (i % 3);
       final opacity = 0.3 + ((i % 4) * 0.15);
-      
+
       paint.color = color.withOpacity(opacity);
       canvas.drawCircle(Offset(x, y), particleSize, paint);
     }
   }
-  
+
   double _cos(double angle) => _cosApprox(angle);
   double _sin(double angle) => _sinApprox(angle);
-  
+
   // Simple approximations to avoid importing dart:math
   double _cosApprox(double x) {
     x = x % (2 * 3.14159);
     return 1 - (x * x / 2) + (x * x * x * x / 24);
   }
-  
+
   double _sinApprox(double x) {
     x = x % (2 * 3.14159);
     return x - (x * x * x / 6) + (x * x * x * x * x / 120);
   }
-  
+
   @override
   bool shouldRepaint(_ParticlePainter oldDelegate) {
     return oldDelegate.progress != progress;
@@ -305,13 +302,9 @@ class _ParticlePainter extends CustomPainter {
 class PolieAvatarCompact extends StatelessWidget {
   final double size;
   final AvatarController? controller;
-  
-  const PolieAvatarCompact({
-    super.key,
-    this.size = 48,
-    this.controller,
-  });
-  
+
+  const PolieAvatarCompact({super.key, this.size = 48, this.controller});
+
   @override
   Widget build(BuildContext context) {
     return PolieAvatar(
@@ -328,13 +321,13 @@ class PolieAvatarCompact extends StatelessWidget {
 class PolieSpeakingIndicator extends StatefulWidget {
   final bool isSpeaking;
   final Color color;
-  
+
   const PolieSpeakingIndicator({
     super.key,
     required this.isSpeaking,
     this.color = PolieAvatarColors.electricTeal,
   });
-  
+
   @override
   State<PolieSpeakingIndicator> createState() => _PolieSpeakingIndicatorState();
 }
@@ -342,7 +335,7 @@ class PolieSpeakingIndicator extends StatefulWidget {
 class _PolieSpeakingIndicatorState extends State<PolieSpeakingIndicator>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  
+
   @override
   void initState() {
     super.initState();
@@ -350,12 +343,12 @@ class _PolieSpeakingIndicatorState extends State<PolieSpeakingIndicator>
       vsync: this,
       duration: const Duration(milliseconds: 600),
     );
-    
+
     if (widget.isSpeaking) {
       _controller.repeat(reverse: true);
     }
   }
-  
+
   @override
   void didUpdateWidget(PolieSpeakingIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -368,13 +361,13 @@ class _PolieSpeakingIndicatorState extends State<PolieSpeakingIndicator>
       }
     }
   }
-  
+
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -386,7 +379,7 @@ class _PolieSpeakingIndicatorState extends State<PolieSpeakingIndicator>
             final delay = index * 0.15;
             final value = ((_controller.value + delay) % 1.0);
             final height = 4 + (value * 12);
-            
+
             return Container(
               margin: const EdgeInsets.symmetric(horizontal: 2),
               width: 4,

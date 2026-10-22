@@ -1,0 +1,94 @@
+charter: v2
+id: P1-048
+kind: build
+title: Add passkey sign-in
+phase: P1
+epic: E-P1-AUTH
+req_ids:
+- EP-§13.1-06
+depends_on:
+- E-P0-INTAKE
+- P1-047
+size: L
+difficulty:
+  score: 9
+  blast: 2
+  ambiguity: 2
+  coupling: 2
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T3
+  justification: score 9; blast 2; security/crypto tester
+token_budget: 160000
+file_allowlist:
+- node-backend/src/controllers/auth.controller.ts
+- node-backend/src/services/passkey.service.ts
+- node-backend/src/models/passkeyCredential.model.ts
+- lib/services/passkey_service.dart
+- lib/screens/auth/passkey_prompt.dart
+context_anchors:
+- ELEVATION.md#§13.1:L1851
+acceptance_criteria:
+- id: AC1
+  text: Given a signed-in user, when they register a passkey, then a credential is stored and listed in their security settings
+- id: AC2
+  text: Given a registered passkey, when they sign in with it, then they receive tokens per P1-047 with no password entry
+- id: AC3
+  text: Given a replayed or cross-origin assertion, when verified, then it is rejected
+- id: AC4
+  text: Given a device without passkey support, when the option is shown, then the user is offered Google, Apple or email
+    link instead
+- id: AC5
+  text: Given a lost device, when the user removes a passkey, then it can no longer authenticate
+test_plan:
+  unit:
+  - challenge handling
+  integration:
+  - register and login flow
+  security:
+  - replay and origin tests
+  e2e:
+  - passkey sign-in on a test device
+  perf: []
+  a11y:
+  - prompt labels
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - prompt
+  - registering
+  - success
+  - unsupported
+  - error
+  copy_keys:
+  - passkey.prompt
+  - passkey.unsupported
+  tokens:
+  - design-system form tokens
+  motion_tier: product
+  a11y:
+  - prompt labelled
+  - error announced
+  goldens:
+  - passkey_prompt
+  - passkey_unsupported
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G1
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

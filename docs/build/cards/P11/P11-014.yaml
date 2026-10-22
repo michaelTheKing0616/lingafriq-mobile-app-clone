@@ -1,0 +1,76 @@
+charter: v2
+id: P11-014
+kind: build
+title: Author Thomas Mofolo persona dossier and prompts
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- RM-P1-17
+depends_on:
+- E-P1-CONTAINMENT
+- P11-002
+- P11-001
+- P11-006
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 2
+  coupling: 0
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 2, coupling 0, depth 0'
+token_budget: 70000
+file_allowlist:
+- docs/build/personas/dossiers/thomas_mofolo.json
+- node-backend/src/services/persona/personas/index.ts
+context_anchors:
+- ELEVATION.md#§8.3:L1517-L1520
+- ELEVATION.md#§8.2:L1503-L1515
+acceptance_criteria:
+- id: AC1
+  text: Given the Thomas Mofolo dossier, when validated against the schema, then it has ≥1 primary source, ≥1 secondary source,
+    contested points and known myths filled, and the death date set.
+- id: AC2
+  text: Given the dossier, when historian review completes, then review.signed_at and historian_id are set; the persona stays
+    disabled until they are.
+- id: AC3
+  text: Given the persona definition (Sesotho and English), when loaded, then it declares mode from ADR-031 and its age-tier
+    overrides.
+- id: AC4
+  text: Given the 50-probe set for this persona, when run, then the persona passes the suite thresholds of its eval card.
+test_plan:
+  unit:
+  - dossier schema
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - historian review sign-off recorded
+  - 50 probes pass
+user_facing: false
+ux_spec: null
+tags:
+- enables_persona
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers:
+- EXT-15
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

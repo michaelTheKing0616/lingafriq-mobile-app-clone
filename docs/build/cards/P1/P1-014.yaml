@@ -1,0 +1,74 @@
+charter: v2
+id: P1-014
+kind: build
+title: Derive socket identity only from verified JWT
+phase: P1
+epic: E-P1-SOCKETS
+req_ids:
+- P0-5
+- RM-P0-03
+depends_on:
+- E-P0-INTAKE
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 0
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T3
+  reviewer: T2
+  justification: score 6; blast 3; security/crypto tester
+token_budget: 70000
+file_allowlist:
+- node-backend/src/services/socket.service.ts
+- node-backend/src/socket/handlers.ts
+- node-backend/src/middleware/socketAuth.middleware.ts
+context_anchors:
+- ELEVATION.md#§1:L142-L149
+- ELEVATION.md#§16.1:L2026-L2029
+acceptance_criteria:
+- id: AC1
+  text: Given a client emitting user_connected with another user's id, when processed, then the event does not exist, the
+    server ignores it and the socket stays bound to its JWT subject
+- id: AC2
+  text: Given a token passed in the query string, when connecting, then the handshake is rejected and only auth-payload tokens
+    are accepted
+- id: AC3
+  text: Given an expired or unsigned JWT, when connecting, then the handshake fails with a typed auth error
+- id: AC4
+  text: Given two users, when user A tries to receive user B's per-user events by spoofing, then 0 events arrive
+test_plan:
+  unit:
+  - handshake auth
+  integration:
+  - spoof attempt test
+  security:
+  - token-in-query rejection
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "user_connected remains as a presence ping bound to the JWT subject; P0-5 asked for the event to be removed"
+- "If JWT_SECRET is unset outside production, verification falls back to a fixed development secret"
+gate: G1
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

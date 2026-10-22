@@ -1,0 +1,48 @@
+charter: v2
+id: P5-054
+kind: verification
+title: Verify Tier C Expert error ≤1.5%
+phase: P5
+epic: E-P5-QUALITY
+req_ids:
+- CP-§6-14
+depends_on:
+- P5-051
+- P5-056
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T0
+  tester: T0
+  reviewer: T1
+  justification: verification only; no code
+token_budget: 20000
+file_allowlist: []
+context_anchors:
+- CURRICULUM.md#§6:L664-L664
+acceptance_criteria:
+- id: AC1
+  text: Given Expert-reviewed Yoruba and Igbo items, when sampled, then error is ≤1.5% or the gate fails
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G6
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

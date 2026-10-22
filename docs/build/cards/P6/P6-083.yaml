@@ -1,0 +1,77 @@
+charter: v2
+id: P6-083
+kind: build
+title: Add push-to-talk fallback for noise and low bandwidth
+phase: P6
+epic: E-P6-REALTIME
+req_ids:
+- EP-§7.7-10
+depends_on:
+- P6-075
+size: S
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist:
+- lib/services/realtime_voice_client.dart
+- lib/screens/voice/ptt_button.dart
+context_anchors:
+- ELEVATION.md#§7.7:L1480-L1481
+acceptance_criteria:
+- id: AC1
+  text: Given noisy conditions or user choice, when push-to-talk is on, then audio is captured only while held and VAD is
+    bypassed
+- id: AC2
+  text: Given bandwidth below the threshold, when detected, then the app offers push-to-talk automatically
+test_plan:
+  unit:
+  - capture window
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - toggle alternative
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - idle
+  - held
+  - sending
+  - error
+  copy_keys:
+  - voice.ptt_hold
+  tokens:
+  - color.accent
+  motion_tier: product
+  a11y:
+  - hold alternative with toggle for motor access
+  goldens:
+  - ptt_held
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

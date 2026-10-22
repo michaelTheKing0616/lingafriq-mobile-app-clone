@@ -1,0 +1,68 @@
+charter: v2
+id: P2-008
+kind: build
+title: Gate 70% coverage on domain logic
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.9-09
+- EP-§13.9-10
+depends_on:
+- E-P1-CONTAINMENT
+- P2-001
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 0
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 3: blast 1, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist:
+- .github/workflows/build.yml
+- scripts/ci/coverage_gate.py
+- coverage_domain_paths.yaml
+context_anchors:
+- ELEVATION.md#§13.9:L1954
+- ELEVATION.md#§13.9:L1954-L1955
+acceptance_criteria:
+- id: AC1
+  text: Given the domain-path list, when CI computes coverage, then the job fails below 70% line coverage on those paths
+- id: AC2
+  text: Given the 64 existing Flutter test files baseline, when the gate lands, then the baseline test and file counts are
+    recorded in STATUS inputs
+- id: AC3
+  text: Given a new domain file with no tests, when CI runs, then it counts at 0% and fails the gate if it drops the total
+    below 70%
+test_plan:
+  unit:
+  - coverage parser fixtures
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

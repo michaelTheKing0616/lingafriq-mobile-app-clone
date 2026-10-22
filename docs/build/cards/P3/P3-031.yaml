@@ -1,0 +1,60 @@
+charter: v2
+id: P3-031
+kind: design
+title: Draw wireflows for Today, Learn and Speak
+phase: P3
+epic: E-P3-DESIGN-WORKFLOW
+req_ids:
+- EP-§17.1-02
+- EP-§17.1-04
+- EP-§17.1-05
+depends_on:
+- P3-030
+size: M
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T4
+  justification: 'score 4: blast 0, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- docs/build/design/WIREFLOWS_TODAY_LEARN_SPEAK.md
+context_anchors:
+- ELEVATION.md#§17.1:L2171-L2194
+acceptance_criteria:
+- id: AC1
+  text: Given each hub, when the wireflow is drawn, then every sitemap item appears with entry, back and empty paths
+- id: AC2
+  text: Given a destination, when counted, then it is reachable in <=2 taps from its hub root
+- id: AC3
+  text: Given global tools, when added, then Search, Lens and Word Card entries appear on every wireflow
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: true
+dod_evidence:
+- tester report
+- ledger row
+- T4 visual approval with exported frames
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/navigation-patterns
+  - prime/information-architecture
+  - prime/user-flow-diagram
+  reviewer_extra:
+  - prime/critique-visual-hierarchy
+  - prime/critique-typography
+  - prime/design-to-code-check

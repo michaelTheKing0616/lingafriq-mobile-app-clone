@@ -1,0 +1,90 @@
+charter: v2
+id: P3-056
+kind: build
+title: Revive Shadowing exercise
+phase: P3
+epic: E-P3-REVIVE
+req_ids:
+- REV-25
+depends_on:
+- P3-040
+- E-P6-SCORER
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/screens/tutor/shadowing_exercise_screen.dart
+context_anchors:
+- ELEVATION.md#§17.5:L2325-L2332
+acceptance_criteria:
+- id: AC1
+  text: Given the hub Speak, when the learner opens it, then the entry point leads to /speak/shadowing and each route is registered
+    in my_app.dart
+- id: AC2
+  text: Given the screen has no data, when it opens, then the empty state shows; given a load error, then the error state
+    shows and no stale data renders
+- id: AC3
+  text: Given the reachability scan from lib/main.dart, when it runs, then every revived screen is reachable from the shell
+- id: AC4
+  text: Given a shadowing attempt, when scored, then the score shows only from the real scorer with an unsure state and never
+    a placeholder number
+test_plan:
+  unit:
+  - route registered
+  integration:
+  - entry from hub
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - semantics
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - default
+  - empty
+  - error
+  - offline
+  copy_keys:
+  - rev.rv_shadow.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags:
+- shows_score
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

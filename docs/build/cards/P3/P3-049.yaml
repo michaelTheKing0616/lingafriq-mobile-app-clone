@@ -1,0 +1,69 @@
+charter: v2
+id: P3-049
+kind: build
+title: 'Add contextual surfacing rules: lesson, word, camera, tones'
+phase: P3
+epic: E-P3-SHELL
+req_ids:
+- EP-§17.3-01
+- EP-§17.3-02
+- EP-§17.3-03
+- EP-§17.3-04
+depends_on:
+- P3-039
+- P3-047
+size: M
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 4: blast 0, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/navigation/surfacing_rules.dart
+- assets/config/surfacing_rules.json
+- test/navigation/surfacing_rules_test.dart
+context_anchors:
+- ELEVATION.md#§17.3:L2295-L2300
+acceptance_criteria:
+- id: AC1
+  text: Given a lesson finishes, when Lesson Recap opens, then a say-it action and one matching game are offered
+- id: AC2
+  text: Given a word is long-pressed, when the card opens, then Living Dictionary, save and practise are offered
+- id: AC3
+  text: Given an object lesson or the camera button, when used, then Lens Point & Say is offered
+- id: AC4
+  text: Given repeated tone errors, when detected from learner events, then Tone Gym appears in Today and Tone Forge in Play,
+    each at most once per day
+test_plan:
+  unit:
+  - rule table
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

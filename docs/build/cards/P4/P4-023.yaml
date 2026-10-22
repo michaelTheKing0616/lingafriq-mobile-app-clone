@@ -1,0 +1,48 @@
+charter: v2
+id: P4-023
+kind: verification
+title: Verify and purchase Yoruba reference grammar
+phase: P4
+epic: E-P4-LANGUAGE-KITS
+req_ids:
+- CP-§2.4-yo-03
+depends_on:
+- P4-022
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: 'score 1: blast 0, ambiguity 1, coupling 0, depth 0, size 0'
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- CURRICULUM.md#§2.4:L290-L297
+acceptance_criteria:
+- id: AC1
+  text: Given the Yoruba grammar need, when verified, then a modern reference grammar (e.g. Bámgbóṣé) edition is chosen and
+    its purchase is logged on EXT-22
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- dated evidence note
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-22
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

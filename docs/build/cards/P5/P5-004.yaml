@@ -1,0 +1,68 @@
+charter: v2
+id: P5-004
+kind: build
+title: Rebuild legacy Word Card fields and drop false tone rule
+phase: P5
+epic: E-P5-A1
+req_ids:
+- EP-§6.1-26
+- EP-§6.1-27
+- EP-§6.1-28
+depends_on:
+- P5-002
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 3: blast 1, ambiguity 1, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist:
+- tools/content/wordcard_rebuild.py
+- test/content/wordcard_rebuild_test.py
+context_anchors:
+- ELEVATION.md#§6.1:L1128-L1130
+acceptance_criteria:
+- id: AC1
+  text: Given a Word Card where phonetic_guide equals tonal_note, when rebuilt, then phonetic_guide is generated from IPA
+    or set null; equality is rejected by lint WC-001
+- id: AC2
+  text: Given the entry carrying the false tone rule (P0-17), when rebuilt, then the rule text is removed and the entry re-enters
+    via the lexicon-anchored path only
+- id: AC3
+  text: Given a topic truncated mid-parenthesis (3 known), when linted, then WC-002 fails the build and the three topics are
+    restored from source or removed
+test_plan:
+  unit:
+  - WC-001/002
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - 1,409 legacy words re-linted
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,86 @@
+charter: v2
+id: P4-101
+kind: build
+title: Define lexeme schema with tone, audio and review fields
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.5-01
+- EP-§6.5-02
+- EP-§6.5-03
+- EP-§6.5-04
+- EP-§6.5-05
+- EP-§6.5-06
+- EP-§6.5-07
+- EP-§6.5-08
+- EP-§6.5-09
+- EP-§6.5-10
+- EP-§6.5-11
+- EP-§6.5-12
+depends_on:
+- P4-100
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- schemas/v2/content/lexeme.schema.json
+- test/content/test_lexeme_schema.py
+- test/content/fixtures/lexeme_yo_oko.json
+context_anchors:
+- ELEVATION.md#§6.5:L1293-L1320
+acceptance_criteria:
+- id: AC1
+  text: Given a lexeme, when validated, then id matches <lang>.lex.<slug>.<sense> and is unique within its language, else
+    LEXEME_ID_INVALID
+- id: AC2
+  text: Given a lexeme, when validated, then lemma is NFC, orthography has standard, ascii_fallback and script, and ipa, tone_pattern
+    and syllables are present for tonal languages, else typed error per field
+- id: AC3
+  text: Given senses[], when validated, then each has gloss_en, gloss_fr, domain and register, and minimal_pairs[] ids must
+    resolve to existing lexemes, else MINIMAL_PAIR_DANGLING
+- id: AC4
+  text: Given audio[] entries, when validated, then each has voice_id, speed in natural|slow, a content-hash uri and aligned_phones,
+    plus audio.kind from P4-100
+- id: AC5
+  text: Given an image field, when validated, then uri, alt_text and cultural_review in approved|pending|rejected are present
+    and pending blocks native_verified
+- id: AC6
+  text: Given the yo ọkọ̀ fixture, when validated, then it passes and cefr plus frequency_rank are carried through unchanged
+test_plan:
+  unit:
+  - test_lexeme_schema
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - yo ọkọ fixture
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,6699 @@
+{
+"lang": "ha",
+"level": "C1",
+"built": "2026-10-21",
+"source_type": "synthesized",
+"items": [
+{
+"id": "ha.syn.96a8948ed6e2",
+"lang": "ha",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.PROD: Produce argumentative text"
+],
+"text": "Ko da yake tattalin arziki ya bunkasa, har yanzu talakawa da yawa suna fama da talauci.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Although the economy has grown, many ordinary people still struggle with poverty.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Ko da yake = although.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Ko",
+"count": 4709,
+"locator": "leipzig:hau_community_2017#s2"
+},
+{
+"token": "da",
+"count": 68620,
+"locator": "leipzig:hau_community_2017#s1"
+},
+{
+"token": "yake",
+"count": 2092,
+"locator": "leipzig:hau_community_2017#s56"
+},
+{
+"token": "tattalin",
+"count": 376,
+"locator": "leipzig:hau_community_2017#s474"
+},
+{
+"token": "arziki",
+"count": 326,
+"locator": "leipzig:hau_community_2017#s372"
+},
+{
+"token": "ya",
+"count": 28034,
+"locator": "leipzig:hau_community_2017#s1"
+},
+{
+"token": "bunkasa",
+"count": 152,
+"locator": "leipzig:hau_community_2017#s898"
+},
+{
+"token": "har",
+"count": 2782,
+"locator": "leipzig:hau_community_2017#s61"
+},
+{
+"token": "yanzu",
+"count": 2364,
+"locator": "leipzig:hau_community_2017#s264"
+},
+{
+"token": "talakawa",
+"count": 146,
+"locator": "leipzig:hau_community_2017#s921"
+},
+{
+"token": "da",
+"count": 68620,
+"locator": "leipzig:hau_community_2017#s1"
+},
+{
+"token": "yawa",
+"count": 1022,
+"locator": "leipzig:hau_community_2017#s62"
+},
+{
+"token": "suna",
+"count": 3074,
+"locator": "leipzig:hau_community_2017#s85"
+},
+{
+"token": "fama",
+"count": 271,
+"locator": "leipzig:hau_community_2017#s76"
+},
+{
+"token": "da",
+"count": 68620,
+"locator": "leipzig:hau_community_2017#s1"
+},
+{
+"token": "talauci",
+"count": 105,
+"locator": "leipzig:hau_community_2017#s415"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:hau_community_2017#s2",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Ko' attested 4709x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s2"
+},
+{
+"text": "token 'da' attested 68620x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s1"
+},
+{
+"text": "token 'yake' attested 2092x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s56"
+},
+{
+"text": "token 'tattalin' attested 376x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s474"
+},
+{
+"text": "token 'arziki' attested 326x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s372"
+},
+{
+"text": "token 'ya' attested 28034x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s1"
+},
+{
+"text": "token 'bunkasa' attested 152x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s898"
+},
+{
+"text": "token 'har' attested 2782x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s61"
+},
+{
+"text": "token 'yanzu' attested 2364x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s264"
+},
+{
+"text": "token 'talakawa' attested 146x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s921"
+},
+{
+"text": "token 'da' attested 68620x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s1"
+},
+{
+"text": "token 'yawa' attested 1022x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s62"
+}
+],
+"confidence": 0.7,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": true,
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.61338099f63b",
+"lang": "ha",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.PROD: Produce narrative text"
+],
+"text": "Da ya isa gida, sai ya ga kofa a bude.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "When he reached home, he saw the door open.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Da (when) + sai sequencing.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Da",
+"count": 68620,
+"locator": "leipzig:hau_community_2017#s1"
+},
+{
+"token": "ya",
+"count": 28034,
+"locator": "leipzig:hau_community_2017#s1"
+},
+{
+"token": "isa",
+"count": 321,
+"locator": "leipzig:hau_community_2017#s273"
+},
+{
+"token": "gida",
+"count": 589,
+"locator": "leipzig:hau_community_2017#s108"
+},
+{
+"token": "sai",
+"count": 5523,
+"locator": "leipzig:hau_community_2017#s8"
+},
+{
+"token": "ya",
+"count": 28034,
+"locator": "leipzig:hau_community_2017#s1"
+},
+{
+"token": "ga",
+"count": 5651,
+"locator": "leipzig:hau_community_2017#s3"
+},
+{
+"token": "kofa",
+"count": 35,
+"locator": "leipzig:hau_community_2017#s4692"
+},
+{
+"token": "a",
+"count": 33552,
+"locator": "leipzig:hau_community_2017#s1"
+},
+{
+"token": "bude",
+"count": 285,
+"locator": "leipzig:hau_community_2017#s6"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:hau_community_2017#s1",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Da' attested 68620x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s1"
+},
+{
+"text": "token 'ya' attested 28034x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s1"
+},
+{
+"text": "token 'isa' attested 321x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s273"
+},
+{
+"text": "token 'gida' attested 589x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s108"
+},
+{
+"text": "token 'sai' attested 5523x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s8"
+},
+{
+"text": "token 'ya' attested 28034x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s1"
+},
+{
+"text": "token 'ga' attested 5651x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s3"
+},
+{
+"text": "token 'kofa' attested 35x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s4692"
+},
+{
+"text": "token 'a' attested 33552x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s1"
+},
+{
+"text": "token 'bude' attested 285x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s6"
+}
+],
+"confidence": 0.7,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": false,
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.929447da4a8d",
+"lang": "ha",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULT: Understand a cultural practice"
+],
+"text": "Sannu da zuwa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Welcome.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": "Standard welcome to an arriving guest; reply 'Yauwa, sannu'.",
+"description_status": "needs-review"
+},
+"token_evidence": [
+{
+"token": "Sannu",
+"count": 53,
+"locator": "leipzig:hau_community_2017#s727"
+},
+{
+"token": "da",
+"count": 68620,
+"locator": "leipzig:hau_community_2017#s1"
+},
+{
+"token": "zuwa",
+"count": 2400,
+"locator": "leipzig:hau_community_2017#s23"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:hau_community_2017#s727",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Sannu' attested 53x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s727"
+},
+{
+"text": "token 'da' attested 68620x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s1"
+},
+{
+"text": "token 'zuwa' attested 2400x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s23"
+}
+],
+"confidence": 0.7,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.culture_note"
+],
+"games": [],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"register_model": true,
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 4,
+"crosscheck_ok": true
+},
+{
+"id": "ha.prv.bebfba672e7c",
+"lang": "ha",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.IDIOM: Understand and use proverbs in context"
+],
+"text": "Komai nisan jifa, dole zai faɗo ƙasa.",
+"source_type": "attested",
+"translation_en": {
+"text": "However far a stone is thrown, it must fall to earth.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"token_evidence": [
+{
+"token": "Komai",
+"count": 511,
+"locator": "leipzig:hau_community_2017#s46"
+},
+{
+"token": "nisan",
+"count": 41,
+"locator": "leipzig:hau_community_2017#s1315"
+},
+{
+"token": "jifa",
+"count": 8,
+"locator": "leipzig:hau_community_2017#s2469"
+},
+{
+"token": "dole",
+"count": 523,
+"locator": "leipzig:hau_community_2017#s136"
+},
+{
+"token": "zai",
+"count": 3390,
+"locator": "leipzig:hau_community_2017#s8"
+},
+{
+"token": "fado",
+"count": 27,
+"locator": "leipzig:hau_community_2017#s2407"
+},
+{
+"token": "kasa",
+"count": 2341,
+"locator": "leipzig:hau_community_2017#s7"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:hau_community_2017#s21697 :: “Komai nisan jifa dole zai fado kasa, ma’ana za a ga alherin zuwan nasa ko kuma cikakkun bayanai kana bin da ya kai shi tun da bai fadi koma bayan abin da muka ",
+"role": "shipped_text"
+},
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:hau_community_2017#s46",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'Komai' attested 511x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s46"
+},
+{
+"text": "token 'nisan' attested 41x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s1315"
+},
+{
+"text": "token 'jifa' attested 8x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s2469"
+},
+{
+"text": "token 'dole' attested 523x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s136"
+},
+{
+"text": "token 'zai' attested 3390x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s8"
+},
+{
+"text": "token 'fado' attested 27x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s2407"
+},
+{
+"text": "token 'kasa' attested 2341x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s7"
+}
+],
+"confidence": 0.7,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"idiom_or_formula",
+"meaning_gloss_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"register_model": false,
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 3,
+"crosscheck_ok": false,
+"text_original": "Komai nisan jifa dole zai fado kasa",
+"fix_source": "sonnet",
+"native_check_priority": true
+},
+{
+"id": "ha.prv.44f808dc2680",
+"lang": "ha",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.IDIOM: Understand and use proverbs in context"
+],
+"text": "Ruwa ba ya tsami banza.",
+"source_type": "attested",
+"translation_en": {
+"text": "Water does not go sour for nothing.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"token_evidence": [
+{
+"token": "ruwa",
+"count": 527,
+"locator": "leipzig:hau_community_2017#s1"
+},
+{
+"token": "baya",
+"count": 1258,
+"locator": "leipzig:hau_community_2017#s14"
+},
+{
+"token": "tsami",
+"count": 17,
+"locator": "leipzig:hau_community_2017#s177"
+},
+{
+"token": "banza",
+"count": 76,
+"locator": "leipzig:hau_community_2017#s720"
+}
+],
+"provenance": {
+"sources": [
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:hau_community_2017#s33160 :: Takardar bayan taron ta ci gaba da bayyana cewa, “Tabbas muna sane da cewa, ba a banza Dk Ahmed Gumi ya yi wancan kalaman ba, domin ruwa baya tsami banza.",
+"role": "shipped_text"
+},
+{
+"source_id": "leipzig",
+"licence": "CC BY",
+"locator": "leipzig:hau_community_2017#s1",
+"role": "anchor"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [
+{
+"text": "token 'ruwa' attested 527x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s1"
+},
+{
+"text": "token 'baya' attested 1258x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s14"
+},
+{
+"text": "token 'tsami' attested 17x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s177"
+},
+{
+"text": "token 'banza' attested 76x",
+"source_id": "leipzig",
+"locator": "leipzig:hau_community_2017#s720"
+}
+],
+"confidence": 0.7,
+"risk_tags": [
+"synthesized",
+"naturalness_unverified",
+"idiom_or_formula",
+"meaning_gloss_unverified"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"register_model": false,
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true,
+"text_original": "ruwa baya tsami banza",
+"fix_source": "sonnet",
+"native_check_priority": true
+},
+{
+"id": "ha.syn.6452e4f85abf",
+"lang": "ha",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Ko da yake shirin yana da kyakkyawar manufa, aiwatar da shi ya yi rauni.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Although the plan has good intentions, its implementation has been weak.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.85d7d95a01a2",
+"lang": "ha",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "A bayyane yake cewa ba tare da ilimi ba, ci gaba ba zai yiwu ba.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It is clear that without education, progress is impossible.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.f1d8b6970d5a",
+"lang": "ha",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Tambayar ba ita ce ko muna buƙatar sauyi ba, a'a, yaya za mu kawo shi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The question is not whether we need change, but how to bring it.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 4,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.3545d1bb0427",
+"lang": "ha",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Idan gwamnati ta kasa magance cin hanci, jama'a za su daina amincewa da ita.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "If the government fails to tackle bribery, people will stop trusting it.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.edce1fadf302",
+"lang": "ha",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Duk da ƙoƙarin da aka yi, sakamakon bai gamsar ba tukuna.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Despite the efforts made, the results are not yet satisfactory.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.83fc2bc2ed0c",
+"lang": "ha",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Yawan karatunka, yawan fahimtarka.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The more you read, the more you understand.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.b056bd484aa3",
+"lang": "ha",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Dole mu tafi kafin ruwa ya fara.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "We must leave before the rain starts.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 4,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.51b6dcdb6f3f",
+"lang": "ha",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Ana cewa ɗan siyasar zai yi murabus.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It is said the politician will resign.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.b030a73b2171",
+"lang": "ha",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Babu wanda ya san abin da ya faru.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "No one knew what had happened.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.7d23065291b8",
+"lang": "ha",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Yana magana kamar shi masani ne.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He talks as if he were an expert.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.0f322758eee4",
+"lang": "ha",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "Cikin girmamawa, ina gabatar da roƙona gare ku.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Respectfully, I present my request to you.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.baa057ff505e",
+"lang": "ha",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "Muna sanar da ku cewa za a rufe ofis ranar Litinin.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "We inform you that the office will be closed on Monday.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.75090d9306fd",
+"lang": "ha",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "A madadin kwamiti, ina miƙa godiya ta musamman.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "On behalf of the committee, I extend special thanks.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.3bf41bb6e8e5",
+"lang": "ha",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "A daren nan, ƙauyen gaba ɗaya ya yi tsit.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "That night, the whole village was silent.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.1b74415e7444",
+"lang": "ha",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Tsohon ya zauna a zaure yana tunanin ƙuruciyarsa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The old man sat in the entrance hut thinking of his youth.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.6d6196eacc5b",
+"lang": "ha",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Ya gane cewa dukiya ba ta iya sayen lokacin da ya wuce.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He realised wealth cannot buy time that has passed.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.e6fae45e015c",
+"lang": "ha",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Ana amfani da karin magana wajen ba da shawara ba tare da ɓata wa mutum rai ba.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Proverbs are used to advise without offending.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 3,
+"crosscheck_ok": false,
+"text_original": "Karin magana ana amfani da shi wajen ba da shawara ba tare da ɓata wa mutum rai ba.",
+"fix_source": "sonnet"
+},
+{
+"id": "ha.syn.19b01225fda6",
+"lang": "ha",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Fadar sarki muhimmiyar cibiya ce ta al'ada a ƙasar Hausa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The emir's palace is an important cultural centre in Hausaland.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.d03a68b19e46",
+"lang": "ha",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Hawan Sallah biki ne na dawakai a lokacin Sallah.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Hawan Sallah is a horse festival during the Eid celebrations.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.prv.c57ae045deda",
+"lang": "ha",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.PROVERB"
+],
+"text": "Sannu ba ta hana zuwa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Slowly, slowly does not prevent arrival.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 3,
+"crosscheck_ok": false,
+"text_original": "Sannu sannu bai hana zuwa.",
+"fix_source": "sonnet",
+"native_check_priority": true
+},
+{
+"id": "ha.prv.e2b181e590ed",
+"lang": "ha",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.PROVERB"
+],
+"text": "Haƙuri maganin duniya.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Patience is the cure for the world's troubles.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 4,
+"crosscheck_ok": true
+},
+{
+"id": "ha.prv.1932cce30234",
+"lang": "ha",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.PROVERB"
+],
+"text": "Hannu ɗaya ba ya ɗaukar jinka.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "One hand cannot lift a thatch roof.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.fa5bd3c9e568",
+"lang": "ha",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Bai kamata a ɗora wa matasa laifin rashin aikin yi kaɗai ba.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Young people alone should not be blamed for unemployment.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.0aa78236e2b6",
+"lang": "ha",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Wajibi ne gwamnati ta samar da yanayi mai kyau ga 'yan kasuwa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The government must create a good environment for business people.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.85cda1995a0e",
+"lang": "ha",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Matsalar tsaro ta shafi harkokin noma a jihohi da dama.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The security problem has affected farming in many states.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.d3e515144182",
+"lang": "ha",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "In ba a gyara tsarin ilimi ba, ƙasar za ta ci gaba da fama da jahilci.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "If the education system is not reformed, the country will keep suffering from illiteracy.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.499d2e42d039",
+"lang": "ha",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Wasu na ganin cewa tallafin man fetur yana amfanar masu hannu da shuni ne kawai.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Some believe the fuel subsidy only benefits the wealthy.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.5b3281f4eff5",
+"lang": "ha",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Duk da haka, cire tallafin ba tare da shiri ba zai ƙara wa talakawa wahala.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Even so, removing the subsidy without a plan will add to the hardship of the poor.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.5324973d7692",
+"lang": "ha",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Ya kamata a auna fa'ida da illar wannan mataki kafin a ɗauke shi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The benefits and harms of this step should be weighed before it is taken.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.d6112afa1265",
+"lang": "ha",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Hujjojin da aka gabatar ba su gamsar da kowa ba.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The arguments presented did not convince everyone.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.fe930663d3c0",
+"lang": "ha",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Ba zai yiwu a samu zaman lafiya ba sai an yi adalci.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Peace is impossible without justice.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.66d462efed05",
+"lang": "ha",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Mafi yawan masana sun yarda cewa sauyin yanayi gaskiya ne.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Most experts agree that climate change is real.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.0619fd5e78bd",
+"lang": "ha",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Abin tambaya a nan shi ne, wa zai ɗauki nauyin wannan aiki?",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The question here is: who will bear the cost of this work?",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.4016ef460535",
+"lang": "ha",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Ina ganin wannan doka za ta fi cutar da ƙananan 'yan kasuwa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "I think this law will hurt small traders most.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.917298b81314",
+"lang": "ha",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Ba za mu iya dogara ga man fetur kaɗai ba har abada.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "We cannot depend on oil alone forever.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.dd44a550b176",
+"lang": "ha",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Ya zama dole a ƙarfafa noma domin wadatar abinci.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Agriculture must be strengthened for food sufficiency.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.a0be0e7aaadf",
+"lang": "ha",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Wannan ra'ayi yana da tushe, amma ba shi da cikakkiyar hujja.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "This view has a basis, but lacks full proof.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.a7a314d3ef11",
+"lang": "ha",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Idan muka kwatanta shekaru goma da suka wuce, za mu ga an samu ci gaba.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "If we compare with ten years ago, we will see progress.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.209ea63d60e7",
+"lang": "ha",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Cin hanci da rashawa babbar barazana ce ga ci gaban ƙasa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Bribery and corruption are a major threat to national development.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.d20a554f1080",
+"lang": "ha",
+"type": "sentence",
+"category": "argumentative",
+"cefr": "C1",
+"can_do": [
+"C1.ARGUMENTATIVE"
+],
+"text": "Ba laifi ba ne mutum ya bayyana ra'ayinsa cikin ladabi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It is not wrong for a person to express his opinion politely.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.argumentative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.0ba865068dc6",
+"lang": "ha",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Da a ce na san za a yi ruwa, da ban fito ba.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Had I known it would rain, I would not have come out.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.2a4cc2e84ad0",
+"lang": "ha",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Ko da kuwa ka yi gudu, ba za ka cim masa ba.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Even if you run, you won't catch up with him.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.c00336f7daf5",
+"lang": "ha",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Ba wanda ya iya amsa tambayar sai Musa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "No one could answer the question except Musa.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.5b6dab84d94b",
+"lang": "ha",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "An ce min ka riga ka tafi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "I was told you had already left.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.b53a98ce0f98",
+"lang": "ha",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Littafin da aka rubuta a kan tarihin Kano yana da muhimmanci.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The book written on the history of Kano is important.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.20d8fcf90497",
+"lang": "ha",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Duk wanda ya zo da wuri zai sami wurin zama.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Whoever comes early will get a seat.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.bb4903f491b5",
+"lang": "ha",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Ina so ka gaya mini abin da ya faru.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "I want you to tell me what happened.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.7e1977e32f44",
+"lang": "ha",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Sai da ya gama aiki sannan ya ci abinci.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Only after he finished work did he eat.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.3d47edbdff83",
+"lang": "ha",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Tun da yake ba ka nan, mun ci gaba ba tare da kai ba.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Since you weren't here, we went ahead without you.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.39757fc9c24c",
+"lang": "ha",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Ya yi kamar bai ji ba.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He pretended not to hear.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.a463e67f34df",
+"lang": "ha",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Ana sa ran za a kammala aikin kafin damina.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The work is expected to be completed before the rainy season.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.8655b56abba0",
+"lang": "ha",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Yayin da muke magana, sai wayarsa ta yi ƙara.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "While we were talking, his phone rang.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.dcc023d4d70d",
+"lang": "ha",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Ba don kai ba, da mun yi asara.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "If not for you, we would have suffered a loss.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.be85909e882a",
+"lang": "ha",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Mutumin da muka gani jiya shi ne shugaban kamfanin.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The man we saw yesterday is the company head.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.61824513c95f",
+"lang": "ha",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Yaran sun gaji har ba su iya tafiya.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The children were so tired they could not walk.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.7d72589af401",
+"lang": "ha",
+"type": "pattern",
+"category": "grammar_complex",
+"cefr": "C1",
+"can_do": [
+"C1.GRAMMAR_COMPLEX"
+],
+"text": "Ya kasance malami kafin ya shiga siyasa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He was a teacher before he entered politics.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.grammar_complex"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.f35acd8a1c11",
+"lang": "ha",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "Mai girma Gwamna, muna maraba da zuwanka.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Your Excellency the Governor, we welcome your visit.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.18aec189cf8d",
+"lang": "ha",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "Bisa ga umarnin hukuma, an dakatar da taron.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "On the authority's orders, the meeting has been suspended.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.a033a7292ce4",
+"lang": "ha",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "Muna roƙon jama'a su kwantar da hankalinsu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "We urge the public to remain calm.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.597142f077ab",
+"lang": "ha",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "Ina mai farin cikin sanar da ku cewa an amince da buƙatarku.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "I am pleased to inform you that your request has been approved.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.b9eadda1a8b1",
+"lang": "ha",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "Hukumar ta fitar da sanarwa a yau Litinin.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The agency issued a statement today, Monday.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.24c9d6563566",
+"lang": "ha",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "Da fatan za a yi la'akari da wannan buƙata.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "It is hoped that this request will be considered.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.583f4b23ad41",
+"lang": "ha",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "Ranka ya daɗe, ga takardar da ka nema.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Sir, here is the document you asked for.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.df4161b2fa5b",
+"lang": "ha",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "Ina mai godiya da wannan dama da aka ba ni.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "I am grateful for this opportunity given to me.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.1ff2de5932fd",
+"lang": "ha",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "An gudanar da taron cikin lumana.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The meeting was conducted peacefully.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.78df605133c8",
+"lang": "ha",
+"type": "pattern",
+"category": "register",
+"cefr": "C1",
+"can_do": [
+"C1.REGISTER"
+],
+"text": "'Yan sanda sun tabbatar da faruwar lamarin.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The police have confirmed the incident.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.register"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.ce911aea45d2",
+"lang": "ha",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Da gari ya waye, sai muka kama hanya.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "At daybreak, we set off.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.99456e11b871",
+"lang": "ha",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Ruwan sama ya sauka ba zato ba tsammani.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The rain came down unexpectedly.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.6f2900e0d009",
+"lang": "ha",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Mun isa ƙauyen a lokacin da rana ke faɗuwa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "We reached the village as the sun was setting.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.834f4c1c8535",
+"lang": "ha",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Tsohuwar ta tarbe mu da murmushi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The old woman received us with a smile.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.9552df498cb9",
+"lang": "ha",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Ta ba mu ruwan sha da fura.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "She gave us drinking water and fura.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.9d882299ac63",
+"lang": "ha",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Bayan mun huta, ta fara ba mu labarin ƙauyen.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "After we rested, she began telling us the village's story.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.17980ed87abd",
+"lang": "ha",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Ta ce a da can, ƙauyen yana da kasuwa mai girma.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "She said that long ago the village had a big market.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.3c5f9670deea",
+"lang": "ha",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Amma yaƙi ya tarwatsa mutanen ƙauyen.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "But war scattered the villagers.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.74ebf8fb091a",
+"lang": "ha",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Wasu sun koma birni, wasu kuma suka yi ƙaura zuwa wata ƙasa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Some moved to the city, others migrated to another country.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.64cf2c6a29a7",
+"lang": "ha",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Muryarta ta yi rauni yayin da take tuna wannan lokaci.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Her voice weakened as she recalled that time.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.b3169785965a",
+"lang": "ha",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Mun yi shiru, muna sauraren ta.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "We were silent, listening to her.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.e1e52e1aea03",
+"lang": "ha",
+"type": "sentence",
+"category": "narrative",
+"cefr": "C1",
+"can_do": [
+"C1.NARRATIVE"
+],
+"text": "Washegari, muka yi mata bankwana muka tafi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The next day, we bade her farewell and left.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.narrative"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.d8fe6ab2969e",
+"lang": "ha",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Durbar biki ne na dawakai da ake yi a lokacin Sallah a masarautun arewa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Durbar is a horse festival held during Eid in the northern emirates.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.2500f8ad273b",
+"lang": "ha",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Fura da nono abin sha ne na gargajiya na Fulani da Hausawa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Fura and fermented milk is a traditional Fulani and Hausa drink.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.0f6cd630a0ce",
+"lang": "ha",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Ana ba baƙo ruwa kafin a tambaye shi dalilin zuwansa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "A guest is given water before being asked why he came.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.474b3bd58aac",
+"lang": "ha",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Kunya muhimmiyar ɗabi'a ce, musamman ga mata da matasa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Modesty is an important virtue, especially for women and youth.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.2e3574b16cea",
+"lang": "ha",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Ana kiran ɗan fari da wasu laƙabi saboda kunyar ambaton sunansa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The firstborn is called by nicknames out of shyness about saying his name.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.6a7dd4c9970f",
+"lang": "ha",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Zumunci yana nufin kyakkyawar dangantaka tsakanin 'yan uwa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Zumunci means good relations among kin.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.65a8c8323596",
+"lang": "ha",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Makaɗa da maroƙa suna yabon sarakuna a lokutan biki.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Drummers and praise-singers praise rulers at festivals.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.3be3fa495c9a",
+"lang": "ha",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Ana yin biki da walima bayan an saukar da Alƙur'ani.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "A celebration is held after a child completes reading the Qur'an.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.a1f1a0e38366",
+"lang": "ha",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Kasuwar mako-mako muhimmiyar cibiyar zamantakewa ce a ƙauyuka.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The weekly market is an important social centre in villages.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.b94622aa9d7f",
+"lang": "ha",
+"type": "culture_note",
+"category": "culture_note",
+"cefr": "C1",
+"can_do": [
+"C1.CULTURE_NOTE"
+],
+"text": "Lalle ado ne da mata ke yi a hannu da ƙafa a lokacin biki.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Henna is decoration women apply to hands and feet at celebrations.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.culture_note"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.7467e81c8e84",
+"lang": "ha",
+"type": "sentence",
+"category": "idiom",
+"cefr": "C1",
+"can_do": [
+"C1.IDIOM"
+],
+"text": "Ya sha ruwan tsuntsaye.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He just barely escaped (lit. drank birds' water).",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.idiom"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 4,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.a7e2b2f0152b",
+"lang": "ha",
+"type": "sentence",
+"category": "idiom",
+"cefr": "C1",
+"can_do": [
+"C1.IDIOM"
+],
+"text": "Ta ɗora masa alhakin komai.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "She held him responsible for everything.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.idiom"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.f8ba8f43704b",
+"lang": "ha",
+"type": "sentence",
+"category": "idiom",
+"cefr": "C1",
+"can_do": [
+"C1.IDIOM"
+],
+"text": "Ya yi kunnen ƙashi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He turned a deaf ear.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.idiom"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.74e27be62eff",
+"lang": "ha",
+"type": "sentence",
+"category": "idiom",
+"cefr": "C1",
+"can_do": [
+"C1.IDIOM"
+],
+"text": "Bai san inda ya dosa ba.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He doesn't know where he is heading.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.idiom"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.0172c20d5b67",
+"lang": "ha",
+"type": "sentence",
+"category": "idiom",
+"cefr": "C1",
+"can_do": [
+"C1.IDIOM"
+],
+"text": "Sun yi kafaɗa da kafaɗa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "They worked shoulder to shoulder.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.idiom"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.5ecf3db5549a",
+"lang": "ha",
+"type": "sentence",
+"category": "idiom",
+"cefr": "C1",
+"can_do": [
+"C1.IDIOM"
+],
+"text": "Maganarsa ta zama ruwan dare.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "His words became common knowledge.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.idiom"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.923a173e65f6",
+"lang": "ha",
+"type": "sentence",
+"category": "idiom",
+"cefr": "C1",
+"can_do": [
+"C1.IDIOM"
+],
+"text": "Ya ci gyaɗa da baki biyu.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "He played both sides.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.idiom"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.syn.868b4cdfcac4",
+"lang": "ha",
+"type": "sentence",
+"category": "idiom",
+"cefr": "C1",
+"can_do": [
+"C1.IDIOM"
+],
+"text": "Al'amarin ya zama gagarumi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "The matter became enormous.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.idiom"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": false,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.prv.ab30d7212c97",
+"lang": "ha",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.PROVERB"
+],
+"text": "Ganin ido bai ba ka ba.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Seeing with the eyes does not give you (the thing).",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.prv.68ba0533afb0",
+"lang": "ha",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.PROVERB"
+],
+"text": "Kowa ya yi da kyau, zai ga da kyau.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Whoever does good will see good.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.prv.599faccca6b8",
+"lang": "ha",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.PROVERB"
+],
+"text": "Mai haƙuri yakan dafa dutse har ya sha romonsa.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "A patient person can cook a stone and drink its broth.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.prv.b2da538bda26",
+"lang": "ha",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.PROVERB"
+],
+"text": "Abin da ka shuka shi za ka girba.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "What you sow is what you will reap.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.prv.c436736839b9",
+"lang": "ha",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.PROVERB"
+],
+"text": "Kowa ya bar gida, gida ya bar shi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Whoever leaves home, home leaves him.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.prv.a496d533e520",
+"lang": "ha",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.PROVERB"
+],
+"text": "Hankali ya fi ilimi.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Good sense is better than learning.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+},
+{
+"id": "ha.prv.876caff8806f",
+"lang": "ha",
+"type": "proverb",
+"category": "proverb",
+"cefr": "C1",
+"can_do": [
+"C1.PROVERB"
+],
+"text": "Taimakon kai shi ne taimakon Allah.",
+"source_type": "synthesized",
+"translation_en": {
+"text": "Self-help is God's help.",
+"alignment": "sentence",
+"status": "needs-review"
+},
+"pattern": {
+"description": null
+},
+"provenance": {
+"sources": [
+{
+"source_id": "synth-v2",
+"licence": "original (LingAfriq)",
+"locator": "synth/v2/ha_b.tsv",
+"role": "shipped_text"
+}
+],
+"created_at": "2026-10-21",
+"ai_assisted": true
+},
+"claims": [],
+"confidence": 0.6,
+"risk_tags": [
+"synthesized",
+"unattested_forms_allowed"
+],
+"status": "needs-review",
+"label": "beta",
+"audio": [],
+"feature_hooks": {
+"lessons": [
+"ha.C1.proverb"
+],
+"games": [
+"translate",
+"cloze"
+],
+"point_and_say": false,
+"living_dictionary": true,
+"personas": {
+"level": "C1"
+}
+},
+"crosscheck": "sonnet-5.5",
+"crosscheck_score": 5,
+"crosscheck_ok": true
+}
+]
+}

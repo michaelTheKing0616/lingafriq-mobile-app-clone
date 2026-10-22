@@ -1,0 +1,69 @@
+charter: v2
+id: P12-004
+kind: build
+title: Gate release APK download size under 40 MB in CI
+phase: P12
+epic: E-P12-RELEASE
+req_ids:
+- EP-§13.6-08
+depends_on:
+- P12-001
+- P12-002
+- P12-003
+size: S
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 0
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 2, ambiguity 0, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist:
+- .github/workflows/build.yml
+- .github/workflows/build-and-release.yml
+- scripts/ci/apk_size_gate.sh
+context_anchors:
+- ELEVATION.md#§13.6:L1928-L1929
+acceptance_criteria:
+- id: AC1
+  text: Given a release build, when the size gate runs, then it measures the per-ABI download size and fails the workflow
+    when it is 40 MB (40,000,000 bytes) or more
+- id: AC2
+  text: Given the gate fails, when the CI log is read, then it prints the five largest assets and the delta against the previous
+    release
+- id: AC3
+  text: Given the size measurement tool is unavailable, when the gate runs, then it fails loud rather than passing
+test_plan:
+  unit:
+  - apk_size_gate threshold logic
+  integration:
+  - workflow run on over-size fixture fails
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Measure download (compressed) size, not installed size; state which in the gate output
+gate: G12
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

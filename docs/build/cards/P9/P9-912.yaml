@@ -1,0 +1,103 @@
+charter: v2
+id: P9-912
+kind: build
+title: Assess age at sign-up and enforce age tiers
+phase: P9
+epic: E-P9-GUARDIAN
+req_ids:
+- EP-§13.3-01
+- EP-§9.4-02
+- EP-§9.1-19
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, ambiguity 1, coupling 2, depth 1'
+token_budget: 80000
+file_allowlist:
+- node-backend/src/services/ageAssurance.service.ts
+- node-backend/src/models/ageTier.ts
+- lib/screens/onboarding/age_gate_screen.dart
+- lib/services/age_tier_service.dart
+context_anchors:
+- ELEVATION.md#§13.3:L1892
+- ELEVATION.md#§9.4:L1642-L1643
+- ELEVATION.md#§9.1:L1566
+acceptance_criteria:
+- id: AC1
+  text: Given a new sign-up, when the user enters a date of birth, then the server assigns exactly one tier (under-13, 13-15,
+    16-17, adult) using the jurisdiction table reviewed by counsel and stores the tier, not the raw birth date beyond the
+    retention schedule
+- id: AC2
+  text: Given the tier is under-13 or below the local digital-consent age, when sign-up continues, then the account is created
+    in a pending-guardian state with no social, chat or purchase capability
+- id: AC3
+  text: Given a user who changes the entered date of birth after a failed gate, when they retry on the same device within
+    24 h, then the original answer is kept and a typed AGE_RETRY_BLOCKED state is shown
+- id: AC4
+  text: Given any social endpoint, when called by an account without a tier, then it returns AGE_TIER_REQUIRED and no data
+test_plan:
+  unit:
+  - tier calculator per jurisdiction
+  integration:
+  - sign-up paths
+  - tier gate on endpoints
+  security:
+  - tier tampering client-side
+  e2e: []
+  perf: []
+  a11y:
+  - age gate screen
+  content:
+  - age-gate copy in supported UI languages
+user_facing: true
+ux_spec:
+  states:
+  - default
+  - invalid
+  - blocked-retry
+  - pending-guardian
+  copy_keys:
+  - age_gate.title
+  - age_gate.body
+  - age_gate.blocked
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - age_gate_default
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- consent ages under NDPA 2023, GDPR Art. 8 and COPPA differ; counsel confirms table before release [verify]
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

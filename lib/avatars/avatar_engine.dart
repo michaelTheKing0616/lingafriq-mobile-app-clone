@@ -1,11 +1,13 @@
 import 'dart:async';
+
 import 'package:flutter/foundation.dart';
-import 'package:rive/rive.dart';
+
+import 'cast/cast_file_cache.dart';
+import 'cast/cast_session.dart';
+import 'cast/phoneme_viseme.dart';
 import 'emotion_system.dart';
 import 'personality_system.dart';
-import 'lip_sync_engine.dart';
 
-/// Avatar state representing current avatar condition
 class AvatarState {
   final EmotionState emotionState;
   final bool isSpeaking;
@@ -13,7 +15,7 @@ class AvatarState {
   final double confidence;
   final double energy;
   final String? currentActivity;
-  
+
   const AvatarState({
     required this.emotionState,
     this.isSpeaking = false,
@@ -22,7 +24,7 @@ class AvatarState {
     this.energy = 0.5,
     this.currentActivity,
   });
-  
+
   AvatarState copyWith({
     EmotionState? emotionState,
     bool? isSpeaking,
@@ -42,205 +44,128 @@ class AvatarState {
   }
 }
 
-/// Avatar type enumeration
 enum AvatarType {
-  polie,          // AI assistant
-  elder,          // Pa LingAfriq
-  weaver,         // Adisa
-  timekeeper,     // Kofi
-  griot,          // Amara
-  pathfinder,     // Zuri
-  rhythmMaster,   // Nuru (learning style guide)
-  malaika,        // Vocabulary games
-  baba,           // Cultural games
-  okonkwo,        // Pronunciation games
-  nneka,          // Grammar games
-  userCustom,     // User's custom avatar
+  polie,
+  elder,
+  weaver,
+  timekeeper,
+  griot,
+  pathfinder,
+  rhythmMaster,
+  malaika,
+  baba,
+  okonkwo,
+  nneka,
+  userCustom,
 }
 
-/// Rive asset paths for avatars
-class AvatarAssets {
-  static const String basePath = 'assets/rive/avatars/';
-  
-  static String getAssetPath(AvatarType type) {
-    switch (type) {
-      case AvatarType.polie:
-        return '${basePath}polie_avatar.riv';
-      case AvatarType.elder:
-        return '${basePath}elder.riv';
-      case AvatarType.weaver:
-        return '${basePath}weaver.riv';
-      case AvatarType.timekeeper:
-        return '${basePath}timekeeper.riv';
-      case AvatarType.griot:
-        return '${basePath}griot.riv';
-      case AvatarType.pathfinder:
-        return '${basePath}pathfinder.riv';
-      case AvatarType.malaika:
-        return '${basePath}malaika.riv';
-      case AvatarType.baba:
-        return '${basePath}baba.riv';
-      case AvatarType.okonkwo:
-        return '${basePath}okonkwo.riv';
-      case AvatarType.nneka:
-        return '${basePath}nneka.riv';
-      case AvatarType.rhythmMaster:
-        return '${basePath}rhythm_master.riv';
-      case AvatarType.userCustom:
-        return '${basePath}user_avatar_base.riv';
-    }
+String presetForAvatar(AvatarType type) {
+  switch (type) {
+    case AvatarType.polie:
+      return 'Polie';
+    case AvatarType.elder:
+      return 'PaLingAfriq';
+    case AvatarType.weaver:
+      return 'Adisa';
+    case AvatarType.timekeeper:
+      return 'Kofi';
+    case AvatarType.griot:
+      return 'Amara';
+    case AvatarType.pathfinder:
+      return 'Zuri';
+    case AvatarType.rhythmMaster:
+      return 'Learner';
+    case AvatarType.malaika:
+      return 'Tolu_Lagos';
+    case AvatarType.baba:
+      return 'Ayanwale';
+    case AvatarType.okonkwo:
+      return 'Otieno_Nairobi';
+    case AvatarType.nneka:
+      return 'Ama_Accra';
+    case AvatarType.userCustom:
+      return 'Learner';
   }
-  
-  /// Fallback asset when specific avatar isn't available
-  static const String fallbackAsset = '${basePath}game_guide.riv';
 }
 
-/// Controller for a single avatar instance
+(String, String) avatarActivityFor(AvatarEmotion emotion) {
+  switch (emotion) {
+    case AvatarEmotion.idle:
+      return ('idle', 'neutral');
+    case AvatarEmotion.thinking:
+      return ('thinking', 'focused');
+    case AvatarEmotion.encouraging:
+      return ('encouraging', 'happy');
+    case AvatarEmotion.proud:
+      return ('idle', 'proud');
+    case AvatarEmotion.disappointed:
+      return ('idle', 'concerned');
+    case AvatarEmotion.happy:
+      return ('idle', 'happy');
+    case AvatarEmotion.excited:
+      return ('celebrating', 'happy');
+    case AvatarEmotion.curious:
+      return ('idle', 'curious');
+    case AvatarEmotion.focused:
+      return ('idle', 'focused');
+    case AvatarEmotion.sleepy:
+      return ('sleeping', 'neutral');
+    case AvatarEmotion.celebrating:
+      return ('celebrating', 'proud');
+    case AvatarEmotion.empathetic:
+      return ('encouraging', 'concerned');
+    case AvatarEmotion.playful:
+      return ('idle', 'playful');
+    case AvatarEmotion.listening:
+      return ('listening', 'curious');
+    case AvatarEmotion.speaking:
+      return ('speaking', 'focused');
+    case AvatarEmotion.surprised:
+      return ('idle', 'surprised');
+    case AvatarEmotion.confused:
+      return ('hinting', 'concerned');
+    case AvatarEmotion.determined:
+      return ('idle', 'focused');
+    case AvatarEmotion.relieved:
+      return ('encouraging', 'happy');
+  }
+}
+
 class AvatarController {
   final AvatarType type;
   final AvatarPersonality personality;
   final EmotionSystem emotionSystem;
-  final LipSyncEngine lipSyncEngine;
-  
-  Artboard? _artboard;
-  StateMachineController? _stateMachineController;
-  
-  // State machine inputs
-  SMINumber? _emotionInput;
-  SMIBool? _isSpeakingInput;
-  SMIBool? _isListeningInput;
-  SMINumber? _confidenceInput;
-  SMINumber? _energyInput;
-  SMINumber? _mouthOpennessInput;
-  SMINumber? _lipRoundingInput;
-  SMINumber? _mouthShapeInput;
-  SMITrigger? _celebrateTrigger;
-  SMITrigger? _waveTrigger;
-  SMITrigger? _nodTrigger;
-  
+  final CastSession session;
+
   AvatarState _state = const AvatarState(
     emotionState: EmotionState(primary: AvatarEmotion.idle),
   );
-  
   final _stateController = StreamController<AvatarState>.broadcast();
-  
+
   AvatarController({
     required this.type,
     required this.personality,
     EmotionSystem? emotionSystem,
-    LipSyncEngine? lipSyncEngine,
-  })  : emotionSystem = emotionSystem ?? EmotionSystem(),
-        lipSyncEngine = lipSyncEngine ?? LipSyncEngine();
-  
-  /// Current avatar state
+    CastSession? session,
+  }) : emotionSystem = emotionSystem ?? EmotionSystem(),
+       session = session ?? CastSession(preset: presetForAvatar(type));
+
   AvatarState get state => _state;
-  
-  /// Stream of state changes
   Stream<AvatarState> get stateStream => _stateController.stream;
-  
-  /// The Rive artboard for rendering
-  Artboard? get artboard => _artboard;
-  
-  /// Initialize with Rive file
-  Future<void> initialize(RiveFile riveFile, {String? artboardName}) async {
-    try {
-      _artboard = artboardName != null 
-          ? riveFile.artboardByName(artboardName) 
-          : riveFile.mainArtboard;
-      
-      if (_artboard == null) {
-        debugPrint('Avatar: Could not load artboard');
-        return;
-      }
-      
-      // Find and attach state machine
-      final stateMachine = _artboard!.stateMachines.isNotEmpty
-          ? _artboard!.stateMachines.first
-          : null;
-      
-      if (stateMachine != null) {
-        _stateMachineController = StateMachineController.fromArtboard(
-          _artboard!,
-          stateMachine.name,
-        );
-        
-        if (_stateMachineController != null) {
-          _artboard!.addController(_stateMachineController!);
-          _bindInputs();
-        }
-      }
-      
-      // Set initial state based on personality
-      _applyPersonalityDefaults();
-      
-      debugPrint('Avatar: Initialized ${type.name} successfully');
-    } catch (e) {
-      debugPrint('Avatar: Error initializing - $e');
-    }
-  }
-  
-  /// Bind to state machine inputs
-  void _bindInputs() {
-    if (_stateMachineController == null) return;
-    
-    for (final input in _stateMachineController!.inputs) {
-      switch (input.name) {
-        case 'emotion':
-          _emotionInput = input as SMINumber?;
-          break;
-        case 'isSpeaking':
-          _isSpeakingInput = input as SMIBool?;
-          break;
-        case 'isListening':
-          _isListeningInput = input as SMIBool?;
-          break;
-        case 'confidence':
-          _confidenceInput = input as SMINumber?;
-          break;
-        case 'energy':
-          _energyInput = input as SMINumber?;
-          break;
-        case 'mouthOpenness':
-          _mouthOpennessInput = input as SMINumber?;
-          break;
-        case 'lipRounding':
-          _lipRoundingInput = input as SMINumber?;
-          break;
-        case 'mouthShape':
-          _mouthShapeInput = input as SMINumber?;
-          break;
-        case 'celebrate':
-          _celebrateTrigger = input as SMITrigger?;
-          break;
-        case 'wave':
-          _waveTrigger = input as SMITrigger?;
-          break;
-        case 'nod':
-          _nodTrigger = input as SMITrigger?;
-          break;
-      }
-    }
-  }
-  
-  /// Apply personality defaults to avatar
-  void _applyPersonalityDefaults() {
-    final traits = personality.traits;
-    _energyInput?.value = traits.energy;
-    _confidenceInput?.value = 0.5;
-  }
-  
-  /// Set emotion
+
   void setEmotion(
     AvatarEmotion emotion, {
     EmotionIntensity intensity = EmotionIntensity.moderate,
   }) {
     final transition = emotionSystem.setEmotion(emotion, intensity: intensity);
-    _emotionInput?.value = transition.to.primaryValue;
+    final mapped = avatarActivityFor(emotion);
+    session.activity(mapped.$1);
+    session.expression(mapped.$2, _intensity(intensity));
     _updateState(emotionState: transition.to);
   }
-  
-  /// Set emotion from context
-  void setContextualEmotion(AvatarContext context, {
+
+  void setContextualEmotion(
+    AvatarContext context, {
     double userConfidence = 0.5,
     bool userSucceeded = true,
   }) {
@@ -249,103 +174,111 @@ class AvatarController {
       userConfidence: userConfidence,
       userSucceeded: userSucceeded,
     );
-    _emotionInput?.value = emotionState.primaryValue;
+    final mapped = avatarActivityFor(emotionState.primary);
+    session.activity(mapped.$1);
+    session.expression(mapped.$2, _intensity(emotionState.intensity));
     _updateState(emotionState: emotionState);
   }
-  
-  /// Start speaking (with optional lip-sync)
-  void startSpeaking({String? text, Duration? duration}) {
-    _isSpeakingInput?.value = true;
-    _updateState(isSpeaking: true);
-    
-    if (text != null) {
-      final lipSyncData = lipSyncEngine.generateFromText(text);
-      lipSyncEngine.play(
-        lipSyncData,
-        onFrame: _applyLipSyncFrame,
-        onComplete: stopSpeaking,
-      );
-    } else if (duration != null) {
-      final lipSyncData = lipSyncEngine.generateFromDuration(duration);
-      lipSyncEngine.play(
-        lipSyncData,
-        onFrame: _applyLipSyncFrame,
-        onComplete: stopSpeaking,
+
+  /// [text] is not a mouth source. Pass [phonemes] from forced alignment.
+  void startSpeaking({
+    String? text,
+    Duration? duration,
+    String language = 'default',
+    List<AlignedPhoneme> phonemes = const [],
+    List<RmsSample> rms = const [],
+  }) {
+    session.activity('speaking');
+    _updateState(isSpeaking: true, currentActivity: 'speaking');
+    if (text != null && phonemes.isEmpty && rms.isEmpty) {
+      debugPrint(
+        'Avatar: transcript ignored until forced alignment provides phonemes',
       );
     }
+    if (phonemes.isNotEmpty || rms.isNotEmpty) {
+      session.playAlignment(
+        LipSyncTrack(language: language, phonemes: phonemes, rms: rms),
+      );
+    }
+    if (duration != null) {
+      Future<void>.delayed(duration, stopSpeaking);
+    }
   }
-  
-  /// Stop speaking
+
   void stopSpeaking() {
-    _isSpeakingInput?.value = false;
-    lipSyncEngine.stop();
-    _mouthOpennessInput?.value = 0.0;
-    _lipRoundingInput?.value = 0.0;
+    session.stopAlignment();
     _updateState(isSpeaking: false);
   }
-  
-  /// Apply lip-sync frame
-  void _applyLipSyncFrame(LipSyncFrame frame) {
-    _mouthOpennessInput?.value = frame.mouthOpenness;
-    _lipRoundingInput?.value = frame.lipRounding;
-    _mouthShapeInput?.value = frame.viseme.index.toDouble();
-  }
-  
-  /// Start listening
+
   void startListening() {
-    _isListeningInput?.value = true;
-    setEmotion(AvatarEmotion.listening);
-    _updateState(isListening: true);
+    session.activity('listening');
+    session.expression('curious');
+    _updateState(
+      isListening: true,
+      emotionState: EmotionState.simple(AvatarEmotion.listening),
+    );
   }
-  
-  /// Stop listening
+
   void stopListening() {
-    _isListeningInput?.value = false;
-    setEmotion(AvatarEmotion.idle);
-    _updateState(isListening: false);
+    session.activity('idle');
+    session.expression('neutral');
+    _updateState(
+      isListening: false,
+      emotionState: EmotionState.simple(AvatarEmotion.idle),
+    );
   }
-  
-  /// Set confidence level
+
   void setConfidence(double confidence) {
-    _confidenceInput?.value = confidence.clamp(0.0, 1.0);
-    _updateState(confidence: confidence);
+    final value = confidence.clamp(0.0, 1.0);
+    session.energy(value);
+    _updateState(confidence: value);
   }
-  
-  /// Trigger celebration animation
+
   void celebrate() {
-    _celebrateTrigger?.fire();
+    session.fire('celebrate');
     setEmotion(AvatarEmotion.celebrating, intensity: EmotionIntensity.extreme);
   }
-  
-  /// Trigger wave animation
+
   void wave() {
-    _waveTrigger?.fire();
-    setEmotion(AvatarEmotion.happy, intensity: EmotionIntensity.moderate);
+    session.fire('wave');
+    setEmotion(AvatarEmotion.happy);
   }
-  
-  /// Trigger nod animation
-  void nod() {
-    _nodTrigger?.fire();
-  }
-  
-  /// Play reaction sequence
+
+  void nod() => session.fire('nod');
+
   Future<void> playReactionSequence(AvatarReaction reaction) async {
+    if (reaction == AvatarReaction.levelUp) session.fire('levelUp');
+    if (reaction == AvatarReaction.encourageAfterFail) {
+      session.fire('incorrect');
+    }
     final sequence = emotionSystem.getReactionSequence(reaction);
-    
     for (final emotionState in sequence) {
-      _emotionInput?.value = emotionState.primaryValue;
+      final mapped = avatarActivityFor(emotionState.primary);
+      session.activity(mapped.$1);
+      session.expression(mapped.$2, _intensity(emotionState.intensity));
       _updateState(emotionState: emotionState);
-      await Future.delayed(const Duration(milliseconds: 600));
+      await Future<void>.delayed(const Duration(milliseconds: 600));
     }
   }
-  
-  /// Get greeting based on personality and time
+
   String getGreeting() => personality.getGreeting();
-  
-  /// Get encouragement based on context
-  String getEncouragement(String context) => personality.getEncouragement(context);
-  
-  /// Update internal state and notify listeners
+
+  String getEncouragement(String context) =>
+      personality.getEncouragement(context);
+
+  void reset() {
+    emotionSystem.reset();
+    stopSpeaking();
+    stopListening();
+    setEmotion(AvatarEmotion.idle);
+    session.energy(0.5);
+  }
+
+  void dispose() {
+    session.dispose();
+    _stateController.close();
+  }
+
   void _updateState({
     EmotionState? emotionState,
     bool? isSpeaking,
@@ -362,71 +295,76 @@ class AvatarController {
       energy: energy,
       currentActivity: currentActivity,
     );
-    _stateController.add(_state);
-  }
-  
-  /// Reset to idle state
-  void reset() {
-    emotionSystem.reset();
-    stopSpeaking();
-    stopListening();
-    setEmotion(AvatarEmotion.idle);
-    _confidenceInput?.value = 0.5;
-    _applyPersonalityDefaults();
-  }
-  
-  /// Dispose resources
-  void dispose() {
-    lipSyncEngine.dispose();
-    _stateController.close();
-    _stateMachineController?.dispose();
+    if (!_stateController.isClosed) _stateController.add(_state);
   }
 }
 
-/// Avatar Engine - central management for all avatars
+double _intensity(EmotionIntensity intensity) {
+  switch (intensity) {
+    case EmotionIntensity.subtle:
+      return 0.3;
+    case EmotionIntensity.moderate:
+      return 0.6;
+    case EmotionIntensity.strong:
+      return 0.85;
+    case EmotionIntensity.extreme:
+      return 1;
+  }
+}
+
 class AvatarEngine {
   static final AvatarEngine _instance = AvatarEngine._internal();
   factory AvatarEngine() => _instance;
   AvatarEngine._internal();
-  
+
   final PersonalitySystem _personalitySystem = PersonalitySystem();
   final Map<String, AvatarController> _controllers = {};
-  final Map<String, RiveFile> _cachedRiveFiles = {};
-  
-  /// Get or create an avatar controller
+
   Future<AvatarController> getController(
     AvatarType type, {
     String? instanceId,
   }) async {
     final key = instanceId ?? type.name;
-    
-    if (_controllers.containsKey(key)) {
-      return _controllers[key]!;
-    }
-    
-    // Get personality for this avatar type
-    final personalityId = _getPersonalityId(type);
-    final personality = _personalitySystem.getPersonality(personalityId) ??
+    final existing = _controllers[key];
+    if (existing != null) return existing;
+
+    final personalityId = _personalityId(type);
+    final personality =
+        _personalitySystem.getPersonality(personalityId) ??
         _personalitySystem.getPersonality('polie')!;
-    
-    // Create controller
-    final controller = AvatarController(
-      type: type,
-      personality: personality,
-    );
-    
-    // Load Rive file
-    final riveFile = await _loadRiveFile(type);
-    if (riveFile != null) {
-      await controller.initialize(riveFile);
-    }
-    
+    await CastFileCache.instance.load();
+    final controller = AvatarController(type: type, personality: personality);
     _controllers[key] = controller;
     return controller;
   }
-  
-  /// Get personality ID for avatar type
-  String _getPersonalityId(AvatarType type) {
+
+  Future<AvatarController> getGameAvatar(GameCategory category) {
+    return getController(_typeForGame(category));
+  }
+
+  Future<AvatarController> getOnboardingAvatar(OnboardingStep step) {
+    return getController(
+      _typeForOnboarding(step),
+      instanceId: 'onboarding_${step.name}',
+    );
+  }
+
+  void releaseController(String key) {
+    _controllers.remove(key)?.dispose();
+  }
+
+  void releaseAll() {
+    for (final controller in _controllers.values) {
+      controller.dispose();
+    }
+    _controllers.clear();
+  }
+
+  void clearCache() {}
+
+  PersonalitySystem get personalitySystem => _personalitySystem;
+
+  String _personalityId(AvatarType type) {
     switch (type) {
       case AvatarType.polie:
         return 'polie';
@@ -449,54 +387,12 @@ class AvatarEngine {
       case AvatarType.nneka:
         return 'nneka';
       case AvatarType.rhythmMaster:
-        return 'polie'; // Rhythm master uses default personality
       case AvatarType.userCustom:
-        return 'polie'; // Default personality for custom avatars
+        return 'polie';
     }
   }
-  
-  /// Load Rive file with caching
-  Future<RiveFile?> _loadRiveFile(AvatarType type) async {
-    final assetPath = AvatarAssets.getAssetPath(type);
-    
-    if (_cachedRiveFiles.containsKey(assetPath)) {
-      return _cachedRiveFiles[assetPath];
-    }
-    
-    try {
-      final riveFile = await RiveFile.asset(assetPath);
-      _cachedRiveFiles[assetPath] = riveFile;
-      return riveFile;
-    } catch (e) {
-      debugPrint('Avatar: Could not load $assetPath - $e');
-      
-      // Try fallback asset
-      try {
-        if (!_cachedRiveFiles.containsKey(AvatarAssets.fallbackAsset)) {
-          final fallbackFile = await RiveFile.asset(AvatarAssets.fallbackAsset);
-          _cachedRiveFiles[AvatarAssets.fallbackAsset] = fallbackFile;
-        }
-        return _cachedRiveFiles[AvatarAssets.fallbackAsset];
-      } catch (e2) {
-        debugPrint('Avatar: Could not load fallback asset - $e2');
-        return null;
-      }
-    }
-  }
-  
-  /// Get avatar for game category
-  Future<AvatarController> getGameAvatar(GameCategory category) async {
-    final type = _getAvatarTypeForGameCategory(category);
-    return getController(type);
-  }
-  
-  /// Get avatar for onboarding step
-  Future<AvatarController> getOnboardingAvatar(OnboardingStep step) async {
-    final type = _getAvatarTypeForOnboardingStep(step);
-    return getController(type, instanceId: 'onboarding_${step.name}');
-  }
-  
-  AvatarType _getAvatarTypeForGameCategory(GameCategory category) {
+
+  AvatarType _typeForGame(GameCategory category) {
     switch (category) {
       case GameCategory.vocabulary:
         return AvatarType.malaika;
@@ -508,10 +404,12 @@ class AvatarEngine {
         return AvatarType.nneka;
     }
   }
-  
-  AvatarType _getAvatarTypeForOnboardingStep(OnboardingStep step) {
+
+  AvatarType _typeForOnboarding(OnboardingStep step) {
     switch (step) {
       case OnboardingStep.welcome:
+      case OnboardingStep.profile:
+      case OnboardingStep.complete:
         return AvatarType.elder;
       case OnboardingStep.languageSelection:
         return AvatarType.weaver;
@@ -523,32 +421,6 @@ class AvatarEngine {
         return AvatarType.timekeeper;
       case OnboardingStep.story:
         return AvatarType.griot;
-      case OnboardingStep.profile:
-        return AvatarType.elder;
-      case OnboardingStep.complete:
-        return AvatarType.elder;
     }
   }
-  
-  /// Release a specific controller
-  void releaseController(String key) {
-    _controllers[key]?.dispose();
-    _controllers.remove(key);
-  }
-  
-  /// Release all controllers
-  void releaseAll() {
-    for (final controller in _controllers.values) {
-      controller.dispose();
-    }
-    _controllers.clear();
-  }
-  
-  /// Clear Rive file cache
-  void clearCache() {
-    _cachedRiveFiles.clear();
-  }
-  
-  /// Get personality system for customization
-  PersonalitySystem get personalitySystem => _personalitySystem;
 }

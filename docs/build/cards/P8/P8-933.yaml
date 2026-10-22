@@ -1,0 +1,117 @@
+charter: v2
+id: P8-933
+kind: build
+title: Circle co-op goals for the game meta-layer
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.4-04
+- EP-§10.4-05
+- EP-§10.4-06
+depends_on:
+- E-P8-PLAY
+- P8-901
+- P8-909
+- E-P9-SAFETY
+- E-P3-DESIGN-SYSTEM
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, coupling 2; P0 area'
+token_budget: 60000
+file_allowlist:
+- lib/games/circles/circle_goal_service.dart
+- lib/games/circles/circle_goal_screen.dart
+- node-backend/src/services/circle_goals.service.ts
+- lib/games/gamekit/game_meta_layer.dart
+context_anchors:
+- ELEVATION.md#§10.4:L1775-L1777
+acceptance_criteria:
+- id: AC1
+  text: Given a circle, when members learn words, then the circle total is the sum of server-verified newly learned words
+    this week and the displayed number is the computed value, not a target or example
+- id: AC2
+  text: Given a goal, when it is set, then the goal is collective with a shared progress bar and no individual ranking inside
+    the circle
+- id: AC3
+  text: Given a member's words, when counted, then only items moving to learned state in the learner model count and practice-mode
+    sessions count zero
+- id: AC4
+  text: Given a circle with minors, when goals and member names show, then E-P9-SAFETY visibility rules apply
+- id: AC5
+  text: Given the week ends, when totals freeze, then late claims are rejected with a typed error
+test_plan:
+  unit:
+  - total aggregation
+  integration:
+  - weekly freeze
+  security:
+  - cross-circle access
+  - forged counts
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - ready
+  - playing
+  - correct
+  - wrong
+  - why_wrong
+  - results
+  - error
+  - offline
+  - practice_mode
+  - goal_reached
+  copy_keys:
+  - games.circle_goals.title
+  - games.circle_goals.instructions
+  - games.circle_goals.why_wrong
+  - games.circle_goals.practice_label
+  - games.circle_goals.error
+  tokens:
+  - color.surface.game
+  - color.feedback.correct
+  - color.feedback.wrong
+  - space.4
+  - radius.card
+  - type.title
+  motion_tier: product
+  a11y:
+  - screen-reader labels on every answer control
+  - reduced-motion variant
+  - correctness shown by icon and text not colour alone
+  - touch targets ≥48dp
+  goldens:
+  - circle_goals_playing
+  - circle_goals_why_wrong
+  - circle_goals_results
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

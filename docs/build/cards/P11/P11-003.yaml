@@ -1,0 +1,94 @@
+charter: v2
+id: P11-003
+kind: build
+title: Validate persona answer contract server-side
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§8.3-10
+- EP-§8.3-11
+- EP-§8.3-12
+- EP-§8.3-13
+- EP-§8.3-14
+- EP-§8.3-15
+- EP-§8.3-16
+- EP-§8.3-17
+- EP-§8.1-04
+- EP-§8.2-16
+- EP-§8.2-17
+- EP-§8.2-18
+depends_on:
+- E-P1-CONTAINMENT
+- P11-002
+- P11-029
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 3, ambiguity 1, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/services/persona/answerContract.ts
+- node-backend/src/services/persona/answerValidator.ts
+- lib/ai/validation/response_validator.dart
+- lib/ai/personas/historical_roleplay_controller.dart
+context_anchors:
+- ELEVATION.md#§8.3:L1521-L1523
+- ELEVATION.md#§8.2:L1511-L1513
+- ELEVATION.md#§8.1:L1489-L1491
+acceptance_criteria:
+- id: AC1
+  text: 'Given a model reply, when parsed, then it must match {speech_text, language_teaching_points[], claims[{text, support:
+    documented|inferred|legend, source_ids[]}], emotion, next_beat} or the server returns a typed AnswerContractViolation
+    and nothing is shown.'
+- id: AC2
+  text: Given a claim with support documented, when validated, then every source_id must exist in the persona's dossier index
+    and be among the retrieved cards of this turn; otherwise the claim is rejected.
+- id: AC3
+  text: Given a claim with no retrieved support, when validated, then it is downgraded to inferred or removed, never left
+    as documented.
+- id: AC4
+  text: Given a stored persona response, when written, then sources[] holds real source_ids and no hard-coded confidence value
+    is stored or shown.
+- id: AC5
+  text: Given an answer, when emitted, then emotion is a member of the CharacterVM expression enum from ADR-030.
+test_plan:
+  unit:
+  - schema validation matrix
+  - support downgrade
+  integration:
+  - reject uncited documented claim
+  security:
+  - source_id forgery rejected
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- enables_persona
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- depends on ADR-030 enum for emotion field
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

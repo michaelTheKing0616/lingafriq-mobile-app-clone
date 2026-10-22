@@ -1,0 +1,86 @@
+charter: v2
+id: P2-023
+kind: build
+title: Issue short-lived asymmetric access tokens with kid rotation
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.1-01
+- EP-§13.1-02
+- EP-§13.1-04
+- EP-§13.1-05
+- EP-§13.1-12
+- EP-§13.1-13
+- EP-§13.1-14
+depends_on:
+- E-P1-CONTAINMENT
+- P2-018
+size: L
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 2
+  coupling: 1
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T3
+  justification: 'score 8: blast 3, coupling 1, depth 2'
+token_budget: 150000
+file_allowlist:
+- node-backend/src/controllers/auth.controller.ts
+- node-backend/src/middleware/auth.middleware.ts
+- node-backend/src/services/socket.service.ts
+- node-backend/src/services/jwks.service.ts
+- node-backend/test/auth/jwt.test.ts
+context_anchors:
+- ELEVATION.md#§13.1:L1849
+- ELEVATION.md#§13.1:L1850
+- ELEVATION.md#§13.1:L1850-L1851
+- ELEVATION.md#§13.1:L1854
+- ELEVATION.md#§13.1:L1854-L1855
+- ELEVATION.md#§13.1:L1855-L1856
+acceptance_criteria:
+- id: AC1
+  text: Given a login, when a token is issued, then it is EdDSA or RS256 signed with a kid and expires in 10 to 15 minutes
+- id: AC2
+  text: Given a rotated signing key, when an old-kid token within validity arrives, then it verifies against the published
+    key set and unknown kid is rejected
+- id: AC3
+  text: Given HTTP and socket auth, when verifying tokens, then one shared verifier is used and no code reads the shared secret
+- id: AC4
+  text: Given a trailing newline in any key env var, when the service boots, then the value is normalised once at config load
+    or boot fails loud
+- id: AC5
+  text: Given HS256 tokens, when presented after cutover, then they are rejected with a typed 401
+test_plan:
+  unit:
+  - verifier
+  - kid rotation
+  integration: []
+  security:
+  - alg confusion and none tests
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

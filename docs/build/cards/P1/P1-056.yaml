@@ -1,0 +1,63 @@
+charter: v2
+id: P1-056
+kind: build
+title: Obfuscate release builds
+phase: P1
+epic: E-P1-AUTH
+req_ids:
+- EP-§13.1-28
+- EP-§13.1-29
+depends_on:
+- E-P0-INTAKE
+size: S
+difficulty:
+  score: 2
+  blast: 1
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: score 2; blast 1
+token_budget: 25000
+file_allowlist:
+- .github/workflows/build-and-release.yml
+- docs/security/SYMBOLS.md
+context_anchors:
+- ELEVATION.md#§13.1:L1869-L1870
+- ELEVATION.md#§13.1:L1870
+acceptance_criteria:
+- id: AC1
+  text: Given the release workflow, when it builds, then flutter build runs with --obfuscate and --split-debug-info and the
+    symbols are uploaded as a protected artifact
+- id: AC2
+  text: Given a release build, when a stack trace is symbolicated with the stored symbols, then readable frames result
+test_plan:
+  unit: []
+  integration:
+  - workflow dry run
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G1
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

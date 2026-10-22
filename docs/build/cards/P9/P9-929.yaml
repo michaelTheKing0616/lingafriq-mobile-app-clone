@@ -1,0 +1,92 @@
+charter: v2
+id: P9-929
+kind: build
+title: Rate-limit new accounts and add friction to first DMs
+phase: P9
+epic: E-P9-MODERATION
+req_ids:
+- EP-§9.4-06
+- EP-§9.4-07
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+- P9-906
+- P9-921
+size: M
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 4: blast 2, ambiguity 1, coupling 1, depth 0'
+token_budget: 80000
+file_allowlist:
+- node-backend/src/middleware/newAccountLimits.ts
+- lib/screens/chat/first_dm_prompt_sheet.dart
+context_anchors:
+- ELEVATION.md#§9.4:L1643
+acceptance_criteria:
+- id: AC1
+  text: Given an account under 7 days old, when it sends more than the configured messages, invites or joins per hour, then
+    further actions return NEW_ACCOUNT_LIMIT with the reset time
+- id: AC2
+  text: Given a user sending a first DM to someone, when composing, then the recipient must have accepted or the sender sees
+    a request-only state and may send one short message
+- id: AC3
+  text: Given a recipient, when they see a first-DM request, then block, report and accept are each reachable in one tap
+test_plan:
+  unit:
+  - limit windows
+  integration:
+  - first-DM flow
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - first DM sheet
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - request
+  - sent
+  - limited
+  - accepted
+  - declined
+  copy_keys:
+  - firstdm.request.title
+  - firstdm.limited
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - firstdm_default
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

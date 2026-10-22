@@ -1,0 +1,72 @@
+charter: v2
+id: P3-015
+kind: design
+title: Design hi-fi Today, Path map and Lesson player
+phase: P3
+epic: E-P3-DESIGN-WORKFLOW
+req_ids:
+- EP-§3.3-03
+- EP-§3.3-04
+- EP-§3.3-05
+- EP-§17.1-02
+- EP-§17.1-03
+- EP-§17.1-04
+depends_on:
+- P3-014
+- P3-013
+size: L
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 2
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T4
+  justification: 'score 4: blast 0, ambiguity 2, coupling 1'
+token_budget: 150000
+file_allowlist:
+- docs/build/design/screens/today_path_lesson.md
+context_anchors:
+- ELEVATION.md#§3.3:L792-L801
+- ELEVATION.md#§17.1:L2171-L2182
+acceptance_criteria:
+- id: AC1
+  text: Given Today, when drawn, then it shows one 10 to 15 minute plan with due reviews, next lesson and one speaking moment,
+    with the minute estimate visible
+- id: AC2
+  text: Given the screen, when drawn, then light and dark frames exist at 390 px width and a 200% text frame, exported to
+    docs/build/design/screens/
+- id: AC3
+  text: Given every colour, size, font and radius, when audited, then each references a token and none is hard-coded
+- id: AC4
+  text: Given the state kit, when the screen has data, then skeleton, empty, error, offline and reduced-motion frames are
+    included
+- id: AC5
+  text: Given the T4 reviewer, when the visual evidence is checked, then the approval is recorded in the card report
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: true
+dod_evidence:
+- tester report
+- ledger row
+- T4 visual approval with exported frames
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/antislop-ui
+  - prime/platform-conventions
+  reviewer_extra:
+  - prime/critique-visual-hierarchy
+  - prime/critique-typography
+  - prime/design-to-code-check

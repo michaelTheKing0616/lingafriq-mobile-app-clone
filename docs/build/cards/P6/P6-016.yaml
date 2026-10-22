@@ -1,0 +1,70 @@
+charter: v2
+id: P6-016
+kind: build
+title: Emit traces, token cost, latency and eval samples
+phase: P6
+epic: E-P6-GATEWAY
+req_ids:
+- EP-§7.2-22
+- EP-§7.2-23
+- EP-§7.2-24
+- EP-§7.2-25
+depends_on:
+- P6-015
+- P6-006
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/telemetry.ts
+- node-backend/src/ai-gateway/evalSampler.ts
+context_anchors:
+- ELEVATION.md#§7.2:L1367-L1387
+acceptance_criteria:
+- id: AC1
+  text: Given any gateway call, when it completes, then a trace has route, mode, prompt version, tokens, cost and latency
+    without PII
+- id: AC2
+  text: Given the eval sampling rate config, when requests run, then that fraction of consented samples is queued for eval
+- id: AC3
+  text: Given a p95 latency over the mode budget, when measured over 5 minutes, then an alert is emitted
+test_plan:
+  unit:
+  - trace shape
+  integration:
+  - sampler
+  security:
+  - no PII in traces
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

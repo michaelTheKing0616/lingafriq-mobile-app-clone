@@ -1,0 +1,68 @@
+charter: v2
+id: P7-934
+kind: build
+title: Author Yoruba tone and subdot tutorials
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§11.2-05
+- EP-§11.2-06
+depends_on:
+- P7-933
+- E-P5-CONTENT-REAL
+size: S
+difficulty:
+  score: 2
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 0, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist:
+- assets/tutorials/p7_934.json
+- test/content/p7_934_test.dart
+context_anchors:
+- ELEVATION.md#§11.2:L1788-L1789
+acceptance_criteria:
+- id: AC1
+  text: Given the Yoruba tutorial, when it runs, then it teaches the tones and the subdot vowels with learn it, see it, try
+    it
+- id: AC2
+  text: Given the gb and kp sounds, when taught, then each has its own example with audio and mouth video
+- id: AC3
+  text: Given the tutorial content, when validated, then a native reviewer sign-off is recorded before it can be published
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - native review sign-off
+  - 60-90 s runtime
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- content needs native review
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

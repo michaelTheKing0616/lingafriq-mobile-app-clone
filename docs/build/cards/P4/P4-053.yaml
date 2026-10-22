@@ -1,0 +1,70 @@
+charter: v2
+id: P4-053
+kind: build
+title: Build lexicon store with frequency list
+phase: P4
+epic: E-P4-PIPELINE
+req_ids:
+- CP-§3.1-02
+- CP-§3.1-12
+depends_on:
+- P4-037
+- P4-001
+- P4-009
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- tools/content_engine/pipeline/lexicon.py
+- tools/content_engine/tests/test_lexicon.py
+context_anchors:
+- CURRICULUM.md#§3.1:L472-L476
+acceptance_criteria:
+- id: AC1
+  text: Given Leipzig and other CC BY corpora, when the frequency list is built, then every lexeme row stores source ids that
+    exist in the register
+- id: AC2
+  text: Given a lexeme, when stored, then it holds tone pattern, IPA from G2P, POS, noun class and plural, and missing mandatory
+    fields fail with LEXEME_FIELD_MISSING
+- id: AC3
+  text: Given a source with all uses false, when its entries are imported, then import fails with LICENCE_USE_FORBIDDEN
+test_plan:
+  unit:
+  - happy path
+  - typed error path
+  integration:
+  - stage contract with fixtures
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

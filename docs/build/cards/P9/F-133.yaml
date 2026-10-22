@@ -1,0 +1,117 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P9
+epic: E-P9-SAFETY
+hub: Village
+gate: G9
+status: Draft
+size: M
+token_budget: 80000
+user_facing: true
+p0_area: false
+tags:
+- under18_social
+external_blockers: []
+risks: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+id: F-133
+title: Elevate Create Content (UGC)
+req_ids:
+- F-133
+- F-133.D
+- F-133.E
+- F-133.U
+- F-133.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P9-SAFETY
+- E-P1-CONTAINMENT
+- E-P5-CONTENT-REAL
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: creator studio with AI and review pipeline'
+file_allowlist:
+- lib/screens/ugc/ugc_hub_screen.dart
+- lib/screens/ugc/create_lesson_screen.dart
+- lib/screens/ugc/create_quiz_screen.dart
+- lib/screens/ugc/create_story_screen.dart
+- lib/screens/ugc/ugc_validation_feedback_screen.dart
+- lib/screens/ugc/create_lesson_screen_enhanced.dart
+- lib/screens/ugc/create_quiz_screen_enhanced.dart
+- lib/screens/ugc/create_story_screen_enhanced.dart
+context_anchors:
+- ELEVATION.md#§18.6:L5381-L5396
+delta:
+  current_state: UGC hub routed; enhanced create variants unrouted.
+  defects_to_fix:
+  - No editorial pipeline; unknown content quality.
+  elevation_to_build:
+  - Creator Studio templates for mini-lessons, quizzes, stories with AI diacritic checks via gateway.
+  - Native-review queue; published content credited with revenue share for top creators.
+  ux_and_render:
+  - Editor with live preview and review status chips.
+  hub_placement: Village → Create (unlocks at B1).
+  unlock_stage: B1
+  harvest_list:
+  - Merge enhanced quiz and story editors into primary create screens.
+acceptance_criteria:
+- id: AC1
+  text: Given a draft lesson, when submitted, then AI checks run only through the gateway and show validation feedback.
+- id: AC2
+  text: Given B1 unlock, when below B1, then Create entry is locked with honest progress requirement.
+- id: AC3
+  text: Given native approval, when published, then creator credit and revenue share fields are stored server-side.
+- id: AC4
+  text: Given the account is under 18 or age-unknown, when this surface is opened, then it is hidden or guardian-gated until
+    E-P9-SAFETY is Done, and the restriction is enforced server-side.
+test_plan:
+  unit:
+  - domain helpers
+  integration:
+  - API and navigation
+  e2e:
+  - happy path
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content: []
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - ugc_create.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux
+  - adaptive/14-safety-and-high-stakes

@@ -1,0 +1,94 @@
+charter: v2
+id: P10-902
+kind: build
+title: Migrate all balances to the single Cowries currency
+phase: P10
+epic: E-P10-GAMIFICATION
+req_ids:
+- EP-§12.1-01
+- EP-§12.1-06
+depends_on:
+- ADR-020
+- E-P5-CONTENT-REAL
+- E-P6-SCORER
+- P10-900
+size: L
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: score 7; blast 2; p0 area
+token_budget: 150000
+file_allowlist:
+- node-backend/src/scripts/migrate-currencies.ts
+- node-backend/src/models/RewardLedger.ts
+- lib/models/user_gamification_model.dart
+- lib/providers/gamification_provider.dart
+- lib/widgets/gamification/gamification_widgets.dart
+context_anchors:
+- ELEVATION.md#§12.1:L1812-L1815
+acceptance_criteria:
+- id: AC1
+  text: Given a learner holds ngwenya or ancestral_beads, when the migration runs, then the balance converts to Cowries at
+    the ADR-020 rate and a ledger row records the conversion.
+- id: AC2
+  text: Given the migration ran, when any screen renders a currency, then only Cowries appears and no ngwenya or ancestral_beads
+    string remains in lib/ or the API.
+- id: AC3
+  text: Given the migration is run twice, when it finishes, then no balance changes on the second run.
+- id: AC4
+  text: Given a conversion fails for one user, when the job continues, then the failure is logged with the user id and the
+    job exits non-zero.
+test_plan:
+  unit:
+  - conversion rate
+  - idempotent rerun
+  integration:
+  - migration on fixture users
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - grep for retired currency names
+user_facing: true
+ux_spec:
+  states:
+  - balance
+  - migration-error
+  copy_keys:
+  - cowries_balance
+  tokens:
+  - color.semantic
+  - type.scale
+  - space.scale
+  motion_tier: product
+  a11y:
+  - screen reader labels
+  - 48dp touch targets
+  - reduced motion honoured
+  goldens:
+  - cowries_balance_golden
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

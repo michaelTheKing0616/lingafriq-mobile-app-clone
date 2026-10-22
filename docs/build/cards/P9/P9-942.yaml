@@ -1,0 +1,95 @@
+charter: v2
+id: P9-942
+kind: build
+title: Add group calls for adult and approved-circle members
+phase: P9
+epic: E-P9-E2EE
+req_ids:
+- RM-P2-09
+depends_on:
+- E-P9-SAFETY
+- P9-904
+- P9-939
+size: L
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 2, ambiguity 1, coupling 2, depth 2'
+token_budget: 200000
+file_allowlist:
+- lib/screens/chat/group_call_screen.dart
+- node-backend/src/services/livekit/groupCall.service.ts
+context_anchors:
+- ELEVATION.md#§16.3:L2108
+acceptance_criteria:
+- id: AC1
+  text: Given a circle, when a member starts a call, then only current members with call permission can join and tokens expire
+    within 10 minutes
+- id: AC2
+  text: Given a minor in a call, when the call is in a guardian-approved circle, then it is not E2EE, is moderated per policy
+    and recording follows consent rules
+- id: AC3
+  text: Given a member removed mid-call, when removal commits, then the member is disconnected within 5 s
+- id: AC4
+  text: Given packet loss above threshold, when sustained, then the UI shows a degraded-connection state and offers audio-only
+test_plan:
+  unit: []
+  integration:
+  - join authz
+  - removal
+  security:
+  - token reuse
+  e2e: []
+  perf: []
+  a11y:
+  - call controls
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - ringing
+  - connected
+  - degraded
+  - ended
+  - denied
+  copy_keys:
+  - call.join
+  - call.degraded
+  - call.denied
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - call_default
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

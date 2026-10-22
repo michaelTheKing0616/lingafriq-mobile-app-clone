@@ -1,0 +1,64 @@
+charter: v2
+id: P4-084
+kind: build
+title: Re-derive legacy tonal notes from lexicon tone patterns
+phase: P4
+epic: E-P4-LEGACY-REBUILD
+req_ids:
+- CP-§8-04
+depends_on:
+- P4-082
+- P4-061
+- P4-065
+size: S
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1, depth 1, size 0'
+token_budget: 25000
+file_allowlist:
+- tools/content_engine/legacy/tone_claims.py
+- tools/content_engine/tests/test_legacy_tone_claims.py
+context_anchors:
+- CURRICULUM.md#§8:L763-L767
+acceptance_criteria:
+- id: AC1
+  text: Given a legacy tonal_note, when re-derived, then it is generated from the lexicon tone pattern or removed with reason
+    NO_LEXICON_TONE
+- id: AC2
+  text: Given a re-derived note, when it is a tone claim, then it has the high-risk tag and routes to a human
+test_plan:
+  unit:
+  - dry run lists changes
+  integration:
+  - re-run is idempotent
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

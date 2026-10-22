@@ -1,0 +1,73 @@
+charter: v2
+id: P4-114
+kind: build
+title: Build quarterly next-language scoring tool
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.4-38
+- EP-§6.4-39
+- EP-§6.4-40
+- EP-§6.4-41
+- EP-§6.4-42
+- EP-§6.4-43
+depends_on:
+- P4-112
+size: S
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1'
+token_budget: 25000
+file_allowlist:
+- tools/content_pipeline/language_scoring.py
+- test/content/test_language_scoring.py
+context_anchors:
+- ELEVATION.md#§6.4:L1221-L1262
+acceptance_criteria:
+- id: AC1
+  text: Given a language, when scored, then it receives integer 1-5 on speakers, diaspora demand, reviewer and voice-talent
+    availability, AI coverage, partner support and mission value, each with an evidence note
+- id: AC2
+  text: Given missing evidence for a criterion, when scoring, then the criterion is flagged unscored and excluded from the
+    total instead of defaulting to a number
+- id: AC3
+  text: Given the quarterly run, when executed, then it outputs a ranked list with date and previous-quarter delta
+- id: AC4
+  text: Given reviewer availability, when scored, then it reads the paid-reviewer roster and shows unknown if the roster is
+    empty (EXT-13)
+test_plan:
+  unit:
+  - test_language_scoring
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-13
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

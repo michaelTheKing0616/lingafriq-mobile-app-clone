@@ -1,0 +1,79 @@
+charter: v2
+id: P7-921
+kind: build
+title: Route corrections from Native Corrections and the Square
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§17.7-22
+depends_on:
+- P7-920
+- E-P4-CONTENT-ENGINE
+- E-P9-SAFETY
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, coupling 2, depth 1'
+token_budget: 60000
+file_allowlist:
+- node-backend/src/services/lexiconCorrectionBridge.service.ts
+- node-backend/src/routes/lexiconVerify.route.ts
+- lib/services/lexicon_correction_client.dart
+- test/node-backend/lexiconCorrectionBridge.test.ts
+context_anchors:
+- ELEVATION.md#§17.7:L2423-L2424
+acceptance_criteria:
+- id: AC1
+  text: Given a correction in Native Corrections, when it concerns a lexicon entry, then it creates a Verify queue item linked
+    to that entry
+- id: AC2
+  text: Given a correction in the Square, when it concerns a lexicon entry, then it creates a Verify queue item linked to
+    that entry and the post
+- id: AC3
+  text: Given a correction, when queued, then it follows the same 2-approval rule as a suggestion
+- id: AC4
+  text: Given a correction cannot be matched to an entry, when received, then it is held as unlinked with a visible state
+    and not discarded
+- id: AC5
+  text: Given the account is under 18 or age-unknown, when this surface is opened, then it is hidden or guardian-gated until
+    E-P9-SAFETY is Done, and the restriction is enforced server-side.
+test_plan:
+  unit:
+  - entry matching
+  integration:
+  - two sources to queue
+  security:
+  - no bypass of approvals
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- uses_source
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

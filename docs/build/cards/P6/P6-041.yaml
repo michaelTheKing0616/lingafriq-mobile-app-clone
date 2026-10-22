@@ -1,0 +1,68 @@
+charter: v2
+id: P6-041
+kind: build
+title: Collect native 1-5 rating data per language
+phase: P6
+epic: E-P6-SCORING
+req_ids:
+- EP-§7.4-23
+- EP-§7.4-24
+depends_on:
+- P6-031
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/rating/api.ts
+- node-backend/src/models/rating.model.ts
+- tools/rating_console/
+context_anchors:
+- ELEVATION.md#§7.4:L1442-L1444
+acceptance_criteria:
+- id: AC1
+  text: Given an attempt, when a native rater submits, then a 1 to 5 rating with rater id is stored
+- id: AC2
+  text: Given a target of a few thousand attempts per language, when progress is queried, then counts per language and rater
+    are reported
+- id: AC3
+  text: Given two raters per attempt, when stored, then inter-rater agreement is computable
+test_plan:
+  unit:
+  - agreement calc
+  integration:
+  - submit and count
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Rater supply depends on EXT-11
+gate: G8
+external_blockers:
+- EXT-11
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

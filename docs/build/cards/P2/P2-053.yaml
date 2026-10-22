@@ -1,0 +1,88 @@
+charter: v2
+id: P2-053
+kind: build
+title: Add speaking prompt items scored by the real scorer
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§11.3-11
+depends_on:
+- E-P1-CONTAINMENT
+- P2-047
+- E-P6-SCORER
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/screens/quiz/items/speaking_item.dart
+- lib/services/quiz/speaking_grader.dart
+- test/quiz/speaking_grader_test.dart
+context_anchors:
+- ELEVATION.md#§11.3:L1803
+acceptance_criteria:
+- id: AC1
+  text: Given a speaking prompt, when recorded, then it is scored by the real scorer service and the result is shown with
+    confidence
+- id: AC2
+  text: Given the scorer unavailable or low confidence, when graded, then an unsure or unavailable state shows and no numeric
+    score is displayed
+- id: AC3
+  text: Given no opt-in to audio storage, when scored, then raw audio is discarded after scoring
+test_plan:
+  unit:
+  - unsure gating
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - idle
+  - recording
+  - scoring
+  - scored
+  - unsure
+  - unavailable
+  copy_keys:
+  - item.speak
+  - item.unsure
+  - item.unavailable
+  tokens:
+  - color.*
+  - space.*
+  motion_tier: product
+  a11y:
+  - record control labelled
+  goldens:
+  - item_speaking
+tags:
+- shows_score
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

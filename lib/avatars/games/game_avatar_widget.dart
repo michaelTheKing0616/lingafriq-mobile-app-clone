@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:rive/rive.dart' hide LinearGradient;
 import '../avatar_engine.dart';
+import '../cast/cast_stage.dart';
 import '../emotion_system.dart';
 import '../personality_system.dart';
 
@@ -14,7 +14,7 @@ class GameAvatarWidget extends StatefulWidget {
   final String? message;
   final VoidCallback? onTap;
   final bool isMinimized;
-  
+
   const GameAvatarWidget({
     super.key,
     required this.category,
@@ -24,7 +24,7 @@ class GameAvatarWidget extends StatefulWidget {
     this.onTap,
     this.isMinimized = false,
   });
-  
+
   @override
   State<GameAvatarWidget> createState() => _GameAvatarWidgetState();
 }
@@ -34,7 +34,7 @@ class _GameAvatarWidgetState extends State<GameAvatarWidget>
   AvatarController? _controller;
   late AnimationController _bounceController;
   bool _isLoaded = false;
-  
+
   @override
   void initState() {
     super.initState();
@@ -44,14 +44,14 @@ class _GameAvatarWidgetState extends State<GameAvatarWidget>
     );
     _loadAvatar();
   }
-  
+
   Future<void> _loadAvatar() async {
     _controller = await AvatarEngine().getGameAvatar(widget.category);
     if (mounted) {
       setState(() => _isLoaded = true);
     }
   }
-  
+
   @override
   void didUpdateWidget(GameAvatarWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -59,17 +59,17 @@ class _GameAvatarWidgetState extends State<GameAvatarWidget>
       _loadAvatar();
     }
   }
-  
+
   @override
   void dispose() {
     _bounceController.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final effectiveSize = widget.isMinimized ? widget.size * 0.6 : widget.size;
-    
+
     return GestureDetector(
       onTap: _handleTap,
       child: AnimatedContainer(
@@ -84,24 +84,21 @@ class _GameAvatarWidgetState extends State<GameAvatarWidget>
               bottom: widget.showSpeechBubble ? 0 : null,
               child: _buildAvatar(effectiveSize),
             ),
-            
+
             // Speech bubble
             if (widget.showSpeechBubble && widget.message != null)
-              Positioned(
-                top: 0,
-                child: _buildSpeechBubble(),
-              ),
+              Positioned(top: 0, child: _buildSpeechBubble()),
           ],
         ),
       ),
     );
   }
-  
+
   Widget _buildAvatar(double size) {
-    if (!_isLoaded || _controller?.artboard == null) {
+    if (!_isLoaded || _controller == null) {
       return _buildFallbackAvatar(size);
     }
-    
+
     return Container(
       width: size,
       height: size,
@@ -115,48 +112,48 @@ class _GameAvatarWidgetState extends State<GameAvatarWidget>
           ),
         ],
       ),
-      child: ClipOval(
-        child: Rive(
-          artboard: _controller!.artboard!,
-          fit: BoxFit.cover,
-        ),
-      ),
+      child: ClipOval(child: CastStage(session: _controller!.session)),
     );
   }
-  
+
   Widget _buildFallbackAvatar(double size) {
     return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            _getCategoryColor(),
-            _getCategoryColor().withOpacity(0.7),
-          ],
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: _getCategoryColor().withOpacity(0.4),
-            blurRadius: 15,
-            spreadRadius: 3,
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                _getCategoryColor(),
+                _getCategoryColor().withOpacity(0.7),
+              ],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: _getCategoryColor().withOpacity(0.4),
+                blurRadius: 15,
+                spreadRadius: 3,
+              ),
+            ],
           ),
-        ],
-      ),
-      child: Center(
-        child: Icon(
-          _getCategoryIcon(),
-          size: size * 0.5,
-          color: Theme.of(context).colorScheme.onPrimary,
-        ),
-      ),
-    ).animate(onPlay: (c) => c.repeat(reverse: true))
-      .scale(begin: const Offset(1, 1), end: const Offset(1.05, 1.05), duration: 1.seconds);
+          child: Center(
+            child: Icon(
+              _getCategoryIcon(),
+              size: size * 0.5,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
+        )
+        .animate(onPlay: (c) => c.repeat(reverse: true))
+        .scale(
+          begin: const Offset(1, 1),
+          end: const Offset(1.05, 1.05),
+          duration: 1.seconds,
+        );
   }
-  
+
   Widget _buildSpeechBubble() {
     return Container(
       constraints: BoxConstraints(maxWidth: widget.size * 1.5),
@@ -181,11 +178,9 @@ class _GameAvatarWidgetState extends State<GameAvatarWidget>
         ),
         textAlign: TextAlign.center,
       ),
-    ).animate()
-      .fadeIn(duration: 300.ms)
-      .slideY(begin: 0.2, end: 0);
+    ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.2, end: 0);
   }
-  
+
   Color _getCategoryColor() {
     switch (widget.category) {
       case GameCategory.vocabulary:
@@ -198,7 +193,7 @@ class _GameAvatarWidgetState extends State<GameAvatarWidget>
         return const Color(0xFF3498DB); // Blue for Nneka
     }
   }
-  
+
   IconData _getCategoryIcon() {
     switch (widget.category) {
       case GameCategory.vocabulary:
@@ -211,31 +206,34 @@ class _GameAvatarWidgetState extends State<GameAvatarWidget>
         return Icons.format_shapes;
     }
   }
-  
+
   void _handleTap() {
     HapticFeedback.lightImpact();
     _bounceController.forward().then((_) => _bounceController.reverse());
     _controller?.wave();
     widget.onTap?.call();
   }
-  
+
   /// Public methods to control the avatar
-  
+
   void celebrate() => _controller?.celebrate();
-  
+
   void showDisappointment() {
     _controller?.setEmotion(AvatarEmotion.disappointed);
     Future.delayed(const Duration(seconds: 2), () {
       _controller?.setEmotion(AvatarEmotion.encouraging);
     });
   }
-  
+
   void showEncouragement() {
-    _controller?.setEmotion(AvatarEmotion.encouraging, intensity: EmotionIntensity.strong);
+    _controller?.setEmotion(
+      AvatarEmotion.encouraging,
+      intensity: EmotionIntensity.strong,
+    );
   }
-  
+
   void setThinking() => _controller?.setEmotion(AvatarEmotion.thinking);
-  
+
   void setIdle() => _controller?.setEmotion(AvatarEmotion.idle);
 }
 
@@ -243,40 +241,43 @@ class _GameAvatarWidgetState extends State<GameAvatarWidget>
 class GameAvatarController {
   AvatarController? _avatarController;
   final GameCategory category;
-  
+
   GameAvatarController(this.category);
-  
+
   Future<void> initialize() async {
     _avatarController = await AvatarEngine().getGameAvatar(category);
   }
-  
+
   void reactToCorrectAnswer({bool isPerfect = false}) {
     if (isPerfect) {
       _avatarController?.celebrate();
     } else {
-      _avatarController?.setEmotion(AvatarEmotion.proud, intensity: EmotionIntensity.strong);
+      _avatarController?.setEmotion(
+        AvatarEmotion.proud,
+        intensity: EmotionIntensity.strong,
+      );
     }
   }
-  
+
   void reactToIncorrectAnswer() {
     _avatarController?.setEmotion(AvatarEmotion.disappointed);
     Future.delayed(const Duration(milliseconds: 1500), () {
       _avatarController?.setEmotion(AvatarEmotion.encouraging);
     });
   }
-  
+
   void showHint() {
     _avatarController?.setEmotion(AvatarEmotion.thinking);
     _avatarController?.startSpeaking(duration: const Duration(seconds: 2));
   }
-  
+
   void setListening() => _avatarController?.startListening();
   void setIdle() => _avatarController?.setEmotion(AvatarEmotion.idle);
-  
+
   String getEncouragement(String context) {
     return _avatarController?.getEncouragement(context) ?? 'Keep going!';
   }
-  
+
   void dispose() {
     // Controller is managed by AvatarEngine
   }
@@ -290,7 +291,7 @@ class CategoryAvatarInfo {
   final String description;
   final Color primaryColor;
   final IconData icon;
-  
+
   const CategoryAvatarInfo({
     required this.category,
     required this.name,
@@ -299,7 +300,7 @@ class CategoryAvatarInfo {
     required this.primaryColor,
     required this.icon,
   });
-  
+
   static const List<CategoryAvatarInfo> all = [
     CategoryAvatarInfo(
       category: GameCategory.vocabulary,
@@ -334,7 +335,7 @@ class CategoryAvatarInfo {
       icon: Icons.format_shapes,
     ),
   ];
-  
+
   static CategoryAvatarInfo getForCategory(GameCategory category) {
     return all.firstWhere((info) => info.category == category);
   }

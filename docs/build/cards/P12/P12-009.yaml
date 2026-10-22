@@ -1,0 +1,67 @@
+charter: v2
+id: P12-009
+kind: build
+title: Enforce image and Rive asset budgets in CI
+phase: P12
+epic: E-P12-RELEASE
+req_ids:
+- EP-§13.6-13
+depends_on:
+- E-P10-ME
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 3: blast 1, ambiguity 1, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist:
+- assets/images
+- assets/rive
+- scripts/ci/asset_budget_check.py
+- pubspec.yaml
+context_anchors:
+- ELEVATION.md#§13.6:L1932
+acceptance_criteria:
+- id: AC1
+  text: Given assets/images and assets/rive, when the budget check runs, then every file over its configured budget is listed
+    and the build fails
+- id: AC2
+  text: Given a budget config file is missing, when the check runs, then it fails loud instead of defaulting
+- id: AC3
+  text: 'Given a Rive character file, when checked, then the limit applied is the one set for Rive files in the budget config
+    (source: 300 KB per character file)'
+test_plan:
+  unit:
+  - asset_budget_check
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Budget numbers other than the 300 KB Rive figure are not in the source; Tope sets them
+gate: G12
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

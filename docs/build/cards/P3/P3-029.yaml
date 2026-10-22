@@ -1,0 +1,64 @@
+charter: v2
+id: P3-029
+kind: design
+title: Specify motion, sound palette and haptic map
+phase: P3
+epic: E-P3-DESIGN-WORKFLOW
+req_ids:
+- EP-§3.4-33
+- EP-§13.7-07
+depends_on:
+- P3-019
+size: M
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 2
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T4
+  justification: 'score 4: blast 0, ambiguity 2, coupling 1'
+token_budget: 60000
+file_allowlist:
+- docs/build/design/MOTION_SPEC.md
+context_anchors:
+- ELEVATION.md#§3.4:L848-L849
+acceptance_criteria:
+- id: AC1
+  text: Given the rare tier, when MOTION_SPEC.md is written, then celebrations are limited to lesson complete and level up
+    and each has a duration and reduced-motion variant
+- id: AC2
+  text: Given the sound palette, when specified, then it lists >=8 cues with source instruments and a culturally resonant
+    rationale and credit to artists via EXT-16
+- id: AC3
+  text: Given the haptic map, when written, then each feedback event maps to one haptic pattern and one visual alternative
+- id: AC4
+  text: Given product-tier motion, when listed, then each uses the token curve and <=300 ms
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: true
+dod_evidence:
+- tester report
+- ledger row
+- T4 visual approval with exported frames
+risks: []
+gate: G3
+external_blockers:
+- EXT-16
+status: Draft
+skills:
+  worker:
+  - prime/motion-system
+  - prime/design-motion-principles
+  - prime/microinteractions
+  reviewer_extra:
+  - prime/critique-visual-hierarchy
+  - prime/critique-typography
+  - prime/design-to-code-check

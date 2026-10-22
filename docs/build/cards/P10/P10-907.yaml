@@ -1,0 +1,96 @@
+charter: v2
+id: P10-907
+kind: build
+title: Move hearts into opt-in Challenge Mode
+phase: P10
+epic: E-P10-GAMIFICATION
+req_ids:
+- EP-§12.2-20
+- EP-§12.2-21
+- EP-§12.2-22
+- EP-§12.2-23
+depends_on: []
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 5; blast 2
+token_budget: 60000
+file_allowlist:
+- lib/providers/hearts_provider.dart
+- lib/models/hearts_system_model.dart
+- lib/widgets/gamification/hearts_widget.dart
+- lib/screens/village/challenge_mode_screen.dart
+context_anchors:
+- ELEVATION.md#§12.2:L1827-L1829
+acceptance_criteria:
+- id: AC1
+  text: Given a core lesson, when the learner makes any number of mistakes, then no heart is lost and no heart UI shows.
+- id: AC2
+  text: Given a core lesson, when a learner has zero hearts or zero energy, then the lesson still starts and completes with
+    no energy gate.
+- id: AC3
+  text: Given Challenge Mode is off by default, when the learner turns it on, then hearts apply only to lessons and games
+    started from Challenge Mode.
+- id: AC4
+  text: Given a Challenge Mode run is finished on hearts, when the learner wins, then a badge and a bragging-rights entry
+    are awarded by the server.
+- id: AC5
+  text: Given hearts run out in Challenge Mode, when the run ends, then the learner can leave at once and core content stays
+    open.
+test_plan:
+  unit:
+  - no hearts in core
+  - gate absent
+  integration:
+  - challenge run end
+  security: []
+  e2e:
+  - finish core lesson at zero hearts
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - 'off'
+  - 'on'
+  - run-active
+  - run-ended
+  copy_keys:
+  - challenge_mode_toggle
+  tokens:
+  - color.semantic
+  - type.scale
+  - space.scale
+  motion_tier: product
+  a11y:
+  - screen reader labels
+  - 48dp touch targets
+  - reduced motion honoured
+  goldens:
+  - challenge_mode_toggle_golden
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

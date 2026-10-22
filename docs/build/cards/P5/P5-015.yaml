@@ -1,0 +1,66 @@
+charter: v2
+id: P5-015
+kind: build
+title: Mark units mastered by can-do evidence and fix unlock rule
+phase: P5
+epic: E-P5-A1
+req_ids:
+- EP-§6.2-19
+- EP-§6.2-20
+depends_on:
+- P5-014
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/learning/skill_graph/can_do_mastery.dart
+- test/learning/can_do_mastery_test.dart
+context_anchors:
+- ELEVATION.md#§6.2:L1191-L1196
+acceptance_criteria:
+- id: AC1
+  text: Given all can-dos of a unit demonstrated, when evaluated, then the unit is mastered; any missing can-do keeps it not
+    mastered with the missing list
+- id: AC2
+  text: Given the legacy previous_lesson_completed unlock rule, when replaced, then unlock depends on can-do evidence or an
+    explicit review path
+- id: AC3
+  text: Given insufficient evidence, when evaluating, then the result is a visible not-enough-evidence state, not a pass
+test_plan:
+  unit:
+  - mastery rules
+  integration:
+  - unlock path
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

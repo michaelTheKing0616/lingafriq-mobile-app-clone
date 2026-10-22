@@ -1,0 +1,66 @@
+charter: v2
+id: P6-060
+kind: build
+title: Author Hausa eval set of at least 300 items
+phase: P6
+epic: E-P6-EVALS
+req_ids:
+- EP-§7.6-13
+depends_on:
+- P6-057
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- evals/sets/ha.jsonl
+context_anchors:
+- ELEVATION.md#§7.6:L1462-L1475
+acceptance_criteria:
+- id: AC1
+  text: Given the Hausa set, when validated, then it holds at least 300 items covering diacritics, level vocabulary, culture
+    facts and refusal cases
+- id: AC2
+  text: Given each item, when reviewed, then a native linguist has signed it
+- id: AC3
+  text: Given item provenance, when audited, then no item is copied from an unlicensed source
+test_plan:
+  unit:
+  - schema pass
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - Hausa native sign-off
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Authoring needs native linguists (EXT-11)
+gate: G8
+external_blockers:
+- EXT-11
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

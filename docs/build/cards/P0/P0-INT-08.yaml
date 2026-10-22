@@ -1,0 +1,157 @@
+charter: v2
+id: P0-INT-08
+kind: build
+title: Generate REPO_MAP.md with routes, screens, reachability
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- RM-STOP-01
+- RM-STOP-02
+- RM-STOP-05
+- RM-STOP-06
+- RM-STOP-07
+- RM-STOP-08
+- EP-§0-01
+- EP-§0-45
+- EP-§0-46
+- EP-§0-47
+- EP-§0-48
+- EP-§0-49
+- EP-§0-50
+- EP-§0-51
+- EP-§0-52
+- EP-§0-57
+- EP-§0-58
+- EP-§0-59
+- EP-§0-60
+- EP-§2-01
+- EP-§2-02
+- EP-§2-03
+- EP-§2-04
+- EP-§2-05
+- EP-§2-06
+- EP-§2-07
+- EP-§2-08
+- EP-§2-09
+- EP-§2-10
+- EP-§2-11
+- EP-§2-12
+- EP-§2-13
+- EP-§2-14
+- EP-§2-15
+- EP-§2-16
+- EP-§2-17
+- EP-§2-18
+- EP-§2-19
+- EP-§2-20
+- EP-§2-21
+- EP-§2-22
+- EP-§2-23
+- EP-§2-24
+- EP-§2-25
+- EP-§2-26
+- EP-§2-27
+- EP-§2-28
+- EP-§2-29
+- EP-§2-30
+- EP-§2-31
+- EP-§2-32
+- EP-§2-33
+- EP-§2-34
+- EP-§2-35
+- EP-§2-36
+- EP-§2-37
+- EP-§2-38
+- EP-§2-39
+- EP-§2-40
+- EP-§2-41
+- EP-§2-42
+- EP-§2-43
+- EP-§2-44
+- EP-§2-45
+- EP-§2-46
+- EP-§2-47
+- EP-§2-48
+- EP-§2-49
+- EP-§2-50
+- EP-§2-51
+- EP-§2-52
+- EP-§2-53
+- EP-§2-54
+depends_on:
+- E-P0-INTAKE
+- P0-INT-07
+size: M
+difficulty:
+  score: 3
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: read-only static analysis script plus generated doc
+token_budget: 60000
+file_allowlist:
+- scripts/plan/repo_map.py
+- scripts/plan/tests/test_repo_map.py
+- docs/build/REPO_MAP.md
+context_anchors:
+- ELEVATION.md#§0:L21-L81
+- ELEVATION.md#§2:L416-L765
+acceptance_criteria:
+- id: AC1
+  text: Given lib/, when `python3 scripts/plan/repo_map.py` runs, then docs/build/REPO_MAP.md lists every route, screen class
+    and provider with file path
+- id: AC2
+  text: Given lib/main.dart as root, when the import graph is walked, then REPO_MAP.md reports reachable files, files unreachable,
+    files imported by nothing, unreachable screens and line totals, and prints a delta table against the source figures 330,
+    183, 88 and 49,074 lines instead of forcing a match
+- id: AC3
+  text: Given the 44 audited feature areas (EP-§2-01…44), when REPO_MAP.md is built, then each area maps to at least one file
+    or is marked NOT-BUILT with the source status word (Partial, Fake, Broken, Not built yet)
+- id: AC4
+  text: Given the 25 revival screens (REV-01…25) and 3 developer examples (DEV-01…03), when mapped, then each is listed with
+    its file and reachability so P3 cards can cite it
+- id: AC5
+  text: Given the 151 user-facing features of the source, when REPO_MAP.md is built, then a feature-to-screen table has 151
+    rows or lists each missing feature explicitly; nothing is dropped from the table
+- id: AC6
+  text: Given a configured backend path, when the script runs, then backend routes and socket events are listed; when the
+    path is absent, then the script prints BACKEND-NOT-IN-REPO and the section is marked unmapped, never empty-OK
+- id: AC7
+  text: Given test directories, when counted, then REPO_MAP.md records Flutter test files and backend test files and shows
+    them next to the source figures 64 and 52
+- id: AC8
+  text: Given the social-style screens (wa-, snap-, x- families), when mapped, then each is tagged with its learning-loop
+    link or NONE so the no-copy rule can be audited
+test_plan:
+  unit:
+  - import-graph walker on a fixture tree with one cycle and one orphan
+  integration:
+  - run on real lib/ and assert section headers present
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- docs/build/REPO_MAP.md
+- unit test output
+- ledger row
+risks:
+- source reachability figures may differ from today tree; delta is reported not hidden
+gate: G0
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

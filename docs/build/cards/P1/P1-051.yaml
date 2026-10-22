@@ -1,0 +1,69 @@
+charter: v2
+id: P1-051
+kind: build
+title: Remove client-supplied identity fields across the API
+phase: P1
+epic: E-P1-AUTH
+req_ids:
+- EP-§13.1-17
+depends_on:
+- E-P0-INTAKE
+- P1-050
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T3
+  justification: score 7; blast 3; security/crypto tester
+token_budget: 70000
+file_allowlist:
+- node-backend/src/controllers/
+- node-backend/src/validators/index.ts
+- node-backend/src/middleware/auth.middleware.ts
+context_anchors:
+- ELEVATION.md#§13.1:L1858
+acceptance_criteria:
+- id: AC1
+  text: Given any route that accepts userId, senderId or similar, when the request body supplies it, then it is ignored or
+    rejected and the JWT subject is used
+- id: AC2
+  text: Given the controller inventory, when scanned, then a lint rule fails on reads of req.body identity fields
+- id: AC3
+  text: Given user A's token with user B's id in the body, when any write route is called, then it acts on A or returns 403,
+    never on B
+test_plan:
+  unit:
+  - lint rule
+  integration:
+  - spoof test over write routes
+  security:
+  - identity tamper fuzz
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G1
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

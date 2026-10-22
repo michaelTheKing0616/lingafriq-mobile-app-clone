@@ -1,0 +1,95 @@
+charter: v2
+id: P7-915
+kind: build
+title: Wire Lens entry points across tabs and lessons
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§17.6-40
+- EP-§17.6-41
+- EP-§17.6-43
+- EP-§17.6-44
+depends_on:
+- P7-902
+- P7-922
+- E-P3-DESIGN-SYSTEM
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, coupling 2, depth 1'
+token_budget: 60000
+file_allowlist:
+- lib/widgets/app_top_bar.dart
+- lib/screens/learn/object_lessons.dart
+- lib/screens/games/flashcard_safari.dart
+- lib/screens/lens/see_it_in_the_wild.dart
+- test/widgets/lens_entry_points_test.dart
+context_anchors:
+- ELEVATION.md#§17.6:L2390-L2391
+acceptance_criteria:
+- id: AC1
+  text: Given any of the main tabs, when it is shown, then the top bar has a Lens button that opens Lens
+- id: AC2
+  text: Given a Learn object lesson, when it is opened, then a find-these-at-home action opens Lens scoped to that lesson's
+    objects
+- id: AC3
+  text: Given Flashcard Safari, when it starts, then it uses the same Lens recognition pipeline and not a separate one
+- id: AC4
+  text: Given a Word Card, when the learner taps see it in the wild, then Lens opens targeting that word
+- id: AC5
+  text: Given Lens is unavailable on the device, when an entry point is tapped, then a visible explanation is shown
+test_plan:
+  unit:
+  - scoped object set
+  integration:
+  - entry from each tab
+  security: []
+  e2e:
+  - tab-to-Lens-to-card
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - available
+  - unavailable
+  copy_keys:
+  - lens.entry.label
+  tokens:
+  - icon.lens
+  - space.topbar
+  motion_tier: product
+  a11y:
+  - Lens button labelled
+  - touch target >=48dp
+  goldens:
+  - default
+  - loading
+  - error
+  - offline
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/navigation-patterns
+  - prime/mobile-app-ui-design

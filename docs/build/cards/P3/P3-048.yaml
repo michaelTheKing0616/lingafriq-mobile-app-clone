@@ -1,0 +1,92 @@
+charter: v2
+id: P3-048
+kind: build
+title: Replace drawer with All features directory
+phase: P3
+epic: E-P3-SHELL
+req_ids:
+- EP-§17.1-12
+- EP-§17.1-13
+- EP-§17.1-14
+- EP-§17.1-15
+- EP-§17.2-47
+depends_on:
+- P3-036
+- P3-043
+- P3-045
+size: M
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 4: blast 0, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/screens/tabs_view/all_features_screen.dart
+- lib/widgets/pan_african_drawer.dart
+- lib/navigation/feature_directory.dart
+context_anchors:
+- ELEVATION.md#§17.1:L2229-L2231
+acceptance_criteria:
+- id: AC1
+  text: Given Me then All features, when opened, then an A to Z searchable list of every feature in ROUTE_MAP.csv shows grouped
+    by hub
+- id: AC2
+  text: Given a locked feature, when listed, then it shows unlocks at text and a preview
+- id: AC3
+  text: Given the drawer entry count, when compared, then every drawer item has a directory entry (count difference 0)
+- id: AC4
+  text: Given the drawer widget, when removed, then CI fails if any route lost its entry point
+test_plan:
+  unit:
+  - grouping
+  integration:
+  - drawer parity
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - list
+  - search_empty
+  - locked_preview
+  copy_keys:
+  - directory.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

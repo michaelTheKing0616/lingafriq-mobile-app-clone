@@ -1,0 +1,82 @@
+charter: v2
+id: P9-921
+kind: build
+title: Build moderation pipeline orchestrator for all social surfaces
+phase: P9
+epic: E-P9-MODERATION
+req_ids:
+- EP-§9.1-06
+- EP-§9.1-21
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+- P9-905
+size: L
+difficulty:
+  score: 9
+  blast: 3
+  ambiguity: 2
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T4
+  justification: 'score 9: blast 3, ambiguity 2, coupling 2, depth 1; gate-critical (security / child safety / legal / design
+    direction): Fable reviews'
+token_budget: 200000
+file_allowlist:
+- node-backend/src/services/moderation/pipeline.ts
+- node-backend/src/services/moderation/verdict.ts
+- node-backend/src/models/moderationCase.ts
+context_anchors:
+- ELEVATION.md#§9.1:L1554
+- ELEVATION.md#§9.1:L1566
+- ELEVATION.md#§9.4:L1642-L1653
+acceptance_criteria:
+- id: AC1
+  text: Given any message, profile text, clip, caption or room title, when submitted, then it passes pre-send checks and returns
+    a typed verdict (allow, hold, block, escalate, unsure) before delivery
+- id: AC2
+  text: Given a detector timeout or error, when a verdict cannot be produced, then minors' content is held and adult content
+    is delivered but queued for review, and never silently marked allowed
+- id: AC3
+  text: Given the old cosmetic toxicity filter, when this card is complete, then it is removed and a test asserts the new
+    pipeline is the only path
+- id: AC4
+  text: Given a new surface from F-103 to F-136, when it registers a content type, then it must declare its pipeline hook
+    or the build fails
+- id: AC5
+  text: Given a verdict, when stored, then it records detector ids, language, confidence and policy version for audit
+test_plan:
+  unit:
+  - verdict aggregation
+  integration:
+  - hook coverage per surface
+  - timeout behaviour
+  security:
+  - bypass via alternate endpoint
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- three social styles triple the surface; the registry check is the control
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

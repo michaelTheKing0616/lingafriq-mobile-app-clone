@@ -1,0 +1,141 @@
+charter: v2
+id: P8-920
+kind: build
+title: 'Flagship: Talking Drum tone perception and production'
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.3-01
+- EP-§10.3-01a
+- EP-§10.3-01b
+- EP-§10.3-01c
+- EP-§10.3-01d
+depends_on:
+- P8-900
+- P8-901
+- P8-909
+- P8-910
+- P8-912
+- P8-913
+- P8-916
+- E-P6-SCORER
+- E-P4-CONTENT-ENGINE
+- E-P3-DESIGN-SYSTEM
+size: L
+difficulty:
+  score: 9
+  blast: 2
+  ambiguity: 2
+  coupling: 2
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 9: blast 2, coupling 2'
+token_budget: 150000
+file_allowlist:
+- lib/games/talking_drum/talking_drum_game.dart
+- lib/games/talking_drum/talking_drum_screen.dart
+- lib/games/talking_drum/drum_timbre_synth.dart
+- lib/games/talking_drum/contour_overlay.dart
+- lib/games/drum_rhythm/drum_rhythm_game.dart
+- lib/screens/games/cultural/drum_word_game.dart
+- lib/games/gamekit/all_games_registry.dart
+context_anchors:
+- ELEVATION.md#§10.3:L1679-L1691
+- ELEVATION.md#§10.3:L1769-L1770
+acceptance_criteria:
+- id: AC1
+  text: Given a lexicon phrase with tone marks, when a turn starts, then its pitch contour is rendered on a talking-drum timbre
+    and 2–4 candidate phrases are shown, one with matching tones
+- id: AC2
+  text: Given a candidate pick, when it is locally checked, then correct or wrong shows within 160 ms and the wrong-answer
+    explanation plays the tones
+- id: AC3
+  text: Given a correct pick, when the production step starts, then the learner speaks the phrase and the real scorer's F0
+    contour is drawn over the drum contour
+- id: AC4
+  text: Given the scorer returns unsure or is unavailable, when production ends, then the screen shows unsure or practice
+    mode and issues no score-based reward
+- id: AC5
+  text: Given a language, when the tone set is needed, then the per-language tone inventory from P8-913 drives drum pitch
+    levels and contours
+- id: AC6
+  text: Given a phrase without verified tone marks, when the pool builds, then it is excluded
+- id: AC7
+  text: Given Drum Word and Drum Rhythm, when this card completes, then every mechanic in the harvest list is present or the
+    gap is listed and waived by Tope
+test_plan:
+  unit:
+  - contour to drum pitch mapping
+  - candidate generation
+  integration:
+  - scorer fake
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - non-audio contour view
+  content:
+  - tone-marked fixtures
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - ready
+  - playing
+  - correct
+  - wrong
+  - why_wrong
+  - results
+  - error
+  - offline
+  - practice_mode
+  - scorer_unsure
+  - contour_compare
+  copy_keys:
+  - games.talking_drum.title
+  - games.talking_drum.instructions
+  - games.talking_drum.why_wrong
+  - games.talking_drum.practice_label
+  - games.talking_drum.error
+  tokens:
+  - color.surface.game
+  - color.feedback.correct
+  - color.feedback.wrong
+  - space.4
+  - radius.card
+  - type.title
+  motion_tier: product
+  a11y:
+  - screen-reader labels on every answer control
+  - reduced-motion variant
+  - correctness shown by icon and text not colour alone
+  - touch targets ≥48dp
+  goldens:
+  - talking_drum_playing
+  - talking_drum_why_wrong
+  - talking_drum_results
+tags:
+- shows_score
+- uses_source
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+harvest_list:
+- 'Drum Word: lib/screens/games/cultural/drum_word_game.dart'
+- 'Drum Rhythm: lib/games/drum_rhythm/*'
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

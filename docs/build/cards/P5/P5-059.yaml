@@ -1,0 +1,68 @@
+charter: v2
+id: P5-059
+kind: build
+title: 'Build TTS gate runner: ASR round-trip and F0 tone proxy'
+phase: P5
+epic: E-P5-AUDIO
+req_ids:
+- CP-§7-yo-05
+- CP-§7-yo-06
+depends_on:
+- P5-058
+- E-P6-SCORER
+size: L
+difficulty:
+  score: 9
+  blast: 3
+  ambiguity: 2
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T1
+  reviewer: T3
+  justification: 'score 9: blast 3, ambiguity 2, coupling 2, depth 2'
+token_budget: 150000
+file_allowlist:
+- tools/audio/gate_runner.py
+- tools/audio/f0_tone_proxy.py
+- test/audio/gate_runner_test.py
+context_anchors:
+- CURRICULUM.md#§7:L714-L718
+acceptance_criteria:
+- id: AC1
+  text: Given synthesised audio, when the gate runs, then text is transcribed by Intron ASR and matched to the source text
+- id: AC2
+  text: Given tonal audio, when analysed, then F0 contour is compared to the lexicon tone pattern as an automated proxy
+- id: AC3
+  text: Given a failing clip, when reported, then it is rejected with a typed GateFailure
+test_plan:
+  unit:
+  - matcher
+  - f0
+  integration:
+  - asr stub
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- tts_tonal
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

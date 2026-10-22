@@ -1,0 +1,83 @@
+charter: v2
+id: P8-910
+kind: build
+title: 'GameKit: real-scorer adapter for speaking games'
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.1-02
+- P0-18
+depends_on:
+- E-P8-PLAY
+- P8-909
+- E-P6-SCORER
+size: L
+difficulty:
+  score: 9
+  blast: 3
+  ambiguity: 2
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 9: blast 3, coupling 2; P0 area'
+token_budget: 150000
+file_allowlist:
+- lib/games/gamekit/game_scoring.dart
+- lib/games/gamekit/game_result.dart
+- lib/games/gamekit/game_turn_context.dart
+- lib/games/learning_game_adapter.dart
+- lib/models/game/game_content_models.dart
+context_anchors:
+- ELEVATION.md#§10.1:L1662-L1663
+- ELEVATION.md#§10.2:L1670-L1676
+acceptance_criteria:
+- id: AC1
+  text: Given a speaking game turn, when the learner records, then the score comes only from the E-P6-SCORER contract and
+    no random, heuristic or length-based number is displayed
+- id: AC2
+  text: Given the scorer returns low confidence or 'unsure', when the verdict shows, then the game displays an unsure state,
+    awards no score-based reward and offers retry
+- id: AC3
+  text: Given the scorer is unavailable or errors, when a turn needs a score, then the game shows a visible error and falls
+    back to honest practice mode
+- id: AC4
+  text: Given a scored turn, when the result is stored, then the scorer version, confidence and per-phoneme or per-tone breakdown
+    are stored with the learner-model event
+- id: AC5
+  text: Given a grep of speaking-game scoring code, when CI runs, then any use of Random, hash or fixed score in a speaking
+    path fails the build
+test_plan:
+  unit:
+  - adapter contract
+  - unsure path
+  integration:
+  - scorer fake with confidence
+  security:
+  - no client-side score trust
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- shows_score
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

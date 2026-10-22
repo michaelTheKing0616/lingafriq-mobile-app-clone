@@ -1,0 +1,84 @@
+charter: v2
+id: P7-931
+kind: build
+title: Build 30-second perception check for tutorials
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§11.2-12
+- EP-§11.2-13
+depends_on:
+- P7-930
+size: S
+difficulty:
+  score: 2
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 0, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist:
+- lib/screens/tutorials/perception_check.dart
+- test/screens/tutorials/perception_check_test.dart
+context_anchors:
+- ELEVATION.md#§11.2:L1791
+acceptance_criteria:
+- id: AC1
+  text: Given a sound tutorial ends, when the check starts, then a perception check of 30 seconds runs
+- id: AC2
+  text: Given the check finishes, when results show, then they display the learner's own result with no fabricated benchmark
+- id: AC3
+  text: Given the learner leaves mid-check, when they return, then it restarts and no partial result is saved
+test_plan:
+  unit:
+  - 30 s timer
+  - no partial save
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - running
+  - result
+  - abandoned
+  copy_keys:
+  - tutorial.check.title
+  tokens:
+  - motion.timer
+  - color.surface
+  motion_tier: product
+  a11y:
+  - timer announced
+  - non-audio alternative described
+  - reduced-motion variant
+  goldens:
+  - default
+  - loading
+  - error
+  - offline
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

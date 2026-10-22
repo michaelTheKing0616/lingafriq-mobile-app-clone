@@ -1,0 +1,77 @@
+charter: v2
+id: P4-009
+kind: build
+title: Lint share-alike containment of evidence layer
+phase: P4
+epic: E-P4-LICENCES
+req_ids:
+- CP-§2.1-01
+- CP-§2.1-02
+- CP-§2.1-04
+- CP-§2.1-05
+- CP-§2.2-15
+depends_on:
+- P4-003
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- tools/content_engine/linters/sharealike_containment.py
+- tools/content_engine/tests/test_sharealike_containment.py
+- .github/workflows/content-engine.yml
+context_anchors:
+- CURRICULUM.md#§2.1:L107-L113
+- CURRICULUM.md#§2.2:L155-L157
+acceptance_criteria:
+- id: AC1
+  text: Given a lexicon or learner-text artefact, when it contains text whose provenance is a share_alike source, then the
+    linter fails with SHAREALIKE_LEAK and names the item id and source id
+- id: AC2
+  text: Given a share-alike source used as verification evidence, when stored, then it lives only in the separated evidence
+    layer with attribution and never in the proprietary lexicon tables
+- id: AC3
+  text: Given learner-facing text, when generated, then provenance lists the sources cited and verbatim copying is permitted
+    only from public-domain or compatible-licence rows
+- id: AC4
+  text: Given the linter, when run, then it executes in CI and blocks merge on any violation
+test_plan:
+  unit:
+  - leak detected by provenance
+  - evidence-layer item allowed
+  integration:
+  - CI job blocks merge
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-03
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,108 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P7
+epic: E-P7-HUBS
+hub: Speak
+gate: HUB
+status: Draft
+user_facing: true
+p0_area: false
+external_blockers: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+tags: []
+token_budget: 80000
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: Speak hub feature elevation'
+id: F-042
+title: Elevate Tutor dashboard
+req_ids:
+- F-042
+- F-042.D
+- F-042.E
+- F-042.U
+- F-042.L
+depends_on:
+- E-P2-PLATFORM
+- E-P3-DESIGN-SYSTEM
+- E-P1-CONTAINMENT
+- E-P6-SCORER
+file_allowlist:
+- lib/screens/tutor/tutor_dashboard_screen.dart
+- lib/screens/ai_chat/tutor_progress_dashboard_screen.dart
+context_anchors:
+- ELEVATION.md#§18.4:L4095-L4107
+delta:
+  current_state: Routed mode list; unrouted tutor progress dashboard duplicate.
+  defects_to_fix:
+  - Modes listed without recommendation or weak-skill targeting.
+  elevation_to_build:
+  - Coach view recommending next mode from weak skills.
+  - Progress tab with speaking minutes, tone accuracy trend, and conversation goals.
+  ux_and_render:
+  - Recommended ribbon on cards and small honest charts beyond shared bar.
+  hub_placement: Speak → Polie → Coach.
+  unlock_stage: per §17.4
+  harvest_list:
+  - tutor_progress_dashboard_screen.dart as the Progress tab.
+acceptance_criteria:
+- id: AC1
+  text: Given learner skill telemetry, when the coach opens, then a recommended mode appears with rationale tied to weak skills.
+- id: AC2
+  text: Given historical speaking data, when the progress tab loads, then minutes, tone trend, and goals charts use server
+    metrics not placeholders.
+- id: AC3
+  text: Given unrouted progress dashboard, when Speak → Polie → Coach is opened, then a single consolidated dashboard route
+    remains.
+test_plan:
+  unit:
+  - recommendation ranking
+  integration:
+  - progress metrics API
+  e2e:
+  - Speak → Polie → Coach
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content: []
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - f-042.*
+skills:
+  worker:
+  - prime/conversational-ux
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux

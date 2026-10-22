@@ -1,0 +1,65 @@
+charter: v2
+id: P4-088
+kind: build
+title: Produce before/after legacy rebuild dashboard
+phase: P4
+epic: E-P4-LEGACY-REBUILD
+req_ids:
+- CP-§8-08
+depends_on:
+- P4-084
+- P4-085
+- P4-086
+- P4-087
+size: S
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1, depth 1, size 0'
+token_budget: 25000
+file_allowlist:
+- tools/content_engine/legacy/report.py
+- tools/content_engine/tests/test_legacy_report.py
+context_anchors:
+- CURRICULUM.md#§8:L774-L775
+acceptance_criteria:
+- id: AC1
+  text: Given the rebuild, when the report is produced, then it shows items salvaged versus rebuilt versus dropped with counts
+    that sum to the legacy total
+- id: AC2
+  text: Given a count mismatch, when generating, then the report fails with REPORT_COUNT_MISMATCH
+test_plan:
+  unit:
+  - dry run lists changes
+  integration:
+  - re-run is idempotent
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,72 @@
+charter: v2
+id: P4-064
+kind: build
+title: Route items by threshold and regeneration cap
+phase: P4
+epic: E-P4-PIPELINE
+req_ids:
+- CP-§3.4-09
+- CP-§3.4-10
+- CP-§3.4-11
+- CP-§3.4-12
+- CP-§3.4-13
+- CP-§3.4-14
+- CP-§3.4-15
+depends_on:
+- P4-063
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- tools/content_engine/pipeline/routing.py
+- tools/content_engine/tests/test_routing.py
+context_anchors:
+- CURRICULUM.md#§3.4:L546-L550
+acceptance_criteria:
+- id: AC1
+  text: Given score 0.90 or above, all linters passing and no high-risk tag, when routed, then the item publishes as Beta
+- id: AC2
+  text: Given score from 0.70 to 0.90, or any high-risk tag regardless of score, when routed, then the item goes to the linguist
+    queue
+- id: AC3
+  text: Given score below 0.70 or a hard linter failure, when routed, then the item regenerates up to 2 attempts and then
+    is parked for a human
+test_plan:
+  unit:
+  - happy path
+  - typed error path
+  integration:
+  - stage contract with fixtures
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

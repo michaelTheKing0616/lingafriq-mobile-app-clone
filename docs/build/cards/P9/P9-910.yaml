@@ -1,0 +1,84 @@
+charter: v2
+id: P9-910
+kind: build
+title: 'Process chat media: signed uploads, transcode, size limits, EXIF strip'
+phase: P9
+epic: E-P9-REALTIME
+req_ids:
+- EP-§9.3-16
+- EP-§9.3-17
+- EP-§9.3-18
+- EP-§9.3-19
+- EP-§9.3-20
+- EP-§9.1-23
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+- P9-908
+size: L
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 200000
+file_allowlist:
+- node-backend/src/services/mediaUpload.service.ts
+- node-backend/src/services/mediaTranscode.service.ts
+- node-backend/src/validators/media.validator.ts
+context_anchors:
+- ELEVATION.md#§9.3:L1638-L1640
+- ELEVATION.md#§9.1:L1567
+acceptance_criteria:
+- id: AC1
+  text: Given a media upload, when requested, then the server issues a signed URL scoped to one object, one user and a 10
+    minute expiry, and a message referencing any other URL is rejected with MEDIA_URL_EXTERNAL
+- id: AC2
+  text: Given a voice note, when processed, then it is stored as Opus; given a video, then it is transcoded to HEVC or AV1
+    where supported and H.264 as fallback
+- id: AC3
+  text: Given a file above the size limit for its type, when uploaded, then it is rejected with MEDIA_TOO_LARGE before transcode
+- id: AC4
+  text: Given an image with GPS EXIF, when processed, then the stored file contains no EXIF location or device metadata
+- id: AC5
+  text: Given a transcode failure, when it occurs, then the message shows a visible failed-media state and the original is
+    not served
+test_plan:
+  unit:
+  - validator
+  - exif strip
+  integration:
+  - upload to playback
+  - external url reject
+  security:
+  - SSRF and tracking-pixel URL
+  - content-type spoof
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

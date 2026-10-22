@@ -1,0 +1,67 @@
+charter: v2
+id: P2-006
+kind: build
+title: Block on high-severity dependency audit findings
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.1-35
+- EP-§13.1-34
+- EP-§13.1-36
+depends_on:
+- E-P1-CONTAINMENT
+size: S
+difficulty:
+  score: 3
+  blast: 2
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 3: blast 2, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist:
+- .github/workflows/build.yml
+- .github/dependabot.yml
+- scripts/ci/dep_audit.sh
+- .github/workflows/pub-outdated.yml
+context_anchors:
+- ELEVATION.md#§13.1:L1874
+- ELEVATION.md#§13.1:L1874-L1875
+acceptance_criteria:
+- id: AC1
+  text: Given a production npm dependency with a high advisory, when npm audit --omit=dev runs in CI, then the job fails
+- id: AC2
+  text: Given Dependabot config, when a week passes, then update PRs are opened for npm and pub and GitHub Actions
+- id: AC3
+  text: Given the monthly schedule, when pub outdated runs, then its report is attached as an artifact
+test_plan:
+  unit: []
+  integration: []
+  security:
+  - audit gate on a seeded vulnerable fixture
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

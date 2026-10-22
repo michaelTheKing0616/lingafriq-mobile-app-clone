@@ -1,0 +1,35 @@
+charter: v2
+id: P1-007                      # <phase>-<nnn>; feature cards: F-012-<facet>; see 03_PHASES_GATES.md
+title: <verb-first title>
+phase: P1
+epic: <epic id, e.g. E-P1-SOCKETS>
+req_ids: [P0-4, P0-5, P0-6, EP-§9.5-02]   # mandatory; every id must exist in docs/build/RTM.csv
+depends_on: [P1-002]
+size: M                         # S | M | L  (XL forbidden: split)
+difficulty: {score: 8, blast: 3, ambiguity: 1, coupling: 2, depth: 2, size: 0}
+tiers: {worker: T3, tester: T3, reviewer: T3, justification: "authz redesign, privacy-critical"}
+token_budget: 80000             # S ≤30000, M ≤80000, L ≤200000
+file_allowlist:                 # ≤12 paths; Worker may not touch anything else
+  - node-backend/src/services/socket.service.ts
+context_anchors:                # RTM anchors only, never pasted source text
+  - ELEVATION.md#§1:L132-L141
+  - ELEVATION.md#§9.5:L1654-L1659
+acceptance_criteria:            # Given/When/Then, each testable, each with an id
+  - id: AC1
+    text: Given user A and a room of B+C, when A emits join_room, then 403 and no events are delivered to A
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+ux_spec: null                   # required when user_facing: true → {states, copy_keys, tokens, motion_tier, a11y, goldens}
+user_facing: false
+dod_evidence: [test report path, coverage on touched domain code, golden diffs (if demanded), ledger row]
+risks: []
+gate: G1
+external_blockers: []           # ids from EXTERNAL.md
+visual_evidence_required: false # only design-gate cards set true; no screenshots otherwise
+status: Draft                   # Draft | Ready | Spec-Tests | Build | Test | Review | Fix | Done | Blocked-External | Waived

@@ -1,0 +1,97 @@
+charter: v2
+id: P7-907
+kind: build
+title: Build Lens Word Card flip with tone contour and mic
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§17.6-32
+- EP-§17.6-33
+- EP-§17.6-34
+- EP-§17.6-35
+depends_on:
+- P7-902
+- P7-906
+- E-P3-DESIGN-SYSTEM
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, coupling 1, depth 1'
+token_budget: 60000
+file_allowlist:
+- lib/screens/lens/lens_word_card.dart
+- lib/widgets/tone_contour_line.dart
+- test/screens/lens/lens_word_card_test.dart
+context_anchors:
+- ELEVATION.md#§17.6:L2386-L2387
+acceptance_criteria:
+- id: AC1
+  text: Given a detection box, when the learner taps it, then it flips into a Word Card
+- id: AC2
+  text: Given a Word Card, when it renders, then the target word is 28 sp and diacritics are never clipped
+- id: AC3
+  text: Given a toned word, when the card renders, then a tone contour line sits under the syllables
+- id: AC4
+  text: Given a Word Card, when it renders, then a large mic button is visible with a touch target of at least 48 dp
+- id: AC5
+  text: Given reduced motion, when the card flips, then it cross-fades instead of rotating
+test_plan:
+  unit:
+  - contour from lemma tones
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - contrast and text-scale golden
+  - diacritic clipping golden
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - front
+  - flipped
+  - no_audio
+  - unsure
+  copy_keys:
+  - lens.card.mic
+  - lens.card.unsure
+  tokens:
+  - type.lens.word.28
+  - color.tone.contour
+  - radius.card
+  motion_tier: product
+  a11y:
+  - word and contour described to screen reader
+  - mic is labelled button
+  - reduced-motion variant
+  goldens:
+  - default
+  - large-text
+  - no-audio
+  - reduced-motion
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

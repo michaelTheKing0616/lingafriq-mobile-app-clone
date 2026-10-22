@@ -1,0 +1,76 @@
+charter: v2
+id: P13-007
+kind: design
+title: Design Grandma Mode family dialect recordings
+phase: P13
+epic: E-P13-SCALE
+req_ids:
+- RM-MS-03
+- RM-MS-12
+depends_on:
+- E-P12-RELEASE
+- P13-004
+- E-P4-CONTENT-ENGINE
+- E-P9-SAFETY
+- E-P6-SCORER
+size: S
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 2, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§16.4:L2127-L2133
+acceptance_criteria:
+- id: AC1
+  text: Given a family member recording, when it is created, then the design requires explicit recorded consent and a licence
+    choice before storage
+- id: AC2
+  text: Given generated dialect content, when produced from a recording, then the design requires it to be labelled as family-sourced
+    and gated by native review before wider sharing
+- id: AC3
+  text: Given a contributor is a minor or the subject is a minor, when recording, then the design applies the guardian and
+    moderation rules from E-P9-SAFETY
+- id: AC4
+  text: Given a contributor withdraws consent, when requested, then the design deletes the recording and derived content within
+    a stated period
+- id: AC5
+  text: Given the doc, when complete, then it lists the build cards and sizes
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- uses_source
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks:
+- Voice data may trigger DPIA thresholds; see EXT-18
+- Priority MS; design and ADR only, no build before P13-004 gate passes
+gate: G13
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - adaptive/09-writing-and-communication

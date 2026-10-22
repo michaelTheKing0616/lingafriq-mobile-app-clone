@@ -1,0 +1,111 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P7
+epic: E-P7-HUBS
+hub: Speak
+gate: HUB
+status: Draft
+user_facing: true
+p0_area: true
+external_blockers: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+tags:
+- shows_score
+token_budget: 80000
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: Speak hub feature elevation'
+id: F-047
+title: Elevate Speak Missions
+req_ids:
+- F-047
+- F-047.D
+- F-047.E
+- F-047.U
+- F-047.L
+- P0-3
+depends_on:
+- E-P2-PLATFORM
+- E-P3-DESIGN-SYSTEM
+- E-P1-CONTAINMENT
+- E-P6-SCORER
+file_allowlist:
+- lib/screens/content/speak_mission_evaluate_screen.dart
+context_anchors:
+- ELEVATION.md#§18.4:L4170-L4181
+delta:
+  current_state: UI records audio and calls Groq from client for evaluation.
+  defects_to_fix:
+  - Client AI dependency.
+  - Evaluation not grounded in a rubric.
+  elevation_to_build:
+  - Weekly real-world speaking missions with rubric-based evaluation.
+  - Optional share to circle; ties to Daily Challenges.
+  ux_and_render:
+  - Mission checklist, recording sheet, and rubric feedback beyond shared bar.
+  hub_placement: Speak → Missions; Today → Challenges.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given an active mission, when the learner submits a recording, then rubric feedback is returned via gateway using
+    E-P6-SCORER criteria not ad-hoc client text.
+- id: AC2
+  text: Given Today challenges, when a weekly speak mission is live, then Speak → Missions and Today stay in sync on completion
+    state.
+- id: AC3
+  text: Given release build, when evaluation runs, then no client Groq keys are present and failures show typed errors.
+- id: AC4
+  text: Given the scorer is unavailable or its confidence is below the gate threshold, when a score would be shown, then the
+    UI shows the 'unsure' state, stores no number and never shows a fabricated score.
+test_plan:
+  unit:
+  - rubric mapping
+  integration:
+  - mission evaluation API
+  e2e:
+  - Speak → Missions
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content: []
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - f-047.*
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

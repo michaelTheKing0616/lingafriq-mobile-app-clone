@@ -1,0 +1,48 @@
+charter: v2
+id: P2-039
+kind: adr
+title: 'ADR: Decide on Shorebird Dart patching'
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.9-14
+depends_on:
+- E-P1-CONTAINMENT
+size: S
+difficulty:
+  score: 2
+  blast: 1
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T4
+  tester: T0
+  reviewer: T4
+  justification: ADR; no code
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§13.9:L1957-L1958
+acceptance_criteria:
+- id: AC1
+  text: Given store policy and the release gates, when the ADR is written, then it states policy fit, risk and a recommendation
+- id: AC2
+  text: Given Tope signs, when recorded, then DECISIONS.md carries the outcome
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- signed decision recorded in DECISIONS.md
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - prime/diagram-design

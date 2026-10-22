@@ -1,0 +1,67 @@
+charter: v2
+id: P4-021
+kind: build
+title: Define language kit schema and loader
+phase: P4
+epic: E-P4-LANGUAGE-KITS
+req_ids:
+- CP-§3.1-01
+- CP-§3.1-10
+- CP-§3.1-11
+depends_on:
+- E-P4-CONTENT-ENGINE
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- tools/content_engine/kits/kit_schema.py
+- tools/content_engine/kits/loader.py
+- tools/content_engine/tests/test_kit_schema.py
+context_anchors:
+- CURRICULUM.md#§3.1:L469-L471
+acceptance_criteria:
+- id: AC1
+  text: Given a kit file, when loaded, then it validates allowed character set, NFC rule, tone-marking policy, phone inventory,
+    G2P rules, noun-class and concord tables, dialect standard and honorifics register
+- id: AC2
+  text: Given a kit missing any section, when loaded, then loading fails with KIT_SECTION_MISSING naming it
+- id: AC3
+  text: Given a language without a kit, when the pipeline starts, then it stops with KIT_NOT_FOUND and no generation runs
+test_plan:
+  unit:
+  - section-missing matrix
+  - KIT_NOT_FOUND halts
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

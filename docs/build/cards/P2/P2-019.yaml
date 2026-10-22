@@ -1,0 +1,98 @@
+charter: v2
+id: P2-019
+kind: build
+title: Manage downloadable units, storage and Wi-Fi-only default
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.5-08
+- EP-§13.5-09
+- EP-§13.5-10
+- EP-§13.5-11
+depends_on:
+- E-P1-CONTAINMENT
+- P2-014
+- P2-017
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 3, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/services/offline/lesson_download_service.dart
+- lib/services/offline/cache_eviction.dart
+- lib/screens/settings/downloads_screen.dart
+- lib/services/connectivity_service.dart
+context_anchors:
+- ELEVATION.md#§13.5:L1920
+- ELEVATION.md#§13.5:L1921
+acceptance_criteria:
+- id: AC1
+  text: Given a unit, when downloaded, then the content pack and Opus audio are stored together and the size is shown before
+    download
+- id: AC2
+  text: Given a unit pack, when measured in the pilot unit, then its size is recorded against the 10-30 MB expectation and
+    exceeding 30 MB is flagged
+- id: AC3
+  text: Given default settings, when on mobile data, then downloads wait for Wi-Fi unless the user overrides per download
+- id: AC4
+  text: Given low storage, when the user opens storage management, then per-unit size and delete controls are shown and deletion
+    frees the space
+test_plan:
+  unit:
+  - Wi-Fi gating
+  integration:
+  - download, offline play, delete
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - idle
+  - downloading
+  - paused-wifi
+  - complete
+  - error
+  - low-storage
+  copy_keys:
+  - dl.wifi_only
+  - dl.size
+  - dl.delete
+  - dl.error
+  tokens:
+  - color.status.*
+  - space.*
+  motion_tier: product
+  a11y:
+  - progress announced
+  - delete confirm
+  goldens:
+  - downloads_states
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

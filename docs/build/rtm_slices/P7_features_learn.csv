@@ -1,0 +1,141 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+F-007,ELEVATION,§18.3:L3593-L3613,requirement,Lessons map / Courses,P1,agent,,Open
+F-007.D,ELEVATION,§18.3:L3604,requirement,[3] The map draws from placeholder or template curriculum (P0-16). Four entry,P1,agent,,Open
+F-007.E,ELEVATION,§18.3:L3606,requirement,[3] One Path map per language: CEFR bands as regions of a,P1,agent,,Open
+F-007.U,ELEVATION,§18.3:L3610,requirement,[3] Vertical journey with region art; a progress ring per unit; the,P1,agent,,Open
+F-007.L,ELEVATION,§18.3:L3613,requirement,[3] Learn tab (root).,P1,agent,,Open
+F-008,ELEVATION,§18.3:L3614-L3628,requirement,Authentic Path (A1–C1),P1,agent,,Open
+F-008.D,ELEVATION,§18.3:L3621,requirement,[3] Content quality (P0-16). The name implies the main course is not,P1,agent,,Open
+F-008.E,ELEVATION,§18.3:L3622,requirement,"[3] Becomes the ""Real-world track"": authentic materials (radio clips, songs, market",P1,agent,,Open
+F-008.U,ELEVATION,§18.3:L3625,requirement,"[3] Media-first lesson cards with a transcript toggle, Tone Lens and tap-to-gloss.",P1,agent,,Open
+F-008.L,ELEVATION,§18.3:L3628,requirement,"[3] Learn → Path → ""Real-world"" lane (A2+).",P1,agent,,Open
+F-009,ELEVATION,§18.3:L3629-L3640,requirement,Lesson Flow,P1,agent,,Open
+F-009.D,ELEVATION,§18.3:L3634,requirement,"[3] Template content, no audio, and stages that don't adapt.",P1,agent,,Open
+F-009.E,ELEVATION,§18.3:L3635,requirement,[3] An adaptive lesson player: input → noticing (Tone Lens) → guided,P1,agent,,Open
+F-009.U,ELEVATION,§18.3:L3637,requirement,"[3] Full-screen, one task per screen, haptic feedback within 160 ms; progress",P1,agent,,Open
+F-009.L,ELEVATION,§18.3:L3640,requirement,[3] Opened from Path and Today.,P1,agent,,Open
+F-010,ELEVATION,§18.3:L3641-L3654,requirement,Lesson detail & Level certificate,P1,agent,,Open
+F-010.D,ELEVATION,§18.3:L3648,requirement,[3] Certificates aren't evidence-based or verifiable.,P1,agent,,Open
+F-010.E,ELEVATION,§18.3:L3649,requirement,"[3] Lesson detail shows can-dos, words and the culture note, with a",P1,agent,,Open
+F-010.U,ELEVATION,§18.3:L3652,requirement,[3] Certificate rendered with the learner's avatar and a QR verification link.,P1,agent,,Open
+F-010.L,ELEVATION,§18.3:L3654,requirement,[3] Learn → Path → lesson; Me → Credentials.,P1,agent,,Open
+F-011,ELEVATION,§18.3:L3655-L3665,requirement,Learning Path (personal plan),P1,agent,,Open
+F-011.D,ELEVATION,§18.3:L3660,requirement,[3] Duplicates the course map conceptually.,P1,agent,,Open
+F-011.E,ELEVATION,§18.3:L3661,requirement,"[3] Make it the ""My plan"" view of Path: the learner's goal",P1,agent,,Open
+F-011.U,ELEVATION,§18.3:L3663,requirement,[3] Timeline with milestones; editable goal. Rendered on the single unified design,P1,agent,,Open
+F-011.L,ELEVATION,§18.3:L3665,requirement,"[3] Learn → Path → ""My plan"".",P1,agent,,Open
+F-012,ELEVATION,§18.3:L3666-L3678,requirement,Placement test,P1,agent,,Open
+F-012.D,ELEVATION,§18.3:L3673,requirement,[3] Not adaptive; no speaking.,P1,agent,,Open
+F-012.E,ELEVATION,§18.3:L3674,requirement,"[3] An adaptive 3-minute CAT placement with listening, reading and one speaking",P1,agent,,Open
+F-012.U,ELEVATION,§18.3:L3676,requirement,"[3] Calm, one item per screen, with a clear ""skip, I'm a",P1,agent,,Open
+F-012.L,ELEVATION,§18.3:L3678,requirement,"[3] Onboarding; Learn → Path → ""Retake placement"".",P1,agent,,Open
+F-013,ELEVATION,§18.3:L3679-L3694,requirement,Grammar Hub,P1,agent,,Open
+F-013.D,ELEVATION,§18.3:L3685,requirement,[3] Grammar content is the repeated template lines (§6).,P1,agent,,Open
+F-013.E,ELEVATION,§18.3:L3686,requirement,[3] A Pattern Library: each pattern card has a plain-language explanation in,P1,agent,,Open
+F-013.U,ELEVATION,§18.3:L3690,requirement,[3] Cards with colour-coded morphology (not colour-only); swipe through examples.,P1,agent,,Open
+F-013.L,ELEVATION,§18.3:L3694,requirement,[3] Learn → Patterns.,P1,agent,,Open
+F-014,ELEVATION,§18.3:L3695-L3706,requirement,Vocabulary Builder,P1,agent,,Open
+F-014.D,ELEVATION,§18.3:L3700,requirement,[3] Images are stock or remote with spinners; words have no audio,P1,agent,,Open
+F-014.E,ELEVATION,§18.3:L3701,requirement,"[3] Themed word packs (market, family, body, church/mosque, football) with native audio,",P1,agent,,Open
+F-014.U,ELEVATION,§18.3:L3704,requirement,[3] Grid of picture cards; tap to hear; long-press for the Word,P1,agent,,Open
+F-014.L,ELEVATION,§18.3:L3706,requirement,[3] Learn → Words → Packs.,P1,agent,,Open
+F-015,ELEVATION,§18.3:L3707-L3727,requirement,My Words & Review (SRS) (revived),P1,agent,,Open
+F-015.D,ELEVATION,§18.3:L3719,requirement,"[3] Four separate SRS implementations (§6.3). No FSRS. Saved words in chat,",P1,agent,,Open
+F-015.E,ELEVATION,§18.3:L3721,requirement,[3] One FSRS-6 review fed by every feature (save a word anywhere,P1,agent,,Open
+F-015.U,ELEVATION,§18.3:L3724,requirement,"[3] Review card with audio first, then meaning, then a speak-it button;",P1,agent,,Open
+F-015.L,ELEVATION,§18.3:L3727,requirement,[3] Learn → Words → Review / Insights; Today pulls due items.,P1,agent,,Open
+F-016,ELEVATION,§18.3:L3728-L3741,requirement,Review Rush (gamified review) (revived),P1,agent,,Open
+F-016.D,ELEVATION,§18.3:L3734,requirement,[3] Not reachable from any menu.,P1,agent,,Open
+F-016.E,ELEVATION,§18.3:L3735,requirement,[3] Revive as Review Rush: a 90-second sprint over due cards with,P1,agent,,Open
+F-016.U,ELEVATION,§18.3:L3738,requirement,[3] Arcade skin over the same card component; reduced-motion version. Rendered on,P1,agent,,Open
+F-016.L,ELEVATION,§18.3:L3741,requirement,"[3] Learn → Words → Review → ""Rush""; Play → Quick games.",P1,agent,,Open
+F-017,ELEVATION,§18.3:L3742-L3756,requirement,Listening Practice,P1,agent,,Open
+F-017.D,ELEVATION,§18.3:L3749,requirement,[3] Content lacks real audio (§6).,P1,agent,,Open
+F-017.E,ELEVATION,§18.3:L3750,requirement,"[3] Ear training: graded listening at native speed with accents (Lagos, Ibadan,",P1,agent,,Open
+F-017.U,ELEVATION,§18.3:L3753,requirement,[3] Waveform with tap-to-replay segments; transcript reveal after answering. Rendered,P1,agent,,Open
+F-017.L,ELEVATION,§18.3:L3756,requirement,[3] Learn → Skills → Listening.,P1,agent,,Open
+F-018,ELEVATION,§18.3:L3757-L3768,requirement,Writing Practice,P1,agent,,Open
+F-018.D,ELEVATION,§18.3:L3762,requirement,"[3] Client key dependency (P0-3). A regex diacritic ""enforcer"" can introduce errors",P1,agent,,Open
+F-018.E,ELEVATION,§18.3:L3763,requirement,"[3] Write & check: a diacritic keyboard bar, tone-aware grading that is",P1,agent,,Open
+F-018.U,ELEVATION,§18.3:L3766,requirement,[3] Inline corrections with an explanation popover; never auto-replace text. Rendered on,P1,agent,,Open
+F-018.L,ELEVATION,§18.3:L3768,requirement,[3] Learn → Skills → Writing.,P1,agent,,Open
+F-019,ELEVATION,§18.3:L3769-L3781,requirement,Phrase DNA,P1,agent,,Open
+F-019.D,ELEVATION,§18.3:L3775,requirement,[3] Templates come from the same thin content.,P1,agent,,Open
+F-019.E,ELEVATION,§18.3:L3776,requirement,"[3] Turn it into sentence frames you can speak: ""I want to",P1,agent,,Open
+F-019.U,ELEVATION,§18.3:L3779,requirement,[3] Slot chips that snap into place; Tone Lens updates live. Rendered,P1,agent,,Open
+F-019.L,ELEVATION,§18.3:L3781,requirement,[3] Learn → Skills → Phrase DNA; Speak → Warm-ups.,P1,agent,,Open
+F-020,ELEVATION,§18.3:L3782-L3797,requirement,Tone & Rhythm Trainer,P1,agent,,Open
+F-020.D,ELEVATION,§18.3:L3790,requirement,[3] Tone models are simplified (one H/M/L scheme for all languages; §10.1).,P1,agent,,Open
+F-020.E,ELEVATION,§18.3:L3791,requirement,"[3] The Tone Gym, LingAfriq's signature: perception drills (minimal pairs), production with",P1,agent,,Open
+F-020.U,ELEVATION,§18.3:L3794,requirement,"[3] Large pitch canvas; the native contour in a calm colour, the",P1,agent,,Open
+F-020.L,ELEVATION,§18.3:L3797,requirement,[3] Speak → Tone Gym (also Learn → Skills).,P1,agent,,Open
+F-021,ELEVATION,§18.3:L3798-L3808,requirement,Tonal Lesson (Village),P1,agent,,Open
+F-021.D,ELEVATION,§18.3:L3803,requirement,[3] Sits in the Village with no link to the Tone Gym,P1,agent,,Open
+F-021.E,ELEVATION,§18.3:L3804,requirement,"[3] Becomes the story-led tone lesson (an elder teaches greetings with tone),",P1,agent,,Open
+F-021.U,ELEVATION,§18.3:L3806,requirement,[3] Character-led scene with the Tone Lens on every line. Rendered on,P1,agent,,Open
+F-021.L,ELEVATION,§18.3:L3808,requirement,[3] Learn → Path (tone units); Speak → Tone Gym → Lessons.,P1,agent,,Open
+F-022,ELEVATION,§18.3:L3809-L3821,requirement,Language Quiz,P1,agent,,Open
+F-022.D,ELEVATION,§18.3:L3815,requirement,[3] Placeholder items; no calibration.,P1,agent,,Open
+F-022.E,ELEVATION,§18.3:L3816,requirement,[3] Merge into the item bank: unit checkpoints and adaptive quizzes with,P1,agent,,Open
+F-022.U,ELEVATION,§18.3:L3818,requirement,[3] Clean MCQ/listening item templates; result screen with a can-do update. Rendered,P1,agent,,Open
+F-022.L,ELEVATION,§18.3:L3821,requirement,"[3] Learn → Path → Checkpoints; Today → ""Quick quiz"".",P1,agent,,Open
+F-023,ELEVATION,§18.3:L3822-L3833,requirement,History & History Quiz,P1,agent,,Open
+F-023.D,ELEVATION,§18.3:L3827,requirement,"[3] Facts aren't sourced or reviewed (see persona data errors, §8).",P1,agent,,Open
+F-023.E,ELEVATION,§18.3:L3828,requirement,"[3] Living History: short illustrated stories with sources, linked to Historical Personas",P1,agent,,Open
+F-023.U,ELEVATION,§18.3:L3831,requirement,"[3] Story cards with a ""Sources"" footer; persona portrait chip. Rendered on",P1,agent,,Open
+F-023.L,ELEVATION,§18.3:L3833,requirement,[3] Learn → Culture → History; Speak → Personas cross-link.,P1,agent,,Open
+F-024,ELEVATION,§18.3:L3834-L3844,requirement,Mannerisms & etiquette,P1,agent,,Open
+F-024.D,ELEVATION,§18.3:L3838,requirement,[3] Text list only; no practice.,P1,agent,,Open
+F-024.E,ELEVATION,§18.3:L3839,requirement,"[3] Etiquette cards with practice: kneeling and prostration greetings, handshakes, eating",P1,agent,,Open
+F-024.U,ELEVATION,§18.3:L3842,requirement,[3] Card stack with gesture illustrations; regional variants flagged. Rendered on the,P1,agent,,Open
+F-024.L,ELEVATION,§18.3:L3844,requirement,[3] Learn → Culture → Etiquette.,P1,agent,,Open
+F-025,ELEVATION,§18.3:L3845-L3855,requirement,Cultural Hub,P1,agent,,Open
+F-025.D,ELEVATION,§18.3:L3850,requirement,"[3] One of several culture entry points (magazine, heritage, history, mannerisms).",P1,agent,,Open
+F-025.E,ELEVATION,§18.3:L3851,requirement,"[3] Becomes the Culture landing inside Learn, organising Magazine, History, Etiquette,",P1,agent,,Open
+F-025.U,ELEVATION,§18.3:L3853,requirement,[3] Editorial layout with one featured story and shelves. Rendered on the,P1,agent,,Open
+F-025.L,ELEVATION,§18.3:L3855,requirement,[3] Learn → Culture (root).,P1,agent,,Open
+F-026,ELEVATION,§18.3:L3856-L3874,requirement,Culture Magazine,P1,agent,,Open
+F-026.D,ELEVATION,§18.3:L3866,requirement,[3] Client key dependency (P0-3). Backend cultureArticleGenerator.service.ts uses gpt-4o to,P1,agent,,Open
+F-026.E,ELEVATION,§18.3:L3868,requirement,"[3] A bilingual magazine: articles at the reader's level with tap-to-gloss, audio",P1,agent,,Open
+F-026.U,ELEVATION,§18.3:L3871,requirement,[3] Typography-led layout with Andika/Noto; reading progress; offline save. Rendered,P1,agent,,Open
+F-026.L,ELEVATION,§18.3:L3874,requirement,[3] Learn → Culture → Magazine; Today → culture card.,P1,agent,,Open
+F-027,ELEVATION,§18.3:L3875-L3887,requirement,Heritage Milestones,P1,agent,,Open
+F-027.D,ELEVATION,§18.3:L3881,requirement,[3] Milestones are generic.,P1,agent,,Open
+F-027.E,ELEVATION,§18.3:L3882,requirement,"[3] Family milestones for heritage learners: ""Greeted grandma in Yoruba"", ""Understood a",P1,agent,,Open
+F-027.U,ELEVATION,§18.3:L3885,requirement,[3] Timeline with photos and voice memories; private by default. Rendered on,P1,agent,,Open
+F-027.L,ELEVATION,§18.3:L3887,requirement,[3] Me → Heritage; Today celebrates milestones.,P1,agent,,Open
+F-028,ELEVATION,§18.3:L3888-L3899,requirement,FLB Heritage Archive,P1,agent,,Open
+F-028.D,ELEVATION,§18.3:L3893,requirement,[3] Provenance and licensing of items are unclear.,P1,agent,,Open
+F-028.E,ELEVATION,§18.3:L3894,requirement,"[3] The Living Archive (Wave 4 languages): folktales, praise poetry (oríkì), songs",P1,agent,,Open
+F-028.U,ELEVATION,§18.3:L3897,requirement,"[3] Museum-like detail pages with audio first, then text. Rendered on the",P1,agent,,Open
+F-028.L,ELEVATION,§18.3:L3899,requirement,[3] Learn → Culture → Archive.,P1,agent,,Open
+F-029,ELEVATION,§18.3:L3900-L3911,requirement,Dialect Preference,P1,agent,,Open
+F-029.D,ELEVATION,§18.3:L3905,requirement,[3] Dialect choice doesn't change content (no dialect-tagged content yet).,P1,agent,,Open
+F-029.E,ELEVATION,§18.3:L3906,requirement,[3] Real dialect lanes: audio variants per item (Ọ̀yọ́ vs Ìjẹ̀bú Yoruba;,P1,agent,,Open
+F-029.U,ELEVATION,§18.3:L3909,requirement,[3] Map-based picker with sample audio per dialect. Rendered on the single,P1,agent,,Open
+F-029.L,ELEVATION,§18.3:L3911,requirement,[3] Me → Settings → Language & dialect; Word Card toggle.,P1,agent,,Open
+F-030,ELEVATION,§18.3:L3912-L3923,requirement,Living Dictionary,P1,agent,,Open
+F-030.D,ELEVATION,§18.3:L3918,requirement,[3] Per-user word list only (the backend filters by userId); no shared,P1,agent,,Open
+F-030.E,ELEVATION,§18.3:L3919,requirement,[3] See §17.7 (exemplar deep-dive).,P1,agent,,Open
+F-030.U,ELEVATION,§18.3:L3920,requirement,"[3] See §17.7. Rendered on the single unified design system (§3.4), with",P1,agent,,Open
+F-030.L,ELEVATION,§18.3:L3922,requirement,[3] Global: search bar + long-press on any word; Learn → Words.,P1,agent,,Open
+F-031,ELEVATION,§18.3:L3924-L3936,requirement,Offline Downloads (revived),P1,agent,,Open
+F-031.D,ELEVATION,§18.3:L3930,requirement,"[3] Offline is a key need in the target markets, but this",P1,agent,,Open
+F-031.E,ELEVATION,§18.3:L3931,requirement,"[3] Revive as Downloads: per-unit packs (text + Opus audio), storage meter,",P1,agent,,Open
+F-031.U,ELEVATION,§18.3:L3934,requirement,"[3] List with size per pack, progress and a clear sync status.",P1,agent,,Open
+F-031.L,ELEVATION,§18.3:L3936,requirement,[3] Me → Downloads; Path shows a download icon per unit.,P1,agent,,Open
+F-032,ELEVATION,§18.3:L3937-L3950,requirement,Language detail & Suggest a language,P1,agent,,Open
+F-032.D,ELEVATION,§18.3:L3943,requirement,[3] Suggestions go nowhere visible.,P1,agent,,Open
+F-032.E,ELEVATION,§18.3:L3944,requirement,"[3] Language pages show speakers, regions, readiness level (L0–L3) and a sample",P1,agent,,Open
+F-032.U,ELEVATION,§18.3:L3947,requirement,"[3] Language page with a map, audio sample and readiness badge; waitlist",P1,agent,,Open
+F-032.L,ELEVATION,§18.3:L3950,requirement,"[3] Learn → language switcher → ""All languages"".",P1,agent,,Open
+F-033,ELEVATION,§18.3:L3951-L3964,requirement,Passport (proctored test & credential),P1,agent,,Open
+F-033.D,ELEVATION,§18.3:L3957,requirement,[3] Scoring and content aren't valid yet (§12.4); proctoring privacy terms are,P1,agent,,Open
+F-033.E,ELEVATION,§18.3:L3958,requirement,"[3] The LingAfriq Passport: evidence portfolio plus an adaptive proctored test, mapped",P1,agent,,Open
+F-033.U,ELEVATION,§18.3:L3961,requirement,"[3] Formal, calm design; clear privacy explanation before the camera turns on.",P1,agent,,Open
+F-033.L,ELEVATION,§18.3:L3964,requirement,[3] Me → Credentials (unlocks at A2).,P1,agent,,Open
+F-034,ELEVATION,§18.3:L3965-L3978,requirement,Lesson Recap (revived),P1,agent,,Open
+F-034.D,ELEVATION,§18.3:L3971,requirement,"[3] Lessons end without consolidation, so there is no retrieval moment.",P1,agent,,Open
+F-034.E,ELEVATION,§18.3:L3972,requirement,"[3] Revive as the 60-second recap after every lesson: three retrieval questions,",P1,agent,,Open
+F-034.U,ELEVATION,§18.3:L3975,requirement,"[3] Card stack with large type; one celebratory moment, not confetti spam.",P1,agent,,Open
+F-034.L,ELEVATION,§18.3:L3977,requirement,[3] End of every lesson (Learn → lesson → recap).,P1,agent,,Open

@@ -1,0 +1,89 @@
+charter: v2
+id: P2-051
+kind: build
+title: Add listening, tone and picture item types
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§11.3-06
+- EP-§11.3-07
+- EP-§11.3-08
+depends_on:
+- E-P1-CONTAINMENT
+- P2-047
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 3, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/screens/quiz/items/listen_choose_item.dart
+- lib/screens/quiz/items/tone_id_item.dart
+- lib/screens/quiz/items/picture_match_item.dart
+- lib/services/quiz/item_graders.dart
+context_anchors:
+- ELEVATION.md#§11.3:L1802
+acceptance_criteria:
+- id: AC1
+  text: Given a listen-and-choose item, when played, then audio plays from the item bank and the grade follows the answer
+    spec
+- id: AC2
+  text: Given a tone identification item, when answered, then grading uses tone_pattern data of the lexeme
+- id: AC3
+  text: Given a picture matching item, when shown, then each image has alt text
+test_plan:
+  unit:
+  - graders
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - semantics
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - idle
+  - playing
+  - answered-correct
+  - answered-wrong
+  - error
+  copy_keys:
+  - item.listen
+  - item.tone
+  - item.picture
+  tokens:
+  - color.*
+  - space.*
+  motion_tier: product
+  a11y:
+  - alt text
+  - audio controls labelled
+  goldens:
+  - item_types_1
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

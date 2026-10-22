@@ -1,0 +1,115 @@
+id: F-078
+kind: feature
+title: Elevate Folktale Reconstruction
+phase: P8
+epic: E-P8-PLAY
+hub: Play
+req_ids:
+- F-078
+- F-078.D
+- F-078.E
+- F-078.U
+- F-078.L
+depends_on:
+- P8-900
+- P8-912
+- E-P8-PLAY
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P6-SCORER
+- E-P5-CONTENT-REAL
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: 2 blast, coupling 2'
+token_budget: 80000
+file_allowlist:
+- lib/screens/games/folktale_reconstruction_screen.dart
+context_anchors:
+- ELEVATION.md#§18.5:L4626-L4639
+delta:
+  current_state: Routed from Arcade via game_router; content still uses the legacy 85–118 word pool without audio.
+  defects_to_fix:
+  - Thin static word pool without reliable audio.
+  - No learner-model writeback after play.
+  - Legacy per-game results instead of GameKit mastery.
+  - Hard-coded UI strings bypass l10n.
+  elevation_to_build:
+  - Àlọ́, hadithi, and iintsomi tales rebuild then learner narrates with scoring.
+  - Tale sources come from the Living Archive not the thin word pool.
+  ux_and_render:
+  - GameKit frame with unified illustration style and audio on every target-language item.
+  - Reduced-motion variant respects system setting.
+  hub_placement: Play → Culture shelf.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given a tale from Living Archive, when scenes shuffle, then reorder checks use archive metadata and illustrations.
+- id: AC2
+  text: Given narration phase with scorer unavailable, when recording finishes, then UI shows practice mode without fabricated
+    narration score.
+- id: AC3
+  text: Given scorer available, when narration completes, then pronunciation score reflects verified analysis only.
+test_plan:
+  unit:
+  - game rules
+  - content binding
+  integration:
+  - GameKit session
+  - learner model writeback
+  e2e:
+  - Play shelf launch to results
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content:
+  - lexicon pool has audio for target language
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - 078.*
+tags:
+- shows_score
+p0_area: false
+charter: v2
+inherits: FEATURE_BASE
+gate: HUB
+status: Draft
+user_facing: true
+risks: []
+external_blockers: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

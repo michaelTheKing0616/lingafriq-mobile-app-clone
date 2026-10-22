@@ -1,0 +1,119 @@
+id: F-055
+kind: feature
+title: Elevate Games Arcade (hub & catalogue)
+phase: P8
+epic: E-P8-PLAY
+hub: Play
+req_ids:
+- F-055
+- F-055.D
+- F-055.E
+- F-055.U
+- F-055.L
+depends_on:
+- E-P8-PLAY
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+size: L
+difficulty:
+  score: 6
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: 1 blast, coupling 2'
+token_budget: 200000
+file_allowlist:
+- lib/screens/games/games_screen_material3.dart
+- lib/screens/games/games_screen.dart
+- lib/screens/games/games_enhanced_with_all_games.dart
+- lib/screens/games/game_catalog.dart
+- lib/screens/games/game_router.dart
+- lib/screens/games/language_games_screen.dart
+- lib/screens/games/language_games_screen_components.dart
+- lib/screens/games/lazy_game_list.dart
+context_anchors:
+- ELEVATION.md#§18.5:L4281-L4302
+delta:
+  current_state: Three routed catalogues work; parallel unrouted language_games and lazy_list variants remain.
+  defects_to_fix:
+  - Three competing catalogues fragment discovery.
+  - Play hub does not reliably update the learner model after sessions.
+  elevation_to_build:
+  - Single Arcade with skill shelves including For you today, Tone and Sound, Words, Grammar, Speaking, Culture, Traditional,
+    Multiplayer, Classroom.
+  - Each card shows trained skill and learner mastery; lazy loading retained.
+  ux_and_render:
+  - Shelf layout with unified game art, skill chips, New and Event ribbons.
+  hub_placement: Play tab (root).
+  unlock_stage: per §17.4
+  harvest_list:
+  - Route language_games_screen variants into the unified Arcade.
+  - Keep lazy_game_list as the loading strategy inside one catalogue.
+acceptance_criteria:
+- id: AC1
+  text: Given a signed-in learner, when they open Play, then one Arcade shows all shelves and no alternate catalogue route
+    remains reachable.
+- id: AC2
+  text: Given a completed game session, when the learner returns to the Arcade, then mastery chips on that game reflect the
+    learner model update.
+- id: AC3
+  text: Given lazy loading, when a shelf scrolls, then games load incrementally without blocking the Play tab.
+test_plan:
+  unit:
+  - game rules
+  - content binding
+  integration:
+  - GameKit session
+  - learner model writeback
+  e2e:
+  - Play shelf launch to results
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content:
+  - lexicon pool has audio for target language
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - 055.*
+tags: []
+p0_area: false
+charter: v2
+inherits: FEATURE_BASE
+gate: HUB
+status: Draft
+user_facing: true
+risks: []
+external_blockers: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/microinteractions
+  - prime/feedback-patterns

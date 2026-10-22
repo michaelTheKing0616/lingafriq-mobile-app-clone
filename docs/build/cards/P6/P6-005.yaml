@@ -1,0 +1,70 @@
+charter: v2
+id: P6-005
+kind: build
+title: Enforce per-user quotas and daily budgets by tier
+phase: P6
+epic: E-P6-GATEWAY
+req_ids:
+- EP-§7.2-06
+- EP-§7.6-28
+depends_on:
+- P6-002
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/quota.ts
+- node-backend/src/ai-gateway/tiers.ts
+- node-backend/src/models/ai-usage.model.ts
+context_anchors:
+- ELEVATION.md#§7.2:L1367-L1387
+- ELEVATION.md#§7.6:L1462-L1475
+acceptance_criteria:
+- id: AC1
+  text: Given a user on tier X with a configured daily token budget, when the budget is consumed, then the next request returns
+    typed error quota_exceeded with reset time and no model call
+- id: AC2
+  text: Given concurrent requests from one user, when they race at the limit, then total admitted spend never exceeds budget
+    by more than one request
+- id: AC3
+  text: Given a tier change, when the user next calls the gateway, then the new daily budget applies without restart
+test_plan:
+  unit:
+  - budget math
+  integration:
+  - race at limit
+  security:
+  - quota bypass via mode switching
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

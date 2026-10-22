@@ -1,0 +1,103 @@
+charter: v2
+id: P7-919
+kind: build
+title: Keep My Words personal layer and link to verified entries
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§17.7-01
+- EP-§17.7-02
+- EP-§17.7-03
+- EP-§17.7-04
+- EP-§17.7-18
+- EP-§17.7-19
+depends_on:
+- P7-916
+- P7-918
+- E-P3-DESIGN-SYSTEM
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, coupling 1, depth 1'
+token_budget: 60000
+file_allowlist:
+- lib/screens/vocabulary/living_dictionary_screen.dart
+- lib/services/learning/living_dictionary_service.dart
+- lib/screens/vocabulary/my_words_screen.dart
+- test/services/learning/living_dictionary_service_test.dart
+context_anchors:
+- ELEVATION.md#§17.7:L2393-L2399
+- ELEVATION.md#§17.7:L2419-L2420
+acceptance_criteria:
+- id: AC1
+  text: Given a learner, when they list, add or delete My Words, then GET, POST and DELETE keep working against the existing
+    endpoint contract
+- id: AC2
+  text: Given the device is offline, when My Words opens, then cached entries load and an offline banner is shown
+- id: AC3
+  text: Given a saved word that has a verified entry, when it is listed, then it links to that entry
+- id: AC4
+  text: Given a saved word with no verified entry, when it is listed, then it is marked personal and unverified
+- id: AC5
+  text: Given an add or delete fails, when the request errors, then a typed visible error appears and local state is not left
+    inconsistent
+test_plan:
+  unit:
+  - link lookup
+  - cache
+  integration:
+  - offline banner
+  - contract regression
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - empty
+  - list
+  - offline
+  - error
+  copy_keys:
+  - mywords.offline
+  - mywords.unverified
+  tokens:
+  - color.badge.personal
+  - space.list
+  motion_tier: product
+  a11y:
+  - badges announced
+  - touch targets >=48dp
+  - reduced-motion variant
+  goldens:
+  - default
+  - loading
+  - error
+  - offline
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

@@ -1,0 +1,91 @@
+charter: v2
+id: P2-057
+kind: build
+title: Revive preloader help screens as contextual first-use tips
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§11.1-01
+- EP-§11.1-02
+depends_on:
+- E-P1-CONTAINMENT
+- P2-010
+size: M
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 0
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 2, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/screens/help/feature_preloader_screen.dart
+- lib/screens/help/games_preloader.dart
+- lib/screens/help/gamification_preloader.dart
+- lib/screens/help/polie_preloader.dart
+- lib/screens/help/features_guide_screen.dart
+- lib/widgets/first_use_tip.dart
+context_anchors:
+- ELEVATION.md#§11.1:L1780-L1782
+- ELEVATION.md#§11.1:L1781
+acceptance_criteria:
+- id: AC1
+  text: Given the four unreachable preloader screens, when revived, then each appears once as a contextual tip at first use
+    of its feature
+- id: AC2
+  text: Given a dismissed tip, when the feature is used again, then it does not reappear
+- id: AC3
+  text: Given feature tours (features_guide, game onboarding overlay), when audited, then tour-only screens are listed and
+    either linked from settings or removed
+test_plan:
+  unit:
+  - show-once logic
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - semantics
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - hidden
+  - shown
+  - dismissed
+  copy_keys:
+  - tip.games
+  - tip.gamification
+  - tip.polie
+  - tip.features
+  tokens:
+  - color.*
+  - space.*
+  motion_tier: rare
+  a11y:
+  - dismiss target >=48dp
+  - tip text readable by screen reader
+  goldens:
+  - first_use_tip
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

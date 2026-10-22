@@ -1,0 +1,103 @@
+charter: v2
+id: P3-058
+kind: build
+title: Revive Chat Search, Contact Info, Moderation, Welcome
+phase: P3
+epic: E-P3-REVIVE
+req_ids:
+- REV-06
+- REV-07
+- REV-08
+- REV-09
+depends_on:
+- P3-042
+- P3-052
+- E-P9-SAFETY
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/screens/chat/chat_search_screen.dart
+- lib/screens/chat/contact_info_screen.dart
+- lib/screens/chat/moderation_tools_screen.dart
+context_anchors:
+- ELEVATION.md#§17.5:L2325-L2332
+acceptance_criteria:
+- id: AC1
+  text: Given the hub Village, when the learner opens it, then the entry point leads to /village/chat-search, /village/contact-info,
+    /village/moderation, /village/chat-welcome and each route is registered in my_app.dart
+- id: AC2
+  text: Given the screen has no data, when it opens, then the empty state shows; given a load error, then the error state
+    shows and no stale data renders
+- id: AC3
+  text: Given the reachability scan from lib/main.dart, when it runs, then every revived screen is reachable from the shell
+- id: AC4
+  text: Given Contact Info, when Block or Report is tapped, then the action completes server-side and a failure shows a retry
+    state
+- id: AC5
+  text: Given Moderation Tools, when a non-moderator opens it, then access is denied with a typed error
+- id: AC6
+  text: Given Chat Welcome, when a chat is first opened, then the guidelines show once and acceptance is recorded
+- id: AC7
+  text: Given the account is under 18 or age-unknown, when this surface is opened, then it is hidden or guardian-gated until
+    E-P9-SAFETY is Done, and the restriction is enforced server-side.
+test_plan:
+  unit:
+  - route registered
+  integration:
+  - entry from hub
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - semantics
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - default
+  - empty
+  - error
+  - offline
+  copy_keys:
+  - rev.rv_chat.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

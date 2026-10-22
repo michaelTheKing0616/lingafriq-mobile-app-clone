@@ -1,0 +1,90 @@
+charter: v2
+id: P3-082
+kind: build
+title: Route under-13 learners to the guardian flow
+phase: P3
+epic: E-P3-ONBOARDING
+req_ids:
+- OB-step5-b
+depends_on:
+- P3-081
+- P3-052
+- E-P9-SAFETY
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T4
+  justification: 'score 7: child safety boundary; gate-critical (security / child safety / legal / design direction): Fable
+    reviews'
+token_budget: 60000
+file_allowlist:
+- lib/screens/onboarding/steps/guardian_route.dart
+- lib/services/guardian_flow_service.dart
+context_anchors:
+- ELEVATION.md#§5.2:L1054-L1055
+acceptance_criteria:
+- id: AC1
+  text: Given an age under 13, when step 5 completes, then the learner is routed to the guardian flow and cannot reach social
+    features
+- id: AC2
+  text: Given the guardian flow, when started, then it asks for a guardian contact and stops until consent is recorded
+- id: AC3
+  text: Given the guardian flow is not available server-side, when routed, then a typed unavailable state shows and the account
+    stays in a no-social mode
+- id: AC4
+  text: Given a client bypass attempt, when a social call is made, then the server rejects it
+test_plan:
+  unit:
+  - routing
+  integration:
+  - server rejects
+  security:
+  - bypass attempts
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - routed
+  - unavailable
+  copy_keys:
+  - onboarding.guardian.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/navigation-patterns
+  - prime/mobile-app-ui-design

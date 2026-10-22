@@ -1,0 +1,87 @@
+charter: v2
+id: P2-055
+kind: build
+title: Show correct form with audio and a one-sentence reason
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§11.3-13
+- EP-§11.3-14
+- EP-§11.3-15
+depends_on:
+- E-P1-CONTAINMENT
+- P2-051
+- P2-052
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 3, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/screens/quiz/widgets/item_feedback_panel.dart
+- lib/services/quiz/feedback_resolver.dart
+- test/quiz/feedback_resolver_test.dart
+context_anchors:
+- ELEVATION.md#§11.3:L1805
+- ELEVATION.md#§11.3:L1805-L1806
+- ELEVATION.md#§11.3:L1806
+acceptance_criteria:
+- id: AC1
+  text: Given any answered item, when feedback shows, then the correct form is displayed with its audio
+- id: AC2
+  text: Given a wrong answer, when feedback shows, then one sentence of rationale from the item data is shown
+- id: AC3
+  text: Given an item lacking a content-team rationale, when answered wrong, then it shows the correct form only and the item
+    is flagged in the validator report
+test_plan:
+  unit:
+  - resolver
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - semantics
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - correct
+  - wrong
+  - no-rationale
+  copy_keys:
+  - fb.correct_form
+  - fb.why
+  tokens:
+  - color.status.*
+  motion_tier: product
+  a11y:
+  - audio replay labelled
+  goldens:
+  - item_feedback
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers:
+- EXT-11
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

@@ -3,7 +3,7 @@
 // Thin facade that preserves the historical public API surface used by
 // persona-aware controllers, while delegating all synthesis and playback to
 // the unified [AfricanTtsService] (gold/silver/bronze resolver: CDN → MMS-TTS
-// → XTTS-v2 → on-device fallback inside AfricanTtsService).
+// → removed-voice → on-device fallback inside AfricanTtsService).
 //
 // This file intentionally does **not** import flutter_tts. The on-device
 // fallback path is owned exclusively by AfricanTtsService and is enforced by

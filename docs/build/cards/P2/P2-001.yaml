@@ -1,0 +1,65 @@
+charter: v2
+id: P2-001
+kind: build
+title: Make flutter analyze fatal on warnings for new code
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.9-01
+depends_on:
+- E-P1-CONTAINMENT
+size: S
+difficulty:
+  score: 2
+  blast: 1
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 1, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist:
+- .github/workflows/build.yml
+- analysis_options.yaml
+- scripts/ci/analyze_new_code.sh
+context_anchors:
+- ELEVATION.md#§13.9:L1949
+acceptance_criteria:
+- id: AC1
+  text: Given a PR adding a Dart file with an analyzer warning, when CI runs, then the analyze job fails and names file:line
+- id: AC2
+  text: Given a PR touching only legacy files with pre-existing warnings, when CI runs, then the job passes and reports the
+    baseline count unchanged
+- id: AC3
+  text: Given a PR that raises the legacy warning baseline, when CI runs, then the job fails with the delta
+test_plan:
+  unit:
+  - analyze_new_code.sh diffs against merge-base on fixture repos
+  integration:
+  - CI dry run on a seeded warning branch
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

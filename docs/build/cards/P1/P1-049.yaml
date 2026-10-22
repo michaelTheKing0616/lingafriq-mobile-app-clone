@@ -1,0 +1,89 @@
+charter: v2
+id: P1-049
+kind: build
+title: Add Google and Apple sign-in and email magic link
+phase: P1
+epic: E-P1-AUTH
+req_ids:
+- EP-§13.1-06
+depends_on:
+- E-P0-INTAKE
+- P1-048
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T3
+  reviewer: T2
+  justification: score 6; blast 2; security/crypto tester
+token_budget: 70000
+file_allowlist:
+- node-backend/src/controllers/auth.controller.ts
+- node-backend/src/services/oauthSignIn.service.ts
+- node-backend/src/services/magicLink.service.ts
+- lib/screens/auth/sign_in_options.dart
+context_anchors:
+- ELEVATION.md#§13.1:L1851
+acceptance_criteria:
+- id: AC1
+  text: Given a valid Google or Apple identity token, when exchanged, then the server verifies it against the provider keys
+    and issues tokens per P1-047
+- id: AC2
+  text: Given an email magic link, when requested, then a single-use link expires in a short set window and a used or expired
+    link returns a typed error
+- id: AC3
+  text: Given a magic-link request for an unknown email, when processed, then the response is identical to a known email (no
+    enumeration)
+- id: AC4
+  text: Given an email already registered, when a provider sign-in uses it, then accounts link only after verified email match
+test_plan:
+  unit:
+  - token verify
+  integration:
+  - single-use link test
+  security:
+  - enumeration and link reuse
+  e2e: []
+  perf: []
+  a11y:
+  - sign-in options labelled
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - options
+  - sending
+  - link-sent
+  - error
+  copy_keys:
+  - signin.options
+  - signin.link_sent
+  tokens:
+  - design-system form tokens
+  motion_tier: product
+  a11y:
+  - buttons labelled
+  goldens:
+  - signin_options
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G1
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

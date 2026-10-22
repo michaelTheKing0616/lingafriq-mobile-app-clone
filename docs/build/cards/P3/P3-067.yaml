@@ -1,0 +1,80 @@
+charter: v2
+id: P3-067
+kind: build
+title: Consolidate onboarding variants into unified onboarding
+phase: P3
+epic: E-P3-REVIVE
+req_ids:
+- CON-03
+- EP-§5.1-09
+depends_on:
+- P3-037
+size: M
+difficulty:
+  score: 6
+  blast: 1
+  ambiguity: 2
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: ambiguity from merge choices, coupling across variants'
+token_budget: 60000
+file_allowlist:
+- lib/screens/onboarding/unified_onboarding_screen.dart
+- lib/screens/onboarding/kijiji_onboarding_screen.dart
+- lib/screens/onboarding/placement_quiz_screen.dart
+- lib/screens/onboarding/placement_test_screen.dart
+context_anchors:
+- ELEVATION.md#§17.5:L2333-L2338
+acceptance_criteria:
+- id: AC1
+  text: Given the variants, when compared, then each is audited and harvest_list items are moved into the surviving feature
+    or listed as dropped with a reason
+- id: AC2
+  text: Given the surviving feature, when tested, then it passes the golden and behaviour tests of the replaced variants
+- id: AC3
+  text: Given the old variant files, when consolidation ends, then they are deleted or moved under legacy/ and no route points
+    to them
+- id: AC4
+  text: Given any harvested item is missing at review, when checked, then the card fails (No-Cut rule)
+- id: AC5
+  text: Given Kijiji's village story, when harvested, then it appears in the unified flow as the optional story panel
+test_plan:
+  unit:
+  - parity tests
+  integration:
+  - route check
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+harvest_list:
+- kijiji_onboarding_screen.dart village story
+- enhanced_onboarding_flow_screen.dart
+- modern_onboarding_screen.dart
+- onboarding_screen.dart
+- onboarding_screen_material3.dart
+- placement_quiz_screen.dart
+- placement_test_screen.dart
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks:
+- harvest drift; keep list authoritative
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

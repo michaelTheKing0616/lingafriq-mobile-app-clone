@@ -1,0 +1,74 @@
+charter: v2
+id: P5-032
+kind: build
+title: Map content graph to features, one source per surface
+phase: P5
+epic: E-P5-A1
+req_ids:
+- CP-§4-23
+- CP-§4-24
+- CP-§4-25
+- CP-§4-27
+- CP-§4-28
+- CP-§4-30
+- EP-§6.2-07
+depends_on:
+- P5-008
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- docs/build/content_graph_features.yaml
+- tools/content/graph_map_check.py
+- test/content/graph_map_test.py
+context_anchors:
+- CURRICULUM.md#§4:L572-L590
+- ELEVATION.md#§6.2:L1157-L1157
+acceptance_criteria:
+- id: AC1
+  text: Given the map, when read, then Lexeme feeds Word Card, flashcards and dictionary; Pattern feeds Grammar hub and Polie
+    grammar mode; Dialogue feeds Lessons and scenario scripts; Exercise items feed Lessons, Recap, checkpoints and placement;
+    Culture card feeds Culture shelf, Magazine, Heritage, Elders' Blessings; Can-do map feeds Path, Passport evidence, Progress
+    and teacher dashboard
+- id: AC2
+  text: Given a game or screen, when it reads content, then it uses the graph and a siloed copy fails the check
+- id: AC3
+  text: Given exercise items for checkpoints and placement, when selected, then they carry IRT calibration or are excluded
+test_plan:
+  unit:
+  - map loader
+  integration:
+  - surface reads via graph
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

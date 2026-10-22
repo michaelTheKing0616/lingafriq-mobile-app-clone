@@ -1,0 +1,74 @@
+charter: v2
+id: P12-006
+kind: build
+title: Split ai_chat_provider_groq and api_provider
+phase: P12
+epic: E-P12-RELEASE
+req_ids:
+- EP-§13.6-10
+- EP-§13.6-11
+depends_on:
+- E-P10-ME
+size: L
+difficulty:
+  score: 8
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T1
+  reviewer: T3
+  justification: 'score 8: blast 2, ambiguity 1, coupling 2, depth 2'
+token_budget: 150000
+file_allowlist:
+- lib/providers/ai_chat_provider_groq.dart
+- lib/providers/api_provider.dart
+- lib/features/ai_chat/providers
+- lib/features/api/providers
+- test/providers
+context_anchors:
+- ELEVATION.md#§13.6:L1930-L1931
+acceptance_criteria:
+- id: AC1
+  text: Given ai_chat_provider_groq.dart (2,516 lines) and api_provider.dart (2,468 lines), when the split lands, then no
+    resulting file exceeds 500 lines
+- id: AC2
+  text: Given the split, when existing provider tests run, then they pass with unchanged public provider names or documented
+    renames with call-site updates
+- id: AC3
+  text: Given a split provider throws, when the UI reads it, then a typed error state is shown and none is swallowed
+- id: AC4
+  text: Given the split api_provider, when searched, then it holds no AI-gateway business logic that belongs in the gateway
+    client
+test_plan:
+  unit:
+  - provider behaviour parity
+  integration:
+  - chat send/receive via split providers
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- AI gateway and auth paths touched; reviewer at least T2
+gate: G12
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

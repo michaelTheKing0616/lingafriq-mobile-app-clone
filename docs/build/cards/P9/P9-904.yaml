@@ -1,0 +1,82 @@
+charter: v2
+id: P9-904
+kind: build
+title: Authorise every room join and emit per room
+phase: P9
+epic: E-P9-REALTIME
+req_ids:
+- EP-§9.5-05
+- EP-§9.1-08
+- EP-§9.1-12
+- EP-§9.1-13
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+- P9-903
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, ambiguity 1, coupling 2, depth 1'
+token_budget: 80000
+file_allowlist:
+- node-backend/src/services/socket.service.ts
+- node-backend/src/socket/roomAuthz.ts
+- node-backend/src/socket/subscriptions.ts
+context_anchors:
+- ELEVATION.md#§9.1:L1556-L1562
+- ELEVATION.md#§9.5:L1656-L1658
+acceptance_criteria:
+- id: AC1
+  text: Given a user who is not a member of a circle, village or competition, when they emit join_room for it, then the server
+    denies with ROOM_FORBIDDEN and the socket never receives that room's events
+- id: AC2
+  text: Given a client-supplied sender id that differs from the authenticated user, when a message is emitted, then the server
+    overwrites it from the session and logs a spoofing attempt
+- id: AC3
+  text: Given a global broadcast event, when emitted by a non-admin socket, then it is rejected with BROADCAST_FORBIDDEN
+- id: AC4
+  text: Given the previously unwired subscription handlers, when the server starts, then each is registered and a startup
+    test fails if a declared handler is missing
+- id: AC5
+  text: Given a member removed from a circle while connected, when removal commits, then their sockets leave the room within
+    2 s
+test_plan:
+  unit:
+  - authz policy table
+  integration:
+  - join matrix per room type
+  - revocation
+  security:
+  - identity spoofing
+  - global broadcast abuse
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

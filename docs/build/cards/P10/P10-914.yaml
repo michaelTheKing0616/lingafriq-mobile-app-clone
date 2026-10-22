@@ -1,0 +1,88 @@
+charter: v2
+id: P10-914
+kind: build
+title: Publish the Passport CEFR methodology
+phase: P10
+epic: E-P10-CREDENTIALS
+req_ids:
+- EP-§12.4-04
+depends_on:
+- E-P5-CONTENT-REAL
+- E-P6-SCORER
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 5; blast 1
+token_budget: 60000
+file_allowlist:
+- docs/passport/METHODOLOGY.md
+- node-backend/src/services/passport-methodology.service.ts
+- lib/screens/passport/passport_credential_screen.dart
+context_anchors:
+- ELEVATION.md#§12.4:L1843-L1843
+acceptance_criteria:
+- id: AC1
+  text: Given the Passport maps can-dos to CEFR descriptors, when the methodology is published, then every mapped can-do cites
+    its descriptor id.
+- id: AC2
+  text: Given a credential is viewed or verified, when the page loads, then it links to the methodology version that was in
+    force at issue.
+- id: AC3
+  text: Given the methodology has a known limit, when it is published, then limits and the review date are stated and no accuracy
+    figure appears without a source.
+- id: AC4
+  text: Given the methodology changes, when it is republished, then the version increments and old versions stay readable.
+test_plan:
+  unit:
+  - descriptor mapping complete
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - methodology doc lint
+user_facing: true
+ux_spec:
+  states:
+  - loaded
+  - missing-version
+  copy_keys:
+  - methodology_link
+  tokens:
+  - color.semantic
+  - type.scale
+  - space.scale
+  motion_tier: product
+  a11y:
+  - screen reader labels
+  - 48dp touch targets
+  - reduced motion honoured
+  goldens:
+  - methodology_link_golden
+tags:
+- issues_credential
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

@@ -1,0 +1,109 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P10
+epic: E-P10-ME
+hub: Me
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: Me hub screen revive or consolidation; no real-time audio
+token_budget: 80000
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f_150.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+test_plan:
+  unit:
+  - directory index
+  - tip once flags
+  integration:
+  - stitch hub parity with directory
+  e2e:
+  - search and open locked item
+  a11y:
+  - bottom sheet focus order
+  content: []
+tags: []
+id: F-150
+title: Elevate Features Guide & First-use Tips
+req_ids:
+- F-150
+- F-150.D
+- F-150.E
+- F-150.U
+- F-150.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+file_allowlist:
+- screens/help/features_guide_screen.dart
+- screens/help/stitch_navigation_hub_screen.dart
+- screens/help/feature_preloader_screen.dart
+- screens/help/games_preloader.dart
+- screens/help/gamification_preloader.dart
+- screens/help/polie_preloader.dart
+context_anchors:
+- ELEVATION.md#§18.7:L5614-L5630
+delta:
+  current_state: Features guide and Stitch hub work; four preloaders unrouted.
+  defects_to_fix:
+  - Features explained in one long list instead of in context
+  elevation_to_build:
+  - Searchable A–Z All features directory replacing drawer discovery
+  - Locked items show unlock stage and preview
+  - Revive preloaders as contextual first-use bottom-sheet tips
+  ux_and_render:
+  - Hub-grouped directory with icons; tips as bottom sheets
+  hub_placement: Me → All features; contextual first use
+  unlock_stage: per §17.4
+  harvest_list:
+  - Map preloaders to Polie, games, and gamification first-open tips
+  - Ensure drawer items remain reachable via directory
+acceptance_criteria:
+- id: AC1
+  text: Given Me → All features, when user searches, then A–Z directory returns hub-grouped entries with icons.
+- id: AC2
+  text: Given a locked feature, when row opens, then unlock stage and preview show honestly.
+- id: AC3
+  text: Given first open of Polie or games, when tip triggers, then three-card bottom sheet appears once.
+skills:
+  worker:
+  - prime/onboarding-ux
+  - prime/mobile-app-ui-design

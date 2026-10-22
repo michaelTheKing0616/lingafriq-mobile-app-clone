@@ -1,0 +1,64 @@
+charter: v2
+id: P5-069
+kind: build
+title: Ship isiXhosa interim audio from FLEURS and WAXAL
+phase: P5
+epic: E-P5-AUDIO
+req_ids:
+- CP-§7-xh-01
+- CP-§7-xh-02
+- CP-§7-xh-05
+depends_on:
+- P5-068
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- tools/audio/xh_interim_match.py
+- test/audio/xh_interim_test.py
+context_anchors:
+- CURRICULUM.md#§7:L742-L748
+acceptance_criteria:
+- id: AC1
+  text: Given isiXhosa, when audio is looked up, then no commercial voice is assumed
+- id: AC2
+  text: Given sentences that match FLEURS or WAXAL, when found, then that audio is used with licence checked
+- id: AC3
+  text: Given the audio, when approved, then listen-check including clicks passes
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - match coverage
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,102 @@
+charter: v2
+id: F-021
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Tonal Lesson (Village)
+phase: P7
+epic: E-P7-HUBS
+hub: Learn
+req_ids:
+- F-021
+- F-021.D
+- F-021.E
+- F-021.U
+- F-021.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P5-CONTENT-REAL
+- E-P6-SCORER
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: hub feature delta spec'
+token_budget: 80000
+file_allowlist:
+- lib/screens/village/tonal_lesson_screen.dart
+context_anchors:
+- ELEVATION.md#§18.3:L3798-L3808
+delta:
+  current_state: Tonal lesson route works but isolated from Tone Gym and Path.
+  defects_to_fix:
+  - No linkage to Tone Gym or Path tone units.
+  elevation_to_build:
+  - Story-led tone lesson linked to Tone Gym practice and Path tone introduction units.
+  ux_and_render:
+  - Character-led scene with Tone Lens on every line.
+  hub_placement: Learn → Path (tone units); Speak → Tone Gym → Lessons.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given tone unit on Path, when opened, then story lesson links to matching Tone Gym drills.
+- id: AC2
+  text: Given every dialogue line, when rendered, then Tone Lens wraps target-language text.
+test_plan:
+  unit:
+  - domain rules for feature delta
+  integration:
+  - navigation and data wiring from hub placement
+  e2e:
+  - primary happy path from Lives in entry
+  a11y:
+  - goldens at 100%/200% text
+  - semantics order
+  content:
+  - honest labels on shown curriculum or media
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - learn.f_021.*
+tags:
+- tts_tonal
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

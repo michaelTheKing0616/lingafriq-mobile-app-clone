@@ -1,0 +1,66 @@
+charter: v2
+id: P9-959
+kind: verification
+title: Verify every Village surface creates language practice
+phase: P9
+epic: E-P9-VILLAGE
+req_ids:
+- EP-§9.2-01
+- EP-§9.2-02
+depends_on:
+- E-P9-SAFETY
+- P9-944
+- P9-947
+- P9-948
+- P9-951
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T2
+  justification: 'score 3: blast 1, ambiguity 1, coupling 1, depth 0'
+token_budget: 30000
+file_allowlist:
+- docs/build/external/village_practice_audit.md
+context_anchors:
+- ELEVATION.md#§9.2:L1571-L1573
+acceptance_criteria:
+- id: AC1
+  text: Given each Village surface card, when audited, then it names the language-practice or belonging outcome it creates
+- id: AC2
+  text: Given the audit, when complete, then every surface reflects speed, voice, ephemerality or creativity and any surface
+    failing all four is listed as a defect
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- under18_social
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

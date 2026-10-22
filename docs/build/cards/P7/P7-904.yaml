@@ -1,0 +1,82 @@
+charter: v2
+id: P7-904
+kind: build
+title: Build server vision recognition via the AI gateway
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§17.6-16
+- EP-§17.6-17
+depends_on:
+- P7-900
+- P7-903
+- E-P2-PLATFORM
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 2
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 2, coupling 2, depth 1'
+token_budget: 60000
+file_allowlist:
+- node-backend/src/services/lens/vision.service.ts
+- node-backend/src/routes/lens.route.ts
+- lib/services/lens/server_recognizer.dart
+- test/services/lens/server_recognizer_test.dart
+context_anchors:
+- ELEVATION.md#§17.6:L2368-L2371
+acceptance_criteria:
+- id: AC1
+  text: Given a cropped region, when the server vision model is called through the AI gateway, then the response returns a
+    label with a confidence score and a culturally specific object id from the curated set
+- id: AC2
+  text: Given a confidence below the configured threshold, when the result is returned, then the client shows Unsure and not
+    a confident word
+- id: AC3
+  text: Given the gateway budget is exhausted or the call fails, when recognition is requested, then a typed error is returned
+    and the client shows a visible retry state
+- id: AC4
+  text: Given the vision model name and version, when a request is made, then the model used is logged on the response and
+    shown in AI disclosure, with no provider key in client code
+- id: AC5
+  text: Given an unauthenticated caller, when the endpoint is called, then it returns 401 and no model call is made
+test_plan:
+  unit:
+  - confidence gate
+  - typed errors
+  integration:
+  - gateway budget exhaustion
+  security:
+  - auth required
+  - no key in client bundle
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- model choice depends on the companion AI stack doc (EXT-01)
+gate: HUB
+external_blockers:
+- EXT-01
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

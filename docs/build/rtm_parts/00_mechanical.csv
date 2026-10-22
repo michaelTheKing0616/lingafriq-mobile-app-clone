@@ -1,0 +1,811 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+P0-1,ELEVATION,§1:L84-L102,requirement,Firebase Admin SDK private key,P0,agent,,Open
+P0-2,ELEVATION,§1:L104-L112,requirement,Apple .p8 key in repo root,P0,agent,,Open
+P0-3,ELEVATION,§1:L114-L129,requirement,Paid AI keys compiled into,P0,agent,,Open
+P0-4,ELEVATION,§1:L131-L140,requirement,Any user can listen to any,P0,agent,,Open
+P0-5,ELEVATION,§1:L142-L149,requirement,Socket identity spoofing,P0,agent,,Open
+P0-6,ELEVATION,§1:L151-L160,requirement,Global metadata leak,P0,agent,,Open
+P0-7,ELEVATION,§1:L162-L170,requirement,Self-mint currency,P0,agent,,Open
+P0-8,ELEVATION,§1:L172-L180,requirement,Self-award points/XP,P0,agent,,Open
+P0-9,ELEVATION,§1:L182-L193,requirement,Open LLM proxy,P0,agent,,Open
+P0-10,ELEVATION,§1:L195-L206,requirement,No child safety or age,P0,agent,,Open
+P0-11,ELEVATION,§1:L208-L219,requirement,Moderation is cosmetic,P0,agent,,Open
+P0-12,ELEVATION,§1:L221-L231,requirement,"""Disappearing"" snaps never",P0,agent,,Open
+P0-13,ELEVATION,§1:L233-L242,requirement,Persona missions silently,P0,agent,,Open
+P0-14,ELEVATION,§1:L244-L256,requirement,Persona safety filter blocks,P0,agent,,Open
+P0-15,ELEVATION,§1:L258-L268,requirement,Persona told to deny being AI,P0,agent,,Open
+P0-16,ELEVATION,§1:L270-L276,requirement,Curriculum is placeholder or,P0,agent,,Open
+P0-17,ELEVATION,§1:L278-L288,requirement,False tone and grammar,P0,agent,,Open
+P0-18,ELEVATION,§1:L290-L300,requirement,Fake pronunciation,P0,agent,,Open
+P0-19,ELEVATION,§1:L302-L313,requirement,Pronunciation backend lies,P0,agent,,Open
+P0-20,ELEVATION,§1:L315-L320,requirement,Every release logs everyone,P0,agent,,Open
+P0-21,ELEVATION,§1:L322-L331,requirement,Onboarding answers,P0,agent,,Open
+P0-22,ELEVATION,§1:L333-L342,requirement,Offline queue drops data,P0,agent,,Open
+P0-23,ELEVATION,§1:L344-L357,requirement,"Push spam, duplicated",P0,agent,,Open
+P0-24,ELEVATION,§1:L359-L375,requirement,Non- commercial,P0,agent,,Open
+P0-25,ELEVATION,§1:L377-L386,requirement,"Login enumeration,",P0,agent,,Open
+P0-26,ELEVATION,§1:L388-L396,requirement,Unofficial Google,P0,agent,,Open
+P0-27,ELEVATION,§1:L398-L409,requirement,Purchases not verified server-,P0,agent,,Open
+F-001,ELEVATION,§18.2:L3497-L3517,requirement,Home / Today session,P1,agent,,Open
+F-001.D,ELEVATION,§18.2:L3503,requirement,"[2] Two dashboards compete. ""Continue learning"" falls back to a placeholder card",P1,agent,,Open
+F-001.E,ELEVATION,§18.2:L3507,requirement,"[2] Make it a single adaptive ""Today"" session (10–15 min), a playlist",P1,agent,,Open
+F-001.U,ELEVATION,§18.2:L3513,requirement,[2] A hero card with an avatar greeting in the target language,P1,agent,,Open
+F-001.L,ELEVATION,§18.2:L3517,requirement,[2] Today tab (root).,P1,agent,,Open
+F-002,ELEVATION,§18.2:L3518-L3531,requirement,Daily Goals,P1,agent,,Open
+F-002.D,ELEVATION,§18.2:L3523,requirement,"[2] Goals are XP-based, and XP can be self-minted (P0-8). The AI",P1,agent,,Open
+F-002.E,ELEVATION,§18.2:L3525,requirement,"[2] Goals become intent-based (""speak for 5 minutes"", ""learn 10 words"", ""one",P1,agent,,Open
+F-002.U,ELEVATION,§18.2:L3528,requirement,[2] Goal ring on Today. Edit sheet with three presets and a,P1,agent,,Open
+F-002.L,ELEVATION,§18.2:L3531,requirement,[2] Today → goal ring; Me → Settings → Goals.,P1,agent,,Open
+F-003,ELEVATION,§18.2:L3532-L3548,requirement,Daily Challenges (revived),P1,agent,,Open
+F-003.D,ELEVATION,§18.2:L3539,requirement,"[2] There is no detail view, so challenges can only be seen,",P1,agent,,Open
+F-003.E,ELEVATION,§18.2:L3541,requirement,[2] Revive as the Challenge board behind the Today widget. Challenges are,P1,agent,,Open
+F-003.U,ELEVATION,§18.2:L3545,requirement,"[2] Three cards with progress chips and a ""Do it"" deep-link. Completion",P1,agent,,Open
+F-003.L,ELEVATION,§18.2:L3548,requirement,[2] Today → Challenges strip → board.,P1,agent,,Open
+F-004,ELEVATION,§18.2:L3549-L3561,requirement,Quests,P1,agent,,Open
+F-004.D,ELEVATION,§18.2:L3555,requirement,[2] Quest generation relies on client AI (P0-3). Rewards can be minted,P1,agent,,Open
+F-004.E,ELEVATION,§18.2:L3556,requirement,"[2] Story quests set in the village narrative (""Help Mama Ngozi prepare",P1,agent,,Open
+F-004.U,ELEVATION,§18.2:L3559,requirement,[2] Quest map with illustrated stops; each stop is a deep-link. Rendered,P1,agent,,Open
+F-004.L,ELEVATION,§18.2:L3561,requirement,[2] Today → Quest card; Play → Quests.,P1,agent,,Open
+F-005,ELEVATION,§18.2:L3562-L3577,requirement,Seasonal Events / Village Festival,P1,agent,,Open
+F-005.D,ELEVATION,§18.2:L3568,requirement,[2] The hard-coded fallback can show stale or wrong-date events. Event content,P1,agent,,Open
+F-005.E,ELEVATION,§18.2:L3570,requirement,"[2] A cultural calendar: Ọdún Ọ̀ṣun, Eid, Timkat, Durbar, Homowo, Umhlanga, Kwanzaa",P1,agent,,Open
+F-005.U,ELEVATION,§18.2:L3574,requirement,"[2] Event banner on Today; event page with a countdown, a culture",P1,agent,,Open
+F-005.L,ELEVATION,§18.2:L3577,requirement,[2] Today → Event banner; Village → Events.,P1,agent,,Open
+F-006,ELEVATION,§18.2:L3578-L3592,requirement,Streaks & reminders,P1,agent,,Open
+F-006.D,ELEVATION,§18.2:L3584,requirement,"[2] Loss-aversion copy at night, duplicate pushes, and streaks that can be",P1,agent,,Open
+F-006.E,ELEVATION,§18.2:L3585,requirement,"[2] Ethical streaks (§12): a weekly-streak option, earned freezes and repair windows.",P1,agent,,Open
+F-006.U,ELEVATION,§18.2:L3588,requirement,[2] Streak flame becomes a calabash that fills; tap for history; no,P1,agent,,Open
+F-006.L,ELEVATION,§18.2:L3591,requirement,[2] Today header; Me → Progress.,P1,agent,,Open
+F-007,ELEVATION,§18.3:L3593-L3613,requirement,Lessons map / Courses,P1,agent,,Open
+F-007.D,ELEVATION,§18.3:L3604,requirement,[3] The map draws from placeholder or template curriculum (P0-16). Four entry,P1,agent,,Open
+F-007.E,ELEVATION,§18.3:L3606,requirement,[3] One Path map per language: CEFR bands as regions of a,P1,agent,,Open
+F-007.U,ELEVATION,§18.3:L3610,requirement,[3] Vertical journey with region art; a progress ring per unit; the,P1,agent,,Open
+F-007.L,ELEVATION,§18.3:L3613,requirement,[3] Learn tab (root).,P1,agent,,Open
+F-008,ELEVATION,§18.3:L3614-L3628,requirement,Authentic Path (A1–C1),P1,agent,,Open
+F-008.D,ELEVATION,§18.3:L3621,requirement,[3] Content quality (P0-16). The name implies the main course is not,P1,agent,,Open
+F-008.E,ELEVATION,§18.3:L3622,requirement,"[3] Becomes the ""Real-world track"": authentic materials (radio clips, songs, market",P1,agent,,Open
+F-008.U,ELEVATION,§18.3:L3625,requirement,"[3] Media-first lesson cards with a transcript toggle, Tone Lens and tap-to-gloss.",P1,agent,,Open
+F-008.L,ELEVATION,§18.3:L3628,requirement,"[3] Learn → Path → ""Real-world"" lane (A2+).",P1,agent,,Open
+F-009,ELEVATION,§18.3:L3629-L3640,requirement,Lesson Flow,P1,agent,,Open
+F-009.D,ELEVATION,§18.3:L3634,requirement,"[3] Template content, no audio, and stages that don't adapt.",P1,agent,,Open
+F-009.E,ELEVATION,§18.3:L3635,requirement,[3] An adaptive lesson player: input → noticing (Tone Lens) → guided,P1,agent,,Open
+F-009.U,ELEVATION,§18.3:L3637,requirement,"[3] Full-screen, one task per screen, haptic feedback within 160 ms; progress",P1,agent,,Open
+F-009.L,ELEVATION,§18.3:L3640,requirement,[3] Opened from Path and Today.,P1,agent,,Open
+F-010,ELEVATION,§18.3:L3641-L3654,requirement,Lesson detail & Level certificate,P1,agent,,Open
+F-010.D,ELEVATION,§18.3:L3648,requirement,[3] Certificates aren't evidence-based or verifiable.,P1,agent,,Open
+F-010.E,ELEVATION,§18.3:L3649,requirement,"[3] Lesson detail shows can-dos, words and the culture note, with a",P1,agent,,Open
+F-010.U,ELEVATION,§18.3:L3652,requirement,[3] Certificate rendered with the learner's avatar and a QR verification link.,P1,agent,,Open
+F-010.L,ELEVATION,§18.3:L3654,requirement,[3] Learn → Path → lesson; Me → Credentials.,P1,agent,,Open
+F-011,ELEVATION,§18.3:L3655-L3665,requirement,Learning Path (personal plan),P1,agent,,Open
+F-011.D,ELEVATION,§18.3:L3660,requirement,[3] Duplicates the course map conceptually.,P1,agent,,Open
+F-011.E,ELEVATION,§18.3:L3661,requirement,"[3] Make it the ""My plan"" view of Path: the learner's goal",P1,agent,,Open
+F-011.U,ELEVATION,§18.3:L3663,requirement,[3] Timeline with milestones; editable goal. Rendered on the single unified design,P1,agent,,Open
+F-011.L,ELEVATION,§18.3:L3665,requirement,"[3] Learn → Path → ""My plan"".",P1,agent,,Open
+F-012,ELEVATION,§18.3:L3666-L3678,requirement,Placement test,P1,agent,,Open
+F-012.D,ELEVATION,§18.3:L3673,requirement,[3] Not adaptive; no speaking.,P1,agent,,Open
+F-012.E,ELEVATION,§18.3:L3674,requirement,"[3] An adaptive 3-minute CAT placement with listening, reading and one speaking",P1,agent,,Open
+F-012.U,ELEVATION,§18.3:L3676,requirement,"[3] Calm, one item per screen, with a clear ""skip, I'm a",P1,agent,,Open
+F-012.L,ELEVATION,§18.3:L3678,requirement,"[3] Onboarding; Learn → Path → ""Retake placement"".",P1,agent,,Open
+F-013,ELEVATION,§18.3:L3679-L3694,requirement,Grammar Hub,P1,agent,,Open
+F-013.D,ELEVATION,§18.3:L3685,requirement,[3] Grammar content is the repeated template lines (§6).,P1,agent,,Open
+F-013.E,ELEVATION,§18.3:L3686,requirement,[3] A Pattern Library: each pattern card has a plain-language explanation in,P1,agent,,Open
+F-013.U,ELEVATION,§18.3:L3690,requirement,[3] Cards with colour-coded morphology (not colour-only); swipe through examples.,P1,agent,,Open
+F-013.L,ELEVATION,§18.3:L3694,requirement,[3] Learn → Patterns.,P1,agent,,Open
+F-014,ELEVATION,§18.3:L3695-L3706,requirement,Vocabulary Builder,P1,agent,,Open
+F-014.D,ELEVATION,§18.3:L3700,requirement,[3] Images are stock or remote with spinners; words have no audio,P1,agent,,Open
+F-014.E,ELEVATION,§18.3:L3701,requirement,"[3] Themed word packs (market, family, body, church/mosque, football) with native audio,",P1,agent,,Open
+F-014.U,ELEVATION,§18.3:L3704,requirement,[3] Grid of picture cards; tap to hear; long-press for the Word,P1,agent,,Open
+F-014.L,ELEVATION,§18.3:L3706,requirement,[3] Learn → Words → Packs.,P1,agent,,Open
+F-015,ELEVATION,§18.3:L3707-L3727,requirement,My Words & Review (SRS) (revived),P1,agent,,Open
+F-015.D,ELEVATION,§18.3:L3719,requirement,"[3] Four separate SRS implementations (§6.3). No FSRS. Saved words in chat,",P1,agent,,Open
+F-015.E,ELEVATION,§18.3:L3721,requirement,[3] One FSRS-6 review fed by every feature (save a word anywhere,P1,agent,,Open
+F-015.U,ELEVATION,§18.3:L3724,requirement,"[3] Review card with audio first, then meaning, then a speak-it button;",P1,agent,,Open
+F-015.L,ELEVATION,§18.3:L3727,requirement,[3] Learn → Words → Review / Insights; Today pulls due items.,P1,agent,,Open
+F-016,ELEVATION,§18.3:L3728-L3741,requirement,Review Rush (gamified review) (revived),P1,agent,,Open
+F-016.D,ELEVATION,§18.3:L3734,requirement,[3] Not reachable from any menu.,P1,agent,,Open
+F-016.E,ELEVATION,§18.3:L3735,requirement,[3] Revive as Review Rush: a 90-second sprint over due cards with,P1,agent,,Open
+F-016.U,ELEVATION,§18.3:L3738,requirement,[3] Arcade skin over the same card component; reduced-motion version. Rendered on,P1,agent,,Open
+F-016.L,ELEVATION,§18.3:L3741,requirement,"[3] Learn → Words → Review → ""Rush""; Play → Quick games.",P1,agent,,Open
+F-017,ELEVATION,§18.3:L3742-L3756,requirement,Listening Practice,P1,agent,,Open
+F-017.D,ELEVATION,§18.3:L3749,requirement,[3] Content lacks real audio (§6).,P1,agent,,Open
+F-017.E,ELEVATION,§18.3:L3750,requirement,"[3] Ear training: graded listening at native speed with accents (Lagos, Ibadan,",P1,agent,,Open
+F-017.U,ELEVATION,§18.3:L3753,requirement,[3] Waveform with tap-to-replay segments; transcript reveal after answering. Rendered,P1,agent,,Open
+F-017.L,ELEVATION,§18.3:L3756,requirement,[3] Learn → Skills → Listening.,P1,agent,,Open
+F-018,ELEVATION,§18.3:L3757-L3768,requirement,Writing Practice,P1,agent,,Open
+F-018.D,ELEVATION,§18.3:L3762,requirement,"[3] Client key dependency (P0-3). A regex diacritic ""enforcer"" can introduce errors",P1,agent,,Open
+F-018.E,ELEVATION,§18.3:L3763,requirement,"[3] Write & check: a diacritic keyboard bar, tone-aware grading that is",P1,agent,,Open
+F-018.U,ELEVATION,§18.3:L3766,requirement,[3] Inline corrections with an explanation popover; never auto-replace text. Rendered on,P1,agent,,Open
+F-018.L,ELEVATION,§18.3:L3768,requirement,[3] Learn → Skills → Writing.,P1,agent,,Open
+F-019,ELEVATION,§18.3:L3769-L3781,requirement,Phrase DNA,P1,agent,,Open
+F-019.D,ELEVATION,§18.3:L3775,requirement,[3] Templates come from the same thin content.,P1,agent,,Open
+F-019.E,ELEVATION,§18.3:L3776,requirement,"[3] Turn it into sentence frames you can speak: ""I want to",P1,agent,,Open
+F-019.U,ELEVATION,§18.3:L3779,requirement,[3] Slot chips that snap into place; Tone Lens updates live. Rendered,P1,agent,,Open
+F-019.L,ELEVATION,§18.3:L3781,requirement,[3] Learn → Skills → Phrase DNA; Speak → Warm-ups.,P1,agent,,Open
+F-020,ELEVATION,§18.3:L3782-L3797,requirement,Tone & Rhythm Trainer,P1,agent,,Open
+F-020.D,ELEVATION,§18.3:L3790,requirement,[3] Tone models are simplified (one H/M/L scheme for all languages; §10.1).,P1,agent,,Open
+F-020.E,ELEVATION,§18.3:L3791,requirement,"[3] The Tone Gym, LingAfriq's signature: perception drills (minimal pairs), production with",P1,agent,,Open
+F-020.U,ELEVATION,§18.3:L3794,requirement,"[3] Large pitch canvas; the native contour in a calm colour, the",P1,agent,,Open
+F-020.L,ELEVATION,§18.3:L3797,requirement,[3] Speak → Tone Gym (also Learn → Skills).,P1,agent,,Open
+F-021,ELEVATION,§18.3:L3798-L3808,requirement,Tonal Lesson (Village),P1,agent,,Open
+F-021.D,ELEVATION,§18.3:L3803,requirement,[3] Sits in the Village with no link to the Tone Gym,P1,agent,,Open
+F-021.E,ELEVATION,§18.3:L3804,requirement,"[3] Becomes the story-led tone lesson (an elder teaches greetings with tone),",P1,agent,,Open
+F-021.U,ELEVATION,§18.3:L3806,requirement,[3] Character-led scene with the Tone Lens on every line. Rendered on,P1,agent,,Open
+F-021.L,ELEVATION,§18.3:L3808,requirement,[3] Learn → Path (tone units); Speak → Tone Gym → Lessons.,P1,agent,,Open
+F-022,ELEVATION,§18.3:L3809-L3821,requirement,Language Quiz,P1,agent,,Open
+F-022.D,ELEVATION,§18.3:L3815,requirement,[3] Placeholder items; no calibration.,P1,agent,,Open
+F-022.E,ELEVATION,§18.3:L3816,requirement,[3] Merge into the item bank: unit checkpoints and adaptive quizzes with,P1,agent,,Open
+F-022.U,ELEVATION,§18.3:L3818,requirement,[3] Clean MCQ/listening item templates; result screen with a can-do update. Rendered,P1,agent,,Open
+F-022.L,ELEVATION,§18.3:L3821,requirement,"[3] Learn → Path → Checkpoints; Today → ""Quick quiz"".",P1,agent,,Open
+F-023,ELEVATION,§18.3:L3822-L3833,requirement,History & History Quiz,P1,agent,,Open
+F-023.D,ELEVATION,§18.3:L3827,requirement,"[3] Facts aren't sourced or reviewed (see persona data errors, §8).",P1,agent,,Open
+F-023.E,ELEVATION,§18.3:L3828,requirement,"[3] Living History: short illustrated stories with sources, linked to Historical Personas",P1,agent,,Open
+F-023.U,ELEVATION,§18.3:L3831,requirement,"[3] Story cards with a ""Sources"" footer; persona portrait chip. Rendered on",P1,agent,,Open
+F-023.L,ELEVATION,§18.3:L3833,requirement,[3] Learn → Culture → History; Speak → Personas cross-link.,P1,agent,,Open
+F-024,ELEVATION,§18.3:L3834-L3844,requirement,Mannerisms & etiquette,P1,agent,,Open
+F-024.D,ELEVATION,§18.3:L3838,requirement,[3] Text list only; no practice.,P1,agent,,Open
+F-024.E,ELEVATION,§18.3:L3839,requirement,"[3] Etiquette cards with practice: kneeling and prostration greetings, handshakes, eating",P1,agent,,Open
+F-024.U,ELEVATION,§18.3:L3842,requirement,[3] Card stack with gesture illustrations; regional variants flagged. Rendered on the,P1,agent,,Open
+F-024.L,ELEVATION,§18.3:L3844,requirement,[3] Learn → Culture → Etiquette.,P1,agent,,Open
+F-025,ELEVATION,§18.3:L3845-L3855,requirement,Cultural Hub,P1,agent,,Open
+F-025.D,ELEVATION,§18.3:L3850,requirement,"[3] One of several culture entry points (magazine, heritage, history, mannerisms).",P1,agent,,Open
+F-025.E,ELEVATION,§18.3:L3851,requirement,"[3] Becomes the Culture landing inside Learn, organising Magazine, History, Etiquette,",P1,agent,,Open
+F-025.U,ELEVATION,§18.3:L3853,requirement,[3] Editorial layout with one featured story and shelves. Rendered on the,P1,agent,,Open
+F-025.L,ELEVATION,§18.3:L3855,requirement,[3] Learn → Culture (root).,P1,agent,,Open
+F-026,ELEVATION,§18.3:L3856-L3874,requirement,Culture Magazine,P1,agent,,Open
+F-026.D,ELEVATION,§18.3:L3866,requirement,[3] Client key dependency (P0-3). Backend cultureArticleGenerator.service.ts uses gpt-4o to,P1,agent,,Open
+F-026.E,ELEVATION,§18.3:L3868,requirement,"[3] A bilingual magazine: articles at the reader's level with tap-to-gloss, audio",P1,agent,,Open
+F-026.U,ELEVATION,§18.3:L3871,requirement,[3] Typography-led layout with Andika/Noto; reading progress; offline save. Rendered,P1,agent,,Open
+F-026.L,ELEVATION,§18.3:L3874,requirement,[3] Learn → Culture → Magazine; Today → culture card.,P1,agent,,Open
+F-027,ELEVATION,§18.3:L3875-L3887,requirement,Heritage Milestones,P1,agent,,Open
+F-027.D,ELEVATION,§18.3:L3881,requirement,[3] Milestones are generic.,P1,agent,,Open
+F-027.E,ELEVATION,§18.3:L3882,requirement,"[3] Family milestones for heritage learners: ""Greeted grandma in Yoruba"", ""Understood a",P1,agent,,Open
+F-027.U,ELEVATION,§18.3:L3885,requirement,[3] Timeline with photos and voice memories; private by default. Rendered on,P1,agent,,Open
+F-027.L,ELEVATION,§18.3:L3887,requirement,[3] Me → Heritage; Today celebrates milestones.,P1,agent,,Open
+F-028,ELEVATION,§18.3:L3888-L3899,requirement,FLB Heritage Archive,P1,agent,,Open
+F-028.D,ELEVATION,§18.3:L3893,requirement,[3] Provenance and licensing of items are unclear.,P1,agent,,Open
+F-028.E,ELEVATION,§18.3:L3894,requirement,"[3] The Living Archive (Wave 4 languages): folktales, praise poetry (oríkì), songs",P1,agent,,Open
+F-028.U,ELEVATION,§18.3:L3897,requirement,"[3] Museum-like detail pages with audio first, then text. Rendered on the",P1,agent,,Open
+F-028.L,ELEVATION,§18.3:L3899,requirement,[3] Learn → Culture → Archive.,P1,agent,,Open
+F-029,ELEVATION,§18.3:L3900-L3911,requirement,Dialect Preference,P1,agent,,Open
+F-029.D,ELEVATION,§18.3:L3905,requirement,[3] Dialect choice doesn't change content (no dialect-tagged content yet).,P1,agent,,Open
+F-029.E,ELEVATION,§18.3:L3906,requirement,[3] Real dialect lanes: audio variants per item (Ọ̀yọ́ vs Ìjẹ̀bú Yoruba;,P1,agent,,Open
+F-029.U,ELEVATION,§18.3:L3909,requirement,[3] Map-based picker with sample audio per dialect. Rendered on the single,P1,agent,,Open
+F-029.L,ELEVATION,§18.3:L3911,requirement,[3] Me → Settings → Language & dialect; Word Card toggle.,P1,agent,,Open
+F-030,ELEVATION,§18.3:L3912-L3923,requirement,Living Dictionary,P1,agent,,Open
+F-030.D,ELEVATION,§18.3:L3918,requirement,[3] Per-user word list only (the backend filters by userId); no shared,P1,agent,,Open
+F-030.E,ELEVATION,§18.3:L3919,requirement,[3] See §17.7 (exemplar deep-dive).,P1,agent,,Open
+F-030.U,ELEVATION,§18.3:L3920,requirement,"[3] See §17.7. Rendered on the single unified design system (§3.4), with",P1,agent,,Open
+F-030.L,ELEVATION,§18.3:L3922,requirement,[3] Global: search bar + long-press on any word; Learn → Words.,P1,agent,,Open
+F-031,ELEVATION,§18.3:L3924-L3936,requirement,Offline Downloads (revived),P1,agent,,Open
+F-031.D,ELEVATION,§18.3:L3930,requirement,"[3] Offline is a key need in the target markets, but this",P1,agent,,Open
+F-031.E,ELEVATION,§18.3:L3931,requirement,"[3] Revive as Downloads: per-unit packs (text + Opus audio), storage meter,",P1,agent,,Open
+F-031.U,ELEVATION,§18.3:L3934,requirement,"[3] List with size per pack, progress and a clear sync status.",P1,agent,,Open
+F-031.L,ELEVATION,§18.3:L3936,requirement,[3] Me → Downloads; Path shows a download icon per unit.,P1,agent,,Open
+F-032,ELEVATION,§18.3:L3937-L3950,requirement,Language detail & Suggest a language,P1,agent,,Open
+F-032.D,ELEVATION,§18.3:L3943,requirement,[3] Suggestions go nowhere visible.,P1,agent,,Open
+F-032.E,ELEVATION,§18.3:L3944,requirement,"[3] Language pages show speakers, regions, readiness level (L0–L3) and a sample",P1,agent,,Open
+F-032.U,ELEVATION,§18.3:L3947,requirement,"[3] Language page with a map, audio sample and readiness badge; waitlist",P1,agent,,Open
+F-032.L,ELEVATION,§18.3:L3950,requirement,"[3] Learn → language switcher → ""All languages"".",P1,agent,,Open
+F-033,ELEVATION,§18.3:L3951-L3964,requirement,Passport (proctored test & credential),P1,agent,,Open
+F-033.D,ELEVATION,§18.3:L3957,requirement,[3] Scoring and content aren't valid yet (§12.4); proctoring privacy terms are,P1,agent,,Open
+F-033.E,ELEVATION,§18.3:L3958,requirement,"[3] The LingAfriq Passport: evidence portfolio plus an adaptive proctored test, mapped",P1,agent,,Open
+F-033.U,ELEVATION,§18.3:L3961,requirement,"[3] Formal, calm design; clear privacy explanation before the camera turns on.",P1,agent,,Open
+F-033.L,ELEVATION,§18.3:L3964,requirement,[3] Me → Credentials (unlocks at A2).,P1,agent,,Open
+F-034,ELEVATION,§18.3:L3965-L3978,requirement,Lesson Recap (revived),P1,agent,,Open
+F-034.D,ELEVATION,§18.3:L3971,requirement,"[3] Lessons end without consolidation, so there is no retrieval moment.",P1,agent,,Open
+F-034.E,ELEVATION,§18.3:L3972,requirement,"[3] Revive as the 60-second recap after every lesson: three retrieval questions,",P1,agent,,Open
+F-034.U,ELEVATION,§18.3:L3975,requirement,"[3] Card stack with large type; one celebratory moment, not confetti spam.",P1,agent,,Open
+F-034.L,ELEVATION,§18.3:L3977,requirement,[3] End of every lesson (Learn → lesson → recap).,P1,agent,,Open
+F-035,ELEVATION,§18.4:L3979-L4003,requirement,Polie AI Tutor workspace,P1,agent,,Open
+F-035.D,ELEVATION,§18.4:L3994,requirement,"[4] 6,485-line god screen. Client keys (P0-3). No streaming on the backend",P1,agent,,Open
+F-035.E,ELEVATION,§18.4:L3996,requirement,[4] Polie becomes a voice-first companion: hold-to-talk with live transcript and Tone,P1,agent,,Open
+F-035.U,ELEVATION,§18.4:L4000,requirement,"[4] Chat surface with large target-language text (18 sp+), a gloss on",P1,agent,,Open
+F-035.L,ELEVATION,§18.4:L4003,requirement,[4] Speak tab (root) → Polie.,P1,agent,,Open
+F-036,ELEVATION,§18.4:L4004-L4019,requirement,Tutor: Dialogue mode,P1,agent,,Open
+F-036.D,ELEVATION,§18.4:L4010,requirement,[4] Client key dependency (P0-3): in release builds these modes fail and,P1,agent,,Open
+F-036.E,ELEVATION,§18.4:L4012,requirement,"[4] Scripted-goal dialogues (""order food"", ""ask directions"") where Polie improvises inside",P1,agent,,Open
+F-036.U,ELEVATION,§18.4:L4015,requirement,"[4] Shared tutor shell: header with avatar and mode chip, transcript, mic",P1,agent,,Open
+F-036.L,ELEVATION,§18.4:L4019,requirement,[4] Speak → Polie → mode chips.,P1,agent,,Open
+F-037,ELEVATION,§18.4:L4020-L4033,requirement,Tutor: Grammar mode,P1,agent,,Open
+F-037.D,ELEVATION,§18.4:L4026,requirement,[4] Client key dependency (P0-3): in release builds these modes fail and,P1,agent,,Open
+F-037.E,ELEVATION,§18.4:L4028,requirement,"[4] Answers come only from the Pattern Library (retrieval), cite the pattern",P1,agent,,Open
+F-037.U,ELEVATION,§18.4:L4030,requirement,"[4] Shared tutor shell: header with avatar and mode chip, transcript, mic",P1,agent,,Open
+F-037.L,ELEVATION,§18.4:L4033,requirement,[4] Speak → Polie → mode chips.,P1,agent,,Open
+F-038,ELEVATION,§18.4:L4034-L4048,requirement,Tutor: Story mode,P1,agent,,Open
+F-038.D,ELEVATION,§18.4:L4040,requirement,[4] Client key dependency (P0-3): in release builds these modes fail and,P1,agent,,Open
+F-038.E,ELEVATION,§18.4:L4042,requirement,"[4] Choose-your-path stories at the learner's level using known plus due words,",P1,agent,,Open
+F-038.U,ELEVATION,§18.4:L4045,requirement,"[4] Shared tutor shell: header with avatar and mode chip, transcript, mic",P1,agent,,Open
+F-038.L,ELEVATION,§18.4:L4048,requirement,[4] Speak → Polie → mode chips.,P1,agent,,Open
+F-039,ELEVATION,§18.4:L4049-L4064,requirement,Tutor: Translation mode,P1,agent,,Open
+F-039.D,ELEVATION,§18.4:L4055,requirement,[4] Client key dependency (P0-3): in release builds these modes fail and,P1,agent,,Open
+F-039.E,ELEVATION,§18.4:L4057,requirement,"[4] Translate & teach: shows the translation, word-by-word alignment, register options",P1,agent,,Open
+F-039.U,ELEVATION,§18.4:L4060,requirement,"[4] Shared tutor shell: header with avatar and mode chip, transcript, mic",P1,agent,,Open
+F-039.L,ELEVATION,§18.4:L4063,requirement,[4] Speak → Polie → mode chips.,P1,agent,,Open
+F-040,ELEVATION,§18.4:L4065-L4080,requirement,Tutor: Pronunciation mode,P1,agent,,Open
+F-040.D,ELEVATION,§18.4:L4072,requirement,[4] Client key dependency (P0-3): in release builds these modes fail and,P1,agent,,Open
+F-040.E,ELEVATION,§18.4:L4074,requirement,[4] Real scoring (§7.4): per-syllable tone and phone feedback with the native,P1,agent,,Open
+F-040.U,ELEVATION,§18.4:L4077,requirement,"[4] Shared tutor shell: header with avatar and mode chip, transcript, mic",P1,agent,,Open
+F-040.L,ELEVATION,§18.4:L4080,requirement,[4] Speak → Polie → mode chips.,P1,agent,,Open
+F-041,ELEVATION,§18.4:L4081-L4094,requirement,Tutor: Assess mode,P1,agent,,Open
+F-041.D,ELEVATION,§18.4:L4087,requirement,[4] Client key dependency (P0-3): in release builds these modes fail and,P1,agent,,Open
+F-041.E,ELEVATION,§18.4:L4089,requirement,[4] An oral proficiency interview lite: a 5-minute adaptive conversation rated against,P1,agent,,Open
+F-041.U,ELEVATION,§18.4:L4091,requirement,"[4] Shared tutor shell: header with avatar and mode chip, transcript, mic",P1,agent,,Open
+F-041.L,ELEVATION,§18.4:L4094,requirement,[4] Speak → Polie → mode chips.,P1,agent,,Open
+F-042,ELEVATION,§18.4:L4095-L4107,requirement,Tutor dashboard,P1,agent,,Open
+F-042.D,ELEVATION,§18.4:L4102,requirement,[4] Modes are listed rather than recommended.,P1,agent,,Open
+F-042.E,ELEVATION,§18.4:L4103,requirement,[4] Coach view: Polie recommends the next mode based on weak skills;,P1,agent,,Open
+F-042.U,ELEVATION,§18.4:L4105,requirement,"[4] Cards with ""Recommended"" ribbon; small charts. Rendered on the single unified",P1,agent,,Open
+F-042.L,ELEVATION,§18.4:L4107,requirement,"[4] Speak → Polie → ""Coach"".",P1,agent,,Open
+F-043,ELEVATION,§18.4:L4108-L4121,requirement,Shadowing (revived),P1,agent,,Open
+F-043.D,ELEVATION,§18.4:L4115,requirement,[4] Unreachable; client key dependency.,P1,agent,,Open
+F-043.E,ELEVATION,§18.4:L4116,requirement,[4] Revive as Shadow Me: a native clip plays and the learner,P1,agent,,Open
+F-043.U,ELEVATION,§18.4:L4119,requirement,"[4] Lyrics-style scrolling transcript; dual waveform; ""slow"" toggle. Rendered on the",P1,agent,,Open
+F-043.L,ELEVATION,§18.4:L4121,requirement,[4] Speak → Practice → Shadowing; Today slot.,P1,agent,,Open
+F-044,ELEVATION,§18.4:L4122-L4142,requirement,Conversation Scenarios & Roleplay (revived),P1,agent,,Open
+F-044.D,ELEVATION,§18.4:L4133,requirement,"[4] Without summary and progress, roleplay has no closure or progression. Client",P1,agent,,Open
+F-044.E,ELEVATION,§18.4:L4135,requirement,[4] Scenario Theatre: a library of real-life scenes with goals and a,P1,agent,,Open
+F-044.U,ELEVATION,§18.4:L4139,requirement,[4] Scene cards with illustrated settings; summary screen with replay of key,P1,agent,,Open
+F-044.L,ELEVATION,§18.4:L4142,requirement,[4] Speak → Scenarios.,P1,agent,,Open
+F-045,ELEVATION,§18.4:L4143-L4154,requirement,Conversation Analytics (revived),P1,agent,,Open
+F-045.D,ELEVATION,§18.4:L4148,requirement,[4] Insight data is collected but never shown.,P1,agent,,Open
+F-045.E,ELEVATION,§18.4:L4149,requirement,"[4] Revive as ""How I speak"": words used vs avoided, average utterance",P1,agent,,Open
+F-045.U,ELEVATION,§18.4:L4152,requirement,"[4] Simple, honest charts with an explanation line under each. Rendered on",P1,agent,,Open
+F-045.L,ELEVATION,§18.4:L4154,requirement,[4] Speak → Coach → Insights; Me → Progress.,P1,agent,,Open
+F-046,ELEVATION,§18.4:L4155-L4169,requirement,Speak Engine Lab (code-switch & register coach),P1,agent,,Open
+F-046.D,ELEVATION,§18.4:L4162,requirement,"[4] ""Lab"" framing hides two genuinely novel features.",P1,agent,,Open
+F-046.E,ELEVATION,§18.4:L4163,requirement,[4] Split into two named features. Code-Switch Coach: practise natural Yoruba-English or,P1,agent,,Open
+F-046.U,ELEVATION,§18.4:L4167,requirement,"[4] Side-by-side ""casual vs respectful"" cards with audio. Rendered on the single",P1,agent,,Open
+F-046.L,ELEVATION,§18.4:L4169,requirement,[4] Speak → Practice → Code-Switch Coach / Respect Coach.,P1,agent,,Open
+F-047,ELEVATION,§18.4:L4170-L4181,requirement,Speak Missions,P1,agent,,Open
+F-047.D,ELEVATION,§18.4:L4175,requirement,[4] Client AI dependency; evaluation not grounded in a rubric.,P1,agent,,Open
+F-047.E,ELEVATION,§18.4:L4176,requirement,"[4] Weekly speaking missions in the real world (""Greet three people in",P1,agent,,Open
+F-047.U,ELEVATION,§18.4:L4179,requirement,[4] Mission card with checklist; recording sheet; rubric feedback. Rendered on the,P1,agent,,Open
+F-047.L,ELEVATION,§18.4:L4181,requirement,[4] Speak → Missions; Today → Challenges.,P1,agent,,Open
+F-048,ELEVATION,§18.4:L4182-L4196,requirement,Historical Personas,P1,agent,,Open
+F-048.D,ELEVATION,§18.4:L4189,requirement,[4] P0-13/14/15; ungrounded answers.,P1,agent,,Open
+F-048.E,ELEVATION,§18.4:L4190,requirement,"[4] See §8: grounded, cited, AI-disclosed personas with illustrated story chapters (Yaa",P1,agent,,Open
+F-048.U,ELEVATION,§18.4:L4193,requirement,"[4] Portrait busts (Rive), a sources drawer on every answer, and an",P1,agent,,Open
+F-048.L,ELEVATION,§18.4:L4196,requirement,[4] Speak → Personas.,P1,agent,,Open
+F-049,ELEVATION,§18.4:L4197-L4211,requirement,Persona Missions,P1,agent,,Open
+F-049.D,ELEVATION,§18.4:L4205,requirement,"[4] P0-13 canned fallback ""I hear you. Let us continue.""",P1,agent,,Open
+F-049.E,ELEVATION,§18.4:L4206,requirement,"[4] The story-chapter format from §8: era scene, objective (greet the Queen",P1,agent,,Open
+F-049.U,ELEVATION,§18.4:L4209,requirement,"[4] Illustrated scene header, ambient audio, objective tracker. Rendered on the single",P1,agent,,Open
+F-049.L,ELEVATION,§18.4:L4211,requirement,[4] Speak → Personas → Missions.,P1,agent,,Open
+F-050,ELEVATION,§18.4:L4212-L4223,requirement,LingChat AI conversation,P1,agent,,Open
+F-050.D,ELEVATION,§18.4:L4217,requirement,[4] Duplicates Polie in a different place.,P1,agent,,Open
+F-050.E,ELEVATION,§18.4:L4218,requirement,"[4] Becomes ""Practice with Polie"" inside chat: open a practice DM with",P1,agent,,Open
+F-050.U,ELEVATION,§18.4:L4221,requirement,"[4] Appears as a pinned contact in Chats with an ""AI"" label.",P1,agent,,Open
+F-050.L,ELEVATION,§18.4:L4223,requirement,"[4] Village → Chats → pinned ""Polie (AI)"".",P1,agent,,Open
+F-051,ELEVATION,§18.4:L4224-L4235,requirement,Synthetic Voice Styles,P1,agent,,Open
+F-051.D,ELEVATION,§18.4:L4229,requirement,"[4] Voices come from non-commercial models (MMS-TTS, XTTS-v2; P0-24).",P1,agent,,Open
+F-051.E,ELEVATION,§18.4:L4230,requirement,"[4] Voice picker with commercial voices per language (Intron, Spitch, Azure, custom;",P1,agent,,Open
+F-051.U,ELEVATION,§18.4:L4233,requirement,[4] Voice cards with a play sample and region tag. Rendered on,P1,agent,,Open
+F-051.L,ELEVATION,§18.4:L4235,requirement,[4] Me → Settings → Voice; Speak → Polie settings.,P1,agent,,Open
+F-052,ELEVATION,§18.4:L4236-L4245,requirement,Point & Say,P1,agent,,Open
+F-052.D,ELEVATION,§18.4:L4241,requirement,[4] See §17.6.,P1,agent,,Open
+F-052.E,ELEVATION,§18.4:L4242,requirement,[4] See §17.6 (exemplar deep-dive).,P1,agent,,Open
+F-052.U,ELEVATION,§18.4:L4243,requirement,"[4] See §17.6. Rendered on the single unified design system (§3.4), with",P1,agent,,Open
+F-052.L,ELEVATION,§18.4:L4245,requirement,[4] Global Lens button; Learn/Speak contextual.,P1,agent,,Open
+F-053,ELEVATION,§18.4:L4246-L4263,requirement,Live Translate,P1,agent,,Open
+F-053.D,ELEVATION,§18.4:L4254,requirement,"[4] On-device recognisers rarely support Yoruba, Igbo, Hausa, Xhosa or Pidgin, so",P1,agent,,Open
+F-053.E,ELEVATION,§18.4:L4256,requirement,"[4] Conversation Bridge: two people, two languages, one phone. Each speaks in",P1,agent,,Open
+F-053.U,ELEVATION,§18.4:L4260,requirement,[4] Split-screen facing layout (one half upside-down for the other person); big,P1,agent,,Open
+F-053.L,ELEVATION,§18.4:L4263,requirement,"[4] Global Lens → ""Bridge""; Speak → Practice.",P1,agent,,Open
+F-054,ELEVATION,§18.4:L4264-L4280,requirement,Import Media (OCR & clips),P1,agent,,Open
+F-054.D,ELEVATION,§18.4:L4270,requirement,[4] ML Kit Latin OCR mangles stacked tone marks [verify on device].,P1,agent,,Open
+F-054.E,ELEVATION,§18.4:L4272,requirement,"[4] Learn from anything: import a song, a WhatsApp voice note, a",P1,agent,,Open
+F-054.U,ELEVATION,§18.4:L4276,requirement,[4] Import sheet (camera/files/share-sheet target); processing steps shown honestly.,P1,agent,,Open
+F-054.L,ELEVATION,§18.4:L4279,requirement,"[4] Global Lens → ""Import""; share-sheet target from other apps.",P1,agent,,Open
+F-055,ELEVATION,§18.5:L4281-L4302,requirement,Games Arcade (hub & catalogue),P1,agent,,Open
+F-055.D,ELEVATION,§18.5:L4292,requirement,[5] Three competing catalogues; games are a separate destination and don't update,P1,agent,,Open
+F-055.E,ELEVATION,§18.5:L4294,requirement,"[5] One Arcade with shelves: ""For you today"" (games that train the",P1,agent,,Open
+F-055.U,ELEVATION,§18.5:L4299,requirement,[5] Shelf layout with game art (one consistent illustration style); skill chips;,P1,agent,,Open
+F-055.L,ELEVATION,§18.5:L4302,requirement,[5] Play tab (root).,P1,agent,,Open
+F-056,ELEVATION,§18.5:L4303-L4322,requirement,"Game shell, guides & results (revived)",P1,agent,,Open
+F-056.D,ELEVATION,§18.5:L4315,requirement,[5] Inconsistent results screens; no mastery feedback after play.,P1,agent,,Open
+F-056.E,ELEVATION,§18.5:L4316,requirement,[5] One GameKit frame. A 10-second how-to (from the start guide) on,P1,agent,,Open
+F-056.U,ELEVATION,§18.5:L4319,requirement,"[5] Consistent header (timer, score, quit), results with skill bars; confetti only",P1,agent,,Open
+F-056.L,ELEVATION,§18.5:L4322,requirement,[5] Inside every game.,P1,agent,,Open
+F-057,ELEVATION,§18.5:L4323-L4336,requirement,Word Match,P1,agent,,Open
+F-057.D,ELEVATION,§18.5:L4330,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-057.E,ELEVATION,§18.5:L4331,requirement,"[5] Due-word driven matching with audio on every tap and a ""tone",P1,agent,,Open
+F-057.U,ELEVATION,§18.5:L4333,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-057.L,ELEVATION,§18.5:L4336,requirement,[5] Play → Words shelf.,P1,agent,,Open
+F-058,ELEVATION,§18.5:L4337-L4350,requirement,Word Match (audio),P1,agent,,Open
+F-058.D,ELEVATION,§18.5:L4345,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-058.E,ELEVATION,§18.5:L4346,requirement,"[5] Listening-first: hear it, match it. Speakers rotate across regions to build",P1,agent,,Open
+F-058.U,ELEVATION,§18.5:L4347,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-058.L,ELEVATION,§18.5:L4350,requirement,[5] Play → Tone & Sound shelf.,P1,agent,,Open
+F-059,ELEVATION,§18.5:L4351-L4363,requirement,Fill in the Blank,P1,agent,,Open
+F-059.D,ELEVATION,§18.5:L4358,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-059.E,ELEVATION,§18.5:L4359,requirement,[5] Cloze from real dialogues with diacritic-aware typing and a hint that,P1,agent,,Open
+F-059.U,ELEVATION,§18.5:L4360,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-059.L,ELEVATION,§18.5:L4363,requirement,[5] Play → Grammar shelf.,P1,agent,,Open
+F-060,ELEVATION,§18.5:L4364-L4377,requirement,Picture–Word Association,P1,agent,,Open
+F-060.D,ELEVATION,§18.5:L4371,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-060.E,ELEVATION,§18.5:L4372,requirement,"[5] Culturally reviewed illustrations (local foods, clothing, places) and a ""say it""",P1,agent,,Open
+F-060.U,ELEVATION,§18.5:L4374,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-060.L,ELEVATION,§18.5:L4377,requirement,[5] Play → Words shelf.,P1,agent,,Open
+F-061,ELEVATION,§18.5:L4378-L4391,requirement,Memory Map,P1,agent,,Open
+F-061.D,ELEVATION,§18.5:L4384,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-061.E,ELEVATION,§18.5:L4385,requirement,"[5] Audio-card variant (flip to hear) and family-themed decks, so heritage learners",P1,agent,,Open
+F-061.U,ELEVATION,§18.5:L4387,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-061.L,ELEVATION,§18.5:L4391,requirement,[5] Play → Words shelf.,P1,agent,,Open
+F-062,ELEVATION,§18.5:L4392-L4405,requirement,Speed Challenge,P1,agent,,Open
+F-062.D,ELEVATION,§18.5:L4399,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-062.E,ELEVATION,§18.5:L4400,requirement,"[5] Adaptive speed that targets 80–85% success, with a ""calm mode"" without",P1,agent,,Open
+F-062.U,ELEVATION,§18.5:L4402,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-062.L,ELEVATION,§18.5:L4405,requirement,[5] Play → Words shelf.,P1,agent,,Open
+F-063,ELEVATION,§18.5:L4406-L4419,requirement,Speed Round,P1,agent,,Open
+F-063.D,ELEVATION,§18.5:L4413,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-063.E,ELEVATION,§18.5:L4414,requirement,[5] Merge mechanics with Speed Challenge as two modes of one game,P1,agent,,Open
+F-063.U,ELEVATION,§18.5:L4416,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-063.L,ELEVATION,§18.5:L4419,requirement,[5] Play → Words shelf.,P1,agent,,Open
+F-064,ELEVATION,§18.5:L4420-L4433,requirement,Story Builder,P1,agent,,Open
+F-064.D,ELEVATION,§18.5:L4427,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-064.E,ELEVATION,§18.5:L4428,requirement,[5] Builds illustrated audio stories from the learner's level; finished stories can,P1,agent,,Open
+F-064.U,ELEVATION,§18.5:L4430,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-064.L,ELEVATION,§18.5:L4433,requirement,[5] Play → Grammar shelf.,P1,agent,,Open
+F-065,ELEVATION,§18.5:L4434-L4447,requirement,Grammar Detective,P1,agent,,Open
+F-065.D,ELEVATION,§18.5:L4442,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-065.E,ELEVATION,§18.5:L4443,requirement,[5] Cases framed as village mysteries; each solved case unlocks a Pattern,P1,agent,,Open
+F-065.U,ELEVATION,§18.5:L4444,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-065.L,ELEVATION,§18.5:L4447,requirement,[5] Play → Grammar shelf.,P1,agent,,Open
+F-066,ELEVATION,§18.5:L4448-L4461,requirement,Grammar Jam,P1,agent,,Open
+F-066.D,ELEVATION,§18.5:L4455,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-066.E,ELEVATION,§18.5:L4456,requirement,"[5] Rhythm-paced sentence building over Afrobeats/amapiano-style beats (commissioned),",P1,agent,,Open
+F-066.U,ELEVATION,§18.5:L4458,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-066.L,ELEVATION,§18.5:L4461,requirement,[5] Play → Grammar shelf.,P1,agent,,Open
+F-067,ELEVATION,§18.5:L4462-L4475,requirement,Greeting Diplomacy,P1,agent,,Open
+F-067.D,ELEVATION,§18.5:L4469,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-067.E,ELEVATION,§18.5:L4470,requirement,"[5] Becomes Greeting Gauntlet (§10.3): time × person × setting, with avatar",P1,agent,,Open
+F-067.U,ELEVATION,§18.5:L4472,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-067.L,ELEVATION,§18.5:L4475,requirement,[5] Play → Culture shelf.,P1,agent,,Open
+F-068,ELEVATION,§18.5:L4476-L4491,requirement,Market Bargaining,P1,agent,,Open
+F-068.D,ELEVATION,§18.5:L4484,requirement,"[5] Asking price is random (:84), which is fine as a mechanic;",P1,agent,,Open
+F-068.E,ELEVATION,§18.5:L4486,requirement,"[5] Becomes Market Haggle: voice roleplay with trader personalities, real numbers practice,",P1,agent,,Open
+F-068.U,ELEVATION,§18.5:L4488,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-068.L,ELEVATION,§18.5:L4491,requirement,[5] Play → Speaking shelf.,P1,agent,,Open
+F-069,ELEVATION,§18.5:L4492-L4505,requirement,Quiz Chef,P1,agent,,Open
+F-069.D,ELEVATION,§18.5:L4499,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-069.E,ELEVATION,§18.5:L4500,requirement,"[5] Recipes as lessons: cook jollof, egusi, ugali or chakalaka by following",P1,agent,,Open
+F-069.U,ELEVATION,§18.5:L4502,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-069.L,ELEVATION,§18.5:L4505,requirement,[5] Play → Culture shelf.,P1,agent,,Open
+F-070,ELEVATION,§18.5:L4506-L4519,requirement,Roleplay Adventure,P1,agent,,Open
+F-070.D,ELEVATION,§18.5:L4513,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-070.E,ELEVATION,§18.5:L4514,requirement,[5] Shares the Scenario Theatre engine; adventures become multi-scene trips (Lagos →,P1,agent,,Open
+F-070.U,ELEVATION,§18.5:L4516,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-070.L,ELEVATION,§18.5:L4519,requirement,[5] Play → Speaking shelf.,P1,agent,,Open
+F-071,ELEVATION,§18.5:L4520-L4534,requirement,Taxi Survival,P1,agent,,Open
+F-071.D,ELEVATION,§18.5:L4527,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-071.E,ELEVATION,§18.5:L4529,requirement,[5] Becomes Danfo/Matatu Rush: real recorded conductor calls at native speed; board,P1,agent,,Open
+F-071.U,ELEVATION,§18.5:L4531,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-071.L,ELEVATION,§18.5:L4534,requirement,[5] Play → Tone & Sound shelf.,P1,agent,,Open
+F-072,ELEVATION,§18.5:L4535-L4550,requirement,Tone Trainer,P1,agent,,Open
+F-072.D,ELEVATION,§18.5:L4542,requirement,"[5] Applies one High/Mid/Low scheme to every language (tone_trainer_game.dart:47-66),",P1,agent,,Open
+F-072.E,ELEVATION,§18.5:L4545,requirement,[5] Per-language tone inventories with minimal pairs and real audio; feeds the,P1,agent,,Open
+F-072.U,ELEVATION,§18.5:L4547,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-072.L,ELEVATION,§18.5:L4550,requirement,[5] Play → Tone & Sound shelf.,P1,agent,,Open
+F-073,ELEVATION,§18.5:L4551-L4565,requirement,Pronunciation Duel,P1,agent,,Open
+F-073.D,ELEVATION,§18.5:L4558,requirement,[5] Never opens the microphone; random 75–95% score (pronunciation_duel_game.dart:105-,P1,agent,,Open
+F-073.E,ELEVATION,§18.5:L4560,requirement,[5] Real recording and scoring; async duels with friends on minimal pairs;,P1,agent,,Open
+F-073.U,ELEVATION,§18.5:L4562,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-073.L,ELEVATION,§18.5:L4565,requirement,[5] Play → Speaking shelf.,P1,agent,,Open
+F-074,ELEVATION,§18.5:L4566-L4580,requirement,Pronunciation Game,P1,agent,,Open
+F-074.D,ELEVATION,§18.5:L4573,requirement,[5] No verified scoring path [Unverified whether it records]. Thin content; no,P1,agent,,Open
+F-074.E,ELEVATION,§18.5:L4576,requirement,[5] Merge its rounds into the Tone Gym ladder as a game,P1,agent,,Open
+F-074.U,ELEVATION,§18.5:L4577,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-074.L,ELEVATION,§18.5:L4580,requirement,[5] Play → Speaking shelf.,P1,agent,,Open
+F-075,ELEVATION,§18.5:L4581-L4596,requirement,Pronunciation Karaoke,P1,agent,,Open
+F-075.D,ELEVATION,§18.5:L4589,requirement,"[5] Pitch score is 60 + rng.nextInt(35) (pronunciation_karaoke_screen.dart:155, P0-18). Thin",P1,agent,,Open
+F-075.E,ELEVATION,§18.5:L4591,requirement,"[5] Becomes Echo Karaoke: real F0 line, licensed songs, children's rhymes and",P1,agent,,Open
+F-075.U,ELEVATION,§18.5:L4593,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-075.L,ELEVATION,§18.5:L4596,requirement,[5] Play → Speaking shelf.,P1,agent,,Open
+F-076,ELEVATION,§18.5:L4597-L4610,requirement,Emoji Translator,P1,agent,,Open
+F-076.D,ELEVATION,§18.5:L4604,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-076.E,ELEVATION,§18.5:L4605,requirement,"[5] Emoji stories → sentences, then send the sentence as a chat",P1,agent,,Open
+F-076.U,ELEVATION,§18.5:L4607,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-076.L,ELEVATION,§18.5:L4610,requirement,[5] Play → Words shelf.,P1,agent,,Open
+F-077,ELEVATION,§18.5:L4611-L4625,requirement,Elders' Blessings,P1,agent,,Open
+F-077.D,ELEVATION,§18.5:L4618,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-077.E,ELEVATION,§18.5:L4619,requirement,"[5] An elder character (avatar) gives blessings for life events (birth, marriage,",P1,agent,,Open
+F-077.U,ELEVATION,§18.5:L4622,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-077.L,ELEVATION,§18.5:L4625,requirement,[5] Play → Culture shelf.,P1,agent,,Open
+F-078,ELEVATION,§18.5:L4626-L4639,requirement,Folktale Reconstruction,P1,agent,,Open
+F-078.D,ELEVATION,§18.5:L4633,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-078.E,ELEVATION,§18.5:L4634,requirement,"[5] Àlọ́ / hadithi / iintsomi storytelling: rebuild the tale, then narrate",P1,agent,,Open
+F-078.U,ELEVATION,§18.5:L4636,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-078.L,ELEVATION,§18.5:L4639,requirement,[5] Play → Culture shelf.,P1,agent,,Open
+F-079,ELEVATION,§18.5:L4640-L4653,requirement,Clan Lineage Story Builder,P1,agent,,Open
+F-079.D,ELEVATION,§18.5:L4647,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-079.E,ELEVATION,§18.5:L4648,requirement,[5] Teaches kinship vocabulary through a family tree you build; links to,P1,agent,,Open
+F-079.U,ELEVATION,§18.5:L4650,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-079.L,ELEVATION,§18.5:L4653,requirement,[5] Play → Culture shelf.,P1,agent,,Open
+F-080,ELEVATION,§18.5:L4654-L4668,requirement,Conversation Relay,P1,agent,,Open
+F-080.D,ELEVATION,§18.5:L4661,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-080.E,ELEVATION,§18.5:L4662,requirement,[5] Classroom and circle relay: each player adds a turn by voice;,P1,agent,,Open
+F-080.U,ELEVATION,§18.5:L4664,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-080.L,ELEVATION,§18.5:L4667,requirement,[5] Play → Speaking shelf.,P1,agent,,Open
+F-081,ELEVATION,§18.5:L4669-L4681,requirement,Board Word Games,P1,agent,,Open
+F-081.D,ELEVATION,§18.5:L4676,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-081.E,ELEVATION,§18.5:L4677,requirement,[5] Diacritic-aware word puzzles (Wordle-like with tone marks as a mechanic).,P1,agent,,Open
+F-081.U,ELEVATION,§18.5:L4678,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-081.L,ELEVATION,§18.5:L4681,requirement,[5] Play → Words shelf.,P1,agent,,Open
+F-082,ELEVATION,§18.5:L4682-L4693,requirement,Cultural Games collection,P1,agent,,Open
+F-082.D,ELEVATION,§18.5:L4688,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-082.E,ELEVATION,§18.5:L4689,requirement,"[5] Becomes the Arcade's ""Culture"" shelf (the screen remains as a themed",P1,agent,,Open
+F-082.U,ELEVATION,§18.5:L4690,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-082.L,ELEVATION,§18.5:L4693,requirement,[5] Play → Culture shelf.,P1,agent,,Open
+F-083,ELEVATION,§18.5:L4694-L4707,requirement,Accent Puzzle,P1,agent,,Open
+F-083.D,ELEVATION,§18.5:L4701,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-083.E,ELEVATION,§18.5:L4702,requirement,[5] Decode the same sentence spoken in different regional accents; builds real-world,P1,agent,,Open
+F-083.U,ELEVATION,§18.5:L4704,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-083.L,ELEVATION,§18.5:L4707,requirement,[5] Play → Tone & Sound shelf.,P1,agent,,Open
+F-084,ELEVATION,§18.5:L4708-L4721,requirement,Call & Response,P1,agent,,Open
+F-084.D,ELEVATION,§18.5:L4716,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-084.E,ELEVATION,§18.5:L4717,requirement,[5] Musical call-and-response with real singers; responses scored on rhythm and tone.,P1,agent,,Open
+F-084.U,ELEVATION,§18.5:L4718,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-084.L,ELEVATION,§18.5:L4721,requirement,[5] Play → Speaking shelf.,P1,agent,,Open
+F-085,ELEVATION,§18.5:L4722-L4735,requirement,Cultural Etiquette,P1,agent,,Open
+F-085.D,ELEVATION,§18.5:L4729,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-085.E,ELEVATION,§18.5:L4730,requirement,"[5] Linked to Etiquette cards; consequences shown kindly (""Mama is surprised you",P1,agent,,Open
+F-085.U,ELEVATION,§18.5:L4732,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-085.L,ELEVATION,§18.5:L4735,requirement,[5] Play → Culture shelf.,P1,agent,,Open
+F-086,ELEVATION,§18.5:L4736-L4748,requirement,Drum Word,P1,agent,,Open
+F-086.D,ELEVATION,§18.5:L4743,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-086.E,ELEVATION,§18.5:L4744,requirement,"[5] Becomes Talking Drum (§10.3): drummed tone contours → words, then speak",P1,agent,,Open
+F-086.U,ELEVATION,§18.5:L4745,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-086.L,ELEVATION,§18.5:L4748,requirement,[5] Play → Tone & Sound shelf.,P1,agent,,Open
+F-087,ELEVATION,§18.5:L4749-L4762,requirement,Flashcard Safari,P1,agent,,Open
+F-087.D,ELEVATION,§18.5:L4756,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-087.E,ELEVATION,§18.5:L4757,requirement,"[5] Shares the Point & Say camera pipeline: a scavenger hunt (""find",P1,agent,,Open
+F-087.U,ELEVATION,§18.5:L4758,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-087.L,ELEVATION,§18.5:L4762,requirement,[5] Play → Words shelf.,P1,agent,,Open
+F-088,ELEVATION,§18.5:L4763-L4775,requirement,Food Quest,P1,agent,,Open
+F-088.D,ELEVATION,§18.5:L4770,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-088.E,ELEVATION,§18.5:L4771,requirement,[5] Market-to-pot quests with regional dishes; ties to Quiz Chef recipes.,P1,agent,,Open
+F-088.U,ELEVATION,§18.5:L4772,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-088.L,ELEVATION,§18.5:L4775,requirement,[5] Play → Culture shelf.,P1,agent,,Open
+F-089,ELEVATION,§18.5:L4776-L4789,requirement,Liar Liar,P1,agent,,Open
+F-089.D,ELEVATION,§18.5:L4783,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-089.E,ELEVATION,§18.5:L4784,requirement,"[5] Social bluffing: friends submit sentences, some wrong; others spot the lie.",P1,agent,,Open
+F-089.U,ELEVATION,§18.5:L4786,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-089.L,ELEVATION,§18.5:L4789,requirement,[5] Play → Grammar shelf.,P1,agent,,Open
+F-090,ELEVATION,§18.5:L4790-L4803,requirement,Multilingual Relay,P1,agent,,Open
+F-090.D,ELEVATION,§18.5:L4797,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-090.E,ELEVATION,§18.5:L4798,requirement,[5] Pan-African relay: one word passed through several languages (Yoruba → Swahili,P1,agent,,Open
+F-090.U,ELEVATION,§18.5:L4800,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-090.L,ELEVATION,§18.5:L4803,requirement,[5] Play → Words shelf.,P1,agent,,Open
+F-091,ELEVATION,§18.5:L4804-L4817,requirement,Phrase Sniper,P1,agent,,Open
+F-091.D,ELEVATION,§18.5:L4812,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-091.E,ELEVATION,§18.5:L4813,requirement,[5] Listening reflex game with native audio; accessibility mode without time pressure.,P1,agent,,Open
+F-091.U,ELEVATION,§18.5:L4814,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-091.L,ELEVATION,§18.5:L4817,requirement,[5] Play → Tone & Sound shelf.,P1,agent,,Open
+F-092,ELEVATION,§18.5:L4818-L4832,requirement,Proverb Unlocker,P1,agent,,Open
+F-092.D,ELEVATION,§18.5:L4825,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-092.E,ELEVATION,§18.5:L4826,requirement,[5] Becomes Proverb Weaver (§10.3). CONSOLIDATE with the unrouted GameKit rewrite,P1,agent,,Open
+F-092.U,ELEVATION,§18.5:L4829,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-092.L,ELEVATION,§18.5:L4832,requirement,[5] Play → Culture shelf.,P1,agent,,Open
+F-093,ELEVATION,§18.5:L4833-L4845,requirement,Rhythm Typing,P1,agent,,Open
+F-093.D,ELEVATION,§18.5:L4840,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-093.E,ELEVATION,§18.5:L4841,requirement,[5] Diacritic typing trainer to rhythm; builds tone-mark keyboard fluency.,P1,agent,,Open
+F-093.U,ELEVATION,§18.5:L4842,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-093.L,ELEVATION,§18.5:L4845,requirement,[5] Play → Words shelf.,P1,agent,,Open
+F-094,ELEVATION,§18.5:L4846-L4860,requirement,Tongue Twister Race,P1,agent,,Open
+F-094.D,ELEVATION,§18.5:L4854,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-094.E,ELEVATION,§18.5:L4855,requirement,[5] Real scoring with fluency metrics; native tongue twisters per language; shareable,P1,agent,,Open
+F-094.U,ELEVATION,§18.5:L4857,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-094.L,ELEVATION,§18.5:L4860,requirement,[5] Play → Speaking shelf.,P1,agent,,Open
+F-095,ELEVATION,§18.5:L4861-L4874,requirement,Village Quest,P1,agent,,Open
+F-095.D,ELEVATION,§18.5:L4868,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-095.E,ELEVATION,§18.5:L4869,requirement,[5] Becomes the playable layer of the Village map: talk to NPCs,P1,agent,,Open
+F-095.U,ELEVATION,§18.5:L4871,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-095.L,ELEVATION,§18.5:L4874,requirement,[5] Play → Speaking shelf.,P1,agent,,Open
+F-096,ELEVATION,§18.5:L4875-L4888,requirement,Ayo (mancala),P1,agent,,Open
+F-096.D,ELEVATION,§18.5:L4882,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-096.E,ELEVATION,§18.5:L4883,requirement,[5] Keep the authentic game; questions become due-word reviews; online play with,P1,agent,,Open
+F-096.U,ELEVATION,§18.5:L4885,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-096.L,ELEVATION,§18.5:L4888,requirement,[5] Play → Traditional shelf.,P1,agent,,Open
+F-097,ELEVATION,§18.5:L4889-L4903,requirement,Snakes & Ladders (cultural),P1,agent,,Open
+F-097.D,ELEVATION,§18.5:L4896,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-097.E,ELEVATION,§18.5:L4897,requirement,"[5] Family mode for heritage households (pass-and-play), with questions at each player's",P1,agent,,Open
+F-097.U,ELEVATION,§18.5:L4900,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-097.L,ELEVATION,§18.5:L4903,requirement,[5] Play → Traditional shelf.,P1,agent,,Open
+F-098,ELEVATION,§18.5:L4904-L4916,requirement,Language Ludo,P1,agent,,Open
+F-098.D,ELEVATION,§18.5:L4911,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-098.E,ELEVATION,§18.5:L4912,requirement,[5] Multiplayer with friends and circles; speaking challenges on special squares.,P1,agent,,Open
+F-098.U,ELEVATION,§18.5:L4913,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-098.L,ELEVATION,§18.5:L4916,requirement,[5] Play → Traditional shelf.,P1,agent,,Open
+F-099,ELEVATION,§18.5:L4917-L4929,requirement,Suwe (hopscotch),P1,agent,,Open
+F-099.D,ELEVATION,§18.5:L4924,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-099.E,ELEVATION,§18.5:L4925,requirement,[5] Kids-friendly counting and body-movement vocabulary; a guardian-safe offline mode.,P1,agent,,Open
+F-099.U,ELEVATION,§18.5:L4926,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-099.L,ELEVATION,§18.5:L4929,requirement,[5] Play → Traditional shelf.,P1,agent,,Open
+F-100,ELEVATION,§18.5:L4930-L4943,requirement,Whot!,P1,agent,,Open
+F-100.D,ELEVATION,§18.5:L4937,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-100.E,ELEVATION,§18.5:L4938,requirement,"[5] Card names and calls in the target language (""Check up!"", ""Last",P1,agent,,Open
+F-100.U,ELEVATION,§18.5:L4940,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-100.L,ELEVATION,§18.5:L4943,requirement,[5] Play → Traditional shelf.,P1,agent,,Open
+F-101,ELEVATION,§18.5:L4944-L4957,requirement,Drum Rhythm,P1,agent,,Open
+F-101.D,ELEVATION,§18.5:L4952,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,,Open
+F-101.E,ELEVATION,§18.5:L4953,requirement,[5] Merge with Talking Drum as its rhythm mode; rhythm mapped to,P1,agent,,Open
+F-101.U,ELEVATION,§18.5:L4954,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,,Open
+F-101.L,ELEVATION,§18.5:L4957,requirement,[5] Play → Tone & Sound shelf.,P1,agent,,Open
+F-102,ELEVATION,§18.5:L4958-L4971,requirement,Tone Forge (revived),P1,agent,,Open
+F-102.D,ELEVATION,§18.5:L4963,requirement,[5] A flagship tone game that nobody can reach.,P1,agent,,Open
+F-102.E,ELEVATION,§18.5:L4964,requirement,[5] Revive as a headline Tone & Sound game: forge words by,P1,agent,,Open
+F-102.U,ELEVATION,§18.5:L4967,requirement,[5] Tactile contour editor; blacksmith-forge art direction (a nod to Ogun /,P1,agent,,Open
+F-102.L,ELEVATION,§18.5:L4970,requirement,[5] Play → Tone & Sound (featured).,P1,agent,,Open
+F-103,ELEVATION,§18.6:L4972-L4986,requirement,Villages hub & Language Villages,P1,agent,,Open
+F-103.D,ELEVATION,§18.6:L4978,requirement,[6] Places are static screens; little living activity; hard-coded strings.,P1,agent,,Open
+F-103.E,ELEVATION,§18.6:L4979,requirement,[6] The Village is the community home: an illustrated map per language,P1,agent,,Open
+F-103.U,ELEVATION,§18.6:L4983,requirement,[6] Hand-illustrated map per region (not one generic village); tap-to-enter places;,P1,agent,,Open
+F-103.L,ELEVATION,§18.6:L4986,requirement,[6] Village tab (root).,P1,agent,,Open
+F-104,ELEVATION,§18.6:L4987-L4998,requirement,Swahili Village Map,P1,agent,,Open
+F-104.D,ELEVATION,§18.6:L4993,requirement,[6] The only language with a map; others are generic.,P1,agent,,Open
+F-104.E,ELEVATION,§18.6:L4994,requirement,"[6] The template for every language: Yoruba compound, Igbo obi, Hausa birni,",P1,agent,,Open
+F-104.U,ELEVATION,§18.6:L4996,requirement,"[6] Same map engine, regional art direction. Rendered on the single unified",P1,agent,,Open
+F-104.L,ELEVATION,§18.6:L4998,requirement,[6] Village → map (per language).,P1,agent,,Open
+F-105,ELEVATION,§18.6:L4999-L5009,requirement,Village Market,P1,agent,,Open
+F-105.D,ELEVATION,§18.6:L5004,requirement,[6] Mostly static.,P1,agent,,Open
+F-105.E,ELEVATION,§18.6:L5005,requirement,"[6] Live Market Haggle stall, price and number drills, and the Magic",P1,agent,,Open
+F-105.U,ELEVATION,§18.6:L5007,requirement,[6] Stalls as cards; trader NPC avatar. Rendered on the single unified,P1,agent,,Open
+F-105.L,ELEVATION,§18.6:L5009,requirement,[6] Village → map → Market.,P1,agent,,Open
+F-106,ELEVATION,§18.6:L5010-L5020,requirement,Village Café,P1,agent,,Open
+F-106.D,ELEVATION,§18.6:L5015,requirement,[6] Little actual activity.,P1,agent,,Open
+F-106.E,ELEVATION,§18.6:L5016,requirement,"[6] Doorway to Practice Rooms and audio rooms: ""3 tables open in",P1,agent,,Open
+F-106.U,ELEVATION,§18.6:L5018,requirement,[6] Tables showing level and topic; join button. Rendered on the single,P1,agent,,Open
+F-106.L,ELEVATION,§18.6:L5020,requirement,[6] Village → map → Café.,P1,agent,,Open
+F-107,ELEVATION,§18.6:L5021-L5032,requirement,Elder Hut,P1,agent,,Open
+F-107.D,ELEVATION,§18.6:L5026,requirement,[6] Static content.,P1,agent,,Open
+F-107.E,ELEVATION,§18.6:L5027,requirement,[6] Home of Micro-Mentors and proverbs: book a 10-minute session with a,P1,agent,,Open
+F-107.U,ELEVATION,§18.6:L5030,requirement,[6] Warm interior art; mentor cards with verified badge. Rendered on the,P1,agent,,Open
+F-107.L,ELEVATION,§18.6:L5032,requirement,[6] Village → map → Elder Hut.,P1,agent,,Open
+F-108,ELEVATION,§18.6:L5033-L5050,requirement,Practice Rooms & Sessions,P1,agent,,Open
+F-108.D,ELEVATION,§18.6:L5043,requirement,[6] Fake activity; no real matching; no safety controls.,P1,agent,,Open
+F-108.E,ELEVATION,§18.6:L5044,requirement,[6] Real small-group rooms (2–6 learners at the same level) with a,P1,agent,,Open
+F-108.U,ELEVATION,§18.6:L5047,requirement,[6] Video/audio tiles; speaking-time meter to encourage balance; report and block in,P1,agent,,Open
+F-108.L,ELEVATION,§18.6:L5050,requirement,[6] Village → Café → Practice Rooms; Today when a room matches.,P1,agent,,Open
+F-109,ELEVATION,§18.6:L5051-L5062,requirement,Flashcard Focus (group),P1,agent,,Open
+F-109.D,ELEVATION,§18.6:L5057,requirement,[6] Fake participants.,P1,agent,,Open
+F-109.E,ELEVATION,§18.6:L5058,requirement,[6] Replace the mocks with real matched learners or clearly labelled practice,P1,agent,,Open
+F-109.U,ELEVATION,§18.6:L5060,requirement,"[6] Participant avatars with ""bot"" labels where applicable. Rendered on the single",P1,agent,,Open
+F-109.L,ELEVATION,§18.6:L5062,requirement,[6] Village → Café → Study together.,P1,agent,,Open
+F-110,ELEVATION,§18.6:L5063-L5073,requirement,Matching Pairs (group),P1,agent,,Open
+F-110.D,ELEVATION,§18.6:L5068,requirement,[6] Duplicates Memory Map mechanics.,P1,agent,,Open
+F-110.E,ELEVATION,§18.6:L5069,requirement,"[6] Becomes the multiplayer mode of Memory Map: turn-based with friends, audio",P1,agent,,Open
+F-110.U,ELEVATION,§18.6:L5071,requirement,[6] Shared board; turn indicator. Rendered on the single unified design system,P1,agent,,Open
+F-110.L,ELEVATION,§18.6:L5073,requirement,[6] Village → Café; Play → Words.,P1,agent,,Open
+F-111,ELEVATION,§18.6:L5074-L5091,requirement,Tribes,P1,agent,,Open
+F-111.D,ELEVATION,§18.6:L5083,requirement,"[6] ""Tribe"" naming can read as ethnic grouping in an African context;",P1,agent,,Open
+F-111.E,ELEVATION,§18.6:L5085,requirement,"[6] Keep the feature, rename to Circles (study teams of 5–30) with",P1,agent,,Open
+F-111.U,ELEVATION,§18.6:L5088,requirement,"[6] Circle crest builder (patterns from adire, kente, kanga, Ndebele — reviewed);",P1,agent,,Open
+F-111.L,ELEVATION,§18.6:L5091,requirement,[6] Village → Circles.,P1,agent,,Open
+F-112,ELEVATION,§18.6:L5092-L5104,requirement,"Tribe vs Tribe, Tribal Duel & Inter-tribe Leaderboard",P1,agent,,Open
+F-112.D,ELEVATION,§18.6:L5099,requirement,[6] Cheatable scoring; competition without learning value.,P1,agent,,Open
+F-112.E,ELEVATION,§18.6:L5100,requirement,[6] Circle Clash: weekend team events where points come only from verified,P1,agent,,Open
+F-112.U,ELEVATION,§18.6:L5102,requirement,"[6] Event banner, live team bars, highlights reel at the end. Rendered",P1,agent,,Open
+F-112.L,ELEVATION,§18.6:L5104,requirement,[6] Village → Circles → Clash; Today → Events.,P1,agent,,Open
+F-113,ELEVATION,§18.6:L5105-L5120,requirement,Global Chat,P1,agent,,Open
+F-113.D,ELEVATION,§18.6:L5114,requirement,[6] P0-4/5/6 socket flaws; moderation cosmetic (P0-11); open to minors (P0-10).,P1,agent,,Open
+F-113.E,ELEVATION,§18.6:L5115,requirement,"[6] Language Squares: public rooms per language and level with a ""target-language",P1,agent,,Open
+F-113.U,ELEVATION,§18.6:L5118,requirement,[6] Chat with level badges and pinned daily topic. Rendered on the,P1,agent,,Open
+F-113.L,ELEVATION,§18.6:L5120,requirement,[6] Village → Square → Rooms.,P1,agent,,Open
+F-114,ELEVATION,§18.6:L5121-L5140,requirement,Private Chat (DMs) (revived),P1,agent,,Open
+F-114.D,ELEVATION,§18.6:L5132,requirement,[6] P0-4/5/6; no reachable block/report UI; open to minors.,P1,agent,,Open
+F-114.E,ELEVATION,§18.6:L5133,requirement,[6] Language-exchange DMs: each message can be written in the target language,P1,agent,,Open
+F-114.U,ELEVATION,§18.6:L5137,requirement,[6] WhatsApp-familiar layout made learning-native; correction bubbles in a distinct,P1,agent,,Open
+F-114.L,ELEVATION,§18.6:L5140,requirement,[6] Village → Chats.,P1,agent,,Open
+F-115,ELEVATION,§18.6:L5141-L5151,requirement,Call History,P1,agent,,Open
+F-115.D,ELEVATION,§18.6:L5146,requirement,[6] Calls carry no learning value afterwards.,P1,agent,,Open
+F-115.E,ELEVATION,§18.6:L5147,requirement,[6] Each call entry shows minutes spoken in the target language and,P1,agent,,Open
+F-115.U,ELEVATION,§18.6:L5149,requirement,[6] List with minutes chip. Rendered on the single unified design system,P1,agent,,Open
+F-115.L,ELEVATION,§18.6:L5151,requirement,[6] Village → Chats → Calls.,P1,agent,,Open
+F-116,ELEVATION,§18.6:L5152-L5162,requirement,Chat Welcome & Community Guidelines (revived),P1,agent,,Open
+F-116.D,ELEVATION,§18.6:L5157,requirement,[6] Community norms never shown.,P1,agent,,Open
+F-116.E,ELEVATION,§18.6:L5158,requirement,"[6] Revive as the first-entry pledge: 3 friendly rules (be kind, help",P1,agent,,Open
+F-116.U,ELEVATION,§18.6:L5160,requirement,[6] Short illustrated cards; one-tap agree. Rendered on the single unified design,P1,agent,,Open
+F-116.L,ELEVATION,§18.6:L5162,requirement,[6] Village first entry; Me → Safety.,P1,agent,,Open
+F-117,ELEVATION,§18.6:L5163-L5176,requirement,Moderation Tools (revived),P1,agent,,Open
+F-117.D,ELEVATION,§18.6:L5170,requirement,[6] No moderation surface for chat.,P1,agent,,Open
+F-117.E,ELEVATION,§18.6:L5171,requirement,[6] Revive as Community Stewards tools for circle leaders and trusted volunteers:,P1,agent,,Open
+F-117.U,ELEVATION,§18.6:L5173,requirement,[6] Queue cards with context and quick actions. Rendered on the single,P1,agent,,Open
+F-117.L,ELEVATION,§18.6:L5176,requirement,[6] Village → Circles → Steward tools (role-gated).,P1,agent,,Open
+F-118,ELEVATION,§18.6:L5177-L5192,requirement,Social Hub & Connections,P1,agent,,Open
+F-118.D,ELEVATION,§18.6:L5186,requirement,[6] Find-anyone search with no age or privacy controls.,P1,agent,,Open
+F-118.E,ELEVATION,§18.6:L5187,requirement,[6] Language partners: suggested partners who speak the language you learn and,P1,agent,,Open
+F-118.U,ELEVATION,§18.6:L5190,requirement,"[6] Partner cards with ""speaks / learns"" pills. Rendered on the single",P1,agent,,Open
+F-118.L,ELEVATION,§18.6:L5192,requirement,[6] Village → People.,P1,agent,,Open
+F-119,ELEVATION,§18.6:L5193-L5204,requirement,Friend Quests & Challenge a Friend,P1,agent,,Open
+F-119.D,ELEVATION,§18.6:L5199,requirement,"[6] Challenges are score-only, and scores can be faked (P0-8, P0-18).",P1,agent,,Open
+F-119.E,ELEVATION,§18.6:L5200,requirement,"[6] Buddy quests: shared weekly goals (both practise five days), async challenges",P1,agent,,Open
+F-119.U,ELEVATION,§18.6:L5202,requirement,[6] Paired progress bars; challenge cards in chat. Rendered on the single,P1,agent,,Open
+F-119.L,ELEVATION,§18.6:L5204,requirement,[6] Village → People → Quests; Today.,P1,agent,,Open
+F-120,ELEVATION,§18.6:L5205-L5216,requirement,Share Progress,P1,agent,,Open
+F-120.D,ELEVATION,§18.6:L5210,requirement,[6] Generic share cards.,P1,agent,,Open
+F-120.E,ELEVATION,§18.6:L5211,requirement,[6] Beautiful share cards: the learner's avatar saying a phrase they learned,P1,agent,,Open
+F-120.U,ELEVATION,§18.6:L5214,requirement,[6] Story-format cards (9:16) with the brand system. Rendered on the single,P1,agent,,Open
+F-120.L,ELEVATION,§18.6:L5216,requirement,[6] Me → Progress → Share; after milestones.,P1,agent,,Open
+F-121,ELEVATION,§18.6:L5217-L5229,requirement,Social Gifting,P1,agent,,Open
+F-121.D,ELEVATION,§18.6:L5224,requirement,[6] Cheatable economy.,P1,agent,,Open
+F-121.E,ELEVATION,§18.6:L5225,requirement,[6] Gift a lesson / streak freeze / cosmetic using server-validated currency;,P1,agent,,Open
+F-121.U,ELEVATION,§18.6:L5227,requirement,[6] Gift-wrap animation; message composer. Rendered on the single unified design,P1,agent,,Open
+F-121.L,ELEVATION,§18.6:L5229,requirement,[6] Village → People → Gift.,P1,agent,,Open
+F-122,ELEVATION,§18.6:L5230-L5241,requirement,Community Corrections,P1,agent,,Open
+F-122.D,ELEVATION,§18.6:L5235,requirement,[6] No reputation or quality control for correctors.,P1,agent,,Open
+F-122.E,ELEVATION,§18.6:L5236,requirement,[6] Native Corrections: learners post short writing or audio; verified natives correct,P1,agent,,Open
+F-122.U,ELEVATION,§18.6:L5239,requirement,[6] Diff-style inline edits; audio replies. Rendered on the single unified design,P1,agent,,Open
+F-122.L,ELEVATION,§18.6:L5241,requirement,[6] Village → Corrections.,P1,agent,,Open
+F-123,ELEVATION,§18.6:L5242-L5253,requirement,Ancestral Tree,P1,agent,,Open
+F-123.D,ELEVATION,§18.6:L5247,requirement,[6] Not connected to learning.,P1,agent,,Open
+F-123.E,ELEVATION,§18.6:L5248,requirement,[6] Family Tree in your language: heritage learners build their family tree,P1,agent,,Open
+F-123.U,ELEVATION,§18.6:L5251,requirement,[6] Tree with avatar nodes; kinship terms on edges. Rendered on the,P1,agent,,Open
+F-123.L,ELEVATION,§18.6:L5253,requirement,[6] Me → Heritage; Learn → Culture.,P1,agent,,Open
+F-124,ELEVATION,§18.6:L5254-L5267,requirement,Micro-Mentors,P1,agent,,Open
+F-124.D,ELEVATION,§18.6:L5260,requirement,"[6] No verification, safeguarding or payment flow visible [verify].",P1,agent,,Open
+F-124.E,ELEVATION,§18.6:L5261,requirement,"[6] Book a native for 10–20 minute focused sessions (pronunciation clinic, heritage",P1,agent,,Open
+F-124.U,ELEVATION,§18.6:L5264,requirement,[6] Mentor profiles with sample audio; booking sheet. Rendered on the single,P1,agent,,Open
+F-124.L,ELEVATION,§18.6:L5267,requirement,[6] Village → Elder Hut → Mentors.,P1,agent,,Open
+F-125,ELEVATION,§18.6:L5268-L5286,requirement,Live Classroom,P1,agent,,Open
+F-125.D,ELEVATION,§18.6:L5280,requirement,[6] Five parallel implementations; safeguarding for minors not visible.,P1,agent,,Open
+F-125.E,ELEVATION,§18.6:L5281,requirement,[6] School in the Village: scheduled live classes by level with a,P1,agent,,Open
+F-125.U,ELEVATION,§18.6:L5284,requirement,[6] Classroom grid; hand-raise queue; notes panel. Rendered on the single unified,P1,agent,,Open
+F-125.L,ELEVATION,§18.6:L5286,requirement,[6] Village → School.,P1,agent,,Open
+F-126,ELEVATION,§18.6:L5287-L5298,requirement,Teacher Classroom Dashboard (revived),P1,agent,,Open
+F-126.D,ELEVATION,§18.6:L5292,requirement,[6] Teachers have no management surface.,P1,agent,,Open
+F-126.E,ELEVATION,§18.6:L5293,requirement,"[6] Revive as LingAfriq for Schools: class roster, assign units, see weak",P1,agent,,Open
+F-126.U,ELEVATION,§18.6:L5296,requirement,[6] Desktop/tablet-friendly layout; class heatmap. Rendered on the single unified design,P1,agent,,Open
+F-126.L,ELEVATION,§18.6:L5298,requirement,[6] Me → Teaching (role-gated); web.,P1,agent,,Open
+F-127,ELEVATION,§18.6:L5299-L5316,requirement,Social Audio Rooms (revived),P1,agent,,Open
+F-127.D,ELEVATION,§18.6:L5309,requirement,"[6] No scheduling or following, so rooms are empty; moderation for minors.",P1,agent,,Open
+F-127.E,ELEVATION,§18.6:L5310,requirement,"[6] Village Radio: scheduled audio shows hosted by natives (folktale night, Pidgin",P1,agent,,Open
+F-127.U,ELEVATION,§18.6:L5314,requirement,[6] Schedule cards; speaker stage; captions bar. Rendered on the single unified,P1,agent,,Open
+F-127.L,ELEVATION,§18.6:L5316,requirement,[6] Village → Radio.,P1,agent,,Open
+F-128,ELEVATION,§18.6:L5317-L5328,requirement,Status (WhatsApp-style),P1,agent,,Open
+F-128.D,ELEVATION,§18.6:L5322,requirement,[6] Status events broadcast globally (P0-6).,P1,agent,,Open
+F-128.E,ELEVATION,§18.6:L5323,requirement,"[6] Language Status: post a daily status in the target language (text,",P1,agent,,Open
+F-128.U,ELEVATION,§18.6:L5326,requirement,[6] Familiar ring UI; stickers with the learner's avatar. Rendered on the,P1,agent,,Open
+F-128.L,ELEVATION,§18.6:L5328,requirement,[6] Village → Status.,P1,agent,,Open
+F-129,ELEVATION,§18.6:L5329-L5339,requirement,Starred Messages & Media Gallery,P1,agent,,Open
+F-129.D,ELEVATION,§18.6:L5334,requirement,[6] Starred items aren't reusable for learning.,P1,agent,,Open
+F-129.E,ELEVATION,§18.6:L5335,requirement,[6] Starred = Saved phrases: starring a message adds it to My,P1,agent,,Open
+F-129.U,ELEVATION,§18.6:L5337,requirement,[6] Grid with phrase overlays. Rendered on the single unified design system,P1,agent,,Open
+F-129.L,ELEVATION,§18.6:L5339,requirement,[6] Village → Chats → Saved.,P1,agent,,Open
+F-130,ELEVATION,§18.6:L5340-L5352,requirement,Snaps & Streaks (Snapchat-style),P1,agent,,Open
+F-130.D,ELEVATION,§18.6:L5346,requirement,[6] Privacy promise broken; content risks for minors.,P1,agent,,Open
+F-130.E,ELEVATION,§18.6:L5347,requirement,[6] Clips: send a photo or 10-second video with a phrase overlay,P1,agent,,Open
+F-130.U,ELEVATION,§18.6:L5350,requirement,[6] Camera with phrase chips; AR text in correct diacritics. Rendered on,P1,agent,,Open
+F-130.L,ELEVATION,§18.6:L5352,requirement,[6] Village → Clips; Lens camera.,P1,agent,,Open
+F-131,ELEVATION,§18.6:L5353-L5368,requirement,Community Feed (X-style),P1,agent,,Open
+F-131.D,ELEVATION,§18.6:L5362,requirement,[6] Moderation cosmetic (P0-11); generic feed with no learning hook.,P1,agent,,Open
+F-131.E,ELEVATION,§18.6:L5363,requirement,[6] The Square feed: posts in the target language with Tone Lens,P1,agent,,Open
+F-131.U,ELEVATION,§18.6:L5366,requirement,[6] Feed cards with language tag; translate toggle. Rendered on the single,P1,agent,,Open
+F-131.L,ELEVATION,§18.6:L5368,requirement,[6] Village → Square.,P1,agent,,Open
+F-132,ELEVATION,§18.6:L5369-L5380,requirement,"Explore, Search & Community Profile",P1,agent,,Open
+F-132.D,ELEVATION,§18.6:L5375,requirement,[6] Overlaps with the X explore screen.,P1,agent,,Open
+F-132.E,ELEVATION,§18.6:L5376,requirement,"[6] Explore becomes the Square's discover page (trending phrases, events, top correctors);",P1,agent,,Open
+F-132.U,ELEVATION,§18.6:L5378,requirement,"[6] Discover grid. Rendered on the single unified design system (§3.4), with",P1,agent,,Open
+F-132.L,ELEVATION,§18.6:L5380,requirement,[6] Village → Square → Discover; global Search.,P1,agent,,Open
+F-133,ELEVATION,§18.6:L5381-L5396,requirement,Create Content (UGC),P1,agent,,Open
+F-133.D,ELEVATION,§18.6:L5390,requirement,[6] No editorial pipeline; content quality unknown.,P1,agent,,Open
+F-133.E,ELEVATION,§18.6:L5391,requirement,"[6] Creator Studio: templates for mini-lessons, quizzes and stories; AI checks for",P1,agent,,Open
+F-133.U,ELEVATION,§18.6:L5394,requirement,[6] Editor with live preview; review status chips. Rendered on the single,P1,agent,,Open
+F-133.L,ELEVATION,§18.6:L5396,requirement,[6] Village → Create (unlocks at B1).,P1,agent,,Open
+F-134,ELEVATION,§18.6:L5397-L5408,requirement,Voice Contribution,P1,agent,,Open
+F-134.D,ELEVATION,§18.6:L5402,requirement,[6] Consent and licensing of recordings unclear [verify].,P1,agent,,Open
+F-134.E,ELEVATION,§18.6:L5403,requirement,[6] Lend your voice: natives record prompted sentences with explicit consent and,P1,agent,,Open
+F-134.U,ELEVATION,§18.6:L5406,requirement,"[6] Prompt card, quality meter, consent sheet. Rendered on the single unified",P1,agent,,Open
+F-134.L,ELEVATION,§18.6:L5408,requirement,[6] Village → Contribute.,P1,agent,,Open
+F-135,ELEVATION,§18.6:L5409-L5421,requirement,Native Speaker Contribution & Lesson Item Verification (revived),P1,agent,,Open
+F-135.D,ELEVATION,§18.6:L5416,requirement,[6] The human-validation loop the language factory needs (§6.4.1) is unreachable.,P1,agent,,Open
+F-135.E,ELEVATION,§18.6:L5417,requirement,[6] Revive as the Verify queue: native speakers swipe through AI-drafted lesson,P1,agent,,Open
+F-135.U,ELEVATION,§18.6:L5419,requirement,[6] Swipe cards with audio; fix-inline editor. Rendered on the single unified,P1,agent,,Open
+F-135.L,ELEVATION,§18.6:L5421,requirement,[6] Village → Contribute → Verify (verified natives).,P1,agent,,Open
+F-136,ELEVATION,§18.6:L5422-L5433,requirement,Native Content Review,P1,agent,,Open
+F-136.D,ELEVATION,§18.6:L5427,requirement,[6] Overlaps with the revived verification screens.,P1,agent,,Open
+F-136.E,ELEVATION,§18.6:L5428,requirement,"[6] Becomes the reviewer dashboard above the Verify queue: stats, disagreements and",P1,agent,,Open
+F-136.U,ELEVATION,§18.6:L5430,requirement,[6] Dashboard with queue counts. Rendered on the single unified design system,P1,agent,,Open
+F-136.L,ELEVATION,§18.6:L5432,requirement,[6] Village → Contribute → Review.,P1,agent,,Open
+F-137,ELEVATION,§18.7:L5434-L5448,requirement,Profile,P1,agent,,Open
+F-137.D,ELEVATION,§18.7:L5443,requirement,"[7] Duplicate edit flows; profile is stats-heavy, identity-light.",P1,agent,,Open
+F-137.E,ELEVATION,§18.7:L5444,requirement,"[7] My LingAfriq identity: avatar (§4), languages and levels, heritage story (optional),",P1,agent,,Open
+F-137.U,ELEVATION,§18.7:L5446,requirement,[7] Avatar hero; language pills; stamp shelf. Rendered on the single unified,P1,agent,,Open
+F-137.L,ELEVATION,§18.7:L5448,requirement,"[7] Me (avatar, top-left).",P1,agent,,Open
+F-138,ELEVATION,§18.7:L5449-L5463,requirement,Global Handle (@id) (revived),P1,agent,,Open
+F-138.D,ELEVATION,§18.7:L5458,requirement,[7] People can be searched by global ID but can't set one.,P1,agent,,Open
+F-138.E,ELEVATION,§18.7:L5459,requirement,"[7] Revive in onboarding (after account creation) and profile: choose an @handle,",P1,agent,,Open
+F-138.U,ELEVATION,§18.7:L5461,requirement,"[7] Inline availability check. Rendered on the single unified design system (§3.4),",P1,agent,,Open
+F-138.L,ELEVATION,§18.7:L5463,requirement,[7] Me → Profile → Handle; onboarding.,P1,agent,,Open
+F-139,ELEVATION,§18.7:L5464-L5477,requirement,Progress Dashboard,P1,agent,,Open
+F-139.D,ELEVATION,§18.7:L5471,requirement,[7] Vanity metrics (XP) rather than ability.,P1,agent,,Open
+F-139.E,ELEVATION,§18.7:L5472,requirement,"[7] Can-do progress: CEFR can-do statements ticked with evidence, skill radar (listen,",P1,agent,,Open
+F-139.U,ELEVATION,§18.7:L5475,requirement,[7] Calm charts; evidence links to recordings. Rendered on the single unified,P1,agent,,Open
+F-139.L,ELEVATION,§18.7:L5477,requirement,[7] Me → Progress.,P1,agent,,Open
+F-140,ELEVATION,§18.7:L5478-L5491,requirement,Achievements & Badges,P1,agent,,Open
+F-140.D,ELEVATION,§18.7:L5485,requirement,"[7] XP awards can be self-awarded (P0-8); badges for volume, not mastery.",P1,agent,,Open
+F-140.E,ELEVATION,§18.7:L5486,requirement,"[7] Cultural badges earned by real milestones: first proverb used correctly, 100",P1,agent,,Open
+F-140.U,ELEVATION,§18.7:L5489,requirement,[7] Badge cabinet with stories behind each design. Rendered on the single,P1,agent,,Open
+F-140.L,ELEVATION,§18.7:L5491,requirement,[7] Me → Achievements.,P1,agent,,Open
+F-141,ELEVATION,§18.7:L5492-L5504,requirement,Leaderboards,P1,agent,,Open
+F-141.D,ELEVATION,§18.7:L5499,requirement,[7] Cheatable (P0-8); demotivating for beginners.,P1,agent,,Open
+F-141.E,ELEVATION,§18.7:L5500,requirement,"[7] Leagues of 30 similar learners with weekly promotion, an opt-out, and",P1,agent,,Open
+F-141.U,ELEVATION,§18.7:L5502,requirement,[7] League ladder; your row pinned. Rendered on the single unified design,P1,agent,,Open
+F-141.L,ELEVATION,§18.7:L5504,requirement,[7] Me → Leagues; Village → Circles.,P1,agent,,Open
+F-142,ELEVATION,§18.7:L5505-L5515,requirement,Magic Items,P1,agent,,Open
+F-142.D,ELEVATION,§18.7:L5510,requirement,[7] Economy self-mintable (P0-7).,P1,agent,,Open
+F-142.E,ELEVATION,§18.7:L5511,requirement,"[7] Cosmetic and helper shop: avatar outfits from regional designers, streak freezes",P1,agent,,Open
+F-142.U,ELEVATION,§18.7:L5513,requirement,[7] Shop grid with try-on on the avatar. Rendered on the single,P1,agent,,Open
+F-142.L,ELEVATION,§18.7:L5515,requirement,[7] Me → Wardrobe & Shop; Village → Market.,P1,agent,,Open
+F-143,ELEVATION,§18.7:L5516-L5531,requirement,"Settings, Privacy & Appearance",P1,agent,,Open
+F-143.D,ELEVATION,§18.7:L5525,requirement,[7] Privacy controls thin for minors; duplicates.,P1,agent,,Open
+F-143.E,ELEVATION,§18.7:L5526,requirement,"[7] Grouped settings: Learning (daily goal, reminders, voice), Privacy & Safety (who",P1,agent,,Open
+F-143.U,ELEVATION,§18.7:L5529,requirement,[7] Standard grouped list; search in settings. Rendered on the single unified,P1,agent,,Open
+F-143.L,ELEVATION,§18.7:L5531,requirement,[7] Me → Settings.,P1,agent,,Open
+F-144,ELEVATION,§18.7:L5532-L5545,requirement,Subscription & Plans (revived),P1,agent,,Open
+F-144.D,ELEVATION,§18.7:L5538,requirement,[7] No monetisation surface.,P1,agent,,Open
+F-144.E,ELEVATION,§18.7:L5539,requirement,[7] Revive as LingAfriq Plus: free core learning forever; Plus adds unlimited,P1,agent,,Open
+F-144.U,ELEVATION,§18.7:L5542,requirement,[7] Honest comparison table; no dark patterns. Rendered on the single unified,P1,agent,,Open
+F-144.L,ELEVATION,§18.7:L5545,requirement,[7] Me → Plus.,P1,agent,,Open
+F-145,ELEVATION,§18.7:L5546-L5556,requirement,Family / Guardian Dashboard (revived),P1,agent,,Open
+F-145.D,ELEVATION,§18.7:L5551,requirement,"[7] No guardian controls although onboarding collects ""child"" (P0-10).",P1,agent,,Open
+F-145.E,ELEVATION,§18.7:L5552,requirement,"[7] Revive as the Guardian hub: link child profiles, see progress, set",P1,agent,,Open
+F-145.U,ELEVATION,§18.7:L5554,requirement,[7] Child cards with progress and controls. Rendered on the single unified,P1,agent,,Open
+F-145.L,ELEVATION,§18.7:L5556,requirement,[7] Me → Family (guardians).,P1,agent,,Open
+F-146,ELEVATION,§18.7:L5557-L5568,requirement,About & Policy (revived),P1,agent,,Open
+F-146.D,ELEVATION,§18.7:L5563,requirement,[7] No mission story in the app.,P1,agent,,Open
+F-146.E,ELEVATION,§18.7:L5564,requirement,"[7] Revive About as Our Story: the mission, the native-speaker community, language-credit",P1,agent,,Open
+F-146.U,ELEVATION,§18.7:L5566,requirement,[7] Editorial page with photos of contributors (with consent). Rendered on the,P1,agent,,Open
+F-146.L,ELEVATION,§18.7:L5568,requirement,[7] Me → About.,P1,agent,,Open
+F-147,ELEVATION,§18.7:L5569-L5583,requirement,"Sign in, Sign up & Email Verification",P1,agent,,Open
+F-147.D,ELEVATION,§18.7:L5578,requirement,"[7] P0-20, P0-25.",P1,agent,,Open
+F-147.E,ELEVATION,§18.7:L5579,requirement,"[7] Try-before-signup (first lesson without an account), then passkey, Google/Apple, phone",P1,agent,,Open
+F-147.U,ELEVATION,§18.7:L5581,requirement,"[7] Short, branded flows. Rendered on the single unified design system (§3.4),",P1,agent,,Open
+F-147.L,ELEVATION,§18.7:L5583,requirement,[7] Before the app; Me → Account.,P1,agent,,Open
+F-148,ELEVATION,§18.7:L5584-L5603,requirement,Onboarding & Placement,P1,agent,,Open
+F-148.D,ELEVATION,§18.7:L5597,requirement,[7] P0-21; long forms before value.,P1,agent,,Open
+F-148.E,ELEVATION,§18.7:L5598,requirement,[7] See §5: 90 seconds to the first spoken word. Choose language,P1,agent,,Open
+F-148.U,ELEVATION,§18.7:L5601,requirement,[7] Full-screen illustrated steps; skip always available. Rendered on the single unified,P1,agent,,Open
+F-148.L,ELEVATION,§18.7:L5603,requirement,[7] First run.,P1,agent,,Open
+F-149,ELEVATION,§18.7:L5604-L5613,requirement,Splash,P1,agent,,Open
+F-149.D,ELEVATION,§18.7:L5608,requirement,[7] Plain wait screen [verify content].,P1,agent,,Open
+F-149.E,ELEVATION,§18.7:L5609,requirement,"[7] A 1-second greeting in the learner's target language, with the avatar",P1,agent,,Open
+F-149.U,ELEVATION,§18.7:L5611,requirement,[7] Brand mark + greeting. Rendered on the single unified design system,P1,agent,,Open
+F-149.L,ELEVATION,§18.7:L5613,requirement,[7] Launch.,P1,agent,,Open
+F-150,ELEVATION,§18.7:L5614-L5630,requirement,"Features Guide, Navigation Hub & First-use Tips (revived)",P1,agent,,Open
+F-150.D,ELEVATION,§18.7:L5624,requirement,[7] Features are explained in one long list instead of in context.,P1,agent,,Open
+F-150.E,ELEVATION,§18.7:L5625,requirement,"[7] Becomes the All features directory (A–Z, searchable, with locked items showing",P1,agent,,Open
+F-150.U,ELEVATION,§18.7:L5628,requirement,[7] Directory grouped by hub with icons; tips as bottom sheets. Rendered,P1,agent,,Open
+F-150.L,ELEVATION,§18.7:L5630,requirement,[7] Me → All features; contextual first use.,P1,agent,,Open
+F-151,ELEVATION,§18.7:L5631-L5647,requirement,Staff & Micro-mentor Reports,P1,agent,,Open
+F-151.D,ELEVATION,§18.7:L5637,requirement,[7] Staff tooling in the consumer app; role checks need verification [verify].,P1,agent,,Open
+F-151.E,ELEVATION,§18.7:L5638,requirement,"[7] Keep in-app for staff on the go, behind server-checked roles, with",P1,agent,,Open
+F-151.U,ELEVATION,§18.7:L5640,requirement,"[7] Role-gated; compact queue. Rendered on the single unified design system (§3.4),",P1,agent,,Open
+F-151.L,ELEVATION,§18.7:L5642,requirement,[7] Me → Staff (role-gated).,P1,agent,,Open
+D1,CURRICULUM,§10:L852,decision,Approve the three-label policy (Beta / Expert-reviewed / Native-verified) and the rule,G0,Tope,,Open
+D2,CURRICULUM,§10:L857,decision,"Approve licence purchases: Oxford datasets (top priority), IgboAPI, a Zulu dictionary licence,",G0,Tope,,Open
+D3,CURRICULUM,§10:L859,decision,"Commission the isiXhosa custom voice now, or ship Xhosa with matched corpus",G0,Tope,,Open
+D4,CURRICULUM,§10:L861,decision,"Contract 2 part-time linguists per Stage-1 language (universities in elevation plan §6.4),",G0,Tope,,Open
+D5,CURRICULUM,§10:L863,decision,Approve the Curriculum Studio build in lingafriq-admin.,G0,Tope,,Open
+UNV-E01,ELEVATION,§2:L583,external,[Unverified which path is live] (P0-26) [Unverified which path is live],P1,external,,Open
+UNV-E02,ELEVATION,§2:L652,external,[Unverified] [Unverified],P1,external,,Open
+UNV-E03,ELEVATION,§3.2:L786,external,"[Unverified on device] Yoruba diacritics (ọ̀, ẹ́) can mis-render in fallback fonts",P1,external,,Open
+UNV-E04,ELEVATION,§6.1:L1124,external,[Unverified: media was stripped from the copy] assets/audio is not in pubspec.yaml,P1,external,,Open
+UNV-E05,ELEVATION,§7.4:L1447,external,[Unverified on-device performance] 300M Omnilingual variant is a candidate for offline use,P1,external,,Open
+UNV-E06,ELEVATION,§13.2:L1881,external,[verify thresholds with counsel] [verify thresholds with counsel]; DPIA for voice data,P1,external,,Open
+UNV-E07,ELEVATION,§17.6:L2366,external,[Unverified on device] 6. Latin-only OCR mangles stacked diacritics [Unverified on device],P1,external,,Open
+UNV-E08,ELEVATION,§18.4:L4270,external,[verify on device] Defects. ML Kit Latin OCR mangles stacked tone marks,P1,external,,Open
+UNV-E09,ELEVATION,§18.5:L4573,external,[Unverified whether it records] Defects. No verified scoring path [Unverified whether it,P1,external,,Open
+UNV-E10,ELEVATION,§18.6:L5260,external,"[verify] Defects. No verification, safeguarding or payment flow visible [verify].",P1,external,,Open
+UNV-E11,ELEVATION,§18.6:L5402,external,[verify] Defects. Consent and licensing of recordings unclear [verify].,P1,external,,Open
+UNV-E12,ELEVATION,§18.7:L5608,external,[verify content] Defects. Plain wait screen [verify content].,P1,external,,Open
+UNV-E13,ELEVATION,§18.7:L5637,external,[verify] Defects. Staff tooling in the consumer app; role checks need verification,P1,external,,Open
+UNV-C01,CURRICULUM,§2.4:L312,external,[verify] orthography) [verify];,P1,external,,Open
+UNV-C02,CURRICULUM,§2.4:L349,external,[purchase] [purchase],P1,external,,Open
+UNV-C03,CURRICULUM,§2.4:L380,external,[purchase] [purchase] and corpora,P1,external,,Open
+UNV-C04,CURRICULUM,§2.4:L392,external,[verify citation] [verify citation] +,P1,external,,Open
+UNV-C05,CURRICULUM,§2.4:L401,external,[purchase] [purchase],P1,external,,Open
+UNV-C06,CURRICULUM,§2.4:L425,external,[purchase] [purchase]; SADiLaR,P1,external,,Open
+UNV-C07,CURRICULUM,§2.4:L461,external,[verify] [verify],P1,external,,Open
+UNV-C08,CURRICULUM,§9.1:L789,external,[estimate] weeks [estimate].,P1,external,,Open
+UNV-C09,CURRICULUM,§9.4:L840,external,"[quote] isiXhosa custom voice (2 actors, buy-out, training) n/a $10k–25k [quote]",P1,external,,Open
+UNV-C10,CURRICULUM,§9.4:L844,external,[quotes] off/annual [quotes],P1,external,,Open

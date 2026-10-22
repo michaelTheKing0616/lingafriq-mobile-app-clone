@@ -1,0 +1,55 @@
+charter: v2
+id: P0-VER-22
+kind: verification
+title: Obtain isiXhosa custom voice quote
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- UNV-C09
+depends_on:
+- E-P0-INTAKE
+- EXT-12
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: verification only; result recorded, never inferred
+token_budget: 20000
+file_allowlist:
+- docs/build/verification/P0-VER-22.md
+- docs/build/UNVERIFIED.md
+context_anchors:
+- CURRICULUM.md#§9.4:L840
+acceptance_criteria:
+- id: AC1
+  text: Given the voice brief and script list from EXT-12, when two vendor quotes are received, then each is stored with scope,
+    buy-out terms, training terms and total price
+- id: AC2
+  text: Given quotes outside the source range USD 10k to 25k, when received, then the difference is recorded and passed to
+    Tope for D3 review
+user_facing: false
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- docs/build/verification/P0-VER-22.md
+- UNVERIFIED.md row updated
+risks: []
+gate: G8
+external_blockers:
+- EXT-12
+owner: external
+status: Blocked-External
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

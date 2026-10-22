@@ -1,0 +1,67 @@
+charter: v2
+id: P2-035
+kind: build
+title: Add per-feature AI cost dashboards and fallback-rate alert
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.4-22
+- EP-§13.4-23
+depends_on:
+- E-P1-CONTAINMENT
+- P2-034
+size: M
+difficulty:
+  score: 6
+  blast: 3
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 3, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/telemetry/ai_cost.ts
+- infra/dashboards/ai_cost.json
+- infra/alerts/fallback_rate.yaml
+context_anchors:
+- ELEVATION.md#§13.4:L1907-L1908
+- ELEVATION.md#§13.4:L1908
+acceptance_criteria:
+- id: AC1
+  text: Given AI calls, when logged, then cost is attributed per feature and shown on a dashboard
+- id: AC2
+  text: Given the fallback path rate, when it exceeds the configured threshold over 15 minutes, then an alert fires
+- id: AC3
+  text: Given missing pricing data, when computing cost, then the dashboard shows unknown and not zero
+test_plan:
+  unit:
+  - cost attribution
+  integration:
+  - alert rule test
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

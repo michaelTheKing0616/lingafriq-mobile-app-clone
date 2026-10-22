@@ -1,0 +1,63 @@
+charter: v2
+id: P6-078
+kind: build
+title: Stream LLM output into streaming TTS to client
+phase: P6
+epic: E-P6-REALTIME
+req_ids:
+- EP-§7.7-04
+- EP-§7.7-05
+depends_on:
+- P6-075
+- P6-047
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/ai-gateway/realtime/llmTtsPipe.ts
+context_anchors:
+- ELEVATION.md#§7.7:L1477-L1482
+acceptance_criteria:
+- id: AC1
+  text: Given streaming LLM tokens, when sentence chunks complete, then TTS starts on the first chunk without waiting for
+    the full reply
+- id: AC2
+  text: Given a voice not passing the tone gate, when selected, then the turn falls back to text with a visible no-voice state
+test_plan:
+  unit:
+  - chunker
+  integration:
+  - pipe
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

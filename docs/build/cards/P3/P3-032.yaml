@@ -1,0 +1,60 @@
+charter: v2
+id: P3-032
+kind: design
+title: Draw wireflows for Play, Village and Me
+phase: P3
+epic: E-P3-DESIGN-WORKFLOW
+req_ids:
+- EP-§17.1-06
+- EP-§17.1-07
+- EP-§17.1-08
+depends_on:
+- P3-031
+size: M
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T4
+  justification: 'score 4: blast 0, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- docs/build/design/WIREFLOWS_PLAY_VILLAGE_ME.md
+context_anchors:
+- ELEVATION.md#§17.1:L2190-L2206
+acceptance_criteria:
+- id: AC1
+  text: Given each hub, when the wireflow is drawn, then every sitemap item appears with entry, back and empty paths
+- id: AC2
+  text: Given a locked feature, when drawn, then it shows unlock text, preview and open-anyway for adults
+- id: AC3
+  text: Given a minor, when drawn, then guardian-gated paths are marked
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: true
+dod_evidence:
+- tester report
+- ledger row
+- T4 visual approval with exported frames
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/navigation-patterns
+  - prime/information-architecture
+  - prime/user-flow-diagram
+  reviewer_extra:
+  - prime/critique-visual-hierarchy
+  - prime/critique-typography
+  - prime/design-to-code-check

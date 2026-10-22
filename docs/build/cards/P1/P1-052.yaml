@@ -1,0 +1,71 @@
+charter: v2
+id: P1-052
+kind: build
+title: Build IDOR authorisation suite over every id route
+phase: P1
+epic: E-P1-AUTH
+req_ids:
+- EP-§13.1-16
+depends_on:
+- E-P0-INTAKE
+- P1-051
+size: L
+difficulty:
+  score: 9
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T4
+  justification: 'score 9; blast 3; security/crypto tester; gate-critical (security / child safety / legal / design direction):
+    Fable reviews'
+token_budget: 160000
+file_allowlist:
+- node-backend/src/tests/security/idor.spec.ts
+- node-backend/src/tests/security/routeInventory.ts
+- node-backend/src/tests/security/fixtures.ts
+context_anchors:
+- ELEVATION.md#§13.1:L1857-L1858
+acceptance_criteria:
+- id: AC1
+  text: Given the route inventory, when the suite enumerates every route with an :id param, then each is covered by a case
+    where user B reads, updates and deletes user A's object and gets 403 or 404
+- id: AC2
+  text: Given a new :id route without a case, when CI runs, then the suite fails listing the route
+- id: AC3
+  text: Given admin-only objects, when a normal user accesses them, then access is denied
+- id: AC4
+  text: Given the suite passes on the fixed code, when a deliberately vulnerable route is added, then the suite fails (mutation
+    check)
+test_plan:
+  unit: []
+  integration:
+  - IDOR matrix
+  security:
+  - cross-user access matrix
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G1
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

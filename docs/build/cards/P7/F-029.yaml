@@ -1,0 +1,98 @@
+charter: v2
+id: F-029
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Dialect Preference
+phase: P7
+epic: E-P7-HUBS
+hub: Learn
+req_ids:
+- F-029
+- F-029.D
+- F-029.E
+- F-029.U
+- F-029.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: hub feature delta spec'
+token_budget: 80000
+file_allowlist:
+- lib/screens/learning/dialect_preference_screen.dart
+context_anchors:
+- ELEVATION.md#§18.3:L3900-L3911
+delta:
+  current_state: Dialect preference route works but does not affect content.
+  defects_to_fix:
+  - Dialect choice does not switch dialect-tagged audio yet.
+  elevation_to_build:
+  - Dialect lanes with per-item audio variants, difference notes, and hear-other-dialect toggle on Word Card.
+  ux_and_render:
+  - Map picker with sample audio per dialect.
+  hub_placement: Me → Settings → Language & dialect; Word Card toggle.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given dialect selection, when content plays, then audio matches selected dialect variant when available.
+test_plan:
+  unit:
+  - domain rules for feature delta
+  integration:
+  - navigation and data wiring from hub placement
+  e2e:
+  - primary happy path from Lives in entry
+  a11y:
+  - goldens at 100%/200% text
+  - semantics order
+  content:
+  - honest labels on shown curriculum or media
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - learn.f_029.*
+tags: []
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers:
+- EXT-13
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

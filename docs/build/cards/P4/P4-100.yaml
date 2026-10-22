@@ -1,0 +1,83 @@
+charter: v2
+id: P4-100
+kind: build
+title: Define shared provenance, label and audio-kind envelope
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.5-13
+- EP-§6.5-14
+- EP-§6.4-57
+- EP-§6.6-09
+depends_on:
+- E-P2-PLATFORM
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- schemas/v2/content/common.schema.json
+- tools/content_pipeline/schema_loader.py
+- test/content/test_common_schema.py
+context_anchors:
+- ELEVATION.md#§6.5:L1293-L1320
+- ELEVATION.md#§6.6:L1321-L1337
+- CURRICULUM.md#§10:L852
+acceptance_criteria:
+- id: AC1
+  text: Given any content object, when validated, then provenance.sources[] needs ≥1 entry with name, licence, uri-or-citation
+    and retrieved_at, plus author and created_at, else typed error PROVENANCE_MISSING
+- id: AC2
+  text: Given a content object, when validated, then claims[] entries carry kind (tone|cultural|linguistic|factual) and source_ref,
+    confidence is a number in [0,1], and risk_tags[] values come from a schema-fixed allowlist, else CLAIM_INVALID
+- id: AC3
+  text: Given a content object, when label is absent or not one of beta|expert_reviewed|native_verified, then validation fails
+    LABEL_MISSING and no default label is inferred (D1)
+- id: AC4
+  text: Given any audio reference, when validated, then audio.kind is one of human|tts_synthetic and tts_synthetic entries
+    must carry the "Synthetic voice" flag, else AUDIO_KIND_INVALID
+- id: AC5
+  text: Given an object with ai_assisted true, when validated, then model id and prompt id are recorded, and absence of ai_assisted
+    fails AI_FLAG_MISSING
+- id: AC6
+  text: 'Given label native_verified, when review.reviewers lacks two distinct native reviewers plus one linguist approval,
+    then validation fails NATIVE_VERIFIED_REQUIRES_TWO_NATIVES (D1: Elevation two-native rule is the promotion criterion)'
+test_plan:
+  unit:
+  - test_common_schema
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - 'fixtures: valid/invalid envelopes'
+user_facing: false
+ux_spec: null
+tags:
+- native_verified_rule
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Beta/TTS interim allowed only with labels (D1/D6)
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

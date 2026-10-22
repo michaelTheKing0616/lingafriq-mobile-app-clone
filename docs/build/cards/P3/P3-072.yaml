@@ -1,0 +1,59 @@
+charter: v2
+id: P3-072
+kind: verification
+title: Verify consolidation harvest lists are complete
+phase: P3
+epic: E-P3-REVIVE
+req_ids:
+- EP-§17.5-06
+depends_on:
+- P3-065
+- P3-066
+- P3-067
+- P3-068
+- P3-069
+- P3-070
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 1: blast 0, ambiguity 0, coupling 1'
+token_budget: 25000
+file_allowlist:
+- docs/build/design/HARVEST_REPORT.md
+- scripts/nav/harvest_check.py
+context_anchors:
+- ELEVATION.md#§17.5:L2333-L2338
+acceptance_criteria:
+- id: AC1
+  text: Given the six consolidation cards, when audited, then every harvest_list item is Moved or Dropped-with-reason in a
+    harvest report
+- id: AC2
+  text: Given a dropped item, when listed, then the reason and approver are recorded
+- id: AC3
+  text: Given a variant file still imported anywhere, when scanned, then CI fails
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

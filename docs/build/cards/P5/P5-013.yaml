@@ -1,0 +1,72 @@
+charter: v2
+id: P5-013
+kind: build
+title: Auto-hide flagged items to Under review
+phase: P5
+epic: E-P5-QUALITY
+req_ids:
+- CP-§5-14
+- CP-§5-15
+depends_on:
+- P5-012
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 2, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/services/flag.service.ts
+- lib/content/under_review.dart
+- test/content/autohide_test.dart
+context_anchors:
+- CURRICULUM.md#§5:L614-L616
+acceptance_criteria:
+- id: AC1
+  text: Given an item with 3 flags from distinct users, when the third arrives, then the item auto-hides to Under review
+- id: AC2
+  text: Given a trusted user, when they flag once, then the item auto-hides immediately
+- id: AC3
+  text: Given an item Under review, when a learner requests it, then it is excluded from lessons and shows a visible Under
+    review state, never a silent gap
+- id: AC4
+  text: Given duplicate flags from one user, when counted, then they count once; trusted-user list comes from config and an
+    undefined list fails loud with TrustedListMissing
+test_plan:
+  unit:
+  - threshold logic
+  integration:
+  - hide and restore
+  security:
+  - flag spam
+  - trusted list tamper
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Trusted user is not defined in source; definition is a DECISIONS.md item for Tope
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

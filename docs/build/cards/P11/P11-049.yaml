@@ -1,0 +1,74 @@
+charter: v2
+id: P11-049
+kind: build
+title: Build AvatarDirector and retire scaffolding engines
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- AV-step6
+- EP-§4-02
+- EP-§4.2-04
+- EP-§4.2-08
+- EP-§4.5-07
+- EP-§4.5-08
+- EP-§4.5-09
+depends_on:
+- P11-048
+- P11-035
+size: L
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 2, ambiguity 1, coupling 2, depth 1'
+token_budget: 150000
+file_allowlist:
+- lib/avatars/director/avatar_director.dart
+- lib/avatars/avatar_engine.dart
+- lib/avatars/lip_sync_engine.dart
+- lib/avatars/emotion_system.dart
+context_anchors:
+- ELEVATION.md#§4.5:L978-L980
+- ELEVATION.md#§4:L858-L859
+acceptance_criteria:
+- id: AC1
+  text: Given learning events such as answer graded or mic open, when emitted, then AvatarDirector maps them to View Model
+    writes.
+- id: AC2
+  text: Given any screen, when scanned, then none imports Rive directly.
+- id: AC3
+  text: Given avatar_engine, lip_sync_engine and emotion_system scaffolding, when this card is done, then they are removed.
+test_plan:
+  unit:
+  - event to VM mapping
+  integration:
+  - import scan
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

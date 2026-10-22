@@ -1,0 +1,101 @@
+charter: v2
+id: P3-051
+kind: build
+title: Implement progressive unlocking stages with open-anyway
+phase: P3
+epic: E-P3-SHELL
+req_ids:
+- EP-§17.4-01
+- EP-§17.4-02
+- EP-§17.4-04
+- EP-§17.4-05
+- EP-§17.4-06
+- EP-§17.4-07
+- EP-§17.4-08
+- EP-§17.4-09
+depends_on:
+- P3-039
+- P3-048
+- P3-050
+- E-P1-CONTAINMENT
+size: M
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 4: blast 0, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/navigation/unlock_stages.dart
+- assets/config/unlock_stages.json
+- test/navigation/unlock_stages_test.dart
+context_anchors:
+- ELEVATION.md#§17.4:L2309-L2318
+acceptance_criteria:
+- id: AC1
+  text: Given an adult opens a locked feature, when tapped, then it shows unlocks at text, Preview and Open anyway and Open
+    anyway opens it
+- id: AC2
+  text: Given Day 1 with no account, when the app opens, then Today, first unit, Polie basic, Lens, 3 games, Word Card and
+    read-only Magazine and Events are open
+- id: AC3
+  text: Given an account exists, when created, then Streaks, all games, Circles join, Square read and Global handle unlock
+- id: AC4
+  text: Given Week 1 or A1 unit 3, when reached, then Personas, Scenarios, Chats for adults, Status and Practice unlock
+- id: AC5
+  text: Given A2 and B1, when reached, then Clips, Native Corrections post, Passport, Code-Switch, Respect and Radio speak,
+    then Create, host rooms and mentoring unlock; Contribute and Verify are open to native speakers at any level
+test_plan:
+  unit:
+  - stage table
+  integration:
+  - open anyway
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - locked
+  - preview
+  - unlocked
+  copy_keys:
+  - unlock.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags:
+- enables_persona
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

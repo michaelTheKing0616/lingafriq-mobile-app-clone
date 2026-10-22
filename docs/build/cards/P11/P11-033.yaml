@@ -1,0 +1,50 @@
+charter: v2
+id: P11-033
+kind: adr
+title: Decide scarification and tribal marks policy (ADR-035)
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§4.2-37
+depends_on:
+- P11-034
+size: S
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 2
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T4
+  tester: T0
+  reviewer: T4
+  justification: 'score 4: blast 2, ambiguity 2, coupling 0, depth 0'
+token_budget: 25000
+file_allowlist:
+- docs/build/adr/ADR-035.md
+context_anchors:
+- ELEVATION.md#§4.2:L903
+acceptance_criteria:
+- id: AC1
+  text: Given scarification or tribal marks, when ADR-035 is accepted, then the policy states opt-in, consultant review and
+    age rules, or states they are excluded.
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- reviewer verdict
+- ledger row
+risks: []
+gate: G11
+external_blockers:
+- EXT-14
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - prime/diagram-design

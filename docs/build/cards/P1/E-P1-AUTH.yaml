@@ -1,0 +1,38 @@
+charter: v2
+id: E-P1-AUTH
+kind: epic
+title: Auth, API hardening and supply chain
+phase: P1
+epic: E-P1-CONTAINMENT
+req_ids:
+- RM-P0-12
+depends_on:
+- E-P0-INTAKE
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T4
+  tester: T0
+  reviewer: T4
+  justification: epic gate owned by the Orchestrator; no implementation
+token_budget: 10000
+file_allowlist: []
+context_anchors: []
+acceptance_criteria:
+- id: AC1
+  text: Every member card of this epic is Done with Tester evidence and Reviewer PASS
+- id: AC2
+  text: Lockout, rate-limit and IDOR suites green; token and password policy tests green
+tags: []
+gate: G1
+status: Draft
+skills:
+  worker:
+  - adaptive/13-agent-teams
+  - adaptive/06-execution-and-verification

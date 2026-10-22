@@ -1,0 +1,74 @@
+charter: v2
+id: P3-017
+kind: design
+title: Design hi-fi Village map, Arcade shelf and Polie voice
+phase: P3
+epic: E-P3-DESIGN-WORKFLOW
+req_ids:
+- EP-§3.3-06
+- EP-§3.3-07
+- EP-§3.3-08
+- EP-§17.1-05
+- EP-§17.1-06
+- EP-§17.1-07
+depends_on:
+- P3-016
+size: L
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 2
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T4
+  justification: 'score 4: blast 0, ambiguity 2, coupling 1'
+token_budget: 150000
+file_allowlist:
+- docs/build/design/screens/village_arcade_polie.md
+context_anchors:
+- ELEVATION.md#§3.3:L802-L813
+- ELEVATION.md#§17.1:L2183-L2201
+acceptance_criteria:
+- id: AC1
+  text: Given the Arcade shelf, when drawn, then games sit on skill shelves (Tone & Sound, Words, Grammar, Speaking, Culture,
+    Traditional, Multiplayer)
+- id: AC2
+  text: Given the Polie voice screen, when drawn, then tutor modes appear as chips and the speaking state, listening state
+    and AI-unavailable state are shown
+- id: AC3
+  text: Given the screen, when drawn, then light and dark frames exist at 390 px width and a 200% text frame, exported to
+    docs/build/design/screens/
+- id: AC4
+  text: Given every colour, size, font and radius, when audited, then each references a token and none is hard-coded
+- id: AC5
+  text: Given the state kit, when the screen has data, then skeleton, empty, error, offline and reduced-motion frames are
+    included
+- id: AC6
+  text: Given the T4 reviewer, when the visual evidence is checked, then the approval is recorded in the card report
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: true
+dod_evidence:
+- tester report
+- ledger row
+- T4 visual approval with exported frames
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/antislop-ui
+  - prime/platform-conventions
+  reviewer_extra:
+  - prime/critique-visual-hierarchy
+  - prime/critique-typography
+  - prime/design-to-code-check

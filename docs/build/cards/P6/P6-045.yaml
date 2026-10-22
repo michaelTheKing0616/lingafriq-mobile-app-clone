@@ -1,0 +1,73 @@
+charter: v2
+id: P6-045
+kind: adr
+title: Decide TTS vendors per language and licence exclusions
+phase: P6
+epic: E-P6-TTS
+req_ids:
+- EP-§7.5-09
+- EP-§7.5-10
+- EP-§7.5-11
+- EP-§7.5-12
+- EP-§7.5-13
+- EP-§7.5-14
+- EP-§7.5-15
+- EP-§7.5-17
+- EP-§7.5-18
+- EP-§7.2-31
+- EP-§7.1-14
+depends_on: []
+size: S
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T0
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 2, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§7.5:L1449-L1460
+- ELEVATION.md#§7.1:L1349-L1366
+acceptance_criteria:
+- id: AC1
+  text: Given Intron, Spitch, Azure, Google, ElevenLabs and Gemini candidates, when the ADR is accepted, then each of the
+    seven Stage-1 languages has a primary and fallback or a commissioned-voice decision
+- id: AC2
+  text: Given licences, when reviewed, then YarnGPT (CC-BY-NC-SA), MMS-TTS and XTTS-v2 are recorded as excluded unless licensed
+- id: AC3
+  text: Given isiXhosa has no vendor voice, when decided, then a commissioned voice is the mandated route
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers:
+- EXT-01
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - prime/diagram-design

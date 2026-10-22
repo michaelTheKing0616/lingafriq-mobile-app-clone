@@ -1,0 +1,76 @@
+charter: v2
+id: P4-133
+kind: build
+title: Enforce voice-count gates and QA listen-through
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.6-04
+- EP-§6.6-13
+- EP-§6.6-14
+- EP-§6.6-16
+- EP-§6.6-19
+- EP-§6.4-60
+depends_on:
+- P4-123
+- P4-110
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- tools/content_pipeline/voice_coverage.py
+- tools/content_pipeline/listen_qa.py
+- test/content/test_voice_coverage.py
+context_anchors:
+- ELEVATION.md#§6.6:L1321-L1337
+- ELEVATION.md#§6.4.1:L1264-L1292
+acceptance_criteria:
+- id: AC1
+  text: Given a language targeting L0 or L1, when gated, then ≥2 distinct voices have recorded its items, else VOICE_COUNT_LOW
+- id: AC2
+  text: Given L2+, when gated, then ≥4 voices spanning gender, age and region are required
+- id: AC3
+  text: Given a recording, when QA listen-through is logged, then reviewer, result and timestamp are stored and unlogged recordings
+    cannot ship
+- id: AC4
+  text: Given a UGC voice contribution, when submitted, then it is routed through this pipeline with consent and licence checks
+    and never auto-published
+test_plan:
+  unit:
+  - test_voice_coverage
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- native_verified_rule
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-13
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

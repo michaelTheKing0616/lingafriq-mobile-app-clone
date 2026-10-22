@@ -1,0 +1,258 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+EP-§4-01,ELEVATION,§4:L853,informational,the Rive avatars have not been made yet,P1,agent,,Open
+EP-§4-02,ELEVATION,§4:L858-L859,requirement,"Dart scaffolding (lib/avatars/*), which should be rebuilt against this contract",P1,agent,,Open
+EP-§4.1-01,ELEVATION,§4.1:L861,requirement,"A modular hierarchy (head, face parts, hair, body, clothing)",P1,agent,,Open
+EP-§4.1-02,ELEVATION,§4.1:L861-L863,requirement,"a state list close to what a tutor needs (Idle, Listening, Thinking,",P1,agent,,Open
+EP-§4.1-03,ELEVATION,§4.1:L863,requirement,"idle micro-motion (breathing, blink variance, eye darts)",P1,agent,,Open
+EP-§4.1-04,ELEVATION,§4.1:L863-L864,requirement,"anticipation, overshoot and follow-through",P1,agent,,Open
+EP-§4.1-05,ELEVATION,§4.1:L864,requirement,a nod to data binding,P1,agent,,Open
+EP-§4.2-01,ELEVATION,§4.2:L867,decision,Don't build on the deprecated contract.,P1,agent,,Open
+EP-§4.2-02,ELEVATION,§4.2:L868-L869,informational,Rive marks state-machine input and text-run access as deprecated in favour of,P1,agent,,Open
+EP-§4.2-03,ELEVATION,§4.2:L870,informational,The existing scaffolding pins rive: ^0.12.4 (pubspec.yaml),P1,agent,,Open
+EP-§4.2-04,ELEVATION,§4.2:L870-L871,informational,avatar_engine.dart:106-219 wires SMINumber/SMITrigger,P1,agent,,Open
+EP-§4.2-05,ELEVATION,§4.2:L871,requirement,so replace it rather than extend it.,P1,agent,,Open
+EP-§4.2-06,ELEVATION,§4.2:L871-L872,requirement,"Plan for rive ≥ 0.14.11 with rive_native,",P1,agent,,Open
+EP-§4.2-07,ELEVATION,§4.2:L872,requirement,"RiveWidgetController, DataBind from day one.",P1,agent,,Open
+EP-§4.2-08,ELEVATION,§4.2:L873,informational,"""Triggers (Boolean)"" is a category error.",P1,agent,,Open
+EP-§4.2-09,ELEVATION,§4.2:L874,requirement,"correctAnswer, celebrate and the others are Triggers;",P1,agent,,Open
+EP-§4.2-10,ELEVATION,§4.2:L874-L875,requirement,"isListening and isSpeaking are Booleans, or better, one Enum.",P1,agent,,Open
+EP-§4.2-11,ELEVATION,§4.2:L876-L878,informational,"""Eyes: Neutral (0), Happy (33), Excited (66), Curious (100)""",P1,agent,,Open
+EP-§4.2-12,ELEVATION,§4.2:L879,constraint,closed sets are Enums,P1,agent,,Open
+EP-§4.2-13,ELEVATION,§4.2:L879-L880,requirement,neutral|happy|proud|curious|concerned|surprised|thinking|encouraging,P1,agent,,Open
+EP-§4.2-14,ELEVATION,§4.2:L880-L881,requirement,Continuous dimensions are normalised Numbers 0..1,P1,agent,,Open
+EP-§4.2-15,ELEVATION,§4.2:L881,metric,gazeX/Y in −1..1,P1,agent,,Open
+EP-§4.2-16,ELEVATION,§4.2:L882,decision,so settle one contract before drawing,P1,Tope,,Open
+EP-§4.2-17,ELEVATION,§4.2:L882-L883,informational,assets/rive/README.md says emotion 0–5 and confidence 0–1,P1,agent,,Open
+EP-§4.2-18,ELEVATION,§4.2:L883,informational,Tope's plan says 0–100,P1,agent,,Open
+EP-§4.2-19,ELEVATION,§4.2:L883-L884,informational,avatar_engine.dart adds mouthOpenness/lipRounding/mouthShape.,P1,agent,,Open
+EP-§4.2-20,ELEVATION,§4.2:L885,informational,No lip-sync contract.,P1,agent,,Open
+EP-§4.2-21,ELEVATION,§4.2:L885-L886,requirement,A speaking tutor in a pronunciation app needs viseme-accurate mouths.,P1,agent,,Open
+EP-§4.2-22,ELEVATION,§4.2:L886-L887,informational,lip_sync_engine.dart:184-230 maps letters to visemes,P1,agent,,Open
+EP-§4.2-23,ELEVATION,§4.2:L887-L889,requirement,Plan the real pipeline from,P1,agent,,Open
+EP-§4.2-24,ELEVATION,§4.2:L889-L890,risk,"letter mapping fails on digraphs (Yoruba gb, kp), nasal vowels, Zulu clicks",P1,agent,,Open
+EP-§4.2-25,ELEVATION,§4.2:L891,informational,One monolithic state machine.,P1,agent,,Open
+EP-§4.2-26,ELEVATION,§4.2:L892-L893,requirement,"Use layers: L1 body/gesture, L2 expression, L3 gaze/head, L4 blink (autonomous)",P1,agent,,Open
+EP-§4.2-27,ELEVATION,§4.2:L893-L894,constraint,Layers must not key the same properties,P1,agent,,Open
+EP-§4.2-28,ELEVATION,§4.2:L895,requirement,"Hair, headwear and garments should be nested artboards",P1,agent,,Open
+EP-§4.2-29,ELEVATION,§4.2:L896,requirement,"swapped through Artboard properties in data binding, not visibility toggles",P1,agent,,Open
+EP-§4.2-30,ELEVATION,§4.2:L897-L898,metric,does not scale past about 10 options.,P1,agent,,Open
+EP-§4.2-31,ELEVATION,§4.2:L899,informational,No cultural design bible.,P1,agent,,Open
+EP-§4.2-32,ELEVATION,§4.2:L900-L901,requirement,"named regional styles (Fulani braids, Shuku, Bantu knots, Irun kiko threading, cornrows,",P1,agent,,Open
+EP-§4.2-33,ELEVATION,§4.2:L901,requirement,"headwear (gele, fila, kufi, tignon, duku, Maasai beadwork, Hausa hula)",P1,agent,,Open
+EP-§4.2-34,ELEVATION,§4.2:L902,requirement,textiles,P1,agent,,Open
+EP-§4.2-35,ELEVATION,§4.2:L902,requirement,skin-tone system,P1,agent,,Open
+EP-§4.2-36,ELEVATION,§4.2:L902,metric,needs at least 10 tones with correct undertones and lighting,P1,agent,,Open
+EP-§4.2-37,ELEVATION,§4.2:L903,decision,"scarification or tribal marks policy (cultural sensitivity: opt-in, reviewed)",P1,Tope,,Open
+EP-§4.2-38,ELEVATION,§4.2:L903-L905,requirement,"disability representation (glasses, hearing aids, wheelchair-seated pose, vitiligo, albinism,",P1,agent,,Open
+EP-§4.2-39,ELEVATION,§4.2:L906,informational,A 200×200 artboard scaled to 64 px loses brows and pupils.,P1,agent,,Open
+EP-§4.2-40,ELEVATION,§4.2:L906-L907,requirement,Silhouette and expression must read,P1,agent,,Open
+EP-§4.2-41,ELEVATION,§4.2:L907,metric,"at 32, 48 and 64 px.",P1,agent,,Open
+EP-§4.2-42,ELEVATION,§4.2:L907,requirement,"a dedicated ""chip"" artboard: simplified face,",P1,agent,,Open
+EP-§4.2-43,ELEVATION,§4.2:L908,requirement,exaggerated brows and mouth,P1,agent,,Open
+EP-§4.2-44,ELEVATION,§4.2:L908,metric,2-px minimum strokes at 64 px,P1,agent,,Open
+EP-§4.2-45,ELEVATION,§4.2:L908,constraint,no thin hair strands,P1,agent,,Open
+EP-§4.2-46,ELEVATION,§4.2:L908-L909,requirement,test it as a 1-bit silhouette.,P1,agent,,Open
+EP-§4.2-47,ELEVATION,§4.2:L910-L911,requirement,file-size budget per artboard,P1,agent,,Open
+EP-§4.2-48,ELEVATION,§4.2:L911,requirement,draw-call budget,P1,agent,,Open
+EP-§4.2-49,ELEVATION,§4.2:L911,decision,renderer choice (Rive Renderer vs Flutter/Impeller),P1,Tope,,Open
+EP-§4.2-50,ELEVATION,§4.2:L911,requirement,offscreen pause,P1,agent,,Open
+EP-§4.2-51,ELEVATION,§4.2:L912,requirement,battery behaviour,P1,agent,,Open
+EP-§4.2-52,ELEVATION,§4.2:L912,requirement,"reduced motion (idle loops stop, blinking continues)",P1,agent,,Open
+EP-§4.2-53,ELEVATION,§4.2:L912-L913,requirement,"screen-reader semantics (""Polie looks proud"")",P1,agent,,Open
+EP-§4.2-54,ELEVATION,§4.2:L914-L916,decision,"Decide up front what is earned, what is bought, what shows mastery,",P1,Tope,,Open
+EP-§4.3-01,ELEVATION,§4.3:L918,requirement,File: lingafriq_cast.riv,P1,agent,,Open
+EP-§4.3-02,ELEVATION,§4.3:L919,requirement,"Artboards: Character (full), CharacterChip (64px), Bust (chat/persona),",P1,agent,,Open
+EP-§4.3-03,ELEVATION,§4.3:L919-L920,metric,CharacterChip (64px),P1,agent,,Open
+EP-§4.3-04,ELEVATION,§4.3:L919-L920,requirement,"nested: Hair/*, Headwear/*, Top/*, Bottom/*, Accessory/*, Prop/*",P1,agent,,Open
+EP-§4.3-05,ELEVATION,§4.3:L921,requirement,State Machine: CharacterSM with layers:,P1,agent,,Open
+EP-§4.3-06,ELEVATION,§4.3:L922,requirement,L1 Body (activity enum),P1,agent,,Open
+EP-§4.3-07,ELEVATION,§4.3:L923,requirement,L2 Face (expression enum + intensity),P1,agent,,Open
+EP-§4.3-08,ELEVATION,§4.3:L924,requirement,"L3 Gaze/Head (gazeX, gazeY, headTilt)",P1,agent,,Open
+EP-§4.3-09,ELEVATION,§4.3:L925,requirement,L4 Blink (autonomous; blinkRate),P1,agent,,Open
+EP-§4.3-10,ELEVATION,§4.3:L926,requirement,"L5 Mouth (viseme enum + jawOpen, driven per frame)",P1,agent,,Open
+EP-§4.3-11,ELEVATION,§4.3:L927,requirement,ViewModel CharacterVM,P1,agent,,Open
+EP-§4.3-12,ELEVATION,§4.3:L928-L929,requirement,"activity: Enum(idle, listening, thinking, speaking, celebrating, encouraging, hinting,",P1,agent,,Open
+EP-§4.3-13,ELEVATION,§4.3:L930,requirement,"expression: Enum(neutral, happy, proud, curious, concerned, surprised, playful, focused)",P1,agent,,Open
+EP-§4.3-14,ELEVATION,§4.3:L932,requirement,intensity: Number 0..1 (default 0.6),P1,agent,,Open
+EP-§4.3-15,ELEVATION,§4.3:L932,metric,default 0.6,P1,agent,,Open
+EP-§4.3-16,ELEVATION,§4.3:L934,requirement,energy: Number 0..1 (time-of-day + streak mood),P1,agent,,Open
+EP-§4.3-17,ELEVATION,§4.3:L936,requirement,"gazeX/Y: Number -1..1 (look at the word being taught,",P1,agent,,Open
+EP-§4.3-18,ELEVATION,§4.3:L938-L939,requirement,"viseme: Enum(sil, PP, FF, TH, DD, kk, CH, SS, nn, RR, aa,",P1,agent,,Open
+EP-§4.3-19,ELEVATION,§4.3:L940,requirement,"jawOpen: Number 0..1 (from audio RMS, smoothed)",P1,agent,,Open
+EP-§4.3-20,ELEVATION,§4.3:L943,requirement,"correct, incorrect, celebrate, levelUp, wave, nod, shrug: Trigger",P1,agent,,Open
+EP-§4.3-21,ELEVATION,§4.3:L945,requirement,skinTone: Color; hairColor: Color; outfitPrimary/Secondary: Color,P1,agent,,Open
+EP-§4.3-22,ELEVATION,§4.3:L947,requirement,"hair, headwear, top, bottom, accessory, prop: Artboard properties",P1,agent,,Open
+EP-§4.3-23,ELEVATION,§4.3:L949,requirement,reducedMotion: Boolean,P1,agent,,Open
+EP-§4.3-24,ELEVATION,§4.3:L951-L952,requirement,tapped: Trigger,P1,agent,,Open
+EP-§4.3-25,ELEVATION,§4.3:L953,requirement,"the TTS or recorded audio comes with phoneme timings, either from",P1,agent,,Open
+EP-§4.3-26,ELEVATION,§4.3:L954-L955,decision,"Montreal Forced Aligner with per-language dictionaries, or a CTC aligner on an",P1,Tope,,Open
+EP-§4.3-27,ELEVATION,§4.3:L955,requirement,or from the TTS engine's own alignment.,P1,agent,,Open
+EP-§4.3-28,ELEVATION,§4.3:L955-L956,requirement,Phonemes map to visemes through a per-language table (extend PhonemeVisemeMap),P1,agent,,Open
+EP-§4.3-29,ELEVATION,§4.3:L956,requirement,the app schedules viseme changes against the audio clock,P1,agent,,Open
+EP-§4.3-30,ELEVATION,§4.3:L956-L957,requirement,adds jawOpen from audio RMS for liveliness.,P1,agent,,Open
+EP-§4.3-31,ELEVATION,§4.3:L957,requirement,Fallback for unaligned audio: RMS-only jaw.,P1,agent,,Open
+EP-§4.3-32,ELEVATION,§4.3:L957-L958,constraint,Never use letter-based mapping.,P1,agent,,Open
+EP-§4.3-33,ELEVATION,§4.3:L958-L959,external,companion: LINGAFRIQ_AI_MODEL_STACK.md §3.8,P1,external,,Open
+EP-§4.3-34,ELEVATION,§4.3:L958,external,"Omnilingual CTC aligner, Apache-2.0; Rhubarb Lip Sync, MIT",P1,external,,Open
+EP-§4.4-01,ELEVATION,§4.4:L961,requirement,Cast: Polie (guide),P1,agent,,Open
+EP-§4.4-02,ELEVATION,§4.4:L961-L962,requirement,"the village archetypes already used in onboarding (Elder, Weaver, Griot, Timekeeper,",P1,agent,,Open
+EP-§4.4-03,ELEVATION,§4.4:L962-L963,requirement,"per-language hosts (a Lagos host, an Accra host, a Nairobi host,",P1,agent,,Open
+EP-§4.4-04,ELEVATION,§4.4:L963,requirement,Each has a voice and a personality bible.,P1,Tope,,Open
+EP-§4.4-05,ELEVATION,§4.4:L963-L964,requirement,The learner's own avatar uses the same rig.,P1,agent,,Open
+EP-§4.4-06,ELEVATION,§4.4:L965,requirement,"items unlock by demonstrated skill, not just XP.",P1,agent,,Open
+EP-§4.4-07,ELEVATION,§4.4:L966,requirement,"finish the Yoruba ""Greetings & respect"" can-do → unlock fila and gele.",P1,agent,,Open
+EP-§4.4-08,ELEVATION,§4.4:L966-L967,requirement,"Pass a tone checkpoint → ""Talking Drum"" prop that animates to your",P1,agent,,Open
+EP-§4.4-09,ELEVATION,§4.4:L967-L968,external,"Region-authentic outfits are reviewed by the cultural consultant,",P1,external,,Open
+EP-§4.4-10,ELEVATION,§4.4:L968-L969,requirement,each item has a 1-line cultural note,P1,agent,,Open
+EP-§4.4-11,ELEVATION,§4.4:L970,constraint,No pay-to-look-better pressure on kids;,P1,agent,,Open
+EP-§4.4-12,ELEVATION,§4.4:L970-L971,constraint,cosmetics bought with real money are adult-only,P1,agent,,Open
+EP-§4.4-13,ELEVATION,§4.4:L971,constraint,never loot boxes (§12).,P1,agent,,Open
+EP-§4.4-14,ELEVATION,§4.4:L972-L973,requirement,stickers and reactions generated from the rig,P1,agent,,Open
+EP-§4.4-15,ELEVATION,§4.4:L973-L974,requirement,"Shareable ""I can now say..."" cards render the avatar speaking the phrase,",P1,agent,,Open
+EP-§4.5-01,ELEVATION,§4.5:L976,requirement,"Upgrade to rive ^0.14.11,",P1,agent,,Open
+EP-§4.5-02,ELEVATION,§4.5:L976,requirement,"call RiveNative.init() in main.dart,",P1,agent,,Open
+EP-§4.5-03,ELEVATION,§4.5:L976,requirement,"load files once into a cache,",P1,agent,,Open
+EP-§4.5-04,ELEVATION,§4.5:L976-L977,requirement,one RiveWidgetController per visible character.,P1,agent,,Open
+EP-§4.5-05,ELEVATION,§4.5:L977,requirement,Pause offscreen;,P1,agent,,Open
+EP-§4.5-06,ELEVATION,§4.5:L977,requirement,drop to the static chip in long lists.,P1,agent,,Open
+EP-§4.5-07,ELEVATION,§4.5:L978-L979,requirement,"An AvatarDirector service (Riverpod) translates learning events (answer graded, mic open,",P1,agent,,Open
+EP-§4.5-08,ELEVATION,§4.5:L979,constraint,so screens never touch Rive directly.,P1,agent,,Open
+EP-§4.5-09,ELEVATION,§4.5:L979-L980,requirement,Build it fresh; retire the three scaffolding engines in avatars/*.,P1,agent,,Open
+EP-§4.5-10,ELEVATION,§4.5:L981,metric,≤ 300 KB per character file,P1,agent,,Open
+EP-§4.5-11,ELEVATION,§4.5:L981-L982,requirement,nested artboards streamed (assets via Rive's out-of-band asset loading),P1,agent,,Open
+EP-§4.5-12,ELEVATION,§4.5:L982,metric,≤ 2 ms frame cost on a 2020 mid-range Android,P1,agent,,Open
+EP-§4.5-13,ELEVATION,§4.5:L983,metric,60 fps target,P1,agent,,Open
+EP-§4.5-14,ELEVATION,§4.5:L983,metric,graceful at 30.,P1,agent,,Open
+EP-§4.5-15,ELEVATION,§4.5:L984,requirement,golden tests of chip renders at 32/48/64 px;,P1,agent,,Open
+EP-§4.5-16,ELEVATION,§4.5:L984-L986,requirement,a contract test that fails CI if a View Model property named,P1,agent,,Open
+AV-step1,ELEVATION,§4.6:L989-L990,requirement,"Character bible 1 page per character: personality, voice, region, palette,",P1,Tope,,Open
+EP-§4.6-01,ELEVATION,§4.6:L990,metric,silhouette sketches at 64 px;,P1,Tope,,Open
+EP-§4.6-02,ELEVATION,§4.6:L990,external,cultural consultant sign-off,P1,external,,Open
+EP-§4.6-03,ELEVATION,§4.6:L991-L992,metric,Silhouettes are distinguishable as 1-bit shapes at 48 px;,P1,Tope,,Open
+EP-§4.6-04,ELEVATION,§4.6:L992-L993,external,reviewer approves dress and hair references,P1,external,,Open
+AV-step2,ELEVATION,§4.6:L994-L998,requirement,"Rig spike (one character, Polie) lingafriq_cast.riv with Character + CharacterChip",P1,agent,,Open
+EP-§4.6-05,ELEVATION,§4.6:L996-L997,requirement,"artboards, layers L1–L5, the full CharacterVM from §4.3",P1,agent,,Open
+EP-§4.6-06,ELEVATION,§4.6:L998,constraint,"(enums, not 0–100 codes)",P1,agent,,Open
+EP-§4.6-07,ELEVATION,§4.6:L999,requirement,Every property in §4.3 exists and is bound;,P1,agent,,Open
+EP-§4.6-08,ELEVATION,§4.6:L1000-L1001,requirement,enumerating the View Model in a Dart test matches the contract,P1,agent,,Open
+AV-step3,ELEVATION,§4.6:L1002-L1004,requirement,"States Idle, listening, thinking, speaking, correct, incorrect,",P1,agent,,Open
+EP-§4.6-09,ELEVATION,§4.6:L1005,requirement,Each state reads correctly at 64 px,P1,agent,,Open
+EP-§4.6-10,ELEVATION,§4.6:L1006,metric,person hallway test;,P1,Tope,,Open
+EP-§4.6-11,ELEVATION,§4.6:L1006,metric,transitions ≤ 300 ms;,P1,agent,,Open
+EP-§4.6-12,ELEVATION,§4.6:L1006-L1007,constraint,no layer keys another layer's properties,P1,agent,,Open
+AV-step4,ELEVATION,§4.6:L1008-L1009,requirement,"Lip-sync Viseme enum incl. KP/GB, click C/Q/X, nasal; sidecar",P1,agent,,Open
+EP-§4.6-13,ELEVATION,§4.6:L1009,requirement,timing JSON from forced alignment,P1,agent,,Open
+EP-§4.6-14,ELEVATION,§4.6:L1010,external,"Native viewers rate sync ""natural""",P1,external,,Open
+EP-§4.6-15,ELEVATION,§4.6:L1010,metric,≥ 80%,P1,agent,,Open
+EP-§4.6-16,ELEVATION,§4.6:L1011,metric,of 20 clips per Stage-1 language,P1,agent,,Open
+AV-step5,ELEVATION,§4.6:L1012-L1014,requirement,Customisation Hair/headwear/garments as nested artboards (start with,P1,agent,,Open
+EP-§4.6-17,ELEVATION,§4.6:L1013,metric,"6 hair styles from the expanded library,",P1,agent,,Open
+EP-§4.6-18,ELEVATION,§4.6:L1013,metric,"4 headwear,",P1,agent,,Open
+EP-§4.6-19,ELEVATION,§4.6:L1013-L1014,metric,10 skin tones,P1,agent,,Open
+EP-§4.6-20,ELEVATION,§4.6:L1015,metric,File ≤ 300 KB;,P1,agent,,Open
+EP-§4.6-21,ELEVATION,§4.6:L1015-L1016,requirement,swapping an item causes no frame drop on a Tecno/Infinix-class device,P1,agent,,Open
+AV-step6,ELEVATION,§4.6:L1017-L1018,requirement,"Integration rive ^0.14.11 + rive_native, AvatarDirector,",P1,agent,,Open
+EP-§4.6-22,ELEVATION,§4.6:L1018,requirement,"reduced-motion path,",P1,agent,,Open
+EP-§4.6-23,ELEVATION,§4.6:L1018,requirement,semantics labels,P1,agent,,Open
+EP-§4.6-24,ELEVATION,§4.6:L1019,metric,≤ 2 ms/frame on the reference device;,P1,agent,,Open
+EP-§4.6-25,ELEVATION,§4.6:L1020,requirement,offscreen pause verified;,P1,agent,,Open
+EP-§4.6-26,ELEVATION,§4.6:L1020-L1021,requirement,screen reader announces expression changes,P1,agent,,Open
+AV-step7,ELEVATION,§4.6:L1022,requirement,"Cast expansion Village archetypes, then per-language hosts",P1,agent,,Open
+EP-§4.6-27,ELEVATION,§4.6:L1022,requirement,Each passes steps 3–6,P1,agent,,Open
+EP-§4.6-28,ELEVATION,§4.6:L1023,requirement,"Keep a single .riv source in version control with a changelog,",P1,agent,,Open
+EP-§4.6-29,ELEVATION,§4.6:L1023,requirement,"export from one Rive file version,",P1,agent,,Open
+EP-§4.6-30,ELEVATION,§4.6:L1023-L1024,requirement,CI contract test (step 2) so art and code can't drift.,P1,agent,,Open
+EP-§8.1-01,ELEVATION,§8.1:L1485-L1486,informational,Two independent systems. Client registry: 27 personas,P1,agent,,Open
+EP-§8.1-02,ELEVATION,§8.1:L1487,informational,scenario templates whose branches: {} are empty,P1,agent,,Open
+EP-§8.1-03,ELEVATION,§8.1:L1488-L1489,informational,chat uses a plain system prompt with no retrieval,P1,agent,,Open
+EP-§8.1-04,ELEVATION,§8.1:L1489-L1490,informational,responses are stored with sources: [] and a hard-coded confidence: 0.9,P1,agent,,Open
+EP-§8.1-05,ELEVATION,§8.1:L1491-L1492,informational,tries four URL variants per call,P1,agent,,Open
+EP-§8.1-06,ELEVATION,§8.1:L1493,informational,Persona missions use the client Groq key and fail silently in release,P1,agent,,Open
+EP-§8.1-07,ELEVATION,§8.1:L1494,informational,Safety is a substring blocklist that blocks the core content of these,P1,agent,,Open
+EP-§8.1-08,ELEVATION,§8.1:L1494-L1495,informational,anti-colonial war (Yaa Asantewaa),P1,agent,,Open
+EP-§8.1-09,ELEVATION,§8.1:L1495,informational,apartheid discrimination (Mandela),P1,agent,,Open
+EP-§8.1-10,ELEVATION,§8.1:L1495,informational,the Zulu kingdom's military history (Shaka),P1,agent,,Open
+EP-§8.1-11,ELEVATION,§8.1:L1495-L1497,informational,"It also blocks ""skill"" and ""whatever""",P1,agent,,Open
+EP-§8.1-12,ELEVATION,§8.1:L1498,informational,Do not mention... being an AI model,P1,agent,,Open
+EP-§8.1-13,ELEVATION,§8.1:L1499-L1500,informational,Nkrumah's languages English/Twi,P1,agent,,Open
+EP-§8.1-14,ELEVATION,§8.1:L1500-L1501,informational,First sub-Saharan colony to reach independence,P1,agent,,Open
+EP-§8.2-01,ELEVATION,§8.2:L1503-L1504,requirement,"a narrative quest, a language lesson, and a history lesson",P1,agent,,Open
+EP-§8.2-02,ELEVATION,§8.2:L1503-L1504,requirement,"short, authored, replayable experience",P1,agent,,Open
+EP-§8.2-03,ELEVATION,§8.2:L1505,metric,"Twi, A2–B1",P1,agent,,Open
+EP-§8.2-04,ELEVATION,§8.2:L1505,metric,25 min,P1,agent,,Open
+EP-§8.2-05,ELEVATION,§8.2:L1505,metric,4 chapters,P1,agent,,Open
+EP-§8.2-06,ELEVATION,§8.2:L1505-L1506,requirement,era-accurate illustrated scene with ambient sound (talking drums,P1,agent,,Open
+EP-§8.2-07,ELEVATION,§8.2:L1506-L1507,requirement,The learner is a young messenger,P1,agent,,Open
+EP-§8.2-08,ELEVATION,§8.2:L1507,requirement,Objective: greet the Queen Mother correctly (honorifics,P1,agent,,Open
+EP-§8.2-09,ELEVATION,§8.2:L1507-L1508,requirement,The Tone Lens is on,P1,agent,,Open
+EP-§8.2-10,ELEVATION,§8.2:L1508,requirement,the avatar kneels if the learner chooses the respectful option,P1,agent,,Open
+EP-§8.2-11,ELEVATION,§8.2:L1508-L1509,requirement,The British governor's demand for the Golden Stool is read in English,P1,agent,,Open
+EP-§8.2-12,ELEVATION,§8.2:L1509-L1510,requirement,Yaa Asantewaa responds in Twi with subtitles toggled by level,P1,agent,,Open
+EP-§8.2-13,ELEVATION,§8.2:L1510,requirement,must understand three key sentences (comprehension checkpoint),P1,agent,,Open
+EP-§8.2-14,ELEVATION,§8.2:L1510,metric,three key sentences,P1,agent,,Open
+EP-§8.2-15,ELEVATION,§8.2:L1511,requirement,argues a position in simplified Twi (scaffolded sentence builders),P1,agent,,Open
+EP-§8.2-16,ELEVATION,§8.2:L1511-L1512,requirement,The persona answers in character,P1,agent,,Open
+EP-§8.2-17,ELEVATION,§8.2:L1512,requirement,grounded in sources,P1,agent,,Open
+EP-§8.2-18,ELEVATION,§8.2:L1512-L1513,requirement,marks clearly when something is inferred,P1,agent,,Open
+EP-§8.2-19,ELEVATION,§8.2:L1513,requirement,A historian's note (human-written),P1,external,,Open
+EP-§8.2-20,ELEVATION,§8.2:L1513,requirement,and a mini-quiz,P1,agent,,Open
+EP-§8.2-21,ELEVATION,§8.2:L1514,requirement,"""Primary source"" card (photo of an archival document or museum object with",P1,agent,,Open
+EP-§8.2-22,ELEVATION,§8.2:L1515,requirement,vocabulary set added to the learner's deck,P1,agent,,Open
+EP-§8.3-01,ELEVATION,§8.3:L1517,requirement,Source dossier per persona,P1,agent,,Open
+EP-§8.3-02,ELEVATION,§8.3:L1517,requirement,curated by a historian,P1,external,,Open
+EP-§8.3-03,ELEVATION,§8.3:L1517-L1518,requirement,"primary sources (speeches, letters, court records, oral histories)",P1,agent,,Open
+EP-§8.3-04,ELEVATION,§8.3:L1518,requirement,reputable secondary sources,P1,agent,,Open
+EP-§8.3-05,ELEVATION,§8.3:L1518,requirement,contested points,P1,agent,,Open
+EP-§8.3-06,ELEVATION,§8.3:L1518,requirement,known myths,P1,agent,,Open
+EP-§8.3-07,ELEVATION,§8.3:L1518-L1519,external,respectful-portrayal guidance from descendants or community bodies,P1,external,,Open
+EP-§8.3-08,ELEVATION,§8.3:L1519-L1520,requirement,Store it as a retrieval index,P1,agent,,Open
+EP-§8.3-09,ELEVATION,§8.3:L1520,requirement,every persona turn retrieves from it,P1,agent,,Open
+EP-§8.3-10,ELEVATION,§8.3:L1521,requirement,Answer contract: {speech_text,P1,agent,,Open
+EP-§8.3-11,ELEVATION,§8.3:L1521,requirement,language_teaching_points[],P1,agent,,Open
+EP-§8.3-12,ELEVATION,§8.3:L1521,requirement,"claims:[{text,",P1,agent,,Open
+EP-§8.3-13,ELEVATION,§8.3:L1521-L1522,requirement,support: documented|inferred|legend,P1,agent,,Open
+EP-§8.3-14,ELEVATION,§8.3:L1522,requirement,source_ids[]}],P1,agent,,Open
+EP-§8.3-15,ELEVATION,§8.3:L1522,requirement,emotion,P1,agent,,Open
+EP-§8.3-16,ELEVATION,§8.3:L1522,requirement,next_beat},P1,agent,,Open
+EP-§8.3-17,ELEVATION,§8.3:L1522,requirement,validated server-side,P1,agent,,Open
+EP-§8.3-18,ELEVATION,§8.3:L1522-L1523,requirement,"shows a small ""Source"" chip on documented claims",P1,agent,,Open
+EP-§8.3-19,ELEVATION,§8.3:L1523,requirement,"an ""Inferred"" label on speculation",P1,agent,,Open
+EP-§8.3-20,ELEVATION,§8.3:L1524,requirement,the persona knows nothing after their death,P1,agent,,Open
+EP-§8.3-21,ELEVATION,§8.3:L1524-L1525,requirement,answers in character with curiosity,P1,agent,,Open
+EP-§8.3-22,ELEVATION,§8.3:L1525-L1526,requirement,A classifier decides this,P1,agent,,Open
+EP-§8.3-23,ELEVATION,§8.3:L1526,constraint,not keyword lists,P1,agent,,Open
+EP-§8.3-24,ELEVATION,§8.3:L1527,requirement,Sensitivity rules written with historians,P1,external,,Open
+EP-§8.3-25,ELEVATION,§8.3:L1527-L1528,constraint,violence is discussed historically and age-appropriately,P1,agent,,Open
+EP-§8.3-26,ELEVATION,§8.3:L1528,constraint,never glorified,P1,agent,,Open
+EP-§8.3-27,ELEVATION,§8.3:L1528,constraint,no slurs reproduced even if in sources,P1,agent,,Open
+EP-§8.3-28,ELEVATION,§8.3:L1528,requirement,paraphrase with a note,P1,agent,,Open
+EP-§8.3-29,ELEVATION,§8.3:L1528-L1529,external,"living-memory figures (Mandela, Sankara, Lumumba)",P1,external,,Open
+EP-§8.3-30,ELEVATION,§8.3:L1529,external,handled with family/estate guidance,P1,external,,Open
+EP-§8.3-31,ELEVATION,§8.3:L1529-L1530,decision,"possibly limited to narrated ""as told by"" modes",P1,Tope,,Open
+EP-§8.3-32,ELEVATION,§8.3:L1531,decision,Some figures should get a narrator rather than first person,P1,Tope,,Open
+EP-§8.3-33,ELEVATION,§8.3:L1532,requirement,"a persistent ""AI recreation"" badge",P1,agent,,Open
+EP-§8.3-34,ELEVATION,§8.3:L1532-L1533,requirement,an opening line that explains how the persona was built,P1,agent,,Open
+EP-§8.4-01,ELEVATION,§8.4:L1535,requirement,a voice actor per persona,P1,external,,Open
+EP-§8.4-02,ELEVATION,§8.4:L1535,requirement,speaking the target language with appropriate regional accent,P1,external,,Open
+EP-§8.4-03,ELEVATION,§8.4:L1536,constraint,cloned only with consent and a licence,P1,external,,Open
+EP-§8.4-04,ELEVATION,§8.4:L1536,constraint,synthesised voices clearly labelled as such,P1,agent,,Open
+EP-§8.4-05,ELEVATION,§8.4:L1536,requirement,Avatar busts with era-accurate dress,P1,agent,,Open
+EP-§8.4-06,ELEVATION,§8.4:L1536,requirement,reviewed,P1,external,,Open
+EP-§8.4-07,ELEVATION,§8.4:L1537,requirement,fill the empty branches with authored beats,P1,agent,,Open
+EP-§8.4-08,ELEVATION,§8.4:L1537,requirement,let the model improvise between beats,P1,agent,,Open
+EP-§8.4-09,ELEVATION,§8.4:L1537-L1538,constraint,keep the story on rails,P1,agent,,Open
+EP-§8.4-10,ELEVATION,§8.4:L1539,requirement,teachers assign a persona chapter,P1,agent,,Open
+EP-§8.4-11,ELEVATION,§8.4:L1539,requirement,students' turns are graded against can-dos,P1,agent,,Open
+EP-§8.4-12,ELEVATION,§8.4:L1539-L1540,requirement,a debrief sheet is generated for the teacher,P1,agent,,Open
+EP-§8.4-13,ELEVATION,§8.4:L1542,requirement,"""Queens of Africa""",P1,agent,,Open
+EP-§8.4-14,ELEVATION,§8.4:L1542,requirement,"""Scholars of Timbuktu""",P1,agent,,Open
+EP-§8.4-15,ELEVATION,§8.4:L1542,requirement,"""Independence Generation""",P1,agent,,Open
+EP-§8.4-16,ELEVATION,§8.4:L1542-L1543,requirement,"""Writers & Thinkers""",P1,agent,,Open
+EP-§8.4-17,ELEVATION,§8.4:L1543,informational,"Thomas Mofolo, Ahmed Baba, Cheikh Anta Diop",P1,agent,,Open
+EP-§8.4-18,ELEVATION,§8.4:L1543-L1544,requirement,each pairing figures with the languages they spoke,P1,agent,,Open
+EP-§8.4-19,ELEVATION,§8.4:L1545,requirement,historian-rated fidelity,P1,external,,Open
+EP-§8.4-20,ELEVATION,§8.4:L1545,metric,50 scripted probes per persona,P1,agent,,Open
+EP-§8.4-21,ELEVATION,§8.4:L1545-L1546,requirement,an adversarial suite (jailbreaks,P1,agent,,Open
+EP-§8.4-22,ELEVATION,§8.4:L1546,requirement,anachronism traps,P1,agent,,Open
+EP-§8.4-23,ELEVATION,§8.4:L1546,requirement,attempts to make the persona endorse atrocities,P1,agent,,Open
+EP-§8.4-24,ELEVATION,§8.4:L1547,requirement,language-quality checks by natives,P1,external,,Open

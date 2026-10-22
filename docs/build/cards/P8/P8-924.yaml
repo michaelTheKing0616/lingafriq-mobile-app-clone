@@ -1,0 +1,128 @@
+charter: v2
+id: P8-924
+kind: build
+title: 'Flagship: Proverb Weaver'
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.3-05
+- EP-§10.3-05a
+- EP-§10.3-05b
+- EP-§10.3-05c
+depends_on:
+- P8-900
+- P8-901
+- P8-909
+- P8-912
+- P8-916
+- E-P4-CONTENT-ENGINE
+- E-P6-SCORER
+- E-P3-DESIGN-SYSTEM
+size: M
+difficulty:
+  score: 6
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T1
+  justification: 'score 6: blast 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/games/proverb_weaver/proverb_weaver_game.dart
+- lib/games/proverb_weaver/proverb_weaver_screen.dart
+- lib/games/proverb_unlocker/proverb_unlocker_game.dart
+- lib/games/proverb_unlocker/proverb_unlocker_screen.dart
+- lib/screens/games/cultural/proverb_unlocker_game.dart
+- lib/games/gamekit/all_games_registry.dart
+context_anchors:
+- ELEVATION.md#§10.3:L1720-L1726
+- ELEVATION.md#§10.3:L1770-L1771
+acceptance_criteria:
+- id: AC1
+  text: Given a proverb, when a turn starts, then fragments are shown shuffled and the learner assembles them, then hears
+    the whole proverb and picks the situation where it applies
+- id: AC2
+  text: Given the learner's level, when the game lists proverbs, then only B1+ learners see it by default and lower levels
+    see a lock reason
+- id: AC3
+  text: Given a proverb record, when it enters the pool, then it must carry reviewed_by (elder or linguist) or it is excluded
+- id: AC4
+  text: Given proverb audio in a tonal language, when it plays, then it is a recording or tone-verified TTS and never unverified
+    synthesis
+- id: AC5
+  text: Given Proverb Unlocker, when this card completes, then the GameKit rewrite is reachable here and its mechanics are
+    carried or waived
+test_plan:
+  unit:
+  - fragment assembly
+  - level gate
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - reviewed_by required
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - ready
+  - playing
+  - correct
+  - wrong
+  - why_wrong
+  - results
+  - error
+  - offline
+  - practice_mode
+  - locked_below_b1
+  copy_keys:
+  - games.proverb_weaver.title
+  - games.proverb_weaver.instructions
+  - games.proverb_weaver.why_wrong
+  - games.proverb_weaver.practice_label
+  - games.proverb_weaver.error
+  tokens:
+  - color.surface.game
+  - color.feedback.correct
+  - color.feedback.wrong
+  - space.4
+  - radius.card
+  - type.title
+  motion_tier: product
+  a11y:
+  - screen-reader labels on every answer control
+  - reduced-motion variant
+  - correctness shown by icon and text not colour alone
+  - touch targets ≥48dp
+  goldens:
+  - proverb_weaver_playing
+  - proverb_weaver_why_wrong
+  - proverb_weaver_results
+tags:
+- uses_source
+- tts_tonal
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers:
+- EXT-11
+status: Draft
+harvest_list:
+- 'Proverb Unlocker: lib/games/proverb_unlocker/*, lib/screens/games/cultural/proverb_unlocker_game.dart'
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

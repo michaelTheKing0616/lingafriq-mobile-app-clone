@@ -1,0 +1,48 @@
+charter: v2
+id: P4-006
+kind: verification
+title: Verify African Storybook has Igbo titles
+phase: P4
+epic: E-P4-LICENCES
+req_ids:
+- CP-§2.2-21
+depends_on:
+- P4-004
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: 'score 1: blast 0, ambiguity 1, coupling 0, depth 0, size 0'
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- CURRICULUM.md#§2.2:L194-L194
+acceptance_criteria:
+- id: AC1
+  text: Given the African Storybook catalogue, when searched for Igbo, then a dated note records the count of CC BY Igbo titles
+    or confirms none, and the register is updated
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- dated evidence note
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-03
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

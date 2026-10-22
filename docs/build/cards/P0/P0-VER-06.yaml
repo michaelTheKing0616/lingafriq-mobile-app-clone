@@ -1,0 +1,54 @@
+charter: v2
+id: P0-VER-06
+kind: verification
+title: Confirm DPIA thresholds for voice data with counsel
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- UNV-E06
+depends_on:
+- E-P0-INTAKE
+- EXT-18
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: verification only; result recorded, never inferred
+token_budget: 20000
+file_allowlist:
+- docs/build/verification/P0-VER-06.md
+- docs/build/UNVERIFIED.md
+context_anchors:
+- ELEVATION.md#§13.2:L1881
+acceptance_criteria:
+- id: AC1
+  text: Given the DPIA draft from EXT-18, when counsel responds, then the threshold wording for voice data is recorded verbatim
+    with the counsel name and date
+- id: AC2
+  text: Given no counsel answer, when the gate nears, then the row stays unverified and is listed as a G12 blocker
+user_facing: false
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- docs/build/verification/P0-VER-06.md
+- UNVERIFIED.md row updated
+risks: []
+gate: G12
+external_blockers:
+- EXT-18
+owner: external
+status: Blocked-External
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

@@ -1,0 +1,52 @@
+charter: v2
+id: P5-078
+kind: verification
+title: Verify Phase 2 A2 and promotion exit
+phase: P5
+epic: E-P5-A2
+req_ids:
+- CP-§9.2-03
+depends_on:
+- P5-081
+- P5-056
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T0
+  tester: T0
+  reviewer: T1
+  justification: verification only; no code
+token_budget: 20000
+file_allowlist: []
+context_anchors:
+- CURRICULUM.md#§9.2:L804-L808
+acceptance_criteria:
+- id: AC1
+  text: Given Weeks 12-24, when closed, then A2 units are published
+- id: AC2
+  text: Given promotion, when checked, then A1 high-exposure items are Expert-reviewed and native validators have started
+    verifying A1
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G6
+external_blockers:
+- EXT-13
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

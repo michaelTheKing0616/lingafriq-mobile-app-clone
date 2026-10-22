@@ -1,0 +1,94 @@
+charter: v2
+id: P10-910
+kind: build
+title: Issue shareable can-do badges after checkpoints
+phase: P10
+epic: E-P10-GAMIFICATION
+req_ids:
+- EP-§12.1-02
+- EP-§12.2-31
+- EP-§12.2-32
+depends_on:
+- E-P5-CONTENT-REAL
+- E-P6-SCORER
+- P10-901
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: score 4; blast 1
+token_budget: 60000
+file_allowlist:
+- node-backend/src/services/cando-badges.service.ts
+- lib/widgets/gamification/gamification_widgets.dart
+- lib/screens/passport/cando_badge_screen.dart
+context_anchors:
+- ELEVATION.md#§12.1:L1813-L1813
+- ELEVATION.md#§12.2:L1834-L1835
+acceptance_criteria:
+- id: AC1
+  text: Given a learner passes a can-do checkpoint, when the server verifies it, then one can-do badge is issued with checkpoint
+    evidence.
+- id: AC2
+  text: Given a badge exists, when the learner shares it, then the share page shows the can-do text, level and a verify link.
+- id: AC3
+  text: Given a checkpoint is not passed, when the learner asks for the badge, then a typed error BADGE_NOT_EARNED returns
+    and nothing is issued.
+- id: AC4
+  text: Given generic badges, magic items and the ancestral tree exist, when this card ships, then each is either mapped to
+    a verified can-do or removed from the app.
+test_plan:
+  unit:
+  - issue once
+  - not earned error
+  integration:
+  - share link verifies
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - locked
+  - earned
+  - shared
+  copy_keys:
+  - cando_badge_share
+  tokens:
+  - color.semantic
+  - type.scale
+  - space.scale
+  motion_tier: product
+  a11y:
+  - screen reader labels
+  - 48dp touch targets
+  - reduced motion honoured
+  goldens:
+  - cando_badge_share_golden
+tags:
+- issues_credential
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

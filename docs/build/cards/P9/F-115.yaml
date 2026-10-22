@@ -1,0 +1,105 @@
+charter: v2
+id: F-115
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Call History
+phase: P9
+epic: E-P9-SAFETY
+hub: Village
+req_ids:
+- F-115
+- F-115.D
+- F-115.E
+- F-115.U
+- F-115.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P9-SAFETY
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: social/village feature complexity and coupling'
+token_budget: 80000
+file_allowlist:
+- lib/screens/chat/call_history_screen.dart
+context_anchors:
+- ELEVATION.md#§18.6:L5141-L5151
+delta:
+  current_state: Call history route works without post-call learning value.
+  defects_to_fix:
+  - Calls leave no learning takeaway after they end
+  elevation_to_build:
+  - Each entry shows target-language minutes and opt-in words learned
+  - Save phrases from call transcript when user opts in
+  ux_and_render:
+  - List rows with minutes chip
+  hub_placement: Village → Chats → Calls
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given a completed call, when viewing history, then target-language minutes display from verified telemetry
+- id: AC2
+  text: Given opt-in transcript, when user saves phrases, then phrases land in their word collection honestly
+- id: AC3
+  text: Given the account is under 18 or age-unknown, when this surface is opened, then it is hidden or guardian-gated until
+    E-P9-SAFETY is Done, and the restriction is enforced server-side.
+test_plan:
+  unit:
+  - delta defects covered
+  - routing and state transitions
+  integration:
+  - hub navigation and backend contracts
+  e2e:
+  - primary user journey on device
+  a11y:
+  - semantics
+  - 200% text scale goldens
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f-115.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+tags:
+- under18_social
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux
+  - adaptive/14-safety-and-high-stakes

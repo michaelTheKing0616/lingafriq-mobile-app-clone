@@ -1,0 +1,72 @@
+charter: v2
+id: P13-008
+kind: design
+title: Design living history and AR grounded in archives
+phase: P13
+epic: E-P13-SCALE
+req_ids:
+- RM-MS-04
+depends_on:
+- E-P12-RELEASE
+- P13-004
+- E-P1-CONTAINMENT
+- E-P11-PERSONAS-AVATARS
+- E-P4-CONTENT-ENGINE
+size: S
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 2, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§16.4:L2134-L2138
+acceptance_criteria:
+- id: AC1
+  text: Given the design doc, when reviewed, then each persona states its archive sources, licence and the museum or university
+    partner who reviewed it
+- id: AC2
+  text: Given a persona answer not supported by an archive source, when produced, then the design requires an honest unsure
+    or refusal state
+- id: AC3
+  text: Given AR is used, when specified, then device and performance fallbacks are defined and AR is optional
+- id: AC4
+  text: Given the doc, when complete, then partners are listed as external with owner Tope
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- enables_persona
+- uses_source
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks:
+- Owner is external (museum and university partners); no EXT item exists, add one before G13
+- Priority MS; design and ADR only, no build before P13-004 gate passes
+gate: G13
+external_blockers:
+- EXT-29
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - adaptive/09-writing-and-communication

@@ -1,0 +1,72 @@
+charter: v2
+id: P4-055
+kind: build
+title: Generate grounded items with Gemini 3.1 Pro
+phase: P4
+epic: E-P4-PIPELINE
+req_ids:
+- CP-§3.1-03
+- CP-§3.1-25
+- CP-§3.1-15
+- CP-§3.1-16
+depends_on:
+- P4-054
+- P4-037
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- tools/content_engine/pipeline/generate.py
+- tools/content_engine/tests/test_generate.py
+context_anchors:
+- CURRICULUM.md#§3.1:L477-L481
+acceptance_criteria:
+- id: AC1
+  text: Given a can-do target and the allowed lexicon (anchored lexemes only), when the generator is called with Gemini 3.1
+    Pro, then it receives only that lexicon and returns structured JSON
+- id: AC2
+  text: Given the output, when parsed, then every claim has a citation with source id plus locator or parsing fails with CITATION_MISSING
+- id: AC3
+  text: Given the companion AI stack doc, when model routing is read, then it cites EXT-01 and the named model is configurable,
+    not hard-coded
+test_plan:
+  unit:
+  - happy path
+  - typed error path
+  integration:
+  - stage contract with fixtures
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-01
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,111 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P9
+epic: E-P9-SAFETY
+hub: Village
+gate: G9
+status: Draft
+size: M
+token_budget: 80000
+user_facing: true
+p0_area: false
+tags:
+- under18_social
+external_blockers: []
+risks: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+id: F-127
+title: Elevate Social Audio Rooms
+req_ids:
+- F-127
+- F-127.D
+- F-127.E
+- F-127.U
+- F-127.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P9-SAFETY
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: scheduled audio with moderation'
+file_allowlist:
+- lib/screens/social_audio/room_discovery_screen.dart
+- lib/screens/social_audio/create_room_screen.dart
+- lib/screens/social_audio/room_detail_screen.dart
+- lib/screens/social_audio/following_screen.dart
+- lib/screens/social_audio/scheduled_sessions_screen.dart
+- lib/screens/social_audio/moderation_screen.dart
+context_anchors:
+- ELEVATION.md#§18.6:L5299-L5316
+delta:
+  current_state: Discovery, create, and detail reachable; following and schedule screens unrouted.
+  defects_to_fix:
+  - No scheduling or following, so rooms stay empty; weak minor moderation.
+  elevation_to_build:
+  - 'Village Radio: scheduled native shows and learner rooms by level with follow graph.'
+  - Live captions with Tone Lens; replays become listening lessons.
+  ux_and_render:
+  - Schedule cards, speaker stage, and captions bar.
+  hub_placement: Village → Radio.
+  unlock_stage: per §17.4
+  harvest_list:
+  - Revive following_screen.dart and scheduled_sessions_screen.dart into Radio navigation.
+  - Remove mock/fake room markers in favor of server schedules.
+acceptance_criteria:
+- id: AC1
+  text: Given the Radio tab, when opened, then scheduled shows and follow list are populated from server data.
+- id: AC2
+  text: Given a live show, when a minor joins, then E-P9-SAFETY moderation rules apply before audio.
+- id: AC3
+  text: Given a finished show, when replay is saved, then it appears as a listening lesson with captions.
+test_plan:
+  unit:
+  - domain helpers
+  integration:
+  - API and navigation
+  e2e:
+  - happy path
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content: []
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - social_audio.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux
+  - adaptive/14-safety-and-high-stakes

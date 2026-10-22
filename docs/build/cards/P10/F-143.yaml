@@ -1,0 +1,116 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P10
+epic: E-P10-ME
+hub: Me
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: Settings consolidation with minor privacy; no crypto
+token_budget: 80000
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f_143.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+p0_area: true
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+test_plan:
+  unit:
+  - settings section routing
+  - minor flag gates
+  integration:
+  - privacy screen with safety epic
+  e2e:
+  - search finds learning reminder setting
+  a11y:
+  - grouped list semantics
+  content: []
+tags:
+- under18_social
+id: F-143
+title: Elevate Settings, Privacy & Appearance
+req_ids:
+- F-143
+- F-143.D
+- F-143.E
+- F-143.U
+- F-143.L
+- P0-10
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P9-SAFETY
+- E-P1-MINORS
+- E-P10-PRIVACY
+file_allowlist:
+- screens/settings/settings_screen_material3.dart
+- screens/settings/settings_screen.dart
+- screens/settings/privacy_settings_screen.dart
+- screens/settings/change_password_screen.dart
+- screens/tabs_view/profile/change_password_screen.dart
+- screens/tabs_view/profile/delete_account_dialogue.dart
+context_anchors:
+- ELEVATION.md#§18.7:L5516-L5531
+delta:
+  current_state: Settings route works; legacy settings and duplicate password flows unrouted.
+  defects_to_fix:
+  - Thin privacy controls for minors
+  - Duplicate settings and password screens
+  elevation_to_build:
+  - Grouped Learning, Privacy & Safety, Appearance, and Account sections
+  - Minor-safe messaging, discoverability, NDPA export and delete
+  - Theme, text size, and reduced motion controls
+  ux_and_render:
+  - Standard grouped list with settings search
+  hub_placement: Me → Settings
+  unlock_stage: per §17.4
+  harvest_list:
+  - Retire unrouted settings_screen.dart
+  - Single change-password screen
+acceptance_criteria:
+- id: AC1
+  text: Given a minor account, when Privacy opens, then safety controls exceed legacy thin toggles and reflect P0-10 policy.
+- id: AC2
+  text: Given duplicate password routes, when user changes password, then only one screen is linked from Settings.
+- id: AC3
+  text: Given data export requested, when job completes, then user gets honest status without fake success.
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux
+  - adaptive/14-safety-and-high-stakes

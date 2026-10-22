@@ -1,0 +1,76 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+F-137,ELEVATION,§18.7:L5434-L5448,requirement,Profile,P1,agent,,Open
+F-137.D,ELEVATION,§18.7:L5443,requirement,"[7] Duplicate edit flows; profile is stats-heavy, identity-light.",P1,agent,,Open
+F-137.E,ELEVATION,§18.7:L5444,requirement,"[7] My LingAfriq identity: avatar (§4), languages and levels, heritage story (optional),",P1,agent,,Open
+F-137.U,ELEVATION,§18.7:L5446,requirement,[7] Avatar hero; language pills; stamp shelf. Rendered on the single unified,P1,agent,,Open
+F-137.L,ELEVATION,§18.7:L5448,requirement,"[7] Me (avatar, top-left).",P1,agent,,Open
+F-138,ELEVATION,§18.7:L5449-L5463,requirement,Global Handle (@id) (revived),P1,agent,,Open
+F-138.D,ELEVATION,§18.7:L5458,requirement,[7] People can be searched by global ID but can't set one.,P1,agent,,Open
+F-138.E,ELEVATION,§18.7:L5459,requirement,"[7] Revive in onboarding (after account creation) and profile: choose an @handle,",P1,agent,,Open
+F-138.U,ELEVATION,§18.7:L5461,requirement,"[7] Inline availability check. Rendered on the single unified design system (§3.4),",P1,agent,,Open
+F-138.L,ELEVATION,§18.7:L5463,requirement,[7] Me → Profile → Handle; onboarding.,P1,agent,,Open
+F-139,ELEVATION,§18.7:L5464-L5477,requirement,Progress Dashboard,P1,agent,,Open
+F-139.D,ELEVATION,§18.7:L5471,requirement,[7] Vanity metrics (XP) rather than ability.,P1,agent,,Open
+F-139.E,ELEVATION,§18.7:L5472,requirement,"[7] Can-do progress: CEFR can-do statements ticked with evidence, skill radar (listen,",P1,agent,,Open
+F-139.U,ELEVATION,§18.7:L5475,requirement,[7] Calm charts; evidence links to recordings. Rendered on the single unified,P1,agent,,Open
+F-139.L,ELEVATION,§18.7:L5477,requirement,[7] Me → Progress.,P1,agent,,Open
+F-140,ELEVATION,§18.7:L5478-L5491,requirement,Achievements & Badges,P1,agent,,Open
+F-140.D,ELEVATION,§18.7:L5485,requirement,"[7] XP awards can be self-awarded (P0-8); badges for volume, not mastery.",P1,agent,,Open
+F-140.E,ELEVATION,§18.7:L5486,requirement,"[7] Cultural badges earned by real milestones: first proverb used correctly, 100",P1,agent,,Open
+F-140.U,ELEVATION,§18.7:L5489,requirement,[7] Badge cabinet with stories behind each design. Rendered on the single,P1,agent,,Open
+F-140.L,ELEVATION,§18.7:L5491,requirement,[7] Me → Achievements.,P1,agent,,Open
+F-141,ELEVATION,§18.7:L5492-L5504,requirement,Leaderboards,P1,agent,,Open
+F-141.D,ELEVATION,§18.7:L5499,requirement,[7] Cheatable (P0-8); demotivating for beginners.,P1,agent,,Open
+F-141.E,ELEVATION,§18.7:L5500,requirement,"[7] Leagues of 30 similar learners with weekly promotion, an opt-out, and",P1,agent,,Open
+F-141.U,ELEVATION,§18.7:L5502,requirement,[7] League ladder; your row pinned. Rendered on the single unified design,P1,agent,,Open
+F-141.L,ELEVATION,§18.7:L5504,requirement,[7] Me → Leagues; Village → Circles.,P1,agent,,Open
+F-142,ELEVATION,§18.7:L5505-L5515,requirement,Magic Items,P1,agent,,Open
+F-142.D,ELEVATION,§18.7:L5510,requirement,[7] Economy self-mintable (P0-7).,P1,agent,,Open
+F-142.E,ELEVATION,§18.7:L5511,requirement,"[7] Cosmetic and helper shop: avatar outfits from regional designers, streak freezes",P1,agent,,Open
+F-142.U,ELEVATION,§18.7:L5513,requirement,[7] Shop grid with try-on on the avatar. Rendered on the single,P1,agent,,Open
+F-142.L,ELEVATION,§18.7:L5515,requirement,[7] Me → Wardrobe & Shop; Village → Market.,P1,agent,,Open
+F-143,ELEVATION,§18.7:L5516-L5531,requirement,"Settings, Privacy & Appearance",P1,agent,,Open
+F-143.D,ELEVATION,§18.7:L5525,requirement,[7] Privacy controls thin for minors; duplicates.,P1,agent,,Open
+F-143.E,ELEVATION,§18.7:L5526,requirement,"[7] Grouped settings: Learning (daily goal, reminders, voice), Privacy & Safety (who",P1,agent,,Open
+F-143.U,ELEVATION,§18.7:L5529,requirement,[7] Standard grouped list; search in settings. Rendered on the single unified,P1,agent,,Open
+F-143.L,ELEVATION,§18.7:L5531,requirement,[7] Me → Settings.,P1,agent,,Open
+F-144,ELEVATION,§18.7:L5532-L5545,requirement,Subscription & Plans (revived),P1,agent,,Open
+F-144.D,ELEVATION,§18.7:L5538,requirement,[7] No monetisation surface.,P1,agent,,Open
+F-144.E,ELEVATION,§18.7:L5539,requirement,[7] Revive as LingAfriq Plus: free core learning forever; Plus adds unlimited,P1,agent,,Open
+F-144.U,ELEVATION,§18.7:L5542,requirement,[7] Honest comparison table; no dark patterns. Rendered on the single unified,P1,agent,,Open
+F-144.L,ELEVATION,§18.7:L5545,requirement,[7] Me → Plus.,P1,agent,,Open
+F-145,ELEVATION,§18.7:L5546-L5556,requirement,Family / Guardian Dashboard (revived),P1,agent,,Open
+F-145.D,ELEVATION,§18.7:L5551,requirement,"[7] No guardian controls although onboarding collects ""child"" (P0-10).",P1,agent,,Open
+F-145.E,ELEVATION,§18.7:L5552,requirement,"[7] Revive as the Guardian hub: link child profiles, see progress, set",P1,agent,,Open
+F-145.U,ELEVATION,§18.7:L5554,requirement,[7] Child cards with progress and controls. Rendered on the single unified,P1,agent,,Open
+F-145.L,ELEVATION,§18.7:L5556,requirement,[7] Me → Family (guardians).,P1,agent,,Open
+F-146,ELEVATION,§18.7:L5557-L5568,requirement,About & Policy (revived),P1,agent,,Open
+F-146.D,ELEVATION,§18.7:L5563,requirement,[7] No mission story in the app.,P1,agent,,Open
+F-146.E,ELEVATION,§18.7:L5564,requirement,"[7] Revive About as Our Story: the mission, the native-speaker community, language-credit",P1,agent,,Open
+F-146.U,ELEVATION,§18.7:L5566,requirement,[7] Editorial page with photos of contributors (with consent). Rendered on the,P1,agent,,Open
+F-146.L,ELEVATION,§18.7:L5568,requirement,[7] Me → About.,P1,agent,,Open
+F-147,ELEVATION,§18.7:L5569-L5583,requirement,"Sign in, Sign up & Email Verification",P1,agent,,Open
+F-147.D,ELEVATION,§18.7:L5578,requirement,"[7] P0-20, P0-25.",P1,agent,,Open
+F-147.E,ELEVATION,§18.7:L5579,requirement,"[7] Try-before-signup (first lesson without an account), then passkey, Google/Apple, phone",P1,agent,,Open
+F-147.U,ELEVATION,§18.7:L5581,requirement,"[7] Short, branded flows. Rendered on the single unified design system (§3.4),",P1,agent,,Open
+F-147.L,ELEVATION,§18.7:L5583,requirement,[7] Before the app; Me → Account.,P1,agent,,Open
+F-148,ELEVATION,§18.7:L5584-L5603,requirement,Onboarding & Placement,P1,agent,,Open
+F-148.D,ELEVATION,§18.7:L5597,requirement,[7] P0-21; long forms before value.,P1,agent,,Open
+F-148.E,ELEVATION,§18.7:L5598,requirement,[7] See §5: 90 seconds to the first spoken word. Choose language,P1,agent,,Open
+F-148.U,ELEVATION,§18.7:L5601,requirement,[7] Full-screen illustrated steps; skip always available. Rendered on the single unified,P1,agent,,Open
+F-148.L,ELEVATION,§18.7:L5603,requirement,[7] First run.,P1,agent,,Open
+F-149,ELEVATION,§18.7:L5604-L5613,requirement,Splash,P1,agent,,Open
+F-149.D,ELEVATION,§18.7:L5608,requirement,[7] Plain wait screen [verify content].,P1,agent,,Open
+F-149.E,ELEVATION,§18.7:L5609,requirement,"[7] A 1-second greeting in the learner's target language, with the avatar",P1,agent,,Open
+F-149.U,ELEVATION,§18.7:L5611,requirement,[7] Brand mark + greeting. Rendered on the single unified design system,P1,agent,,Open
+F-149.L,ELEVATION,§18.7:L5613,requirement,[7] Launch.,P1,agent,,Open
+F-150,ELEVATION,§18.7:L5614-L5630,requirement,"Features Guide, Navigation Hub & First-use Tips (revived)",P1,agent,,Open
+F-150.D,ELEVATION,§18.7:L5624,requirement,[7] Features are explained in one long list instead of in context.,P1,agent,,Open
+F-150.E,ELEVATION,§18.7:L5625,requirement,"[7] Becomes the All features directory (A–Z, searchable, with locked items showing",P1,agent,,Open
+F-150.U,ELEVATION,§18.7:L5628,requirement,[7] Directory grouped by hub with icons; tips as bottom sheets. Rendered,P1,agent,,Open
+F-150.L,ELEVATION,§18.7:L5630,requirement,[7] Me → All features; contextual first use.,P1,agent,,Open
+F-151,ELEVATION,§18.7:L5631-L5647,requirement,Staff & Micro-mentor Reports,P1,agent,,Open
+F-151.D,ELEVATION,§18.7:L5637,requirement,[7] Staff tooling in the consumer app; role checks need verification [verify].,P1,agent,,Open
+F-151.E,ELEVATION,§18.7:L5638,requirement,"[7] Keep in-app for staff on the go, behind server-checked roles, with",P1,agent,,Open
+F-151.U,ELEVATION,§18.7:L5640,requirement,"[7] Role-gated; compact queue. Rendered on the single unified design system (§3.4),",P1,agent,,Open
+F-151.L,ELEVATION,§18.7:L5642,requirement,[7] Me → Staff (role-gated).,P1,agent,,Open

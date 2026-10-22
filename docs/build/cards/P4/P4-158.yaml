@@ -1,0 +1,84 @@
+charter: v2
+id: P4-158
+kind: build
+title: Build quality dashboards for items, agreement and audio coverage
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§14.2-31
+- EP-§14.2-33
+- EP-§14.2-34
+depends_on:
+- P4-134
+- P4-132
+- P4-150
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- lingafriq-admin/src/pages/QualityDashboard.tsx
+- node-backend/src/services/quality_metrics.service.ts
+- test/admin/QualityDashboard.test.tsx
+context_anchors:
+- ELEVATION.md#§14.2:L1970-L1989
+acceptance_criteria:
+- id: AC1
+  text: Given pilot data, when the dashboard loads, then item difficulty and discrimination are shown per language and level
+- id: AC2
+  text: Given reviews, when shown, then inter-reviewer agreement per language is displayed with sample size
+- id: AC3
+  text: Given audio, when shown, then coverage per language and level equals items with audio over total items and counts
+    tts_synthetic separately
+- id: AC4
+  text: Given insufficient data, when a metric cannot be computed, then it shows insufficient data instead of zero
+test_plan:
+  unit:
+  - QualityDashboard.test
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - empty
+  - data
+  - error
+  copy_keys:
+  - quality.insufficient
+  tokens:
+  - admin.chart
+  motion_tier: product
+  a11y:
+  - chart text alternative
+  goldens: []
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

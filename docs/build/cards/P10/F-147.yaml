@@ -1,0 +1,113 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P10
+epic: E-P10-ME
+hub: Me
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: Auth security P0-20/P0-25 lockout and enumeration fixes
+token_budget: 80000
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f_147.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+p0_area: true
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+test_plan:
+  unit:
+  - lockout counter
+  - generic error mapping
+  integration:
+  - auth providers and verification
+  e2e:
+  - signup verify login
+  a11y:
+  - form field semantics
+  content: []
+tags: []
+id: F-147
+title: Elevate Sign in, Sign up & Email Verification
+req_ids:
+- F-147
+- F-147.D
+- F-147.E
+- F-147.U
+- F-147.L
+- P0-20
+- P0-25
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P1-AUTH
+file_allowlist:
+- screens/auth/world_class_login_screen.dart
+- screens/auth/world_class_signup_screen.dart
+- screens/auth/forgot_password_screen.dart
+- screens/auth/email_verification_screen.dart
+- screens/auth/login_screen.dart
+- screens/auth/sign_up_screen.dart
+context_anchors:
+- ELEVATION.md#§18.7:L5569-L5583
+delta:
+  current_state: World-class auth works; legacy login screens unrouted; P0-20 logout and P0-25 enumeration issues.
+  defects_to_fix:
+  - Release logout regression
+  - Login enumeration and missing lockout
+  elevation_to_build:
+  - Try-before-signup first lesson without account
+  - Passkey, Google or Apple, phone OTP, and email paths
+  - Generic errors and lockout after failed attempts
+  ux_and_render:
+  - Short branded auth flows
+  hub_placement: Before the app; Me → Account
+  unlock_stage: per §17.4
+  harvest_list:
+  - Retire login_screen.dart and sign_up_screen.dart routes
+acceptance_criteria:
+- id: AC1
+  text: Given a fresh install, when user completes first lesson, then try-before-signup works before account creation.
+- id: AC2
+  text: Given repeated failed login, when threshold exceeded, then lockout applies with generic messaging per P0-25.
+- id: AC3
+  text: Given app upgrade, when user opens app, then existing session persists without P0-20 mass logout.
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

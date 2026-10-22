@@ -1,0 +1,64 @@
+charter: v2
+id: P5-055
+kind: build
+title: Enforce Waves 2-4 label rules and Expert L0
+phase: P5
+epic: E-P5-QUALITY
+req_ids:
+- CP-§6-06
+- CP-§6-07
+- CP-§6-15
+depends_on:
+- P5-011
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- tools/content/wave_label_rules.py
+- test/content/wave_label_rules_test.py
+context_anchors:
+- CURRICULUM.md#§6:L665-L670
+acceptance_criteria:
+- id: AC1
+  text: Given a Wave 2-4 language item below L0, when labelled Beta without a lexicon source, then CI fails
+- id: AC2
+  text: Given L0 Taste content, when published, then it is Expert-reviewed
+- id: AC3
+  text: Given Waves 2-4, when sampled, then the Expert-reviewed target is ≤2%
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - wave label checks
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G7
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

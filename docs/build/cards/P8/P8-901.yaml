@@ -1,0 +1,80 @@
+charter: v2
+id: P8-901
+kind: build
+title: 'GameKit: write results to learner graph and SRS'
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.2-02
+- EP-§10.1-07
+- EP-§10.1-08
+depends_on:
+- E-P8-PLAY
+- P8-900
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/games/gamekit/game_session.dart
+- lib/games/gamekit/game_result.dart
+- lib/games/gamekit/game_engine_service.dart
+- lib/games/learning_game_adapter.dart
+- lib/learning/game_integration/learning_game.dart
+- lib/learning/learner_model/learner_model_service.dart
+- lib/services/learning/spaced_repetition_service.dart
+context_anchors:
+- ELEVATION.md#§10.1:L1665-L1666
+- ELEVATION.md#§10.2:L1670-L1676
+acceptance_criteria:
+- id: AC1
+  text: Given a completed answer in any GameKit game, when the turn resolves, then exactly one learner-model event (item id,
+    skill, correct/incorrect, error type, timestamp) is written before the next turn starts
+- id: AC2
+  text: Given an answer event, when it is written, then the item's SRS due date is updated by the same scheduler used in lesson
+    practice
+- id: AC3
+  text: Given the device is offline, when turns resolve, then events queue durably and sync in order with no duplicates after
+    reconnect
+- id: AC4
+  text: Given a session of K answered turns, when the session ends, then the learner model holds K events for that session
+    id and a test fails if any game bypasses the writer
+test_plan:
+  unit:
+  - event shape
+  - dedupe by turn id
+  integration:
+  - offline queue then sync
+  - SRS parity with lesson path
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

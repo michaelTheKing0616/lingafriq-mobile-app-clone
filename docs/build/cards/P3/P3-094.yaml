@@ -1,0 +1,71 @@
+charter: v2
+id: P3-094
+kind: build
+title: Extract 1,104 hard-coded strings to ARB
+phase: P3
+epic: E-P3-A11Y-I18N
+req_ids:
+- EP-§13.8-01
+- EP-§13.8-02
+depends_on:
+- P3-013
+- P3-030
+size: L
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: tool-driven extraction, T1 workable'
+token_budget: 150000
+file_allowlist:
+- l10n.yaml
+- lib/l10n/app_en.arb
+- scripts/i18n/extract_strings.py
+- scripts/i18n/string_baseline.json
+context_anchors:
+- ELEVATION.md#§13.8:L1943
+acceptance_criteria:
+- id: AC1
+  text: Given lib/, when the extractor scans, then it reports the 1,104 baseline and writes keys to lib/l10n/app_en.arb by
+    feature prefix
+- id: AC2
+  text: Given shell and onboarding code, when extracted, then 0 hard-coded UI strings remain there
+- id: AC3
+  text: Given the ratchet, when a new hard-coded string is added anywhere, then CI fails; the remaining count is printed per
+    run
+- id: AC4
+  text: Given placeholders and plurals, when extracted, then ICU syntax is valid and a malformed message fails the build
+test_plan:
+  unit:
+  - ICU validity
+  - key naming
+  integration:
+  - ratchet
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

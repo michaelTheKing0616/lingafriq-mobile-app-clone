@@ -1,0 +1,71 @@
+charter: v2
+id: P1-053
+kind: build
+title: Build rate-limit and lockout test suite
+phase: P1
+epic: E-P1-AUTH
+req_ids:
+- P0-25
+- RM-P0-12
+depends_on:
+- E-P0-INTAKE
+- P1-043
+- P1-044
+size: M
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 0
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T3
+  reviewer: T2
+  justification: score 4; blast 2; security/crypto tester
+token_budget: 70000
+file_allowlist:
+- node-backend/src/tests/security/rateLimit.spec.ts
+- node-backend/src/tests/security/lockout.spec.ts
+context_anchors:
+- ELEVATION.md#§1:L377-L386
+- ELEVATION.md#§16.1:L2057
+acceptance_criteria:
+- id: AC1
+  text: Given 11 login requests in a minute from one IP, when sent, then the 11th returns 429
+- id: AC2
+  text: Given repeated failures against one account from many IPs, when sent, then backoff engages per P1-044 with growing
+    Retry-After
+- id: AC3
+  text: Given unknown and known accounts, when attacked, then failure responses are identical in body and status
+- id: AC4
+  text: Given the suite, when run in CI, then results are deterministic using a fake clock
+test_plan:
+  unit: []
+  integration:
+  - rate-limit and lockout suite
+  security:
+  - enumeration comparison
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G1
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

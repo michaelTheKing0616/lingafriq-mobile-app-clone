@@ -1,0 +1,108 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P9
+epic: E-P9-SAFETY
+hub: Village
+gate: G9
+status: Draft
+size: M
+token_budget: 80000
+user_facing: true
+p0_area: true
+tags:
+- under18_social
+external_blockers: []
+risks: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+id: F-130
+title: Elevate Snaps and Streaks
+req_ids:
+- F-130
+- F-130.D
+- F-130.E
+- F-130.U
+- F-130.L
+- P0-12
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P9-SAFETY
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: real deletion and minor circle restrictions'
+file_allowlist:
+- lib/screens/snap/snap_camera_screen.dart
+- lib/screens/snap/snap_inbox_screen.dart
+- lib/screens/snap/snap_story_feed_screen.dart
+- lib/screens/snap/snap_streaks_screen.dart
+- lib/screens/snap/snap_viewer_screen.dart
+context_anchors:
+- ELEVATION.md#§18.6:L5340-L5352
+delta:
+  current_state: Snap routes work but content never actually disappears.
+  defects_to_fix:
+  - Privacy promise broken; elevated risk for minors.
+  elevation_to_build:
+  - 'Clips: photo or 10s video with target-language phrase overlay from Point and Say hints.'
+  - Streaks count only when both sides use the language; real deletion; kids limited to circles.
+  ux_and_render:
+  - Camera with phrase chips and diacritic-safe AR text.
+  hub_placement: Village → Clips; Lens camera.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given a sent clip, when the TTL expires, then media is deleted server-side and unavailable in client cache.
+- id: AC2
+  text: Given an under-18 account, when sending clips, then recipients are limited to approved circles only.
+- id: AC3
+  text: Given a streak, when counted, then both sides must include target-language use verified by server events.
+test_plan:
+  unit:
+  - domain helpers
+  integration:
+  - API and navigation
+  e2e:
+  - happy path
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content: []
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - snap_clips.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux
+  - adaptive/14-safety-and-high-stakes

@@ -1,0 +1,75 @@
+charter: v2
+id: P10-931
+kind: build
+title: Emit learning events from the app
+phase: P10
+epic: E-P10-ANALYTICS
+req_ids:
+- EP-§15-08
+- EP-§15-09
+- EP-§15-11
+- EP-§15-13
+depends_on:
+- P10-930
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 5; blast 1
+token_budget: 60000
+file_allowlist:
+- lib/services/analytics_service.dart
+- lib/services/monitoring/performance_analytics.dart
+- lib/services/offline/offline_analytics.dart
+context_anchors:
+- ELEVATION.md#§15:L1994-L1996
+acceptance_criteria:
+- id: AC1
+  text: Given a session opens, when it starts, then one session_started event is emitted.
+- id: AC2
+  text: Given an item is answered, when it completes, then item_answered carries item_id, correct, latency and hints and no
+    answer text.
+- id: AC3
+  text: Given a can-do is demonstrated, when the server verifies it, then one cando_demonstrated event is emitted by the server.
+- id: AC4
+  text: Given a learner reports content, when they submit, then one content_reported event is emitted with item id and reason
+    code only.
+- id: AC5
+  text: Given the device is offline, when events occur, then they queue and send once in order after reconnect, and a failed
+    send is retried then dropped with a counter.
+test_plan:
+  unit:
+  - payload shape
+  integration:
+  - offline queue
+  security:
+  - no free text in payload
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

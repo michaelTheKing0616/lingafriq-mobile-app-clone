@@ -1,0 +1,21 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+RM-MS-10,ELEVATION,§16.4:L2113,metric,16.4 Moonshots (9–24 months),MS,Tope,,Open
+RM-MS-01,ELEVATION,§16.4:L2115-L2119,requirement,95+ languages via the Living Archive (Wave 4 community starter [XL],MS,Tope,,Open
+RM-MS-08,ELEVATION,§16.4:L2115,metric,95+ languages via the Living Archive,MS,Tope,,Open
+RM-MS-02,ELEVATION,§16.4:L2120-L2126,external,Open tone corpus and on-device tone model for 10+ tonal [XL],MS,external,,Open
+RM-MS-09,ELEVATION,§16.4:L2120-L2121,metric,on-device tone model for 10+ tonal,MS,external,,Open
+RM-MS-03,ELEVATION,§16.4:L2127-L2133,requirement,"""Grandma Mode"": family members record phrases in their own dialect [L]",MS,agent,,Open
+RM-MS-12,ELEVATION,§16.4:L2131-L2132,constraint,generates authentic dialect content with consent,MS,agent,,Open
+RM-MS-04,ELEVATION,§16.4:L2134-L2138,external,Living history: personas grounded in archives (with museum and university partners) [XL],MS,external,,Open
+RM-MS-05,ELEVATION,§16.4:L2139-L2141,requirement,"Ajami, Nsibidi, Adinkra and Ge'ez script journeys [L]",MS,agent,,Open
+RM-MS-06,ELEVATION,§16.4:L2142-L2146,requirement,Heritage Language Fund: a share of revenue funds documentation of endangered [M],MS,Tope,,Open
+RM-MS-11,ELEVATION,§16.4:L2143-L2144,requirement,with progress shown in-app,MS,agent,,Open
+RM-MS-07,ELEVATION,§16.4:L2147-L2151,external,"Teacher marketplace: verified native tutors for live sessions, with fair revenue [L]",MS,external,,Open
+CP-§2.4-later-01,CURRICULUM,§2.4:L462,requirement,Later waves. Reuse the same template.,P1,agent,,Open
+CP-§2.4-later-02,CURRICULUM,§2.4:L462,requirement,1. an orthography authority;,P1,agent,,Open
+CP-§2.4-later-03,CURRICULUM,§2.4:L462-L463,requirement,2. one licensed or public-domain lexicon;,P1,agent,,Open
+CP-§2.4-later-04,CURRICULUM,§2.4:L463,requirement,3. one reference grammar;,P1,agent,,Open
+CP-§2.4-later-05,CURRICULUM,§2.4:L463,requirement,4. a CC-BY or PD corpus.,P1,agent,,Open
+CP-§2.4-later-06,CURRICULUM,§2.4:L464,requirement,Use Lanfrica to discover sources,P1,agent,,Open
+CP-§2.4-later-07,CURRICULUM,§2.4:L464,requirement,check each one against FSI's and the Peace Corps' language lists,P1,agent,,Open
+CP-§2.4-later-08,CURRICULUM,§2.4:L464-L465,constraint,A language without a lexicon source cannot pass the gates beyond L0,P1,agent,,Open

@@ -1,0 +1,71 @@
+charter: v2
+id: P2-031
+kind: build
+title: Add health, readiness probes and graceful shutdown
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.4-13
+- EP-§13.4-14
+- EP-§13.4-15
+depends_on:
+- E-P1-CONTAINMENT
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/routes/health.routes.ts
+- node-backend/src/app.ts
+- node-backend/src/server.ts
+- infra/lb/README.md
+context_anchors:
+- ELEVATION.md#§13.4:L1903
+- ELEVATION.md#§13.4:L1903-L1904
+- ELEVATION.md#§13.4:L1904
+acceptance_criteria:
+- id: AC1
+  text: Given a dependency down, when /ready is called, then it returns 503 with the failing dependency name while /health
+    stays 200
+- id: AC2
+  text: Given SIGTERM, when received, then the server stops accepting, drains in-flight requests within the grace period and
+    closes sockets and DB
+- id: AC3
+  text: Given the production deploy, when inspected, then at least two API instances sit behind the load balancer
+test_plan:
+  unit: []
+  integration:
+  - SIGTERM under load, no dropped requests
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

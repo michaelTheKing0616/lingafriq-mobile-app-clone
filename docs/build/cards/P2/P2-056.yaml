@@ -1,0 +1,83 @@
+charter: v2
+id: P2-056
+kind: build
+title: Map unit checkpoints to can-dos and credential evidence
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§11.3-16
+- EP-§11.3-17
+- EP-§11.3-18
+- EP-§11.3-19
+- EP-§11.3-20
+depends_on:
+- E-P1-CONTAINMENT
+- P2-050
+- P2-053
+- E-P5-CONTENT-REAL
+- E-P6-SCORER
+size: L
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 2
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 3, coupling 2, depth 1'
+token_budget: 150000
+file_allowlist:
+- lib/services/placement/checkpoint_service.dart
+- lib/services/passport/credential_evidence_service.dart
+- node-backend/src/services/credentialEvidence.service.ts
+- test/placement/checkpoint_test.dart
+context_anchors:
+- ELEVATION.md#§11.3:L1807
+- ELEVATION.md#§11.3:L1808
+- ELEVATION.md#§11.3:L1808-L1809
+- ELEVATION.md#§11.3:L1809
+acceptance_criteria:
+- id: AC1
+  text: Given a unit, when its checkpoint is built, then every item maps to the unit's can-do statements
+- id: AC2
+  text: Given a passed checkpoint, when recorded, then credential evidence stores item ids, scores and calibration status
+- id: AC3
+  text: Given non-Passport contexts, when taken, then no proctoring is applied; given Passport contexts, then proctoring requires
+    explicit consent
+- id: AC4
+  text: Given uncalibrated items or no real scorer, when passing is computed, then no credential evidence is issued
+test_plan:
+  unit:
+  - can-do coverage
+  - evidence gating
+  integration:
+  - pass to evidence record
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- issues_credential
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers:
+- EXT-18
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

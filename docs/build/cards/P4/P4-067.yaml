@@ -1,0 +1,64 @@
+charter: v2
+id: P4-067
+kind: build
+title: Publish reviewed items with a quality label
+phase: P4
+epic: E-P4-PIPELINE
+req_ids:
+- CP-§3.1-09
+depends_on:
+- P4-064
+- P4-065
+size: S
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1, depth 1, size 0'
+token_budget: 25000
+file_allowlist:
+- tools/content_engine/pipeline/publish.py
+- tools/content_engine/tests/test_publish.py
+context_anchors:
+- CURRICULUM.md#§3.1:L498-L498
+acceptance_criteria:
+- id: AC1
+  text: Given an item routed to review, when a reviewer approves, then it publishes with a label (Beta, Reviewed or Native-verified)
+    and reviewer id
+- id: AC2
+  text: Given an item not yet reviewed, when publish is called, then it fails with REVIEW_REQUIRED
+test_plan:
+  unit:
+  - happy path
+  - typed error path
+  integration:
+  - stage contract with fixtures
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

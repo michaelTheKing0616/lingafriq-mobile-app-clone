@@ -1,0 +1,68 @@
+charter: v2
+id: P13-010
+kind: adr
+title: Decide Heritage Language Fund mechanics and in-app progress
+phase: P13
+epic: E-P13-SCALE
+req_ids:
+- RM-MS-06
+- RM-MS-11
+depends_on:
+- E-P12-RELEASE
+- P13-004
+- E-P10-ME
+size: S
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 2, coupling 1, depth 1'
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§16.4:L2142-L2146
+acceptance_criteria:
+- id: AC1
+  text: Given revenue, when the fund share is defined, then the ADR states the percentage owner, the accounting method and
+    the audit trail, with no figure assumed in the ADR
+- id: AC2
+  text: Given documentation projects, when funded, then the ADR defines selection criteria and public reporting
+- id: AC3
+  text: Given the in-app progress display, when specified, then it shows only verified amounts and project states, never projected
+    figures
+- id: AC4
+  text: Given the ADR, when accepted, then legal and tax review is listed as a prerequisite
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks:
+- Payments and revenue accounting touched; legal review is human-run
+- Priority MS; design and ADR only, no build before P13-004 gate passes
+gate: G13
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - prime/diagram-design

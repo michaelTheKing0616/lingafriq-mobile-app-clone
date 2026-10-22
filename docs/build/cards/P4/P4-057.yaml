@@ -1,0 +1,69 @@
+charter: v2
+id: P4-057
+kind: build
+title: Run independent cross-check with a second model
+phase: P4
+epic: E-P4-PIPELINE
+req_ids:
+- CP-§3.1-04
+- CP-§3.1-19
+depends_on:
+- P4-056
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 1, coupling 2, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- tools/content_engine/pipeline/crosscheck.py
+- tools/content_engine/tests/test_crosscheck.py
+context_anchors:
+- CURRICULUM.md#§3.1:L483-L486
+acceptance_criteria:
+- id: AC1
+  text: Given an item, when cross-checked, then a GPT-5 class model from a different family receives the item without the
+    generator reasoning
+- id: AC2
+  text: Given the two models disagree, when scored, then a third model acts as tie-breaker and all three opinions are stored
+    on the item
+- id: AC3
+  text: Given the cross-check model call fails, when run, then the item is marked XCHECK_ERROR and cannot publish
+test_plan:
+  unit:
+  - happy path
+  - typed error path
+  integration:
+  - stage contract with fixtures
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-01
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

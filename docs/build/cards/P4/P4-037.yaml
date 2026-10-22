@@ -1,0 +1,73 @@
+charter: v2
+id: P4-037
+kind: build
+title: Populate kits for pcm, sw, zu and xh
+phase: P4
+epic: E-P4-LANGUAGE-KITS
+req_ids:
+- CP-§3.1-01
+- CP-§3.1-10
+- CP-§3.1-11
+depends_on:
+- P4-021
+- P4-028
+- P4-030
+- P4-032
+- P4-034
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 2, coupling 1, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- tools/content_engine/kits/pcm/kit.yaml
+- tools/content_engine/kits/sw/kit.yaml
+- tools/content_engine/kits/zu/kit.yaml
+- tools/content_engine/kits/xh/kit.yaml
+- tools/content_engine/tests/test_kits_b.py
+context_anchors:
+- CURRICULUM.md#§3.1:L469-L471
+acceptance_criteria:
+- id: AC1
+  text: Given the sw, zu and xh kits, when validated, then each has noun-class and concord tables, G2P rules, phone inventory
+    and dialect standard
+- id: AC2
+  text: Given the pcm kit, when validated, then it carries the NLA normalisation table reference and high-tone marking policy
+- id: AC3
+  text: Given any kit, when a section is empty, then validation fails with KIT_SECTION_MISSING
+test_plan:
+  unit:
+  - schema valid per kit
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - linguist signs kit
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

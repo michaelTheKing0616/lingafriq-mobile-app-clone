@@ -1,0 +1,123 @@
+charter: v2
+kind: feature
+inherits: FEATURE_BASE
+phase: P10
+epic: E-P10-ME
+hub: Me
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: Me hub screen revive or consolidation; no real-time audio
+token_budget: 80000
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f_137.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+test_plan:
+  unit:
+  - profile merge field mapping
+  - stamp list from API
+  integration:
+  - single edit route from Me tab
+  e2e:
+  - edit profile and see hero refresh
+  a11y:
+  - avatar hero semantics, 200% text on pills
+  content: []
+tags:
+- issues_credential
+- enables_persona
+id: F-137
+title: Elevate Profile
+req_ids:
+- F-137
+- F-137.D
+- F-137.E
+- F-137.U
+- F-137.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P11-PERSONAS-AVATARS
+- E-P5-CONTENT-REAL
+- E-P6-SCORER
+file_allowlist:
+- screens/tabs_view/profile/profile_tab_material3.dart
+- screens/profile/profile_screen_material3.dart
+- screens/tabs_view/profile/profile_edit_screen.dart
+- screens/settings/edit_profile_screen.dart
+- screens/profile/user_profile_screen.dart
+context_anchors:
+- ELEVATION.md#§18.7:L5434-L5448
+delta:
+  current_state: Profile tab works; duplicate edit screens and unrouted user profile screen.
+  defects_to_fix:
+  - Duplicate edit flows
+  - Profile emphasizes stats over identity
+  elevation_to_build:
+  - My LingAfriq identity with avatar, languages, levels, optional heritage story
+  - Passport stamps, contributions, and circles on one profile
+  - Single consolidated edit flow
+  ux_and_render:
+  - Avatar hero
+  - Language pills
+  - Passport stamp shelf
+  hub_placement: Me (avatar, top-left)
+  unlock_stage: per §17.4
+  harvest_list:
+  - Merge edit_profile_screen and profile_edit_screen into one flow
+  - Route or retire user_profile_screen.dart into unified profile
+acceptance_criteria:
+- id: AC1
+  text: Given two edit routes existed, when the user edits profile, then only one edit flow is reachable and saves identity
+    fields.
+- id: AC2
+  text: Given passport data from server, when profile loads, then stamp shelf shows verified credentials not client-fabricated
+    stamps.
+- id: AC3
+  text: Given no credential backend yet, when stamps are unavailable, then the shelf shows honest empty state not placeholder
+    stamps.
+- id: AC4
+  text: Given avatar config exists, when profile renders, then avatar hero uses persona system with Tone Lens on target-language
+    labels.
+skills:
+  worker:
+  - prime/form-design
+  - prime/mobile-app-ui-design
+  - prime/ux-writing

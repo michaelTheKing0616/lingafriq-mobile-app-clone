@@ -1,0 +1,67 @@
+charter: v2
+id: P5-063
+kind: build
+title: Register licensed human audio for yo, ig, ha
+phase: P5
+epic: E-P5-AUDIO
+req_ids:
+- CP-§7-yo-03
+- CP-§7-yo-04
+- CP-§7-ig-02
+- CP-§7-ha-02
+depends_on:
+- P5-058
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- assets/data/audio/licensed_human.json
+- tools/audio/licensed_audio_register.py
+- test/audio/licensed_audio_test.py
+context_anchors:
+- CURRICULUM.md#§7:L710-L729
+acceptance_criteria:
+- id: AC1
+  text: Given FSI Yoruba, Igbo and Hausa tapes, when registered, then they are marked public domain with dated quality, for
+    tone drills
+- id: AC2
+  text: Given Common Voice and FLEURS, when used, then only for their own sentences
+- id: AC3
+  text: Given an entry without licence id, when registered, then it fails LicenceUnregistered
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - register complete
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

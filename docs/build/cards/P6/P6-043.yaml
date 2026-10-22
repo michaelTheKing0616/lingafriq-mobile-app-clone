@@ -1,0 +1,72 @@
+charter: v2
+id: P6-043
+kind: build
+title: 'Enforce honesty rules: unsure state and retry'
+phase: P6
+epic: E-P6-SCORING
+req_ids:
+- EP-§7.4-05
+- EP-§7.4-27
+- EP-§7.4-28
+depends_on:
+- P6-031
+size: M
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T3
+  justification: 'score 8: blast 3, ambiguity 1, coupling 2, depth 2; DSP tester T3'
+token_budget: 70000
+file_allowlist:
+- speech-service/scorer/quality.py
+- speech-service/scorer/honesty.py
+context_anchors:
+- ELEVATION.md#§7.4:L1445-L1447
+acceptance_criteria:
+- id: AC1
+  text: Given audio with clipping above the configured ratio or SNR below threshold, when scored, then the result is unsure
+    with reason clipping or noise and retry_requested true
+- id: AC2
+  text: Given any failure or low confidence, when returned, then no numeric score field is present
+- id: AC3
+  text: Given a fuzz run over random and silent audio, when executed, then zero responses contain a number without a confidence
+    above threshold
+- id: AC4
+  text: Given a scorer exception, when it occurs, then a typed error is returned and never a default score
+test_plan:
+  unit:
+  - clip ratio
+  - snr
+  integration:
+  - retry contract
+  security:
+  - fuzz audio
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

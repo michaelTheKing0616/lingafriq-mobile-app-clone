@@ -1,0 +1,88 @@
+charter: v2
+id: P1-011
+kind: build
+title: Route client AI chat providers through the gateway
+phase: P1
+epic: E-P1-AI-GATEWAY
+req_ids:
+- P0-3
+- RM-P0-02
+depends_on:
+- E-P0-INTAKE
+- P1-007
+- P1-009
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: score 7; blast 3
+token_budget: 70000
+file_allowlist:
+- lib/providers/ai_chat_provider_groq.dart
+- lib/providers/ai_chat_provider.dart
+- lib/services/ai_gateway_client.dart
+- lib/services/env_config.dart
+context_anchors:
+- ELEVATION.md#§1:L114-L129
+- ELEVATION.md#§16.1:L2022-L2025
+acceptance_criteria:
+- id: AC1
+  text: Given the app after this card, when any chat or image feature runs, then every request goes to the backend gateway
+    with the user JWT and no request targets a provider host
+- id: AC2
+  text: Given a gateway error, when the chat fails, then the UI shows a typed error with Retry and no fabricated reply
+- id: AC3
+  text: Given a static scan of lib/, when run, then 0 references to provider hosts or provider key names remain in ai_chat_provider*.dart
+test_plan:
+  unit:
+  - gateway client error mapping
+  integration:
+  - network-mock test asserts hosts
+  security:
+  - static host scan
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - error-retryable
+  - quota-exceeded
+  copy_keys:
+  - ai.error.retry
+  - ai.quota.exceeded
+  tokens:
+  - design-system error and surface tokens
+  motion_tier: product
+  a11y:
+  - error announced to screen reader
+  - retry button 48dp
+  goldens:
+  - ai_error_retry
+  - ai_quota_exceeded
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G1
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/navigation-patterns
+  - prime/mobile-app-ui-design

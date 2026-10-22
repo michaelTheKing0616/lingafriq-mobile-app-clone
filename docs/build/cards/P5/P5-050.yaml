@@ -1,0 +1,51 @@
+charter: v2
+id: P5-050
+kind: verification
+title: Verify Tier B Beta error ≤5% for zu, xh, ha, pcm
+phase: P5
+epic: E-P5-QUALITY
+req_ids:
+- CP-§6-04
+- CP-§6-10
+depends_on:
+- P5-046
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T0
+  tester: T0
+  reviewer: T1
+  justification: verification only; no code
+token_budget: 20000
+file_allowlist: []
+context_anchors:
+- CURRICULUM.md#§6:L645-L654
+acceptance_criteria:
+- id: AC1
+  text: Given isiZulu, isiXhosa, Hausa and Pidgin Beta items, when scored, then each language error rate is ≤5% or the gate
+    fails
+- id: AC2
+  text: Given the result, when recorded, then it is a measured pilot value
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

@@ -1,0 +1,80 @@
+charter: v2
+id: P3-088
+kind: build
+title: Support 200% text without clipping
+phase: P3
+epic: E-P3-A11Y-I18N
+req_ids:
+- EP-§13.7-03
+- EP-§13.7-04
+depends_on:
+- P3-019
+size: M
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 4: blast 0, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- test/goldens/text_scale_200_test.dart
+- lib/design/a11y/text_scale.dart
+context_anchors:
+- ELEVATION.md#§13.7:L1937
+acceptance_criteria:
+- id: AC1
+  text: Given the shell, onboarding and every catalogue component, when rendered at 200% text, then no text clips or overflows
+    (golden)
+- id: AC2
+  text: Given an overflow in a golden run, when detected, then CI fails with widget name
+- id: AC3
+  text: Given 200% text on a 360 dp width, when rendered, then all primary actions stay reachable
+test_plan:
+  unit: []
+  integration:
+  - 200% goldens
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - 200% text
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - 200%
+  copy_keys:
+  - a11y.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/accessibility
+  - prime/fixing-accessibility

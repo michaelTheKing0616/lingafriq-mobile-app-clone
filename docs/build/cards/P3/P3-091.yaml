@@ -1,0 +1,88 @@
+charter: v2
+id: P3-091
+kind: build
+title: Add haptic and visual alternatives and visual pitch path
+phase: P3
+epic: E-P3-A11Y-I18N
+req_ids:
+- EP-§13.7-07
+- EP-§13.7-12
+- EP-§13.7-08
+depends_on:
+- P3-034
+- P3-028
+- P3-029
+size: M
+difficulty:
+  score: 5
+  blast: 0
+  ambiguity: 2
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 0, ambiguity 2, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/design/a11y/cue_alternatives.dart
+- lib/design/tone_lens/tone_lens.dart
+context_anchors:
+- ELEVATION.md#§13.7:L1937-L1941
+acceptance_criteria:
+- id: AC1
+  text: Given a sound-only cue, when played, then a haptic or visual alternative fires per the haptic map
+- id: AC2
+  text: Given a hearing-impaired setting, when on, then pitch feedback uses the Tone Lens contour and text only, with no audio
+    required to complete a lesson item
+- id: AC3
+  text: Given the Tone Lens, when audited, then it passes the greyscale test and is never colour-only
+test_plan:
+  unit:
+  - cue map
+  integration:
+  - hearing-impaired setting
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - not colour-only
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - haptic
+  - visual_only
+  copy_keys:
+  - a11y.cue.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/motion-system
+  - prime/rive
+  - prime/animation-principles

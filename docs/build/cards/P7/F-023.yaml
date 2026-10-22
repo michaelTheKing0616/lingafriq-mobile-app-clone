@@ -1,0 +1,100 @@
+charter: v2
+id: F-023
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate History & History Quiz
+phase: P7
+epic: E-P7-HUBS
+hub: Learn
+req_ids:
+- F-023
+- F-023.D
+- F-023.E
+- F-023.U
+- F-023.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: hub feature delta spec'
+token_budget: 80000
+file_allowlist:
+- lib/history/screens/history_list_screen.dart
+- lib/history_quiz/screens/history_quiz_sections_screen.dart
+context_anchors:
+- ELEVATION.md#§18.3:L3822-L3833
+delta:
+  current_state: History list and quiz sections work from home/drawer pushes.
+  defects_to_fix:
+  - Facts lack sourcing and historian review.
+  elevation_to_build:
+  - Living History stories with sources, persona links, and quizzes citing the story; historian-reviewed.
+  ux_and_render:
+  - Story cards with "Sources" footer and persona portrait chip.
+  hub_placement: Learn → Culture → History; Speak → Personas cross-link.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given a history story, when opened, then sources footer lists reviewed citations.
+- id: AC2
+  text: Given quiz question, when shown, then rationale references the story segment.
+test_plan:
+  unit:
+  - domain rules for feature delta
+  integration:
+  - navigation and data wiring from hub placement
+  e2e:
+  - primary happy path from Lives in entry
+  a11y:
+  - goldens at 100%/200% text
+  - semantics order
+  content:
+  - honest labels on shown curriculum or media
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - learn.f_023.*
+tags: []
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/microinteractions
+  - prime/feedback-patterns

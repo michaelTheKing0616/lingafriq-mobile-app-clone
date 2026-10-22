@@ -1,0 +1,46 @@
+charter: v2
+id: P4-080
+kind: verification
+title: Verify Studio effort estimate
+phase: P4
+epic: E-P4-STUDIO
+req_ids:
+- CP-§9.1-10
+depends_on:
+- P4-069
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: 'score 1: blast 0, ambiguity 1, coupling 0, depth 0, size 0'
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- CURRICULUM.md#§9.1:L788-L789
+acceptance_criteria:
+- id: AC1
+  text: Given the estimate of 10–14 engineer-weeks (2 engineers × 6 weeks), when compared to actuals after P4 gate G4, then
+    the variance is recorded and the estimate marked verified or revised
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- dated evidence note
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

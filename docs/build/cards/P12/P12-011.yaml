@@ -1,0 +1,66 @@
+charter: v2
+id: P12-011
+kind: build
+title: Remove rebuild storms from large Riverpod providers
+phase: P12
+epic: E-P12-RELEASE
+req_ids:
+- EP-§13.6-16
+depends_on:
+- P12-006
+- P12-007
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T1
+  reviewer: T3
+  justification: 'score 7: blast 2, ambiguity 1, coupling 2, depth 2'
+token_budget: 60000
+file_allowlist:
+- lib/providers
+- test/perf/rebuild_count_test.dart
+context_anchors:
+- ELEVATION.md#§13.6:L1932-L1933
+acceptance_criteria:
+- id: AC1
+  text: Given the 5 highest-traffic screens, when a single provider field changes, then widgets not reading that field rebuild
+    0 times, measured by a widget rebuild-count test
+- id: AC2
+  text: Given each large provider, when consumed, then screens use select or split providers rather than watching the whole
+    state
+- id: AC3
+  text: Given the rebuild-count tests, when they run in CI, then a regression fails the build
+test_plan:
+  unit:
+  - rebuild counters
+  integration: []
+  security: []
+  e2e: []
+  perf:
+  - rebuild-count tests
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G12
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

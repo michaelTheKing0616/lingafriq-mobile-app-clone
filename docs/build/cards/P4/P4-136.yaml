@@ -1,0 +1,73 @@
+charter: v2
+id: P4-136
+kind: build
+title: Add pack diff download and per-item history
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.6-06
+- EP-§6.6-22
+depends_on:
+- P4-105
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 2, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/services/content/pack_updater.dart
+- node-backend/src/services/content_pack.service.ts
+- node-backend/src/models/item_history.model.ts
+- test/pack_updater_test.dart
+context_anchors:
+- ELEVATION.md#§6.6:L1321-L1337
+acceptance_criteria:
+- id: AC1
+  text: Given an installed pack version, when a newer one exists, then the app downloads only the diff and verifies its signature
+    before applying
+- id: AC2
+  text: Given a diff that fails verification or an interrupted download, when applying, then the old pack stays active and
+    an error state is shown
+- id: AC3
+  text: Given an item edit, when published, then a history entry (version, author, reason, timestamp) is appended and prior
+    versions remain retrievable
+- id: AC4
+  text: Given a rollback, when requested by a content lead, then the previous pack version is re-issued as a new semver
+test_plan:
+  unit:
+  - pack_updater_test
+  integration:
+  - diff apply and rollback
+  security:
+  - tampered diff rejected
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

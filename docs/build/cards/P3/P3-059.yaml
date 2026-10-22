@@ -1,0 +1,89 @@
+charter: v2
+id: P3-059
+kind: build
+title: Revive Social Audio Following and Scheduled Sessions
+phase: P3
+epic: E-P3-REVIVE
+req_ids:
+- REV-20
+- REV-21
+depends_on:
+- P3-042
+size: M
+difficulty:
+  score: 3
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 3: blast 0, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- lib/screens/social_audio/following_screen.dart
+- lib/screens/social_audio/scheduled_sessions_screen.dart
+context_anchors:
+- ELEVATION.md#§17.5:L2325-L2332
+acceptance_criteria:
+- id: AC1
+  text: Given the hub Village, when the learner opens it, then the entry point leads to /village/radio/following, /village/radio/scheduled
+    and each route is registered in my_app.dart
+- id: AC2
+  text: Given the screen has no data, when it opens, then the empty state shows; given a load error, then the error state
+    shows and no stale data renders
+- id: AC3
+  text: Given the reachability scan from lib/main.dart, when it runs, then every revived screen is reachable from the shell
+- id: AC4
+  text: Given a minor account, when Radio opens, then speaking and hosting stay locked per the minor gate
+test_plan:
+  unit:
+  - route registered
+  integration:
+  - entry from hub
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - semantics
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - default
+  - empty
+  - error
+  - offline
+  copy_keys:
+  - rev.rv_audio.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

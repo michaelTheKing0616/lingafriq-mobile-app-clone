@@ -1,0 +1,93 @@
+charter: v2
+id: P9-914
+kind: build
+title: Let guardians approve circles and classrooms for children
+phase: P9
+epic: E-P9-GUARDIAN
+req_ids:
+- EP-§13.3-03
+depends_on:
+- E-P9-GUARDIAN
+- P9-913
+size: M
+difficulty:
+  score: 5
+  blast: 3
+  ambiguity: 0
+  coupling: 2
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T4
+  justification: 'score 5: blast 3, ambiguity 0, coupling 2, depth 0; gate-critical (security / child safety / legal / design
+    direction): Fable reviews'
+token_budget: 80000
+file_allowlist:
+- node-backend/src/services/guardianApproval.service.ts
+- lib/screens/guardian/approvals_screen.dart
+context_anchors:
+- ELEVATION.md#§13.3:L1892-L1893
+acceptance_criteria:
+- id: AC1
+  text: Given a child asking to join a circle or classroom, when submitted, then a request appears in the guardian hub showing
+    the group name, size, adult members count and moderation status
+- id: AC2
+  text: Given no guardian decision, when 7 days pass, then the request expires and the child is not added
+- id: AC3
+  text: Given guardian approval, when granted, then the child is added and the approval is revocable with immediate effect
+- id: AC4
+  text: Given a circle changing its membership rules after approval, when the change takes effect, then the guardian is notified
+    and approval is re-requested
+test_plan:
+  unit:
+  - approval policy
+  integration:
+  - request-approve-revoke
+  security:
+  - child self-approval
+  e2e: []
+  perf: []
+  a11y:
+  - approvals screen
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - empty
+  - pending
+  - approved
+  - expired
+  - revoked
+  copy_keys:
+  - guardian.approvals.title
+  - guardian.approvals.empty
+  tokens:
+  - color.surface
+  - color.danger
+  - space.4
+  - type.body
+  motion_tier: product
+  a11y:
+  - screen-reader labels
+  - 44pt targets
+  - dynamic type 200%
+  goldens:
+  - guardian_default
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

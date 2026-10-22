@@ -1,0 +1,69 @@
+charter: v2
+id: P1-042
+kind: build
+title: Remove unofficial Google Translate scraper
+phase: P1
+epic: E-P1-LICENCES
+req_ids:
+- P0-26
+- RM-P0-11
+depends_on:
+- E-P0-INTAKE
+size: S
+difficulty:
+  score: 3
+  blast: 2
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: score 3; blast 2
+token_budget: 25000
+file_allowlist:
+- node-backend/src/services/freeGoogleTranslate.service.ts
+- node-backend/package.json
+- lib/screens/live_translate_screen.dart
+context_anchors:
+- ELEVATION.md#§1:L388-L396
+- ELEVATION.md#§16.1:L2054-L2056
+acceptance_criteria:
+- id: AC1
+  text: Given the backend after this card, when searched, then @vitalets/google-translate-api and the service file are absent
+- id: AC2
+  text: Given a translate request, when no licensed provider is configured, then it returns 503 translation_unavailable retryable
+    false and never scraped output
+- id: AC3
+  text: Given the live translate screen, when the 503 arrives, then the client shows an unavailable state
+test_plan:
+  unit:
+  - error mapping
+  integration:
+  - translate 503 test
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G1
+external_blockers:
+- EXT-01
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

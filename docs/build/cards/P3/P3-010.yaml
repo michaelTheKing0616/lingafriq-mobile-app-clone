@@ -1,0 +1,65 @@
+charter: v2
+id: P3-010
+kind: build
+title: Add motion tokens with the ease-out curve
+phase: P3
+epic: E-P3-TOKENS
+req_ids:
+- EP-§3.4-06
+- EP-§3.4-07
+depends_on:
+- P3-007
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 1: blast 0, ambiguity 1, coupling 0'
+token_budget: 25000
+file_allowlist:
+- design/tokens/tokens.json
+- test/design/motion_tokens_test.dart
+context_anchors:
+- ELEVATION.md#§3.4:L826-L828
+acceptance_criteria:
+- id: AC1
+  text: Given product motion tokens, when generated, then the easing equals cubic-bezier(0.23,1,0.32,1) and every duration
+    is <=300 ms
+- id: AC2
+  text: Given a product-tier duration above 300 ms, when the generator runs, then it fails with a typed error
+- id: AC3
+  text: Given the rare tier, when defined, then it is a separate token group usable only by lesson-complete and level-up
+test_plan:
+  unit:
+  - curve value
+  - duration cap
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

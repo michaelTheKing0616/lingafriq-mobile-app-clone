@@ -1,0 +1,64 @@
+charter: v2
+id: P4-015
+kind: build
+title: Exclude IgboAPI data pending licence from Nkọwa okwu
+phase: P4
+epic: E-P4-LICENCES
+req_ids:
+- CP-§2.3-06
+- CP-§2.3-19
+depends_on:
+- P4-010
+size: S
+difficulty:
+  score: 2
+  blast: 1
+  ambiguity: 0
+  coupling: 0
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: 'score 2: blast 1, ambiguity 0, coupling 0, depth 1, size 0'
+token_budget: 25000
+file_allowlist:
+- tools/content_engine/licences/exclusions.yaml
+- tools/content_engine/tests/test_excl_x_igboapi.py
+context_anchors:
+- CURRICULUM.md#§2.3:L244-L245
+acceptance_criteria:
+- id: AC1
+  text: Given the IgboAPI dataset (data CC BY-NC-SA 4.0, code Apache-2.0), when read, then data is excluded and code is allowed
+- id: AC2
+  text: Given a licence from Nkọwa okwu, when recorded with a document reference, then data uses unlock only after EXT-05
+    is Received
+test_plan:
+  unit:
+  - table row present with status excluded
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers:
+- EXT-05
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

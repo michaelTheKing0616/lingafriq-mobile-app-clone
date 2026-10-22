@@ -1,0 +1,87 @@
+charter: v2
+id: P3-092
+kind: build
+title: Honour reduced motion with gentler animation
+phase: P3
+epic: E-P3-A11Y-I18N
+req_ids:
+- EP-§13.7-10
+- EP-§3.4-35
+depends_on:
+- P3-010
+- P3-028
+size: S
+difficulty:
+  score: 2
+  blast: 0
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 2: blast 0, ambiguity 1, coupling 1'
+token_budget: 25000
+file_allowlist:
+- lib/design/motion/motion_scope.dart
+- scripts/lint/motion_reduced.py
+context_anchors:
+- ELEVATION.md#§13.7:L1939
+- ELEVATION.md#§3.4:L849
+acceptance_criteria:
+- id: AC1
+  text: Given the system reduce-motion setting, when on, then celebrations and transitions use a gentler variant and are not
+    removed
+- id: AC2
+  text: Given reduced motion, when a rare-tier celebration plays, then it is a fade or scale under 300 ms with a static end
+    state
+- id: AC3
+  text: Given a widget animates without reading the setting, when linted, then CI fails
+test_plan:
+  unit:
+  - gentler variant
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - reduced motion
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - normal
+  - reduced
+  copy_keys:
+  - motion.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: rare
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/motion-system
+  - prime/rive
+  - prime/animation-principles

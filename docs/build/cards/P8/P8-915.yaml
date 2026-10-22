@@ -1,0 +1,107 @@
+charter: v2
+id: P8-915
+kind: build
+title: Revive the game mastery results screen
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.1-10
+depends_on:
+- E-P8-PLAY
+- P8-901
+- E-P3-DESIGN-SYSTEM
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T1
+  justification: 'score 5: blast 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/screens/games/game_mastery_results_screen.dart
+- lib/games/gamekit/game_result.dart
+- lib/games/gamekit/universal_game_screen.dart
+- lib/learning/learner_model/learner_skill_state.dart
+context_anchors:
+- ELEVATION.md#§10.1:L1666-L1668
+acceptance_criteria:
+- id: AC1
+  text: Given any finished GameKit session, when results show, then the mastery results screen is the destination and lists
+    skills touched with before and after state from the learner model
+- id: AC2
+  text: Given a skill with no measured change, when results show, then it is listed as 'no change', not as improved
+- id: AC3
+  text: Given the screen's old static data, when this card completes, then all figures come from the session's learner-model
+    events
+- id: AC4
+  text: Given the reachability scan from lib/main.dart, when it runs, then the mastery results screen and the GameKit-based
+    Proverb Unlocker rewrite are reachable (the latter via P8-925)
+test_plan:
+  unit:
+  - delta computation
+  integration:
+  - results from stored events
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - ready
+  - playing
+  - correct
+  - wrong
+  - why_wrong
+  - results
+  - error
+  - offline
+  - practice_mode
+  copy_keys:
+  - games.game_mastery_results.title
+  - games.game_mastery_results.instructions
+  - games.game_mastery_results.why_wrong
+  - games.game_mastery_results.practice_label
+  - games.game_mastery_results.error
+  tokens:
+  - color.surface.game
+  - color.feedback.correct
+  - color.feedback.wrong
+  - space.4
+  - radius.card
+  - type.title
+  motion_tier: product
+  a11y:
+  - screen-reader labels on every answer control
+  - reduced-motion variant
+  - correctness shown by icon and text not colour alone
+  - touch targets ≥48dp
+  goldens:
+  - game_mastery_results_playing
+  - game_mastery_results_why_wrong
+  - game_mastery_results_results
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

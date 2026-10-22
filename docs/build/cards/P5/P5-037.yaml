@@ -1,0 +1,54 @@
+charter: v2
+id: P5-037
+kind: design
+title: Design autonomy, competence and relatedness without streak pressure
+phase: P5
+epic: E-P5-A1
+req_ids:
+- EP-§6.2-25
+- EP-§6.2-26
+depends_on:
+- P5-015
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 3: blast 1, ambiguity 1, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§6.2:L1204-L1210
+acceptance_criteria:
+- id: AC1
+  text: Given the learner, when choosing, then themes can be selected (autonomy)
+- id: AC2
+  text: Given progress, when displayed, then visible skill growth is shown (competence)
+- id: AC3
+  text: Given social features, when designed, then relatedness is supported without streak pressure as the main driver
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/hooked-ux
+  - prime/feedback-patterns
+  - prime/onboarding-ux

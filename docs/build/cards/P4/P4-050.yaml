@@ -1,0 +1,66 @@
+charter: v2
+id: P4-050
+kind: build
+title: Lint placeholders, empty fields and broken JSON
+phase: P4
+epic: E-P4-LINTERS
+req_ids:
+- CP-§3.3-18
+- CP-§3.2-08
+depends_on:
+- P4-039
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 0
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 3: blast 1, ambiguity 1, coupling 0, depth 1, size 0'
+token_budget: 25000
+file_allowlist:
+- tools/content_engine/linters/placeholders.py
+- tools/content_engine/tests/test_placeholders.py
+context_anchors:
+- CURRICULUM.md#§3.3:L539-L539
+- CURRICULUM.md#§3.2:L517-L517
+acceptance_criteria:
+- id: AC1
+  text: Given an item matching /word\d|example meaning|sample|lorem|TODO/i, when linted, then it fails with PLACEHOLDER_TEXT
+- id: AC2
+  text: Given an empty required field or JSON not matching the schema, when linted, then it fails with SCHEMA_INVALID
+- id: AC3
+  text: Given the CI job, when any bundle contains a placeholder, then the merge is blocked
+test_plan:
+  unit:
+  - pass and fail fixtures
+  integration:
+  - CI blocks merge on failure
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- placeholder_linter
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,121 @@
+charter: v2
+id: P8-927
+kind: build
+title: 'Flagship: Fidel Flight / Script Sprint'
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- EP-§10.3-08
+- EP-§10.3-08a
+depends_on:
+- P8-900
+- P8-901
+- P8-909
+- P8-912
+- E-P4-CONTENT-ENGINE
+- E-P3-DESIGN-SYSTEM
+size: L
+difficulty:
+  score: 9
+  blast: 2
+  ambiguity: 2
+  coupling: 2
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 9: blast 2, coupling 2'
+token_budget: 150000
+file_allowlist:
+- lib/games/script_sprint/script_sprint_game.dart
+- lib/games/script_sprint/script_sprint_screen.dart
+- lib/games/script_sprint/handwriting_recognizer.dart
+- lib/games/script_sprint/script_sets.dart
+- lib/games/gamekit/all_games_registry.dart
+context_anchors:
+- ELEVATION.md#§10.3:L1748-L1753
+acceptance_criteria:
+- id: AC1
+  text: Given a script set (Ge'ez, N'Ko, Adlam or Tifinagh), when a flight round starts, then the learner recognises and traces
+    characters while flying
+- id: AC2
+  text: Given a stroke input, when recognised, then recognition runs on device with no network call and no stroke data is
+    uploaded
+- id: AC3
+  text: Given recognition confidence is below threshold, when a character is traced, then the game shows an unsure state and
+    lets the learner retry
+- id: AC4
+  text: Given the set of characters, when the pool builds, then each comes with a verified stroke order and sound from the
+    script records
+- id: AC5
+  text: Given a script without a verified recogniser model, when the game opens, then that script is hidden with a 'not yet
+    available' reason
+test_plan:
+  unit:
+  - confidence threshold
+  integration:
+  - on-device recogniser fake
+  security:
+  - no stroke egress
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - stroke-order fixtures per script
+user_facing: true
+ux_spec:
+  states:
+  - loading
+  - ready
+  - playing
+  - correct
+  - wrong
+  - why_wrong
+  - results
+  - error
+  - offline
+  - practice_mode
+  - recognition_unsure
+  - script_unavailable
+  copy_keys:
+  - games.script_sprint.title
+  - games.script_sprint.instructions
+  - games.script_sprint.why_wrong
+  - games.script_sprint.practice_label
+  - games.script_sprint.error
+  tokens:
+  - color.surface.game
+  - color.feedback.correct
+  - color.feedback.wrong
+  - space.4
+  - radius.card
+  - type.title
+  motion_tier: product
+  a11y:
+  - screen-reader labels on every answer control
+  - reduced-motion variant
+  - correctness shown by icon and text not colour alone
+  - touch targets ≥48dp
+  goldens:
+  - script_sprint_playing
+  - script_sprint_why_wrong
+  - script_sprint_results
+tags:
+- uses_source
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

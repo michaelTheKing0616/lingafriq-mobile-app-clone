@@ -1,0 +1,77 @@
+charter: v2
+id: P4-123
+kind: build
+title: Build native recording ingest and forced alignment
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.4-47
+- EP-§6.4-61
+- EP-§6.4-73
+- EP-§6.6-15
+depends_on:
+- P4-101
+- P4-105
+size: M
+difficulty:
+  score: 8
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 2, ambiguity 2, coupling 1'
+token_budget: 60000
+file_allowlist:
+- tools/content_pipeline/audio_ingest.py
+- tools/content_pipeline/forced_align.py
+- tools/content_pipeline/audio_manifest.py
+- test/content/test_audio_ingest.py
+context_anchors:
+- ELEVATION.md#§6.4.1:L1264-L1292
+- ELEVATION.md#§6.6:L1321-L1337
+acceptance_criteria:
+- id: AC1
+  text: Given a recording, when ingested, then it is stored under its content hash with voice_id, speed natural or slow, consent
+    id and audio.kind human
+- id: AC2
+  text: Given each item, when aligned, then word and phone alignment is produced and an alignment failure marks the item ALIGN_FAILED
+    instead of defaulting timings
+- id: AC3
+  text: Given curriculum audio, when kind is tts_synthetic, then it is allowed only as labelled interim per D1/D6 and flagged
+    for native replacement by exposure rank
+- id: AC4
+  text: Given an item with no natural take or no slow take, when validated, then COVERAGE_GAP names the missing take
+test_plan:
+  unit:
+  - test_audio_ingest
+  integration:
+  - aligner on sample audio
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- aligner choice is an engineering decision at build time
+gate: G4
+external_blockers:
+- EXT-13
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

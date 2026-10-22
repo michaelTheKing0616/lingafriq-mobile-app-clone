@@ -1,0 +1,93 @@
+charter: v2
+id: P11-017
+kind: build
+title: Build quest scenes, ambient sound and Tone Lens moment
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§8.2-06
+- EP-§8.2-09
+- EP-§8.2-10
+depends_on:
+- E-P1-CONTAINMENT
+- P11-016
+- P11-041
+- E-P6-SCORER
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 1, coupling 2, depth 0'
+token_budget: 70000
+file_allowlist:
+- lib/ai/personas/quests/yaa_asantewaa/scene_chapter1.dart
+- assets/audio/quests/
+context_anchors:
+- ELEVATION.md#§8.2:L1505-L1508
+acceptance_criteria:
+- id: AC1
+  text: Given a chapter, when opened, then an era-accurate illustrated scene plays with ambient sound (talking drums) and
+    respects mute and reduced motion.
+- id: AC2
+  text: Given the greeting step, when the Tone Lens is on, then tone feedback comes from the real scorer and an "unsure" state
+    is shown when confidence is low.
+- id: AC3
+  text: Given the learner picks the respectful option, when confirmed, then the avatar kneels via the activity enum; the other
+    option never kneels.
+test_plan:
+  unit:
+  - option to kneel mapping
+  integration: []
+  security: []
+  e2e:
+  - greet flow
+  perf: []
+  a11y:
+  - scene description
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - playing
+  - tone_lens_on
+  - unsure
+  - kneeling
+  - muted
+  copy_keys:
+  - quest.scene.alt
+  - quest.tonelens.unsure
+  tokens:
+  - scene.overlay
+  motion_tier: rare
+  a11y:
+  - scene alt text
+  - captions for ambient sound
+  goldens:
+  - scene_chapter1
+tags:
+- shows_score
+- enables_persona
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers:
+- EXT-16
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

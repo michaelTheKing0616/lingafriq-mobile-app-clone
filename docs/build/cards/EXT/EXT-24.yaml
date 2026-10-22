@@ -1,0 +1,40 @@
+charter: v2
+id: EXT-24
+kind: external
+title: 'Obtain: Professional UI translation + native sign-off of ARB strings with diacritics (20 locales)'
+phase: P0
+epic: E-P0-INTAKE
+req_ids:
+- EP-§13.8-01
+- RM-P1-11
+depends_on: []
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T2
+  justification: agent prepares the artefact; a human completes the item
+token_budget: 20000
+file_allowlist: []
+context_anchors: []
+acceptance_criteria:
+- id: AC1
+  text: 'Artefact prepared and stored under docs/build/external/EXT-24/: ARB export, glossary, reviewer brief'
+- id: AC2
+  text: Owner (Tope) has the artefact and a one-line status in EXTERNAL.md; due gate G3
+owner: Tope
+due_gate: G3
+external_blockers:
+- EXT-24
+gate: G3
+status: Blocked-External
+skills:
+  worker:
+  - adaptive/09-writing-and-communication

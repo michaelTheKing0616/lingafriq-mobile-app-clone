@@ -1,0 +1,111 @@
+id: F-069
+kind: feature
+title: Elevate Quiz Chef
+phase: P8
+epic: E-P8-PLAY
+hub: Play
+req_ids:
+- F-069
+- F-069.D
+- F-069.E
+- F-069.U
+- F-069.L
+depends_on:
+- P8-900
+- P8-912
+- E-P8-PLAY
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: 1 blast, coupling 2'
+token_budget: 80000
+file_allowlist:
+- lib/screens/games/quiz_chef_screen.dart
+context_anchors:
+- ELEVATION.md#§18.5:L4506-L4519
+delta:
+  current_state: Routed from Arcade via game_router; content still uses the legacy 85–118 word pool without audio.
+  defects_to_fix:
+  - Thin static word pool without reliable audio.
+  - No learner-model writeback after play.
+  - Legacy per-game results instead of GameKit mastery.
+  - Hard-coded UI strings bypass l10n.
+  elevation_to_build:
+  - Recipe lessons for dishes like jollof, egusi, ugali, or chakalaka.
+  - Learner follows spoken instructions in the target language step by step.
+  ux_and_render:
+  - GameKit frame with unified illustration style and audio on every target-language item.
+  - Reduced-motion variant respects system setting.
+  hub_placement: Play → Culture shelf.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given a recipe step, when instructions play, then target-language audio precedes interactive choices.
+- id: AC2
+  text: Given wrong ingredient order, when submitted, then feedback references the spoken step without fake success.
+- id: AC3
+  text: Given recipe completion, when results show, then culture and listening skills update in the learner model.
+test_plan:
+  unit:
+  - game rules
+  - content binding
+  integration:
+  - GameKit session
+  - learner model writeback
+  e2e:
+  - Play shelf launch to results
+  a11y:
+  - goldens at 100%/200% text
+  - semantics
+  content:
+  - lexicon pool has audio for target language
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - 069.*
+tags: []
+p0_area: false
+charter: v2
+inherits: FEATURE_BASE
+gate: HUB
+status: Draft
+user_facing: true
+risks: []
+external_blockers: []
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/microinteractions
+  - prime/feedback-patterns

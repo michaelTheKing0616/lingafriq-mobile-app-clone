@@ -1,0 +1,92 @@
+charter: v2
+id: P4-113
+kind: build
+title: Encode Stage 1 vendor coverage and level targets
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§6.4-06
+- EP-§6.4-07
+- EP-§6.4-14
+- EP-§6.4-15
+- EP-§6.4-16
+- EP-§6.4-17
+- EP-§6.4-18
+- EP-§6.4-19
+- EP-§6.4-20
+- EP-§6.4-21
+- EP-§6.4-22
+- EP-§6.4-23
+- EP-§6.4-24
+depends_on:
+- P4-112
+- E-P6-SCORER
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- assets/content/stage1_coverage.json
+- schemas/v2/vendor_coverage.schema.json
+- tools/content_pipeline/coverage_check.py
+- test/content/test_coverage.py
+context_anchors:
+- ELEVATION.md#§6.4:L1221-L1262
+acceptance_criteria:
+- id: AC1
+  text: Given the coverage file, when validated, then ASR is Intron for all seven (code-switching for six), dynamic TTS is
+    Intron for yo, ig, ha, pcm, sw and Azure for zu, and xh is marked custom-voice-required
+- id: AC2
+  text: Given realtime native audio, when validated, then Gemini Live covers yo, ha, sw, zu and ig, pcm, xh use the cascade,
+    and tone scoring is in-house
+- id: AC3
+  text: Given the targets, when evaluated, then all seven reach L1 within the first quarter and L2 within two quarters, and
+    a miss shows as an overdue gate in the readiness report
+- id: AC4
+  text: Given L3 candidates, when chosen, then only languages passing realtime and persona evals are listed
+- id: AC5
+  text: Given a language whose coverage entry is absent, when a feature requests it, then the lookup returns UNCOVERED and
+    no vendor fallback is invented
+- id: AC6
+  text: Given xh dynamic TTS, when requested before the commissioned voice exists, then the feature is disabled with a visible
+    reason (EXT-12)
+test_plan:
+  unit:
+  - test_coverage
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- tts_tonal
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- AI stack companion doc absent (EXT-01)
+gate: G4
+external_blockers:
+- EXT-01
+- EXT-12
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

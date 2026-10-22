@@ -1,0 +1,54 @@
+charter: v2
+id: P5-038
+kind: design
+title: Design speaking-first flow with recasts, not text-heavy
+phase: P5
+epic: E-P5-A1
+req_ids:
+- EP-§6.2-11
+- EP-§6.2-12
+depends_on:
+- P5-030
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 3: blast 1, ambiguity 1, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§6.2:L1161-L1166
+acceptance_criteria:
+- id: AC1
+  text: Given session 1, when started, then the learner speaks
+- id: AC2
+  text: Given an error, when Polie responds, then it recasts rather than corrects by rule dump
+- id: AC3
+  text: Given a screen, when specified, then it is not text-heavy
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/hooked-ux
+  - prime/feedback-patterns
+  - prime/onboarding-ux

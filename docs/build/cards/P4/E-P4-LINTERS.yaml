@@ -1,0 +1,38 @@
+charter: v2
+id: E-P4-LINTERS
+kind: epic
+title: 'Sub-epic: Linters'
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- CP-§3.3-20
+depends_on:
+- E-P2-PLATFORM
+size: S
+difficulty:
+  score: 0
+  blast: 0
+  ambiguity: 0
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T4
+  tester: T0
+  reviewer: T4
+  justification: epic gate owned by the Orchestrator; no implementation
+token_budget: 10000
+file_allowlist: []
+context_anchors: []
+acceptance_criteria:
+- id: AC1
+  text: Every member card (P4-039…P4-052) is Done with Tester evidence and Reviewer PASS
+- id: AC2
+  text: All RTM rows owned by member cards are Verified-Done, Blocked-External or Waived-by-Tope
+tags: []
+gate: G4
+status: Draft
+skills:
+  worker:
+  - adaptive/13-agent-teams
+  - adaptive/06-execution-and-verification

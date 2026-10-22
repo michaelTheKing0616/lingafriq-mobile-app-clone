@@ -1,0 +1,70 @@
+charter: v2
+id: P6-021
+kind: build
+title: Self-host Omnilingual ASR fine-tuned for Stage-1 languages
+phase: P6
+epic: E-P6-GATEWAY
+req_ids:
+- EP-§7.2-28
+- EP-§7.2-29
+depends_on:
+- P6-020
+- P6-074
+size: L
+difficulty:
+  score: 8
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 2, ambiguity 2, coupling 1, depth 2'
+token_budget: 160000
+file_allowlist:
+- speech-service/asr/omnilingual/
+- speech-service/asr/finetune/
+- speech-service/asr/serve.py
+context_anchors:
+- ELEVATION.md#§7.2:L1367-L1387
+acceptance_criteria:
+- id: AC1
+  text: Given the Apache-2.0 Omnilingual checkpoint covering 1,600+ languages, when loaded, then it transcribes all seven
+    Stage-1 languages on the GPU worker
+- id: AC2
+  text: Given fine-tuning on licensed data, when evaluated on the 300-utterance set per language, then WER and tone-diacritic
+    accuracy are recorded and compared to Intron
+- id: AC3
+  text: Given a route flag, when set to Omnilingual for a language, then gateway STT serves from it and falls back to Intron
+    on error
+test_plan:
+  unit:
+  - serve api
+  integration:
+  - gateway switch
+  security: []
+  e2e: []
+  perf:
+  - GPU worker latency recorded
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

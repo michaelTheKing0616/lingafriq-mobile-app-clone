@@ -1,0 +1,99 @@
+charter: v2
+id: F-016
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Review Rush (gamified review)
+phase: P7
+epic: E-P7-HUBS
+hub: Learn
+req_ids:
+- F-016
+- F-016.D
+- F-016.E
+- F-016.U
+- F-016.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+size: S
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T2
+  reviewer: T2
+  justification: 'score 4: hub feature delta spec'
+token_budget: 30000
+file_allowlist:
+- lib/screens/review/gamified_review_screen.dart
+context_anchors:
+- ELEVATION.md#§18.3:L3728-L3741
+delta:
+  current_state: Gamified review screen exists unrouted but wired to real providers.
+  defects_to_fix:
+  - Not reachable from any menu.
+  elevation_to_build:
+  - 90-second sprint over due cards; combo multipliers reward accuracy only; updates FSRS like normal review.
+  ux_and_render:
+  - Arcade skin on shared review card; reduced-motion variant.
+  hub_placement: Learn → Words → Review → "Rush"; Play → Quick games.
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given due cards, when Rush starts, then 90-second timer runs and grades update FSRS.
+- id: AC2
+  text: Given menu entry from Review, when tapped, then gamified_review route opens.
+test_plan:
+  unit:
+  - domain rules for feature delta
+  integration:
+  - navigation and data wiring from hub placement
+  e2e:
+  - primary happy path from Lives in entry
+  a11y:
+  - goldens at 100%/200% text
+  - semantics order
+  content:
+  - honest labels on shown curriculum or media
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+  copy_keys:
+  - learn.f_016.*
+tags: []
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
+  - prime/error-handling-ux

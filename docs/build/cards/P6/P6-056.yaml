@@ -1,0 +1,69 @@
+charter: v2
+id: P6-056
+kind: build
+title: Build eval harness with CI deploy blocker
+phase: P6
+epic: E-P6-EVALS
+req_ids:
+- EP-§7.6-12
+- EP-§7.6-22
+depends_on:
+- P6-003
+- P6-011
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, ambiguity 1, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- evals/harness/run.ts
+- evals/thresholds.yaml
+- .github/workflows/ai_eval.yml
+context_anchors:
+- ELEVATION.md#§7.6:L1462-L1475
+acceptance_criteria:
+- id: AC1
+  text: Given any change to a prompt template, route table or model version, when CI runs, then the eval suite runs for every
+    affected mode and language
+- id: AC2
+  text: Given a metric regressing below its threshold, when CI finishes, then the ai-eval job fails and blocks deploy
+- id: AC3
+  text: Given the pre-launch check, when evals are missing for a launching mode, then deploy is blocked with a named missing-set
+    error
+test_plan:
+  unit:
+  - threshold compare
+  integration:
+  - CI blocker on seeded regression
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

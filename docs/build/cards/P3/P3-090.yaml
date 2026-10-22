@@ -1,0 +1,83 @@
+charter: v2
+id: P3-090
+kind: build
+title: Add captions and transcripts for audio and video
+phase: P3
+epic: E-P3-A11Y-I18N
+req_ids:
+- EP-§13.7-06
+depends_on:
+- P3-020
+size: M
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 4: blast 0, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/design/media/caption_player.dart
+- lib/design/media/transcript_view.dart
+context_anchors:
+- ELEVATION.md#§13.7:L1937-L1938
+acceptance_criteria:
+- id: AC1
+  text: Given any audio or video item, when played, then captions show by default when the system captions setting is on
+- id: AC2
+  text: Given an item with no transcript, when played, then a typed missing-transcript state shows and the item is flagged
+    for content review
+- id: AC3
+  text: Given a transcript, when opened, then it supports 200% text and screen-reader reading
+test_plan:
+  unit:
+  - missing transcript state
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - captions
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - captions_on
+  - captions_off
+  - missing_transcript
+  copy_keys:
+  - media.caption.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

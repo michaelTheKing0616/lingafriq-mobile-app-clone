@@ -1,0 +1,71 @@
+charter: v2
+id: P6-074
+kind: build
+title: Evaluate ASR on 300-utterance sets
+phase: P6
+epic: E-P6-EVALS
+req_ids:
+- EP-§7.2-27
+- EP-§7.2-28
+- EP-§7.1-16
+depends_on:
+- P6-020
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- evals/asr/run.ts
+- evals/asr/sets/
+- docs/build/asr_eval_report.md
+context_anchors:
+- ELEVATION.md#§7.2:L1382-L1383
+acceptance_criteria:
+- id: AC1
+  text: Given a 300-utterance set per Stage-1 language, when Intron and Omnilingual are run, then WER and tone-diacritic accuracy
+    are reported per language
+- id: AC2
+  text: Given Whisper-family output on the same sets, when measured, then the diacritic drop is quantified
+- id: AC3
+  text: Given the report, when accepted, then the STT route table follows the best model per language
+test_plan:
+  unit:
+  - wer calc
+  integration:
+  - fixture run
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - 300 utterances per language
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- Utterance sets need native recordings
+gate: G8
+external_blockers:
+- EXT-01
+status: Draft
+skills:
+  worker:
+  - adaptive/11-data-and-quantitative-work
+  - adaptive/07-research-and-fact-checking

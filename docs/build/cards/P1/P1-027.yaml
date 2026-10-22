@@ -1,0 +1,84 @@
+charter: v2
+id: P1-027
+kind: build
+title: Replace persona substring filter with policy classifier
+phase: P1
+epic: E-P1-CONTENT-HONESTY
+req_ids:
+- P0-14
+- RM-P0-07
+depends_on:
+- E-P0-INTAKE
+- P1-007
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: score 7; blast 3
+token_budget: 70000
+file_allowlist:
+- lib/ai/personas/roleplay_safety_filter.dart
+- test/ai/persona_cognition_test.dart
+- node-backend/src/services/personaSafety.service.ts
+- node-backend/src/services/aiGateway/modes.ts
+- node-backend/src/services/aiGateway/promptTemplates.ts
+- node-backend/src/services/historicalPersonality.service.ts
+- node-backend/src/__test__/P1-027.personaPolicy.test.ts
+- node-backend/src/__test__/P1-026.personaDisclosure.test.ts
+context_anchors:
+- ELEVATION.md#§1:L244-L256
+- ELEVATION.md#§16.1:L2039-L2041
+acceptance_criteria:
+- id: AC1
+  text: Given the words skill, whatever and discrimination in a Mandela conversation, when checked, then none is blocked (regression
+    tests)
+- id: AC2
+  text: Given a model-based policy classifier call through the gateway, when a message violates persona-specific rules, then
+    it is blocked or redirected with a typed reason
+- id: AC3
+  text: Given a question about historical violence at an age-appropriate level, when asked, then it is allowed and answered
+    age-appropriately
+- id: AC4
+  text: Given the classifier is unavailable, when a message is sent, then the persona replies with the honest error state
+    rather than skipping the check
+test_plan:
+  unit:
+  - rule mapping
+  - false-positive fixtures
+  integration:
+  - classifier mock outage
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - fixture set of harmless and harmful prompts
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "No numeric age cutoff is signed. A historical-violence classification is allowed and answered with a non-graphic reply. The drafted path lib/services/roleplay_safety_filter.dart does not exist; the filter is lib/ai/personas/roleplay_safety_filter.dart."
+- "promptTemplates.ts, historicalPersonality.service.ts, and the P1-026 spec were updated so the new gateway mode loads and persona sends do not skip the check."
+- "A model that returns allow plus historical_violence for a harm endorsement still receives the canned allow. The server does not override that decision (OW-035)."
+gate: G1
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

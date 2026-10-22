@@ -1,0 +1,99 @@
+charter: v2
+id: P3-042
+kind: build
+title: Wire Village hub destinations
+phase: P3
+epic: E-P3-SHELL
+req_ids:
+- EP-§3.3-08
+- EP-§17.1-07
+- EP-§17.2-33
+- EP-§17.2-34
+- EP-§17.2-35
+- EP-§17.2-36
+- EP-§17.2-37
+- EP-§17.2-38
+- EP-§17.2-39
+- EP-§17.2-40
+depends_on:
+- P3-037
+size: M
+difficulty:
+  score: 4
+  blast: 0
+  ambiguity: 1
+  coupling: 2
+  depth: 0
+  size: 1
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 4: blast 0, ambiguity 1, coupling 2'
+token_budget: 60000
+file_allowlist:
+- lib/navigation/hub_village.dart
+- lib/screens/village/villages_hub_screen.dart
+context_anchors:
+- ELEVATION.md#§17.2:L2268-L2275
+- ELEVATION.md#§3.3:L810-L813
+acceptance_criteria:
+- id: AC1
+  text: 'Given the hub, when opened, then every sitemap item in its list is reachable in <=2 taps and each route is registered:
+    /village, map, circles, square, chats, status, clips, radio, school, elder hut, corrections, create, verify'
+- id: AC2
+  text: Given a destination screen that is not built yet, when opened, then a typed not-available state shows and no fake
+    data renders
+- id: AC3
+  text: Given the hub has no data, when it renders, then the empty state points to a next step
+- id: AC4
+  text: Given a minor account, when Village opens, then guardian-gated entries show locked per the minor gate card and are
+    not hidden
+test_plan:
+  unit:
+  - route table
+  integration:
+  - 2-tap reachability
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - semantics
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - default
+  - empty
+  - error
+  - offline
+  copy_keys:
+  - hub.h_village.*
+  tokens:
+  - color.*
+  - space.*
+  - type.*
+  motion_tier: product
+  a11y:
+  - semantics label
+  - 200% text no clip
+  - reduced motion
+  goldens:
+  - light
+  - dark
+  - 200%
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/navigation-patterns
+  - prime/mobile-app-ui-design

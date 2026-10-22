@@ -1,0 +1,54 @@
+charter: v2
+id: P2-021
+kind: design
+title: Specify on-device tone feedback hook for offline practice
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.5-12
+depends_on:
+- E-P1-CONTAINMENT
+- P2-015
+- E-P6-SCORER
+size: S
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 0
+  coupling: 2
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: spec only, later phase
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§13.5:L1921-L1922
+acceptance_criteria:
+- id: AC1
+  text: Given a distilled tone model, when the spec is written, then it defines the interface, model size budget, accuracy
+    floor and the fallback shown when offline
+- id: AC2
+  text: Given the real scorer is not yet available, when offline, then the spec requires an explicit unavailable state instead
+    of any score
+user_facing: false
+ux_spec: null
+tags:
+- shows_score
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- spec reviewed
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - adaptive/09-writing-and-communication

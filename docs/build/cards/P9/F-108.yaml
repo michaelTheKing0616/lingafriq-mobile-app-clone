@@ -1,0 +1,116 @@
+charter: v2
+id: F-108
+kind: feature
+inherits: FEATURE_BASE
+title: Elevate Practice Rooms and Sessions
+phase: P9
+epic: E-P9-SAFETY
+hub: Village
+req_ids:
+- F-108
+- F-108.D
+- F-108.E
+- F-108.U
+- F-108.L
+depends_on:
+- E-P3-DESIGN-SYSTEM
+- E-P2-PLATFORM
+- E-P1-CONTAINMENT
+- E-P9-SAFETY
+- P9-936
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: social/village feature complexity and coupling'
+token_budget: 80000
+file_allowlist:
+- lib/screens/village/practice_room_setup_screen.dart
+- lib/screens/village/practice_session_screen.dart
+- lib/screens/village/practice_room_collaborative_screen.dart
+- lib/screens/village/session_summary_screen.dart
+context_anchors:
+- ELEVATION.md#§18.6:L5033-L5050
+delta:
+  current_state: UI routes work but active speaker is simulated with random values.
+  defects_to_fix:
+  - Fake activity and matching
+  - No safety controls
+  - Random-based speaker simulation
+  elevation_to_build:
+  - Real 2–6 learner rooms at matched levels with structured script
+  - Polie facilitates turns and hints; summary lists words and corrections
+  - Adult-only or teacher-supervised minors
+  ux_and_render:
+  - Video/audio tiles
+  - Speaking-time meter
+  - One-tap report and block
+  hub_placement: Village → Café → Practice Rooms; Today when a room matches
+  unlock_stage: per §17.4
+acceptance_criteria:
+- id: AC1
+  text: Given a matched room, when session runs, then speaker turns follow real participation not random simulation
+- id: AC2
+  text: Given a minor account, when joining, then only teacher-supervised or blocked paths are offered per safety tier
+- id: AC3
+  text: Given session end, when summary opens, then words used and corrections list from verified session data
+- id: AC4
+  text: Given harassment, when report or block is tapped, then action completes in one tap and queues to moderation
+test_plan:
+  unit:
+  - delta defects covered
+  - routing and state transitions
+  integration:
+  - hub navigation and backend contracts
+  e2e:
+  - primary user journey on device
+  a11y:
+  - semantics
+  - 200% text scale goldens
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - skeleton
+  - empty
+  - error
+  - offline
+  - ai_unavailable
+  - under_review
+  copy_keys:
+  - f-108.*
+  tokens:
+  - design-system only
+  motion_tier: product
+  a11y:
+  - semantics
+  - reduced_motion
+  - 200% text
+  goldens:
+  - light
+  - dark
+tags:
+- under18_social
+p0_area: false
+dod_evidence:
+- tester report
+- goldens diff
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/error-handling-ux
+  - adaptive/14-safety-and-high-stakes

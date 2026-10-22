@@ -1,0 +1,66 @@
+charter: v2
+id: P2-033
+kind: build
+title: Add OpenTelemetry traces across app, API, AI gateway and speech
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.4-17
+depends_on:
+- E-P1-CONTAINMENT
+- P2-036
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 7: blast 3, coupling 2, depth 1'
+token_budget: 70000
+file_allowlist:
+- lib/services/monitoring/otel_tracer.dart
+- node-backend/src/telemetry/otel.ts
+- node-backend/src/services/aiGateway.service.ts
+- node-backend/src/services/speech.service.ts
+context_anchors:
+- ELEVATION.md#§13.4:L1906
+acceptance_criteria:
+- id: AC1
+  text: Given a chat request, when it flows app to API to AI gateway to speech, then one trace id links all spans
+- id: AC2
+  text: Given traces, when exported, then no span attribute contains PII or prompt text
+- id: AC3
+  text: Given the exporter is down, when requests run, then user requests are unaffected and a drop counter increments
+test_plan:
+  unit: []
+  integration:
+  - trace propagation test
+  security:
+  - attribute allowlist
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

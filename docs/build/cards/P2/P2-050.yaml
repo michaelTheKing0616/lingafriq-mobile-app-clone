@@ -1,0 +1,76 @@
+charter: v2
+id: P2-050
+kind: build
+title: Build CAT placement engine with reported confidence
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§11.3-03
+- EP-§11.3-04
+- EP-§11.3-05
+- EP-§11.3-20
+depends_on:
+- E-P1-CONTAINMENT
+- P2-049
+size: L
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 3, coupling 2, depth 2'
+token_budget: 150000
+file_allowlist:
+- lib/services/placement/cat_engine.dart
+- lib/services/placement_test_service.dart
+- test/placement/cat_engine_test.dart
+- test/placement/cat_simulation_test.dart
+context_anchors:
+- ELEVATION.md#§11.3:L1799-L1800
+- ELEVATION.md#§11.3:L1800
+- ELEVATION.md#§11.3:L1809
+acceptance_criteria:
+- id: AC1
+  text: Given simulated learners, when placement runs, then it ends in 8 to 15 items in at least 95% of runs
+- id: AC2
+  text: Given a finished test, when reported, then the result includes ability estimate and a confidence interval
+- id: AC3
+  text: Given too few calibrated items, when placement starts, then the result is labelled provisional and unsure rather than
+    a precise level
+- id: AC4
+  text: Given any placement or checkpoint score, when computed, then it derives only from item responses and calibrated parameters,
+    never random or opaque values
+test_plan:
+  unit:
+  - item selection
+  - stopping rule
+  integration:
+  - 1000 simulated learners
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

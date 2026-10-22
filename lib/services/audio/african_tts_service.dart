@@ -3,16 +3,11 @@
 // Plays authentic African-accented audio for every supported language by
 // resolving the best available source in order:
 //
-//   Gold   — Pre-recorded native speaker MP3 hosted on CDN (assets/data/
-//            audio_manifest.json contains the SHA256 + CDN URL).
-//   Silver — Meta MMS-TTS via backend proxy /api/tts. Free, self-hosted,
-//            supports 40+ African languages.
-//   Bronze — Coqui XTTS-v2 via /api/voice/tts/synthesize (premium voice
-//            cloning where available; preserves authentic prosody for
-//            English variants and high-resource African langs).
-//   Fallback — On-device flutter_tts ONLY when network is unavailable. We
-//            return early so no English ljspeech voice ever speaks an
-//            African phrase by accident.
+//   Gold   — Pre-recorded native speaker audio. Always tried first.
+//   Router — /api/voice/tts/synthesize. Server picks Intron, Azure, or
+//            Spitch. isiXhosa returns voice_coming until the custom voice
+//            exists. A 503 does not fall through to the device voice.
+//   Fallback — On-device flutter_tts ONLY when the network itself is dead.
 //
 // All successful syntheses are sha256-keyed and cached on disk via
 // TtsAudioCache so subsequent plays are zero-latency and offline-safe.
@@ -47,6 +42,13 @@ class TtsResolution {
     this.engineLabel,
     this.errorReason,
   });
+}
+
+class TtsUnavailable implements Exception {
+  final String code;
+  const TtsUnavailable(this.code);
+  @override
+  String toString() => code;
 }
 
 class AfricanTtsService {
@@ -176,22 +178,10 @@ class AfricanTtsService {
       return gold;
     }
 
-    // -------- SILVER: MMS-TTS via backend proxy --------
-    try {
-      final silver = await _resolveSilverMms(
-        language: lang,
-        text: body,
-        speed: speed,
-      );
-      if (silver != null) {
-        _silverHits++;
-        return silver;
-      }
-    } catch (e) {
-      debugPrint('[AfricanTts] silver(mms) failed: $e');
-    }
+    // Human curriculum audio (gold) is the only clip played before synthesis.
+    // The non-commercial silver engine is not called.
 
-    // -------- BRONZE: XTTS-v2 voice synthesis --------
+    // -------- Dynamic TTS via the server router --------
     try {
       final bronze = await _resolveBronzeXtts(
         language: lang,
@@ -203,8 +193,15 @@ class AfricanTtsService {
         _bronzeHits++;
         return bronze;
       }
+    } on TtsUnavailable catch (e) {
+      _failures++;
+      return TtsResolution(
+        tier: TtsEngineTier.unavailable,
+        engineLabel: e.code,
+        errorReason: e.code,
+      );
     } catch (e) {
-      debugPrint('[AfricanTts] bronze(xtts) failed: $e');
+      debugPrint('[AfricanTts] router synth failed: $e');
     }
 
     // -------- DEVICE FALLBACK: only when network is dead --------
@@ -388,11 +385,33 @@ class AfricanTtsService {
             }),
           )
           .timeout(const Duration(seconds: 45));
-      if (synth.statusCode == 200 && synth.bodyBytes.isNotEmpty) {
+      if (synth.statusCode == 200 &&
+          synth.bodyBytes.isNotEmpty &&
+          !synth.headers['content-type'].toString().contains('json')) {
         return synth.bodyBytes;
       }
+      if (synth.statusCode == 503) {
+        final code = _unavailableCode(synth.body);
+        if (code != null) {
+          throw TtsUnavailable(code);
+        }
+      }
+    } on TtsUnavailable {
+      rethrow;
     } catch (e) {
       debugPrint('[AfricanTts] bronze synth failed: $e');
+    }
+    return null;
+  }
+
+  String? _unavailableCode(String body) {
+    try {
+      final decoded = jsonDecode(body);
+      if (decoded is Map && decoded['code'] is String) {
+        return decoded['code'] as String;
+      }
+    } catch (_) {
+      return null;
     }
     return null;
   }

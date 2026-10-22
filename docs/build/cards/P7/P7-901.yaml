@@ -1,0 +1,56 @@
+charter: v2
+id: P7-901
+kind: adr
+title: Decide the two-layer living lexicon architecture
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§17.7-13
+depends_on: []
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 1: blast 0, coupling 0, depth 0'
+token_budget: 25000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§17.7:L2412-L2418
+acceptance_criteria:
+- id: AC1
+  text: ADR records the Verified Lexicon (shared) and My Words (personal) layers, link rules and the single schema across
+    languages, with alternatives considered
+- id: AC2
+  text: ADR is accepted by Tope and recorded in DECISIONS.md before any P7 lexicon build card leaves Draft
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/10-analysis-and-decision-support
+  - prime/diagram-design

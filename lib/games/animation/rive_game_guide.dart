@@ -1,90 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:rive/rive.dart';
-import 'rive_asset_loader.dart';
 
-/// Rive character guide controller
-/// Controls the animated guide character that appears in all games
+import '../../avatars/avatar_engine.dart';
+import '../../avatars/cast/cast_stage.dart';
+import '../../avatars/emotion_system.dart';
+import '../../avatars/personality_system.dart';
+
+/// Game guide. The cast file is the only character; legacy SMI inputs are gone.
 class RiveGameGuideController {
-  Artboard? _artboard;
-  SMIBool? _isListening;
-  SMIBool? _isSpeaking;
-  SMINumber? _confidence;
-  SMINumber? _emotion;
+  final AvatarController avatar = AvatarController(
+    type: AvatarType.polie,
+    personality: PersonalitySystem().getPersonality('polie')!,
+  );
 
-  /// Initialize the Rive controller with the artboard
-  void initialize(Artboard artboard) {
-    _artboard = artboard;
-    
-    // Find state machine inputs
-    final stateMachine = _artboard!.stateMachines.firstOrNull;
-    if (stateMachine != null) {
-      for (final input in stateMachine.inputs) {
-        if (input.name == 'isListening') {
-          _isListening = input as SMIBool;
-        } else if (input.name == 'isSpeaking') {
-          _isSpeaking = input as SMIBool;
-        } else if (input.name == 'confidence') {
-          _confidence = input as SMINumber;
-        } else if (input.name == 'emotion') {
-          _emotion = input as SMINumber;
-        }
-      }
+  void setListening(bool listening) {
+    if (listening) {
+      avatar.startListening();
+    } else {
+      avatar.stopListening();
     }
   }
 
-  /// Set listening state
-  void setListening(bool listening) {
-    _isListening?.value = listening;
-  }
-
-  /// Set speaking state
   void setSpeaking(bool speaking) {
-    _isSpeaking?.value = speaking;
+    if (speaking) {
+      avatar.startSpeaking();
+    } else {
+      avatar.stopSpeaking();
+    }
   }
 
-  /// Set confidence level (0.0 to 1.0)
-  void setConfidence(double confidence) {
-    _confidence?.value = confidence.clamp(0.0, 1.0);
-  }
+  void setConfidence(double confidence) => avatar.setConfidence(confidence);
 
-  /// Set emotion
-  void setEmotion(GuideEmotion emotion) {
-    _emotion?.value = emotion.index.toDouble();
-  }
+  void setEmotion(GuideEmotion emotion) => avatar.setEmotion(_emotion(emotion));
 
-  /// Celebrate success
-  void celebrate() {
-    setEmotion(GuideEmotion.proud);
-    setConfidence(1.0);
-    // Trigger celebration animation if available
-  }
+  void celebrate() => avatar.celebrate();
 
-  /// Show failure
   void fail() {
-    setEmotion(GuideEmotion.disappointed);
-    setConfidence(0.0);
+    avatar.session.fire('incorrect');
+    avatar.setEmotion(AvatarEmotion.disappointed);
   }
-
-  /// Get the artboard for rendering
-  Artboard? get artboard => _artboard;
 }
 
-/// Guide emotion enum
-enum GuideEmotion {
-  idle,
-  thinking,
-  encouraging,
-  proud,
-  disappointed,
-  happy, // Added for positive reactions
+enum GuideEmotion { idle, thinking, encouraging, proud, disappointed, happy }
+
+AvatarEmotion _emotion(GuideEmotion emotion) {
+  switch (emotion) {
+    case GuideEmotion.idle:
+      return AvatarEmotion.idle;
+    case GuideEmotion.thinking:
+      return AvatarEmotion.thinking;
+    case GuideEmotion.encouraging:
+      return AvatarEmotion.encouraging;
+    case GuideEmotion.proud:
+      return AvatarEmotion.proud;
+    case GuideEmotion.disappointed:
+      return AvatarEmotion.disappointed;
+    case GuideEmotion.happy:
+      return AvatarEmotion.happy;
+  }
 }
 
-/// Rive game guide widget
-class RiveGameGuide extends StatefulWidget {
-  final RiveGameGuideController controller;
-  final double? width;
-  final double? height;
-
+class RiveGameGuide extends StatelessWidget {
   const RiveGameGuide({
     super.key,
     required this.controller,
@@ -92,46 +67,16 @@ class RiveGameGuide extends StatefulWidget {
     this.height,
   });
 
-  @override
-  State<RiveGameGuide> createState() => _RiveGameGuideState();
-}
-
-class _RiveGameGuideState extends State<RiveGameGuide> {
-  @override
-  void initState() {
-    super.initState();
-    _loadRiveFile();
-  }
-
-  Future<void> _loadRiveFile() async {
-    await RiveAssetLoader.loadRiveAsset(widget.controller);
-  }
+  final RiveGameGuideController controller;
+  final double? width;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
-    final artboard = widget.controller.artboard;
-    
-    if (artboard == null) {
-      // Fallback to simple icon if Rive not available
-      return SizedBox(
-        width: widget.width ?? 100,
-        height: widget.height ?? 100,
-        child: Icon(
-          Icons.face,
-          size: widget.width ?? 100,
-          color: Colors.blue,
-        ),
-      );
-    }
-
     return SizedBox(
-      width: widget.width,
-      height: widget.height,
-      child: Rive(
-        artboard: artboard,
-        fit: BoxFit.contain,
-      ),
+      width: width ?? 100,
+      height: height ?? 100,
+      child: CastStage(session: controller.avatar.session),
     );
   }
 }
-

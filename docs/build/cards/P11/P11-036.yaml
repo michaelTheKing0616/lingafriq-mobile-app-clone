@@ -1,0 +1,64 @@
+charter: v2
+id: P11-036
+kind: build
+title: Version-control single .riv source with changelog
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§4.6-28
+- EP-§4.6-29
+- EP-§4.3-01
+depends_on:
+- P11-035
+size: S
+difficulty:
+  score: 1
+  blast: 0
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 1: blast 0, ambiguity 0, coupling 1, depth 0'
+token_budget: 25000
+file_allowlist:
+- assets/rive/avatars/CHANGELOG.md
+- scripts/avatars/check_riv_version.py
+context_anchors:
+- ELEVATION.md#§4.3:L918
+- ELEVATION.md#§4.6:L1023
+acceptance_criteria:
+- id: AC1
+  text: Given lingafriq_cast.riv, when committed, then it is the single source with a CHANGELOG entry naming the Rive editor
+    version.
+- id: AC2
+  text: Given an export, when CI checks the file, then it fails if the export version differs from the pinned version.
+test_plan:
+  unit:
+  - version check
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

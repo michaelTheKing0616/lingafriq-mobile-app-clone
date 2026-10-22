@@ -1,0 +1,68 @@
+charter: v2
+id: P4-039
+kind: build
+title: Build linter runner for CI and Studio
+phase: P4
+epic: E-P4-LINTERS
+req_ids:
+- CP-§3.3-20
+depends_on:
+- P4-021
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, ambiguity 1, coupling 1, depth 1, size 0'
+token_budget: 60000
+file_allowlist:
+- tools/content_engine/linters/runner.py
+- tools/content_engine/linters/types.py
+- .github/workflows/content-engine.yml
+- tools/content_engine/tests/test_runner.py
+context_anchors:
+- CURRICULUM.md#§3.3:L518-L518
+acceptance_criteria:
+- id: AC1
+  text: Given an item and its language kit, when the runner executes, then each registered linter returns pass or typed failure
+    with item id, rule id and span
+- id: AC2
+  text: Given any linter failure, when CI runs, then the job exits non-zero and the merge is blocked
+- id: AC3
+  text: Given the Studio calls the runner, when run on an item, then it returns the same results as CI for the same input
+- id: AC4
+  text: Given a linter crashes, when running, then the item is marked LINT_ERROR and not passed
+test_plan:
+  unit:
+  - crash becomes LINT_ERROR
+  integration:
+  - CI blocks on failure
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

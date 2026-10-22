@@ -1,0 +1,102 @@
+charter: v2
+id: P10-906
+kind: build
+title: Limit reminders to one a day in quiet hours
+phase: P10
+epic: E-P10-GAMIFICATION
+req_ids:
+- EP-§12.1-05
+- EP-§12.2-15
+- EP-§12.2-16
+- EP-§12.2-17
+- EP-§12.2-18
+- EP-§12.2-19
+depends_on: []
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 5; blast 2; p0 area
+token_budget: 60000
+file_allowlist:
+- node-backend/src/services/reminders.service.ts
+- lib/providers/notification_provider.dart
+- lib/providers/firebase_messaging_provider.dart
+- lib/screens/settings/reminder_settings_screen.dart
+context_anchors:
+- ELEVATION.md#§12.1:L1814-L1815
+- ELEVATION.md#§12.2:L1824-L1826
+acceptance_criteria:
+- id: AC1
+  text: Given any learner in any day, when reminders are scheduled, then at most 1 push reminder is sent per learner per local
+    day.
+- id: AC2
+  text: Given a learner has not set a window, when the first reminder is scheduled, then quiet hours apply by default and
+    no push is sent inside them.
+- id: AC3
+  text: Given a learner sets a window and timezone, when a reminder is due, then it is sent only inside that window in that
+    timezone.
+- id: AC4
+  text: Given the local time is in quiet hours, when copy is chosen, then no loss-aversion copy is used.
+- id: AC5
+  text: Given a milestone is reached, when a reminder is composed, then it celebrates the milestone and never threatens a
+    loss.
+- id: AC6
+  text: Given the learner turns reminders off, when the scheduler runs, then no push is sent and the setting survives reinstall.
+test_plan:
+  unit:
+  - daily cap
+  - quiet hours
+  - timezone window
+  integration:
+  - scheduler honours settings
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - reminder copy lint
+user_facing: true
+ux_spec:
+  states:
+  - 'on'
+  - 'off'
+  - window-set
+  - quiet-hours
+  copy_keys:
+  - reminder_window
+  tokens:
+  - color.semantic
+  - type.scale
+  - space.scale
+  motion_tier: product
+  a11y:
+  - screen reader labels
+  - 48dp touch targets
+  - reduced motion honoured
+  goldens:
+  - reminder_window_golden
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G10
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

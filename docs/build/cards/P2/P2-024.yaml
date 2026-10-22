@@ -1,0 +1,71 @@
+charter: v2
+id: P2-024
+kind: build
+title: Add rotating revocable refresh tokens with reuse detection
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.1-03
+depends_on:
+- E-P1-CONTAINMENT
+- P2-023
+size: M
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 2
+  coupling: 1
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T3
+  justification: 'score 8: blast 3, coupling 1, depth 2'
+token_budget: 70000
+file_allowlist:
+- node-backend/src/controllers/auth.controller.ts
+- node-backend/src/middleware/auth.middleware.ts
+- node-backend/src/models/refreshToken.model.ts
+- node-backend/test/auth/refresh.test.ts
+context_anchors:
+- ELEVATION.md#§13.1:L1849-L1850
+acceptance_criteria:
+- id: AC1
+  text: Given a valid refresh token, when used, then a new pair is issued and the old token is invalidated server-side
+- id: AC2
+  text: Given a rotated-out token replayed, when presented, then the whole token family is revoked and a typed reuse error
+    is returned
+- id: AC3
+  text: Given the user logs out or an admin revokes, when a refresh is attempted, then it fails with 401
+- id: AC4
+  text: Given a refresh row, when stored, then only a hash is persisted
+test_plan:
+  unit:
+  - rotation
+  - reuse detection
+  integration: []
+  security:
+  - replay and race
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

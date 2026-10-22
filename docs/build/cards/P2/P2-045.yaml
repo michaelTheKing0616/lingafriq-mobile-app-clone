@@ -1,0 +1,76 @@
+charter: v2
+id: P2-045
+kind: build
+title: Model Learner Knowledge Graph nodes and error counts
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§6.3-02
+- EP-§6.3-03
+- EP-§6.3-05
+depends_on:
+- E-P1-CONTAINMENT
+- P2-042
+- P2-043
+- P2-014
+size: L
+difficulty:
+  score: 8
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: 'score 8: blast 3, coupling 2, depth 2'
+token_budget: 150000
+file_allowlist:
+- lib/models/learner/knowledge_node.dart
+- lib/services/learning/knowledge_graph_service.dart
+- lib/db/tables/knowledge_nodes.dart
+- test/learning/knowledge_graph_test.dart
+context_anchors:
+- ELEVATION.md#§6.3:L1212
+- ELEVATION.md#§6.3:L1212-L1213
+- ELEVATION.md#§6.3:L1215
+acceptance_criteria:
+- id: AC1
+  text: Given a user and language, when the graph is built, then exactly one graph exists with lexeme, grammar pattern and
+    phonological skill nodes
+- id: AC2
+  text: Given a node, when evidence arrives, then production and recognition strength, last evidence and FSRS state update
+- id: AC3
+  text: Given an error, when classified, then the matching taxonomy counter (tone, segmental, word order, register) increments
+- id: AC4
+  text: Given the same event log, when the graph is rebuilt, then it equals the stored graph
+test_plan:
+  unit:
+  - node updates
+  - error taxonomy
+  integration:
+  - rebuild from log equals stored
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

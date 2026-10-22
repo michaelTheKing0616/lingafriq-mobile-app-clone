@@ -1,0 +1,94 @@
+charter: v2
+id: P7-929
+kind: build
+title: Wire lexicon entry points in Learn, Lens and Village
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§17.7-38
+- EP-§17.7-39
+- EP-§17.7-40
+depends_on:
+- P7-919
+- P7-920
+- P7-922
+- E-P3-DESIGN-SYSTEM
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, coupling 1, depth 1'
+token_budget: 60000
+file_allowlist:
+- lib/screens/learn/words_tab.dart
+- lib/screens/lens/lens_results_lexicon_link.dart
+- lib/screens/village/contribute_hub.dart
+- test/screens/learn/words_tab_test.dart
+context_anchors:
+- ELEVATION.md#§17.7:L2434-L2435
+acceptance_criteria:
+- id: AC1
+  text: Given Learn, when the Words area opens, then My Words and Review are reachable
+- id: AC2
+  text: Given Lens results, when a word is shown, then it links to its lexicon entry
+- id: AC3
+  text: Given Village, when Contribute then Verify is opened, then the Verify queue shows
+- id: AC4
+  text: Given a learner who is not a native reviewer, when Verify opens, then they see suggest-only access with a visible
+    explanation
+test_plan:
+  unit: []
+  integration:
+  - navigation from each entry
+  security: []
+  e2e:
+  - Learn to Words
+  - Village to Verify
+  perf: []
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - words
+  - contribute
+  - restricted
+  copy_keys:
+  - learn.words
+  - village.verify
+  tokens:
+  - space.nav
+  motion_tier: product
+  a11y:
+  - screen-reader labels on every control
+  - touch targets >=48dp
+  - reduced-motion variant
+  goldens:
+  - default
+  - loading
+  - error
+  - offline
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

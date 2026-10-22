@@ -1,0 +1,69 @@
+charter: v2
+id: P5-036
+kind: build
+title: Author register and honorific units, Expert-reviewed only
+phase: P5
+epic: E-P5-A1
+req_ids:
+- EP-§6.2-23
+- EP-§6.2-24
+- CP-§6-24
+- CP-§6-25
+depends_on:
+- P5-008
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 2
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T1
+  reviewer: T2
+  justification: 'score 6: blast 2, ambiguity 2, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- assets/data/units/register/
+- tools/content/register_gate.py
+- test/content/register_test.py
+context_anchors:
+- ELEVATION.md#§6.2:L1200-L1203
+- CURRICULUM.md#§6:L690-L691
+acceptance_criteria:
+- id: AC1
+  text: Given greetings by time of day and social status, honorifics (Yoruba ẹ vs o) and kinship terms, when authored, then
+    units exist as practice, not notes only
+- id: AC2
+  text: Given a respect-sensitive unit, when labelled, then it is Expert-reviewed or better and cannot be Beta
+- id: AC3
+  text: Given a unit that addresses an elder, when linted, then the formal register is required
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - respect-sensitive units not Beta
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G5
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

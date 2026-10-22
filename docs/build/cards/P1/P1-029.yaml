@@ -1,0 +1,96 @@
+charter: v2
+id: P1-029
+kind: build
+title: Pull placeholder bundles from build and add placeholder linter
+phase: P1
+epic: E-P1-CONTENT-HONESTY
+req_ids:
+- P0-16
+- RM-P0-08
+depends_on:
+- E-P0-INTAKE
+size: M
+difficulty:
+  score: 7
+  blast: 3
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: score 7; blast 3
+token_budget: 70000
+file_allowlist:
+- pubspec.yaml
+- scripts/ci/placeholder_linter.py
+- .github/workflows/build.yml
+- .github/workflows/build-and-release.yml
+- .github/workflows/build-sideload-apk.yml
+- docs/build/MARKETING_CLAIMS_FREEZE.md
+- lib/screens/curriculum/curriculum_screen_material3.dart
+- lib/l10n/app_en.arb
+- lib/l10n/generated/
+context_anchors:
+- ELEVATION.md#§1:L270-L276
+- ELEVATION.md#§16.1:L2042-L2047
+acceptance_criteria:
+- id: AC1
+  text: Given the release build, when assets are bundled, then none of the placeholder or template curriculum bundles identified
+    by the linter are included
+- id: AC2
+  text: Given a content file whose items match placeholder or template patterns, when placeholder_linter runs in CI, then
+    the build fails and lists the files
+- id: AC3
+  text: Given MARKETING_CLAIMS_FREEZE.md, when read, then it lists every public claim about lesson counts or languages that
+    is frozen until content is verified
+- id: AC4
+  text: Given the app after this card, when a language has no verified content, then the UI shows a coming-soon state instead
+    of placeholder lessons
+test_plan:
+  unit:
+  - linter fixtures
+  integration:
+  - bundle manifest assertion
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - placeholder inventory
+user_facing: true
+ux_spec:
+  states:
+  - coming-soon
+  copy_keys:
+  - content.coming_soon
+  tokens:
+  - design-system empty-state tokens
+  motion_tier: product
+  a11y:
+  - state announced
+  goldens:
+  - language_coming_soon
+tags:
+- placeholder_linter
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- L-sized source fix; replacement content pipeline is E-P4/E-P5
+- AC4 allowlist was missing the screen and arb; added on FIX 1
+- Second FIX: generated l10n added to the allowlist; empty verified-language set recorded as D20 (awaiting)
+- "2026-10-21: live workflows now run placeholder_linter.py before build. Spec test green (15 passed). curriculum_service.dart still names the removed bundles and is outside this allowlist."
+gate: G1
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

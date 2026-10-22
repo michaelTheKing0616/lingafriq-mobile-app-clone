@@ -1,0 +1,65 @@
+charter: v2
+id: P2-013
+kind: build
+title: Add backend contract tests from OpenAPI spec
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§13.9-05
+depends_on:
+- E-P1-CONTAINMENT
+- P2-011
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- node-backend/test/contract/contract.test.ts
+- docs/api/openapi.v1.json
+- .github/workflows/build.yml
+context_anchors:
+- ELEVATION.md#§13.9:L1951
+acceptance_criteria:
+- id: AC1
+  text: Given each documented operation, when the contract test calls the running API, then status and body validate against
+    the spec schema
+- id: AC2
+  text: Given a response deviating from the spec, when CI runs, then it fails naming operation and field
+- id: AC3
+  text: Given an undocumented route, when CI runs, then it fails listing the route
+test_plan:
+  unit: []
+  integration:
+  - contract suite as blocking job
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

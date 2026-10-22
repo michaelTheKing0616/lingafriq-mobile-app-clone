@@ -1,0 +1,76 @@
+charter: v2
+id: P11-016
+kind: build
+title: Author Yaa Asantewaa quest chapter structure
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§8.2-01
+- EP-§8.2-02
+- EP-§8.2-03
+- EP-§8.2-04
+- EP-§8.2-05
+- EP-§8.2-07
+- EP-§8.2-08
+depends_on:
+- E-P1-CONTAINMENT
+- P11-010
+- E-P4-CONTENT-ENGINE
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 1
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 1, coupling 1, depth 0'
+token_budget: 70000
+file_allowlist:
+- lib/ai/personas/quests/yaa_asantewaa/quest.json
+- lib/ai/personas/quest_runner.dart
+context_anchors:
+- ELEVATION.md#§8.2:L1503-L1508
+acceptance_criteria:
+- id: AC1
+  text: Given the quest, when loaded, then it has exactly 4 chapters in Twi at A2–B1 with a runtime estimate of 25 min, replayable
+    and combining narrative, language and history.
+- id: AC2
+  text: Given chapter 1, when played, then the learner is a young messenger whose objective is to greet the Queen Mother with
+    correct honorifics.
+- id: AC3
+  text: Given a replay, when started, then progress resets without losing earned vocabulary.
+test_plan:
+  unit:
+  - chapter count and CEFR bounds
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - native Twi review
+user_facing: false
+ux_spec: null
+tags:
+- enables_persona
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers:
+- EXT-15
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

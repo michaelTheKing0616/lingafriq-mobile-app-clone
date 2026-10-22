@@ -1,0 +1,65 @@
+charter: v2
+id: P3-001
+kind: design
+title: Benchmark Duolingo and three rivals into baselines
+phase: P3
+epic: E-P3-DESIGN-WORKFLOW
+req_ids:
+- EP-§3.1-01
+depends_on:
+- E-P2-PLATFORM
+size: M
+difficulty:
+  score: 2
+  blast: 0
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 1
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T4
+  justification: 'score 2: research synthesis, capped searches, no code'
+token_budget: 60000
+file_allowlist:
+- docs/build/design/BENCHMARK.md
+context_anchors:
+- ELEVATION.md#§3.1:L768-L772
+acceptance_criteria:
+- id: AC1
+  text: Given a cap of 12 web searches total, when the benchmark runs on Duolingo plus Speak, Babbel and Memrise, then docs/build/design/BENCHMARK.md
+    lists the queries used and stops at the cap
+- id: AC2
+  text: Given each product, when measured, then BENCHMARK.md holds >=12 numeric baselines (taps to first lesson, seconds to
+    first spoken output, onboarding step count, min text sp, feedback latency ms) each with value, unit, source and date
+- id: AC3
+  text: Given a baseline without a primary source, when recorded, then it carries the [Unverified] tag and no number is invented
+- id: AC4
+  text: Given docs/build/benchmark/ exists, when screenshots are cited, then only files from that folder are used; if absent,
+    entries say no-screenshot
+- id: AC5
+  text: Given the baselines, when G3 is reviewed, then every later UX or UI Scorecard target cites the baseline row it must
+    meet or beat
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: true
+dod_evidence:
+- tester report
+- ledger row
+- T4 visual approval with exported frames
+risks: []
+gate: G3
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/design-audit
+  - prime/critique-visual-hierarchy
+  reviewer_extra:
+  - prime/critique-visual-hierarchy
+  - prime/critique-typography
+  - prime/design-to-code-check

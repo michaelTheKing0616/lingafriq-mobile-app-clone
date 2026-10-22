@@ -1,0 +1,89 @@
+charter: v2
+id: P4-154
+kind: build
+title: Build tone-aware text field with diacritic palette and Tone Lens
+phase: P4
+epic: E-P4-CONTENT-ENGINE
+req_ids:
+- EP-§14.2-22
+- EP-§14.2-23
+- EP-§14.2-24
+- EP-§14.2-25
+depends_on:
+- P4-140
+- P4-150
+size: M
+difficulty:
+  score: 5
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 1
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 1, ambiguity 1, coupling 1'
+token_budget: 60000
+file_allowlist:
+- lingafriq-admin/src/components/ToneTextField.tsx
+- lingafriq-admin/src/components/DiacriticPalette.tsx
+- lingafriq-admin/src/components/ToneLensPreview.tsx
+- lingafriq-admin/src/lib/nfc.ts
+- test/admin/ToneTextField.test.tsx
+context_anchors:
+- ELEVATION.md#§14.2:L1970-L1989
+acceptance_criteria:
+- id: AC1
+  text: Given typed or pasted text, when changed, then it is NFC-normalised and a non-NFC input is never stored
+- id: AC2
+  text: Given the palette, when a diacritic is chosen, then it composes onto the caret character per language layout
+- id: AC3
+  text: Given tone marks in the field, when edited, then the Tone Lens preview updates within 200 ms using the shared renderer
+    logic
+- id: AC4
+  text: Given a tonal language field with missing tone marks, when saved, then a blocking validation message names the word
+test_plan:
+  unit:
+  - ToneTextField.test
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - palette keyboard operable
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - empty
+  - valid
+  - invalid
+  - nfc_fixed
+  copy_keys:
+  - studio.tone.missing
+  - studio.nfc.fixed
+  tokens:
+  - admin.field
+  motion_tier: product
+  a11y:
+  - aria-describedby
+  - keyboard palette
+  goldens: []
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

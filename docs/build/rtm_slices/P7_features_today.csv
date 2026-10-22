@@ -1,0 +1,31 @@
+req_id,source_doc,anchor,type,verbatim_hook,priority,owner,card_ids,status
+F-001,ELEVATION,§18.2:L3497-L3517,requirement,Home / Today session,P1,agent,,Open
+F-001.D,ELEVATION,§18.2:L3503,requirement,"[2] Two dashboards compete. ""Continue learning"" falls back to a placeholder card",P1,agent,,Open
+F-001.E,ELEVATION,§18.2:L3507,requirement,"[2] Make it a single adaptive ""Today"" session (10–15 min), a playlist",P1,agent,,Open
+F-001.U,ELEVATION,§18.2:L3513,requirement,[2] A hero card with an avatar greeting in the target language,P1,agent,,Open
+F-001.L,ELEVATION,§18.2:L3517,requirement,[2] Today tab (root).,P1,agent,,Open
+F-002,ELEVATION,§18.2:L3518-L3531,requirement,Daily Goals,P1,agent,,Open
+F-002.D,ELEVATION,§18.2:L3523,requirement,"[2] Goals are XP-based, and XP can be self-minted (P0-8). The AI",P1,agent,,Open
+F-002.E,ELEVATION,§18.2:L3525,requirement,"[2] Goals become intent-based (""speak for 5 minutes"", ""learn 10 words"", ""one",P1,agent,,Open
+F-002.U,ELEVATION,§18.2:L3528,requirement,[2] Goal ring on Today. Edit sheet with three presets and a,P1,agent,,Open
+F-002.L,ELEVATION,§18.2:L3531,requirement,[2] Today → goal ring; Me → Settings → Goals.,P1,agent,,Open
+F-003,ELEVATION,§18.2:L3532-L3548,requirement,Daily Challenges (revived),P1,agent,,Open
+F-003.D,ELEVATION,§18.2:L3539,requirement,"[2] There is no detail view, so challenges can only be seen,",P1,agent,,Open
+F-003.E,ELEVATION,§18.2:L3541,requirement,[2] Revive as the Challenge board behind the Today widget. Challenges are,P1,agent,,Open
+F-003.U,ELEVATION,§18.2:L3545,requirement,"[2] Three cards with progress chips and a ""Do it"" deep-link. Completion",P1,agent,,Open
+F-003.L,ELEVATION,§18.2:L3548,requirement,[2] Today → Challenges strip → board.,P1,agent,,Open
+F-004,ELEVATION,§18.2:L3549-L3561,requirement,Quests,P1,agent,,Open
+F-004.D,ELEVATION,§18.2:L3555,requirement,[2] Quest generation relies on client AI (P0-3). Rewards can be minted,P1,agent,,Open
+F-004.E,ELEVATION,§18.2:L3556,requirement,"[2] Story quests set in the village narrative (""Help Mama Ngozi prepare",P1,agent,,Open
+F-004.U,ELEVATION,§18.2:L3559,requirement,[2] Quest map with illustrated stops; each stop is a deep-link. Rendered,P1,agent,,Open
+F-004.L,ELEVATION,§18.2:L3561,requirement,[2] Today → Quest card; Play → Quests.,P1,agent,,Open
+F-005,ELEVATION,§18.2:L3562-L3577,requirement,Seasonal Events / Village Festival,P1,agent,,Open
+F-005.D,ELEVATION,§18.2:L3568,requirement,[2] The hard-coded fallback can show stale or wrong-date events. Event content,P1,agent,,Open
+F-005.E,ELEVATION,§18.2:L3570,requirement,"[2] A cultural calendar: Ọdún Ọ̀ṣun, Eid, Timkat, Durbar, Homowo, Umhlanga, Kwanzaa",P1,agent,,Open
+F-005.U,ELEVATION,§18.2:L3574,requirement,"[2] Event banner on Today; event page with a countdown, a culture",P1,agent,,Open
+F-005.L,ELEVATION,§18.2:L3577,requirement,[2] Today → Event banner; Village → Events.,P1,agent,,Open
+F-006,ELEVATION,§18.2:L3578-L3592,requirement,Streaks & reminders,P1,agent,,Open
+F-006.D,ELEVATION,§18.2:L3584,requirement,"[2] Loss-aversion copy at night, duplicate pushes, and streaks that can be",P1,agent,,Open
+F-006.E,ELEVATION,§18.2:L3585,requirement,"[2] Ethical streaks (§12): a weekly-streak option, earned freezes and repair windows.",P1,agent,,Open
+F-006.U,ELEVATION,§18.2:L3588,requirement,[2] Streak flame becomes a calabash that fills; tap for history; no,P1,agent,,Open
+F-006.L,ELEVATION,§18.2:L3591,requirement,[2] Today header; Me → Progress.,P1,agent,,Open

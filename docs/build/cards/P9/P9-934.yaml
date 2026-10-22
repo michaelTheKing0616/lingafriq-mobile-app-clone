@@ -1,0 +1,69 @@
+charter: v2
+id: P9-934
+kind: verification
+title: Verify safety lead, incident response and moderator training exist
+phase: P9
+epic: E-P9-MODERATION
+req_ids:
+- EP-§13.3-13
+- EP-§13.3-14
+- EP-§13.3-15
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+- P9-928
+size: S
+difficulty:
+  score: 3
+  blast: 2
+  ambiguity: 1
+  coupling: 0
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T2
+  justification: 'score 3: blast 2, ambiguity 1, coupling 0, depth 0'
+token_budget: 30000
+file_allowlist:
+- docs/safety/INCIDENT_RESPONSE.md
+- docs/safety/MODERATOR_TRAINING.md
+context_anchors:
+- ELEVATION.md#§13.3:L1896
+acceptance_criteria:
+- id: AC1
+  text: Given the gate packet, when assembled, then it names the safety lead with contact and deputy and Tope has signed the
+    record
+- id: AC2
+  text: Given the incident response document, when reviewed, then it covers detection, containment, notification, regulator
+    and hotline reporting and a post-incident review, and a tabletop exercise date is recorded
+- id: AC3
+  text: Given moderator training, when reviewed, then it includes grooming-pattern content and each active moderator has a
+    completion record
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

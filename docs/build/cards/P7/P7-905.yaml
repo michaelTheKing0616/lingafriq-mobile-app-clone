@@ -1,0 +1,77 @@
+charter: v2
+id: P7-905
+kind: build
+title: Replace NLLB and MyMemory with lexicon-grounded word lookup
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- EP-§17.6-05
+- EP-§17.6-06
+- EP-§17.6-07
+- EP-§17.6-11
+depends_on:
+- P7-901
+- P7-916
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, coupling 1, depth 1'
+token_budget: 60000
+file_allowlist:
+- lib/services/hybrid_polie/translation_service.dart
+- lib/services/lens/lexicon_label_resolver.dart
+- test/services/lens/lexicon_label_resolver_test.dart
+context_anchors:
+- ELEVATION.md#§17.6:L2352-L2354
+- ELEVATION.md#§17.6:L2362-L2363
+acceptance_criteria:
+- id: AC1
+  text: Given a Lens object id, when a word is needed in the learner's language, then it is resolved from the Verified Lexicon
+    and not from a machine translator
+- id: AC2
+  text: Given no verified entry exists, when a word is needed, then the card shows an AI-draft badge with the honest label
+    and is queued to the Verify queue
+- id: AC3
+  text: Given the Lens path, when the app is built, then no call to the Hugging Face NLLB-200 model or the MyMemory API remains
+    in the Lens flow and a lint test enforces it
+- id: AC4
+  text: Given the NLLB-200 non-commercial licence, when other callers of translation_service remain, then each is listed in
+    a harvest note for the owning card and none ships in a commercial build unflagged
+test_plan:
+  unit:
+  - resolver
+  - draft fallback
+  integration:
+  - 'lint: no NLLB/MyMemory in Lens'
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- 'P0-24 licence: NLLB-200 is CC-BY-NC'
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,81 @@
+charter: v2
+id: P11-053
+kind: build
+title: Build learner avatar editor on the shared rig
+phase: P11
+epic: E-P11-PERSONAS-AVATARS
+req_ids:
+- EP-§4.4-05
+- EP-§4.4-10
+depends_on:
+- P11-045
+- P11-049
+size: M
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T1
+  reviewer: T1
+  justification: 'score 3: blast 1, ambiguity 1, coupling 1, depth 0'
+token_budget: 70000
+file_allowlist:
+- lib/avatars/customisation/avatar_editor_screen.dart
+- lib/l10n/app_en.arb
+context_anchors:
+- ELEVATION.md#§4.4:L964-L970
+acceptance_criteria:
+- id: AC1
+  text: Given the learner, when editing, then the avatar uses the same rig and slots as cast characters.
+- id: AC2
+  text: Given each item, when shown, then it has a one-line cultural note.
+- id: AC3
+  text: Given locked items, when browsed, then a visible locked state explains the unlock.
+test_plan:
+  unit:
+  - slot parity
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - item label
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - unlocked
+  - locked
+  - selected
+  copy_keys:
+  - avatar.item.locked
+  - avatar.item.note
+  tokens:
+  - card.surface
+  motion_tier: product
+  a11y:
+  - item name and note announced
+  goldens:
+  - editor_grid
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G11
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/motion-system
+  - prime/rive
+  - prime/animation-principles

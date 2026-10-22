@@ -1,0 +1,25 @@
+{
+ "yo": {
+  "sentence:Beta": 20,
+  "sentence:needs-review": 350
+ },
+ "ig": {
+  "sentence:needs-review": 400
+ },
+ "ha": {
+  "sentence:needs-review": 57
+ },
+ "pcm": {},
+ "sw": {
+  "lexeme:Beta": 717,
+  "lexeme:needs-review": 1806,
+  "sentence:Beta": 150,
+  "sentence:needs-review": 250
+ },
+ "zu": {
+  "sentence:needs-review": 400
+ },
+ "xh": {
+  "sentence:needs-review": 118
+ }
+}

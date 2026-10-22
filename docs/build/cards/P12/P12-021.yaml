@@ -1,0 +1,65 @@
+charter: v2
+id: P12-021
+kind: verification
+title: Conduct accessibility audit with disabled users
+phase: P12
+epic: E-P12-RELEASE
+req_ids:
+- RM-P2-13
+depends_on:
+- E-P10-ME
+size: M
+difficulty:
+  score: 4
+  blast: 1
+  ambiguity: 2
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T1
+  tester: T0
+  reviewer: T1
+  justification: 'score 4: blast 1, ambiguity 2, coupling 1, depth 0'
+token_budget: 60000
+file_allowlist: []
+context_anchors:
+- ELEVATION.md#§16.3:L2112
+acceptance_criteria:
+- id: AC1
+  text: Given the audit scope covering onboarding, Learn, Speak and Play, when sessions run with disabled users, then every
+    finding is logged with severity and WCAG 2.2 criterion
+- id: AC2
+  text: Given findings of severity high or above, when the release readiness check runs, then each has a fix card or a Waived-by-Tope
+    record
+- id: AC3
+  text: Given fixes ship, when re-tested by the same users, then the report states pass or fail per finding and WCAG 2.2 AA
+    status honestly
+test_plan:
+  unit: []
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- ledger row
+risks:
+- Owner is external (auditor and participants); no EXT register item exists for it, so Tope must add one before G12
+- Participant recruitment, consent and payment are human-run
+gate: G12
+external_blockers:
+- EXT-27
+status: Draft
+skills:
+  worker:
+  - adaptive/07-research-and-fact-checking
+  - adaptive/06-execution-and-verification

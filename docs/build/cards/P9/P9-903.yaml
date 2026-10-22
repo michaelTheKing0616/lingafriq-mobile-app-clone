@@ -1,0 +1,73 @@
+charter: v2
+id: P9-903
+kind: build
+title: 'Harden socket handshake: origins, token transport, single server'
+phase: P9
+epic: E-P9-REALTIME
+req_ids:
+- EP-§9.1-09
+- EP-§9.1-10
+- EP-§9.1-11
+depends_on:
+- E-P1-CONTAINMENT
+- E-P2-PLATFORM
+size: S
+difficulty:
+  score: 3
+  blast: 2
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 3: blast 2, ambiguity 0, coupling 1, depth 0'
+token_budget: 30000
+file_allowlist:
+- node-backend/src/services/socket.service.ts
+- node-backend/src/socket/handlers.ts
+- node-backend/src/config/cors.ts
+context_anchors:
+- ELEVATION.md#§9.1:L1556-L1561
+acceptance_criteria:
+- id: AC1
+  text: Given NODE_ENV=production, when the origin allowlist is loaded, then it contains no localhost entry and a request
+    from an unlisted origin is rejected with a typed ORIGIN_DENIED error
+- id: AC2
+  text: Given a handshake with the token in the query string, when it connects, then it is refused with TOKEN_TRANSPORT_INVALID;
+    only the auth payload or header is accepted
+- id: AC3
+  text: Given the codebase, when searched for the second Socket.IO server with wildcard CORS in socket/handlers.ts, then it
+    is deleted or unreachable and a test fails if any server sets origin '*'
+test_plan:
+  unit:
+  - origin allowlist
+  integration:
+  - handshake matrix
+  security:
+  - CORS wildcard regression
+  - token in URL
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G9
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

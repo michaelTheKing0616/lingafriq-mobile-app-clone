@@ -1,0 +1,82 @@
+charter: v2
+id: P2-002
+kind: build
+title: Add placeholder and claim linters over source and content
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- EP-§6.5-26
+- CP-§3.2-08
+- CP-§1-08
+- CP-§1-05
+- EP-§11.1-05
+depends_on:
+- E-P1-CONTAINMENT
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 5: blast 2, coupling 1, depth 1'
+token_budget: 70000
+file_allowlist:
+- scripts/ci/placeholder_lint.py
+- scripts/ci/claim_lint.py
+- .github/workflows/build.yml
+- scripts/ci/lint_patterns.yaml
+- test/ci/lint_fixtures_test.py
+context_anchors:
+- ELEVATION.md#§6.5:L1318-L1319
+- CURRICULUM.md#§3.2:L517
+- CURRICULUM.md#§1:L84-L85
+- CURRICULUM.md#§1:L86-L92
+- ELEVATION.md#§11.1:L1785
+acceptance_criteria:
+- id: AC1
+  text: Given any file under lib/, node-backend/ or content bundles matching /word\d|example|sample|lorem/i or an empty field,
+    when the placeholder linter runs, then CI fails listing path:line and rule id
+- id: AC2
+  text: Given a content bundle containing a Sample MCQ item with answer a, when the linter runs, then it fails the build
+- id: AC3
+  text: Given grammar text with generic phrasing flagged by the claim linter ruleset, when the claim linter runs, then CI
+    fails with the rejected span
+- id: AC4
+  text: Given a tone statement without a lexicon source reference, when the tone-claim linter runs, then CI fails
+- id: AC5
+  text: Given an allowlisted legitimate use, when the linter runs, then it passes only if the allowlist entry carries a reason
+    and an owner
+test_plan:
+  unit:
+  - fixtures per rule, positive and negative
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - run over all four legacy bundles; failures recorded as baseline
+user_facing: false
+ux_spec: null
+tags:
+- placeholder_linter
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks: []
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging
