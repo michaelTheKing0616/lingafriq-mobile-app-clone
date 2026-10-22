@@ -8,14 +8,14 @@ The Firebase service account, the Apple `.p8`, and the five client AI keys stay 
 
 Work is continuous on `cloud-handoff`. Do not pause between cards. The key files remain tracked.
 
-- Mobile: `cloud-handoff`. Latest card push is P2-033.
-- Backend: `cloud-handoff`. Latest card push is P2-033, one trace id from the app through speech.
+- Mobile: `cloud-handoff`. Latest card push is P2-034.
+- Backend: `cloud-handoff`. Latest card push is P2-034, RED metrics and SLO alerts.
 - The key files are still tracked. Copies also exist in `~/.lingafriq/secrets/` (mode 600). History was not rewritten.
-- Next unblocked card is P2-034. P2-014 through P2-030 wait on ADR-004. P2-031 stays open until two live API instances are confirmed. P2-032 waits on Atlas. P7-961 does not jump this queue.
+- Next unblocked card is P2-037. P2-034 stays open until AI responses stamp a first-token time. P2-014 through P2-030 wait on ADR-004. P2-031 stays open until two live API instances are confirmed. P2-032 waits on Atlas. P7-961 does not jump this queue.
 
 ## Next 3 steps
 
-1. Continue at P2-034. P2-031 still needs the live two-instance check. P2-032 needs Atlas access.
+1. Continue at P2-037. P2-034 still needs a first-token stamp on AI responses. P2-031 still needs the live two-instance check. P2-032 needs Atlas access.
 2. Do not stop to ask what is next.
 3. Do not remove the Firebase service account, the Apple `.p8`, or the five client AI keys. Intron stays off until its flag and server key are set.
 

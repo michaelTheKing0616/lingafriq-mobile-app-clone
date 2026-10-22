@@ -28,8 +28,10 @@ tiers:
 token_budget: 70000
 file_allowlist:
 - node-backend/src/telemetry/red_metrics.ts
-- infra/alerts/slo_rules.yaml
-- infra/dashboards/red.json
+- node-backend/src/telemetry/otel.ts
+- node-backend/infra/alerts/slo_rules.yaml
+- node-backend/infra/dashboards/red.json
+- node-backend/test/telemetry/red_metrics.test.ts
 context_anchors:
 - ELEVATION.md#§13.4:L1906-L1907
 - ELEVATION.md#§13.4:L1907
@@ -61,10 +63,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "Read and chat durations are recorded when a request finishes. AI chat completion returns the whole body, so a first-token time is not stamped yet. The alert fires once that stamp is above 400 ms."
 gate: G2
 external_blockers: []
-status: Draft
+status: Ready
 skills:
   worker:
   - adaptive/11-data-and-quantitative-work

@@ -88,3 +88,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-076 | open | P2-031 | /health stays 200 when MongoDB is down and /ready returns 503. Two API instances behind the live load balancer have not been inspected. |
 | OW-077 | open | P2-036 | Winston scrubs secret keys and secret-shaped strings. A log written with console.log does not pass through that scrub. |
 | OW-078 | open | P2-033 | Spans are accepted in-process. No collector URL is set, so they are not shipped off the machine. |
+| OW-079 | open | P2-034 | Read and chat durations are recorded. AI chat completion returns the whole body, so a first-token time is not stamped yet. |
