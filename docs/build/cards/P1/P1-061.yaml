@@ -29,6 +29,7 @@ file_allowlist:
 - node-backend/src/controllers/revenuecatWebhook.controller.ts
 - node-backend/src/models/entitlement.model.ts
 - node-backend/src/services/entitlement.service.ts
+- node-backend/src/tests/security/revenuecatWebhook.spec.ts
 context_anchors:
 - ELEVATION.md#§1:L398-L409
 - ELEVATION.md#§16.1:L2058
@@ -65,12 +66,14 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "REVENUECAT_WEBHOOK_SECRET is not in this repo. EXT-19 stays open until the dashboard secret is set."
+- "The receiver is not deployed. EXT-23 stays open. Premium gates read this table in P1-062."
 gate: G1
 external_blockers:
 - EXT-19
 - EXT-23
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes

@@ -71,3 +71,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-059 | open | P1-058 | Backend workflows other than the SBOM job still use action tags. The pin lint scans the mobile repo. |
 | OW-060 | open | P1-059, commit `9ae8e11` | The built login page responds. An authenticated login and a write were not run because the API was not running and no test account is in the repo. Production audit still reports moderate react-router and yaml findings. yarn.lock was not regenerated. Firebase deploy uses npm ci. Vite 8 needs the esbuild package because the config still minifies with esbuild. |
 | OW-061 | open | P1-060 | The scope doc is ready to send. Test account passwords are not issued. EXT-17 stays open until a vendor is booked. |
+| OW-062 | open | P1-061, commit `a2c6603` | REVENUECAT_WEBHOOK_SECRET is unset in the repo. The webhook is not deployed (EXT-23). Premium gates do not read the entitlement row yet. |
