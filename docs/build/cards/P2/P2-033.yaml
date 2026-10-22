@@ -25,9 +25,16 @@ tiers:
 token_budget: 70000
 file_allowlist:
 - lib/services/monitoring/otel_tracer.dart
+- lib/providers/dio_provider.dart
+- test/monitoring/otel_tracer_test.dart
 - node-backend/src/telemetry/otel.ts
-- node-backend/src/services/aiGateway.service.ts
-- node-backend/src/services/speech.service.ts
+- node-backend/src/app.ts
+- node-backend/src/controllers/aiCompletion.controller.ts
+- node-backend/src/services/ai/providerRouter.ts
+- node-backend/test/telemetry/trace.test.ts
+- node-backend/package.json
+- node-backend/package-lock.json
+- node-backend/yarn.lock
 context_anchors:
 - ELEVATION.md#§13.4:L1906
 acceptance_criteria:
@@ -57,10 +64,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "Spans are accepted in-process. A collector URL is not set, so they are not shipped off the machine. Outside tests the process does not keep the span bodies."
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging

@@ -15,6 +15,7 @@ import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:lingafriq/utils/certificate_pinning.dart';
 import 'package:lingafriq/utils/transport_error_policy.dart';
 
+import '../services/monitoring/otel_tracer.dart';
 import '../utils/api.dart';
 
 /// Production API domains that require certificate pinning
@@ -76,10 +77,33 @@ final client = Provider<Dio>(
     // Retry interceptor for transient DNS / connection failures.
     // Must be added BEFORE the logger so retries are transparent.
     dio.interceptors.add(_DnsRetryInterceptor());
+    dio.interceptors.add(_TraceparentInterceptor());
     dio.interceptors.add(_DioLogger(ref));
     return dio;
   },
 );
+
+/// Puts a fresh W3C traceparent on every API call. The body is not copied onto the span.
+class _TraceparentInterceptor extends Interceptor {
+  final OtelTracer _tracer = OtelTracer();
+
+  @override
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    options.headers.addAll(_tracer.headers());
+    handler.next(options);
+  }
+}
+
+/// Puts a fresh W3C traceparent on every API call. The body is not copied onto the span.
+class _TraceparentInterceptor extends Interceptor {
+  final OtelTracer _tracer = OtelTracer();
+
+  @override
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    options.headers.addAll(_tracer.headers());
+    handler.next(options);
+  }
+}
 
 /// Retries transient transport failures (DNS, timeout, temporary disconnects).
 class _DnsRetryInterceptor extends Interceptor {
