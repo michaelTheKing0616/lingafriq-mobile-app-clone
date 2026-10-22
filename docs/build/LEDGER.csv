@@ -60,3 +60,4 @@ P1-049,build,T2,grok-4.7,n/a,n/a,1,pass,A verified Google or Apple token links t
 P1-050,build,T3,grok-4.7,n/a,n/a,1,pass,Every route is inventoried with a Joi schema or an explicit exemption; normal JSON is capped at 256 KiB and an invalid auth body returns 400 without a stack
 P1-051,build,T3,grok-4.7,n/a,n/a,1,pass,A body that names another user does not become the actor; Rive state is stored for the JWT subject, and an unmarked body actor-id read fails the scan
 P1-052,build,T3,grok-4.7,n/a,n/a,1,pass,User B is denied on user A's private, self, and admin id routes; a new id route missing from the inventory fails the suite
+P1-053,build,T2,grok-4.7,n/a,n/a,1,pass,The 11th login from one IP returns 429; one account's backoff grows across IPs; unknown and known failures match; the clock is fake

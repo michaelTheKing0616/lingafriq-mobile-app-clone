@@ -28,6 +28,7 @@ token_budget: 70000
 file_allowlist:
 - node-backend/src/tests/security/rateLimit.spec.ts
 - node-backend/src/tests/security/lockout.spec.ts
+- node-backend/src/middleware/rateLimiter.ts
 context_anchors:
 - ELEVATION.md#§1:L377-L386
 - ELEVATION.md#§16.1:L2057
@@ -61,10 +62,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "The per-IP limiter still skips itself in tests until the suite installs the fake clock. A limiter error in production still allows the request."
 gate: G1
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes
