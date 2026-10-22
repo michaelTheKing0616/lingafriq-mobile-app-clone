@@ -23,9 +23,18 @@ tiers:
   justification: score 6; blast 1
 token_budget: 160000
 file_allowlist:
-- admin-panel/package.json
-- admin-panel/vite.config.ts
-- admin-panel/src/main.tsx
+- lingafriq-admin/package.json
+- lingafriq-admin/package-lock.json
+- lingafriq-admin/src/App.tsx
+- lingafriq-admin/src/hooks/useTextEditor.ts
+- lingafriq-admin/src/components/inputs/TextEditor.tsx
+- lingafriq-admin/src/components/dialogs/LessonsModal.tsx
+- lingafriq-admin/src/components/dialogs/LanguageModal.tsx
+- lingafriq-admin/src/components/dialogs/CultureMagazineModal.tsx
+- lingafriq-admin/src/components/tables/UsersTable.tsx
+- lingafriq-admin/src/components/tables/CultureMagazineTable.tsx
+- lingafriq-admin/src/pages/LiveClassroom.tsx
+- lingafriq-admin/src/pages/SocialHub.tsx
 context_anchors:
 - ELEVATION.md#§13.1:L1875-L1876
 acceptance_criteria:
@@ -57,10 +66,12 @@ dod_evidence:
 - coverage on touched domain code
 - ledger row
 risks:
-- Major-version breakage; admin panel path assumed
+- "The panel is lingafriq-admin, not admin-panel. Draft.js is removed because React 19 dropped findDOMNode; saved fields were already plain text."
+- "Production audit still has moderate react-router and yaml findings. yarn.lock was not regenerated. Firebase deploy uses npm ci."
+- "The built login page responds. An authenticated login and a write were not run. The API was not running."
 gate: G1
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging
