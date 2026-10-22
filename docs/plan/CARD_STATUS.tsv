@@ -332,7 +332,7 @@ P1-054	Done	Decide certificate pinning approach	P1/P1-054.yaml
 P1-055	Done	Implement certificate pinning consistently per ADR	P1/P1-055.yaml
 P1-056	Done	Obfuscate release builds	P1/P1-056.yaml
 P1-057	Done	Enable dependency update bot, audit gate and monthly pub check	P1/P1-057.yaml
-P1-058	Draft	Generate SBOM and pin GitHub Actions by SHA	P1/P1-058.yaml
+P1-058	Done	Generate SBOM and pin GitHub Actions by SHA	P1/P1-058.yaml
 P1-059	Draft	Upgrade admin panel React and Vite	P1/P1-059.yaml
 P1-060	Draft	Prepare penetration test scope document	P1/P1-060.yaml
 P1-061	Draft	Add RevenueCat webhook receiver and entitlement table	P1/P1-061.yaml

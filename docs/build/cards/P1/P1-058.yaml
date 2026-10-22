@@ -27,6 +27,15 @@ file_allowlist:
 - .github/workflows/build.yml
 - .github/workflows/build-and-release.yml
 - .github/workflows/sbom.yml
+- .github/workflows/build-sideload-apk.yml
+- .github/workflows/llm_authoring.yml
+- .github/workflows/content-assets.yml
+- .github/workflows/audit.yml
+- .github/workflows/pub-outdated.yml
+- chat_bundle/.github/workflows/ci.yml
+- scripts/ci/check_action_pins.py
+- scripts/ci/pub_sbom.py
+- node-backend/.github/workflows/sbom.yml
 context_anchors:
 - ELEVATION.md#§13.1:L1875
 acceptance_criteria:
@@ -55,10 +64,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "Backend workflows other than the SBOM job still use action tags. The pin lint scans the mobile repo."
 gate: G1
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging

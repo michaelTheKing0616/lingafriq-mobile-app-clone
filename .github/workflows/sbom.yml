@@ -1,0 +1,29 @@
+name: SBOM
+
+on:
+  pull_request:
+  push:
+    branches: [main, cloud-handoff]
+
+jobs:
+  pins-and-sbom:
+    name: Pin lint and app SBOM
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Fail on an unpinned action
+        run: |
+          python3 scripts/ci/check_action_pins.py --self-test
+          python3 scripts/ci/check_action_pins.py .github/workflows chat_bundle/.github/workflows
+
+      - name: Write the app SBOM
+        run: python3 scripts/ci/pub_sbom.py pubspec.lock app.cdx.json
+
+      - name: Upload the app SBOM
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: app-sbom
+          path: app.cdx.json
+          retention-days: 90

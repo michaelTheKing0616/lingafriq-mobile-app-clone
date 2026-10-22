@@ -65,3 +65,4 @@ P1-054,adr,T2,grok-4.7,n/a,n/a,1,pass,Leaf DER SHA-256 on both platforms; the cu
 P1-055,build,T2,grok-4.7,n/a,n/a,1,pass,An unknown leaf throws certificate_pin_mismatch; the backup pin still matches; the Android placeholder pin is gone
 P1-056,build,T1,grok-4.7,n/a,n/a,1,pass,Release builds pass --obfuscate and upload symbols privately; symbolize restored uniqueReadableFrame from an obfuscated program counter
 P1-057,build,T1,grok-4.7,n/a,n/a,1,pass,Dependabot covers pub, npm, and GitHub Actions; a high production advisory fails npm audit; pub outdated is posted monthly
+P1-058,build,T1,grok-4.7,n/a,n/a,1,pass,Mobile action refs are full SHAs; an unpinned ref fails the lint; the app SBOM is attached to the release and the API SBOM is an artifact
