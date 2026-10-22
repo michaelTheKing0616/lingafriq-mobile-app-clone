@@ -25,8 +25,10 @@ tiers:
 token_budget: 70000
 file_allowlist:
 - node-backend/src/controllers/auth.controller.ts
+- node-backend/src/controllers/v1/auth.controller.ts
+- node-backend/src/controllers/admin/auth.admin.controller.ts
 - node-backend/src/services/loginThrottle.service.ts
-- node-backend/src/middleware/rateLimit.middleware.ts
+- node-backend/src/__test__/P1-044.loginThrottle.test.ts
 context_anchors:
 - ELEVATION.md#§1:L377-L386
 - ELEVATION.md#§16.1:L2057
@@ -66,10 +68,11 @@ dod_evidence:
 - coverage on touched domain code
 - ledger row
 risks:
-- Lockout enables targeted DoS; backoff not hard lock, recorded in DECISIONS.md
+- "Five failures arm a delay of 30 seconds. Each later failure doubles it, up to 15 minutes. The source does not set those numbers. The delay expires."
+- "The drafted file rateLimit.middleware.ts does not exist. The per-IP limit that remains is src/middleware/rateLimiter.ts. That middleware skips itself when NODE_ENV is test."
 gate: G1
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes

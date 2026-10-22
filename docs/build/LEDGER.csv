@@ -51,3 +51,4 @@ P1-038,build,T2,grok-4.7,n/a,n/a,1,pass,One local-day cap across jobs; quiet hou
 P1-040,build,T2,grok-4.7,n/a,n/a,1,pass,Non-commercial TTS and NLLB routes return typed unavailable; the ban-list still names the excluded ids
 P1-042,build,T2,grok-4.7,n/a,n/a,1,pass,Scraper package and service removed; translate returns translation_unavailable with retryable false
 P1-043,build,T2,grok-4.7,n/a,n/a,1,pass,Unknown email and wrong password share one 401 body and a pbkdf2 verify; logs omit the header and password length
+P1-044,build,T2,grok-4.7,n/a,n/a,1,pass,Five failures arm a growing Retry-After; the correct password stays refused until it expires; the per-IP limiter remains

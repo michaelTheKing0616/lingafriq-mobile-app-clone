@@ -54,4 +54,5 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-042 | open | P1-037, commit `e00e54b` | After a clean finish the waiter still enters the job when the lease ends. The sent ledger blocks a second push. Overlapping ticks in one process share `workerOwnerId`. Live PM2 was not inspected (EXT-23). Reviewer [P1-037](4a840bd9-96ef-475a-9bdb-ed2933f01a0b). |
 | OW-043 | open | P1-038 | Daily and weekly still follow their cron hour. The shared day cap blocks a second job the same local day. Unknown and invalid timezones become UTC and are logged. |
 | OW-044 | open | P1-042 | Google Cloud Translation still runs when GOOGLE_CLOUD_API_KEY is set. The live translate screen shows "Translation is unavailable" for that code. |
-| OW-045 | open | P1-043 | A correct password on a non-admin account still returns "User is not an admin". Unknown emails and wrong passwords share one 401. Per-account lockout is P1-044. |
+| OW-045 | open | P1-043 | A correct password on a non-admin account still returns "User is not an admin". Unknown emails and wrong passwords share one 401. |
+| OW-046 | open | P1-044 | The backoff numbers, 30 seconds doubling to 15 minutes, are not in the source. The per-IP limiter skips itself when NODE_ENV is test. |
