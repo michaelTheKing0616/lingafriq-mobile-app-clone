@@ -8,11 +8,11 @@ The Firebase service account, the Apple `.p8`, and the five client AI keys stay 
 
 Work is continuous on `cloud-handoff`. Do not pause between cards. The key files remain tracked.
 
-- Mobile: `cloud-handoff`. Latest card push is ADR-004. Drift is the local database.
+- Mobile: `cloud-handoff`. Latest card push is P2-014. Drift is open. Hive still serves reads.
 - Backend: `cloud-handoff`. Latest card push is P2-034. OpenAI and Groq stamp first-token time.
 - The key files are still tracked. Copies also exist in `~/.lingafriq/secrets/` (mode 600). History was not rewritten.
 - Admin gamification edits were not part of this build. They are in git stash `admin-gamification-wip-not-this-build` on `lingafriq-admin` `cloud-handoff`.
-- Next build card is P2-014. ADR-004 is signed: Drift, not Isar. P2-014 through P2-030 are unblocked. P2-031 and P2-032 stay behind the host switches above. P7-961 does not jump this queue.
+- P2-014 is in progress. Drift is open and vocabulary is copied. Hive still serves reads, so the card is not done. P2-015 through P2-030 are unblocked once their earlier cards finish. P7-961 does not jump this queue.
 
 ## Next 3 steps
 

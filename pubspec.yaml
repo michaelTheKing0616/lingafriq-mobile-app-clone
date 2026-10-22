@@ -122,6 +122,9 @@ dependencies:
   passkeys: ^2.23.1
   google_sign_in: ^7.2.0
   sign_in_with_apple: ^8.2.0
+  drift: ^2.35.2
+  sqlite3_flutter_libs: ^0.6.0+eol
+  path: ^1.9.1
 dependency_overrides:
   # Fix record_linux compatibility issue - update to latest compatible version
   record_platform_interface: ^1.4.0

@@ -26,9 +26,11 @@ tiers:
 token_budget: 150000
 file_allowlist:
 - lib/services/offline/local_database_service.dart
-- lib/db/migrations/
-- lib/services/secure_storage_service.dart
+- lib/db/app_database.dart
+- lib/db/migrations/local_sql.dart
 - test/db/migration_test.dart
+- pubspec.yaml
+- pubspec.lock
 context_anchors:
 - ELEVATION.md#§16.1:L2048-L2050
 - ELEVATION.md#§13.5:L1918-L1919
@@ -63,10 +65,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "Drift opens on startup and keeps the session. Vocabulary is copied in. Hive still serves the reads until the remaining boxes move."
 gate: G2
 external_blockers: []
-status: Draft
+status: Ready
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes

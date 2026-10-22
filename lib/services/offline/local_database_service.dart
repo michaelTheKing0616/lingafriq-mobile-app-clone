@@ -1,6 +1,9 @@
 import 'dart:io';
+import 'package:drift/native.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import '../../db/app_database.dart';
 import '../../models/offline/local_lesson.dart';
 import '../../models/offline/local_vocabulary.dart';
 import '../../models/offline/local_progress.dart';
@@ -26,6 +29,7 @@ class LocalDatabaseService {
   Box<LocalProgress>? _progressBox;
   Box<LocalMediaCache>? _mediaCacheBox;
   Box? _metadataBox;
+  LingAfriqDatabase? _drift;
 
   bool _isInitialized = false;
   final int _schemaVersion = 2;
@@ -67,6 +71,7 @@ class LocalDatabaseService {
 
       // Check and migrate schema if needed
       await _migrateSchemaIfNeeded();
+      await _openDrift();
 
       _isInitialized = true;
     } on SchemaMigrationFailure {
@@ -81,6 +86,24 @@ class LocalDatabaseService {
 
   /// Get current schema version
   int get schemaVersion => _schemaVersion;
+
+  Future<void> _openDrift() async {
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File(p.join(dir.path, 'lingafriq.sqlite'));
+    final db = LingAfriqDatabase(NativeDatabase(file));
+    if (db.clearsSessionOnUpgrade) {
+      throw StateError('a version change must not clear the session');
+    }
+    await db.customSelect('SELECT 1').get();
+    _drift = db;
+    final count = await db.customSelect('SELECT COUNT(*) AS c FROM vocabulary').getSingle();
+    if (count.read<int>('c') > 0) return;
+    final box = _vocabularyBox;
+    if (box == null) return;
+    for (final item in box.values) {
+      await storeVocabularyPayload(db, item.toJson());
+    }
+  }
 
   Future<void> _migrateSchemaIfNeeded() async {
     final metadata = _metadataBox;
@@ -518,6 +541,8 @@ class LocalDatabaseService {
     await _progressBox?.close();
     await _mediaCacheBox?.close();
     await _metadataBox?.close();
+    await _drift?.close();
+    _drift = null;
 
     _isInitialized = false;
   }
