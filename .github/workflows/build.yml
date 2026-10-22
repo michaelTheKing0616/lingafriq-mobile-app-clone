@@ -95,6 +95,14 @@ jobs:
           flutter test --coverage
           echo "✅ Flutter tests passed"
 
+      - name: Upload golden diffs
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: golden-diffs
+          path: test/golden/failures
+          if-no-files-found: ignore
+
       - name: Domain coverage gate
         run: python3 scripts/ci/coverage_gate.py coverage/lcov.info
 

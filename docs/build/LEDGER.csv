@@ -81,3 +81,4 @@ P2-006,build,T1,grok-4.7,n/a,n/a,1,pass,A seeded high lodash advisory fails npm 
 P2-007,build,T1,grok-4.7,n/a,n/a,1,pass,The release job uploads a CycloneDX SBOM for the app and the API and no longer commits a version bump; an action ref that is not a full SHA fails and names the action
 P2-008,build,T1,grok-4.7,n/a,n/a,1,pass,A domain file missing from lcov counts at 0% and fails the gate below 70%; lib/learning is at 0.0 percent; the elevation baseline of 64 Flutter test files is recorded
 P2-009,build,T2,grok-4.7,n/a,n/a,1,pass,User B is denied on user A's private object for every inventoried id route; a route missing from the inventory fails the suite; the API CI job is blocking
+P2-010,build,T1,grok-4.7,n/a,n/a,1,pass,A selected design-system chip and the Rive CharacterChip at frame zero match stored goldens; a pixel diff above 0.01 fails and the diff is written for upload

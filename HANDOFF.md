@@ -6,17 +6,18 @@ The Firebase service account, the Apple `.p8`, and the five client AI keys stay 
 
 ## Where this stopped
 
-This file is the pause point for a cloud agent. The key files remain tracked.
+Work is continuous on `cloud-handoff`. Do not pause between cards. The key files remain tracked.
 
-- Mobile work is on `cloud-handoff`, branched from `build/p1-031-practice-mode` (`7d8050a`, [P1-036]).
-- Backend work is on `cloud-handoff`, branched from `feature/intron-stt-proxy` (`e00e54b`, [P1-037]).
+- Mobile: `cloud-handoff`. Latest card push is P2-010.
+- Backend: `cloud-handoff`. Latest card push is P2-009 (`74a2d56`), the blocking IDOR job.
 - The key files are still tracked. Copies also exist in `~/.lingafriq/secrets/` (mode 600). History was not rewritten.
+- Next card is P2-059 (lib/learning to 70%, threshold stays 0.70). Then P2-011. P7-961 is the full Import Media lesson and does not jump this queue.
 
 ## Next 3 steps
 
-1. P1-038 is done. Resume at P1-040. The router stays off until `AI_INTRON_ENABLED` and `INTRON_API_KEY` are set. Intron is set up and not connected. Key cleanup waits until the end of the build.
-2. Do not remove the Firebase service account, the Apple `.p8`, or the five client AI keys.
-3. Record Tope's 2026-10-22 age-gate and JWT decisions in `docs/build/DECISIONS.md` before building P1-020 or P1-046.
+1. Finish P2-059 with real behaviour tests until `lib/learning` passes the 70% gate. Do not lower the threshold or drop files.
+2. Continue at P2-011 and keep going. Do not stop to ask what is next.
+3. Do not remove the Firebase service account, the Apple `.p8`, or the five client AI keys. Intron stays off until its flag and server key are set.
 
 ## Gates
 
@@ -86,3 +87,13 @@ Copies are in `docs/plan/`. Originals:
 - `curriculum/` in this repo (copied from `~/LingAfriq/lingafriq/curriculum`, about 141 MB, no file over 50 MB, so Git LFS was not required)
 
 Intron is set up and not connected. Do not put `INTRON_API_KEY` in the client.
+
+## Pending decisions
+
+Nothing new is blocked on a decision in this run. Still waiting, and not being re-asked mid-card:
+
+- P1-004: which secrets manager, if any, replaces the local secret folder.
+- P1-010: turn on Play Integrity and App Attest for the existing app ids.
+- P1-025: where signed snap URLs come from. No bucket exists yet.
+- D12–D19 remain unsigned. D11 is already decided: do not block under-13 sign-up.
+- Key cleanup stays at the end of the build. Do not delete the Firebase account, the Apple `.p8`, or the five client AI keys.

@@ -26,6 +26,10 @@ file_allowlist:
 - test/golden/golden_harness.dart
 - test/golden/README.md
 - .github/workflows/build.yml
+- .github/workflows/build-and-release.yml
+- test/golden/golden_harness_test.dart
+- test/golden/goldens/griot_chip_selected.png
+- test/golden/goldens/character_chip_frame0.png
 context_anchors:
 - ELEVATION.md#§13.9:L1950
 acceptance_criteria:
@@ -55,10 +59,12 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "The Rive chip is decoded with the Flutter factory and held on frame zero. A diff above 0.01 fails and the workflow uploads test/golden/failures."
+- "Goldens were written on this Mac. A Linux runner that differs by more than that tolerance fails the job and keeps the diff."
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging
