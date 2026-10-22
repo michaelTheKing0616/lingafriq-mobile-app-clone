@@ -229,7 +229,7 @@ jobs:
         run: |
           set +e
           chmod +x android/gradlew || true
-          flutter build appbundle --release --split-debug-info=build/symbols \
+          flutter build appbundle --release --obfuscate --split-debug-info=build/symbols \
             --dart-define=CERTIFICATE_PIN_HASHES="${{ secrets.CERTIFICATE_PIN_HASHES }}" \
             --build-name="$VERSION_NAME" --build-number="$BUILD_NUMBER" 2>&1 | tee build.log
           BUILD_EXIT_CODE=${PIPESTATUS[0]}
@@ -247,7 +247,7 @@ jobs:
           (cd android && ./gradlew clean --refresh-dependencies --stacktrace 2>&1 | tail -20) || true
           flutter pub get
 
-          flutter build appbundle --release --split-debug-info=build/symbols \
+          flutter build appbundle --release --obfuscate --split-debug-info=build/symbols \
             --dart-define=CERTIFICATE_PIN_HASHES="${{ secrets.CERTIFICATE_PIN_HASHES }}" \
             --build-name="$VERSION_NAME" --build-number="$BUILD_NUMBER" 2>&1 | tee build-retry.log
           BUILD_EXIT_CODE=${PIPESTATUS[0]}
@@ -272,7 +272,6 @@ jobs:
           fi
           cp "$AAB_PATH" "build/release/LingAfriq-${version}.aab"
           [ -f build/app/outputs/mapping/release/mapping.txt ] && cp build/app/outputs/mapping/release/mapping.txt build/release/mapping.txt || true
-          [ -d build/symbols ] && cp -r build/symbols build/release/ || true
 
       - name: 📤 Upload AAB and mapping file
         uses: actions/upload-artifact@v4
@@ -282,6 +281,14 @@ jobs:
             build/release/LingAfriq-${{ needs.increment-version.outputs.version }}.aab
             build/release/mapping.txt
           if-no-files-found: warn
+
+      - name: 📤 Upload Android debug symbols
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-debug-symbols-${{ needs.increment-version.outputs.version }}
+          path: build/symbols/
+          if-no-files-found: error
+          retention-days: 90
 
   build-ios:
     name: Build iOS IPA
@@ -593,7 +600,7 @@ jobs:
           set -o pipefail
           set +e
           if [ "$IOS_SIGNING_READY" = "true" ] && [ -n "$IOS_P12" ]; then
-            flutter build ios --release --no-codesign --split-debug-info=build/symbols \
+            flutter build ios --release --no-codesign --obfuscate --split-debug-info=build/symbols \
               --dart-define=CERTIFICATE_PIN_HASHES="${{ secrets.CERTIFICATE_PIN_HASHES }}" \
               --build-name="$VERSION_NAME" --build-number="$BUILD_NUMBER" 2>&1 | tee build-ios.log
             build_code=${PIPESTATUS[0]}
@@ -620,7 +627,7 @@ jobs:
               code=$build_code
             fi
           else
-            flutter build ios --release --no-codesign --split-debug-info=build/symbols \
+            flutter build ios --release --no-codesign --obfuscate --split-debug-info=build/symbols \
               --dart-define=CERTIFICATE_PIN_HASHES="${{ secrets.CERTIFICATE_PIN_HASHES }}" \
               --build-name="$VERSION_NAME" --build-number="$BUILD_NUMBER" 2>&1 | tee build-ios.log
             code=${PIPESTATUS[0]}
@@ -659,6 +666,14 @@ jobs:
               echo "⚠️ No unsigned iOS archive directory found. Nothing to package."
             fi
           fi
+
+      - name: 📤 Upload iOS debug symbols
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-debug-symbols-${{ needs.increment-version.outputs.version }}
+          path: build/symbols/
+          if-no-files-found: error
+          retention-days: 90
 
       - name: 📤 Upload iOS build artifact
         continue-on-error: true

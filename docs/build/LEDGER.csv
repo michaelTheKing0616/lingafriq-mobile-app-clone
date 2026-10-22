@@ -63,3 +63,4 @@ P1-052,build,T3,grok-4.7,n/a,n/a,1,pass,User B is denied on user A's private, se
 P1-053,build,T2,grok-4.7,n/a,n/a,1,pass,The 11th login from one IP returns 429; one account's backoff grows across IPs; unknown and known failures match; the clock is fake
 P1-054,adr,T2,grok-4.7,n/a,n/a,1,pass,Leaf DER SHA-256 on both platforms; the current pin and the next pin share CERTIFICATE_PIN_HASHES; a build with no pins stays open
 P1-055,build,T2,grok-4.7,n/a,n/a,1,pass,An unknown leaf throws certificate_pin_mismatch; the backup pin still matches; the Android placeholder pin is gone
+P1-056,build,T1,grok-4.7,n/a,n/a,1,pass,Release builds pass --obfuscate and upload symbols privately; symbolize restored uniqueReadableFrame from an obfuscated program counter

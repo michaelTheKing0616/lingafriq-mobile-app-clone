@@ -54,10 +54,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "The manual sideload tester workflow does not pass --obfuscate. build.yml is disabled and is not the release path."
 gate: G1
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging
