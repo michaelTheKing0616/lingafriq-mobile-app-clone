@@ -322,7 +322,7 @@ P1-044	Draft	Add per-account progressive lockout and backoff	P1/P1-044.yaml
 P1-045	Done	Enforce 8-char password with breached check and Argon2id rehash	P1/P1-045.yaml
 P1-046	Done	Fix JWT secret handling and move to asymmetric keys with kid rotation	P1/P1-046.yaml
 P1-047	Done	Issue short-lived access tokens with rotating revocable refresh tokens	P1/P1-047.yaml
-P1-048	Draft	Add passkey sign-in	P1/P1-048.yaml
+P1-048	Done	Add passkey sign-in	P1/P1-048.yaml
 P1-049	Draft	Add Google and Apple sign-in and email magic link	P1/P1-049.yaml
 P1-050	Draft	Apply schema validation and per-route size limits on every route	P1/P1-050.yaml
 P1-051	Draft	Remove client-supplied identity fields across the API	P1/P1-051.yaml

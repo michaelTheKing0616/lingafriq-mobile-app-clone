@@ -26,6 +26,12 @@ class Api {
   static const String login = "auth/jwt/create/";
   static const String refreshToken = "auth/jwt/refresh/";
   static const String logout = "auth/logout";
+  static const String passkeyRegisterOptions = "auth/passkey/register/options";
+  static const String passkeyRegisterVerify = "auth/passkey/register/verify";
+  static const String passkeyCredentials = "auth/passkey/credentials";
+  static const String passkeyLoginOptions = "auth/passkey/login/options";
+  static const String passkeyLoginVerify = "auth/passkey/login/verify";
+  static String passkeyCredential(String id) => "auth/passkey/credentials/$id";
   static const String userInfo = "accounts/auth/users/me/";
   static const String userPreferences = "api/user/preferences";
   static const String registerFcmDevice = "devices/";

@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart' show VoidCallback;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/models/onboarding_answers.dart';
+import 'package:lingafriq/models/profile_model.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
 import 'package:lingafriq/utils/utils.dart';

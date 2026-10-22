@@ -59,3 +59,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-047 | open | P1-045 | `src/scripts/ensureAdminUser.ts` still requires 6 characters and stores a Django hash. The next successful admin login rehashes it. Tests stub the breach HTTP call; they do not call Have I Been Pwned. |
 | OW-048 | open | P1-046 | `src/routes/scraper.route.ts` still verifies with the raw `SCRAPER_SECRET` or `JWT_SECRET`. There is no HS256 cutover date. |
 | OW-049 | open | P1-047 | Logout and password change revoke refresh tokens only. An unexpired access JWT stays valid until it expires. A second refresh inside 10 seconds is invalid and does not revoke the family. |
+| OW-050 | open | P1-048 | Phone passkeys need the Apple associated-domain file and the Android signing-cert origin for lingafriq.com. Google, Apple, and email-link buttons return to the email form until P1-049. |

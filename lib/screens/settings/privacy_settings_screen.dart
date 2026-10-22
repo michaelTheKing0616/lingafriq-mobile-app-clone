@@ -219,6 +219,13 @@ class PrivacySettingsScreen extends HookConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: PanAfricanSpacing.sm),
+                ListTile(
+                  title: const Text('Passkeys'),
+                  subtitle: const Text('Add or remove a passkey for this account'),
+                  onTap: () {
+                    Navigator.of(context).pushNamed('/passkey-manage');
+                  },
+                ),
 
                 // Analytics & Data Collection
                 _PrivacySection(

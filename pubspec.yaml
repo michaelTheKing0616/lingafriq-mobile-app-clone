@@ -119,6 +119,7 @@ dependencies:
   http: any
   collection: any
   google_mlkit_object_detection: ^0.15.1
+  passkeys: ^2.23.1
 dependency_overrides:
   # Fix record_linux compatibility issue - update to latest compatible version
   record_platform_interface: ^1.4.0

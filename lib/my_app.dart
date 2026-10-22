@@ -16,6 +16,7 @@ import 'services/offline/persisted_outbox_service.dart';
 import 'utils/api_service.dart';
 import 'providers/theme_mode_provider.dart';
 import 'screens/splash/splash_screen.dart';
+import 'services/passkey_service.dart';
 
 // Route screen imports
 import 'screens/ai_chat/ai_mode_selection_screen.dart';
@@ -276,6 +277,11 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
   final normalizedRoute = _normalizeRouteName(settings.name);
   final routes = <String, WidgetBuilder>{
     'ai_chat_select': (_) => const AIModeSelectionScreen(),
+    'passkey-sign-in': (_) => PasskeyAccountScreen(
+          mode: PasskeyMode.signIn,
+          email: settings.arguments is String ? settings.arguments as String : null,
+        ),
+    'passkey-manage': (_) => const PasskeyAccountScreen(mode: PasskeyMode.manage),
     'polie_mode_selection': (_) => const PolieModeSelectionScreen(),
     'curriculum': (_) => const LessonsMapEntryScreen(),
     'authentic-path': (_) => const AuthenticCurriculumEntryScreen(),

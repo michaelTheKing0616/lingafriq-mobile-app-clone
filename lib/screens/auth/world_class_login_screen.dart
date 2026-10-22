@@ -167,6 +167,16 @@ class WorldClassLoginScreen extends HookConsumerWidget {
 
                     SizedBox(height: PanAfricanSpacing.lg),
 
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(
+                          '/passkey-sign-in',
+                          arguments: emailController.text,
+                        );
+                      },
+                      child: const Text('Sign in with a passkey'),
+                    ),
+
                     // Biometric login
                     if (isBiometricAvailable.value == true &&
                         biometricEnabledForAccount.value)
