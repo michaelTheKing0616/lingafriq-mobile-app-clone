@@ -102,6 +102,14 @@ class SyncV2Service {
     });
   }
 
+  /// Conflict rows stay in the outbox. This pull only refreshes the delta
+  /// cache so a later merge can see `pendingConflicts`.
+  Future<void> observeOutboxConflicts(List<Map<String, dynamic>> conflicts) async {
+    if (conflicts.isEmpty) return;
+    logger.warn('Outbox conflict retained', context: {'count': conflicts.length});
+    await pullDeltaAndCache();
+  }
+
   Future<Map<String, dynamic>> getCachedPreferences() async {
     final prefs = await SharedPreferences.getInstance();
     final raw = prefs.getString(_prefsKeyCachedPreferencesJson);
