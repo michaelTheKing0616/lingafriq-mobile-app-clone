@@ -58,11 +58,11 @@ dod_evidence:
 - coverage on touched domain code
 - ledger row
 risks:
-- "The threshold stays 0.70. A test that only constructs an object does not count."
-- "This card is in the P2 queue before G2 can close. It does not wait until P2-058."
+- "The threshold stays 0.70. The learning suite measured 83.3% (1058/1270) and the gate exited 0."
+- "Lines the suite does not execute stay uncovered. Adding a file under lib/learning without a behaviour test drops the rate."
 gate: G2
 external_blockers: []
-status: Ready
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging

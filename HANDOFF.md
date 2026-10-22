@@ -8,15 +8,15 @@ The Firebase service account, the Apple `.p8`, and the five client AI keys stay 
 
 Work is continuous on `cloud-handoff`. Do not pause between cards. The key files remain tracked.
 
-- Mobile: `cloud-handoff`. Latest card push is P2-010.
+- Mobile: `cloud-handoff`. Latest card push is P2-059.
 - Backend: `cloud-handoff`. Latest card push is P2-009 (`74a2d56`), the blocking IDOR job.
 - The key files are still tracked. Copies also exist in `~/.lingafriq/secrets/` (mode 600). History was not rewritten.
-- Next card is P2-059 (lib/learning to 70%, threshold stays 0.70). Then P2-011. P7-961 is the full Import Media lesson and does not jump this queue.
+- Next card is P2-011 (versioned OpenAPI from the backend). P7-961 is the full Import Media lesson and does not jump this queue.
 
 ## Next 3 steps
 
-1. Finish P2-059 with real behaviour tests until `lib/learning` passes the 70% gate. Do not lower the threshold or drop files.
-2. Continue at P2-011 and keep going. Do not stop to ask what is next.
+1. Finish P2-011: generate `docs/api/openapi.v1.json` from the route schemas, fail CI on drift, and fail a breaking diff unless the major version is bumped.
+2. Continue at P2-012 and keep going. Do not stop to ask what is next.
 3. Do not remove the Firebase service account, the Apple `.p8`, or the five client AI keys. Intron stays off until its flag and server key are set.
 
 ## Gates

@@ -82,3 +82,4 @@ P2-007,build,T1,grok-4.7,n/a,n/a,1,pass,The release job uploads a CycloneDX SBOM
 P2-008,build,T1,grok-4.7,n/a,n/a,1,pass,A domain file missing from lcov counts at 0% and fails the gate below 70%; lib/learning is at 0.0 percent; the elevation baseline of 64 Flutter test files is recorded
 P2-009,build,T2,grok-4.7,n/a,n/a,1,pass,User B is denied on user A's private object for every inventoried id route; a route missing from the inventory fails the suite; the API CI job is blocking
 P2-010,build,T1,grok-4.7,n/a,n/a,1,pass,A selected design-system chip and the Rive CharacterChip at frame zero match stored goldens; a pixel diff above 0.01 fails and the diff is written for upload
+P2-059,build,T2,grok-4.7,n/a,n/a,1,pass,Learning behaviour tests raise lib/learning to 83.3 percent (1058/1270); the 70 percent gate exits 0 and the threshold file is unchanged

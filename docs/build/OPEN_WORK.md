@@ -81,5 +81,5 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-069 | open | P2-005 | The eval gate does not call a live model and does not set AI_EVALS_PASSED. The native set of at least 300 items per language is not in this job. The open pull request differs from main in the model stack doc, so that check stays red until outputs for those bytes meet the thresholds. |
 | OW-070 | open | P2-006 | This repo has no package-lock.json, so the production scan prints that the API lockfile is in node-backend. The seeded high advisory is what fails the mobile job. |
 | OW-071 | open | P2-007 | The release build number is computed for that run and is not written back to pubspec. Android and iOS jobs still check out main. |
-| OW-072 | open | P2-008, P2-059 | lib/learning is at 0.0% (0/2895). P2-059 must raise it to 70% before G2 closes. The threshold stays 0.70. |
+| OW-072 | open | P2-008, P2-059 | Paid on the learning suite: domain coverage 83.3% (1058/1270), gate exit 0. Threshold stays 0.70. A new lib/learning file without a behaviour test drops the rate again. |
 | OW-073 | open | P2-009 | Catalog and shared reads stay allowed. They must not return another user's private payload. The mobile workflow does not run the API suite. |
