@@ -1,0 +1,67 @@
+charter: v2
+id: P4-168
+kind: build
+title: Register the Point and Say model and reject a non-commercial weight
+phase: P4
+epic: E-P4-LICENCES
+req_ids:
+- TR-R1-02
+depends_on:
+- P4-001
+size: S
+difficulty:
+  score: 3
+  blast: 2
+  ambiguity: 0
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 3; blast 2; licence gate
+token_budget: 20000
+file_allowlist:
+- tools/content_engine/licences/register.csv
+- tools/content_engine/licences/check_register.py
+- tools/content_engine/tests/test_point_say_model_licence.py
+context_anchors:
+- CURRICULUM.md#§2.1:L117-L118
+acceptance_criteria:
+- id: AC1
+  text: Given the Point and Say TFLite file, when the register is checked, then one row names that file, Apache-2.0, the source URL, and allowed display use
+- id: AC2
+  text: Given a model row whose licence is non-commercial or missing, when the checker runs, then it fails with a typed error and the file is not bundled
+- id: AC3
+  text: Given an image set used to fine-tune the classifier, when any image has no commercial or newly collected licence row, then the checker fails and training is refused
+test_plan:
+  unit:
+  - apache row passes
+  - non-commercial row fails
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content:
+  - register row for the bundled checkpoint
+user_facing: false
+ux_spec: null
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "Counsel sign-off of the register remains EXT-03. This card still refuses an unregistered or non-commercial file."
+gate: G4
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

@@ -1,0 +1,81 @@
+charter: v2
+id: P6-085
+kind: build
+title: Play human audio for a Point and Say hit before licensed voice
+phase: P6
+epic: E-P6-GATEWAY
+req_ids:
+- TR-R1-03
+depends_on:
+- E-P6-GATEWAY
+size: S
+difficulty:
+  score: 4
+  blast: 2
+  ambiguity: 0
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 4; blast 2
+token_budget: 25000
+file_allowlist:
+- lib/services/lens/point_say_audio.dart
+- lib/services/voice/tts_service.dart
+- test/services/lens/point_say_audio_test.dart
+context_anchors:
+- ELEVATION.md#§18.4:L4236-L4245
+acceptance_criteria:
+- id: AC1
+  text: Given a dictionary entry with human audio, when the learner plays the word, then that recording plays and no TTS request is made
+- id: AC2
+  text: Given no human audio, when the learner plays the word, then the licensed voice route is called
+- id: AC3
+  text: Given the voice route returns 503 voice_coming or audio_unavailable, when playback is requested, then the screen shows that state and does not call device TTS
+test_plan:
+  unit:
+  - human audio wins
+  - 503 does not fall through
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - play control is a labelled button
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - playing_human
+  - playing_licensed
+  - voice_coming
+  - audio_unavailable
+  copy_keys:
+  - lens.point_say.voice_coming
+  - lens.point_say.audio_unavailable
+  tokens:
+  - color.surface.scrim
+  motion_tier: product
+  a11y:
+  - play button labelled with the word
+  goldens: []
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "isiXhosa stays voice_coming until a human or custom voice exists. Device TTS is not the substitute."
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

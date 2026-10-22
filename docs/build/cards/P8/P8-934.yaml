@@ -1,0 +1,86 @@
+charter: v2
+id: P8-934
+kind: build
+title: Add a camera word hunt on the Point and Say pipeline
+phase: P8
+epic: E-P8-PLAY
+req_ids:
+- TR-R1-06
+- F-087.E
+depends_on:
+- P7-945
+- P7-946
+size: M
+difficulty:
+  score: 5
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 5; blast 2
+token_budget: 60000
+file_allowlist:
+- lib/games/word_hunt/word_hunt_screen.dart
+- lib/games/word_hunt/word_hunt_session.dart
+- test/games/word_hunt/word_hunt_session_test.dart
+context_anchors:
+- ELEVATION.md#§18.5:L4757
+acceptance_criteria:
+- id: AC1
+  text: Given a hunt list, when the learner points the camera at a listed object, then the on-device classifier marks that item found and speaks it through the dictionary mapping
+- id: AC2
+  text: Given airplane mode, when a hunt item is checked, then the check uses the on-device model and sends no photo
+- id: AC3
+  text: Given an item that is not in the dictionary, when it is recognised, then the hunt shows not in the dictionary yet and does not count a made-up word as found
+test_plan:
+  unit:
+  - found only on a listed label
+  integration:
+  - offline classification
+  security:
+  - no upload
+  e2e: []
+  perf: []
+  a11y:
+  - found state announced
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - hunting
+  - found
+  - not_in_dictionary
+  - complete
+  copy_keys:
+  - games.word_hunt.found
+  - games.word_hunt.not_in_dictionary
+  tokens:
+  - color.surface.scrim
+  motion_tier: product
+  a11y:
+  - list items are buttons
+  goldens:
+  - hunting
+  - complete
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "The hunt uses the same classifier as Point and Say. It does not add a second model."
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

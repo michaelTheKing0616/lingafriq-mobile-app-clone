@@ -1,0 +1,73 @@
+charter: v2
+id: P2-058
+kind: build
+title: Estimate per-skill mastery on the device
+phase: P2
+epic: E-P2-PLATFORM
+req_ids:
+- TR-R2-01
+depends_on:
+- P2-041
+- P2-043
+size: L
+difficulty:
+  score: 8
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T3
+  justification: score 8; blast 2; learner model
+token_budget: 120000
+file_allowlist:
+- lib/services/learner/skill_mastery.dart
+- lib/services/learner/mastery_event.dart
+- test/services/learner/skill_mastery_test.dart
+context_anchors:
+- ELEVATION.md#§6.3:L1211
+- ELEVATION.md#§10.2:L1674
+acceptance_criteria:
+- id: AC1
+  text: Given accuracy, response time, hint use, pronunciation score, tone score, session length, and drop-off for one skill, when mastery is updated, then the estimate changes only from those signals
+- id: AC2
+  text: Given airplane mode, when a practice event is recorded, then the update runs on the device and makes no network call
+- id: AC3
+  text: Given a learner under 16, when mastery is stored, then the record is skill estimates only and contains no advertising identifier or marketing profile
+- id: AC4
+  text: Given the learner resets mastery, when the reset completes, then every skill estimate returns to the starting prior
+test_plan:
+  unit:
+  - signal update
+  - reset
+  integration:
+  - offline update
+  security:
+  - under-16 record shape
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "The tracer is Bayesian or logistic. It is not a network trained on learner data."
+- "Pronunciation and tone scores are used when those events exist. This P2 card does not depend on P5 or P6."
+gate: G2
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

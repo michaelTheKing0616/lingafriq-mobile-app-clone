@@ -15,4 +15,4 @@ charter: v2
 | External | EXT-01…30 open (`EXTERNAL.md`); EXT-01 companion doc still missing |
 | Benchmark | UI phases: `docs/build/benchmark/duolingo/` holds the 12 picks; `all/` holds the other 48; `README.md` has source, date, and size. Do not open the images until a card sets `visual_evidence_required`. |
 | Audit | `check_agent_files.py` OK (1,092 files) |
-| Next | P1-044 Done. Work stays on the Mac on `cloud-handoff` and pushes as cards land. Key cleanup is end-of-build (D24). Next build card is P1-045. Curriculum wiring stays paused. Live PM2 stays unverified (EXT-23). |
+| Next | Tope requests R1 and R2 are carded (P7-945, P4-168, P6-085, P7-946, P7-947, P8-934, P2-058, P7-949). Work stays on the Mac on `cloud-handoff`. Key cleanup is end-of-build (D24). Next build card is P1-045. Curriculum wiring stays paused. Live PM2 stays unverified (EXT-23). |

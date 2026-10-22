@@ -1,0 +1,94 @@
+charter: v2
+id: P7-945
+kind: build
+title: Replace Point and Say coarse labels with an on-device classifier
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- TR-R1-01
+- F-052
+depends_on:
+- P7-902
+size: L
+difficulty:
+  score: 8
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: score 8; on-device model; blast 2
+token_budget: 120000
+file_allowlist:
+- lib/screens/ar/point_and_say_screen.dart
+- lib/services/lens/on_device_object_classifier.dart
+- assets/models/point_say_mobilenet.tflite
+- test/services/lens/on_device_object_classifier_test.dart
+context_anchors:
+- ELEVATION.md#§18.4:L4236-L4245
+- ELEVATION.md#§17.6:L2346-L2347
+acceptance_criteria:
+- id: AC1
+  text: Given airplane mode, when a camera frame is classified, then the label comes from the bundled TFLite model and no photo or embedding is sent off the device
+- id: AC2
+  text: Given the bundled model file, when its licence register row is read, then the row is Apache-2.0 and names the exact checkpoint
+- id: AC3
+  text: Given a frame, when classification finishes, then the top three labels are returned with scores and the ML Kit five-way food/home/fashion/plant/place label is not the result
+- id: AC4
+  text: Given a latency log from a mid-range Android, when p50 is above 150 ms, then the run is recorded as failing that bar and is not described as met
+- id: AC5
+  text: Given the current navigation, when this card ships, then Point and Say stays on its existing route and is not moved
+test_plan:
+  unit:
+  - offline classifier contract
+  - top-3 label shape
+  integration:
+  - airplane-mode network assertion
+  security:
+  - no upload without a separate opt-in
+  e2e: []
+  perf:
+  - latency log parser with a 150 ms p50 gate
+  a11y: []
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - recognising
+  - top3
+  - model_missing
+  - camera_denied
+  copy_keys:
+  - lens.point_say.recognising
+  - lens.point_say.model_missing
+  tokens:
+  - color.surface.scrim
+  - radius.box
+  motion_tier: product
+  a11y:
+  - top label announced
+  - touch targets >=48dp
+  goldens:
+  - top3
+  - model_missing
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "The 150 ms bar is unmet until a mid-range Android log is attached. A desktop timing run does not satisfy it."
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

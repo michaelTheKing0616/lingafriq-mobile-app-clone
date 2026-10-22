@@ -1078,3 +1078,11 @@ P9-956	Draft	Build the Square feed with Tone Lens	P9/P9-956.yaml
 P9-957	Draft	Add Stories for circles	P9/P9-957.yaml
 P9-958	Draft	Replace mock co-learners in Village flashcards with real or empty state	P9/P9-958.yaml
 P9-959	Draft	Verify every Village surface creates language practice	P9/P9-959.yaml
+P2-058	Draft	Estimate per-skill mastery on the device	P2/P2-058.yaml
+P4-168	Draft	Register the Point and Say model and reject a non-commercial weight	P4/P4-168.yaml
+P6-085	Draft	Play human audio for a Point and Say hit before licensed voice	P6/P6-085.yaml
+P7-945	Draft	Replace Point and Say coarse labels with an on-device classifier	P7/P7-945.yaml
+P7-946	Draft	Map Point and Say labels to dictionary entries	P7/P7-946.yaml
+P7-947	Draft	Fine-tune the Point and Say classifier on a licensed dataset	P7/P7-947.yaml
+P7-949	Draft	Adapt lesson length and difficulty to mastery	P7/P7-949.yaml
+P8-934	Draft	Add a camera word hunt on the Point and Say pipeline	P8/P8-934.yaml

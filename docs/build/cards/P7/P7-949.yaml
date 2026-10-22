@@ -1,0 +1,98 @@
+charter: v2
+id: P7-949
+kind: build
+title: Adapt lesson length and difficulty to mastery
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- TR-R2-02
+depends_on:
+- P2-058
+- P2-043
+- P5-019
+- P6-008
+size: L
+difficulty:
+  score: 8
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T3
+  justification: score 8; blast 2; pacing and under-16
+token_budget: 140000
+file_allowlist:
+- lib/services/learner/lesson_pacing.dart
+- lib/screens/learn/lesson_session_screen.dart
+- test/services/learner/lesson_pacing_test.dart
+- test/services/learner/pacing_replay_test.dart
+context_anchors:
+- ELEVATION.md#§6.3:L1211
+- ELEVATION.md#§10.2:L1674
+acceptance_criteria:
+- id: AC1
+  text: Given mastery and a recent success rate outside 80 to 85 percent, when the next lesson is built, then its length, new-item mix, and difficulty move toward that band
+- id: AC2
+  text: Given a weak tone or pronunciation skill, when the next lesson is built, then it adds drills for that skill and still leaves every other lesson reachable
+- id: AC3
+  text: Given a recommendation, when it is shown, then the learner sees why it was chosen and can override or reset the pace
+- id: AC4
+  text: Given a learner under 16, when pacing runs, then adaptation matches other learners and no marketing profile is written
+- id: AC5
+  text: Given a fixture of learner traces, when adaptive pacing and fixed pacing are replayed, then the harness reports 7-day retention and completion for both and fails if adaptive is not higher
+- id: AC6
+  text: Given airplane mode, when the next lesson is chosen, then the choice uses the on-device estimate and makes no network call
+test_plan:
+  unit:
+  - difficulty band
+  - override
+  integration:
+  - offline replay fixture
+  security:
+  - under-16 record
+  e2e: []
+  perf: []
+  a11y:
+  - pace control labelled
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - recommended
+  - overridden
+  - reset
+  copy_keys:
+  - learn.pace.reason
+  - learn.pace.override
+  - learn.pace.reset
+  tokens:
+  - color.surface
+  motion_tier: product
+  a11y:
+  - reason text is readable by the screen reader
+  goldens:
+  - recommended
+  - overridden
+tags: []
+p0_area: false
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "The replay is on a fixture. A live seven-day study is not claimed by a green test."
+- "Content is never locked behind the model."
+- "The 80 to 85 percent band matches P8-905. This P7 card does not depend on that later card."
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

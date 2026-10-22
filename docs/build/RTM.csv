@@ -2007,7 +2007,7 @@ F-051.D,ELEVATION,§18.4:L4229,requirement,"[4] Voices come from non-commercial 
 F-051.E,ELEVATION,§18.4:L4230,requirement,"[4] Voice picker with commercial voices per language (Intron, Spitch, Azure, custom;",P1,agent,F-051,Mapped
 F-051.U,ELEVATION,§18.4:L4233,requirement,[4] Voice cards with a play sample and region tag. Rendered on,P1,agent,F-051,Mapped
 F-051.L,ELEVATION,§18.4:L4235,requirement,[4] Me → Settings → Voice; Speak → Polie settings.,P1,agent,F-051,Mapped
-F-052,ELEVATION,§18.4:L4236-L4245,requirement,Point & Say,P1,agent,F-052,Mapped
+F-052,ELEVATION,§18.4:L4236-L4245,requirement,Point & Say,P1,agent,F-052;P7-945,Mapped
 F-052.D,ELEVATION,§18.4:L4241,requirement,[4] See §17.6.,P1,agent,F-052,Mapped
 F-052.E,ELEVATION,§18.4:L4242,requirement,[4] See §17.6 (exemplar deep-dive).,P1,agent,F-052,Mapped
 F-052.U,ELEVATION,§18.4:L4243,requirement,"[4] See §17.6. Rendered on the single unified design system (§3.4), with",P1,agent,F-052,Mapped
@@ -2186,7 +2186,7 @@ F-086.U,ELEVATION,§18.5:L4745,requirement,[5] GameKit frame; one illustration s
 F-086.L,ELEVATION,§18.5:L4748,requirement,[5] Play → Tone & Sound shelf.,P1,agent,F-086,Mapped
 F-087,ELEVATION,§18.5:L4749-L4762,requirement,Flashcard Safari,P1,agent,F-087,Mapped
 F-087.D,ELEVATION,§18.5:L4756,requirement,[5] Thin content; no learner-model updates; inconsistent results screen; hard-coded strings.,P1,agent,F-087,Mapped
-F-087.E,ELEVATION,§18.5:L4757,requirement,"[5] Shares the Point & Say camera pipeline: a scavenger hunt (""find",P1,agent,F-087,Mapped
+F-087.E,ELEVATION,§18.5:L4757,requirement,"[5] Shares the Point & Say camera pipeline: a scavenger hunt (""find",P1,agent,F-087;P8-934,Mapped
 F-087.U,ELEVATION,§18.5:L4758,requirement,[5] GameKit frame; one illustration style; audio on every target-language item; reduced-,P1,agent,F-087,Mapped
 F-087.L,ELEVATION,§18.5:L4762,requirement,[5] Play → Words shelf.,P1,agent,F-087,Mapped
 F-088,ELEVATION,§18.5:L4763-L4775,requirement,Food Quest,P1,agent,F-088,Mapped
@@ -2959,3 +2959,11 @@ D2,CURRICULUM,§10:L857,decision,"Approve licence purchases: Oxford datasets (to
 D3,CURRICULUM,§10:L859,decision,"Commission the isiXhosa custom voice now, or ship Xhosa with matched corpus",G0,Tope,ADR-003;EXT-12,Mapped
 D4,CURRICULUM,§10:L861,decision,"Contract 2 part-time linguists per Stage-1 language (universities in elevation plan §6.4),",G0,Tope,ADR-002;EXT-11,Mapped
 D5,CURRICULUM,§10:L863,decision,Approve the Curriculum Studio build in lingafriq-admin.,G0,Tope,ADR-002,Mapped
+TR-R1-01,TOPE_REQUESTS,R1:L3-L11,requirement,On-device MobileNet classifier for Point and Say,P1,agent,P7-945,Mapped
+TR-R1-02,TOPE_REQUESTS,R1:L5,requirement,Apache-2.0 model logged in the licence register,P1,agent,P4-168,Mapped
+TR-R1-03,TOPE_REQUESTS,R1:L6,requirement,Human audio first and TTS only as fallback,P1,agent,P6-085,Mapped
+TR-R1-04,TOPE_REQUESTS,R1:L6-L7,requirement,Map labels to dictionary entries or an honest gap,P1,agent,P7-946,Mapped
+TR-R1-05,TOPE_REQUESTS,R1:L8,requirement,Fine-tune on licensed African everyday objects,P1,agent,P7-947,Mapped
+TR-R1-06,TOPE_REQUESTS,R1:L11,requirement,Camera word hunt and Lens collection,P1,agent,P7-946;P8-934,Mapped
+TR-R2-01,TOPE_REQUESTS,R2:L14-L16,requirement,On-device per-skill mastery from practice signals,P1,agent,P2-058,Mapped
+TR-R2-02,TOPE_REQUESTS,R2:L17-L19,requirement,Adaptive lesson pacing with an override,P1,agent,P7-949,Mapped
