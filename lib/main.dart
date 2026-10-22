@@ -28,6 +28,7 @@ import 'services/auth/credential_storage_service.dart';
 // Localization & Features
 import 'services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
 import 'services/advanced/smart_recommendations.dart';
+import 'services/monitoring/crash_reporter.dart';
 import 'services/monitoring/sentry_service.dart';
 import 'services/deep_link_service.dart';
 import 'config/secrets_manager.dart';
@@ -41,12 +42,12 @@ void main() async {
   await RiveNative.init();
 
   FlutterError.onError = (details) {
-    logger.error(
-      'Flutter error',
-      error: details.exception,
+    final report = CrashReporter.instance.report(
+      details.exception,
       stackTrace: details.stack,
-      context: {'library': details.library},
+      context: {'library': details.library ?? 'flutter'},
     );
+    logger.error('uncaught error', context: Map<String, dynamic>.from(report));
   };
 
   runZonedGuarded(() async {
@@ -151,17 +152,27 @@ void main() async {
     
     // Initialize Sentry for error tracking
     final sentryDsn = SecretsManager().sentryDsn;
-    if (sentryDsn != null && sentryDsn.isNotEmpty) {
-      await SentryService().initialize(
-        dsn: sentryDsn,
-        environment: kDebugMode ? 'development' : 'production',
-        enablePerformanceMonitoring: true,
-      );
+    CrashReporter.instance.log = (message) => logger.error(message);
+    final started = await CrashReporter.instance.initialize(
+      device: Platform.operatingSystem,
+      start: () async {
+        if (sentryDsn != null && sentryDsn.isNotEmpty) {
+          await SentryService().initialize(
+            dsn: sentryDsn,
+            environment: kDebugMode ? 'development' : 'production',
+            enablePerformanceMonitoring: true,
+          );
+        }
+      },
+    );
+    if (!started) {
+      logger.error(CrashReporter.instance.diagnostic ?? 'crash reporter failed to start');
+    } else if (sentryDsn == null || sentryDsn.isEmpty) {
+      logger.debug('Sentry DSN not configured, skipping initialization');
+    } else {
       logger.info('Sentry initialized successfully', context: {
         'environment': kDebugMode ? 'development' : 'production',
       });
-    } else {
-      logger.debug('Sentry DSN not configured, skipping initialization');
     }
   } catch (e) {
     logger.error('Error initializing monitoring services', error: e);

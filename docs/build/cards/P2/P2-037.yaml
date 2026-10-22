@@ -24,9 +24,12 @@ tiers:
 token_budget: 70000
 file_allowlist:
 - lib/services/monitoring/crash_reporter.dart
-- android/app/src/main/AndroidManifest.xml
+- lib/main.dart
+- lib/services/monitoring/sentry_service.dart
 - docs/ops/release_gates.md
 - scripts/ci/crash_gate.py
+- test/monitoring/crash_reporter_test.dart
+- test/ci/crash_gate_test.py
 context_anchors:
 - ELEVATION.md#§13.9:L1957
 acceptance_criteria:
@@ -57,10 +60,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "Uncaught Flutter errors are scrubbed and carry the release and the operating system. An ANR is recorded when reportAnr is called. The OS exit reason is not read yet."
 gate: G2
 external_blockers: []
-status: Draft
+status: Ready
 skills:
   worker:
   - adaptive/08-coding-and-debugging

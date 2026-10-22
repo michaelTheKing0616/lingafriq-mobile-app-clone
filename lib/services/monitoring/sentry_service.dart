@@ -63,9 +63,9 @@ class SentryService {
           
           // Enable additional features
           options.enableAutoSessionTracking = true;
-          options.attachScreenshot = true;
-          options.attachViewHierarchy = true;
-          
+          options.attachScreenshot = false;
+          options.attachViewHierarchy = false;
+
           options.beforeSend = (event, hint) {
             final app = event.contexts.app;
             event.contexts.app = SentryApp(
@@ -74,6 +74,8 @@ class SentryService {
               build: packageInfo.buildNumber,
               identifier: app?.identifier,
             );
+            final userId = event.user?.id;
+            event.user = userId == null ? null : SentryUser(id: userId);
             return event;
           };
         },
