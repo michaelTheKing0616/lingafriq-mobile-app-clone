@@ -82,3 +82,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-070 | open | P2-006 | This repo has no package-lock.json, so the production scan prints that the API lockfile is in node-backend. The seeded high advisory is what fails the mobile job. |
 | OW-071 | open | P2-007 | The release build number is computed for that run and is not written back to pubspec. Android and iOS jobs still check out main. |
 | OW-072 | open | P2-008 | lib/learning is at 0.0% (0/2895). The Android coverage gate stays red until that tree reaches 70%. |
+| OW-073 | open | P2-009 | Catalog and shared reads stay allowed. They must not return another user's private payload. The mobile workflow does not run the API suite. |

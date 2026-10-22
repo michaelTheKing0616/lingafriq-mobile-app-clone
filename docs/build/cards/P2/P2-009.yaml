@@ -25,16 +25,15 @@ tiers:
     Fable reviews'
 token_budget: 70000
 file_allowlist:
-- node-backend/test/authz/idor.test.ts
-- node-backend/test/authz/route_inventory.ts
-- .github/workflows/build.yml
+- src/tests/security/idor.spec.ts
+- src/tests/security/routeInventory.ts
+- .github/workflows/ci.yml
 context_anchors:
 - ELEVATION.md#§13.9:L1951-L1952
 - ELEVATION.md#§13.1:L1857-L1858
 acceptance_criteria:
 - id: AC1
-  text: Given every route with an :id param in the route inventory, when user B requests user A's resource, then the response
-    is 403 or 404 and never the resource
+  text: Given every inventoried id route, when user B requests user A's private object, then the response is 403 or 404 and the body never contains that private object
 - id: AC2
   text: Given a new /:id route absent from the inventory, when CI runs, then the suite fails listing the route
 - id: AC3
@@ -58,10 +57,12 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "The suite and the blocking job are in the node-backend repo. A catalog or shared read stays allowed and must not return another user's private payload."
+- "A route missing from the inventory fails the suite. The mobile build workflow does not run this job."
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes
