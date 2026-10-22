@@ -27,6 +27,7 @@ file_allowlist:
 - .pre-commit-config.yaml
 - .gitleaks.toml
 - .github/workflows/build.yml
+- .github/workflows/build-and-release.yml
 - scripts/secrets-hygiene-check.mjs
 context_anchors:
 - ELEVATION.md#§13.1:L1871
@@ -57,10 +58,12 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "The secrets job scans the pull request or push range. It does not scan full history, so credentials already in history stay until the end-of-build purge."
+- "JWT_SECRET_EXPLANATION.md is a known hygiene finding. The check prints [REDACTED] and does not fail the build for that file and key."
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes
