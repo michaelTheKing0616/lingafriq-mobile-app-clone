@@ -28,9 +28,17 @@ tiers:
 token_budget: 70000
 file_allowlist:
 - node-backend/src/controllers/auth.controller.ts
+- node-backend/src/controllers/v1/auth.controller.ts
+- node-backend/src/controllers/admin/auth.admin.controller.ts
+- node-backend/src/controllers/accounts.controller.ts
 - node-backend/src/services/password.service.ts
 - node-backend/src/services/breachedPassword.service.ts
 - node-backend/src/validators/auth.schema.ts
+- node-backend/src/utils/loginCredentials.ts
+- node-backend/src/utils/validation/validateUser.ts
+- node-backend/src/middleware/validation.ts
+- node-backend/src/middleware/requestValidation.middleware.ts
+- node-backend/src/middleware/errorHandler.middleware.ts
 context_anchors:
 - ELEVATION.md#§1:L377-L386
 - ELEVATION.md#§13.1:L1851-L1852
@@ -73,10 +81,13 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "AC5: /auth/register Joi was already min 8 in validation.ts. validateUser, change-password, and reset were min 6 and stored a Django hash. Login stays min 6 so an existing shorter password still works."
+- "src/scripts/ensureAdminUser.ts still requires 6 characters and stores a Django hash. The next successful admin login rehashes it."
+- "Tests use a labelled HTTP fixture for the breach service. A live Have I Been Pwned call is not part of the pass."
 gate: G1
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes

@@ -319,7 +319,7 @@ P1-041	Draft	Choose commercial TTS and MT replacements named in source	P1/P1-041
 P1-042	Draft	Remove unofficial Google Translate scraper	P1/P1-042.yaml
 P1-043	Draft	Return generic login errors and stop logging credentials metadata	P1/P1-043.yaml
 P1-044	Draft	Add per-account progressive lockout and backoff	P1/P1-044.yaml
-P1-045	Draft	Enforce 8-char password with breached check and Argon2id rehash	P1/P1-045.yaml
+P1-045	Done	Enforce 8-char password with breached check and Argon2id rehash	P1/P1-045.yaml
 P1-046	Draft	Fix JWT secret handling and move to asymmetric keys with kid rotation	P1/P1-046.yaml
 P1-047	Draft	Issue short-lived access tokens with rotating revocable refresh tokens	P1/P1-047.yaml
 P1-048	Draft	Add passkey sign-in	P1/P1-048.yaml

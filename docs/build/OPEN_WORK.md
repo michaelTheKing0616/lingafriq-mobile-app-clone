@@ -56,3 +56,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-044 | open | P1-042 | Google Cloud Translation still runs when GOOGLE_CLOUD_API_KEY is set. The live translate screen shows "Translation is unavailable" for that code. |
 | OW-045 | open | P1-043 | A correct password on a non-admin account still returns "User is not an admin". Unknown emails and wrong passwords share one 401. |
 | OW-046 | open | P1-044 | The backoff numbers, 30 seconds doubling to 15 minutes, are not in the source. The per-IP limiter skips itself when NODE_ENV is test. |
+| OW-047 | open | P1-045 | `src/scripts/ensureAdminUser.ts` still requires 6 characters and stores a Django hash. The next successful admin login rehashes it. Tests stub the breach HTTP call; they do not call Have I Been Pwned. |
