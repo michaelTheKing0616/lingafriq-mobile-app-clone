@@ -12,7 +12,7 @@ jobs:
     name: Increment Version Number
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
     outputs:
       version: ${{ steps.increment.outputs.version }}
       version_name: ${{ steps.increment.outputs.version_name }}
@@ -28,7 +28,7 @@ jobs:
           # Extract current version from pubspec.yaml
           # The part before + (marketing / CFBundleShortVersionString) must stay STRICTLY above the latest
           # version ever approved on the App Store, or TestFlight upload fails with 409 (train closed / invalid version).
-          # This job only bumps the build number after +; raise the marketing version in pubspec when Apple approves a release.
+          # The build number is an output for this run. It is not committed.
           current_version=$(grep '^version:' pubspec.yaml | sed 's/version: //')
           version_name=$(echo $current_version | cut -d'+' -f1)
           build_number=$(echo $current_version | cut -d'+' -f2)
@@ -47,23 +47,11 @@ jobs:
           fi
           
           new_version="${version_name}+${build_number}"
-          
-          # Update pubspec.yaml
-          sed -i "s/^version: .*/version: $new_version/" pubspec.yaml
-          
+
           echo "version=$new_version" >> $GITHUB_OUTPUT
           echo "version_name=$version_name" >> $GITHUB_OUTPUT
           echo "build_number=$build_number" >> $GITHUB_OUTPUT
-          echo "📦 Updated version: $new_version (build number: $build_number)"
-
-      - name: 💾 Commit version update
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add pubspec.yaml
-          git commit -m "chore: auto-increment build number to ${{ steps.increment.outputs.version }}" || echo "No changes to commit"
-          # Downstream jobs checkout main; if push fails they would build the old marketing version and TestFlight rejects (409).
-          git push
+          echo "Build number for this run: $new_version"
 
   build-android:
     name: Build Android App Bundle
@@ -788,10 +776,35 @@ jobs:
         if: steps.check-artifacts.outputs.has_artifacts != 'true'
         run: echo "No Android/iOS artifacts found. Skipping release creation."
 
+      - name: Fail on an unpinned action
+        run: python3 scripts/ci/check_pinned_actions.py .github/workflows
+
       - name: Write app SBOM
         run: |
           mkdir -p build/release
           python3 scripts/ci/pub_sbom.py pubspec.lock build/release/app.cdx.json
+
+      - name: Setup Node for the backend SBOM
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+
+      - name: Write backend SBOM from the API lockfile
+        run: |
+          set -euo pipefail
+          work="$(mktemp -d)"
+          git clone --depth 1 --branch cloud-handoff https://github.com/LingAfrika/node-backend.git "$work"
+          cd "$work"
+          npx --yes @cyclonedx/cyclonedx-npm@6.0.1 --package-lock-only --omit dev --output-file "$GITHUB_WORKSPACE/build/release/backend.cdx.json"
+
+      - name: Upload app and backend SBOMs
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: release-sbom
+          path: |
+            build/release/app.cdx.json
+            build/release/backend.cdx.json
+          retention-days: 90
 
       - name: 🏁 Create GitHub Release
         if: steps.check-artifacts.outputs.has_artifacts == 'true'
@@ -807,6 +820,7 @@ jobs:
             build/release/ios/*.zip
             build/release/ios/*.xcarchive.zip
             build/release/app.cdx.json
+            build/release/backend.cdx.json
           generate_release_notes: true
           draft: false
           prerelease: false

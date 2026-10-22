@@ -80,3 +80,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-068 | open | P2-004 | The four legacy bundles are not v1. The content job stays green only while accepted stays 0. Tone is checked on the lexeme lemma, not on every string. |
 | OW-069 | open | P2-005 | The eval gate does not call a live model and does not set AI_EVALS_PASSED. The native set of at least 300 items per language is not in this job. The open pull request differs from main in the model stack doc, so that check stays red until outputs for those bytes meet the thresholds. |
 | OW-070 | open | P2-006 | This repo has no package-lock.json, so the production scan prints that the API lockfile is in node-backend. The seeded high advisory is what fails the mobile job. |
+| OW-071 | open | P2-007 | The release build number is computed for that run and is not written back to pubspec. Android and iOS jobs still check out main. |

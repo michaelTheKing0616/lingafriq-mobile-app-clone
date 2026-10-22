@@ -78,3 +78,4 @@ P7-960,build,T2,grok-4.7,n/a,n/a,1,pass,Import Media builds a lesson whose model
 P2-004,build,T2,grok-4.7,n/a,n/a,1,pass,A v1 pack missing lemma fails with the item id and /items/0/lemma; non-NFC names the field; a tonal lemma without a tone mark fails; the four legacy bundles are rejected and the migration report records accepted 0
 P2-005,build,T2,grok-4.7,n/a,n/a,1,pass,A prompt or model-identifier change without eval outputs fails loud; a score under the threshold is blocked; a change that touches neither prints skipped with that reason
 P2-006,build,T1,grok-4.7,n/a,n/a,1,pass,A seeded high lodash advisory fails npm audit --omit=dev; Dependabot is weekly for npm, pub, and GitHub Actions; the monthly pub outdated report is uploaded as an artifact
+P2-007,build,T1,grok-4.7,n/a,n/a,1,pass,The release job uploads a CycloneDX SBOM for the app and the API and no longer commits a version bump; an action ref that is not a full SHA fails and names the action

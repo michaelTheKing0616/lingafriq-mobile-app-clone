@@ -28,6 +28,8 @@ file_allowlist:
 - .github/workflows/build-and-release.yml
 - .github/workflows/build.yml
 - scripts/ci/check_pinned_actions.py
+- scripts/ci/check_action_pins.py
+- test/ci/pinned_actions_test.py
 context_anchors:
 - ELEVATION.md#§13.1:L1875
 - ELEVATION.md#§13.9:L1958-L1959
@@ -57,10 +59,13 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "The release job no longer commits a version bump. Android and iOS take the build number from the job output."
+- "The release job writes the API SBOM from the public node-backend cloud-handoff lockfile. That repo also uploads backend-sbom on its own push."
+- "A tag or branch action ref fails the pin check and names the action. A full SHA passes."
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging

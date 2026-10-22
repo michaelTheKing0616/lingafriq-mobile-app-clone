@@ -472,7 +472,7 @@ P2-003	Done	Run gitleaks in pre-commit and CI	P2/P2-003.yaml
 P2-004	Done	Build content schema validator as blocking CI job	P2/P2-004.yaml
 P2-005	Done	Block merges on prompt or model changes without AI eval	P2/P2-005.yaml
 P2-006	Done	Block on high-severity dependency audit findings	P2/P2-006.yaml
-P2-007	Draft	Generate SBOM, pin Actions by SHA, drop auto-commit step	P2/P2-007.yaml
+P2-007	Done	Generate SBOM, pin Actions by SHA, drop auto-commit step	P2/P2-007.yaml
 P2-008	Draft	Gate 70% coverage on domain logic	P2/P2-008.yaml
 P2-009	Draft	Add object-level authorisation test suite for /:id routes	P2/P2-009.yaml
 P2-010	Draft	Add golden test harness for design system and Rive chips	P2/P2-010.yaml

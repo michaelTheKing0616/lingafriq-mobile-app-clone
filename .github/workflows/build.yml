@@ -25,6 +25,9 @@ jobs:
           bash scripts/ci/dep_audit.sh --self-test
           bash scripts/ci/dep_audit.sh
 
+      - name: Fail on an unpinned action
+        run: python3 scripts/ci/check_pinned_actions.py .github/workflows
+
       - name: 🔧 Ensure Gradle wrapper is executable
         run: |
           chmod +x android/gradlew || true
