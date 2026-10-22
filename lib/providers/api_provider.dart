@@ -19,6 +19,7 @@ import 'package:lingafriq/providers/firebase_messaging_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/random_quiz/models/random_quiz_lesson_model.dart';
+import 'package:lingafriq/services/auth_token_service.dart';
 import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/transport_error_policy.dart';
@@ -75,7 +76,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
   String? token;
   String? refreshToken;
-  Completer<String?>? _refreshLock;
+  final RefreshGate _refreshGate = RefreshGate();
 
   /// Load tokens from SharedPreferences on provider initialization
   void _loadTokensFromStorage() {
@@ -91,60 +92,56 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  /// Refresh access token using refresh token
-  Future<String?> refreshAccessToken() async {
-    if (_refreshLock != null) {
-      return _refreshLock!.future;
-    }
-    final completer = Completer<String?>();
-    _refreshLock = completer;
+  Future<void> logout() async {
     try {
-      if (refreshToken == null || (refreshToken?.isEmpty ?? true)) {
-        // Try to get from shared preferences
-        final prefs = ref.read(sharedPreferencesProvider);
-        refreshToken = await prefs.getRefreshToken();
-      }
-      
-      if (refreshToken == null || (refreshToken?.isEmpty ?? true)) {
-        if (!completer.isCompleted) completer.complete(null);
+      await ref.read(client).post(Api.logout).timeout(const Duration(seconds: 5));
+    } catch (_) {
+      // The caller still clears local tokens.
+    }
+  }
+
+  /// Refresh access token using refresh token.
+  /// Parallel callers share one request.
+  Future<String?> refreshAccessToken() {
+    return _refreshGate.run(() async {
+      try {
+        if (refreshToken == null || (refreshToken?.isEmpty ?? true)) {
+          final prefs = ref.read(sharedPreferencesProvider);
+          refreshToken = await prefs.getRefreshToken();
+        }
+
+        if (refreshToken == null || (refreshToken?.isEmpty ?? true)) {
+          return null;
+        }
+
+        final res = await ref.read(client).post(
+          Api.refreshToken,
+          data: { 'refresh': refreshToken },
+        );
+
+        if (res.statusCode == 200) {
+          final data = res.data;
+          final access = (data is Map<String, dynamic>)
+              ? (data['accessToken'] ?? data['access'] ?? data['token'])?.toString()
+              : null;
+
+          if (access != null && access.isNotEmpty) {
+            token = access;
+            refreshToken = rotatedRefresh(data, refreshToken);
+            final prefs = ref.read(sharedPreferencesProvider);
+            if (refreshToken != null && refreshToken!.isNotEmpty) {
+              await prefs.storeAuthTokens(token!, refreshToken!);
+            }
+            return token;
+          }
+        }
+        return null;
+      } catch (_) {
+        token = null;
+        refreshToken = null;
         return null;
       }
-
-      final res = await ref.read(client).post(
-        Api.refreshToken,
-        // Django JWT refresh contract: { refresh: token } -> { access }
-        data: { 'refresh': refreshToken },
-      );
-
-      if (res.statusCode == 200) {
-        final data = res.data;
-        final access = (data is Map<String, dynamic>)
-            ? (data['accessToken'] ?? data['access'])?.toString()
-            : null;
-
-        if (access != null && access.isNotEmpty) {
-          token = access;
-
-          // Legacy refresh returns {access} only; keep existing refresh token.
-          final prefs = ref.read(sharedPreferencesProvider);
-          if (refreshToken != null && refreshToken!.isNotEmpty) {
-            await prefs.storeAuthTokens(token!, refreshToken!);
-          }
-
-          if (!completer.isCompleted) completer.complete(token);
-          return token;
-        }
-      }
-      if (!completer.isCompleted) completer.complete(null);
-      return null;
-    } catch (e) {
-      token = null;
-      refreshToken = null;
-      if (!completer.isCompleted) completer.complete(null);
-      return null;
-    } finally {
-      _refreshLock = null;
-    }
+    });
   }
 
   /// Clear stored tokens

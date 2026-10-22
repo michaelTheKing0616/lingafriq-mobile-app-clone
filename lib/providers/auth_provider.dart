@@ -310,6 +310,11 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
   Future<void> signOut({bool deleteAccount = false}) async {
     try {
+      try {
+        await ref.read(apiProvider.notifier).logout();
+      } catch (_) {
+        // Local sign-out continues when the server cannot be reached.
+      }
       final prefs = ref.read(sharedPreferencesProvider);
       await prefs.removeEmailAndPassword();
       await prefs.clearAuthTokens();

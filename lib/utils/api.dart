@@ -25,6 +25,7 @@ class Api {
   static const String register = "accounts/auth/users/";
   static const String login = "auth/jwt/create/";
   static const String refreshToken = "auth/jwt/refresh/";
+  static const String logout = "auth/logout";
   static const String userInfo = "accounts/auth/users/me/";
   static const String userPreferences = "api/user/preferences";
   static const String registerFcmDevice = "devices/";

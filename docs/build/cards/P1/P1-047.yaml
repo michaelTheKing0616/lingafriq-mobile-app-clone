@@ -29,9 +29,17 @@ tiers:
 token_budget: 70000
 file_allowlist:
 - node-backend/src/controllers/auth.controller.ts
+- node-backend/src/controllers/v1/auth.controller.ts
+- node-backend/src/controllers/accounts.controller.ts
+- node-backend/src/controllers/admin/auth.admin.controller.ts
 - node-backend/src/services/refreshToken.service.ts
 - node-backend/src/models/refreshToken.model.ts
+- node-backend/src/__test__/P1-047.refresh.test.ts
 - lib/services/auth_token_service.dart
+- lib/providers/api_provider.dart
+- lib/providers/auth_provider.dart
+- lib/utils/api.dart
+- test/services/auth_token_service_test.dart
 context_anchors:
 - ELEVATION.md#§13.1:L1849
 - ELEVATION.md#§13.1:L1849-L1850
@@ -73,10 +81,15 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "Installed HS256 access tokens presented as refresh stay valid until they expire (D25). They are not reuse_detected."
+- "A second presentation inside 10 seconds returns invalid and does not revoke the family. Replay after that window returns reuse_detected."
+- "Logout and password change revoke refresh tokens only. A still-unexpired access JWT is not denylisted."
+- "Password-reset email tokens stay 7 days and cannot be exchanged for a session."
+- "src/routes/scraper.route.ts is unchanged (OW-048)."
 gate: G1
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes

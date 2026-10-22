@@ -54,3 +54,4 @@ P1-043,build,T2,grok-4.7,n/a,n/a,1,pass,Unknown email and wrong password share o
 P1-044,build,T2,grok-4.7,n/a,n/a,1,pass,Five failures arm a growing Retry-After; the correct password stays refused until it expires; the per-IP limiter remains
 P1-045,build,T2,grok-4.7,n/a,n/a,1,pass,New passwords require 8 characters and a hash-prefix breach check; a Django hash becomes Argon2id on the next successful login
 P1-046,build,T3,grok-4.7,n/a,n/a,1,pass,One loader trims JWT_SECRET and still accepts the untrimmed value; EdDSA and RS256 resolve by kid; HS256 is not cut over
+P1-047,build,T3,grok-4.7,n/a,n/a,1,pass,New logins issue a 15-minute access token and a hashed rotating refresh token; replay after 10 seconds revokes the family; installed 7-day tokens still refresh until they expire
