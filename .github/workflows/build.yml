@@ -49,6 +49,7 @@ jobs:
           python3 scripts/ci/placeholder_linter.py assets/data
           python3 scripts/ci/placeholder_linter.py schemas/v2
           python3 scripts/ci/placeholder_lint.py --baseline scripts/ci/lint_baseline.tsv
+          # Claim lint reads bundled curriculum only. Runtime Import Media lessons are not in this job.
           python3 scripts/ci/claim_lint.py --baseline scripts/ci/lint_baseline.tsv
           python3 test/ci/lint_fixtures_test.py
 

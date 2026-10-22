@@ -130,7 +130,8 @@ class ClaimLintTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "grammar.json"
             path.write_text(
-                '{"grammar": ["Yoruba marks tense with a preverbal particle."]}\n',
+                '{"grammar": ["Yoruba marks tense with a preverbal particle."], '
+                '"reviewer_id": "native_1", "review_date": "2026-01-15"}\n',
                 encoding="utf-8",
             )
             result = run(CLAIM, str(path))
@@ -153,6 +154,85 @@ class ClaimLintTest(unittest.TestCase):
         self.assertEqual(result.returncode, 1, result.stdout)
         self.assertIn("claim.tone_without_source", result.stdout)
         self.assertIn("High tone on àárọ̀ marks respect", result.stdout)
+
+    def test_dictionary_corpus_native_and_media_sources_pass(self) -> None:
+        notes = {
+            "dictionary": '{"tonal_note": "High tone on àárọ̀ marks respect", "dictionary_entry": "yo.lex.aro"}\n',
+            "corpus": '{"tonal_note": "High tone on àárọ̀ marks respect", "corpus_id": "jw-1", "licence": "cc-by"}\n',
+            "native": (
+                '{"tonal_note": "High tone on àárọ̀ marks respect", '
+                '"reviewer_id": "native_1", "review_date": "2026-01-15"}\n'
+            ),
+            "media": (
+                '{"tonal_note": "High tone on àárọ̀ marks respect", '
+                '"media_id": "media-42", "timestamp": "00:01:02-00:01:08"}\n'
+            ),
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            for name, body in notes.items():
+                path = Path(tmp) / f"{name}.json"
+                path.write_text(body, encoding="utf-8")
+                result = run(CLAIM, str(path))
+                self.assertEqual(result.returncode, 0, f"{name}\n{result.stdout}{result.stderr}")
+
+    def test_native_id_without_review_date_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "tone.json"
+            path.write_text(
+                '{"tonal_note": "High tone on àárọ̀ marks respect", "author_id": "native_1"}\n',
+                encoding="utf-8",
+            )
+            result = run(CLAIM, str(path))
+        self.assertEqual(result.returncode, 1, result.stdout)
+        self.assertIn("claim.tone_without_source", result.stdout)
+
+    def test_media_id_without_span_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "tone.json"
+            path.write_text(
+                '{"tonal_note": "High tone on àárọ̀ marks respect", "media_id": "media-42"}\n',
+                encoding="utf-8",
+            )
+            result = run(CLAIM, str(path))
+        self.assertEqual(result.returncode, 1, result.stdout)
+
+    def test_runtime_import_lesson_is_not_a_build_failure(self) -> None:
+        body = (
+            '{"provenance": "from your media", "media_id": "media-42", '
+            '"tonal_note": "High tone on àárọ̀ marks respect"}\n'
+        )
+        generated = (
+            '{"provenance": "AI-generated, unreviewed", '
+            '"grammar": ["High tone on the question marks surprise"]}\n'
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            media = Path(tmp) / "runtime.json"
+            media.write_text(body, encoding="utf-8")
+            ai = Path(tmp) / "generated.json"
+            ai.write_text(generated, encoding="utf-8")
+            from_media = run(CLAIM, str(media))
+            from_ai = run(CLAIM, str(ai))
+        self.assertEqual(from_media.returncode, 0, from_media.stdout + from_media.stderr)
+        self.assertEqual(from_ai.returncode, 0, from_ai.stdout + from_ai.stderr)
+
+    def test_lesson_without_any_source_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "lesson.json"
+            path.write_text('{"grammar": ["Yoruba marks tense with a preverbal particle."]}\n', encoding="utf-8")
+            result = run(CLAIM, str(path))
+        self.assertEqual(result.returncode, 1, result.stdout)
+        self.assertIn("claim.lesson_without_source", result.stdout)
+        self.assertIn("Yoruba marks tense with a preverbal particle.", result.stdout)
+
+    def test_claim_scan_roots_are_bundled_curriculum_only(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts" / "ci"))
+        import placeholder_lint as gate
+
+        names = {path.name for path in gate.curriculum_roots()}
+        self.assertIn("curriculum_bundle", names)
+        self.assertIn("data", names)
+        self.assertNotIn("lib", names)
+        self.assertNotIn("node-backend", names)
 
     def test_tone_with_lexicon_source_passes(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

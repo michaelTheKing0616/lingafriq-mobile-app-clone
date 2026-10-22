@@ -113,6 +113,64 @@ class MediaLearningPipeline {
     );
   }
 
+  /// Builds one lesson from a learner's media. The model line is quoted from
+  /// that media. Generated checks are tagged unreviewed and are not a CI lint.
+  ImportedMediaLesson buildLesson({
+    required String text,
+    required String sourceLanguage,
+    required String mediaId,
+    required String span,
+    String? title,
+  }) {
+    final source = text.trim();
+    final id = mediaId.trim();
+    final cite = span.trim();
+    if (source.isEmpty) {
+      throw ArgumentError('Import Media lesson needs text from the media');
+    }
+    if (id.isEmpty || cite.isEmpty) {
+      throw ArgumentError('Import Media lesson needs a media id and a timestamp or span');
+    }
+
+    final sentences = _splitSentences(source);
+    final model = sentences.isNotEmpty ? sentences.first : source;
+    final words = _tokenize(model);
+    final vocabulary = _extractVocabulary(words, sourceLanguage);
+    final focus = vocabulary.isNotEmpty
+        ? vocabulary.first.word
+        : (words.isNotEmpty ? words.first : model);
+    final cards = <ReviewItemFromMedia>[];
+    for (final item in vocabulary.take(10)) {
+      final context = item.context.trim().isEmpty ? model : item.context;
+      cards.add(ReviewItemFromMedia(
+        skillId: item.skillId,
+        type: MediaReviewType.cloze,
+        prompt: _generateCloze(item.word, context),
+        answer: item.word,
+        context: model,
+      ));
+    }
+
+    return ImportedMediaLesson(
+      title: title ?? 'From your media',
+      mediaId: id,
+      span: cite,
+      sourceLanguage: sourceLanguage,
+      provenance: 'from your media',
+      objective: 'Notice and reuse one line from your media',
+      modelText: model,
+      focus: focus,
+      guidedPrompt: _generateCloze(focus, model),
+      guidedAnswer: focus,
+      checkQuestion: 'Which line is from your media?',
+      checkAnswer: model,
+      checkProvenance: 'AI-generated, unreviewed',
+      toneStep: 'Listen to the tone in this line from your media: $model. No tone pattern is claimed.',
+      shadowingText: model,
+      flashcards: cards,
+    );
+  }
+
   // ─── Extraction logic ──────────────────────────────────────────────
 
   List<ExtractedVocabulary> _extractVocabulary(
@@ -386,3 +444,42 @@ class ComprehensionQuestion {
 
 enum MediaReviewType { vocabularyRecall, cloze, phraseTranslation }
 enum ComprehensionType { trueFalse, vocabularyMeaning, inference }
+
+/// A personal lesson built from one Import Media item.
+class ImportedMediaLesson {
+  final String title;
+  final String mediaId;
+  final String span;
+  final String sourceLanguage;
+  final String provenance;
+  final String objective;
+  final String modelText;
+  final String focus;
+  final String guidedPrompt;
+  final String guidedAnswer;
+  final String checkQuestion;
+  final String checkAnswer;
+  final String checkProvenance;
+  final String toneStep;
+  final String shadowingText;
+  final List<ReviewItemFromMedia> flashcards;
+
+  const ImportedMediaLesson({
+    required this.title,
+    required this.mediaId,
+    required this.span,
+    required this.sourceLanguage,
+    required this.provenance,
+    required this.objective,
+    required this.modelText,
+    required this.focus,
+    required this.guidedPrompt,
+    required this.guidedAnswer,
+    required this.checkQuestion,
+    required this.checkAnswer,
+    required this.checkProvenance,
+    required this.toneStep,
+    required this.shadowingText,
+    required this.flashcards,
+  });
+}

@@ -22,8 +22,17 @@ claim_rules:
     pattern: subject\s*(?:→|->)\s*verb\s*(?:→|->)\s*object
 
 tone_id: claim.tone_without_source
+lesson_id: claim.lesson_without_source
 tone_statement: high tone|low tone|tone mark
-tone_source: lexicon[_ ]source
 tone_window_lines: 40
+lesson_key: grammar|explanation|lesson_note|teaching_note|description_l1
+source_lexicon: lexicon[_ ]source|dictionary_entry|source_type.{0,8}lexicon|source_type.{0,8}dictionary
+source_corpus: corpus_id|licensed_corpus|source_type.{0,8}corpus
+source_licence: licen[cs]e
+source_person: native_speaker_id|reviewer_id|author_id
+source_date: review_date|reviewed_at
+source_media: media_id
+source_span: timestamp|time_span|span
+runtime_provenance: provenance.{0,8}from your media|provenance.{0,8}AI-generated, unreviewed
 
 allowlist: []

@@ -1,0 +1,66 @@
+charter: v2
+id: P7-960
+kind: build
+title: Build a structured lesson from Import Media
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- F-054
+depends_on:
+- E-P1-CONTAINMENT
+- F-054
+size: S
+difficulty:
+  score: 3
+  blast: 1
+  ambiguity: 1
+  coupling: 1
+  depth: 0
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: 'score 3: blast 1, coupling 1'
+token_budget: 25000
+file_allowlist:
+- lib/content/import_media/media_learning_pipeline.dart
+- test/content/import_media_lesson_test.dart
+context_anchors:
+- ELEVATION.md#§18.4:L4264-L4275
+acceptance_criteria:
+- id: AC1
+  text: Given imported text, a media id, and a span, when the builder runs, then the model line is taken from that text, the guided answer is inside the model, and there are at most 10 flashcards
+- id: AC2
+  text: Given that lesson, when its tags are read, then the lesson says from your media and the generated check says AI-generated, unreviewed
+- id: AC3
+  text: Given empty text or a missing media id or span, when the builder runs, then it refuses to return a lesson
+- id: AC4
+  text: Given the same imported text, when the existing pipeline runs, then vocabulary and review items are still produced
+test_plan:
+  unit:
+  - import_media_lesson_test.dart
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags: []
+p0_area: false
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "The check question is tagged AI-generated, unreviewed. The builder does not invent a gloss or a tone pattern."
+gate: G7
+external_blockers: []
+status: Done
+skills:
+  worker:
+  - adaptive/08-coding-and-debugging

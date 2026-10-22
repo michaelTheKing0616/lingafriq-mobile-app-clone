@@ -77,8 +77,9 @@ dod_evidence:
 - ledger row
 risks:
 - "Legacy matches are recorded in scripts/ci/lint_baseline.tsv. A file passes while its count does not rise."
-- "Lockfiles and dependency folders are not scanned. An empty field is a blank JSON or YAML content value. A tone line passes when a lexicon source is within 40 lines."
-- "build.yml is workflow_dispatch only. Pull requests run the content-lint job. The mobile job scans node-backend only when that checkout is present."
+- "A lesson or tone note passes with a lexicon or dictionary entry, a licensed corpus item, a native-speaker id plus a review date, or an Import Media id plus a timestamp or span. Content with no source still fails."
+- "The claim lint runs on repo-bundled curriculum at CI time. A runtime lesson tagged from your media or AI-generated, unreviewed is not a build failure."
+- "build.yml is workflow_dispatch only. Pull requests run the content-lint job. Placeholder scanning still includes node-backend only when that checkout is present."
 gate: G2
 external_blockers: []
 status: Done
