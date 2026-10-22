@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
+        with:
+          fetch-depth: 0
 
       - name: 🔧 Ensure Gradle wrapper is executable
         run: |
@@ -34,10 +36,7 @@ jobs:
         run: flutter pub get
 
       - name: Flutter analyze
-        run: |
-          echo "🔍 Running Flutter analyze..."
-          flutter analyze --no-fatal-infos --no-fatal-warnings
-          echo "✅ Flutter analyze passed"
+        run: bash scripts/ci/analyze_new_code.sh
 
       - name: i18n literal gate
         run: dart run tool/i18n_gate.dart

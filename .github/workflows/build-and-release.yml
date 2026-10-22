@@ -136,11 +136,7 @@ jobs:
           done
 
       - name: Flutter analyze
-        run: |
-          echo "🔍 Running Flutter analyze..."
-          # Default flutter analyze treats infos/warnings as fatal; CI should fail only on errors.
-          flutter analyze --no-fatal-infos --no-fatal-warnings
-          echo "✅ Flutter analyze passed"
+        run: bash scripts/ci/analyze_new_code.sh
 
       - name: i18n literal gate
         run: dart run tool/i18n_gate.dart
@@ -331,10 +327,7 @@ jobs:
           done
 
       - name: Flutter analyze
-        run: |
-          echo "🔍 Running Flutter analyze..."
-          flutter analyze --no-fatal-infos --no-fatal-warnings
-          echo "✅ Flutter analyze passed"
+        run: bash scripts/ci/analyze_new_code.sh
 
       - name: i18n literal gate
         run: dart run tool/i18n_gate.dart
@@ -820,3 +813,24 @@ jobs:
           fail_on_unmatched_files: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  analyze-new-code:
+    name: Analyze new Dart
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+        with:
+          flutter-version: '3.35.0'
+          channel: stable
+
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      - name: Analyze changed Dart
+        run: bash scripts/ci/analyze_new_code.sh

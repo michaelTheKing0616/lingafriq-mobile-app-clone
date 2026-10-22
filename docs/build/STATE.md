@@ -15,4 +15,4 @@ charter: v2
 | External | EXT-01…30 open (`EXTERNAL.md`); EXT-01 companion doc still missing |
 | Benchmark | UI phases: `docs/build/benchmark/duolingo/` holds the 12 picks; `all/` holds the other 48; `README.md` has source, date, and size. Do not open the images until a card sets `visual_evidence_required`. |
 | Audit | `check_agent_files.py` OK (1,092 files) |
-| Next | Work stays on the Mac on `cloud-handoff`. Key cleanup is end-of-build (D24). P1-062 is Done: premium routes require an entitlement row and a 403 shows the upgrade state. Next build card is P2-001. R1 model update is carded (P4-168, P6-086, P7-945, P7-950, P7-947) and does not jump ahead of the open queue. Curriculum wiring stays paused. Live PM2 stays unverified (EXT-23). |
+| Next | Work stays on the Mac on `cloud-handoff`. Key cleanup is end-of-build (D24). P2-001 is Done: changed Dart fails when it adds an analyzer warning, and a legacy file passes when its warning count does not rise. Next build card is P2-002. R1 model update is carded (P4-168, P6-086, P7-945, P7-950, P7-947) and does not jump ahead of the open queue. Curriculum wiring stays paused. Live PM2 stays unverified (EXT-23). |

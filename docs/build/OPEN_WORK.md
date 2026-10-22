@@ -73,3 +73,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-061 | open | P1-060 | The scope doc is ready to send. Test account passwords are not issued. EXT-17 stays open until a vendor is booked. |
 | OW-062 | open | P1-061, commit `a2c6603` | REVENUECAT_WEBHOOK_SECRET is unset in the repo. The webhook is not deployed (EXT-23). |
 | OW-063 | open | P1-062 | Entitlement decisions are cached for 60 seconds. A subscriber who exists only on the old Subscription collection has no entitlement row and is denied. |
+| OW-064 | open | P2-001 | Infos are not fatal. Legacy warning counts stay until the file is edited. Android and iOS jobs still check out main, so a pull request is enforced by the analyze-new-code job. |

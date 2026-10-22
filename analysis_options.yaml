@@ -10,24 +10,8 @@
 include: package:flutter_lints/flutter.yaml
 
 analyzer:
-  errors:
-    # The codebase is on a Flutter/Dart version where many legacy APIs are marked
-    # deprecated (e.g. Color.withOpacity, MaterialStateProperty). These are noisy
-    # and don’t impact runtime correctness; treat them as non-blocking while the
-    # audit focuses on correctness, security, and stability.
-    deprecated_member_use: ignore
-    deprecated_member_use_from_same_package: ignore
-    # Large legacy surface: unused imports / redundant imports / dead locals are
-    # tracked for incremental cleanup but must not fail CI (flutter analyze exits
-    # non-zero when warnings or infos are fatal). Real compile errors still fail.
-    unused_import: ignore
-    unnecessary_import: ignore
-    unused_local_variable: ignore
-    unused_element_parameter: ignore
-    unnecessary_non_null_assertion: ignore
-    unused_field: ignore
-    unnecessary_brace_in_string_interps: ignore
-    unnecessary_library_name: ignore
+  # Warnings stay visible. scripts/ci/analyze_new_code.sh fails a change that
+  # adds one, and leaves a legacy file alone when its warning count does not grow.
   exclude:
     # Curriculum JSON bundles: exclude only the known patched provider experiments.
     # Use explicit paths (not **) so analyzer globs cannot over-match app lib/ files.

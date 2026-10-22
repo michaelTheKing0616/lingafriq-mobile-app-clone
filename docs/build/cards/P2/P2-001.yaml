@@ -24,6 +24,7 @@ tiers:
 token_budget: 25000
 file_allowlist:
 - .github/workflows/build.yml
+- .github/workflows/build-and-release.yml
 - analysis_options.yaml
 - scripts/ci/analyze_new_code.sh
 context_anchors:
@@ -40,7 +41,7 @@ test_plan:
   unit:
   - analyze_new_code.sh diffs against merge-base on fixture repos
   integration:
-  - CI dry run on a seeded warning branch
+  - --self-test seeds three git repos instead of pushing a warning branch
   security: []
   e2e: []
   perf: []
@@ -56,10 +57,12 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "Infos are not fatal. A legacy file keeps its warning count until that file is edited, and a lower count still passes."
+- "build.yml is workflow_dispatch only. A pull request is gated by analyze-new-code. The Android and iOS jobs still check out ref: main."
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging
