@@ -15,6 +15,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: OpenAPI spec has a version
+        run: python3 -c "import json; d=json.load(open('docs/api/openapi.v1.json')); assert d['openapi'].startswith('3.'); assert d['info']['version']"
+
       - name: Setup Node
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:

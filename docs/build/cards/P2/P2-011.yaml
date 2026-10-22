@@ -24,15 +24,16 @@ tiers:
 token_budget: 70000
 file_allowlist:
 - node-backend/src/openapi/generate.ts
+- node-backend/src/openapi/openapi.spec.ts
 - node-backend/src/app.ts
+- node-backend/.github/workflows/ci.yml
 - docs/api/openapi.v1.json
 - .github/workflows/build.yml
 context_anchors:
 - ELEVATION.md#§13.4:L1909
 acceptance_criteria:
 - id: AC1
-  text: Given route definitions with zod schemas, when the generator runs, then docs/api/openapi.v1.json is produced with
-    version info
+  text: Given the route contracts and the Joi schemas the API enforces, when the generator runs, then docs/api/openapi.v1.json is produced with info.version
 - id: AC2
   text: Given a route change without regenerating the spec, when CI runs, then it fails on spec drift
 - id: AC3
@@ -57,10 +58,13 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "The live body schemas are Joi routeSchemas. The generator reads those and the route inventory. It does not keep a second schema copy."
+- "Routes marked exempt are listed without a request body until a schema is registered for them."
+- "Spec drift and the major-version check run in the API CI job. The mobile copy is the same file for the client."
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging

@@ -83,3 +83,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-071 | open | P2-007 | The release build number is computed for that run and is not written back to pubspec. Android and iOS jobs still check out main. |
 | OW-072 | open | P2-008, P2-059 | Paid on the learning suite: domain coverage 83.3% (1058/1270), gate exit 0. Threshold stays 0.70. A new lib/learning file without a behaviour test drops the rate again. |
 | OW-073 | open | P2-009 | Catalog and shared reads stay allowed. They must not return another user's private payload. The mobile workflow does not run the API suite. |
+| OW-074 | open | P2-011 | Exempt routes are in the spec without a body schema. A body schema has to be registered before the spec can describe that body. |
