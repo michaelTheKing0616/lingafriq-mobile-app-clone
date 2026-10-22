@@ -69,3 +69,4 @@ P1-058,build,T1,grok-4.7,n/a,n/a,1,pass,Mobile action refs are full SHAs; an unp
 P1-059,build,T2,grok-4.7,n/a,n/a,1,pass,Admin builds on React 19.3.1 and Vite 8.3.5; production npm audit has 0 high
 P1-060,verification,T1,grok-4.7,n/a,n/a,1,pass,Scope lists API mounts, socket events, auth flows, minor-reachable surfaces, test-account roles, and exclusions for EXT-17
 P1-061,build,T3,grok-4.7,n/a,n/a,1,pass,A bad webhook secret returns 401; purchase renewal cancellation and expiry update the row; a repeated or older event does not roll it back; a write failure returns 500
+P1-062,build,T3,grok-4.7,n/a,n/a,1,pass,A missing entitlement returns 403 premium_required; an active row is allowed; a client premium claim is ignored; expiry is denied after the 60 second cache

@@ -39,6 +39,15 @@ class SubscriptionScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (subscription.showUpgrade)
+              Semantics(
+                liveRegion: true,
+                label: 'premium.required',
+                child: Text(
+                  'Premium is required',
+                  style: PanAfricanTypography.titleMedium(context),
+                ),
+              ),
             Semantics(
               header: true,
               child: Text(

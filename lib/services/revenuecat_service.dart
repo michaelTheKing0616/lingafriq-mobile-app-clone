@@ -6,6 +6,10 @@ import 'package:lingafriq/config/secrets_manager.dart';
 import 'package:lingafriq/models/revenuecat_mapping.dart';
 import 'package:lingafriq/utils/structured_logger.dart' hide LogLevel;
 
+bool isPremiumRequired({int? statusCode, Object? body}) {
+  return statusCode == 403 && body is Map && body['error'] == 'premium_required';
+}
+
 class RevenueCatService {
   bool _configured = false;
   String? _currentAppUserId;

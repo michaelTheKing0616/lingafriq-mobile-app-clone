@@ -26,8 +26,13 @@ tiers:
 token_budget: 70000
 file_allowlist:
 - node-backend/src/middleware/requireEntitlement.middleware.ts
+- node-backend/src/middleware/subscriptionGate.middleware.ts
 - node-backend/src/routes/subscription.route.ts
+- node-backend/src/tests/security/entitlementGate.spec.ts
 - lib/services/revenuecat_service.dart
+- lib/providers/subscription_provider.dart
+- lib/screens/subscription/subscription_screen.dart
+- test/services/premium_gate_test.dart
 context_anchors:
 - ELEVATION.md#§1:L398-L409
 - ELEVATION.md#§16.1:L2058
@@ -74,11 +79,12 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "Entitlement decisions are cached for 60 seconds. A subscriber who exists only in the old Subscription collection is denied until a webhook row exists."
 gate: G1
 external_blockers:
 - EXT-19
-status: Draft
+status: Done
 skills:
   worker:
   - prime/mobile-app-ui-design
