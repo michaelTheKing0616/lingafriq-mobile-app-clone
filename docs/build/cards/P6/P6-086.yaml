@@ -1,0 +1,73 @@
+charter: v2
+id: P6-086
+kind: build
+title: Match a Point and Say frame with SigLIP behind the gateway
+phase: P6
+epic: E-P6-GATEWAY
+req_ids:
+- TR-R1-07
+depends_on:
+- E-P6-GATEWAY
+- P4-168
+size: M
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 2
+  size: 0
+tiers:
+  worker: T3
+  tester: T3
+  reviewer: T3
+  justification: score 7; blast 2; photos leave the device only with opt-in
+token_budget: 70000
+file_allowlist:
+- node-backend/src/services/vision/siglipMatch.service.ts
+- node-backend/src/routes/vision.route.ts
+- node-backend/src/__test__/P6-086.siglipMatch.test.ts
+context_anchors:
+- ELEVATION.md#§18.4:L4236-L4245
+acceptance_criteria:
+- id: AC1
+  text: Given the weight loader, when it starts, then it accepts only google/siglip-base-patch16-224 model.safetensors at revision 7fd15f0689c79d79e38b1c2e2e2370a7bf2761ed and refuses a YOLO file or any other checkpoint
+- id: AC2
+  text: Given no image opt-in, when a frame is submitted, then the route returns a typed refusal and does not store or forward the image
+- id: AC3
+  text: Given opt-in and the active language word list, when matching runs, then the result is the top matches against those glosses
+- id: AC4
+  text: Given this route, when a client calls it, then the client is not required to ship the SigLIP file and the phone build does not contain it
+test_plan:
+  unit:
+  - wrong checkpoint refused
+  - missing opt-in refused
+  integration:
+  - gloss list is the candidate set
+  security:
+  - image bytes absent from logs
+  e2e: []
+  perf: []
+  a11y: []
+  content: []
+user_facing: false
+ux_spec: null
+tags:
+- licence_register
+p0_area: false
+security_dsp_crypto: true
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "The verified file is 203155970 parameters and has no official quantized TFLite sibling, so it stays on the server. WebLI images are not Apache-2.0. This card uses the weight file only."
+- "Counsel sign-off of the register remains EXT-03."
+gate: G8
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - adaptive/14-safety-and-high-stakes
+  - adaptive/08-coding-and-debugging

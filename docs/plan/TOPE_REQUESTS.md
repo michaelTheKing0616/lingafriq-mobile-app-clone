@@ -2,7 +2,7 @@
 
 Convert each item into a proper card (in the charter format) under the phase named, add it to CARD_STATUS.tsv, then mark it "carded" here.
 
-Carded 2026-10-22. R1 is P7-945, P4-168, P6-085, P7-946, P7-947, P8-934. R2 is P2-058, P7-949. The Lens collection save is an acceptance criterion on P7-946 because P7-909 already owns the collection.
+Carded 2026-10-22. R1 is P7-945, P4-168, P6-085, P7-946, P7-947, P8-934. R2 is P2-058, P7-949. The Lens collection save is an acceptance criterion on P7-946 because P7-909 already owns the collection. The R1 model-choice update is carded as a revision of P7-945, P4-168, and P7-947, plus P6-086 (server SigLIP) and P7-950 (on-device fallback). Build order is P4-168, then P6-086, then P7-945, P7-946, P7-950, then P7-947. These do not jump ahead of the open P1 cards.
 
 ## R1. On-device object recogniser for Point & Say (phase P7; also touches P4 and P6) — carded
 - Problem: `point_and_say_screen.dart` uses ML Kit's default object detector, which only gives 5 coarse labels (food, home goods, fashion, plant, place). That's too vague to teach words.
@@ -18,3 +18,9 @@ Carded 2026-10-22. R1 is P7-945, P4-168, P6-085, P7-946, P7-947, P8-934. R2 is P
 - Adapt: lesson length, how new items mix with reviews, difficulty (aim for 80–85% success, as in P8-905), when to move to the next CEFR step, extra tone or pronunciation drills where weak, and a pace setting the learner can see and override.
 - Fairness and honesty: explain why something was recommended ("You're strong on greetings, so we've added more numbers"). Never lock content behind the model. Under-16s get the same adaptation with no profiling for marketing.
 - Acceptance: an A/B test or offline replay shows better 7-day retention or completion than fixed pacing; the learner can reset or override; the model runs on the device and works offline.
+
+## R1 update: model choice (Tope, 2026-10-22; replaces the "MobileNet-family" line above) — carded
+- On the phone, use **MobileNetV4** (Apache-2.0) as a TFLite ML Kit custom model for instant offline recognition.
+- When online, or when on-device confidence is low, fall back to **SigLIP** (Apache-2.0), an open-vocabulary model: match the image against each language's Living Dictionary word list (English glosses), so new objects or languages need no retraining. Use a small or quantized variant on the phone if it meets the speed target; otherwise run it on the server behind the AI gateway, sending images only with opt-in.
+- Use SigLIP's confident matches, after user confirmation and with opt-in, to build the African-objects fine-tuning set for MobileNetV4.
+- **Do not use Ultralytics YOLO** (AGPL). Check the licence of each specific set of trained model files (not just the code) and log it in the licence register before using it.

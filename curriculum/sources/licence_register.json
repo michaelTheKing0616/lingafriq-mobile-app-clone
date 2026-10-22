@@ -199,5 +199,34 @@
   "licence": "Public-domain status unclear",
   "use": "excluded (unclear)",
   "checked": "2026-10-21"
+ },
+ {
+  "id": "mobilenetv4_conv_small",
+  "source": "timm/mobilenetv4_conv_small.e2400_r224_in1k model.safetensors",
+  "url": "https://huggingface.co/timm/mobilenetv4_conv_small.e2400_r224_in1k/blob/331fb803779522b685cf942e15f914fb6741c1eb/model.safetensors",
+  "licence": "Apache-2.0",
+  "use": "ship on device only after conversion from this file",
+  "checked": "2026-10-22",
+  "attribution": "Ross Wightman. MobileNetV4-Conv-Small, ImageNet-1k. Hugging Face card license apache-2.0. Revision 331fb803779522b685cf942e15f914fb6741c1eb.",
+  "notes": "Checked the model card and the Hugging Face license tag on this revision, not a third-party TFLite conversion. Official TensorFlow MobileNetV4 checkpoints were unreleased (tensorflow/models#11205). 3799112 parameters. ImageNet-1k images are not Apache-2.0. This row is the weight file only. Counsel sign-off remains EXT-03."
+ },
+ {
+  "id": "siglip_base_patch16_224",
+  "source": "google/siglip-base-patch16-224 model.safetensors",
+  "url": "https://huggingface.co/google/siglip-base-patch16-224/blob/7fd15f0689c79d79e38b1c2e2e2370a7bf2761ed/model.safetensors",
+  "licence": "Apache-2.0",
+  "use": "server only, behind the AI gateway, and only when the learner opts in to sending the image",
+  "checked": "2026-10-22",
+  "attribution": "Google SigLIP base (Zhai et al.). Hugging Face card license apache-2.0. Revision 7fd15f0689c79d79e38b1c2e2e2370a7bf2761ed. Code release google-research/big_vision is Apache-2.0.",
+  "notes": "Checked the license tag on this revision and the big_vision LICENSE. The weight file is model.safetensors, not pytorch_model.bin. 203155970 parameters. This revision has no official quantized TFLite file, so it is not a phone model. WebLI images are not Apache-2.0. This row is the weight file only. Counsel sign-off remains EXT-03."
+ },
+ {
+  "id": "ultralytics_yolo",
+  "source": "Ultralytics YOLO weights",
+  "url": "https://github.com/ultralytics/ultralytics",
+  "licence": "AGPL-3.0",
+  "use": "excluded",
+  "checked": "2026-10-22",
+  "notes": "Tope 2026-10-22. Do not bundle and do not use as a Point and Say model."
  }
 ]

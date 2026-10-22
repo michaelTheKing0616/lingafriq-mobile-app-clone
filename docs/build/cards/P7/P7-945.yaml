@@ -1,11 +1,12 @@
 charter: v2
 id: P7-945
 kind: build
-title: Replace Point and Say coarse labels with an on-device classifier
+title: Bundle MobileNetV4 Conv-Small for on-device Point and Say
 phase: P7
 epic: E-P7-HUBS
 req_ids:
 - TR-R1-01
+- TR-R1-07
 - F-052
 depends_on:
 - P7-902
@@ -26,7 +27,7 @@ token_budget: 120000
 file_allowlist:
 - lib/screens/ar/point_and_say_screen.dart
 - lib/services/lens/on_device_object_classifier.dart
-- assets/models/point_say_mobilenet.tflite
+- assets/models/point_say_mobilenetv4.tflite
 - test/services/lens/on_device_object_classifier_test.dart
 context_anchors:
 - ELEVATION.md#§18.4:L4236-L4245
@@ -35,7 +36,7 @@ acceptance_criteria:
 - id: AC1
   text: Given airplane mode, when a camera frame is classified, then the label comes from the bundled TFLite model and no photo or embedding is sent off the device
 - id: AC2
-  text: Given the bundled model file, when its licence register row is read, then the row is Apache-2.0 and names the exact checkpoint
+  text: Given the bundled TFLite file, when its licence register row is read, then the row is Apache-2.0 and names timm/mobilenetv4_conv_small.e2400_r224_in1k model.safetensors at revision 331fb803779522b685cf942e15f914fb6741c1eb, and the TFLite was converted from that file
 - id: AC3
   text: Given a frame, when classification finishes, then the top three labels are returned with scores and the ML Kit five-way food/home/fashion/plant/place label is not the result
 - id: AC4
@@ -85,6 +86,7 @@ dod_evidence:
 - ledger row
 risks:
 - "The 150 ms bar is unmet until a mid-range Android log is attached. A desktop timing run does not satisfy it."
+- "Official TensorFlow MobileNetV4 checkpoints are unreleased. A third-party TFLite file is not a substitute for the named safetensors revision."
 gate: HUB
 external_blockers: []
 status: Draft

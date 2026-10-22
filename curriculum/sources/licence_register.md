@@ -25,6 +25,9 @@
 | african_voices | [African Voices (Data Science Nigeria)](https://africanvoices.ai) | ToS licence; CC BY 4.0 by default, commercial + derivatives with attribution | qualifies (ha/ig/pcm/yo); NOT downloaded (needs registration) |  |
 | tonative | [Tonative datasets (XNLI adaptation, MRL-Benchmark incl. Pidgin)](https://tonative.org) | Not stated | excluded (unclear) |  |
 | peace_corps | [Peace Corps language manuals](various) | Public-domain status unclear | excluded (unclear) |  |
+| mobilenetv4_conv_small | [timm/mobilenetv4_conv_small.e2400_r224_in1k model.safetensors, revision 331fb803779522b685cf942e15f914fb6741c1eb](https://huggingface.co/timm/mobilenetv4_conv_small.e2400_r224_in1k/blob/331fb803779522b685cf942e15f914fb6741c1eb/model.safetensors) | Apache-2.0 (weight file; checked 2026-10-22) | ship on device only after conversion from this file | Ross Wightman. MobileNetV4-Conv-Small, ImageNet-1k. |
+| siglip_base_patch16_224 | [google/siglip-base-patch16-224 model.safetensors, revision 7fd15f0689c79d79e38b1c2e2e2370a7bf2761ed](https://huggingface.co/google/siglip-base-patch16-224/blob/7fd15f0689c79d79e38b1c2e2e2370a7bf2761ed/model.safetensors) | Apache-2.0 (weight file; checked 2026-10-22) | server only, behind the AI gateway, image opt-in required | Google SigLIP base (Zhai et al.). big_vision code is Apache-2.0. |
+| ultralytics_yolo | [Ultralytics YOLO](https://github.com/ultralytics/ultralytics) | AGPL-3.0 | excluded |  |
 
 Notes:
 - **leipzig**: Licence page bot-walled (403); verified via Terms of Usage text in search index. Sentences from *.wikipedia.org (CC BY-SA) and Bible/JW domains excluded from shipped examples; frequencies use all.
@@ -33,3 +36,6 @@ Notes:
 - **kaikki**: No Igbo or Nigerian Pidgin files.
 - **cv_pcm**: 8,964 clips, 12.5 h validated, 60 speakers, 987 sentences.
 - **cv27_pcm**: Downloaded by user to ~/Downloads 2026-10-21; only sentence TSVs extracted.
+- **mobilenetv4_conv_small**: Licence is the Hugging Face `license: apache-2.0` tag on revision 331fb803779522b685cf942e15f914fb6741c1eb, 3,799,112 parameters. Official TensorFlow checkpoints were unreleased. ImageNet-1k images are not Apache-2.0. Do not substitute another TFLite file.
+- **siglip_base_patch16_224**: Licence is the Hugging Face `license: apache-2.0` tag on revision 7fd15f0689c79d79e38b1c2e2e2370a7bf2761ed, and `google-research/big_vision` LICENSE is Apache-2.0. Use `model.safetensors` (203,155,970 parameters). No official quantized phone file is in that revision. WebLI images are not Apache-2.0.
+- **ultralytics_yolo**: Excluded. AGPL-3.0. Not a Point and Say model.

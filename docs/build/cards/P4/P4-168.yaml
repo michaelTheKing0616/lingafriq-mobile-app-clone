@@ -1,11 +1,12 @@
 charter: v2
 id: P4-168
 kind: build
-title: Register the Point and Say model and reject a non-commercial weight
+title: Register MobileNetV4 and SigLIP weights and reject YOLO
 phase: P4
 epic: E-P4-LICENCES
 req_ids:
 - TR-R1-02
+- TR-R1-09
 depends_on:
 - P4-001
 size: S
@@ -23,18 +24,21 @@ tiers:
   justification: score 3; blast 2; licence gate
 token_budget: 20000
 file_allowlist:
-- tools/content_engine/licences/register.csv
+- curriculum/sources/licence_register.md
+- curriculum/sources/licence_register.json
 - tools/content_engine/licences/check_register.py
 - tools/content_engine/tests/test_point_say_model_licence.py
 context_anchors:
 - CURRICULUM.md#§2.1:L117-L118
 acceptance_criteria:
 - id: AC1
-  text: Given the Point and Say TFLite file, when the register is checked, then one row names that file, Apache-2.0, the source URL, and allowed display use
+  text: Given the Point and Say weights, when the register is checked, then the MobileNetV4 row names model.safetensors revision 331fb803779522b685cf942e15f914fb6741c1eb and the SigLIP row names model.safetensors revision 7fd15f0689c79d79e38b1c2e2e2370a7bf2761ed, both Apache-2.0, with source URLs
 - id: AC2
-  text: Given a model row whose licence is non-commercial or missing, when the checker runs, then it fails with a typed error and the file is not bundled
+  text: Given a model row whose licence is non-commercial, AGPL, or missing, when the checker runs, then it fails with a typed error and the file is not bundled
 - id: AC3
   text: Given an image set used to fine-tune the classifier, when any image has no commercial or newly collected licence row, then the checker fails and training is refused
+- id: AC4
+  text: Given an Ultralytics YOLO weight, when the checker runs, then it fails and that file is not bundled
 test_plan:
   unit:
   - apache row passes
