@@ -57,3 +57,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-045 | open | P1-043 | A correct password on a non-admin account still returns "User is not an admin". Unknown emails and wrong passwords share one 401. |
 | OW-046 | open | P1-044 | The backoff numbers, 30 seconds doubling to 15 minutes, are not in the source. The per-IP limiter skips itself when NODE_ENV is test. |
 | OW-047 | open | P1-045 | `src/scripts/ensureAdminUser.ts` still requires 6 characters and stores a Django hash. The next successful admin login rehashes it. Tests stub the breach HTTP call; they do not call Have I Been Pwned. |
+| OW-048 | open | P1-046 | `src/routes/scraper.route.ts` still verifies with the raw `SCRAPER_SECRET` or `JWT_SECRET`. There is no HS256 cutover date. |

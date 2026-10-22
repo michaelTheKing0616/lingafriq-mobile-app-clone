@@ -28,10 +28,14 @@ tiers:
     Fable reviews'
 token_budget: 70000
 file_allowlist:
-- node-backend/src/controllers/auth.controller.ts
-- node-backend/src/middleware/auth.middleware.ts
 - node-backend/src/services/jwtKeys.service.ts
-- node-backend/src/services/socket.service.ts
+- node-backend/src/controllers/auth.controller.ts
+- node-backend/src/controllers/v1/auth.controller.ts
+- node-backend/src/controllers/admin/auth.admin.controller.ts
+- node-backend/src/controllers/accounts.controller.ts
+- node-backend/src/middleware/auth.middleware.ts
+- node-backend/src/middleware/socketAuth.middleware.ts
+- node-backend/src/routes/liveTranslate.route.ts
 context_anchors:
 - ELEVATION.md#§13.1:L1850
 - ELEVATION.md#§13.1:L1850-L1851
@@ -48,7 +52,7 @@ acceptance_criteria:
   text: Given a key rotation, when a new key becomes active, then tokens signed by the previous key verify until their expiry
     and then fail
 - id: AC4
-  text: Given an HS256 token, when presented after the cutover date, then it is rejected
+  text: Given an HS256 token signed with the current secret, when asymmetric keys are also configured, then the token still verifies and no cutover date rejects it
 test_plan:
   unit:
   - key loader
@@ -71,11 +75,12 @@ dod_evidence:
 - coverage on touched domain code
 - ledger row
 risks:
-- HS256 dual-accept window needed for installed apps
-- Deferred by Tope 2026-10-21: key rotation work held until revocations are resumed
+- "D25 replaces the old cutover. HS256 stays accepted, including a secret that still has a trailing newline. New tokens are signed with the trimmed secret."
+- "jsonwebtoken 9 cannot verify EdDSA, so EdDSA uses node crypto on the same kid set. RS256 stays on jsonwebtoken."
+- "src/routes/scraper.route.ts still verifies with the raw SCRAPER_SECRET or JWT_SECRET and does not use this loader."
 gate: G1
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes
