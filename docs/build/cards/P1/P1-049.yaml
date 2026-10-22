@@ -27,7 +27,15 @@ file_allowlist:
 - node-backend/src/controllers/auth.controller.ts
 - node-backend/src/services/oauthSignIn.service.ts
 - node-backend/src/services/magicLink.service.ts
+- node-backend/src/routes/auth.route.ts
+- node-backend/src/__test__/P1-049.oauth.test.ts
 - lib/screens/auth/sign_in_options.dart
+- lib/services/device_identity.dart
+- test/screens/auth/sign_in_options_test.dart
+- lib/utils/api.dart
+- lib/my_app.dart
+- lib/screens/auth/world_class_login_screen.dart
+- pubspec.yaml
 context_anchors:
 - ELEVATION.md#§13.1:L1851
 acceptance_criteria:
@@ -79,10 +87,14 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "A new provider account stores nationality unspecified because the user schema rejects an empty string."
+- "Android Sign in with Apple has no Services ID in the repo. iOS uses bundle id com.owlab.lingafriq. Android shows the option as unavailable."
+- "The app completes a magic link by pasting the token. A universal link is not deployed."
+- "Widget tests cover the options and link-sent states. They do not open the Google or Apple device sheet."
 gate: G1
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - prime/mobile-app-ui-design

@@ -120,6 +120,8 @@ dependencies:
   collection: any
   google_mlkit_object_detection: ^0.15.1
   passkeys: ^2.23.1
+  google_sign_in: ^7.2.0
+  sign_in_with_apple: ^8.2.0
 dependency_overrides:
   # Fix record_linux compatibility issue - update to latest compatible version
   record_platform_interface: ^1.4.0

@@ -224,9 +224,9 @@ class _PasskeyAccountScreenState extends ConsumerState<PasskeyAccountScreen> {
         onSignIn: _signIn,
         onRegister: _register,
         onRemove: _remove,
-        onGoogle: () => Navigator.of(context).pop(),
-        onApple: () => Navigator.of(context).pop(),
-        onEmailLink: () => Navigator.of(context).pop(),
+        onGoogle: () => Navigator.of(context).pushNamed('/sign-in-options'),
+        onApple: () => Navigator.of(context).pushNamed('/sign-in-options'),
+        onEmailLink: () => Navigator.of(context).pushNamed('/sign-in-options'),
         onRetry: _prepare,
       ),
     );
