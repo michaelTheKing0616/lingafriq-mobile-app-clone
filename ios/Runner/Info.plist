@@ -27,6 +27,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
+	<!-- Leaf pins are enforced by the Dart client when CERTIFICATE_PIN_HASHES is set. -->
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
 		<string>$(LINGAFRIQ_IOS_ALLOW_ARBITRARY_LOADS)</string>

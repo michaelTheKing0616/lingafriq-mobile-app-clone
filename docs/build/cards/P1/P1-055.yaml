@@ -29,6 +29,8 @@ file_allowlist:
 - android/app/src/main/res/xml/network_security_config.xml
 - lib/services/network/pinning_client.dart
 - ios/Runner/Info.plist
+- lib/utils/certificate_pinning.dart
+- test/services/network/pinning_client_test.dart
 context_anchors:
 - ELEVATION.md#§13.1:L1864-L1865
 - ELEVATION.md#§13.1:L1865-L1866
@@ -60,10 +62,12 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "The Android network config does not embed a pin. The Dart client is the check on both platforms. No device proxy test was run."
+- "A build that sets CERTIFICATE_PIN_HASHES fails closed, including a debug build. A build with no pins stays open."
 gate: G1
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes

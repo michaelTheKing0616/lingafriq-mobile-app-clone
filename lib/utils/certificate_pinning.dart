@@ -13,10 +13,10 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:crypto/crypto.dart';
-import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:lingafriq/services/env_config.dart';
+import 'package:lingafriq/services/network/pinning_client.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 
 /// Certificate pinning configuration
@@ -39,9 +39,7 @@ class CertificatePinningConfig {
     // If no hashes are configured, pinning is disabled (allows app to run)
     // To enable: Set CERTIFICATE_PIN_HASHES at build time with comma-separated pins.
     final envHashes = const String.fromEnvironment('CERTIFICATE_PIN_HASHES', defaultValue: '');
-    final hashes = envHashes.isNotEmpty 
-        ? envHashes.split(',').map((h) => h.trim()).where((h) => h.isNotEmpty).toList()
-        : <String>[];
+    final hashes = LeafPinCheck.parsePins(envHashes);
     
     // Check if backend URL is HTTP (not HTTPS) - disable pinning for HTTP
     final backendUrl = EnvConfig.backendBaseUrl;
@@ -49,8 +47,8 @@ class CertificatePinningConfig {
     
     return CertificatePinningConfig(
       certificateDerSha256Pins: hashes,
-      enabled: hashes.isNotEmpty && !kDebugMode && !isHttp, // Disable for HTTP or debug mode
-      allowSelfSigned: isHttp || kDebugMode, // Allow self-signed for HTTP/local development
+      enabled: hashes.isNotEmpty && !isHttp,
+      allowSelfSigned: isHttp,
     );
   }
 }
@@ -63,42 +61,20 @@ class CertificatePinner {
       : config = config ?? CertificatePinningConfig.defaultConfig;
 
   /// Validate certificate
-  bool validateCertificate(X509Certificate certificate) {
-    if (!config.enabled) {
-      logger.debug('Certificate pinning disabled');
-      return true;
-    }
-
-    // Allow self-signed certificates in debug mode or if explicitly allowed
-    if ((kDebugMode || config.allowSelfSigned) && config.allowSelfSigned) {
-      logger.debug('Allowing self-signed certificate (debug mode or HTTP backend)');
+  bool validateCertificate(X509Certificate certificate, {String host = ''}) {
+    if (!config.enabled || config.certificateDerSha256Pins.isEmpty) {
       return true;
     }
 
     try {
-      // If no hashes are configured, allow connection (pinning is disabled)
-      if (config.certificateDerSha256Pins.isEmpty) {
-        logger.debug('Certificate pinning not configured - allowing connection');
-        return true;
-      }
-
-      // Check leaf certificate DER hash
       final certDerPin = _getCertificateDerSha256Pin(certificate);
-      if (certDerPin == 'sha256/ERROR') {
-        logger.error('Certificate hash computation failed');
-        return false;
-      }
-
-      if (config.certificateDerSha256Pins.contains(certDerPin)) {
-        logger.debug('Certificate pin matches');
-        return true;
-      }
-
-      logger.warn('Certificate pinning failed: hash mismatch', context: {
-        'certDerPin': certDerPin,
-        'expectedPins': config.certificateDerSha256Pins,
-      });
-
+      return LeafPinCheck.allows(
+        pins: config.certificateDerSha256Pins,
+        leafPin: certDerPin,
+        host: host,
+      );
+    } on CertificatePinException {
+      logger.warn('Certificate pin mismatch', context: {'host': host});
       return false;
     } catch (e) {
       logger.error('Certificate validation error', error: e);
@@ -124,15 +100,18 @@ class CertificatePinner {
   Interceptor createInterceptor() {
     return InterceptorsWrapper(
       onError: (error, handler) {
-        if (error.type == DioExceptionType.badCertificate) {
-          logger.error('Certificate pinning failed', error: error);
-          // In production, reject the request
-          // In development, might want to allow with warning
-          if (config.enabled && !kDebugMode) {
-            return handler.reject(error);
-          }
+        if (error.type == DioExceptionType.badCertificate && config.enabled) {
+          handler.reject(
+            DioException(
+              requestOptions: error.requestOptions,
+              type: DioExceptionType.badCertificate,
+              error: CertificatePinException(host: error.requestOptions.uri.host),
+              message: CertificatePinException.code,
+            ),
+          );
+          return;
         }
-        return handler.next(error);
+        handler.next(error);
       },
     );
   }
@@ -151,7 +130,7 @@ void setupCertificatePinning(Dio dio, {CertificatePinningConfig? config}) {
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) {
       client.badCertificateCallback = (cert, host, port) {
         // Validate certificate using our pinner
-        final isValid = pinner.validateCertificate(cert);
+        final isValid = pinner.validateCertificate(cert, host: host);
         if (!isValid) {
           logger.error('Certificate pinning validation failed', context: {
             'host': host,

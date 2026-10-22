@@ -329,7 +329,7 @@ P1-051	Done	Remove client-supplied identity fields across the API	P1/P1-051.yaml
 P1-052	Done	Build IDOR authorisation suite over every id route	P1/P1-052.yaml
 P1-053	Done	Build rate-limit and lockout test suite	P1/P1-053.yaml
 P1-054	Done	Decide certificate pinning approach	P1/P1-054.yaml
-P1-055	Draft	Implement certificate pinning consistently per ADR	P1/P1-055.yaml
+P1-055	Done	Implement certificate pinning consistently per ADR	P1/P1-055.yaml
 P1-056	Draft	Obfuscate release builds	P1/P1-056.yaml
 P1-057	Draft	Enable dependency update bot, audit gate and monthly pub check	P1/P1-057.yaml
 P1-058	Draft	Generate SBOM and pin GitHub Actions by SHA	P1/P1-058.yaml

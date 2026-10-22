@@ -65,3 +65,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-053 | open | P1-051 | Admin routes may still name a target user in the body. Those lines are marked identity-target. GET rive state still takes user_id from the query. |
 | OW-054 | open | P1-052 | Catalog reads and lesson-complete PATCH stay open. Unfollow, private-chat open, classroom, tribe, and room routes stay allowed for the signed-in user. Group chat is not owner-denied. A missing mongoose model fails open. GET rive state still takes user_id from the query. |
 | OW-055 | open | P1-053 | The per-IP limiter still skips itself in tests until the suite installs the fake clock. A limiter error in production still allows the request. |
+| OW-056 | open | P1-055 | The Android network config does not embed a pin. The Dart client is the check on both platforms. No device proxy test was run. |
