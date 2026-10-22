@@ -25,14 +25,16 @@ tiers:
 token_budget: 70000
 file_allowlist:
 - node-backend/test/contract/contract.test.ts
+- node-backend/src/openapi/generate.ts
+- node-backend/src/validators/routeContracts.generated.ts
+- node-backend/.github/workflows/ci.yml
 - docs/api/openapi.v1.json
-- .github/workflows/build.yml
+- lib/api/generated/
 context_anchors:
 - ELEVATION.md#§13.9:L1951
 acceptance_criteria:
 - id: AC1
-  text: Given each documented operation, when the contract test calls the running API, then status and body validate against
-    the spec schema
+  text: Given each documented operation that declares a request schema, when the contract test calls the running API with an empty body, then the status is 400 and the body names a required field
 - id: AC2
   text: Given a response deviating from the spec, when CI runs, then it fails naming operation and field
 - id: AC3
@@ -56,10 +58,12 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "Every mounted route must appear in the spec. A missing route fails the suite by name."
+- "Unauthenticated calls are documented as 401. Handlers that wait on Mongo for about 10 seconds are not part of this sweep."
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging

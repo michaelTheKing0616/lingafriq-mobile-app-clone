@@ -8,14 +8,14 @@ The Firebase service account, the Apple `.p8`, and the five client AI keys stay 
 
 Work is continuous on `cloud-handoff`. Do not pause between cards. The key files remain tracked.
 
-- Mobile: `cloud-handoff`. Latest card push is P2-012.
-- Backend: `cloud-handoff`. Latest card push is P2-011 (`1b3ab20`), the generated OpenAPI spec.
+- Mobile: `cloud-handoff`. Latest card push is P2-013.
+- Backend: `cloud-handoff`. Latest card push is P2-013, the OpenAPI contract suite.
 - The key files are still tracked. Copies also exist in `~/.lingafriq/secrets/` (mode 600). History was not rewritten.
-- Next card is P2-013. P7-961 is the full Import Media lesson and does not jump this queue.
+- Next card is P2-014. P7-961 is the full Import Media lesson and does not jump this queue.
 
 ## Next 3 steps
 
-1. Finish P2-013 and keep going in plan order.
+1. Finish P2-014 and keep going in plan order.
 2. Do not stop to ask what is next.
 3. Do not remove the Firebase service account, the Apple `.p8`, or the five client AI keys. Intron stays off until its flag and server key are set.
 
