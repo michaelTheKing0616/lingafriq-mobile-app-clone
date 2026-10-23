@@ -57,10 +57,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- 'The test writes onboarding and the first lesson into Drift, then drains the events to a loopback server. It does not tap through the onboarding widgets.'
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging

@@ -92,6 +92,9 @@ jobs:
       - name: Avatar contract
         run: flutter test test/avatar/contract_test.dart
 
+      - name: Onboarding first lesson sync
+        run: flutter test -d flutter-tester integration_test/onboarding_first_lesson_sync_test.dart
+
       - name: Flutter test
         run: |
           echo "🧪 Running Flutter tests..."

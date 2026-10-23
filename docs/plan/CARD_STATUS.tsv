@@ -487,7 +487,7 @@ P2-018	Done	Replace fake-success paths with typed errors and visible states	P2/P
 P2-019	Done	Manage downloadable units, storage and Wi-Fi-only default	P2/P2-019.yaml
 P2-020	Done	Add low-bandwidth mode honouring Android Data Saver	P2/P2-020.yaml
 P2-021	Done	Specify on-device tone feedback hook for offline practice	P2/P2-021.yaml
-P2-022	Draft	Add integration test for onboarding, first lesson and sync	P2/P2-022.yaml
+P2-022	Done	Add integration test for onboarding, first lesson and sync	P2/P2-022.yaml
 P2-023	Done	Issue short-lived asymmetric access tokens with kid rotation	P2/P2-023.yaml
 P2-024	Done	Add rotating revocable refresh tokens with reuse detection	P2/P2-024.yaml
 P2-025	Done	Add passkey sign-in and sign-up	P2/P2-025.yaml

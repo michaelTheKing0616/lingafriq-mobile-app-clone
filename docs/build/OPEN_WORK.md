@@ -99,3 +99,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-087 | open | P2-024 | Revocation is logout, password change, and reuse detection. There is no separate admin revoke button. |
 | OW-088 | open | P2-025 | CI does not open a platform passkey prompt. The server ceremony and the cancelled-state fallbacks are tested. |
 | OW-089 | open | P2-042 | The event log is the new write. Vocabulary SM-2, chat SM-2, game SM-2, and BKT/HLR still update themselves. |
+| OW-090 | open | P2-022 | The onboarding-to-sync test uses Drift and a local events fixture. It does not tap the onboarding screens and it does not start Workmanager. |

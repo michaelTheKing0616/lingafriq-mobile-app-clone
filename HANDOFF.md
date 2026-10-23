@@ -8,15 +8,15 @@ The Firebase service account, the Apple `.p8`, and the five client AI keys stay 
 
 Work is continuous on `cloud-handoff`. Do not pause between cards. The key files remain tracked.
 
-- Mobile: `cloud-handoff`. Latest card push is P2-025. Passkey save-progress links an anonymous id. A cancelled prompt offers Google, Apple, and email.
+- Mobile: `cloud-handoff`. Latest card push is P2-022. The onboarding, first lesson, and sync test persists progress offline and posts each event once.
 - Backend: `cloud-handoff`. Latest card push is P2-025. New sessions are RS256 for 15 minutes when a private key is configured. HS256 still verifies. Learning events with the same client id apply once.
 - The key files are still tracked. Copies also exist in `~/.lingafriq/secrets/` (mode 600). History was not rewritten.
 - Admin gamification edits were not part of this build. They are in git stash `admin-gamification-wip-not-this-build` on `lingafriq-admin` `cloud-handoff`.
-- P2-025 and P2-042 are done, including P2-023, P2-024, and P2-041. Next card is P2-022. P7-961 does not jump this queue.
+- P2-022 is done. Next card is P2-026. Build any unfinished dependency first. P7-961 does not jump this queue.
 
 ## Next 3 steps
 
-1. Build P2-022, then the next card whose dependencies are done. Build any unfinished dependency first. The host switches below do not stop the queue.
+1. Build P2-026, then the next card. Build any unfinished dependency first. The host switches below do not stop the queue.
 2. Do not stop to ask what is next.
 3. Do not remove the Firebase service account, the Apple `.p8`, or the five client AI keys. Intron stays off until its flag and server key are set.
 
