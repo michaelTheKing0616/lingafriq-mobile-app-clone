@@ -27,6 +27,8 @@ file_allowlist:
 - tools/content_engine/licences/exclusions.yaml
 - tools/content_engine/linters/exclusion_enforce.py
 - tools/content_engine/tests/test_exclusion_enforce.py
+- .github/workflows/content-engine.yml
+- .github/workflows/content-engine.yml
 context_anchors:
 - CURRICULUM.md#§2.1:L114-L116
 acceptance_criteria:
@@ -65,7 +67,7 @@ risks: []
 gate: G4
 external_blockers:
 - EXT-03
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging

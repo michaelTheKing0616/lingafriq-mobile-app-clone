@@ -1,0 +1,122 @@
+charter: v2
+sources:
+  jw300:
+    status: excluded
+    licence: "not a CC licence"
+    reason: "no JW300-derived data. It was removed for a terms breach. This is not a CC licence."
+    commercial_licence_document: ""
+    counsel_status: ""
+    uses:
+      display: false
+      evidence: false
+      training: false
+  mafand-mt:
+    status: excluded
+    licence: "CC BY-NC 4.0"
+    reason: "CC BY-NC 4.0. No commercial licence is recorded."
+    commercial_licence_document: ""
+    counsel_status: ""
+    uses:
+      display: false
+      evidence: false
+      training: false
+  masakhaner-2:
+    status: excluded
+    licence: "CC BY-NC 4.0"
+    reason: "CC BY-NC 4.0. No commercial licence is recorded."
+    commercial_licence_document: ""
+    counsel_status: ""
+    uses:
+      display: false
+      evidence: false
+      training: false
+  afrisenti:
+    status: excluded
+    licence: "non-commercial"
+    reason: "The paper restricts commercial use without creator approval."
+    commercial_licence_document: ""
+    counsel_status: ""
+    uses:
+      display: false
+      evidence: false
+      training: false
+  panlex:
+    status: excluded
+    licence: "CC BY-NC-SA 4.0"
+    reason: "CC BY-NC-SA 4.0. No written commercial permission is recorded."
+    commercial_licence_document: ""
+    counsel_status: ""
+    uses:
+      display: false
+      evidence: false
+      training: false
+  naijavoices:
+    status: excluded
+    licence: "CC BY-NC-SA 4.0"
+    reason: "CC BY-NC-SA 4.0. The membership waiver is not recorded as purchased."
+    commercial_licence_document: ""
+    counsel_status: ""
+    uses:
+      display: false
+      evidence: false
+      training: false
+  igboapi:
+    status: excluded
+    licence: "CC BY-NC-SA 4.0"
+    reason: "The code being Apache-2.0 does not license the data."
+    commercial_licence_document: ""
+    counsel_status: ""
+    uses:
+      display: false
+      evidence: false
+      training: false
+  kamusi:
+    status: excluded
+    licence: "CC BY-NC-SA"
+    reason: "CC BY-NC-SA. No commercial licence is recorded."
+    commercial_licence_document: ""
+    counsel_status: ""
+    uses:
+      display: false
+      evidence: false
+      training: false
+  helsinki-swahili-2:
+    status: excluded
+    licence: "academic-only CLARIN ACA"
+    reason: "Academic-only CLARIN ACA. An ELRA purchase is not recorded."
+    commercial_licence_document: ""
+    counsel_status: ""
+    uses:
+      display: false
+      evidence: false
+      training: false
+  oxford-languages:
+    status: needs-licence
+    licence: "Commercial licence not held"
+    reason: "Commercial licence not held."
+    commercial_licence_document: ""
+    counsel_status: ""
+    uses:
+      display: false
+      evidence: false
+      training: false
+  abraham-yoruba-1958:
+    status: needs-licence
+    licence: "Copyright unconfirmed"
+    reason: "Copyright unconfirmed. Reference only until counsel confirms."
+    commercial_licence_document: ""
+    counsel_status: ""
+    uses:
+      display: false
+      evidence: false
+      training: false
+  bargery-hausa-1934:
+    status: needs-licence
+    licence: "Copyright unconfirmed"
+    reason: "Copyright unconfirmed. Reference only until counsel confirms."
+    commercial_licence_document: ""
+    counsel_status: ""
+    uses:
+      display: false
+      evidence: false
+      training: false
