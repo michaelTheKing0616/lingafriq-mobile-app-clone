@@ -24,10 +24,10 @@ tiers:
   justification: 'score 7: blast 3, coupling 1, depth 1'
 token_budget: 70000
 file_allowlist:
-- node-backend/src/controllers/auth.controller.ts
-- node-backend/src/middleware/auth.middleware.ts
-- node-backend/src/services/oidc.service.ts
-- lib/services/auth/social_sign_in_service.dart
+- node-backend/src/services/oauthSignIn.service.ts
+- node-backend/src/__test__/P1-049.oauth.test.ts
+- lib/services/device_identity.dart
+- lib/screens/auth/sign_in_options.dart
 context_anchors:
 - ELEVATION.md#§13.1:L1851
 acceptance_criteria:
@@ -59,10 +59,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- 'Audience, issuer, expiry, and email verification are checked. A nonce is not required, because Google and Apple tokens are accepted without one.'
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes
