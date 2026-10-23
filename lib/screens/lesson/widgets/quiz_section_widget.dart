@@ -51,7 +51,7 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
   void initState() {
     super.initState();
     final qs = _bankQuestions;
-    if (kDebugMode && qs != null && qs.length > 1) {
+    if (kDebugMode && qs.length > 1) {
       final ids = qs.map((e) => e.id).toSet();
       assert(
         ids.length == qs.length,
