@@ -106,3 +106,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-094 | open | P2-035 | Provider call sites do not record into the AI cost ledger yet. A recorded call is attributed, and a missing price stays unknown. |
 | OW-095 | open | P2-038 | The flag client does not fetch from the API yet. A stale cache or a failed evaluation turns the feature off after 60 seconds. |
 | OW-096 | open | P2-039 | Shorebird is off by builder default. Tope has not signed a patch channel on. |
+| OW-097 | open | P2-040 | P0-INT-09 still points at scripts/plan/archive_status_md.py and a pre-commit hook. The move already ran from scripts/docs/archive_status_md.py. HANDOFF.md stays at the root. |

@@ -62,10 +62,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- 'Root markdown count was 323 against the stated 319. The delta is in the manifest header. HANDOFF.md, ARCHITECTURE.md, and STATUS.md stay at the root. No file was deleted. Hashes match on all 318 moved files.'
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging
