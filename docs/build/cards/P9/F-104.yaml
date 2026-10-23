@@ -15,6 +15,7 @@ req_ids:
 depends_on:
 - E-P3-DESIGN-SYSTEM
 - E-P2-PLATFORM
+- P7-953
 size: M
 difficulty:
   score: 5
@@ -50,6 +51,8 @@ acceptance_criteria:
     engine
 - id: AC2
   text: Given a new language map, when published, then consultant review status is visible in content metadata
+- id: AC3
+  text: Given licensed Path scene props, when this village map renders, then it may reuse those props and does not keep a second lesson-progress store.
 test_plan:
   unit:
   - delta defects covered

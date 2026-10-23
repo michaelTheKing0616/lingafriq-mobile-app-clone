@@ -2970,3 +2970,11 @@ TR-R2-02,TOPE_REQUESTS,R2:L17-L19,requirement,Adaptive lesson pacing with an ove
 TR-R1-07,TOPE_REQUESTS,R1-update:L22-L26,requirement,MobileNetV4 on device and SigLIP fallback from the named weight files,P1,agent,P6-086;P7-945;P7-950,Mapped
 TR-R1-08,TOPE_REQUESTS,R1-update:L25,requirement,Confirmed opt-in SigLIP matches may enter the fine-tune set,P1,agent,P7-947,Mapped
 TR-R1-09,TOPE_REQUESTS,R1-update:L26,requirement,Do not use Ultralytics YOLO,P1,agent,P4-168,Mapped
+TR-R3-01,TOPE_REQUESTS,R3:L32,requirement,Vertical zig-zag lesson nodes on dotted trails,P1,agent,F-007;P7-951,Mapped
+TR-R3-02,TOPE_REQUESTS,R3:L32,requirement,Done current locked and review-due node states,P1,agent,F-007;P7-951,Mapped
+TR-R3-03,TOPE_REQUESTS,R3:L33,requirement,Unit banners current-node scroll and lesson preview,P1,agent,F-007;P7-952,Mapped
+TR-R3-04,TOPE_REQUESTS,R3:L34,requirement,Per-language path scenes and animated Polie,P1,agent,F-007;P7-953,Mapped
+TR-R3-05,TOPE_REQUESTS,R3:L35,requirement,Lazy path sections at 60 fps from Drift,P1,agent,F-007;P7-952,Mapped
+TR-R3-06,TOPE_REQUESTS,R3:L36,requirement,Path node labels tap size reduced motion and alt text,P1,agent,F-007;P7-951;P7-953,Mapped
+TR-R3-07,TOPE_REQUESTS,R3:L37,requirement,Original or commercial path art in the licence register,P1,agent,F-007;P7-953,Mapped
+TR-R3-08,TOPE_REQUESTS,R3:L38,requirement,Personal plan tone units and village maps share one path,P1,agent,F-007;F-011;F-021;F-103;F-104,Mapped

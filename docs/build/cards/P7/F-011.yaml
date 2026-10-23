@@ -16,6 +16,7 @@ depends_on:
 - E-P3-DESIGN-SYSTEM
 - E-P2-PLATFORM
 - E-P5-CONTENT-REAL
+- P7-951
 size: M
 difficulty:
   score: 5
@@ -51,6 +52,8 @@ acceptance_criteria:
   text: Given a learner goal, when saving plan, then weekly targets and ETA update on the timeline.
 - id: AC2
   text: Given Path progress, when opening My plan, then milestones reflect real unit completion only.
+- id: AC3
+  text: Given the winding Path, when My plan is open, then it points at the current path node and does not draw a second lesson path.
 test_plan:
   unit:
   - domain rules for feature delta

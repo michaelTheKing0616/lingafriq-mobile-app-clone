@@ -17,6 +17,9 @@ depends_on:
 - E-P3-DESIGN-SYSTEM
 - E-P2-PLATFORM
 - E-P5-CONTENT-REAL
+- P7-951
+- P7-952
+- P7-953
 size: M
 difficulty:
   score: 5
@@ -48,8 +51,10 @@ delta:
   elevation_to_build:
   - One Path map per language with CEFR regions, unit stops, can-dos, downloads, and border checkpoints.
   - Keep list and teacher outline as modes of the same map.
+  - The main Path is the R3 winding trail (P7-951, P7-952, P7-953). My plan (F-011), tone units (F-021), and village maps (F-103, F-104) link to it and do not keep a second lesson-progress store.
   ux_and_render:
-  - Vertical journey with region art, per-unit progress ring, pinned current unit, offline badge.
+  - Vertical scrolling zig-zag of large numbered nodes on dotted trails, first lesson at the bottom. Done, current, locked, and review-due states. Unit banners, current-node scroll, and a tap preview.
+  - Per-language parchment and licensed scene art, dimmed ahead of the current node, Polie in Rive when a licensed file exists.
   hub_placement: Learn tab (root).
   unlock_stage: per §17.4
   harvest_list:
@@ -62,6 +67,24 @@ acceptance_criteria:
   text: Given unrouted curriculum variants, when the map loads, then a single routed map exposes list and outline modes.
 - id: AC3
   text: Given an offline pack exists, when viewing a unit, then an offline badge reflects download state.
+- id: AC4
+  text: Given the Path for a language, when the learner opens it, then lessons are a vertical scrolling zig-zag of large numbered nodes joined by dotted trails, with the first lesson at the bottom and later lessons above it.
+- id: AC5
+  text: Given lesson progress and FSRS review dates, when a node renders, then a done node is green with a tick, the current node is highlighted with the learner avatar, a Play now pill and the lesson title, a locked node is grey with a lock, and a review-due node is marked from FSRS.
+- id: AC6
+  text: Given adaptive pacing from P7-949, when a fast learner may open or skip a node, then the path shows that node open or skipped and does not hide a lesson the learner is allowed to reach.
+- id: AC7
+  text: Given a unit boundary, when the path renders, then a banner shows the unit name, the CEFR level, and the can-do statement, and the page scrolls to the current node.
+- id: AC8
+  text: Given a tap on a node, when the preview opens, then it shows the lesson goal, the time, the XP, and start or review.
+- id: AC9
+  text: Given a long path, when it scrolls, then sections lazy-load, a low-end Android frame log at or above 60 fps passes, a slower log fails, and the path renders offline from Drift.
+- id: AC10
+  text: Given a screen reader, reduced motion, or a node control, when the path is presented, then every node exposes its label and state, the tap target is at least 48 dp, non-essential motion is still, and each illustration has alt text.
+- id: AC11
+  text: Given path art or the Polie file, when it is bundled, then the licence register names an original or commercial licence, the scene matches the language and unit, locked areas ahead are dimmed, and an unlicensed file is absent.
+- id: AC12
+  text: Given My plan, a tone unit, or a village map, when that screen opens, then it links to this path or reuses its licensed scene props and does not keep a second lesson-progress store.
 test_plan:
   unit:
   - domain rules for feature delta
@@ -83,6 +106,11 @@ ux_spec:
   - offline
   - ai_unavailable
   - under_review
+  - done
+  - current
+  - locked
+  - review-due
+  - preview
   tokens:
   - design-system only
   motion_tier: product
@@ -95,6 +123,8 @@ ux_spec:
   - dark
   copy_keys:
   - learn.f_007.*
+  - learn.f_007.play_now
+  - learn.f_007.review_due
 tags: []
 p0_area: true
 dod_evidence:

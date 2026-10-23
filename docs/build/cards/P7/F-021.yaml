@@ -17,6 +17,7 @@ depends_on:
 - E-P2-PLATFORM
 - E-P5-CONTENT-REAL
 - E-P6-SCORER
+- P7-951
 size: M
 difficulty:
   score: 5
@@ -50,6 +51,8 @@ acceptance_criteria:
   text: Given tone unit on Path, when opened, then story lesson links to matching Tone Gym drills.
 - id: AC2
   text: Given every dialogue line, when rendered, then Tone Lens wraps target-language text.
+- id: AC3
+  text: Given a tone unit, when the Path renders it, then that unit is a node on the winding path and not a separate lesson map.
 test_plan:
   unit:
   - domain rules for feature delta

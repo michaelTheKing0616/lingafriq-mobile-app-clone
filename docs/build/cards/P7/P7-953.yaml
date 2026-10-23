@@ -1,0 +1,101 @@
+charter: v2
+id: P7-953
+kind: build
+title: Place licensed path scenes and the Polie mascot
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- TR-R3-04
+- TR-R3-06
+- TR-R3-07
+- F-007
+depends_on:
+- P7-951
+- P4-001
+size: L
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 1
+  depth: 2
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: score 7; licensed scene art and Rive; blast 2
+token_budget: 120000
+file_allowlist:
+- lib/widgets/learning_path/path_scene_art.dart
+- lib/widgets/learning_path/polie_path_mascot.dart
+- curriculum/sources/licence_register.md
+- curriculum/sources/licence_register.json
+- test/widgets/learning_path/path_scene_art_test.dart
+context_anchors:
+- ELEVATION.md#§18.3:L3593-L3613
+acceptance_criteria:
+- id: AC1
+  text: Given a language and a unit, when the path renders, then the characters and props match that language and unit for Yoruba, Igbo, Hausa, Zulu, Xhosa, Swahili, and Pidgin.
+- id: AC2
+  text: Given the path background, when it renders, then the parchment texture follows the language theme.
+- id: AC3
+  text: Given nodes ahead of the current lesson, when they render, then those areas are dimmed.
+- id: AC4
+  text: Given a licensed Polie .riv file, when reduced motion is off, then Polie animates from that file. Given no licensed .riv, when the path renders, then Polie is a labelled still and no unlicensed animation plays.
+- id: AC5
+  text: Given an illustration, when it is bundled, then the licence register names an original or commercial licence, and a missing or non-commercial row keeps the file out of the bundle.
+- id: AC6
+  text: Given a screen reader, when scene art is shown, then the image has alt text and is not described by colour alone.
+test_plan:
+  unit:
+  - language scene lookup
+  - licence row gate
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - alt text
+  - reduced motion still
+  content:
+  - licence register rows
+user_facing: true
+ux_spec:
+  states:
+  - scene
+  - dimmed
+  - polie-animated
+  - polie-still
+  - art-missing
+  copy_keys:
+  - learn.f_007.polie
+  - learn.f_007.art_missing
+  tokens:
+  - color.surface.parchment
+  motion_tier: product
+  a11y:
+  - alt text on every illustration
+  - reduced motion keeps Polie on a still frame
+  goldens:
+  - path_scene
+  - polie_still
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "EXT-16 still has to deliver the commissioned .riv and illustrations. Until then the path shows a labelled still, not a substitute clip."
+- "Village maps may reuse these props. They do not own a second lesson-progress store."
+- "Do not build this ahead of the open P2 cards."
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/brand

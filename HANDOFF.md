@@ -40,7 +40,7 @@ Full exit text: `docs/build/03_PHASES_GATES.md`.
 
 ## Cards
 
-Counts from `docs/plan/CARD_STATUS.tsv` on 2026-10-23: Draft 941, Done 100, Blocked-External 44, Ready 7. The TSV is the list. Do not treat this prose as a second list.
+Counts from `docs/plan/CARD_STATUS.tsv` on 2026-10-23: Draft 944, Done 100, Blocked-External 44, Ready 7. The TSV is the list. Do not treat this prose as a second list. R3 is carded on F-007, P7-951, P7-952, and P7-953. It does not jump this queue.
 
 Nothing is in progress. Mobile `cloud-handoff` latest card is P2-052. Backend `cloud-handoff` latest card is P2-049.
 

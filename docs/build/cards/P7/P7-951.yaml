@@ -1,0 +1,103 @@
+charter: v2
+id: P7-951
+kind: build
+title: Draw the winding lesson path and its node states
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- TR-R3-01
+- TR-R3-02
+- TR-R3-06
+- F-007
+depends_on:
+- P2-043
+- P7-949
+size: L
+difficulty:
+  score: 7
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 1
+tiers:
+  worker: T3
+  tester: T2
+  reviewer: T3
+  justification: score 7; path layout and node states; blast 2
+token_budget: 120000
+file_allowlist:
+- lib/widgets/learning_path/learning_path_widget.dart
+- lib/widgets/learning_path/learning_path_painter.dart
+- lib/widgets/learning_path/path_node_widget.dart
+- lib/widgets/learning_path/path_node_state.dart
+- test/widgets/learning_path/path_nodes_test.dart
+context_anchors:
+- ELEVATION.md#§18.3:L3593-L3613
+acceptance_criteria:
+- id: AC1
+  text: Given lessons in order, when the Path lays them out, then the nodes form a vertical scrolling zig-zag joined by dotted trails, the first lesson sits at the bottom, and later lessons sit above it.
+- id: AC2
+  text: Given a done lesson, when its node renders, then the node is green and shows a tick.
+- id: AC3
+  text: Given the current lesson, when its node renders, then the node is highlighted, the learner avatar sits beside it, and a Play now pill shows the lesson title.
+- id: AC4
+  text: Given a lesson the learner has not reached, when its node renders, then the node is grey and shows a lock.
+- id: AC5
+  text: Given an FSRS review is due, when that node renders, then the node is marked review-due from the scheduler and not from a fixed date.
+- id: AC6
+  text: Given P7-949 opens or skips a node for a fast learner, when the path renders, then that node is open or skipped and a lesson the learner may reach stays visible.
+- id: AC7
+  text: Given a screen reader or reduced motion, when a node is presented, then it exposes its number, title, and state, its tap target is at least 48 dp, and non-essential motion is still.
+test_plan:
+  unit:
+  - node state mapping
+  - bottom-to-top order
+  integration: []
+  security: []
+  e2e: []
+  perf: []
+  a11y:
+  - semantics label and state
+  - 48 dp target
+  - reduced motion
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - done
+  - current
+  - locked
+  - review-due
+  - skipped
+  copy_keys:
+  - learn.f_007.play_now
+  - learn.f_007.review_due
+  tokens:
+  - color.status.success
+  - color.text.muted
+  motion_tier: product
+  a11y:
+  - node label and state
+  - tap target at least 48 dp
+  - reduced motion
+  goldens:
+  - path_nodes
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "This card does not draw unit banners, the preview sheet, or scene art. Those are P7-952 and P7-953."
+- "Do not build this ahead of the open P2 cards. P7-949 is a dependency."
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns

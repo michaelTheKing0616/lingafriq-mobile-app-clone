@@ -1,0 +1,98 @@
+charter: v2
+id: P7-952
+kind: build
+title: Add path banners, preview, and the long-path budget
+phase: P7
+epic: E-P7-HUBS
+req_ids:
+- TR-R3-03
+- TR-R3-05
+- F-007
+depends_on:
+- P7-951
+size: M
+difficulty:
+  score: 6
+  blast: 2
+  ambiguity: 1
+  coupling: 2
+  depth: 1
+  size: 0
+tiers:
+  worker: T2
+  tester: T2
+  reviewer: T2
+  justification: score 6; banners, scroll, and frame budget; blast 2
+token_budget: 70000
+file_allowlist:
+- lib/widgets/learning_path/path_section_banner.dart
+- lib/widgets/learning_path/lesson_preview_sheet.dart
+- lib/screens/learning/learning_path_screen.dart
+- lib/providers/learning_path_provider.dart
+- test/widgets/learning_path/path_section_test.dart
+context_anchors:
+- ELEVATION.md#§18.3:L3593-L3613
+acceptance_criteria:
+- id: AC1
+  text: Given a unit boundary, when the path renders, then a banner shows the unit name, the CEFR level, and the can-do statement.
+- id: AC2
+  text: Given a current node, when the path opens, then the page scrolls that node into view.
+- id: AC3
+  text: Given a tap on a node, when the preview opens, then it shows the lesson goal, the time, the XP, and start or review.
+- id: AC4
+  text: Given a path longer than one viewport, when the learner scrolls, then sections outside the window are not built until they approach the viewport.
+- id: AC5
+  text: Given a low-end Android frame log, when the median frame time is above 16.7 ms, then the run fails the 60 fps bar and is not described as met.
+- id: AC6
+  text: Given the device is offline and the path rows are in Drift, when the learner opens Path, then the nodes render from Drift and the screen does not wait on the network.
+test_plan:
+  unit:
+  - banner fields
+  - preview fields
+  integration:
+  - scroll to current node
+  security: []
+  e2e: []
+  perf:
+  - lazy section build
+  - 16.7 ms frame gate
+  a11y:
+  - banner text is readable
+  content: []
+user_facing: true
+ux_spec:
+  states:
+  - banner
+  - preview
+  - scrolling
+  - offline
+  copy_keys:
+  - learn.f_007.unit
+  - learn.f_007.preview
+  tokens:
+  - color.surface
+  - space.stack
+  motion_tier: product
+  a11y:
+  - banner announced with the unit name
+  goldens:
+  - path_banner
+  - path_preview
+tags: []
+p0_area: true
+security_dsp_crypto: false
+visual_evidence_required: false
+dod_evidence:
+- tester report
+- coverage on touched domain code
+- ledger row
+risks:
+- "A desktop frame time does not satisfy the low-end Android bar."
+- "Do not build this ahead of the open P2 cards."
+gate: HUB
+external_blockers: []
+status: Draft
+skills:
+  worker:
+  - prime/mobile-app-ui-design
+  - prime/feedback-patterns
