@@ -26,7 +26,9 @@ tiers:
 token_budget: 25000
 file_allowlist:
 - tools/content_engine/licences/exclusions.yaml
+- tools/content_engine/linters/exclusion_enforce.py
 - tools/content_engine/tests/test_excl_x_jw.py
+- .github/workflows/content-engine.yml
 context_anchors:
 - CURRICULUM.md#§2.3:L217-L227
 acceptance_criteria:
@@ -60,7 +62,7 @@ dod_evidence:
 risks: []
 gate: G4
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging

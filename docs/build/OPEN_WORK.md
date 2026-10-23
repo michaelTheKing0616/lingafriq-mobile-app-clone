@@ -128,3 +128,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-116 | open | P4-008 | Counsel has not confirmed any register row. P4-008 stays Blocked-External EXT-03. Display and training stay false. |
 | OW-117 | open | P4-009 | The share-alike job fails the workflow. Branch protection does not require that check, so a merge is not blocked until the check is required. |
 | OW-118 | open | P4-010 | No commercial waiver is held for the excluded sources. The exclusion job is not a required merge check. |
+| OW-119 | closed | P4-011 | Closed 2026-10-23. JW300, MAFAND-MT, and MasakhaNER 2.0 are excluded in the table. A JW300-derived manifest fails JW300_DERIVED_DATA. No Masakhane commercial licence is held. |

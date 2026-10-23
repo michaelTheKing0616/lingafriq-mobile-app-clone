@@ -73,7 +73,8 @@ def test_shipped_jw300_and_mafand_mt_are_excluded_with_uses_false() -> None:
     for source_id in _NEEDS_LICENCE_IDS:
         assert sources[source_id]["status"] == "needs-licence"
     assert "BY-NC" not in sources["jw300"]["licence"]
-    assert "no JW300-derived data" in sources["jw300"]["reason"]
+    assert sources["jw300"]["reason"] == "built-in-breach-of-jw.org-terms"
+    assert sources["jw300"]["declaration"] == "no-JW300-derived-data"
     assert "Apache-2.0" in sources["igboapi"]["reason"]
     assert "not recorded as purchased" in sources["naijavoices"]["reason"]
     assert "not recorded" in sources["helsinki-swahili-2"]["reason"]
@@ -113,7 +114,7 @@ def test_manifest_jw300_in_evidence_fails_excluded_source_used(layer: str) -> No
     with pytest.raises(ExclusionEnforceError) as exc_info:
         scan_manifest([{"source_id": "jw300", "layer": layer}], table)
     message = str(exc_info.value)
-    assert exc_info.value.code == "EXCLUDED_SOURCE_USED"
+    assert exc_info.value.code == "JW300_DERIVED_DATA"
     assert "jw300" in message
 
 

@@ -117,6 +117,11 @@ def scan_manifest(
                 "EXCLUDED_SOURCE_USED",
                 "manifest item is missing source_id",
             )
+        if _jw300_derived_manifest_item(item, source_id):
+            raise ExclusionEnforceError(
+                "JW300_DERIVED_DATA",
+                f"source_id {source_id} is JW300-derived data and cannot be used",
+            )
         row = index.get(source_id)
         if row is None:
             continue
@@ -261,6 +266,16 @@ def _index_sources(
                 index[source_id] = row
         return index
     raise TypeError("exclusion table must be a mapping or a list of rows")
+
+
+def _jw300_derived_manifest_item(item: Mapping[str, Any], source_id: str) -> bool:
+    """True when the manifest item references JW300 by id, substring, or lineage."""
+    if source_id == "jw300" or "jw300" in source_id:
+        return True
+    derived = item.get("derived_from")
+    if isinstance(derived, str) and derived.strip() == "jw300":
+        return True
+    return False
 
 
 def _item_source_id(item: Mapping[str, Any]) -> str | None:

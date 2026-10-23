@@ -3,7 +3,8 @@ sources:
   jw300:
     status: excluded
     licence: "not a CC licence"
-    reason: "no JW300-derived data. It was removed for a terms breach. This is not a CC licence."
+    reason: built-in-breach-of-jw.org-terms
+    declaration: no-JW300-derived-data
     commercial_licence_document: ""
     counsel_status: ""
     uses:
@@ -14,6 +15,7 @@ sources:
     status: excluded
     licence: "CC BY-NC 4.0"
     reason: "CC BY-NC 4.0. No commercial licence is recorded."
+    action: exclude-or-request-commercial-licence-from-Masakhane
     commercial_licence_document: ""
     counsel_status: ""
     uses:
@@ -24,6 +26,7 @@ sources:
     status: excluded
     licence: "CC BY-NC 4.0"
     reason: "CC BY-NC 4.0. No commercial licence is recorded."
+    action: exclude-or-request-commercial-licence-from-Masakhane
     commercial_licence_document: ""
     counsel_status: ""
     uses:
