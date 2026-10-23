@@ -143,3 +143,4 @@ P4-010,build,T2,grok-4.7,n/a,n/a,1,pass,Non-commercial and academic-only sources
 P4-011,build,T1,composer-2.5-fast,n/a,n/a,1,pass,JW300 is declared excluded and a derived manifest fails. MAFAND-MT and MasakhaNER stay CC BY-NC until Masakhane grants a licence.
 P4-012,build,T1,composer-2.5-fast,n/a,n/a,1,pass,AfriSenti stays excluded. The HF CC BY 4.0 label is stored as a conflict and does not allow a use.
 P4-013,build,T1,composer-2.5-fast,n/a,n/a,1,pass,PanLex stays excluded. The permission draft is pending and unsent. No use is allowed.
+P4-014,build,T1,composer-2.5-fast,n/a,n/a,1,pass,NaijaVoices stays excluded. The membership price is an unverified curriculum quote and the waiver is not purchased.

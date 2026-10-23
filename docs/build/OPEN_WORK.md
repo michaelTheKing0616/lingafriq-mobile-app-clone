@@ -131,3 +131,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-119 | closed | P4-011 | Closed 2026-10-23. JW300, MAFAND-MT, and MasakhaNER 2.0 are excluded in the table. A JW300-derived manifest fails JW300_DERIVED_DATA. No Masakhane commercial licence is held. |
 | OW-120 | open | P4-012 | AfriSenti stays excluded. The creator query is recorded and has not been sent. |
 | OW-121 | open | P4-013 | The PanLex permission draft is stored and has not been sent. No reply is recorded. |
+| OW-122 | open | P4-014 | The NaijaVoices waiver is not purchased. The $5,000+ figure is the curriculum statement, not a quote LingAfriq received. |

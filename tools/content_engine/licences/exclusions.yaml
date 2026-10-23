@@ -65,6 +65,11 @@ sources:
   naijavoices:
     status: excluded
     licence: "CC BY-NC-SA 4.0"
+    waiver_recorded: false
+    waiver_tier_quote: "$5,000+"
+    waiver_term_quote: "12 months"
+    waiver_quote_status: unverified
+    waiver_revocable: true
     reason: "CC BY-NC-SA 4.0. The membership waiver is not recorded as purchased."
     commercial_licence_document: ""
     counsel_status: ""
