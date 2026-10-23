@@ -500,7 +500,7 @@ P2-031	Ready	Add health, readiness probes and graceful shutdown	P2/P2-031.yaml
 P2-032	Draft	Configure Atlas backups and quarterly restore drill	P2/P2-032.yaml
 P2-033	Done	Add OpenTelemetry traces across app, API, AI gateway and speech	P2/P2-033.yaml
 P2-034	Done	Emit RED metrics and alert on latency SLOs	P2/P2-034.yaml
-P2-035	Draft	Add per-feature AI cost dashboards and fallback-rate alert	P2/P2-035.yaml
+P2-035	Done	Add per-feature AI cost dashboards and fallback-rate alert	P2/P2-035.yaml
 P2-036	Done	Emit structured logs without PII or credentials	P2/P2-036.yaml
 P2-037	Done	Report crashes and ANRs with release gates	P2/P2-037.yaml
 P2-038	Draft	Add feature flags and staged rollout stages	P2/P2-038.yaml

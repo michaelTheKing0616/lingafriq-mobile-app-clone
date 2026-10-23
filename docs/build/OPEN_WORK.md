@@ -103,3 +103,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-091 | open | P2-028 | The offline breach-check test does not see the winston warning. The hash is still stored when that check is down, and the password is not sent to the breach service. |
 | OW-092 | open | P2-029 | Ten profile cold starts on a mid-range Android are not recorded. The budget is 2 seconds. The splash no longer waits 1.2 seconds. |
 | OW-093 | open | P2-030 | The worker lease is in memory for one process. A second worker does not share it, so PM2 keeps the worker count at 1. The queue client stays Bull. |
+| OW-094 | open | P2-035 | Provider call sites do not record into the AI cost ledger yet. A recorded call is attributed, and a missing price stays unknown. |

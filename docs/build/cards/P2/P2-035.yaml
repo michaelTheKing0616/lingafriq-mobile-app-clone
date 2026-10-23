@@ -26,8 +26,9 @@ tiers:
 token_budget: 70000
 file_allowlist:
 - node-backend/src/telemetry/ai_cost.ts
-- infra/dashboards/ai_cost.json
-- infra/alerts/fallback_rate.yaml
+- node-backend/src/__test__/P2-035.aiCost.test.ts
+- node-backend/infra/dashboards/ai_cost.json
+- node-backend/infra/alerts/fallback_rate.yaml
 context_anchors:
 - ELEVATION.md#§13.4:L1907-L1908
 - ELEVATION.md#§13.4:L1908
@@ -58,10 +59,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- 'The ledger attributes a recorded call. Provider call sites do not record into it yet, so the dashboard stays empty until they do. A missing price is unknown, not zero. The fallback alert is above 0.2 in 15 minutes.'
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging
