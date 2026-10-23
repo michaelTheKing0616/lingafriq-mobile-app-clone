@@ -12,11 +12,11 @@ Work is continuous on `cloud-handoff`. Do not pause between cards. The key files
 - Backend: `cloud-handoff`. Latest card push is P2-056. Flag buckets are stable. HS256 still verifies.
 - The key files are still tracked. Copies also exist in `~/.lingafriq/secrets/` (mode 600). History was not rewritten.
 - Admin gamification edits were not part of this build. They are in git stash `admin-gamification-wip-not-this-build` on `lingafriq-admin` `cloud-handoff`.
-- P2-058 is done. Next card is P3-001. P2-031 stays a live-host switch-on and is not Done. P7-961 does not jump this queue. R3 (P7-951, P7-952, P7-953) does not jump this queue.
+- P2-058 is done. P3-001 stays Draft: 3 sourced baselines, 17 blank. The search cap is spent and missing numbers stay blank. P3-002 and the art-direction chain wait on a Done P3-001. Next unblocked card is P4-001. P2-031 stays a live-host switch-on and is not Done. P7-961 does not jump this queue. R3 (P7-951, P7-952, P7-953) does not jump this queue.
 
 ## Next 3 steps
 
-1. Build P3-001, then the next card. Build any unfinished dependency first. The host switches below do not stop the queue.
+1. Build P4-001, then the next unblocked card. P3-001 stays Draft. Do not invent benchmark numbers. The host switches below do not stop the queue.
 2. Do not stop to ask what is next.
 3. Do not remove the Firebase service account, the Apple `.p8`, or the five client AI keys. Intron stays off until its flag and server key are set.
 
@@ -44,11 +44,11 @@ Counts from `docs/plan/CARD_STATUS.tsv` on 2026-10-23: Draft 938, Done 106, Bloc
 
 Nothing is in progress. Mobile `cloud-handoff` latest card is P2-058. Backend `cloud-handoff` latest card is P2-056.
 
-Next card is P3-001 (benchmark baselines). P2-058 is Done. P2-059 was already Done. After P3-001, continue in plan order. Do not issue credential evidence from uncalibrated items or without the real scorer. EXT-18 is the NDPC and DPIA switch-on. It does not stop the honest gate.
+Next card is P4-001 (licence register schema and validator). P3-001 is not Done. P3-002 waits. Do not issue credential evidence from uncalibrated items or without the real scorer. EXT-18 is the NDPC and DPIA switch-on. It does not stop the honest gate.
 
 Do not mark Done: P2-031 (live two replicas), P2-032 (Atlas PITR), P1-004, P1-010, P1-025, P1-020. Do not close G2. Do not jump to P7-961.
 
-Open items are in `docs/build/OPEN_WORK.md`. The newest is OW-107 (skill mastery is not called from the knowledge graph or lesson pacing yet).
+Open items are in `docs/build/OPEN_WORK.md`. The newest is OW-108 (P3-001 has 3 sourced baselines and stays Draft).
 
 ## Decisions
 

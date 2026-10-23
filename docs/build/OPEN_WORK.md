@@ -117,3 +117,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-105 | open | P2-053 | Speaking, conversation, and item-feedback widgets are not hosted by the lesson quiz section yet. |
 | OW-106 | open | P2-056 | Credential evidence is kept on the caller and is not written to a store. The proctored flag means Passport consent, not a finished proctoring session. |
 | OW-107 | open | P2-058 | Skill mastery is not yet called from the knowledge graph or lesson pacing. |
+| OW-108 | open | P3-001 | The benchmark has 3 sourced numbers and 17 blank rows. The 12-search cap is spent. Missing numbers stay blank. P3-001 stays Draft. P3-002 and the art-direction chain wait on it. |
