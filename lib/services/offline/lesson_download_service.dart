@@ -381,11 +381,7 @@ class LessonDownloadService {
           throw Exception('Download cancelled');
         }
 
-        final lessonData = lessons[i];
-        if (lessonData is! Map) {
-          continue;
-        }
-        final lessonMap = Map<String, dynamic>.from(lessonData);
+        final lessonMap = lessons[i];
         final lessonId = (lessonMap['id']).toString();
         progressNotifier.value = DownloadProgress(
           language: language,
@@ -398,7 +394,7 @@ class LessonDownloadService {
         );
 
         try {
-          final lessonSize = await _downloadSingleLesson(
+          await _downloadSingleLesson(
             lessonId: lessonId,
             lessonData: lessonMap,
             language: language,
