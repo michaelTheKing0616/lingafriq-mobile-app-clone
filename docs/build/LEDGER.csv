@@ -119,3 +119,4 @@ P2-044,build,T1,grok-4.7,n/a,n/a,1,pass,FSRS mutation score is 130/147 (0.8844).
 P2-045,build,T3,grok-4.7,n/a,n/a,1,pass,One graph per learner and language. Evidence updates FSRS state, channel strength, and one error counter. Rebuilding the event log matches the stored graph.
 P2-046,build,T2,grok-4.7,n/a,n/a,1,pass,Due and weak nodes rank by recall, then error count. Polie receives at most the configured weak items and no learner id. An empty graph returns an empty result.
 P2-047,build,T3,grok-4.7,n/a,n/a,1,pass,An item stores its type, stimulus, diacritic-insensitive answer, IRT a and b, and skill tags. A draft is not served. An answer links the item id and those node ids. A distractor without a rationale is rejected.
+P2-048,build,T3,grok-4.7,n/a,n/a,1,pass,Language, history, random, and unit quizzes are served from item-bank items. Sample MCQ text is excluded. Bracket questions stay sentence building.

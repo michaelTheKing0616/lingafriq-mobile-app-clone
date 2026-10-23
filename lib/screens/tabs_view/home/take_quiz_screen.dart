@@ -244,13 +244,17 @@ class TakeQuizScreen extends ConsumerWidget {
       final quiz = questions.map((e) {
         final question = e['question'] as String;
         final choices = randomQuiz.otherData["choices"] as List;
-        return QuizModel(
-          question: question,
+        return QuizModel.fromChoice(
+          system: 'random_quiz',
+          id: '${randomQuiz.id}',
+          prompt: question,
           score: randomQuiz.score / questions.length,
-          answer: choices.where((e) => e['correct_answer'] == true).first['text'],
-          choices: choices.map((e) => e['text'] as String).toList(),
+          choices: choices,
+          hint: e is Map ? e['add_hint'] as String? : null,
+          funFact: e is Map ? e['fun_fact'] as String? : null,
         );
-      }).toList();
+      }).whereType<QuizModel>().toList();
+      if (quiz.isEmpty) return false;
       final result = await ref.read(navigationProvider).navigateTo(QuizScreen(
             title: randomQuiz.title,
             quiz: quiz,
@@ -270,7 +274,13 @@ class TakeQuizScreen extends ConsumerWidget {
     try {
       // final questions = randomQuiz.otherData['word_question'] as List;
       final question = randomQuiz.otherData; // (questions.first as List).first;
-      final text = question['text'] as String;
+      final bank = QuizModel.sentenceItem(
+        system: 'random_quiz',
+        id: '${randomQuiz.id}',
+        prompt: question['text'] as String,
+      );
+      if (bank == null) return false;
+      final text = bank.stimulusText!;
       final brackets = <String>[];
       // final bracketsIncluded = <String>[];
       final regex = RegExp(r'\[(.*?)\]');

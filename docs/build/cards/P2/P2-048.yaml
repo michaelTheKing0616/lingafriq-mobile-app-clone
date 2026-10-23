@@ -32,6 +32,7 @@ file_allowlist:
 - lib/screens/lesson/widgets/quiz_section_widget.dart
 - lib/screens/games/quiz_chef_screen.dart
 - node-backend/src/models/languageQuiz.model.ts
+- test/models/quiz_bank_test.dart
 context_anchors:
 - ELEVATION.md#§11.1:L1783
 - ELEVATION.md#§11.1:L1784
@@ -68,10 +69,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- Legacy distractors without an author rationale keep that option's own text. Uncalibrated items store IRT a of 1 and b of 0 until P2-049.
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging

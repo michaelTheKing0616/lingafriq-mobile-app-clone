@@ -172,13 +172,17 @@ class _SectionHistoryList extends ConsumerWidget {
       final quiz = questions.map((e) {
         final question = e['question']["question"] as String;
         final choices = e["choices"] as List;
-        return QuizModel(
-          question: question,
+        return QuizModel.fromChoice(
+          system: 'history_quiz',
+          id: '${e['question']['id'] ?? question.hashCode}',
+          prompt: question,
           score: sectionHistory.score / questions.length,
-          answer: choices.where((e) => e['correct_answer'] == true).first['text'],
-          choices: choices.map((e) => e['text'] as String).toList(),
+          choices: choices,
+          hint: e['question'] is Map ? e['question']['add_hint'] as String? : null,
+          funFact: e['question'] is Map ? e['question']['fun_fact'] as String? : null,
         );
-      }).toList();
+      }).whereType<QuizModel>().toList();
+      if (quiz.isEmpty) return false;
       final result = await ref.read(navigationProvider).navigateTo(QuizScreen(
             title: sectionHistory.title,
             quiz: quiz,
@@ -197,7 +201,13 @@ class _SectionHistoryList extends ConsumerWidget {
     try {
       final questions = sectionHistory.otherData['word_question'] as List;
       final question = (questions.first as List).first;
-      final text = question['text'] as String;
+      final bank = QuizModel.sentenceItem(
+        system: 'history_quiz',
+        id: '${question['id'] ?? sectionHistory.id}',
+        prompt: question['text'] as String,
+      );
+      if (bank == null) return false;
+      final text = bank.stimulusText!;
       final brackets = <String>[];
       // final bracketsIncluded = <String>[];
       final regex = RegExp(r'\[(.*?)\]');

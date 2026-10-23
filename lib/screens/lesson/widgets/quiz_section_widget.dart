@@ -10,6 +10,7 @@ import 'package:lingafriq/widgets/content/vocab_audio_controls.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/portrait_video_player.dart';
 import '../models/lesson_content.dart';
+import 'package:lingafriq/models/quiz_model.dart';
 
 /// Quiz section widget with multiple choice questions
 class QuizSectionWidget extends StatefulWidget {
@@ -49,7 +50,7 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
   @override
   void initState() {
     super.initState();
-    final qs = widget.content.questions;
+    final qs = _bankQuestions;
     if (kDebugMode && qs != null && qs.length > 1) {
       final ids = qs.map((e) => e.id).toSet();
       assert(
@@ -69,6 +70,30 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
     _pageController.dispose();
     _shakeController.dispose();
     super.dispose();
+  }
+
+  List<QuizQuestion> get _bankQuestions {
+    final raw = widget.content.questions ?? [];
+    return [
+      for (final question in raw)
+        if (QuizModel.fromChoice(
+              system: 'unit_quiz',
+              id: 'unit.${question.id}',
+              prompt: question.question,
+              choices: [
+                for (final option in question.options)
+                  {'text': option.text, 'correct_answer': option.isCorrect},
+              ],
+              hint: question.hint,
+              funFact: question.funFact,
+              refs: [
+                if (question.audioUrl != null && question.audioUrl!.isNotEmpty) question.audioUrl!,
+                if (question.imageUrl != null && question.imageUrl!.isNotEmpty) question.imageUrl!,
+              ],
+            ) !=
+            null)
+          question,
+    ];
   }
 
   void _selectAnswer(int questionId, String answer) {
@@ -126,7 +151,7 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
 
   @override
   Widget build(BuildContext context) {
-    final questions = widget.content.questions ?? [];
+    final questions = _bankQuestions;
     if (questions.isEmpty) {
       return Center(
         child: Text(

@@ -8,15 +8,15 @@ The Firebase service account, the Apple `.p8`, and the five client AI keys stay 
 
 Work is continuous on `cloud-handoff`. Do not pause between cards. The key files remain tracked.
 
-- Mobile: `cloud-handoff`. Latest card push is P2-047. The FSRS mutation score is 130/147. Fuzzing is off.
-- Backend: `cloud-handoff`. Latest card push is P2-047 (`13e263f`). Flag buckets are stable. HS256 still verifies.
+- Mobile: `cloud-handoff`. Latest card push is P2-048. The FSRS mutation score is 130/147. Fuzzing is off.
+- Backend: `cloud-handoff`. Latest card push is P2-048 (`ff010f8`). Flag buckets are stable. HS256 still verifies.
 - The key files are still tracked. Copies also exist in `~/.lingafriq/secrets/` (mode 600). History was not rewritten.
 - Admin gamification edits were not part of this build. They are in git stash `admin-gamification-wip-not-this-build` on `lingafriq-admin` `cloud-handoff`.
-- P2-047 is done. Next card is P2-048. P2-031 stays a live-host switch-on and is not Done. P7-961 does not jump this queue.
+- P2-048 is done. Next card is P2-049. P2-031 stays a live-host switch-on and is not Done. P7-961 does not jump this queue.
 
 ## Next 3 steps
 
-1. Build P2-048, then the next card. Build any unfinished dependency first. The host switches below do not stop the queue.
+1. Build P2-049, then the next card. Build any unfinished dependency first. The host switches below do not stop the queue.
 2. Do not stop to ask what is next.
 3. Do not remove the Firebase service account, the Apple `.p8`, or the five client AI keys. Intron stays off until its flag and server key are set.
 
@@ -40,11 +40,11 @@ Full exit text: `docs/build/03_PHASES_GATES.md`.
 
 ## Cards
 
-Counts from `docs/plan/CARD_STATUS.tsv` on 2026-10-23: Draft 946, Done 95, Blocked-External 44, Ready 7. The TSV is the list. Do not treat this prose as a second list.
+Counts from `docs/plan/CARD_STATUS.tsv` on 2026-10-23: Draft 945, Done 96, Blocked-External 44, Ready 7. The TSV is the list. Do not treat this prose as a second list.
 
-Nothing is in progress. Mobile `cloud-handoff` latest card is P2-047. Backend `cloud-handoff` is `13e263f` [P2-047].
+Nothing is in progress. Mobile `cloud-handoff` latest card is P2-048. Backend `cloud-handoff` is `ff010f8` [P2-048].
 
-Next card is P2-048 (consolidate the four quiz systems into the item bank). P2-004, P2-045, and P2-047 are Done. After that, continue in plan order.
+Next card is P2-049 (calibrate IRT parameters from pilot responses). P2-047 and P2-048 are Done. After that, continue in plan order.
 
 Do not mark Done: P2-031 (live two replicas), P2-032 (Atlas PITR), P1-004, P1-010, P1-025, P1-020. Do not close G2. Do not jump to P7-961.
 
