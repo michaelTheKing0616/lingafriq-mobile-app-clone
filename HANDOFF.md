@@ -40,15 +40,15 @@ Full exit text: `docs/build/03_PHASES_GATES.md`.
 
 ## Cards
 
-1,079 cards. Counts from `docs/plan/CARD_STATUS.tsv`: Draft 1001, Blocked-External 44, Done 29, Ready 5.
+Counts from `docs/plan/CARD_STATUS.tsv` on 2026-10-23: Draft 950, Done 91, Blocked-External 44, Ready 7. The TSV is the list. Do not treat this prose as a second list.
 
-P1 Done (24): P1-007, P1-008, P1-012 through P1-019, P1-023, P1-024, P1-026 through P1-037.
+Nothing is in progress. Mobile `cloud-handoff` is `088b4a0f` [P2-043]. Backend `cloud-handoff` is `4c41900` [P2-038].
 
-P1 in progress, uncommitted, not reviewed: P1-040 (non-commercial TTS/MT removal) and the provider router from the AI wiring prompt.
+Next card is P2-044 (mutation gate on FSRS). Its dependency P2-043 is Done. After that, continue in plan order.
 
-P1 not started as implementation, still Draft unless noted: P1-003, P1-004, P1-005, P1-006, P1-009, P1-010, P1-011, P1-020, P1-021, P1-022, P1-025, P1-038 through P1-062. P1-001 and P1-002 are Blocked-External in the card files. Tope has since said not to revoke the Firebase account, the Apple key, or the five client AI keys.
+Do not mark Done: P2-031 (live two replicas), P2-032 (Atlas PITR), P1-004, P1-010, P1-025, P1-020. Do not close G2. Do not jump to P7-961.
 
-P2–P13, F-001–F-151, and the epic cards are Draft. EXT cards are Blocked-External. Every id is in `docs/plan/CARD_STATUS.tsv`.
+Open items are in `docs/build/OPEN_WORK.md`. The newest are OW-097 (P0-INT-09 script path), OW-098 (three other SM-2 copies), and OW-099 (BKT mastery still updates).
 
 ## Decisions
 
