@@ -8,15 +8,15 @@ The Firebase service account, the Apple `.p8`, and the five client AI keys stay 
 
 Work is continuous on `cloud-handoff`. Do not pause between cards. The key files remain tracked.
 
-- Mobile: `cloud-handoff`. Latest card push is P2-043. FSRS-6 matches the published vectors. Fuzzing is off.
+- Mobile: `cloud-handoff`. Latest card push is P2-044. The FSRS mutation score is 130/147. Fuzzing is off.
 - Backend: `cloud-handoff`. Latest card push is P2-038. Flag buckets are stable. HS256 still verifies.
 - The key files are still tracked. Copies also exist in `~/.lingafriq/secrets/` (mode 600). History was not rewritten.
 - Admin gamification edits were not part of this build. They are in git stash `admin-gamification-wip-not-this-build` on `lingafriq-admin` `cloud-handoff`.
-- P2-043 is done. Next card is P2-044. P2-031 stays a live-host switch-on and is not Done. P7-961 does not jump this queue.
+- P2-044 is done. Next card is P2-045. P2-031 stays a live-host switch-on and is not Done. P7-961 does not jump this queue.
 
 ## Next 3 steps
 
-1. Build P2-044, then the next card. Build any unfinished dependency first. The host switches below do not stop the queue.
+1. Build P2-045, then the next card. Build any unfinished dependency first. The host switches below do not stop the queue.
 2. Do not stop to ask what is next.
 3. Do not remove the Firebase service account, the Apple `.p8`, or the five client AI keys. Intron stays off until its flag and server key are set.
 
@@ -40,11 +40,11 @@ Full exit text: `docs/build/03_PHASES_GATES.md`.
 
 ## Cards
 
-Counts from `docs/plan/CARD_STATUS.tsv` on 2026-10-23: Draft 950, Done 91, Blocked-External 44, Ready 7. The TSV is the list. Do not treat this prose as a second list.
+Counts from `docs/plan/CARD_STATUS.tsv` on 2026-10-23: Draft 949, Done 92, Blocked-External 44, Ready 7. The TSV is the list. Do not treat this prose as a second list.
 
-Nothing is in progress. Mobile `cloud-handoff` is `088b4a0f` [P2-043]. Backend `cloud-handoff` is `4c41900` [P2-038].
+Nothing is in progress. Mobile `cloud-handoff` latest card is P2-044. Backend `cloud-handoff` is `4c41900` [P2-038].
 
-Next card is P2-044 (mutation gate on FSRS). Its dependency P2-043 is Done. After that, continue in plan order.
+Next card is P2-045 (learner graph nodes and error counts). P2-014, P2-042, and P2-043 are Done. After that, continue in plan order.
 
 Do not mark Done: P2-031 (live two replicas), P2-032 (Atlas PITR), P1-004, P1-010, P1-025, P1-020. Do not close G2. Do not jump to P7-961.
 

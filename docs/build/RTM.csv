@@ -1349,8 +1349,8 @@ EP-§13.9-05,ELEVATION,§13.9:L1951,requirement,backend contract tests from the 
 EP-§13.9-06,ELEVATION,§13.9:L1951-L1952,requirement,an authorisation test suite,P1,agent,P2-009,Mapped
 EP-§13.9-07,ELEVATION,§13.9:L1952,requirement,content validator (§6.5) as a blocking job,P1,agent,P2-004,Mapped
 EP-§13.9-08,ELEVATION,§13.9:L1952-L1953,requirement,"AI eval suite (§7.6, §8) blocking for prompt and model changes",P1,agent,P2-005,Mapped
-EP-§13.9-09,ELEVATION,§13.9:L1954,metric,Coverage target: 70% on domain logic,P1,agent,P2-008,Mapped
-EP-§13.9-10,ELEVATION,§13.9:L1954-L1955,informational,Today there are 64 Flutter test files for 306k lines and 52,P1,agent,P2-008,Mapped
+EP-§13.9-09,ELEVATION,§13.9:L1954,metric,Coverage target: 70% on domain logic,P1,agent,P2-008;P2-059,Mapped
+EP-§13.9-10,ELEVATION,§13.9:L1954-L1955,informational,Today there are 64 Flutter test files for 306k lines and 52,P1,agent,P2-008;P2-059,Mapped
 EP-§13.9-11,ELEVATION,§13.9:L1956,requirement,trunk-based with feature flags (a featureFlag.model.ts already exists),P1,agent,P2-038,Mapped
 EP-§13.9-12,ELEVATION,§13.9:L1956-L1957,metric,staged rollouts (1% → 10% → 50% → 100%),P1,agent,P12-016;P2-038,Mapped
 EP-§13.9-13,ELEVATION,§13.9:L1957,requirement,crash-free and ANR gates,P1,agent,P12-016;P12-017;P2-037,Mapped
@@ -2017,10 +2017,10 @@ F-053.D,ELEVATION,§18.4:L4254,requirement,"[4] On-device recognisers rarely sup
 F-053.E,ELEVATION,§18.4:L4256,requirement,"[4] Conversation Bridge: two people, two languages, one phone. Each speaks in",P1,agent,F-053,Mapped
 F-053.U,ELEVATION,§18.4:L4260,requirement,[4] Split-screen facing layout (one half upside-down for the other person); big,P1,agent,F-053,Mapped
 F-053.L,ELEVATION,§18.4:L4263,requirement,"[4] Global Lens → ""Bridge""; Speak → Practice.",P1,agent,F-053,Mapped
-F-054,ELEVATION,§18.4:L4264-L4280,requirement,Import Media (OCR & clips),P1,agent,F-054,Mapped
+F-054,ELEVATION,§18.4:L4264-L4280,requirement,Import Media (OCR & clips),P1,agent,F-054;P7-960;P7-961,Mapped
 F-054.D,ELEVATION,§18.4:L4270,requirement,[4] ML Kit Latin OCR mangles stacked tone marks [verify on device].,P1,agent,F-054,Mapped
 UNV-E08,ELEVATION,§18.4:L4270,external,[verify on device] Defects. ML Kit Latin OCR mangles stacked tone marks,P1,external,P0-VER-08,Mapped
-F-054.E,ELEVATION,§18.4:L4272,requirement,"[4] Learn from anything: import a song, a WhatsApp voice note, a",P1,agent,F-054,Mapped
+F-054.E,ELEVATION,§18.4:L4272,requirement,"[4] Learn from anything: import a song, a WhatsApp voice note, a",P1,agent,F-054;P7-961,Mapped
 F-054.U,ELEVATION,§18.4:L4276,requirement,[4] Import sheet (camera/files/share-sheet target); processing steps shown honestly.,P1,agent,F-054,Mapped
 F-054.L,ELEVATION,§18.4:L4279,requirement,"[4] Global Lens → ""Import""; share-sheet target from other apps.",P1,agent,F-054,Mapped
 F-055,ELEVATION,§18.5:L4281-L4302,requirement,Games Arcade (hub & catalogue),P1,agent,F-055,Mapped
@@ -2967,6 +2967,6 @@ TR-R1-05,TOPE_REQUESTS,R1:L8,requirement,Fine-tune on licensed African everyday 
 TR-R1-06,TOPE_REQUESTS,R1:L11,requirement,Camera word hunt and Lens collection,P1,agent,P7-946;P8-934,Mapped
 TR-R2-01,TOPE_REQUESTS,R2:L14-L16,requirement,On-device per-skill mastery from practice signals,P1,agent,P2-058,Mapped
 TR-R2-02,TOPE_REQUESTS,R2:L17-L19,requirement,Adaptive lesson pacing with an override,P1,agent,P7-949,Mapped
-TR-R1-07,TOPE_REQUESTS,R1-update:L22-L26,requirement,MobileNetV4 on device and SigLIP fallback from the named weight files,P1,agent,P7-945;P6-086;P7-950,Mapped
+TR-R1-07,TOPE_REQUESTS,R1-update:L22-L26,requirement,MobileNetV4 on device and SigLIP fallback from the named weight files,P1,agent,P6-086;P7-945;P7-950,Mapped
 TR-R1-08,TOPE_REQUESTS,R1-update:L25,requirement,Confirmed opt-in SigLIP matches may enter the fine-tune set,P1,agent,P7-947,Mapped
 TR-R1-09,TOPE_REQUESTS,R1-update:L26,requirement,Do not use Ultralytics YOLO,P1,agent,P4-168,Mapped

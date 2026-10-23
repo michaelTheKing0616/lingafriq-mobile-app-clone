@@ -509,7 +509,7 @@ P2-040	Done	Archive status docs and generate honest STATUS.md	P2/P2-040.yaml
 P2-041	Done	'ADR: Single Learner Knowledge Graph replaces four learner models'	P2/P2-041.yaml
 P2-042	Done	Build idempotent learning event log	P2/P2-042.yaml
 P2-043	Done	Implement FSRS-6 scheduler on device	P2/P2-043.yaml
-P2-044	Draft	Add mutation testing gate on FSRS	P2/P2-044.yaml
+P2-044	Done	Add mutation testing gate on FSRS	P2/P2-044.yaml
 P2-045	Draft	Model Learner Knowledge Graph nodes and error counts	P2/P2-045.yaml
 P2-046	Draft	Expose graph queries for session builder and Polie context	P2/P2-046.yaml
 P2-047	Draft	Build item bank schema and storage	P2/P2-047.yaml

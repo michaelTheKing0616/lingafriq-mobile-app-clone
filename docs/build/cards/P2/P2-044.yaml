@@ -53,10 +53,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- 'Operators are the builder default in DECISIONS.md. A mutant that does not compile is not scored. The floor stays 80 percent.'
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging

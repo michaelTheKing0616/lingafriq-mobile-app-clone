@@ -1,0 +1,25 @@
+charter: v2
+threshold: 0.80
+module: lib/services/learning/fsrs6_scheduler.dart
+tests:
+  - test/learning/fsrs6_test.dart
+  - test/learning/fsrs6_property_test.dart
+replace:
+  "<=": "<"
+  ">=": ">"
+  "==": "!="
+  "!=": "=="
+  "&&": "||"
+  "||": "&&"
+  "+": "-"
+  "-": "+"
+  "*": "/"
+  "/": "*"
+  "<": "<="
+  ">": ">="
+literals:
+  "true": "false"
+  "false": "true"
+  "0": "1"
+  "1": "0"
+unary_minus: drop

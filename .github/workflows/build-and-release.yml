@@ -840,6 +840,35 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  fsrs-mutation:
+    name: FSRS mutation gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+        with:
+          flutter-version: '3.35.0'
+          channel: stable
+
+      - name: Install CMake
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake
+
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      - name: Prepare Rive native runtime
+        run: |
+          dart run rive_native:setup --platform linux
+          echo "LD_LIBRARY_PATH=$PWD/build/rive_native/native/build/linux/bin/lib/debug_shared" >> $GITHUB_ENV
+
+      - name: FSRS mutation score
+        run: bash scripts/ci/mutation_gate.sh
+
   analyze-new-code:
     name: Analyze new Dart
     runs-on: ubuntu-latest
