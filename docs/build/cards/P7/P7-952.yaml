@@ -45,6 +45,8 @@ acceptance_criteria:
   text: Given a low-end Android frame log, when the median frame time is above 16.7 ms, then the run fails the 60 fps bar and is not described as met.
 - id: AC6
   text: Given the device is offline and the path rows are in Drift, when the learner opens Path, then the nodes render from Drift and the screen does not wait on the network.
+- id: AC7
+  text: Given a low-end Android device in the Tecno or Infinix class, when the v3 path files run, then a frame-time log is attached and a missing log is not described as meeting the bar.
 test_plan:
   unit:
   - banner fields

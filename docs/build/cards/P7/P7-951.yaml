@@ -49,6 +49,8 @@ acceptance_criteria:
   text: Given P7-949 opens or skips a node for a fast learner, when the path renders, then that node is open or skipped and a lesson the learner may reach stays visible.
 - id: AC7
   text: Given a screen reader or reduced motion, when a node is presented, then it exposes its number, title, and state, its tap target is at least 48 dp, and non-essential motion is still.
+- id: AC8
+  text: Given a v3 path node, when an unlock plays, then state and the unlock trigger are set in the same frame, reducedMotion is passed through, and the visible label and ctaText come from unit data rather than the defaults BEGIN or 1.
 test_plan:
   unit:
   - node state mapping

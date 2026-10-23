@@ -12,7 +12,7 @@ Work is continuous on `cloud-handoff`. Do not pause between cards. The key files
 - Backend: `cloud-handoff`. Latest card push is P2-056. Flag buckets are stable. HS256 still verifies.
 - The key files are still tracked. Copies also exist in `~/.lingafriq/secrets/` (mode 600). History was not rewritten.
 - Admin gamification edits were not part of this build. They are in git stash `admin-gamification-wip-not-this-build` on `lingafriq-admin` `cloud-handoff`.
-- P2-058 is done. P3-001 stays Draft: 3 sourced baselines, 17 blank. The search cap is spent and missing numbers stay blank. P3-002 and the art-direction chain wait on a Done P3-001. Next unblocked card is P4-001. P2-031 stays a live-host switch-on and is not Done. P7-961 does not jump this queue. R3 (P7-951, P7-952, P7-953) does not jump this queue.
+- P2-058 is done. P3-001 stays Draft: 3 sourced baselines, 17 blank. The search cap is spent and missing numbers stay blank. P3-002 and the art-direction chain wait on a Done P3-001. Next unblocked card is P4-001. P2-031 stays a live-host switch-on and is not Done. P7-961 does not jump this queue. R3 stays on F-007, P7-951, P7-952, and P7-953. Path Rive is v3 at ~/LingAfriq/lingafriq/design/path_rive/path/v3/. Do not use v1 or v2. Do not build the path until those cards.
 
 ## Next 3 steps
 
@@ -98,7 +98,7 @@ Decisions for 2026-10-22 are signed in `docs/build/DECISIONS.md`. These still ne
 - Tope to switch on: create the Doppler project and a service token (`DOPPLER_TOKEN`). Key migration stays at the end of the build. Do not delete the Firebase account, the Apple `.p8`, or the five client AI keys.
 - Tope to switch on: Play Integrity and App Attest credentials. `INTEGRITY_MODE` stays `log` until the false-positive review.
 - Tope to switch on: the private Cloudflare R2 bucket (`SNAP_STORAGE=r2` plus `R2_ACCOUNT_ID`, `R2_BUCKET`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`).
-- Tope to switch on: the named native reviewer for each locale (D18).
+- Tope to switch on: the named native reviewer for each locale (D18). Path v3 also needs a native reader, before release, for the Igbo elder cap, Zulu beadworker colours, Xhosa umbhaco, Zulu ukhamba, Hausa elder robe, Yoruba drummer, Igbo udu and ogene, and the Pidgin hawker and danfo. This does not pull F-007 forward.
 - Heritage Fund percent and marketplace share stay blank until EXT-03.
 - Tope to switch on: ten profile cold starts on a mid-range Android. Each must be under 2 seconds to the first meaningful frame.
 - Tope to switch on: NDPC registration check and the DPIA, including voice-data thresholds (EXT-18). Credential evidence stays unissued until a real scorer and calibrated items exist. The check does not stop the queue.

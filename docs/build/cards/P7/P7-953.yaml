@@ -47,6 +47,8 @@ acceptance_criteria:
   text: Given an illustration, when it is bundled, then the licence register names an original or commercial licence, and a missing or non-commercial row keeps the file out of the bundle.
 - id: AC6
   text: Given a screen reader, when scene art is shown, then the image has alt text and is not described by colour alone.
+- id: AC7
+  text: Given the v3 scenery file, when a prop is shown, then it is loaded by artboard name, the licence register records the art as original and Nunito as SIL OFL 1.1, and the visible title and subtitle are unit strings rather than UNIT TITLE or UNIT 1.
 test_plan:
   unit:
   - language scene lookup
@@ -89,7 +91,8 @@ dod_evidence:
 - coverage on touched domain code
 - ledger row
 risks:
-- "EXT-16 still has to deliver the commissioned .riv and illustrations. Until then the path shows a labelled still, not a substitute clip."
+- "EXT-16 still has to deliver nothing further for Polie. The v3 files are at ~/LingAfriq/lingafriq/design/path_rive/path/v3/. v1 and v2 are not used."
+- "Native review before release: Igbo elder cap, Zulu beadworker colours, Xhosa umbhaco, Zulu ukhamba, Hausa elder robe, Yoruba drummer, Igbo udu and ogene, Pidgin hawker and danfo. Sacred objects and warrior props stay out."
 - "Village maps may reuse these props. They do not own a second lesson-progress store."
 - "Do not build this ahead of the open P2 cards."
 gate: HUB

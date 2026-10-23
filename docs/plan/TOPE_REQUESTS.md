@@ -34,6 +34,6 @@ R3 is carded 2026-10-23 on F-007, with build slices P7-951, P7-952, and P7-953. 
 - Scenes: culturally specific illustrated characters and props along the path for each language and unit (Yoruba, Igbo, Hausa, Zulu, Xhosa, Swahili, Pidgin), plus Polie the mascot animated in Rive. The background is parchment textured per language. Locked areas ahead are dimmed.
 - Performance: lazy-load sections, hold 60 fps on a low-end Android, and work offline from Drift.
 - Accessibility: every node has a label and a state for screen readers, a minimum tap size, a reduced-motion mode, and alt text on the art.
-- Art: original or commercially licensed only, logged in the licence register, and drawn to the design pack and the brand kit. An unlicensed file is not shipped. Until EXT-16 delivers a `.riv`, Polie is a labelled still, not a stand-in animation.
+- Art: the shipped files are v3 at ~/LingAfriq/lingafriq/design/path_rive/path/v3/ (path_node.riv, polie_path.riv, unit_banner.riv, path_scenery.riv). v1 and v2 are not used. Art is original. Nunito Black is SIL OFL 1.1. Do not ship the default strings BEGIN, UNIT TITLE, or UNIT 1.
 - Cards: F-007 holds the acceptance criteria. P7-951 draws the trail and the node states. P7-952 adds banners, auto-scroll, the preview sheet, and the long-path budget. P7-953 places the licensed scenes and Polie. F-011 (personal plan), F-021 (tone units), and F-103 / F-104 (village maps) link to this path and do not keep a second lesson-progress store.
 - Do not build these ahead of the open P2 cards.

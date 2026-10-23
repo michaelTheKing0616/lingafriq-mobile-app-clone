@@ -52,6 +52,7 @@ delta:
   - One Path map per language with CEFR regions, unit stops, can-dos, downloads, and border checkpoints.
   - Keep list and teacher outline as modes of the same map.
   - The main Path is the R3 winding trail (P7-951, P7-952, P7-953). My plan (F-011), tone units (F-021), and village maps (F-103, F-104) link to it and do not keep a second lesson-progress store.
+  - Path Rive is v3 only, at ~/LingAfriq/lingafriq/design/path_rive/path/v3/. v1 and v2 are not used. Copy path_node.riv, polie_path.riv, unit_banner.riv, and path_scenery.riv into assets/rive/path/ when this card is built, and add path_contract_test.dart to the tests. Follow each *.INTEGRATION.md and contract.json.
   ux_and_render:
   - Vertical scrolling zig-zag of large numbered nodes on dotted trails, first lesson at the bottom. Done, current, locked, and review-due states. Unit banners, current-node scroll, and a tap preview.
   - Per-language parchment and licensed scene art, dimmed ahead of the current node, Polie in Rive when a licensed file exists.
@@ -85,6 +86,10 @@ acceptance_criteria:
   text: Given path art or the Polie file, when it is bundled, then the licence register names an original or commercial licence, the scene matches the language and unit, locked areas ahead are dimmed, and an unlicensed file is absent.
 - id: AC12
   text: Given My plan, a tone unit, or a village map, when that screen opens, then it links to this path or reuses its licensed scene props and does not keep a second lesson-progress store.
+- id: AC13
+  text: Given the path is built, when Rive files are bundled, then they are the v3 files from design/path_rive/path/v3 copied to assets/rive/path, v1 and v2 are absent, and path_contract_test.dart passes.
+- id: AC14
+  text: Given a node or banner unlock, when it animates, then the state and the unlock trigger are set in the same frame, scenery loads by artboard name, reducedMotion is honoured, and label, title, subtitle, and ctaText come from unit data rather than BEGIN, UNIT TITLE, or UNIT 1.
 test_plan:
   unit:
   - domain rules for feature delta
