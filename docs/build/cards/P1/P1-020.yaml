@@ -33,20 +33,21 @@ context_anchors:
 - ELEVATION.md#§16.1:L2033-L2035
 acceptance_criteria:
 - id: AC1
-  text: Given a new user in onboarding, when they have not provided a date of birth, then account creation is blocked and
-    the age gate is shown first
+  text: Given a new user in onboarding, when they have not provided a birth year, then account creation waits and the age
+    gate asks for the year only
 - id: AC2
-  text: Given an entered age under 13, when submitted, then sign-up is blocked with a state explaining that guardian consent
-    is not yet available, and no account or personal data is stored
+  text: Given a birth year under the country child threshold, when consent is missing, then no account data is stored, and
+    after verifiable parental consent the account is child mode with social, chat, marketplace, and ads gated off, moderated
+    AI only, and Historical Personas free chat still available under child-safe moderation
 - id: AC3
-  text: Given an entered age of 13 to 17, when submitted, then the account is created with ageBand teen and restricted defaults
+  text: Given a birth year in the teen band for that country, when the account is created, then the profile is private and
+    direct messages from adults are gated off, and no feature is removed
 - id: AC4
-  text: Given a client posting ageBand or dateOfBirth to the API, when validated, then the server computes the band itself
-    and rejects an inconsistent value
+  text: Given a client posting an age band or a date of birth, when the server validates it, then the server computes the
+    band from the birth year and the per-country config and rejects a band that does not match
 - id: AC5
-  text: Given an under-13 result, when the user returns to the gate on the same device, then the gate does not invite re-entry
-    of a different birth date (neutral wording, device-local cooldown) and the blocked state is not bypassable by restarting
-    onboarding
+  text: Given a child without consent, when the same device sends another birth year or band, then no account data is stored
+    before consent and the second request cannot widen access
 test_plan:
   unit:
   - age band computation
@@ -88,7 +89,7 @@ dod_evidence:
 - coverage on touched domain code
 - ledger row
 risks:
-- Under-13 outcome (block until E-P9 guardian stack) is an assumption to confirm with Tope
+- "D11, signed 2026-10-23: birth year only. Child mode waits for verifiable parental consent before any account data is stored. Features are gated, not removed. Historical Personas free chat stays under child-safe moderation."
 - Existing users have unknown age (handled by P1-021)
 gate: G1
 external_blockers: []
