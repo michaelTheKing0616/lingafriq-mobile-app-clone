@@ -76,7 +76,7 @@ external_blockers:
 - EXT-01
 - EXT-04
 - EXT-22
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging

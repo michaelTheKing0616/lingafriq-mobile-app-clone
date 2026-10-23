@@ -151,3 +151,4 @@ P4-018,build,T1,composer-2.5-fast,n/a,n/a,1,pass,Oxford stays licence-required. 
 P4-019,build,T1,composer-2.5-fast,n/a,n/a,1,pass,Abraham and Bargery stay excluded. Copyright is unconfirmed and neither work is public domain.
 P4-020,adr,T1,composer-2.5-fast,n/a,n/a,1,pass,Four restricted sources stay excluded. Oxford is buy only after a signed quote. Nothing is purchased.
 P4-021,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,A language kit must validate every required section. A missing kit stops the pipeline before generation.
+P4-022,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Yoruba stack records Oxford unheld, Abraham as reference, Bámgbóṣé unpurchased, and Spitch disabled.

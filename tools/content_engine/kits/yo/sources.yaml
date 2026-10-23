@@ -1,0 +1,43 @@
+orthography:
+  standard: standard Yoruba
+  tone_marking: full tone marking for pedagogy
+  nerdc_status: unverified
+
+lexicon:
+  - source_id: oxford-languages
+    role: licensed
+    held: false
+  - source_id: wiktionary-kaikki
+    role: cross-check
+  - source_id: abraham-yoruba-1958
+    role: reference
+
+grammar:
+  - source_id: fsi-yoruba
+    courses:
+      - Basic
+      - Intermediate
+    licence: public-domain
+  - author: Bámgbóṣé
+    title: A Grammar of Yoruba
+    purchased: false
+    web_verified: false
+  - source_id: ud-yoruba-ytb
+    role: grammar-evidence
+
+corpora_audio:
+  - leipzig-corpora
+  - biblica-yoruba
+  - common-voice-yo
+  - fleurs
+
+tools:
+  naijaml:
+    licence: Apache-2.0
+    full_tone_word_accuracy: "80.3%"
+    dot_below_accuracy: "93.3%"
+    use: independent-check
+  spitch:
+    enabled: false
+    ext01_status: pending
+    citation: docs/plan/LINGAFRIQ_AI_MODEL_STACK.md

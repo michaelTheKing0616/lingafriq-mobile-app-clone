@@ -139,3 +139,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-127 | open | P4-019 | Abraham 1958 and Bargery 1934 stay excluded until counsel confirms public domain. The 2026-10-23 note does not decide copyright. |
 | OW-128 | open | P4-020 | No restricted source is purchased. Oxford stays licence-required until a signed quote exists. |
 | OW-129 | open | P4-021 | No shipped language kit file exists yet. The loader stops generation until one does. |
+| OW-130 | open | P4-022 | Yoruba NERDC edition is unverified. Oxford is not held. Bámgbóṣé is not purchased. Spitch stays off while EXT-01 is pending. |
