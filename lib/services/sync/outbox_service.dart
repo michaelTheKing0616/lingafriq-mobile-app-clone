@@ -130,6 +130,7 @@ class OutboxService {
     String? clientInstallId,
     String? clientAppVersion,
     int? schemaVersion,
+    bool refreshPayload = false,
   }) async {
     final db = _requireDb();
     if (!isValidSyncOutboxOperationType(type)) {
@@ -137,6 +138,27 @@ class OutboxService {
     }
     final key = (idempotencyKey == null || idempotencyKey.isEmpty) ? _newId() : idempotencyKey;
     final existing = _byKey(key);
+    if (existing != null && refreshPayload && !existing.isDeadLetter) {
+      final updated = OutboxRecord(
+        id: existing.id,
+        idempotencyKey: existing.idempotencyKey,
+        type: type,
+        payload: payload,
+        state: outboxPendingState,
+        attempts: existing.attempts,
+        createdAt: existing.createdAt,
+        nextAttemptAt: existing.nextAttemptAt,
+        lastError: existing.lastError,
+        lastStatusCode: existing.lastStatusCode,
+        clientCreatedAt: clientCreatedAt ?? existing.clientCreatedAt,
+        clientInstallId: clientInstallId ?? existing.clientInstallId,
+        clientAppVersion: clientAppVersion ?? existing.clientAppVersion,
+        schemaVersion: schemaVersion ?? existing.schemaVersion,
+      );
+      await _persist(db, updated);
+      _rows[updated.id] = updated;
+      return updated;
+    }
     if (existing != null) return existing;
     final record = OutboxRecord(
       id: _newId(),

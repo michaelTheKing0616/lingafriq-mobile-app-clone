@@ -15,4 +15,4 @@ charter: v2
 | External | EXT-01…30 open (`EXTERNAL.md`); EXT-01 companion doc still missing |
 | Benchmark | UI phases: `docs/build/benchmark/duolingo/` holds the 12 picks; `all/` holds the other 48; `README.md` has source, date, and size. Do not open the images until a card sets `visual_evidence_required`. |
 | Audit | `check_agent_files.py` OK (1,092 files) |
-| Next | Work stays on the Mac on `cloud-handoff`. Key cleanup is end-of-build (D24). P2-015 is done. The Drift outbox keeps the idempotency key, backs off up to 60 seconds, and leaves a permanent 4xx in the dead-letter list. Next build card is P2-016. P7-961 does not jump the queue. Curriculum wiring stays paused. Live PM2 stays unverified (EXT-23). |
+| Next | Work stays on the Mac on `cloud-handoff`. Key cleanup is end-of-build (D24). P2-016 is done. One Drift outbox replaced the competing offline queues. Next build card is P2-017. P7-961 does not jump the queue. Curriculum wiring stays paused. Live PM2 stays unverified (EXT-23). |

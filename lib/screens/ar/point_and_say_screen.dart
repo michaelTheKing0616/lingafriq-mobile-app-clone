@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/services/media_import_service.dart';
-import 'package:lingafriq/services/offline/offline_service.dart';
 import 'package:lingafriq/services/offline/point_and_say_queue_service.dart';
 import 'package:lingafriq/services/voice/audio_recording_service.dart';
 import 'package:lingafriq/services/voice/voice_api_service.dart';
@@ -68,6 +67,7 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
 
   Future<void> _initQueueCount() async {
     await PointAndSayQueueService.instance.ensureOpen();
+    await PointAndSayQueueService.instance.flushPending(voiceApi: _voice);
     setState(
       () => _pendingQueue = PointAndSayQueueService.instance.pendingCount,
     );
@@ -463,11 +463,7 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
                 decision.userMessage ??
                 'Voice service is unavailable. Queued for sync.';
           });
-          OfflineService().queueSync(() async {
-            await PointAndSayQueueService.instance.flushPending(
-              voiceApi: _voice,
-            );
-          });
+          await PointAndSayQueueService.instance.flushPending(voiceApi: _voice);
           return;
         }
         throw Exception(
@@ -519,11 +515,7 @@ class _PointAndSayScreenState extends ConsumerState<PointAndSayScreen> {
             _pendingQueue = PointAndSayQueueService.instance.pendingCount;
             _error = decision.userMessage;
           });
-          OfflineService().queueSync(() async {
-            await PointAndSayQueueService.instance.flushPending(
-              voiceApi: _voice,
-            );
-          });
+          await PointAndSayQueueService.instance.flushPending(voiceApi: _voice);
           return;
         } catch (_) {
           // Fall through to show the original error below.

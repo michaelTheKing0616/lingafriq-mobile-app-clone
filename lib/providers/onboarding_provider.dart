@@ -2,9 +2,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/onboarding_data_model.dart';
 import 'package:lingafriq/models/onboarding_answers.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
-import 'package:lingafriq/providers/backend_sync_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
+import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
 
 class OnboardingNotifier extends Notifier<OnboardingData> {
   SharedPreferencesProvider get _prefs => ref.read(sharedPreferencesProvider);
@@ -478,15 +478,14 @@ class OnboardingNotifier extends Notifier<OnboardingData> {
     try {
       final user = ref.read(userProvider);
       if (user != null) {
-        final syncProvider = ref.read(backendSyncProvider.notifier);
-        await syncProvider.queueSync(SyncTask(
-          type: SyncType.onboarding,
+        await PersistedOutboxService.instance.enqueue(
+          type: 'onboarding_sync',
           data: {
             'user_id': user.id.toString(),
             'onboarding_data': state.toJson(),
             'timestamp': DateTime.now().toIso8601String(),
           },
-        ));
+        );
       }
     } catch (e) {
       logger.error('Error queuing onboarding sync', tag: 'onboarding', error: e);

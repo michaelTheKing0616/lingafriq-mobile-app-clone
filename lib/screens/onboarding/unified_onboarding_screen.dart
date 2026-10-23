@@ -12,7 +12,6 @@ import 'dart:io';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/providers/api_provider.dart';
-import 'package:lingafriq/providers/backend_sync_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/auth/world_class_login_screen.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
@@ -27,6 +26,7 @@ import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:lingafriq/avatars/avatars.dart';
 import 'package:lingafriq/models/onboarding_answers.dart';
 import 'placement_test_screen.dart';
+import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
 
 /// Unified Onboarding: "Kijiji cha Lugha" - The Language Village
 ///
@@ -437,12 +437,9 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
 
     // Queue backend sync
     try {
-      final syncProvider = ref.read(backendSyncProvider.notifier);
-      await syncProvider.queueSync(
-        SyncTask(
-          type: SyncType.onboarding,
+      await PersistedOutboxService.instance.enqueue(
+          type: 'onboarding_sync',
           data: {...data, 'completed_at': DateTime.now().toIso8601String()},
-        ),
       );
     } catch (e) {
       logger.warn('Backend sync failed for onboarding completion', error: e);

@@ -16,10 +16,8 @@ import 'my_app.dart';
 import 'providers/firebase_messaging_provider.dart';
 import 'providers/shared_preferences_provider.dart';
 // Offline Services
-import 'services/offline/offline_service.dart';
-import 'services/offline/background_sync_service.dart';
+import 'services/offline/persisted_outbox_service.dart';
 import 'services/offline/conflict_resolution.dart';
-import 'services/offline/selective_sync.dart';
 import 'services/offline/cache_compression.dart';
 import 'services/offline/cache_encryption.dart';
 import 'services/offline/offline_analytics.dart';
@@ -96,10 +94,8 @@ void main() async {
 
   // Initialize Offline Services
   try {
-    await OfflineService().initialize();
-    await BackgroundSyncService().initialize();
+    await PersistedOutboxService.instance.start();
     await ConflictResolutionService().initialize();
-    await SelectiveSyncService().initialize();
     await CacheCompressionService().initialize();
     await CacheEncryptionService().initialize();
     await OfflineAnalyticsService().initialize();

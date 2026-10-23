@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/vocabulary_progress_model.dart';
 import '../providers/user_provider.dart';
-import '../providers/backend_sync_provider.dart';
+import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
 
 final vocabularyProgressServiceProvider = Provider<VocabularyProgressService>((ref) {
   return VocabularyProgressService(ref);
@@ -190,17 +190,16 @@ class VocabularyProgressService {
       final user = _ref.read(userProvider);
       if (user == null) return;
 
-      final syncProvider = _ref.read(backendSyncProvider.notifier);
-      await syncProvider.queueSync(SyncTask(
-        type: SyncType.progress,
-        data: {
+      await PersistedOutboxService.instance.enqueue(
+          type: 'progress_sync',
+          data: {
           'user_id': user.id.toString(),
           'type': 'vocabulary',
           'language': progress.language,
           'progress': progress.toJson(),
           'timestamp': DateTime.now().toIso8601String(),
         },
-      ));
+      );
     } catch (e) {
       debugPrint('Error syncing vocabulary progress: $e');
     }

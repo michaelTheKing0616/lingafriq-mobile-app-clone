@@ -54,6 +54,35 @@ void main() {
     expect(outboxBackoffMs(1, 400), lessThan(outboxBackoffMs(2, 0) + 400));
   });
 
+  test('a repeated onboarding step stays one visible row', () async {
+    final db = LingAfriqDatabase.memory();
+    addTearDown(db.close);
+    final store = OutboxService(
+      clock: () => DateTime.utc(2026, 1, 1),
+      newId: () => 'onb-1',
+    );
+    await store.open(db);
+    await store.enqueue(
+      type: 'onboarding_sync',
+      payload: const {'step': 'age_category', 'age_category': 'adult'},
+      idempotencyKey: 'onboarding:7:age_category',
+    );
+    final updated = await store.enqueue(
+      type: 'onboarding_sync',
+      payload: const {'step': 'age_category', 'age_category': 'teen'},
+      idempotencyKey: 'onboarding:7:age_category',
+      refreshPayload: true,
+    );
+    expect(store.pendingCount, 1);
+    expect(updated.payload['age_category'], 'teen');
+    expect(File('lib/services/offline/offline_service.dart').existsSync(), isFalse);
+    expect(File('lib/providers/backend_sync_provider.dart').existsSync(), isFalse);
+    expect(File('lib/services/offline/selective_sync.dart').existsSync(), isFalse);
+    expect(File('lib/services/offline/sync_v2_service.dart').existsSync(), isFalse);
+    expect(File('lib/services/offline/background_sync_service.dart').existsSync(), isFalse);
+    expect(File('lib/services/offline/offline_handler.dart').existsSync(), isFalse);
+  });
+
   test('the same key applies the effect once', () {
     final ledger = IdempotentLedger();
     expect(ledger.apply('k', () => 'first'), 'first');

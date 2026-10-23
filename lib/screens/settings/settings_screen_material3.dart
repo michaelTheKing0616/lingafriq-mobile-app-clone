@@ -10,11 +10,10 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/services/auth/biometric_auth.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart'
     show DynamicLocalizationService, AppLanguage;
-import 'package:lingafriq/services/offline/selective_sync.dart'
-    show SelectiveSyncService, SyncCategory, SyncPreference;
+import 'package:lingafriq/services/offline/persisted_outbox_service.dart'
+    show SelectiveSyncService, SyncCategory, SyncPreference, PersistedOutboxService;
 import 'package:lingafriq/services/offline/cache_encryption.dart'
     show CacheEncryptionService;
-import 'package:lingafriq/services/offline/offline_service.dart' show OfflineService;
 import 'package:lingafriq/screens/settings/edit_profile_screen.dart';
 import 'package:lingafriq/screens/settings/change_password_screen.dart';
 import 'package:lingafriq/screens/settings/privacy_settings_screen.dart';
@@ -830,9 +829,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
   }
 
   void _showCacheManagement(BuildContext context, WidgetRef ref) async {
-    final offlineService = OfflineService();
-    await offlineService.initialize();
-    final stats = await offlineService.getCacheStats();
+    final stats = await PersistedOutboxService.instance.getCacheStats();
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     showDialog(
@@ -882,7 +879,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
             TextButton(
               onPressed: () async {
                 HapticFeedback.mediumImpact();
-                await offlineService.clearCache(null);
+                await PersistedOutboxService.instance.clearCache(null);
                 if (context.mounted) Navigator.pop(context);
                 if (context.mounted) {
                   showLingAfriqSuccess(context, 'Cache cleared');

@@ -6,8 +6,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/historical_personality_enhanced_model.dart';
 import '../providers/user_provider.dart';
-import '../providers/backend_sync_provider.dart';
 import 'ai/historical_personality_service.dart' as base_service;
+import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
 
 final enhancedHistoricalPersonalityServiceProvider = Provider<EnhancedHistoricalPersonalityService>((ref) {
   return EnhancedHistoricalPersonalityService(ref);
@@ -240,17 +240,16 @@ class EnhancedHistoricalPersonalityService {
       final user = _ref.read(userProvider);
       if (user == null) return;
 
-      final syncProvider = _ref.read(backendSyncProvider.notifier);
-      await syncProvider.queueSync(SyncTask(
-        type: SyncType.progress,
-        data: {
+      await PersistedOutboxService.instance.enqueue(
+          type: 'progress_sync',
+          data: {
           'user_id': user.id.toString(),
           'type': 'personality_memory',
           'personality_id': memory.personalityId,
           'memory': memory.toJson(),
           'timestamp': DateTime.now().toIso8601String(),
         },
-      ));
+      );
     } catch (e) {
       debugPrint('Error syncing personality memory: $e');
     }

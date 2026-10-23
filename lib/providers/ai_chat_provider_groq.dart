@@ -8,7 +8,6 @@ import 'package:lingafriq/utils/transport_error_policy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'base_provider.dart';
 import 'api_provider.dart';
-import 'backend_sync_provider.dart';
 import 'user_provider.dart';
 import 'package:lingafriq/services/learning_engine_bridge.dart';
 import '../config/url_constants.dart';
@@ -24,6 +23,7 @@ import '../services/error/error_recovery_service.dart';
 import '../services/monitoring/performance_analytics.dart';
 import '../utils/structured_logger.dart';
 import '../utils/api_service.dart';
+import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
 
 /// Comprehensive AI Chat Provider using Groq API with Aya 8B
 /// Features:
@@ -2379,9 +2379,8 @@ Return only JSON.
       } catch (apiError) {
         logger.warn('Error syncing to backend API, falling back to sync queue', tag: 'ai-chat', error: apiError);
         // Fallback to sync queue
-        final syncProvider = ref.read(backendSyncProvider.notifier);
-        await syncProvider.queueSync(SyncTask(
-          type: SyncType.aiChatHistory,
+        await PersistedOutboxService.instance.enqueue(
+          type: 'ai_chat_history_sync',
           data: {
             'user_id': user.id.toString(),
             'mode': _modeNameForBackend,
@@ -2389,7 +2388,7 @@ Return only JSON.
             'messages': _messages.map((m) => m.toJson()).toList(),
             'timestamp': DateTime.now().toIso8601String(),
           },
-        ));
+        );
       }
     } catch (e) {
       logger.error('Error syncing chat history', tag: 'ai-chat', error: e);

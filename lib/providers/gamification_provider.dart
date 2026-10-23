@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user_gamification_model.dart';
 import '../models/badge_model.dart';
 import 'api_provider.dart';
-import 'backend_sync_provider.dart';
 import 'user_provider.dart';
 import 'base_provider.dart';
 import 'gamification_services_provider.dart';
@@ -13,6 +12,7 @@ import '../utils/api.dart';
 import '../utils/structured_logger.dart';
 import '../widgets/gamification/streak_milestone_overlay.dart';
 import 'notification_provider.dart';
+import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
 
 final gamificationProvider =
     NotifierProvider<GamificationProvider, BaseProviderState>(() {
@@ -169,10 +169,9 @@ class GamificationProvider extends Notifier<BaseProviderState>
       final user = ref.read(userProvider);
       if (user == null) return;
 
-      final syncProvider = ref.read(backendSyncProvider.notifier);
-      await syncProvider.queueSync(SyncTask(
-        type: SyncType.gamification,
-        data: {
+      await PersistedOutboxService.instance.enqueue(
+          type: 'gamification_sync',
+          data: {
           'user_id': user.id.toString(),
           'pending_xp_award': true,
           'source': source,
@@ -181,7 +180,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
           'multiplier': multiplier,
           'timestamp': DateTime.now().toIso8601String(),
         },
-      ));
+      );
     } catch (e) {
       logger.error('Error queuing pending XP event', tag: 'gamification', error: e);
     }
@@ -552,15 +551,14 @@ class GamificationProvider extends Notifier<BaseProviderState>
       final user = ref.read(userProvider);
       if (user == null) return;
 
-      final syncProvider = ref.read(backendSyncProvider.notifier);
-      await syncProvider.queueSync(SyncTask(
-        type: SyncType.gamification,
-        data: {
+      await PersistedOutboxService.instance.enqueue(
+          type: 'gamification_sync',
+          data: {
           'user_id': user.id.toString(),
           'gamification': _gamification.toJson(),
           'timestamp': DateTime.now().toIso8601String(),
         },
-      ));
+      );
     } catch (e) {
       logger.error('Error queuing gamification sync', tag: 'gamification', error: e);
     }

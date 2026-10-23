@@ -11,7 +11,6 @@ import '../models/game/phrase_card_model.dart';
 import '../models/game/game_session_model.dart';
 import '../models/game/game_content_failure.dart';
 import '../providers/gamification_provider.dart';
-import '../providers/backend_sync_provider.dart';
 import '../providers/user_provider.dart';
 import '../services/offline/persisted_outbox_service.dart';
 import '../providers/dio_provider.dart';
@@ -1833,16 +1832,13 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       sessionJson['accuracy'] = session.accuracy;
       sessionJson['correct_count'] = session.correctCount;
       sessionJson['total_turns'] = session.totalTurns;
-      final syncProvider = ref.read(backendSyncProvider.notifier);
-      await syncProvider.queueSync(
-        SyncTask(
-        type: SyncType.gameSession,
-        data: {
+      await PersistedOutboxService.instance.enqueue(
+          type: 'game_session_sync',
+          data: {
           'user_id': user.id.toString(),
           'session': sessionJson,
           'timestamp': DateTime.now().toIso8601String(),
         },
-        ),
       );
     } catch (e) {
       logger.error(
@@ -1855,7 +1851,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
   /// Sync SRS to backend via Sync v2 outbox (`game_srs_upsert_many`), matching
   /// `applyGameSrsUpsertMany` in `syncV2.controller.ts`. Survives restarts via Hive.
-  /// Legacy `SyncType.gameSRS` is no longer queued here; persisted legacy tasks may still flush via [BackendSyncProvider].
+  /// Game SRS is queued on the durable outbox as `game_srs_upsert_many`.
   Future<void> _syncSRSToBackend() async {
     try {
       final user = ref.read(userProvider);
@@ -1890,7 +1886,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         type: 'game_srs_upsert_many',
         payload: {'entries': entries},
       );
-      // Flush is triggered by [BackendSyncProvider.syncAll], app resume, and periodic sync.
+      // Flush is triggered when the app is online and by the periodic background task.
     } catch (e) {
       logger.error('Error enqueueing game_srs_upsert_many', tag: 'game-provider', error: e);
     }
@@ -1902,17 +1898,14 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       final user = ref.read(userProvider);
       if (user == null) return;
 
-      final syncProvider = ref.read(backendSyncProvider.notifier);
-      await syncProvider.queueSync(
-        SyncTask(
-        type: SyncType.telemetry,
-        data: {
+      await PersistedOutboxService.instance.enqueue(
+          type: 'telemetry_sync',
+          data: {
           'user_id': user.id.toString(),
           'event': event,
           'timestamp': DateTime.now().toIso8601String(),
           ...data,
         },
-        ),
       );
       
       // Also log locally for offline access

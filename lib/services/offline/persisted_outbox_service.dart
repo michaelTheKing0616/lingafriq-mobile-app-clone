@@ -1,7 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
 import 'package:crypto/crypto.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:workmanager/workmanager.dart';
 import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/config/sync_outbox_operation_types.dart';
 import 'package:lingafriq/services/connectivity_service.dart';
@@ -11,7 +15,7 @@ import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:lingafriq/services/offline/sync_v2_service.dart';
+import 'package:lingafriq/services/offline/tone_trainer_queue_service.dart';
 import 'package:uuid/uuid.dart';
 
 /// In-memory state of the durable outbox. Hive is only the store; completion
@@ -143,6 +147,56 @@ class PersistedOutboxService {
   final OutboxService _store = OutboxService();
   String? _installId;
   String? _appVersion;
+  bool _isOnline = true;
+  Timer? _connectivityTimer;
+
+  bool get isOnline => _isOnline;
+
+  /// Opens the queue, restores selective-sync preferences, and starts one
+  /// background flush. An in-memory callback queue is not kept: a callback
+  /// cannot survive a restart, so callers flush a durable queue instead.
+  Future<void> start() async {
+    await ensureOpen();
+    await SelectiveSyncService().initialize();
+    _connectivityTimer ??= Timer.periodic(const Duration(seconds: 5), (_) {
+      unawaited(_refreshConnectivity());
+    });
+    try {
+      await Workmanager().initialize(backgroundSyncCallback, isInDebugMode: kDebugMode);
+      await Workmanager().registerPeriodicTask(
+        'background-sync',
+        'backgroundSync',
+        frequency: const Duration(hours: 1),
+        constraints: Constraints(networkType: NetworkType.connected),
+      );
+    } catch (error, stack) {
+      logger.error('Background sync did not start', error: error, stackTrace: stack);
+    }
+  }
+
+  Future<void> _refreshConnectivity() async {
+    final wasOnline = _isOnline;
+    try {
+      _isOnline = await ConnectivityService.hasInternet();
+    } catch (_) {
+      return;
+    }
+    if (!wasOnline && _isOnline) {
+      await flushPending();
+      await ToneTrainerQueueService.instance.flushPending();
+    }
+  }
+
+  Map<String, dynamic> getSyncStatus() {
+    return {
+      'is_online': _isOnline,
+      'is_syncing': false,
+      'queue_length': pendingCount,
+      'pending_count': pendingCount,
+      'failed_count': deadLetterCount,
+      'dead_letter_count': deadLetterCount,
+    };
+  }
 
   Future<void> ensureOpen() async {
     await _store.openShared();
@@ -174,17 +228,25 @@ class PersistedOutboxService {
   /// The same type and payload reuse the pending row so a retry is one key.
   Future<String> enqueue({
     required String type,
-    required Map<String, dynamic> payload,
+    Map<String, dynamic>? payload,
+    Map<String, dynamic>? data,
   }) async {
+    final body = payload ?? data;
+    if (body == null) {
+      throw ArgumentError('enqueue requires payload');
+    }
+    payload = body;
     if (!isValidSyncOutboxOperationType(type)) {
       throw ArgumentError.value(
         type,
         'type',
-        'Unknown sync v2 outbox operation (must match server ALLOWED_TYPES)',
+        'Unknown sync outbox operation',
       );
     }
     await ensureOpen();
-    final idempotencyKey = DurableOutbox.idempotencyKeyFor(type, payload);
+    final idempotencyKey = type == 'onboarding_sync' && (payload['step']?.toString().isNotEmpty ?? false)
+        ? 'onboarding:${payload['user_id'] ?? ''}:${payload['step']}'
+        : DurableOutbox.idempotencyKeyFor(type, payload);
     final record = await _store.enqueue(
       type: type,
       payload: payload,
@@ -193,6 +255,7 @@ class PersistedOutboxService {
       clientInstallId: _installId,
       clientAppVersion: _appVersion,
       schemaVersion: _schemaVersion,
+      refreshPayload: type == 'onboarding_sync',
     );
     return record.id;
   }
@@ -214,6 +277,11 @@ class PersistedOutboxService {
       random: Random(),
     );
     final removed = await worker.flush(batchSize: batchSize);
+    try {
+      await ToneTrainerQueueService.instance.flushPending();
+    } catch (error, stack) {
+      logger.error('Tone trainer flush failed; rows kept', error: error, stackTrace: stack);
+    }
     await _observeConflicts();
     return removed;
   }
@@ -225,10 +293,90 @@ class PersistedOutboxService {
         .toList();
     if (conflicts.isEmpty) return;
     try {
-      await SyncV2Service.instance.observeOutboxConflicts(conflicts);
+      logger.warn('Outbox conflict retained', context: {'count': conflicts.length});
+      await pullDeltaAndCache();
     } catch (e, st) {
       logger.error('Outbox conflict hook failed; rows kept', error: e, stackTrace: st);
     }
+  }
+
+  Future<void> pullDeltaAndCache({int limit = 500}) async {
+    if (!await ConnectivityService.hasInternet()) return;
+    await ApiService.initialize();
+    final prefs = await SharedPreferences.getInstance();
+    final sinceRaw = prefs.getString('sync_v2_last_delta_server_time') ??
+        prefs.getString('sync_v2_last_delta_since');
+    final since = sinceRaw == null ? null : DateTime.tryParse(sinceRaw)?.toUtc();
+    final uri = Uri.parse(ApiContract.url(ApiContract.syncV2.delta)).replace(
+      queryParameters: {
+        if (since != null) 'since': since.toIso8601String(),
+        'limit': '$limit',
+      },
+    );
+    final res = await ApiService.get(uri.toString());
+    if (res.statusCode != 200 || res.data is! Map) return;
+    final delta = (res.data as Map).cast<String, dynamic>();
+    final serverTime = delta['serverTime']?.toString();
+    final sinceEcho = delta['since']?.toString();
+    if (serverTime != null && serverTime.isNotEmpty) {
+      await prefs.setString('sync_v2_last_delta_server_time', serverTime);
+    }
+    if (sinceEcho != null && sinceEcho.isNotEmpty) {
+      await prefs.setString('sync_v2_last_delta_since', sinceEcho);
+    }
+    if (delta['preferences'] is Map) {
+      await prefs.setString('sync_v2_cached_preferences_json', jsonEncode(delta['preferences']));
+    }
+  }
+
+  Future<Map<String, dynamic>> getCachedPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    final raw = prefs.getString('sync_v2_cached_preferences_json');
+    if (raw == null || raw.trim().isEmpty) return const {};
+    try {
+      final decoded = jsonDecode(raw);
+      if (decoded is Map) return decoded.cast<String, dynamic>();
+    } catch (_) {}
+    return const {};
+  }
+
+  Future<void> putPreferences(Map<String, dynamic> preferences) async {
+    await ApiService.initialize();
+    final res = await ApiService.put(
+      ApiContract.url(ApiContract.syncV2.preferences),
+      data: {'preferences': preferences},
+    );
+    if (res.statusCode != 200) {
+      throw Exception('Preferences update failed (${res.statusCode})');
+    }
+  }
+
+  Future<Map<String, dynamic>> getCacheStats() async {
+    final prefs = await SharedPreferences.getInstance();
+    final keys = prefs.getKeys();
+    var total = 0;
+    for (final key in keys) {
+      final value = prefs.get(key);
+      total += key.length * 2;
+      if (value is String) total += value.length * 2;
+    }
+    return {
+      'totalKeys': keys.length,
+      'fileCount': keys.length,
+      'cacheSizeBytes': total,
+      'formattedSize': '$total B',
+      'queueSize': pendingCount,
+      'lastSync': prefs.getString('last_sync') ?? 'Never',
+    };
+  }
+
+  Future<void> clearCache(String? cacheType) async {
+    if (cacheType != null) {
+      logger.info('Clearing cache type', context: {'cacheType': cacheType});
+      return;
+    }
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
   }
 
   int get pendingCount => _store.pendingCount;
@@ -243,6 +391,35 @@ class PersistedOutboxService {
 class _ApiOutboxTransport implements OutboxTransport {
   @override
   Future<OutboxBatchResponse> push(List<OutboxRecord> batch) async {
+    final legacy = batch.where((row) => _legacyOutboxTypes.contains(row.type)).toList();
+    final v2 = batch.where((row) => !_legacyOutboxTypes.contains(row.type)).toList();
+    final results = <OutboxItemResult>[];
+    for (final row in legacy) {
+      results.add(await _postLegacy(row));
+    }
+    if (v2.isEmpty) {
+      final failedOpen = results.isNotEmpty && results.every((item) => item.error == 'transport_error');
+      return OutboxBatchResponse(
+        statusCode: failedOpen ? null : 200,
+        results: results,
+        transportFailed: failedOpen,
+      );
+    }
+    final pushed = await _postV2(v2);
+    if (pushed.transportFailed) {
+      return OutboxBatchResponse(
+        statusCode: pushed.statusCode,
+        results: results,
+        transportFailed: legacy.isEmpty,
+      );
+    }
+    return OutboxBatchResponse(
+      statusCode: pushed.statusCode ?? 200,
+      results: [...results, ...pushed.results],
+    );
+  }
+
+  Future<OutboxBatchResponse> _postV2(List<OutboxRecord> batch) async {
     final pushUrl = ApiContract.url(ApiContract.syncV2.outboxPush);
     final body = batch.map((row) {
       return {
@@ -278,4 +455,207 @@ class _ApiOutboxTransport implements OutboxTransport {
       return const OutboxBatchResponse(statusCode: null, transportFailed: true);
     }
   }
+
+  Future<OutboxItemResult> _postLegacy(OutboxRecord row) async {
+    try {
+      final response = await _legacyRequest(row);
+      final code = response.statusCode ?? 0;
+      final ok = code == 200 || code == 201;
+      final permanent = code >= 400 && code < 500 && code != 408 && code != 429;
+      return OutboxItemResult(
+        clientOperationId: row.id,
+        ok: ok,
+        error: ok ? null : (permanent ? 'invalid_operation' : 'http_$code'),
+      );
+    } catch (error) {
+      logger.error('Legacy outbox post failed', error: error, context: {'type': row.type});
+      return OutboxItemResult(clientOperationId: row.id, ok: false, error: 'transport_error');
+    }
+  }
+
+  Future<Response> _legacyRequest(OutboxRecord row) {
+    final data = row.payload;
+    switch (row.type) {
+      case 'gamification_sync':
+        return ApiService.post(ApiContract.url(ApiContract.gamification.sync), data: data);
+      case 'game_session_sync':
+        return ApiService.post(
+          ApiContract.url(ApiContract.games.sessionStart),
+          data: {
+            'session': data['session'],
+            if (data['timestamp'] != null) 'timestamp': data['timestamp'],
+          },
+        );
+      case 'game_srs_sync':
+        final userId = data['user_id']?.toString() ?? '';
+        return ApiService.put(
+          ApiContract.url(ApiContract.games.srsUser(userId)),
+          data: {
+            'srs': data['srs'],
+            if (data['timestamp'] != null) 'timestamp': data['timestamp'],
+          },
+        );
+      case 'ai_chat_history_sync':
+        return ApiService.post(ApiContract.url(ApiContract.ai.chatHistorySync), data: data);
+      case 'ai_chat_srs_sync':
+        return ApiService.post(ApiContract.url(ApiContract.ai.chatSrsSync), data: data);
+      case 'progress_sync':
+        return ApiService.post(ApiContract.url(ApiContract.gamification.progressSync), data: data);
+      case 'onboarding_sync':
+        return ApiService.post(
+          ApiContract.url(ApiContract.onboarding.save),
+          data: {
+            'onboarding_data': data,
+            'timestamp': DateTime.now().toUtc().toIso8601String(),
+          },
+        );
+      case 'telemetry_sync':
+        return ApiService.post(ApiContract.url(ApiContract.games.telemetry), data: data);
+      default:
+        throw StateError('not a legacy outbox type ${row.type}');
+    }
+  }
+}
+
+const Set<String> _legacyOutboxTypes = {
+  'gamification_sync',
+  'game_session_sync',
+  'game_srs_sync',
+  'ai_chat_history_sync',
+  'ai_chat_srs_sync',
+  'progress_sync',
+  'onboarding_sync',
+  'telemetry_sync',
+};
+
+enum SyncCategory {
+  lessons,
+  quizzes,
+  progress,
+  media,
+  cultureMagazine,
+  games,
+  profile,
+  chat,
+  achievements,
+  content,
+  settings,
+}
+
+class SyncPreference {
+  SyncPreference({
+    required this.category,
+    required this.enabled,
+    this.lastSynced,
+    this.syncOnWifiOnly = false,
+    this.maxSize,
+  });
+
+  final SyncCategory category;
+  final bool enabled;
+  final DateTime? lastSynced;
+  final bool syncOnWifiOnly;
+  final int? maxSize;
+}
+
+class SelectiveSync {
+  static const _prefKey = 'selective_sync_settings';
+  static const serverPreferencesKey = 'selectiveSync';
+
+  static Future<Map<String, bool>> getSyncPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    final raw = prefs.getString(_prefKey);
+    if (raw == null || raw.trim().isEmpty) {
+      return {
+        'lessons': true,
+        'quizzes': true,
+        'progress': true,
+        'media': false,
+        'culture_magazine': true,
+        'games': true,
+      };
+    }
+    try {
+      final decoded = jsonDecode(raw);
+      if (decoded is! Map) return {};
+      return {
+        for (final entry in decoded.entries)
+          if (entry.value is bool) entry.key.toString(): entry.value as bool,
+      };
+    } catch (_) {
+      return {};
+    }
+  }
+
+  static Future<void> setSyncPreferences(Map<String, bool> preferences) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_prefKey, jsonEncode(preferences));
+  }
+
+  static Future<bool> shouldSync(String contentType) async {
+    final preferences = await getSyncPreferences();
+    return preferences[contentType] ?? true;
+  }
+}
+
+class SelectiveSyncService {
+  static final SelectiveSyncService _instance = SelectiveSyncService._();
+  factory SelectiveSyncService() => _instance;
+  SelectiveSyncService._();
+
+  Future<void> initialize() async {
+    final cached = await PersistedOutboxService.instance.getCachedPreferences();
+    final fromServer = cached[SelectiveSync.serverPreferencesKey];
+    if (fromServer is! Map) return;
+    final merged = <String, bool>{
+      for (final entry in fromServer.entries)
+        if (entry.value is bool) entry.key.toString(): entry.value as bool,
+    };
+    if (merged.isNotEmpty) await SelectiveSync.setSyncPreferences(merged);
+  }
+
+  Future<Map<SyncCategory, SyncPreference>> getAllPreferences() async {
+    final prefs = await SelectiveSync.getSyncPreferences();
+    final result = <SyncCategory, SyncPreference>{};
+    for (final category in SyncCategory.values) {
+      result[category] = SyncPreference(
+        category: category,
+        enabled: prefs[category.name] ?? prefs[_legacyName(category.name)] ?? true,
+      );
+    }
+    return result;
+  }
+
+  Future<void> setPreference(SyncPreference preference) async {
+    final all = await getAllPreferences();
+    all[preference.category] = preference;
+    await SelectiveSync.setSyncPreferences({
+      for (final entry in all.entries) entry.key.name: entry.value.enabled,
+    });
+    try {
+      final current = await PersistedOutboxService.instance.getCachedPreferences();
+      final next = <String, dynamic>{...current};
+      next[SelectiveSync.serverPreferencesKey] = {
+        for (final entry in all.entries) entry.key.name: entry.value.enabled,
+      };
+      await PersistedOutboxService.instance.putPreferences(next);
+    } catch (_) {}
+  }
+
+  String _legacyName(String name) => name == 'cultureMagazine' ? 'culture_magazine' : name;
+}
+
+@pragma('vm:entry-point')
+void backgroundSyncCallback() {
+  Workmanager().executeTask((task, inputData) async {
+    try {
+      if (!await ConnectivityService.hasInternet()) return false;
+      await PersistedOutboxService.instance.ensureOpen();
+      await PersistedOutboxService.instance.flushPending();
+      return true;
+    } catch (error, stack) {
+      logger.error('Periodic background sync task failed', error: error, stackTrace: stack);
+      return false;
+    }
+  });
 }

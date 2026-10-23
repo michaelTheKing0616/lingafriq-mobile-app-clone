@@ -19,7 +19,6 @@ import 'package:lingafriq/services/games_learning_language_preload.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
-import 'package:lingafriq/providers/backend_sync_provider.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
@@ -28,6 +27,7 @@ import 'package:lingafriq/services/connectivity_service.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:async';
 import 'dart:io';
+import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
 
 /// Enhanced 9-Step Onboarding Flow with Beautiful Material 3 + Pan-African Design
 class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
@@ -570,15 +570,14 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
 
       // Queue sync with backend (will retry automatically)
       try {
-        final syncProvider = ref.read(backendSyncProvider.notifier);
-        await syncProvider.queueSync(SyncTask(
-          type: SyncType.onboarding,
+        await PersistedOutboxService.instance.enqueue(
+          type: 'onboarding_sync',
           data: {
             'step': 'proficiency_language',
             'proficiency_language': selectedLanguage.value,
             'timestamp': DateTime.now().toIso8601String(),
           },
-        ));
+        );
         // Sync will be handled by the queue automatically
       } catch (e) {
         // Log but continue - user can proceed even if backend is unavailable
@@ -835,15 +834,14 @@ class _Step15ProficiencyLevel extends HookConsumerWidget {
 
           // Queue sync with backend
           try {
-            final syncProvider = ref.read(backendSyncProvider.notifier);
-            await syncProvider.queueSync(SyncTask(
-              type: SyncType.onboarding,
-              data: {
+            await PersistedOutboxService.instance.enqueue(
+          type: 'onboarding_sync',
+          data: {
                 'step': 'proficiency_level',
                 'proficiency_level': selectedLevel.value,
                 'timestamp': DateTime.now().toIso8601String(),
               },
-            ));
+            );
           } catch (e) {
             logger.warn('Failed to queue sync for proficiency level, continuing locally', error: e);
           }
@@ -1000,15 +998,14 @@ class _Step2LearningLanguage extends HookConsumerWidget {
 
       // Queue sync with backend (will retry automatically)
       try {
-        final syncProvider = ref.read(backendSyncProvider.notifier);
-        await syncProvider.queueSync(SyncTask(
-          type: SyncType.onboarding,
+        await PersistedOutboxService.instance.enqueue(
+          type: 'onboarding_sync',
           data: {
             'step': 'learning_language',
             'learning_language': selectedLanguage.value,
             'timestamp': DateTime.now().toIso8601String(),
           },
-        ));
+        );
         // Sync will be handled by the queue automatically
       } catch (e) {
         logger.warn('Failed to queue sync for learning language, continuing locally', error: e);
@@ -1147,15 +1144,14 @@ class _Step3AgeCategory extends HookConsumerWidget {
 
           // Queue sync with backend (will retry automatically)
           try {
-            final syncProvider = ref.read(backendSyncProvider.notifier);
-            await syncProvider.queueSync(SyncTask(
-              type: SyncType.onboarding,
-              data: {
+            await PersistedOutboxService.instance.enqueue(
+          type: 'onboarding_sync',
+          data: {
                 'step': 'age_category',
                 'age_category': selected.value,
                 'timestamp': DateTime.now().toIso8601String(),
               },
-            ));
+            );
             // Sync will be handled by the queue automatically
           } catch (e) {
             logger.warn('Failed to queue sync for age category, continuing locally', error: e);
@@ -1278,15 +1274,14 @@ class _Step4LearningReasons extends HookConsumerWidget {
 
           // Queue sync with backend (will retry automatically)
           try {
-            final syncProvider = ref.read(backendSyncProvider.notifier);
-            await syncProvider.queueSync(SyncTask(
-              type: SyncType.onboarding,
-              data: {
+            await PersistedOutboxService.instance.enqueue(
+          type: 'onboarding_sync',
+          data: {
                 'step': 'learning_reasons',
                 'learning_reasons': selected.value.toList(),
                 'timestamp': DateTime.now().toIso8601String(),
               },
-            ));
+            );
             // Sync will be handled by the queue automatically
           } catch (e) {
             logger.warn('Failed to queue sync for learning reasons, continuing locally', error: e);
@@ -1462,15 +1457,14 @@ class _Step45DailyTimeGoal extends HookConsumerWidget {
 
                       // Queue sync with backend
                       try {
-                        final syncProvider = ref.read(backendSyncProvider.notifier);
-                        await syncProvider.queueSync(SyncTask(
-                          type: SyncType.onboarding,
-                          data: {
+                        await PersistedOutboxService.instance.enqueue(
+          type: 'onboarding_sync',
+          data: {
                             'step': 'daily_time_goal',
                             'daily_time_goal_minutes': selectedDuration.value,
                             'timestamp': DateTime.now().toIso8601String(),
                           },
-                        ));
+                        );
                       } catch (e) {
                         logger.warn('Failed to queue sync for daily time goal, continuing locally', error: e);
                       }
@@ -1537,15 +1531,14 @@ class _Step5PrimaryGoal extends HookConsumerWidget {
 
           // Queue sync with backend (will retry automatically)
           try {
-            final syncProvider = ref.read(backendSyncProvider.notifier);
-            await syncProvider.queueSync(SyncTask(
-              type: SyncType.onboarding,
-              data: {
+            await PersistedOutboxService.instance.enqueue(
+          type: 'onboarding_sync',
+          data: {
                 'step': 'primary_goal',
                 'primary_goal': selected.value,
                 'timestamp': DateTime.now().toIso8601String(),
               },
-            ));
+            );
             // Sync will be handled by the queue automatically
           } catch (e) {
             logger.warn('Failed to queue sync for primary goal, continuing locally', error: e);
@@ -1658,15 +1651,14 @@ class _Step6LearningStyle extends HookConsumerWidget {
 
           // Queue sync with backend (will retry automatically)
           try {
-            final syncProvider = ref.read(backendSyncProvider.notifier);
-            await syncProvider.queueSync(SyncTask(
-              type: SyncType.onboarding,
-              data: {
+            await PersistedOutboxService.instance.enqueue(
+          type: 'onboarding_sync',
+          data: {
                 'step': 'learning_style',
                 'learning_style': selected.value,
                 'timestamp': DateTime.now().toIso8601String(),
               },
-            ));
+            );
             // Sync will be handled by the queue automatically
           } catch (e) {
             logger.warn('Failed to queue sync for learning style, continuing locally', error: e);
@@ -1779,15 +1771,14 @@ class _Step7PacePreference extends HookConsumerWidget {
 
           // Queue sync with backend (will retry automatically)
           try {
-            final syncProvider = ref.read(backendSyncProvider.notifier);
-            await syncProvider.queueSync(SyncTask(
-              type: SyncType.onboarding,
-              data: {
+            await PersistedOutboxService.instance.enqueue(
+          type: 'onboarding_sync',
+          data: {
                 'step': 'pace_preference',
                 'pace_preference': selected.value,
                 'timestamp': DateTime.now().toIso8601String(),
               },
-            ));
+            );
             // Sync will be handled by the queue automatically
           } catch (e) {
             logger.warn('Failed to queue sync for pace preference, continuing locally', error: e);
@@ -1900,15 +1891,14 @@ class _Step8AppTone extends HookConsumerWidget {
 
           // Queue sync with backend (will retry automatically)
           try {
-            final syncProvider = ref.read(backendSyncProvider.notifier);
-            await syncProvider.queueSync(SyncTask(
-              type: SyncType.onboarding,
-              data: {
+            await PersistedOutboxService.instance.enqueue(
+          type: 'onboarding_sync',
+          data: {
                 'step': 'app_tone',
                 'app_tone': selected.value,
                 'timestamp': DateTime.now().toIso8601String(),
               },
-            ));
+            );
             // Sync will be handled by the queue automatically
           } catch (e) {
             logger.warn('Failed to queue sync for app tone, continuing locally', error: e);
@@ -2086,17 +2076,16 @@ class _Step9SchedulePreferences extends HookConsumerWidget {
 
                       // Queue sync with backend (will retry automatically)
                       try {
-                        final syncProvider = ref.read(backendSyncProvider.notifier);
-                        await syncProvider.queueSync(SyncTask(
-                          type: SyncType.onboarding,
-                          data: {
+                        await PersistedOutboxService.instance.enqueue(
+          type: 'onboarding_sync',
+          data: {
                             'step': 'schedule_preferences',
                             'daily_duration_minutes': duration.value,
                             'preferred_time_of_day': timeOfDay.value,
                             'reminders_enabled': remindersEnabled.value,
                             'timestamp': DateTime.now().toIso8601String(),
                           },
-                        ));
+                        );
                         // Sync will be handled by the queue automatically
                       } catch (e) {
                         logger.warn('Failed to queue sync for schedule preferences, continuing locally', error: e);
@@ -2360,16 +2349,15 @@ class _Step10ProfileSetup extends HookConsumerWidget {
 
                           // Queue sync with backend (will retry automatically)
                           try {
-                            final syncProvider = ref.read(backendSyncProvider.notifier);
-                            await syncProvider.queueSync(SyncTask(
-                              type: SyncType.onboarding,
-                              data: {
+                            await PersistedOutboxService.instance.enqueue(
+          type: 'onboarding_sync',
+          data: {
                                 'step': 'profile_setup',
                                 'username': usernameValue,
                                 'avatar_path': avatarPath.value,
                                 'timestamp': DateTime.now().toIso8601String(),
                               },
-                            ));
+                            );
                             // Sync will be handled by the queue automatically
                           } catch (e) {
                             logger.warn('Failed to queue sync for profile setup, continuing locally', error: e);
@@ -2465,9 +2453,8 @@ class _OnboardingStepTemplate extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Watch sync status to show progress indicator
-    final syncState = ref.watch(backendSyncProvider);
-    final isSyncing = syncState.isSyncing;
-    final pendingSyncs = syncState.pendingSyncs;
+    final pendingSyncs = PersistedOutboxService.instance.pendingCount;
+    final isSyncing = pendingSyncs > 0;
 
     return Container(
       decoration: BoxDecoration(

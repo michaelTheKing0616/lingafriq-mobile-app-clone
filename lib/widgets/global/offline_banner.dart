@@ -9,7 +9,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:lingafriq/services/connectivity_service.dart';
-import '../../services/offline/offline_handler.dart';
+import '../../services/offline/persisted_outbox_service.dart';
 
 class OfflineBanner extends StatefulWidget {
   final Widget child;
@@ -26,7 +26,7 @@ class OfflineBanner extends StatefulWidget {
 }
 
 class _OfflineBannerState extends State<OfflineBanner> {
-  final OfflineHandler _offlineHandler = OfflineHandler();
+  final PersistedOutboxService _offlineHandler = PersistedOutboxService.instance;
   bool _isOnline = true;
   Map<String, dynamic> _syncStatus = {};
   Timer? _connectivityTimer;

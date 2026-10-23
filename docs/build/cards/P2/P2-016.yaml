@@ -31,6 +31,12 @@ file_allowlist:
 - lib/services/offline/persisted_outbox_service.dart
 - lib/providers/backend_sync_provider.dart
 - lib/services/offline/selective_sync.dart
+- lib/services/offline/offline_service.dart
+- lib/services/sync/outbox_service.dart
+- lib/config/sync_outbox_operation_types.dart
+- test/sync/outbox_test.dart
+- lib/main.dart
+- lib/widgets/global/offline_banner.dart
 context_anchors:
 - ELEVATION.md#§13.5:L1915-L1917
 acceptance_criteria:
@@ -70,10 +76,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "The six competing sync modules are deleted. An in-memory callback queue is not kept because a callback cannot survive restart. Point and Say flushes its durable queue on open and after a queued recording. Tone trainer flushes with the outbox. Legacy sync types post to their existing endpoints from this one queue."
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging
