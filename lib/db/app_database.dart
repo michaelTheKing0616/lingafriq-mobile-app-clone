@@ -4,6 +4,7 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 
 import 'migrations/local_sql.dart';
+import 'tables/knowledge_nodes.dart';
 
 /// A schema step failed. The surrounding transaction is rolled back and
 /// SQLite `user_version` is left on the previous schema.
@@ -29,7 +30,7 @@ class LingAfriqDatabase extends GeneratedDatabase {
 
   LingAfriqDatabase.memory({this.failAtStep}) : super(NativeDatabase.memory());
 
-  static const int latestSchema = 4;
+  static const int latestSchema = 5;
 
   /// Test-only. When set, that step writes a probe row and then fails.
   final int? failAtStep;
@@ -48,6 +49,7 @@ class LingAfriqDatabase extends GeneratedDatabase {
             await applyMigrationStep(this, 2);
             await applyMigrationStep(this, 3);
             await applyMigrationStep(this, 4);
+            await applyMigrationStep(this, 5);
           });
         },
         onUpgrade: (migrator, from, to) async {
@@ -97,6 +99,10 @@ Future<void> applyMigrationStep(GeneratedDatabase db, int version) async {
       break;
     case 4:
       await db.customStatement(createOutbox);
+      break;
+    case 5:
+      await db.customStatement(createKnowledgeNodes);
+      await db.customStatement(createKnowledgeGraphEvents);
       break;
     default:
       throw StateError('missing migration to schema $version');

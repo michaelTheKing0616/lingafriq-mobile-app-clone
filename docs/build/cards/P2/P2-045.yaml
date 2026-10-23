@@ -31,6 +31,7 @@ file_allowlist:
 - lib/models/learner/knowledge_node.dart
 - lib/services/learning/knowledge_graph_service.dart
 - lib/db/tables/knowledge_nodes.dart
+- lib/db/app_database.dart
 - test/learning/knowledge_graph_test.dart
 context_anchors:
 - ELEVATION.md#§6.3:L1212
@@ -67,10 +68,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- Event payload fields and strength as correct over attempts are the builder default.
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging
