@@ -140,3 +140,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-128 | open | P4-020 | No restricted source is purchased. Oxford stays licence-required until a signed quote exists. |
 | OW-129 | open | P4-021 | No shipped language kit file exists yet. The loader stops generation until one does. |
 | OW-130 | open | P4-022 | Yoruba NERDC edition is unverified. Oxford is not held. Bámgbóṣé is not purchased. Spitch stays off while EXT-01 is pending. |
+| OW-131 | open | P4-023 | EXT-22 is Open. No Bámgbóṣé edition is chosen and no purchase is logged. |

@@ -644,7 +644,7 @@ P4-019	Done	Verify copyright status of Bargery and classic dictionaries	P4/P4-01
 P4-020	Done	Decide buy-or-exclude for each restricted source	P4/P4-020.yaml
 P4-021	Done	Define language kit schema and loader	P4/P4-021.yaml
 P4-022	Done	Record Yoruba source stack in kit	P4/P4-022.yaml
-P4-023	Draft	Verify and purchase Yoruba reference grammar	P4/P4-023.yaml
+P4-023	Blocked-External	Verify and purchase Yoruba reference grammar	P4/P4-023.yaml
 P4-024	Draft	Record Igbo source stack in kit	P4/P4-024.yaml
 P4-025	Draft	Verify Ọnwụ orthography and purchase Igbo grammar	P4/P4-025.yaml
 P4-026	Draft	Record Hausa source stack in kit	P4/P4-026.yaml
