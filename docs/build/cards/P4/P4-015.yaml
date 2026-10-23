@@ -25,6 +25,7 @@ tiers:
 token_budget: 25000
 file_allowlist:
 - tools/content_engine/licences/exclusions.yaml
+- tools/content_engine/linters/exclusion_enforce.py
 - tools/content_engine/tests/test_excl_x_igboapi.py
 context_anchors:
 - CURRICULUM.md#§2.3:L244-L245
@@ -58,7 +59,7 @@ risks: []
 gate: G4
 external_blockers:
 - EXT-05
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging

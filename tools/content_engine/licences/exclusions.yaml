@@ -80,6 +80,10 @@ sources:
   igboapi:
     status: excluded
     licence: "CC BY-NC-SA 4.0"
+    code_licence: "Apache-2.0"
+    code_status: allowed
+    ext05_status: Open
+    licensor: "Nkọwa okwu"
     reason: "The code being Apache-2.0 does not license the data."
     commercial_licence_document: ""
     counsel_status: ""

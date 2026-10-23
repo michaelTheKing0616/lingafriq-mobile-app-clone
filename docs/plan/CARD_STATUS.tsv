@@ -636,7 +636,7 @@ P4-011	Done	Declare JW300, MAFAND-MT and MasakhaNER excluded	P4/P4-011.yaml
 P4-012	Done	Exclude AfriSenti pending creator confirmation	P4/P4-012.yaml
 P4-013	Done	Exclude PanLex pending written permission	P4/P4-013.yaml
 P4-014	Done	Exclude NaijaVoices unless waiver purchased	P4/P4-014.yaml
-P4-015	Draft	Exclude IgboAPI data pending licence from Nkọwa okwu	P4/P4-015.yaml
+P4-015	Done	Exclude IgboAPI data pending licence from Nkọwa okwu	P4/P4-015.yaml
 P4-016	Draft	Exclude Kamusi pending commercial licence	P4/P4-016.yaml
 P4-017	Draft	Exclude Helsinki Corpus of Swahili without ELRA licence	P4/P4-017.yaml
 P4-018	Draft	Record Oxford datasets as licence-required sources	P4/P4-018.yaml

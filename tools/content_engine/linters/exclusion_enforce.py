@@ -232,7 +232,13 @@ def _as_bool(value: Any) -> bool:
 
 
 def _exclusion_lifted(row: Mapping[str, Any]) -> bool:
-    """True only when the row stores a document and counsel_status confirmed."""
+    """True only when the row stores a document and counsel_status confirmed.
+
+    When ext05_status is present and not exactly Received, the block stays up
+    even with a document and confirmed counsel.
+    """
+    if "ext05_status" in row and _string_field(row, "ext05_status") != "Received":
+        return False
     return (
         _commercial_document(row) != ""
         and _counsel_status(row) == _COUNSEL_CONFIRMED

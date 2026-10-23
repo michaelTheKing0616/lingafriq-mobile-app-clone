@@ -144,3 +144,4 @@ P4-011,build,T1,composer-2.5-fast,n/a,n/a,1,pass,JW300 is declared excluded and 
 P4-012,build,T1,composer-2.5-fast,n/a,n/a,1,pass,AfriSenti stays excluded. The HF CC BY 4.0 label is stored as a conflict and does not allow a use.
 P4-013,build,T1,composer-2.5-fast,n/a,n/a,1,pass,PanLex stays excluded. The permission draft is pending and unsent. No use is allowed.
 P4-014,build,T1,composer-2.5-fast,n/a,n/a,1,pass,NaijaVoices stays excluded. The membership price is an unverified curriculum quote and the waiver is not purchased.
+P4-015,build,T1,composer-2.5-fast,n/a,n/a,1,pass,IgboAPI data stays excluded. Apache-2.0 covers the code only. EXT-05 is Open, so a document does not unlock the data.
