@@ -117,3 +117,4 @@ P2-040,build,T1,grok-4.7,n/a,n/a,1,pass,318 root notes moved with matching hashe
 P2-043,build,T3,grok-4.7,n/a,n/a,1,pass,FSRS-6 matches the published vectors within 1e-6. Fuzzing is off. The four named schedulers no longer use SM-2 or HLR.
 P2-044,build,T1,grok-4.7,n/a,n/a,1,pass,FSRS mutation score is 130/147 (0.8844). Seventeen survivors are listed. Four mutants do not compile and are not scored. A score under 80 percent fails the gate.
 P2-045,build,T3,grok-4.7,n/a,n/a,1,pass,One graph per learner and language. Evidence updates FSRS state, channel strength, and one error counter. Rebuilding the event log matches the stored graph.
+P2-046,build,T2,grok-4.7,n/a,n/a,1,pass,Due and weak nodes rank by recall, then error count. Polie receives at most the configured weak items and no learner id. An empty graph returns an empty result.

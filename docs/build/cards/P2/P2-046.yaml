@@ -27,6 +27,7 @@ file_allowlist:
 - lib/services/learning/knowledge_graph_queries.dart
 - lib/services/hybrid_polie/polie_context_builder.dart
 - lib/services/learning/session_builder.dart
+- test/learning/knowledge_graph_queries_test.dart
 context_anchors:
 - ELEVATION.md#§6.3:L1218-L1219
 acceptance_criteria:
@@ -56,10 +57,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- Due, weak, and the Polie item cap are the builder default.
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging
