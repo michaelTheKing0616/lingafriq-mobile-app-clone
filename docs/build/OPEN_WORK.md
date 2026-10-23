@@ -101,3 +101,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-089 | open | P2-042 | The event log is the new write. Vocabulary SM-2, chat SM-2, game SM-2, and BKT/HLR still update themselves. |
 | OW-090 | open | P2-022 | The onboarding-to-sync test uses Drift and a local events fixture. It does not tap the onboarding screens and it does not start Workmanager. |
 | OW-091 | open | P2-028 | The offline breach-check test does not see the winston warning. The hash is still stored when that check is down, and the password is not sent to the breach service. |
+| OW-092 | open | P2-029 | Ten profile cold starts on a mid-range Android are not recorded. The budget is 2 seconds. The splash no longer waits 1.2 seconds. |

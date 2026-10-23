@@ -29,6 +29,8 @@ import 'services/localization/dynamic_localization_service.dart' show DynamicLoc
 import 'services/advanced/smart_recommendations.dart';
 import 'services/monitoring/crash_reporter.dart';
 import 'services/monitoring/sentry_service.dart';
+import 'services/monitoring/startup_schedule.dart';
+import 'services/performance_monitor.dart';
 import 'services/deep_link_service.dart';
 import 'config/secrets_manager.dart';
 import 'package:rive/rive.dart';
@@ -37,8 +39,8 @@ import 'utils/structured_logger.dart';
 import 'utils/polie_design_tokens.dart';
 
 void main() async {
+  final coldStart = Stopwatch()..start();
   WidgetsFlutterBinding.ensureInitialized();
-  await RiveNative.init();
 
   FlutterError.onError = (details) {
     final report = CrashReporter.instance.report(
@@ -50,105 +52,82 @@ void main() async {
   };
 
   runZonedGuarded(() async {
-  // Initialize local database for offline mode
-  SchemaMigrationFailure? schemaRecovery;
-  try {
-    await LocalDatabaseService().init();
-    logger.info('Local database initialized');
-  } on SchemaMigrationFailure catch (failure) {
-    schemaRecovery = failure;
-    logger.warning('Local schema migration needs recovery', error: failure);
-  } catch (e) {
-    logger.warning('Failed to initialize local database: $e');
-  }
-
-  // Load .env file if it exists (for development/local configuration)
-  // In production, use --dart-define or secure storage
-  try {
-    await dotenv.load(fileName: ".env");
-    logger.info('Loaded .env file successfully');
-  } catch (e) {
-    // .env file not found - this is OK, we'll use --dart-define or secure storage
-    logger.debug('Note: .env file not found. Using build-time variables or secure storage.');
-  }
-  
-  // Configure image cache for optimal performance
-  ImageCacheManager.configureCache();
-  final prefs = await SharedPreferences.getInstance();
-
-  // Polie: apply serif language text preference from settings
-  final polieSerif = prefs.getBool('polie_serif_language_text') ?? false;
-  PolieTypography.setUseSerifForLanguageText(polieSerif);
-  
-  // Initialize Firebase
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
-
-  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-  await FirebaseMessagingProvider.init();
-
-  // Initialize Offline Services
-  try {
-    await PersistedOutboxService.instance.start();
-    await LowBandwidthMode.instance.refresh();
-    await ConflictResolutionService().initialize();
-    await CacheCompressionService().initialize();
-    await CacheEncryptionService().initialize();
-    await OfflineAnalyticsService().initialize();
-    logger.info('Offline services initialized successfully');
-  } catch (e) {
-    logger.error('Error initializing offline services', error: e);
-  }
-
-  // Initialize Auth Services
-  try {
-    await CredentialStorageService().initialize();
-    // BiometricAuthService doesn't need initialization
-    logger.info('Auth services initialized successfully');
-  } catch (e) {
-    logger.error('Error initializing auth services', error: e);
-  }
-
-  // Initialize Localization & Features
-  try {
-    await DynamicLocalizationService.initialize();
-
-    // Priority: saved `app_language` (settings / prior session) → onboarding
-    // `proficiency_language` → first-launch device locale. Never clobber an
-    // explicit `app_language` with device locale.
-    final savedAppLang = prefs.getString('app_language');
-    if (savedAppLang == null || savedAppLang.isEmpty) {
-      final profLang = prefs.getString('proficiency_language');
-      if (profLang != null && profLang.isNotEmpty) {
-        await DynamicLocalizationService.setLanguage(profLang);
-        logger.info('Applied onboarding UI language: $profLang');
-      } else {
-        final deviceLocale = Platform.localeName.split('_').first.toLowerCase();
-        final detectedLanguage = _detectLanguageFromLocale(deviceLocale);
-        if (detectedLanguage != null) {
-          await DynamicLocalizationService.setLanguage(detectedLanguage.code);
-          logger.info('First launch: device UI language ${detectedLanguage.code}');
-        }
-      }
+    try {
+      await dotenv.load(fileName: ".env");
+      logger.info('Loaded .env file successfully');
+    } catch (e) {
+      logger.debug('Note: .env file not found. Using build-time variables or secure storage.');
     }
 
-    await SmartRecommendationsService().initialize();
-    logger.info('Localization and features initialized successfully');
-  } catch (e) {
-    logger.error('Error initializing localization services', error: e);
-  }
+    final recovery = <SchemaMigrationFailure>[];
+    SharedPreferences? prefs;
+    await runStartup(
+      sentry: _startCrashReporter,
+      parallel: {
+        'database': () => _openDatabase(recovery),
+        'preferences': () async {
+          prefs = await SharedPreferences.getInstance();
+        },
+        'firebase': () => Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
+        'rive': RiveNative.init,
+      },
+      deferred: {
+        'offline': _startDeferredServices,
+        'recommendations': () => SmartRecommendationsService().initialize(),
+      },
+      onFirstFrame: (task) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          unawaited(task());
+        });
+      },
+    );
 
-  // Initialize Secrets Manager and Sentry
+    final stored = prefs;
+    if (stored == null) {
+      throw StateError('preferences did not open');
+    }
+    ImageCacheManager.configureCache();
+    PolieTypography.setUseSerifForLanguageText(stored.getBool('polie_serif_language_text') ?? false);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+    await FirebaseMessagingProvider.init();
+    try {
+      await CredentialStorageService().initialize();
+      logger.info('Auth services initialized successfully');
+    } catch (e) {
+      logger.error('Error initializing auth services', error: e);
+    }
+    await _applyLanguage(stored);
+    try {
+      DeepLinkService().initialize();
+      logger.info('Deep link service initialized successfully');
+    } catch (e) {
+      logger.error('Error initializing deep link service', error: e);
+    }
+
+    startupPerformance.recordTiming('cold_start', coldStart.elapsed);
+    if (recovery.isNotEmpty) {
+      runApp(SchemaRecoveryApp(failure: recovery.single));
+      return;
+    }
+
+    runApp(ProviderScope(
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(SharedPreferencesProvider(stored)),
+      ],
+      child: const MyApp(),
+    ));
+  }, (error, stack) {
+    logger.error('Unhandled error', error: error, stackTrace: stack);
+  });
+}
+
+Future<void> _startCrashReporter() async {
   try {
     await SecretsManager().initialize();
-    
-    // Initialize Sentry for error tracking
     final sentryDsn = SecretsManager().sentryDsn;
     CrashReporter.instance.log = (message) => logger.error(message);
     final started = await CrashReporter.instance.initialize(
@@ -165,46 +144,72 @@ void main() async {
     );
     if (!started) {
       logger.error(CrashReporter.instance.diagnostic ?? 'crash reporter failed to start');
+      return;
+    }
+    final previousAnrs = await CrashReporter.instance.collectPreviousAnrs();
+    for (final anr in previousAnrs) {
+      logger.error('previous anr', context: Map<String, dynamic>.from(anr));
+    }
+    if (sentryDsn == null || sentryDsn.isEmpty) {
+      logger.debug('Sentry DSN not configured, skipping initialization');
     } else {
-      final previousAnrs = await CrashReporter.instance.collectPreviousAnrs();
-      for (final anr in previousAnrs) {
-        logger.error('previous anr', context: Map<String, dynamic>.from(anr));
-      }
-      if (sentryDsn == null || sentryDsn.isEmpty) {
-        logger.debug('Sentry DSN not configured, skipping initialization');
-      } else {
-        logger.info('Sentry initialized successfully', context: {
-          'environment': kDebugMode ? 'development' : 'production',
-        });
-      }
+      logger.info('Sentry initialized successfully', context: {
+        'environment': kDebugMode ? 'development' : 'production',
+      });
     }
   } catch (e) {
     logger.error('Error initializing monitoring services', error: e);
-    // Don't fail app startup if monitoring fails
   }
+}
 
-  // Initialize Deep Link Service
+Future<void> _openDatabase(List<SchemaMigrationFailure> recovery) async {
   try {
-    DeepLinkService().initialize();
-    logger.info('Deep link service initialized successfully');
+    await LocalDatabaseService().init();
+    logger.info('Local database initialized');
+  } on SchemaMigrationFailure catch (failure) {
+    recovery.add(failure);
+    logger.warning('Local schema migration needs recovery', error: failure);
   } catch (e) {
-    logger.error('Error initializing deep link service', error: e);
+    logger.warning('Failed to initialize local database: $e');
   }
+}
 
-    if (schemaRecovery != null) {
-      runApp(SchemaRecoveryApp(failure: schemaRecovery));
-      return;
+Future<void> _startDeferredServices() async {
+  try {
+    await PersistedOutboxService.instance.start();
+    await LowBandwidthMode.instance.refresh();
+    await ConflictResolutionService().initialize();
+    await CacheCompressionService().initialize();
+    await CacheEncryptionService().initialize();
+    await OfflineAnalyticsService().initialize();
+    logger.info('Offline services initialized successfully');
+  } catch (e) {
+    logger.error('Error initializing offline services', error: e);
+  }
+}
+
+Future<void> _applyLanguage(SharedPreferences prefs) async {
+  try {
+    await DynamicLocalizationService.initialize();
+    final savedAppLang = prefs.getString('app_language');
+    if (savedAppLang == null || savedAppLang.isEmpty) {
+      final profLang = prefs.getString('proficiency_language');
+      if (profLang != null && profLang.isNotEmpty) {
+        await DynamicLocalizationService.setLanguage(profLang);
+        logger.info('Applied onboarding UI language: $profLang');
+      } else {
+        final deviceLocale = Platform.localeName.split('_').first.toLowerCase();
+        final detectedLanguage = _detectLanguageFromLocale(deviceLocale);
+        if (detectedLanguage != null) {
+          await DynamicLocalizationService.setLanguage(detectedLanguage.code);
+          logger.info('First launch: device UI language ${detectedLanguage.code}');
+        }
+      }
     }
-
-    runApp(ProviderScope(
-      overrides: [
-        sharedPreferencesProvider.overrideWithValue(SharedPreferencesProvider(prefs)),
-      ],
-      child: const MyApp(),
-    ));
-  }, (error, stack) {
-    logger.error('Unhandled error', error: error, stackTrace: stack);
-  });
+    logger.info('Localization and features initialized successfully');
+  } catch (e) {
+    logger.error('Error initializing localization services', error: e);
+  }
 }
 
 /// Detect AppLanguage from device locale

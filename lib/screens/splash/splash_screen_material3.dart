@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -25,7 +23,6 @@ class _SplashScreenMaterial3State extends ConsumerState<SplashScreenMaterial3> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       try {
-        await Future.delayed(const Duration(milliseconds: 1200));
         if (!mounted) return;
         // Use a generous timeout (30s) for the full navigation flow.
         // navigateBasedOnCondition() may need to read PackageInfo,

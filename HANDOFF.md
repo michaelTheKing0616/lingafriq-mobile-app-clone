@@ -8,15 +8,15 @@ The Firebase service account, the Apple `.p8`, and the five client AI keys stay 
 
 Work is continuous on `cloud-handoff`. Do not pause between cards. The key files remain tracked.
 
-- Mobile: `cloud-handoff`. Latest card push is P2-037. A previous Android ANR is read from the process exit and scrubbed.
+- Mobile: `cloud-handoff`. Latest card push is P2-029. Sentry starts first. The splash no longer waits 1.2 seconds.
 - Backend: `cloud-handoff`. Latest card push is P2-028. A 5-character password is checked against the hash. New passwords still require 8 characters. HS256 still verifies.
 - The key files are still tracked. Copies also exist in `~/.lingafriq/secrets/` (mode 600). History was not rewritten.
 - Admin gamification edits were not part of this build. They are in git stash `admin-gamification-wip-not-this-build` on `lingafriq-admin` `cloud-handoff`.
-- P2-037 is done. Next card is P2-029. P7-961 does not jump this queue.
+- P2-029 is done. Next card is P2-030. P2-031 stays a live-host switch-on and is not Done. P7-961 does not jump this queue.
 
 ## Next 3 steps
 
-1. Build P2-029, then the next card. Build any unfinished dependency first. The host switches below do not stop the queue.
+1. Build P2-030. The live two-replica switch-on does not stop the worker card. Build any unfinished dependency first.
 2. Do not stop to ask what is next.
 3. Do not remove the Firebase service account, the Apple `.p8`, or the five client AI keys. Intron stays off until its flag and server key are set.
 
@@ -100,3 +100,4 @@ Decisions for 2026-10-22 are signed in `docs/build/DECISIONS.md`. These still ne
 - Tope to switch on: the private Cloudflare R2 bucket (`SNAP_STORAGE=r2` plus `R2_ACCOUNT_ID`, `R2_BUCKET`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`).
 - Tope to switch on: the named native reviewer for each locale (D18).
 - Heritage Fund percent and marketplace share stay blank until EXT-03.
+- Tope to switch on: ten profile cold starts on a mid-range Android. Each must be under 2 seconds to the first meaningful frame.

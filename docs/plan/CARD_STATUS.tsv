@@ -494,7 +494,7 @@ P2-025	Done	Add passkey sign-in and sign-up	P2/P2-025.yaml
 P2-026	Done	Add Google and Apple sign-in	P2/P2-026.yaml
 P2-027	Done	Add email magic link sign-in	P2/P2-027.yaml
 P2-028	Done	Rehash legacy passwords with Argon2id and enforce password rules	P2/P2-028.yaml
-P2-029	Draft	Start Sentry first and cut cold start under 2 s	P2/P2-029.yaml
+P2-029	Done	Start Sentry first and cut cold start under 2 s	P2/P2-029.yaml
 P2-030	Draft	Split worker service on BullMQ with leader-elected cron	P2/P2-030.yaml
 P2-031	Ready	Add health, readiness probes and graceful shutdown	P2/P2-031.yaml
 P2-032	Draft	Configure Atlas backups and quarterly restore drill	P2/P2-032.yaml
