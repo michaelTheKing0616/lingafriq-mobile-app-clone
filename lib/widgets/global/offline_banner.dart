@@ -10,6 +10,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:lingafriq/services/connectivity_service.dart';
 import '../../services/offline/persisted_outbox_service.dart';
+import '../sync_status_chip.dart';
 
 class OfflineBanner extends StatefulWidget {
   final Widget child;
@@ -87,7 +88,11 @@ class _OfflineBannerState extends State<OfflineBanner> {
 
   @override
   Widget build(BuildContext context) {
-    final showBanner = widget.showWhenOnline ? _isOnline : !_isOnline;
+    final needsAttention = !_isOnline ||
+        _syncStatus['is_syncing'] == true ||
+        _count('pending_count') > 0 ||
+        _count('dead_letter_count') > 0;
+    final showBanner = needsAttention || widget.showWhenOnline;
 
     return Stack(
       children: [
@@ -103,76 +108,28 @@ class _OfflineBannerState extends State<OfflineBanner> {
     );
   }
 
-  Widget _buildBanner() {
-    if (_isOnline) {
-      final pendingCount = _syncStatus['pending_count'] ?? 0;
-      if (pendingCount > 0) {
-        return _buildSyncBanner(pendingCount);
-      }
-      return const SizedBox.shrink();
-    }
-
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      color: Colors.orange[700],
-      child: SafeArea(
-        bottom: false,
-        child: Builder(
-          builder: (context) => Row(
-            children: [
-              Icon(Icons.cloud_off, color: Theme.of(context).colorScheme.onSurface, size: 20),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  'You are offline',
-                  style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontWeight: FontWeight.w500),
-                ),
-              ),
-              if (_syncStatus['queue_length'] != null && _syncStatus['queue_length'] > 0)
-                Text(
-                  '${_syncStatus['queue_length']} pending',
-                  style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 12),
-                ),
-            ],
-          ),
-        ),
-      ),
-    );
+  int _count(String key) {
+    final value = _syncStatus[key];
+    return value is int ? value : 0;
   }
 
-  Widget _buildSyncBanner(int pendingCount) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      color: Colors.blue[700],
-      child: SafeArea(
-        bottom: false,
-        child: Builder(
-          builder: (context) => Row(
-            children: [
-              Icon(Icons.sync, color: Theme.of(context).colorScheme.onSurface, size: 20),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  'Syncing $pendingCount item${pendingCount != 1 ? 's' : ''}...',
-                  style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontWeight: FontWeight.w500),
-                ),
-              ),
-              if (_syncStatus['is_syncing'] == true)
-                SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onSurface),
-                  ),
-                ),
-            ],
-          ),
-        ),
-      ),
+  Widget _buildBanner() {
+    final chip = SyncStatusChip(
+      online: _isOnline,
+      syncing: _syncStatus['is_syncing'] == true,
+      pending: _count('pending_count'),
+      failed: _count('dead_letter_count'),
+      onRetry: () {
+        unawaited(PersistedOutboxService.instance.flushPending());
+      },
     );
+    if (_isOnline &&
+        _syncStatus['is_syncing'] != true &&
+        _count('pending_count') == 0 &&
+        _count('dead_letter_count') == 0) {
+      return const SizedBox.shrink();
+    }
+    return SafeArea(bottom: false, child: chip);
   }
 }
 

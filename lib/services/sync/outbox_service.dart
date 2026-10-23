@@ -86,6 +86,23 @@ class OutboxRecord {
 const String outboxPendingState = 'pending';
 const String outboxDeadLetterState = 'dead_letter';
 
+enum SyncVisibility { synced, pending, syncing, failed, offline }
+
+/// Offline wins over every other state, so the chip never reads synced
+/// while the device has no connection.
+SyncVisibility syncVisibility({
+  required bool online,
+  required bool syncing,
+  required int pending,
+  required int failed,
+}) {
+  if (!online) return SyncVisibility.offline;
+  if (failed > 0) return SyncVisibility.failed;
+  if (syncing) return SyncVisibility.syncing;
+  if (pending > 0) return SyncVisibility.pending;
+  return SyncVisibility.synced;
+}
+
 class OutboxService {
   OutboxService({
     LingAfriqDatabase? database,

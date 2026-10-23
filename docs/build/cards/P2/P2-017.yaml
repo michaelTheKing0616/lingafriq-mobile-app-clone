@@ -28,6 +28,9 @@ file_allowlist:
 - lib/widgets/sync_status_chip.dart
 - lib/services/sync/outbox_service.dart
 - test/golden/sync_status_chip_test.dart
+- test/golden/goldens/sync_status_chip_states.png
+- lib/widgets/global/offline_banner.dart
+- lib/services/offline/persisted_outbox_service.dart
 context_anchors:
 - ELEVATION.md#§13.5:L1915
 acceptance_criteria:
@@ -78,10 +81,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "The chip hides when everything is synced. Offline, pending, syncing, and failed stay visible. Retry calls the same outbox flush."
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - prime/error-handling-ux

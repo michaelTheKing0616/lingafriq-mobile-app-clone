@@ -148,6 +148,7 @@ class PersistedOutboxService {
   String? _installId;
   String? _appVersion;
   bool _isOnline = true;
+  bool _isSyncing = false;
   Timer? _connectivityTimer;
 
   bool get isOnline => _isOnline;
@@ -190,7 +191,7 @@ class PersistedOutboxService {
   Map<String, dynamic> getSyncStatus() {
     return {
       'is_online': _isOnline,
-      'is_syncing': false,
+      'is_syncing': _isSyncing,
       'queue_length': pendingCount,
       'pending_count': pendingCount,
       'failed_count': deadLetterCount,
@@ -271,19 +272,24 @@ class PersistedOutboxService {
     }
 
     await ApiService.initialize();
-    final worker = OutboxWorker(
-      store: _store,
-      transport: _ApiOutboxTransport(),
-      random: Random(),
-    );
-    final removed = await worker.flush(batchSize: batchSize);
+    _isSyncing = true;
     try {
-      await ToneTrainerQueueService.instance.flushPending();
-    } catch (error, stack) {
-      logger.error('Tone trainer flush failed; rows kept', error: error, stackTrace: stack);
+      final worker = OutboxWorker(
+        store: _store,
+        transport: _ApiOutboxTransport(),
+        random: Random(),
+      );
+      final removed = await worker.flush(batchSize: batchSize);
+      try {
+        await ToneTrainerQueueService.instance.flushPending();
+      } catch (error, stack) {
+        logger.error('Tone trainer flush failed; rows kept', error: error, stackTrace: stack);
+      }
+      await _observeConflicts();
+      return removed;
+    } finally {
+      _isSyncing = false;
     }
-    await _observeConflicts();
-    return removed;
   }
 
   Future<void> _observeConflicts() async {
