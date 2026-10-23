@@ -25,9 +25,10 @@ tiers:
   justification: 'score 7: blast 3, coupling 2, depth 1'
 token_budget: 70000
 file_allowlist:
-- node-backend/src/models/featureFlag.model.ts
 - node-backend/src/services/featureFlag.service.ts
+- node-backend/src/__test__/P2-038.flags.test.ts
 - lib/services/feature_flag_service.dart
+- test/services/feature_flag_service_test.dart
 - docs/ops/rollout.md
 context_anchors:
 - ELEVATION.md#§13.9:L1956
@@ -61,10 +62,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- 'The client cache turns a feature off after 60 seconds or when evaluation fails. It does not fetch flags from the API yet. A percent snaps down to 1, 10, 50, or 100.'
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging
