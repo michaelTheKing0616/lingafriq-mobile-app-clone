@@ -1,0 +1,250 @@
+charter: v2
+items:
+  - T1
+  - T2
+  - T3
+  - T4a
+  - T4b
+  - T5
+sources:
+  fsi-yoruba:
+    T1: "yes"
+    T2: "no"
+    T3: "no"
+    T4a: "no"
+    T4b: "no"
+    T5: "no"
+  fsi-igbo:
+    T1: "yes"
+    T2: "no"
+    T3: "no"
+    T4a: "no"
+    T4b: "no"
+    T5: "no"
+  fsi-hausa:
+    T1: "yes"
+    T2: "no"
+    T3: "no"
+    T4a: "no"
+    T4b: "no"
+    T5: "no"
+  fsi-swahili:
+    T1: "yes"
+    T2: "no"
+    T3: "no"
+    T4a: "no"
+    T4b: "no"
+    T5: "no"
+  peace-corps-hausa:
+    T1:
+      answer: not-applicable
+      reason: "Not established for every item; verify per item before copying."
+    T2:
+      answer: not-applicable
+      reason: "Not established for every item; verify per item before copying."
+    T3:
+      answer: not-applicable
+      reason: "Not established for every item; verify per item before copying."
+    T4a:
+      answer: not-applicable
+      reason: "Not established for every item; verify per item before copying."
+    T4b:
+      answer: not-applicable
+      reason: "Not established for every item; verify per item before copying."
+    T5:
+      answer: not-applicable
+      reason: "Not established for every item; verify per item before copying."
+  peace-corps-kiswahili:
+    T1:
+      answer: not-applicable
+      reason: "Not established for every item; verify per item before copying."
+    T2:
+      answer: not-applicable
+      reason: "Not established for every item; verify per item before copying."
+    T3:
+      answer: not-applicable
+      reason: "Not established for every item; verify per item before copying."
+    T4a:
+      answer: not-applicable
+      reason: "Not established for every item; verify per item before copying."
+    T4b:
+      answer: not-applicable
+      reason: "Not established for every item; verify per item before copying."
+    T5:
+      answer: not-applicable
+      reason: "Not established for every item; verify per item before copying."
+  peace-corps-zulu:
+    T1:
+      answer: not-applicable
+      reason: "Not established for every item; verify per item before copying."
+    T2:
+      answer: not-applicable
+      reason: "Not established for every item; verify per item before copying."
+    T3:
+      answer: not-applicable
+      reason: "Not established for every item; verify per item before copying."
+    T4a:
+      answer: not-applicable
+      reason: "Not established for every item; verify per item before copying."
+    T4b:
+      answer: not-applicable
+      reason: "Not established for every item; verify per item before copying."
+    T5:
+      answer: not-applicable
+      reason: "Not established for every item; verify per item before copying."
+  peace-corps-yoruba:
+    T1:
+      answer: not-applicable
+      reason: "Not established for every item; verify per item before copying."
+    T2:
+      answer: not-applicable
+      reason: "Not established for every item; verify per item before copying."
+    T3:
+      answer: not-applicable
+      reason: "Not established for every item; verify per item before copying."
+    T4a:
+      answer: not-applicable
+      reason: "Not established for every item; verify per item before copying."
+    T4b:
+      answer: not-applicable
+      reason: "Not established for every item; verify per item before copying."
+    T5:
+      answer: not-applicable
+      reason: "Not established for every item; verify per item before copying."
+  wiktionary-kaikki:
+    T1: no
+    T2: no
+    T3: yes
+    T4a: no
+    T4b: no
+    T5: no
+  ud-yoruba-ytb:
+    T1: no
+    T2: no
+    T3: yes
+    T4a: no
+    T4b: no
+    T5: no
+  ud-naija-nsc:
+    T1: no
+    T2: no
+    T3: yes
+    T4a: no
+    T4b: no
+    T5: no
+  biblica-yoruba:
+    T1: no
+    T2: no
+    T3: yes
+    T4a: no
+    T4b: no
+    T5: no
+  biblica-hausa:
+    T1: no
+    T2: no
+    T3: yes
+    T4a: no
+    T4b: no
+    T5: no
+  leipzig-corpora:
+    T1: no
+    T2:
+      answer: not-applicable
+      reason: "Paper 2606.28867: a Leipzig CC BY label may not cover the underlying text."
+    T3: no
+    T4a: no
+    T4b: no
+    T5: no
+  fleurs:
+    T1: no
+    T2: yes
+    T3: no
+    T4a: no
+    T4b: no
+    T5: no
+  waxal-ghana:
+    T1: no
+    T2:
+      answer: not-applicable
+      reason: "Paper 2606.28867 contradicts a blanket WAXAL CC-BY 4.0 claim."
+    T3: no
+    T4a: no
+    T4b: no
+    T5: no
+  waxal-other:
+    T1: no
+    T2: no
+    T3: yes
+    T4a: no
+    T4b: no
+    T5: no
+  african-storybook:
+    T1: no
+    T2: yes
+    T3: no
+    T4a:
+      answer: not-applicable
+      reason: "register excluded_uses: CC BY-NC stories"
+    T4b: no
+    T5: no
+  common-voice-yo:
+    T1: "yes"
+    T2: "no"
+    T3: "no"
+    T4a: "no"
+    T4b: "no"
+    T5: "no"
+  common-voice-ha:
+    T1: "yes"
+    T2: "no"
+    T3: "no"
+    T4a: "no"
+    T4b: "no"
+    T5: "no"
+  common-voice-ig:
+    T1: "yes"
+    T2: "no"
+    T3: "no"
+    T4a: "no"
+    T4b: "no"
+    T5: "no"
+  common-voice-sw:
+    T1: "yes"
+    T2: "no"
+    T3: "no"
+    T4a: "no"
+    T4b: "no"
+    T5: "no"
+  common-voice-zu:
+    T1: "yes"
+    T2: "no"
+    T3: "no"
+    T4a: "no"
+    T4b: "no"
+    T5: "no"
+  common-voice-xh:
+    T1: "yes"
+    T2: "no"
+    T3: "no"
+    T4a: "no"
+    T4b: "no"
+    T5: "no"
+  lanfrica:
+    T1:
+      answer: not-applicable
+      reason: "Discovery only; always verify the licence at the source."
+    T2:
+      answer: not-applicable
+      reason: "Discovery only; always verify the licence at the source."
+    T3:
+      answer: not-applicable
+      reason: "Discovery only; always verify the licence at the source."
+    T4a:
+      answer: not-applicable
+      reason: "Discovery only; always verify the licence at the source."
+    T4b:
+      answer: not-applicable
+      reason: "Discovery only; always verify the licence at the source."
+    T5:
+      answer: not-applicable
+      reason: "Discovery only; always verify the licence at the source."

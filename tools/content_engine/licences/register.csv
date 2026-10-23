@@ -1,4 +1,4 @@
-source_id,url,licence,version_or_date,display,evidence,training,attribution_text,owner_signoff,pd_status,modernise_vocabulary,share_alike,religious_register,excluded_uses,languages,permitted_uses,recorded_hours,hours_status,dataset_version,igbo_cc_by_titles
+source_id,url,licence,version_or_date,display,evidence,training,attribution_text,owner_signoff,pd_status,modernise_vocabulary,share_alike,religious_register,excluded_uses,languages,permitted_uses,recorded_hours,hours_status,dataset_version,igbo_cc_by_titles,discovery_only
 fsi-yoruba,CURRICULUM.md#§2.2:L124-L134,public-domain,"380 pp + tone drills + Intermediate Texts",false,true,false,US government work (Foreign Service Institute Basic Course). Public domain.,,confirmed,true
 fsi-igbo,CURRICULUM.md#§2.2:L124-L134,public-domain,1962,false,true,false,US government work (Foreign Service Institute Basic Course). Public domain.,,confirmed,true
 fsi-hausa,CURRICULUM.md#§2.2:L124-L134,public-domain,See CURRICULUM §2.2 L124-L127,false,true,false,US government work (Foreign Service Institute Basic Course). Public domain.,,confirmed,true
@@ -23,3 +23,4 @@ common-voice-ig,CURRICULUM.md#§2.2:L170-L177,CC0,not stated in §2.2,false,true
 common-voice-sw,CURRICULUM.md#§2.2:L170-L177,CC0,27.0,false,true,false,,,,,,,,,"display,evidence,training",1065,recorded,27.0
 common-voice-zu,CURRICULUM.md#§2.2:L170-L177,CC0,not stated in §2.2,false,true,false,,,,,,,,,"display,evidence,training",,verify,
 common-voice-xh,CURRICULUM.md#§2.2:L170-L177,CC0,not stated in §2.2,false,true,false,,,,,,,,,"display,evidence,training",,verify,
+lanfrica,CURRICULUM.md#§2.2:L207-L210,n/a,See CURRICULUM §2.2 L207-L210,false,false,false,Discovery only; always verify the licence at the source.,,,,,,,,,,,,,true

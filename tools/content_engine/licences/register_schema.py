@@ -5,7 +5,12 @@ from __future__ import annotations
 import csv
 import re
 from pathlib import Path
-from typing import Iterable, Mapping, MutableMapping, Sequence
+from typing import Any, Iterable, Mapping, MutableMapping, Sequence
+
+try:
+    import yaml
+except ImportError:  # pragma: no cover
+    yaml = None  # type: ignore[assignment]
 
 REGISTER_CSV_COLUMNS: tuple[str, ...] = (
     "source_id",
@@ -31,7 +36,10 @@ REGISTER_OPTIONAL_COLUMNS: tuple[str, ...] = (
     "hours_status",
     "dataset_version",
     "igbo_cc_by_titles",
+    "discovery_only",
 )
+
+_COMPAT_CHECKLIST_ITEM_NAMES: tuple[str, ...] = ("T1", "T2", "T3", "T4a", "T4b", "T5")
 
 _IGBO_CC_BY_TITLES_RE = re.compile(r"^\d+$")
 
@@ -165,12 +173,26 @@ def _validate_optional_columns(row: Mapping[str, str]) -> None:
                 "igbo_cc_by_titles must be empty, 'none', 'unverified', "
                 f"or digits only, got {igbo_count!r}",
             )
+    discovery_only = row.get("discovery_only", "").strip()
+    if discovery_only and discovery_only not in ("true", "false"):
+        raise LicenceRegisterError(
+            "LICENCE_DISCOVERY_ONLY_INVALID",
+            f"discovery_only must be 'true' or 'false', got {discovery_only!r}",
+        )
 
 
 def apply_pd_status_constraints(row: MutableMapping[str, str]) -> None:
     """Force display and training off when public-domain status is unconfirmed."""
     if row.get("pd_status", "").strip() == "unconfirmed":
         row["display"] = "false"
+        row["training"] = "false"
+
+
+def apply_discovery_only_constraints(row: MutableMapping[str, str]) -> None:
+    """Force all use flags off when the source is discovery-only."""
+    if row.get("discovery_only", "").strip() == "true":
+        row["display"] = "false"
+        row["evidence"] = "false"
         row["training"] = "false"
 
 
@@ -364,6 +386,12 @@ def check_items(
             )
         row = index[source_id]
         validate_row(row)
+        if row.get("discovery_only", "").strip() == "true":
+            raise LicenceRegisterError(
+                "DISCOVERY_ONLY",
+                f"Source {source_id!r} is discovery-only; verify the licence at "
+                "the dataset's own source before use",
+            )
         if source_id == "wiktionary-kaikki" and item.get("copy_into") == "proprietary_lexicon":
             raise LicenceRegisterError(
                 "WIKTIONARY_LEXICON_COPY",
@@ -397,8 +425,112 @@ def load_register_csv(path: Path | str) -> list[dict[str, str]]:
                 if column in raw and raw[column] is not None:
                     row[column] = raw[column]
             apply_pd_status_constraints(row)
+            apply_discovery_only_constraints(row)
             rows.append(row)
         return rows
+
+
+def _parse_checklist_item_value(raw: Any) -> tuple[str, str]:
+    """Return (answer, reason) where reason is empty unless answer is not-applicable."""
+    if isinstance(raw, bool):
+        return ("yes" if raw else "no"), ""
+    if isinstance(raw, str):
+        answer = raw.strip()
+        if answer in ("yes", "no", "not-applicable"):
+            return answer, ""
+        raise LicenceRegisterError(
+            "LICENCE_CHECKLIST_INCOMPLETE",
+            f"Checklist item must be yes, no, or not-applicable, got {raw!r}",
+        )
+    if isinstance(raw, Mapping):
+        answer = str(raw.get("answer", raw.get("value", ""))).strip()
+        reason = str(raw.get("reason", "")).strip()
+        if answer not in ("yes", "no", "not-applicable"):
+            raise LicenceRegisterError(
+                "LICENCE_CHECKLIST_INCOMPLETE",
+                f"Checklist item must be yes, no, or not-applicable, got {answer!r}",
+            )
+        if answer == "not-applicable" and not reason:
+            raise LicenceRegisterError(
+                "LICENCE_CHECKLIST_INCOMPLETE",
+                "not-applicable checklist answers require a reason",
+            )
+        return answer, reason
+    raise LicenceRegisterError(
+        "LICENCE_CHECKLIST_INCOMPLETE",
+        f"Invalid checklist item value: {raw!r}",
+    )
+
+
+def load_compat_checklist(path: Path | str) -> dict[str, Any]:
+    """Load the compatibility checklist YAML (paper Table 2 tier names)."""
+    if yaml is None:
+        raise LicenceRegisterError(
+            "LICENCE_CHECKLIST_INCOMPLETE",
+            "PyYAML is required to load the compatibility checklist",
+        )
+    path = Path(path)
+    with path.open(encoding="utf-8") as handle:
+        data = yaml.safe_load(handle)
+    if not isinstance(data, Mapping):
+        raise LicenceRegisterError(
+            "LICENCE_CHECKLIST_INCOMPLETE",
+            "Compatibility checklist must be a YAML mapping",
+        )
+    return dict(data)
+
+
+def require_checklist(
+    register_rows: Sequence[Mapping[str, str]],
+    checklist: Mapping[str, Any],
+) -> None:
+    """Ensure every register source has a complete tier checklist (Table 2 matrix)."""
+    items_raw = checklist.get("items")
+    if not isinstance(items_raw, list) or not items_raw:
+        raise LicenceRegisterError(
+            "LICENCE_CHECKLIST_INCOMPLETE",
+            "Checklist must define a non-empty items list",
+        )
+    item_names = [str(name).strip() for name in items_raw]
+    if item_names != list(_COMPAT_CHECKLIST_ITEM_NAMES):
+        raise LicenceRegisterError(
+            "LICENCE_CHECKLIST_INCOMPLETE",
+            "Checklist items must match the paper compatibility matrix tier names",
+        )
+    sources_raw = checklist.get("sources")
+    if not isinstance(sources_raw, Mapping):
+        raise LicenceRegisterError(
+            "LICENCE_CHECKLIST_INCOMPLETE",
+            "Checklist must define a sources mapping",
+        )
+    for row in register_rows:
+        source_id = row.get("source_id", "").strip()
+        if not source_id:
+            continue
+        entry = sources_raw.get(source_id)
+        if entry is None:
+            raise LicenceRegisterError(
+                "LICENCE_CHECKLIST_INCOMPLETE",
+                f"No compatibility checklist entry for source_id {source_id!r}",
+            )
+        if not isinstance(entry, Mapping):
+            raise LicenceRegisterError(
+                "LICENCE_CHECKLIST_INCOMPLETE",
+                f"Checklist entry for {source_id!r} must be a mapping",
+            )
+        for name in item_names:
+            if name not in entry:
+                raise LicenceRegisterError(
+                    "LICENCE_CHECKLIST_INCOMPLETE",
+                    f"Checklist for {source_id!r} missing item {name!r}",
+                )
+            raw_value = entry[name]
+            if raw_value is None or (isinstance(raw_value, str) and raw_value.strip() == ""):
+                raise LicenceRegisterError(
+                    "LICENCE_CHECKLIST_INCOMPLETE",
+                    f"Checklist for {source_id!r} has blank item {name!r}",
+                )
+            _parse_checklist_item_value(raw_value)
 
 
 def ensure_row_columns(row: MutableMapping[str, str]) -> None:

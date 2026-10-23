@@ -25,6 +25,7 @@ tiers:
 token_budget: 25000
 file_allowlist:
 - tools/content_engine/licences/register.csv
+- tools/content_engine/licences/register_schema.py
 - tools/content_engine/licences/compat_checklist.yaml
 - tools/content_engine/tests/test_checklist.py
 context_anchors:
@@ -61,7 +62,7 @@ risks: []
 gate: G4
 external_blockers:
 - EXT-03
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging
