@@ -78,7 +78,7 @@ dod_evidence:
 risks: []
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - prime/mobile-app-ui-design

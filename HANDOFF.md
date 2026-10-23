@@ -8,15 +8,15 @@ The Firebase service account, the Apple `.p8`, and the five client AI keys stay 
 
 Work is continuous on `cloud-handoff`. Do not pause between cards. The key files remain tracked.
 
-- Mobile: `cloud-handoff`. Latest card push is P2-052. The FSRS mutation score is 130/147. Fuzzing is off.
+- Mobile: `cloud-handoff`. Latest card push is P2-055. The FSRS mutation score is 130/147. Fuzzing is off.
 - Backend: `cloud-handoff`. Latest card push is P2-049. Flag buckets are stable. HS256 still verifies.
 - The key files are still tracked. Copies also exist in `~/.lingafriq/secrets/` (mode 600). History was not rewritten.
 - Admin gamification edits were not part of this build. They are in git stash `admin-gamification-wip-not-this-build` on `lingafriq-admin` `cloud-handoff`.
-- P2-052 is done. Next card is P2-053. P2-031 stays a live-host switch-on and is not Done. P7-961 does not jump this queue.
+- P2-055 is done. Next card is P2-056. P2-031 stays a live-host switch-on and is not Done. P7-961 does not jump this queue. R3 (P7-951, P7-952, P7-953) does not jump this queue.
 
 ## Next 3 steps
 
-1. Build P2-053, then the next card. Build any unfinished dependency first. The host switches below do not stop the queue.
+1. Build P2-056, then the next card. Build any unfinished dependency first. The host switches below do not stop the queue. Uncalibrated items and a missing scorer must not issue credential evidence.
 2. Do not stop to ask what is next.
 3. Do not remove the Firebase service account, the Apple `.p8`, or the five client AI keys. Intron stays off until its flag and server key are set.
 
@@ -40,15 +40,15 @@ Full exit text: `docs/build/03_PHASES_GATES.md`.
 
 ## Cards
 
-Counts from `docs/plan/CARD_STATUS.tsv` on 2026-10-23: Draft 944, Done 100, Blocked-External 44, Ready 7. The TSV is the list. Do not treat this prose as a second list. R3 is carded on F-007, P7-951, P7-952, and P7-953. It does not jump this queue.
+Counts from `docs/plan/CARD_STATUS.tsv` on 2026-10-23: Draft 941, Done 103, Blocked-External 44, Ready 7. The TSV is the list. Do not treat this prose as a second list. R3 is carded on F-007, P7-951, P7-952, and P7-953. It does not jump this queue.
 
-Nothing is in progress. Mobile `cloud-handoff` latest card is P2-052. Backend `cloud-handoff` latest card is P2-049.
+Nothing is in progress. Mobile `cloud-handoff` latest card is P2-055. Backend `cloud-handoff` latest card is P2-049.
 
-Next card is P2-053 (speaking prompt items scored by the real scorer). P2-052 is Done. After that, continue in plan order.
+Next card is P2-056 (unit checkpoints to can-dos and credential evidence). P2-053, P2-054, and P2-055 are Done. After that, continue in plan order. Do not issue credential evidence from uncalibrated items or without the real scorer. EXT-18 is the NDPC and DPIA switch-on. It does not stop the honest gate.
 
 Do not mark Done: P2-031 (live two replicas), P2-032 (Atlas PITR), P1-004, P1-010, P1-025, P1-020. Do not close G2. Do not jump to P7-961.
 
-Open items are in `docs/build/OPEN_WORK.md`. The newest is OW-104 (dictation and sentence building are not in the lesson quiz yet).
+Open items are in `docs/build/OPEN_WORK.md`. The newest is OW-105 (speaking, conversation, and feedback widgets are not in the lesson quiz yet).
 
 ## Decisions
 
@@ -101,3 +101,4 @@ Decisions for 2026-10-22 are signed in `docs/build/DECISIONS.md`. These still ne
 - Tope to switch on: the named native reviewer for each locale (D18).
 - Heritage Fund percent and marketplace share stay blank until EXT-03.
 - Tope to switch on: ten profile cold starts on a mid-range Android. Each must be under 2 seconds to the first meaningful frame.
+- Tope to switch on: NDPC registration check and the DPIA, including voice-data thresholds (EXT-18). Credential evidence stays unissued until a real scorer and calibrated items exist. The check does not stop the queue.

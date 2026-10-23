@@ -114,3 +114,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-102 | open | P2-050 | Onboarding still shows the static question bank, then reports unsure. Those questions are not calibrated, so the screen does not call the adaptive session. |
 | OW-103 | open | P2-051 | The lesson quiz section does not host the listen, tone, or picture items yet. The widgets grade and play when a screen uses them. |
 | OW-104 | open | P2-052 | Dictation and sentence building are not hosted by the lesson quiz section yet. |
+| OW-105 | open | P2-053 | Speaking, conversation, and item-feedback widgets are not hosted by the lesson quiz section yet. |

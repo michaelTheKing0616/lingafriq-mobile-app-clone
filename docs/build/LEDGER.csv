@@ -124,3 +124,6 @@ P2-049,build,T3,grok-4.7,n/a,n/a,1,pass,Recovered difficulty correlates at least
 P2-050,build,T3,grok-4.7,n/a,n/a,1,pass,1000 simulated placements finished in 8 to 15 items. The result has an ability and a confidence interval. Fewer than 8 calibrated items is provisional and unsure.
 P2-051,build,T2,grok-4.7,n/a,n/a,1,pass,Listen items play the item-bank ref and grade the answer spec. Tone items grade the lexeme tone pattern. A picture without alt text is rejected.
 P2-052,build,T2,grok-4.7,n/a,n/a,1,pass,A missing tone mark is not fully correct. A listed ASCII variant passes with a hint. Sentence building accepts only the orderings on the item.
+P2-053,build,T3,grok-4.7,n/a,n/a,1,pass,A speaking prompt shows a score only with a finite confidence of at least 0.6 from the pronounce endpoint. Low confidence and an unavailable scorer show no number. Raw audio is discarded unless storage was opted in.
+P2-054,build,T3,grok-4.7,n/a,n/a,1,pass,Each can-do is met, not met, or unsure from scored turns. Thin evidence is not met. An unavailable scorer stores nothing.
+P2-055,build,T2,composer-2.5-fast,n/a,n/a,1,pass,Feedback shows the correct form and its audio. A wrong answer shows the item rationale. A missing rationale shows the form only and flags the item.
