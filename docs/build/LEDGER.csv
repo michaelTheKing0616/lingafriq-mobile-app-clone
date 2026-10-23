@@ -96,3 +96,4 @@ P2-016,build,T3,grok-4.7,n/a,n/a,1,pass,The competing offline queues are deleted
 P2-017,build,T1,grok-4.7,n/a,n/a,1,pass,The sync chip shows the pending count, a failed state with Retry, and Offline whenever the device has no connection
 P2-018,build,T3,grok-4.7,n/a,n/a,1,pass,An unavailable pronunciation scorer returns 503 and no score. A failed persona reply is a typed error, not a canned line
 P2-019,build,T2,grok-4.7,n/a,n/a,1,pass,Downloads wait for Wi-Fi unless the learner overrides that download. The unit size is shown, a pack over 30 MB is flagged, and delete frees that unit
+P2-020,build,T2,grok-4.7,n/a,n/a,1,pass,Android Data Saver turns on low-bandwidth mode. A manual choice wins. Chat stays text until audio is tapped, and LazyImage asks for a smaller image

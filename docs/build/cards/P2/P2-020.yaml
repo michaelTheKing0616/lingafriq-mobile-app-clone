@@ -28,7 +28,15 @@ file_allowlist:
 - lib/services/connectivity_service.dart
 - lib/services/performance/low_bandwidth_mode.dart
 - lib/services/media_import_service.dart
-- android/app/src/main/kotlin/DataSaverChannel.kt
+- android/app/src/main/kotlin/com/cracklog/lingafriq/DataSaverChannel.kt
+- android/app/src/main/kotlin/com/cracklog/lingafriq/MainActivity.kt
+- lib/screens/settings/settings_screen_material3.dart
+- lib/main.dart
+- lib/providers/persona_providers.dart
+- lib/widgets/performance/lazy_image.dart
+- lib/utils/performance_utils.dart
+- test/performance/low_bandwidth_mode_test.dart
+- test/golden/goldens/lowbw_settings.png
 context_anchors:
 - ELEVATION.md#§13.5:L1923
 acceptance_criteria:
@@ -75,10 +83,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "Android Data Saver enables the mode on launch. iOS has no Data Saver channel, so the mode stays off there until the learner turns it on. A saved on or off beats detection. Persona replies stay text until the learner taps play. Screens that load images outside LazyImage do not yet request the smaller variant."
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - prime/mobile-app-ui-design

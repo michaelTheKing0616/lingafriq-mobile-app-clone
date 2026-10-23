@@ -8,15 +8,15 @@ The Firebase service account, the Apple `.p8`, and the five client AI keys stay 
 
 Work is continuous on `cloud-handoff`. Do not pause between cards. The key files remain tracked.
 
-- Mobile: `cloud-handoff`. Latest card push is P2-019. Downloads wait for Wi-Fi unless that download is overridden.
+- Mobile: `cloud-handoff`. Latest card push is P2-020. Low-bandwidth mode follows Android Data Saver unless the learner overrides it.
 - Backend: `cloud-handoff`. Latest card push is D27. Doppler loads when `DOPPLER_TOKEN` is set. `.env` is the local fallback.
 - The key files are still tracked. Copies also exist in `~/.lingafriq/secrets/` (mode 600). History was not rewritten.
 - Admin gamification edits were not part of this build. They are in git stash `admin-gamification-wip-not-this-build` on `lingafriq-admin` `cloud-handoff`.
-- P2-019 is done. Downloads wait for Wi-Fi unless that download is overridden. Next card is P2-020. P7-961 does not jump this queue.
+- P2-020 is done. Low-bandwidth mode follows Android Data Saver unless the learner overrides it. Next card is P2-021. P7-961 does not jump this queue.
 
 ## Next 3 steps
 
-1. Build P2-020. The host switches below do not stop the queue.
+1. Build P2-021. The host switches below do not stop the queue.
 2. Do not stop to ask what is next.
 3. Do not remove the Firebase service account, the Apple `.p8`, or the five client AI keys. Intron stays off until its flag and server key are set.
 

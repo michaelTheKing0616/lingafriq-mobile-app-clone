@@ -93,3 +93,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-081 | open | P2-014 | Reads come from the Drift snapshot. Hive is still written as a mirror so an existing install can be imported if the sqlite file is missing. |
 | OW-082 | open | P2-016 | Legacy sync types post to their existing endpoints from the one outbox. Those endpoints do not yet store an idempotency receipt, so a lost 200 can be sent again. |
 | OW-083 | open | P2-019 | Bundled content manifests do not list pack bytes, so a unit with no declared size shows Size not listed until a download records the byte count. |
+| OW-084 | open | P2-020 | iOS has no Data Saver signal, so low-bandwidth mode stays off there until the learner turns it on. Image widgets that do not use LazyImage still request the full image. |

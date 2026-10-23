@@ -12,6 +12,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'performance/low_bandwidth_mode.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'hybrid_polie/translation_service.dart';
 
@@ -110,13 +111,14 @@ class MediaImportService {
     final startTime = DateTime.now();
     
     try {
+      final light = LowBandwidthMode.instance.enabled;
       final XFile? pickedFile = await _imagePicker.pickImage(
         source: source == MediaSource.camera 
             ? ImageSource.camera 
             : ImageSource.gallery,
-        imageQuality: imageQuality,
-        maxWidth: maxWidth ?? 1920,
-        maxHeight: maxHeight ?? 1080,
+        imageQuality: light && imageQuality > 40 ? 40 : imageQuality,
+        maxWidth: light ? 480 : (maxWidth ?? 1920),
+        maxHeight: light ? 480 : (maxHeight ?? 1080),
       );
       
       if (pickedFile == null) {

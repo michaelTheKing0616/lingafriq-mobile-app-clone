@@ -9,6 +9,7 @@ import 'package:lingafriq/ai/personas/historical_persona_registry.dart';
 import 'package:lingafriq/ai/personas/historical_roleplay_controller.dart';
 import 'package:lingafriq/ai/personas/roleplay_assessment_engine.dart';
 import 'package:lingafriq/ai/personas/roleplay_safety_filter.dart';
+import 'package:lingafriq/services/performance/low_bandwidth_mode.dart';
 import 'package:lingafriq/services/voice/persona_tts_controller.dart';
 import 'package:lingafriq/services/classroom/classroom_persona_service.dart';
 import 'package:lingafriq/services/classroom/cross_class_persona_memory.dart';
@@ -192,6 +193,7 @@ class PersonaChatNotifier extends Notifier<PersonaChatState> {
   }
 
   Future<void> _speakResponse(String text) async {
+    if (!loadAudioImmediately(LowBandwidthMode.instance.decision)) return;
     state = state.copyWith(isSpeaking: true);
     try {
       await ref.read(personaTtsControllerProvider).speak(text);

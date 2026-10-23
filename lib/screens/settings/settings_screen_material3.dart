@@ -15,6 +15,7 @@ import 'package:lingafriq/services/offline/persisted_outbox_service.dart'
 import 'package:lingafriq/services/offline/cache_encryption.dart'
     show CacheEncryptionService;
 import 'package:lingafriq/screens/settings/downloads_screen.dart';
+import 'package:lingafriq/services/performance/low_bandwidth_mode.dart';
 import 'package:lingafriq/screens/settings/edit_profile_screen.dart';
 import 'package:lingafriq/screens/settings/change_password_screen.dart';
 import 'package:lingafriq/screens/settings/privacy_settings_screen.dart';
@@ -536,6 +537,8 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       },
                       isDark: isDark.value,
                     ),
+                    _SettingsDivider(isDark: isDark.value),
+                    const LowBandwidthSettingsTile(),
                   ],
                   isDark.value,
                   6,

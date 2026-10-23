@@ -21,6 +21,7 @@ import 'services/offline/conflict_resolution.dart';
 import 'services/offline/cache_compression.dart';
 import 'services/offline/cache_encryption.dart';
 import 'services/offline/offline_analytics.dart';
+import 'services/performance/low_bandwidth_mode.dart';
 // Auth Services
 import 'services/auth/credential_storage_service.dart';
 // Localization & Features
@@ -95,6 +96,7 @@ void main() async {
   // Initialize Offline Services
   try {
     await PersistedOutboxService.instance.start();
+    await LowBandwidthMode.instance.refresh();
     await ConflictResolutionService().initialize();
     await CacheCompressionService().initialize();
     await CacheEncryptionService().initialize();

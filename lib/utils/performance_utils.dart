@@ -4,6 +4,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:lingafriq/services/performance/low_bandwidth_mode.dart';
 
 /// Debouncer for search and other frequent operations
 class Debouncer {
@@ -212,7 +213,7 @@ class LazyImage extends StatelessWidget {
     }
 
     return CachedNetworkImage(
-      imageUrl: imageUrl!,
+      imageUrl: imageLightUrl(imageUrl!, lowBandwidth: LowBandwidthMode.instance.enabled),
       width: width,
       height: height,
       fit: fit,
