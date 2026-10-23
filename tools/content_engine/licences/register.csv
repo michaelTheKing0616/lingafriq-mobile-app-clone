@@ -1,1 +1,9 @@
-source_id,url,licence,version_or_date,display,evidence,training,attribution_text,owner_signoff
+source_id,url,licence,version_or_date,display,evidence,training,attribution_text,owner_signoff,pd_status,modernise_vocabulary
+fsi-yoruba,CURRICULUM.md#§2.2:L124-L134,public-domain,"380 pp + tone drills + Intermediate Texts",false,true,false,US government work (Foreign Service Institute Basic Course). Public domain.,,confirmed,true
+fsi-igbo,CURRICULUM.md#§2.2:L124-L134,public-domain,1962,false,true,false,US government work (Foreign Service Institute Basic Course). Public domain.,,confirmed,true
+fsi-hausa,CURRICULUM.md#§2.2:L124-L134,public-domain,See CURRICULUM §2.2 L124-L127,false,true,false,US government work (Foreign Service Institute Basic Course). Public domain.,,confirmed,true
+fsi-swahili,CURRICULUM.md#§2.2:L124-L134,public-domain,"1968, 150 units",false,true,false,US government work (Foreign Service Institute Basic Course). Public domain.,,confirmed,true
+peace-corps-hausa,CURRICULUM.md#§2.2:L136-L146,public-domain,See CURRICULUM §2.2 L136-L138,false,true,false,"Peace Corps manual (Hausa). Often US-gov public domain, but not established for every item; verify per item before copying.",,unconfirmed,false
+peace-corps-kiswahili,CURRICULUM.md#§2.2:L136-L146,public-domain,See CURRICULUM §2.2 L136-L138,false,true,false,"Peace Corps manual (Kiswahili). Often US-gov public domain, but not established for every item; verify per item before copying.",,unconfirmed,false
+peace-corps-zulu,CURRICULUM.md#§2.2:L136-L146,public-domain,See CURRICULUM §2.2 L136-L138,false,true,false,"Peace Corps manual (Zulu). Often US-gov public domain, but not established for every item; verify per item before copying.",,unconfirmed,false
+peace-corps-yoruba,CURRICULUM.md#§2.2:L136-L146,public-domain,1965 on ERIC,false,true,false,"Peace Corps manual (Yoruba). Often US-gov public domain, but not established for every item; verify per item before copying.",,unconfirmed,false

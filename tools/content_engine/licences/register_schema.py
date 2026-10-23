@@ -19,6 +19,27 @@ REGISTER_CSV_COLUMNS: tuple[str, ...] = (
     "owner_signoff",
 )
 
+REGISTER_OPTIONAL_COLUMNS: tuple[str, ...] = (
+    "pd_status",
+    "modernise_vocabulary",
+)
+
+FSI_NO_COURSE_NOTE = "No FSI Zulu or Xhosa course found"
+
+_ZULU_NON_FSI_GRAMMAR = "Poulos & Msimang [purchase]"
+_XHOSA_NON_FSI_GRAMMAR = "a standard Xhosa reference grammar [linguist to choose]"
+
+_FSI_LANGUAGE_SOURCE_ID: dict[str, str] = {
+    "yo": "fsi-yoruba",
+    "yoruba": "fsi-yoruba",
+    "ig": "fsi-igbo",
+    "igbo": "fsi-igbo",
+    "ha": "fsi-hausa",
+    "hausa": "fsi-hausa",
+    "sw": "fsi-swahili",
+    "swahili": "fsi-swahili",
+}
+
 _REQUIRED_FIELDS: tuple[str, ...] = (
     "url",
     "licence",
@@ -73,8 +94,78 @@ def _licence_restricts_display_training(licence: str) -> bool:
     return _NONCOMMERCIAL_LICENCE_RE.search(licence) is not None
 
 
+def _validate_optional_columns(row: Mapping[str, str]) -> None:
+    pd_status = row.get("pd_status", "").strip()
+    if pd_status and pd_status not in ("confirmed", "unconfirmed"):
+        raise LicenceRegisterError(
+            "LICENCE_PD_STATUS_INVALID",
+            f"pd_status must be 'confirmed' or 'unconfirmed', got {pd_status!r}",
+        )
+    modernise = row.get("modernise_vocabulary", "").strip()
+    if modernise and modernise not in ("true", "false"):
+        raise LicenceRegisterError(
+            "LICENCE_MODERNISE_INVALID",
+            f"modernise_vocabulary must be 'true' or 'false', got {modernise!r}",
+        )
+
+
+def apply_pd_status_constraints(row: MutableMapping[str, str]) -> None:
+    """Force display and training off when public-domain status is unconfirmed."""
+    if row.get("pd_status", "").strip() == "unconfirmed":
+        row["display"] = "false"
+        row["training"] = "false"
+
+
+def non_fsi_grammar(language: str) -> str | None:
+    """Curriculum language-kit grammar locator when no FSI course exists."""
+    code = language.strip().lower()
+    if code in ("zu", "zulu"):
+        return _ZULU_NON_FSI_GRAMMAR
+    if code in ("xh", "xhosa"):
+        return _XHOSA_NON_FSI_GRAMMAR
+    return None
+
+
+def fsi_course(
+    language: str,
+    register_rows: Sequence[Mapping[str, str]],
+) -> Mapping[str, str] | None:
+    """Return the FSI register row for a language code, or None if none exists."""
+    code = language.strip().lower()
+    if code in ("zu", "xh", "zulu", "xhosa"):
+        return None
+    source_id = _FSI_LANGUAGE_SOURCE_ID.get(code)
+    if source_id is None:
+        return None
+    return register_index(register_rows).get(source_id)
+
+
+def require_modernised(
+    row: Mapping[str, str],
+    item: Mapping[str, str],
+) -> None:
+    """Require lexicon items to be marked modernised when the source demands it."""
+    if row.get("modernise_vocabulary", "").strip() != "true":
+        return
+    if "modernised" in item:
+        raw = item["modernised"]
+    elif "modernized" in item:
+        raw = item["modernized"]
+    else:
+        return
+    if isinstance(raw, str):
+        raw = raw.strip().lower()
+    if raw in ("false", False):
+        raise LicenceRegisterError(
+            "MODERNISE_REQUIRED",
+            "Vocabulary must be modernised for source "
+            f"{row.get('source_id', '')!r} (1960s-language register)",
+        )
+
+
 def validate_row(row: Mapping[str, str]) -> None:
     """Validate a single register row; raise LicenceRegisterError on failure."""
+    _validate_optional_columns(row)
     for field in _REQUIRED_FIELDS:
         if _field_absent(row, field):
             raise LicenceRegisterError(
@@ -149,7 +240,10 @@ def check_items(
                 "LICENCE_UNREGISTERED",
                 f"source_id not in licence register: {source_id}",
             )
-        validate_row(index[source_id])
+        row = index[source_id]
+        validate_row(row)
+        if kind == "lexicon":
+            require_modernised(row, item)
 
 
 def load_register_csv(path: Path | str) -> list[dict[str, str]]:
@@ -171,9 +265,10 @@ def load_register_csv(path: Path | str) -> list[dict[str, str]]:
         rows: list[dict[str, str]] = []
         for raw in reader:
             row: dict[str, str] = {}
-            for column in REGISTER_CSV_COLUMNS:
+            for column in REGISTER_CSV_COLUMNS + REGISTER_OPTIONAL_COLUMNS:
                 if column in raw and raw[column] is not None:
                     row[column] = raw[column]
+            apply_pd_status_constraints(row)
             rows.append(row)
         return rows
 
