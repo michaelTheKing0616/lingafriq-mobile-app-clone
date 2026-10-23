@@ -161,3 +161,4 @@ P4-028,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Pidgin stack keeps UD-N
 P4-029,verification,T1,n/a,n/a,n/a,0,blocked,No NSC licence is recorded and no Faraclas purchase is logged. EXT-22 is Open. The card is Blocked-External.
 P4-030,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Swahili stack leaves BAKITA unverified, Kamusi excluded, Ashton unpurchased, and Common Voice at 1065 hours.
 P4-031,verification,T1,n/a,n/a,n/a,0,blocked,No BAKITA citation is verified and no Ashton purchase is logged. EXT-22 is Open. The card is Blocked-External.
+P4-032,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Zulu stack leaves EXT-06 open, Poulos unpurchased, and ZulMorph disabled. SADiLaR and NCHLT are evidence only.

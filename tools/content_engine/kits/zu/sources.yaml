@@ -1,0 +1,35 @@
+orthography:
+  authority: PanSALB revised spelling and orthography rules
+  gazette_date: 6 Jul 2023
+
+lexicon:
+  oxford_api_zulu: false
+  commercial_licence_status: pending
+  publisher: Doke–Vilakazi publisher / isiZulu National Lexicography Unit
+  publisher_status: unverified
+  ext06_status: Open
+  request_sent: false
+  source_id: wiktionary-kaikki
+  role: cross-check
+
+grammar:
+  - source_id: peace-corps-zulu
+    pd_status: unconfirmed
+  - author: Poulos & Msimang
+    purchased: false
+  - source_id: sadilar-zulu-morph
+    tokens: 45933
+    licence: CC BY 4.0
+
+corpora_audio:
+  - source_id: nchlt
+    licence: CC BY 2.5 ZA
+  - source_id: fleurs
+  - source_id: waxal-other
+  - source_id: african-storybook
+
+tools:
+  - id: zulmorph
+    licence: Apache-2.0
+    local_use_terms: unverified
+    enabled: false

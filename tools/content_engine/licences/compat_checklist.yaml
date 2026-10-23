@@ -248,3 +248,21 @@ sources:
     T5:
       answer: not-applicable
       reason: "Discovery only; always verify the licence at the source."
+  sadilar-zulu-morph:
+    T1: "no"
+    T2:
+      answer: "yes"
+      reason: "CC BY 4.0 is attribution only."
+    T3: "no"
+    T4a: "no"
+    T4b: "no"
+    T5: "no"
+  nchlt:
+    T1: "no"
+    T2:
+      answer: "yes"
+      reason: "CC BY 2.5 ZA is attribution only."
+    T3: "no"
+    T4a: "no"
+    T4b: "no"
+    T5: "no"

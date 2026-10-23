@@ -33,6 +33,8 @@ token_budget: 60000
 file_allowlist:
 - tools/content_engine/kits/zu/sources.yaml
 - tools/content_engine/tests/test_stack_zu.py
+- tools/content_engine/licences/register.csv
+- tools/content_engine/licences/compat_checklist.yaml
 context_anchors:
 - CURRICULUM.md#§2.4:L410-L442
 acceptance_criteria:
@@ -74,7 +76,7 @@ gate: G4
 external_blockers:
 - EXT-06
 - EXT-22
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging
