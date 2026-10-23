@@ -25,7 +25,9 @@ tiers:
 token_budget: 25000
 file_allowlist:
 - tools/content_engine/licences/exclusions.yaml
+- tools/content_engine/linters/exclusion_enforce.py
 - tools/content_engine/tests/test_excl_x_oxford.py
+- tools/content_engine/tests/test_exclusion_enforce.py
 context_anchors:
 - CURRICULUM.md#§2.3:L257-L264
 acceptance_criteria:
@@ -59,7 +61,7 @@ risks: []
 gate: G4
 external_blockers:
 - EXT-04
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/11-data-and-quantitative-work

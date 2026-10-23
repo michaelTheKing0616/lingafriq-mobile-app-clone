@@ -119,8 +119,13 @@ sources:
       evidence: false
       training: false
   oxford-languages:
-    status: needs-licence
+    status: licence-required
     licence: "Commercial licence not held"
+    pending_action: "request a quote"
+    quote_covers: "tone-marked headwords, examples, and the right to display"
+    request_sent: false
+    datasets: "Hausa, isiXhosa, Igbo, Yoruba"
+    api_languages: Swahili
     reason: "Commercial licence not held."
     commercial_licence_document: ""
     counsel_status: ""

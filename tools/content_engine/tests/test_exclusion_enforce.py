@@ -32,8 +32,8 @@ _EXCLUDED_IDS = (
     "kamusi",
     "helsinki-swahili-2",
 )
+_LICENCE_REQUIRED_IDS = ("oxford-languages",)
 _NEEDS_LICENCE_IDS = (
-    "oxford-languages",
     "abraham-yoruba-1958",
     "bargery-hausa-1934",
 )
@@ -57,7 +57,9 @@ def test_shipped_jw300_and_mafand_mt_are_excluded_with_uses_false() -> None:
     table = load_exclusions()
     assert table["charter"] == "v2"
     sources = table["sources"]
-    assert set(sources) == set(_EXCLUDED_IDS) | set(_NEEDS_LICENCE_IDS)
+    assert set(sources) == (
+        set(_EXCLUDED_IDS) | set(_NEEDS_LICENCE_IDS) | set(_LICENCE_REQUIRED_IDS)
+    )
     for source_id, row in sources.items():
         assert row["commercial_licence_document"] == ""
         assert row["counsel_status"] == ""
@@ -70,6 +72,8 @@ def test_shipped_jw300_and_mafand_mt_are_excluded_with_uses_false() -> None:
         assert sources[source_id]["status"] == "excluded"
     for source_id in _EXCLUDED_IDS:
         assert sources[source_id]["status"] == "excluded"
+    for source_id in _LICENCE_REQUIRED_IDS:
+        assert sources[source_id]["status"] == "licence-required"
     for source_id in _NEEDS_LICENCE_IDS:
         assert sources[source_id]["status"] == "needs-licence"
     assert "BY-NC" not in sources["jw300"]["licence"]

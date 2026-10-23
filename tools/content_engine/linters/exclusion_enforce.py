@@ -27,7 +27,7 @@ _NC_LICENCE_RE = re.compile(
 )
 
 _USE_FLAGS = ("display", "evidence", "training")
-_BLOCKED_STATUSES = frozenset({"excluded", "needs-licence"})
+_BLOCKED_STATUSES = frozenset({"excluded", "needs-licence", "licence-required"})
 _MANIFEST_LAYERS = frozenset({"lexicon", "corpus", "training", "evidence"})
 _COUNSEL_CONFIRMED = "confirmed"
 
