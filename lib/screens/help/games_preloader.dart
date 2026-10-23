@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/screens/help/feature_preloader_screen.dart';
+import 'package:lingafriq/widgets/first_use_tip.dart';
 
 /// Pre-loader screen for games features
 /// Shown when users first access games
 class GamesPreloader extends StatelessWidget {
   final VoidCallback? onComplete;
+  final FirstUseTipStore? tipStore;
 
-  const GamesPreloader({super.key, this.onComplete});
+  const GamesPreloader({super.key, this.onComplete, this.tipStore});
 
   @override
   Widget build(BuildContext context) {
     return FeaturePreloaderScreen(
+      firstUseTipId: FirstUseTipIds.games,
+      tipStore: tipStore,
       featureName: '35 Language Games',
       featureDescription: 'Learn through play! 35 unique games designed for African language learning.',
       icon: Icons.games_rounded,

@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/screens/help/feature_preloader_screen.dart';
+import 'package:lingafriq/widgets/first_use_tip.dart';
 
 /// Pre-loader screen for gamification features
 /// Shown when users first encounter gamification
 class GamificationPreloader extends StatelessWidget {
   final VoidCallback? onComplete;
+  final FirstUseTipStore? tipStore;
 
-  const GamificationPreloader({super.key, this.onComplete});
+  const GamificationPreloader({super.key, this.onComplete, this.tipStore});
 
   @override
   Widget build(BuildContext context) {
     return FeaturePreloaderScreen(
+      firstUseTipId: FirstUseTipIds.gamification,
+      tipStore: tipStore,
       featureName: 'Gamification System',
       featureDescription: 'Earn XP, level up, collect currencies, and unlock badges as you learn!',
       icon: Icons.emoji_events_rounded,

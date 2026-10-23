@@ -2,6 +2,95 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/screens/games/game_onboarding_overlay.dart';
+
+/// Tour-only help surfaces linked from settings (screens are not removed).
+const tourScreens = <String>[
+  '/features_guide',
+  'FeaturesGuideScreen',
+  'GameOnboardingOverlay',
+];
+
+class SettingsHelpLink {
+  const SettingsHelpLink({
+    required this.label,
+    required this.screenOrRoute,
+  });
+
+  final String label;
+  final String screenOrRoute;
+}
+
+/// Settings entry point: deep links to feature tours without editing the settings screen.
+List<SettingsHelpLink> settingsHelpLinks() {
+  return const [
+    SettingsHelpLink(
+      label: 'Features Guide',
+      screenOrRoute: 'FeaturesGuideScreen',
+    ),
+    SettingsHelpLink(
+      label: 'Game onboarding overlay',
+      screenOrRoute: 'GameOnboardingOverlay',
+    ),
+  ];
+}
+
+void openSettingsHelpLink(BuildContext context, SettingsHelpLink link) {
+  switch (link.screenOrRoute) {
+    case 'FeaturesGuideScreen':
+      Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (_) => const FeaturesGuideScreen(),
+        ),
+      );
+      break;
+    case 'GameOnboardingOverlay':
+      showDialog<void>(
+        context: context,
+        builder: (dialogContext) => GameOnboardingOverlay(
+          gameType: 'settings_help_tour',
+          title: 'How game onboarding works',
+          rules: const [
+            'When you open a game for the first time, a short rules overlay can appear.',
+            'Use Got it! to continue playing; you can reopen this tour from Settings anytime.',
+          ],
+          onDismiss: () => Navigator.of(dialogContext).pop(),
+        ),
+      );
+      break;
+  }
+}
+
+/// Embeddable Help rows for Settings (labels from [settingsHelpLinks]).
+class SettingsHelpLinks extends StatelessWidget {
+  const SettingsHelpLinks({
+    super.key,
+    required this.tileBuilder,
+  });
+
+  final Widget Function(
+    BuildContext context,
+    SettingsHelpLink link,
+    VoidCallback onTap,
+  ) tileBuilder;
+
+  @override
+  Widget build(BuildContext context) {
+    final links = settingsHelpLinks();
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        for (var i = 0; i < links.length; i++) ...[
+          tileBuilder(
+            context,
+            links[i],
+            () => openSettingsHelpLink(context, links[i]),
+          ),
+        ],
+      ],
+    );
+  }
+}
 
 /// Comprehensive Features Guide Screen
 /// Explains all modules, features, and how to use them

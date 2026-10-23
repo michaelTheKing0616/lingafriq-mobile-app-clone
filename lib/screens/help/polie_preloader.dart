@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/screens/help/feature_preloader_screen.dart';
+import 'package:lingafriq/widgets/first_use_tip.dart';
 
 /// Pre-loader screen for Polie AI features
 /// Shown when users first use AI chat
 class PoliePreloader extends StatelessWidget {
   final VoidCallback? onComplete;
+  final FirstUseTipStore? tipStore;
 
-  const PoliePreloader({super.key, this.onComplete});
+  const PoliePreloader({super.key, this.onComplete, this.tipStore});
 
   @override
   Widget build(BuildContext context) {
     return FeaturePreloaderScreen(
+      firstUseTipId: FirstUseTipIds.polie,
+      tipStore: tipStore,
       featureName: 'Meet Polie',
       featureDescription: 'Your AI language assistant with 6 powerful modes for comprehensive learning.',
       icon: Icons.smart_toy_rounded,

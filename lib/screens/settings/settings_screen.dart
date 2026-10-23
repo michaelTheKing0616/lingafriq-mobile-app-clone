@@ -6,6 +6,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/providers/offline_download_provider.dart';
+import 'package:lingafriq/screens/help/features_guide_screen.dart';
 
 /// Settings Screen - Pan-African Design System
 class SettingsScreen extends ConsumerStatefulWidget {
@@ -56,6 +57,23 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     if (bytes < 1024 * 1024) return '${(bytes / 1024).toStringAsFixed(1)} KB';
     if (bytes < 1024 * 1024 * 1024) return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
     return '${(bytes / (1024 * 1024 * 1024)).toStringAsFixed(1)} GB';
+  }
+
+  List<Widget> _helpTourTiles(BuildContext context, bool isDark) {
+    final links = settingsHelpLinks();
+    return [
+      for (var i = 0; i < links.length; i++) ...[
+        if (i > 0) _SettingsDivider(isDark: isDark),
+        _SettingsActionTile(
+          icon: links[i].screenOrRoute == 'FeaturesGuideScreen'
+              ? Icons.menu_book_rounded
+              : Icons.sports_esports_rounded,
+          title: links[i].label,
+          onTap: () => openSettingsHelpLink(context, links[i]),
+          isDark: isDark,
+        ),
+      ],
+    ];
   }
 
   Future<void> _clearOfflineData(BuildContext context) async {
@@ -284,11 +302,20 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   ),
                   SizedBox(height: PanAfricanSpacing.lg),
 
+                  // Help tours
+                  _SettingsSection(
+                    title: 'Help',
+                    isDark: isDark,
+                    index: 3,
+                    children: _helpTourTiles(context, isDark),
+                  ),
+                  SizedBox(height: PanAfricanSpacing.lg),
+
                   // Offline Storage Section
                   _SettingsSection(
                     title: 'Offline Storage',
                     isDark: isDark,
-                    index: 3,
+                    index: 4,
                     children: [
                       _SettingsInfoTile(
                         icon: Icons.cloud_download,

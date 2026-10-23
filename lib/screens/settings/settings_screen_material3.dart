@@ -36,6 +36,31 @@ import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/staff/micro_mentor_reports_screen.dart';
 import 'package:lingafriq/services/auth/biometric_preference_service.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
+import 'package:lingafriq/screens/help/features_guide_screen.dart';
+
+List<Widget> _helpTourTiles(BuildContext context, bool isDark) {
+  final links = settingsHelpLinks();
+  return [
+    for (var i = 0; i < links.length; i++) ...[
+      if (i > 0) _SettingsDivider(isDark: isDark),
+      _SettingsTile(
+        icon: links[i].screenOrRoute == 'FeaturesGuideScreen'
+            ? Icons.menu_book_rounded
+            : Icons.sports_esports_rounded,
+        title: links[i].label,
+        trailing: Icon(
+          Icons.chevron_right_rounded,
+          color: PanAfricanColors.neutralMedium,
+        ),
+        onTap: () {
+          HapticFeedback.lightImpact();
+          openSettingsHelpLink(context, links[i]);
+        },
+        isDark: isDark,
+      ),
+    ],
+  ];
+}
 
 /// Beautiful Material 3 Settings Screen with Pan-African Design
 class SettingsScreenMaterial3 extends HookConsumerWidget {
@@ -584,6 +609,8 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       },
                       isDark: isDark.value,
                     ),
+                    _SettingsDivider(isDark: isDark.value),
+                    ..._helpTourTiles(context, isDark.value),
                     _SettingsDivider(isDark: isDark.value),
                     _SettingsTile(
                       icon: Icons.help_rounded,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/widgets/first_use_tip.dart';
 
 /// Informative pre-loader screen that explains new features and terminologies
 /// Shown when users first encounter new features
@@ -13,6 +14,8 @@ class FeaturePreloaderScreen extends StatefulWidget {
   final IconData icon;
   final VoidCallback? onComplete;
   final Duration? duration;
+  final String? firstUseTipId;
+  final FirstUseTipStore? tipStore;
 
   const FeaturePreloaderScreen({
     super.key,
@@ -23,6 +26,8 @@ class FeaturePreloaderScreen extends StatefulWidget {
     required this.icon,
     this.onComplete,
     this.duration,
+    this.firstUseTipId,
+    this.tipStore,
   });
 
   @override
@@ -42,8 +47,16 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
       vsync: this,
     );
     _controller.forward().then((_) {
-      widget.onComplete?.call();
+      _finishPreloader();
     });
+  }
+
+  void _finishPreloader() {
+    final tipId = widget.firstUseTipId;
+    if (tipId != null) {
+      resolveFirstUseTipStore(widget.tipStore).dismiss(tipId);
+    }
+    widget.onComplete?.call();
   }
 
   @override
@@ -63,6 +76,13 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
         top: false,
         child: Column(
           children: [
+            if (widget.firstUseTipId != null)
+              FirstUseTip(
+                store: resolveFirstUseTipStore(widget.tipStore),
+                tipId: widget.firstUseTipId!,
+                sentence: firstUseTipSentence(widget.firstUseTipId!),
+                onDismiss: () => setState(() {}),
+              ),
             // Progress indicator
             LinearProgressIndicator(
               value: _controller.value,
@@ -121,7 +141,7 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
                       if (_currentPage < totalPages - 1) {
                         // Next page logic
                       } else {
-                        widget.onComplete?.call();
+                        _finishPreloader();
                       }
                     },
                     style: FilledButton.styleFrom(
@@ -387,5 +407,27 @@ class FeatureTip {
     required this.description,
     this.icon,
   });
+}
+
+/// Pre-loader for the features overview (fourth revived preloader).
+class FeaturesHelpPreloader extends StatelessWidget {
+  const FeaturesHelpPreloader({super.key, this.onComplete, this.tipStore});
+
+  final VoidCallback? onComplete;
+  final FirstUseTipStore? tipStore;
+
+  @override
+  Widget build(BuildContext context) {
+    return FeaturePreloaderScreen(
+      firstUseTipId: FirstUseTipIds.features,
+      tipStore: tipStore,
+      featureName: 'New Features',
+      featureDescription: FirstUseTipCopy.features,
+      icon: Icons.explore_rounded,
+      terms: const [],
+      tips: const [],
+      onComplete: onComplete,
+    );
+  }
 }
 
