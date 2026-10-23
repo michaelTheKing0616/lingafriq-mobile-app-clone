@@ -26,7 +26,20 @@ REGISTER_OPTIONAL_COLUMNS: tuple[str, ...] = (
     "religious_register",
     "excluded_uses",
     "languages",
+    "permitted_uses",
+    "recorded_hours",
+    "hours_status",
+    "dataset_version",
 )
+
+_COMMON_VOICE_SOURCE_ID: dict[str, str] = {
+    "yo": "common-voice-yo",
+    "ha": "common-voice-ha",
+    "ig": "common-voice-ig",
+    "sw": "common-voice-sw",
+    "zu": "common-voice-zu",
+    "xh": "common-voice-xh",
+}
 
 _LEIPZIG_NC_USES: frozenset[str] = frozenset(
     {
@@ -135,6 +148,12 @@ def _validate_optional_columns(row: Mapping[str, str]) -> None:
             "LICENCE_RELIGIOUS_REGISTER_INVALID",
             f"religious_register must be 'true' or 'false', got {religious_register!r}",
         )
+    hours_status = row.get("hours_status", "").strip()
+    if hours_status and hours_status not in ("recorded", "verify"):
+        raise LicenceRegisterError(
+            "LICENCE_HOURS_STATUS_INVALID",
+            f"hours_status must be 'recorded' or 'verify', got {hours_status!r}",
+        )
 
 
 def apply_pd_status_constraints(row: MutableMapping[str, str]) -> None:
@@ -152,6 +171,33 @@ def non_fsi_grammar(language: str) -> str | None:
     if code in ("xh", "xhosa"):
         return _XHOSA_NON_FSI_GRAMMAR
     return None
+
+
+def common_voice_hours(
+    language: str,
+    rows: Sequence[Mapping[str, str]],
+) -> dict[str, float | str | None]:
+    """Recorded hours, status, and dataset version for a Common Voice language."""
+    code = language.strip().lower()
+    source_id = _COMMON_VOICE_SOURCE_ID.get(code)
+    if source_id is None:
+        raise ValueError(f"Unknown Common Voice language code: {language!r}")
+    row = register_index(rows).get(source_id)
+    if row is None:
+        raise LicenceRegisterError(
+            "LICENCE_UNREGISTERED",
+            f"source_id not in licence register: {source_id}",
+        )
+    raw_hours = row.get("recorded_hours", "").strip()
+    hours: float | None
+    if raw_hours == "":
+        hours = None
+    else:
+        hours = float(raw_hours)
+    status = row.get("hours_status", "").strip()
+    raw_version = row.get("dataset_version", "").strip()
+    version: float | None = float(raw_version) if raw_version else None
+    return {"hours": hours, "status": status, "version": version}
 
 
 def fsi_course(
@@ -194,7 +240,10 @@ def require_modernised(
 def validate_row(row: Mapping[str, str]) -> None:
     """Validate a single register row; raise LicenceRegisterError on failure."""
     _validate_optional_columns(row)
+    licence = row.get("licence", "")
     for field in _REQUIRED_FIELDS:
+        if field == "attribution_text" and licence == "CC0":
+            continue
         if _field_absent(row, field):
             raise LicenceRegisterError(
                 "LICENCE_FIELD_MISSING",
@@ -218,7 +267,6 @@ def validate_row(row: Mapping[str, str]) -> None:
             "owner_signoff is empty while display or training is true",
         )
 
-    licence = row["licence"]
     if (uses["display"] or uses["training"]) and _licence_restricts_display_training(
         licence
     ):

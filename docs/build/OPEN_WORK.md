@@ -122,3 +122,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-110 | open | P4-002 | Seeded rows stay evidence-only. owner_signoff is empty until EXT-03. Peace Corps pd_status stays unconfirmed, so display and training stay false until each item is verified. Xhosa has no named grammar. Poulos & Msimang is purchase and is not a register row. |
 | OW-111 | open | P4-003 | Wiktionary, UD, and Biblica are seeded and stay evidence-only until EXT-03. |
 | OW-112 | open | P4-004 | WAXAL subset names are not in §2.2, so the register has two licence groups instead of one row per unnamed subset. Display and training stay false until EXT-03. |
+| OW-113 | open | P4-005 | Common Voice display and training stay false until EXT-03. Hausa and Igbo have no dataset version in §2.2. Zulu and Xhosa hours stay unverified. |

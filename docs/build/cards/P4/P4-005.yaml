@@ -65,7 +65,7 @@ risks: []
 gate: G4
 external_blockers:
 - EXT-03
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging
