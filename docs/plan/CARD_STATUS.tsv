@@ -622,7 +622,7 @@ P3-096	Draft	Support RTL layouts for Arabic and Ajami	P3/P3-096.yaml
 P3-097	Draft	Import reviewed UI translations in nine languages	P3/P3-097.yaml
 P3-098	Draft	Deliver explanations in the learner's L1	P3/P3-098.yaml
 P3-099	Draft	Review G3 design gate with UX and UI Scorecards	P3/P3-099.yaml
-P4-001	Draft	Define licence register schema and validator	P4/P4-001.yaml
+P4-001	Done	Define licence register schema and validator	P4/P4-001.yaml
 P4-002	Draft	Seed register with US-government public-domain courses	P4/P4-002.yaml
 P4-003	Draft	Seed share-alike evidence sources in register	P4/P4-003.yaml
 P4-004	Draft	Seed CC BY corpora and storybook entries	P4/P4-004.yaml
