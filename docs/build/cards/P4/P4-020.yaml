@@ -26,7 +26,8 @@ tiers:
   reviewer: T3
   justification: 'score 2: blast 0, ambiguity 2, coupling 0, depth 0, size 0'
 token_budget: 25000
-file_allowlist: []
+file_allowlist:
+- docs/build/adr/P4-020.md
 context_anchors:
 - CURRICULUM.md#§2.3:L226-L262
 acceptance_criteria:
@@ -50,7 +51,7 @@ external_blockers:
 - EXT-08
 - EXT-09
 - EXT-10
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/10-analysis-and-decision-support

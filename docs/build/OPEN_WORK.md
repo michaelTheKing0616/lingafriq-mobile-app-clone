@@ -137,3 +137,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-125 | open | P4-017 | No ELRA licence is purchased. The EUR 7,500 and EUR 15,000 figures are the curriculum statement, not a quote LingAfriq received. |
 | OW-126 | open | P4-018 | The Oxford quote request is stored and has not been sent. No signed commercial licence is recorded. |
 | OW-127 | open | P4-019 | Abraham 1958 and Bargery 1934 stay excluded until counsel confirms public domain. The 2026-10-23 note does not decide copyright. |
+| OW-128 | open | P4-020 | No restricted source is purchased. Oxford stays licence-required until a signed quote exists. |

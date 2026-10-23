@@ -149,3 +149,4 @@ P4-016,build,T1,composer-2.5-fast,n/a,n/a,1,pass,Kamusi stays excluded. The comm
 P4-017,build,T1,composer-2.5-fast,n/a,n/a,1,pass,Helsinki Swahili stays excluded. The ELRA prices are an unverified curriculum quote and nothing is purchased.
 P4-018,build,T1,composer-2.5-fast,n/a,n/a,1,pass,Oxford stays licence-required. The quote request is unsent and no use is allowed.
 P4-019,build,T1,composer-2.5-fast,n/a,n/a,1,pass,Abraham and Bargery stay excluded. Copyright is unconfirmed and neither work is public domain.
+P4-020,adr,T1,composer-2.5-fast,n/a,n/a,1,pass,Four restricted sources stay excluded. Oxford is buy only after a signed quote. Nothing is purchased.
