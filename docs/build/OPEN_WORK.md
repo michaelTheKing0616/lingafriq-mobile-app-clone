@@ -126,4 +126,3 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-114 | open | P4-006 | The CC BY Igbo title count is unverified. On 2026-10-23 the live site did not serve the catalogue. A search index is not a count. |
 | OW-115 | open | P4-007 | Peace Corps has no tier until each item is verified. Leipzig and WAXAL Ghana are not settled as CC-BY. Counsel signoff is still EXT-03. |
 | OW-116 | open | P4-008 | Counsel has not confirmed any register row. P4-008 stays Blocked-External EXT-03. Display and training stay false. |
-| OW-116 | open | P4-008 | Counsel has not confirmed any register row. P4-008 stays Blocked-External EXT-03. Display and training stay false. |
