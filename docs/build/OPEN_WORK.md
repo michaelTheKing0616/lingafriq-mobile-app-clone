@@ -145,3 +145,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-133 | open | P4-025 | EXT-22 is Open. Ọnwụ has no linguist confirmation and no Emenanjo purchase is logged. |
 | OW-134 | open | P4-026 | Oxford Hausa is not held. Newman is not purchased. Peace Corps Hausa stays unconfirmed. Tone marks are not model-generated. |
 | OW-135 | open | P4-027 | EXT-22 is Open. No Newman purchase is logged. Bargery copyright stays unconfirmed. |
+| OW-136 | open | P4-028 | Faraclas is not purchased. NSC speech licence is unverified. Intron stays off while EXT-01 is pending. The anglicisation detector is not enabled. |

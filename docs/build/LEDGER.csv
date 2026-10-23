@@ -157,3 +157,4 @@ P4-024,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Igbo stack records Ọn
 P4-025,verification,T1,n/a,n/a,n/a,0,blocked,Ọnwụ stays unverified and no Emenanjo purchase is logged. EXT-22 is Open. The card is Blocked-External.
 P4-026,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Hausa tone and length come from dictionary lookup. Oxford is unheld and Newman is unpurchased.
 P4-027,verification,T1,n/a,n/a,n/a,0,blocked,No Newman purchase is logged. Bargery stays unconfirmed. EXT-22 is Open. The card is Blocked-External.
+P4-028,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Pidgin stack keeps UD-Naija-NSC as evidence only. Faraclas is unpurchased, NSC speech unverified, and Intron off.

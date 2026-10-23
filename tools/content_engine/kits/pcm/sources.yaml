@@ -1,0 +1,38 @@
+orthography:
+  authority: Naija Langwej Akademi
+  guide: IFRA
+  script: phonetic Latin
+  high_tone: marked only in scientific use
+
+lexicon:
+  commercial_dictionary: false
+  sources:
+    - source_id: ud-naija-nsc
+      role: evidence
+      licence: CC BY-SA 4.0
+    - author: Faraclas
+      title: Nigerian Pidgin
+      year: 1996
+      purchased: false
+
+grammar:
+  - source_id: ud-naija-nsc
+    role: evidence-only
+    licence: CC BY-SA 4.0
+
+corpora:
+  - id: nsc-speech
+    licence_status: unverified
+    display: false
+    evidence: false
+    training: false
+
+tools:
+  intron:
+    use: ASR
+    enabled: false
+    ext01_status: pending
+    citation: docs/plan/LINGAFRIQ_AI_MODEL_STACK.md
+  anglicisation-detector:
+    card: P4-048
+    enabled: false
