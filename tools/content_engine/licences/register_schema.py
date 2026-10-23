@@ -24,7 +24,21 @@ REGISTER_OPTIONAL_COLUMNS: tuple[str, ...] = (
     "modernise_vocabulary",
     "share_alike",
     "religious_register",
+    "excluded_uses",
+    "languages",
 )
+
+_LEIPZIG_NC_USES: frozenset[str] = frozenset(
+    {
+        "web service",
+        "web-service",
+        "web services",
+        "application",
+        "applications",
+    }
+)
+
+_LEIPZIG_ALLOWED_USES: frozenset[str] = frozenset({"download", "frequency"})
 
 FSI_NO_COURSE_NOTE = "No FSI Zulu or Xhosa course found"
 
@@ -332,3 +346,38 @@ def ensure_row_columns(row: MutableMapping[str, str]) -> None:
     """Ensure a row dict includes every column key (values may be empty)."""
     for column in REGISTER_CSV_COLUMNS:
         row.setdefault(column, "")
+
+
+def leipzig_use(use: str) -> None:
+    """Reject Leipzig uses excluded as CC BY-NC (web services and applications)."""
+    normalized = use.strip().casefold()
+    if normalized in _LEIPZIG_ALLOWED_USES:
+        return None
+    if normalized in _LEIPZIG_NC_USES:
+        raise LicenceRegisterError(
+            "LICENCE_NC_EXCLUDED",
+            "Leipzig web services and applications are CC BY-NC and excluded",
+        )
+    return None
+
+
+def ingest_story(story: dict) -> dict:
+    """Accept only CC BY African Storybook entries with a named author."""
+    licence = str(story.get("licence", ""))
+    if _NONCOMMERCIAL_LICENCE_RE.search(licence):
+        raise LicenceRegisterError(
+            "LICENCE_NC_EXCLUDED",
+            "Story licence is non-commercial or share-alike and excluded",
+        )
+    if not licence.strip().startswith("CC BY"):
+        raise LicenceRegisterError(
+            "LICENCE_NC_EXCLUDED",
+            "Story licence must be CC BY",
+        )
+    author = story.get("author")
+    if author is None or (isinstance(author, str) and author.strip() == ""):
+        raise LicenceRegisterError(
+            "STORY_AUTHOR_MISSING",
+            "Story author is required for attribution",
+        )
+    return story

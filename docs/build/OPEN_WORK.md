@@ -120,4 +120,5 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-108 | open | P3-001 | The benchmark has 3 sourced numbers and 17 blank rows. The 12-search cap is spent. Missing numbers stay blank. P3-001 stays Draft. P3-002 and the art-direction chain wait on it. |
 | OW-109 | closed | P4-001 | Closed 2026-10-23. The register validator rejects a missing field by name, a use flag other than true or false, unsigned display or training, and a non-commercial or share-alike display or training use. 23 tests. Commit a6ae454a. |
 | OW-110 | open | P4-002 | Seeded rows stay evidence-only. owner_signoff is empty until EXT-03. Peace Corps pd_status stays unconfirmed, so display and training stay false until each item is verified. Xhosa has no named grammar. Poulos & Msimang is purchase and is not a register row. |
-| OW-111 | open | P4-003 | Share-alike rows stay evidence-only until EXT-03. Leipzig, Common Voice, FLEURS, WAXAL, and African Storybook are not in this card. |
+| OW-111 | open | P4-003 | Wiktionary, UD, and Biblica are seeded and stay evidence-only until EXT-03. |
+| OW-112 | open | P4-004 | WAXAL subset names are not in §2.2, so the register has two licence groups instead of one row per unnamed subset. Display and training stay false until EXT-03. |
