@@ -24,6 +24,8 @@ tiers:
 token_budget: 25000
 file_allowlist:
 - tools/content_engine/licences/check_register.py
+- tools/content_engine/licences/register.csv
+- tools/content_engine/licences/register_schema.py
 - tools/content_engine/tests/test_signoff.py
 context_anchors:
 - CURRICULUM.md#§2.1:L108-L109
@@ -61,7 +63,7 @@ risks: []
 gate: G4
 external_blockers:
 - EXT-03
-status: Draft
+status: Blocked-External
 skills:
   worker:
   - adaptive/08-coding-and-debugging

@@ -25,6 +25,7 @@ REGISTER_CSV_COLUMNS: tuple[str, ...] = (
 )
 
 REGISTER_OPTIONAL_COLUMNS: tuple[str, ...] = (
+    "counsel_status",
     "pd_status",
     "modernise_vocabulary",
     "share_alike",
@@ -135,6 +136,12 @@ def _licence_restricts_display_training(licence: str) -> bool:
 
 
 def _validate_optional_columns(row: Mapping[str, str]) -> None:
+    counsel_status = row.get("counsel_status", "").strip()
+    if counsel_status and counsel_status != "confirmed":
+        raise LicenceRegisterError(
+            "COUNSEL_STATUS_INVALID",
+            f"counsel_status must be empty or 'confirmed', got {counsel_status!r}",
+        )
     pd_status = row.get("pd_status", "").strip()
     if pd_status and pd_status not in ("confirmed", "unconfirmed"):
         raise LicenceRegisterError(
@@ -307,6 +314,13 @@ def validate_row(row: Mapping[str, str]) -> None:
             "LICENCE_NONCOMMERCIAL",
             "Licence does not permit display or training: "
             f"{licence!r} (BY-NC, BY-SA, or non-commercial)",
+        )
+
+    counsel_status = row.get("counsel_status", "").strip()
+    if (uses["display"] or uses["training"]) and counsel_status != "confirmed":
+        raise LicenceRegisterError(
+            "COUNSEL_PENDING",
+            "counsel_status must be 'confirmed' while display or training is true",
         )
 
 

@@ -629,7 +629,7 @@ P4-004	Done	Seed CC BY corpora and storybook entries	P4/P4-004.yaml
 P4-005	Done	Seed Common Voice audio entries with hours	P4/P4-005.yaml
 P4-006	Done	Verify African Storybook has Igbo titles	P4/P4-006.yaml
 P4-007	Done	Add discovery-only sources and compatibility checklist	P4/P4-007.yaml
-P4-008	Draft	Gate register rows on counsel and owner sign-off	P4/P4-008.yaml
+P4-008	Blocked-External	Gate register rows on counsel and owner sign-off	P4/P4-008.yaml
 P4-009	Draft	Lint share-alike containment of evidence layer	P4/P4-009.yaml
 P4-010	Draft	Enforce non-commercial exclusion rule and exclusion table	P4/P4-010.yaml
 P4-011	Draft	Declare JW300, MAFAND-MT and MasakhaNER excluded	P4/P4-011.yaml
