@@ -624,7 +624,7 @@ P3-098	Draft	Deliver explanations in the learner's L1	P3/P3-098.yaml
 P3-099	Draft	Review G3 design gate with UX and UI Scorecards	P3/P3-099.yaml
 P4-001	Done	Define licence register schema and validator	P4/P4-001.yaml
 P4-002	Done	Seed register with US-government public-domain courses	P4/P4-002.yaml
-P4-003	Draft	Seed share-alike evidence sources in register	P4/P4-003.yaml
+P4-003	Done	Seed share-alike evidence sources in register	P4/P4-003.yaml
 P4-004	Draft	Seed CC BY corpora and storybook entries	P4/P4-004.yaml
 P4-005	Draft	Seed Common Voice audio entries with hours	P4/P4-005.yaml
 P4-006	Draft	Verify African Storybook has Igbo titles	P4/P4-006.yaml

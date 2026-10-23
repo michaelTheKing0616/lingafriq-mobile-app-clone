@@ -1,4 +1,4 @@
-source_id,url,licence,version_or_date,display,evidence,training,attribution_text,owner_signoff,pd_status,modernise_vocabulary
+source_id,url,licence,version_or_date,display,evidence,training,attribution_text,owner_signoff,pd_status,modernise_vocabulary,share_alike,religious_register
 fsi-yoruba,CURRICULUM.md#§2.2:L124-L134,public-domain,"380 pp + tone drills + Intermediate Texts",false,true,false,US government work (Foreign Service Institute Basic Course). Public domain.,,confirmed,true
 fsi-igbo,CURRICULUM.md#§2.2:L124-L134,public-domain,1962,false,true,false,US government work (Foreign Service Institute Basic Course). Public domain.,,confirmed,true
 fsi-hausa,CURRICULUM.md#§2.2:L124-L134,public-domain,See CURRICULUM §2.2 L124-L127,false,true,false,US government work (Foreign Service Institute Basic Course). Public domain.,,confirmed,true
@@ -6,4 +6,9 @@ fsi-swahili,CURRICULUM.md#§2.2:L124-L134,public-domain,"1968, 150 units",false,
 peace-corps-hausa,CURRICULUM.md#§2.2:L136-L146,public-domain,See CURRICULUM §2.2 L136-L138,false,true,false,"Peace Corps manual (Hausa). Often US-gov public domain, but not established for every item; verify per item before copying.",,unconfirmed,false
 peace-corps-kiswahili,CURRICULUM.md#§2.2:L136-L146,public-domain,See CURRICULUM §2.2 L136-L138,false,true,false,"Peace Corps manual (Kiswahili). Often US-gov public domain, but not established for every item; verify per item before copying.",,unconfirmed,false
 peace-corps-zulu,CURRICULUM.md#§2.2:L136-L146,public-domain,See CURRICULUM §2.2 L136-L138,false,true,false,"Peace Corps manual (Zulu). Often US-gov public domain, but not established for every item; verify per item before copying.",,unconfirmed,false
-peace-corps-yoruba,CURRICULUM.md#§2.2:L136-L146,public-domain,1965 on ERIC,false,true,false,"Peace Corps manual (Yoruba). Often US-gov public domain, but not established for every item; verify per item before copying.",,unconfirmed,false
+peace-corps-yoruba,CURRICULUM.md#§2.2:L136-L146,public-domain,1965 on ERIC,false,true,false,"Peace Corps manual (Yoruba). Often US-gov public domain, but not established for every item; verify per item before copying.",,unconfirmed,false,,
+wiktionary-kaikki,CURRICULUM.md#§2.2:L147-L157,CC BY-SA 4.0 + GFDL; wiktextract code MIT,See CURRICULUM §2.2 L147-L157,false,true,false,"Cross-check evidence for lemma, POS, tone marks, inflection; do not copy into the proprietary lexicon (§2.1).",,,,,
+ud-yoruba-ytb,CURRICULUM.md#§2.2:L195-L198,CC BY-SA 4.0,See CURRICULUM §2.2 L195-L198,false,true,false,Parsed sentences as grammar evidence (Yoruba).,,,,true,
+ud-naija-nsc,CURRICULUM.md#§2.2:L195-L198,CC BY-SA 4.0,See CURRICULUM §2.2 L195-L198,false,true,false,Parsed sentences as grammar evidence (Pidgin).,,,,true,
+biblica-yoruba,CURRICULUM.md#§2.2:L199-L206,CC BY-SA 4.0,See CURRICULUM §2.2 L199-L206,false,true,false,"trademark removed from derivatives; corpus and frequency evidence only; religious register.",,,,true,true
+biblica-hausa,CURRICULUM.md#§2.2:L199-L206,CC BY-SA 4.0,See CURRICULUM §2.2 L199-L206,false,true,false,"trademark removed from derivatives; corpus and frequency evidence only; religious register.",,,,true,true

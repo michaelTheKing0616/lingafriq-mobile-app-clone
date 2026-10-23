@@ -22,6 +22,8 @@ REGISTER_CSV_COLUMNS: tuple[str, ...] = (
 REGISTER_OPTIONAL_COLUMNS: tuple[str, ...] = (
     "pd_status",
     "modernise_vocabulary",
+    "share_alike",
+    "religious_register",
 )
 
 FSI_NO_COURSE_NOTE = "No FSI Zulu or Xhosa course found"
@@ -106,6 +108,18 @@ def _validate_optional_columns(row: Mapping[str, str]) -> None:
         raise LicenceRegisterError(
             "LICENCE_MODERNISE_INVALID",
             f"modernise_vocabulary must be 'true' or 'false', got {modernise!r}",
+        )
+    share_alike = row.get("share_alike", "").strip()
+    if share_alike and share_alike not in ("true", "false"):
+        raise LicenceRegisterError(
+            "LICENCE_SHARE_ALIKE_INVALID",
+            f"share_alike must be 'true' or 'false', got {share_alike!r}",
+        )
+    religious_register = row.get("religious_register", "").strip()
+    if religious_register and religious_register not in ("true", "false"):
+        raise LicenceRegisterError(
+            "LICENCE_RELIGIOUS_REGISTER_INVALID",
+            f"religious_register must be 'true' or 'false', got {religious_register!r}",
         )
 
 
@@ -206,6 +220,41 @@ def validate_rows(rows: Iterable[Mapping[str, str]]) -> None:
         validate_row(row)
 
 
+def assert_no_biblica_mark(text: str) -> None:
+    """Reject derivative strings that retain the Biblica trademark."""
+    if "biblica" in text.casefold():
+        raise LicenceRegisterError(
+            "BIBLICA_MARK_PRESENT",
+            "Derivative text must not contain the Biblica trademark",
+        )
+
+
+def _check_religious_register_use(row: Mapping[str, str], item: Mapping[str, str]) -> None:
+    if row.get("religious_register", "").strip() != "true":
+        return
+    kind = item["kind"]
+    if kind in ("lexicon", "audio"):
+        raise LicenceRegisterError(
+            "BIBLE_USE_FORBIDDEN",
+            f"Source {row.get('source_id', '')!r} is religious-register; "
+            f"{kind} use is forbidden (corpus and frequency evidence only)",
+        )
+    if kind == "corpus":
+        evidence_use = item.get("evidence_use", "").strip().lower()
+        if evidence_use in ("", "corpus", "frequency"):
+            return
+        raise LicenceRegisterError(
+            "BIBLE_USE_FORBIDDEN",
+            f"Source {row.get('source_id', '')!r} is religious-register; "
+            "corpus items allow only corpus or frequency evidence_use",
+        )
+    raise LicenceRegisterError(
+        "BIBLE_USE_FORBIDDEN",
+        f"Source {row.get('source_id', '')!r} is religious-register; "
+        "corpus and frequency evidence only",
+    )
+
+
 def register_index(
     register_rows: Sequence[Mapping[str, str]] | Mapping[str, Mapping[str, str]],
 ) -> dict[str, Mapping[str, str]]:
@@ -242,6 +291,12 @@ def check_items(
             )
         row = index[source_id]
         validate_row(row)
+        if source_id == "wiktionary-kaikki" and item.get("copy_into") == "proprietary_lexicon":
+            raise LicenceRegisterError(
+                "WIKTIONARY_LEXICON_COPY",
+                "Wiktionary/Kaikki data must not be copied into the proprietary lexicon",
+            )
+        _check_religious_register_use(row, item)
         if kind == "lexicon":
             require_modernised(row, item)
 
