@@ -127,3 +127,4 @@ P2-052,build,T2,grok-4.7,n/a,n/a,1,pass,A missing tone mark is not fully correct
 P2-053,build,T3,grok-4.7,n/a,n/a,1,pass,A speaking prompt shows a score only with a finite confidence of at least 0.6 from the pronounce endpoint. Low confidence and an unavailable scorer show no number. Raw audio is discarded unless storage was opted in.
 P2-054,build,T3,grok-4.7,n/a,n/a,1,pass,Each can-do is met, not met, or unsure from scored turns. Thin evidence is not met. An unavailable scorer stores nothing.
 P2-055,build,T2,composer-2.5-fast,n/a,n/a,1,pass,Feedback shows the correct form and its audio. A wrong answer shows the item rationale. A missing rationale shows the form only and flags the item.
+P2-056,build,T3,grok-4.7,n/a,n/a,1,pass,Checkpoints keep only items that map to the unit can-dos. Evidence stores item ids, scores, and calibration. Uncalibrated items or a missing scorer issue nothing. Proctoring is passport-only with consent.

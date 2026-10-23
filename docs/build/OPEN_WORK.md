@@ -115,3 +115,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-103 | open | P2-051 | The lesson quiz section does not host the listen, tone, or picture items yet. The widgets grade and play when a screen uses them. |
 | OW-104 | open | P2-052 | Dictation and sentence building are not hosted by the lesson quiz section yet. |
 | OW-105 | open | P2-053 | Speaking, conversation, and item-feedback widgets are not hosted by the lesson quiz section yet. |
+| OW-106 | open | P2-056 | Credential evidence is kept on the caller and is not written to a store. The proctored flag means Passport consent, not a finished proctoring session. |

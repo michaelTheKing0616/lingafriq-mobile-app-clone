@@ -76,7 +76,7 @@ risks: []
 gate: G2
 external_blockers:
 - EXT-18
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes
