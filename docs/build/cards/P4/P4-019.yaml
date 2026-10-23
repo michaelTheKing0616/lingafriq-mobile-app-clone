@@ -22,7 +22,11 @@ tiers:
   reviewer: T1
   justification: 'score 1: blast 0, ambiguity 1, coupling 0, depth 0, size 0'
 token_budget: 25000
-file_allowlist: []
+file_allowlist:
+- tools/content_engine/licences/exclusions.yaml
+- tools/content_engine/licences/classic_dictionaries_2026-10-23.md
+- tools/content_engine/tests/test_excl_x_classics.py
+- tools/content_engine/tests/test_exclusion_enforce.py
 context_anchors:
 - CURRICULUM.md#§2.3:L265-L272
 acceptance_criteria:
@@ -41,7 +45,7 @@ risks: []
 gate: G4
 external_blockers:
 - EXT-03
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/07-research-and-fact-checking

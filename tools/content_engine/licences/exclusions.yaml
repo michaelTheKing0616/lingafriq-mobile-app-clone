@@ -134,8 +134,11 @@ sources:
       evidence: false
       training: false
   abraham-yoruba-1958:
-    status: needs-licence
+    status: excluded
     licence: "Copyright unconfirmed"
+    copyright_status: unconfirmed
+    pd_confirmed: false
+    evidence_note: tools/content_engine/licences/classic_dictionaries_2026-10-23.md
     reason: "Copyright unconfirmed. Reference only until counsel confirms."
     commercial_licence_document: ""
     counsel_status: ""
@@ -144,8 +147,11 @@ sources:
       evidence: false
       training: false
   bargery-hausa-1934:
-    status: needs-licence
+    status: excluded
     licence: "Copyright unconfirmed"
+    copyright_status: unconfirmed
+    pd_confirmed: false
+    evidence_note: tools/content_engine/licences/classic_dictionaries_2026-10-23.md
     reason: "Copyright unconfirmed. Reference only until counsel confirms."
     commercial_licence_document: ""
     counsel_status: ""

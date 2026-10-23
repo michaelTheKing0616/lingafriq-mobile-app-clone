@@ -640,7 +640,7 @@ P4-015	Done	Exclude IgboAPI data pending licence from Nkọwa okwu	P4/P4-015.yam
 P4-016	Done	Exclude Kamusi pending commercial licence	P4/P4-016.yaml
 P4-017	Done	Exclude Helsinki Corpus of Swahili without ELRA licence	P4/P4-017.yaml
 P4-018	Done	Record Oxford datasets as licence-required sources	P4/P4-018.yaml
-P4-019	Draft	Verify copyright status of Bargery and classic dictionaries	P4/P4-019.yaml
+P4-019	Done	Verify copyright status of Bargery and classic dictionaries	P4/P4-019.yaml
 P4-020	Draft	Decide buy-or-exclude for each restricted source	P4/P4-020.yaml
 P4-021	Draft	Define language kit schema and loader	P4/P4-021.yaml
 P4-022	Draft	Record Yoruba source stack in kit	P4/P4-022.yaml
