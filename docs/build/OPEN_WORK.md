@@ -147,3 +147,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-135 | open | P4-027 | EXT-22 is Open. No Newman purchase is logged. Bargery copyright stays unconfirmed. |
 | OW-136 | open | P4-028 | Faraclas is not purchased. NSC speech licence is unverified. Intron stays off while EXT-01 is pending. The anglicisation detector is not enabled. |
 | OW-137 | open | P4-029 | EXT-22 is Open. NSC speech has no verified licence and no Faraclas purchase is logged. |
+| OW-138 | open | P4-030 | BAKITA and the Kenyan notes are unverified. Oxford Swahili is not held. Kamusi stays excluded. Ashton is not purchased. |

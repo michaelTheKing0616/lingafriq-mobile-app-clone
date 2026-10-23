@@ -159,3 +159,4 @@ P4-026,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Hausa tone and length c
 P4-027,verification,T1,n/a,n/a,n/a,0,blocked,No Newman purchase is logged. Bargery stays unconfirmed. EXT-22 is Open. The card is Blocked-External.
 P4-028,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Pidgin stack keeps UD-Naija-NSC as evidence only. Faraclas is unpurchased, NSC speech unverified, and Intron off.
 P4-029,verification,T1,n/a,n/a,n/a,0,blocked,No NSC licence is recorded and no Faraclas purchase is logged. EXT-22 is Open. The card is Blocked-External.
+P4-030,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Swahili stack leaves BAKITA unverified, Kamusi excluded, Ashton unpurchased, and Common Voice at 1065 hours.
