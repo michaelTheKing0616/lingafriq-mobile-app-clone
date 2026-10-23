@@ -8,15 +8,15 @@ The Firebase service account, the Apple `.p8`, and the five client AI keys stay 
 
 Work is continuous on `cloud-handoff`. Do not pause between cards. The key files remain tracked.
 
-- Mobile: `cloud-handoff`. Latest card push is P2-014. Drift schema 3 serves the local reads. Hive is an import source and a write mirror.
+- Mobile: `cloud-handoff`. Latest card push is P2-015. The Drift outbox is the durable queue.
 - Backend: `cloud-handoff`. Latest card push is P2-034. OpenAI and Groq stamp first-token time.
 - The key files are still tracked. Copies also exist in `~/.lingafriq/secrets/` (mode 600). History was not rewritten.
 - Admin gamification edits were not part of this build. They are in git stash `admin-gamification-wip-not-this-build` on `lingafriq-admin` `cloud-handoff`.
-- P2-014 is done. Downloads, offline review, and the Point & Say queue stay readable after the schema steps. A failed step leaves the previous schema in place. Next card is P2-015. P7-961 does not jump this queue.
+- P2-015 is done. A client idempotency key survives restart, retries back off to 60 seconds, and a permanent 4xx stays visible. Next card is P2-016. P7-961 does not jump this queue.
 
 ## Next 3 steps
 
-1. Build P2-015, the durable outbox. The host switches below do not stop the queue.
+1. Build P2-016, one outbox for the competing offline systems. The host switches below do not stop the queue.
 2. Do not stop to ask what is next.
 3. Do not remove the Firebase service account, the Apple `.p8`, or the five client AI keys. Intron stays off until its flag and server key are set.
 

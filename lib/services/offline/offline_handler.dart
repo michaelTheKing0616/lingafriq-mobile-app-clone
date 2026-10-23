@@ -65,7 +65,8 @@ class OfflineHandler {
       'is_syncing': _isSyncing,
       'queue_length': PersistedOutboxService.instance.pendingCount,
       'pending_count': PersistedOutboxService.instance.pendingCount,
-      'failed_count': PersistedOutboxService.instance.retryingCount,
+      'failed_count': PersistedOutboxService.instance.deadLetterCount,
+      'dead_letter_count': PersistedOutboxService.instance.deadLetterCount,
     };
   }
 

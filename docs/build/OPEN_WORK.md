@@ -91,3 +91,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-079 | open | P2-034 | OpenAI and Groq stamp first-token time from the stream. Gemini and Hugging Face still return one finished body, so those calls do not stamp it. |
 | OW-080 | open | P2-037 | The rollout gate uses crash-free users 0.995 and ANR rate 0.0047. An Android ANR exit is not read from the OS yet. |
 | OW-081 | open | P2-014 | Reads come from the Drift snapshot. Hive is still written as a mirror so an existing install can be imported if the sqlite file is missing. |
+| OW-082 | open | P2-015 | The old Hive outbox is imported once. background_sync_service, sync_v2_service, and backend_sync_provider still call the same Drift outbox through their own entry points until P2-016. |

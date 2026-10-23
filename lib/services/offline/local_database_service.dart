@@ -98,6 +98,12 @@ class LocalDatabaseService {
   /// Check if database is initialized
   bool get isInitialized => _isInitialized;
 
+  /// The open Drift database. Call [init] first.
+  LingAfriqDatabase get database {
+    _ensureInitialized();
+    return _drift!;
+  }
+
   /// Get current schema version
   int get schemaVersion => _schemaVersion;
 
@@ -672,6 +678,7 @@ class LocalDatabaseService {
     await db.customStatement('DELETE FROM progress');
     await db.customStatement('DELETE FROM media_cache');
     await db.customStatement('DELETE FROM point_and_say');
+    await db.customStatement('DELETE FROM outbox');
     _lessons.clear();
     _vocabulary.clear();
     _progress.clear();

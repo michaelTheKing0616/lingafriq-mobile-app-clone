@@ -30,6 +30,11 @@ file_allowlist:
 - lib/services/sync/outbox_worker.dart
 - lib/config/sync_outbox_operation_types.dart
 - test/sync/outbox_test.dart
+- lib/db/app_database.dart
+- lib/db/migrations/local_sql.dart
+- lib/services/offline/local_database_service.dart
+- lib/services/offline/persisted_outbox_service.dart
+- lib/services/offline/offline_handler.dart
 context_anchors:
 - ELEVATION.md#§13.5:L1914
 - ELEVATION.md#§13.5:L1915
@@ -66,10 +71,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "The live queue is the Drift outbox. A permanent 4xx or a rejected operation stays in the dead-letter list. The older Hive box is imported once when Drift is empty."
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging

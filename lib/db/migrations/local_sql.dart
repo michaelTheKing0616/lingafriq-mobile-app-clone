@@ -37,3 +37,14 @@ CREATE TABLE IF NOT EXISTS point_and_say (
   payload TEXT NOT NULL
 )
 ''';
+
+const createOutbox = '''
+CREATE TABLE IF NOT EXISTS outbox (
+  id TEXT NOT NULL PRIMARY KEY,
+  idempotency_key TEXT NOT NULL UNIQUE,
+  state TEXT NOT NULL,
+  next_attempt_at INTEGER,
+  attempts INTEGER NOT NULL,
+  payload TEXT NOT NULL
+)
+''';

@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:crypto/crypto.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/config/sync_outbox_operation_types.dart';
 import 'package:lingafriq/services/connectivity_service.dart';
+import 'package:lingafriq/services/sync/outbox_service.dart';
+import 'package:lingafriq/services/sync/outbox_worker.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -134,18 +136,16 @@ class PersistedOutboxService {
   PersistedOutboxService._();
   static final PersistedOutboxService instance = PersistedOutboxService._();
 
-  static const _boxName = 'lingafriq_sync_outbox_v1';
   static const _uuid = Uuid();
   static const _installIdKey = 'lingafriq_install_id_v1';
   static const int _schemaVersion = 1;
 
-  Box<String>? _box;
+  final OutboxService _store = OutboxService();
   String? _installId;
   String? _appVersion;
 
   Future<void> ensureOpen() async {
-    if (_box != null && _box!.isOpen) return;
-    _box = await Hive.openBox<String>(_boxName);
+    await _store.openShared();
     await _ensureClientMetadata();
   }
 
@@ -185,89 +185,20 @@ class PersistedOutboxService {
     }
     await ensureOpen();
     final idempotencyKey = DurableOutbox.idempotencyKeyFor(type, payload);
-    for (final existing in _pendingRecords()) {
-      if (existing['idempotencyKey'] == idempotencyKey) {
-        final id = existing['clientOperationId']?.toString();
-        if (id != null && id.isNotEmpty) return id;
-      }
-    }
-    final clientOperationId = _uuid.v4();
-    final rec = <String, dynamic>{
-      'clientOperationId': clientOperationId,
-      'idempotencyKey': idempotencyKey,
-      'type': type,
-      'payload': payload,
-      'clientCreatedAt': DateTime.now().toUtc().toIso8601String(),
-      'clientInstallId': _installId,
-      'clientAppVersion': _appVersion,
-      'schemaVersion': _schemaVersion,
-      'createdAt': DateTime.now().toUtc().toIso8601String(),
-      'attempts': 0,
-      'lastError': null,
-    };
-    await _box!.put(clientOperationId, jsonEncode(rec));
-    return clientOperationId;
+    final record = await _store.enqueue(
+      type: type,
+      payload: payload,
+      idempotencyKey: idempotencyKey,
+      clientCreatedAt: DateTime.now().toUtc().toIso8601String(),
+      clientInstallId: _installId,
+      clientAppVersion: _appVersion,
+      schemaVersion: _schemaVersion,
+    );
+    return record.id;
   }
 
-  List<Map<String, dynamic>> _pendingRecords() {
-    if (_box == null || !_box!.isOpen) return [];
-    final out = <Map<String, dynamic>>[];
-    for (final key in _box!.keys) {
-      final raw = _box!.get(key);
-      if (raw == null) continue;
-      try {
-        final m = jsonDecode(raw) as Map<String, dynamic>;
-        out.add(m);
-      } catch (_) {}
-    }
-    out.sort((a, b) {
-      final ta = a['createdAt']?.toString() ?? '';
-      final tb = b['createdAt']?.toString() ?? '';
-      return ta.compareTo(tb);
-    });
-    return out;
-  }
-
-  static const int _flushMaxAttempts = 3;
-
-  ({DurableOutbox machine, Set<String> loadedIds}) _loadMachine() {
-    final machine = DurableOutbox();
-    final loadedIds = <String>{};
-    if (_box == null || !_box!.isOpen) {
-      return (machine: machine, loadedIds: loadedIds);
-    }
-    for (final key in _box!.keys) {
-      final raw = _box!.get(key);
-      if (raw == null) continue;
-      try {
-        final decoded = jsonDecode(raw);
-        if (decoded is! Map) continue;
-        final row = decoded.cast<String, dynamic>();
-        final id = row['clientOperationId']?.toString();
-        if (id == null || id.isEmpty) continue;
-        machine.restore(row);
-        loadedIds.add(id);
-      } catch (_) {
-        // Leave unreadable rows in the box. A parse error is not an ack.
-      }
-    }
-    return (machine: machine, loadedIds: loadedIds);
-  }
-
-  Future<void> _persistMachine(DurableOutbox machine, Set<String> loadedIds) async {
-    for (final id in loadedIds) {
-      final row = machine.rows[id];
-      if (row == null) {
-        await _box!.delete(id);
-      } else {
-        await _box!.put(id, jsonEncode(row));
-      }
-    }
-  }
-
-  /// Push up to [batchSize] due operations. A row is deleted only after the
-  /// server result says `ok == true`. Transport errors and `ok: false` keep
-  /// the row, increment attempts, and set `nextAttemptAt`.
+  /// Push due operations. A row is removed only after the server applies it
+  /// once. A permanent 4xx stays in the dead-letter list.
   Future<int> flushPending({int batchSize = 50}) async {
     await ensureOpen();
 
@@ -277,79 +208,21 @@ class PersistedOutboxService {
     }
 
     await ApiService.initialize();
-
-    final loaded = _loadMachine();
-    final due = loaded.machine.due(batchSize: batchSize);
-    if (due.isEmpty) return 0;
-
-    final batch = due.map((e) {
-      return {
-        'idempotencyKey': e['idempotencyKey'],
-        'clientOperationId': e['clientOperationId'],
-        'type': e['type'],
-        'payload': e['payload'],
-        'clientCreatedAt': e['clientCreatedAt'],
-        'clientInstallId': e['clientInstallId'],
-        'clientAppVersion': e['clientAppVersion'],
-        'schemaVersion': e['schemaVersion'],
-      };
-    }).toList();
-    final batchIds = batch
-        .map((e) => e['clientOperationId']?.toString())
-        .whereType<String>()
-        .toSet();
-
-    final pushUrl = ApiContract.url(ApiContract.syncV2.outboxPush);
-
-    for (var attempt = 0; attempt < _flushMaxAttempts; attempt++) {
-      try {
-        final res = await ApiService.post(
-          pushUrl,
-          data: {'operations': batch},
-        );
-        if (res.statusCode == 200) {
-          final data = res.data;
-          final results = data is Map ? data['results'] : null;
-          final removed = results is List
-              ? loaded.machine.applyServerResults(results, batchIds)
-              : 0;
-          if (results is! List) {
-            loaded.machine.markTransportFailure(batchIds, 'missing_results');
-          }
-          await _persistMachine(loaded.machine, loaded.loadedIds);
-          await _observeConflicts(loaded.machine);
-          return removed;
-        }
-        final code = res.statusCode ?? 0;
-        final retryable = (code >= 500 && code < 600) || code == 429;
-        if (retryable && attempt < _flushMaxAttempts - 1) {
-          await Future<void>.delayed(Duration(milliseconds: 250 * (1 << attempt)));
-          continue;
-        }
-        logger.warn('Outbox push non-200', context: {
-          'status': res.statusCode,
-          'data': res.data,
-          'attempt': attempt + 1,
-        });
-        loaded.machine.markTransportFailure(batchIds, 'http_$code');
-        await _persistMachine(loaded.machine, loaded.loadedIds);
-        return 0;
-      } catch (e, st) {
-        if (attempt < _flushMaxAttempts - 1) {
-          await Future<void>.delayed(Duration(milliseconds: 250 * (1 << attempt)));
-          continue;
-        }
-        logger.error('Outbox flush failed', error: e, stackTrace: st);
-        loaded.machine.markTransportFailure(batchIds, 'transport_error');
-        await _persistMachine(loaded.machine, loaded.loadedIds);
-        return 0;
-      }
-    }
-    return 0;
+    final worker = OutboxWorker(
+      store: _store,
+      transport: _ApiOutboxTransport(),
+      random: Random(),
+    );
+    final removed = await worker.flush(batchSize: batchSize);
+    await _observeConflicts();
+    return removed;
   }
 
-  Future<void> _observeConflicts(DurableOutbox machine) async {
-    final conflicts = machine.conflicts();
+  Future<void> _observeConflicts() async {
+    final conflicts = _store.deadLetters
+        .where((row) => (row.lastError ?? '').toLowerCase().contains('conflict'))
+        .map((row) => row.toJson())
+        .toList();
     if (conflicts.isEmpty) return;
     try {
       await SyncV2Service.instance.observeOutboxConflicts(conflicts);
@@ -358,17 +231,51 @@ class PersistedOutboxService {
     }
   }
 
-  int get pendingCount {
-    if (_box == null || !_box!.isOpen) return 0;
-    return _box!.length;
-  }
+  int get pendingCount => _store.pendingCount;
 
-  int get retryingCount {
-    var count = 0;
-    for (final row in _pendingRecords()) {
-      final attempts = (row['attempts'] as num?)?.toInt() ?? 0;
-      if (attempts > 0) count++;
+  int get retryingCount => _store.retryingCount;
+
+  int get deadLetterCount => _store.deadLetterCount;
+
+  List<OutboxRecord> get deadLetters => _store.deadLetters;
+}
+
+class _ApiOutboxTransport implements OutboxTransport {
+  @override
+  Future<OutboxBatchResponse> push(List<OutboxRecord> batch) async {
+    final pushUrl = ApiContract.url(ApiContract.syncV2.outboxPush);
+    final body = batch.map((row) {
+      return {
+        'idempotencyKey': row.idempotencyKey,
+        'clientOperationId': row.id,
+        'type': row.type,
+        'payload': row.payload,
+        'clientCreatedAt': row.clientCreatedAt,
+        'clientInstallId': row.clientInstallId,
+        'clientAppVersion': row.clientAppVersion,
+        'schemaVersion': row.schemaVersion,
+      };
+    }).toList();
+    try {
+      final res = await ApiService.post(pushUrl, data: {'operations': body});
+      final data = res.data;
+      final rawResults = data is Map ? data['results'] : null;
+      final results = <OutboxItemResult>[];
+      if (rawResults is List) {
+        for (final item in rawResults) {
+          if (item is! Map) continue;
+          results.add(OutboxItemResult(
+            clientOperationId: item['clientOperationId']?.toString() ?? '',
+            ok: item['ok'] == true,
+            duplicate: item['duplicate'] == true,
+            error: item['error']?.toString(),
+          ));
+        }
+      }
+      return OutboxBatchResponse(statusCode: res.statusCode, results: results);
+    } catch (error) {
+      logger.error('Outbox flush failed', error: error);
+      return const OutboxBatchResponse(statusCode: null, transportFailed: true);
     }
-    return count;
   }
 }

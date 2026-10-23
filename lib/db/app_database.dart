@@ -29,7 +29,7 @@ class LingAfriqDatabase extends GeneratedDatabase {
 
   LingAfriqDatabase.memory({this.failAtStep}) : super(NativeDatabase.memory());
 
-  static const int latestSchema = 3;
+  static const int latestSchema = 4;
 
   /// Test-only. When set, that step writes a probe row and then fails.
   final int? failAtStep;
@@ -47,6 +47,7 @@ class LingAfriqDatabase extends GeneratedDatabase {
             await applyMigrationStep(this, 1);
             await applyMigrationStep(this, 2);
             await applyMigrationStep(this, 3);
+            await applyMigrationStep(this, 4);
           });
         },
         onUpgrade: (migrator, from, to) async {
@@ -93,6 +94,9 @@ Future<void> applyMigrationStep(GeneratedDatabase db, int version) async {
       break;
     case 3:
       await db.customStatement(createPointAndSay);
+      break;
+    case 4:
+      await db.customStatement(createOutbox);
       break;
     default:
       throw StateError('missing migration to schema $version');
@@ -202,7 +206,7 @@ Future<void> _upsertPayload(
 }
 
 void _assertTable(String table) {
-  const allowed = {'lessons', 'vocabulary', 'progress', 'media_cache', 'point_and_say'};
+  const allowed = {'lessons', 'vocabulary', 'progress', 'media_cache', 'point_and_say', 'outbox'};
   if (!allowed.contains(table)) {
     throw ArgumentError('unknown local table $table');
   }
