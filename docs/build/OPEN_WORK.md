@@ -144,3 +144,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-132 | open | P4-024 | Ọnwụ is unverified. IgboAPI data and Oxford are not held. Emenanjo is not purchased. The tone restorer does not approve a mark. |
 | OW-133 | open | P4-025 | EXT-22 is Open. Ọnwụ has no linguist confirmation and no Emenanjo purchase is logged. |
 | OW-134 | open | P4-026 | Oxford Hausa is not held. Newman is not purchased. Peace Corps Hausa stays unconfirmed. Tone marks are not model-generated. |
+| OW-135 | open | P4-027 | EXT-22 is Open. No Newman purchase is logged. Bargery copyright stays unconfirmed. |
