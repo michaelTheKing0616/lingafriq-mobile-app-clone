@@ -483,7 +483,7 @@ P2-014	Done	Add schema-versioned local migrations without logout on update	P2/P2
 P2-015	Done	Build one durable outbox with idempotency keys and backoff	P2/P2-015.yaml
 P2-016	Done	Consolidate competing offline systems into the outbox	P2/P2-016.yaml
 P2-017	Done	Show a visible sync state	P2/P2-017.yaml
-P2-018	Draft	Replace fake-success paths with typed errors and visible states	P2/P2-018.yaml
+P2-018	Done	Replace fake-success paths with typed errors and visible states	P2/P2-018.yaml
 P2-019	Draft	Manage downloadable units, storage and Wi-Fi-only default	P2/P2-019.yaml
 P2-020	Draft	Add low-bandwidth mode honouring Android Data Saver	P2/P2-020.yaml
 P2-021	Draft	Specify on-device tone feedback hook for offline practice	P2/P2-021.yaml

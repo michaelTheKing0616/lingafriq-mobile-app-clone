@@ -16,6 +16,7 @@ import '../data/roleplay_dataset.dart';
 import '../services/hybrid_polie/hybrid_polie_orchestrator.dart';
 import '../services/telemetry_service.dart';
 import '../services/env_config.dart';
+import '../services/error/typed_errors.dart';
 import '../utils/supported_languages.dart';
 import '../services/ai/conversation_context_manager.dart';
 import '../services/ai/conversation_practice_enhancer.dart';
@@ -2098,12 +2099,14 @@ Return only valid JSON.
         ),
       );
 
-      final confidence = (response.data['confidence'] ?? 0.5) as double? ?? 0.5;
+      final raw = response.data['confidence'];
+      if (raw is! num) throw pronunciationUnavailable;
+      final confidence = raw.toDouble();
       _recordSessionMetrics(pron: confidence);
       return confidence;
     } catch (e) {
       logger.error('Pronunciation scoring error', tag: 'ai-chat', error: e);
-      return 0.5;
+      throw pronunciationUnavailable;
     }
   }
 
@@ -2132,7 +2135,9 @@ Return only valid JSON.
 
       final userText = transResp.data['text']?.toString() ?? '';
       final wer = wordErrorRate(referenceText, userText);
-      final pronunciationScore = (transResp.data['confidence'] ?? 0.6) as double? ?? 0.6;
+      final rawConfidence = transResp.data['confidence'];
+      if (rawConfidence is! num) throw pronunciationUnavailable;
+      final pronunciationScore = rawConfidence.toDouble();
 
       final score = ((1 - wer) * 0.6 + pronunciationScore * 0.4).clamp(0.0, 1.0);
 
@@ -2149,13 +2154,8 @@ Return only valid JSON.
       };
     } catch (e) {
       logger.error('Shadowing exercise error', tag: 'ai-chat', error: e);
-      return {
-        'score': 0.0,
-        'wer': 1.0,
-        'userText': '',
-        'pronunciationScore': 0.0,
-        'corrections': [],
-      };
+      if (e is LingAfriqFailure) rethrow;
+      throw pronunciationUnavailable;
     }
   }
 

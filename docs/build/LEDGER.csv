@@ -94,3 +94,4 @@ P2-014,build,T3,grok-4.7,n/a,n/a,1,pass,Schema steps run in order. A failed step
 P2-015,build,T3,grok-4.7,n/a,n/a,1,pass,An offline write keeps a client idempotency key in Drift across restart. Retry delay grows to a 60 second cap. The same key applies once. A permanent 4xx stays in the dead-letter list
 P2-016,build,T3,grok-4.7,n/a,n/a,1,pass,The competing offline queues are deleted. Writes, preferences, and background flush go through the one Drift outbox. Downloads, review, Point and Say, and the tone trainer stay readable
 P2-017,build,T1,grok-4.7,n/a,n/a,1,pass,The sync chip shows the pending count, a failed state with Retry, and Offline whenever the device has no connection
+P2-018,build,T3,grok-4.7,n/a,n/a,1,pass,An unavailable pronunciation scorer returns 503 and no score. A failed persona reply is a typed error, not a canned line

@@ -8,15 +8,15 @@ The Firebase service account, the Apple `.p8`, and the five client AI keys stay 
 
 Work is continuous on `cloud-handoff`. Do not pause between cards. The key files remain tracked.
 
-- Mobile: `cloud-handoff`. Latest card push is P2-017. The sync chip is the visible state.
+- Mobile: `cloud-handoff`. Latest card push is P2-018. An unavailable scorer does not invent a score.
 - Backend: `cloud-handoff`. Latest card push is P2-034. OpenAI and Groq stamp first-token time.
 - The key files are still tracked. Copies also exist in `~/.lingafriq/secrets/` (mode 600). History was not rewritten.
 - Admin gamification edits were not part of this build. They are in git stash `admin-gamification-wip-not-this-build` on `lingafriq-admin` `cloud-handoff`.
-- P2-017 is done. The sync chip shows pending, failed, and offline. Next card is P2-018. P7-961 does not jump this queue.
+- P2-018 is done. An unavailable scorer returns 503 and no invented score. Next card is P2-019. P7-961 does not jump this queue.
 
 ## Next 3 steps
 
-1. Build P2-018. The host switches below do not stop the queue.
+1. Build P2-019. The host switches below do not stop the queue.
 2. Do not stop to ask what is next.
 3. Do not remove the Firebase service account, the Apple `.p8`, or the five client AI keys. Intron stays off until its flag and server key are set.
 

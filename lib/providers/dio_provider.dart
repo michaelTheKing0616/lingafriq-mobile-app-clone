@@ -94,17 +94,6 @@ class _TraceparentInterceptor extends Interceptor {
   }
 }
 
-/// Puts a fresh W3C traceparent on every API call. The body is not copied onto the span.
-class _TraceparentInterceptor extends Interceptor {
-  final OtelTracer _tracer = OtelTracer();
-
-  @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    options.headers.addAll(_tracer.headers());
-    handler.next(options);
-  }
-}
-
 /// Retries transient transport failures (DNS, timeout, temporary disconnects).
 class _DnsRetryInterceptor extends Interceptor {
   static const _maxRetries = 2;

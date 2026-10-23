@@ -29,10 +29,13 @@ tiers:
 token_budget: 70000
 file_allowlist:
 - lib/services/pronunciation_scoring_service.dart
-- lib/services/hybrid_polie/
-- lib/services/offline/offline_service.dart
+- lib/services/hybrid_polie/pronunciation_service.dart
+- lib/services/hybrid_polie/hybrid_polie_orchestrator.dart
 - lib/services/error/typed_errors.dart
-- node-backend/src/controllers/pronunciation.controller.ts
+- lib/providers/ai_chat_provider_groq.dart
+- lib/ai/persona_cognition/groq_two_pass_orchestrator.dart
+- lib/providers/dio_provider.dart
+- test/services/error/typed_failure_test.dart
 context_anchors:
 - ELEVATION.md#§13.4:L1898
 - ELEVATION.md#§13.4:L1899
@@ -68,10 +71,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- "The hybrid-polie pronounce route in node-backend returns 503 pronunciation_unavailable and no score when MFA is down. A numeric score from MFA, including zero, is returned as scored. The deleted offline callback queue stays deleted."
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes

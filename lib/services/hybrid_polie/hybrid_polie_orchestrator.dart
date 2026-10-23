@@ -14,6 +14,7 @@ import '../../config/api_contract.dart';
 import '../../utils/diacritics_enforcer.dart';
 import '../../utils/supported_languages.dart';
 import '../env_config.dart';
+import '../error/typed_errors.dart';
 
 class HybridPolieOrchestrator {
   final TranslationService _translationService = TranslationService();
@@ -89,11 +90,8 @@ class HybridPolieOrchestrator {
         // Dialogue/roleplay/tutor → LLaMA-3.1-70B
         // Check recursion guard to prevent infinite loops
         if (_isProcessingLlamaCall) {
-          debugPrint('⚠️ Recursion guard triggered - returning direct response');
-          rawOutput = userMessage;
-          modelUsed = 'direct-passthrough';
-          metadata['recursion_prevented'] = true;
-          break;
+          debugPrint('Recursion guard triggered');
+          throw personaUnavailable;
         }
         
         // Check if we need to inject canonical phrases
@@ -134,17 +132,16 @@ class HybridPolieOrchestrator {
           sourceLanguage: sourceLanguage ?? 'english',
           systemPrompt: groqProvider.currentSystemPrompt,
         );
-        rawOutput = geminiOutput['content']?.toString() ?? userMessage;
+        final geminiText = geminiOutput['content']?.toString().trim() ?? '';
+        if (geminiText.isEmpty) throw personaUnavailable;
+        rawOutput = geminiText;
         modelUsed = geminiOutput['model']?.toString() ?? 'gemini-via-backend';
         metadata['provider'] = 'gemini';
         metadata['routed_by'] = 'hybrid_model_router';
         break;
         
       case ModelType.asrMfa:
-        // Pronunciation → handled separately in pronunciation service
-        rawOutput = '[Pronunciation feedback will be handled by ASR/MFA service]';
-        modelUsed = 'asr-mfa';
-        break;
+        throw pronunciationUnavailable;
     }
     
     // 3. Post-process: enforce diacritics
@@ -248,8 +245,8 @@ Respond in $langName, incorporating the canonical phrase above where appropriate
       final groqApiKey = EnvConfig.groqApiKey;
       
       if (groqApiKey.isEmpty || groqApiKey == 'YOUR_GROQ_API_KEY') {
-        debugPrint('⚠️ Groq API key not configured');
-        return prompt; // Fallback to original prompt
+        debugPrint('Groq API key not configured');
+        throw personaUnavailable;
       }
       
       final messages = <Map<String, String>>[];
@@ -284,14 +281,17 @@ Respond in $langName, incorporating the canonical phrase above where appropriate
         final choices = data['choices'] as List?;
         if (choices != null && choices.isNotEmpty) {
           final message = choices[0]['message'];
-          return message['content'] ?? prompt;
+          final content = message['content']?.toString().trim() ?? '';
+          if (content.isEmpty) throw personaUnavailable;
+          return content;
         }
       }
-      
-      return prompt; // Fallback
+
+      throw personaUnavailable;
     } catch (e) {
+      if (e is LingAfriqFailure) rethrow;
       debugPrint('Error calling LLaMA directly: $e');
-      return prompt; // Fallback
+      throw personaUnavailable;
     } finally {
       _isProcessingLlamaCall = false;
     }
@@ -342,9 +342,10 @@ Respond in $langName, incorporating the canonical phrase above where appropriate
       prompt: userMessage,
       systemPrompt: systemPrompt,
     );
+    if (fallback.trim().isEmpty) throw personaUnavailable;
     return {
       'content': fallback,
-      'model': 'llama-fallback',
+      'model': 'llama-3.3-70b-versatile',
     };
   }
   

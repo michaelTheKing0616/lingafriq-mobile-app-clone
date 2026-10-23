@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:lingafriq/ai/personas/historical_persona_registry.dart';
 import 'package:lingafriq/ai/persona_cognition/epistemic_classifier.dart';
 import 'package:lingafriq/ai/persona_cognition/intent_classifier.dart';
+import 'package:lingafriq/services/error/typed_errors.dart';
 
 class Pass1Result {
   final EpistemicStatus epistemicStatus;
@@ -225,31 +226,18 @@ RULES:
     );
 
     final content = response.data['choices']?[0]?['message']?['content'] as String?;
-    if (content == null) {
-      return {
-        'persona_reply': '${persona.displayName} nods thoughtfully. (Response unavailable.)',
-        'epistemic_status': pass1.epistemicStatus.name,
-        'confidence': pass1.confidence,
-        'language_feedback': <Map<String, dynamic>>[],
-        'cultural_note': null,
-        'historical_citations': <Map<String, dynamic>>[],
-        'emotion_tone': 'calm',
-      };
+    if (content == null || content.trim().isEmpty) {
+      throw personaUnavailable;
     }
 
     try {
       final json = jsonDecode(content) as Map<String, dynamic>;
+      final reply = json['persona_reply']?.toString() ?? '';
+      if (reply.trim().isEmpty) throw personaUnavailable;
       return json;
-    } catch (_) {
-      return {
-        'persona_reply': '${persona.displayName} responds with warmth. (Parse error.)',
-        'epistemic_status': pass1.epistemicStatus.name,
-        'confidence': pass1.confidence,
-        'language_feedback': <Map<String, dynamic>>[],
-        'cultural_note': null,
-        'historical_citations': <Map<String, dynamic>>[],
-        'emotion_tone': 'calm',
-      };
+    } catch (e) {
+      if (e is LingAfriqFailure) rethrow;
+      throw personaUnavailable;
     }
   }
 }

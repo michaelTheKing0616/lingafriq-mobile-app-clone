@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/providers/dio_provider.dart';
+import 'package:lingafriq/services/error/typed_errors.dart';
 
 class PronunciationService {
   final Dio _dio;
@@ -68,20 +69,7 @@ class PronunciationService {
       
       throw Exception('Pronunciation scoring failed: ${response.statusCode}');
     } catch (e) {
-      // Enhanced fallback with better error handling
-      return PronunciationResult(
-        score: 0.7,
-        phonemeErrors: [],
-        wordErrors: [],
-        alignment: {},
-        feedback: 'Unable to analyze pronunciation. Your audio was recorded successfully. Please check your connection and try again.',
-        model: 'fallback',
-        error: e.toString(),
-        phonemeScore: 0.7,
-        toneScore: 0.7,
-        fluencyScore: 0.7,
-        confidenceScore: 0.5,
-      );
+      throw pronunciationUnavailable;
     }
   }
   
