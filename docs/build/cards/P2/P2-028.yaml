@@ -29,9 +29,9 @@ tiers:
 token_budget: 70000
 file_allowlist:
 - node-backend/src/controllers/auth.controller.ts
-- node-backend/src/middleware/auth.middleware.ts
+- node-backend/src/controllers/v1/auth.controller.ts
 - node-backend/src/services/password.service.ts
-- node-backend/test/auth/password.test.ts
+- node-backend/src/__test__/P1-045.password.test.ts
 context_anchors:
 - ELEVATION.md#§13.1:L1851-L1852
 - ELEVATION.md#§13.1:L1852-L1853
@@ -71,10 +71,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- 'Before this change, login rejected a password shorter than 6 characters with Email and password are required, before the hash was checked. Sign-up already required 8 characters and a breach check. Login now checks any non-empty password against the stored hash.'
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes

@@ -106,3 +106,4 @@ P2-025,build,T3,grok-4.7,n/a,n/a,1,pass,Saving progress creates a passkey linked
 P2-022,build,T3,grok-4.7,n/a,n/a,1,pass,Onboarding and the first lesson persist in Drift offline. The sync posts those events once. A failed step is named step:name.
 P2-026,build,T3,grok-4.7,n/a,n/a,1,pass,Google and Apple identity tokens are verified for audience, issuer, and expiry. An unverified email is not linked.
 P2-027,build,T3,grok-4.7,n/a,n/a,1,pass,A magic link lasts 15 minutes, is single use, hides whether the email exists, and returns rate_limited after the auth limit.
+P2-028,build,T3,grok-4.7,n/a,n/a,1,pass,A legacy Django hash becomes Argon2id on login. A 5-character password is checked against the hash. New passwords stay at 8 characters with a breach check.
