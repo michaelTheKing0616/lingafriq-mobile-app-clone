@@ -66,7 +66,7 @@ risks:
 - "Pronunciation and tone scores are used when those events exist. This P2 card does not depend on P5 or P6."
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes

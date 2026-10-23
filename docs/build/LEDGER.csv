@@ -129,3 +129,4 @@ P2-054,build,T3,grok-4.7,n/a,n/a,1,pass,Each can-do is met, not met, or unsure f
 P2-055,build,T2,composer-2.5-fast,n/a,n/a,1,pass,Feedback shows the correct form and its audio. A wrong answer shows the item rationale. A missing rationale shows the form only and flags the item.
 P2-056,build,T3,grok-4.7,n/a,n/a,1,pass,Checkpoints keep only items that map to the unit can-dos. Evidence stores item ids, scores, and calibration. Uncalibrated items or a missing scorer issue nothing. Proctoring is passport-only with consent.
 P2-057,build,T1,composer-2.5-fast,n/a,n/a,1,pass,Each preloader shows once. A dismissed tip stays dismissed. Settings links to the features guide and the game onboarding overlay. Neither screen was removed.
+P2-058,build,T3,grok-4.7,n/a,n/a,1,pass,On-device Beta-Binomial mastery uses only the practice signals. A missing score is not invented. The under-16 record has no advertising id. Reset returns the prior.
