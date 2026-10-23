@@ -94,3 +94,8 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-082 | open | P2-016 | Legacy sync types post to their existing endpoints from the one outbox. Those endpoints do not yet store an idempotency receipt, so a lost 200 can be sent again. |
 | OW-083 | open | P2-019 | Bundled content manifests do not list pack bytes, so a unit with no declared size shows Size not listed until a download records the byte count. |
 | OW-084 | open | P2-020 | iOS has no Data Saver signal, so low-bandwidth mode stays off there until the learner turns it on. Image widgets that do not use LazyImage still request the full image. |
+| OW-085 | open | P2-041 | The four learner models are still in the app. This decision names them and the order. It does not delete them. |
+| OW-086 | open | P2-023 | Asymmetric signing runs only when a private key is in JWT_ASYMMETRIC_KEYS. With no key, new sessions stay HS256 for 15 minutes. JWT_HS256_CUTOVER stays unset (D25). |
+| OW-087 | open | P2-024 | Revocation is logout, password change, and reuse detection. There is no separate admin revoke button. |
+| OW-088 | open | P2-025 | CI does not open a platform passkey prompt. The server ceremony and the cancelled-state fallbacks are tested. |
+| OW-089 | open | P2-042 | The event log is the new write. Vocabulary SM-2, chat SM-2, game SM-2, and BKT/HLR still update themselves. |

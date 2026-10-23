@@ -488,9 +488,9 @@ P2-019	Done	Manage downloadable units, storage and Wi-Fi-only default	P2/P2-019.
 P2-020	Done	Add low-bandwidth mode honouring Android Data Saver	P2/P2-020.yaml
 P2-021	Done	Specify on-device tone feedback hook for offline practice	P2/P2-021.yaml
 P2-022	Draft	Add integration test for onboarding, first lesson and sync	P2/P2-022.yaml
-P2-023	Draft	Issue short-lived asymmetric access tokens with kid rotation	P2/P2-023.yaml
-P2-024	Draft	Add rotating revocable refresh tokens with reuse detection	P2/P2-024.yaml
-P2-025	Draft	Add passkey sign-in and sign-up	P2/P2-025.yaml
+P2-023	Done	Issue short-lived asymmetric access tokens with kid rotation	P2/P2-023.yaml
+P2-024	Done	Add rotating revocable refresh tokens with reuse detection	P2/P2-024.yaml
+P2-025	Done	Add passkey sign-in and sign-up	P2/P2-025.yaml
 P2-026	Draft	Add Google and Apple sign-in	P2/P2-026.yaml
 P2-027	Draft	Add email magic link sign-in	P2/P2-027.yaml
 P2-028	Draft	Rehash legacy passwords with Argon2id and enforce password rules	P2/P2-028.yaml
@@ -506,8 +506,8 @@ P2-037	Ready	Report crashes and ANRs with release gates	P2/P2-037.yaml
 P2-038	Draft	Add feature flags and staged rollout stages	P2/P2-038.yaml
 P2-039	Draft	'ADR: Decide on Shorebird Dart patching'	P2/P2-039.yaml
 P2-040	Draft	Archive status docs and generate honest STATUS.md	P2/P2-040.yaml
-P2-041	Draft	'ADR: Single Learner Knowledge Graph replaces four learner models'	P2/P2-041.yaml
-P2-042	Draft	Build idempotent learning event log	P2/P2-042.yaml
+P2-041	Done	'ADR: Single Learner Knowledge Graph replaces four learner models'	P2/P2-041.yaml
+P2-042	Done	Build idempotent learning event log	P2/P2-042.yaml
 P2-043	Draft	Implement FSRS-6 scheduler on device	P2/P2-043.yaml
 P2-044	Draft	Add mutation testing gate on FSRS	P2/P2-044.yaml
 P2-045	Draft	Model Learner Knowledge Graph nodes and error counts	P2/P2-045.yaml

@@ -25,11 +25,14 @@ tiers:
   justification: 'score 8: blast 3, coupling 1, depth 2'
 token_budget: 150000
 file_allowlist:
+- node-backend/src/services/passkey.service.ts
+- node-backend/src/models/passkeyCredential.model.ts
 - node-backend/src/controllers/auth.controller.ts
-- node-backend/src/middleware/auth.middleware.ts
-- node-backend/src/services/webauthn.service.ts
-- lib/services/auth/passkey_service.dart
+- lib/services/passkey_service.dart
 - lib/screens/auth/save_progress_screen.dart
+- lib/screens/auth/passkey_prompt.dart
+- test/screens/auth/save_progress_screen_test.dart
+- node-backend/src/__test__/P1-048.passkey.test.ts
 context_anchors:
 - ELEVATION.md#§13.1:L1851
 - ELEVATION.md#§5.2:L1056
@@ -81,10 +84,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- 'The widget test does not open a platform authenticator. The server ceremony is covered by the passkey test. Google, Apple, and magic link are offered from the cancelled and unsupported states. Their sign-in handlers are the existing routes.'
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - prime/mobile-app-ui-design

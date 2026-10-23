@@ -55,12 +55,16 @@ class PasskeyApi {
     await _storeSession(verified.data);
   }
 
-  Future<List<PasskeySummary>> register() async {
+  Future<List<PasskeySummary>> register({String? anonymousProgressId}) async {
     final started = await _post(Api.passkeyRegisterOptions);
     final created = await authenticator.register(
       registrationRequest(Map<String, dynamic>.from(started.data as Map)),
     );
-    final verified = await _post(Api.passkeyRegisterVerify, data: created.toJson());
+    final payload = Map<String, dynamic>.from(created.toJson());
+    if (anonymousProgressId != null && anonymousProgressId.isNotEmpty) {
+      payload['anonymousProgressId'] = anonymousProgressId;
+    }
+    final verified = await _post(Api.passkeyRegisterVerify, data: payload);
     return passkeySummaries(verified.data);
   }
 

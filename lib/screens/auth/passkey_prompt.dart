@@ -7,7 +7,7 @@ class PasskeySummary {
   final bool backedUp;
 }
 
-enum PasskeyPromptState { prompt, registering, success, unsupported, error }
+enum PasskeyPromptState { prompt, registering, success, unsupported, cancelled, error }
 
 class PasskeyPrompt extends StatelessWidget {
   const PasskeyPrompt({
@@ -40,7 +40,11 @@ class PasskeyPrompt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: state == PasskeyPromptState.unsupported ? 'passkey.unsupported' : 'passkey.prompt',
+      label: state == PasskeyPromptState.unsupported
+          ? 'passkey.unsupported'
+          : state == PasskeyPromptState.cancelled
+              ? 'passkey.cancelled'
+              : 'passkey.prompt',
       child: Material(
         child: ListView(
           padding: const EdgeInsets.all(24),
@@ -48,7 +52,9 @@ class PasskeyPrompt extends StatelessWidget {
             Text(
               state == PasskeyPromptState.unsupported
                   ? 'Passkeys are not available on this device'
-                  : 'Use a passkey for this account',
+                  : state == PasskeyPromptState.cancelled
+                      ? 'The passkey prompt was cancelled'
+                      : 'Use a passkey for this account',
               key: Key(state == PasskeyPromptState.unsupported ? 'passkey.unsupported' : 'passkey.prompt'),
               style: Theme.of(context).textTheme.titleLarge,
             ),
@@ -60,7 +66,7 @@ class PasskeyPrompt extends StatelessWidget {
               const SizedBox(height: 12),
               OutlinedButton(onPressed: onRetry, child: const Text('Try again')),
             ],
-            if (state == PasskeyPromptState.unsupported) ...[
+            if (state == PasskeyPromptState.unsupported || state == PasskeyPromptState.cancelled) ...[
               OutlinedButton(onPressed: onGoogle, child: const Text('Continue with Google')),
               const SizedBox(height: 8),
               OutlinedButton(onPressed: onApple, child: const Text('Continue with Apple')),
