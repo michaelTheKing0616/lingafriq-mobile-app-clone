@@ -40,17 +40,22 @@ class PlacementTestScreen extends HookConsumerWidget {
     // they were defined after submitTest and caused "referenced before declared".
     // These declarations above submitTest fix that.
     List<String> getStrengths(PlacementResult r) {
+      if (r.provisional || r.level == 'unsure') return ['A precise level needs more calibrated items'];
       if (r.score >= 70) return ['Strong vocabulary foundation', 'Good understanding of basic grammar'];
       if (r.score >= 50) return ['Basic vocabulary knowledge'];
       return ['Willingness to learn'];
     }
     List<String> getWeaknesses(PlacementResult r) {
+      if (r.provisional || r.level == 'unsure') return [];
       if (r.score < 50) return ['Need to build vocabulary', 'Grammar fundamentals needed'];
       if (r.score < 70) return ['Some grammar concepts need review'];
       return [];
     }
     List<String> getRecommendations(PlacementResult r) {
       final level = r.level;
+      if (r.provisional || level == 'unsure') {
+        return ['Start with the first lessons. A level waits until calibrated items are available.'];
+      }
       if (level == 'A1' || level == 'A2') return ['Start with beginner lessons', 'Focus on vocabulary building', 'Practice pronunciation daily'];
       if (level == 'B1' || level == 'B2') return ['Continue with intermediate content', 'Practice conversation skills', 'Expand vocabulary in specific topics'];
       return ['Advanced lessons recommended', 'Focus on fluency and nuance', 'Engage with native content'];
@@ -216,6 +221,10 @@ class PlacementTestScreen extends HookConsumerWidget {
           'score': placementResult.score,
           'total_questions': placementResult.totalQuestions,
           'correct': placementResult.correct,
+          'provisional': placementResult.provisional,
+          if (placementResult.ability != null) 'ability': placementResult.ability,
+          if (placementResult.intervalLow != null) 'interval_low': placementResult.intervalLow,
+          if (placementResult.intervalHigh != null) 'interval_high': placementResult.intervalHigh,
           'strengths': getStrengths(placementResult),
           'weaknesses': getWeaknesses(placementResult),
           'recommendations': getRecommendations(placementResult),
@@ -556,14 +565,14 @@ class PlacementTestScreen extends HookConsumerWidget {
                     shape: BoxShape.circle,
                   ),
                   child: Text(
-                    result['cefr_level'] ?? 'A1',
+                    (result['cefr_level'] ?? 'unsure').toString(),
                     style: PanAfricanTypography.displayLarge(context)
                         .copyWith(color: PanAfricanColors.primary),
                   ),
                 ),
                 SizedBox(height: PanAfricanSpacing.xl),
                 Text(
-                  'Your Proficiency Level',
+                  (result['cefr_level'] ?? 'unsure').toString() == 'unsure' ? 'Level not precise yet' : 'Your Proficiency Level',
                   style: PanAfricanTypography.titleLarge(context)
                       .copyWith(color: Theme.of(context).colorScheme.onPrimary),
                 ),

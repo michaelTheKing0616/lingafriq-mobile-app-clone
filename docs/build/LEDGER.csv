@@ -121,3 +121,4 @@ P2-046,build,T2,grok-4.7,n/a,n/a,1,pass,Due and weak nodes rank by recall, then 
 P2-047,build,T3,grok-4.7,n/a,n/a,1,pass,An item stores its type, stimulus, diacritic-insensitive answer, IRT a and b, and skill tags. A draft is not served. An answer links the item id and those node ids. A distractor without a rationale is rejected.
 P2-048,build,T3,grok-4.7,n/a,n/a,1,pass,Language, history, random, and unit quizzes are served from item-bank items. Sample MCQ text is excluded. Bracket questions stay sentence building.
 P2-049,build,T3,grok-4.7,n/a,n/a,1,pass,Recovered difficulty correlates at least 0.9 with the simulation. Items under 200 responses stay uncalibrated and are not scored. The report lists fit and sample size.
+P2-050,build,T3,grok-4.7,n/a,n/a,1,pass,1000 simulated placements finished in 8 to 15 items. The result has an ability and a confidence interval. Fewer than 8 calibrated items is provisional and unsure.

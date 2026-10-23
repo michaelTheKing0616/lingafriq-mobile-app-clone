@@ -20,10 +20,14 @@ class PlacementQuestion {
 
 class PlacementResult {
   final String languageCode;
-  final String level; // CEFR level
-  final double score; // 0-100
+  final String level;
+  final double score;
   final int totalQuestions;
   final int correct;
+  final bool provisional;
+  final double? ability;
+  final double? intervalLow;
+  final double? intervalHigh;
 
   const PlacementResult({
     required this.languageCode,
@@ -31,6 +35,10 @@ class PlacementResult {
     required this.score,
     required this.totalQuestions,
     required this.correct,
+    this.provisional = false,
+    this.ability,
+    this.intervalLow,
+    this.intervalHigh,
   });
 
   Map<String, dynamic> toMap() => {
@@ -39,6 +47,10 @@ class PlacementResult {
         'score': score,
         'totalQuestions': totalQuestions,
         'correct': correct,
+        'provisional': provisional,
+        if (ability != null) 'ability': ability,
+        if (intervalLow != null) 'interval_low': intervalLow,
+        if (intervalHigh != null) 'interval_high': intervalHigh,
       };
 }
 

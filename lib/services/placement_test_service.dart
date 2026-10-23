@@ -1,6 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../models/placement_question.dart';
 import 'curriculum_service.dart';
+import 'placement/cat_engine.dart';
 import '../utils/text_sanitizer.dart';
 
 /// Static placement test content and evaluation logic.
@@ -173,40 +174,48 @@ class PlacementTestService {
     return _sanitizeQuestions(qs);
   }
 
-  /// Evaluate answers and map to a CEFR-ish level using simple bands.
+  /// Score a placement from calibrated items only.
+  ///
+  /// The static question banks have no calibrated parameters, so [evaluate]
+  /// asks the engine to ignore them and returns unsure.
   static PlacementResult evaluate({
     required String languageCode,
     required List<PlacementQuestion> questions,
     required List<int?> selectedIndices,
   }) {
-    int correct = 0;
+    var correct = 0;
     for (var i = 0; i < questions.length; i++) {
       final sel = (i < selectedIndices.length) ? selectedIndices[i] : null;
       if (sel != null && sel == questions[i].correctIndex) {
         correct++;
       }
     }
-
-    final total = questions.length;
-    final pct = total == 0 ? 0.0 : (correct / total * 100.0);
-    final level = _mapScoreToCEFR(pct);
-
+    final placement = const CatEngine().run(
+      bank: [
+        for (final question in questions)
+          CatItem(id: question.id, a: 1, b: 0, calibrated: false),
+      ],
+      respond: (_) => throw StateError('uncalibrated placement items are not scored'),
+    );
     return PlacementResult(
       languageCode: languageCode,
-      level: level,
-      score: double.parse(pct.toStringAsFixed(1)),
-      totalQuestions: total,
+      level: placement.label,
+      score: 0,
+      totalQuestions: questions.length,
       correct: correct,
+      provisional: placement.provisional,
+      ability: placement.ability,
+      intervalLow: placement.intervalLow,
+      intervalHigh: placement.intervalHigh,
     );
   }
 
-  static String _mapScoreToCEFR(double pct) {
-    if (pct < 20) return 'A1';
-    if (pct < 40) return 'A2';
-    if (pct < 55) return 'B1';
-    if (pct < 70) return 'B2';
-    if (pct < 85) return 'C1';
-    return 'C2';
+  /// Run placement on items that already carry calibrated 2PL parameters.
+  static CatPlacement place({
+    required List<CatItem> items,
+    required bool Function(CatItem item) respond,
+  }) {
+    return const CatEngine().run(bank: items, respond: respond);
   }
 
   // --- Question banks (trimmed but meaningful, easy to extend) ---
