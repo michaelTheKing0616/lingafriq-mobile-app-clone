@@ -113,3 +113,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-101 | open | P2-049 | The app item model does not read irt_calibrated yet. The server refuses uncalibrated parameters for scoring. P2-050 has to do the same on the device. |
 | OW-102 | open | P2-050 | Onboarding still shows the static question bank, then reports unsure. Those questions are not calibrated, so the screen does not call the adaptive session. |
 | OW-103 | open | P2-051 | The lesson quiz section does not host the listen, tone, or picture items yet. The widgets grade and play when a screen uses them. |
+| OW-104 | open | P2-052 | Dictation and sentence building are not hosted by the lesson quiz section yet. |

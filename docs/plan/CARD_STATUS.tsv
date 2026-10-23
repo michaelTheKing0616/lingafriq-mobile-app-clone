@@ -517,7 +517,7 @@ P2-048	Done	Consolidate four quiz systems into the item bank	P2/P2-048.yaml
 P2-049	Done	Calibrate IRT parameters from pilot responses	P2/P2-049.yaml
 P2-050	Done	Build CAT placement engine with reported confidence	P2/P2-050.yaml
 P2-051	Done	Add listening, tone and picture item types	P2/P2-051.yaml
-P2-052	Draft	Add dictation and sentence-building item types	P2/P2-052.yaml
+P2-052	Done	Add dictation and sentence-building item types	P2/P2-052.yaml
 P2-053	Draft	Add speaking prompt items scored by the real scorer	P2/P2-053.yaml
 P2-054	Draft	Add conversation tasks scored against can-dos	P2/P2-054.yaml
 P2-055	Draft	Show correct form with audio and a one-sentence reason	P2/P2-055.yaml

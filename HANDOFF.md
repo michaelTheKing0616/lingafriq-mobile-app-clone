@@ -8,15 +8,15 @@ The Firebase service account, the Apple `.p8`, and the five client AI keys stay 
 
 Work is continuous on `cloud-handoff`. Do not pause between cards. The key files remain tracked.
 
-- Mobile: `cloud-handoff`. Latest card push is P2-051. The FSRS mutation score is 130/147. Fuzzing is off.
+- Mobile: `cloud-handoff`. Latest card push is P2-052. The FSRS mutation score is 130/147. Fuzzing is off.
 - Backend: `cloud-handoff`. Latest card push is P2-049. Flag buckets are stable. HS256 still verifies.
 - The key files are still tracked. Copies also exist in `~/.lingafriq/secrets/` (mode 600). History was not rewritten.
 - Admin gamification edits were not part of this build. They are in git stash `admin-gamification-wip-not-this-build` on `lingafriq-admin` `cloud-handoff`.
-- P2-051 is done. Next card is P2-052. P2-031 stays a live-host switch-on and is not Done. P7-961 does not jump this queue.
+- P2-052 is done. Next card is P2-053. P2-031 stays a live-host switch-on and is not Done. P7-961 does not jump this queue.
 
 ## Next 3 steps
 
-1. Build P2-052, then the next card. Build any unfinished dependency first. The host switches below do not stop the queue.
+1. Build P2-053, then the next card. Build any unfinished dependency first. The host switches below do not stop the queue.
 2. Do not stop to ask what is next.
 3. Do not remove the Firebase service account, the Apple `.p8`, or the five client AI keys. Intron stays off until its flag and server key are set.
 
@@ -40,15 +40,15 @@ Full exit text: `docs/build/03_PHASES_GATES.md`.
 
 ## Cards
 
-Counts from `docs/plan/CARD_STATUS.tsv` on 2026-10-23: Draft 942, Done 99, Blocked-External 44, Ready 7. The TSV is the list. Do not treat this prose as a second list.
+Counts from `docs/plan/CARD_STATUS.tsv` on 2026-10-23: Draft 941, Done 100, Blocked-External 44, Ready 7. The TSV is the list. Do not treat this prose as a second list.
 
-Nothing is in progress. Mobile `cloud-handoff` latest card is P2-051. Backend `cloud-handoff` latest card is P2-049.
+Nothing is in progress. Mobile `cloud-handoff` latest card is P2-052. Backend `cloud-handoff` latest card is P2-049.
 
-Next card is P2-052 (dictation and sentence-building item types). P2-051 is Done. After that, continue in plan order.
+Next card is P2-053 (speaking prompt items scored by the real scorer). P2-052 is Done. After that, continue in plan order.
 
 Do not mark Done: P2-031 (live two replicas), P2-032 (Atlas PITR), P1-004, P1-010, P1-025, P1-020. Do not close G2. Do not jump to P7-961.
 
-Open items are in `docs/build/OPEN_WORK.md`. The newest is OW-103 (the lesson quiz does not host the new item widgets yet).
+Open items are in `docs/build/OPEN_WORK.md`. The newest is OW-104 (dictation and sentence building are not in the lesson quiz yet).
 
 ## Decisions
 

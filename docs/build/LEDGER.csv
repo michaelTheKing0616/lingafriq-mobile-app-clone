@@ -123,3 +123,4 @@ P2-048,build,T3,grok-4.7,n/a,n/a,1,pass,Language, history, random, and unit quiz
 P2-049,build,T3,grok-4.7,n/a,n/a,1,pass,Recovered difficulty correlates at least 0.9 with the simulation. Items under 200 responses stay uncalibrated and are not scored. The report lists fit and sample size.
 P2-050,build,T3,grok-4.7,n/a,n/a,1,pass,1000 simulated placements finished in 8 to 15 items. The result has an ability and a confidence interval. Fewer than 8 calibrated items is provisional and unsure.
 P2-051,build,T2,grok-4.7,n/a,n/a,1,pass,Listen items play the item-bank ref and grade the answer spec. Tone items grade the lexeme tone pattern. A picture without alt text is rejected.
+P2-052,build,T2,grok-4.7,n/a,n/a,1,pass,A missing tone mark is not fully correct. A listed ASCII variant passes with a hint. Sentence building accepts only the orderings on the item.
