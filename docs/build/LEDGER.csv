@@ -155,3 +155,4 @@ P4-022,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Yoruba stack records Ox
 P4-023,verification,T1,n/a,n/a,n/a,0,blocked,No edition is chosen and no purchase is logged. EXT-22 is Open. The card is Blocked-External.
 P4-024,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Igbo stack records Ọnwụ unverified, IgboAPI and Oxford unheld, Emenanjo unpurchased, and the tone restorer advisory.
 P4-025,verification,T1,n/a,n/a,n/a,0,blocked,Ọnwụ stays unverified and no Emenanjo purchase is logged. EXT-22 is Open. The card is Blocked-External.
+P4-026,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Hausa tone and length come from dictionary lookup. Oxford is unheld and Newman is unpurchased.

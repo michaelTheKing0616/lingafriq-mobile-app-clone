@@ -1,0 +1,44 @@
+orthography:
+  standard: standard Boko
+  special_characters:
+    - ɓ
+    - ɗ
+    - ƙ
+    - ƴ
+    - "ʼ"
+  tone_and_length: unwritten in normal text
+  pedagogical_marking: dictionary-lookup
+  model_generation: false
+
+lexicon:
+  - source_id: oxford-languages
+    role: licensed
+    held: false
+    dataset: Hausa
+  - source_id: wiktionary-kaikki
+    role: cross-check
+  - source_id: bargery-hausa-1934
+    role: reference
+
+grammar:
+  - source_id: fsi-hausa
+    course: Basic
+    licence: public-domain
+  - source_id: peace-corps-hausa
+    pd_status: unconfirmed
+  - author: Newman
+    title: The Hausa Language
+    publisher: Yale
+    year: 2000
+    purchased: false
+
+corpora_audio:
+  - leipzig-corpora
+  - biblica-hausa
+  - common-voice-ha
+  - fleurs
+
+tools:
+  lexicon-lookup:
+    use: tone and length marks
+    model_generation: false
