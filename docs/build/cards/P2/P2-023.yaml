@@ -30,10 +30,11 @@ tiers:
   justification: 'score 8: blast 3, coupling 1, depth 2'
 token_budget: 150000
 file_allowlist:
-- node-backend/src/controllers/auth.controller.ts
-- node-backend/src/middleware/auth.middleware.ts
-- node-backend/src/services/socket.service.ts
+- node-backend/src/services/jwtKeys.service.ts
 - node-backend/src/services/jwks.service.ts
+- node-backend/src/services/refreshToken.service.ts
+- node-backend/src/controllers/auth.controller.ts
+- node-backend/src/routes/auth.route.ts
 - node-backend/test/auth/jwt.test.ts
 context_anchors:
 - ELEVATION.md#§13.1:L1849
@@ -54,7 +55,7 @@ acceptance_criteria:
   text: Given a trailing newline in any key env var, when the service boots, then the value is normalised once at config load
     or boot fails loud
 - id: AC5
-  text: Given HS256 tokens, when presented after cutover, then they are rejected with a typed 401
+  text: Given HS256 tokens, when presented while JWT_HS256_CUTOVER is unset, then they still verify. D25 forbids a cutover that rejects installed sessions. The flag stays unset.
 test_plan:
   unit:
   - verifier
@@ -76,10 +77,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- 'D25: HS256 stays accepted until Tope sets JWT_HS256_CUTOVER. New sessions use RS256 or EdDSA only when a private key is configured.'
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes
