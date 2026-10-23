@@ -30,7 +30,10 @@ REGISTER_OPTIONAL_COLUMNS: tuple[str, ...] = (
     "recorded_hours",
     "hours_status",
     "dataset_version",
+    "igbo_cc_by_titles",
 )
+
+_IGBO_CC_BY_TITLES_RE = re.compile(r"^\d+$")
 
 _COMMON_VOICE_SOURCE_ID: dict[str, str] = {
     "yo": "common-voice-yo",
@@ -154,6 +157,14 @@ def _validate_optional_columns(row: Mapping[str, str]) -> None:
             "LICENCE_HOURS_STATUS_INVALID",
             f"hours_status must be 'recorded' or 'verify', got {hours_status!r}",
         )
+    igbo_count = row.get("igbo_cc_by_titles", "").strip()
+    if igbo_count and igbo_count not in ("none", "unverified"):
+        if not _IGBO_CC_BY_TITLES_RE.fullmatch(igbo_count):
+            raise LicenceRegisterError(
+                "IGBO_COUNT_INVALID",
+                "igbo_cc_by_titles must be empty, 'none', 'unverified', "
+                f"or digits only, got {igbo_count!r}",
+            )
 
 
 def apply_pd_status_constraints(row: MutableMapping[str, str]) -> None:

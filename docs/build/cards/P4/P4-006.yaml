@@ -22,7 +22,11 @@ tiers:
   reviewer: T1
   justification: 'score 1: blast 0, ambiguity 1, coupling 0, depth 0, size 0'
 token_budget: 25000
-file_allowlist: []
+file_allowlist:
+- tools/content_engine/licences/register.csv
+- tools/content_engine/licences/register_schema.py
+- tools/content_engine/licences/storybook_igbo_2026-10-23.md
+- tools/content_engine/tests/test_seed_cc.py
 context_anchors:
 - CURRICULUM.md#§2.2:L194-L194
 acceptance_criteria:
@@ -41,7 +45,7 @@ risks: []
 gate: G4
 external_blockers:
 - EXT-03
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/07-research-and-fact-checking

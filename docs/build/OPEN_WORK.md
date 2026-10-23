@@ -123,3 +123,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-111 | open | P4-003 | Wiktionary, UD, and Biblica are seeded and stay evidence-only until EXT-03. |
 | OW-112 | open | P4-004 | WAXAL subset names are not in §2.2, so the register has two licence groups instead of one row per unnamed subset. Display and training stay false until EXT-03. |
 | OW-113 | open | P4-005 | Common Voice display and training stay false until EXT-03. Hausa and Igbo have no dataset version in §2.2. Zulu and Xhosa hours stay unverified. |
+| OW-114 | open | P4-006 | The CC BY Igbo title count is unverified. On 2026-10-23 the live site did not serve the catalogue. A search index is not a count. |

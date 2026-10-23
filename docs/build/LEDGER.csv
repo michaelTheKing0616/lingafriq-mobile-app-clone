@@ -135,3 +135,4 @@ P4-002,build,T1,composer-2.5-fast,composer-2.5-fast,composer-2.5-fast,2,pass,FSI
 P4-003,build,T1,composer-2.5-fast,composer-2.5-fast,composer-2.5-fast,2,pass,Wiktionary, UD, and Biblica stay evidence-only under CC BY-SA. A derivative that still names Biblica fails. Bible rows allow corpus and frequency evidence only.
 P4-004,build,T1,composer-2.5-fast,composer-2.5-fast,composer-2.5-fast,1,pass,Leipzig web apps stay excluded. FLEURS lists six languages. WAXAL is two licence groups. A non-commercial story or a story with no author fails.
 P4-005,build,T1,composer-2.5-fast,composer-2.5-fast,composer-2.5-fast,1,pass,Common Voice is CC0 with empty attribution. Hours are the curriculum figures. Unknown Zulu and Xhosa hours stay empty and are not zero.
+P4-006,verification,T1,composer-2.5-fast,n/a,n/a,2,pass,The live catalogue did not state an Igbo CC BY count. The search index shows Igbo Attribution 4.0 pages. The register stays unverified.

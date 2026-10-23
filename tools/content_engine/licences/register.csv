@@ -1,4 +1,4 @@
-source_id,url,licence,version_or_date,display,evidence,training,attribution_text,owner_signoff,pd_status,modernise_vocabulary,share_alike,religious_register,excluded_uses,languages,permitted_uses,recorded_hours,hours_status,dataset_version
+source_id,url,licence,version_or_date,display,evidence,training,attribution_text,owner_signoff,pd_status,modernise_vocabulary,share_alike,religious_register,excluded_uses,languages,permitted_uses,recorded_hours,hours_status,dataset_version,igbo_cc_by_titles
 fsi-yoruba,CURRICULUM.md#§2.2:L124-L134,public-domain,"380 pp + tone drills + Intermediate Texts",false,true,false,US government work (Foreign Service Institute Basic Course). Public domain.,,confirmed,true
 fsi-igbo,CURRICULUM.md#§2.2:L124-L134,public-domain,1962,false,true,false,US government work (Foreign Service Institute Basic Course). Public domain.,,confirmed,true
 fsi-hausa,CURRICULUM.md#§2.2:L124-L134,public-domain,See CURRICULUM §2.2 L124-L127,false,true,false,US government work (Foreign Service Institute Basic Course). Public domain.,,confirmed,true
@@ -16,7 +16,7 @@ leipzig-corpora,CURRICULUM.md#§2.2:L158-L169,CC BY,See CURRICULUM §2.2 L158-L1
 fleurs,CURRICULUM.md#§2.2:L178-L180,CC BY 4.0,See CURRICULUM §2.2 L178-L180,false,true,false,FLEURS parallel sentences and audio.,,,,,,,"yo,ig,ha,sw,xh,zu"
 waxal-ghana,CURRICULUM.md#§2.2:L181-L187,CC BY 4.0,See CURRICULUM §2.2 L181-L187,false,true,false,University of Ghana subsets,,,,false,,,
 waxal-other,CURRICULUM.md#§2.2:L181-L187,CC BY-SA 4.0,See CURRICULUM §2.2 L181-L187,false,true,false,Most other WAXAL subsets,,,,true,,,
-african-storybook,CURRICULUM.md#§2.2:L188-L194,CC BY,See CURRICULUM §2.2 L188-L194,false,true,false,"CC BY stories only; attribute the author. Graded readers for zu, xh, sw, yo, ha; Igbo not confirmed in this section.",,,,,,CC BY-NC stories,
+african-storybook,CURRICULUM.md#§2.2:L188-L194,CC BY,See CURRICULUM §2.2 L188-L194,false,true,false,"CC BY stories only; attribute the author. Graded readers for zu, xh, sw, yo, ha; Igbo not confirmed in this section.",,,,,,CC BY-NC stories,,,,,,unverified
 common-voice-yo,CURRICULUM.md#§2.2:L170-L177,CC0,26.0,false,true,false,,,,,,,,,"display,evidence,training",8.3,recorded,26.0
 common-voice-ha,CURRICULUM.md#§2.2:L170-L177,CC0,not stated in §2.2,false,true,false,,,,,,,,,"display,evidence,training",12.6,recorded,
 common-voice-ig,CURRICULUM.md#§2.2:L170-L177,CC0,not stated in §2.2,false,true,false,,,,,,,,,"display,evidence,training",18.9,recorded,

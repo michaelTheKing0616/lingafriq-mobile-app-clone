@@ -89,3 +89,18 @@ def test_ingest_story_requires_author() -> None:
     with pytest.raises(LicenceRegisterError) as exc_info:
         ingest_story({"licence": "CC BY", "author": "   "})
     assert exc_info.value.code == "STORY_AUTHOR_MISSING"
+
+
+def test_african_storybook_igbo_evidence_note() -> None:
+    row = _row_by_id("african-storybook")
+    igbo = row.get("igbo_cc_by_titles", "").strip()
+    assert igbo in ("none", "unverified") or igbo.isdigit()
+    note = (
+        Path(__file__).resolve().parents[1]
+        / "licences"
+        / "storybook_igbo_2026-10-23.md"
+    )
+    assert note.is_file()
+    text = note.read_text(encoding="utf-8")
+    assert text.splitlines()[0] == "charter: v2"
+    assert "2026-10-23" in text
