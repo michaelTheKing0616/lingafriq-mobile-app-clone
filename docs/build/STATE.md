@@ -15,4 +15,4 @@ charter: v2
 | External | EXT-01…30 open (`EXTERNAL.md`); EXT-01 companion doc still missing |
 | Benchmark | UI phases: `docs/build/benchmark/duolingo/` holds the 12 picks; `all/` holds the other 48; `README.md` has source, date, and size. Do not open the images until a card sets `visual_evidence_required`. |
 | Audit | `check_agent_files.py` OK (1,092 files) |
-| Next | Work stays on the Mac on `cloud-handoff`. Key cleanup is end-of-build (D24). P2-029 is done. Next build card is P2-030. The ten cold-start runs are a switch-on. HS256 stays accepted (D25). Doppler is the vault (D27) and the project token is not created yet. P7-961 does not jump the queue. Curriculum wiring stays paused. Live PM2 stays unverified (EXT-23). |
+| Next | Work stays on the Mac on `cloud-handoff`. Key cleanup is end-of-build (D24). P2-030 is done. Next build card is P2-035. The worker count stays 1 until a shared lease store is connected. HS256 stays accepted (D25). Doppler is the vault (D27) and the project token is not created yet. P7-961 does not jump the queue. Curriculum wiring stays paused. Live PM2 stays unverified (EXT-23). |

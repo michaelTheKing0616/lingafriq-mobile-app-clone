@@ -25,11 +25,11 @@ tiers:
   justification: 'score 8: blast 3, coupling 2, depth 1'
 token_budget: 150000
 file_allowlist:
-- node-backend/src/worker.ts
+- node-backend/src/workers/index.ts
 - node-backend/src/queues/index.ts
 - node-backend/src/services/leader.service.ts
-- node-backend/src/app.ts
-- ecosystem.config.js
+- node-backend/src/__test__/P2-030.leader.test.ts
+- node-backend/infra/pm2/ecosystem.config.cjs
 context_anchors:
 - ELEVATION.md#§13.4:L1902-L1903
 - ELEVATION.md#§13.4:L1903
@@ -61,10 +61,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- 'The queue client stays Bull. PM2 runs one worker process, so cron is not doubled. A shared lease is what lets a second worker take over. That store is not connected.'
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes
