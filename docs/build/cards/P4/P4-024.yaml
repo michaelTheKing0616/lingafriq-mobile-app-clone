@@ -73,7 +73,7 @@ gate: G4
 external_blockers:
 - EXT-05
 - EXT-22
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging

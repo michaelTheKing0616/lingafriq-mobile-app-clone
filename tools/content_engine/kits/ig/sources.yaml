@@ -1,0 +1,38 @@
+orthography:
+  standard: Standard Igbo (Ọnwụ)
+  onwu_status: unverified
+  dialect_policy: Central Igbo plus Onitsha and Owerri notes
+
+lexicon:
+  - source_id: igboapi
+    role: licensed
+    held: false
+  - source_id: oxford-languages
+    role: licensed
+    held: false
+    dataset: Igbo
+  - source_id: wiktionary-kaikki
+    role: cross-check
+
+grammar:
+  - source_id: fsi-igbo
+    course: Basic
+    licence: public-domain
+    tape_1: missing
+  - author: Emenanjo
+    title: Igbo grammar
+    purchased: false
+    verified: false
+
+corpora_audio:
+  - leipzig-corpora
+  - common-voice-ig
+  - fleurs
+
+tools:
+  igbo-tone-restorer:
+    tone_mark_accuracy: "61.6%"
+    use: advisory
+    tone_policy: lexicon match plus human check
+    generator: false
+    approves_tone_mark: false

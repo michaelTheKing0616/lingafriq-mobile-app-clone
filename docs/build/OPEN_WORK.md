@@ -141,3 +141,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-129 | open | P4-021 | No shipped language kit file exists yet. The loader stops generation until one does. |
 | OW-130 | open | P4-022 | Yoruba NERDC edition is unverified. Oxford is not held. Bámgbóṣé is not purchased. Spitch stays off while EXT-01 is pending. |
 | OW-131 | open | P4-023 | EXT-22 is Open. No Bámgbóṣé edition is chosen and no purchase is logged. |
+| OW-132 | open | P4-024 | Ọnwụ is unverified. IgboAPI data and Oxford are not held. Emenanjo is not purchased. The tone restorer does not approve a mark. |
