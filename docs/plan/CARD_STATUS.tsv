@@ -512,7 +512,7 @@ P2-043	Done	Implement FSRS-6 scheduler on device	P2/P2-043.yaml
 P2-044	Done	Add mutation testing gate on FSRS	P2/P2-044.yaml
 P2-045	Done	Model Learner Knowledge Graph nodes and error counts	P2/P2-045.yaml
 P2-046	Done	Expose graph queries for session builder and Polie context	P2/P2-046.yaml
-P2-047	Draft	Build item bank schema and storage	P2/P2-047.yaml
+P2-047	Done	Build item bank schema and storage	P2/P2-047.yaml
 P2-048	Draft	Consolidate four quiz systems into the item bank	P2/P2-048.yaml
 P2-049	Draft	Calibrate IRT parameters from pilot responses	P2/P2-049.yaml
 P2-050	Draft	Build CAT placement engine with reported confidence	P2/P2-050.yaml

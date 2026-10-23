@@ -36,6 +36,7 @@ file_allowlist:
 - lib/models/item.dart
 - node-backend/src/controllers/item.controller.ts
 - test/content/item_schema_test.py
+- test/models/item_test.dart
 context_anchors:
 - ELEVATION.md#§11.3:L1799
 - ELEVATION.md#§11.1:L1785
@@ -73,10 +74,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- ASCII ids, draft exclusion, and required IRT values are the builder default. Calibration stays on P2-049.
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging

@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lingafriq.com/content/schema/item.v1.json",
+  "title": "LingAfriq exercise item",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "language", "type", "stimulus", "answer", "irt", "skill_tags", "review"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,80}$" },
+    "language": { "type": "string", "pattern": "^[a-z]{2,8}$" },
+    "type": {
+      "enum": [
+        "listen_and_choose",
+        "tone_identification",
+        "picture_matching",
+        "dictation",
+        "sentence_building",
+        "speaking_prompt",
+        "short_conversation",
+        "multiple_choice"
+      ]
+    },
+    "stimulus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["refs"],
+      "properties": {
+        "refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "text": { "type": "string" }
+      }
+    },
+    "answer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["correct", "matching"],
+      "properties": {
+        "correct": { "type": "string", "minLength": 1 },
+        "variants": { "type": "array", "items": { "type": "string" } },
+        "matching": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["diacritic_insensitive"],
+          "properties": {
+            "diacritic_insensitive": { "type": "boolean" }
+          }
+        }
+      }
+    },
+    "distractors": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/distractor" }
+    },
+    "irt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["a", "b"],
+      "properties": {
+        "a": { "type": "number", "exclusiveMinimum": 0 },
+        "b": { "type": "number" }
+      }
+    },
+    "skill_tags": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{1,80}$" }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": { "enum": ["draft", "approved"] }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "type": { "const": "multiple_choice" } },
+        "required": ["type"]
+      },
+      "then": {
+        "required": ["distractors"],
+        "properties": {
+          "distractors": { "minItems": 1 }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "distractor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text", "rationale"],
+      "properties": {
+        "text": { "type": "string", "minLength": 1 },
+        "rationale": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}
