@@ -146,3 +146,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-134 | open | P4-026 | Oxford Hausa is not held. Newman is not purchased. Peace Corps Hausa stays unconfirmed. Tone marks are not model-generated. |
 | OW-135 | open | P4-027 | EXT-22 is Open. No Newman purchase is logged. Bargery copyright stays unconfirmed. |
 | OW-136 | open | P4-028 | Faraclas is not purchased. NSC speech licence is unverified. Intron stays off while EXT-01 is pending. The anglicisation detector is not enabled. |
+| OW-137 | open | P4-029 | EXT-22 is Open. NSC speech has no verified licence and no Faraclas purchase is logged. |
