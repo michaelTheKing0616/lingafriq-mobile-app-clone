@@ -107,6 +107,10 @@ sources:
   helsinki-swahili-2:
     status: excluded
     licence: "academic-only CLARIN ACA"
+    elra_member_quote: "EUR 7,500 (member)"
+    elra_quote: "EUR 15,000"
+    quote_status: unverified
+    purchase_recorded: false
     reason: "Academic-only CLARIN ACA. An ELRA purchase is not recorded."
     commercial_licence_document: ""
     counsel_status: ""

@@ -134,3 +134,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-122 | open | P4-014 | The NaijaVoices waiver is not purchased. The $5,000+ figure is the curriculum statement, not a quote LingAfriq received. |
 | OW-123 | open | P4-015 | IgboAPI data stays excluded while EXT-05 is Open. No licence document from Nkọwa okwu is recorded. |
 | OW-124 | open | P4-016 | The Kamusi commercial-licence request has not been sent. The Swahili-gap decision stays optional. |
+| OW-125 | open | P4-017 | No ELRA licence is purchased. The EUR 7,500 and EUR 15,000 figures are the curriculum statement, not a quote LingAfriq received. |
