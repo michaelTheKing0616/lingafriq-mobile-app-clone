@@ -24,7 +24,9 @@ tiers:
   reviewer: T1
   justification: spec only, later phase
 token_budget: 25000
-file_allowlist: []
+file_allowlist:
+- docs/build/specs/P2-021-on-device-tone.md
+- test/specs/p2_021_tone_hook_test.dart
 context_anchors:
 - ELEVATION.md#§13.5:L1921-L1922
 acceptance_criteria:
@@ -44,10 +46,11 @@ visual_evidence_required: false
 dod_evidence:
 - spec reviewed
 - ledger row
-risks: []
+risks:
+- "No distilled model is selected. The hook returns unavailable until a commercial-licence model is installed and meets the 90 percent floor. The 20 MB budget is a builder default, Tope may override."
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/10-analysis-and-decision-support
