@@ -90,4 +90,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-078 | open | P2-033 | Spans are accepted in-process. No collector URL is set, so they are not shipped off the machine. |
 | OW-079 | open | P2-034 | OpenAI and Groq stamp first-token time from the stream. Gemini and Hugging Face still return one finished body, so those calls do not stamp it. |
 | OW-080 | open | P2-037 | The rollout gate uses crash-free users 0.995 and ANR rate 0.0047. An Android ANR exit is not read from the OS yet. |
-| OW-081 | open | P2-014 | Drift opens on startup and copies vocabulary. Lessons, progress and media reads still come from Hive. |
+| OW-081 | open | P2-014 | Reads come from the Drift snapshot. Hive is still written as a mirror so an existing install can be imported if the sqlite file is missing. |

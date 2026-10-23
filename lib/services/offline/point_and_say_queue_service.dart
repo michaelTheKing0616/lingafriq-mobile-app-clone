@@ -1,8 +1,7 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lingafriq/config/api_contract.dart';
+import 'package:lingafriq/services/offline/local_database_service.dart';
 import 'package:lingafriq/services/voice/voice_api_service.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
@@ -17,20 +16,13 @@ class PointAndSayQueueService {
   PointAndSayQueueService._();
   static final PointAndSayQueueService instance = PointAndSayQueueService._();
 
-  static const _boxName = 'lingafriq_point_and_say_queue_v1';
   static const _uuid = Uuid();
 
-  Box<String>? _box;
-
   Future<void> ensureOpen() async {
-    if (_box != null && _box!.isOpen) return;
-    _box = await Hive.openBox<String>(_boxName);
+    await LocalDatabaseService().init();
   }
 
-  int get pendingCount {
-    if (_box == null || !_box!.isOpen) return 0;
-    return _box!.length;
-  }
+  int get pendingCount => LocalDatabaseService().pointAndSayCount;
 
   Future<String> enqueue({
     required String language,
@@ -52,22 +44,13 @@ class PointAndSayQueueService {
       'attempts': 0,
       'lastError': null,
     };
-    await _box!.put(id, jsonEncode(rec));
+    await LocalDatabaseService().savePointAndSay(rec);
     return id;
   }
 
   List<Map<String, dynamic>> _pendingRecords() {
-    if (_box == null || !_box!.isOpen) return [];
-    final out = <Map<String, dynamic>>[];
-    for (final key in _box!.keys) {
-      final raw = _box!.get(key);
-      if (raw == null) continue;
-      try {
-        out.add(jsonDecode(raw) as Map<String, dynamic>);
-      } catch (_) {}
-    }
-    out.sort((a, b) => (a['createdAt']?.toString() ?? '').compareTo(b['createdAt']?.toString() ?? ''));
-    return out;
+    if (!LocalDatabaseService().isInitialized) return [];
+    return LocalDatabaseService().pointAndSayRecords();
   }
 
   /// Attempts to flush up to [batchSize] queued evaluations.
@@ -91,13 +74,12 @@ class PointAndSayQueueService {
       final evaluateTone = rec['evaluateTone'] == true;
 
       if (audioPath.isEmpty || expectedText.isEmpty || language.isEmpty) {
-        await _box!.delete(id);
+        await LocalDatabaseService().deletePointAndSay(id);
         removed++;
         continue;
       }
       if (!await File(audioPath).exists()) {
-        // Cannot ever upload; drop.
-        await _box!.delete(id);
+        await LocalDatabaseService().deletePointAndSay(id);
         removed++;
         continue;
       }
@@ -132,7 +114,7 @@ class PointAndSayQueueService {
         }
 
         // Success: remove record. (Results are shown live in-screen when user initiates sync.)
-        await _box!.delete(id);
+        await LocalDatabaseService().deletePointAndSay(id);
         removed++;
       } catch (e, st) {
         logger.error('PointAndSay flush item failed', error: e, stackTrace: st, context: {
@@ -142,7 +124,7 @@ class PointAndSayQueueService {
         final attempts = (rec['attempts'] is num) ? (rec['attempts'] as num).toInt() : 0;
         rec['attempts'] = attempts + 1;
         rec['lastError'] = e.toString();
-        await _box!.put(id, jsonEncode(rec));
+        await LocalDatabaseService().savePointAndSay(rec);
         // Stop early on first failure to avoid thrashing when connectivity is flaky.
         break;
       }

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:drift/native.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -30,6 +31,12 @@ class LocalDatabaseService {
   Box<LocalMediaCache>? _mediaCacheBox;
   Box? _metadataBox;
   LingAfriqDatabase? _drift;
+  Box<String>? _pointAndSayBox;
+  final Map<String, LocalLesson> _lessons = {};
+  final Map<String, LocalVocabulary> _vocabulary = {};
+  final Map<String, LocalProgress> _progress = {};
+  final Map<String, LocalMediaCache> _media = {};
+  final Map<String, Map<String, dynamic>> _pointAndSay = {};
 
   bool _isInitialized = false;
   final int _schemaVersion = 2;
@@ -76,6 +83,13 @@ class LocalDatabaseService {
       _isInitialized = true;
     } on SchemaMigrationFailure {
       rethrow;
+    } on DriftMigrationFailure catch (error) {
+      throw SchemaMigrationFailure(
+        code: 'schema_migration_failed',
+        fromVersion: error.fromVersion,
+        toVersion: error.toVersion,
+        cause: error.cause,
+      );
     } catch (e) {
       throw Exception('Failed to initialize LocalDatabaseService: $e');
     }
@@ -94,15 +108,117 @@ class LocalDatabaseService {
     if (db.clearsSessionOnUpgrade) {
       throw StateError('a version change must not clear the session');
     }
-    await db.customSelect('SELECT 1').get();
-    _drift = db;
-    final count = await db.customSelect('SELECT COUNT(*) AS c FROM vocabulary').getSingle();
-    if (count.read<int>('c') > 0) return;
-    final box = _vocabularyBox;
-    if (box == null) return;
-    for (final item in box.values) {
-      await storeVocabularyPayload(db, item.toJson());
+    try {
+      await db.customSelect('SELECT 1').get();
+    } on DriftMigrationFailure catch (error) {
+      await db.close();
+      throw SchemaMigrationFailure(
+        code: 'schema_migration_failed',
+        fromVersion: error.fromVersion,
+        toVersion: error.toVersion,
+        cause: error.cause,
+      );
     }
+    _drift = db;
+    await _loadOrImportLessons(db);
+    await _loadOrImportVocabulary(db);
+    await _loadOrImportProgress(db);
+    await _loadOrImportMedia(db);
+    await _loadOrImportPointAndSay(db);
+  }
+
+  Future<void> _loadOrImportLessons(LingAfriqDatabase db) async {
+    final stored = await readPayloads(db, 'lessons');
+    if (stored.isEmpty) {
+      for (final item in _lessonsBox?.values ?? const <LocalLesson>[]) {
+        await storeLessonPayload(db, item.toJson());
+        _lessons[item.id] = item;
+      }
+      return;
+    }
+    _lessons
+      ..clear()
+      ..addEntries(stored.map((row) => MapEntry(
+            '${row['id']}',
+            LocalLesson.fromJson(Map<String, dynamic>.from(row)),
+          )));
+  }
+
+  Future<void> _loadOrImportVocabulary(LingAfriqDatabase db) async {
+    final stored = await readPayloads(db, 'vocabulary');
+    if (stored.isEmpty) {
+      for (final item in _vocabularyBox?.values ?? const <LocalVocabulary>[]) {
+        await storeVocabularyPayload(db, item.toJson());
+        _vocabulary[item.id] = item;
+      }
+      return;
+    }
+    _vocabulary
+      ..clear()
+      ..addEntries(stored.map((row) => MapEntry(
+            '${row['id']}',
+            LocalVocabulary.fromJson(Map<String, dynamic>.from(row)),
+          )));
+  }
+
+  Future<void> _loadOrImportProgress(LingAfriqDatabase db) async {
+    final stored = await readPayloads(db, 'progress');
+    if (stored.isEmpty) {
+      for (final item in _progressBox?.values ?? const <LocalProgress>[]) {
+        await storeProgressPayload(db, item.toJson());
+        _progress[item.id] = item;
+      }
+      return;
+    }
+    _progress
+      ..clear()
+      ..addEntries(stored.map((row) => MapEntry(
+            '${row['id']}',
+            LocalProgress.fromJson(Map<String, dynamic>.from(row)),
+          )));
+  }
+
+  Future<void> _loadOrImportMedia(LingAfriqDatabase db) async {
+    final stored = await readPayloads(db, 'media_cache');
+    if (stored.isEmpty) {
+      for (final item in _mediaCacheBox?.values ?? const <LocalMediaCache>[]) {
+        await storeMediaPayload(db, item.toJson());
+        _media[item.url] = item;
+      }
+      return;
+    }
+    _media
+      ..clear()
+      ..addEntries(stored.map((row) => MapEntry(
+            '${row['url']}',
+            LocalMediaCache.fromJson(Map<String, dynamic>.from(row)),
+          )));
+  }
+
+  Future<void> _loadOrImportPointAndSay(LingAfriqDatabase db) async {
+    const boxName = 'lingafriq_point_and_say_queue_v1';
+    _pointAndSayBox = Hive.isBoxOpen(boxName)
+        ? Hive.box<String>(boxName)
+        : await Hive.openBox<String>(boxName);
+    final stored = await readPayloads(db, 'point_and_say');
+    if (stored.isEmpty) {
+      for (final key in _pointAndSayBox!.keys) {
+        final raw = _pointAndSayBox!.get(key);
+        if (raw == null) continue;
+        final decoded = jsonDecode(raw);
+        if (decoded is! Map) continue;
+        final row = Map<String, dynamic>.from(decoded);
+        await storePointAndSayPayload(db, row);
+        _pointAndSay['${row['id']}'] = row;
+      }
+      return;
+    }
+    _pointAndSay
+      ..clear()
+      ..addEntries(stored.map((row) => MapEntry(
+            '${row['id']}',
+            Map<String, dynamic>.from(row),
+          )));
   }
 
   Future<void> _migrateSchemaIfNeeded() async {
@@ -125,25 +241,25 @@ class LocalDatabaseService {
   /// Save a lesson
   Future<void> saveLesson(LocalLesson lesson) async {
     _ensureInitialized();
-    await _lessonsBox!.put(lesson.id, lesson);
+    await _writeLesson(lesson);
   }
 
   /// Get a lesson by ID
   LocalLesson? getLesson(String id) {
     _ensureInitialized();
-    return _lessonsBox!.get(id);
+    return _lessons[id];
   }
 
   /// Get all lessons
   List<LocalLesson> getAllLessons() {
     _ensureInitialized();
-    return _lessonsBox!.values.toList();
+    return _lessons.values.toList();
   }
 
   /// Get lessons by language
   List<LocalLesson> getLessonsByLanguage(String language) {
     _ensureInitialized();
-    return _lessonsBox!.values
+    return _lessons.values
         .where((lesson) => lesson.language == language)
         .toList();
   }
@@ -151,7 +267,7 @@ class LocalDatabaseService {
   /// Get lessons by level
   List<LocalLesson> getLessonsByLevel(String level) {
     _ensureInitialized();
-    return _lessonsBox!.values
+    return _lessons.values
         .where((lesson) => lesson.level == level)
         .toList();
   }
@@ -159,7 +275,7 @@ class LocalDatabaseService {
   /// Get lessons by module
   List<LocalLesson> getLessonsByModule(String moduleId) {
     _ensureInitialized();
-    return _lessonsBox!.values
+    return _lessons.values
         .where((lesson) => lesson.moduleId == moduleId)
         .toList();
   }
@@ -167,34 +283,45 @@ class LocalDatabaseService {
   /// Update a lesson
   Future<void> updateLesson(LocalLesson lesson) async {
     _ensureInitialized();
-    await _lessonsBox!.put(lesson.id, lesson);
+    await _writeLesson(lesson);
   }
 
   /// Delete a lesson
   Future<void> deleteLesson(String id) async {
     _ensureInitialized();
-    await _lessonsBox!.delete(id);
+    _lessons.remove(id);
+    await deleteLocalRow(_drift!, 'lessons', 'id', id);
+    await _lessonsBox?.delete(id);
   }
 
   /// Check if lesson exists
   bool lessonExists(String id) {
     _ensureInitialized();
-    return _lessonsBox!.containsKey(id);
+    return _lessons.containsKey(id);
   }
 
   /// Batch save lessons
   Future<void> saveLessonsBatch(List<LocalLesson> lessons) async {
     _ensureInitialized();
-    final Map<String, LocalLesson> map = {
-      for (var lesson in lessons) lesson.id: lesson
-    };
-    await _lessonsBox!.putAll(map);
+    await _drift!.transaction(() async {
+      for (final lesson in lessons) {
+        await _writeLesson(lesson);
+      }
+    });
   }
 
   /// Batch delete lessons
   Future<void> deleteLessonsBatch(List<String> ids) async {
     _ensureInitialized();
-    await _lessonsBox!.deleteAll(ids);
+    for (final id in ids) {
+      await deleteLesson(id);
+    }
+  }
+
+  Future<void> _writeLesson(LocalLesson lesson) async {
+    await storeLessonPayload(_drift!, lesson.toJson());
+    _lessons[lesson.id] = lesson;
+    await _lessonsBox?.put(lesson.id, lesson);
   }
 
   // ============================================================================
@@ -204,25 +331,25 @@ class LocalDatabaseService {
   /// Save a vocabulary item
   Future<void> saveVocabulary(LocalVocabulary vocabulary) async {
     _ensureInitialized();
-    await _vocabularyBox!.put(vocabulary.id, vocabulary);
+    await _writeVocabulary(vocabulary);
   }
 
   /// Get a vocabulary item by ID
   LocalVocabulary? getVocabulary(String id) {
     _ensureInitialized();
-    return _vocabularyBox!.get(id);
+    return _vocabulary[id];
   }
 
   /// Get all vocabulary items
   List<LocalVocabulary> getAllVocabulary() {
     _ensureInitialized();
-    return _vocabularyBox!.values.toList();
+    return _vocabulary.values.toList();
   }
 
   /// Get vocabulary by language
   List<LocalVocabulary> getVocabularyByLanguage(String language) {
     _ensureInitialized();
-    return _vocabularyBox!.values
+    return _vocabulary.values
         .where((vocab) => vocab.language == language)
         .toList();
   }
@@ -231,7 +358,7 @@ class LocalDatabaseService {
   List<LocalVocabulary> getVocabularyDueForReview() {
     _ensureInitialized();
     final now = DateTime.now();
-    return _vocabularyBox!.values
+    return _vocabulary.values
         .where((vocab) =>
             vocab.nextReviewDate != null &&
             vocab.nextReviewDate!.isBefore(now))
@@ -241,7 +368,7 @@ class LocalDatabaseService {
   /// Get vocabulary by category
   List<LocalVocabulary> getVocabularyByCategory(String category) {
     _ensureInitialized();
-    return _vocabularyBox!.values
+    return _vocabulary.values
         .where((vocab) => vocab.category == category)
         .toList();
   }
@@ -249,7 +376,7 @@ class LocalDatabaseService {
   /// Get mastered vocabulary
   List<LocalVocabulary> getMasteredVocabulary() {
     _ensureInitialized();
-    return _vocabularyBox!.values
+    return _vocabulary.values
         .where((vocab) => vocab.isMastered)
         .toList();
   }
@@ -257,34 +384,45 @@ class LocalDatabaseService {
   /// Update vocabulary
   Future<void> updateVocabulary(LocalVocabulary vocabulary) async {
     _ensureInitialized();
-    await _vocabularyBox!.put(vocabulary.id, vocabulary);
+    await _writeVocabulary(vocabulary);
   }
 
   /// Delete vocabulary
   Future<void> deleteVocabulary(String id) async {
     _ensureInitialized();
-    await _vocabularyBox!.delete(id);
+    _vocabulary.remove(id);
+    await deleteLocalRow(_drift!, 'vocabulary', 'id', id);
+    await _vocabularyBox?.delete(id);
   }
 
   /// Check if vocabulary exists
   bool vocabularyExists(String id) {
     _ensureInitialized();
-    return _vocabularyBox!.containsKey(id);
+    return _vocabulary.containsKey(id);
   }
 
   /// Batch save vocabulary
   Future<void> saveVocabularyBatch(List<LocalVocabulary> vocabulary) async {
     _ensureInitialized();
-    final Map<String, LocalVocabulary> map = {
-      for (var vocab in vocabulary) vocab.id: vocab
-    };
-    await _vocabularyBox!.putAll(map);
+    await _drift!.transaction(() async {
+      for (final item in vocabulary) {
+        await _writeVocabulary(item);
+      }
+    });
   }
 
   /// Batch delete vocabulary
   Future<void> deleteVocabularyBatch(List<String> ids) async {
     _ensureInitialized();
-    await _vocabularyBox!.deleteAll(ids);
+    for (final id in ids) {
+      await deleteVocabulary(id);
+    }
+  }
+
+  Future<void> _writeVocabulary(LocalVocabulary vocabulary) async {
+    await storeVocabularyPayload(_drift!, vocabulary.toJson());
+    _vocabulary[vocabulary.id] = vocabulary;
+    await _vocabularyBox?.put(vocabulary.id, vocabulary);
   }
 
   // ============================================================================
@@ -294,25 +432,25 @@ class LocalDatabaseService {
   /// Save progress
   Future<void> saveProgress(LocalProgress progress) async {
     _ensureInitialized();
-    await _progressBox!.put(progress.id, progress);
+    await _writeProgress(progress);
   }
 
   /// Get progress by ID
   LocalProgress? getProgress(String id) {
     _ensureInitialized();
-    return _progressBox!.get(id);
+    return _progress[id];
   }
 
   /// Get all progress
   List<LocalProgress> getAllProgress() {
     _ensureInitialized();
-    return _progressBox!.values.toList();
+    return _progress.values.toList();
   }
 
   /// Get progress by type
   List<LocalProgress> getProgressByType(String type) {
     _ensureInitialized();
-    return _progressBox!.values
+    return _progress.values
         .where((progress) => progress.type == type)
         .toList();
   }
@@ -320,7 +458,7 @@ class LocalDatabaseService {
   /// Get progress by language
   List<LocalProgress> getProgressByLanguage(String language) {
     _ensureInitialized();
-    return _progressBox!.values
+    return _progress.values
         .where((progress) => progress.language == language)
         .toList();
   }
@@ -328,7 +466,7 @@ class LocalDatabaseService {
   /// Get unsynced progress
   List<LocalProgress> getUnsyncedProgress() {
     _ensureInitialized();
-    return _progressBox!.values
+    return _progress.values
         .where((progress) => !progress.isSynced)
         .toList();
   }
@@ -336,10 +474,9 @@ class LocalDatabaseService {
   /// Mark progress as synced
   Future<void> markProgressAsSynced(String id) async {
     _ensureInitialized();
-    final progress = _progressBox!.get(id);
+    final progress = _progress[id];
     if (progress != null) {
-      await _progressBox!.put(
-        id,
+      await _writeProgress(
         progress.copyWith(
           isSynced: true,
           syncedAt: DateTime.now(),
@@ -351,34 +488,45 @@ class LocalDatabaseService {
   /// Update progress
   Future<void> updateProgress(LocalProgress progress) async {
     _ensureInitialized();
-    await _progressBox!.put(progress.id, progress);
+    await _writeProgress(progress);
   }
 
   /// Delete progress
   Future<void> deleteProgress(String id) async {
     _ensureInitialized();
-    await _progressBox!.delete(id);
+    _progress.remove(id);
+    await deleteLocalRow(_drift!, 'progress', 'id', id);
+    await _progressBox?.delete(id);
   }
 
   /// Check if progress exists
   bool progressExists(String id) {
     _ensureInitialized();
-    return _progressBox!.containsKey(id);
+    return _progress.containsKey(id);
   }
 
   /// Batch save progress
   Future<void> saveProgressBatch(List<LocalProgress> progress) async {
     _ensureInitialized();
-    final Map<String, LocalProgress> map = {
-      for (var prog in progress) prog.id: prog
-    };
-    await _progressBox!.putAll(map);
+    await _drift!.transaction(() async {
+      for (final item in progress) {
+        await _writeProgress(item);
+      }
+    });
   }
 
   /// Batch delete progress
   Future<void> deleteProgressBatch(List<String> ids) async {
     _ensureInitialized();
-    await _progressBox!.deleteAll(ids);
+    for (final id in ids) {
+      await deleteProgress(id);
+    }
+  }
+
+  Future<void> _writeProgress(LocalProgress progress) async {
+    await storeProgressPayload(_drift!, progress.toJson());
+    _progress[progress.id] = progress;
+    await _progressBox?.put(progress.id, progress);
   }
 
   // ============================================================================
@@ -388,26 +536,26 @@ class LocalDatabaseService {
   /// Save media cache entry
   Future<void> saveMediaCache(LocalMediaCache cache) async {
     _ensureInitialized();
-    await _mediaCacheBox!.put(cache.url, cache);
+    await _writeMedia(cache);
   }
 
   /// Get media cache by URL
   LocalMediaCache? getMediaCache(String url) {
     _ensureInitialized();
-    return _mediaCacheBox!.get(url);
+    return _media[url];
   }
 
   /// Get all media cache entries
   List<LocalMediaCache> getAllMediaCache() {
     _ensureInitialized();
-    return _mediaCacheBox!.values.toList();
+    return _media.values.toList();
   }
 
   /// Get expired media cache entries
   List<LocalMediaCache> getExpiredMediaCache() {
     _ensureInitialized();
     final now = DateTime.now();
-    return _mediaCacheBox!.values
+    return _media.values
         .where((cache) =>
             cache.expiresAt != null && cache.expiresAt!.isBefore(now))
         .toList();
@@ -416,7 +564,7 @@ class LocalDatabaseService {
   /// Get media cache by language
   List<LocalMediaCache> getMediaCacheByLanguage(String language) {
     _ensureInitialized();
-    return _mediaCacheBox!.values
+    return _media.values
         .where((cache) => cache.language == language)
         .toList();
   }
@@ -424,7 +572,7 @@ class LocalDatabaseService {
   /// Get media cache by lesson
   List<LocalMediaCache> getMediaCacheByLesson(String lessonId) {
     _ensureInitialized();
-    return _mediaCacheBox!.values
+    return _media.values
         .where((cache) => cache.lessonId == lessonId)
         .toList();
   }
@@ -432,10 +580,9 @@ class LocalDatabaseService {
   /// Update media cache access time
   Future<void> updateMediaCacheAccess(String url) async {
     _ensureInitialized();
-    final cache = _mediaCacheBox!.get(url);
+    final cache = _media[url];
     if (cache != null) {
-      await _mediaCacheBox!.put(
-        url,
+      await _writeMedia(
         cache.copyWith(
           lastAccessedAt: DateTime.now(),
           accessCount: cache.accessCount + 1,
@@ -447,28 +594,69 @@ class LocalDatabaseService {
   /// Delete media cache entry
   Future<void> deleteMediaCache(String url) async {
     _ensureInitialized();
-    await _mediaCacheBox!.delete(url);
+    _media.remove(url);
+    await deleteLocalRow(_drift!, 'media_cache', 'url', url);
+    await _mediaCacheBox?.delete(url);
   }
 
   /// Check if media cache exists
   bool mediaCacheExists(String url) {
     _ensureInitialized();
-    return _mediaCacheBox!.containsKey(url);
+    return _media.containsKey(url);
   }
 
   /// Batch save media cache
   Future<void> saveMediaCacheBatch(List<LocalMediaCache> cache) async {
     _ensureInitialized();
-    final Map<String, LocalMediaCache> map = {
-      for (var c in cache) c.url: c
-    };
-    await _mediaCacheBox!.putAll(map);
+    await _drift!.transaction(() async {
+      for (final item in cache) {
+        await _writeMedia(item);
+      }
+    });
   }
 
   /// Batch delete media cache
   Future<void> deleteMediaCacheBatch(List<String> urls) async {
     _ensureInitialized();
-    await _mediaCacheBox!.deleteAll(urls);
+    for (final url in urls) {
+      await deleteMediaCache(url);
+    }
+  }
+
+  Future<void> _writeMedia(LocalMediaCache cache) async {
+    await storeMediaPayload(_drift!, cache.toJson());
+    _media[cache.url] = cache;
+    await _mediaCacheBox?.put(cache.url, cache);
+  }
+
+  int get pointAndSayCount {
+    if (!_isInitialized) return 0;
+    return _pointAndSay.length;
+  }
+
+  List<Map<String, dynamic>> pointAndSayRecords() {
+    _ensureInitialized();
+    final rows = _pointAndSay.values
+        .map((row) => Map<String, dynamic>.from(row))
+        .toList();
+    rows.sort((a, b) =>
+        (a['createdAt']?.toString() ?? '').compareTo(b['createdAt']?.toString() ?? ''));
+    return rows;
+  }
+
+  Future<void> savePointAndSay(Map<String, dynamic> row) async {
+    _ensureInitialized();
+    final id = '${row['id']}';
+    await storePointAndSayPayload(_drift!, row);
+    _pointAndSay[id] = Map<String, dynamic>.from(row);
+    await _pointAndSayBox?.put(id, jsonEncode(row));
+  }
+
+  Future<void> deletePointAndSay(String id) async {
+    _ensureInitialized();
+    _pointAndSay.remove(id);
+    await deleteLocalRow(_drift!, 'point_and_say', 'id', id);
+    await _pointAndSayBox?.delete(id);
   }
 
   // ============================================================================
@@ -478,11 +666,23 @@ class LocalDatabaseService {
   /// Clear all data from all boxes
   Future<void> clearAll() async {
     _ensureInitialized();
-    await _lessonsBox!.clear();
-    await _vocabularyBox!.clear();
-    await _progressBox!.clear();
-    await _mediaCacheBox!.clear();
-    await _metadataBox!.clear();
+    final db = _drift!;
+    await db.customStatement('DELETE FROM lessons');
+    await db.customStatement('DELETE FROM vocabulary');
+    await db.customStatement('DELETE FROM progress');
+    await db.customStatement('DELETE FROM media_cache');
+    await db.customStatement('DELETE FROM point_and_say');
+    _lessons.clear();
+    _vocabulary.clear();
+    _progress.clear();
+    _media.clear();
+    _pointAndSay.clear();
+    await _lessonsBox?.clear();
+    await _vocabularyBox?.clear();
+    await _progressBox?.clear();
+    await _mediaCacheBox?.clear();
+    await _pointAndSayBox?.clear();
+    await _metadataBox?.clear();
   }
 
   /// Get total database size in bytes
@@ -513,10 +713,10 @@ class LocalDatabaseService {
   Map<String, int> getItemCounts() {
     _ensureInitialized();
     return {
-      'lessons': _lessonsBox!.length,
-      'vocabulary': _vocabularyBox!.length,
-      'progress': _progressBox!.length,
-      'mediaCache': _mediaCacheBox!.length,
+      'lessons': _lessons.length,
+      'vocabulary': _vocabulary.length,
+      'progress': _progress.length,
+      'mediaCache': _media.length,
     };
   }
 
@@ -540,9 +740,15 @@ class LocalDatabaseService {
     await _vocabularyBox?.close();
     await _progressBox?.close();
     await _mediaCacheBox?.close();
+    await _pointAndSayBox?.close();
     await _metadataBox?.close();
     await _drift?.close();
     _drift = null;
+    _lessons.clear();
+    _vocabulary.clear();
+    _progress.clear();
+    _media.clear();
+    _pointAndSay.clear();
 
     _isInitialized = false;
   }

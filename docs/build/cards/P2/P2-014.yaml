@@ -26,6 +26,7 @@ tiers:
 token_budget: 150000
 file_allowlist:
 - lib/services/offline/local_database_service.dart
+- lib/services/offline/point_and_say_queue_service.dart
 - lib/db/app_database.dart
 - lib/db/migrations/local_sql.dart
 - test/db/migration_test.dart
@@ -66,10 +67,10 @@ dod_evidence:
 - coverage on touched domain code
 - ledger row
 risks:
-- "Drift opens on startup and keeps the session. Vocabulary is copied in. Hive still serves the reads until the remaining boxes move."
+- "Getters read the Drift snapshot loaded at startup. Hive is the import source and a write mirror, so a lost sqlite file can be imported again. A version change does not clear the session."
 gate: G2
 external_blockers: []
-status: Ready
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes

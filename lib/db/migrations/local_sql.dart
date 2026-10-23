@@ -30,3 +30,10 @@ CREATE TABLE media_cache (
 ''';
 
 const addReviewDue = 'ALTER TABLE vocabulary ADD COLUMN review_due INTEGER';
+
+const createPointAndSay = '''
+CREATE TABLE IF NOT EXISTS point_and_say (
+  id TEXT NOT NULL PRIMARY KEY,
+  payload TEXT NOT NULL
+)
+''';
