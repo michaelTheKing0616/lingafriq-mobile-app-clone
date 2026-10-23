@@ -61,10 +61,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- 'Logout and password change revoke the family. There is no separate admin button. D25 still accepts an unexpired HS256 access token presented as a refresh until it expires.'
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes
