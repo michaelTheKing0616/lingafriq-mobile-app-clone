@@ -24,10 +24,10 @@ tiers:
   justification: 'score 7: blast 3, coupling 1, depth 1'
 token_budget: 70000
 file_allowlist:
-- node-backend/src/controllers/auth.controller.ts
-- node-backend/src/middleware/auth.middleware.ts
 - node-backend/src/services/magicLink.service.ts
-- lib/services/auth/magic_link_service.dart
+- node-backend/src/middleware/rateLimiter.ts
+- node-backend/src/__test__/P1-049.oauth.test.ts
+- lib/screens/auth/sign_in_options.dart
 context_anchors:
 - ELEVATION.md#§13.1:L1851
 acceptance_criteria:
@@ -58,10 +58,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- 'The magic-link route uses the shared auth limiter, 10 requests a minute per IP, and returns code rate_limited.'
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes

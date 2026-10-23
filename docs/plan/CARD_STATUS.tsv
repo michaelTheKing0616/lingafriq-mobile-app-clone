@@ -491,8 +491,8 @@ P2-022	Done	Add integration test for onboarding, first lesson and sync	P2/P2-022
 P2-023	Done	Issue short-lived asymmetric access tokens with kid rotation	P2/P2-023.yaml
 P2-024	Done	Add rotating revocable refresh tokens with reuse detection	P2/P2-024.yaml
 P2-025	Done	Add passkey sign-in and sign-up	P2/P2-025.yaml
-P2-026	Draft	Add Google and Apple sign-in	P2/P2-026.yaml
-P2-027	Draft	Add email magic link sign-in	P2/P2-027.yaml
+P2-026	Done	Add Google and Apple sign-in	P2/P2-026.yaml
+P2-027	Done	Add email magic link sign-in	P2/P2-027.yaml
 P2-028	Draft	Rehash legacy passwords with Argon2id and enforce password rules	P2/P2-028.yaml
 P2-029	Draft	Start Sentry first and cut cold start under 2 s	P2/P2-029.yaml
 P2-030	Draft	Split worker service on BullMQ with leader-elected cron	P2/P2-030.yaml
