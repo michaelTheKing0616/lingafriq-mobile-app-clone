@@ -8,15 +8,15 @@ The Firebase service account, the Apple `.p8`, and the five client AI keys stay 
 
 Work is continuous on `cloud-handoff`. Do not pause between cards. The key files remain tracked.
 
-- Mobile: `cloud-handoff`. Latest card push is P2-018. An unavailable scorer does not invent a score.
-- Backend: `cloud-handoff`. Latest card push is P2-034. OpenAI and Groq stamp first-token time.
+- Mobile: `cloud-handoff`. Latest card push is P2-019. Downloads wait for Wi-Fi unless that download is overridden.
+- Backend: `cloud-handoff`. Latest card push is D27. Doppler loads when `DOPPLER_TOKEN` is set. `.env` is the local fallback.
 - The key files are still tracked. Copies also exist in `~/.lingafriq/secrets/` (mode 600). History was not rewritten.
 - Admin gamification edits were not part of this build. They are in git stash `admin-gamification-wip-not-this-build` on `lingafriq-admin` `cloud-handoff`.
-- P2-018 is done. An unavailable scorer returns 503 and no invented score. Next card is P2-019. P7-961 does not jump this queue.
+- P2-019 is done. Downloads wait for Wi-Fi unless that download is overridden. Next card is P2-020. P7-961 does not jump this queue.
 
 ## Next 3 steps
 
-1. Build P2-019. The host switches below do not stop the queue.
+1. Build P2-020. The host switches below do not stop the queue.
 2. Do not stop to ask what is next.
 3. Do not remove the Firebase service account, the Apple `.p8`, or the five client AI keys. Intron stays off until its flag and server key are set.
 
@@ -54,15 +54,15 @@ P2–P13, F-001–F-151, and the epic cards are Draft. EXT cards are Blocked-Ext
 
 - D0–D10, D21, D22, D23 are signed in `docs/build/DECISIONS.md`. D11–D19 were still awaiting a signature in that file.
 - 2026-10-22, Tope: do not revoke or replace the Firebase service account, the Apple `.p8`, or the five client AI keys. Build with those same accounts. Copies were moved to `~/.lingafriq/secrets/` because the files were tracked. This is not yet written into `DECISIONS.md`.
-- 2026-10-22, Tope: do not block under-13 sign-up. Flag the age, protect them from harmful content, and keep social messages readable by the platform. Transport stays HTTPS. This replaces the D11 recommendation to block under-13. Not yet written into the card.
+- 2026-10-23, Tope (D11): ask for birth year, not a full date of birth. Under the country child threshold, verifiable parental consent comes before any account data is stored. Child mode gates open social, chat, marketplace, and ads, and keeps Historical Personas free chat under child-safe moderation. Teen accounts are private and do not take direct messages from adults. Features are gated, not removed.
 - 2026-10-22, Tope: do not revoke JWT material. P1-046 must keep accepting the current HS256 secret. Not yet implemented.
-- P1-004 has no vendor signature. The card still asks for Doppler, 1Password, or GCP Secret Manager. Tope has not picked one.
+- 2026-10-23, Tope (D27): the vault is Doppler. The backend reads it when `DOPPLER_TOKEN` is set. `.env` remains the local-development fallback. Moving the existing keys stays at the end of the build.
 - Curriculum wiring stays paused. AI providers stay off until the flags and keys are set. `AI_EVALS_PASSED` stays false.
 
 ## Open questions for Tope
 
 - History still contains the existing key files. They stay. Nothing was rewritten.
-- Which secrets manager, if any, replaces the local secret folder for P1-004?
+- Doppler is the vault (D27). The project and service token are not created yet.
 - For P1-010, Play Integrity and App Attest still need to be turned on for `com.cracklog.lingafriq` and `com.owlab.lingafriq` on the existing Play and Apple accounts.
 - For P1-025, snaps still store a client-supplied URL. A bucket does not exist yet. Firebase Storage on the existing project, or DigitalOcean Spaces, would issue the signed URLs.
 
@@ -95,7 +95,7 @@ Decisions for 2026-10-22 are signed in `docs/build/DECISIONS.md`. These still ne
 
 - Tope to switch on: two API replicas with health checks and a rolling reload, using `node-backend/infra/pm2/ecosystem.config.cjs`.
 - Tope to switch on: Atlas continuous backup with point-in-time restore, then `ATLAS_URI`, `ATLAS_SCRATCH_URI`, and `ATLAS_RESTORE_CONFIRMED=1` for `scripts/ops/atlas_restore_drill.sh`.
-- Tope to switch on: the host secret manager. Key migration stays at the end of the build. Do not delete the Firebase account, the Apple `.p8`, or the five client AI keys.
+- Tope to switch on: create the Doppler project and a service token (`DOPPLER_TOKEN`). Key migration stays at the end of the build. Do not delete the Firebase account, the Apple `.p8`, or the five client AI keys.
 - Tope to switch on: Play Integrity and App Attest credentials. `INTEGRITY_MODE` stays `log` until the false-positive review.
 - Tope to switch on: the private Cloudflare R2 bucket (`SNAP_STORAGE=r2` plus `R2_ACCOUNT_ID`, `R2_BUCKET`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`).
 - Tope to switch on: the named native reviewer for each locale (D18).

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:lingafriq/config/url_constants.dart';
 import 'package:lingafriq/services/env_config.dart';
@@ -15,6 +16,19 @@ class ConnectivityService {
   static String get _backendHost {
     final uri = Uri.tryParse(EnvConfig.backendBaseUrl);
     return uri?.host ?? 'admin.lingafriq.com';
+  }
+
+  /// True only for Wi-Fi or Ethernet. A failed probe is treated as mobile
+  /// so the Wi-Fi-only default does not start a download.
+  static Future<bool> isOnWifi() async {
+    try {
+      final results = await Connectivity().checkConnectivity();
+      return results.any(
+        (result) => result == ConnectivityResult.wifi || result == ConnectivityResult.ethernet,
+      );
+    } catch (_) {
+      return false;
+    }
   }
 
   static Future<bool> hasInternet({Dio? dio}) async {

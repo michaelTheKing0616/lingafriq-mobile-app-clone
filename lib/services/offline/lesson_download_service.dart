@@ -15,6 +15,50 @@ import '../learning/dialect_preference_service.dart';
 import '../learning/heritage_milestone_service.dart';
 import '../content/cms_manifest_service.dart';
 import 'local_database_service.dart';
+import '../connectivity_service.dart';
+import 'cache_eviction.dart';
+
+const int unitPackFloorBytes = 10 * 1024 * 1024;
+const int unitPackCeilingBytes = 30 * 1024 * 1024;
+const String wifiOnlyPrefKey = 'dl.wifi_only';
+
+enum DownloadGate { proceed, waitForWifi, lowStorage }
+
+/// Wi-Fi is the default. Mobile data needs an explicit override, and a full
+/// quota does not start a download.
+DownloadGate downloadGate({
+  required bool wifiOnly,
+  required bool onWifi,
+  required bool allowMobile,
+  required bool lowStorage,
+}) {
+  if (lowStorage) return DownloadGate.lowStorage;
+  if (wifiOnly && !onWifi && !allowMobile) return DownloadGate.waitForWifi;
+  return DownloadGate.proceed;
+}
+
+bool packExceedsCeiling(int bytes) => bytes > unitPackCeilingBytes;
+
+String formatPackSize(int bytes) {
+  if (bytes < 1024) return '$bytes B';
+  if (bytes < 1024 * 1024) return '${(bytes / 1024).toStringAsFixed(1)} KB';
+  return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
+}
+
+int declaredPackBytes(Map<String, dynamic> manifest) {
+  final direct = manifest['packBytes'] ?? manifest['sizeBytes'] ?? manifest['totalBytes'];
+  if (direct is num) return direct.round();
+  var total = 0;
+  final lessons = manifest['lessons'];
+  if (lessons is List) {
+    for (final lesson in lessons) {
+      if (lesson is! Map) continue;
+      final size = lesson['sizeBytes'] ?? lesson['audioBytes'] ?? lesson['bytes'];
+      if (size is num) total += size.round();
+    }
+  }
+  return total;
+}
 
 /// Download progress information
 class DownloadProgress {
@@ -203,13 +247,37 @@ class LessonDownloadService {
   /// Get storage quota in MB
   int getStorageQuotaMB() => _storageQuotaBytes ~/ (1024 * 1024);
 
-  /// Download all lessons for a language
-  Future<void> downloadLessonPack(String language) async {
+  /// Download all lessons for a language.
+  /// [allowMobile] is the per-download override of the Wi-Fi-only default.
+  Future<void> downloadLessonPack(String language, {bool allowMobile = false}) async {
     if (_activeDownloads.containsKey(language)) {
       throw Exception('Download already in progress for $language');
     }
 
     await init();
+    final prefs = await SharedPreferences.getInstance();
+    final wifiOnly = prefs.getBool(wifiOnlyPrefKey) ?? true;
+    final onWifi = await ConnectivityService.isOnWifi();
+    final gate = downloadGate(
+      wifiOnly: wifiOnly,
+      onWifi: onWifi,
+      allowMobile: allowMobile,
+      lowStorage: await isStorageQuotaExceeded(),
+    );
+    if (gate != DownloadGate.proceed) {
+      _progressNotifiers[language] = ValueNotifier<DownloadProgress>(
+        DownloadProgress(
+          language: language,
+          totalLessons: 0,
+          completedLessons: 0,
+          totalBytes: 0,
+          downloadedBytes: 0,
+          isComplete: false,
+          error: gate == DownloadGate.waitForWifi ? 'paused-wifi' : 'low-storage',
+        ),
+      );
+      return;
+    }
     
     final cancelToken = CancelToken();
     _activeDownloads[language] = cancelToken;
@@ -386,6 +454,8 @@ class LessonDownloadService {
         downloadedBytes: downloadedBytes,
         isComplete: true,
       );
+      final recorded = downloadedBytes > 0 ? downloadedBytes : declaredPackBytes(manifest);
+      await CacheEvictionManager().recordUnitBytes(language, recorded);
       await _clearPackState(language);
     } catch (e) {
       logger.error('Failed to download lesson pack for $language', error: e);
@@ -781,6 +851,7 @@ class LessonDownloadService {
     }
     
     _progressNotifiers.remove(language);
+    await CacheEvictionManager().releaseUnit(language);
   }
 
   /// Check if storage quota is exceeded

@@ -95,3 +95,4 @@ P2-015,build,T3,grok-4.7,n/a,n/a,1,pass,An offline write keeps a client idempote
 P2-016,build,T3,grok-4.7,n/a,n/a,1,pass,The competing offline queues are deleted. Writes, preferences, and background flush go through the one Drift outbox. Downloads, review, Point and Say, and the tone trainer stay readable
 P2-017,build,T1,grok-4.7,n/a,n/a,1,pass,The sync chip shows the pending count, a failed state with Retry, and Offline whenever the device has no connection
 P2-018,build,T3,grok-4.7,n/a,n/a,1,pass,An unavailable pronunciation scorer returns 503 and no score. A failed persona reply is a typed error, not a canned line
+P2-019,build,T2,grok-4.7,n/a,n/a,1,pass,Downloads wait for Wi-Fi unless the learner overrides that download. The unit size is shown, a pack over 30 MB is flagged, and delete frees that unit
