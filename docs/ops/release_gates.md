@@ -9,4 +9,4 @@ A staged rollout stops when either line is crossed:
 
 `scripts/ci/crash_gate.py` reads a JSON report with `crash_free_users` and `anr_rate` and exits 1 when promotion is blocked. The report comes from the store metrics for that rollout stage. The script does not invent those numbers.
 
-Crash reports carry the release and the operating system. Email addresses and bearer tokens are removed before the report is logged.
+Crash reports carry the release and the operating system. Email addresses and bearer tokens are removed before the report is logged. On Android 11 and newer, the previous process exit is read and an ANR reason is reported. Older Android versions and iOS have no exit record, so that list stays empty.

@@ -502,7 +502,7 @@ P2-033	Done	Add OpenTelemetry traces across app, API, AI gateway and speech	P2/P
 P2-034	Done	Emit RED metrics and alert on latency SLOs	P2/P2-034.yaml
 P2-035	Draft	Add per-feature AI cost dashboards and fallback-rate alert	P2/P2-035.yaml
 P2-036	Done	Emit structured logs without PII or credentials	P2/P2-036.yaml
-P2-037	Ready	Report crashes and ANRs with release gates	P2/P2-037.yaml
+P2-037	Done	Report crashes and ANRs with release gates	P2/P2-037.yaml
 P2-038	Draft	Add feature flags and staged rollout stages	P2/P2-038.yaml
 P2-039	Draft	'ADR: Decide on Shorebird Dart patching'	P2/P2-039.yaml
 P2-040	Draft	Archive status docs and generate honest STATUS.md	P2/P2-040.yaml

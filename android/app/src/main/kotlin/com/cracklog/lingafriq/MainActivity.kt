@@ -17,5 +17,6 @@ class MainActivity: FlutterActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         DataSaverChannel.register(this, flutterEngine)
+        AnrExitChannel.register(this, flutterEngine)
     }
 }

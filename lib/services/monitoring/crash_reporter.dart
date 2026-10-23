@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+
 /// Report of one crash or ANR. Email addresses and bearer tokens are removed
 /// before this map is logged or handed to the transport.
 class CrashReporter {
@@ -10,12 +13,16 @@ class CrashReporter {
   });
 
   static final CrashReporter instance = CrashReporter();
+  static const anrChannel = MethodChannel('lingafriq/anr_exits');
 
   String release;
   String device;
   bool ready = false;
   String? diagnostic;
   void Function(String message)? log;
+
+  /// Test stand-in for the Android exit-reason channel.
+  Future<List<Map<String, Object>>> Function()? readPreviousAnrs;
 
   static const _secretKey = r'password|authorization|token|secret|cookie|email|prompt|phone|name';
 
@@ -58,6 +65,42 @@ class CrashReporter {
 
   Map<String, Object> reportAnr(Object error, {Map<String, Object>? context}) {
     return report(error, context: context, anr: true);
+  }
+
+  /// Previous Android ANR exits. iOS and Android before API 30 return none.
+  Future<List<Map<String, Object>>> collectPreviousAnrs() async {
+    final reader = readPreviousAnrs ?? _platformAnrs;
+    List<Map<String, Object>> rows;
+    try {
+      rows = await reader();
+    } catch (error) {
+      log?.call('crash reporter failed to read anr exits: $error');
+      return [];
+    }
+    return [
+      for (final row in rows)
+        reportAnr(
+          row['description'] ?? 'anr',
+          context: {
+            if (row['timestamp'] is num) 'timestamp': row['timestamp'] as num,
+          },
+        ),
+    ];
+  }
+
+  static Future<List<Map<String, Object>>> _platformAnrs() async {
+    if (kIsWeb || !Platform.isAndroid) return [];
+    final raw = await anrChannel.invokeMethod<List<dynamic>>('previousAnrs');
+    if (raw == null) return [];
+    return [
+      for (final item in raw)
+        if (item is Map)
+          {
+            for (final entry in item.entries)
+              if (entry.key is String && (entry.value is String || entry.value is num))
+                entry.key as String: entry.value as Object,
+          },
+    ];
   }
 
   static String scrubText(String value) {

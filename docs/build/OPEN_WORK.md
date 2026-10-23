@@ -89,7 +89,7 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-077 | open | P2-036 | Winston scrubs secret keys and secret-shaped strings. A log written with console.log does not pass through that scrub. |
 | OW-078 | open | P2-033 | Spans are accepted in-process. No collector URL is set, so they are not shipped off the machine. |
 | OW-079 | open | P2-034 | OpenAI and Groq stamp first-token time from the stream. Gemini and Hugging Face still return one finished body, so those calls do not stamp it. |
-| OW-080 | open | P2-037 | The rollout gate uses crash-free users 0.995 and ANR rate 0.0047. An Android ANR exit is not read from the OS yet. |
+| OW-080 | closed | P2-037 | Closed 2026-10-23. Android 11 and newer reads REASON_ANR. Older Android and iOS stay empty. The gate still uses 0.995 and 0.0047. |
 | OW-081 | open | P2-014 | Reads come from the Drift snapshot. Hive is still written as a mirror so an existing install can be imported if the sqlite file is missing. |
 | OW-082 | open | P2-016 | Legacy sync types post to their existing endpoints from the one outbox. Those endpoints do not yet store an idempotency receipt, so a lost 200 can be sent again. |
 | OW-083 | open | P2-019 | Bundled content manifests do not list pack bytes, so a unit with no declared size shows Size not listed until a download records the byte count. |

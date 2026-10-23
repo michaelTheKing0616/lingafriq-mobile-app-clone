@@ -165,12 +165,18 @@ void main() async {
     );
     if (!started) {
       logger.error(CrashReporter.instance.diagnostic ?? 'crash reporter failed to start');
-    } else if (sentryDsn == null || sentryDsn.isEmpty) {
-      logger.debug('Sentry DSN not configured, skipping initialization');
     } else {
-      logger.info('Sentry initialized successfully', context: {
-        'environment': kDebugMode ? 'development' : 'production',
-      });
+      final previousAnrs = await CrashReporter.instance.collectPreviousAnrs();
+      for (final anr in previousAnrs) {
+        logger.error('previous anr', context: Map<String, dynamic>.from(anr));
+      }
+      if (sentryDsn == null || sentryDsn.isEmpty) {
+        logger.debug('Sentry DSN not configured, skipping initialization');
+      } else {
+        logger.info('Sentry initialized successfully', context: {
+          'environment': kDebugMode ? 'development' : 'production',
+        });
+      }
     }
   } catch (e) {
     logger.error('Error initializing monitoring services', error: e);

@@ -38,4 +38,22 @@ void main() {
     expect(reporter.diagnostic, 'crash reporter failed to start');
     expect(lines.single, contains('crash reporter failed to start'));
   });
+
+  test('a previous Android ANR is reported once and scrubbed', () async {
+    final reporter = CrashReporter(release: '1.6.2+330', device: 'android');
+    reporter.readPreviousAnrs = () async => [
+      {
+        'timestamp': 10,
+        'description': 'input dispatch timed out for seeded-person@example.com',
+      },
+    ];
+
+    final reports = await reporter.collectPreviousAnrs();
+    expect(reports, hasLength(1));
+    expect(reports.single['kind'], 'anr');
+    expect(reports.single['release'], '1.6.2+330');
+    expect(reports.single['device'], 'android');
+    expect(reports.single.toString(), isNot(contains('seeded-person@example.com')));
+    expect((reports.single['context'] as Map)['timestamp'], 10);
+  });
 }

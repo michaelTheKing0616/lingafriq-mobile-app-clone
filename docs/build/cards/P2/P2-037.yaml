@@ -25,7 +25,8 @@ token_budget: 70000
 file_allowlist:
 - lib/services/monitoring/crash_reporter.dart
 - lib/main.dart
-- lib/services/monitoring/sentry_service.dart
+- android/app/src/main/kotlin/com/cracklog/lingafriq/AnrExitChannel.kt
+- android/app/src/main/kotlin/com/cracklog/lingafriq/MainActivity.kt
 - docs/ops/release_gates.md
 - scripts/ci/crash_gate.py
 - test/monitoring/crash_reporter_test.dart
@@ -61,10 +62,10 @@ dod_evidence:
 - coverage on touched domain code
 - ledger row
 risks:
-- "Uncaught Flutter errors are scrubbed and carry the release and the operating system. An ANR is recorded when reportAnr is called. The OS exit reason is not read yet."
+- "Android 11 and newer reads REASON_ANR from ApplicationExitInfo. Older Android and iOS return an empty list. The store metrics that feed crash_gate.py are not fetched by this script."
 gate: G2
 external_blockers: []
-status: Ready
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging

@@ -107,3 +107,4 @@ P2-022,build,T3,grok-4.7,n/a,n/a,1,pass,Onboarding and the first lesson persist 
 P2-026,build,T3,grok-4.7,n/a,n/a,1,pass,Google and Apple identity tokens are verified for audience, issuer, and expiry. An unverified email is not linked.
 P2-027,build,T3,grok-4.7,n/a,n/a,1,pass,A magic link lasts 15 minutes, is single use, hides whether the email exists, and returns rate_limited after the auth limit.
 P2-028,build,T3,grok-4.7,n/a,n/a,1,pass,A legacy Django hash becomes Argon2id on login. A 5-character password is checked against the hash. New passwords stay at 8 characters with a breach check.
+P2-037,build,T2,grok-4.7,n/a,n/a,1,pass,An Android ANR exit is reported with the release and device, and the email is scrubbed. The rollout gate still blocks below 0.995 crash-free or above 0.0047 ANR.
