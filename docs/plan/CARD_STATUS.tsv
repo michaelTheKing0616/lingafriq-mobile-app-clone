@@ -634,7 +634,7 @@ P4-009	Done	Lint share-alike containment of evidence layer	P4/P4-009.yaml
 P4-010	Done	Enforce non-commercial exclusion rule and exclusion table	P4/P4-010.yaml
 P4-011	Done	Declare JW300, MAFAND-MT and MasakhaNER excluded	P4/P4-011.yaml
 P4-012	Done	Exclude AfriSenti pending creator confirmation	P4/P4-012.yaml
-P4-013	Draft	Exclude PanLex pending written permission	P4/P4-013.yaml
+P4-013	Done	Exclude PanLex pending written permission	P4/P4-013.yaml
 P4-014	Draft	Exclude NaijaVoices unless waiver purchased	P4/P4-014.yaml
 P4-015	Draft	Exclude IgboAPI data pending licence from Nkọwa okwu	P4/P4-015.yaml
 P4-016	Draft	Exclude Kamusi pending commercial licence	P4/P4-016.yaml

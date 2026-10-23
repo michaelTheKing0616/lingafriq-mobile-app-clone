@@ -49,6 +49,12 @@ sources:
   panlex:
     status: excluded
     licence: "CC BY-NC-SA 4.0"
+    permission_email: info@panlex.org
+    permission_status: pending
+    permission_draft: >-
+      LingAfriq is a paid language-learning app and needs written permission
+      before any use of PanLex, including training and evidence.
+    reply: ""
     reason: "CC BY-NC-SA 4.0. No written commercial permission is recorded."
     commercial_licence_document: ""
     counsel_status: ""
