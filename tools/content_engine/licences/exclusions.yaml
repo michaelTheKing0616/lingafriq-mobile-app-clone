@@ -36,6 +36,9 @@ sources:
   afrisenti:
     status: excluded
     licence: "non-commercial"
+    hf_card_licence: "CC BY 4.0"
+    conflict: "HF card says CC BY 4.0; the paper restricts commercial use without creator approval"
+    action: ask-the-creators
     reason: "The paper restricts commercial use without creator approval."
     commercial_licence_document: ""
     counsel_status: ""

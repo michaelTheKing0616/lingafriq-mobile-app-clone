@@ -141,3 +141,4 @@ P4-008,build,T1,composer-2.5-fast,n/a,n/a,2,pass,Display or training without cou
 P4-009,build,T2,grok-4.7,n/a,n/a,1,pass,Share-alike provenance fails out of the evidence layer and names the item and source. Evidence with attribution passes. The content-engine job runs the tests.
 P4-010,build,T2,grok-4.7,n/a,n/a,1,pass,Non-commercial and academic-only sources stay excluded. A manifest cannot lift them. No waiver is recorded.
 P4-011,build,T1,composer-2.5-fast,n/a,n/a,1,pass,JW300 is declared excluded and a derived manifest fails. MAFAND-MT and MasakhaNER stay CC BY-NC until Masakhane grants a licence.
+P4-012,build,T1,composer-2.5-fast,n/a,n/a,1,pass,AfriSenti stays excluded. The HF CC BY 4.0 label is stored as a conflict and does not allow a use.
