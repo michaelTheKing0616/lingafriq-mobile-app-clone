@@ -27,8 +27,12 @@ tiers:
 token_budget: 150000
 file_allowlist:
 - lib/services/learning/learning_event_log.dart
+- lib/services/offline/persisted_outbox_service.dart
+- lib/config/sync_outbox_operation_types.dart
 - node-backend/src/models/learningEvent.model.ts
 - node-backend/src/controllers/learningEvent.controller.ts
+- node-backend/src/routes/learning.route.ts
+- node-backend/src/__test__/P2-042.learningEvent.test.ts
 - test/learning/event_log_test.dart
 context_anchors:
 - ELEVATION.md#§6.3:L1216-L1217
@@ -63,10 +67,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- 'A retried batch is applied once by the unique client id. The four legacy learner models still write their own state until the graph cards replace them.'
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging

@@ -20,6 +20,7 @@ const Set<String> kSyncOutboxOperationTypes = {
   'progress_sync',
   'onboarding_sync',
   'telemetry_sync',
+  'learning_event',
 };
 
 bool isValidSyncOutboxOperationType(String type) =>

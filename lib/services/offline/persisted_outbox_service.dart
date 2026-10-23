@@ -9,6 +9,7 @@ import 'package:workmanager/workmanager.dart';
 import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/config/sync_outbox_operation_types.dart';
 import 'package:lingafriq/services/connectivity_service.dart';
+import 'package:lingafriq/services/learning/learning_event_log.dart';
 import 'package:lingafriq/services/sync/outbox_service.dart';
 import 'package:lingafriq/services/sync/outbox_worker.dart';
 import 'package:lingafriq/utils/api_service.dart';
@@ -517,6 +518,8 @@ class _ApiOutboxTransport implements OutboxTransport {
         );
       case 'telemetry_sync':
         return ApiService.post(ApiContract.url(ApiContract.games.telemetry), data: data);
+      case 'learning_event':
+        return ApiService.post(ApiContract.url(learningEventPath), data: data);
       default:
         throw StateError('not a legacy outbox type ${row.type}');
     }
@@ -532,6 +535,7 @@ const Set<String> _legacyOutboxTypes = {
   'progress_sync',
   'onboarding_sync',
   'telemetry_sync',
+  'learning_event',
 };
 
 enum SyncCategory {
