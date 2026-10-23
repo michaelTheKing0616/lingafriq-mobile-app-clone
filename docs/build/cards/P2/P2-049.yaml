@@ -63,7 +63,7 @@ dod_evidence:
 risks: []
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/11-data-and-quantitative-work

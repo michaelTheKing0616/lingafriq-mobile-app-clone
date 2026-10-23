@@ -109,3 +109,5 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-097 | open | P2-040 | P0-INT-09 still points at scripts/plan/archive_status_md.py and a pre-commit hook. The move already ran from scripts/docs/archive_status_md.py. HANDOFF.md stays at the root. |
 | OW-098 | open | P2-043 | vocabulary_service, spaced_repetition_service, and adaptive_learning_service still contain an SM-2 update. They are not the four models named in ADR-005. |
 | OW-099 | open | P2-043 | BKT still updates mastery. The HLR class remains for its tests and is not called from lib. P5-019 deletes the old models. |
+| OW-100 | open | P2-049 | Lesson answers still do not store a server-graded correct bit. The job reads learning events that already have payload.itemId and a boolean payload.correct. It is a manual job, not a cron. |
+| OW-101 | open | P2-049 | The app item model does not read irt_calibrated yet. The server refuses uncalibrated parameters for scoring. P2-050 has to do the same on the device. |
