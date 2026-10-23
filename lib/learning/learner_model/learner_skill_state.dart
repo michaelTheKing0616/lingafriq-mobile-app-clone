@@ -1,5 +1,6 @@
+import '../../services/learning/fsrs6_scheduler.dart';
+import '../../services/learning/memory_state.dart';
 import '../core/bkt_mastery.dart';
-import '../core/hlr_forgetting_curve.dart';
 import 'error_taxonomy.dart';
 
 /// The complete state of a learner's knowledge for a single skill.
@@ -78,7 +79,7 @@ class LearnerSkillState {
       skillId: skillId,
       learnerId: learnerId,
       mastery: bktParams?.pL0 ?? BktMastery.defaultParams.pL0,
-      halfLifeDays: HlrForgettingCurve.initialHalfLifeDays,
+      halfLifeDays: 0.5,
       lastRecall: now,
       lastPractice: now,
       bktParams: bktParams,
@@ -88,9 +89,9 @@ class LearnerSkillState {
   /// Current recall probability based on time elapsed since last recall.
   double get currentRecallProbability {
     final elapsed = DateTime.now().difference(lastRecall).inHours / 24.0;
-    return HlrForgettingCurve.recallProbability(
+    return const Fsrs6Scheduler().retrievability(
       elapsedDays: elapsed,
-      halfLifeDays: halfLifeDays,
+      stability: halfLifeDays,
     );
   }
 
@@ -102,11 +103,7 @@ class LearnerSkillState {
 
   /// Urgency of reviewing this skill (0 = not urgent, 1 = critical).
   double get reviewUrgency {
-    final elapsed = DateTime.now().difference(lastRecall).inHours / 24.0;
-    return HlrForgettingCurve.reviewUrgency(
-      elapsedDays: elapsed,
-      halfLifeDays: halfLifeDays,
-    );
+    return (1 - currentRecallProbability).clamp(0.0, 1.0);
   }
 
   /// Overall accuracy ratio.
@@ -115,10 +112,7 @@ class LearnerSkillState {
 
   /// The optimal day to schedule the next review.
   DateTime get nextOptimalReview {
-    final daysUntilReview = HlrForgettingCurve.optimalReviewDays(
-      halfLifeDays: halfLifeDays,
-      targetProbability: 0.7,
-    );
+    final daysUntilReview = const Fsrs6Scheduler().intervalDays(halfLifeDays, retention: 0.7).toDouble();
     return lastRecall.add(Duration(
       hours: (daysUntilReview * 24).round(),
     ));
@@ -150,27 +144,17 @@ class LearnerSkillState {
       params: params,
     );
 
-    // 2. Compute error severity from observed errors
-    final errorSeverity = errorTypeIds.isEmpty
-        ? 0.0
-        : errorTypeIds.fold<double>(0.0, (sum, id) {
-              final errorType = ErrorType.byId(id);
-              return sum + (errorType?.severity ?? 0.5);
-            }) /
-            errorTypeIds.length;
-
-    // 3. Update HLR half-life
-    // Bonus for difficult successful recall (time pressure)
-    final difficultyBonus = wasCorrect && currentRecallProbability < 0.5
-        ? 0.1
-        : 0.0;
-
-    final newHalfLife = HlrForgettingCurve.updateHalfLife(
-      currentHalfLifeDays: halfLifeDays,
-      wasSuccessful: wasCorrect,
-      errorSeverity: errorSeverity,
-      difficultyBonus: difficultyBonus,
+    final reviewed = const Fsrs6Scheduler.days().review(
+      MemoryState(
+        stability: halfLifeDays,
+        difficulty: 5,
+        phase: FsrsPhase.review,
+        lastReview: lastPractice,
+      ),
+      wasCorrect ? FsrsRating.good : FsrsRating.again,
+      now,
     );
+    final newHalfLife = reviewed.stability!;
 
     // 4. Update error distribution
     ErrorDistribution newErrorDist = errorDistribution;

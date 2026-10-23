@@ -244,7 +244,7 @@ void main() {
         expect(updated.repetitions, equals(1));
       });
 
-      test('second repetition sets interval to 6', () async {
+      test('a second hard review uses the FSRS-6 interval', () async {
         final vocab = LocalVocabulary(
           id: 'test10',
           word: 'hello',
@@ -260,11 +260,11 @@ void main() {
 
         final updated = store.getVocabulary('test10');
         expect(updated, isNotNull);
-        expect(updated!.interval, equals(6));
+        expect(updated!.interval, equals(2));
         expect(updated.repetitions, equals(2));
       });
 
-      test('third repetition multiplies interval by ease factor', () async {
+      test('a later hard review follows the FSRS-6 interval', () async {
         final vocab = LocalVocabulary(
           id: 'test11',
           word: 'hello',
@@ -280,7 +280,7 @@ void main() {
 
         final updated = store.getVocabulary('test11');
         expect(updated, isNotNull);
-        expect(updated!.interval, equals(15)); // 6 * 2.5 = 15
+        expect(updated!.interval, equals(10));
         expect(updated.repetitions, equals(3));
       });
     });

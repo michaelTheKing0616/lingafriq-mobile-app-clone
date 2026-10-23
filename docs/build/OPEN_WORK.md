@@ -107,3 +107,5 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-095 | open | P2-038 | The flag client does not fetch from the API yet. A stale cache or a failed evaluation turns the feature off after 60 seconds. |
 | OW-096 | open | P2-039 | Shorebird is off by builder default. Tope has not signed a patch channel on. |
 | OW-097 | open | P2-040 | P0-INT-09 still points at scripts/plan/archive_status_md.py and a pre-commit hook. The move already ran from scripts/docs/archive_status_md.py. HANDOFF.md stays at the root. |
+| OW-098 | open | P2-043 | vocabulary_service, spaced_repetition_service, and adaptive_learning_service still contain an SM-2 update. They are not the four models named in ADR-005. |
+| OW-099 | open | P2-043 | BKT still updates mastery. The HLR class remains for its tests and is not called from lib. P5-019 deletes the old models. |

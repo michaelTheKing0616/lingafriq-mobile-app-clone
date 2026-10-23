@@ -12,6 +12,8 @@ import '../models/game/game_session_model.dart';
 import '../models/game/game_content_failure.dart';
 import '../providers/gamification_provider.dart';
 import '../providers/user_provider.dart';
+import '../services/learning/fsrs6_scheduler.dart';
+import '../services/learning/memory_state.dart';
 import '../services/offline/persisted_outbox_service.dart';
 import '../providers/dio_provider.dart';
 import '../utils/diacritics_enforcer.dart';
@@ -1783,36 +1785,23 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     final key = '${userId}_${cardId}_$language';
     final current = _userSRS[key] ?? SRSState();
 
-    // SM-2 algorithm variant
-    double newEase = current.ease;
-    int newRepetitions = current.repetitions;
-    int newInterval = current.intervalDays;
-
-    if (quality >= 3) {
-      // Successful recall
-      if (newRepetitions == 0) {
-        newInterval = 1;
-      } else if (newRepetitions == 1) {
-        newInterval = 6;
-      } else {
-        newInterval = (newInterval * newEase).round();
-      }
-      newRepetitions += 1;
-      newEase = newEase + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
-      if (newEase < 1.3) newEase = 1.3;
-    } else {
-      // Failed recall - reset
-      newRepetitions = 0;
-      newInterval = 1;
-      newEase = current.ease * 0.8;
-      if (newEase < 1.3) newEase = 1.3;
-    }
-
+    final now = DateTime.now();
+    const scheduler = Fsrs6Scheduler.days();
+    final reviewed = scheduler.review(
+      MemoryState(
+        stability: current.intervalDays > 0 ? current.intervalDays.toDouble() : null,
+        difficulty: Fsrs6Scheduler.difficultyFromEase(current.ease),
+        phase: current.intervalDays > 0 ? FsrsPhase.review : FsrsPhase.learning,
+        lastReview: current.lastReview,
+      ),
+      FsrsRating.fromQuality(quality),
+      now,
+    );
     _userSRS[key] = SRSState(
-      ease: newEase,
-      repetitions: newRepetitions,
-      intervalDays: newInterval,
-      lastReview: DateTime.now(),
+      ease: Fsrs6Scheduler.easeFromDifficulty(reviewed.difficulty!),
+      repetitions: quality < 3 ? 0 : current.repetitions + 1,
+      intervalDays: reviewed.due!.difference(now).inDays.clamp(1, 36500),
+      lastReview: now,
     );
 
     await _saveUserSRS();

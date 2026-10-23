@@ -1,10 +1,9 @@
-import '../core/hlr_forgetting_curve.dart';
+import '../../services/learning/fsrs6_scheduler.dart';
 import '../learner_model/learner_model_service.dart';
 
 /// Spaced review scheduler driven by the learner model.
 ///
-/// Uses Half-Life Regression to determine optimal review timing,
-/// and Bayesian Knowledge Tracing to decide when to stop reviewing.
+/// Uses FSRS-6 retrievability to decide when a skill is due.
 ///
 /// Review sessions:
 /// - Are scheduled when recall probability drops below threshold
@@ -52,17 +51,10 @@ class ReviewScheduler {
     for (final entry in allStates.entries) {
       final state = entry.value;
       final elapsed = now.difference(state.lastRecall).inHours / 24.0;
-      final recall = HlrForgettingCurve.recallProbability(
-        elapsedDays: elapsed,
-        halfLifeDays: state.halfLifeDays,
-      );
+      final recall = _recall(elapsed, state.halfLifeDays);
 
       if (recall < reviewThreshold && !state.isMastered) {
-        final urgency = HlrForgettingCurve.reviewUrgency(
-          elapsedDays: elapsed,
-          halfLifeDays: state.halfLifeDays,
-          recallThreshold: reviewThreshold,
-        );
+        final urgency = 1 - recall;
 
         reviewItems.add(ReviewItem(
           skillId: entry.key,
@@ -142,19 +134,13 @@ class ReviewScheduler {
     for (final entry in allStates.entries) {
       final state = entry.value;
       final elapsed = now.difference(state.lastRecall).inHours / 24.0;
-      final recall = HlrForgettingCurve.recallProbability(
-        elapsedDays: elapsed,
-        halfLifeDays: state.halfLifeDays,
-      );
+      final recall = _recall(elapsed, state.halfLifeDays);
 
       if (recall < reviewThreshold) {
         items.add(ReviewItem(
           skillId: entry.key,
           currentRecall: recall,
-          urgency: HlrForgettingCurve.reviewUrgency(
-            elapsedDays: elapsed,
-            halfLifeDays: state.halfLifeDays,
-          ),
+          urgency: 1 - recall,
           halfLifeDays: state.halfLifeDays,
           lastRecall: state.lastRecall,
           dominantError: state.dominantErrorType,
@@ -195,10 +181,9 @@ class ReviewScheduler {
     DateTime? earliestDue;
 
     for (final state in allStates.values) {
-      final optimalDays = HlrForgettingCurve.optimalReviewDays(
-        halfLifeDays: state.halfLifeDays,
-        targetProbability: reviewThreshold,
-      );
+      final optimalDays = const Fsrs6Scheduler()
+          .intervalDays(state.halfLifeDays, retention: reviewThreshold)
+          .toDouble();
       final due = state.lastRecall.add(Duration(
         hours: (optimalDays * 24).round(),
       ));
@@ -222,15 +207,19 @@ class ReviewScheduler {
     for (final state in allStates.values) {
       final currentElapsed = DateTime.now().difference(state.lastRecall).inHours / 24.0;
       final futureElapsed = currentElapsed + daysFromNow;
-      final futureRecall = HlrForgettingCurve.recallProbability(
-        elapsedDays: futureElapsed,
-        halfLifeDays: state.halfLifeDays,
-      );
+      final futureRecall = _recall(futureElapsed, state.halfLifeDays);
 
       if (futureRecall < reviewThreshold) count++;
     }
 
     return count;
+  }
+
+  double _recall(double elapsedDays, double stability) {
+    return const Fsrs6Scheduler().retrievability(
+      elapsedDays: elapsedDays,
+      stability: stability,
+    );
   }
 
   double _estimateSessionDuration(int itemCount) {

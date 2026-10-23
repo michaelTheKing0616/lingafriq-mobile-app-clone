@@ -29,6 +29,14 @@ file_allowlist:
 - lib/services/learning/memory_state.dart
 - test/learning/fsrs6_test.dart
 - test/learning/fsrs6_property_test.dart
+- lib/services/offline/vocabulary_store.dart
+- lib/services/vocabulary_progress_service.dart
+- lib/providers/ai_chat_provider_groq.dart
+- lib/providers/game_provider.dart
+- lib/learning/learner_model/learner_skill_state.dart
+- lib/learning/scheduling/review_scheduler.dart
+- lib/providers/research_metrics_provider.dart
+- test/services/vocabulary_store_test.dart
 context_anchors:
 - ELEVATION.md#§6.2:L1145-L1150
 - ELEVATION.md#§6.3:L1214-L1215
@@ -63,10 +71,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- 'Fuzzing is off so a replay is deterministic. BKT still updates mastery. Three other SM-2 copies are not the four models in ADR-005. The HLR class remains for its tests and is not called from lib.'
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging

@@ -5,6 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/vocabulary_progress_model.dart';
 import '../providers/user_provider.dart';
+import 'package:lingafriq/services/learning/fsrs6_scheduler.dart';
+import 'package:lingafriq/services/learning/memory_state.dart';
 import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
 
 final vocabularyProgressServiceProvider = Provider<VocabularyProgressService>((ref) {
@@ -101,28 +103,21 @@ class VocabularyProgressService {
     final newTimesCorrect = isCorrect ? mastery.timesCorrect + 1 : mastery.timesCorrect;
     final newMasteryLevel = newTimesSeen > 0 ? newTimesCorrect / newTimesSeen : 0.0;
 
-    // SM-2 Algorithm for SRS
-    double newEaseFactor = mastery.easeFactor;
-    int newIntervalDays = mastery.intervalDays;
-
-    if (isCorrect) {
-      // Quality 4-5 (correct)
-      newEaseFactor = mastery.easeFactor + (0.1 - (5 - 4) * (0.08 + (5 - 4) * 0.02));
-      newEaseFactor = newEaseFactor.clamp(1.3, double.infinity);
-      
-      if (newTimesCorrect == 1) {
-        newIntervalDays = 1;
-      } else if (newTimesCorrect == 2) {
-        newIntervalDays = 6;
-      } else {
-        newIntervalDays = (mastery.intervalDays * newEaseFactor).round();
-      }
-    } else {
-      // Quality 0-3 (incorrect)
-      newEaseFactor = mastery.easeFactor - 0.2;
-      newEaseFactor = newEaseFactor.clamp(1.3, double.infinity);
-      newIntervalDays = 1; // Reset interval
-    }
+    const scheduler = Fsrs6Scheduler.days();
+    final reviewed = scheduler.review(
+      MemoryState(
+        stability: mastery.intervalDays > 0 ? mastery.intervalDays.toDouble() : null,
+        difficulty: Fsrs6Scheduler.difficultyFromEase(mastery.easeFactor),
+        phase: mastery.intervalDays > 0 ? FsrsPhase.review : FsrsPhase.learning,
+        lastReview: mastery.intervalDays > 0
+            ? now.subtract(Duration(days: mastery.intervalDays))
+            : null,
+      ),
+      isCorrect ? FsrsRating.good : FsrsRating.again,
+      now,
+    );
+    final newEaseFactor = Fsrs6Scheduler.easeFromDifficulty(reviewed.difficulty!);
+    final newIntervalDays = reviewed.due!.difference(now).inDays.clamp(1, 36500);
 
     final nextReview = now.add(Duration(days: newIntervalDays));
 

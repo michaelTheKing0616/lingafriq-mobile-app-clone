@@ -1,18 +1,18 @@
+import '../learning/fsrs6_scheduler.dart';
+import '../learning/memory_state.dart';
 import '../../models/offline/local_vocabulary.dart';
 import '../../utils/api_service.dart';
 import '../../utils/structured_logger.dart';
 import 'local_database_service.dart';
 
 /// Vocabulary Store Service
-/// Implements SM-2 spaced repetition algorithm for vocabulary learning
+/// Schedules vocabulary with FSRS-6. The stored ease rises when difficulty falls.
 class VocabularyStore {
   static final VocabularyStore _instance = VocabularyStore._internal();
   factory VocabularyStore() => _instance;
   VocabularyStore._internal();
 
   final LocalDatabaseService _db = LocalDatabaseService();
-
-  static const double _minEaseFactor = 1.3;
 
   /// Add a word to the vocabulary store
   Future<void> addWord(LocalVocabulary word) async {
@@ -58,8 +58,7 @@ class VocabularyStore {
     return dueWords;
   }
 
-  /// Review a word with quality rating (0-5)
-  /// Updates the word's SRS metadata based on SM-2 algorithm
+  /// Review a word with a quality rating from 0 to 5.
   Future<void> reviewWord(String id, int quality) async {
     if (quality < 0 || quality > 5) {
       throw ArgumentError('Quality must be between 0 and 5');
@@ -74,61 +73,33 @@ class VocabularyStore {
     await _db.updateVocabulary(updatedVocab);
   }
 
-  /// Update SRS metadata based on SM-2 algorithm
   LocalVocabulary _updateSRSMetadata(LocalVocabulary vocab, int quality) {
-    double easeFactor = vocab.easeFactor;
-    int interval = vocab.interval;
-    int repetitions = vocab.repetitions;
-    DateTime? nextReviewDate;
     final now = DateTime.now();
-
-    if (quality < 3) {
-      repetitions = 0;
-      interval = 1;
-      nextReviewDate = now.add(const Duration(days: 1));
-    } else {
-      if (repetitions == 0) {
-        interval = 1;
-      } else if (repetitions == 1) {
-        interval = 6;
-      } else {
-        interval = (interval * easeFactor).round();
-      }
-
-      repetitions += 1;
-      nextReviewDate = now.add(Duration(days: interval));
-
-      if (quality >= 4) {
-        easeFactor = _calculateNewEaseFactor(easeFactor, quality);
-      }
-    }
-
-    final isMastered = interval >= 365 && repetitions >= 5;
-
+    const scheduler = Fsrs6Scheduler.days();
+    final reviewed = scheduler.review(
+      MemoryState(
+        stability: vocab.interval > 0 ? vocab.interval.toDouble() : null,
+        difficulty: Fsrs6Scheduler.difficultyFromEase(vocab.easeFactor),
+        phase: vocab.interval > 0 ? FsrsPhase.review : FsrsPhase.learning,
+        lastReview: vocab.lastReviewedAt ??
+            (vocab.interval > 0 ? now.subtract(Duration(days: vocab.interval)) : null),
+      ),
+      FsrsRating.fromQuality(quality),
+      now,
+    );
+    final interval = reviewed.due!.difference(now).inDays.clamp(1, 36500);
+    final repetitions = quality < 3 ? 0 : vocab.repetitions + 1;
     return vocab.copyWith(
-      easeFactor: easeFactor.clamp(_minEaseFactor, double.infinity),
+      easeFactor: Fsrs6Scheduler.easeFromDifficulty(reviewed.difficulty!),
       interval: interval,
       repetitions: repetitions,
-      nextReviewDate: nextReviewDate,
+      nextReviewDate: now.add(Duration(days: interval)),
       lastReviewedAt: now,
       quality: quality,
       totalReviews: vocab.totalReviews + 1,
       correctReviews: quality >= 3 ? vocab.correctReviews + 1 : vocab.correctReviews,
-      isMastered: isMastered,
+      isMastered: interval >= 365 && repetitions >= 5,
     );
-  }
-
-  /// Calculate new ease factor based on SM-2 formula (modified)
-  /// Base: EF' = EF + (0.1 - (5-q) * (0.08 + (5-q) * 0.02))
-  /// Modification: quality >= 4 always produces at least a small positive
-  /// adjustment (0.01) so that "good" answers are rewarded, not just "perfect".
-  double _calculateNewEaseFactor(double currentEF, int quality) {
-    final q = quality.toDouble();
-    final delta = 0.1 - (5 - q) * (0.08 + (5 - q) * 0.02);
-    // Standard SM-2 gives delta=0 for q=4; ensure a minimum positive reward
-    final adjustedDelta = quality >= 4 && delta <= 0 ? 0.01 : delta;
-    final newEF = currentEF + adjustedDelta;
-    return newEF.clamp(_minEaseFactor, double.infinity);
   }
 
   /// Get mastery statistics for a language

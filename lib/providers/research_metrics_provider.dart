@@ -2,7 +2,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:lingafriq/learning/learner_model/learner_model_service.dart';
 import 'package:lingafriq/learning/learner_model/error_taxonomy.dart';
-import 'package:lingafriq/learning/core/hlr_forgetting_curve.dart';
+import 'package:lingafriq/services/learning/fsrs6_scheduler.dart';
 import 'package:lingafriq/learning/scheduling/review_scheduler.dart';
 import 'package:lingafriq/services/gamification/competence_gamification.dart';
 
@@ -28,9 +28,9 @@ final retentionCurveProvider = Provider.family<
     // Generate predicted recall curve from now to +30 days
     for (int day = 0; day <= 30; day++) {
       final elapsed = now.difference(state.lastRecall).inHours / 24.0 + day;
-      final recall = HlrForgettingCurve.recallProbability(
+      final recall = const Fsrs6Scheduler().retrievability(
         elapsedDays: elapsed,
-        halfLifeDays: state.halfLifeDays,
+        stability: state.halfLifeDays,
       );
 
       points.add(RetentionCurvePoint(

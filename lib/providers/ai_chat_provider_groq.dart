@@ -9,6 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'base_provider.dart';
 import 'api_provider.dart';
 import 'user_provider.dart';
+import 'package:lingafriq/services/learning/fsrs6_scheduler.dart';
+import 'package:lingafriq/services/learning/memory_state.dart';
 import 'package:lingafriq/services/learning_engine_bridge.dart';
 import '../config/url_constants.dart';
 import '../utils/diacritics_enforcer.dart';
@@ -72,9 +74,9 @@ class ChatMessage {
       );
 }
 
-// Word Memory for SRS (SM-2 variant)
+// Word memory scheduled with FSRS-6.
 class WordMemory {
-  double ease = 2.5; // Ease factor (SM-2 algorithm)
+  double ease = 2.5;
   int repetitions = 0; // Number of successful reviews
   int intervalDays = 1; // Days until next review
   DateTime nextReview = DateTime.now();
@@ -94,34 +96,25 @@ class WordMemory {
     strength = repetitions.clamp(0, 5);
   }
 
-  /// Update SRS using SM-2 variant algorithm
-  /// Quality: 0-5 (0=complete blackout, 5=perfect recall)
+  /// Quality is 0–5. The name stays so existing callers keep compiling.
   void updateWithSM2(int quality) {
-    if (quality < 3) {
-      // Failed: reset
-      repetitions = 0;
-      intervalDays = 1;
-    } else {
-      // Passed: update
-      if (repetitions == 0) {
-        intervalDays = 1;
-      } else if (repetitions == 1) {
-        intervalDays = 6;
-      } else {
-        intervalDays = (intervalDays * ease).round();
-      }
-      repetitions++;
-    }
-    
-    // Update ease factor (SM-2 formula)
-    ease = (ease + 0.1 - (5 - quality) * 0.08).clamp(1.3, double.infinity);
-    
-    // Update next review date
-    nextReview = DateTime.now().add(Duration(days: intervalDays));
-    
-    // Update legacy strength
+    final now = DateTime.now();
+    const scheduler = Fsrs6Scheduler.days();
+    final reviewed = scheduler.review(
+      MemoryState(
+        stability: intervalDays > 0 ? intervalDays.toDouble() : null,
+        difficulty: Fsrs6Scheduler.difficultyFromEase(ease),
+        phase: intervalDays > 0 ? FsrsPhase.review : FsrsPhase.learning,
+        lastReview: intervalDays > 0 ? now.subtract(Duration(days: intervalDays)) : null,
+      ),
+      FsrsRating.fromQuality(quality),
+      now,
+    );
+    ease = Fsrs6Scheduler.easeFromDifficulty(reviewed.difficulty!);
+    intervalDays = reviewed.due!.difference(now).inDays.clamp(1, 36500);
+    repetitions = quality < 3 ? 0 : repetitions + 1;
+    nextReview = now.add(Duration(days: intervalDays));
     strength = repetitions.clamp(0, 5);
-    
     attempts++;
     if (quality >= 3) successes++;
   }

@@ -109,7 +109,7 @@ void main() {
       final updated2 = vocabularyStore.getVocabulary('test-vocab-2');
       expect(updated2, isNotNull);
       expect(updated2!.repetitions, equals(2));
-      expect(updated2.interval, equals(6));
+      expect(updated2.interval, equals(1));
       expect(updated2.easeFactor, greaterThan(2.5));
     });
 

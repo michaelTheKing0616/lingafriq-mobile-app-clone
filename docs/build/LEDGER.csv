@@ -114,3 +114,4 @@ P2-035,build,T2,grok-4.7,n/a,n/a,1,pass,AI cost is per feature. A missing price 
 P2-038,build,T3,grok-4.7,n/a,n/a,1,pass,Flag assignment is stable and snaps to 1, 10, 50, and 100. A failure or a stale cache turns the feature off.
 P2-039,adr,T4,grok-4.7,n/a,n/a,1,pass,Shorebird stays off. Store fixes keep the rollout stages. Tope may turn the patch channel on later.
 P2-040,build,T1,grok-4.7,n/a,n/a,1,pass,318 root notes moved with matching hashes. STATUS.md is unknown until a test report and a flag snapshot are passed in.
+P2-043,build,T3,grok-4.7,n/a,n/a,1,pass,FSRS-6 matches the published vectors within 1e-6. Fuzzing is off. The four named schedulers no longer use SM-2 or HLR.
