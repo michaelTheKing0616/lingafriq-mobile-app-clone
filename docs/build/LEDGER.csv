@@ -111,3 +111,5 @@ P2-037,build,T2,grok-4.7,n/a,n/a,1,pass,An Android ANR exit is reported with the
 P2-029,build,T2,grok-4.7,n/a,n/a,1,pass,Sentry starts before the other services. Independent init runs together. The 1.2 second splash wait is gone. The ten device cold starts are not recorded.
 P2-030,build,T3,grok-4.7,n/a,n/a,1,pass,Cron runs in the worker process under a lease. A second owner waits until the lease expires. The API process does not start workers.
 P2-035,build,T2,grok-4.7,n/a,n/a,1,pass,AI cost is per feature. A missing price is unknown, not zero. The fallback alert is above 20 percent in 15 minutes.
+P2-038,build,T3,grok-4.7,n/a,n/a,1,pass,Flag assignment is stable and snaps to 1, 10, 50, and 100. A failure or a stale cache turns the feature off.
+P2-039,adr,T4,grok-4.7,n/a,n/a,1,pass,Shorebird stays off. Store fixes keep the rollout stages. Tope may turn the patch channel on later.

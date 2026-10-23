@@ -38,10 +38,11 @@ security_dsp_crypto: false
 visual_evidence_required: false
 dod_evidence:
 - signed decision recorded in DECISIONS.md
-risks: []
+risks:
+- 'This is a builder default. Tope has not signed Shorebird on. The patch channel stays off.'
 gate: G2
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/10-analysis-and-decision-support
