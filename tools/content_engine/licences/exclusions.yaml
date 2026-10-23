@@ -94,6 +94,9 @@ sources:
   kamusi:
     status: excluded
     licence: "CC BY-NC-SA"
+    pending_action: "commercial licence on request"
+    swahili_gap_decision: optional
+    request_sent: false
     reason: "CC BY-NC-SA. No commercial licence is recorded."
     commercial_licence_document: ""
     counsel_status: ""

@@ -145,3 +145,4 @@ P4-012,build,T1,composer-2.5-fast,n/a,n/a,1,pass,AfriSenti stays excluded. The H
 P4-013,build,T1,composer-2.5-fast,n/a,n/a,1,pass,PanLex stays excluded. The permission draft is pending and unsent. No use is allowed.
 P4-014,build,T1,composer-2.5-fast,n/a,n/a,1,pass,NaijaVoices stays excluded. The membership price is an unverified curriculum quote and the waiver is not purchased.
 P4-015,build,T1,composer-2.5-fast,n/a,n/a,1,pass,IgboAPI data stays excluded. Apache-2.0 covers the code only. EXT-05 is Open, so a document does not unlock the data.
+P4-016,build,T1,composer-2.5-fast,n/a,n/a,1,pass,Kamusi stays excluded. The commercial-licence request is optional and has not been sent.

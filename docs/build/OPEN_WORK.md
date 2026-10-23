@@ -133,3 +133,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-121 | open | P4-013 | The PanLex permission draft is stored and has not been sent. No reply is recorded. |
 | OW-122 | open | P4-014 | The NaijaVoices waiver is not purchased. The $5,000+ figure is the curriculum statement, not a quote LingAfriq received. |
 | OW-123 | open | P4-015 | IgboAPI data stays excluded while EXT-05 is Open. No licence document from Nkọwa okwu is recorded. |
+| OW-124 | open | P4-016 | The Kamusi commercial-licence request has not been sent. The Swahili-gap decision stays optional. |
