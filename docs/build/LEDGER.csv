@@ -175,3 +175,4 @@ P4-044,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Swahili concord checks 
 P4-045,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Zulu and Xhosa concord uses the kit table for classes 1-15. A spaced verbal complex fails. Xhosa analyser is none. No ZulMorph call.
 P4-046,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,ZulMorph stays off. A missing module fails ZULMORPH_UNAVAILABLE. A labelled external parse failure goes to human review and does not auto-publish.
 P4-043,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Teaching marks also pass for dictionary/lexicon fields, a native-author id plus review date, and an Import Media id plus a span. 30 tests. Coverage 97% lines and 94% branches.
+P4-047,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,English spellings flag only from a kit NLA table. A missing, empty, or not-included table fails and does not pass. No rows were invented. 10 tests. Coverage 94% lines and 88% branches.

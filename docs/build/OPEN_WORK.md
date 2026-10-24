@@ -168,3 +168,6 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-156 | open | P4-046 | The real ZulMorph API is not wired. An unexpected import raises. Local-use terms stay unverified. test_zulmorph.py is not a workflow job. |
 | OW-157 | closed 2026-10-24 | P4-043 | Teaching-mark provenance accepts dictionary/lexicon, native-author id plus review date, and Import Media id plus a span. 30 tests passed. Coverage 97% lines and 94% branches on hausa.py. Reviewer PASS. |
 | OW-158 | open | P4-043 | Provenance is the token fields. A forged id still passes. There is no dictionary, speaker, or media lookup. test_hausa.py is not a workflow job. |
+| OW-159 | closed 2026-10-24 | P4-047 | Pidgin NLA lint. 10 tests passed. Coverage 94% lines and 88% branches on pidgin_nla.py. Reviewer PASS. The shipped kit was not given rows. |
+| OW-160 | open | P4-047 | The pcm kit still has table_included false, so live text fails PCM_NLA_TABLE_MISSING. Test rows are labels, not NLA spellings. test_pidgin_nla.py is not a workflow job. |
+| OW-161 | open | P4-048 | Not built. EXT-01 is Open. The card also depends on P4-057, which is not Done. Status stays Draft. |

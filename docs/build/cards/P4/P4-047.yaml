@@ -53,10 +53,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- The shipped pcm kit has table_included false, so a live item fails PCM_NLA_TABLE_MISSING until a licensed table is added. The test rows are labels, not NLA spellings.
 gate: G4
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging
