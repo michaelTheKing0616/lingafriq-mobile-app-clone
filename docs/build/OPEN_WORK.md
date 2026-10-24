@@ -171,3 +171,5 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-159 | closed 2026-10-24 | P4-047 | Pidgin NLA lint. 10 tests passed. Coverage 94% lines and 88% branches on pidgin_nla.py. Reviewer PASS. The shipped kit was not given rows. |
 | OW-160 | open | P4-047 | The pcm kit still has table_included false, so live text fails PCM_NLA_TABLE_MISSING. Test rows are labels, not NLA spellings. test_pidgin_nla.py is not a workflow job. |
 | OW-161 | open | P4-048 | Not built. EXT-01 is Open. The card also depends on P4-057, which is not Done. Status stays Draft. |
+| OW-162 | closed 2026-10-24 | P4-049 | Claims lint. 11 tests passed. Coverage 100% lines and 100% branches on claims.py. Reviewer PASS. |
+| OW-163 | open | P4-049 | runner.py main() still has no registered linters. test_claims.py is not a workflow job. |
