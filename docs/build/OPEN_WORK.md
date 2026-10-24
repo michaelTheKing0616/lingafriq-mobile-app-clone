@@ -155,3 +155,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-143 | open | P4-035 | EXT-11 and EXT-22 are Open. No Xhosa grammar title or edition is chosen. No purchase is logged. |
 | OW-144 | open | P4-038 | EXT-11 is Open. No Igbo tone-marking convention is recorded. P4-036 stays Draft until that convention exists. |
 | OW-145 | open | P4-037 | load_kit reads {language}.yaml, not kit.yaml. Class prefixes, G2P pairs, code points and NLA table rows are not enumerated in §3.3. Linguist signoff is false. |
+| OW-146 | open | P4-039 | runner.py main() has no registered linters, so the file CLI raises ValueError. The linter-runner job is not a required merge check. |

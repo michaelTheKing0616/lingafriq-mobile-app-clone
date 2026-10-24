@@ -167,3 +167,4 @@ P4-034,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Xhosa stack leaves Oxfo
 P4-035,verification,T1,n/a,n/a,n/a,0,blocked,No Xhosa grammar title or edition is chosen. No purchase is logged. EXT-11 and EXT-22 stay Open. The card is Blocked-External.
 P4-038,adr,T1,n/a,n/a,n/a,0,blocked,No Igbo tone convention is recorded. EXT-11 is Open. P4-036 stays Draft. The card is Blocked-External.
 P4-037,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,pcm, sw, zu and xh kits keep §3.3 gaps unenumerated. Linguist signoff stays false. load_kit does not read kit.yaml.
+P4-039,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Runner shares one function. Crashes are LINT_ERROR. CLI has no registered linters yet. Branch protection is unset.

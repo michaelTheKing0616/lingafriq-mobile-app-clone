@@ -46,3 +46,21 @@ jobs:
 
       - name: Exclusion enforcement tests
         run: python3 -m pytest tools/content_engine/tests/test_exclusion_enforce.py tools/content_engine/tests/test_excl_x_jw.py
+
+  linter-runner:
+    name: Linter runner
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Setup Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.11"
+
+      - name: Install test dependencies
+        run: python3 -m pip install --disable-pip-version-check pytest==9.1.1 PyYAML==6.0.3
+
+      - name: Linter runner tests
+        run: python3 -m pytest tools/content_engine/tests/test_runner.py
