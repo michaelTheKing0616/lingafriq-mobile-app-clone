@@ -8,7 +8,7 @@ The Firebase service account, the Apple `.p8`, and the five client AI keys stay 
 
 Work is continuous on `cloud-handoff`. Do not pause between cards. The key files remain tracked.
 
-- Mobile: `cloud-handoff`. P4-049 is Done. P4-048 stays Draft because EXT-01 is Open and P4-057 is not Done. Next build card is P4-050. P4-046 stays Done. P4-008, P4-023, P4-025, P4-027, P4-029, P4-031, P4-033, P4-035, and P4-038 stay Blocked-External. P4-036 and P4-042 stay Draft because P4-038 is Blocked-External. The FSRS mutation score is 130/147. Fuzzing is off.
+- Mobile: `cloud-handoff`. P4-050 is Done. P4-048 stays Draft because EXT-01 is Open and P4-057 is not Done. Next build card is P4-051. P4-046 stays Done. P4-008, P4-023, P4-025, P4-027, P4-029, P4-031, P4-033, P4-035, and P4-038 stay Blocked-External. P4-036 and P4-042 stay Draft because P4-038 is Blocked-External. The FSRS mutation score is 130/147. Fuzzing is off.
 - Backend: `cloud-handoff`. Latest card push is P2-056. Flag buckets are stable. HS256 still verifies.
 - The key files are still tracked. Copies also exist in `~/.lingafriq/secrets/` (mode 600). History was not rewritten.
 - Admin gamification edits were not part of this build. They are in git stash `admin-gamification-wip-not-this-build` on `lingafriq-admin` `cloud-handoff`.
@@ -17,7 +17,7 @@ Work is continuous on `cloud-handoff`. Do not pause between cards. The key files
 
 ## Next 3 steps
 
-1. P4-049 is Done. P4-048 stays Draft: EXT-01 is Open and P4-057 is not Done. Build P4-050, then the next unblocked card. Do not invent NLA spelling rows. §3.3 names the table and does not list it. Do not enable ZulMorph. Do not invent Zulu or Xhosa concord morphemes. Do not build P4-042 or P4-036 until P4-038 is Done. P4-038 stays Blocked-External. Do not invent the Igbo tone convention. P3-001 stays Draft. Do not invent benchmark numbers. Do not build the path until F-007. The host switches below do not stop the queue. P4-008, P4-023, P4-025, P4-027, P4-029, P4-031, P4-033, P4-035, and P4-038 stay Blocked-External. Do not mark them Done. Do not invent a grammar edition or log a purchase. Do not invent an Xhosa grammar title. Do not enable Intron. Do not invent an NSC licence. Do not invent a BAKITA citation. Do not mark EXT-06 received. Do not enable ZulMorph. Oxford isiXhosa stays unheld while EXT-04 is Open. Do not invent phoneme charts or concord prefixes the curriculum does not list.
+1. P4-050 is Done. P4-048 stays Draft: EXT-01 is Open and P4-057 is not Done. Build P4-051, then the next unblocked card. Do not invent NLA spelling rows. §3.3 names the table and does not list it. Do not enable ZulMorph. Do not invent Zulu or Xhosa concord morphemes. Do not build P4-042 or P4-036 until P4-038 is Done. P4-038 stays Blocked-External. Do not invent the Igbo tone convention. P3-001 stays Draft. Do not invent benchmark numbers. Do not build the path until F-007. The host switches below do not stop the queue. P4-008, P4-023, P4-025, P4-027, P4-029, P4-031, P4-033, P4-035, and P4-038 stay Blocked-External. Do not mark them Done. Do not invent a grammar edition or log a purchase. Do not invent an Xhosa grammar title. Do not enable Intron. Do not invent an NSC licence. Do not invent a BAKITA citation. Do not mark EXT-06 received. Do not enable ZulMorph. Oxford isiXhosa stays unheld while EXT-04 is Open. Do not invent phoneme charts or concord prefixes the curriculum does not list.
 2. Do not stop to ask what is next.
 3. Do not remove the Firebase service account, the Apple `.p8`, or the five client AI keys. Intron stays off until its flag and server key are set.
 
@@ -43,13 +43,13 @@ Full exit text: `docs/build/03_PHASES_GATES.md`.
 
 Counts from `docs/plan/CARD_STATUS.tsv` on 2026-10-24: Draft 895, Done 141, Blocked-External 53, Ready 7. P4-169 stays Draft. The TSV is the list. Do not treat this prose as a second list. R3 is carded on F-007, P7-951, P7-952, and P7-953. Path art is v3 and does not jump this queue.
 
-Nothing is in progress. Mobile `cloud-handoff` tip is P4-049. Backend `cloud-handoff` latest card is P2-056. The branch is ahead of origin and has not been pushed.
+Nothing is in progress. Mobile `cloud-handoff` tip is P4-050. Backend `cloud-handoff` latest card is P2-056. The branch is ahead of origin and has not been pushed.
 
-Next card is P4-050 (placeholders, empty fields, and broken JSON). P4-049 is Done. Uncited explanation and culture-note facts fail CLAIM_NO_CITATION. The two banned grammar templates fail GENERIC_TEMPLATE. P4-047 is Done. Do not invent table rows. P4-048 stays Draft because EXT-01 is Open and it depends on P4-057. P4-046 is Done. ZulMorph stays off. P4-045, P4-044, and P4-043 are Done. A Hausa teaching mark passes for dictionary/lexicon, native-author, or Import Media provenance. P4-042 and P4-036 stay Draft because P4-038 is Blocked-External. P4-035, P4-033, P4-031, P4-029, P4-027, P4-025, P4-023, and P4-008 stay Blocked-External. P4-034, P4-037, P4-039, P4-040, and P4-041 are Done. P4-169 stays Draft until content loading. P3-001 stays Draft. Canonical course content is `../curriculum/` (D28). Do not build the v3 path until F-007. Do not enable Intron. Do not mark EXT-06 received. Do not enable ZulMorph. Oxford isiXhosa stays unheld. Do not invent the Igbo tone convention.
+Next card is P4-051 (near-identical dialogues and repeated lines). P4-050 is Done. Placeholder text fails before schema validation. Blank required strings are read from the curriculum item schema. P4-049 is Done. P4-047 is Done. Do not invent table rows. P4-048 stays Draft because EXT-01 is Open and it depends on P4-057. P4-046 is Done. ZulMorph stays off. P4-045, P4-044, and P4-043 are Done. A Hausa teaching mark passes for dictionary/lexicon, native-author, or Import Media provenance. P4-042 and P4-036 stay Draft because P4-038 is Blocked-External. P4-035, P4-033, P4-031, P4-029, P4-027, P4-025, P4-023, and P4-008 stay Blocked-External. P4-034, P4-037, P4-039, P4-040, and P4-041 are Done. P4-169 stays Draft until content loading. P3-001 stays Draft. Canonical course content is `../curriculum/` (D28). Do not build the v3 path until F-007. Do not enable Intron. Do not mark EXT-06 received. Do not enable ZulMorph. Oxford isiXhosa stays unheld. Do not invent the Igbo tone convention.
 
 Do not mark Done: P2-031 (live two replicas), P2-032 (Atlas PITR), P1-004, P1-010, P1-025, P1-020. Do not close G2. Do not jump to P7-961.
 
-Open items are in `docs/build/OPEN_WORK.md`. The newest open row is OW-156 (the real ZulMorph API is not wired and local-use terms stay unverified). OW-155 closed P4-046.
+Open items are in `docs/build/OPEN_WORK.md`. The newest open row is OW-165 (the placeholder CLI is still unregistered). OW-164 closed P4-050.
 
 ## Decisions
 

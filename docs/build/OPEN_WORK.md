@@ -173,3 +173,5 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-161 | open | P4-048 | Not built. EXT-01 is Open. The card also depends on P4-057, which is not Done. Status stays Draft. |
 | OW-162 | closed 2026-10-24 | P4-049 | Claims lint. 11 tests passed. Coverage 100% lines and 100% branches on claims.py. Reviewer PASS. |
 | OW-163 | open | P4-049 | runner.py main() still has no registered linters. test_claims.py is not a workflow job. |
+| OW-164 | closed 2026-10-24 | P4-050 | Placeholder and schema lint. 13 tests passed. Coverage 94% lines and 91% branches on placeholders.py. Reviewer PASS. Schema file was not edited. |
+| OW-165 | open | P4-050 | runner.py main() still has no registered linters. A placeholder outside item text is PLACEHOLDER_TEXT with an empty span. |
