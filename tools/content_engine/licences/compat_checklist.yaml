@@ -266,3 +266,12 @@ sources:
     T4a: "no"
     T4b: "no"
     T5: "no"
+  sadilar-xhosa-annotated:
+    T1: "no"
+    T2:
+      answer: "yes"
+      reason: "CC BY 4.0 is attribution only."
+    T3: "no"
+    T4a: "no"
+    T4b: "no"
+    T5: "no"

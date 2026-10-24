@@ -163,3 +163,4 @@ P4-030,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Swahili stack leaves BA
 P4-031,verification,T1,n/a,n/a,n/a,0,blocked,No BAKITA citation is verified and no Ashton purchase is logged. EXT-22 is Open. The card is Blocked-External.
 P4-032,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Zulu stack leaves EXT-06 open, Poulos unpurchased, and ZulMorph disabled. SADiLaR and NCHLT are evidence only.
 P4-033,verification,T1,n/a,n/a,n/a,0,blocked,No Doke–Vilakazi licensor is recorded and no Poulos & Msimang purchase is logged. EXT-06 and EXT-22 stay Open. The card is Blocked-External.
+P4-034,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Xhosa stack leaves Oxford unheld, grammar pending linguist, and only the rule-based concord checker enabled. SADiLaR is evidence only.
