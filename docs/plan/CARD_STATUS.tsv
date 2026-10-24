@@ -654,7 +654,7 @@ P4-029	Blocked-External	Verify NSC licence and purchase Faraclas Pidgin grammar	
 P4-030	Done	Record Swahili source stack in kit	P4/P4-030.yaml
 P4-031	Blocked-External	Verify BAKITA citation and purchase Ashton grammar	P4/P4-031.yaml
 P4-032	Done	Record isiZulu source stack in kit	P4/P4-032.yaml
-P4-033	Draft	Verify Zulu dictionary licensor and purchase grammars	P4/P4-033.yaml
+P4-033	Blocked-External	Verify Zulu dictionary licensor and purchase grammars	P4/P4-033.yaml
 P4-034	Draft	Record isiXhosa source stack in kit	P4/P4-034.yaml
 P4-035	Draft	Choose Xhosa reference grammar with linguist	P4/P4-035.yaml
 P4-036	Draft	Populate kits for yo, ig and ha	P4/P4-036.yaml

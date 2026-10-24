@@ -44,7 +44,7 @@ gate: G4
 external_blockers:
 - EXT-06
 - EXT-22
-status: Draft
+status: Blocked-External
 skills:
   worker:
   - adaptive/07-research-and-fact-checking

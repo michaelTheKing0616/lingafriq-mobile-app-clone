@@ -150,3 +150,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-138 | open | P4-030 | BAKITA and the Kenyan notes are unverified. Oxford Swahili is not held. Kamusi stays excluded. Ashton is not purchased. |
 | OW-139 | open | P4-031 | EXT-22 is Open. BAKITA stays unverified and no Ashton purchase is logged. |
 | OW-140 | open | P4-032 | EXT-06 is Open. The Doke–Vilakazi approach is unverified. Poulos & Msimang is not purchased. ZulMorph local-use terms are unverified. |
+| OW-141 | open | P4-033 | EXT-06 and EXT-22 are Open. No Doke–Vilakazi licensor or terms are recorded. No Poulos & Msimang purchase is logged. |
