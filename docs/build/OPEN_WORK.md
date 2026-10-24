@@ -162,3 +162,5 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-150 | open | P4-043 | test_hausa.py is not a content-engine workflow job. runner.py main() still has no registered linters. Omitting a hook is not HA_HOOKED_LETTER. |
 | OW-151 | closed 2026-10-24 | P4-044 | Swahili concord lint. 9 tests passed. Coverage 100% lines and 100% branches on concord_sw.py. Reviewer PASS. |
 | OW-152 | open | P4-044 | Relative and possessive concords named in §3.3 are not checked. Classes other than m/wa and ki/vi are not in the table. test_concord_sw.py is not a workflow job. |
+| OW-153 | closed 2026-10-24 | P4-045 | Zulu and Xhosa concord lint. 13 tests passed. Coverage 93% lines and 86% branches on concord_zux.py. Reviewer PASS. |
+| OW-154 | open | P4-045 | Prefix forms stay unenumerated. The fixture is class-number markers, not a paradigm. Relative and possessive concords are not checked. test_concord_zux.py is not a workflow job. |

@@ -172,3 +172,4 @@ P4-040,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Unicode lint fails NFC,
 P4-041,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Yoruba lint checks underdot, syllabic nasal tone, lexicon diacritics, and unmarked learner-facing tokens. Mid stays unmarked.
 P4-043,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Hausa lint fails plain replacements of hooked letters, tone or length marks on display text, and teaching marks without a dictionary-sourced form.
 P4-044,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Swahili concord checks only the listed m/wa and ki/vi pairs against the kit table. An unknown noun fails and does not pass.
+P4-045,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Zulu and Xhosa concord uses the kit table for classes 1-15. A spaced verbal complex fails. Xhosa analyser is none. No ZulMorph call.

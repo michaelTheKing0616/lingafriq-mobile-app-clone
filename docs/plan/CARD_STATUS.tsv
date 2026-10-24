@@ -666,7 +666,7 @@ P4-041	Done	Lint Yoruba dot-below, tone and lexicon diacritics	P4/P4-041.yaml
 P4-042	Draft	Lint Igbo dotted vowels and lexicon tone	P4/P4-042.yaml
 P4-043	Done	Lint Hausa hooked letters, display versus teaching text	P4/P4-043.yaml
 P4-044	Done	Check Swahili noun-class concords	P4/P4-044.yaml
-P4-045	Draft	Check Zulu and Xhosa concords and conjunctive writing	P4/P4-045.yaml
+P4-045	Done	Check Zulu and Xhosa concords and conjunctive writing	P4/P4-045.yaml
 P4-046	Draft	Integrate ZulMorph parse for Zulu forms	P4/P4-046.yaml
 P4-047	Draft	Lint Pidgin against NLA spelling table	P4/P4-047.yaml
 P4-048	Draft	Detect anglicised Pidgin with LLM rating	P4/P4-048.yaml

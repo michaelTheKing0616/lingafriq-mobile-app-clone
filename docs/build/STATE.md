@@ -15,4 +15,4 @@ charter: v2
 | External | EXT-01…30 open (`EXTERNAL.md`); EXT-01 companion doc still missing |
 | Benchmark | UI phases: `docs/build/benchmark/duolingo/` holds the 12 picks; `all/` holds the other 48; `README.md` has source, date, and size. Do not open the images until a card sets `visual_evidence_required`. |
 | Audit | `check_agent_files.py` OK (1,092 files) |
-| Next | Mobile `cloud-handoff`. P4-044 is Done. Next build card is P4-045. Do not invent Zulu or Xhosa concord morphemes. P4-042 and P4-036 stay Draft until P4-038 is Done. Canonical course content is `../curriculum/` (D28). FSRS mutation score is 130/147. Fuzzing is off. Intron stays off. ZulMorph stays off. HS256 stays accepted (D25). Doppler is the vault (D27). P7-961 does not jump the queue. |
+| Next | Mobile `cloud-handoff`. P4-045 is Done. Next build card is P4-046. ZulMorph stays off until local-use terms are verified. P4-042 and P4-036 stay Draft until P4-038 is Done. Canonical course content is `../curriculum/` (D28). FSRS mutation score is 130/147. Fuzzing is off. Intron stays off. HS256 stays accepted (D25). Doppler is the vault (D27). P7-961 does not jump the queue. |
