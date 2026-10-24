@@ -160,3 +160,5 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-148 | open | P4-041 | YO_NASAL_TONE uses the token syllabic flag. The linter does not decide which nasals are syllabic. |
 | OW-149 | closed 2026-10-24 | P4-043 | Hausa hook, display-mark, and teaching-mark lint. 20 tests passed. Coverage 97% lines and 95% branches on hausa.py. Reviewer PASS. |
 | OW-150 | open | P4-043 | test_hausa.py is not a content-engine workflow job. runner.py main() still has no registered linters. Omitting a hook is not HA_HOOKED_LETTER. |
+| OW-151 | closed 2026-10-24 | P4-044 | Swahili concord lint. 9 tests passed. Coverage 100% lines and 100% branches on concord_sw.py. Reviewer PASS. |
+| OW-152 | open | P4-044 | Relative and possessive concords named in §3.3 are not checked. Classes other than m/wa and ki/vi are not in the table. test_concord_sw.py is not a workflow job. |
