@@ -10,6 +10,7 @@ depends_on:
 - P4-067
 - P4-074
 - P4-050
+- P4-169
 size: M
 difficulty:
   score: 6

@@ -158,3 +158,5 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-146 | open | P4-039 | runner.py main() has no registered linters, so the file CLI raises ValueError. The linter-runner job is not a required merge check. |
 | OW-147 | open | P4-040 | Look-alikes outside the explicit Greek epsilon and Cyrillic a table are not flagged as LOOKALIKE_CHAR. The workflow file was not edited. |
 | OW-148 | open | P4-041 | YO_NASAL_TONE uses the token syllabic flag. The linter does not decide which nasals are syllabic. |
+| OW-149 | closed 2026-10-24 | P4-043 | Hausa hook, display-mark, and teaching-mark lint. 20 tests passed. Coverage 97% lines and 95% branches on hausa.py. Reviewer PASS. |
+| OW-150 | open | P4-043 | test_hausa.py is not a content-engine workflow job. runner.py main() still has no registered linters. Omitting a hook is not HA_HOOKED_LETTER. |

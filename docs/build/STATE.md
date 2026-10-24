@@ -4,7 +4,7 @@ charter: v2
 
 | Field | Value |
 |---|---|
-| Updated | 2026-10-22 |
+| Updated | 2026-10-24 |
 | Stage | **G0 GO signed by Tope 2026-10-21** → build phase; orchestrator = Grok 4.7 (`ORCHESTRATOR_PROMPT.md`) |
 | Gate | G0 passed · next G1 Containment |
 | RTM | `RTM.csv` 2,960 rows · unmapped 0 · Blocked-External 5 · `check_rtm_coverage.py --write` applied |
@@ -15,4 +15,4 @@ charter: v2
 | External | EXT-01…30 open (`EXTERNAL.md`); EXT-01 companion doc still missing |
 | Benchmark | UI phases: `docs/build/benchmark/duolingo/` holds the 12 picks; `all/` holds the other 48; `README.md` has source, date, and size. Do not open the images until a card sets `visual_evidence_required`. |
 | Audit | `check_agent_files.py` OK (1,092 files) |
-| Next | Work stays on the Mac on `cloud-handoff`. Key cleanup is end-of-build (D24). P2-048 is done. Next build card is P2-049. FSRS mutation score is 130/147. Fuzzing is off. Shorebird stays off. HS256 stays accepted (D25). Doppler is the vault (D27) and the project token is not created yet. P7-961 does not jump the queue. Curriculum wiring stays paused. Live PM2 stays unverified (EXT-23). |
+| Next | Mobile `cloud-handoff`. P4-043 is Done. Next build card is P4-044. P4-042 and P4-036 stay Draft until P4-038 is Done. Canonical course content is `../curriculum/` (D28). FSRS mutation score is 130/147. Fuzzing is off. Intron stays off. ZulMorph stays off. HS256 stays accepted (D25). Doppler is the vault (D27). P7-961 does not jump the queue. |

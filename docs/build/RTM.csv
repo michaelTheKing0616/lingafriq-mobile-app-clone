@@ -2978,3 +2978,4 @@ TR-R3-05,TOPE_REQUESTS,R3:L35,requirement,Lazy path sections at 60 fps from Drif
 TR-R3-06,TOPE_REQUESTS,R3:L36,requirement,Path node labels tap size reduced motion and alt text,P1,agent,F-007;P7-951;P7-953,Mapped
 TR-R3-07,TOPE_REQUESTS,R3:L37,requirement,Original or commercial path art in the licence register,P1,agent,F-007;P7-953,Mapped
 TR-R3-08,TOPE_REQUESTS,R3:L38,requirement,Personal plan tone units and village maps share one path,P1,agent,F-007;F-011;F-021;F-103;F-104,Mapped
+CP-D28-01,CURRICULUM,D28,requirement,Import course items only from the sibling curriculum packs through schema and validators,P1,agent,P4-169,Mapped

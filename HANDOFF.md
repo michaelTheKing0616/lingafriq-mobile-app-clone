@@ -8,16 +8,16 @@ The Firebase service account, the Apple `.p8`, and the five client AI keys stay 
 
 Work is continuous on `cloud-handoff`. Do not pause between cards. The key files remain tracked.
 
-- Mobile: `cloud-handoff`. Latest card push is P4-041. P4-008, P4-023, P4-025, P4-027, P4-029, P4-031, P4-033, P4-035, and P4-038 stay Blocked-External. P4-036 and P4-042 stay Draft because P4-038 is Blocked-External. The FSRS mutation score is 130/147. Fuzzing is off.
+- Mobile: `cloud-handoff`. Latest card push is P4-043. P4-008, P4-023, P4-025, P4-027, P4-029, P4-031, P4-033, P4-035, and P4-038 stay Blocked-External. P4-036 and P4-042 stay Draft because P4-038 is Blocked-External. The FSRS mutation score is 130/147. Fuzzing is off.
 - Backend: `cloud-handoff`. Latest card push is P2-056. Flag buckets are stable. HS256 still verifies.
 - The key files are still tracked. Copies also exist in `~/.lingafriq/secrets/` (mode 600). History was not rewritten.
 - Admin gamification edits were not part of this build. They are in git stash `admin-gamification-wip-not-this-build` on `lingafriq-admin` `cloud-handoff`.
-- P4-041 is Done. Yoruba lint checks underdot, syllabic nasal tone, lexicon diacritics, and unmarked learner-facing tokens. P4-042 stays Draft because it depends on P4-038, which is Blocked-External. P4-040 is Done. Unicode lint flags NFC, forbidden code points, and the explicit look-alikes. P4-039 is Done. The file CLI has no registered rules yet. P4-037 is Done. The pcm, sw, zu and xh kits record only the §3.3 facts. load_kit still reads {language}.yaml. P4-036 stays Draft. P4-035 is Blocked-External. No Xhosa grammar title or edition is chosen and no purchase is logged. P4-034 is Done. Oxford isiXhosa stays unheld. P4-033 is Blocked-External. No Doke–Vilakazi licensor or terms are recorded and no Poulos & Msimang purchase is logged. P4-031, P4-029, P4-027, P4-025, and P4-023 stay Blocked-External. P4-008 stays Blocked-External because counsel has not confirmed any source. It is not Done. P3-001 stays Draft: 3 sourced baselines, 17 blank. The search cap is spent and missing numbers stay blank. P3-002 and the art-direction chain wait on a Done P3-001. Next unblocked card is P4-043. P2-031 stays a live-host switch-on and is not Done. P7-961 does not jump this queue. R3 stays on F-007, P7-951, P7-952, and P7-953. Path Rive is v3 at ~/LingAfriq/lingafriq/design/path_rive/path/v3/. Do not use v1 or v2. Do not build the path until those cards.
-- Voice service is on `main`. There is no `cloud-handoff` branch. An untracked `.gitignore` was left uncommitted. Admin `cloud-handoff` is clean. The gamification stash stays.
+- P4-043 is Done. Plain replacements of ɓ ɗ ƙ ƴ or U+02BC fail, display text with a tone or length mark fails, and a teaching mark fails unless it is on a dictionary-sourced form. P4-041 is Done. P4-042 stays Draft because it depends on P4-038, which is Blocked-External. P4-040 is Done. P4-039 is Done. The file CLI has no registered rules yet. P4-037 is Done. The pcm, sw, zu and xh kits record only the §3.3 facts. load_kit still reads {language}.yaml. P4-036 stays Draft. P4-035 is Blocked-External. No Xhosa grammar title or edition is chosen and no purchase is logged. P4-034 is Done. Oxford isiXhosa stays unheld. P4-033 is Blocked-External. No Doke–Vilakazi licensor or terms are recorded and no Poulos & Msimang purchase is logged. P4-031, P4-029, P4-027, P4-025, and P4-023 stay Blocked-External. P4-008 stays Blocked-External because counsel has not confirmed any source. It is not Done. P3-001 stays Draft: 3 sourced baselines, 17 blank. The search cap is spent and missing numbers stay blank. P3-002 and the art-direction chain wait on a Done P3-001. Next unblocked card is P4-044. D28: `../curriculum/` is the only course-content source. P4-169 is the import card and stays Draft until content loading. Do not import the legacy trees. P2-031 stays a live-host switch-on and is not Done. P7-961 does not jump this queue. R3 stays on F-007, P7-951, P7-952, and P7-953. Path Rive is v3 at ~/LingAfriq/lingafriq/design/path_rive/path/v3/. Do not use v1 or v2. Do not build the path until those cards.
+- Voice service has a local `cloud-handoff` branch created from `main`. It is not pushed. An untracked `.gitignore` stays uncommitted. Admin `cloud-handoff` is clean. The gamification stash stays.
 
 ## Next 3 steps
 
-1. Build P4-043, then the next unblocked card. Do not build P4-042 or P4-036 until P4-038 is Done. P4-038 stays Blocked-External. Do not invent the Igbo tone convention. P3-001 stays Draft. Do not invent benchmark numbers. Do not build the path until F-007. The host switches below do not stop the queue. P4-008, P4-023, P4-025, P4-027, P4-029, P4-031, P4-033, P4-035, and P4-038 stay Blocked-External. Do not mark them Done. Do not invent a grammar edition or log a purchase. Do not invent an Xhosa grammar title. Do not enable Intron. Do not invent an NSC licence. Do not invent a BAKITA citation. Do not mark EXT-06 received. Do not enable ZulMorph. Oxford isiXhosa stays unheld while EXT-04 is Open. Do not invent phoneme charts or concord prefixes the curriculum does not list.
+1. Build P4-044, then the next unblocked card. The Swahili concord table in the curriculum lists m/wa and ki/vi only. Do not invent the other class prefixes or their agreement forms. Do not build P4-042 or P4-036 until P4-038 is Done. P4-038 stays Blocked-External. Do not invent the Igbo tone convention. P3-001 stays Draft. Do not invent benchmark numbers. Do not build the path until F-007. The host switches below do not stop the queue. P4-008, P4-023, P4-025, P4-027, P4-029, P4-031, P4-033, P4-035, and P4-038 stay Blocked-External. Do not mark them Done. Do not invent a grammar edition or log a purchase. Do not invent an Xhosa grammar title. Do not enable Intron. Do not invent an NSC licence. Do not invent a BAKITA citation. Do not mark EXT-06 received. Do not enable ZulMorph. Oxford isiXhosa stays unheld while EXT-04 is Open. Do not invent phoneme charts or concord prefixes the curriculum does not list.
 2. Do not stop to ask what is next.
 3. Do not remove the Firebase service account, the Apple `.p8`, or the five client AI keys. Intron stays off until its flag and server key are set.
 
@@ -41,24 +41,24 @@ Full exit text: `docs/build/03_PHASES_GATES.md`.
 
 ## Cards
 
-Counts from `docs/plan/CARD_STATUS.tsv` on 2026-10-24: Draft 898, Done 137, Blocked-External 53, Ready 7. The TSV is the list. Do not treat this prose as a second list. R3 is carded on F-007, P7-951, P7-952, and P7-953. Path art is v3 and does not jump this queue.
+Counts from `docs/plan/CARD_STATUS.tsv` on 2026-10-24: Draft 898, Done 138, Blocked-External 53, Ready 7. P4-169 is the new Draft import card. The TSV is the list. Do not treat this prose as a second list. R3 is carded on F-007, P7-951, P7-952, and P7-953. Path art is v3 and does not jump this queue.
 
-Nothing is in progress. Mobile `cloud-handoff` latest card is P4-041. Backend `cloud-handoff` latest card is P2-056. The branch is ahead of origin and has not been pushed.
+Nothing is in progress. Mobile `cloud-handoff` latest card is P4-043. Backend `cloud-handoff` latest card is P2-056. The branch is ahead of origin and has not been pushed.
 
-Next card is P4-043 (Hausa hooked letters, display versus teaching text). P4-042 and P4-036 stay Draft because P4-038 is Blocked-External. P4-035, P4-033, P4-031, P4-029, P4-027, P4-025, P4-023, and P4-008 stay Blocked-External. P4-034, P4-037, P4-039, P4-040, and P4-041 are Done. P3-001 stays Draft. Do not build the v3 path until F-007. Do not enable Intron. Do not mark EXT-06 received. Do not enable ZulMorph. Oxford isiXhosa stays unheld. Do not invent the Igbo tone convention.
+Next card is P4-044 (Swahili noun-class concords). Use only the class pairs the curriculum lists (m/wa, ki/vi). Do not invent the other prefixes. P4-043 is Done. P4-042 and P4-036 stay Draft because P4-038 is Blocked-External. P4-035, P4-033, P4-031, P4-029, P4-027, P4-025, P4-023, and P4-008 stay Blocked-External. P4-034, P4-037, P4-039, P4-040, and P4-041 are Done. P4-169 stays Draft until content loading. P3-001 stays Draft. Canonical course content is `../curriculum/` (D28). Do not build the v3 path until F-007. Do not enable Intron. Do not mark EXT-06 received. Do not enable ZulMorph. Oxford isiXhosa stays unheld. Do not invent the Igbo tone convention.
 
 Do not mark Done: P2-031 (live two replicas), P2-032 (Atlas PITR), P1-004, P1-010, P1-025, P1-020. Do not close G2. Do not jump to P7-961.
 
-Open items are in `docs/build/OPEN_WORK.md`. The newest is OW-108 (P3-001 has 3 sourced baselines and stays Draft).
+Open items are in `docs/build/OPEN_WORK.md`. The newest open row is OW-150 (P4-043 is not a workflow job, and omitting a hook is not HA_HOOKED_LETTER). OW-149 closed P4-043.
 
 ## Decisions
 
-- D0–D10, D21, D22, D23 are signed in `docs/build/DECISIONS.md`. D11–D19 were still awaiting a signature in that file.
+- D0–D10, D21, D22, D23, D28 are signed in `docs/build/DECISIONS.md`. D28 (Tope, 2026-10-24): `../curriculum/` is the only course-content source. Legacy curriculum trees stay on disk and are not imported. `*.synth.json` stays draft until native review. D11–D19 were still awaiting a signature in that file.
 - 2026-10-22, Tope: do not revoke or replace the Firebase service account, the Apple `.p8`, or the five client AI keys. Build with those same accounts. Copies were moved to `~/.lingafriq/secrets/` because the files were tracked. This is not yet written into `DECISIONS.md`.
 - 2026-10-23, Tope (D11): ask for birth year, not a full date of birth. Under the country child threshold, verifiable parental consent comes before any account data is stored. Child mode gates open social, chat, marketplace, and ads, and keeps Historical Personas free chat under child-safe moderation. Teen accounts are private and do not take direct messages from adults. Features are gated, not removed.
 - 2026-10-22, Tope: do not revoke JWT material. P1-046 must keep accepting the current HS256 secret. Not yet implemented.
 - 2026-10-23, Tope (D27): the vault is Doppler. The backend reads it when `DOPPLER_TOKEN` is set. `.env` remains the local-development fallback. Moving the existing keys stays at the end of the build.
-- Curriculum wiring stays paused. AI providers stay off until the flags and keys are set. `AI_EVALS_PASSED` stays false.
+- App curriculum wiring stays paused until the content-loading cards. Those cards import `../curriculum/` (D28) and do not import the legacy trees. AI providers stay off until the flags and keys are set. `AI_EVALS_PASSED` stays false.
 
 ## Open questions for Tope
 
@@ -86,7 +86,7 @@ Copies are in `docs/plan/`. Originals:
 - `~/LingAfriq/lingafriq/LINGAFRIQ_AI_MODEL_STACK.md`
 - `~/LingAfriq/lingafriq/BUILDER_AI_WIRING_PROMPT.md`
 - `~/LingAfriq/lingafriq/BUILDER_CURRICULUM_PROMPT.md`
-- `curriculum/` in this repo (copied from `~/LingAfriq/lingafriq/curriculum`, about 141 MB, no file over 50 MB, so Git LFS was not required)
+- Canonical course content is `~/LingAfriq/lingafriq/curriculum` (`../curriculum/` from this repo). D28. The `curriculum/` directory inside this repo is a legacy copy. Do not import it.
 
 Intron is set up and not connected. Do not put `INTRON_API_KEY` in the client.
 
