@@ -661,7 +661,7 @@ P4-036	Draft	Populate kits for yo, ig and ha	P4/P4-036.yaml
 P4-037	Done	Populate kits for pcm, sw, zu and xh	P4/P4-037.yaml
 P4-038	Blocked-External	Decide Igbo tone-marking convention once	P4/P4-038.yaml
 P4-039	Done	Build linter runner for CI and Studio	P4/P4-039.yaml
-P4-040	Draft	Lint Unicode NFC, code points and look-alikes	P4/P4-040.yaml
+P4-040	Done	Lint Unicode NFC, code points and look-alikes	P4/P4-040.yaml
 P4-041	Draft	Lint Yoruba dot-below, tone and lexicon diacritics	P4/P4-041.yaml
 P4-042	Draft	Lint Igbo dotted vowels and lexicon tone	P4/P4-042.yaml
 P4-043	Draft	Lint Hausa hooked letters, display versus teaching text	P4/P4-043.yaml
