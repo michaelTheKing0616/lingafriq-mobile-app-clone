@@ -153,3 +153,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-141 | open | P4-033 | EXT-06 and EXT-22 are Open. No Doke–Vilakazi licensor or terms are recorded. No Poulos & Msimang purchase is logged. |
 | OW-142 | open | P4-034 | Oxford isiXhosa stays unheld (EXT-04). Grammar stays pending-linguist-choice. The concord checker is configured and not implemented (P4-045). SADiLaR Xhosa is evidence only until EXT-03. WAXAL is waxal-other (CC BY-SA), listed and not copied. |
 | OW-143 | open | P4-035 | EXT-11 and EXT-22 are Open. No Xhosa grammar title or edition is chosen. No purchase is logged. |
+| OW-144 | open | P4-038 | EXT-11 is Open. No Igbo tone-marking convention is recorded. P4-036 stays Draft until that convention exists. |

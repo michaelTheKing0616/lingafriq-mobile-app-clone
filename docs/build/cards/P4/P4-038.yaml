@@ -40,7 +40,7 @@ risks: []
 gate: G4
 external_blockers:
 - EXT-11
-status: Draft
+status: Blocked-External
 skills:
   worker:
   - adaptive/10-analysis-and-decision-support
