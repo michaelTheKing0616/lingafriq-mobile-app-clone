@@ -175,3 +175,6 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-163 | open | P4-049 | runner.py main() still has no registered linters. test_claims.py is not a workflow job. |
 | OW-164 | closed 2026-10-24 | P4-050 | Placeholder and schema lint. 13 tests passed. Coverage 94% lines and 91% branches on placeholders.py. Reviewer PASS. Schema file was not edited. |
 | OW-165 | open | P4-050 | runner.py main() still has no registered linters. A placeholder outside item text is PLACEHOLDER_TEXT with an empty span. |
+| OW-166 | closed 2026-10-24 | P4-051 | Duplicate lint. 9 tests passed. Coverage 97% lines and 93% branches on duplicates.py. Reviewer PASS. |
+| OW-167 | open | P4-051 | Thresholds are on kit duplicate_config. There is no separate config file. runner.py main() still has no registered linters. |
+| OW-168 | open | P4-052 | Not built. It depends on P4-036, which stays Draft until P4-038 is Done. P4-038 stays Blocked-External. |

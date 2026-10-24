@@ -672,7 +672,7 @@ P4-047	Done	Lint Pidgin against NLA spelling table	P4/P4-047.yaml
 P4-048	Draft	Detect anglicised Pidgin with LLM rating	P4/P4-048.yaml
 P4-049	Done	Lint claims and banned generic grammar strings	P4/P4-049.yaml
 P4-050	Done	Lint placeholders, empty fields and broken JSON	P4/P4-050.yaml
-P4-051	Draft	Detect near-identical dialogues and repeated lines	P4/P4-051.yaml
+P4-051	Done	Detect near-identical dialogues and repeated lines	P4/P4-051.yaml
 P4-052	Draft	Check honorific register and respect-sensitive units	P4/P4-052.yaml
 P4-053	Draft	Build lexicon store with frequency list	P4/P4-053.yaml
 P4-054	Draft	Compute anchored and single-source lexeme status	P4/P4-054.yaml

@@ -55,10 +55,11 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- Thresholds live on kit duplicate_config. There is no separate config file in this card's allowlist. The file CLI still has no registered linters.
 gate: G4
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - prime/conversational-ux
