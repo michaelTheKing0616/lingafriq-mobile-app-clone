@@ -55,7 +55,8 @@ dod_evidence:
 - tester report
 - coverage on touched domain code
 - ledger row
-risks: []
+risks:
+- Teaching-mark provenance is the token fields. There is no live dictionary, speaker, or media lookup.
 gate: G4
 external_blockers: []
 status: Done

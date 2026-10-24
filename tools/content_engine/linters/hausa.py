@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 import unicodedata
 from collections.abc import Mapping
 
@@ -9,6 +10,8 @@ from tools.content_engine.linters.types import LintResult, Span
 
 _TEXT_ROLES = frozenset({"display", "teaching"})
 _TONE_LENGTH = frozenset({"\u0300", "\u0301", "\u0302", "\u0304"})
+_ISO_DATE = re.compile(r"\d{4}-\d{2}-\d{2}")
+_DICT_SOURCE_TYPES = frozenset({"lexicon", "dictionary"})
 _HOOK_PLAIN: dict[str, frozenset[str]] = {
     "ɓ": frozenset({"b"}),
     "Ɓ": frozenset({"B"}),
@@ -79,7 +82,7 @@ def _lint_token(item_id: str, token: Mapping, text_role: str) -> LintResult | No
         _, surf_marks = _base_and_marks(surf_text)
         if not surf_marks:
             continue
-        if not dictionary_sourced or index >= len(lex_clusters):
+        if not _has_teaching_mark_provenance(token, dictionary_sourced) or index >= len(lex_clusters):
             return LintResult(
                 item_id=item_id,
                 rule_id="HA_MARK_NO_DICT",
@@ -95,6 +98,42 @@ def _lint_token(item_id: str, token: Mapping, text_role: str) -> LintResult | No
                 status="fail",
             )
     return None
+
+
+def _has_teaching_mark_provenance(token: Mapping, dictionary_sourced: object) -> bool:
+    """True when a teaching mark has dictionary, native-speaker, or Import Media provenance."""
+    if dictionary_sourced is True:
+        return True
+    if _nonempty_str(token.get("dictionary_entry")) or _nonempty_str(
+        token.get("lexicon_source")
+    ):
+        return True
+    source_type = token.get("source_type")
+    if isinstance(source_type, str) and source_type.casefold() in _DICT_SOURCE_TYPES:
+        return True
+    person = (
+        _nonempty_str(token.get("native_speaker_id"))
+        or _nonempty_str(token.get("author_id"))
+        or _nonempty_str(token.get("reviewer_id"))
+    )
+    dated = _iso_date(token.get("review_date")) or _iso_date(token.get("reviewed_at"))
+    if person and dated:
+        return True
+    if _nonempty_str(token.get("media_id")) and (
+        _nonempty_str(token.get("timestamp"))
+        or _nonempty_str(token.get("time_span"))
+        or _nonempty_str(token.get("span"))
+    ):
+        return True
+    return False
+
+
+def _nonempty_str(value: object) -> bool:
+    return isinstance(value, str) and value.strip() != ""
+
+
+def _iso_date(value: object) -> bool:
+    return isinstance(value, str) and _ISO_DATE.fullmatch(value) is not None
 
 
 def _is_plain_replacement(lex_base: str, surf_base: str) -> bool:

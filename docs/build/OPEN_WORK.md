@@ -166,3 +166,5 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-154 | open | P4-045 | Prefix forms stay unenumerated. The fixture is class-number markers, not a paradigm. Relative and possessive concords are not checked. test_concord_zux.py is not a workflow job. |
 | OW-155 | closed 2026-10-24 | P4-046 | ZulMorph loud-failure lint. 7 tests passed. Coverage 97% lines and 100% branches on zulmorph.py. Reviewer PASS. ZulMorph was not installed and was not enabled. |
 | OW-156 | open | P4-046 | The real ZulMorph API is not wired. An unexpected import raises. Local-use terms stay unverified. test_zulmorph.py is not a workflow job. |
+| OW-157 | closed 2026-10-24 | P4-043 | Teaching-mark provenance accepts dictionary/lexicon, native-author id plus review date, and Import Media id plus a span. 30 tests passed. Coverage 97% lines and 94% branches on hausa.py. Reviewer PASS. |
+| OW-158 | open | P4-043 | Provenance is the token fields. A forged id still passes. There is no dictionary, speaker, or media lookup. test_hausa.py is not a workflow job. |

@@ -26,12 +26,15 @@ def _token(
     surface: str,
     lexicon: str,
     dictionary_sourced: bool = False,
+    **provenance: object,
 ) -> dict[str, object]:
-    return {
+    token: dict[str, object] = {
         "surface": surface,
         "lexicon": lexicon,
         "dictionary_sourced": dictionary_sourced,
     }
+    token.update(provenance)
+    return token
 
 
 def _item(
@@ -153,6 +156,108 @@ def test_P4_043_AC3_sourced_matching_mark_passes() -> None:
     )
     result = lint_hausa(item, _KIT)
     assert result == _pass("item-sourced-ok")
+
+
+def test_P4_043_AC3_dictionary_lexicon_provenance_passes() -> None:
+    item = _item(
+        "item-dict-entry",
+        [
+            _token(
+                "à",
+                "a" + _GRAVE,
+                dictionary_sourced=False,
+                dictionary_entry="lex-ha-001",
+            )
+        ],
+        text_role="teaching",
+    )
+    result = lint_hausa(item, _KIT)
+    assert result == _pass("item-dict-entry")
+
+
+@pytest.mark.parametrize(
+    "person_field",
+    ["author_id", "native_speaker_id", "reviewer_id"],
+)
+def test_P4_043_AC3_native_author_provenance_passes(person_field: str) -> None:
+    item = _item(
+        "item-native-ok",
+        [
+            _token(
+                "à",
+                "a" + _GRAVE,
+                dictionary_sourced=False,
+                review_date="2026-01-15",
+                **{person_field: "speaker-1"},
+            )
+        ],
+        text_role="teaching",
+    )
+    result = lint_hausa(item, _KIT)
+    assert result == _pass("item-native-ok")
+
+
+@pytest.mark.parametrize(
+    "span_field",
+    ["timestamp", "time_span", "span"],
+)
+def test_P4_043_AC3_import_media_provenance_passes(span_field: str) -> None:
+    item = _item(
+        "item-media-ok",
+        [
+            _token(
+                "à",
+                "a" + _GRAVE,
+                dictionary_sourced=False,
+                media_id="media-1",
+                **{span_field: "00:01.200"},
+            )
+        ],
+        text_role="teaching",
+    )
+    result = lint_hausa(item, _KIT)
+    assert result == _pass("item-media-ok")
+
+
+def test_P4_043_AC3_native_author_without_review_date_fails() -> None:
+    item = _item(
+        "item-native-no-date",
+        [_token("à", "a" + _GRAVE, dictionary_sourced=False, author_id="author-1")],
+        text_role="teaching",
+    )
+    result = lint_hausa(item, _KIT)
+    assert result.status == "fail"
+    assert result.rule_id == "HA_MARK_NO_DICT"
+
+
+def test_P4_043_AC3_import_media_without_span_fails() -> None:
+    item = _item(
+        "item-media-no-span",
+        [_token("à", "a" + _GRAVE, dictionary_sourced=False, media_id="media-1")],
+        text_role="teaching",
+    )
+    result = lint_hausa(item, _KIT)
+    assert result.status == "fail"
+    assert result.rule_id == "HA_MARK_NO_DICT"
+
+
+def test_P4_043_AC3_native_author_mark_not_on_form_fails() -> None:
+    item = _item(
+        "item-native-mark-mismatch",
+        [
+            _token(
+                "à",
+                "a",
+                dictionary_sourced=False,
+                author_id="author-1",
+                review_date="2026-01-15",
+            )
+        ],
+        text_role="teaching",
+    )
+    result = lint_hausa(item, _KIT)
+    assert result.status == "fail"
+    assert result.rule_id == "HA_MARK_NO_DICT"
 
 
 def test_P4_043_AC3_teaching_without_marks_passes() -> None:
