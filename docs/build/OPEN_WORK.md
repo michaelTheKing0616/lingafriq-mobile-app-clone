@@ -157,3 +157,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-145 | open | P4-037 | load_kit reads {language}.yaml, not kit.yaml. Class prefixes, G2P pairs, code points and NLA table rows are not enumerated in §3.3. Linguist signoff is false. |
 | OW-146 | open | P4-039 | runner.py main() has no registered linters, so the file CLI raises ValueError. The linter-runner job is not a required merge check. |
 | OW-147 | open | P4-040 | Look-alikes outside the explicit Greek epsilon and Cyrillic a table are not flagged as LOOKALIKE_CHAR. The workflow file was not edited. |
+| OW-148 | open | P4-041 | YO_NASAL_TONE uses the token syllabic flag. The linter does not decide which nasals are syllabic. |

@@ -169,3 +169,4 @@ P4-038,adr,T1,n/a,n/a,n/a,0,blocked,No Igbo tone convention is recorded. EXT-11 
 P4-037,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,pcm, sw, zu and xh kits keep §3.3 gaps unenumerated. Linguist signoff stays false. load_kit does not read kit.yaml.
 P4-039,build,T2,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Runner shares one function. Crashes are LINT_ERROR. CLI has no registered linters yet. Branch protection is unset.
 P4-040,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Unicode lint fails NFC, forbidden code points, and the explicit Greek and Cyrillic look-alikes.
+P4-041,build,T1,cursor-grok-4.6-high-fast,n/a,n/a,1,pass,Yoruba lint checks underdot, syllabic nasal tone, lexicon diacritics, and unmarked learner-facing tokens. Mid stays unmarked.

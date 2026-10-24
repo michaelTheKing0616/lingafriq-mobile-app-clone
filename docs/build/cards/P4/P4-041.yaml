@@ -62,7 +62,7 @@ dod_evidence:
 risks: []
 gate: G4
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging
