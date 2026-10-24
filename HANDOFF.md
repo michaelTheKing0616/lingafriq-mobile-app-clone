@@ -8,16 +8,16 @@ The Firebase service account, the Apple `.p8`, and the five client AI keys stay 
 
 Work is continuous on `cloud-handoff`. Do not pause between cards. The key files remain tracked.
 
-- Mobile: `cloud-handoff`. Latest card push is P4-034. P4-008, P4-023, P4-025, P4-027, P4-029, P4-031, and P4-033 stay Blocked-External. The FSRS mutation score is 130/147. Fuzzing is off.
+- Mobile: `cloud-handoff`. Latest card push is P4-035. P4-008, P4-023, P4-025, P4-027, P4-029, P4-031, P4-033, and P4-035 stay Blocked-External. The FSRS mutation score is 130/147. Fuzzing is off.
 - Backend: `cloud-handoff`. Latest card push is P2-056. Flag buckets are stable. HS256 still verifies.
 - The key files are still tracked. Copies also exist in `~/.lingafriq/secrets/` (mode 600). History was not rewritten.
 - Admin gamification edits were not part of this build. They are in git stash `admin-gamification-wip-not-this-build` on `lingafriq-admin` `cloud-handoff`.
-- P4-034 is done. Oxford isiXhosa stays unheld. The Xhosa grammar stays pending-linguist-choice. P4-033 is Blocked-External. No Doke–Vilakazi licensor or terms are recorded and no Poulos & Msimang purchase is logged. P4-031, P4-029, P4-027, P4-025, and P4-023 stay Blocked-External. P4-008 stays Blocked-External because counsel has not confirmed any source. It is not Done. P3-001 stays Draft: 3 sourced baselines, 17 blank. The search cap is spent and missing numbers stay blank. P3-002 and the art-direction chain wait on a Done P3-001. Next card is P4-035. P2-031 stays a live-host switch-on and is not Done. P7-961 does not jump this queue. R3 stays on F-007, P7-951, P7-952, and P7-953. Path Rive is v3 at ~/LingAfriq/lingafriq/design/path_rive/path/v3/. Do not use v1 or v2. Do not build the path until those cards.
+- P4-035 is Blocked-External. No Xhosa grammar title or edition is chosen and no purchase is logged. P4-034 is Done. Oxford isiXhosa stays unheld. P4-033 is Blocked-External. No Doke–Vilakazi licensor or terms are recorded and no Poulos & Msimang purchase is logged. P4-031, P4-029, P4-027, P4-025, and P4-023 stay Blocked-External. P4-008 stays Blocked-External because counsel has not confirmed any source. It is not Done. P3-001 stays Draft: 3 sourced baselines, 17 blank. The search cap is spent and missing numbers stay blank. P3-002 and the art-direction chain wait on a Done P3-001. Next card is P4-036, which waits on P4-038. P2-031 stays a live-host switch-on and is not Done. P7-961 does not jump this queue. R3 stays on F-007, P7-951, P7-952, and P7-953. Path Rive is v3 at ~/LingAfriq/lingafriq/design/path_rive/path/v3/. Do not use v1 or v2. Do not build the path until those cards.
 - Voice service is on `main`. There is no `cloud-handoff` branch. An untracked `.gitignore` was left uncommitted. Admin `cloud-handoff` is clean. The gamification stash stays.
 
 ## Next 3 steps
 
-1. Build P4-035, then the next unblocked card. P3-001 stays Draft. Do not invent benchmark numbers. Do not build the path until F-007. The host switches below do not stop the queue. P4-008, P4-023, P4-025, P4-027, P4-029, P4-031, and P4-033 stay Blocked-External. Do not mark them Done. Do not invent a grammar edition or log a purchase. Do not invent an Xhosa grammar title. Do not enable Intron. Do not invent an NSC licence. Do not invent a BAKITA citation. Do not mark EXT-06 received. Do not enable ZulMorph. Oxford isiXhosa stays unheld while EXT-04 is Open.
+1. Build P4-036 only after P4-038. P4-038 is the Igbo tone convention and stays blocked while EXT-11 is Open. Do not invent that convention. If P4-038 cannot be decided, leave P4-036 Draft and build the next unblocked card, P4-037. P3-001 stays Draft. Do not invent benchmark numbers. Do not build the path until F-007. The host switches below do not stop the queue. P4-008, P4-023, P4-025, P4-027, P4-029, P4-031, P4-033, and P4-035 stay Blocked-External. Do not mark them Done. Do not invent a grammar edition or log a purchase. Do not invent an Xhosa grammar title. Do not enable Intron. Do not invent an NSC licence. Do not invent a BAKITA citation. Do not mark EXT-06 received. Do not enable ZulMorph. Oxford isiXhosa stays unheld while EXT-04 is Open.
 2. Do not stop to ask what is next.
 3. Do not remove the Firebase service account, the Apple `.p8`, or the five client AI keys. Intron stays off until its flag and server key are set.
 
@@ -41,11 +41,11 @@ Full exit text: `docs/build/03_PHASES_GATES.md`.
 
 ## Cards
 
-Counts from `docs/plan/CARD_STATUS.tsv` on 2026-10-24: Draft 904, Done 133, Blocked-External 51, Ready 7. The TSV is the list. Do not treat this prose as a second list. R3 is carded on F-007, P7-951, P7-952, and P7-953. Path art is v3 and does not jump this queue.
+Counts from `docs/plan/CARD_STATUS.tsv` on 2026-10-24: Draft 903, Done 133, Blocked-External 52, Ready 7. The TSV is the list. Do not treat this prose as a second list. R3 is carded on F-007, P7-951, P7-952, and P7-953. Path art is v3 and does not jump this queue.
 
-Nothing is in progress. Mobile `cloud-handoff` latest card is P4-034. Backend `cloud-handoff` latest card is P2-056.
+Nothing is in progress. Mobile `cloud-handoff` latest card is P4-035. Backend `cloud-handoff` latest card is P2-056.
 
-Next card is P4-035 (the Xhosa reference grammar stays unchosen). P4-034 is Done. P4-033, P4-031, P4-029, P4-027, P4-025, P4-023, and P4-008 stay Blocked-External. P3-001 stays Draft. Do not build the v3 path until F-007. Do not enable Intron. Do not mark EXT-06 received. Do not enable ZulMorph. Oxford isiXhosa stays unheld.
+Next card is P4-036, after its dependency P4-038. P4-038 stays open on EXT-11. Do not invent the Igbo tone convention. P4-035, P4-033, P4-031, P4-029, P4-027, P4-025, P4-023, and P4-008 stay Blocked-External. P4-034 is Done. P3-001 stays Draft. Do not build the v3 path until F-007. Do not enable Intron. Do not mark EXT-06 received. Do not enable ZulMorph. Oxford isiXhosa stays unheld.
 
 Do not mark Done: P2-031 (live two replicas), P2-032 (Atlas PITR), P1-004, P1-010, P1-025, P1-020. Do not close G2. Do not jump to P7-961.
 

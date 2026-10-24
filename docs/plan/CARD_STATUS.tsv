@@ -656,7 +656,7 @@ P4-031	Blocked-External	Verify BAKITA citation and purchase Ashton grammar	P4/P4
 P4-032	Done	Record isiZulu source stack in kit	P4/P4-032.yaml
 P4-033	Blocked-External	Verify Zulu dictionary licensor and purchase grammars	P4/P4-033.yaml
 P4-034	Done	Record isiXhosa source stack in kit	P4/P4-034.yaml
-P4-035	Draft	Choose Xhosa reference grammar with linguist	P4/P4-035.yaml
+P4-035	Blocked-External	Choose Xhosa reference grammar with linguist	P4/P4-035.yaml
 P4-036	Draft	Populate kits for yo, ig and ha	P4/P4-036.yaml
 P4-037	Draft	Populate kits for pcm, sw, zu and xh	P4/P4-037.yaml
 P4-038	Draft	Decide Igbo tone-marking convention once	P4/P4-038.yaml
