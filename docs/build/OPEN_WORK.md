@@ -164,3 +164,5 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-152 | open | P4-044 | Relative and possessive concords named in §3.3 are not checked. Classes other than m/wa and ki/vi are not in the table. test_concord_sw.py is not a workflow job. |
 | OW-153 | closed 2026-10-24 | P4-045 | Zulu and Xhosa concord lint. 13 tests passed. Coverage 93% lines and 86% branches on concord_zux.py. Reviewer PASS. |
 | OW-154 | open | P4-045 | Prefix forms stay unenumerated. The fixture is class-number markers, not a paradigm. Relative and possessive concords are not checked. test_concord_zux.py is not a workflow job. |
+| OW-155 | closed 2026-10-24 | P4-046 | ZulMorph loud-failure lint. 7 tests passed. Coverage 97% lines and 100% branches on zulmorph.py. Reviewer PASS. ZulMorph was not installed and was not enabled. |
+| OW-156 | open | P4-046 | The real ZulMorph API is not wired. An unexpected import raises. Local-use terms stay unverified. test_zulmorph.py is not a workflow job. |
