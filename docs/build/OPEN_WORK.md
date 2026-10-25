@@ -184,3 +184,5 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-172 | closed 2026-10-25 | P4-054 | Anchoring status. 9 tests passed. Coverage 91% lines and 78% branches on anchoring.py. Reviewer PASS. |
 | OW-173 | open | P4-054 | high_frequency is a caller flag. §3.1 gives no cutoff. This module does not invent one. |
 | OW-174 | open | P4-055 | Stays Draft. EXT-01 is Open. P4-056 through P4-059 and P4-062 wait on that chain. P4-060 and P4-061 wait on P4-042, which stays Draft while P4-038 is Blocked-External. |
+| OW-175 | closed 2026-10-25 | P4-069 | Curriculum Studio scaffold. 3 tests passed. New-file coverage 99% lines. Reviewer PASS. |
+| OW-176 | open | P4-069 | studio router is not mounted. index.route.ts is outside the allowlist. The admin screen was not opened in a browser. |
