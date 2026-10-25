@@ -675,7 +675,7 @@ P4-050	Done	Lint placeholders, empty fields and broken JSON	P4/P4-050.yaml
 P4-051	Done	Detect near-identical dialogues and repeated lines	P4/P4-051.yaml
 P4-052	Draft	Check honorific register and respect-sensitive units	P4/P4-052.yaml
 P4-053	Done	Build lexicon store with frequency list	P4/P4-053.yaml
-P4-054	Draft	Compute anchored and single-source lexeme status	P4/P4-054.yaml
+P4-054	Done	Compute anchored and single-source lexeme status	P4/P4-054.yaml
 P4-055	Draft	Generate grounded items with Gemini 3.1 Pro	P4/P4-055.yaml
 P4-056	Draft	Reject out-of-lexicon words and uncited claims	P4/P4-056.yaml
 P4-057	Draft	Run independent cross-check with a second model	P4/P4-057.yaml

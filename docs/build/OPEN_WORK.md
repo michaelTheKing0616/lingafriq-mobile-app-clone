@@ -181,3 +181,6 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-169 | closed 2026-10-25 | P4-053 | Lexicon store. 24 tests passed. Coverage 98% lines and 96% branches on lexicon.py. Reviewer PASS. |
 | OW-170 | open | P4-053 | IPA matches the caller g2p result. There is no G2P engine. Forms and counts are caller-supplied. Leipzig is not downloaded. |
 | OW-171 | open | RTM | `check_rtm_coverage.py --write` on 2026-10-25 cleared TR-R3 card ids. That write was reverted. Do not run `--write` again until the script keeps existing card ids. |
+| OW-172 | closed 2026-10-25 | P4-054 | Anchoring status. 9 tests passed. Coverage 91% lines and 78% branches on anchoring.py. Reviewer PASS. |
+| OW-173 | open | P4-054 | high_frequency is a caller flag. §3.1 gives no cutoff. This module does not invent one. |
+| OW-174 | open | P4-055 | Stays Draft. EXT-01 is Open. P4-056 through P4-059 and P4-062 wait on that chain. P4-060 and P4-061 wait on P4-042, which stays Draft while P4-038 is Blocked-External. |
