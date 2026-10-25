@@ -697,7 +697,7 @@ P4-072	Done	Build lexicon editor with side-by-side sources	P4/P4-072.yaml
 P4-073	Done	Build generation jobs UI with versioned prompts	P4/P4-073.yaml
 P4-074	Done	Build per-item verification report	P4/P4-074.yaml
 P4-075	Done	Build keyboard-first review queues	P4/P4-075.yaml
-P4-076	Draft	Build and sign semver content packs	P4/P4-076.yaml
+P4-076	Done	Build and sign semver content packs	P4/P4-076.yaml
 P4-077	Draft	Add staged rollout and rollback for packs	P4/P4-077.yaml
 P4-078	Draft	Build quality dashboard	P4/P4-078.yaml
 P4-079	Draft	Export reviewer payments by items reviewed	P4/P4-079.yaml
