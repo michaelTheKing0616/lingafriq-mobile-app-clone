@@ -700,7 +700,7 @@ P4-075	Done	Build keyboard-first review queues	P4/P4-075.yaml
 P4-076	Done	Build and sign semver content packs	P4/P4-076.yaml
 P4-077	Done	Add staged rollout and rollback for packs	P4/P4-077.yaml
 P4-078	Done	Build quality dashboard	P4/P4-078.yaml
-P4-079	Draft	Export reviewer payments by items reviewed	P4/P4-079.yaml
+P4-079	Done	Export reviewer payments by items reviewed	P4/P4-079.yaml
 P4-080	Draft	Verify Studio effort estimate	P4/P4-080.yaml
 P4-081	Draft	Quarantine placeholder and duplicate legacy bundles	P4/P4-081.yaml
 P4-082	Draft	Salvage real phrases from authentic curriculum JSON	P4/P4-082.yaml
