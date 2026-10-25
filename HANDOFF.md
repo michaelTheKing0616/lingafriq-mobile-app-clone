@@ -77,6 +77,8 @@ node-backend: `yarn`, `yarn build`, `yarn dev` (nodemon `dist/server.js`). Tests
 
 Admin (`../lingafriq-admin`): `yarn`, `yarn dev` (Vite port 3000, proxy `localhost:4000`).
 
+Studio specs (`lingafriq-mobile-app-clone`): `npx --yes tsx --test tools/content_engine/tests/studio_*.test.ts`.
+
 Voice service (`node-backend/voice-service` and the sibling `lingafriq-voice-service`): Python `main.py` from `voice-service/requirements.txt`. `VOICE_SERVICE_URL` defaults to `http://localhost:5051`. The app STT route no longer proxies Whisper when the uncommitted router is running. It returns `stt_unavailable` until Intron is switched on.
 
 ## Pointers
