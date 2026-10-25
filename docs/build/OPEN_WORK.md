@@ -178,3 +178,6 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-166 | closed 2026-10-24 | P4-051 | Duplicate lint. 9 tests passed. Coverage 97% lines and 93% branches on duplicates.py. Reviewer PASS. |
 | OW-167 | open | P4-051 | Thresholds are on kit duplicate_config. There is no separate config file. runner.py main() still has no registered linters. |
 | OW-168 | open | P4-052 | Not built. It depends on P4-036, which stays Draft until P4-038 is Done. P4-038 stays Blocked-External. |
+| OW-169 | closed 2026-10-25 | P4-053 | Lexicon store. 24 tests passed. Coverage 98% lines and 96% branches on lexicon.py. Reviewer PASS. |
+| OW-170 | open | P4-053 | IPA matches the caller g2p result. There is no G2P engine. Forms and counts are caller-supplied. Leipzig is not downloaded. |
+| OW-171 | open | RTM | `check_rtm_coverage.py --write` on 2026-10-25 cleared TR-R3 card ids. That write was reverted. Do not run `--write` again until the script keeps existing card ids. |

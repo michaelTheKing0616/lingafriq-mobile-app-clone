@@ -4,7 +4,7 @@ charter: v2
 
 | Field | Value |
 |---|---|
-| Updated | 2026-10-24 |
+| Updated | 2026-10-25 |
 | Stage | **G0 GO signed by Tope 2026-10-21** → build phase; orchestrator = Grok 4.7 (`ORCHESTRATOR_PROMPT.md`) |
 | Gate | G0 passed · next G1 Containment |
 | RTM | `RTM.csv` 2,960 rows · unmapped 0 · Blocked-External 5 · `check_rtm_coverage.py --write` applied |
@@ -15,4 +15,6 @@ charter: v2
 | External | EXT-01…30 open (`EXTERNAL.md`); EXT-01 companion doc still missing |
 | Benchmark | UI phases: `docs/build/benchmark/duolingo/` holds the 12 picks; `all/` holds the other 48; `README.md` has source, date, and size. Do not open the images until a card sets `visual_evidence_required`. |
 | Audit | `check_agent_files.py` OK (1,092 files) |
-| Next | Mobile `cloud-handoff`. P4-051 is Done. P4-052 stays Draft (depends on P4-036). P4-048 stays Draft (EXT-01 open, P4-057 not Done). Next build card is P4-053. Do not invent NLA rows. ZulMorph stays off. P4-042 and P4-036 stay Draft until P4-038 is Done. Canonical course content is `../curriculum/` (D28). FSRS mutation score is 130/147. Fuzzing is off. Intron stays off. HS256 stays accepted (D25). Doppler is the vault (D27). P7-961 does not jump the queue. |
+| Next | Mobile `cloud-handoff`. P4-053 is Done. P4-052 stays Draft (depends on P4-036). P4-048 stays Draft (EXT-01 open, P4-057 not Done). Next build card is P4-054. Do not invent a high-frequency cutoff. Do not invent NLA rows. ZulMorph stays off. P4-042 and P4-036 stay Draft until P4-038 is Done. Canonical course content is `../curriculum/` (D28). FSRS mutation score is 130/147. Fuzzing is off. Intron stays off. HS256 stays accepted (D25). Doppler is the vault (D27). P7-961 does not jump the queue. |
+| Packets | Card path, allowlist, anchor excerpt, constraints the card does not state. Do not paste briefs, ACs, or APIs the files already hold. Reports stay capped. |
+| Models | Card tier. T1 and T2 use `cursor-grok-4.6-high-fast`. `grok-4.7-xhigh` only after that slug fails the card once. |
