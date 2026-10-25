@@ -684,7 +684,7 @@ P4-059	Draft	Back-translate with Google Cloud Translation and MADLAD-400	P4/P4-0
 P4-060	Draft	Run linters and morphological analysers as a stage	P4/P4-060.yaml
 P4-061	Draft	Gate tone and diacritics by three-way agreement	P4/P4-061.yaml
 P4-062	Draft	Run NaijaML restorer as tone check for Yoruba	P4/P4-062.yaml
-P4-063	Draft	Compute weighted confidence score	P4/P4-063.yaml
+P4-063	Done	Compute weighted confidence score	P4/P4-063.yaml
 P4-064	Draft	Route items by threshold and regeneration cap	P4/P4-064.yaml
 P4-065	Draft	Enforce high-risk tags as never AI-only	P4/P4-065.yaml
 P4-066	Draft	Calibrate thresholds against pilot error rate	P4/P4-066.yaml
@@ -695,7 +695,7 @@ P4-070	Draft	Build backend job service for pipeline runs	P4/P4-070.yaml
 P4-071	Done	Build source library and licence register UI	P4/P4-071.yaml
 P4-072	Done	Build lexicon editor with side-by-side sources	P4/P4-072.yaml
 P4-073	Done	Build generation jobs UI with versioned prompts	P4/P4-073.yaml
-P4-074	Draft	Build per-item verification report	P4/P4-074.yaml
+P4-074	Done	Build per-item verification report	P4/P4-074.yaml
 P4-075	Draft	Build keyboard-first review queues	P4/P4-075.yaml
 P4-076	Draft	Build and sign semver content packs	P4/P4-076.yaml
 P4-077	Draft	Add staged rollout and rollback for packs	P4/P4-077.yaml
