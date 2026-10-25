@@ -22,7 +22,10 @@ tiers:
   reviewer: T1
   justification: 'score 1: blast 0, ambiguity 1, coupling 0, depth 0, size 0'
 token_budget: 25000
-file_allowlist: []
+file_allowlist:
+- tools/content_engine/studio/studioEffortEstimate.ts
+- tools/content_engine/tests/studio_effortEstimate.test.ts
+- docs/build/verification/P4-080-2026-10-25.md
 context_anchors:
 - CURRICULUM.md#§9.1:L788-L789
 acceptance_criteria:
@@ -39,7 +42,7 @@ dod_evidence:
 risks: []
 gate: G4
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/07-research-and-fact-checking

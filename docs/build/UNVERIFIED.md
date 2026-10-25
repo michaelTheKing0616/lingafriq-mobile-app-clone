@@ -23,7 +23,7 @@ Every `[verify] [purchase] [quote] [Unverified] [estimate]` tag in the sources i
 | UNV-C02…C06 | CURRICULUM §2.4 | grammar purchases (Newman, Faraclas, Ashton, Poulos & Msimang, Emenanjo) | purchase list (EXT-22) | Tope |
 | UNV-C04 | CURRICULUM §2.4:L392 | BAKITA Kiswahili Sanifu citation | linguist | external |
 | UNV-C07 | CURRICULUM §2.4:L461 | no mature open Xhosa analyser | literature/tool scan (capped search) | agent |
-| UNV-C08 | CURRICULUM §9.1:L789 | Studio effort 10–14 eng-weeks [estimate] | re-estimate from cards | agent |
+| UNV-C08 | CURRICULUM §9.1:L789 | Studio effort 10–14 eng-weeks [estimate] | P4-080 card sum 11.5 eng-weeks (2026-10-25); calendar actuals after G4 | agent |
 | UNV-C09 | CURRICULUM §9.4:L840 | isiXhosa voice $10k–25k [quote] | RFQ (EXT-12) | Tope |
 | UNV-C10 | CURRICULUM §9.4:L844 | data licence costs [quotes] | RFQs (EXT-04…10) | Tope |
 | — | CURRICULUM §2.4 (in CP rows) | NERDC Yoruba edition; ZulMorph local-use terms; NSC licence; Leipzig corpus sizes; Zulu/Xhosa Common Voice hours; Peace Corps per-item PD status; classic-dictionary copyright | one verification card each (`P0-VER-*`), capped web check, result into the licence register | agent / counsel |
