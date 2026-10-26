@@ -1082,7 +1082,7 @@ P2-058	Done	Estimate per-skill mastery on the device	P2/P2-058.yaml
 P2-059	Done	Raise lib/learning line coverage to the 70% gate	P2/P2-059.yaml
 P4-168	Done	Register MobileNetV4 and SigLIP weights and reject YOLO (check_register.py)	P4/P4-168.yaml
 P4-169	Draft	Import course items only from the canonical curriculum packs	P4/P4-169.yaml
-P6-085	Draft	Play human audio for a Point and Say hit before licensed voice	P6/P6-085.yaml
+P6-085	Done	Point-and-Say human audio before licensed TTS (point_say_audio.dart, tts_service.dart)	P6/P6-085.yaml
 P6-086	Done	Match a Point and Say frame with SigLIP behind the gateway (siglipMatch.service.ts)	P6/P6-086.yaml
 P7-945	Draft	Bundle MobileNetV4 Conv-Small for on-device Point and Say	P7/P7-945.yaml
 P7-946	Draft	Map Point and Say labels to dictionary entries	P7/P7-946.yaml
