@@ -803,7 +803,7 @@ P5-038	Done	Design speaking-first flow with recasts, not text-heavy (speaking_fi
 P5-039	Done	Add declared standard and per-item dialect tags (dialect_check.py)	P5/P5-039.yaml
 P5-040	Done	Add Pidgin corpus anchoring and anglicisation detector (pidgin_anglicisation.py)	P5/P5-040.yaml
 P5-041	Done	TargetText surface contract, visible no-audio state, EP-§6.7-02 lint test	P5/P5-041.yaml
-P5-042	Draft	Provide diacritic-aware keyboard bars per language	P5/P5-042.yaml
+P5-042	Done	Per-language diacritic bar (layouts.json, kbd.hint, LayoutMissing)	P5/P5-042.yaml
 P5-043	Draft	Grade leniently on missing tone marks in early levels	P5/P5-043.yaml
 P5-044	Draft	Route items to paid linguist review by risk	P5/P5-044.yaml
 P5-045	Draft	Run 300-item calibration sets and compute Cohen kappa	P5/P5-045.yaml

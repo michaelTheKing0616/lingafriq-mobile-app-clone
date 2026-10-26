@@ -7,7 +7,7 @@ import 'package:lingafriq/widgets/diacritic_keyboard_bar.dart';
 import '../helpers/test_utils.dart';
 
 DiacriticKeyboardLayouts _layoutsFromRepoFile() {
-  final path = File('assets/content/keyboard_layouts.json');
+  final path = File('assets/data/keyboard/layouts.json');
   return DiacriticKeyboardLayouts.fromJsonString(path.readAsStringSync());
 }
 
@@ -41,6 +41,7 @@ void main() {
     required FocusNode focusNode,
     required TextEditingController controller,
     void Function(String id)? onLayoutMissing,
+    DiacriticKeyboardCopy? copy,
   }) {
     return Column(
       children: [
@@ -50,6 +51,7 @@ void main() {
           focusNode: focusNode,
           controller: controller,
           layouts: layouts,
+          copy: copy ?? const DiacriticKeyboardCopy(),
           onLayoutMissing: onLayoutMissing,
         ),
       ],
@@ -110,9 +112,10 @@ void main() {
     }
   });
 
-  testWidgets('unknown language hides bar and reports missing layout', (tester) async {
+  testWidgets('unknown language shows kbd hint and reports missing layout', (tester) async {
     final focus = FocusNode();
     final controller = TextEditingController();
+    const hint = 'System keyboard only for this language.';
     String? missing;
     addTearDown(focus.dispose);
     addTearDown(controller.dispose);
@@ -123,6 +126,7 @@ void main() {
         languageId: 'xx',
         focusNode: focus,
         controller: controller,
+        copy: const DiacriticKeyboardCopy(kbdHint: hint),
         onLayoutMissing: (id) => missing = id,
       ),
     );
@@ -130,6 +134,7 @@ void main() {
     await tester.pump();
 
     expect(find.byKey(const ValueKey('diacritic-bar-noLayout')), findsOneWidget);
+    expect(find.text(hint), findsOneWidget);
     expect(missing, 'xx');
     expect(find.text('ẹ'), findsNothing);
   });

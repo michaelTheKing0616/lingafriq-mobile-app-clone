@@ -13,6 +13,8 @@ class DiacriticKeyboardCopy {
     this.toneLow = 'Low tone',
     this.toneMid = 'Mid tone',
     this.dotBelow = 'Dot below',
+    this.kbdHint =
+        'Use your device keyboard; diacritic shortcuts are not available for this language.',
     this.noLayoutLogged = 'No diacritic keyboard layout for this language.',
   });
 
@@ -20,6 +22,8 @@ class DiacriticKeyboardCopy {
   final String toneLow;
   final String toneMid;
   final String dotBelow;
+  /// Copy key: `kbd.hint` (EP-§6.7).
+  final String kbdHint;
   final String noLayoutLogged;
 
   String labelForCopyKey(String copyKey) {
@@ -65,7 +69,7 @@ class DiacriticKeyboardLayouts {
 
   final Map<String, DiacriticKeyboardLayout> _byLanguage;
 
-  static const assetPath = 'assets/content/keyboard_layouts.json';
+  static const assetPath = 'assets/data/keyboard/layouts.json';
 
   DiacriticKeyboardLayout? forLanguage(String languageId) =>
       _byLanguage[languageId.trim().toLowerCase()];
@@ -198,9 +202,19 @@ class _DiacriticKeyboardBarState extends State<DiacriticKeyboardBar> {
     final state = _resolveState();
     if (state == DiacriticKeyboardBarState.noLayout) {
       _reportMissingLayoutOnce();
-      return const SizedBox(
-        key: ValueKey('diacritic-bar-noLayout'),
-        height: 0,
+      final theme = Theme.of(context);
+      return Semantics(
+        label: widget.copy.kbdHint,
+        child: Padding(
+          key: const ValueKey('diacritic-bar-noLayout'),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Text(
+            widget.copy.kbdHint,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ),
       );
     }
     if (state != DiacriticKeyboardBarState.visible) {
@@ -265,13 +279,13 @@ class _KeyButton extends StatelessWidget {
       button: true,
       label: semanticsLabel,
       child: SizedBox(
-        height: 44,
-        width: 44,
+        height: 48,
+        width: 48,
         child: OutlinedButton(
           onPressed: onPressed,
           style: OutlinedButton.styleFrom(
             padding: EdgeInsets.zero,
-            minimumSize: const Size(44, 44),
+            minimumSize: const Size(48, 48),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
           child: FittedBox(child: Text(label)),
