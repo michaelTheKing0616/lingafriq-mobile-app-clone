@@ -1,0 +1,132 @@
+# CURRICULUM §3.2 what-catches-what matrix seeds (P4-068). Fixture tokens only.
+version: 1
+rows:
+  wrong_word_or_meaning:
+    curriculum_ref: "§3.2 L501-L502"
+    primary:
+      - lexicon_anchor
+      - backtranslation
+    backup:
+      - crosscheck_disapprove
+    residual: linguist_sample
+    seed:
+      lexicon:
+        - {form: "abi"}
+      dialogue: "abi omo"
+      backtranslation:
+        language: yo
+        target_text: "abi omo"
+        intended_meaning: "we greet warmly"
+        mock_english: "unrelated warehouse stock"
+      crosscheck:
+        cross: {approves: false, naturalness: 2}
+        tie: {approves: false, naturalness: 2}
+
+  missing_or_wrong_tone_marks:
+    curriculum_ref: "§3.2 L503"
+    primary:
+      - tone_agreement
+    backup:
+      - linguist_residual
+    residual: linguist
+    seed:
+      lexicon_form: "\u1eb9\u1e63in"
+      generator_form: "esin"
+      restorer: "esin"
+
+  hausa_tone_and_vowel_length:
+    curriculum_ref: "§3.2 L504"
+    primary:
+      - hausa_teaching_mark
+    backup:
+      - linguist_residual
+    residual: linguist
+    seed:
+      surface: "\u00e0"
+      lexicon: "a\u0300"
+      dictionary_sourced: false
+
+  noun_class_concord_errors:
+    curriculum_ref: "§3.2 L505"
+    primary:
+      - concord_linter
+      - zulmorph_parse
+    backup:
+      - crosscheck_disapprove
+    residual: null
+    seed:
+      language: sw
+      concord:
+        id: "sw.conc.0123456789ab"
+        noun: {in_lexicon: false, class_pair: null}
+        subject: "wa"
+        object: "m"
+        adjective: "m"
+      crosscheck:
+        cross: {approves: false, naturalness: 2}
+        tie: {approves: false, naturalness: 2}
+
+  unnatural_anglicised_phrasing:
+    curriculum_ref: "§3.2 L506-L511"
+    primary:
+      - crosscheck_naturalness
+      - anglicisation_detector
+    backup:
+      - learner_flags
+    residual: native_validators
+    seed:
+      language: pcm
+      text: "How you dey?"
+      anglicisation_rating: {naturalness: 2, anglicised: false}
+      crosscheck:
+        cross: {approves: false, naturalness: 2}
+        tie: {approves: false, naturalness: 2}
+      learner_flag:
+        item_id: "pcm.nat.0123456789ab"
+        learner_id: "learner-matrix"
+        note: "fixture anglicised phrasing"
+
+  false_grammar_culture_claims:
+    curriculum_ref: "§3.2 L512-L513"
+    primary:
+      - claim_entailment
+    backup:
+      - linguist_residual
+    residual: linguist_or_cultural_reviewer
+    seed:
+      claim:
+        section: "grammar_note"
+        text: "fixture unsupported grammar claim"
+        citation: {source_id: "fixture-src", locator: "p.1"}
+      passage:
+        - {source_id: "fixture-src", locator: "p.1", passage: "The fixture passage supports the claim."}
+      entailed: false
+
+  wrong_register_honorifics:
+    curriculum_ref: "§3.2 L514-L516"
+    primary:
+      - honorific_register_list
+    backup:
+      - crosscheck_disapprove
+    residual: linguist
+    note: "Full HONORIFIC_MISMATCH linter is P4-052 (Draft); matrix uses kit list + high-risk gate."
+    seed:
+      respect_sensitive_unit: true
+      text: "bawo ni o se"
+      honorifics:
+        elder: "\u1eb9"
+      honorific_surfaces: ["o"]
+      crosscheck:
+        cross: {approves: false, naturalness: 2}
+        tie: {approves: false, naturalness: 2}
+
+  placeholders_empty_broken:
+    curriculum_ref: "§3.2 L517"
+    primary:
+      - placeholder_lint
+    backup:
+      - schema_validator
+    residual: ci_blocks_build
+    seed:
+      placeholder_text: "word1 meaning here"
+      broken_json: '{"id": "yo.lex.0123456789ab", "lang": '
