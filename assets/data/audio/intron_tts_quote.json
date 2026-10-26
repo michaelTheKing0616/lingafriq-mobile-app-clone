@@ -1,0 +1,82 @@
+{
+  "charter": "v2",
+  "card_id": "P5-071",
+  "stack_doc": "docs/plan/LINGAFRIQ_AI_MODEL_STACK.md",
+  "stack_section": "3.5",
+  "sources": [
+    "docs/plan/LINGAFRIQ_AI_MODEL_STACK.md#§3.5",
+    "docs/source/CURRICULUM.md#§7:L706-L709",
+    "CP-§7-yo-08",
+    "CP-§7-09"
+  ],
+  "quote": {
+    "vendor": "intron",
+    "status": "pending",
+    "price_per_character": null,
+    "currency": null,
+    "terms_recorded": false,
+    "note": "No vendor quote on file; pricing remains [verify] per AI stack §3.5. Do not enable Intron TTS until quote, terms, and AI_INTRON_ENABLED are set server-side."
+  },
+  "server_gate": {
+    "env_flag": "AI_INTRON_ENABLED",
+    "expected_until_quote": false,
+    "api_key_env": "INTRON_API_KEY",
+    "client_exposure_forbidden": true
+  },
+  "interim_tts_routing": [
+    {
+      "language_id": "yo",
+      "primary": "intron",
+      "fallbacks": ["spitch"],
+      "tone_marked_input_required": true
+    },
+    {
+      "language_id": "ig",
+      "primary": "intron",
+      "fallbacks": ["spitch"],
+      "tone_marked_input_required": true
+    },
+    {
+      "language_id": "ha",
+      "primary": "intron",
+      "fallbacks": ["spitch", "elevenlabs_v3"],
+      "tone_marked_input_required": true
+    },
+    {
+      "language_id": "pcm",
+      "primary": "intron",
+      "fallbacks": ["spitch"],
+      "tone_marked_input_required": false
+    },
+    {
+      "language_id": "sw",
+      "primary": "intron",
+      "fallbacks": [
+        "google_chirp3_hd_sw_ke",
+        "azure_sw_ke",
+        "elevenlabs_v3",
+        "gemini_tts"
+      ],
+      "blind_test_card": "P5-065"
+    },
+    {
+      "language_id": "zu",
+      "primary": "azure_zu_za",
+      "fallbacks": ["custom_voice"],
+      "voices": ["ThandoNeural", "ThembaNeural"]
+    },
+    {
+      "language_id": "xh",
+      "primary": "custom_trained_voice",
+      "fallbacks": [],
+      "procurement_blocker": "EXT-12",
+      "interim_card": "P5-069"
+    }
+  ],
+  "cross_check": {
+    "status": "passed",
+    "checked_at": "2026-10-27",
+    "ext_01_doc": "docs/plan/LINGAFRIQ_AI_MODEL_STACK.md",
+    "vendor_map_matches_stack_section_3_5": true
+  }
+}
