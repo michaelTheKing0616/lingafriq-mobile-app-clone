@@ -1,0 +1,56 @@
+{
+  "card": "P5-083",
+  "built": "2026-10-27",
+  "tracks": {
+    "geez_fidel": {
+      "script_id": "geez_fidel",
+      "title_key": "script.title.geez",
+      "default_title": "Ge'ez / Fidel",
+      "languages": ["am", "ti"],
+      "availability": "available",
+      "lessons_asset": "assets/data/scripts/fidel_geez_lessons.json"
+    },
+    "nko": {
+      "script_id": "nko",
+      "title_key": "script.title.nko",
+      "default_title": "N'Ko",
+      "languages": ["bm-nko", "ff-nko"],
+      "availability": "coming_later",
+      "lessons_asset": null
+    },
+    "adlam": {
+      "script_id": "adlam",
+      "title_key": "script.title.adlam",
+      "default_title": "Adlam",
+      "languages": ["ff-adlm"],
+      "availability": "coming_later",
+      "lessons_asset": null
+    },
+    "tifinagh": {
+      "script_id": "tifinagh",
+      "title_key": "script.title.tifinagh",
+      "default_title": "Tifinagh",
+      "languages": ["tzm-tfng"],
+      "availability": "coming_later",
+      "lessons_asset": null
+    },
+    "ajami": {
+      "script_id": "ajami",
+      "title_key": "script.title.ajami",
+      "default_title": "Ajami",
+      "languages": ["ha-arab", "sw-arab"],
+      "availability": "coming_later",
+      "lessons_asset": null
+    }
+  },
+  "language_to_track": {
+    "am": "geez_fidel",
+    "ti": "geez_fidel",
+    "bm-nko": "nko",
+    "ff-nko": "nko",
+    "ff-adlm": "adlam",
+    "tzm-tfng": "tifinagh",
+    "ha-arab": "ajami",
+    "sw-arab": "ajami"
+  }
+}
