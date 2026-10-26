@@ -795,7 +795,7 @@ P5-030	Done	dialogue_linter.py DL-001/i+1/content-graph; assets/data/dialogues s
 P5-031	Done	Mix item types and hold 80-85% success (difficulty_controller.dart)	P5/P5-031.yaml
 P5-032	Done	content_graph_features.yaml, graph_map_check.py, graph_map_test.py	P5/P5-032.yaml
 P5-033	Done	Limit historical personas to cited cards	P5/P5-033.yaml
-P5-034	Draft	Author cited culture cards with no Beta label	P5/P5-034.yaml
+P5-034	Done	Cited culture cards per lang, culture_linter CU-001..003, culture_test	P5/P5-034.yaml
 P5-035	Draft	Publish proverbs only after linguist review	P5/P5-035.yaml
 P5-036	Draft	Author register and honorific units, Expert-reviewed only	P5/P5-036.yaml
 P5-037	Draft	Design autonomy, competence and relatedness without streak pressure	P5/P5-037.yaml
