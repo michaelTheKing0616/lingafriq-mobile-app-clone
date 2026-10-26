@@ -185,8 +185,11 @@ def set_readiness(
 ) -> None:
     if level not in READINESS_LEVELS:
         raise LanguageRegistryError("READINESS_INVALID", f"unsupported level {level}")
-    for row in _entries(data):
-        if row.get("entry_id") == entry_id:
+    raw = data.get("entries")
+    if not isinstance(raw, list):
+        raise LanguageRegistryError("ENTRIES_MISSING", "entries must be an array")
+    for row in raw:
+        if isinstance(row, dict) and row.get("entry_id") == entry_id:
             row["readiness_level"] = level
             return
     raise LanguageRegistryError("ENTRY_NOT_FOUND", f"unknown entry_id {entry_id}")
@@ -214,15 +217,15 @@ def assert_kit_creation_allowed(
 def assert_wave2_l0_allowed(
     entry: Mapping[str, Any],
     wave1_readiness: Mapping[str, str],
+    *,
+    target_level: str = "L0",
 ) -> None:
-    """Refuse Wave 2 L0 until every Stage-1 language has reached L1."""
-    if entry.get("wave") != 2:
-        return
-    if entry.get("readiness_level") != "L0":
+    """Refuse starting Wave 2 L0 until every Stage-1 language has reached L1."""
+    if entry.get("wave") != 2 or target_level != "L0":
         return
     for lang_id in sorted(WAVE_1_LANGUAGE_IDS):
         level = wave1_readiness.get(lang_id)
-        if level != "L1" and level != "L2" and level != "L3":
+        if level not in ("L1", "L2", "L3"):
             raise LanguageRegistryError(
                 "WAVE_GATE_NOT_MET",
                 f"Wave 2 L0 blocked until Wave 1 language {lang_id} reaches L1; got {level!r}",

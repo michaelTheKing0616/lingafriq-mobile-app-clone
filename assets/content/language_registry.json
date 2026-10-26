@@ -4,25 +4,25 @@
   "sources": [
     "ELEVATION.md#§6.4:L1221-L1262",
     "assets/content/wave_roster_decision.json",
-    "docs/plan/LINGAFRIQ_AI_MODEL_STACK.md"
+    "docs/build/DECISIONS.md#D15"
   ],
   "planning_targets": {
+    "kind": "planning_target",
     "wave_1": 7,
     "wave_2_cumulative": "~21",
     "wave_3_cumulative": "~46",
     "wave_4_cumulative": "95+",
-    "disclaimer": "Planning targets from ELEVATION §6.4; not shipped language counts."
+    "note": "Planning targets from ELEVATION §6.4; not shipped language counts."
   },
   "entries": [
     {
-      "entry_id": "yo",
-      "language_id": "yo",
-      "name": "Yoruba",
+      "entry_id": "ha",
+      "language_id": "ha",
+      "name": "Hausa",
       "wave": 1,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "ig",
@@ -31,18 +31,7 @@
       "wave": 1,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
-    },
-    {
-      "entry_id": "ha",
-      "language_id": "ha",
-      "name": "Hausa",
-      "wave": 1,
-      "script": "Latn",
-      "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "pcm",
@@ -51,8 +40,7 @@
       "wave": 1,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "sw",
@@ -61,8 +49,7 @@
       "wave": 1,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "xh",
@@ -71,8 +58,16 @@
       "wave": 1,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
+    },
+    {
+      "entry_id": "yo",
+      "language_id": "yo",
+      "name": "Yoruba",
+      "wave": 1,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false
     },
     {
       "entry_id": "zu",
@@ -81,8 +76,7 @@
       "wave": 1,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "am",
@@ -91,8 +85,7 @@
       "wave": 2,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "tw",
@@ -101,8 +94,7 @@
       "wave": 2,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "so",
@@ -111,8 +103,7 @@
       "wave": 2,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "rw",
@@ -121,8 +112,7 @@
       "wave": 2,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "af",
@@ -131,8 +121,7 @@
       "wave": 2,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "sn",
@@ -141,8 +130,7 @@
       "wave": 2,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "wo",
@@ -151,8 +139,7 @@
       "wave": 2,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "om",
@@ -161,8 +148,7 @@
       "wave": 2,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "lg",
@@ -171,8 +157,7 @@
       "wave": 2,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "ln",
@@ -181,8 +166,7 @@
       "wave": 2,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "st",
@@ -191,8 +175,7 @@
       "wave": 2,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "tn",
@@ -201,8 +184,7 @@
       "wave": 2,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "ny",
@@ -211,8 +193,7 @@
       "wave": 2,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "mg",
@@ -221,8 +202,7 @@
       "wave": 2,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "ti",
@@ -231,8 +211,7 @@
       "wave": 3,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "ee",
@@ -241,8 +220,7 @@
       "wave": 3,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "fon",
@@ -251,8 +229,7 @@
       "wave": 3,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "ff-Latn",
@@ -261,8 +238,7 @@
       "wave": 3,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "ff-Adlm",
@@ -271,8 +247,7 @@
       "wave": 3,
       "script": "Adlm",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "bm-Latn",
@@ -281,8 +256,7 @@
       "wave": 3,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "bm-Nkoo",
@@ -291,8 +265,7 @@
       "wave": 3,
       "script": "Nkoo",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "kg",
@@ -301,8 +274,7 @@
       "wave": 3,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "ki",
@@ -311,8 +283,7 @@
       "wave": 3,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "luo",
@@ -321,8 +292,7 @@
       "wave": 3,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "rn",
@@ -331,8 +301,7 @@
       "wave": 3,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "tzm-Tfng",
@@ -341,8 +310,7 @@
       "wave": 3,
       "script": "Tfng",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "tzm-Latn",
@@ -351,8 +319,7 @@
       "wave": 3,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "gaa",
@@ -361,8 +328,7 @@
       "wave": 3,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "efi",
@@ -371,8 +337,7 @@
       "wave": 3,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "tiv",
@@ -381,8 +346,7 @@
       "wave": 3,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "kr",
@@ -391,8 +355,7 @@
       "wave": 3,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "bin",
@@ -401,8 +364,7 @@
       "wave": 3,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "sg",
@@ -411,8 +373,7 @@
       "wave": 3,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "kri",
@@ -421,8 +382,7 @@
       "wave": 3,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "kea",
@@ -431,8 +391,7 @@
       "wave": 3,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "nso",
@@ -441,8 +400,7 @@
       "wave": 3,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "ts",
@@ -451,8 +409,7 @@
       "wave": 3,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "ve",
@@ -461,8 +418,7 @@
       "wave": 3,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "ss",
@@ -471,8 +427,7 @@
       "wave": 3,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "nr",
@@ -481,8 +436,7 @@
       "wave": 3,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "kam",
@@ -491,8 +445,7 @@
       "wave": 3,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "mfe",
@@ -501,8 +454,25 @@
       "wave": 3,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
+    },
+    {
+      "entry_id": "ar-eg",
+      "language_id": "ar-eg",
+      "name": "Egyptian Arabic",
+      "wave": 4,
+      "script": "Arab",
+      "readiness_level": null,
+      "community_consent_required": false
+    },
+    {
+      "entry_id": "ary",
+      "language_id": "ary",
+      "name": "Moroccan Darija",
+      "wave": 4,
+      "script": "Arab",
+      "readiness_level": null,
+      "community_consent_required": false
     },
     {
       "entry_id": "urh",
@@ -511,8 +481,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "nup",
@@ -521,8 +490,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "igl",
@@ -531,8 +499,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "idu",
@@ -541,8 +508,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "ijc",
@@ -551,8 +517,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "its",
@@ -561,8 +526,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "ebr",
@@ -571,8 +535,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "bem",
@@ -581,8 +544,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "toi",
@@ -591,8 +553,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "loz",
@@ -601,8 +562,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "vmw",
@@ -611,8 +571,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "seh",
@@ -621,8 +580,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "umb",
@@ -631,8 +589,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "kmb",
@@ -641,8 +598,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "lua",
@@ -651,8 +607,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "men",
@@ -661,8 +616,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "tem",
@@ -671,8 +625,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "dag",
@@ -681,8 +634,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "dga",
@@ -691,8 +643,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "mos",
@@ -701,8 +652,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "dyu",
@@ -711,8 +661,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "snk",
@@ -721,8 +670,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "srr",
@@ -731,8 +679,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "kbp",
@@ -741,8 +688,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "sid",
@@ -751,8 +697,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "wal",
@@ -761,8 +706,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "aar",
@@ -771,8 +715,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "hdy",
@@ -781,8 +724,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "din",
@@ -791,8 +733,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "nus",
@@ -801,8 +742,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "ach",
@@ -811,8 +751,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "lgg",
@@ -821,8 +760,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "nyn",
@@ -831,8 +769,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "kln",
@@ -841,8 +778,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "mas",
@@ -851,8 +787,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "luy",
@@ -861,8 +796,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "guz",
@@ -871,18 +805,16 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
-      "entry_id": "jmc",
-      "language_id": "jmc",
+      "entry_id": "chg",
+      "language_id": "chg",
       "name": "Chaga",
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "suk",
@@ -891,8 +823,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "nym",
@@ -901,8 +832,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "mey",
@@ -911,8 +841,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "fia",
@@ -921,8 +850,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "naq",
@@ -931,8 +859,7 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     },
     {
       "entry_id": "ngh",
@@ -941,38 +868,16 @@
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": true,
-      "consent": null
+      "community_consent_required": true
     },
     {
       "entry_id": "gez",
       "language_id": "gez",
-      "name": "Ge'ez",
+      "name": "Ge'ez (liturgical)",
       "wave": 4,
       "script": "Latn",
       "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
-    },
-    {
-      "entry_id": "ar-eg",
-      "language_id": "ar-eg",
-      "name": "Egyptian Arabic",
-      "wave": 4,
-      "script": "Latn",
-      "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
-    },
-    {
-      "entry_id": "ary",
-      "language_id": "ary",
-      "name": "Moroccan Darija",
-      "wave": 4,
-      "script": "Latn",
-      "readiness_level": null,
-      "community_consent_required": false,
-      "consent": null
+      "community_consent_required": false
     }
   ]
 }
