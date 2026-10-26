@@ -135,7 +135,10 @@ import 'package:lingafriq/screens/passport/passport_route_args.dart';
 import 'package:lingafriq/screens/passport/passport_proctored_session_screen.dart';
 import 'package:lingafriq/screens/passport/passport_credential_screen.dart';
 import 'package:lingafriq/screens/community/micro_mentor_hub_screen.dart';
+import 'lessons/handwriting_practice.dart';
+import 'lessons/script_track.dart';
 import 'lessons/models/section_lesson_model.dart';
+import 'lessons/stroke_order_view.dart';
 import 'models/language_response.dart';
 import 'models/offline/local_vocabulary.dart';
 import 'widgets/empty_state_widget.dart';
@@ -534,6 +537,20 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     },
     'micro-mentor-hub': (_) => const MicroMentorHubScreen(),
     'quality-report': (_) => const QualityReportScreen(),
+    'script-track': (_) {
+      final args = settings.arguments as Map<String, dynamic>?;
+      return _ScriptTrackRouteScreen(
+        languageCode: args?['languageCode']?.toString() ?? 'am',
+      );
+    },
+    'stroke-order-practice': (_) {
+      final args = settings.arguments as Map<String, dynamic>?;
+      final character = args?['character']?.toString().trim();
+      return _StrokePracticeRouteScreen(
+        character: (character == null || character.isEmpty) ? '\u1200' : character,
+        romanization: args?['romanization']?.toString().trim() ?? '',
+      );
+    },
     'suggest-fix': (ctx) {
       final args = settings.arguments as Map<String, dynamic>?;
       final itemId = args?['itemId']?.toString().trim();
@@ -703,6 +720,105 @@ class _Unfocus extends StatelessWidget {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: child,
+    );
+  }
+}
+
+class _ScriptTrackRouteScreen extends StatefulWidget {
+  const _ScriptTrackRouteScreen({required this.languageCode});
+
+  final String languageCode;
+
+  @override
+  State<_ScriptTrackRouteScreen> createState() => _ScriptTrackRouteScreenState();
+}
+
+class _ScriptTrackRouteScreenState extends State<_ScriptTrackRouteScreen> {
+  ScriptTrackView? _view;
+  String? _selectedLessonId;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    unawaited(_load());
+  }
+
+  Future<void> _load() async {
+    try {
+      final catalog = await loadScriptTracksCatalogFromAsset();
+      final lessonsJson = await rootBundle.loadString('assets/data/scripts/fidel_geez_lessons.json');
+      final lessons = loadScriptLessonsFromJson(lessonsJson);
+      final view = resolveScriptTrack(
+        catalog: catalog,
+        languageCode: widget.languageCode,
+        geezLessons: lessons,
+      );
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _view = view;
+        _error = null;
+      });
+    } catch (err) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _error = err.toString();
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final view = _view;
+    if (_error != null) {
+      return _namedRouteArgumentIssueScaffold(context, _error!);
+    }
+    if (view == null) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator.adaptive()));
+    }
+    return Scaffold(
+      appBar: AppBar(title: const Text('Script track')),
+      body: SafeArea(
+        child: ScriptTrackPanel(
+          view: view,
+          selectedLessonId: _selectedLessonId,
+          onOpenLesson: (lesson) => setState(() => _selectedLessonId = lesson.lessonId),
+        ),
+      ),
+    );
+  }
+}
+
+class _StrokePracticeRouteScreen extends StatelessWidget {
+  const _StrokePracticeRouteScreen({
+    required this.character,
+    required this.romanization,
+  });
+
+  final String character;
+  final String romanization;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Stroke practice')),
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            StrokeOrderView(
+              character: character,
+              romanization: romanization,
+            ),
+            const SizedBox(height: 16),
+            HandwritingPracticePanel(character: character),
+          ],
+        ),
+      ),
     );
   }
 }
