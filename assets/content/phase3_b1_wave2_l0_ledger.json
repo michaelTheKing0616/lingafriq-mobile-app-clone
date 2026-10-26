@@ -1,0 +1,29 @@
+{
+  "card_id": "P5-079",
+  "updated_on": "2026-10-27",
+  "b1_units_published": [
+    { "language_id": "yo", "published": false, "blocker": "unit_pack_publish" },
+    { "language_id": "ig", "published": false, "blocker": "unit_pack_publish" },
+    { "language_id": "ha", "published": false, "blocker": "b1_lexicon_shortfall" },
+    { "language_id": "pcm", "published": false, "blocker": "b1_lexicon_shortfall" },
+    { "language_id": "sw", "published": false, "blocker": "unit_pack_publish" },
+    { "language_id": "zu", "published": false, "blocker": "b1_lexicon_shortfall" },
+    { "language_id": "xh", "published": false, "blocker": "b1_lexicon_shortfall" }
+  ],
+  "wave2_l0_taste": [
+    { "language_id": "am", "kit_exists": false, "lexicon_source_registered": false, "l0_taste_expert_reviewed": false, "blocker": "P4-120" },
+    { "language_id": "tw", "kit_exists": false, "lexicon_source_registered": false, "l0_taste_expert_reviewed": false, "blocker": "P4-120" },
+    { "language_id": "so", "kit_exists": false, "lexicon_source_registered": false, "l0_taste_expert_reviewed": false, "blocker": "P4-120" },
+    { "language_id": "rw", "kit_exists": false, "lexicon_source_registered": false, "l0_taste_expert_reviewed": false, "blocker": "P4-120" },
+    { "language_id": "af", "kit_exists": false, "lexicon_source_registered": false, "l0_taste_expert_reviewed": false, "blocker": "P4-120" },
+    { "language_id": "sn", "kit_exists": false, "lexicon_source_registered": false, "l0_taste_expert_reviewed": false, "blocker": "P4-120" },
+    { "language_id": "wo", "kit_exists": false, "lexicon_source_registered": false, "l0_taste_expert_reviewed": false, "blocker": "P4-120" },
+    { "language_id": "om", "kit_exists": false, "lexicon_source_registered": false, "l0_taste_expert_reviewed": false, "blocker": "P4-120" },
+    { "language_id": "lg", "kit_exists": false, "lexicon_source_registered": false, "l0_taste_expert_reviewed": false, "blocker": "P4-120" },
+    { "language_id": "ln", "kit_exists": false, "lexicon_source_registered": false, "l0_taste_expert_reviewed": false, "blocker": "P4-120" },
+    { "language_id": "st", "kit_exists": false, "lexicon_source_registered": false, "l0_taste_expert_reviewed": false, "blocker": "P4-120" },
+    { "language_id": "tn", "kit_exists": false, "lexicon_source_registered": false, "l0_taste_expert_reviewed": false, "blocker": "P4-120" },
+    { "language_id": "ny", "kit_exists": false, "lexicon_source_registered": false, "l0_taste_expert_reviewed": false, "blocker": "P4-120" },
+    { "language_id": "mg", "kit_exists": false, "lexicon_source_registered": false, "l0_taste_expert_reviewed": false, "blocker": "P4-120" }
+  ]
+}
