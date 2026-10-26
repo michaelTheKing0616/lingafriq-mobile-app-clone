@@ -845,7 +845,7 @@ P5-080	Done	Phase 4 scale plan ADR months 9-24 (phase4_scale_plan_decision.json)
 P5-081	Done	A2 cumulative lexicon (~1500) via lexicon_select.py; ha shortfall gates at 940	P5/P5-081.yaml
 P5-082	Done	Select B1 lexicon to about 2,500-3,000 cumulative lexemes (lexicon_select.py, assets/data/lexicon/b1/)	P5/P5-082.yaml
 P5-083	Done	Script tracks catalog + Fidel lessons; N'Ko/Adlam/Tifinagh/Ajami coming-later (script_track.dart)	P5/P5-083.yaml
-P5-084	Draft	Add stroke-order animation and handwriting practice	P5/P5-084.yaml
+P5-084	Done	Stroke-order view + on-device handwriting practice; Fidel glyphs unavailable until sourced fixtures	P5/P5-084.yaml
 P5-085	Draft	Measure machine pipeline throughput in Phase 1	P5/P5-085.yaml
 P5-086	Draft	Measure linguist review throughput	P5/P5-086.yaml
 P5-087	Draft	Measure publishable items per week and A1 and A1-B1 timelines	P5/P5-087.yaml
