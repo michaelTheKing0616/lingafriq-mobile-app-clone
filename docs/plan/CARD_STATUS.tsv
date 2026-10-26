@@ -826,7 +826,7 @@ P5-061	Done	Wire Igbo TTS with 200-sample linguist check (ig_tts.dart, ig_listen
 P5-062	Done	Hausa TTS Intron→Spitch→ElevenLabs v3 client (ha_tts.dart)	P5/P5-062.yaml
 P5-063	Done	Register licensed human audio for yo, ig, ha (licensed_audio_register.py)	P5/P5-063.yaml
 P5-064	Done	Wire Nigerian Pidgin TTS with round-trip and listen gate	P5/P5-064.yaml
-P5-065	Draft	'Decide Swahili TTS by blind test: Intron, Chirp 3 HD, Azure'	P5/P5-065.yaml
+P5-065	Done	Swahili TTS blind-test ADR (sw_tts_decision.json, sw_tts_decision.py)	P5/P5-065.yaml
 P5-066	Draft	Wire Swahili TTS and Common Voice audio	P5/P5-066.yaml
 P5-067	Draft	Wire isiZulu TTS with Azure zu-ZA Thando and Themba	P5/P5-067.yaml
 P5-068	Draft	'Decide isiXhosa voice: Option B custom voice, Option A interim'	P5/P5-068.yaml
