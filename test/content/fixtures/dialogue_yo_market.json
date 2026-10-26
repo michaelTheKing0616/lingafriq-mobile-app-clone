@@ -1,0 +1,54 @@
+{
+  "id": "yo.dlg.marketgreeting",
+  "scene": "Buyer greets a market seller",
+  "roles": [
+    { "role_id": "buyer", "display_name": "Buyer" },
+    { "role_id": "seller", "display_name": "Seller" }
+  ],
+  "can_do_ids": ["yo.A1.SOC.greet_market"],
+  "turns": [
+    {
+      "speaker": "buyer",
+      "text": "Ẹ káàbọ̀",
+      "gloss": "Welcome / greetings",
+      "tone_pattern": ["H", "L", "M"],
+      "audio": {
+        "kind": "human",
+        "uri": "audio/yo/fe90dbe72f33bc7c.ogg",
+        "text_hash": "fe90dbe72f33bc7c",
+        "voice_id": "yo_f_lagos_01"
+      }
+    },
+    {
+      "speaker": "seller",
+      "text": "Ẹ ṣé",
+      "gloss": "Thank you",
+      "tone_pattern": ["M", "M"],
+      "audio": {
+        "kind": "human",
+        "uri": "audio/yo/25222791a714594a.ogg",
+        "text_hash": "25222791a714594a",
+        "voice_id": "yo_m_ibadan_02"
+      }
+    }
+  ],
+  "comprehension_items": ["yo.item.dlg_market_q1"],
+  "label": "expert_reviewed",
+  "provenance": {
+    "author": "content-studio",
+    "created_at": "2026-10-26T10:00:00Z",
+    "ai_assisted": false,
+    "sources": [
+      {
+        "name": "Salvaged dialogue draft",
+        "licence": "CC BY 4.0",
+        "uri_or_citation": "curriculum/dialogues/yo/market",
+        "retrieved_at": "2026-10-26T10:00:00Z"
+      }
+    ]
+  },
+  "claims": [{ "kind": "cultural", "source_ref": "dialogue:yo:market" }],
+  "confidence": 0.88,
+  "risk_tags": [],
+  "audio": []
+}
