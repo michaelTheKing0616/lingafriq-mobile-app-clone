@@ -1,0 +1,79 @@
+{
+  "charter": "v2",
+  "card_id": "P5-088",
+  "gate": "G5",
+  "depends_on": ["P5-085", "EXT-01"],
+  "sources": [
+    "docs/source/CURRICULUM.md#§9.4:L830-L832",
+    "docs/plan/LINGAFRIQ_AI_MODEL_STACK.md",
+    "CP-§9.4-01",
+    "CP-§9.4-02",
+    "CP-§9.4-17"
+  ],
+  "planning_band": {
+    "items_per_language_min": 10000,
+    "items_per_language_max": 12000,
+    "model_passes_per_item": 4,
+    "usd_per_language_min": 500,
+    "usd_per_language_max": 1500,
+    "usd_stage1_min": 4000,
+    "usd_stage1_max": 10000,
+    "source": "docs/source/CURRICULUM.md#§9.4:L830-L832",
+    "estimate": true
+  },
+  "ext01_model_rates": {
+    "gemini_3_1_pro": {
+      "model_id": "gemini-3.1-pro",
+      "input_usd_per_million": 2.0,
+      "output_usd_per_million": 12.0,
+      "source_anchor": "docs/plan/LINGAFRIQ_AI_MODEL_STACK.md#§3.5:L144"
+    },
+    "gemini_3_flash": {
+      "model_id": "gemini-3-flash",
+      "input_usd_per_million": 0.5,
+      "output_usd_per_million": 3.0,
+      "source_anchor": "docs/plan/LINGAFRIQ_AI_MODEL_STACK.md#§3.5:L142"
+    },
+    "gpt_5_mini": {
+      "model_id": "gpt-5-mini",
+      "input_usd_per_million": 0.25,
+      "output_usd_per_million": 2.0,
+      "source_anchor": "docs/plan/LINGAFRIQ_AI_MODEL_STACK.md#§3.5:L145"
+    }
+  },
+  "token_profile_per_pass": [
+    {
+      "pass_id": "draft",
+      "model_key": "gemini_3_1_pro",
+      "pipeline_step": "content_engine.pipeline.generate",
+      "input_tokens": 3200,
+      "output_tokens": 1400,
+      "note": "Engineering estimate per item; not measured production tokens."
+    },
+    {
+      "pass_id": "crosscheck",
+      "model_key": "gpt_5_mini",
+      "pipeline_step": "content_engine.pipeline.crosscheck",
+      "input_tokens": 2800,
+      "output_tokens": 600,
+      "note": "Second-family verifier pass."
+    },
+    {
+      "pass_id": "entailment",
+      "model_key": "gemini_3_flash",
+      "pipeline_step": "content_engine.pipeline.entailment",
+      "input_tokens": 2200,
+      "output_tokens": 350,
+      "note": "Culture/grammar claim grounding."
+    },
+    {
+      "pass_id": "variant",
+      "model_key": "gemini_3_flash",
+      "pipeline_step": "content_engine.pipeline.generate (variant)",
+      "input_tokens": 2600,
+      "output_tokens": 900,
+      "note": "Distractor / back-translation style variant pass."
+    }
+  ],
+  "llm_generation_cost_verifications": []
+}
