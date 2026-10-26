@@ -22,7 +22,10 @@ tiers:
   reviewer: T2
   justification: decision record; judgment, no code
 token_budget: 20000
-file_allowlist: []
+file_allowlist:
+- assets/content/phase4_scale_plan_decision.json
+- tools/content/phase4_scale_plan_decision.py
+- test/content/test_phase4_scale_plan_decision.py
 context_anchors:
 - CURRICULUM.md#§9.2:L813-L815
 acceptance_criteria:
@@ -43,7 +46,7 @@ dod_evidence:
 risks: []
 gate: G7
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/10-analysis-and-decision-support

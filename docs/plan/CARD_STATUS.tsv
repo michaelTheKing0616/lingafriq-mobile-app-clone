@@ -841,7 +841,7 @@ P5-076	Done	Phase 0 exit checklist (phase0_foundations_exit.py; gate fails on EX
 P5-077	Done	Phase 1 A1 Beta exit checklist (phase1_a1_beta_exit.py; lexicon anchor, TTS, blind ledger)	P5/P5-077.yaml
 P5-078	Done	Verify Phase 2 A2 and promotion exit (phase2_a2_promotion_exit.py)	P5/P5-078.yaml
 P5-079	Done	Verify Phase 3 B1 and Wave 2 L0 exit (phase3_b1_wave2_l0_exit.py)	P5/P5-079.yaml
-P5-080	Draft	Decide Phase 4 scale plan for months 9-24	P5/P5-080.yaml
+P5-080	Done	Phase 4 scale plan ADR months 9-24 (phase4_scale_plan_decision.json)	P5/P5-080.yaml
 P5-081	Done	A2 cumulative lexicon (~1500) via lexicon_select.py; ha shortfall gates at 940	P5/P5-081.yaml
 P5-082	Done	Select B1 lexicon to about 2,500-3,000 cumulative lexemes (lexicon_select.py, assets/data/lexicon/b1/)	P5/P5-082.yaml
 P5-083	Draft	Build script learning tracks for Fidel, N'Ko, Adlam, Tifinagh, Ajami	P5/P5-083.yaml
