@@ -788,7 +788,7 @@ P5-023	Done	isiZulu A1 subject concords classes 1–15 (zu.json, pattern_zu_test
 P5-024	Done	A1 pattern libraries ig/ha/pcm/xh + pattern_p5_024_test.py (P5-024)	P5/P5-024.yaml
 P5-025	Done	Grammar aha cards from patterns (grammar_aha_card.dart, PatternContrastMissing)	P5/P5-025.yaml
 P5-026	Done	Tone perception drills: minimal_pairs.json, tone_perception_drill.dart, sourced ọkọ́/ọkọ̀	P5/P5-026.yaml
-P5-027	Draft	Replace global 3-tone model with per-language tone models	P5/P5-027.yaml
+P5-027	Done	Per-language tone models (tone_models.dart, models.json)	P5/P5-027.yaml
 P5-028	Draft	Add click and vowel/stress drills for xh, zu, sw	P5/P5-028.yaml
 P5-029	Draft	Give specific feedback on tone production drills	P5/P5-029.yaml
 P5-030	Draft	Author dialogues and scenes at i+1 with unique lines	P5/P5-030.yaml
