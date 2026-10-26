@@ -812,7 +812,7 @@ P5-047	Done	Publish error rate per language and label (quality.routes.ts, qualit
 P5-048	Done	Compute IRT item statistics and flag abnormal items (irt_stats.py)	P5/P5-048.yaml
 P5-049	Done	Verify Tier A Beta error ≤3% for Swahili (tier_beta_verification.py)	P5/P5-049.yaml
 P5-050	Done	Verify Tier B Beta error ≤5% for zu, xh, ha, pcm (tier_b_beta_verification.py)	P5/P5-050.yaml
-P5-051	Draft	Verify Tier C Beta error ≤5% for Yoruba and Igbo	P5/P5-051.yaml
+P5-051	Done	Verify Tier C Beta error ≤5% for yo/ig anchored tokens (tier_c_beta_verification.py)	P5/P5-051.yaml
 P5-052	Draft	Verify Tier A Expert error ≤1% for Swahili	P5/P5-052.yaml
 P5-053	Draft	Verify Tier B Expert error ≤1.5%	P5/P5-053.yaml
 P5-054	Draft	Verify Tier C Expert error ≤1.5%	P5/P5-054.yaml
