@@ -46,7 +46,7 @@ risks:
 - planning targets, not promises
 gate: G4
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/10-analysis-and-decision-support

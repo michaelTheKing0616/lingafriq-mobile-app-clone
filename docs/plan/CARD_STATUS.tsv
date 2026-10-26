@@ -719,7 +719,7 @@ P4-105	Done	Build signed semver content packs with hash filenames	P4/P4-105.yaml
 P4-106	Done	Content validator and CI linters (validate_content.py, content-validate.yml)	P4/P4-106.yaml
 P4-107	Done	Migrate four legacy bundles into v2 schema (migrate_legacy_bundles.py)	P4/P4-107.yaml
 P4-110	Done	Implement readiness levels L0-L3 with promotion gates (readiness.py)	P4/P4-110.yaml
-P4-111	Draft	Decide Wave 2-4 rosters and Arabic/Darija inclusion	P4/P4-111.yaml
+P4-111	Done	Wave 2-4 rosters and Arabic/Darija ADR (wave_roster_decision.json)	P4/P4-111.yaml
 P4-112	Draft	Build language registry with waves, scripts and consent flags	P4/P4-112.yaml
 P4-113	Draft	Encode Stage 1 vendor coverage and level targets	P4/P4-113.yaml
 P4-114	Draft	Build quarterly next-language scoring tool	P4/P4-114.yaml
