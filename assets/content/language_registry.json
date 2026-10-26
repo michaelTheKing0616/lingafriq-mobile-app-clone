@@ -1,0 +1,978 @@
+{
+  "charter": "v2",
+  "card_id": "P4-112",
+  "sources": [
+    "ELEVATION.md#§6.4:L1221-L1262",
+    "assets/content/wave_roster_decision.json",
+    "docs/plan/LINGAFRIQ_AI_MODEL_STACK.md"
+  ],
+  "planning_targets": {
+    "wave_1": 7,
+    "wave_2_cumulative": "~21",
+    "wave_3_cumulative": "~46",
+    "wave_4_cumulative": "95+",
+    "disclaimer": "Planning targets from ELEVATION §6.4; not shipped language counts."
+  },
+  "entries": [
+    {
+      "entry_id": "yo",
+      "language_id": "yo",
+      "name": "Yoruba",
+      "wave": 1,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "ig",
+      "language_id": "ig",
+      "name": "Igbo",
+      "wave": 1,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "ha",
+      "language_id": "ha",
+      "name": "Hausa",
+      "wave": 1,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "pcm",
+      "language_id": "pcm",
+      "name": "Nigerian Pidgin (Naijá)",
+      "wave": 1,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "sw",
+      "language_id": "sw",
+      "name": "Swahili",
+      "wave": 1,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "xh",
+      "language_id": "xh",
+      "name": "isiXhosa",
+      "wave": 1,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "zu",
+      "language_id": "zu",
+      "name": "isiZulu",
+      "wave": 1,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "am",
+      "language_id": "am",
+      "name": "Amharic",
+      "wave": 2,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "tw",
+      "language_id": "tw",
+      "name": "Twi (Akan)",
+      "wave": 2,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "so",
+      "language_id": "so",
+      "name": "Somali",
+      "wave": 2,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "rw",
+      "language_id": "rw",
+      "name": "Kinyarwanda",
+      "wave": 2,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "af",
+      "language_id": "af",
+      "name": "Afrikaans",
+      "wave": 2,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "sn",
+      "language_id": "sn",
+      "name": "Shona",
+      "wave": 2,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "wo",
+      "language_id": "wo",
+      "name": "Wolof",
+      "wave": 2,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "om",
+      "language_id": "om",
+      "name": "Oromo",
+      "wave": 2,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "lg",
+      "language_id": "lg",
+      "name": "Luganda",
+      "wave": 2,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "ln",
+      "language_id": "ln",
+      "name": "Lingala",
+      "wave": 2,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "st",
+      "language_id": "st",
+      "name": "Sesotho",
+      "wave": 2,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "tn",
+      "language_id": "tn",
+      "name": "Setswana",
+      "wave": 2,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "ny",
+      "language_id": "ny",
+      "name": "Chichewa/Nyanja",
+      "wave": 2,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "mg",
+      "language_id": "mg",
+      "name": "Malagasy",
+      "wave": 2,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "ti",
+      "language_id": "ti",
+      "name": "Tigrinya",
+      "wave": 3,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "ee",
+      "language_id": "ee",
+      "name": "Ewe",
+      "wave": 3,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "fon",
+      "language_id": "fon",
+      "name": "Fon",
+      "wave": 3,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "ff-Latn",
+      "language_id": "ff",
+      "name": "Fula/Fulfulde",
+      "wave": 3,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "ff-Adlm",
+      "language_id": "ff",
+      "name": "Fula/Fulfulde",
+      "wave": 3,
+      "script": "Adlm",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "bm-Latn",
+      "language_id": "bm",
+      "name": "Bambara",
+      "wave": 3,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "bm-Nkoo",
+      "language_id": "bm",
+      "name": "Bambara",
+      "wave": 3,
+      "script": "Nkoo",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "kg",
+      "language_id": "kg",
+      "name": "Kikongo",
+      "wave": 3,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "ki",
+      "language_id": "ki",
+      "name": "Kikuyu",
+      "wave": 3,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "luo",
+      "language_id": "luo",
+      "name": "Dholuo",
+      "wave": 3,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "rn",
+      "language_id": "rn",
+      "name": "Kirundi",
+      "wave": 3,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "tzm-Tfng",
+      "language_id": "tzm",
+      "name": "Tamazight",
+      "wave": 3,
+      "script": "Tfng",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "tzm-Latn",
+      "language_id": "tzm",
+      "name": "Tamazight",
+      "wave": 3,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "gaa",
+      "language_id": "gaa",
+      "name": "Ga",
+      "wave": 3,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "efi",
+      "language_id": "efi",
+      "name": "Efik/Ibibio",
+      "wave": 3,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "tiv",
+      "language_id": "tiv",
+      "name": "Tiv",
+      "wave": 3,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "kr",
+      "language_id": "kr",
+      "name": "Kanuri",
+      "wave": 3,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "bin",
+      "language_id": "bin",
+      "name": "Edo (Bini)",
+      "wave": 3,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "sg",
+      "language_id": "sg",
+      "name": "Sango",
+      "wave": 3,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "kri",
+      "language_id": "kri",
+      "name": "Krio",
+      "wave": 3,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "kea",
+      "language_id": "kea",
+      "name": "Cape Verdean Kriolu",
+      "wave": 3,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "nso",
+      "language_id": "nso",
+      "name": "Sepedi (Northern Sotho)",
+      "wave": 3,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "ts",
+      "language_id": "ts",
+      "name": "Xitsonga",
+      "wave": 3,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "ve",
+      "language_id": "ve",
+      "name": "Tshivenda",
+      "wave": 3,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "ss",
+      "language_id": "ss",
+      "name": "siSwati",
+      "wave": 3,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "nr",
+      "language_id": "nr",
+      "name": "isiNdebele",
+      "wave": 3,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "kam",
+      "language_id": "kam",
+      "name": "Kamba",
+      "wave": 3,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "mfe",
+      "language_id": "mfe",
+      "name": "Mauritian Creole",
+      "wave": 3,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "urh",
+      "language_id": "urh",
+      "name": "Urhobo",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "nup",
+      "language_id": "nup",
+      "name": "Nupe",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "igl",
+      "language_id": "igl",
+      "name": "Igala",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "idu",
+      "language_id": "idu",
+      "name": "Idoma",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "ijc",
+      "language_id": "ijc",
+      "name": "Ijaw (Izon)",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "its",
+      "language_id": "its",
+      "name": "Itsekiri",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "ebr",
+      "language_id": "ebr",
+      "name": "Ebira",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "bem",
+      "language_id": "bem",
+      "name": "Bemba",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "toi",
+      "language_id": "toi",
+      "name": "Tonga",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "loz",
+      "language_id": "loz",
+      "name": "Lozi",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "vmw",
+      "language_id": "vmw",
+      "name": "Makhuwa",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "seh",
+      "language_id": "seh",
+      "name": "Sena",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "umb",
+      "language_id": "umb",
+      "name": "Umbundu",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "kmb",
+      "language_id": "kmb",
+      "name": "Kimbundu",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "lua",
+      "language_id": "lua",
+      "name": "Tshiluba",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "men",
+      "language_id": "men",
+      "name": "Mende",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "tem",
+      "language_id": "tem",
+      "name": "Temne",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "dag",
+      "language_id": "dag",
+      "name": "Dagbani",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "dga",
+      "language_id": "dga",
+      "name": "Dagaare",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "mos",
+      "language_id": "mos",
+      "name": "Mooré",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "dyu",
+      "language_id": "dyu",
+      "name": "Dyula",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "snk",
+      "language_id": "snk",
+      "name": "Soninke",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "srr",
+      "language_id": "srr",
+      "name": "Serer",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "kbp",
+      "language_id": "kbp",
+      "name": "Kabiye",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "sid",
+      "language_id": "sid",
+      "name": "Sidamo",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "wal",
+      "language_id": "wal",
+      "name": "Wolaytta",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "aar",
+      "language_id": "aar",
+      "name": "Afar",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "hdy",
+      "language_id": "hdy",
+      "name": "Hadiyya",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "din",
+      "language_id": "din",
+      "name": "Dinka",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "nus",
+      "language_id": "nus",
+      "name": "Nuer",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "ach",
+      "language_id": "ach",
+      "name": "Acholi",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "lgg",
+      "language_id": "lgg",
+      "name": "Lugbara",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "nyn",
+      "language_id": "nyn",
+      "name": "Runyankole",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "kln",
+      "language_id": "kln",
+      "name": "Kalenjin",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "mas",
+      "language_id": "mas",
+      "name": "Maasai",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "luy",
+      "language_id": "luy",
+      "name": "Luhya",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "guz",
+      "language_id": "guz",
+      "name": "Gusii",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "jmc",
+      "language_id": "jmc",
+      "name": "Chaga",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "suk",
+      "language_id": "suk",
+      "name": "Sukuma",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "nym",
+      "language_id": "nym",
+      "name": "Nyamwezi",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "mey",
+      "language_id": "mey",
+      "name": "Hassaniya",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "fia",
+      "language_id": "fia",
+      "name": "Nobiin",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "naq",
+      "language_id": "naq",
+      "name": "Khoekhoe (Nama)",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "ngh",
+      "language_id": "ngh",
+      "name": "N|uu",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": true,
+      "consent": null
+    },
+    {
+      "entry_id": "gez",
+      "language_id": "gez",
+      "name": "Ge'ez",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "ar-eg",
+      "language_id": "ar-eg",
+      "name": "Egyptian Arabic",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    },
+    {
+      "entry_id": "ary",
+      "language_id": "ary",
+      "name": "Moroccan Darija",
+      "wave": 4,
+      "script": "Latn",
+      "readiness_level": null,
+      "community_consent_required": false,
+      "consent": null
+    }
+  ]
+}
