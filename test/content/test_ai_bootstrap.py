@@ -22,6 +22,7 @@ from tools.content_pipeline.ai_bootstrap import (  # noqa: E402
     wrap_bootstrap_asset,
 )
 from tools.content_pipeline.language_kit import (  # noqa: E402
+    LanguageKitError,
     create_kit_for_language,
     import_seed_lexicon_entry,
     try_mark_complete,
@@ -221,5 +222,6 @@ def test_wrap_bootstrap_asset() -> None:
 
 def test_build_bootstrap_request_sw() -> None:
     kit = create_kit_for_language("sw", started_at="2026-10-01")
-    with pytest.raises(Exception):
+    with pytest.raises(LanguageKitError) as exc:
         build_bootstrap_request(kit)
+    assert exc.value.code == "KIT_INCOMPLETE"
