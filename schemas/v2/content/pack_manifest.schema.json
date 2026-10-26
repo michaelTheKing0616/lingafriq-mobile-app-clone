@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.lingafriq.com/v2/content/pack_manifest.schema.json",
+  "title": "LingAfriq signed content pack manifest",
+  "description": "Semver manifest with object and blob hashes for v2 content packs (P4-105).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "version",
+    "built_at",
+    "replaces_legacy_bundles",
+    "objects",
+    "blobs"
+  ],
+  "properties": {
+    "format": {
+      "type": "string",
+      "const": "lingafriq.content_pack.v2"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$"
+    },
+    "built_at": { "type": "string", "minLength": 1 },
+    "replaces_legacy_bundles": {
+      "type": "array",
+      "minItems": 4,
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "objects": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/objectEntry" }
+    },
+    "blobs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/blobEntry" }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "objectEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stable_id", "kind", "sha256"],
+      "properties": {
+        "stable_id": { "type": "string", "minLength": 1 },
+        "kind": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "blobEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^blobs/[0-9a-f]{64}\\.[a-z0-9]+$"
+        },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    }
+  }
+}
