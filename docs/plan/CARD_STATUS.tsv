@@ -816,7 +816,7 @@ P5-051	Done	Verify Tier C Beta error ≤5% for yo/ig anchored tokens (tier_c_bet
 P5-052	Done	Verify Tier A Expert error ≤1% for Swahili (tier_a_expert_verification.py)	P5/P5-052.yaml
 P5-053	Done	Verify Tier B Expert error ≤1.5% (tier_b_expert_verification.py)	P5/P5-053.yaml
 P5-054	Done	Verify Tier C Expert error ≤1.5% (tier_c_expert_verification.py)	P5/P5-054.yaml
-P5-055	Draft	Enforce Waves 2-4 label rules and Expert L0	P5/P5-055.yaml
+P5-055	Done	Enforce Waves 2-4 label rules and Expert L0 (wave_label_rules.py)	P5/P5-055.yaml
 P5-056	Done	Promote high-exposure A1 items to Expert-reviewed (promotion.service.ts)	P5/P5-056.yaml
 P5-057	Draft	Route community fixes into the Verify queue	P5/P5-057.yaml
 P5-058	Draft	Gate every item on audio and labelled synthetic voice	P5/P5-058.yaml
