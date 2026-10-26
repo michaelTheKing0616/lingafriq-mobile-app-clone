@@ -777,7 +777,7 @@ P5-012	Done	Report a mistake sheet + POST /api/v2/content-flags (five categories
 P5-013	Done	Auto-hide flagged items to Under review (flag.service.ts, under_review.dart)	P5/P5-013.yaml
 P5-014	Done	Map every unit to CEFR and ACTFL can-dos (cando_map.json, cando_linter.py)	P5/P5-014.yaml
 P5-015	Done	Mark units mastered by can-do evidence and fix unlock rule (can_do_mastery.dart)	P5/P5-015.yaml
-P5-016	Draft	Select frequency-ranked A1 lexicon, 600-800 lexemes per language	P5/P5-016.yaml
+P5-016	Done	Select frequency-ranked A1 lexicon (`lexicon_select.py`, `assets/data/lexicon/a1/`)	P5/P5-016.yaml
 P5-017	Draft	Restrict tonal Beta to lexicon-anchored tokens	P5/P5-017.yaml
 P5-018	Draft	'Plan spiral exposures: at least 6 per lexeme across units'	P5/P5-018.yaml
 P5-019	Draft	Unify review scheduling on FSRS-6	P5/P5-019.yaml
