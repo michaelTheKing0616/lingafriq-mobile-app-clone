@@ -104,6 +104,7 @@ import 'screens/learning/speak_engine_lab_screen.dart';
 import 'screens/settings/synthetic_voice_styles_screen.dart';
 import 'screens/ar/point_and_say_screen.dart';
 import 'screens/quality_report_screen.dart';
+import 'screens/suggest_fix_sheet.dart';
 import 'screens/social/friend_quests_screen.dart';
 import 'screens/social/create_friend_quest_screen.dart';
 import 'screens/auth/email_verification_screen.dart';
@@ -533,6 +534,30 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     },
     'micro-mentor-hub': (_) => const MicroMentorHubScreen(),
     'quality-report': (_) => const QualityReportScreen(),
+    'suggest-fix': (ctx) {
+      final args = settings.arguments as Map<String, dynamic>?;
+      final itemId = args?['itemId']?.toString().trim();
+      final packVersion = args?['packVersion']?.toString().trim();
+      if (itemId == null ||
+          itemId.isEmpty ||
+          packVersion == null ||
+          packVersion.isEmpty) {
+        return _namedRouteArgumentIssueScaffold(
+          ctx,
+          'Missing required arguments for SuggestFixSheet',
+        );
+      }
+      return Scaffold(
+        appBar: AppBar(title: const Text('Suggest a fix')),
+        body: SafeArea(
+          child: SuggestFixSheet(
+            itemId: itemId,
+            packVersion: packVersion,
+            submitter: SuggestFixSubmitter(),
+          ),
+        ),
+      );
+    },
     'cultural-hub': (_) => const CulturalHubScreen(),
     'vocabulary-builder': (_) => const VocabularyBuilderScreen(),
     'listening-practice': (_) => const ListeningPracticeScreen(),
