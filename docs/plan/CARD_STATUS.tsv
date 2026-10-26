@@ -703,7 +703,7 @@ P4-078	Done	Build quality dashboard	P4/P4-078.yaml
 P4-079	Done	Export reviewer payments by items reviewed	P4/P4-079.yaml
 P4-080	Done	Verify Studio effort estimate	P4/P4-080.yaml
 P4-081	Done	Quarantine placeholder and duplicate legacy bundles	P4/P4-081.yaml
-P4-082	Draft	Salvage real phrases from authentic curriculum JSON	P4/P4-082.yaml
+P4-082	Done	Salvage real phrases from authentic curriculum JSON	P4/P4-082.yaml
 P4-083	Draft	Delete generic grammar sentences from all lessons	P4/P4-083.yaml
 P4-084	Draft	Re-derive legacy tonal notes from lexicon tone patterns	P4/P4-084.yaml
 P4-085	Draft	Regenerate dialogues from can-do targets	P4/P4-085.yaml

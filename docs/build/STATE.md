@@ -15,6 +15,6 @@ charter: v2
 | External | EXT-01…30 open (`EXTERNAL.md`); EXT-01 companion doc still missing |
 | Benchmark | UI phases: `docs/build/benchmark/duolingo/` holds the 12 picks; `all/` holds the other 48; `README.md` has source, date, and size. Do not open the images until a card sets `visual_evidence_required`. |
 | Audit | `check_agent_files.py` OK (1,092 files) |
-| Next | Mobile, admin, and backend are `cloud-handoff`, not pushed. P4-069 is Done. P4-070 stays Draft (depends on P4-064). Next build card is P4-071. P4-055 stays Draft (EXT-01). P4-060 and P4-061 wait on P4-042. Do not invent a high-frequency cutoff. ZulMorph stays off. Canonical course content is `../curriculum/` (D28). Intron stays off. Doppler is the vault (D27). |
+| Next | Mobile, admin, and backend are `cloud-handoff`, not pushed. P4-063, P4-069, and P4-071 through P4-081 are Done. P4-070 stays Draft (depends on P4-064). Next build card is P4-083. P4-082 is Done. P4-055 stays Draft (EXT-01). P4-060 and P4-061 wait on P4-042. Do not invent a high-frequency cutoff. ZulMorph stays off. Canonical course content is `../curriculum/` (D28). Intron stays off. Doppler is the vault (D27). |
 | Packets | Card path, allowlist, anchor excerpt, constraints the card does not state. Do not paste briefs, ACs, or APIs the files already hold. Reports stay capped. |
 | Models | Card tier. T1 and T2 use `cursor-grok-4.6-high-fast`. `grok-4.7-xhigh` only after that slug fails the card once. |
