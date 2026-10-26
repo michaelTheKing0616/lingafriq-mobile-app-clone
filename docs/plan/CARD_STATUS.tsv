@@ -860,7 +860,7 @@ P6-001	Done	ADR-007: TypeScript gateway in node-backend; Python GPU workers; HTT
 P6-002	Done	Gateway core: mode enum, authN/Z, client_prompt_forbidden (src/ai-gateway/)	P6/P6-002.yaml
 P6-003	Done	Server-owned versioned prompt registry (ai-gateway/prompts)	P6/P6-003.yaml
 P6-004	Done	JSON-schema structured output with retries (structured.ts, mode schemas)	P6/P6-004.yaml
-P6-005	Draft	Enforce per-user quotas and daily budgets by tier	P6/P6-005.yaml
+P6-005	Done	Tier daily budgets in ai-gateway/quota.ts; gateway reads tier from entitlement	P6/P6-005.yaml
 P6-006	Draft	Enforce cost budgets per mode	P6/P6-006.yaml
 P6-007	Draft	Add kill switches and feature flags per mode	P6/P6-007.yaml
 P6-008	Draft	Ground prompts in curriculum KG and learner model	P6/P6-008.yaml
