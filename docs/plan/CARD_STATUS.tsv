@@ -251,7 +251,7 @@ P0-INT-06	Done	Build RTM from segmented extraction parts	P0/P0-INT-06.yaml
 P0-INT-07	Done	Provide card validation and coverage tooling	P0/P0-INT-07.yaml
 P0-INT-08	Done	Generate REPO_MAP.md with routes, screens, reachability	P0/P0-INT-08.yaml
 P0-INT-09	Done	Archive root status Markdown files with manifest (archive_status_md.py, pre-commit --check)	P0/P0-INT-09.yaml
-P0-INT-10	Draft	Create containment evidence index for G1	P0/P0-INT-10.yaml
+P0-INT-10	Done	Containment evidence index (containment_index.py, CONTAINMENT_EVIDENCE.md)	P0/P0-INT-10.yaml
 P0-VER-01	Blocked-External	Verify which live-translate path runs in production	P0/P0-VER-01.yaml
 P0-VER-02	Draft	Verify social audio rooms status on staging	P0/P0-VER-02.yaml
 P0-VER-03	Draft	Verify Yoruba diacritics render in fallback fonts	P0/P0-VER-03.yaml
