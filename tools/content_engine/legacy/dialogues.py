@@ -387,15 +387,19 @@ def run_dialogue_regeneration(
                     ),
                 )
 
-    changed = any(c.action == "regenerated" for c in changes) and not dry_run
+    changed = (
+        any(c.action in {"regenerated", "parked"} for c in changes)
+        and not dry_run
+    )
     manifest_path = src.parent / MANIFEST_BASENAME
     park_path = pipeline_input_dir(base) / PARK_INPUT_BASENAME
 
     if not dry_run and changed:
-        src.write_text(
-            json.dumps(curriculum, ensure_ascii=False, indent=2) + "\n",
-            encoding="utf-8",
-        )
+        if regenerated > 0:
+            src.write_text(
+                json.dumps(curriculum, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
         out_dir = park_path.parent
         out_dir.mkdir(parents=True, exist_ok=True)
         if park_records:

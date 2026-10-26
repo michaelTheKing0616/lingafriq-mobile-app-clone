@@ -137,6 +137,10 @@ def test_P4_085_AC2_parks_after_two_failed_attempts(tmp_path: Path) -> None:
     assert len(result.park_records) == 1
     assert result.park_records[0]["attempts"] == MAX_GENERATION_ATTEMPTS
     assert result.park_records[0]["publish"] is False
+    assert result.park_path.is_file()
+    parked_line = result.park_path.read_text(encoding="utf-8").strip().splitlines()[0]
+    persisted = json.loads(parked_line)
+    assert persisted["lesson_id"] == "Yoruba-A1-u1-l1"
 
 
 def test_P4_085_dry_run_lists_changes_without_writing(tmp_path: Path) -> None:
