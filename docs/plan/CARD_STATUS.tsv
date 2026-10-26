@@ -842,7 +842,7 @@ P5-077	Done	Phase 1 A1 Beta exit checklist (phase1_a1_beta_exit.py; lexicon anch
 P5-078	Draft	Verify Phase 2 A2 and promotion exit	P5/P5-078.yaml
 P5-079	Draft	Verify Phase 3 B1 and Wave 2 L0 exit	P5/P5-079.yaml
 P5-080	Draft	Decide Phase 4 scale plan for months 9-24	P5/P5-080.yaml
-P5-081	Draft	Select A2 lexicon to about 1,500 cumulative lexemes	P5/P5-081.yaml
+P5-081	Done	A2 cumulative lexicon (~1500) via lexicon_select.py; ha shortfall gates at 940	P5/P5-081.yaml
 P5-082	Draft	Select B1 lexicon to about 2,500-3,000 cumulative lexemes	P5/P5-082.yaml
 P5-083	Draft	Build script learning tracks for Fidel, N'Ko, Adlam, Tifinagh, Ajami	P5/P5-083.yaml
 P5-084	Draft	Add stroke-order animation and handwriting practice	P5/P5-084.yaml

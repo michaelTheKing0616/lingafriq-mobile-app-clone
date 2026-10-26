@@ -1,4 +1,4 @@
-"""Select frequency-ranked A1 lexicon per Stage-1 language (P5-016, CURRICULUM §4)."""
+"""Select frequency-ranked A1/A2 lexicon per Stage-1 language (P5-016, P5-081; CURRICULUM §4)."""
 
 from __future__ import annotations
 
@@ -17,13 +17,18 @@ from tools.content_engine.curriculum.import_packs import (
 )
 from tools.content_pipeline.validate_content import has_tone_mark
 
-CARD_ID = "P5-016"
-OUTPUT_REL = "assets/data/lexicon/a1"
+CARD_ID_A1 = "P5-016"
+CARD_ID_A2 = "P5-081"
+OUTPUT_REL_A1 = "assets/data/lexicon/a1"
+OUTPUT_REL_A2 = "assets/data/lexicon/a2"
 STAGE1_LANGS: tuple[str, ...] = ("yo", "ig", "ha", "pcm", "sw", "zu", "xh")
 TONAL_LANGS = frozenset({"yo", "ig", "ha"})
 MIN_LEXEMES = 600
 MAX_LEXEMES = 800
 DEFAULT_TARGET = 700
+A2_MIN_CUMULATIVE = 1400
+A2_MAX_CUMULATIVE = 1600
+A2_DEFAULT_CUMULATIVE_TARGET = 1500
 
 # CURRICULUM §4 — learner-needs domains (English gloss / claim text only; no invented lemmas).
 _LEARNER_DOMAIN_MARKERS: tuple[str, ...] = (
@@ -56,7 +61,7 @@ class LicenceUnregistered(LexiconSelectError):
 
 
 class LexiconCountGateError(LexiconSelectError):
-    """Language lexeme count is outside 600–800."""
+    """Language lexeme count is outside the configured gate (A1 or A2 cumulative)."""
 
 
 @dataclass(frozen=True)
@@ -280,7 +285,7 @@ def load_a1_pack(lang: str, root: Path | None = None) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def build_language_manifest(
+def build_a1_language_manifest(
     lang: str,
     root: Path | None = None,
     *,
@@ -291,7 +296,7 @@ def build_language_manifest(
     pack = load_a1_pack(lang, base)
     selected = select_a1_lexemes(pack, lang=lang, register=register, target=target)
     return {
-        "card": CARD_ID,
+        "card": CARD_ID_A1,
         "lang": lang,
         "level": "A1",
         "built": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
@@ -301,6 +306,16 @@ def build_language_manifest(
     }
 
 
+def build_language_manifest(
+    lang: str,
+    root: Path | None = None,
+    *,
+    target: int = DEFAULT_TARGET,
+) -> dict[str, Any]:
+    """Backward-compatible alias for A1 manifest build (P5-016)."""
+    return build_a1_language_manifest(lang, root, target=target)
+
+
 def write_a1_manifests(
     root: Path | None = None,
     *,
@@ -308,11 +323,142 @@ def write_a1_manifests(
     target: int = DEFAULT_TARGET,
 ) -> list[Path]:
     base = repo_root(root)
-    out_dir = base / OUTPUT_REL
+    out_dir = base / OUTPUT_REL_A1
     out_dir.mkdir(parents=True, exist_ok=True)
     written: list[Path] = []
     for lang in langs:
-        doc = build_language_manifest(lang, base, target=target)
+        doc = build_a1_language_manifest(lang, base, target=target)
+        path = out_dir / f"{lang}.json"
+        path.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        written.append(path)
+    return written
+
+
+def load_a1_manifest(lang: str, root: Path | None = None) -> dict[str, Any]:
+    base = repo_root(root)
+    path = base / OUTPUT_REL_A1 / f"{lang}.json"
+    if not path.is_file():
+        raise FileNotFoundError(f"A1 lexicon manifest not found: {path}")
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def load_a2_pack(lang: str, root: Path | None = None) -> dict[str, Any]:
+    path = canonical_packs_dir(root) / lang / "A2.json"
+    if not path.is_file():
+        raise FileNotFoundError(f"A2 pack not found: {path}")
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def assert_a2_cumulative_gate(count: int, lang: str) -> None:
+    if count < A2_MIN_CUMULATIVE or count > A2_MAX_CUMULATIVE:
+        raise LexiconCountGateError(
+            "LEXICON_CUMULATIVE_OUT_OF_RANGE",
+            f"{lang}: {count} cumulative lexemes (required {A2_MIN_CUMULATIVE}–{A2_MAX_CUMULATIVE})",
+        )
+
+
+def select_a2_cumulative_lexemes(
+    a1_rows: Sequence[Mapping[str, Any]],
+    pack: Mapping[str, Any],
+    *,
+    lang: str,
+    register: Mapping[str, Mapping[str, Any]],
+    cumulative_target: int = A2_DEFAULT_CUMULATIVE_TARGET,
+) -> tuple[list[dict[str, Any]], int]:
+    """Merge shipped A1 manifest rows with ranked A2 pack lexemes to reach cumulative_target."""
+    if pack.get("lang") != lang:
+        raise LexiconSelectError("PACK_LANG_MISMATCH", f"pack lang does not match {lang}")
+    a1_lexemes = [dict(row) for row in a1_rows if isinstance(row, Mapping)]
+    a1_ids = {str(row.get("id", "")).strip() for row in a1_lexemes if row.get("id")}
+    if not a1_lexemes:
+        raise LexiconSelectError("A1_MANIFEST_EMPTY", f"A1 manifest has no lexemes for {lang}")
+
+    raw_items = pack.get("items")
+    if not isinstance(raw_items, list):
+        raise LexiconSelectError("PACK_ITEMS_MISSING", "pack items array required")
+    a2_items = [
+        row
+        for row in raw_items
+        if isinstance(row, Mapping)
+        and row.get("type") == "lexeme"
+        and str(row.get("id", "")).strip() not in a1_ids
+    ]
+    ranked_a2 = rank_lexemes(a2_items, lang=lang, register=register)
+    need = cumulative_target - len(a1_lexemes)
+    if need < 0:
+        raise LexiconSelectError(
+            "A1_EXCEEDS_CUMULATIVE_TARGET",
+            f"{lang}: A1 count {len(a1_lexemes)} exceeds cumulative target {cumulative_target}",
+        )
+    a2_selected = ranked_a2[:need] if need else []
+    combined: list[dict[str, Any]] = []
+    for row in a1_lexemes:
+        entry = dict(row)
+        entry["lexicon_stage"] = "A1"
+        combined.append(entry)
+    for row in a2_selected:
+        entry = row.to_dict()
+        entry["lexicon_stage"] = "A2"
+        combined.append(entry)
+    assert_a2_cumulative_gate(len(combined), lang)
+    return combined, len(a2_selected)
+
+
+def build_a2_language_manifest(
+    lang: str,
+    root: Path | None = None,
+    *,
+    cumulative_target: int = A2_DEFAULT_CUMULATIVE_TARGET,
+    a1_target: int = DEFAULT_TARGET,
+) -> dict[str, Any]:
+    base = repo_root(root)
+    register = load_curriculum_register(base)
+    a1_path = base / OUTPUT_REL_A1 / f"{lang}.json"
+    if not a1_path.is_file():
+        build_a1_language_manifest(lang, base, target=a1_target)
+    a1_doc = load_a1_manifest(lang, base)
+    a1_lexemes = a1_doc.get("lexemes")
+    if not isinstance(a1_lexemes, list):
+        raise LexiconSelectError("A1_MANIFEST_INVALID", f"lexemes must be a list for {lang}")
+    pack = load_a2_pack(lang, base)
+    combined, a2_added = select_a2_cumulative_lexemes(
+        a1_lexemes,
+        pack,
+        lang=lang,
+        register=register,
+        cumulative_target=cumulative_target,
+    )
+    return {
+        "card": CARD_ID_A2,
+        "lang": lang,
+        "level": "A2",
+        "built": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+        "cumulative_target": cumulative_target,
+        "a1_count": len(a1_lexemes),
+        "a2_added": a2_added,
+        "count": len(combined),
+        "lexemes": combined,
+    }
+
+
+def write_a2_manifests(
+    root: Path | None = None,
+    *,
+    langs: Sequence[str] = STAGE1_LANGS,
+    cumulative_target: int = A2_DEFAULT_CUMULATIVE_TARGET,
+    a1_target: int = DEFAULT_TARGET,
+) -> list[Path]:
+    base = repo_root(root)
+    out_dir = base / OUTPUT_REL_A2
+    out_dir.mkdir(parents=True, exist_ok=True)
+    written: list[Path] = []
+    for lang in langs:
+        doc = build_a2_language_manifest(
+            lang,
+            base,
+            cumulative_target=cumulative_target,
+            a1_target=a1_target,
+        )
         path = out_dir / f"{lang}.json"
         path.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         written.append(path)
@@ -320,7 +466,15 @@ def write_a1_manifests(
 
 
 def _main(argv: Sequence[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Build A1 frequency-ranked lexicon manifests (P5-016).")
+    parser = argparse.ArgumentParser(
+        description="Build frequency-ranked lexicon manifests (P5-016 A1, P5-081 A2 cumulative).",
+    )
+    parser.add_argument(
+        "--level",
+        choices=("a1", "a2"),
+        default="a1",
+        help="Curriculum level to build (default: a1)",
+    )
     parser.add_argument(
         "--lang",
         action="append",
@@ -330,18 +484,29 @@ def _main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument(
         "--target",
         type=int,
-        default=DEFAULT_TARGET,
-        help=f"Lexeme target per language ({MIN_LEXEMES}–{MAX_LEXEMES}, default {DEFAULT_TARGET})",
+        default=None,
+        help="A1 per-level target or A2 cumulative target (defaults: 700 / 1500)",
     )
     args = parser.parse_args(list(argv) if argv is not None else None)
     langs = tuple(args.langs) if args.langs else STAGE1_LANGS
-    if args.target < MIN_LEXEMES or args.target > MAX_LEXEMES:
-        print(
-            f"target must be between {MIN_LEXEMES} and {MAX_LEXEMES}",
-            file=sys.stderr,
-        )
-        return 2
-    paths = write_a1_manifests(langs=langs, target=args.target)
+    if args.level == "a1":
+        target = args.target if args.target is not None else DEFAULT_TARGET
+        if target < MIN_LEXEMES or target > MAX_LEXEMES:
+            print(
+                f"target must be between {MIN_LEXEMES} and {MAX_LEXEMES}",
+                file=sys.stderr,
+            )
+            return 2
+        paths = write_a1_manifests(langs=langs, target=target)
+    else:
+        cumulative = args.target if args.target is not None else A2_DEFAULT_CUMULATIVE_TARGET
+        if cumulative < A2_MIN_CUMULATIVE or cumulative > A2_MAX_CUMULATIVE:
+            print(
+                f"cumulative target must be between {A2_MIN_CUMULATIVE} and {A2_MAX_CUMULATIVE}",
+                file=sys.stderr,
+            )
+            return 2
+        paths = write_a2_manifests(langs=langs, cumulative_target=cumulative)
     for path in paths:
         print(path)
     return 0
