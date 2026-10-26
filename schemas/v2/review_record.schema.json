@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.lingafriq.com/v2/review_record.schema.json",
+  "title": "Native validation review record (P4-122)",
+  "description": "Two-native plus linguist adjudication for learner-facing content (D1, ELEVATION §6.4.1).",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["object_id", "reviewers"],
+  "properties": {
+    "object_id": { "type": "string", "minLength": 1 },
+    "target_label": {
+      "type": "string",
+      "enum": ["beta", "expert_reviewed", "native_verified"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "approved", "rejected", "disagreement_recorded"]
+    },
+    "reviewers": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/reviewerEntry" }
+    },
+    "adjudication": { "$ref": "#/$defs/adjudication" },
+    "dialect_notes": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/dialectNote" }
+    },
+    "missing_approvals": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "$defs": {
+    "reviewerEntry": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["role", "reviewer_id", "approved"],
+      "properties": {
+        "role": { "type": "string", "enum": ["native", "linguist", "reviewer"] },
+        "reviewer_id": { "type": "string", "minLength": 1 },
+        "approved": { "type": "boolean" },
+        "provenance": {
+          "type": "string",
+          "enum": ["human", "ai"]
+        },
+        "variant_note": { "type": "string" },
+        "reviewed_at": { "type": "string", "minLength": 1 }
+      }
+    },
+    "adjudication": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["linguist_id", "decision", "recorded_at"],
+      "properties": {
+        "linguist_id": { "type": "string", "minLength": 1 },
+        "decision": { "type": "string", "enum": ["uphold_a", "uphold_b", "both_valid_dialect"] },
+        "recorded_at": { "type": "string", "minLength": 1 },
+        "summary": { "type": "string" }
+      }
+    },
+    "dialectNote": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["native_ids", "note", "recorded_at"],
+      "properties": {
+        "native_ids": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "note": { "type": "string", "minLength": 1 },
+        "recorded_at": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}
