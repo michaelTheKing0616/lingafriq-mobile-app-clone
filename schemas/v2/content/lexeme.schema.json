@@ -95,7 +95,17 @@
           "type": "array",
           "items": { "type": "string" }
         },
-        "synthetic_voice_tag": { "type": "string" }
+        "synthetic_voice_tag": { "type": "string" },
+        "take_kind": {
+          "type": "string",
+          "enum": ["standard", "regional"],
+          "default": "standard"
+        },
+        "dialect_tag": {
+          "type": "string",
+          "pattern": "^(standard|[a-z0-9_-]{2,64})$"
+        },
+        "region": { "type": "string", "minLength": 1 }
       }
     },
     "image": {

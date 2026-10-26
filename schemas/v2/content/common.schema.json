@@ -26,7 +26,17 @@
       "type": "array",
       "items": { "$ref": "#/$defs/audioRef" }
     },
-    "review": { "$ref": "#/$defs/review" }
+    "review": { "$ref": "#/$defs/review" },
+    "form_kind": {
+      "type": "string",
+      "enum": ["standard", "regional"],
+      "default": "standard"
+    },
+    "dialect_tag": {
+      "type": "string",
+      "pattern": "^(standard|[a-z0-9_-]{2,64})$"
+    },
+    "region": { "type": "string", "minLength": 1 }
   },
   "$defs": {
     "provenance": {
@@ -89,7 +99,17 @@
       "properties": {
         "kind": { "type": "string", "enum": ["human", "tts_synthetic"] },
         "uri": { "type": "string" },
-        "synthetic_voice_tag": { "type": "string" }
+        "synthetic_voice_tag": { "type": "string" },
+        "take_kind": {
+          "type": "string",
+          "enum": ["standard", "regional"],
+          "default": "standard"
+        },
+        "dialect_tag": {
+          "type": "string",
+          "pattern": "^(standard|[a-z0-9_-]{2,64})$"
+        },
+        "region": { "type": "string", "minLength": 1 }
       }
     },
     "review": {
