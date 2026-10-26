@@ -34,6 +34,36 @@ enum TargetTextInteractionState {
   noGloss,
 }
 
+/// EP-§6.7-02 surfaces that must delegate target-language rendering to [TargetText].
+///
+/// Paths are relative to the mobile app package root. [enforced] flips on as each
+/// elevate surface card lands; the integration test fails when an enforced path
+/// exists on disk but does not reference [TargetText].
+class TargetTextSurfaceContract {
+  const TargetTextSurfaceContract._();
+
+  static const entries = <TargetTextSurfaceEntry>[
+    TargetTextSurfaceEntry('lessons', 'lib/lessons/grammar_aha_card.dart', enforced: false),
+    TargetTextSurfaceEntry('lessons', 'lib/lessons/tone_perception_drill.dart', enforced: false),
+    TargetTextSurfaceEntry('lessons', 'lib/lessons/sound_drill.dart', enforced: false),
+    TargetTextSurfaceEntry('lessons', 'lib/lessons/tone_production_drill.dart', enforced: false),
+    TargetTextSurfaceEntry('games', 'lib/screens/games/', enforced: false),
+    TargetTextSurfaceEntry('chat', 'lib/screens/chat/', enforced: false),
+    TargetTextSurfaceEntry('polie', 'lib/services/polie_content_generator.dart', enforced: false),
+    TargetTextSurfaceEntry('personas', 'lib/ai/persona_grounding.dart', enforced: false),
+    TargetTextSurfaceEntry('magazine', 'lib/screens/magazine/culture_magazine_screen.dart', enforced: false),
+    TargetTextSurfaceEntry('dictionary', 'lib/screens/vocabulary/living_dictionary_screen.dart', enforced: false),
+  ];
+}
+
+class TargetTextSurfaceEntry {
+  const TargetTextSurfaceEntry(this.category, this.relativePath, {required this.enforced});
+
+  final String category;
+  final String relativePath;
+  final bool enforced;
+}
+
 /// Single renderer for learner-facing target-language text (EP-§6.7).
 class TargetText extends StatefulWidget {
   const TargetText({
@@ -227,6 +257,27 @@ class _TargetTextState extends State<TargetText> {
                   Padding(
                     padding: const EdgeInsets.only(top: 4),
                     child: Text(widget.copy.loadingGloss, style: Theme.of(context).textTheme.labelSmall),
+                  ),
+                if (_state == TargetTextInteractionState.noAudio)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.volume_off_outlined,
+                          size: 16,
+                          color: Theme.of(context).colorScheme.error,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          widget.copy.noAudio,
+                          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                                color: Theme.of(context).colorScheme.error,
+                              ),
+                        ),
+                      ],
+                    ),
                   ),
               ],
             ),

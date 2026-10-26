@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lingafriq/services/content/gloss_lookup.dart';
@@ -5,6 +7,27 @@ import 'package:lingafriq/widgets/target_text.dart';
 import 'package:lingafriq/widgets/tone_lens.dart';
 
 import '../helpers/test_utils.dart';
+
+bool _surfaceUsesTargetText(String source) {
+  return source.contains('TargetText(') ||
+      source.contains('widgets/target_text.dart');
+}
+
+List<String> enforcedTargetTextSurfaceViolations(String packageRoot) {
+  final violations = <String>[];
+  for (final entry in TargetTextSurfaceContract.entries) {
+    if (!entry.enforced) continue;
+    final path = entry.relativePath;
+    if (path.endsWith('/')) continue;
+    final file = File('$packageRoot/$path');
+    if (!file.existsSync()) continue;
+    final content = file.readAsStringSync();
+    if (!_surfaceUsesTargetText(content)) {
+      violations.add(path);
+    }
+  }
+  return violations;
+}
 
 void main() {
   group('GlossLookup', () {
@@ -29,6 +52,18 @@ void main() {
     });
   });
 
+  group('TargetText surfaces (EP-§6.7-02)', () {
+    test('contract lists every learner surface category', () {
+      final categories = TargetTextSurfaceContract.entries.map((e) => e.category).toSet();
+      expect(categories, containsAll(['lessons', 'chat', 'polie', 'personas', 'games', 'magazine', 'dictionary']));
+    });
+
+    test('enforced surfaces use TargetText when present on disk', () {
+      final root = Directory.current.path;
+      expect(enforcedTargetTextSurfaceViolations(root), isEmpty);
+    });
+  });
+
   group('TargetText', () {
     testWidgets('tap without audio shows no-audio snackbar', (tester) async {
       await pumpWidgetWithMaterial(
@@ -41,7 +76,8 @@ void main() {
       await tester.tap(find.text('ọkọ̀'));
       await tester.pump();
       await tester.pumpAndSettle();
-      expect(find.text('Audio not available'), findsOneWidget);
+      expect(find.text('Audio not available'), findsNWidgets(2));
+      expect(find.byIcon(Icons.volume_off_outlined), findsOneWidget);
     });
 
     testWidgets('tap with audio invokes onHear', (tester) async {
