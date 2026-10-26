@@ -691,7 +691,7 @@ P4-066	Done	Calibrate thresholds against pilot error rate (calibration.py)	P4/P4
 P4-067	Done	Publish reviewed items with a quality label	P4/P4-067.yaml
 P4-068	Done	Write what-catches-what matrix test plan (matrix/fixtures.yaml)	P4/P4-068.yaml
 P4-069	Done	Scaffold Curriculum Studio module in admin	P4/P4-069.yaml
-P4-070	Draft	Build backend job service for pipeline runs	P4/P4-070.yaml
+P4-070	Done	Build backend job service for pipeline runs	P4/P4-070.yaml
 P4-071	Done	Build source library and licence register UI	P4/P4-071.yaml
 P4-072	Done	Build lexicon editor with side-by-side sources	P4/P4-072.yaml
 P4-073	Done	Build generation jobs UI with versioned prompts	P4/P4-073.yaml
