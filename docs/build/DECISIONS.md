@@ -17,7 +17,7 @@ D1–D10 signed 2026-10-21 ("approve all as recommended").
 | ID | Decision | Chosen | Source |
 |---|---|---|---|
 | D0 | Master Build Plan at G0 ("I approve of the plan"); build orchestrated by Grok 4.7 per `04_ROUTING.md` build-phase note | **GO** | — |
-| D1 | Three-label policy (Beta / Expert-reviewed / Native-verified); Beta never in checkpoints, placement, credentials, children's mode; interim change to Elevation §6.6 and "human-recorded audio" | **Approve** (see CONFLICTS C1) | CURRICULUM §10:L852 |
+| D1 | Three-label policy (Beta / Expert-reviewed / Native-verified); Beta never in checkpoints, placement, credentials, children's mode; interim change to Elevation §6.6 and "human-recorded audio" | **Approve** (see CONFLICTS C1; recorded in `docs/build/adr/ADR-001.md`) | CURRICULUM §10:L852 |
 | D2 | Licence purchases: Oxford datasets (top), IgboAPI, Zulu dictionary; optional NaijaVoices waiver, HCS | **Approve Oxford + IgboAPI + Zulu now; defer NaijaVoices/HCS to gap analysis at G5/G8** | CURRICULUM §10:L857 |
 | D3 | isiXhosa custom voice now vs matched corpus audio + text first | **Commission now** (lead time; G8 dependency) with Option A as the interim | CURRICULUM §10:L859 |
 | D4 | Contract 2 part-time linguists per Stage-1 language with consent + IP clause | **Approve**; agent prepares brief and clause list (EXT-11) | CURRICULUM §10:L861 |

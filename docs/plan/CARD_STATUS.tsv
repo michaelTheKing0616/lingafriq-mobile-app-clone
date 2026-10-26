@@ -1,5 +1,5 @@
 id	status	title	path
-ADR-001	Ready	'ADR: Three-label interim content policy (D1)'	P0/ADR-001.yaml
+ADR-001	Done	'ADR: Three-label interim content policy (D1)'	P0/ADR-001.yaml
 ADR-002	Ready	'ADR: Lexicon-anchored tone Beta rule and verification principles'	P0/ADR-002.yaml
 ADR-003	Ready	'ADR: L1 audio readiness definition and Xhosa voice path'	P0/ADR-003.yaml
 ADR-004	Done	'ADR-004: Choose Drift/SQLite or Isar as the one local database'	P2/ADR-004.yaml
