@@ -62,7 +62,7 @@ E-P9-MODERATION	Draft	'Moderation stack: prevention, detection, response, transp
 E-P9-REALTIME	Draft	'Realtime infra: Redis scale-out, room authz, schemas, rate limits, messaging core'	P9/E-P9-REALTIME.yaml
 E-P9-SAFETY	Draft	'Safety and social: guardian hub, age tiers, moderation, E2EE, pen test'	P9/E-P9-SAFETY.yaml
 E-P9-VILLAGE	Draft	'Village social engines: circles, chat, rooms, clips, classrooms, events'	P9/E-P9-VILLAGE.yaml
-EXT-01	Blocked-External	'Obtain: Companion doc `LINGAFRIQ_AI_MODEL_STACK.md` (model/vendor choices, licences, pricing) — not in repo or Downloads'	EXT/EXT-01.yaml
+EXT-01	Done	Companion doc at docs/plan/LINGAFRIQ_AI_MODEL_STACK.md (EXT-01)	EXT/EXT-01.yaml
 EXT-03	Blocked-External	'Obtain: Counsel sign-off on the licence register'	EXT/EXT-03.yaml
 EXT-04	Blocked-External	'Obtain: Oxford Languages datasets (yo, ig, ha, xh; sw via API) quote + licence'	EXT/EXT-04.yaml
 EXT-05	Blocked-External	'Obtain: IgboAPI dataset licence (Nkọwa okwu)'	EXT/EXT-05.yaml
@@ -676,7 +676,7 @@ P4-051	Done	Detect near-identical dialogues and repeated lines	P4/P4-051.yaml
 P4-052	Draft	Check honorific register and respect-sensitive units	P4/P4-052.yaml
 P4-053	Done	Build lexicon store with frequency list	P4/P4-053.yaml
 P4-054	Done	Compute anchored and single-source lexeme status	P4/P4-054.yaml
-P4-055	Draft	Generate grounded items with Gemini 3.1 Pro	P4/P4-055.yaml
+P4-055	Done	Generate grounded items with Gemini 3.1 Pro	P4/P4-055.yaml
 P4-056	Draft	Reject out-of-lexicon words and uncited claims	P4/P4-056.yaml
 P4-057	Draft	Run independent cross-check with a second model	P4/P4-057.yaml
 P4-058	Draft	Check each citation entails its claim	P4/P4-058.yaml
