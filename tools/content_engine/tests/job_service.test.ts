@@ -9,13 +9,13 @@ import { pathToFileURL } from "node:url";
 import { test } from "node:test";
 
 const LINGAFRIQ = path.resolve(import.meta.dirname, "../../../..");
-const BACKEND_SRC = path.join(LINGAFRIQ, "node-backend", "src");
+const BACKEND_DIST = path.join(LINGAFRIQ, "node-backend", "dist");
 
 const REAL = {
-  routes: path.join(BACKEND_SRC, "routes", "contentJobs.routes.ts"),
-  service: path.join(BACKEND_SRC, "services", "contentEngineJob.service.ts"),
-  worker: path.join(BACKEND_SRC, "workers", "contentEngine.worker.ts"),
-  studioAuth: path.join(BACKEND_SRC, "middleware", "studioAuth.ts"),
+  routes: path.join(BACKEND_DIST, "routes", "contentJobs.routes.js"),
+  service: path.join(BACKEND_DIST, "services", "contentEngineJob.service.js"),
+  worker: path.join(BACKEND_DIST, "workers", "contentEngine.worker.js"),
+  studioAuth: path.join(BACKEND_DIST, "middleware", "studioAuth.js"),
 };
 
 async function loadReal(file: string): Promise<Record<string, unknown>> {
