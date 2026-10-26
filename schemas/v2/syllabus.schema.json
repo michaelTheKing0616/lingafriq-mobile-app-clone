@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.lingafriq.com/v2/syllabus.schema.json",
+  "title": "LingAfriq per-language syllabus (ELEVATION §6.6)",
+  "description": "Applied-linguist syllabus with can-do unit map and licensed corpora references.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "charter",
+    "card_id",
+    "language_id",
+    "applied_linguist",
+    "units",
+    "corpora",
+    "status"
+  ],
+  "properties": {
+    "charter": { "type": "string", "const": "v2" },
+    "card_id": { "type": "string", "const": "P4-130" },
+    "language_id": { "type": "string", "minLength": 1 },
+    "status": { "type": "string", "enum": ["draft", "submitted"] },
+    "applied_linguist": { "$ref": "#/$defs/applied_linguist" },
+    "units": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/unit" }
+    },
+    "corpora": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/corpus_ref" }
+    },
+    "can_do_index": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": { "type": "string", "minLength": 1 }
+      }
+    }
+  },
+  "$defs": {
+    "applied_linguist": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["linguist_id", "display_name", "role"],
+      "properties": {
+        "linguist_id": { "type": "string", "minLength": 1 },
+        "display_name": { "type": "string", "minLength": 1 },
+        "role": { "type": "string", "const": "applied_linguist" }
+      }
+    },
+    "unit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["unit_id", "can_do_ids"],
+      "properties": {
+        "unit_id": { "type": "string", "minLength": 1 },
+        "can_do_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "title": { "type": "string" }
+      }
+    },
+    "corpus_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["corpus_id", "source_id"],
+      "properties": {
+        "corpus_id": { "type": "string", "minLength": 1 },
+        "source_id": { "type": "string", "minLength": 1 },
+        "kind": {
+          "type": "string",
+          "enum": ["register", "masakhane", "jw300_alternative", "community", "news", "radio"]
+        },
+        "licence": { "type": "string", "minLength": 1 },
+        "derived_from": { "type": "string" },
+        "label": { "type": "string" }
+      }
+    }
+  }
+}

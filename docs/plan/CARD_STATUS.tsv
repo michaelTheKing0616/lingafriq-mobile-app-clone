@@ -734,7 +734,7 @@ P4-125	Done	Build pilot cohort and promotion gate runner (pilot_gate.py)	P4/P4-1
 P4-126	Done	Build squad capacity planner for throughput target (squad_capacity.py)	P4/P4-126.yaml
 P4-127	Blocked-External	Secure partner and university linguist agreements	P4/P4-127.yaml
 P4-128	Blocked-External	Secure contributor licence, consent and payment terms	P4/P4-128.yaml
-P4-130	Draft	Build per-language syllabus spec and corpora licence check	P4/P4-130.yaml
+P4-130	Done	Per-language syllabus spec and corpora licence check (syllabus_spec.py)	P4/P4-130.yaml
 P4-131	Draft	Enforce human drafting with grounded LLM variants only	P4/P4-131.yaml
 P4-132	Draft	Implement two-reviewer native review with agreement tracking	P4/P4-132.yaml
 P4-133	Draft	Enforce voice-count gates and QA listen-through	P4/P4-133.yaml
