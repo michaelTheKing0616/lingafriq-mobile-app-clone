@@ -710,7 +710,7 @@ P4-085	Done	Regenerate dialogues from can-do targets	P4/P4-085.yaml
 P4-086	Done	Rebuild units against CEFR map as signed packs	P4/P4-086.yaml
 P4-087	Done	Run UI strings and phrase packs through pipeline (ui_strings.py)	P4/P4-087.yaml
 P4-088	Done	Produce before/after legacy rebuild dashboard (report.py)	P4/P4-088.yaml
-P4-100	Draft	Define shared provenance, label and audio-kind envelope	P4/P4-100.yaml
+P4-100	Done	Define shared provenance, label and audio-kind envelope	P4/P4-100.yaml
 P4-101	Draft	Define lexeme schema with tone, audio and review fields	P4/P4-101.yaml
 P4-102	Draft	Define pattern, dialogue and unit schemas	P4/P4-102.yaml
 P4-103	Draft	Define exercise item schema with matching rules and IRT params	P4/P4-103.yaml
