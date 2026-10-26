@@ -760,7 +760,7 @@ P4-162	Done	Admin persona console: dossiers, claims audit, evals, kill switch (p
 P4-163	Done	AI ops prompt registry: versioned prompts, diffs, eval runs, production pin	P4/P4-163.yaml
 P4-164	Done	AI ops cost report, versioned routing table, incident switches (ai_routing_admin.service.ts, AiOps.tsx)	P4/P4-164.yaml
 P4-165	Done	React 19.3.1/Vite 8.3.5; OpenAPI typed client + CI stale check (lingafriq-admin)	P4/P4-165.yaml
-P4-166	Draft	Add staff SSO, mandatory 2FA and cookie sessions	P4/P4-166.yaml
+P4-166	Done	Staff SSO, mandatory 2FA, httpOnly cookie sessions (`staff_auth.routes.ts`)	P4/P4-166.yaml
 P4-167	Draft	Add Playwright tests for critical studio flows	P4/P4-167.yaml
 P5-001	Draft	Reproduce legacy curriculum audit counts by script	P5/P5-001.yaml
 P5-002	Draft	Quarantine template curriculum behind placeholder linter	P5/P5-002.yaml
