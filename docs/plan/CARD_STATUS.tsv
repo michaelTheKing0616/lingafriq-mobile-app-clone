@@ -678,7 +678,7 @@ P4-053	Done	Build lexicon store with frequency list	P4/P4-053.yaml
 P4-054	Done	Compute anchored and single-source lexeme status	P4/P4-054.yaml
 P4-055	Done	Generate grounded items with Gemini 3.1 Pro	P4/P4-055.yaml
 P4-056	Done	Reject out-of-lexicon words and uncited claims	P4/P4-056.yaml
-P4-057	Draft	Run independent cross-check with a second model	P4/P4-057.yaml
+P4-057	Done	Run independent cross-check with a second model	P4/P4-057.yaml
 P4-058	Draft	Check each citation entails its claim	P4/P4-058.yaml
 P4-059	Draft	Back-translate with Google Cloud Translation and MADLAD-400	P4/P4-059.yaml
 P4-060	Draft	Run linters and morphological analysers as a stage	P4/P4-060.yaml
