@@ -1,0 +1,143 @@
+{
+  "charter": "v2",
+  "card_id": "P4-115",
+  "decision_date": "2026-10-26",
+  "owner": "Tope",
+  "sources": [
+    "ELEVATION.md#§6.4.1:L1290-L1292",
+    "docs/source/CURRICULUM.md#§2.4",
+    "tools/content_engine/kits/*/sources.yaml"
+  ],
+  "dialect_preference_hook": {
+    "model": "umbrellaLanguage + preferredDialectTag (mobile DialectPreferenceService, backend learningV2 dialect-preference)",
+    "mapping_owner": "content-pipeline",
+    "review_date": "2026-10-26",
+    "revisit_trigger": "P4-116 dialect field migration or new regional audio cohort (EXT-13)",
+    "tag_rules": "preferredDialectTag is standard or a lowercase tag matching ^[a-z0-9_-]{2,64}$ (e.g. yo-lagos, ig-onitsha)"
+  },
+  "optional_side_tracks": [
+    {
+      "id": "sheng",
+      "label": "Sheng (Kenyan urban mix)",
+      "status": "optional_fun_side_track",
+      "notes": "ELEVATION §6.4.1; not a Wave 1 umbrella language. Gate behind explicit opt-in when content exists."
+    }
+  ],
+  "wave_2_standard_example": {
+    "language_id": "tw",
+    "standard_taught": "Asante Twi",
+    "note": "ELEVATION lists Asante Twi in the dialect policy sentence; taught standard when Twi (Wave 2) ships."
+  },
+  "stage_1": [
+    {
+      "language_id": "yo",
+      "standard_taught": "Standard Yoruba",
+      "standard_dialect_tag": "standard",
+      "kit_reference": "tools/content_engine/kits/yo/sources.yaml",
+      "regional_variants": [
+        {
+          "dialect_tag": "yo-lagos",
+          "label": "Lagos accent",
+          "modality": "audio",
+          "must_mark_in_content": true
+        },
+        {
+          "dialect_tag": "yo-ibadan",
+          "label": "Ibadan accent",
+          "modality": "audio",
+          "must_mark_in_content": true
+        }
+      ]
+    },
+    {
+      "language_id": "ig",
+      "standard_taught": "Central Igbo",
+      "standard_dialect_tag": "standard",
+      "kit_reference": "tools/content_engine/kits/ig/sources.yaml",
+      "regional_variants": [
+        {
+          "dialect_tag": "ig-onitsha",
+          "label": "Onitsha variant",
+          "modality": "audio",
+          "must_mark_in_content": true
+        },
+        {
+          "dialect_tag": "ig-owerri",
+          "label": "Owerri variant",
+          "modality": "audio",
+          "must_mark_in_content": true
+        }
+      ]
+    },
+    {
+      "language_id": "ha",
+      "standard_taught": "Kano Hausa",
+      "standard_dialect_tag": "standard",
+      "kit_reference": "tools/content_engine/kits/ha/sources.yaml",
+      "regional_variants": [
+        {
+          "dialect_tag": "ha-southern",
+          "label": "Southern Hausa notes",
+          "modality": "text_and_audio",
+          "must_mark_in_content": true
+        }
+      ]
+    },
+    {
+      "language_id": "pcm",
+      "standard_taught": "Nigerian Pidgin (NLA/IFRA orthography)",
+      "standard_dialect_tag": "standard",
+      "kit_reference": "tools/content_engine/kits/pcm/sources.yaml",
+      "regional_variants": [
+        {
+          "dialect_tag": "pcm-lagos",
+          "label": "Lagos Pidgin colour",
+          "modality": "audio",
+          "must_mark_in_content": true
+        }
+      ]
+    },
+    {
+      "language_id": "sw",
+      "standard_taught": "Kiswahili Sanifu",
+      "standard_dialect_tag": "standard",
+      "kit_reference": "tools/content_engine/kits/sw/sources.yaml",
+      "regional_variants": [
+        {
+          "dialect_tag": "sw-kenyan",
+          "label": "Kenyan colloquial notes",
+          "modality": "text_and_audio",
+          "must_mark_in_content": true
+        }
+      ]
+    },
+    {
+      "language_id": "xh",
+      "standard_taught": "Standard isiXhosa (PanSALB orthography)",
+      "standard_dialect_tag": "standard",
+      "kit_reference": "tools/content_engine/kits/xh/sources.yaml",
+      "regional_variants": [
+        {
+          "dialect_tag": "xh-eastern",
+          "label": "Eastern Cape regional notes",
+          "modality": "audio",
+          "must_mark_in_content": true
+        }
+      ]
+    },
+    {
+      "language_id": "zu",
+      "standard_taught": "Standard isiZulu (PanSALB orthography)",
+      "standard_dialect_tag": "standard",
+      "kit_reference": "tools/content_engine/kits/zu/sources.yaml",
+      "regional_variants": [
+        {
+          "dialect_tag": "zu-kzn",
+          "label": "KwaZulu-Natal regional notes",
+          "modality": "audio",
+          "must_mark_in_content": true
+        }
+      ]
+    }
+  ]
+}
