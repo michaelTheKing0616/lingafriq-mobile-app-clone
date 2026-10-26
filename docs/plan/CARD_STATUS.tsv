@@ -829,7 +829,7 @@ P5-064	Done	Wire Nigerian Pidgin TTS with round-trip and listen gate	P5/P5-064.y
 P5-065	Done	Swahili TTS blind-test ADR (sw_tts_decision.json, sw_tts_decision.py)	P5/P5-065.yaml
 P5-066	Done	Wire Swahili TTS and Common Voice audio (sw_tts.dart)	P5/P5-066.yaml
 P5-067	Done	Wire isiZulu TTS with Azure zu-ZA Thando and Themba (zu_tts.dart)	P5/P5-067.yaml
-P5-068	Draft	'Decide isiXhosa voice: Option B custom voice, Option A interim'	P5/P5-068.yaml
+P5-068	Done	Option B custom voice + Option A interim (xh_voice_decision.json, D3)	P5/P5-068.yaml
 P5-069	Draft	Ship isiXhosa interim audio from FLEURS and WAXAL	P5/P5-069.yaml
 P5-070	Draft	Commission isiXhosa custom voice and confirm quote	P5/P5-070.yaml
 P5-071	Draft	Obtain Intron TTS quote and AI-stack interim TTS section	P5/P5-071.yaml

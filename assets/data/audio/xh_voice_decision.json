@@ -1,0 +1,43 @@
+{
+  "charter": "v2",
+  "card_id": "P5-068",
+  "language_id": "xh",
+  "locale": "xh-ZA",
+  "decision_date": "2026-10-26",
+  "owner": "Tope",
+  "decision_ids": ["D3"],
+  "adr_refs": ["ADR-003"],
+  "sources": [
+    "docs/source/CURRICULUM.md#§7:L744-L746",
+    "docs/plan/LINGAFRIQ_AI_MODEL_STACK.md#§3.3",
+    "CP-§7-xh-03"
+  ],
+  "voice_path": {
+    "option_b_primary": {
+      "id": "custom_voice_commission",
+      "label": "Commission native isiXhosa custom voice now (2 actors, buy-out corpus)",
+      "procurement_blocker": "EXT-12",
+      "stack_ref": "LINGAFRIQ_AI_MODEL_STACK.md §3.3–3.4",
+      "dynamic_tts_enabled": false,
+      "disabled_until": "custom_voice_v1_passes_tone_and_click_gate"
+    },
+    "option_a_interim": {
+      "id": "corpus_matched_audio",
+      "label": "Matched FLEURS and WAXAL human audio for static curriculum; no commercial vendor TTS assumed",
+      "downstream_card": "P5-069",
+      "licence_gate": "own_sentences_only"
+    },
+    "no_commercial_dynamic_tts": true,
+    "learner_claim_native_xhosa_tts_while_disabled": false
+  },
+  "coverage_register": {
+    "artefact": "assets/content/stage1_coverage.json",
+    "dynamic_tts_vendor": "custom_voice_required",
+    "dynamic_tts_enabled": false,
+    "disabled_reason_contains": "EXT-12"
+  },
+  "routing_for_p5_069": {
+    "interim_sources": ["fleurs", "waxal"],
+    "dynamic_tts": "forbidden_until_custom_voice"
+  }
+}
