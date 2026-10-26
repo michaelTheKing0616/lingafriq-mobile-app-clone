@@ -782,7 +782,7 @@ P5-017	Done	Restrict tonal Beta to lexicon-anchored tokens (tone_anchor_check.py
 P5-018	Done	Plan spiral exposures: 6/unit spread, phase order, SpiralShortfall lint (spiral_planner.py)	P5/P5-018.yaml
 P5-019	Done	Canonical FSRS-6 in learning/scheduling; per-learner weights at 1k reviews; legacy SM-2 path removed	P5/P5-019.yaml
 P5-020	Done	Pattern Library schema (schemas/v2/pattern.schema.json), PL-001 linter, PatternMissing coverage	P5/P5-020.yaml
-P5-021	Draft	'Author Yoruba A1 patterns: ń, ti, máa'	P5/P5-021.yaml
+P5-021	Done	Yoruba A1 aspect patterns ń/ti/máa in assets/data/patterns/yo.json (P5-021)	P5/P5-021.yaml
 P5-022	Draft	Author Swahili A1 tense-marker patterns	P5/P5-022.yaml
 P5-023	Draft	Author isiZulu A1 subject-concord patterns by class	P5/P5-023.yaml
 P5-024	Draft	Author A1 patterns for ig, ha, pcm and xh	P5/P5-024.yaml
