@@ -1,0 +1,27 @@
+{
+  "card_id": "P5-078",
+  "updated_on": "2026-10-27",
+  "a2_units_published": [
+    { "language_id": "yo", "published": false, "blocker": "unit_pack_publish" },
+    { "language_id": "ig", "published": false, "blocker": "unit_pack_publish" },
+    { "language_id": "ha", "published": false, "blocker": "unit_pack_publish" },
+    { "language_id": "pcm", "published": false, "blocker": "unit_pack_publish" },
+    { "language_id": "sw", "published": false, "blocker": "unit_pack_publish" },
+    { "language_id": "zu", "published": false, "blocker": "unit_pack_publish" },
+    { "language_id": "xh", "published": false, "blocker": "unit_pack_publish" }
+  ],
+  "a1_high_exposure_expert_promotion": [
+    { "language_id": "yo", "complete": false, "blocker": "P5-056" },
+    { "language_id": "ig", "complete": false, "blocker": "P5-056" },
+    { "language_id": "ha", "complete": false, "blocker": "P5-056" },
+    { "language_id": "pcm", "complete": false, "blocker": "P5-056" },
+    { "language_id": "sw", "complete": false, "blocker": "P5-056" },
+    { "language_id": "zu", "complete": false, "blocker": "P5-056" },
+    { "language_id": "xh", "complete": false, "blocker": "P5-056" }
+  ],
+  "native_validators": {
+    "onboard": false,
+    "blocker": "EXT-13",
+    "a1_verification_started": false
+  }
+}
