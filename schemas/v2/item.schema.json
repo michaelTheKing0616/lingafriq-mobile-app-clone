@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.lingafriq.com/v2/item.schema.json",
+  "title": "LingAfriq curriculum exercise item (P5)",
+  "description": "Elevation §6.5 exercise fields plus CURRICULUM §4 provenance, claims, label and audio kind (P5-008).",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "id",
+    "type",
+    "stimulus",
+    "answer_spec",
+    "skill_tags",
+    "irt",
+    "version",
+    "label",
+    "provenance",
+    "claims",
+    "confidence",
+    "risk_tags",
+    "audio"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[a-z]{2,3}\\.item\\.[a-z0-9._-]+$"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "listen_and_choose",
+        "tone_identification",
+        "picture_matching",
+        "dictation",
+        "sentence_building",
+        "speaking_prompt",
+        "short_conversation",
+        "multiple_choice"
+      ]
+    },
+    "stimulus": { "$ref": "#/$defs/stimulus" },
+    "answer_spec": { "$ref": "#/$defs/answerSpec" },
+    "distractors": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/distractor" }
+    },
+    "skill_tags": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{1,80}$"
+      }
+    },
+    "irt": { "$ref": "#/$defs/irt" },
+    "version": { "type": "integer", "minimum": 1 },
+    "label": { "type": "string", "enum": ["beta", "expert", "native"] },
+    "provenance": { "$ref": "#/$defs/provenance" },
+    "claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/claim" }
+    },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "risk_tags": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/riskTag" },
+      "uniqueItems": true
+    },
+    "audio": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/audioRef" }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "type": { "const": "multiple_choice" } },
+        "required": ["type"]
+      },
+      "then": {
+        "required": ["distractors"],
+        "properties": {
+          "distractors": { "minItems": 1 }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "stimulus": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["refs"],
+      "properties": {
+        "refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "text": { "type": "string", "minLength": 1 }
+      }
+    },
+    "answerSpec": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["correct", "accepted_variants", "diacritic_matching"],
+      "properties": {
+        "correct": { "type": "string", "minLength": 1 },
+        "accepted_variants": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "diacritic_matching": {
+          "type": "string",
+          "enum": ["strict", "tone_lenient", "diacritic_insensitive"]
+        }
+      }
+    },
+    "distractor": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["text", "rationale"],
+      "properties": {
+        "text": { "type": "string", "minLength": 1 },
+        "rationale": { "type": "string", "minLength": 1 }
+      }
+    },
+    "irt": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["irt_status", "a", "b"],
+          "properties": {
+            "irt_status": { "const": "calibrated" },
+            "a": { "type": "number", "exclusiveMinimum": 0 },
+            "b": { "type": "number" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["irt_status"],
+          "properties": {
+            "irt_status": { "const": "uncalibrated" }
+          }
+        }
+      ]
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["sources", "author", "created_at", "ai_assisted"],
+      "properties": {
+        "author": { "type": "string", "minLength": 1 },
+        "created_at": { "type": "string", "minLength": 1 },
+        "ai_assisted": { "type": "boolean" },
+        "model_id": { "type": "string", "minLength": 1 },
+        "prompt_id": { "type": "string", "minLength": 1 },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/provenanceSource" }
+        }
+      }
+    },
+    "provenanceSource": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["name", "licence", "uri_or_citation", "retrieved_at"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "licence": { "type": "string", "minLength": 1 },
+        "uri_or_citation": { "type": "string", "minLength": 1 },
+        "retrieved_at": { "type": "string", "minLength": 1 }
+      }
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["text", "source_id", "locator"],
+      "properties": {
+        "text": { "type": "string", "minLength": 1 },
+        "source_id": { "type": "string", "minLength": 1 },
+        "locator": { "type": "string", "minLength": 1 }
+      }
+    },
+    "riskTag": {
+      "type": "string",
+      "enum": [
+        "tone",
+        "idiom",
+        "proverb",
+        "culture_history_religion",
+        "honorific",
+        "grammar_explanation",
+        "child_audience",
+        "anglicised_pidgin"
+      ]
+    },
+    "audioRef": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["kind"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["human", "tts"] },
+        "uri": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

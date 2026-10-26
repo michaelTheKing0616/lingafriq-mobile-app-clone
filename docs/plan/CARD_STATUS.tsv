@@ -768,8 +768,8 @@ P5-003	Done	Block generic grammar templates; record per-language word order (gra
 P5-004	Done	Word Card rebuild + WC-001/002 lint (wordcard_rebuild.py)	P5/P5-004.yaml
 P5-005	Done	Rebuild audio manifest NFC-normalised, hash-keyed and deduplicated (audio_manifest_build.py)	P5/P5-005.yaml
 P5-006	Done	Complete Yoruba ARB with tone marks to 103 keys (app_yo.arb, arb_parity_test.dart)	P5/P5-006.yaml
-P5-007	Draft	Send sample label errors to native review	P5/P5-007.yaml
-P5-008	Draft	Define item schema v2 with provenance, label and audio kind	P5/P5-008.yaml
+P5-007	Blocked-External	Send sample label errors to native review (EXT-13)	P5/P5-007.yaml
+P5-008	Done	CURRICULUM item schema v2: provenance, claims, label, audio kind	P5/P5-008.yaml
 P5-009	Draft	Enforce label state machine with two-native rule	P5/P5-009.yaml
 P5-010	Draft	Show label badges, Beta copy and Synthetic voice tag	P5/P5-010.yaml
 P5-011	Draft	Add CI content tests for label exclusion rules	P5/P5-011.yaml
