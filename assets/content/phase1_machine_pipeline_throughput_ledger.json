@@ -1,0 +1,25 @@
+{
+  "charter": "v2",
+  "card_id": "P5-085",
+  "gate": "G5",
+  "depends_on": ["P5-077"],
+  "sources": [
+    "docs/source/CURRICULUM.md#§9.3:L818-L820",
+    "CP-§9.3-01",
+    "CP-§9.3-02"
+  ],
+  "planning_band": {
+    "items_per_week_min": 2000,
+    "items_per_week_max": 4000,
+    "metric": "items generated and verified per week per language (machine pipeline)",
+    "source": "docs/source/CURRICULUM.md#§9.3:L820",
+    "estimate": true
+  },
+  "weekly_measurements": [
+    {
+      "measurement_status": "awaiting_phase1",
+      "note": "No Phase 1 production week measured yet; record counts via phase1_machine_pipeline_throughput.evaluate_weekly_throughput."
+    }
+  ],
+  "phase1_machine_pipeline_verifications": []
+}
