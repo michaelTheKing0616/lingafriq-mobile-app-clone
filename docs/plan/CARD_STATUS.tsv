@@ -726,7 +726,7 @@ P4-114	Draft	Build quarterly next-language scoring tool (blocked EXT-13)	P4/P4-1
 P4-115	Done	Stage 1 dialect policy ADR (dialect_policy_decision.json)	P4/P4-115.yaml
 P4-116	Done	Dialect fields on v2 schemas, dialect_resolver + marking tests (P4-116)	P4/P4-116.yaml
 P4-120	Done	Build language kit generator (week 0-1) (language_kit.py)	P4/P4-120.yaml
-P4-121	Draft	Build AI bootstrap stage with grounding and flags	P4/P4-121.yaml
+P4-121	Done	Build AI bootstrap stage with grounding and flags (ai_bootstrap.py)	P4/P4-121.yaml
 P4-122	Draft	Enforce two-native plus linguist validation stage	P4/P4-122.yaml
 P4-123	Draft	Build native recording ingest and forced alignment	P4/P4-123.yaml
 P4-124	Draft	Build speech enablement evaluation gates	P4/P4-124.yaml
