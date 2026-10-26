@@ -834,7 +834,7 @@ P5-069	Done	Ship isiXhosa interim audio from FLEURS and WAXAL (xh_interim_match.
 P5-070	Draft	Commission isiXhosa custom voice and confirm quote	P5/P5-070.yaml
 P5-071	Draft	Obtain Intron TTS quote and AI-stack interim TTS section	P5/P5-071.yaml
 P5-072	Done	Rank items by exposure to order native re-recording (exposure_rank.py)	P5/P5-072.yaml
-P5-073	Draft	Export top 2,000 items per language as recording scripts	P5/P5-073.yaml
+P5-073	Done	Export top 2,000 items per language as recording scripts (export_scripts.py)	P5/P5-073.yaml
 P5-074	Draft	Bump item version and drop Synthetic tag on replacement	P5/P5-074.yaml
 P5-075	Draft	Keep and label TTS for dynamic content	P5/P5-075.yaml
 P5-076	Draft	Verify Phase 0 foundations exit	P5/P5-076.yaml
