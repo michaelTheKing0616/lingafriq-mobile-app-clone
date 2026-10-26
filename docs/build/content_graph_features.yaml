@@ -1,0 +1,205 @@
+# CURRICULUM §4 content graph → feature surfaces (P5-032). One canonical node type per surface.
+card: P5-032
+version: 1
+
+graph_nodes:
+  lexeme:
+    description: Lemma, tone, IPA, senses, audio, image, dialect variants
+    feeds:
+      - living_dictionary
+      - word_card
+      - flashcards
+      - point_and_say
+      - words_review_fsrs
+      - tone_gym_minimal_pairs
+      - games_word_pool
+      - lens_ocr_lookup
+  pattern:
+    description: Grammar pattern with citations
+    feeds:
+      - grammar_hub
+      - polie_grammar_mode
+      - grammar_detective
+      - liar_liar
+      - lesson_explanations
+  dialogue:
+    description: Dialogue and scene scripts
+    feeds:
+      - lessons
+      - scenario_theatre
+      - market_haggle
+      - greeting_gauntlet
+      - shadowing_clips
+      - conversation_bridge
+  exercise_item:
+    description: IRT-tracked exercise items (schemas/v2/item.schema.json)
+    feeds:
+      - lessons
+      - lesson_recap
+      - checkpoints
+      - placement_test
+      - review_rush
+      - daily_challenges
+  culture_card:
+    description: Cited culture cards
+    feeds:
+      - culture_shelf
+      - magazine
+      - heritage
+      - elders_blessings
+      - proverb_weaver
+      - persona_dossiers
+  can_do:
+    description: CEFR / ACTFL can-do statements per unit
+    feeds:
+      - path
+      - passport_evidence
+      - progress
+      - teacher_dashboard
+
+surfaces:
+  living_dictionary:
+    source_node: lexeme
+    canonical_store: assets/data/lexicon/
+  word_card:
+    source_node: lexeme
+    canonical_store: assets/data/lexicon/
+  flashcards:
+    source_node: lexeme
+    canonical_store: assets/data/lexicon/
+  point_and_say:
+    source_node: lexeme
+    canonical_store: assets/data/lexicon/
+  words_review_fsrs:
+    source_node: lexeme
+    canonical_store: assets/data/lexicon/
+  tone_gym_minimal_pairs:
+    source_node: lexeme
+    canonical_store: assets/data/tone/minimal_pairs.json
+  games_word_pool:
+    source_node: lexeme
+    canonical_store: assets/data/lexicon/
+  lens_ocr_lookup:
+    source_node: lexeme
+    canonical_store: assets/data/lexicon/
+  grammar_hub:
+    source_node: pattern
+    canonical_store: assets/data/patterns/
+  polie_grammar_mode:
+    source_node: pattern
+    canonical_store: assets/data/patterns/
+  grammar_detective:
+    source_node: pattern
+    canonical_store: assets/data/patterns/
+  liar_liar:
+    source_node: pattern
+    canonical_store: assets/data/patterns/
+  lesson_explanations:
+    source_node: pattern
+    canonical_store: assets/data/patterns/
+  lessons:
+    source_nodes: [dialogue, exercise_item]
+    canonical_stores:
+      dialogue: assets/data/dialogues/
+      exercise_item: curriculum/packs/
+  scenario_theatre:
+    source_node: dialogue
+    canonical_store: assets/data/dialogues/
+  market_haggle:
+    source_node: dialogue
+    canonical_store: assets/data/dialogues/
+  greeting_gauntlet:
+    source_node: dialogue
+    canonical_store: assets/data/dialogues/
+  shadowing_clips:
+    source_node: dialogue
+    canonical_store: assets/data/dialogues/
+  conversation_bridge:
+    source_node: dialogue
+    canonical_store: assets/data/dialogues/
+  lesson_recap:
+    source_node: exercise_item
+    canonical_store: curriculum/packs/
+  checkpoints:
+    source_node: exercise_item
+    canonical_store: curriculum/packs/
+    irt_required: true
+  placement_test:
+    source_node: exercise_item
+    canonical_store: curriculum/packs/
+    irt_required: true
+  review_rush:
+    source_node: exercise_item
+    canonical_store: curriculum/packs/
+  daily_challenges:
+    source_node: exercise_item
+    canonical_store: curriculum/packs/
+  culture_shelf:
+    source_node: culture_card
+    canonical_store: curriculum/packs/
+  magazine:
+    source_node: culture_card
+    canonical_store: curriculum/packs/
+  heritage:
+    source_node: culture_card
+    canonical_store: curriculum/packs/
+  elders_blessings:
+    source_node: culture_card
+    canonical_store: curriculum/packs/
+  proverb_weaver:
+    source_node: culture_card
+    canonical_store: curriculum/packs/
+  persona_dossiers:
+    source_node: culture_card
+    canonical_store: curriculum/packs/
+  path:
+    source_node: can_do
+    canonical_store: assets/data/cando_map.json
+  passport_evidence:
+    source_node: can_do
+    canonical_store: assets/data/cando_map.json
+  progress:
+    source_node: can_do
+    canonical_store: assets/data/cando_map.json
+  teacher_dashboard:
+    source_node: can_do
+    canonical_store: assets/data/cando_map.json
+
+# Feature consumers declare graph refs; siloed inline copies fail GM-001.
+feature_bindings:
+  - consumer_id: word_match_game
+    surfaces: [games_word_pool]
+    graph_node: lexeme
+    source_ref: assets/data/lexicon/{lang}/a1/{lang}.json
+    read_mode: graph_ref
+  - consumer_id: memory_map_screen
+    surfaces: [games_word_pool]
+    graph_node: lexeme
+    source_ref: assets/data/lexicon/{lang}/a1/{lang}.json
+    read_mode: graph_ref
+  - consumer_id: grammar_aha_card
+    surfaces: [grammar_hub, lesson_explanations]
+    graph_node: pattern
+    source_ref: assets/data/patterns/{lang}.json
+    read_mode: graph_ref
+  - consumer_id: dialogue_lesson_block
+    surfaces: [lessons, scenario_theatre]
+    graph_node: dialogue
+    source_ref: assets/data/dialogues/{lang}.json
+    read_mode: graph_ref
+  - consumer_id: checkpoint_service
+    surfaces: [checkpoints, placement_test]
+    graph_node: exercise_item
+    source_ref: curriculum/packs/{lang}/{level}.json
+    read_mode: graph_ref
+  - consumer_id: can_do_mastery
+    surfaces: [path, progress]
+    graph_node: can_do
+    source_ref: assets/data/cando_map.json
+    read_mode: graph_ref
+
+silo_forbidden_patterns:
+  - inline_word_pool
+  - embedded_lexicon_copy
+  - local_dialogue_script
+  - duplicated_pattern_bank
