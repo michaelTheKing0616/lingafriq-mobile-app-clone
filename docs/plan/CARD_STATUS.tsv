@@ -797,7 +797,7 @@ P5-032	Done	content_graph_features.yaml, graph_map_check.py, graph_map_test.py	P
 P5-033	Done	Limit historical personas to cited cards	P5/P5-033.yaml
 P5-034	Done	Cited culture cards per lang, culture_linter CU-001..003, culture_test	P5/P5-034.yaml
 P5-035	Done	Publish proverbs only after linguist review (proverb_gate.py)	P5/P5-035.yaml
-P5-036	Draft	Author register and honorific units, Expert-reviewed only	P5/P5-036.yaml
+P5-036	Done	Register/honorific practice units + register_gate.py (P5-036)	P5/P5-036.yaml
 P5-037	Draft	Design autonomy, competence and relatedness without streak pressure	P5/P5-037.yaml
 P5-038	Draft	Design speaking-first flow with recasts, not text-heavy	P5/P5-038.yaml
 P5-039	Draft	Add declared standard and per-item dialect tags	P5/P5-039.yaml

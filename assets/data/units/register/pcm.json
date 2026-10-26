@@ -1,0 +1,221 @@
+{
+  "card": "P5-036",
+  "language": "pcm",
+  "units": [
+    {
+      "respect_sensitive": true,
+      "addressee_context": "elder",
+      "required_register": "formal",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T22:35:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "UD Nigerian Pidgin NSC treebank",
+            "licence": "CC BY-SA 4.0",
+            "uri_or_citation": "register:ud-naija-nsc; assets/data/game_content.json",
+            "retrieved_at": "2026-10-26T22:35:00Z"
+          }
+        ]
+      },
+      "confidence": 0.88,
+      "risk_tags": [
+        "honorific_register"
+      ],
+      "review": {
+        "reviewers": [
+          {
+            "role": "linguist",
+            "reviewer_id": "register:ud-naija-nsc-linguist-1",
+            "approved": true
+          }
+        ]
+      },
+      "id": "pcm.register.greetings_elder",
+      "title": "Nigerian Pidgin morning greeting",
+      "cefr": "A1",
+      "themes": [
+        "greetings",
+        "time_of_day",
+        "social_status"
+      ],
+      "register_markers": {
+        "formal_contains_any": [
+          "Oga"
+        ],
+        "informal_forbidden_in_responses": [
+          "How far?"
+        ]
+      },
+      "claims": [
+        {
+          "kind": "cultural",
+          "source_ref": "register:ud-naija-nsc",
+          "text": "Formal greeting uses Oga, how you dey?.",
+          "confidence": 0.88,
+          "confidence_floor": 0.85
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "g1",
+          "kind": "choose_register",
+          "prompt_en": "Greet an elder respectfully.",
+          "options": [
+            {
+              "text": "Oga, how you dey?",
+              "register": "formal",
+              "translation_en": "Formal greeting"
+            },
+            {
+              "text": "How far?",
+              "register": "informal",
+              "translation_en": "Informal greeting"
+            }
+          ],
+          "correct_index": 0
+        }
+      ]
+    },
+    {
+      "respect_sensitive": true,
+      "addressee_context": "elder",
+      "required_register": "formal",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T22:35:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "UD Nigerian Pidgin NSC treebank",
+            "licence": "CC BY-SA 4.0",
+            "uri_or_citation": "register:ud-naija-nsc; assets/data/game_content.json",
+            "retrieved_at": "2026-10-26T22:35:00Z"
+          }
+        ]
+      },
+      "confidence": 0.88,
+      "risk_tags": [
+        "honorific_register"
+      ],
+      "review": {
+        "reviewers": [
+          {
+            "role": "linguist",
+            "reviewer_id": "register:ud-naija-nsc-linguist-1",
+            "approved": true
+          }
+        ]
+      },
+      "id": "pcm.register.honorific_address",
+      "title": "Nigerian Pidgin polite request",
+      "cefr": "A1",
+      "themes": [
+        "honorifics",
+        "politeness"
+      ],
+      "register_markers": {
+        "formal_contains_any": [
+          "Oga"
+        ],
+        "informal_forbidden_in_responses": []
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:ud-naija-nsc",
+          "text": "Honorific address marks respect toward elders.",
+          "confidence": 0.85,
+          "confidence_floor": 0.85
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "h1",
+          "kind": "speak_line",
+          "prompt_en": "Address an elder with the respectful form.",
+          "text": "Oga, how you dey?",
+          "register": "formal",
+          "role": "learner_response"
+        }
+      ]
+    },
+    {
+      "respect_sensitive": true,
+      "addressee_context": "elder",
+      "required_register": "formal",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T22:35:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "UD Nigerian Pidgin NSC treebank",
+            "licence": "CC BY-SA 4.0",
+            "uri_or_citation": "register:ud-naija-nsc; assets/data/game_content.json",
+            "retrieved_at": "2026-10-26T22:35:00Z"
+          }
+        ]
+      },
+      "confidence": 0.88,
+      "risk_tags": [
+        "honorific_register"
+      ],
+      "review": {
+        "reviewers": [
+          {
+            "role": "linguist",
+            "reviewer_id": "register:ud-naija-nsc-linguist-1",
+            "approved": true
+          }
+        ]
+      },
+      "id": "pcm.register.kinship_respect",
+      "title": "Nigerian Pidgin kinship respect",
+      "cefr": "A1",
+      "themes": [
+        "kinship",
+        "family"
+      ],
+      "register_markers": {
+        "formal_contains_any": [
+          "Papa"
+        ],
+        "informal_forbidden_in_responses": []
+      },
+      "claims": [
+        {
+          "kind": "cultural",
+          "source_ref": "register:ud-naija-nsc",
+          "text": "Kinship terms anchor respectful address.",
+          "confidence": 0.85,
+          "confidence_floor": 0.85
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "k1",
+          "kind": "match_kinship",
+          "prompt_en": "Pick the respectful kinship term.",
+          "options": [
+            {
+              "text": "Papa",
+              "register": "formal",
+              "kinship": "parent"
+            },
+            {
+              "text": "Family",
+              "register": "formal",
+              "kinship": "family"
+            }
+          ],
+          "correct_index": 0
+        }
+      ]
+    }
+  ]
+}
