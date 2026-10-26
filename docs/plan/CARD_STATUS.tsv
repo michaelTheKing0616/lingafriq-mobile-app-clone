@@ -737,7 +737,7 @@ P4-128	Blocked-External	Secure contributor licence, consent and payment terms	P4
 P4-130	Done	Per-language syllabus spec and corpora licence check (syllabus_spec.py)	P4/P4-130.yaml
 P4-131	Done	Enforce human drafting with grounded LLM variants only (drafting_policy.py)	P4/P4-131.yaml
 P4-132	Done	Two-reviewer assignment, κ per language, dialect-note resolution (review_assignment.py, review_agreement.py)	P4/P4-132.yaml
-P4-133	Draft	Enforce voice-count gates and QA listen-through	P4/P4-133.yaml
+P4-133	Done	Enforce voice-count gates and QA listen-through	P4/P4-133.yaml
 P4-134	Draft	Compute pilot item statistics	P4/P4-134.yaml
 P4-135	Draft	Add "this is wrong" button routed to reviewers	P4/P4-135.yaml
 P4-136	Draft	Add pack diff download and per-item history	P4/P4-136.yaml
