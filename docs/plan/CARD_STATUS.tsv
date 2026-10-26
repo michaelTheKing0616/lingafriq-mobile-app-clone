@@ -792,7 +792,7 @@ P5-027	Done	Per-language tone models (tone_models.dart, models.json)	P5/P5-027.y
 P5-028	Done	sound_drill.dart, clicks_vowels.json, WAXAL gate, AudioMissing	P5/P5-028.yaml
 P5-029	Done	tone_production_drill.dart: /api/voice/pronunciation/tone, actionable feedback, unsure retry, RandomScoreForbidden	P5/P5-029.yaml
 P5-030	Done	dialogue_linter.py DL-001/i+1/content-graph; assets/data/dialogues stage-1 A1 u1–u6 pilot	P5/P5-030.yaml
-P5-031	Draft	Mix item types and hold 80-85% success	P5/P5-031.yaml
+P5-031	Done	Mix item types and hold 80-85% success (difficulty_controller.dart)	P5/P5-031.yaml
 P5-032	Draft	Map content graph to features, one source per surface	P5/P5-032.yaml
 P5-033	Draft	Limit historical personas to cited cards	P5/P5-033.yaml
 P5-034	Draft	Author cited culture cards with no Beta label	P5/P5-034.yaml
