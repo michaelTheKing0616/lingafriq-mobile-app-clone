@@ -708,7 +708,7 @@ P4-083	Done	Delete generic grammar sentences from all lessons	P4/P4-083.yaml
 P4-084	Done	Re-derive legacy tonal notes from lexicon tone patterns	P4/P4-084.yaml
 P4-085	Done	Regenerate dialogues from can-do targets	P4/P4-085.yaml
 P4-086	Done	Rebuild units against CEFR map as signed packs	P4/P4-086.yaml
-P4-087	Draft	Run UI strings and phrase packs through pipeline	P4/P4-087.yaml
+P4-087	Done	Run UI strings and phrase packs through pipeline (ui_strings.py)	P4/P4-087.yaml
 P4-088	Draft	Produce before/after legacy rebuild dashboard	P4/P4-088.yaml
 P4-100	Draft	Define shared provenance, label and audio-kind envelope	P4/P4-100.yaml
 P4-101	Draft	Define lexeme schema with tone, audio and review fields	P4/P4-101.yaml
