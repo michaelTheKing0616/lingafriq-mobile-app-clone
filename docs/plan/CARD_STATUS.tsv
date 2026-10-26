@@ -854,7 +854,7 @@ P5-089	Draft	Verify linguist review cost	P5/P5-089.yaml
 P5-090	Draft	Verify calibration and sampling cost	P5/P5-090.yaml
 P5-091	Done	interim_tts_cost_verify.py; Azure $16/M + P5-071 Intron quote ledger (P5-091)	P5/P5-091.yaml
 P5-092	Done	data_licence_cost_verify.py; $15k–60k band vs EXT-04/05/06 quotes ledger (P5-092)	P5/P5-092.yaml
-P5-093	Draft	Verify reference books and engineering estimates	P5/P5-093.yaml
+P5-093	Done	reference_books_cost_verify.py; §9.4 $200–600/lang & 14–20 eng-wks; EXT-22 purchases pending (P5-093)	P5/P5-093.yaml
 P5-094	Draft	Verify all-in Stage 1 content cost rollup	P5/P5-094.yaml
 P6-001	Draft	Decide AI Gateway runtime language and transports	P6/P6-001.yaml
 P6-002	Draft	Build gateway core with mode enum and authN/Z	P6/P6-002.yaml
