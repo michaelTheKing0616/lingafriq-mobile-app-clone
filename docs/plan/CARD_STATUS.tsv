@@ -819,7 +819,7 @@ P5-054	Done	Verify Tier C Expert error ≤1.5% (tier_c_expert_verification.py)	P
 P5-055	Done	Enforce Waves 2-4 label rules and Expert L0 (wave_label_rules.py)	P5/P5-055.yaml
 P5-056	Done	Promote high-exposure A1 items to Expert-reviewed (promotion.service.ts)	P5/P5-056.yaml
 P5-057	Done	Route community fixes into the Verify queue (verify_queue.service.ts, suggest_fix_sheet.dart)	P5/P5-057.yaml
-P5-058	Draft	Gate every item on audio and labelled synthetic voice	P5/P5-058.yaml
+P5-058	Done	Gate every item on audio and labelled synthetic voice (audio_coverage_gate.py)	P5/P5-058.yaml
 P5-059	Draft	'Build TTS gate runner: ASR round-trip and F0 tone proxy'	P5/P5-059.yaml
 P5-060	Draft	'Wire Yoruba TTS: Intron with Spitch fallback'	P5/P5-060.yaml
 P5-061	Draft	Wire Igbo TTS with 200-sample linguist check	P5/P5-061.yaml
