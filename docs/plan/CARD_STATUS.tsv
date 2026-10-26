@@ -763,7 +763,7 @@ P4-165	Done	React 19.3.1/Vite 8.3.5; OpenAPI typed client + CI stale check (ling
 P4-166	Done	Staff SSO, mandatory 2FA, httpOnly cookie sessions (`staff_auth.routes.ts`)	P4/P4-166.yaml
 P4-167	Done	Playwright e2e: staff 2FA, draft/workflow mocks, 33-page smoke, CI traces (lingafriq-admin)	P4/P4-167.yaml
 P5-001	Done	Reproduce legacy curriculum audit counts by script (legacy_curriculum_audit.py)	P5/P5-001.yaml
-P5-002	Draft	Quarantine template curriculum behind placeholder linter	P5/P5-002.yaml
+P5-002	Done	Quarantine template curriculum behind placeholder linter (PH-001..004, legacy_quarantine.json)	P5/P5-002.yaml
 P5-003	Draft	Block generic grammar templates; record per-language word order	P5/P5-003.yaml
 P5-004	Draft	Rebuild legacy Word Card fields and drop false tone rule	P5/P5-004.yaml
 P5-005	Draft	Rebuild audio manifest NFC-normalised, hash-keyed and deduplicated	P5/P5-005.yaml
