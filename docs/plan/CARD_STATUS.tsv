@@ -729,7 +729,7 @@ P4-120	Done	Build language kit generator (week 0-1) (language_kit.py)	P4/P4-120.
 P4-121	Done	Build AI bootstrap stage with grounding and flags (ai_bootstrap.py)	P4/P4-121.yaml
 P4-122	Done	Enforce two-native plus linguist validation stage (native_validation.py)	P4/P4-122.yaml
 P4-123	Done	Native recording ingest and forced alignment (audio_ingest.py, forced_align.py)	P4/P4-123.yaml
-P4-124	Draft	Build speech enablement evaluation gates	P4/P4-124.yaml
+P4-124	Done	Build speech enablement evaluation gates (speech_eval.py)	P4/P4-124.yaml
 P4-125	Draft	Build pilot cohort and promotion gate runner	P4/P4-125.yaml
 P4-126	Draft	Build squad capacity planner for throughput target	P4/P4-126.yaml
 P4-127	Blocked-External	Secure partner and university linguist agreements	P4/P4-127.yaml
