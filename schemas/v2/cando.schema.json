@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.lingafriq.com/v2/cando.schema.json",
+  "title": "LingAfriq unit can-do map (P5-014)",
+  "description": "CEFR can-do statements per legacy unit key with ACTFL equivalents (CURRICULUM §4, ELEVATION §6.2).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["charter", "card_id", "cefr_actfl", "units"],
+  "properties": {
+    "charter": { "type": "string", "const": "v2" },
+    "card_id": { "type": "string", "const": "P5-014" },
+    "cefr_actfl": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["A1", "A2", "B1"],
+      "properties": {
+        "A1": { "$ref": "#/$defs/cefrActflRow" },
+        "A2": { "$ref": "#/$defs/cefrActflRow" },
+        "B1": { "$ref": "#/$defs/cefrActflRow" }
+      }
+    },
+    "units": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/unitEntry" }
+    }
+  },
+  "$defs": {
+    "cefrActflRow": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["cefr", "actfl", "actfl_descriptor"],
+          "properties": {
+            "cefr": { "type": "string", "enum": ["A1", "A2", "B1"] },
+            "actfl": {
+              "type": "string",
+              "enum": [
+                "Novice Low",
+                "Novice Mid",
+                "Novice High",
+                "Intermediate Low",
+                "Intermediate Mid"
+              ]
+            },
+            "actfl_descriptor": { "type": "string", "minLength": 1 }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["cefr", "gap"],
+          "properties": {
+            "cefr": { "type": "string", "enum": ["A1", "A2", "B1"] },
+            "gap": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["kind", "reason"],
+              "properties": {
+                "kind": { "type": "string", "const": "MappingGap" },
+                "reason": { "type": "string", "minLength": 1 }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "canDoStatement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["can_do_id", "cefr", "actfl", "statement_en", "skill", "source_objective"],
+      "properties": {
+        "can_do_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z]{2,3}\\.cando\\.[a-z0-9._-]+$"
+        },
+        "cefr": { "type": "string", "enum": ["A1", "A2", "B1", "B2", "C1", "C2"] },
+        "actfl": {
+          "type": "string",
+          "enum": [
+            "Novice Low",
+            "Novice Mid",
+            "Novice High",
+            "Intermediate Low",
+            "Intermediate Mid",
+            "Intermediate High",
+            "Advanced Low",
+            "Advanced Mid"
+          ]
+        },
+        "statement_en": {
+          "type": "string",
+          "minLength": 8,
+          "pattern": "^I can .+"
+        },
+        "skill": {
+          "type": "string",
+          "enum": ["SPEAK", "LISTEN", "READ", "WRITE", "LEX", "INTERACT"]
+        },
+        "source_objective": { "type": "string", "minLength": 1 }
+      }
+    },
+    "unitEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["unit_key", "kit_lang", "cefr_band", "can_dos"],
+      "properties": {
+        "unit_key": { "type": "string", "minLength": 1 },
+        "kit_lang": { "type": "string", "pattern": "^[a-z]{2,3}$" },
+        "cefr_band": { "type": "string", "enum": ["A1", "A2", "B1", "B2", "C1", "C2"] },
+        "can_dos": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 4,
+          "items": { "$ref": "#/$defs/canDoStatement" }
+        }
+      }
+    }
+  }
+}

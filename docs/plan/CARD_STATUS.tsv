@@ -775,7 +775,7 @@ P5-010	Done	Show label badges, Beta copy and Synthetic voice tag (content_label_
 P5-011	Done	CI label exclusion rules (label_rules.py, content_ci.yml)	P5/P5-011.yaml
 P5-012	Done	Report a mistake sheet + POST /api/v2/content-flags (five categories)	P5/P5-012.yaml
 P5-013	Done	Auto-hide flagged items to Under review (flag.service.ts, under_review.dart)	P5/P5-013.yaml
-P5-014	Draft	Map every unit to CEFR and ACTFL can-dos	P5/P5-014.yaml
+P5-014	Done	Map every unit to CEFR and ACTFL can-dos (cando_map.json, cando_linter.py)	P5/P5-014.yaml
 P5-015	Draft	Mark units mastered by can-do evidence and fix unlock rule	P5/P5-015.yaml
 P5-016	Draft	Select frequency-ranked A1 lexicon, 600-800 lexemes per language	P5/P5-016.yaml
 P5-017	Draft	Restrict tonal Beta to lexicon-anchored tokens	P5/P5-017.yaml
