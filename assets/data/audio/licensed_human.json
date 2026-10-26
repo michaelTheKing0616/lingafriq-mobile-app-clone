@@ -1,0 +1,140 @@
+{
+  "card_id": "P5-063",
+  "schema_version": "1.0.0",
+  "generated_at": "2026-10-26T22:35:10+00:00",
+  "curriculum_anchor": "CURRICULUM.md#§7:L704-L729",
+  "languages": {
+    "yo": [
+      {
+        "pool_id": "fsi-yoruba-tapes",
+        "language": "yo",
+        "provider": "fsi_tapes",
+        "licence_id": "fsi-yoruba",
+        "licence": "public-domain",
+        "quality": "dated",
+        "allowed_use": [
+          "tone_drills"
+        ],
+        "text_scope": "fsi_course_recordings",
+        "register_url": "CURRICULUM.md#§2.2:L124-L134",
+        "notes": "US FSI Basic Course tape recordings; CURRICULUM §7 tone-drill interim human audio."
+      },
+      {
+        "pool_id": "common-voice-yo-clips",
+        "language": "yo",
+        "provider": "common_voice",
+        "licence_id": "common-voice-yo",
+        "licence": "CC0",
+        "quality": "community",
+        "allowed_use": [
+          "learner_audio"
+        ],
+        "text_scope": "own_sentences_only",
+        "register_url": "CURRICULUM.md#§2.2:L170-L177",
+        "notes": "Mozilla Common Voice clips may only back the exact sentence they were recorded for."
+      },
+      {
+        "pool_id": "fleurs-yo",
+        "language": "yo",
+        "provider": "fleurs",
+        "licence_id": "fleurs",
+        "licence": "CC BY 4.0",
+        "quality": "parallel_corpus",
+        "allowed_use": [
+          "learner_audio"
+        ],
+        "text_scope": "own_sentences_only",
+        "register_url": "CURRICULUM.md#§2.2:L178-L180",
+        "notes": "FLEURS audio may only back the FLEURS transcript sentence it ships with."
+      }
+    ],
+    "ig": [
+      {
+        "pool_id": "fsi-igbo-tapes",
+        "language": "ig",
+        "provider": "fsi_tapes",
+        "licence_id": "fsi-igbo",
+        "licence": "public-domain",
+        "quality": "dated",
+        "allowed_use": [
+          "tone_drills"
+        ],
+        "text_scope": "fsi_course_recordings",
+        "register_url": "CURRICULUM.md#§2.2:L124-L134",
+        "notes": "US FSI Basic Course tape recordings; CURRICULUM §7 tone-drill interim human audio."
+      },
+      {
+        "pool_id": "common-voice-ig-clips",
+        "language": "ig",
+        "provider": "common_voice",
+        "licence_id": "common-voice-ig",
+        "licence": "CC0",
+        "quality": "community",
+        "allowed_use": [
+          "learner_audio"
+        ],
+        "text_scope": "own_sentences_only",
+        "register_url": "CURRICULUM.md#§2.2:L170-L177",
+        "notes": "Mozilla Common Voice clips may only back the exact sentence they were recorded for."
+      },
+      {
+        "pool_id": "fleurs-ig",
+        "language": "ig",
+        "provider": "fleurs",
+        "licence_id": "fleurs",
+        "licence": "CC BY 4.0",
+        "quality": "parallel_corpus",
+        "allowed_use": [
+          "learner_audio"
+        ],
+        "text_scope": "own_sentences_only",
+        "register_url": "CURRICULUM.md#§2.2:L178-L180",
+        "notes": "FLEURS audio may only back the FLEURS transcript sentence it ships with."
+      }
+    ],
+    "ha": [
+      {
+        "pool_id": "fsi-hausa-tapes",
+        "language": "ha",
+        "provider": "fsi_tapes",
+        "licence_id": "fsi-hausa",
+        "licence": "public-domain",
+        "quality": "dated",
+        "allowed_use": [
+          "tone_drills"
+        ],
+        "text_scope": "fsi_course_recordings",
+        "register_url": "CURRICULUM.md#§2.2:L124-L134",
+        "notes": "US FSI Basic Course tape recordings; CURRICULUM §7 tone-drill interim human audio."
+      },
+      {
+        "pool_id": "common-voice-ha-clips",
+        "language": "ha",
+        "provider": "common_voice",
+        "licence_id": "common-voice-ha",
+        "licence": "CC0",
+        "quality": "community",
+        "allowed_use": [
+          "learner_audio"
+        ],
+        "text_scope": "own_sentences_only",
+        "register_url": "CURRICULUM.md#§2.2:L170-L177",
+        "notes": "Mozilla Common Voice clips may only back the exact sentence they were recorded for."
+      },
+      {
+        "pool_id": "fleurs-ha",
+        "language": "ha",
+        "provider": "fleurs",
+        "licence_id": "fleurs",
+        "licence": "CC BY 4.0",
+        "quality": "parallel_corpus",
+        "allowed_use": [
+          "learner_audio"
+        ],
+        "text_scope": "own_sentences_only",
+        "register_url": "CURRICULUM.md#§2.2:L178-L180",
+        "notes": "FLEURS audio may only back the FLEURS transcript sentence it ships with."
+      }
+    ]
+  }
+}
