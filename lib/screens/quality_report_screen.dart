@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/widgets/content_label_badge.dart';
 
 /// Copy keys (P5-047): quality.title, quality.no_data.
@@ -201,7 +202,9 @@ class _QualityReportScreenState extends State<QualityReportScreen> {
   }
 
   static Future<QualityReportPayload?> _defaultLoader() async {
-    return null;
+    await ApiService.initialize();
+    final response = await ApiService.get(qualityReportApiPath);
+    return parseQualityReportResponse(response.data);
   }
 
   @override
