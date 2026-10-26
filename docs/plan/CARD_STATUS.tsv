@@ -740,7 +740,7 @@ P4-132	Done	Two-reviewer assignment, κ per language, dialect-note resolution (r
 P4-133	Done	Enforce voice-count gates and QA listen-through	P4/P4-133.yaml
 P4-134	Done	Compute pilot item statistics (item_stats.py)	P4/P4-134.yaml
 P4-135	Done	"This is wrong" control + offline queue; POST /api/v2/item-reports → flagged review queue	P4/P4-135.yaml
-P4-136	Draft	Add pack diff download and per-item history	P4/P4-136.yaml
+P4-136	Done	Add pack diff download and per-item history	P4/P4-136.yaml
 P4-140	Draft	Build single target-language text renderer	P4/P4-140.yaml
 P4-141	Draft	Build diacritic keyboard bar per language	P4/P4-141.yaml
 P4-142	Draft	Implement level-aware lenient diacritic grading	P4/P4-142.yaml
