@@ -681,7 +681,7 @@ P4-056	Done	Reject out-of-lexicon words and uncited claims	P4/P4-056.yaml
 P4-057	Done	Run independent cross-check with a second model	P4/P4-057.yaml
 P4-058	Done	Check each citation entails its claim (entailment.py)	P4/P4-058.yaml
 P4-059	Done	Back-translate with Google Cloud Translation and MADLAD-400 (backtranslate.py)	P4/P4-059.yaml
-P4-060	Draft	Run linters and morphological analysers as a stage	P4/P4-060.yaml
+P4-060	Done	Run linters and morphological analysers as a stage	P4/P4-060.yaml
 P4-061	Draft	Gate tone and diacritics by three-way agreement	P4/P4-061.yaml
 P4-062	Draft	Run NaijaML restorer as tone check for Yoruba	P4/P4-062.yaml
 P4-063	Done	Compute weighted confidence score	P4/P4-063.yaml
