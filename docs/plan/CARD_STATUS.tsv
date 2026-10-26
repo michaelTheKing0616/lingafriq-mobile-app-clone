@@ -747,7 +747,7 @@ P4-142	Done	Level-aware diacritic grading (answer_matcher.dart, learner level po
 P4-150	Done	Studio RBAC: ten roles, language-scoped leads, server 403, SELF_APPROVAL_FORBIDDEN	P4/P4-150.yaml
 P4-151	Done	Content review workflow state machine (content_workflow.service.ts, ReviewQueue.tsx)	P4/P4-151.yaml
 P4-152	Done	Append-only workflow audit events + admin AuditTrail viewer (audit.service.ts)	P4/P4-152.yaml
-P4-153	Draft	Move lesson drafts to server and remove dead native-verification code	P4/P4-153.yaml
+P4-153	Done	Lesson drafts on server (draft.routes.ts, LessonBuilder autosave, native_verification REMOVAL_DECISION)	P4/P4-153.yaml
 P4-154	Draft	Build tone-aware text field with diacritic palette and Tone Lens	P4/P4-154.yaml
 P4-155	Draft	Build audio waveform alignment view and dialogue editor	P4/P4-155.yaml
 P4-156	Draft	Build minimal-pair linker and can-do mapper	P4/P4-156.yaml
