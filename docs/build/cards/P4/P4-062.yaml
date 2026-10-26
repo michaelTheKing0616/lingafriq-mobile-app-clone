@@ -57,9 +57,8 @@ dod_evidence:
 - ledger row
 risks: []
 gate: G4
-external_blockers:
-- EXT-01
-status: Draft
+external_blockers: []
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging
