@@ -754,7 +754,7 @@ P4-156	Done	Minimal-pair linker and can-do mapper (MinimalPairLinker.tsx, CanDoM
 P4-157	Done	Studio item preview parity via preview_contract.json + ItemPreview.tsx	P4/P4-157.yaml
 P4-158	Done	Item/agreement/audio metrics dashboard (quality_metrics.service.ts, QualityDashboard.tsx)	P4/P4-158.yaml
 P4-159	Done	Problem queue, placeholder scan, ARB i18n coverage (ProblemQueue.tsx, i18n_coverage.service.ts)	P4/P4-159.yaml
-P4-160	Draft	Build moderation console with queues and actions	P4/P4-160.yaml
+P4-160	Done	Moderation console queues, actions, appeals (moderation_actions.service.ts, ModerationConsole.tsx)	P4/P4-160.yaml
 P4-161	Draft	Build law-enforcement escalation with restricted CSAM handling	P4/P4-161.yaml
 P4-162	Draft	Build persona console with dossiers, evals and kill switch	P4/P4-162.yaml
 P4-163	Draft	Build AI ops prompt registry and eval runs	P4/P4-163.yaml
