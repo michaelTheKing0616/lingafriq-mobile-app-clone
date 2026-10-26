@@ -23,7 +23,9 @@ tiers:
   reviewer: T1
   justification: verification only; no code
 token_budget: 20000
-file_allowlist: []
+file_allowlist:
+- tools/content/tier_a_expert_verification.py
+- test/content/tier_a_expert_verification_test.py
 context_anchors:
 - CURRICULUM.md#§6:L642-L642
 acceptance_criteria:
@@ -41,7 +43,7 @@ dod_evidence:
 risks: []
 gate: G6
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/07-research-and-fact-checking
