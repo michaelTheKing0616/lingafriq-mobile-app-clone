@@ -731,7 +731,7 @@ P4-122	Done	Enforce two-native plus linguist validation stage (native_validation
 P4-123	Done	Native recording ingest and forced alignment (audio_ingest.py, forced_align.py)	P4/P4-123.yaml
 P4-124	Done	Build speech enablement evaluation gates (speech_eval.py)	P4/P4-124.yaml
 P4-125	Done	Build pilot cohort and promotion gate runner (pilot_gate.py)	P4/P4-125.yaml
-P4-126	Draft	Build squad capacity planner for throughput target	P4/P4-126.yaml
+P4-126	Done	Build squad capacity planner for throughput target (squad_capacity.py)	P4/P4-126.yaml
 P4-127	Blocked-External	Secure partner and university linguist agreements	P4/P4-127.yaml
 P4-128	Blocked-External	Secure contributor licence, consent and payment terms	P4/P4-128.yaml
 P4-130	Draft	Build per-language syllabus spec and corpora licence check	P4/P4-130.yaml
