@@ -784,7 +784,7 @@ P5-019	Done	Canonical FSRS-6 in learning/scheduling; per-learner weights at 1k r
 P5-020	Done	Pattern Library schema (schemas/v2/pattern.schema.json), PL-001 linter, PatternMissing coverage	P5/P5-020.yaml
 P5-021	Done	Yoruba A1 aspect patterns ń/ti/máa in assets/data/patterns/yo.json (P5-021)	P5/P5-021.yaml
 P5-022	Done	Swahili A1 tense markers -na-/-li-/-ta-/-me- in assets/data/patterns/sw.json (P5-022)	P5/P5-022.yaml
-P5-023	Draft	Author isiZulu A1 subject-concord patterns by class	P5/P5-023.yaml
+P5-023	Done	isiZulu A1 subject concords classes 1–15 (zu.json, pattern_zu_test.py)	P5/P5-023.yaml
 P5-024	Draft	Author A1 patterns for ig, ha, pcm and xh	P5/P5-024.yaml
 P5-025	Draft	Render grammar aha cards with contrastive examples	P5/P5-025.yaml
 P5-026	Draft	Build tone perception drills from sourced minimal pairs	P5/P5-026.yaml

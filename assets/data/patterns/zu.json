@@ -1,0 +1,620 @@
+{
+  "language": "zu",
+  "patterns": [
+    {
+      "id": "zu.pat.sc-c01",
+      "description_l1": "isiZulu noun class 1 (umu-/u-) agrees with subject concord u- on the verb (present -ya-)",
+      "form": "Class 1 noun + u- + verb stem (-ya- present)",
+      "examples": [
+        "Umuntu uyahamba"
+      ],
+      "contrasts": [
+        "Umuntu bayahamba (class 2 concord on class 1 noun)"
+      ],
+      "common_errors": [
+        "Using a subject concord from another noun class instead of u-",
+        "Omitting the subject concord and using English-style subject + bare verb"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T21:35:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "Peace Corps isiZulu Foundation Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:peace-corps-zulu; CURRICULUM.md#§4:L565",
+            "retrieved_at": "2026-10-26T21:35:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:peace-corps-zulu"
+        }
+      ],
+      "confidence": 0.9,
+      "risk_tags": [
+        "grammar_explanation"
+      ],
+      "audio": []
+    },
+    {
+      "id": "zu.pat.sc-c02",
+      "description_l1": "isiZulu noun class 2 (aba-/a- plural people) agrees with subject concord ba- on the verb (present -ya-)",
+      "form": "Class 2 noun + ba- + verb stem (-ya- present)",
+      "examples": [
+        "Abantu bayadlala"
+      ],
+      "contrasts": [
+        "Abantu uyadlala (class 1 concord on class 2 noun)"
+      ],
+      "common_errors": [
+        "Using a subject concord from another noun class instead of ba-",
+        "Omitting the subject concord and using English-style subject + bare verb"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T21:35:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "Peace Corps isiZulu Foundation Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:peace-corps-zulu; CURRICULUM.md#§4:L565",
+            "retrieved_at": "2026-10-26T21:35:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:peace-corps-zulu"
+        }
+      ],
+      "confidence": 0.9,
+      "risk_tags": [
+        "grammar_explanation"
+      ],
+      "audio": []
+    },
+    {
+      "id": "zu.pat.sc-c03",
+      "description_l1": "isiZulu noun class 3 (umu-/im-) agrees with subject concord u- on the verb (present -ya-)",
+      "form": "Class 3 noun + u- + verb stem (-ya- present)",
+      "examples": [
+        "Umsebenzi uyasebenza"
+      ],
+      "contrasts": [
+        "Umsebenzi iyasebenza (class 4/9 concord on class 3 noun)"
+      ],
+      "common_errors": [
+        "Using a subject concord from another noun class instead of u-",
+        "Omitting the subject concord and using English-style subject + bare verb"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T21:35:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "Peace Corps isiZulu Foundation Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:peace-corps-zulu; CURRICULUM.md#§4:L565",
+            "retrieved_at": "2026-10-26T21:35:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:peace-corps-zulu"
+        }
+      ],
+      "confidence": 0.9,
+      "risk_tags": [
+        "grammar_explanation"
+      ],
+      "audio": []
+    },
+    {
+      "id": "zu.pat.sc-c04",
+      "description_l1": "isiZulu noun class 4 (imi-) agrees with subject concord i- on the verb (present -ya-)",
+      "form": "Class 4 noun + i- + verb stem (-ya- present)",
+      "examples": [
+        "Iminyaka iyashintsha"
+      ],
+      "contrasts": [
+        "Iminyaka uyashintsha (class 1/3 concord on class 4 noun)"
+      ],
+      "common_errors": [
+        "Using a subject concord from another noun class instead of i-",
+        "Omitting the subject concord and using English-style subject + bare verb"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T21:35:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "Peace Corps isiZulu Foundation Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:peace-corps-zulu; CURRICULUM.md#§4:L565",
+            "retrieved_at": "2026-10-26T21:35:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:peace-corps-zulu"
+        }
+      ],
+      "confidence": 0.9,
+      "risk_tags": [
+        "grammar_explanation"
+      ],
+      "audio": []
+    },
+    {
+      "id": "zu.pat.sc-c05",
+      "description_l1": "isiZulu noun class 5 (ili-/ama-) agrees with subject concord li- on the verb (present -ya-)",
+      "form": "Class 5 noun + li- + verb stem (-ya- present)",
+      "examples": [
+        "Iqembu liyahamba"
+      ],
+      "contrasts": [
+        "Iqembu iyahamba (i- concord on class 5 noun)"
+      ],
+      "common_errors": [
+        "Using a subject concord from another noun class instead of li-",
+        "Omitting the subject concord and using English-style subject + bare verb"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T21:35:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "Peace Corps isiZulu Foundation Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:peace-corps-zulu; CURRICULUM.md#§4:L565",
+            "retrieved_at": "2026-10-26T21:35:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:peace-corps-zulu"
+        }
+      ],
+      "confidence": 0.9,
+      "risk_tags": [
+        "grammar_explanation"
+      ],
+      "audio": []
+    },
+    {
+      "id": "zu.pat.sc-c06",
+      "description_l1": "isiZulu noun class 6 (ama-) agrees with subject concord a- on the verb (present -ya-)",
+      "form": "Class 6 noun + a- + verb stem (-ya- present)",
+      "examples": [
+        "Amanzi ayageleza"
+      ],
+      "contrasts": [
+        "Amanzi iyageleza (i- concord on class 6 noun)"
+      ],
+      "common_errors": [
+        "Using a subject concord from another noun class instead of a-",
+        "Omitting the subject concord and using English-style subject + bare verb"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T21:35:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "Peace Corps isiZulu Foundation Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:peace-corps-zulu; CURRICULUM.md#§4:L565",
+            "retrieved_at": "2026-10-26T21:35:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:peace-corps-zulu"
+        }
+      ],
+      "confidence": 0.9,
+      "risk_tags": [
+        "grammar_explanation"
+      ],
+      "audio": []
+    },
+    {
+      "id": "zu.pat.sc-c07",
+      "description_l1": "isiZulu noun class 7 (isi-/izi-) agrees with subject concord i- on the verb (present -ya-)",
+      "form": "Class 7 noun + i- + verb stem (-ya- present)",
+      "examples": [
+        "Isikhathi siyashintsha"
+      ],
+      "contrasts": [
+        "Isikhathi ziyashintsha (zi- concord on class 7 noun)"
+      ],
+      "common_errors": [
+        "Using a subject concord from another noun class instead of i-",
+        "Omitting the subject concord and using English-style subject + bare verb"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T21:35:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "Peace Corps isiZulu Foundation Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:peace-corps-zulu; CURRICULUM.md#§4:L565",
+            "retrieved_at": "2026-10-26T21:35:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:peace-corps-zulu"
+        }
+      ],
+      "confidence": 0.9,
+      "risk_tags": [
+        "grammar_explanation"
+      ],
+      "audio": []
+    },
+    {
+      "id": "zu.pat.sc-c08",
+      "description_l1": "isiZulu noun class 8 (izi-/ama-) agrees with subject concord zi- on the verb (present -ya-)",
+      "form": "Class 8 noun + zi- + verb stem (-ya- present)",
+      "examples": [
+        "Izidingo ziyadingeka"
+      ],
+      "contrasts": [
+        "Izidingo iyadingeka (i- concord on class 8 noun)"
+      ],
+      "common_errors": [
+        "Using a subject concord from another noun class instead of zi-",
+        "Omitting the subject concord and using English-style subject + bare verb"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T21:35:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "Peace Corps isiZulu Foundation Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:peace-corps-zulu; CURRICULUM.md#§4:L565",
+            "retrieved_at": "2026-10-26T21:35:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:peace-corps-zulu"
+        }
+      ],
+      "confidence": 0.9,
+      "risk_tags": [
+        "grammar_explanation"
+      ],
+      "audio": []
+    },
+    {
+      "id": "zu.pat.sc-c09",
+      "description_l1": "isiZulu noun class 9 (i-/izin-) agrees with subject concord i- on the verb (present -ya-)",
+      "form": "Class 9 noun + i- + verb stem (-ya- present)",
+      "examples": [
+        "Into iyatholakala"
+      ],
+      "contrasts": [
+        "Into ziyatholakala (zi- concord on class 9 noun)"
+      ],
+      "common_errors": [
+        "Using a subject concord from another noun class instead of i-",
+        "Omitting the subject concord and using English-style subject + bare verb"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T21:35:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "Peace Corps isiZulu Foundation Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:peace-corps-zulu; CURRICULUM.md#§4:L565",
+            "retrieved_at": "2026-10-26T21:35:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:peace-corps-zulu"
+        }
+      ],
+      "confidence": 0.9,
+      "risk_tags": [
+        "grammar_explanation"
+      ],
+      "audio": []
+    },
+    {
+      "id": "zu.pat.sc-c10",
+      "description_l1": "isiZulu noun class 10 (izi-/ama-) agrees with subject concord zi- on the verb (present -ya-)",
+      "form": "Class 10 noun + zi- + verb stem (-ya- present)",
+      "examples": [
+        "Izingane ziyadlala"
+      ],
+      "contrasts": [
+        "Izingane iyadlala (i- concord on class 10 noun)"
+      ],
+      "common_errors": [
+        "Using a subject concord from another noun class instead of zi-",
+        "Omitting the subject concord and using English-style subject + bare verb"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T21:35:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "Peace Corps isiZulu Foundation Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:peace-corps-zulu; CURRICULUM.md#§4:L565",
+            "retrieved_at": "2026-10-26T21:35:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:peace-corps-zulu"
+        }
+      ],
+      "confidence": 0.9,
+      "risk_tags": [
+        "grammar_explanation"
+      ],
+      "audio": []
+    },
+    {
+      "id": "zu.pat.sc-c11",
+      "description_l1": "isiZulu noun class 11 (ulu-/ama-) agrees with subject concord lu- on the verb (present -ya-)",
+      "form": "Class 11 noun + lu- + verb stem (-ya- present)",
+      "examples": [
+        "Uhlelo luyasebenza"
+      ],
+      "contrasts": [
+        "Uhlelo uyasebenza (u- concord on class 11 noun)"
+      ],
+      "common_errors": [
+        "Using a subject concord from another noun class instead of lu-",
+        "Omitting the subject concord and using English-style subject + bare verb"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T21:35:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "Peace Corps isiZulu Foundation Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:peace-corps-zulu; CURRICULUM.md#§4:L565",
+            "retrieved_at": "2026-10-26T21:35:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:peace-corps-zulu"
+        }
+      ],
+      "confidence": 0.9,
+      "risk_tags": [
+        "grammar_explanation"
+      ],
+      "audio": []
+    },
+    {
+      "id": "zu.pat.sc-c12",
+      "description_l1": "isiZulu noun class 12 (utu-/ama-, rare) agrees with subject concord tu- on the verb (present -ya-)",
+      "form": "Class 12 noun + tu- + verb stem (-ya- present)",
+      "examples": [
+        "Utshani tuyakhula"
+      ],
+      "contrasts": [
+        "Utshani uyakhula (u- concord on class 12 noun)"
+      ],
+      "common_errors": [
+        "Using a subject concord from another noun class instead of tu-",
+        "Omitting the subject concord and using English-style subject + bare verb"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T21:35:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "Peace Corps isiZulu Foundation Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:peace-corps-zulu; CURRICULUM.md#§4:L565",
+            "retrieved_at": "2026-10-26T21:35:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:peace-corps-zulu"
+        }
+      ],
+      "confidence": 0.9,
+      "risk_tags": [
+        "grammar_explanation"
+      ],
+      "audio": []
+    },
+    {
+      "id": "zu.pat.sc-c13",
+      "description_l1": "isiZulu noun class 13 (uku- abstract) agrees with subject concord ku- on the verb (present -ya-)",
+      "form": "Class 13 noun + ku- + verb stem (-ya- present)",
+      "examples": [
+        "Ukuhumusha kuyadingeka"
+      ],
+      "contrasts": [
+        "Ukuhumusha luyadingeka (lu- concord on class 13 noun)"
+      ],
+      "common_errors": [
+        "Using a subject concord from another noun class instead of ku-",
+        "Omitting the subject concord and using English-style subject + bare verb"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T21:35:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "Peace Corps isiZulu Foundation Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:peace-corps-zulu; CURRICULUM.md#§4:L565",
+            "retrieved_at": "2026-10-26T21:35:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:peace-corps-zulu"
+        }
+      ],
+      "confidence": 0.9,
+      "risk_tags": [
+        "grammar_explanation"
+      ],
+      "audio": []
+    },
+    {
+      "id": "zu.pat.sc-c14",
+      "description_l1": "isiZulu noun class 14 (ubu- abstract) agrees with subject concord bu- on the verb (present -ya-)",
+      "form": "Class 14 noun + bu- + verb stem (-ya- present)",
+      "examples": [
+        "Ubuso buyabukeka"
+      ],
+      "contrasts": [
+        "Ubuso luyabukeka (lu- concord on class 14 noun)"
+      ],
+      "common_errors": [
+        "Using a subject concord from another noun class instead of bu-",
+        "Omitting the subject concord and using English-style subject + bare verb"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T21:35:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "Peace Corps isiZulu Foundation Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:peace-corps-zulu; CURRICULUM.md#§4:L565",
+            "retrieved_at": "2026-10-26T21:35:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:peace-corps-zulu"
+        }
+      ],
+      "confidence": 0.9,
+      "risk_tags": [
+        "grammar_explanation"
+      ],
+      "audio": []
+    },
+    {
+      "id": "zu.pat.sc-c15",
+      "description_l1": "isiZulu noun class 15 (uku- infinitive) agrees with subject concord ku- on the verb (present -ya-)",
+      "form": "Class 15 noun + ku- + verb stem (-ya- present)",
+      "examples": [
+        "Ukudla kuyatholakala"
+      ],
+      "contrasts": [
+        "Ukudla luyatholakala (lu- concord on class 15 noun)"
+      ],
+      "common_errors": [
+        "Using a subject concord from another noun class instead of ku-",
+        "Omitting the subject concord and using English-style subject + bare verb"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T21:35:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "Peace Corps isiZulu Foundation Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:peace-corps-zulu; CURRICULUM.md#§4:L565",
+            "retrieved_at": "2026-10-26T21:35:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:peace-corps-zulu"
+        }
+      ],
+      "confidence": 0.9,
+      "risk_tags": [
+        "grammar_explanation"
+      ],
+      "audio": []
+    }
+  ]
+}
