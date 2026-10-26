@@ -756,7 +756,7 @@ P4-158	Done	Item/agreement/audio metrics dashboard (quality_metrics.service.ts, 
 P4-159	Done	Problem queue, placeholder scan, ARB i18n coverage (ProblemQueue.tsx, i18n_coverage.service.ts)	P4/P4-159.yaml
 P4-160	Done	Moderation console queues, actions, appeals (moderation_actions.service.ts, ModerationConsole.tsx)	P4/P4-160.yaml
 P4-161	Done	Law-enforcement escalation workflow, CSAM trained-staff gate, encrypted evidence	P4/P4-161.yaml
-P4-162	Draft	Build persona console with dossiers, evals and kill switch	P4/P4-162.yaml
+P4-162	Done	Admin persona console: dossiers, claims audit, evals, kill switch (persona_admin.service.ts)	P4/P4-162.yaml
 P4-163	Draft	Build AI ops prompt registry and eval runs	P4/P4-163.yaml
 P4-164	Draft	Build AI ops cost, routing table and incident switches	P4/P4-164.yaml
 P4-165	Draft	Upgrade studio to current React and Vite with typed API client	P4/P4-165.yaml
