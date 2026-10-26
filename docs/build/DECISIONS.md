@@ -22,7 +22,7 @@ D1–D10 signed 2026-10-21 ("approve all as recommended").
 | D3 | isiXhosa custom voice now vs matched corpus audio + text first | **Commission now** (lead time; G8 dependency) with Option A as the interim | CURRICULUM §10:L859 |
 | D4 | Contract 2 part-time linguists per Stage-1 language with consent + IP clause | **Approve**; agent prepares brief and clause list (EXT-11) | CURRICULUM §10:L861 |
 | D5 | Build Curriculum Studio in `lingafriq-admin` | **Approve** | CURRICULUM §10:L863 |
-| D6 | Resolve CONFLICTS C2 (tone Beta rule) and C3 (L1 audio definition) as recommended | **Approve both** — C2 closed in **ADR-002**; C3 in ADR-003 | CONFLICTS.md |
+| D6 | Resolve CONFLICTS C2 (tone Beta rule) and C3 (L1 audio definition) as recommended | **Approve both** — C2 closed in **ADR-002**; C3 closed in **ADR-003** | CONFLICTS.md |
 | D7 | Model-tier → Cursor slug map and initial budgets (S 30k / M 80k / L 200k), WIP 3 | **Approve; calibrate after 10 cards** | 04_ROUTING.md |
 | D8 | UI distinctiveness panel target (≥60% preference, ≥20-person NG/KE/ZA panel) and usability targets (task success ≥90%, SUS ≥85) — *proposed* | **Approve as proposed** | 05_UX_DESIGN_BAR.md |
 | D9 | Supply `LINGAFRIQ_AI_MODEL_STACK.md` (or confirm it does not exist, in which case vendor choices are carried only as written in the two sources) | **Answered — doc at `docs/plan/LINGAFRIQ_AI_MODEL_STACK.md`** | EXT-01 Done |

@@ -58,7 +58,7 @@ risks: []
 gate: G0
 external_blockers:
 - EXT-12
-status: Ready
+status: Done
 skills:
   worker:
   - adaptive/10-analysis-and-decision-support
