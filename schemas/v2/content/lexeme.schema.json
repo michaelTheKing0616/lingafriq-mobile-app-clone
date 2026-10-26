@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.lingafriq.com/v2/content/lexeme.schema.json",
+  "title": "LingAfriq lexeme (v2)",
+  "description": "Lexeme with tone, audio, senses and shared content envelope (P4-101).",
+  "allOf": [
+    { "$ref": "common.schema.json" },
+    {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "id",
+        "lemma",
+        "orthography",
+        "senses",
+        "cefr",
+        "frequency_rank"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z]{2,3}\\.lex\\..+\\..+$"
+        },
+        "lemma": { "type": "string", "minLength": 1 },
+        "orthography": { "$ref": "#/$defs/orthography" },
+        "ipa": { "type": "string", "minLength": 1 },
+        "tone_pattern": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "syllables": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "senses": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/sense" }
+        },
+        "minimal_pairs": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "image": { "$ref": "#/$defs/image" },
+        "cefr": {
+          "type": "string",
+          "enum": ["A1", "A2", "B1", "B2", "C1", "C2"]
+        },
+        "frequency_rank": { "type": "integer", "minimum": 1 }
+      }
+    }
+  ],
+  "$defs": {
+    "orthography": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["standard", "ascii_fallback", "script"],
+      "properties": {
+        "standard": { "type": "string", "minLength": 1 },
+        "ascii_fallback": { "type": "string", "minLength": 1 },
+        "script": { "type": "string", "enum": ["Latn", "Arab", "Ethi"] }
+      }
+    },
+    "sense": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["gloss_en", "gloss_fr", "domain", "register"],
+      "properties": {
+        "gloss_en": { "type": "string", "minLength": 1 },
+        "gloss_fr": { "type": "string", "minLength": 1 },
+        "domain": { "type": "string", "minLength": 1 },
+        "register": {
+          "type": "string",
+          "enum": ["neutral", "formal", "informal", "slang", "literary", "religious"]
+        }
+      }
+    },
+    "lexemeAudio": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["kind", "voice_id", "speed", "uri", "aligned_phones"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["human", "tts_synthetic"] },
+        "voice_id": { "type": "string", "minLength": 1 },
+        "speed": { "type": "string", "enum": ["natural", "slow"] },
+        "uri": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^audio/[a-z]{2,3}/[0-9a-f]{8,64}\\.[a-z0-9]+$"
+        },
+        "aligned_phones": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "synthetic_voice_tag": { "type": "string" }
+      }
+    },
+    "image": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["uri", "alt_text", "cultural_review"],
+      "properties": {
+        "uri": { "type": "string", "minLength": 1 },
+        "alt_text": { "type": "string", "minLength": 1 },
+        "cultural_review": {
+          "type": "string",
+          "enum": ["approved", "pending", "rejected"]
+        }
+      }
+    }
+  }
+}
