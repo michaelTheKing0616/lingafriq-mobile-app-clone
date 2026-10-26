@@ -800,7 +800,7 @@ P5-035	Done	Publish proverbs only after linguist review (proverb_gate.py)	P5/P5-
 P5-036	Done	Register/honorific practice units + register_gate.py (P5-036)	P5/P5-036.yaml
 P5-037	Done	Design autonomy, competence and relatedness without streak pressure (sdt_motivation_policy.dart)	P5/P5-037.yaml
 P5-038	Done	Design speaking-first flow with recasts, not text-heavy (speaking_first_flow_policy.dart)	P5/P5-038.yaml
-P5-039	Draft	Add declared standard and per-item dialect tags	P5/P5-039.yaml
+P5-039	Done	Add declared standard and per-item dialect tags (dialect_check.py)	P5/P5-039.yaml
 P5-040	Draft	Add Pidgin corpus anchoring and anglicisation detector	P5/P5-040.yaml
 P5-041	Draft	Build the unified target-language text renderer	P5/P5-041.yaml
 P5-042	Draft	Provide diacritic-aware keyboard bars per language	P5/P5-042.yaml

@@ -71,6 +71,14 @@
     "audio": {
       "type": "array",
       "items": { "$ref": "#/$defs/audioRef" }
+    },
+    "dialect_tag": {
+      "type": "string",
+      "pattern": "^(standard|[a-z0-9_-]{2,64})$"
+    },
+    "dialect_variants": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/dialectVariant" }
     }
   },
   "allOf": [
@@ -206,6 +214,19 @@
       "properties": {
         "kind": { "type": "string", "enum": ["human", "tts"] },
         "uri": { "type": "string", "minLength": 1 }
+      }
+    },
+    "dialectVariant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text", "dialect_tag", "source_id"],
+      "properties": {
+        "text": { "type": "string", "minLength": 1 },
+        "dialect_tag": {
+          "type": "string",
+          "pattern": "^(standard|[a-z0-9_-]{2,64})$"
+        },
+        "source_id": { "type": "string", "minLength": 1 }
       }
     }
   }
