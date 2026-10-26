@@ -407,6 +407,8 @@ def run_dialogue_regeneration(
                 json.dumps(rec, ensure_ascii=False, sort_keys=True) for rec in park_records
             ]
             park_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        elif park_path.exists():
+            park_path.unlink()
         manifest = {
             "card": CARD_ID,
             "curriculum": str(src.relative_to(base)) if src.is_relative_to(base) else str(src),

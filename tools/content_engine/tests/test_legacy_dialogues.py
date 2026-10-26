@@ -193,6 +193,48 @@ def test_P4_085_idempotent_second_run_is_clean(tmp_path: Path) -> None:
     assert second.changed is False
 
 
+def test_P4_085_clears_stale_park_file_after_successful_regeneration(tmp_path: Path) -> None:
+    bad = [{"speaker": "A", "text": "dup"}, {"speaker": "B", "text": "dup"}]
+    path = _write_curriculum(
+        tmp_path,
+        _curriculum([_lesson("Yoruba-A1-u1-l1", "Greet politely.", bad)]),
+    )
+
+    def always_bad(
+        _can_do: str,
+        _lesson: Mapping[str, Any],
+        _kit: Mapping[str, Any],
+    ) -> list[dict[str, Any]]:
+        return [{"speaker": "A", "text": "dup"}, {"speaker": "B", "text": "dup"}]
+
+    first = run_dialogue_regeneration(
+        tmp_path,
+        dry_run=False,
+        curriculum_path=path,
+        generator=always_bad,
+        lint_kit_by_lang={"yo": _LINT_KIT},
+    )
+    assert first.park_path.is_file()
+
+    def good(
+        _can_do: str,
+        lesson: Mapping[str, Any],
+        _kit: Mapping[str, Any],
+    ) -> list[dict[str, Any]]:
+        return vocab_turn_script(lesson)
+
+    second = run_dialogue_regeneration(
+        tmp_path,
+        dry_run=False,
+        curriculum_path=path,
+        generator=good,
+        lint_kit_by_lang={"yo": _LINT_KIT},
+    )
+    assert second.stats.regenerated == 1
+    assert not second.park_records
+    assert not second.park_path.exists()
+
+
 def test_P4_085_write_without_generator_requires_gemini_flag(tmp_path: Path) -> None:
     path = _write_curriculum(
         tmp_path,
