@@ -773,7 +773,7 @@ P5-008	Done	CURRICULUM item schema v2: provenance, claims, label, audio kind	P5/
 P5-009	Done	Enforce label state machine with two-native rule (label_state.dart, label.service.ts)	P5/P5-009.yaml
 P5-010	Done	Show label badges, Beta copy and Synthetic voice tag (content_label_badge.dart)	P5/P5-010.yaml
 P5-011	Done	CI label exclusion rules (label_rules.py, content_ci.yml)	P5/P5-011.yaml
-P5-012	Draft	Add Report a mistake to every item and Word Card	P5/P5-012.yaml
+P5-012	Done	Report a mistake sheet + POST /api/v2/content-flags (five categories)	P5/P5-012.yaml
 P5-013	Draft	Auto-hide flagged items to Under review	P5/P5-013.yaml
 P5-014	Draft	Map every unit to CEFR and ACTFL can-dos	P5/P5-014.yaml
 P5-015	Draft	Mark units mastered by can-do evidence and fix unlock rule	P5/P5-015.yaml
