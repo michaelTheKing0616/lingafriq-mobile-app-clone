@@ -151,7 +151,7 @@ risks:
 - source reachability figures may differ from today tree; delta is reported not hidden
 gate: G0
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging
