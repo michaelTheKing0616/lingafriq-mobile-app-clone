@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.lingafriq.com/v2/content/culture_card.schema.json",
+  "title": "LingAfriq culture card (v2)",
+  "description": "Short cited culture card with image review gate (P4-104).",
+  "allOf": [
+    { "$ref": "common.schema.json" },
+    {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "title", "body", "image", "claims"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z]{2,3}\\.culture\\.[a-z0-9._-]+$"
+        },
+        "title": { "type": "string", "minLength": 1 },
+        "body": { "type": "string", "minLength": 1 },
+        "image": { "$ref": "#/$defs/image" },
+        "claims": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/cultureClaim" }
+        },
+        "cefr": {
+          "type": "string",
+          "enum": ["A1", "A2", "B1", "B2", "C1", "C2"]
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "image": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["uri", "alt_text", "cultural_review"],
+      "properties": {
+        "uri": { "type": "string", "minLength": 1 },
+        "alt_text": { "type": "string", "minLength": 1 },
+        "cultural_review": {
+          "type": "string",
+          "enum": ["approved", "pending", "rejected"]
+        }
+      }
+    },
+    "cultureClaim": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["kind", "source_ref", "text", "confidence", "confidence_floor"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["tone", "cultural", "linguistic", "factual"]
+        },
+        "source_ref": { "type": "string", "minLength": 1 },
+        "text": { "type": "string", "minLength": 1 },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "confidence_floor": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    }
+  }
+}
