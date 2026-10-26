@@ -46,7 +46,7 @@ dod_evidence:
 risks: []
 gate: G5
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - prime/hooked-ux
