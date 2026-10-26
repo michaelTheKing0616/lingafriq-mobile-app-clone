@@ -245,7 +245,7 @@ F-151	Draft	Elevate Staff & Micro-mentor Reports	P10/F-151.yaml
 P0-INT-01	Done	Install token-economy charter rule and root AGENTS.md	P0/P0-INT-01.yaml
 P0-INT-02	Done	Wire agent-file charter check into pre-commit and CI (.githooks, install_hooks.sh, agent-files.yml)	P0/P0-INT-02.yaml
 P0-INT-03	Done	Add charter prefixes to worker, tester, reviewer briefs	P0/P0-INT-03.yaml
-P0-INT-04	Ready	Add gate-time routing review over LEDGER.csv	P0/P0-INT-04.yaml
+P0-INT-04	Done	Add gate-time routing review over LEDGER.csv (routing_review.py)	P0/P0-INT-04.yaml
 P0-INT-05	Done	Convert source PDFs to anchored text	P0/P0-INT-05.yaml
 P0-INT-06	Done	Build RTM from segmented extraction parts	P0/P0-INT-06.yaml
 P0-INT-07	Done	Provide card validation and coverage tooling	P0/P0-INT-07.yaml
