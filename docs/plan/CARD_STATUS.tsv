@@ -822,7 +822,7 @@ P5-057	Done	Route community fixes into the Verify queue (verify_queue.service.ts
 P5-058	Done	Gate every item on audio and labelled synthetic voice (audio_coverage_gate.py)	P5/P5-058.yaml
 P5-059	Done	TTS gate runner: ASR round-trip + F0 tone proxy (gate_runner.py)	P5/P5-059.yaml
 P5-060	Done	Yoruba TTS tone gate + Intron→Spitch client (yo_tts.dart, yo_listen_check.py)	P5/P5-060.yaml
-P5-061	Draft	Wire Igbo TTS with 200-sample linguist check	P5/P5-061.yaml
+P5-061	Done	Wire Igbo TTS with 200-sample linguist check (ig_tts.dart, ig_listen_check.py)	P5/P5-061.yaml
 P5-062	Draft	'Wire Hausa TTS: Intron, Spitch, ElevenLabs v3'	P5/P5-062.yaml
 P5-063	Draft	Register licensed human audio for yo, ig, ha	P5/P5-063.yaml
 P5-064	Draft	Wire Nigerian Pidgin TTS with round-trip and listen gate	P5/P5-064.yaml
