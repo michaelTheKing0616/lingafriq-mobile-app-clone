@@ -751,7 +751,7 @@ P4-153	Done	Lesson drafts on server (draft.routes.ts, LessonBuilder autosave, na
 P4-154	Done	ToneTextField + DiacriticPalette + ToneLensPreview, NFC, studio tone validation	P4/P4-154.yaml
 P4-155	Done	AlignmentView waveform seek + DialogueEditor turns/audio/tone (admin)	P4/P4-155.yaml
 P4-156	Done	Minimal-pair linker and can-do mapper (MinimalPairLinker.tsx, CanDoMapper.tsx)	P4/P4-156.yaml
-P4-157	Draft	Build item preview that renders exactly like the app	P4/P4-157.yaml
+P4-157	Done	Studio item preview parity via preview_contract.json + ItemPreview.tsx	P4/P4-157.yaml
 P4-158	Draft	Build quality dashboards for items, agreement and audio coverage	P4/P4-158.yaml
 P4-159	Draft	Build report-a-problem queue, placeholder detector and untranslated count	P4/P4-159.yaml
 P4-160	Draft	Build moderation console with queues and actions	P4/P4-160.yaml
