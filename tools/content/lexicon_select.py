@@ -19,8 +19,10 @@ from tools.content_pipeline.validate_content import has_tone_mark
 
 CARD_ID_A1 = "P5-016"
 CARD_ID_A2 = "P5-081"
+CARD_ID_B1 = "P5-082"
 OUTPUT_REL_A1 = "assets/data/lexicon/a1"
 OUTPUT_REL_A2 = "assets/data/lexicon/a2"
+OUTPUT_REL_B1 = "assets/data/lexicon/b1"
 STAGE1_LANGS: tuple[str, ...] = ("yo", "ig", "ha", "pcm", "sw", "zu", "xh")
 TONAL_LANGS = frozenset({"yo", "ig", "ha"})
 MIN_LEXEMES = 600
@@ -29,6 +31,9 @@ DEFAULT_TARGET = 700
 A2_MIN_CUMULATIVE = 1400
 A2_MAX_CUMULATIVE = 1600
 A2_DEFAULT_CUMULATIVE_TARGET = 1500
+B1_MIN_CUMULATIVE = 2500
+B1_MAX_CUMULATIVE = 3000
+B1_DEFAULT_CUMULATIVE_TARGET = 2750
 
 # CURRICULUM §4 — learner-needs domains (English gloss / claim text only; no invented lemmas).
 _LEARNER_DOMAIN_MARKERS: tuple[str, ...] = (
@@ -465,13 +470,156 @@ def write_a2_manifests(
     return written
 
 
+def load_a2_manifest(lang: str, root: Path | None = None) -> dict[str, Any]:
+    base = repo_root(root)
+    path = base / OUTPUT_REL_A2 / f"{lang}.json"
+    if not path.is_file():
+        raise FileNotFoundError(f"A2 lexicon manifest not found: {path}")
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def load_b1_pack(lang: str, root: Path | None = None) -> dict[str, Any]:
+    path = canonical_packs_dir(root) / lang / "B1.json"
+    if not path.is_file():
+        raise FileNotFoundError(f"B1 pack not found: {path}")
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def assert_b1_cumulative_gate(count: int, lang: str) -> None:
+    if count < B1_MIN_CUMULATIVE or count > B1_MAX_CUMULATIVE:
+        raise LexiconCountGateError(
+            "LEXICON_CUMULATIVE_OUT_OF_RANGE",
+            f"{lang}: {count} cumulative lexemes (required {B1_MIN_CUMULATIVE}–{B1_MAX_CUMULATIVE})",
+        )
+
+
+def select_b1_cumulative_lexemes(
+    a2_rows: Sequence[Mapping[str, Any]],
+    pack: Mapping[str, Any],
+    *,
+    lang: str,
+    register: Mapping[str, Mapping[str, Any]],
+    cumulative_target: int = B1_DEFAULT_CUMULATIVE_TARGET,
+) -> tuple[list[dict[str, Any]], int]:
+    """Merge shipped A2 manifest rows with ranked B1 pack lexemes to reach cumulative_target."""
+    if pack.get("lang") != lang:
+        raise LexiconSelectError("PACK_LANG_MISMATCH", f"pack lang does not match {lang}")
+    a2_lexemes = [dict(row) for row in a2_rows if isinstance(row, Mapping)]
+    a2_ids = {str(row.get("id", "")).strip() for row in a2_lexemes if row.get("id")}
+    if not a2_lexemes:
+        raise LexiconSelectError("A2_MANIFEST_EMPTY", f"A2 manifest has no lexemes for {lang}")
+
+    raw_items = pack.get("items")
+    if not isinstance(raw_items, list):
+        raise LexiconSelectError("PACK_ITEMS_MISSING", "pack items array required")
+    b1_items = [
+        row
+        for row in raw_items
+        if isinstance(row, Mapping)
+        and row.get("type") == "lexeme"
+        and str(row.get("id", "")).strip() not in a2_ids
+    ]
+    ranked_b1 = rank_lexemes(b1_items, lang=lang, register=register)
+    need = cumulative_target - len(a2_lexemes)
+    if need < 0:
+        raise LexiconSelectError(
+            "A2_EXCEEDS_CUMULATIVE_TARGET",
+            f"{lang}: A2 count {len(a2_lexemes)} exceeds cumulative target {cumulative_target}",
+        )
+    if need > len(ranked_b1):
+        raise LexiconCountGateError(
+            "LEXICON_CUMULATIVE_OUT_OF_RANGE",
+            f"{lang}: only {len(a2_lexemes) + len(ranked_b1)} lexemes available "
+            f"(required {B1_MIN_CUMULATIVE}–{B1_MAX_CUMULATIVE})",
+        )
+    b1_selected = ranked_b1[:need] if need else []
+    combined: list[dict[str, Any]] = []
+    for row in a2_lexemes:
+        combined.append(dict(row))
+    for row in b1_selected:
+        entry = row.to_dict()
+        entry["lexicon_stage"] = "B1"
+        combined.append(entry)
+    assert_b1_cumulative_gate(len(combined), lang)
+    return combined, len(b1_selected)
+
+
+def build_b1_language_manifest(
+    lang: str,
+    root: Path | None = None,
+    *,
+    cumulative_target: int = B1_DEFAULT_CUMULATIVE_TARGET,
+    a2_cumulative_target: int = A2_DEFAULT_CUMULATIVE_TARGET,
+    a1_target: int = DEFAULT_TARGET,
+) -> dict[str, Any]:
+    base = repo_root(root)
+    register = load_curriculum_register(base)
+    a2_path = base / OUTPUT_REL_A2 / f"{lang}.json"
+    if not a2_path.is_file():
+        build_a2_language_manifest(
+            lang,
+            base,
+            cumulative_target=a2_cumulative_target,
+            a1_target=a1_target,
+        )
+    a2_doc = load_a2_manifest(lang, base)
+    a2_lexemes = a2_doc.get("lexemes")
+    if not isinstance(a2_lexemes, list):
+        raise LexiconSelectError("A2_MANIFEST_INVALID", f"lexemes must be a list for {lang}")
+    pack = load_b1_pack(lang, base)
+    combined, b1_added = select_b1_cumulative_lexemes(
+        a2_lexemes,
+        pack,
+        lang=lang,
+        register=register,
+        cumulative_target=cumulative_target,
+    )
+    return {
+        "card": CARD_ID_B1,
+        "lang": lang,
+        "level": "B1",
+        "built": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+        "cumulative_target": cumulative_target,
+        "a2_count": len(a2_lexemes),
+        "b1_added": b1_added,
+        "count": len(combined),
+        "lexemes": combined,
+    }
+
+
+def write_b1_manifests(
+    root: Path | None = None,
+    *,
+    langs: Sequence[str] = STAGE1_LANGS,
+    cumulative_target: int = B1_DEFAULT_CUMULATIVE_TARGET,
+    a2_cumulative_target: int = A2_DEFAULT_CUMULATIVE_TARGET,
+    a1_target: int = DEFAULT_TARGET,
+) -> list[Path]:
+    base = repo_root(root)
+    out_dir = base / OUTPUT_REL_B1
+    out_dir.mkdir(parents=True, exist_ok=True)
+    written: list[Path] = []
+    for lang in langs:
+        doc = build_b1_language_manifest(
+            lang,
+            base,
+            cumulative_target=cumulative_target,
+            a2_cumulative_target=a2_cumulative_target,
+            a1_target=a1_target,
+        )
+        path = out_dir / f"{lang}.json"
+        path.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        written.append(path)
+    return written
+
+
 def _main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="Build frequency-ranked lexicon manifests (P5-016 A1, P5-081 A2 cumulative).",
+        description="Build frequency-ranked lexicon manifests (P5-016 A1, P5-081 A2, P5-082 B1 cumulative).",
     )
     parser.add_argument(
         "--level",
-        choices=("a1", "a2"),
+        choices=("a1", "a2", "b1"),
         default="a1",
         help="Curriculum level to build (default: a1)",
     )
@@ -485,7 +633,7 @@ def _main(argv: Sequence[str] | None = None) -> int:
         "--target",
         type=int,
         default=None,
-        help="A1 per-level target or A2 cumulative target (defaults: 700 / 1500)",
+        help="A1 per-level target or A2/B1 cumulative target (defaults: 700 / 1500 / 2750)",
     )
     args = parser.parse_args(list(argv) if argv is not None else None)
     langs = tuple(args.langs) if args.langs else STAGE1_LANGS
@@ -498,7 +646,7 @@ def _main(argv: Sequence[str] | None = None) -> int:
             )
             return 2
         paths = write_a1_manifests(langs=langs, target=target)
-    else:
+    elif args.level == "a2":
         cumulative = args.target if args.target is not None else A2_DEFAULT_CUMULATIVE_TARGET
         if cumulative < A2_MIN_CUMULATIVE or cumulative > A2_MAX_CUMULATIVE:
             print(
@@ -507,6 +655,15 @@ def _main(argv: Sequence[str] | None = None) -> int:
             )
             return 2
         paths = write_a2_manifests(langs=langs, cumulative_target=cumulative)
+    else:
+        cumulative = args.target if args.target is not None else B1_DEFAULT_CUMULATIVE_TARGET
+        if cumulative < B1_MIN_CUMULATIVE or cumulative > B1_MAX_CUMULATIVE:
+            print(
+                f"cumulative target must be between {B1_MIN_CUMULATIVE} and {B1_MAX_CUMULATIVE}",
+                file=sys.stderr,
+            )
+            return 2
+        paths = write_b1_manifests(langs=langs, cumulative_target=cumulative)
     for path in paths:
         print(path)
     return 0
