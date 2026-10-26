@@ -766,7 +766,7 @@ P5-001	Done	Reproduce legacy curriculum audit counts by script (legacy_curriculu
 P5-002	Done	Quarantine template curriculum behind placeholder linter (PH-001..004, legacy_quarantine.json)	P5/P5-002.yaml
 P5-003	Done	Block generic grammar templates; record per-language word order (grammar_template_blocker.py)	P5/P5-003.yaml
 P5-004	Done	Word Card rebuild + WC-001/002 lint (wordcard_rebuild.py)	P5/P5-004.yaml
-P5-005	Draft	Rebuild audio manifest NFC-normalised, hash-keyed and deduplicated	P5/P5-005.yaml
+P5-005	Done	Rebuild audio manifest NFC-normalised, hash-keyed and deduplicated (audio_manifest_build.py)	P5/P5-005.yaml
 P5-006	Draft	Complete Yoruba ARB with tone marks to 103 keys	P5/P5-006.yaml
 P5-007	Draft	Send sample label errors to native review	P5/P5-007.yaml
 P5-008	Draft	Define item schema v2 with provenance, label and audio kind	P5/P5-008.yaml
