@@ -758,7 +758,7 @@ P4-160	Done	Moderation console queues, actions, appeals (moderation_actions.serv
 P4-161	Done	Law-enforcement escalation workflow, CSAM trained-staff gate, encrypted evidence	P4/P4-161.yaml
 P4-162	Done	Admin persona console: dossiers, claims audit, evals, kill switch (persona_admin.service.ts)	P4/P4-162.yaml
 P4-163	Done	AI ops prompt registry: versioned prompts, diffs, eval runs, production pin	P4/P4-163.yaml
-P4-164	Draft	Build AI ops cost, routing table and incident switches	P4/P4-164.yaml
+P4-164	Done	AI ops cost report, versioned routing table, incident switches (ai_routing_admin.service.ts, AiOps.tsx)	P4/P4-164.yaml
 P4-165	Draft	Upgrade studio to current React and Vite with typed API client	P4/P4-165.yaml
 P4-166	Draft	Add staff SSO, mandatory 2FA and cookie sessions	P4/P4-166.yaml
 P4-167	Draft	Add Playwright tests for critical studio flows	P4/P4-167.yaml
