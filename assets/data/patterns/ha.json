@@ -1,0 +1,131 @@
+{
+  "language": "ha",
+  "patterns": [
+    {
+      "id": "ha.pat.copula-ne",
+      "description_l1": "Copula ne (masculine/common) and ce (feminine) link a subject to a predicate noun",
+      "form": "Subject + predicate noun + ne/ce",
+      "examples": [
+        "Wannan littafi ne",
+        "Ita malama ce",
+        "Sunan sa Musa ne"
+      ],
+      "contrasts": [
+        "Wannan littafi (incomplete without copula in equative clauses)",
+        "Yana da littafi (possession with da, not identity)"
+      ],
+      "common_errors": [
+        "Omitting ne/ce in equative sentences",
+        "Using ne where ce is required for feminine subjects"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T22:00:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "FSI Hausa Basic Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:fsi-hausa; CURRICULUM.md#§4:L563-L565",
+            "retrieved_at": "2026-10-26T22:00:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:fsi-hausa"
+        }
+      ],
+      "confidence": 0.92,
+      "risk_tags": ["grammar_explanation"],
+      "audio": []
+    },
+    {
+      "id": "ha.pat.continuous-ina",
+      "description_l1": "Auxiliary ina (and its subject forms) marks progressive or continuous action",
+      "form": "Subject ina + verbal noun / complement",
+      "examples": [
+        "Ina karatu",
+        "Yana aiki",
+        "Muna tafiya"
+      ],
+      "contrasts": [
+        "Na karatu (completed reading)",
+        "Zan karatu (future reading)"
+      ],
+      "common_errors": [
+        "Using ina for a single completed event instead of the perfective",
+        "Mismatching the subject form of ina with the grammatical subject"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T22:00:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "FSI Hausa Basic Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:fsi-hausa; CURRICULUM.md#§4:L563-L565",
+            "retrieved_at": "2026-10-26T22:00:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:fsi-hausa"
+        }
+      ],
+      "confidence": 0.92,
+      "risk_tags": ["grammar_explanation"],
+      "audio": []
+    },
+    {
+      "id": "ha.pat.future-za",
+      "description_l1": "Future marker za (and subject agreement forms) before the infinitive marks upcoming action",
+      "form": "Subject za + infinitive",
+      "examples": [
+        "Zan tafi",
+        "Za ta zo gobe",
+        "Za mu ci abinci"
+      ],
+      "contrasts": [
+        "Na tafi (past departure)",
+        "Ina tafiya (ongoing travel)"
+      ],
+      "common_errors": [
+        "Using za for past events",
+        "Wrong subject agreement form on za"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T22:00:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "FSI Hausa Basic Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:fsi-hausa; CURRICULUM.md#§4:L563-L565",
+            "retrieved_at": "2026-10-26T22:00:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:fsi-hausa"
+        }
+      ],
+      "confidence": 0.92,
+      "risk_tags": ["grammar_explanation"],
+      "audio": []
+    }
+  ]
+}

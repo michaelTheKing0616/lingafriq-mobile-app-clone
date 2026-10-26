@@ -1,0 +1,131 @@
+{
+  "language": "ig",
+  "patterns": [
+    {
+      "id": "ig.pat.progressive-na",
+      "description_l1": "Prefix na- on the verb stem marks an action in progress (progressive aspect)",
+      "form": "Subject + na- + verb stem",
+      "examples": [
+        "O na-agụ akwụkwọ",
+        "Anyị na-egwuru egwu",
+        "Ha na-eri nri"
+      ],
+      "contrasts": [
+        "O ga-agụ akwụkwọ (future)",
+        "O gụrụ akwụkwọ (completed)"
+      ],
+      "common_errors": [
+        "Omitting na- and using only the bare verb for ongoing actions",
+        "Placing na- after the verb stem instead of before it"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T22:00:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "FSI Igbo Basic Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:fsi-igbo; CURRICULUM.md#§4:L563-L565",
+            "retrieved_at": "2026-10-26T22:00:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:fsi-igbo"
+        }
+      ],
+      "confidence": 0.9,
+      "risk_tags": ["grammar_explanation"],
+      "audio": []
+    },
+    {
+      "id": "ig.pat.future-ga",
+      "description_l1": "Prefix ga- on the verb stem marks a future or intended action",
+      "form": "Subject + ga- + verb stem",
+      "examples": [
+        "O ga-abịa",
+        "Anyị ga-aga ụlọ",
+        "Ha ga-eri nri"
+      ],
+      "contrasts": [
+        "O na-abịa (in progress)",
+        "O bịara (past arrival)"
+      ],
+      "common_errors": [
+        "Using ga- for completed events instead of the perfective stem",
+        "Dropping ga- and relying only on a time adverb for future reference"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T22:00:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "FSI Igbo Basic Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:fsi-igbo; CURRICULUM.md#§4:L563-L565",
+            "retrieved_at": "2026-10-26T22:00:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:fsi-igbo"
+        }
+      ],
+      "confidence": 0.9,
+      "risk_tags": ["grammar_explanation"],
+      "audio": []
+    },
+    {
+      "id": "ig.pat.locative-no",
+      "description_l1": "Copular nọ (and related forms) with location phrase marks where someone or something is",
+      "form": "Subject + nọ + n' + location",
+      "examples": [
+        "O nọ n'ụlọ",
+        "Anyị nọ n'ụlọ akwụkwọ",
+        "Ha nọ n'ahịa"
+      ],
+      "contrasts": [
+        "O ga-abịa n'ụlọ (future motion, not location)",
+        "O bịara n'ụlọ (completed motion)"
+      ],
+      "common_errors": [
+        "Omitting nọ before a location phrase",
+        "Using bare n' without the copular verb for static location"
+      ],
+      "cefr": "A1",
+      "label": "expert_reviewed",
+      "provenance": {
+        "author": "content-studio",
+        "created_at": "2026-10-26T22:00:00Z",
+        "ai_assisted": false,
+        "sources": [
+          {
+            "name": "FSI Igbo Basic Course",
+            "licence": "public-domain",
+            "uri_or_citation": "register:fsi-igbo; CURRICULUM.md#§4:L563-L565",
+            "retrieved_at": "2026-10-26T22:00:00Z"
+          }
+        ]
+      },
+      "claims": [
+        {
+          "kind": "linguistic",
+          "source_ref": "register:fsi-igbo"
+        }
+      ],
+      "confidence": 0.88,
+      "risk_tags": ["grammar_explanation"],
+      "audio": []
+    }
+  ]
+}
