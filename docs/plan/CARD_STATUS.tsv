@@ -744,7 +744,7 @@ P4-136	Done	Add pack diff download and per-item history	P4/P4-136.yaml
 P4-140	Done	TargetText + Tone Lens, gloss lookup, diacritic goldens (P4-140)	P4/P4-140.yaml
 P4-141	Done	Per-language diacritic keyboard bar (diacritic_keyboard_bar.dart, keyboard_layouts.json)	P4/P4-141.yaml
 P4-142	Done	Level-aware diacritic grading (answer_matcher.dart, learner level policy)	P4/P4-142.yaml
-P4-150	Draft	Implement studio roles with server-side least privilege	P4/P4-150.yaml
+P4-150	Done	Studio RBAC: ten roles, language-scoped leads, server 403, SELF_APPROVAL_FORBIDDEN	P4/P4-150.yaml
 P4-151	Draft	Implement content review workflow state machine	P4/P4-151.yaml
 P4-152	Draft	Add audit trail for every state change with viewer	P4/P4-152.yaml
 P4-153	Draft	Move lesson drafts to server and remove dead native-verification code	P4/P4-153.yaml
