@@ -713,7 +713,7 @@ P4-088	Done	Produce before/after legacy rebuild dashboard (report.py)	P4/P4-088.
 P4-100	Done	Define shared provenance, label and audio-kind envelope	P4/P4-100.yaml
 P4-101	Done	Define lexeme schema with tone, audio and review fields	P4/P4-101.yaml
 P4-102	Done	Define pattern, dialogue and unit schemas (pattern/dialogue/unit JSON + tests)	P4/P4-102.yaml
-P4-103	Draft	Define exercise item schema with matching rules and IRT params	P4/P4-103.yaml
+P4-103	Done	Exercise item v2 schema: answer_spec matching, IRT status, pack beta gate	P4/P4-103.yaml
 P4-104	Draft	Define culture card schema with claims and review gate	P4/P4-104.yaml
 P4-105	Draft	Build signed semver content packs with hash filenames	P4/P4-105.yaml
 P4-106	Draft	Build content validator and CI linters	P4/P4-106.yaml
