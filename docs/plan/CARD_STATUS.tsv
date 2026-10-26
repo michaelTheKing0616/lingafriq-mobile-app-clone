@@ -687,7 +687,7 @@ P4-062	Done	Run NaijaML restorer as tone check for Yoruba (restorer.py)	P4/P4-06
 P4-063	Done	Compute weighted confidence score	P4/P4-063.yaml
 P4-064	Done	Route items by threshold and regeneration cap (routing.py)	P4/P4-064.yaml
 P4-065	Done	Enforce high-risk tags as never AI-only (highrisk.py)	P4/P4-065.yaml
-P4-066	Draft	Calibrate thresholds against pilot error rate	P4/P4-066.yaml
+P4-066	Done	Calibrate thresholds against pilot error rate (calibration.py)	P4/P4-066.yaml
 P4-067	Draft	Publish reviewed items with a quality label	P4/P4-067.yaml
 P4-068	Draft	Write what-catches-what matrix test plan	P4/P4-068.yaml
 P4-069	Done	Scaffold Curriculum Studio module in admin	P4/P4-069.yaml
