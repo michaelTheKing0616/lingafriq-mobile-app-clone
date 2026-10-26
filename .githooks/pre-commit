@@ -1,0 +1,4 @@
+#!/bin/sh
+set -e
+ROOT="$(git rev-parse --show-toplevel)"
+exec python3 "$ROOT/scripts/check_agent_files.py" --staged
