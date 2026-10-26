@@ -549,5 +549,22 @@
   "persona_error_retry": "Couldn't reach the persona. Retry when you're ready.",
   "@persona_error_retry": {
     "description": "Shown when a persona mission reply fails; paired with a Retry action"
+  },
+
+  "labelBetaCopy": "AI-assisted, machine-checked. Spotted a problem? Tell us.",
+  "@labelBetaCopy": {
+    "description": "copy_keys: label.beta.copy — Beta quality label on learner items"
+  },
+  "labelNative": "Native-verified",
+  "@labelNative": {
+    "description": "copy_keys: label.native — short native-verified chip"
+  },
+  "labelExpert": "Expert-reviewed",
+  "@labelExpert": {
+    "description": "copy_keys: label.expert — short expert-reviewed chip"
+  },
+  "audioSynthetic": "Synthetic voice",
+  "@audioSynthetic": {
+    "description": "copy_keys: audio.synthetic — tag on TTS audio"
   }
 }

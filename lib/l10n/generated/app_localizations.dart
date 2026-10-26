@@ -799,6 +799,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Couldn\'t reach the persona. Retry when you\'re ready.'**
   String get persona_error_retry;
+
+  /// copy_keys: label.beta.copy — Beta quality label on learner items
+  ///
+  /// In en, this message translates to:
+  /// **'AI-assisted, machine-checked. Spotted a problem? Tell us.'**
+  String get labelBetaCopy;
+
+  /// copy_keys: label.native — short native-verified chip
+  ///
+  /// In en, this message translates to:
+  /// **'Native-verified'**
+  String get labelNative;
+
+  /// copy_keys: label.expert — short expert-reviewed chip
+  ///
+  /// In en, this message translates to:
+  /// **'Expert-reviewed'**
+  String get labelExpert;
+
+  /// copy_keys: audio.synthetic — tag on TTS audio
+  ///
+  /// In en, this message translates to:
+  /// **'Synthetic voice'**
+  String get audioSynthetic;
 }
 
 class _AppLocalizationsDelegate

@@ -12,62 +12,62 @@ class AppLocalizationsYo extends AppLocalizations {
   String get appTitle => 'LingAfriq';
 
   @override
-  String get welcomeMessage => 'E kaabo si LingAfriq';
+  String get welcomeMessage => 'Ẹ káàbọ̀ sí LingAfriq';
 
   @override
-  String get continueButton => 'Tesiwaju';
+  String get continueButton => 'Tẹ̀síwájú';
 
   @override
-  String get startLearning => 'Bere Kiko';
+  String get startLearning => 'Bẹ̀rẹ̀ ẹ̀kọ́';
 
   @override
-  String get loading => 'N gbe wole...';
+  String get loading => 'Ó ń gbé wọlé...';
 
   @override
-  String get errorOccurred => 'Asise kan sele';
+  String get errorOccurred => 'Àṣìṣe kan ṣẹlẹ̀';
 
   @override
-  String get tryAgain => 'Gbiyanju Leekansi';
+  String get tryAgain => 'Gbìyànjú lẹ́ẹ̀kansi';
 
   @override
-  String get home => 'Ile';
+  String get home => 'Ilé';
 
   @override
-  String get learn => 'Ko';
+  String get learn => 'Kọ́';
 
   @override
-  String get games => 'Ere';
+  String get games => 'Eré';
 
   @override
-  String get profile => 'Akosilè';
+  String get profile => 'Àkọsílẹ̀';
 
   @override
-  String get settings => 'Eto';
+  String get settings => 'Ètò';
 
   @override
-  String get language => 'Ede';
+  String get language => 'Èdè';
 
   @override
-  String get selectLanguage => 'Yan Ede';
+  String get selectLanguage => 'Yan èdè';
 
   @override
-  String get lessons => 'Eko';
+  String get lessons => 'Ẹ̀kọ́';
 
   @override
-  String get quizzes => 'Idanwo';
+  String get quizzes => 'Ìdánwò';
 
   @override
-  String get takeQuiz => 'Se Idanwo';
+  String get takeQuiz => 'Ṣe ìdánwò';
 
   @override
-  String get takeLesson => 'Ko Eko';
+  String get takeLesson => 'Kọ́ ẹ̀kọ́';
 
   @override
-  String get dailyStreak => 'Itesiwaju Ojoojumo';
+  String get dailyStreak => 'Ìtẹ̀síwájú ojoojúmọ́';
 
   @override
   String daysStreak(int count) {
-    return 'Ojo $count';
+    return 'Ọjọ́ $count';
   }
 
   @override
@@ -76,94 +76,94 @@ class AppLocalizationsYo extends AppLocalizations {
   }
 
   @override
-  String get level => 'Ipele';
+  String get level => 'Ìpele';
 
   @override
-  String get beginner => 'Alabere';
+  String get beginner => 'Alábẹ̀ẹ̀rẹ̀';
 
   @override
-  String get intermediate => 'Aarin';
+  String get intermediate => 'Ààrin';
 
   @override
-  String get advanced => 'Agbayan';
+  String get advanced => 'Agbára';
 
   @override
-  String get correct => 'O to!';
+  String get correct => 'Ó tọ́!';
 
   @override
-  String get incorrect => 'Ko to';
+  String get incorrect => 'Kò tọ́';
 
   @override
-  String get next => 'To n bo';
+  String get next => 'Tókàn';
 
   @override
-  String get back => 'Pada';
+  String get back => 'Padà';
 
   @override
-  String get skip => 'Fo';
+  String get skip => 'Fò';
 
   @override
-  String get cancel => 'Fagile';
+  String get cancel => 'Fagílé';
 
   @override
-  String get save => 'Fipamo';
+  String get save => 'Fípamọ́';
 
   @override
-  String get done => 'Pari';
+  String get done => 'Parí';
 
   @override
-  String get submit => 'Fowosi';
+  String get submit => 'Fiwé';
 
   @override
-  String get logout => 'Jade';
+  String get logout => 'Jáde';
 
   @override
-  String get login => 'Wole';
+  String get login => 'Wọlé';
 
   @override
-  String get signup => 'Forukosile';
+  String get signup => 'Forúkọsílẹ̀';
 
   @override
-  String get email => 'Imeeli';
+  String get email => 'Ímeèlì';
 
   @override
-  String get password => 'Oro asina';
+  String get password => 'Ọ̀rọ̀ àṣínà';
 
   @override
-  String get forgotPassword => 'Se o gbagbe Oro Asina?';
+  String get forgotPassword => 'Ṣe o gbàgbé ọ̀rọ̀ àṣínà?';
 
   @override
-  String get noAccount => 'O ni akole?';
+  String get noAccount => 'O ní àkọọ́lẹ̀?';
 
   @override
-  String get haveAccount => 'Se o ni akole tele?';
+  String get haveAccount => 'Ṣé o ní àkọọ́lẹ̀ tẹ́lẹ̀?';
 
   @override
-  String get congratulations => 'Ku oriire!';
+  String get congratulations => 'Kú oríire!';
 
   @override
-  String get lessonComplete => 'Eko Pari!';
+  String get lessonComplete => 'Ẹ̀kọ́ parí!';
 
   @override
-  String get quizComplete => 'Idanwo Pari!';
+  String get quizComplete => 'Ìdánwò parí!';
 
   @override
-  String get accuracy => 'Dedede';
+  String get accuracy => 'Ìtọ́ọ̀tọ́';
 
   @override
-  String get score => 'Iye';
+  String get score => 'Àmì';
 
   @override
-  String get aiTutor => 'Oluko AI';
+  String get aiTutor => 'Olùkọ́ AI';
 
   @override
-  String get cultureMagazine => 'Iwe Asa';
+  String get cultureMagazine => 'Ìwé àṣà';
 
   @override
-  String get tribes => 'Eya';
+  String get tribes => 'Ẹ̀yà';
 
   @override
-  String get leaderboard => 'Atojo Asaju';
+  String get leaderboard => 'Àtòjọ́ àsájú';
 
   @override
   String get flbHeritageTitle => 'FLB Heritage';
@@ -366,4 +366,17 @@ class AppLocalizationsYo extends AppLocalizations {
   @override
   String get persona_error_retry =>
       'Couldn\'t reach the persona. Retry when you\'re ready.';
+
+  @override
+  String get labelBetaCopy =>
+      'AI-assisted, machine-checked. Spotted a problem? Tell us.';
+
+  @override
+  String get labelNative => 'Native-verified';
+
+  @override
+  String get labelExpert => 'Expert-reviewed';
+
+  @override
+  String get audioSynthetic => 'Synthetic voice';
 }

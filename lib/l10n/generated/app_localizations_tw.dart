@@ -366,4 +366,17 @@ class AppLocalizationsTw extends AppLocalizations {
   @override
   String get persona_error_retry =>
       'Couldn\'t reach the persona. Retry when you\'re ready.';
+
+  @override
+  String get labelBetaCopy =>
+      'AI-assisted, machine-checked. Spotted a problem? Tell us.';
+
+  @override
+  String get labelNative => 'Native-verified';
+
+  @override
+  String get labelExpert => 'Expert-reviewed';
+
+  @override
+  String get audioSynthetic => 'Synthetic voice';
 }

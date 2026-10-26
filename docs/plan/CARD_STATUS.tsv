@@ -771,7 +771,7 @@ P5-006	Done	Complete Yoruba ARB with tone marks to 103 keys (app_yo.arb, arb_par
 P5-007	Blocked-External	Send sample label errors to native review (EXT-13)	P5/P5-007.yaml
 P5-008	Done	CURRICULUM item schema v2: provenance, claims, label, audio kind	P5/P5-008.yaml
 P5-009	Done	Enforce label state machine with two-native rule (label_state.dart, label.service.ts)	P5/P5-009.yaml
-P5-010	Draft	Show label badges, Beta copy and Synthetic voice tag	P5/P5-010.yaml
+P5-010	Done	Show label badges, Beta copy and Synthetic voice tag (content_label_badge.dart)	P5/P5-010.yaml
 P5-011	Draft	Add CI content tests for label exclusion rules	P5/P5-011.yaml
 P5-012	Draft	Add Report a mistake to every item and Word Card	P5/P5-012.yaml
 P5-013	Draft	Auto-hide flagged items to Under review	P5/P5-013.yaml
