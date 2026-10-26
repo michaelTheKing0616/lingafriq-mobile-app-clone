@@ -814,7 +814,7 @@ P5-049	Done	Verify Tier A Beta error ≤3% for Swahili (tier_beta_verification.p
 P5-050	Done	Verify Tier B Beta error ≤5% for zu, xh, ha, pcm (tier_b_beta_verification.py)	P5/P5-050.yaml
 P5-051	Done	Verify Tier C Beta error ≤5% for yo/ig anchored tokens (tier_c_beta_verification.py)	P5/P5-051.yaml
 P5-052	Done	Verify Tier A Expert error ≤1% for Swahili (tier_a_expert_verification.py)	P5/P5-052.yaml
-P5-053	Draft	Verify Tier B Expert error ≤1.5%	P5/P5-053.yaml
+P5-053	Done	Verify Tier B Expert error ≤1.5% (tier_b_expert_verification.py)	P5/P5-053.yaml
 P5-054	Draft	Verify Tier C Expert error ≤1.5%	P5/P5-054.yaml
 P5-055	Draft	Enforce Waves 2-4 label rules and Expert L0	P5/P5-055.yaml
 P5-056	Done	Promote high-exposure A1 items to Expert-reviewed (promotion.service.ts)	P5/P5-056.yaml
