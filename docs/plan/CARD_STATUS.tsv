@@ -807,7 +807,7 @@ P5-042	Done	Per-language diacritic bar (layouts.json, kbd.hint, LayoutMissing)	P
 P5-043	Done	Level-aware lenient tone grading (`diacritic_grader.dart`, kDiacriticGradingBands)	P5/P5-043.yaml
 P5-044	Done	Route items to paid linguist review by risk (review_router.py)	P5/P5-044.yaml
 P5-045	Done	Run 300-item calibration sets and compute Cohen kappa (calibration_kappa.py)	P5/P5-045.yaml
-P5-046	Draft	Sample live items weekly for blind review	P5/P5-046.yaml
+P5-046	Done	Weekly stratified blind sample (blind_sampler.py)	P5/P5-046.yaml
 P5-047	Draft	Publish error rate per language and label	P5/P5-047.yaml
 P5-048	Draft	Compute IRT item statistics and flag abnormal items	P5/P5-048.yaml
 P5-049	Draft	Verify Tier A Beta error ≤3% for Swahili	P5/P5-049.yaml
