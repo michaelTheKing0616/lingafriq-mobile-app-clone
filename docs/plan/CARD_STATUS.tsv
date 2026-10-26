@@ -847,8 +847,8 @@ P5-082	Done	Select B1 lexicon to about 2,500-3,000 cumulative lexemes (lexicon_s
 P5-083	Done	Script tracks catalog + Fidel lessons; N'Ko/Adlam/Tifinagh/Ajami coming-later (script_track.dart)	P5/P5-083.yaml
 P5-084	Done	Stroke-order view + on-device handwriting practice; Fidel glyphs unavailable until sourced fixtures	P5/P5-084.yaml
 P5-085	Done	Phase 1 machine pipeline throughput ledger (phase1_machine_pipeline_throughput.py; §9.3 2k–4k/wk)	P5/P5-085.yaml
-P5-086	Draft	Measure linguist review throughput	P5/P5-086.yaml
-P5-087	Draft	Measure publishable items per week and A1 and A1-B1 timelines	P5/P5-087.yaml
+P5-086	Draft	Measure linguist review throughput (Blocked-External EXT-11)	P5/P5-086.yaml
+P5-087	Done	phase1_publishable_throughput.py; weekly + A1/A1–B1 milestone ledger	P5/P5-087.yaml
 P5-088	Draft	Verify LLM generation cost against AI-stack pricing	P5/P5-088.yaml
 P5-089	Draft	Verify linguist review cost	P5/P5-089.yaml
 P5-090	Draft	Verify calibration and sampling cost	P5/P5-090.yaml

@@ -1,0 +1,59 @@
+{
+  "charter": "v2",
+  "card_id": "P5-087",
+  "gate": "G5",
+  "depends_on": ["P5-077"],
+  "sources": [
+    "docs/source/CURRICULUM.md#§9.3:L823-L826",
+    "CP-§9.3-06",
+    "CP-§9.3-07",
+    "CP-§9.3-08",
+    "CP-§9.3-09"
+  ],
+  "planning_band": {
+    "publishable_items_per_week_min": 800,
+    "publishable_items_per_week_max": 1500,
+    "metric": "publishable items per week per language (after human review)",
+    "source": "docs/source/CURRICULUM.md#§9.3:L823-L826",
+    "estimate": true,
+    "milestones": {
+      "a1": {
+        "items_min": 3000,
+        "items_max": 4000,
+        "weeks_min": 3,
+        "weeks_max": 4
+      },
+      "a1_b1": {
+        "items_min": 10000,
+        "items_max": 12000,
+        "weeks_min": 10,
+        "weeks_max": 14
+      }
+    }
+  },
+  "stage1_parallel_schedule": {
+    "language_ids": ["yo", "ig", "ha", "pcm", "sw", "zu", "xh"],
+    "runs_in_parallel": true,
+    "source": "docs/source/CURRICULUM.md#§9.3:L826",
+    "note": "Seven Stage-1 languages run in parallel; per-language timelines are independent."
+  },
+  "weekly_measurements": [
+    {
+      "measurement_status": "awaiting_phase1",
+      "note": "No Phase 1 publishable week measured yet; record via phase1_publishable_throughput.evaluate_weekly_publishable."
+    }
+  ],
+  "milestone_measurements": [
+    {
+      "measurement_status": "awaiting_phase1",
+      "scope": "a1",
+      "note": "Record A1 closure via evaluate_milestone_timeline(scope=a1)."
+    },
+    {
+      "measurement_status": "awaiting_phase1",
+      "scope": "a1_b1",
+      "note": "Record A1–B1 closure via evaluate_milestone_timeline(scope=a1_b1)."
+    }
+  ],
+  "phase1_publishable_verifications": []
+}
