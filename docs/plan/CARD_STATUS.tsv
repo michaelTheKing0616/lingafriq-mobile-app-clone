@@ -856,7 +856,7 @@ P5-091	Done	interim_tts_cost_verify.py; Azure $16/M + P5-071 Intron quote ledger
 P5-092	Done	data_licence_cost_verify.py; $15k–60k band vs EXT-04/05/06 quotes ledger (P5-092)	P5/P5-092.yaml
 P5-093	Done	reference_books_cost_verify.py; §9.4 $200–600/lang & 14–20 eng-wks; EXT-22 purchases pending (P5-093)	P5/P5-093.yaml
 P5-094	Done	stage1_all_in_cost_rollup.py; §9.4 $65k–195k all-in + $4k–15k later-lang bands (P5-094)	P5/P5-094.yaml
-P6-001	Draft	Decide AI Gateway runtime language and transports	P6/P6-001.yaml
+P6-001	Done	ADR-007: TypeScript gateway in node-backend; Python GPU workers; HTTPS/SSE + LiveKit	P6/P6-001.yaml
 P6-002	Draft	Build gateway core with mode enum and authN/Z	P6/P6-002.yaml
 P6-003	Draft	Build server-owned versioned prompt registry	P6/P6-003.yaml
 P6-004	Draft	Add JSON-schema structured output with retries	P6/P6-004.yaml
