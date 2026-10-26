@@ -1,4 +1,4 @@
-import '../../services/learning/fsrs6_scheduler.dart';
+import '../scheduling/fsrs6_scheduler.dart';
 import '../../services/learning/memory_state.dart';
 import '../core/bkt_mastery.dart';
 import 'error_taxonomy.dart';

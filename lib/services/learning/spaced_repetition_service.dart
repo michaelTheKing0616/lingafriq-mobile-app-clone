@@ -1,14 +1,8 @@
-// Spaced Repetition Service
-// Implements spaced repetition algorithm for optimal learning retention
-// 
-// Features:
-// - SM-2 algorithm implementation
-// - Adaptive scheduling
-// - Performance tracking
-// - Review queue management
+// Spaced Repetition Service — FSRS-6 scheduling (P5-019; legacy SM-2 removed).
 
 import '../../utils/simple_cache.dart';
-import 'dart:math' as math;
+import 'fsrs6_scheduler.dart';
+import 'memory_state.dart';
 
 /// Spaced repetition card
 class SRCard {
@@ -113,39 +107,32 @@ class SpacedRepetitionService {
     return updatedCard;
   }
 
-  /// Update card using SM-2 algorithm
   SRCard _updateCard(SRCard card, int quality) {
-    double newEaseFactor = card.easeFactor;
-    int newInterval = card.interval;
-    int newRepetitions = card.repetitions;
-
-    if (quality >= 3) {
-      if (newRepetitions == 0) {
-        newInterval = 1;
-      } else if (newRepetitions == 1) {
-        newInterval = 6;
-      } else {
-        newInterval = (card.interval * newEaseFactor).round();
-      }
-
-      newRepetitions = newRepetitions + 1;
-    } else {
-      newRepetitions = 0;
-      newInterval = 1;
-    }
-
-    newEaseFactor = newEaseFactor + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
-    newEaseFactor = math.max(1.3, newEaseFactor);
-
-    final nextReview = DateTime.now().add(Duration(days: newInterval));
+    const scheduler = Fsrs6Scheduler.days();
+    final now = DateTime.now();
+    final memory = Fsrs6Scheduler.migrateLegacySm2(
+      easeFactor: card.easeFactor,
+      intervalDays: card.interval,
+      repetitions: card.repetitions,
+      lastReview: card.lastReview,
+    );
+    final reviewed = scheduler.review(
+      memory,
+      FsrsRating.fromQuality(quality),
+      now,
+    );
+    final interval = reviewed.due == null
+        ? 1
+        : reviewed.due!.difference(now).inDays.clamp(1, 36500);
+    final repetitions = reviewed.phase == FsrsPhase.learning ? 0 : card.repetitions + 1;
 
     return SRCard(
       lessonItemId: card.lessonItemId,
-      easeFactor: newEaseFactor,
-      interval: newInterval,
-      repetitions: newRepetitions,
-      lastReview: DateTime.now(),
-      nextReview: nextReview,
+      easeFactor: Fsrs6Scheduler.easeFromDifficulty(reviewed.difficulty!),
+      interval: interval,
+      repetitions: repetitions,
+      lastReview: now,
+      nextReview: reviewed.due ?? now.add(Duration(days: interval)),
       quality: quality,
     );
   }

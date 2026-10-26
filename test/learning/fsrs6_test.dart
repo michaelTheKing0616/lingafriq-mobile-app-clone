@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lingafriq/services/learning/fsrs6_scheduler.dart';
+import 'package:lingafriq/learning/scheduling/fsrs6_scheduler.dart';
 import 'package:lingafriq/services/learning/memory_state.dart';
 
 import 'fsrs6_oracle.dart';
@@ -44,5 +44,52 @@ void main() {
 
   test('a day scheduler graduates on the first review', () {
     verifyFsrs6Days(const Fsrs6Scheduler.days());
+  });
+
+  test('per-learner weights stay default until 1000 reviews', () {
+    const profile = LearnerFsrsParameters(reviewCount: 999);
+    expect(profile.isOptimised, isFalse);
+    expect(profile.effectiveWeights, Fsrs6Scheduler.defaultParameters);
+    const tuned = LearnerFsrsParameters(
+      reviewCount: LearnerFsrsParameters.optimizationReviewThreshold,
+      weights: [1.0],
+    );
+    expect(tuned.isOptimised, isTrue);
+    expect(tuned.effectiveWeights, isNot(Fsrs6Scheduler.defaultParameters));
+  });
+
+  test('optimising from a 1000-review log is deterministic', () {
+    final log = List.generate(
+      1000,
+      (i) => FsrsReviewLogEntry(
+        rating: i % 7 == 0 ? FsrsRating.again : FsrsRating.good,
+        at: DateTime.utc(2026, 1, 1).add(Duration(days: i)),
+      ),
+    );
+    final a = const LearnerFsrsParameters().optimizeFromLog(log);
+    final b = const LearnerFsrsParameters().optimizeFromLog(log);
+    expect(a.weights, b.weights);
+    expect(a.reviewCount, 1000);
+    expect(a.weights[11], isNot(closeTo(Fsrs6Scheduler.defaultParameters[11], 1e-9)));
+    expect(Fsrs6Scheduler.forLearner(a).parameters, a.weights);
+  });
+
+  test('legacy SM-2 and half-life migrations replay deterministically', () {
+    const scheduler = Fsrs6Scheduler.days();
+    final sm2 = Fsrs6Scheduler.migrateLegacySm2(
+      easeFactor: 2.5,
+      intervalDays: 6,
+      repetitions: 2,
+      lastReview: DateTime.utc(2026, 1, 1),
+    );
+    final hlr = Fsrs6Scheduler.migrateLegacyHalfLife(
+      halfLifeDays: 3.5,
+      lastRecall: DateTime.utc(2026, 1, 1),
+    );
+    final at = DateTime.utc(2026, 1, 8);
+    final left = scheduler.review(sm2, FsrsRating.good, at);
+    final right = scheduler.review(sm2, FsrsRating.good, at);
+    expect(left.stability, right.stability);
+    expect(scheduler.review(hlr, FsrsRating.hard, at).due, isNotNull);
   });
 }

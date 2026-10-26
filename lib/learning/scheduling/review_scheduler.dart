@@ -1,4 +1,4 @@
-import '../../services/learning/fsrs6_scheduler.dart';
+import 'fsrs6_scheduler.dart';
 import '../learner_model/learner_model_service.dart';
 
 /// Spaced review scheduler driven by the learner model.

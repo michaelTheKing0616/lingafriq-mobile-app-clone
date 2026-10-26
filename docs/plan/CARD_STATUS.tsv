@@ -780,7 +780,7 @@ P5-015	Done	Mark units mastered by can-do evidence and fix unlock rule (can_do_m
 P5-016	Done	Select frequency-ranked A1 lexicon (`lexicon_select.py`, `assets/data/lexicon/a1/`)	P5/P5-016.yaml
 P5-017	Done	Restrict tonal Beta to lexicon-anchored tokens (tone_anchor_check.py)	P5/P5-017.yaml
 P5-018	Done	Plan spiral exposures: 6/unit spread, phase order, SpiralShortfall lint (spiral_planner.py)	P5/P5-018.yaml
-P5-019	Draft	Unify review scheduling on FSRS-6	P5/P5-019.yaml
+P5-019	Done	Canonical FSRS-6 in learning/scheduling; per-learner weights at 1k reviews; legacy SM-2 path removed	P5/P5-019.yaml
 P5-020	Draft	Create Pattern Library schema and linter	P5/P5-020.yaml
 P5-021	Draft	'Author Yoruba A1 patterns: ń, ti, máa'	P5/P5-021.yaml
 P5-022	Draft	Author Swahili A1 tense-marker patterns	P5/P5-022.yaml
