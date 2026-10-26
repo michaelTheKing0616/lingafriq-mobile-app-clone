@@ -25,7 +25,10 @@ tiers:
   reviewer: T1
   justification: verification only; no code
 token_budget: 20000
-file_allowlist: []
+file_allowlist:
+- tools/content/phase0_foundations_exit.py
+- test/content/phase0_foundations_exit_test.py
+- assets/content/phase0_foundations_ledger.json
 context_anchors:
 - CURRICULUM.md#§9.2:L792-L797
 acceptance_criteria:
