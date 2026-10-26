@@ -809,7 +809,7 @@ P5-044	Done	Route items to paid linguist review by risk (review_router.py)	P5/P5
 P5-045	Done	Run 300-item calibration sets and compute Cohen kappa (calibration_kappa.py)	P5/P5-045.yaml
 P5-046	Done	Weekly stratified blind sample (blind_sampler.py)	P5/P5-046.yaml
 P5-047	Done	Publish error rate per language and label (quality.routes.ts, quality_report_screen.dart)	P5/P5-047.yaml
-P5-048	Draft	Compute IRT item statistics and flag abnormal items	P5/P5-048.yaml
+P5-048	Done	Compute IRT item statistics and flag abnormal items (irt_stats.py)	P5/P5-048.yaml
 P5-049	Draft	Verify Tier A Beta error ≤3% for Swahili	P5/P5-049.yaml
 P5-050	Draft	Verify Tier B Beta error ≤5% for zu, xh, ha, pcm	P5/P5-050.yaml
 P5-051	Draft	Verify Tier C Beta error ≤5% for Yoruba and Igbo	P5/P5-051.yaml
