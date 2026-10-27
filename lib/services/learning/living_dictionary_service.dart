@@ -8,6 +8,32 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 export 'living_dictionary_list_result.dart';
 
+/// P7-919 — verified lexicon link on a personal living-dictionary row.
+enum LivingDictionaryVerifiedLink {
+  /// Row is linked to a verified lexeme id from the server.
+  linked,
+  /// No verified entry; learner-owned personal word only.
+  personalUnverified,
+}
+
+/// Pure parsing for list/add responses (no HTTP).
+class LivingDictionaryEntryLink {
+  LivingDictionaryEntryLink._();
+
+  static String? verifiedLexemeIdFromEntry(Map<String, dynamic> entry) {
+    final raw = entry['verified_lexeme_id'] ?? entry['verifiedLexemeId'];
+    if (raw == null) return null;
+    final id = raw.toString().trim();
+    return id.isEmpty ? null : id;
+  }
+
+  static LivingDictionaryVerifiedLink linkStatusForEntry(Map<String, dynamic> entry) {
+    return verifiedLexemeIdFromEntry(entry) != null
+        ? LivingDictionaryVerifiedLink.linked
+        : LivingDictionaryVerifiedLink.personalUnverified;
+  }
+}
+
 class LivingDictionaryService {
   Future<void> _saveListCache(String requestUrl, Map<String, dynamic> data) async {
     try {

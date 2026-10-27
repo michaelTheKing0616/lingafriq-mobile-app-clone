@@ -5,8 +5,16 @@ import 'package:lingafriq/providers/onboarding_provider.dart';
 import 'package:lingafriq/services/learning/living_dictionary_service.dart';
 import 'package:lingafriq/utils/modern_griot_design_system.dart';
 
+/// P7-919 branding for the shared personal word list endpoint.
+enum LivingDictionaryUiVariant { livingDictionary, myWords }
+
 class LivingDictionaryScreen extends ConsumerStatefulWidget {
-  const LivingDictionaryScreen({super.key});
+  const LivingDictionaryScreen({
+    super.key,
+    this.variant = LivingDictionaryUiVariant.livingDictionary,
+  });
+
+  final LivingDictionaryUiVariant variant;
 
   @override
   ConsumerState<LivingDictionaryScreen> createState() =>
@@ -27,6 +35,20 @@ class _LivingDictionaryScreenState
   /// `cache` when [LivingDictionaryService] served last successful snapshot (offline).
   String? _listDataSource;
   static const int _pageSize = 200;
+
+  bool get _isMyWords =>
+      widget.variant == LivingDictionaryUiVariant.myWords;
+
+  String get _screenTitle =>
+      _isMyWords ? 'My Words' : 'Living Dictionary';
+
+  /// Copy key: mywords.offline
+  String get _offlineBannerText => _isMyWords
+      ? 'Offline: showing your cached My Words list.'
+      : 'Offline: showing your last saved word list for this search.';
+
+  String get _unverifiedBadgeLabel =>
+      'Personal · unverified'; // copy key: mywords.unverified
 
   String _defaultLanguageCode() {
     final s = ref.read(onboardingProvider).selectedLanguage?.trim();
@@ -330,7 +352,7 @@ class _LivingDictionaryScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Living Dictionary'),
+        title: Text(_screenTitle),
         actions: [
           IconButton(
             tooltip: 'Refresh',
@@ -387,7 +409,7 @@ class _LivingDictionaryScreenState
                         vertical: 10,
                       ),
                       child: Text(
-                        'Offline: showing your last saved word list for this search.',
+                        _offlineBannerText,
                         style: ModernGriotTypography.bodySmall(),
                       ),
                     ),
@@ -515,6 +537,10 @@ class _LivingDictionaryScreenState
                         final language = (e['language'] ?? '').toString();
                         final idiom = e['idiom'] == true;
                         final contextText = (e['context'] ?? '').toString();
+                        final verifiedId =
+                            LivingDictionaryEntryLink.verifiedLexemeIdFromEntry(e);
+                        final linkStatus =
+                            LivingDictionaryEntryLink.linkStatusForEntry(e);
                         return Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
@@ -537,6 +563,35 @@ class _LivingDictionaryScreenState
                                       style: ModernGriotTypography.titleSmall(),
                                     ),
                                   ),
+                                  if (linkStatus ==
+                                      LivingDictionaryVerifiedLink.linked)
+                                    Semantics(
+                                      label:
+                                          'Linked to verified lexicon $verifiedId',
+                                      child: _EntryLinkBadge(
+                                        label: 'Verified',
+                                        tooltip: verifiedId ?? '',
+                                        background: Theme.of(context)
+                                            .colorScheme
+                                            .primaryContainer,
+                                        foreground: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimaryContainer,
+                                      ),
+                                    )
+                                  else
+                                    Semantics(
+                                      label: _unverifiedBadgeLabel,
+                                      child: _EntryLinkBadge(
+                                        label: _unverifiedBadgeLabel,
+                                        background: Theme.of(context)
+                                            .colorScheme
+                                            .tertiaryContainer,
+                                        foreground: Theme.of(context)
+                                            .colorScheme
+                                            .onTertiaryContainer,
+                                      ),
+                                    ),
                                   if (idiom)
                                     Container(
                                       padding: const EdgeInsets.symmetric(
@@ -616,5 +671,43 @@ class _LivingDictionaryScreenState
               ],
             ),
     );
+  }
+}
+
+class _EntryLinkBadge extends StatelessWidget {
+  const _EntryLinkBadge({
+    required this.label,
+    required this.background,
+    required this.foreground,
+    this.tooltip,
+  });
+
+  final String label;
+  final Color background;
+  final Color foreground;
+  final String? tooltip;
+
+  @override
+  Widget build(BuildContext context) {
+    final child = Container(
+      margin: const EdgeInsets.only(right: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: background,
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontSize: 11,
+          color: foreground,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+    if (tooltip != null && tooltip!.isNotEmpty) {
+      return Tooltip(message: tooltip!, child: child);
+    }
+    return child;
   }
 }
