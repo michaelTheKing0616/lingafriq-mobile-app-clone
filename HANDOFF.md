@@ -98,6 +98,9 @@ Intron is set up and not connected. Do not put `INTRON_API_KEY` in the client.
 ## Reviewer UI gate (last 3h)
 
 - UI-BELOW-BAR P4-071 UI 7/6/8/7/6/6/7/8/7/7 avg 6.9; reference: Airtable data-grid + Notion source manager; gap: `lingafriq-admin/src/pages/CurriculumStudio/sourceLibrary.tsx` renders localisation keys as raw copy, lacks designed state matrix evidence, and has no source-library widget/golden route tests in this window.
+- UI-BELOW-BAR P8-903 UI 8/8/8/8/7/7/7/8/7/8 avg 7.6; reference: Duolingo instant feedback card; gap: `lib/games/gamekit/universal_game_screen.dart` still hardcodes strings and does not evidence loading/empty/error/offline/locked/child-mode matrix at route level.
+- UI-BELOW-BAR P8-904 UI 8/8/8/8/7/7/7/8/7/8 avg 7.6; reference: Duolingo mistake review panel; gap: `GameKitWhyWrongPanel` is component-tested but route-level RTL/text-scale/a11y-state coverage is incomplete and play-audio copy key wiring is weak.
+- UI-BELOW-BAR P8-908 UI 8/8/8/8/7/7/7/7/8/8 avg 7.6; reference: Duolingo practice-bot labeling; gap: `GamekitDuelOpponentStrip` is not mounted in any game screen and duel socket payload handlers in `game_engine_service.dart` are not wired to runtime listeners.
 - UI-BELOW-BAR P7-933 UI 8/8/9/8/7/8/7/7/7/7 avg 7.6; reference: Duolingo pronunciation tips; gap: `SoundTutorialsScreen` is not referenced outside its own file (unwired).
 - UI-BELOW-BAR P7-930 UI 8/8/9/8/7/8/7/7/7/7 avg 7.6; reference: Duolingo lesson flow; gap: `MicroLessonScreen` is not referenced outside its own file (unwired).
 - UI-BELOW-BAR P7-931 UI 8/8/9/8/7/8/7/7/7/7 avg 7.6; reference: ELSA speaking checks; gap: `TutorialPerceptionCheck` is not referenced outside its own file (unwired).
