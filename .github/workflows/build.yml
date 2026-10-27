@@ -73,6 +73,7 @@ jobs:
           # Claim lint reads bundled curriculum only. Runtime Import Media lessons are not in this job.
           python3 scripts/ci/claim_lint.py --baseline scripts/ci/lint_baseline.tsv
           python3 scripts/ci/dedupe_assets_check.py
+          python3 scripts/ci/asset_audit.py
           python3 test/ci/lint_fixtures_test.py
 
       - name: Secrets

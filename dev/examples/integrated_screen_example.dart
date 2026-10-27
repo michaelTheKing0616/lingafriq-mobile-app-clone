@@ -10,9 +10,8 @@
 // - Lazy image loading
 
 import 'package:flutter/material.dart';
-import '../utils/performance_exports.dart';
-// import '../core/network/api_client_with_recovery.dart';
-import '../widgets/global/error_recovery_widget.dart';
+import 'package:lingafriq/utils/performance_exports.dart';
+import 'package:lingafriq/widgets/global/error_recovery_widget.dart';
 
 class IntegratedScreenExample extends StatefulWidget {
   const IntegratedScreenExample({super.key});

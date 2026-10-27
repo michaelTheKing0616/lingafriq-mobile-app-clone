@@ -217,7 +217,6 @@ lib/avatars/cast/phoneme_viseme.dart	placeholder.sample	12
 lib/avatars/lip_sync_engine.dart	placeholder.sample	1
 lib/data/lesson_content_manager.dart	placeholder.example	3
 lib/data/roleplay_dataset.dart	placeholder.example	3
-lib/examples/integrated_screen_example.dart	placeholder.example	17
 lib/firebase_options.dart	placeholder.example	1
 lib/games/tone_forge/tone_forge_audio.dart	placeholder.sample	24
 lib/games/tone_forge/tone_forge_models.dart	placeholder.sample	2
@@ -247,8 +246,6 @@ lib/screens/community/micro_mentor_session_detail_screen.dart	placeholder.sample
 lib/screens/contribute/lesson_item_verification_screen.dart	placeholder.example	6
 lib/screens/contribute/native_speaker_contribution_screen.dart	placeholder.example	1
 lib/screens/curriculum/lesson_detail_screen.dart	placeholder.example	3
-lib/screens/examples/errorhandler_integration_example.dart	placeholder.example	7
-lib/screens/examples/performance_utilities_example.dart	placeholder.example	5
 lib/screens/games/game_templates.dart	placeholder.example	2
 lib/screens/games/grammar_detective_game.dart	placeholder.example	2
 lib/screens/games/pronunciation_duel_game.dart	placeholder.example	2

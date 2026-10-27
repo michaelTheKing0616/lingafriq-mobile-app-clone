@@ -434,7 +434,7 @@ P11-053	Done	Learner avatar editor on shared rig (avatar_editor_screen.dart, slo
 P11-054	Done	Server-verified avatar mastery entitlements (avatarEntitlements.service.ts, unlock_client.dart)	P11/P11-054.yaml
 P11-055	Done	Generate stickers, reactions and speaking share cards (sticker_generator.dart, speaking_card.dart)	P11/P11-055.yaml
 P12-001	Done	Remove duplicated curriculum JSONs from the bundle (dedupe_assets_check.py, pubspec)	P12/P12-001.yaml
-P12-002	Draft	Strip bundled code files and dev examples from assets	P12/P12-002.yaml
+P12-002	Done	asset_audit.py, dev/examples, Dosis trim (golden Regular+Bold only)	P12/P12-002.yaml
 P12-003	Draft	Deliver large content as downloadable language packs	P12/P12-003.yaml
 P12-004	Draft	Gate release APK download size under 40 MB in CI	P12/P12-004.yaml
 P12-005	Draft	Split polie_workspace_screen into feature modules	P12/P12-005.yaml

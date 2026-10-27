@@ -6,7 +6,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../utils/performance_utils.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
 
 /// Example Screen with Performance Utilities
 class ExampleScreenWithPerformanceUtils extends HookConsumerWidget {
