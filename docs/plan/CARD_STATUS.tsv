@@ -3,7 +3,7 @@ ADR-001	Done	'ADR: Three-label interim content policy (D1)'	P0/ADR-001.yaml
 ADR-002	Done	'ADR: Lexicon-anchored tone Beta rule and verification principles'	P0/ADR-002.yaml
 ADR-003	Done	ADR-003 L1 audio readiness + isiXhosa voice path (docs/build/adr/ADR-003.md)	P0/ADR-003.yaml
 ADR-004	Done	'ADR-004: Choose Drift/SQLite or Isar as the one local database'	P2/ADR-004.yaml
-ADR-020	Draft	'Decide one soft currency: keep Cowries'	P10/ADR-020.yaml
+ADR-020	Done	Cowries only soft currency; ADR-020-soft-currency-cowries.md	P10/ADR-020.yaml
 ADR-021	Draft	Decide north-star metric and guardrails	P10/ADR-021.yaml
 E-P0-INTAKE	Draft	'Intake: RTM, charter enforcement, repo map, verification cards'	P0/E-P0-INTAKE.yaml
 E-P1-AI-GATEWAY	Draft	'AI gateway: auth, quotas, server-owned prompts'	P1/E-P1-AI-GATEWAY.yaml
@@ -349,7 +349,7 @@ P10-908	Done	Opt-in leagues, learning-XP ranks, minor circle-only (leagues.servi
 P10-909	Done	Circle quests, family phrase teach-back, Heritage Tree (quests.service.ts, circle_quest_screen.dart, heritage_tree_screen.dart)	P10/P10-909.yaml
 P10-910	Done	Shareable can-do badges after checkpoints (cando-badges.service.ts, cando_badge_screen.dart)	P10/P10-910.yaml
 P10-911	Done	Replace fake co-learners and friend pushes (flashcard roster, friend-waiting push gate)	P10/P10-911.yaml
-P10-912	Draft	Enforce monetisation guardrails in code	P10/P10-912.yaml
+P10-912	Done	Monetisation guardrails (purchase-guard.service.ts, sinks.service.ts, monetisation_guard_test.dart)	P10/P10-912.yaml
 P10-913	Draft	Verify all gamification guardrails hold	P10/P10-913.yaml
 P10-914	Draft	Publish the Passport CEFR methodology	P10/P10-914.yaml
 P10-915	Draft	Build an evidence portfolio of passed can-do tasks	P10/P10-915.yaml
