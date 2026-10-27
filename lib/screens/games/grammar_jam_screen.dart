@@ -13,6 +13,7 @@ import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
 import 'base_game_screen.dart';
+import '../../games/word_forge/word_forge_screen.dart';
 
 class GrammarJamGame extends BaseGameScreen {
   const GrammarJamGame({
@@ -30,6 +31,15 @@ class GrammarJamGame extends BaseGameScreen {
 }
 
 class _GrammarJamGameState extends BaseGameScreenState<GrammarJamGame> {
+  /// Legacy shelf route → flagship Word Forge (P8-926).
+  @override
+  Widget build(BuildContext context) {
+    return WordForgeScreen(
+      language: widget.language,
+      onBack: widget.onBack ?? () => Navigator.of(context).pop(),
+    );
+  }
+
   final List<_GrammarRound> _rounds = [];
   int _currentIndex = 0;
   int _streak = 0;

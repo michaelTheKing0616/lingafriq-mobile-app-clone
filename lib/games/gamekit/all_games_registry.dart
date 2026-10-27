@@ -41,6 +41,7 @@ const Set<String> kArcadeHeadlinerShippedElevationCards = {
   'P8-922',
   'P8-924',
   'P8-925',
+  'P8-926',
 };
 
 /// Ten headliners in product order; Tone Forge carries the Featured badge.
@@ -123,6 +124,7 @@ class AllGamesRegistry {
   static const String toneForgeGameId = 'tone_forge';
   static const String talkingDrumGameId = 'talking_drum';
   static const String minimalPairDuelGameId = 'minimal_pair_duel';
+  static const String wordForgeGameId = 'word_forge';
 
   static bool headlinerElevationShipped(String elevationCardId) {
     return kArcadeHeadlinerShippedElevationCards.contains(elevationCardId);
@@ -277,6 +279,7 @@ class AllGamesRegistry {
     'taxi_bus_stop_survival': 'P8-923',
     'proverb_unlocker': 'P8-924',
     'clan_lineage_story_builder': 'P8-925',
+    'grammar_jam': 'P8-926',
     'greeting_diplomacy_challenge': 'P8-934',
     'pronunciation_karaoke': 'P8-935',
   };
@@ -290,7 +293,8 @@ class AllGamesRegistry {
         gameId == talkingDrumGameId ||
         gameId == GameType.marketBargainingSimulator.name ||
         gameId == GameType.proverbUnlocker.name ||
-        gameId == GameType.clanLineageStoryBuilder.name) {
+        gameId == GameType.clanLineageStoryBuilder.name ||
+        gameId == GameType.grammarJam.name) {
       return false;
     }
     return true;
