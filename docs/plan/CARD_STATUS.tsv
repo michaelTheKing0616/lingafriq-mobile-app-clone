@@ -890,7 +890,7 @@ P6-031	Done	Stand up server-side scorer service (scorer/api.py, score.route.ts)	
 P6-032	Done	Fine-tune Omnilingual CTC per language (finetune.py, licence_check.py; fixture train)	P6/P6-032.yaml
 P6-033	Done	Compute GOP segmental scores with learner advice (gop.py, advice_map.py, test_gop.py)	P6/P6-033.yaml
 P6-034	Done	Extract F0 and normalise per speaker in semitones (f0.py, normalise.py, test_f0.py)	P6/P6-034.yaml
-P6-035	Draft	Compare per-syllable contour to native reference	P6/P6-035.yaml
+P6-035	Done	Compare per-syllable contour to native reference (syllable_contour.py, tone_classifier.py)	P6/P6-035.yaml
 P6-036	Draft	Support Yoruba H/M/L with glides and Twi H/L	P6/P6-036.yaml
 P6-037	Draft	Support Igbo downstep, Hausa falling and Zulu depressors	P6/P6-037.yaml
 P6-038	Draft	Return per-syllable tone correctness with confidence	P6/P6-038.yaml
