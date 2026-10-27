@@ -28,6 +28,9 @@
 | mobilenetv4_conv_small | [timm/mobilenetv4_conv_small.e2400_r224_in1k model.safetensors, revision 331fb803779522b685cf942e15f914fb6741c1eb](https://huggingface.co/timm/mobilenetv4_conv_small.e2400_r224_in1k/blob/331fb803779522b685cf942e15f914fb6741c1eb/model.safetensors) | Apache-2.0 (weight file; checked 2026-10-22) | ship on device only after conversion from this file | Ross Wightman. MobileNetV4-Conv-Small, ImageNet-1k. |
 | siglip_base_patch16_224 | [google/siglip-base-patch16-224 model.safetensors, revision 7fd15f0689c79d79e38b1c2e2e2370a7bf2761ed](https://huggingface.co/google/siglip-base-patch16-224/blob/7fd15f0689c79d79e38b1c2e2e2370a7bf2761ed/model.safetensors) | Apache-2.0 (weight file; checked 2026-10-22) | server only, behind the AI gateway, image opt-in required | Google SigLIP base (Zhai et al.). big_vision code is Apache-2.0. |
 | ultralytics_yolo | [Ultralytics YOLO](https://github.com/ultralytics/ultralytics) | AGPL-3.0 | excluded |  |
+| path_scenery_v3 | [Lesson-path scenery v3](design/path_rive/path/v3/path_scenery.riv) | original (LingAfriq) | ship | LingAfriq original illustration |
+| polie_path_v3 | [Polie path mascot v3](design/path_rive/path/v3/polie_path.riv) | original (LingAfriq) | ship | LingAfriq original character art |
+| path_nunito_black | [Nunito](https://fonts.google.com/specimen/Nunito) | SIL OFL 1.1 | ship (UI type on path banners) | Nunito Project Authors |
 
 Notes:
 - **leipzig**: Licence page bot-walled (403); verified via Terms of Usage text in search index. Sentences from *.wikipedia.org (CC BY-SA) and Bible/JW domains excluded from shipped examples; frequencies use all.

@@ -1091,7 +1091,7 @@ P7-949	Done	lesson_pacing.dart, lesson_session_screen.dart, pacing replay harnes
 P7-950	Draft	Fall back from MobileNetV4 to the SigLIP gateway	P7/P7-950.yaml
 P7-951	Done	Draw the winding lesson path and its node states (path_node_state.dart, learning_path_widget.dart)	P7/P7-951.yaml
 P7-952	Done	Path banners, preview sheet, Drift-first lazy path (path_section_banner.dart, P7-952)	P7/P7-952.yaml
-P7-953	Draft	Place licensed path scenes and the Polie mascot	P7/P7-953.yaml
+P7-953	Done	Licensed path scenery lookup, parchment/dim, Polie still gate (path_scene_art.dart, P7-953)	P7/P7-953.yaml
 P7-960	Done	Build a structured lesson from Import Media	P7/P7-960.yaml
 P7-961	Ready	Build the full Import Media lesson	P7/P7-961.yaml
 P8-934	Draft	Add a camera word hunt on the Point and Say pipeline	P8/P8-934.yaml

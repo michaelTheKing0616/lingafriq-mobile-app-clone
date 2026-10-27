@@ -228,5 +228,32 @@
   "use": "excluded",
   "checked": "2026-10-22",
   "notes": "Tope 2026-10-22. Do not bundle and do not use as a Point and Say model."
+ },
+ {
+  "id": "path_scenery_v3",
+  "source": "LingAfriq lesson-path scenery (path_scenery.riv v3, design/path_rive/path/v3/)",
+  "url": "design/path_rive/path/v3/path_scenery.riv",
+  "licence": "original (LingAfriq)",
+  "use": "ship",
+  "checked": "2026-10-27",
+  "attribution": "LingAfriq original illustration. Nunito Black on banners: SIL OFL 1.1 (path_nunito_black row)."
+ },
+ {
+  "id": "polie_path_v3",
+  "source": "LingAfriq Polie path mascot (polie_path.riv v3)",
+  "url": "design/path_rive/path/v3/polie_path.riv",
+  "licence": "original (LingAfriq)",
+  "use": "ship",
+  "checked": "2026-10-27",
+  "attribution": "LingAfriq original character art."
+ },
+ {
+  "id": "path_nunito_black",
+  "source": "Nunito Black (path banner and node numerals)",
+  "url": "https://fonts.google.com/specimen/Nunito",
+  "licence": "SIL Open Font License 1.1",
+  "use": "ship (UI type on path banners)",
+  "checked": "2026-10-27",
+  "attribution": "Nunito Copyright 2014 The Nunito Project Authors (SIL OFL 1.1)."
  }
 ]
