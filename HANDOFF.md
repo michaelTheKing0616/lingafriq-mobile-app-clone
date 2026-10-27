@@ -127,6 +127,10 @@ Intron is set up and not connected. Do not put `INTRON_API_KEY` in the client.
 - UI-BELOW-BAR P10-903 UI 8/8/9/8/7/8/7/7/7/8 avg 7.7; reference: Duolingo gems shop; gap: `CowriesShopScreen` is not wired to a navigable app route and validation is widget-only (`test/screens/cowries_shop_screen_test.dart`).
 - UI-BELOW-BAR P10-905 UI 8/8/9/8/7/8/8/8/7/8 avg 7.9; reference: Duolingo streak repair controls; gap: streak freeze/repair UX is present but lacks explicit offline/locked/child-mode and reduced-motion evidence in UI tests (`test/streak/p10_905_ethical_streak_test.dart` is policy-centric).
 - UI-BELOW-BAR P10-914 UI 8/8/9/8/7/8/8/8/7/8 avg 7.9; reference: Coursera credential verification card; gap: methodology disclosure is visible but no end-to-end route/open action verification for the methodology path beyond golden coverage (`test/screens/passport/passport_credential_methodology_test.dart`).
+- UI-BELOW-BAR P10-915 UI 8/8/9/8/8/8/8/8/7/8 avg 8.0; reference: LinkedIn skills credential evidence; gap: portfolio list exists, but loading/error/offline/child-mode state coverage is incomplete and route-level open flow is not evidenced outside focused widget tests.
+- UI-BELOW-BAR P10-916 UI 8/8/9/8/8/8/8/8/7/8 avg 8.0; reference: Duolingo English Test setup flow; gap: proctored session route is mounted, but reduced-motion, offline-interruption, and accessibility-state proofs are incomplete for the strict >=9 gate.
+- UI-BELOW-BAR P10-917 UI 8/8/9/8/8/8/8/8/7/8 avg 8.0; reference: LinkedIn credential share card; gap: share action is implemented, but full state matrix (loading/error/offline/locked/child-mode) and accessibility verification remains below bar.
+- UI-BELOW-BAR P10-918 UI 8/8/9/8/8/8/8/8/7/8 avg 8.0; reference: revoked-credential notice patterns in professional credential apps; gap: revoked view is present, but screen-reader/RTL/text-scale and recovery-path verification are not complete to pass the 9+ threshold.
 
 ## Tope to switch on
 
