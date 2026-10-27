@@ -894,7 +894,7 @@ P6-035	Done	Compare per-syllable contour to native reference (syllable_contour.p
 P6-036	Done	Support Yoruba H/M/L with glides and Twi H/L (tones/yoruba.py, tones/twi.py)	P6/P6-036.yaml
 P6-037	Done	Support Igbo downstep, Hausa falling and Zulu depressors (igbo.py, hausa.py, zulu.py)	P6/P6-037.yaml
 P6-038	Done	Per-syllable tone correctness with confidence (tone_result.py, score.route.ts)	P6/P6-038.yaml
-P6-039	Draft	Show learner contour overlaid on native contour	P6/P6-039.yaml
+P6-039	Done	Show learner contour overlaid on native contour (tone_overlay_view.dart, pitch_contour_painter.dart)	P6/P6-039.yaml
 P6-040	Draft	'Score fluency: rate, pauses, self-repairs'	P6/P6-040.yaml
 P6-041	Draft	Collect native 1-5 rating data per language	P6/P6-041.yaml
 P6-042	Draft	Calibrate scorer to native ratings and publish method	P6/P6-042.yaml
