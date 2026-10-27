@@ -43,26 +43,30 @@ class CowriesBalanceChip extends StatelessWidget {
             horizontal: compact ? PanAfricanSpacing.sm : PanAfricanSpacing.md,
             vertical: PanAfricanSpacing.xs,
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.waves, size: compact ? 18 : 22, color: PanAfricanColors.primary),
-              SizedBox(width: PanAfricanSpacing.xs),
-              Text(
-                _format(amount),
-                style: PanAfricanTypography.labelLarge(context).copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: PanAfricanColors.primary,
-                    ),
-              ),
-              if (!compact) ...[
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.waves, size: compact ? 18 : 22, color: PanAfricanColors.primary),
                 SizedBox(width: PanAfricanSpacing.xs),
                 Text(
-                  'Cowries',
-                  style: PanAfricanTypography.bodySmall(context),
+                  _format(amount),
+                  style: PanAfricanTypography.labelLarge(context).copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: PanAfricanColors.primary,
+                      ),
                 ),
+                if (!compact) ...[
+                  SizedBox(width: PanAfricanSpacing.xs),
+                  Text(
+                    'Cowries',
+                    style: PanAfricanTypography.bodySmall(context),
+                  ),
+                ],
               ],
-            ],
+            ),
           ),
         ),
       ),
