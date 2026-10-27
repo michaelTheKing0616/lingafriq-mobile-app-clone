@@ -364,6 +364,7 @@ class _Ai {
   String chatHistory(String mode) => '/api/ai/chat/history/$mode';
   String get chatSrsSync => '/api/ai/chat/srs/sync/';
   String get chatCompletion => '/api/ai/chat/completion';
+  String get personaCognitionTurn => '/api/ai/persona/cognition/turn';
   String get loadingScreenContent => '/api/v1/loading-screen/content';
   String loadingScreenImage(String prompt) =>
       '/api/v1/loading-screen/image/${Uri.encodeComponent(prompt)}';

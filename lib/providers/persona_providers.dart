@@ -20,11 +20,7 @@ import 'package:lingafriq/learning/pronunciation/persona_pronunciation_service.d
 // ---------------------------------------------------------------------------
 
 final personaCognitionEngineProvider = Provider<PersonaCognitionEngine>((ref) {
-  return PersonaCognitionEngine(
-    dio: ref.watch(client),
-    apiKey: '',
-    apiUrl: ApiContract.ai.chatCompletion,
-  );
+  return PersonaCognitionEngine(dio: ref.watch(client));
 });
 
 final historicalRoleplayControllerProvider =

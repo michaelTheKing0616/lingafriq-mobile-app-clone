@@ -873,7 +873,7 @@ P6-014	Done	Input/output safety classifiers, age-tier policy, fail-closed (safet
 P6-015	Done	Scrub PII and log without PII (pii/scrub.ts, logging.ts)	P6/P6-015.yaml
 P6-016	Done	Emit traces, token cost, latency and eval samples (telemetry.ts, evalSampler.ts)	P6/P6-016.yaml
 P6-017	Done	Stream all chat with first token under 400 ms (stream.ts, chat.route.ts)	P6/P6-017.yaml
-P6-018	Draft	Move persona cognition and persona chat to gateway	P6/P6-018.yaml
+P6-018	Done	Server two-pass persona cognition + mobile gateway client (P6-018)	P6/P6-018.yaml
 P6-019	Draft	Migrate client to gateway and remove keys and mode logic	P6/P6-019.yaml
 P6-020	Draft	Serve authenticated STT via gateway with Intron primary	P6/P6-020.yaml
 P6-021	Draft	Self-host Omnilingual ASR fine-tuned for Stage-1 languages	P6/P6-021.yaml

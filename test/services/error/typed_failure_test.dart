@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lingafriq/ai/persona_cognition/epistemic_classifier.dart';
-import 'package:lingafriq/ai/persona_cognition/groq_two_pass_orchestrator.dart';
+import 'package:lingafriq/ai/persona_cognition/persona_cognition_gateway.dart';
 import 'package:lingafriq/ai/personas/historical_persona_registry.dart';
 import 'package:lingafriq/services/error/typed_errors.dart';
 import 'package:lingafriq/services/hybrid_polie/pronunciation_service.dart';
@@ -83,30 +83,30 @@ void main() {
     );
     final persona = HistoricalPersonaRegistry.findById('mandela_nelson');
     expect(persona, isNotNull);
-    final orchestrator = GroqTwoPassOrchestrator(
-      dio: dio,
-      apiKey: 'test-key',
-      apiUrl: 'http://127.0.0.1/unused',
-    );
+    final gateway = PersonaCognitionGateway(dio);
     await expectLater(
-      orchestrator.runPass2(
+      gateway.runTurn(
+        personaId: persona!.id,
         userInput: 'Sawubona',
-        persona: persona!,
-        pass1: const Pass1Result(
-          epistemicStatus: EpistemicStatus.uncertain,
-          reasoningNotes: 'fixture',
-          confidence: 0.4,
-        ),
+        languageCode: 'en',
         learnerMastery: 0.2,
+        epistemicStatus: EpistemicStatus.uncertain.name,
+        epistemicReasoning: 'fixture',
+        epistemicConfidence: 0.4,
+        persona: persona,
       ),
       throwsA(
         isA<LingAfriqFailure>().having((error) => error.code, 'code', 'persona_unavailable'),
       ),
     );
 
-    final replySource = File('lib/ai/persona_cognition/groq_two_pass_orchestrator.dart').readAsStringSync();
-    expect(replySource.contains('nods thoughtfully'), isFalse);
-    expect(replySource.contains('responds with warmth'), isFalse);
+    final cognitionDir = Directory('lib/ai/persona_cognition');
+    for (final entity in cognitionDir.listSync()) {
+      if (entity is! File || !entity.path.endsWith('.dart')) continue;
+      final source = entity.readAsStringSync();
+      expect(source.contains('Authorization'), isFalse, reason: entity.path);
+      expect(source.contains('llama-3.3'), isFalse, reason: entity.path);
+    }
     expect(File('lib/services/offline/offline_service.dart').existsSync(), isFalse);
     expect(syncNotPersisted.code, 'sync_not_persisted');
   });

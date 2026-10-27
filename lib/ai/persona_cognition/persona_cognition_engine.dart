@@ -1,12 +1,10 @@
-// Core reasoning engine that applies persona as a cognition lens.
-// Orchestrates intent → epistemic → Pass 1 → Pass 2 → self-critique → learner update.
+// Core reasoning engine: local classifiers, server two-pass cognition via gateway.
 
 import 'package:dio/dio.dart';
 import 'package:lingafriq/ai/personas/historical_persona_registry.dart';
 import 'package:lingafriq/ai/persona_cognition/epistemic_classifier.dart';
-import 'package:lingafriq/ai/persona_cognition/groq_two_pass_orchestrator.dart';
 import 'package:lingafriq/ai/persona_cognition/intent_classifier.dart';
-import 'package:lingafriq/ai/persona_cognition/self_critique.dart';
+import 'package:lingafriq/ai/persona_cognition/persona_cognition_gateway.dart';
 import 'package:lingafriq/learning/learner_model/learner_model_service.dart';
 
 class TeachingPoint {
@@ -44,40 +42,16 @@ class PersonaCognitionResult {
 }
 
 class PersonaCognitionEngine {
-  final Dio _dio;
-  final String _apiKey;
-  final String _apiUrl;
-  final String _model;
+  final PersonaCognitionGateway _gateway;
   final LearnerModelService _learnerModel;
-  late final GroqTwoPassOrchestrator _orchestrator;
-  late final SelfCritique _selfCritique;
 
   PersonaCognitionEngine({
     required Dio dio,
-    required String apiKey,
-    required String apiUrl,
-    String model = 'llama-3.3-70b-versatile',
     LearnerModelService? learnerModel,
-  })  : _dio = dio,
-        _apiKey = apiKey,
-        _apiUrl = apiUrl,
-        _model = model,
-        _learnerModel = learnerModel ?? LearnerModelService.instance {
-    _orchestrator = GroqTwoPassOrchestrator(
-      dio: _dio,
-      apiKey: _apiKey,
-      apiUrl: _apiUrl,
-      model: _model,
-    );
-    _selfCritique = SelfCritique(
-      dio: _dio,
-      apiKey: _apiKey,
-      apiUrl: _apiUrl,
-      model: _model,
-    );
-  }
+  })  : _gateway = PersonaCognitionGateway(dio),
+        _learnerModel = learnerModel ?? LearnerModelService.instance;
 
-  /// Processes user input through intent → epistemic → two-pass LLM → critique → learner update.
+  /// Processes user input through intent → epistemic → gateway turn → learner update.
   Future<PersonaCognitionResult> processInput({
     required String userInput,
     required String personaId,
@@ -90,14 +64,10 @@ class PersonaCognitionEngine {
       throw StateError('Persona not found: $personaId');
     }
 
-    // 1. Classify intent
     final intent = IntentClassifier.classify(userInput, personaId);
-
-    // 2. Classify epistemic status
     final epistemic =
         EpistemicClassifier.classify(userInput: userInput, persona: persona, intent: intent);
 
-    // Out of scope: return short safe response without LLM
     if (epistemic.status == EpistemicStatus.outOfScope) {
       return PersonaCognitionResult(
         personaReply:
@@ -108,15 +78,6 @@ class PersonaCognitionEngine {
       );
     }
 
-    // 3. Pass 1: hidden reasoning
-    final pass1 = await _orchestrator.runPass1(
-      userInput: userInput,
-      persona: persona,
-      epistemic: epistemic,
-      intent: intent,
-    );
-
-    // 4. Learner state for Pass 2
     final language = persona.primaryLanguages.isNotEmpty
         ? persona.primaryLanguages.first
         : languageCode;
@@ -124,88 +85,52 @@ class PersonaCognitionEngine {
     final state = _learnerModel.getState(learnerId: learnerId, skillId: skillId);
     final learnerMastery = state.mastery;
 
-    // 5. Pass 2: user-facing response
-    final pass2Result = await _orchestrator.runPass2(
+    final turn = await _gateway.runTurn(
+      personaId: personaId,
       userInput: userInput,
-      persona: persona,
-      pass1: pass1,
+      languageCode: languageCode,
       learnerMastery: learnerMastery,
+      epistemicStatus: epistemic.status.name,
+      epistemicReasoning: epistemic.reasoning,
+      epistemicConfidence: epistemic.confidence,
+      persona: persona,
+      intentDomain: intent.domain.name,
+      intentType: intent.type.name,
       conversationHistory: conversationHistory,
     );
 
-    String personaReply =
-        pass2Result['persona_reply'] as String? ?? persona.displayName;
-    final statusStr = pass2Result['epistemic_status'] as String?;
-    EpistemicStatus resultStatus = pass1.epistemicStatus;
-    if (statusStr != null) {
-      final normalized = statusStr.toLowerCase().replaceAll('_', '');
-      for (final e in EpistemicStatus.values) {
-        if (e.name.toLowerCase().replaceAll('_', '') == normalized) {
-          resultStatus = e;
-          break;
-        }
-      }
-    }
-    final confidence =
-        (pass2Result['confidence'] as num?)?.toDouble() ?? pass1.confidence;
-
-    // 6. Self-critique
-    final critique = await _selfCritique.critique(
-      personaReply: personaReply,
-      persona: persona,
-      epistemicStatus: resultStatus,
-    );
-    if (!critique.passedCritique && critique.revisedReply != null) {
-      personaReply = critique.revisedReply!;
-    }
-
-    // Parse language_feedback and historical_citations
-    final feedbackRaw = pass2Result['language_feedback'] as List<dynamic>?;
-    final languageFeedback = <TeachingPoint>[];
-    if (feedbackRaw != null) {
-      for (final e in feedbackRaw) {
-        if (e is Map<String, dynamic>) {
-          final type = e['type'] as String? ?? 'vocabulary';
-          final note = e['note'] as String? ?? e['content'] as String? ?? '';
-          languageFeedback.add(TeachingPoint(type: type, note: note));
-        }
+    EpistemicStatus resultStatus = epistemic.status;
+    final normalized = turn.epistemicStatus.toLowerCase().replaceAll('_', '');
+    for (final e in EpistemicStatus.values) {
+      if (e.name.toLowerCase().replaceAll('_', '') == normalized) {
+        resultStatus = e;
+        break;
       }
     }
 
-    final citationsRaw = pass2Result['historical_citations'] as List<dynamic>?;
-    final citations = <HistoricalCitation>[];
-    if (citationsRaw != null) {
-      for (final e in citationsRaw) {
-        if (e is Map<String, dynamic>) {
-          citations.add(HistoricalCitation(
-            source: e['source'] as String? ?? '',
-            relevance: e['relevance'] as String? ?? '',
-          ));
-        }
-      }
-    }
+    final languageFeedback = turn.languageFeedback
+        .map((e) => TeachingPoint(type: e['type'] ?? 'vocabulary', note: e['note'] ?? ''))
+        .toList();
+    final citations = turn.historicalCitations
+        .map((e) => HistoricalCitation(source: e['source'] ?? '', relevance: e['relevance'] ?? ''))
+        .toList();
 
-    final emotionTone =
-        pass2Result['emotion_tone'] as String? ?? 'calm';
-    final culturalNote = pass2Result['cultural_note'] as String?;
-
-    // 7. Update learner model
     await _learnerModel.recordAttempt(
       learnerId: learnerId,
       skillId: skillId,
-      wasCorrect: critique.passedCritique && critique.issues.isEmpty,
-      errorTypeIds: critique.issues,
+      wasCorrect: turn.critiquePassed && turn.critiqueIssues.isEmpty,
+      errorTypeIds: turn.critiqueIssues,
       responseTimeSeconds: 0,
     );
 
     return PersonaCognitionResult(
-      personaReply: personaReply,
+      personaReply: turn.personaReply,
       epistemicStatus: resultStatus,
-      confidence: confidence,
+      confidence: turn.confidence,
       languageFeedback: languageFeedback,
-      culturalNote: culturalNote?.isNotEmpty == true ? culturalNote : null,
+      culturalNote: turn.culturalNote?.isNotEmpty == true ? turn.culturalNote : null,
       citations: citations,
-      emotionTone: emotionTone,
+      emotionTone: turn.emotionTone,
     );
   }
 }
