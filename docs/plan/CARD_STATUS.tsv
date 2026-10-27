@@ -950,7 +950,7 @@ P7-906	Done	Build Word Card content for Lens tags with native audio (word_card_b
 P7-907	Done	Lens Word Card flip, tone contour line, 48dp mic (lens_word_card.dart)	P7/P7-907.yaml
 P7-908	Done	Build Lens hold-to-speak with GOP and tone scoring (lens_speak_controller.dart)	P7/P7-908.yaml
 P7-909	Done	Build Lens personal collection feeding FSRS review (lens_collection_service.dart)	P7/P7-909.yaml
-P7-910	Draft	Build weekly Home Safari quests	P7/P7-910.yaml
+P7-910	Done	Weekly Home Safari quests (`home_safari_service.dart`, `home_safari_card.dart`)	P7/P7-910.yaml
 P7-911	Draft	Build Lens Clip sharing with face blur	P7/P7-911.yaml
 P7-912	Draft	Build Lens signs and menus OCR with read-aloud	P7/P7-912.yaml
 P7-913	Done	Offline Lens pack manifest + cached audio; PointAndSay queue sync states (P7-913)	P7/P7-913.yaml
