@@ -432,7 +432,7 @@ P11-051	Done	Avatar reduced motion VM + screen-reader semantics (avatar_semantic
 P11-052	Draft	Expand cast to archetypes and per-language hosts	P11/P11-052.yaml
 P11-053	Done	Learner avatar editor on shared rig (avatar_editor_screen.dart, slot parity tests)	P11/P11-053.yaml
 P11-054	Done	Server-verified avatar mastery entitlements (avatarEntitlements.service.ts, unlock_client.dart)	P11/P11-054.yaml
-P11-055	Draft	Generate stickers, reactions and speaking share cards	P11/P11-055.yaml
+P11-055	Done	Generate stickers, reactions and speaking share cards (sticker_generator.dart, speaking_card.dart)	P11/P11-055.yaml
 P12-001	Draft	Remove duplicated curriculum JSONs from the bundle	P12/P12-001.yaml
 P12-002	Draft	Strip bundled code files and dev examples from assets	P12/P12-002.yaml
 P12-003	Draft	Deliver large content as downloadable language packs	P12/P12-003.yaml
