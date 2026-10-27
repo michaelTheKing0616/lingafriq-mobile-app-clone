@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lingafriq/services/analytics_service.dart';
 import 'package:lingafriq/services/monitoring/sentry_service.dart';
 
 /// World-class performance analytics service
@@ -97,6 +98,11 @@ class PerformanceAnalytics {
       debugPrint('Error stopping performance tracking: $e');
       SentryService().captureException(e, stackTrace: stackTrace);
     }
+  }
+
+  /// When [operationName] is `learning_session_open`, opens a v1 analytics session once.
+  Future<void> trackLearningSessionOpen() async {
+    await LearningAnalyticsService.instance.beginLearningSession();
   }
 
   /// Track performance metric directly

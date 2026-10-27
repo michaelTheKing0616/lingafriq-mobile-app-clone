@@ -1,6 +1,7 @@
 // Offline Analytics - Tracks offline usage and sync metrics
 // Provides insights into offline behavior and sync performance
 
+import 'package:lingafriq/services/analytics_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OfflineAnalytics {
@@ -53,6 +54,7 @@ class OfflineAnalytics {
     
     if (success) {
       await prefs.setInt('${_prefKeyPrefix}sync_success', successCount + 1);
+      await LearningAnalyticsService.instance.flush();
     } else {
       await prefs.setInt('${_prefKeyPrefix}sync_failure', failureCount + 1);
     }
