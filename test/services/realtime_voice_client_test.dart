@@ -68,5 +68,68 @@ void main() {
     test('P6-079 agent stop deadline is 300ms', () {
       expect(RealtimeVoiceClient.agentStopDeadlineMs, 300);
     });
+
+    test('P6-083 PTT capture window only while held', () {
+      var state = applyPushToTalkEnabled(const RealtimePttState(), enabled: true);
+      expect(realtimeBypassesVad(state.captureMode), isTrue);
+      expect(isMicCaptureOpen(state), isFalse);
+      state = pttHoldStarted(state);
+      expect(isMicCaptureOpen(state), isTrue);
+      state = pttHoldEnded(state);
+      expect(isMicCaptureOpen(state), isFalse);
+      expect(state.phase, RealtimePttPhase.sending);
+    });
+
+    test('P6-083 auto-offer on low bandwidth or constrained link', () {
+      expect(
+        shouldOfferPushToTalkAutomatically(
+          const RealtimeVoiceNetworkProfile(
+            lowBandwidthActive: true,
+            cellularOrConstrained: false,
+          ),
+        ),
+        isTrue,
+      );
+      expect(
+        shouldOfferPushToTalkAutomatically(
+          RealtimeVoiceNetworkProfile(
+            lowBandwidthActive: false,
+            cellularOrConstrained: false,
+            downlinkKbps: realtimePttBandwidthThresholdKbps - 1,
+          ),
+        ),
+        isTrue,
+      );
+      expect(
+        shouldOfferPushToTalkAutomatically(
+          const RealtimeVoiceNetworkProfile(
+            lowBandwidthActive: false,
+            cellularOrConstrained: false,
+            downlinkKbps: 1000,
+          ),
+        ),
+        isFalse,
+      );
+    });
+
+    test('P6-083 buildPttControlEvent bypasses VAD', () {
+      final ev = buildPttControlEvent(sessionId: 'sess-1', active: true);
+      expect(ev['type'], RealtimeVoiceClient.pttControlType);
+      expect(ev['bypassVad'], isTrue);
+      expect(ev['active'], isTrue);
+    });
+
+    test('P6-083 applyAutoPushToTalkOffer enables PTT', () {
+      final dio = Dio();
+      final client = RealtimeVoiceClient(dio);
+      final offered = client.applyAutoPushToTalkOffer(
+        const RealtimeVoiceNetworkProfile(
+          lowBandwidthActive: true,
+          cellularOrConstrained: false,
+        ),
+      );
+      expect(offered, isTrue);
+      expect(client.pttState.captureMode, RealtimeCaptureMode.pushToTalk);
+    });
   });
 }

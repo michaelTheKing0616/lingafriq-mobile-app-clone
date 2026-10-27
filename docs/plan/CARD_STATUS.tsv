@@ -938,7 +938,7 @@ P6-079	Done	Support barge-in during agent speech (bargeIn.ts, realtime_voice_cli
 P6-080	Done	Gate realtime latency budgets in CI (latencyProbe.ts, ai_latency.yml)	P6/P6-080.yaml
 P6-081	Done	Drive avatar lip-sync from TTS alignments (alignments.ts, lip_sync_driver.dart)	P6/P6-081.yaml
 P6-082	Done	Allow speech-native realtime models only after blind tests (nativeModelGate.ts, realtime_native.yaml)	P6/P6-082.yaml
-P6-083	Draft	Add push-to-talk fallback for noise and low bandwidth	P6/P6-083.yaml
+P6-083	Done	Push-to-talk fallback: hold capture, VAD bypass, low-bandwidth auto-offer (ptt_button.dart)	P6/P6-083.yaml
 P6-084	Draft	Use Opus at 16-24 kbps with text fallback on 2G/3G	P6/P6-084.yaml
 P7-900	Draft	Decide Lens as the name and shape of Point & Say	P7/P7-900.yaml
 P7-901	Draft	Decide the two-layer living lexicon architecture	P7/P7-901.yaml

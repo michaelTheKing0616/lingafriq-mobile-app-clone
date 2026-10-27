@@ -18,9 +18,11 @@ class RealtimeVoiceClient {
 
   static const String bargeInControlType = 'control.bargeIn';
   static const String cancelTtsControlType = 'control.cancelTts';
+  static const String pttControlType = 'control.ptt';
 
   Room? _room;
   RealtimeBargeInState _bargeIn = const RealtimeBargeInState();
+  RealtimePttState _ptt = const RealtimePttState();
 
   /// Fetches a scoped LiveKit token from the gateway (never a vendor key).
   Future<RealtimeSessionCredentials> startSession({
@@ -62,12 +64,78 @@ class RealtimeVoiceClient {
     final room = _room;
     _room = null;
     _bargeIn = const RealtimeBargeInState();
+    _ptt = const RealtimePttState();
     if (room != null) {
       await room.disconnect();
     }
   }
 
   RealtimeBargeInState get bargeInState => _bargeIn;
+
+  RealtimePttState get pttState => _ptt;
+
+  /// User or auto-offer enabled push-to-talk; gateway VAD is bypassed while active.
+  void configurePushToTalk({required bool enabled}) {
+    _ptt = applyPushToTalkEnabled(_ptt, enabled: enabled);
+  }
+
+  /// AC2: surface when low-bandwidth mode or constrained cellular link is detected.
+  bool applyAutoPushToTalkOffer(RealtimeVoiceNetworkProfile profile) {
+    if (!shouldOfferPushToTalkAutomatically(profile)) return false;
+    configurePushToTalk(enabled: true);
+    return true;
+  }
+
+  void onPttHoldStart() {
+    _ptt = pttHoldStarted(_ptt);
+  }
+
+  void onPttHoldEnd() {
+    _ptt = pttHoldEnded(_ptt);
+  }
+
+  void onPttSendComplete() {
+    _ptt = pttSendCompleted(_ptt);
+  }
+
+  void onPttSendFailed() {
+    _ptt = pttSendFailed(_ptt);
+  }
+
+  /// Publishes PTT gate to the room so the agent skips VAD while the button is held.
+  Future<void> syncPushToTalkCapture({
+    required String sessionId,
+    required bool micOpen,
+  }) async {
+    final room = _room;
+    if (room == null) return;
+    final payload = buildPttControlEvent(sessionId: sessionId, active: micOpen);
+    await _publishControlEvent(room, payload);
+  }
+
+  Future<void> beginPttHold({required String sessionId}) async {
+    onPttHoldStart();
+    if (isMicCaptureOpen(_ptt)) {
+      await syncPushToTalkCapture(sessionId: sessionId, micOpen: true);
+    }
+  }
+
+  Future<void> endPttHold({required String sessionId}) async {
+    onPttHoldEnd();
+    await syncPushToTalkCapture(sessionId: sessionId, micOpen: false);
+  }
+
+  Future<void> setPttToggleLatch({
+    required String sessionId,
+    required bool latched,
+  }) async {
+    configurePushToTalk(enabled: true);
+    _ptt = pttToggleLatch(_ptt, latched: latched);
+    await syncPushToTalkCapture(
+      sessionId: sessionId,
+      micOpen: isMicCaptureOpen(_ptt),
+    );
+  }
 
   /// Call when agent TTS begins so local interrupt timing is bounded.
   void onAgentTtsStarted({required String fullReply}) {
@@ -247,6 +315,121 @@ Map<String, dynamic> buildRealtimeControlEvent({
   required String sessionId,
 }) {
   return {'type': type, 'sessionId': sessionId};
+}
+
+Map<String, dynamic> buildPttControlEvent({
+  required String sessionId,
+  required bool active,
+}) {
+  return {
+    'type': RealtimeVoiceClient.pttControlType,
+    'sessionId': sessionId,
+    'active': active,
+    'bypassVad': true,
+  };
+}
+
+enum RealtimeCaptureMode { vad, pushToTalk }
+
+enum RealtimePttPhase { idle, held, sending, error }
+
+/// Inputs for automatic PTT offer (AC2); keep pure for tests.
+class RealtimeVoiceNetworkProfile {
+  const RealtimeVoiceNetworkProfile({
+    required this.lowBandwidthActive,
+    required this.cellularOrConstrained,
+    this.downlinkKbps,
+  });
+
+  final bool lowBandwidthActive;
+  final bool cellularOrConstrained;
+  final int? downlinkKbps;
+}
+
+/// Below this effective downlink the client offers push-to-talk (§7.7 noisy / 2G–3G band).
+const int realtimePttBandwidthThresholdKbps = 256;
+
+bool shouldOfferPushToTalkAutomatically(RealtimeVoiceNetworkProfile profile) {
+  if (profile.lowBandwidthActive) return true;
+  if (profile.cellularOrConstrained) return true;
+  final kbps = profile.downlinkKbps;
+  if (kbps != null && kbps < realtimePttBandwidthThresholdKbps) return true;
+  return false;
+}
+
+bool realtimeBypassesVad(RealtimeCaptureMode mode) => mode == RealtimeCaptureMode.pushToTalk;
+
+class RealtimePttState {
+  const RealtimePttState({
+    this.captureMode = RealtimeCaptureMode.vad,
+    this.phase = RealtimePttPhase.idle,
+    this.latchHeld = false,
+    this.useToggleLatch = false,
+  });
+
+  final RealtimeCaptureMode captureMode;
+  final RealtimePttPhase phase;
+  final bool latchHeld;
+  final bool useToggleLatch;
+
+  RealtimePttState copyWith({
+    RealtimeCaptureMode? captureMode,
+    RealtimePttPhase? phase,
+    bool? latchHeld,
+    bool? useToggleLatch,
+  }) {
+    return RealtimePttState(
+      captureMode: captureMode ?? this.captureMode,
+      phase: phase ?? this.phase,
+      latchHeld: latchHeld ?? this.latchHeld,
+      useToggleLatch: useToggleLatch ?? this.useToggleLatch,
+    );
+  }
+}
+
+RealtimePttState applyPushToTalkEnabled(RealtimePttState state, {required bool enabled}) {
+  if (!enabled) {
+    return const RealtimePttState();
+  }
+  return state.copyWith(
+    captureMode: RealtimeCaptureMode.pushToTalk,
+    phase: RealtimePttPhase.idle,
+    latchHeld: false,
+  );
+}
+
+RealtimePttState pttHoldStarted(RealtimePttState state) {
+  if (state.captureMode != RealtimeCaptureMode.pushToTalk) return state;
+  return state.copyWith(phase: RealtimePttPhase.held);
+}
+
+RealtimePttState pttHoldEnded(RealtimePttState state) {
+  if (state.captureMode != RealtimeCaptureMode.pushToTalk) return state;
+  if (state.useToggleLatch) return state;
+  return state.copyWith(phase: RealtimePttPhase.sending);
+}
+
+RealtimePttState pttSendCompleted(RealtimePttState state) {
+  return state.copyWith(phase: RealtimePttPhase.idle, latchHeld: false);
+}
+
+RealtimePttState pttSendFailed(RealtimePttState state) {
+  return state.copyWith(phase: RealtimePttPhase.error);
+}
+
+RealtimePttState pttToggleLatch(RealtimePttState state, {required bool latched}) {
+  if (state.captureMode != RealtimeCaptureMode.pushToTalk) return state;
+  return state.copyWith(
+    useToggleLatch: true,
+    latchHeld: latched,
+    phase: latched ? RealtimePttPhase.held : RealtimePttPhase.idle,
+  );
+}
+
+/// AC1: in PTT mode the mic is open only while held (or latched for motor access).
+bool isMicCaptureOpen(RealtimePttState state) {
+  if (state.captureMode == RealtimeCaptureMode.vad) return true;
+  return state.phase == RealtimePttPhase.held;
 }
 
 String truncateAssistantHistoryAtSpokenPoint(String fullReply, int spokenCharIndex) {
