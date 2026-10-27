@@ -95,6 +95,13 @@ void main() {
     expect(proverbAudioPlayable(_fixture), isFalse);
   });
 
+  test('language pool keeps only playable reviewed proverb records', () {
+    final pool = poolForLanguage('zu');
+    expect(pool, isNotEmpty);
+    expect(pool.every(proverbHasReviewer), isTrue);
+    expect(pool.every(proverbAudioPlayable), isTrue);
+  });
+
   test('P8-924 headliner playable when card shipped', () {
     final slot = kArcadeHeadlinerOrder[4];
     expect(slot.elevationCardId, 'P8-924');

@@ -91,6 +91,7 @@ const Map<String, List<ProverbWeaverRecord>> kProverbWeaverLibrary = {
       reviewedBy: 'zu-linguist-1',
       reviewerRole: 'linguist',
       sourceRef: 'register:peace-corps-zu',
+      humanRecordingPath: 'assets/audio/proverbs/zu/izandla_ziyagezana.wav',
       usageNoteEn: 'Mutual help when neighbours share work.',
       situations: [
         ProverbSituationChoice(
@@ -116,7 +117,9 @@ const Map<String, List<ProverbWeaverRecord>> kProverbWeaverLibrary = {
 List<ProverbWeaverRecord> poolForLanguage(String languageCode) {
   final key = languageCode.toLowerCase();
   final raw = kProverbWeaverLibrary[key] ?? const <ProverbWeaverRecord>[];
-  return raw.where(proverbHasReviewer).toList(growable: false);
+  return raw
+      .where((record) => proverbHasReviewer(record) && proverbAudioPlayable(record))
+      .toList(growable: false);
 }
 
 List<String> shuffledFragments(ProverbWeaverRecord record, Random rng) {
