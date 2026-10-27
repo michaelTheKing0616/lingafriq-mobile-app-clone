@@ -10,12 +10,86 @@ import 'package:lingafriq/learning/skill_graph/skill_registry.dart';
 /// - Error reduction is celebrated (not just correctness)
 /// - Social contribution earns recognition
 /// - XP still exists but is calibrated to mastery changes
+/// Mirrors [XP_EVIDENCE_RULES] in `node-backend/src/services/xp.rules.ts` (preview only; server awards).
+class EvidenceXpRules {
+  static const int spacedRecallOnSchedule = 20;
+  static const double spacedRecallEarlyMinFactor = 0.25;
+  static const int speakingPass = 30;
+  static const int canDoFirstDemonstration = 40;
+  static const int easyItemBase = 15;
+  static const double easyRepeatDecay = 0.5;
+  static const int easyRepeatZeroFromIndex = 5;
+}
+
+enum EvidenceXpKind { none, spacedRecall, speakingPass, canDoDemo }
+
 class CompetenceGamification {
   final LearnerModelService _learnerModel;
 
   CompetenceGamification({
     LearnerModelService? learnerModel,
   }) : _learnerModel = learnerModel ?? LearnerModelService.instance;
+
+  /// Non-authoritative preview of server evidence XP (P10-901).
+  int computeEvidenceXp({
+    required EvidenceXpKind kind,
+    String? itemId,
+    String? difficulty,
+    DateTime? scheduledRecallAt,
+    DateTime? recalledAt,
+    String? scorerAttemptId,
+    bool speakingPassed = false,
+    String? canDoId,
+    int sameDayEasyRepeatIndex = 0,
+  }) {
+    if (kind == EvidenceXpKind.none) return 0;
+    if (kind == EvidenceXpKind.speakingPass) {
+      if (!speakingPassed || (scorerAttemptId == null || scorerAttemptId.isEmpty)) {
+        return 0;
+      }
+      return EvidenceXpRules.speakingPass;
+    }
+    if (kind == EvidenceXpKind.canDoDemo) {
+      if (canDoId == null || canDoId.isEmpty) return 0;
+      return EvidenceXpRules.canDoFirstDemonstration;
+    }
+    if (kind == EvidenceXpKind.spacedRecall) {
+      if (itemId == null || itemId.isEmpty) return 0;
+      final isEasy = difficulty == 'easy';
+      if (isEasy) {
+        if (sameDayEasyRepeatIndex >= EvidenceXpRules.easyRepeatZeroFromIndex) {
+          return 0;
+        }
+        return (EvidenceXpRules.easyItemBase *
+                _pow(EvidenceXpRules.easyRepeatDecay, sameDayEasyRepeatIndex))
+            .floor();
+      }
+      final factor = _spacedRecallFactor(scheduledRecallAt, recalledAt);
+      return (EvidenceXpRules.spacedRecallOnSchedule * factor).floor();
+    }
+    return 0;
+  }
+
+  double _spacedRecallFactor(DateTime? scheduledRecallAt, DateTime? recalledAt) {
+    if (scheduledRecallAt == null) return 1;
+    final recalled = recalledAt ?? DateTime.now().toUtc();
+    if (!recalled.isBefore(scheduledRecallAt)) return 1;
+    const windowDays = 7;
+    final windowStart = scheduledRecallAt.subtract(const Duration(days: windowDays));
+    final windowMs = scheduledRecallAt.difference(windowStart).inMilliseconds;
+    if (windowMs <= 0) return EvidenceXpRules.spacedRecallEarlyMinFactor;
+    final elapsed = recalled.difference(windowStart).inMilliseconds;
+    final ratio = elapsed / windowMs;
+    return ratio.clamp(EvidenceXpRules.spacedRecallEarlyMinFactor, 1.0);
+  }
+
+  double _pow(double base, int exp) {
+    var result = 1.0;
+    for (var i = 0; i < exp; i++) {
+      result *= base;
+    }
+    return result;
+  }
 
   /// Evaluates which competence achievements a learner has earned.
   ///
