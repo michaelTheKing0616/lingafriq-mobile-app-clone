@@ -14,7 +14,22 @@ import '../../utils/structured_logger.dart';
 import '../env_config.dart';
 import '../api_rate_limiter.dart';
 import '../translation/offline_translation_service.dart';
+import '../lens/lexicon_label_resolver.dart';
+import '../../models/verified_lexeme.dart';
 import 'cache_service.dart';
+
+/// P7-905 harvest (NLLB-200 CC-BY-NC): remaining [TranslationService] / NLLB callers
+/// must stay gated or flagged until their owning cards migrate off NC models:
+/// - lib/services/media_import_service.dart
+/// - lib/services/hybrid_polie/hybrid_polie_orchestrator.dart
+/// - lib/services/hybrid_polie/ensemble_voting.dart
+/// - lib/services/localization_service.dart
+/// - lib/services/polie_mention_handler.dart
+/// - lib/services/translation/offline_translation_service.dart
+/// - lib/screens/ai_chat/polie_workspace_screen.dart
+/// - lib/screens/magazine/culture_magazine_screen_enhanced.dart
+/// - lib/screens/magazine/culture_magazine_enhanced_features.dart
+/// Lens word labels must use [resolveLensWordForObject] only (no NLLB/MyMemory).
 
 class TranslationService {
   final Dio _dio = Dio(BaseOptions(
@@ -26,6 +41,88 @@ class TranslationService {
   final ApiRateLimiter _rateLimiter = ApiRateLimiter();
   final OfflineTranslationService _offlineService = OfflineTranslationService();
   bool _initialized = false;
+  LexiconLabelResolver? _lensLexiconResolver;
+
+  /// Verified Lexicon lookup for Lens (P7-905). Never routes through NLLB/MyMemory.
+  LexiconLabelResolver lensLexiconResolver({
+    FetchVerifiedLexeme? fetchLexeme,
+    EnqueueLensVerify? enqueueVerify,
+  }) {
+    if (fetchLexeme != null || enqueueVerify != null) {
+      return LexiconLabelResolver(
+        fetchLexeme: fetchLexeme ?? _fetchVerifiedLexemeEntry,
+        enqueueVerify: enqueueVerify ?? _enqueueLensVerifySuggestion,
+      );
+    }
+    return _lensLexiconResolver ??= LexiconLabelResolver(
+      fetchLexeme: _fetchVerifiedLexemeEntry,
+      enqueueVerify: _enqueueLensVerifySuggestion,
+    );
+  }
+
+  Future<LensLexiconLabel> resolveLensWordForObject({
+    required String objectSetId,
+    required String livingDictionaryLexemeId,
+    required String learnerLanguageCode,
+  }) {
+    return lensLexiconResolver().resolveForMappedObject(
+      objectSetId: objectSetId,
+      livingDictionaryLexemeId: livingDictionaryLexemeId,
+      learnerLanguageCode: learnerLanguageCode,
+    );
+  }
+
+  Future<VerifiedLexeme?> _fetchVerifiedLexemeEntry(String lexemeId) async {
+    await _ensureInitialized();
+    final trimmed = lexemeId.trim();
+    if (trimmed.isEmpty) return null;
+    final url =
+        '${ApiContract.baseUrl}$lensVerifiedLexiconEntriesPath${Uri.encodeComponent(trimmed)}';
+    try {
+      final response = await _dio.get<dynamic>(
+        url,
+        options: Options(responseType: ResponseType.json),
+      );
+      final status = response.statusCode ?? 0;
+      if (status == 404) return null;
+      if (status != 200) return null;
+      final body = response.data;
+      if (body is Map<String, dynamic>) {
+        return VerifiedLexeme.fromApiJson(body);
+      }
+      if (body is Map) {
+        return VerifiedLexeme.fromApiJson(body.cast<String, dynamic>());
+      }
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<bool> _enqueueLensVerifySuggestion({
+    required String lexemeId,
+    required String objectSetId,
+    required String learnerLanguageCode,
+  }) async {
+    await _ensureInitialized();
+    try {
+      final response = await _dio.post<dynamic>(
+        '${ApiContract.baseUrl}/api/v2/verify-queue/suggestions',
+        data: <String, dynamic>{
+          'item_id': lexemeId,
+          'pack_version': 'lens:$objectSetId',
+          'field': 'lens_lexicon_label',
+          'proposed_value': learnerLanguageCode,
+          'proposer_kind': 'learner',
+          'source': 'lens_object_label',
+        },
+        options: Options(responseType: ResponseType.json),
+      );
+      return (response.statusCode ?? 0) >= 200 && (response.statusCode ?? 0) < 300;
+    } catch (_) {
+      return false;
+    }
+  }
 
   /// Hugging Face model: NLLB-200 for translation.
   static String get _hfNllbUrl =>
