@@ -97,6 +97,7 @@ Intron is set up and not connected. Do not put `INTRON_API_KEY` in the client.
 
 ## Reviewer UI gate (last 3h)
 
+- UI-BELOW-BAR P4-071 UI 7/6/8/7/6/6/7/8/7/7 avg 6.9; reference: Airtable data-grid + Notion source manager; gap: `lingafriq-admin/src/pages/CurriculumStudio/sourceLibrary.tsx` renders localisation keys as raw copy, lacks designed state matrix evidence, and has no source-library widget/golden route tests in this window.
 - UI-BELOW-BAR P7-933 UI 8/8/9/8/7/8/7/7/7/7 avg 7.6; reference: Duolingo pronunciation tips; gap: `SoundTutorialsScreen` is not referenced outside its own file (unwired).
 - UI-BELOW-BAR P7-930 UI 8/8/9/8/7/8/7/7/7/7 avg 7.6; reference: Duolingo lesson flow; gap: `MicroLessonScreen` is not referenced outside its own file (unwired).
 - UI-BELOW-BAR P7-931 UI 8/8/9/8/7/8/7/7/7/7 avg 7.6; reference: ELSA speaking checks; gap: `TutorialPerceptionCheck` is not referenced outside its own file (unwired).
