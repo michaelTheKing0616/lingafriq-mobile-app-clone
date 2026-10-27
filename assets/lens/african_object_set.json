@@ -5,22 +5,22 @@
     {
       "object_set_id": "afr.cup",
       "ml_kit_labels": ["Cup", "Mug", "Teacup"],
-      "living_dictionary_lexeme_id": "yo.lex.ọkọ.vehicle"
+      "living_dictionary_lexeme_id": "yo.lex.418526e95cbc"
     },
     {
       "object_set_id": "afr.chair",
       "ml_kit_labels": ["Chair", "Seat"],
-      "living_dictionary_lexeme_id": "yo.lex.b26da58d1800"
+      "living_dictionary_lexeme_id": "yo.lex.20bbc6fdb2ff"
     },
     {
       "object_set_id": "afr.book",
       "ml_kit_labels": ["Book"],
-      "living_dictionary_lexeme_id": "yo.lex.99128a1d25e2"
+      "living_dictionary_lexeme_id": "yo.lex.f86f9f1be056"
     },
     {
       "object_set_id": "afr.phone",
       "ml_kit_labels": ["Mobile phone", "Cell phone", "Telephone"],
-      "living_dictionary_lexeme_id": "yo.lex.03796a32b606"
+      "living_dictionary_lexeme_id": "yo.lex.4a8c41fde471"
     }
   ]
 }

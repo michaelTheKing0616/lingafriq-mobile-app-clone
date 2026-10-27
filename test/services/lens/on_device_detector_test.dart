@@ -31,7 +31,7 @@ void main() {
       final m = mapper.mapLabel('Cup');
       expect(m.kind, LensLabelMappingKind.mapped);
       expect(m.objectSetId, 'afr.cup');
-      expect(m.livingDictionaryLexemeId, 'yo.lex.ọkọ.vehicle');
+      expect(m.livingDictionaryLexemeId, 'yo.lex.418526e95cbc');
     });
 
     test('Food is coarse Unsure without a word', () {
