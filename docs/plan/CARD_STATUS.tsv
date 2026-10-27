@@ -4,7 +4,7 @@ ADR-002	Done	'ADR: Lexicon-anchored tone Beta rule and verification principles'	
 ADR-003	Done	ADR-003 L1 audio readiness + isiXhosa voice path (docs/build/adr/ADR-003.md)	P0/ADR-003.yaml
 ADR-004	Done	'ADR-004: Choose Drift/SQLite or Isar as the one local database'	P2/ADR-004.yaml
 ADR-020	Done	Cowries only soft currency; ADR-020-soft-currency-cowries.md	P10/ADR-020.yaml
-ADR-021	Draft	Decide north-star metric and guardrails	P10/ADR-021.yaml
+ADR-021	Done	North-star + guardrails in ADR-021-analytics-north-star.md	P10/ADR-021.yaml
 E-P0-INTAKE	Draft	'Intake: RTM, charter enforcement, repo map, verification cards'	P0/E-P0-INTAKE.yaml
 E-P1-AI-GATEWAY	Draft	'AI gateway: auth, quotas, server-owned prompts'	P1/E-P1-AI-GATEWAY.yaml
 E-P1-AUTH	Draft	Auth, API hardening and supply chain	P1/E-P1-AUTH.yaml
@@ -371,7 +371,7 @@ P10-930	Done	Define the versioned analytics event schema (events.v1.json, analyt
 P10-931	Done	LearningAnalyticsService v1 envelopes, offline queue, exercise_answered/content_report	P10/P10-931.yaml
 P10-932	Done	Emit speech and AI turn events (analytics_service, ai-gateway.analytics)	P10/P10-932.yaml
 P10-933	Done	Send on-device aggregates where possible (analytics_aggregator.dart)	P10/P10-933.yaml
-P10-934	Draft	Build the north-star and guardrail metrics dashboard	P10/P10-934.yaml
+P10-934	Done	North-star dashboard (northstar.ts, metrics.service.ts, GET /admin/analytics/northstar)	P10/P10-934.yaml
 P10-935	Draft	Add feature-flag experiments with pre-registration	P10/P10-935.yaml
 P10-936	Draft	Prepare the efficacy study design brief	P10/P10-936.yaml
 P10-937	Draft	Decide the two efficacy-study languages	P10/P10-937.yaml
