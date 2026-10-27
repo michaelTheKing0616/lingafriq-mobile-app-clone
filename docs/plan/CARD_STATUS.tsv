@@ -412,7 +412,7 @@ P11-031	Done	ADR-033 forced aligner: Omnilingual CTC primary, MFA/Rhubarb/Azure 
 P11-032	Done	ADR-034 Rive Renderer on Impeller; 2 ms/frame budget math	P11/P11-032.yaml
 P11-033	Done	ADR-035 scarification/tribal marks: opt-in 18+, not v1, EXT-14 per pattern	P11/P11-033.yaml
 P11-034	Done	Avatar cultural design bible: hair/headwear/textiles, 12 skin tones, disability, EXT-14 review gates	P11/P11-034.yaml
-P11-035	Draft	Generate CharacterVM bindings and CI contract test	P11/P11-035.yaml
+P11-035	Done	CharacterVM schema, Dart bindings, .riv CI contract test	P11/P11-035.yaml
 P11-036	Draft	Version-control single .riv source with changelog	P11/P11-036.yaml
 P11-037	Draft	Integrate Polie rig spike with Character and chip artboards	P11/P11-037.yaml
 P11-038	Draft	Add layer isolation check for L1–L5	P11/P11-038.yaml
