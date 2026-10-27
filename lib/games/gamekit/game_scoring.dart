@@ -34,5 +34,21 @@ class GameScore {
 
   bool get isCorrect => accuracy >= 0.6; // Threshold for "correct"
   bool get isPartial => accuracy >= 0.4 && accuracy < 0.6;
+
+  factory GameScore.correct({double accuracy = 1.0, bool perfect = true}) {
+    return GameScore(
+      accuracy: accuracy,
+      isPerfect: perfect,
+      isFail: false,
+    );
+  }
+
+  factory GameScore.incorrect({double accuracy = 0.0, bool fail = true}) {
+    return GameScore(
+      accuracy: accuracy,
+      isPerfect: false,
+      isFail: fail,
+    );
+  }
 }
 

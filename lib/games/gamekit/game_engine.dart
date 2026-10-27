@@ -318,7 +318,16 @@ class GameEngine {
     };
 
     final startedAt = DateTime.now();
-    return GameSession(
+    final bootstrapEngine = difficulty is AdaptiveGameDifficultyEngine
+        ? difficulty as AdaptiveGameDifficultyEngine
+        : DefaultGameDifficultyEngine();
+    final initialStep = bootstrapEngine.initialStepForLearner(
+      learnerId: userId,
+      gameId: gameId,
+      skillId: metadata['skill_id'] as String?,
+    );
+
+    final session = GameSession(
       sessionId: sessionId,
       userId: userId,
       gameId: gameId,
@@ -330,6 +339,7 @@ class GameEngine {
       queueLoadFailed: plan.loadFailed,
       metadata: metadata,
     );
+    return session.withDifficultyBootstrap(initialStep: initialStep);
   }
 
   /// Resolve a game turn - this is called by all games
@@ -353,6 +363,15 @@ class GameEngine {
       difficultyUpdate: difficultyUpdate,
       timestamp: DateTime.now(),
     );
+  }
+
+  /// Resolves a turn and returns an updated session with difficulty step applied.
+  Future<({GameTurnResult result, GameSession session})> resolveWithSession(
+    GameTurnContext context,
+  ) async {
+    final result = await resolve(context);
+    final session = context.session.applyDifficultyUpdate(result.difficultyUpdate);
+    return (result: result, session: session);
   }
 
   /// Create a default engine instance
