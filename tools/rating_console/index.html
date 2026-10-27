@@ -12,7 +12,7 @@
   </head>
   <body>
     <h1>Native rater console</h1>
-    <p>Submit 1–5 scores for scorer calibration. Requires staff session bearer token and <code>content.review.native</code>.</p>
+    <p>P6-041 pronunciation calibration and P6-070 eval-output ratings. Pronunciation API requires staff bearer token and <code>content.review.native</code>. Eval ratings use local JSON export (no prompts stored).</p>
     <label>API base (e.g. https://api.example.com/api/ai)</label>
     <input id="base" type="url" placeholder="https://localhost:4000/api/ai" />
     <label>Bearer token</label>
@@ -33,6 +33,18 @@
     <input id="score" type="number" min="1" max="5" step="1" required />
     <button type="button" id="submit">Submit rating</button>
     <button type="button" id="progress">Load progress</button>
+    <hr />
+    <h2>Eval output ratings (P6-070)</h2>
+    <label>Import queue JSON (samples array from <code>exportSnapshot</code>)</label>
+    <input id="evalQueueFile" type="file" accept="application/json" />
+    <label>Sample id</label>
+    <input id="evalSample" />
+    <label>Rater id</label>
+    <input id="evalRater" />
+    <label>Score (1–5)</label>
+    <input id="evalScore" type="number" min="1" max="5" step="1" />
+    <button type="button" id="evalSave">Append rating to local store</button>
+    <button type="button" id="evalExport">Download ratings JSON</button>
     <pre id="out"></pre>
     <script>
       const out = document.getElementById('out');
@@ -54,6 +66,55 @@
         const base = document.getElementById('base').value.replace(/\/$/, '');
         const res = await fetch(base + '/rating/progress', { headers: headers() });
         out.textContent = res.status + '\n' + await res.text();
+      };
+
+      const EVAL_STORE_KEY = 'lingafriq_eval_rater_ratings_v1';
+      function loadEvalRatings() {
+        try {
+          return JSON.parse(localStorage.getItem(EVAL_STORE_KEY) || '[]');
+        } catch {
+          return [];
+        }
+      }
+      function saveEvalRatings(rows) {
+        localStorage.setItem(EVAL_STORE_KEY, JSON.stringify(rows));
+      }
+      document.getElementById('evalQueueFile').onchange = async (ev) => {
+        const file = ev.target.files?.[0];
+        if (!file) return;
+        const text = await file.text();
+        const parsed = JSON.parse(text);
+        const samples = parsed.samples || parsed;
+        if (Array.isArray(samples) && samples[0]?.sample_id) {
+          document.getElementById('evalSample').value = samples[0].sample_id;
+        }
+        out.textContent = 'Loaded eval queue (' + (samples?.length || 0) + ' samples).';
+      };
+      document.getElementById('evalSave').onclick = () => {
+        const row = {
+          sample_id: document.getElementById('evalSample').value.trim(),
+          rater_id: document.getElementById('evalRater').value.trim(),
+          score: Number(document.getElementById('evalScore').value),
+          submitted_at_ms: Date.now(),
+        };
+        if (!row.sample_id || !row.rater_id || row.score < 1 || row.score > 5) {
+          out.textContent = 'sample_id, rater_id, and score 1–5 required';
+          return;
+        }
+        const rows = loadEvalRatings();
+        rows.push(row);
+        saveEvalRatings(rows);
+        out.textContent = 'Stored ' + rows.length + ' eval rating(s) locally.';
+      };
+      document.getElementById('evalExport').onclick = () => {
+        const blob = new Blob([JSON.stringify({ ratings: loadEvalRatings() }, null, 2)], {
+          type: 'application/json',
+        });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'eval_rater_ratings.json';
+        a.click();
+        URL.revokeObjectURL(a.href);
       };
     </script>
   </body>
