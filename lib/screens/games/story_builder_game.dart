@@ -14,6 +14,8 @@ import '../../widgets/game/game_widgets.dart';
 import 'base_game_screen.dart';
 import 'game_scenario_loader.dart';
 
+/// Branching story builder; collaborative circles use flagship P8-925 Griot's Story Chain.
+
 class StoryBuilderGame extends BaseGameScreen {
   const StoryBuilderGame({
     super.key,

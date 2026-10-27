@@ -40,6 +40,7 @@ const Set<String> kArcadeHeadlinerShippedElevationCards = {
   'P8-920',
   'P8-922',
   'P8-924',
+  'P8-925',
 };
 
 /// Ten headliners in product order; Tone Forge carries the Featured badge.
@@ -275,6 +276,7 @@ class AllGamesRegistry {
     'market_bargaining_simulator': 'P8-931',
     'taxi_bus_stop_survival': 'P8-923',
     'proverb_unlocker': 'P8-924',
+    'clan_lineage_story_builder': 'P8-925',
     'greeting_diplomacy_challenge': 'P8-934',
     'pronunciation_karaoke': 'P8-935',
   };
@@ -287,7 +289,8 @@ class AllGamesRegistry {
     if (gameId == toneForgeGameId ||
         gameId == talkingDrumGameId ||
         gameId == GameType.marketBargainingSimulator.name ||
-        gameId == GameType.proverbUnlocker.name) {
+        gameId == GameType.proverbUnlocker.name ||
+        gameId == GameType.clanLineageStoryBuilder.name) {
       return false;
     }
     return true;

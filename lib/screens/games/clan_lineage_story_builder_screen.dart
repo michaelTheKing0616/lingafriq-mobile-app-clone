@@ -13,6 +13,7 @@ import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
 import 'game_scenario_loader.dart';
 import 'base_game_screen.dart';
+import '../../games/griot_story_chain/story_chain_screen.dart';
 
 class ClanStoryGame extends BaseGameScreen {
   const ClanStoryGame({
@@ -30,6 +31,49 @@ class ClanStoryGame extends BaseGameScreen {
 }
 
 class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
+  /// Legacy shelf route → flagship Griot's Story Chain (P8-925 / ADR-036).
+  @override
+  Widget build(BuildContext context) {
+    return StoryChainScreen(
+      language: widget.language,
+      onBack: widget.onBack ?? () => Navigator.of(context).pop(),
+      onOpenLegacyClanStory: () => _openLegacyClanTablet(context),
+    );
+  }
+
+  void _openLegacyClanTablet(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => _ClanStoryLegacyTablet(
+          language: widget.language,
+          level: widget.level,
+          onBack: () => Navigator.of(context).pop(),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget buildGameContent(BuildContext context) => const SizedBox.shrink();
+}
+
+class _ClanStoryLegacyTablet extends BaseGameScreen {
+  const _ClanStoryLegacyTablet({
+    required super.language,
+    super.level,
+    super.onBack,
+  });
+
+  @override
+  GameType getGameType() => GameType.clanLineageStoryBuilder;
+
+  @override
+  ConsumerState<_ClanStoryLegacyTablet> createState() =>
+      _ClanStoryLegacyTabletState();
+}
+
+class _ClanStoryLegacyTabletState
+    extends BaseGameScreenState<_ClanStoryLegacyTablet> {
   final List<_Ancestor> _ancestors = [];
   int _currentStep = 0;
   final List<String> _journalEntries = [];

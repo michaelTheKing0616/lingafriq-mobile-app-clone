@@ -1009,7 +1009,7 @@ P8-921	Done	Flagship Minimal Pair Duel: picture grid, async friend duel, league 
 P8-922	Done	Market Haggle flagship: register rubric, gateway AI trader, scorer gate (market_haggle/*)	P8/P8-922.yaml
 P8-923	Done	Danfo/Matatu Rush listening game (danfo_rush/*, taxi_survival harvest; recordings pending EXT-13)	P8/P8-923.yaml
 P8-924	Done	Proverb Weaver flagship: fragment weave, situation match, B1 gate, legacy unlocker link	P8/P8-924.yaml
-P8-925	Draft	'Flagship: Griot''s Story Chain'	P8/P8-925.yaml
+P8-925	Done	Griot Story Chain flagship: turns, grammar gate, playback, story_chain.service (P8-925)	P8/P8-925.yaml
 P8-926	Draft	'Flagship: Word Forge morphology (Swahili and Zulu)'	P8/P8-926.yaml
 P8-927	Draft	'Flagship: Fidel Flight / Script Sprint'	P8/P8-927.yaml
 P8-928	Draft	'Flagship: Greeting Gauntlet'	P8/P8-928.yaml
