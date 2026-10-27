@@ -957,7 +957,7 @@ P7-913	Draft	Build offline Lens pack of top 300 objects with queue sync	P7/P7-91
 P7-914	Draft	Enforce Lens photo privacy and minor consent	P7/P7-914.yaml
 P7-915	Draft	Wire Lens entry points across tabs and lessons	P7/P7-915.yaml
 P7-916	Done	Verified Lexicon v2 lexeme schema, `/api/v2/verified-lexicon`, `verified_lexeme.dart`	P7/P7-916.yaml
-P7-917	Draft	Attach 2-3 native recordings per lexicon entry	P7/P7-917.yaml
+P7-917	Done	Attach 2-3 native recordings per lexicon entry (lexiconAudio.service.ts, lexicon_audio_client.dart)	P7/P7-917.yaml
 P7-918	Draft	Merge admin lexicon and user entries into the two layers	P7/P7-918.yaml
 P7-919	Draft	Keep My Words personal layer and link to verified entries	P7/P7-919.yaml
 P7-920	Draft	Build suggest-and-verify loop with native approvals	P7/P7-920.yaml
