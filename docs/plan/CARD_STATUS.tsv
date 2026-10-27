@@ -384,7 +384,7 @@ P11-003	Done	Validate persona answer contract server-side (answerContract.ts, an
 P11-004	Done	Enforce knowledge horizon with LLM classifier (knowledgeHorizon.ts, epistemic_classifier.dart)	P11/P11-004.yaml
 P11-005	Done	Show Source and Inferred chips on persona claims (persona_claim_chip.dart)	P11/P11-005.yaml
 P11-006	Done	Replace persona blocklist with sensitivity classifier and age tiers (sensitivityPolicy.ts, roleplay_safety_filter.dart)	P11/P11-006.yaml
-P11-007	Draft	Make AI disclosure always visible on personas	P11/P11-007.yaml
+P11-007	Done	Make AI disclosure always visible on personas (persona_disclosure_badge.dart, historical_roleplay_controller.dart)	P11/P11-007.yaml
 P11-008	Draft	Route persona turns through AI gateway with typed errors	P11/P11-008.yaml
 P11-009	Draft	Add per-persona and global persona kill switch	P11/P11-009.yaml
 P11-010	Draft	Author Yaa Asantewaa persona dossier and prompts	P11/P11-010.yaml

@@ -554,6 +554,22 @@
   "@persona_ai_disclosure": {
     "description": "Persistent disclosure that the historical persona chat is an AI recreation based on sources"
   },
+  "personaBadgeAiRecreation": "AI recreation",
+  "@personaBadgeAiRecreation": {
+    "description": "copy_keys: persona.badge.ai_recreation — persistent non-dismissible persona badge"
+  },
+  "personaOpeningHowBuilt": "This recreates {personaName} from {sourceSummary}. Speech and scenes are AI-generated, not a recording of the historical person.",
+  "@personaOpeningHowBuilt": {
+    "description": "copy_keys: persona.opening.how_built — spoken/read before the first in-character line",
+    "placeholders": {
+      "personaName": {"type": "String"},
+      "sourceSummary": {"type": "String"}
+    }
+  },
+  "personaVoiceSynthesised": "Synthesised voice",
+  "@personaVoiceSynthesised": {
+    "description": "copy_keys: persona.voice.synthesised — label while persona TTS plays"
+  },
   "persona_error_retry": "Couldn't reach the persona. The network or server timed out. Retry when you're ready.",
   "@persona_error_retry": {
     "description": "Error shown when a persona mission reply fails; paired with a Retry action"

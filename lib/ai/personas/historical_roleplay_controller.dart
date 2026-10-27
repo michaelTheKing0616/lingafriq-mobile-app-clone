@@ -1,4 +1,7 @@
+import 'package:flutter/foundation.dart';
+
 import 'package:lingafriq/ai/personas/historical_persona_registry.dart';
+import 'package:lingafriq/ai/personas/persona_disclosure_badge.dart';
 import 'package:lingafriq/ai/validation/response_validator.dart';
 import 'package:lingafriq/learning/learner_model/learner_model_service.dart';
 import 'package:lingafriq/learning/learner_model/learner_skill_state.dart';
@@ -50,6 +53,8 @@ class HistoricalRoleplayTurn {
   final String nextState;
   final List<String> closureOptions;
   final List<String> detectedErrors;
+  /// Persona lines are delivered via server TTS unless native clips are wired.
+  final bool usesSynthesisedVoice;
 
   const HistoricalRoleplayTurn({
     required this.speechText,
@@ -59,6 +64,18 @@ class HistoricalRoleplayTurn {
     required this.nextState,
     this.closureOptions = const [],
     this.detectedErrors = const [],
+    this.usesSynthesisedVoice = true,
+  });
+}
+
+/// Opening bundle: how-built preamble must precede the first in-character line (P11-007).
+class PersonaSessionStart {
+  final PersonaHowBuiltFacts howBuilt;
+  final HistoricalRoleplayTurn openingTurn;
+
+  const PersonaSessionStart({
+    required this.howBuilt,
+    required this.openingTurn,
   });
 }
 
@@ -130,8 +147,8 @@ class HistoricalRoleplayController {
         _model = model,
         _learnerModel = learnerModel ?? LearnerModelService.instance;
 
-  /// Starts a new historical roleplay session. Returns the opening turn.
-  Future<HistoricalRoleplayTurn> startPersonaSession({
+  /// Starts a new historical roleplay session. Returns how-built facts plus opening turn.
+  Future<PersonaSessionStart> startPersonaSession({
     required String learnerId,
     required String languageCode,
     required String personaId,
@@ -171,7 +188,10 @@ class HistoricalRoleplayController {
       userMessage: null,
     );
     session.turns.add(turn);
-    return turn;
+    return PersonaSessionStart(
+      howBuilt: PersonaHowBuiltFacts.fromPersona(persona),
+      openingTurn: turn,
+    );
   }
 
   /// Processes the learner's message and returns the next persona turn.
@@ -304,7 +324,30 @@ class HistoricalRoleplayController {
       nextState: nextState,
       closureOptions: closureOptions,
       detectedErrors: _parseDetectedErrors(parsed),
+      usesSynthesisedVoice: true,
     );
+  }
+
+  /// Exposes the roleplay system prompt for compliance scans (P11-007 AC4).
+  @visibleForTesting
+  String buildRoleplaySystemPromptForTest({
+    required HistoricalPersona persona,
+    required String languageCode,
+    required HistoricalEngagementType engagementType,
+  }) {
+    final session = HistoricalRoleplaySession(
+      sessionId: 'scan',
+      learnerId: 'scan',
+      languageCode: languageCode,
+      personaId: persona.id,
+      engagementType: engagementType,
+    );
+    final state = LearnerSkillState.initial(
+      skillId: 'historical_roleplay_scan',
+      learnerId: 'scan',
+    );
+    final messages = _buildMessages(session, persona, state, true, null);
+    return messages.firstWhere((m) => m['role'] == 'system')['content']!;
   }
 
   List<String> _parseDetectedErrors(Map<String, dynamic> parsed) {
@@ -348,7 +391,8 @@ LANGUAGE TEACHING: Use vocabulary: ${persona.commonVocabulary.take(8).join(", ")
 Engagement mode: ${session.engagementType.name}.
 
 RULES:
-- Stay in character. Do not reference being an AI.
+- You are an AI recreation grounded in dossier sources. Stay in character for teaching dialogue; never claim to be the living historical person.
+- If the learner asks whether you are real, human, or AI, answer honestly that you are an AI recreation based on sources, then continue in character.
 - When discussing topics not in your documented positions, indicate uncertainty where appropriate.
 - TEACHING POINTS ARE MANDATORY: every response must include at least one teaching_points entry (vocabulary, grammar, or pragmatics).
 - Respond with JSON only. Schema (P11-003):

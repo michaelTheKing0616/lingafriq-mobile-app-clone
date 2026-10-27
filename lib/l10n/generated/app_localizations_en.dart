@@ -376,6 +376,17 @@ class AppLocalizationsEn extends AppLocalizations {
       'This is an AI recreation based on sources.';
 
   @override
+  String get personaBadgeAiRecreation => 'AI recreation';
+
+  @override
+  String personaOpeningHowBuilt(String personaName, String sourceSummary) {
+    return 'This recreates $personaName from $sourceSummary. Speech and scenes are AI-generated, not a recording of the historical person.';
+  }
+
+  @override
+  String get personaVoiceSynthesised => 'Synthesised voice';
+
+  @override
   String get persona_error_retry =>
       'Couldn\'t reach the persona. The network or server timed out. Retry when you\'re ready.';
 

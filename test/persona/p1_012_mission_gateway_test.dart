@@ -174,7 +174,7 @@ HistoricalRoleplayController _controllerFor(Dio dio) {
   return container.read(historicalRoleplayControllerProvider);
 }
 
-Future<HistoricalRoleplayTurn> _startMission(
+Future<PersonaSessionStart> _startMission(
   HistoricalRoleplayController controller,
   String learnerId,
 ) {
@@ -313,11 +313,11 @@ void main() {
       final recorder = _RecordingGateway();
       final controller = _controllerFor(recorder.dio());
       final opening = await _startMission(controller, 'p1_012_ac4');
-      expect(opening, isA<HistoricalRoleplayTurn>());
+      expect(opening, isA<PersonaSessionStart>());
       expect(recorder.requests, isNotEmpty);
       _assertGatewayRequest(recorder.requests.first);
       expect(
-        opening.speechText.contains(_cannedOpening),
+        opening.openingTurn.speechText.contains(_cannedOpening),
         isFalse,
         reason: 'start must use the gateway reply, not a canned fallback',
       );

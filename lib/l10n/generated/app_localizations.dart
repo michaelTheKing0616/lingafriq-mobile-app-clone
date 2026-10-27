@@ -806,6 +806,24 @@ abstract class AppLocalizations {
   /// **'This is an AI recreation based on sources.'**
   String get persona_ai_disclosure;
 
+  /// copy_keys: persona.badge.ai_recreation — persistent non-dismissible persona badge
+  ///
+  /// In en, this message translates to:
+  /// **'AI recreation'**
+  String get personaBadgeAiRecreation;
+
+  /// copy_keys: persona.opening.how_built — spoken/read before the first in-character line
+  ///
+  /// In en, this message translates to:
+  /// **'This recreates {personaName} from {sourceSummary}. Speech and scenes are AI-generated, not a recording of the historical person.'**
+  String personaOpeningHowBuilt(String personaName, String sourceSummary);
+
+  /// copy_keys: persona.voice.synthesised — label while persona TTS plays
+  ///
+  /// In en, this message translates to:
+  /// **'Synthesised voice'**
+  String get personaVoiceSynthesised;
+
   /// Error shown when a persona mission reply fails; paired with a Retry action
   ///
   /// In en, this message translates to:
