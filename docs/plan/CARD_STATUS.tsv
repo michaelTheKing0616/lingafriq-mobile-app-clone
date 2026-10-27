@@ -415,7 +415,7 @@ P11-034	Done	Avatar cultural design bible: hair/headwear/textiles, 12 skin tones
 P11-035	Done	CharacterVM schema, Dart bindings, .riv CI contract test	P11/P11-035.yaml
 P11-036	Done	Version-control single .riv source with changelog (CHANGELOG.md, check_riv_version.py)	P11/P11-036.yaml
 P11-037	Done	Polie rig in lingafriq_cast.riv: Character/Chip/Bust, L1–L5 SM, contract tests	P11/P11-037.yaml
-P11-038	Draft	Add layer isolation check for L1–L5	P11/P11-038.yaml
+P11-038	Done	Layer isolation gate L1–L5 (check_layer_isolation.py, layer_isolation_test.dart)	P11/P11-038.yaml
 P11-039	Draft	Design chip artboard for 32, 48 and 64 px	P11/P11-039.yaml
 P11-040	Draft	Add golden chip render tests at 32/48/64 px	P11/P11-040.yaml
 P11-041	Draft	Build Polie states, idle micro-motion and transitions	P11/P11-041.yaml
