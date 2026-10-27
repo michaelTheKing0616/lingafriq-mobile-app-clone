@@ -24,7 +24,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loading => 'Loading...';
 
   @override
-  String get errorOccurred => 'An error occurred';
+  String get errorOccurred =>
+      'Something went wrong on our side. The app lost the last step. Try again or restart the lesson.';
 
   @override
   String get tryAgain => 'Try Again';
@@ -94,10 +95,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get incorrect => 'Incorrect';
 
   @override
-  String get next => 'Next';
+  String get next => 'Go on';
 
   @override
-  String get back => 'Back';
+  String get back => 'Go back';
 
   @override
   String get skip => 'Skip';
@@ -109,7 +110,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get save => 'Save';
 
   @override
-  String get done => 'Done';
+  String get done => 'Finish';
 
   @override
   String get submit => 'Submit';
@@ -177,7 +178,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get flbHeritageLoadError =>
-      'Could not load heritage archive. Pull to retry.';
+      'Could not load the heritage archive. The network or server timed out. Pull to retry.';
 
   @override
   String get flbHeritageRefresh => 'Refresh';
@@ -186,7 +187,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get flbHeritageDetailTitle => 'Heritage';
 
   @override
-  String get flbHeritageMissingContent => 'Missing heritage content';
+  String get flbHeritageMissingContent =>
+      'This heritage page is missing. The link did not include an item. Go back and pick another entry.';
 
   @override
   String get tooltipFlbHeritageArchive => 'FLB Heritage archive';
@@ -291,41 +293,45 @@ class AppLocalizationsEn extends AppLocalizations {
   String get liveTranslateInterruptBargeIn => 'Interrupt / barge-in';
 
   @override
-  String get liveTranslatePlaceholderDash => '—';
+  String get liveTranslatePlaceholderDash => '…';
 
   @override
   String get liveTranslateSpeechUnavailable =>
-      'Speech recognition not available on this device.';
+      'Speech input did not start. This phone cannot run live speech here. Type your phrase or use another device.';
 
   @override
   String get liveTranslateMicPermissionRequired =>
-      'Microphone permission is required.';
+      'The mic is blocked. LingAfriq needs the mic to hear you. Open Settings and allow the mic.';
 
   @override
-  String get liveTranslateInvalidSession => 'Invalid session from server.';
+  String get liveTranslateInvalidSession =>
+      'Could not start live translate. The server sent an invalid session. Tap Reconnect and try again.';
 
   @override
-  String get liveTranslateStartSessionFirst => 'Start a session first.';
+  String get liveTranslateStartSessionFirst =>
+      'Listening is not active yet. You have not started a session. Tap Start session, then speak.';
 
   @override
   String get liveTranslateConnectionLost =>
-      'Connection lost. Tap Reconnect to continue.';
+      'Connection lost. Your network cut out. Tap reconnect to try again.';
 
   @override
   String liveTranslateSocketError(Object error) {
-    return 'Socket error: $error';
+    return 'Could not connect for live translate. The socket failed: $error. Check your network and tap Reconnect.';
   }
 
   @override
-  String get liveTranslateSessionFailed => 'Session failed';
+  String get liveTranslateSessionFailed =>
+      'Could not start a live translate session. The server rejected the request. Wait a moment and try again.';
 
   @override
   String liveTranslateCouldNotPlayAudio(Object error) {
-    return 'Could not play translation audio: $error';
+    return 'Could not play the translation audio. Playback failed: $error. Tap Hear it again or check your volume.';
   }
 
   @override
-  String get liveTranslateSessionError => 'Session error';
+  String get liveTranslateSessionError =>
+      'Live translate hit a session error. Something went wrong on the connection. Leave the session and start again.';
 
   @override
   String get liveTranslateDefaultAudioMime => 'audio/wav';
@@ -357,7 +363,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pron_unavailable =>
-      'The scoring service is unavailable. No score is shown.';
+      'We could not score your speech. The scorer is temporarily unavailable. Try again in a moment; no score is shown.';
+
+  @override
+  String get contentPublishAction => 'Publish';
+
+  @override
+  String get contentPublishDone => 'Published';
 
   @override
   String get persona_ai_disclosure =>
@@ -365,7 +377,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get persona_error_retry =>
-      'Couldn\'t reach the persona. Retry when you\'re ready.';
+      'Couldn\'t reach the persona. The network or server timed out. Retry when you\'re ready.';
+
+  @override
+  String get personaChipSource => 'Source';
+
+  @override
+  String get personaChipInferred => 'Inferred';
+
+  @override
+  String get personaChipLegend => 'Legend';
+
+  @override
+  String get personaChipLoading => 'Checking sources';
+
+  @override
+  String get personaChipNoSource => 'Source unavailable';
+
+  @override
+  String get personaChipSourceSemantics =>
+      'Documented claim. Source available. Double tap to open the cited card.';
+
+  @override
+  String get personaChipInferredSemantics =>
+      'Inferred claim. Drawn from context, not a direct citation.';
+
+  @override
+  String get personaChipLegendSemantics =>
+      'Legend claim. Traditional or oral tradition, not a single document.';
+
+  @override
+  String get personaChipNoSourceSemantics =>
+      'Documented claim, but the cited source is not available yet.';
+
+  @override
+  String get persona_dialogue_welcome =>
+      'Eh, welcome back, friend. The path waits for you today.';
 
   @override
   String get labelBetaCopy =>

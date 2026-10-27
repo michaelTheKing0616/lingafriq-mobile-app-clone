@@ -167,7 +167,7 @@ abstract class AppLocalizations {
   /// Generic error message
   ///
   /// In en, this message translates to:
-  /// **'An error occurred'**
+  /// **'Something went wrong on our side. The app lost the last step. Try again or restart the lesson.'**
   String get errorOccurred;
 
   /// Retry button text
@@ -299,13 +299,13 @@ abstract class AppLocalizations {
   /// Next button
   ///
   /// In en, this message translates to:
-  /// **'Next'**
+  /// **'Go on'**
   String get next;
 
   /// Back button
   ///
   /// In en, this message translates to:
-  /// **'Back'**
+  /// **'Go back'**
   String get back;
 
   /// Skip button
@@ -329,7 +329,7 @@ abstract class AppLocalizations {
   /// Done button
   ///
   /// In en, this message translates to:
-  /// **'Done'**
+  /// **'Finish'**
   String get done;
 
   /// Submit button
@@ -461,7 +461,7 @@ abstract class AppLocalizations {
   /// Error when heritage API and bundle fail
   ///
   /// In en, this message translates to:
-  /// **'Could not load heritage archive. Pull to retry.'**
+  /// **'Could not load the heritage archive. The network or server timed out. Pull to retry.'**
   String get flbHeritageLoadError;
 
   /// Refresh heritage list button
@@ -479,7 +479,7 @@ abstract class AppLocalizations {
   /// Route error when heritage detail has no arguments
   ///
   /// In en, this message translates to:
-  /// **'Missing heritage content'**
+  /// **'This heritage page is missing. The link did not include an item. Go back and pick another entry.'**
   String get flbHeritageMissingContent;
 
   /// Tooltip for opening heritage from magazine
@@ -668,64 +668,64 @@ abstract class AppLocalizations {
   /// **'Interrupt / barge-in'**
   String get liveTranslateInterruptBargeIn;
 
-  /// Placeholder when no caption is available
+  /// Placeholder when no caption is available (ellipsis, not em dash)
   ///
   /// In en, this message translates to:
-  /// **'—'**
+  /// **'…'**
   String get liveTranslatePlaceholderDash;
 
   /// Error when speech recognition is not available
   ///
   /// In en, this message translates to:
-  /// **'Speech recognition not available on this device.'**
+  /// **'Speech input did not start. This phone cannot run live speech here. Type your phrase or use another device.'**
   String get liveTranslateSpeechUnavailable;
 
   /// Error when microphone permission is missing
   ///
   /// In en, this message translates to:
-  /// **'Microphone permission is required.'**
+  /// **'The mic is blocked. LingAfriq needs the mic to hear you. Open Settings and allow the mic.'**
   String get liveTranslateMicPermissionRequired;
 
   /// Error when backend returns invalid session payload
   ///
   /// In en, this message translates to:
-  /// **'Invalid session from server.'**
+  /// **'Could not start live translate. The server sent an invalid session. Tap Reconnect and try again.'**
   String get liveTranslateInvalidSession;
 
   /// Error shown when user tries to listen before starting a session
   ///
   /// In en, this message translates to:
-  /// **'Start a session first.'**
+  /// **'Listening is not active yet. You have not started a session. Tap Start session, then speak.'**
   String get liveTranslateStartSessionFirst;
 
   /// Error shown when socket disconnects
   ///
   /// In en, this message translates to:
-  /// **'Connection lost. Tap Reconnect to continue.'**
+  /// **'Connection lost. Your network cut out. Tap reconnect to try again.'**
   String get liveTranslateConnectionLost;
 
   /// Error shown when socket connection fails
   ///
   /// In en, this message translates to:
-  /// **'Socket error: {error}'**
+  /// **'Could not connect for live translate. The socket failed: {error}. Check your network and tap Reconnect.'**
   String liveTranslateSocketError(Object error);
 
   /// Fallback error shown when session creation fails
   ///
   /// In en, this message translates to:
-  /// **'Session failed'**
+  /// **'Could not start a live translate session. The server rejected the request. Wait a moment and try again.'**
   String get liveTranslateSessionFailed;
 
   /// Error shown when TTS audio playback fails
   ///
   /// In en, this message translates to:
-  /// **'Could not play translation audio: {error}'**
+  /// **'Could not play the translation audio. Playback failed: {error}. Tap Hear it again or check your volume.'**
   String liveTranslateCouldNotPlayAudio(Object error);
 
   /// Fallback error message when a live translate session error has no message
   ///
   /// In en, this message translates to:
-  /// **'Session error'**
+  /// **'Live translate hit a session error. Something went wrong on the connection. Leave the session and start again.'**
   String get liveTranslateSessionError;
 
   /// Default mime type for TTS audio when server does not provide one
@@ -785,8 +785,20 @@ abstract class AppLocalizations {
   /// Shown when pronunciation scoring returns 503/retryable; no numeric score is displayed
   ///
   /// In en, this message translates to:
-  /// **'The scoring service is unavailable. No score is shown.'**
+  /// **'We could not score your speech. The scorer is temporarily unavailable. Try again in a moment; no score is shown.'**
   String get pron_unavailable;
+
+  /// Button label to publish reviewed content to learners
+  ///
+  /// In en, this message translates to:
+  /// **'Publish'**
+  String get contentPublishAction;
+
+  /// Success state after content publish completes; must match Publish action wording
+  ///
+  /// In en, this message translates to:
+  /// **'Published'**
+  String get contentPublishDone;
 
   /// Persistent disclosure that the historical persona chat is an AI recreation based on sources
   ///
@@ -794,11 +806,71 @@ abstract class AppLocalizations {
   /// **'This is an AI recreation based on sources.'**
   String get persona_ai_disclosure;
 
-  /// Shown when a persona mission reply fails; paired with a Retry action
+  /// Error shown when a persona mission reply fails; paired with a Retry action
   ///
   /// In en, this message translates to:
-  /// **'Couldn\'t reach the persona. Retry when you\'re ready.'**
+  /// **'Couldn\'t reach the persona. The network or server timed out. Retry when you\'re ready.'**
   String get persona_error_retry;
+
+  /// copy_keys: persona.chip.source — opens cited culture card
+  ///
+  /// In en, this message translates to:
+  /// **'Source'**
+  String get personaChipSource;
+
+  /// copy_keys: persona.chip.inferred — claim not directly documented
+  ///
+  /// In en, this message translates to:
+  /// **'Inferred'**
+  String get personaChipInferred;
+
+  /// copy_keys: persona.chip.legend — oral or traditional tradition claim
+  ///
+  /// In en, this message translates to:
+  /// **'Legend'**
+  String get personaChipLegend;
+
+  /// Loading state while claim support is resolved
+  ///
+  /// In en, this message translates to:
+  /// **'Checking sources'**
+  String get personaChipLoading;
+
+  /// Documented claim missing dossier source ids
+  ///
+  /// In en, this message translates to:
+  /// **'Source unavailable'**
+  String get personaChipNoSource;
+
+  /// Screen reader label for Source chip on persona claims
+  ///
+  /// In en, this message translates to:
+  /// **'Documented claim. Source available. Double tap to open the cited card.'**
+  String get personaChipSourceSemantics;
+
+  /// Screen reader label for Inferred support on persona claims
+  ///
+  /// In en, this message translates to:
+  /// **'Inferred claim. Drawn from context, not a direct citation.'**
+  String get personaChipInferredSemantics;
+
+  /// Screen reader label for Legend support on persona claims
+  ///
+  /// In en, this message translates to:
+  /// **'Legend claim. Traditional or oral tradition, not a single document.'**
+  String get personaChipLegendSemantics;
+
+  /// Screen reader label when documented claim has no source id
+  ///
+  /// In en, this message translates to:
+  /// **'Documented claim, but the cited source is not available yet.'**
+  String get personaChipNoSourceSemantics;
+
+  /// Sample in-character persona greeting; village voice allowed here only
+  ///
+  /// In en, this message translates to:
+  /// **'Eh, welcome back, friend. The path waits for you today.'**
+  String get persona_dialogue_welcome;
 
   /// copy_keys: label.beta.copy — Beta quality label on learner items
   ///

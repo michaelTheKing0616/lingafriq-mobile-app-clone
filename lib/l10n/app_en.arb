@@ -558,6 +558,42 @@
   "@persona_error_retry": {
     "description": "Error shown when a persona mission reply fails; paired with a Retry action"
   },
+  "personaChipSource": "Source",
+  "@personaChipSource": {
+    "description": "copy_keys: persona.chip.source — opens cited culture card"
+  },
+  "personaChipInferred": "Inferred",
+  "@personaChipInferred": {
+    "description": "copy_keys: persona.chip.inferred — claim not directly documented"
+  },
+  "personaChipLegend": "Legend",
+  "@personaChipLegend": {
+    "description": "copy_keys: persona.chip.legend — oral or traditional tradition claim"
+  },
+  "personaChipLoading": "Checking sources",
+  "@personaChipLoading": {
+    "description": "Loading state while claim support is resolved"
+  },
+  "personaChipNoSource": "Source unavailable",
+  "@personaChipNoSource": {
+    "description": "Documented claim missing dossier source ids"
+  },
+  "personaChipSourceSemantics": "Documented claim. Source available. Double tap to open the cited card.",
+  "@personaChipSourceSemantics": {
+    "description": "Screen reader label for Source chip on persona claims"
+  },
+  "personaChipInferredSemantics": "Inferred claim. Drawn from context, not a direct citation.",
+  "@personaChipInferredSemantics": {
+    "description": "Screen reader label for Inferred support on persona claims"
+  },
+  "personaChipLegendSemantics": "Legend claim. Traditional or oral tradition, not a single document.",
+  "@personaChipLegendSemantics": {
+    "description": "Screen reader label for Legend support on persona claims"
+  },
+  "personaChipNoSourceSemantics": "Documented claim, but the cited source is not available yet.",
+  "@personaChipNoSourceSemantics": {
+    "description": "Screen reader label when documented claim has no source id"
+  },
 
   "persona_dialogue_welcome": "Eh, welcome back, friend. The path waits for you today.",
   "@persona_dialogue_welcome": {
