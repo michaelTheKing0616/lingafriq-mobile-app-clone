@@ -378,7 +378,7 @@ P10-937	Done	ADR-023: yo tonal WA + zu Bantu efficacy pair	P10/P10-937.yaml
 P10-938	Done	Lint UI strings for dashes, banned words and verbs (lint_ui_strings.py)	P10/P10-938.yaml
 P10-939	Done	Grade-7 readability + name continuity gates (readability_gate.py, name_continuity.py)	P10/P10-939.yaml
 P10-940	Done	error_copy_check.py, COPY_RULES.md, app_en.arb three-part errors + character voice scope	P10/P10-940.yaml
-P11-001	Draft	Decide persona delivery modes and v1 roster (ADR-031)	P11/P11-001.yaml
+P11-001	Done	ADR-031 persona delivery modes + v1 roster; test_adr_031.py	P11/P11-001.yaml
 P11-002	Draft	Define persona dossier schema and retrieval index	P11/P11-002.yaml
 P11-003	Draft	Validate persona answer contract server-side	P11/P11-003.yaml
 P11-004	Draft	Enforce knowledge horizon with a classifier	P11/P11-004.yaml
