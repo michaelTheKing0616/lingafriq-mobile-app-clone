@@ -1,0 +1,158 @@
+{
+  "card": "P11-041",
+  "displayPx": 64,
+  "artboard": "CharacterChip",
+  "recordedAt": "2026-10-27T20:16:25.358532Z",
+  "panels": [
+    {
+      "preset": "Polie",
+      "activity": "idle",
+      "semanticsLabel": "Polie looks focused",
+      "readable": true
+    },
+    {
+      "preset": "Polie",
+      "activity": "listening",
+      "semanticsLabel": "Polie looks focused and is listening",
+      "readable": true
+    },
+    {
+      "preset": "Polie",
+      "activity": "thinking",
+      "semanticsLabel": "Polie looks focused and is thinking",
+      "readable": true
+    },
+    {
+      "preset": "Polie",
+      "activity": "speaking",
+      "semanticsLabel": "Polie looks focused and is speaking",
+      "readable": true
+    },
+    {
+      "preset": "Polie",
+      "activity": "celebrating",
+      "semanticsLabel": "Polie looks proud and is celebrating",
+      "readable": true
+    },
+    {
+      "preset": "Zuri",
+      "activity": "idle",
+      "semanticsLabel": "Zuri looks focused",
+      "readable": true
+    },
+    {
+      "preset": "Zuri",
+      "activity": "listening",
+      "semanticsLabel": "Zuri looks focused and is listening",
+      "readable": true
+    },
+    {
+      "preset": "Zuri",
+      "activity": "thinking",
+      "semanticsLabel": "Zuri looks focused and is thinking",
+      "readable": true
+    },
+    {
+      "preset": "Zuri",
+      "activity": "speaking",
+      "semanticsLabel": "Zuri looks focused and is speaking",
+      "readable": true
+    },
+    {
+      "preset": "Zuri",
+      "activity": "celebrating",
+      "semanticsLabel": "Zuri looks proud and is celebrating",
+      "readable": true
+    },
+    {
+      "preset": "Kofi",
+      "activity": "idle",
+      "semanticsLabel": "Kofi looks focused",
+      "readable": true
+    },
+    {
+      "preset": "Kofi",
+      "activity": "listening",
+      "semanticsLabel": "Kofi looks focused and is listening",
+      "readable": true
+    },
+    {
+      "preset": "Kofi",
+      "activity": "thinking",
+      "semanticsLabel": "Kofi looks focused and is thinking",
+      "readable": true
+    },
+    {
+      "preset": "Kofi",
+      "activity": "speaking",
+      "semanticsLabel": "Kofi looks focused and is speaking",
+      "readable": true
+    },
+    {
+      "preset": "Kofi",
+      "activity": "celebrating",
+      "semanticsLabel": "Kofi looks proud and is celebrating",
+      "readable": true
+    },
+    {
+      "preset": "Amara",
+      "activity": "idle",
+      "semanticsLabel": "Amara looks focused",
+      "readable": true
+    },
+    {
+      "preset": "Amara",
+      "activity": "listening",
+      "semanticsLabel": "Amara looks focused and is listening",
+      "readable": true
+    },
+    {
+      "preset": "Amara",
+      "activity": "thinking",
+      "semanticsLabel": "Amara looks focused and is thinking",
+      "readable": true
+    },
+    {
+      "preset": "Amara",
+      "activity": "speaking",
+      "semanticsLabel": "Amara looks focused and is speaking",
+      "readable": true
+    },
+    {
+      "preset": "Amara",
+      "activity": "celebrating",
+      "semanticsLabel": "Amara looks proud and is celebrating",
+      "readable": true
+    },
+    {
+      "preset": "Learner",
+      "activity": "idle",
+      "semanticsLabel": "Learner looks focused",
+      "readable": true
+    },
+    {
+      "preset": "Learner",
+      "activity": "listening",
+      "semanticsLabel": "Learner looks focused and is listening",
+      "readable": true
+    },
+    {
+      "preset": "Learner",
+      "activity": "thinking",
+      "semanticsLabel": "Learner looks focused and is thinking",
+      "readable": true
+    },
+    {
+      "preset": "Learner",
+      "activity": "speaking",
+      "semanticsLabel": "Learner looks focused and is speaking",
+      "readable": true
+    },
+    {
+      "preset": "Learner",
+      "activity": "celebrating",
+      "semanticsLabel": "Learner looks proud and is celebrating",
+      "readable": true
+    }
+  ]
+}
