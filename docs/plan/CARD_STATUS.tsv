@@ -886,7 +886,7 @@ P6-027	Done	Story mode: story.ts, story.md, lib/screens/story (lexicon, approval
 P6-028	Draft	Build Shadowing coach on real scorer, replace fake toneScore	P6/P6-028.yaml
 P6-029	Draft	Build Translator-with-teaching behind per-pair quality gate	P6/P6-029.yaml
 P6-030	Draft	Build Live Translate with visible confidence indicator	P6/P6-030.yaml
-P6-031	Draft	Stand up server-side scorer service	P6/P6-031.yaml
+P6-031	Done	Stand up server-side scorer service (scorer/api.py, score.route.ts)	P6/P6-031.yaml
 P6-032	Draft	Fine-tune Omnilingual CTC per language, not MMS weights	P6/P6-032.yaml
 P6-033	Draft	Compute GOP segmental scores with learner advice	P6/P6-033.yaml
 P6-034	Draft	Extract F0 and normalise per speaker in semitones	P6/P6-034.yaml
