@@ -18,6 +18,8 @@ import 'package:lingafriq/screens/games/word_match_game.dart';
 import 'package:lingafriq/screens/games/fill_in_the_blank_game.dart';
 import 'package:lingafriq/screens/games/speed_challenge_game.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/screens/games/games_screen_enhanced_with_all_games.dart';
+import 'package:lingafriq/games/gamekit/all_games_registry.dart';
 
 final languagesForGamesProvider = FutureProvider.autoDispose((ref) {
   return ref.read(apiProvider.notifier).getLanguages();
@@ -350,6 +352,25 @@ class GameTypesScreen extends StatelessWidget {
           decoration: const BoxDecoration(gradient: PanAfricanGradients.forest),
         ),
         elevation: 0,
+        actions: [
+          Semantics(
+            button: true,
+            label: 'Open full arcade, ${AllGamesRegistry.totalArcadeListingCount()} games by skill',
+            child: TextButton.icon(
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                Navigator.push(
+                  context,
+                  SmoothPageRoute.platform(
+                    child: const GamesScreenEnhanced(),
+                  ),
+                );
+              },
+              icon: Icon(Icons.view_carousel_rounded, size: 20.sp),
+              label: const Text('Arcade'),
+            ),
+          ),
+        ],
       ),
       body: Container(
         decoration: BoxDecoration(

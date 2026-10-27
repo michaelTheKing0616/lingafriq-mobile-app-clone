@@ -95,7 +95,7 @@ class AllGamesRegistry {
         shelf: _shelfForCatalogEntry(entry),
         elevationCardId: _elevationCardFor(entry.type.name),
         featured: false,
-        elevationPending: true,
+        elevationPending: _elevationPendingFor(entry.type.name),
         routeGameType: entry.type,
       ),
   };
@@ -130,8 +130,32 @@ class AllGamesRegistry {
     return ArcadeSkillShelf.vocabulary;
   }
 
+  /// §18.5 elevation card ids (link only; full cards live elsewhere).
+  static const Map<String, String> _elevationCardByGameId = {
+    toneForgeGameId: 'P8-914',
+    'drum_to_word_matching': 'P8-930',
+    'drum_rhythm_shadowing': 'P8-930',
+    'market_bargaining_simulator': 'P8-931',
+    'taxi_bus_stop_survival': 'P8-932',
+    'proverb_unlocker': 'P8-933',
+    'greeting_diplomacy_challenge': 'P8-934',
+    'pronunciation_karaoke': 'P8-935',
+  };
+
   static String _elevationCardFor(String gameId) {
-    return 'P8-917';
+    return _elevationCardByGameId[gameId] ?? 'P8-917';
+  }
+
+  static bool _elevationPendingFor(String gameId) {
+    if (gameId == toneForgeGameId) return false;
+    return true;
+  }
+
+  static GameCatalogEntry? catalogEntryFor(String gameId) {
+    for (final entry in GameCatalog.entries) {
+      if (entry.type.name == gameId) return entry;
+    }
+    return null;
   }
 
   static List<ArcadeGameListing> listingsOnShelf(ArcadeSkillShelf shelf) {
@@ -158,17 +182,36 @@ class AllGamesRegistry {
 
   /// CI: every catalog game must appear on exactly one shelf.
   static List<String> validateArcadeShelfCoverage() {
-    final missing = <String>[];
+    final problems = <String>[];
     for (final entry in GameCatalog.entries) {
       if (!_arcadeListings.containsKey(entry.type.name)) {
-        missing.add(entry.type.name);
+        problems.add('missing_shelf:${entry.type.name}');
       }
     }
     if (!_arcadeListings.containsKey(toneForgeGameId)) {
-      missing.add(toneForgeGameId);
+      problems.add('missing_shelf:$toneForgeGameId');
     }
-    return missing;
+    final shelfByGame = <String, String>{};
+    for (final listing in _arcadeListings.values) {
+      final prior = shelfByGame[listing.gameId];
+      if (prior != null) {
+        problems.add('duplicate_shelf:${listing.gameId}');
+      } else {
+        shelfByGame[listing.gameId] = listing.shelf.id;
+      }
+    }
+    for (final id in _arcadeListings.keys) {
+      if (id == toneForgeGameId) continue;
+      final inCatalog =
+          GameCatalog.entries.any((e) => e.type.name == id);
+      if (!inCatalog) {
+        problems.add('orphan_listing:$id');
+      }
+    }
+    return problems;
   }
+
+  static int totalArcadeListingCount() => _arcadeListings.length;
 
   /// Get game definition by ID
   static GameDefinition? getGame(String gameId) {

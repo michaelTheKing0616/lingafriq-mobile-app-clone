@@ -1002,7 +1002,7 @@ P8-913	Done	GameKit per-language tone inventories in tone games (tone_forge_mode
 P8-914	Done	Featured Tone Forge on tone shelf; P8-913 pool + P8-901 graph; practice gate	P8/P8-914.yaml
 P8-915	Done	Revive game mastery results from learner-model snapshots (game_mastery_results_screen.dart, universal_game_screen.dart)	P8/P8-915.yaml
 P8-916	Draft	Decide consolidation of six games into flagships	P8/P8-916.yaml
-P8-917	Draft	'Play hub: every existing game stays on a skill shelf'	P8/P8-917.yaml
+P8-917	Done	Play hub skill shelves: AllGamesRegistry coverage, GamesScreenEnhanced lazy shelves, arcade_shelf_coverage_test	P8/P8-917.yaml
 P8-918	Draft	'Play hub: headliner row of the ten flagship games'	P8/P8-918.yaml
 P8-920	Draft	'Flagship: Talking Drum tone perception and production'	P8/P8-920.yaml
 P8-921	Draft	'Flagship: Minimal Pair Duel'	P8/P8-921.yaml
