@@ -12,16 +12,51 @@
       "licence_status": "approved"
     }
   ],
-  "secondary_sources": [],
-  "contested_points": ["Exact wording of her 1900 address varies by published account."],
-  "known_myths": ["She alone did not end British rule in Ashanti."],
-  "review": { "historian_id": "historian-seed-yaa", "signed_at": "2026-10-27T12:00:00Z" },
+  "secondary_sources": [
+    {
+      "source_id": "src-yaa-arhin-2003",
+      "type": "monograph",
+      "title": "The Life and Times of Yaa Asantewaa of Ejisu",
+      "year": 2003,
+      "licence_status": "approved"
+    }
+  ],
+  "contested_points": [
+    "Exact wording of her 1900 address varies by published account.",
+    "Birth year is often given circa 1840 but is not fixed in colonial records."
+  ],
+  "known_myths": [
+    "She alone did not end British rule in Ashanti.",
+    "Popular retellings sometimes exaggerate a single battlefield outcome as total victory."
+  ],
+  "review": {
+    "historian_id": "ext-15-pending",
+    "signed_at": "1970-01-01T00:00:00Z"
+  },
   "retrieval_cards": [
     {
       "card_id": "yaa.card.golden_stool",
       "source_id": "src-yaa-co-1900",
-      "text": "Ashanti leaders mobilized to defend the Golden Stool as a symbol of sovereignty during the 1900 uprising.",
-      "terms": ["golden stool", "ashanti", "1900"]
+      "text": "Ashanti leaders mobilized in 1900 to defend the Golden Stool as a symbol of sovereignty after British demands seen as humiliating.",
+      "terms": ["golden stool", "ashanti", "1900", "sovereignty"]
+    },
+    {
+      "card_id": "yaa.card.queen_mother",
+      "source_id": "src-yaa-arhin-2003",
+      "text": "Scholarship describes Yaa Asantewaa as Queen Mother of Ejisu who spoke in council and helped rally resistance when male leaders hesitated.",
+      "terms": ["ejisu", "queen mother", "council", "resistance"]
+    },
+    {
+      "card_id": "yaa.card.exile",
+      "source_id": "src-yaa-co-1900",
+      "text": "After the 1900 conflict, British authorities exiled Yaa Asantewaa and other leaders; she died in exile in 1921.",
+      "terms": ["exile", "seychelles", "1921"]
+    },
+    {
+      "card_id": "yaa.card.kumasi",
+      "source_id": "src-yaa-arhin-2003",
+      "text": "The siege of Kumasi and related fighting are documented as part of the 1900 war; outcomes were not a simple single victory for either side.",
+      "terms": ["kumasi", "siege", "war"]
     }
   ]
 }

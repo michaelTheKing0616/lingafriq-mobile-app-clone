@@ -387,7 +387,7 @@ P11-006	Done	Replace persona blocklist with sensitivity classifier and age tiers
 P11-007	Done	Make AI disclosure always visible on personas (persona_disclosure_badge.dart, historical_roleplay_controller.dart)	P11/P11-007.yaml
 P11-008	Done	Route persona turns through AI gateway with typed errors (historical-roleplay/turn, PersonaTurnGatewayError)	P11/P11-008.yaml
 P11-009	Done	killSwitch.ts, persona.routes PersonaDisabled, persona_providers availability	P11/P11-009.yaml
-P11-010	Draft	Author Yaa Asantewaa persona dossier and prompts	P11/P11-010.yaml
+P11-010	Done	Yaa Asantewaa dossier + personas/index.ts prompts/probes; EXT-15 gates learner enable	P11/P11-010.yaml
 P11-011	Draft	Author Kwame Nkrumah persona dossier and prompts	P11/P11-011.yaml
 P11-012	Draft	Author Shaka kaSenzangakhona persona dossier and prompts	P11/P11-012.yaml
 P11-013	Draft	Author Ahmed Baba persona dossier and prompts	P11/P11-013.yaml
