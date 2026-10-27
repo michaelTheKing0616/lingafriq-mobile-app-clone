@@ -971,7 +971,7 @@ P7-927	Draft	Build pan-African same-idea view	P7/P7-927.yaml
 P7-928	Done	Offline lexicon pack manifest + client verify/sync (lexiconPack.service.ts, lexicon_pack_service.dart)	P7/P7-928.yaml
 P7-929	Done	Wire lexicon entry points (words_tab, lens_results_lexicon_link, contribute_hub)	P7/P7-929.yaml
 P7-930	Done	Micro-lesson learn/see/try screen, 60–90s validator, resume + media retry (P7-930)	P7/P7-930.yaml
-P7-931	Draft	Build 30-second perception check for tutorials	P7/P7-931.yaml
+P7-931	Done	30-second tutorial perception check (perception_check.dart, in-memory session)	P7/P7-931.yaml
 P7-932	Draft	Build speaking try step with real scoring	P7/P7-932.yaml
 P7-933	Draft	Build sound tutorial catalogue with native mouth video	P7/P7-933.yaml
 P7-934	Draft	Author Yoruba tone and subdot tutorials	P7/P7-934.yaml
