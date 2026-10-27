@@ -360,7 +360,7 @@ P10-919	Draft	Write the DPIA for voice data and minors	P10/P10-919.yaml
 P10-920	Done	RETENTION.yaml + DATA_MAP.md + data_map_check.py (137 collections, CI --gate)	P10/P10-920.yaml
 P10-921	Done	Run logged purge jobs per RETENTION.yaml (retention-purge.job.ts, PurgeLog)	P10/P10-921.yaml
 P10-922	Done	Voice storage opt-in, delete-after-scoring, guardian gate (voice-consent, audio-retention)	P10/P10-922.yaml
-P10-923	Draft	Ask separate consent for model-training contributions	P10/P10-923.yaml
+P10-923	Done	Separate training-contribution consent (training-consent.service.ts, privacy_settings_screen.dart)	P10/P10-923.yaml
 P10-924	Done	ADR-022 benefit-sharing + contracted payment; test_adr_022.py	P10/P10-924.yaml
 P10-925	Draft	Expose in-app data export and account deletion	P10/P10-925.yaml
 P10-926	Draft	Verify NDPC data-controller registration need	P10/P10-926.yaml

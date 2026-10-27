@@ -12,6 +12,7 @@ import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/services/lens/lens_privacy_policy.dart';
 
 const String voiceStorageConsentApiPath = '/api/v2/voice-storage';
+const String trainingContributionConsentApiPath = '/api/v2/training-contribution';
 
 /// Privacy Settings Screen - Pan-African Design System
 class PrivacySettingsScreen extends HookConsumerWidget {
@@ -53,6 +54,11 @@ class PrivacySettingsScreen extends HookConsumerWidget {
     final voiceConsentVersion = useState<String?>(null);
     final voiceConsentCopy = useState<String?>(null);
     final voiceWithdrawing = useState(false);
+    final trainingContributionEnabled = useState<bool>(false);
+    final trainingConsentVersion = useState<String?>(null);
+    final trainingConsentCopy = useState<String?>(null);
+    final trainingOffered = useState<bool>(true);
+    final trainingWithdrawing = useState(false);
     final isLoading = useState(true);
 
     Future<void> loadSettings(ApiProvider api) async {
@@ -106,6 +112,31 @@ class PrivacySettingsScreen extends HookConsumerWidget {
       } catch (_) {
         // Offline — default remains off (delete-after-scoring).
       }
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        final ageCategory = prefs.getString(_prefAgeCategory) ??
+            prefs.getString('onboarding_age_category');
+        final privacyCtx = lensPrivacyContextFromPrefs(ageCategory: ageCategory);
+        final trainingRes = await ApiService.get(
+          trainingContributionConsentApiPath + '/status',
+        );
+        final trainingData = trainingRes.data;
+        if (trainingData is Map) {
+          final consent = trainingData['consent'];
+          if (consent is Map) {
+            trainingContributionEnabled.value =
+                consent['contribute_enabled'] == true;
+          }
+          trainingConsentVersion.value =
+              trainingData['consent_text_version'] as String?;
+          trainingConsentCopy.value = trainingData['consent_copy'] as String?;
+          final offered = trainingData['offered_to_learner'];
+          trainingOffered.value =
+              offered != false && !privacyCtx.isMinor;
+        }
+      } catch (_) {
+        trainingOffered.value = false;
+      }
       isLoading.value = false;
     }
 
@@ -137,6 +168,106 @@ class PrivacySettingsScreen extends HookConsumerWidget {
       return approved == true;
     }
 
+    Future<void> updateTrainingContribution(bool value, BuildContext context) async {
+      HapticFeedback.selectionClick();
+      if (!trainingOffered.value) return;
+      if (!voiceStorageEnabled.value && value) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Turn on practice recording storage first, then you can choose to help train our speech models.',
+              ),
+            ),
+          );
+        }
+        return;
+      }
+      if (!value) {
+        trainingWithdrawing.value = true;
+        try {
+          await ApiService.post('$trainingContributionConsentApiPath/withdraw');
+          trainingContributionEnabled.value = false;
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  'We removed your clips from future training runs and queued any saved ones for removal.',
+                ),
+              ),
+            );
+          }
+        } catch (_) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  'We could not update training contribution right now. Try again when you are online.',
+                ),
+              ),
+            );
+          }
+        } finally {
+          trainingWithdrawing.value = false;
+        }
+        return;
+      }
+
+      final version = trainingConsentVersion.value;
+      if (version == null || version.isEmpty) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Training contribution settings need a connection. Try again when you are online.',
+              ),
+            ),
+          );
+        }
+        return;
+      }
+
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Help improve speech models?'),
+          content: Text(
+            trainingConsentCopy.value ??
+                'Your stored practice recordings may be used to train speech models. You can turn this off anytime.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: const Text('Not now'),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.pop(ctx, true),
+              child: const Text('I agree'),
+            ),
+          ],
+        ),
+      );
+      if (confirmed != true) return;
+
+      try {
+        await ApiService.post(
+          '$trainingContributionConsentApiPath/opt-in',
+          data: {'consent_text_version': version},
+        );
+        trainingContributionEnabled.value = true;
+      } catch (_) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'We could not save your choice. Check your connection and try again.',
+              ),
+            ),
+          );
+        }
+      }
+    }
+
     Future<void> updateVoiceStorage(bool value, BuildContext context) async {
       HapticFeedback.selectionClick();
       if (!value) {
@@ -165,6 +296,9 @@ class PrivacySettingsScreen extends HookConsumerWidget {
           }
         } finally {
           voiceWithdrawing.value = false;
+        }
+        if (trainingContributionEnabled.value) {
+          await updateTrainingContribution(false, context);
         }
         return;
       }
@@ -503,6 +637,30 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                     ),
                   ],
                 ),
+                if (trainingOffered.value && voiceStorageEnabled.value) ...[
+                  SizedBox(height: PanAfricanSpacing.lg),
+                  _PrivacySection(
+                    title: 'Model training',
+                    isDark: isDark,
+                    index: 6,
+                    children: [
+                      _PrivacySwitchTile(
+                        icon: Icons.model_training_outlined,
+                        title: 'Contribute recordings to model training',
+                        subtitle: trainingConsentCopy.value ??
+                            'Separate from saving recordings. Off by default. Withdraw anytime.',
+                        value: trainingContributionEnabled.value,
+                        onChanged: trainingWithdrawing.value
+                            ? (_) {}
+                            : (v) => updateTrainingContribution(v, context),
+                        isDark: isDark,
+                        semanticsLabel:
+                            'Contribute recordings to model training. '
+                            '${trainingContributionEnabled.value ? 'On' : 'Off'}.',
+                      ),
+                    ],
+                  ),
+                ],
                 SizedBox(height: PanAfricanSpacing.lg),
 
                 // Info Card
