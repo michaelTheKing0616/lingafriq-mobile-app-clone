@@ -399,7 +399,7 @@ P11-018	Done	Bilingual demand dialogue, 3-sentence checkpoint, council sentence 
 P11-019	Done	Historian note gate, mini-quiz, primary source card, idempotent deck merge (debrief.dart)	P11/P11-019.yaml
 P11-020	Done	Authored v1 beat graphs (beats_schema.dart) + beatRunner guardrails/off_rails	P11/P11-020.yaml
 P11-021	Done	Teacher persona-chapter assign, can-do turn grades, debrief sheet (assignment.service.ts, teacher_assignment.dart)	P11/P11-021.yaml
-P11-022	Draft	Specify persona voice casting, consent and labelling	P11/P11-022.yaml
+P11-022	Done	Specify persona voice casting, consent and labelling (voice_casting_brief.md)	P11/P11-022.yaml
 P11-023	Draft	Create era-accurate persona bust artboards	P11/P11-023.yaml
 P11-024	Draft	Build 50-probe scripted eval harness per persona	P11/P11-024.yaml
 P11-025	Draft	Build adversarial persona suite with age-tier policy	P11/P11-025.yaml
