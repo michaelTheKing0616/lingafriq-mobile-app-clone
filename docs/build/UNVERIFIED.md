@@ -12,8 +12,8 @@ Every `[verify] [purchase] [quote] [Unverified] [estimate]` tag in the sources i
 | UNV-E04 | ELEVATION §6.1:L1124 | `assets/audio` absent from pubspec; media stripped | check pubspec + asset manifest | agent (T0) |
 | UNV-E05 | ELEVATION §7.4:L1447 | Omnilingual 300M on-device performance | benchmark on Tecno/Infinix class | agent |
 | UNV-E06 | ELEVATION §13.2:L1881 | DPIA thresholds for voice data | counsel (EXT-18) | Tope |
-| UNV-E07 | ELEVATION §17.6:L2366 | Latin-only OCR mangles stacked diacritics | device test with ọ̀/ẹ́ samples | agent |
-| UNV-E08 | ELEVATION §18.4:L4270 | same, in Point & Say | covered by UNV-E07 | agent |
+| UNV-E07 | ELEVATION §17.6:L2366 | Latin-only OCR mangles stacked diacritics | **Verified (P7-944)** — fixture ledger mean per-mark error 1.0; device re-capture via `integration_test/p7_944_ml_kit_ocr_capture_test.dart` | agent |
+| UNV-E08 | ELEVATION §18.4:L4270 | same, in Point & Say | **Verified via UNV-E07 / P7-944** | agent |
 | UNV-E09 | ELEVATION §18.5:L4573 | whether Pronunciation Game records audio | code trace + device test | agent |
 | UNV-E10 | ELEVATION §18.6:L5260 | micro-mentor verification/safeguarding/payment flow | route + model inspection | agent |
 | UNV-E11 | ELEVATION §18.6:L5402 | consent/licensing of UGC recordings | ToS + model inspection; counsel if unclear | Tope |

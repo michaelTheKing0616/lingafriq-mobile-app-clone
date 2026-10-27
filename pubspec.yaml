@@ -194,6 +194,8 @@ flutter:
     - assets/rive/
     - assets/models/point_say_mobilenetv4.tflite
     - assets/lens/african_object_set.json
+    - assets/data/lens/ocr_diacritic_fixtures.json
+    - assets/data/lens/ml_kit_latin_ocr_ledger.json
     - schemas/v2/
 
 
