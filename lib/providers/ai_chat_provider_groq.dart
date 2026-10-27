@@ -27,8 +27,10 @@ import '../services/monitoring/performance_analytics.dart';
 import '../utils/structured_logger.dart';
 import '../utils/api_service.dart';
 import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
+import 'package:lingafriq/providers/dio_provider.dart';
+import 'package:lingafriq/services/ai_gateway_client.dart';
 
-/// Comprehensive AI Chat Provider using Groq API with Aya 8B
+/// Comprehensive AI Chat Provider using Gateway API with Aya 8B
 /// Features:
 /// - Streaming responses
 /// - Adaptive tutor mode
@@ -41,7 +43,7 @@ import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
 /// - Curriculum generation
 /// 
 /// To use:
-/// 1. Get a free Groq API key: https://console.groq.com/
+/// 1. Get a free Gateway API key: https://console.groq.com/
 /// 2. Replace YOUR_GROQ_API_KEY below or use environment variable
 /// 3. The API is FREE with unlimited usage (no credit card required)
 
@@ -191,23 +193,12 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
     sendTimeout: const Duration(seconds: 30),
   ));
 
-  // API Configuration - uses centralized EnvConfig
-  static String get _groqApiKey => EnvConfig.groqApiKey;
+  // P6-019: model routing is server-side; client sends gateway mode only.
+  static const List<String> _legacyModelLabels = ['gateway'];
+  static String _modelName = _legacyModelLabels[0];
 
-  static String get _groqUrl => UrlConstants.groqChatCompletions;
-  // Groq model names to try in order (favor accuracy for African languages)
-  // Note: Aya 8B can be less reliable for some translations (e.g., Yoruba),
-  // so we prefer the larger Llama model first for quality, then fall back.
-  // Verified available on Groq (Feb 2026). aya-8b is NOT available on Groq.
-  // See https://console.groq.com/docs/models for the current model list.
-  static const List<String> _modelNames = [
-    'llama-3.3-70b-versatile',   // Highest quality, multilingual, free on Groq
-    'llama-3.1-8b-instant',      // Faster fallback (~560 tok/s)
-  ];
-  static String _modelName = _modelNames[0];
-
-  /// Groq model ids users can pick for JSON / structured Polie calls.
-  static List<String> get polieGroqModelIds => List<String>.unmodifiable(_modelNames);
+  static List<String> get polieGroqModelIds =>
+      List<String>.unmodifiable(_legacyModelLabels);
 
   // Supported African languages list (text + speech-friendly where possible)
   static const List<Map<String, String>> _supportedLanguageOptions = [
@@ -459,275 +450,15 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   }
 
   void _initializeSystemPrompt() {
-    // Polie Premium: Enhanced system prompts for all modes
-    if (_mode == PolieMode.translation) {
-      _systemPrompt = '''You are Polie: an expert, culturally aware translation assistant for African languages.
-
-MODE: TRANSLATE
-
-RULES:
-1. Confirm source/target only if missing; otherwise output translation first with canonical diacritics. No refusals or unnecessary clarifications.
-2. For "How do you say X" or any phrase/sentence, provide the $_targetLanguage translation immediately.
-3. Double-check kinship terms, directional words, and culturally-specific vocabulary. Cross-reference with multiple sources when uncertain.
-4. Provide optional ASCII fallback in parentheses only if helpful. Add Usage (formal/informal) and brief Notes (1–2 lines).
-5. Never start lessons or introduce other languages unless requested.
-
-FEW-SHOT (error-prone terms): For Yoruba: egbon = older sibling, aburo = younger sibling, iya = mother, baba = father. Apply equivalent care for other languages.
-GUARDRAIL: If unsure about a translation, say so and provide alternatives (e.g. "Possible translations: A) ... B) ...").
-
-FORMAT:
-Translation: <with diacritics>
-ASCII: (<fallback>)
-Usage: <register>
-Notes: <1–2 lines>
-
-ACCURACY: Use correct orthography and diacritics (e.g. Yoruba: Báwo, Ẹ káàrọ̀). For tonal languages, include tone marks; if ambiguous, give most likely option first then one short alternative.
-SUPPORTED: Yoruba, Hausa, Igbo, Swahili, Zulu, Xhosa, Amharic, Twi, Afrikaans, Nigerian Pidgin — verify spelling and register.
-CULTURAL: Use correct formal/informal and social hierarchy; point out polite alternatives where appropriate.
-
-${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
-${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
-
-${_languageFocusBlock()}
-${_scenarioHintsBlock()}
-
-Be accurate, culturally appropriate, and instant.''';
-      return;
-    }
-
-    if (_mode == PolieMode.tutor) {
-      final cefrLevel = _cefrInfo.level;
-      final cefrScore = _cefrInfo.score;
-
-      _systemPrompt = '''You are Polie Premium: a structured, culturally-aware language tutor for African languages.
-
-MODE: TUTOR
-
-STRICT RULES:
-- Do NOT tell stories or narratives unless the user explicitly requests one (e.g. "tell me a story").
-- Always teach in the user's proficiency language (default: English) unless they specify otherwise.
-- Structure every teaching response in this order: Explanation → Examples → Practice Exercise → Expected Answers (hidden until user attempts).
-
-REQUIRED RESPONSE STRUCTURE:
-1. **Explanation**: What the concept is (clear, concise; use the user's language).
-2. **Examples**: At least 5 examples with translation and pronunciation (phonetic/IPA). Include usage in sentences.
-3. **Practice Exercise**: 3–5 questions for the user (fill-in, multiple choice, translation, or short answer).
-4. **Expected Answers**: Provide correct answers in a clearly marked section (e.g. "Expected answers (try first): ...") so the user can check after attempting.
-
-When the user says "teach me about [topic]" (e.g. verbs, greetings, numbers):
-- For verbs: list key verbs, meanings, conjugations, usage in sentences, pronunciation guides (phonetic), spelling/diacritic notes, then a short quiz.
-- For any topic: same pattern — concept, 5+ examples with translation and pronunciation, then 3–5 practice questions and expected answers.
-
-ADDITIONAL:
-- Suggest connecting to pronunciation scoring when teaching sounds or phrases (e.g. "Try the pronunciation feature to get a score on this phrase.").
-- Note important vocabulary for the user's word list (e.g. "Add to your list: [word1], [word2]").
-- Use correct orthography and diacritics for the target language. CEFR context: $cefrLevel (${cefrScore.toStringAsFixed(0)}%).
-
-${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
-${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
-
-${_languageFocusBlock()}
-${_scenarioHintsBlock()}
-
-Be encouraging, patient, and culturally sensitive. No storytelling unless asked.''';
-      return;
-    }
-    
-    if (_mode == PolieMode.roleplay) {
-      final examples = RoleplayDataset.getFewShotExamples(_selectedLanguage, count: 3);
-      String examplesText = '';
-      if (examples.isNotEmpty) {
-        examplesText = '\n\nFEW-SHOT EXAMPLES:\n';
-        for (final example in examples) {
-          examplesText += 'Scenario: ${example.scenario}\n';
-          examplesText += 'User: ${example.userUtterance}\n';
-          examplesText += 'Assistant: ${example.assistantResponse}\n';
-          examplesText += 'Notes: ${example.notes}\n\n';
-        }
-      }
-
-      String scenarioContext = '';
-      if (_currentRoleplayScenario != null) {
-        scenarioContext = '''
-
-CURRENT SCENARIO:
-Scenario: ${_currentRoleplayScenario!.scenario}
-Context: ${_currentRoleplayScenario!.notes}
-Example User Utterance: "${_currentRoleplayScenario!.userUtterance}"
-Expected Response Style: "${_currentRoleplayScenario!.assistantResponse}"
-
-Use this scenario. Play the role (e.g. shopkeeper, waiter). Track turns (current: $_roleplayTurnCount). Offer 2–3 branching choices when appropriate.
-''';
-      }
-
-      _systemPrompt = '''You are Polie Premium in ROLEPLAY MODE: an immersive conversation partner for practicing $_targetLanguage.
-
-MODE: ROLEPLAY
-
-OPENING: You MUST speak first. Set the scene in BOTH the target language ($_targetLanguage) AND English translation. Example: "Welcome! You've just arrived at a busy market in Lagos. A vendor approaches you... [Yoruba: E kaabo! Se o fe ra nkankan?] (Welcome! Do you want to buy something?)"
-
-AFTER EACH USER RESPONSE:
-1. Gentle correction (if needed): briefly note the correct form and translation of what they said.
-2. Translation: provide the meaning of what the user said in English.
-3. Continue the conversation naturally in character. Stay in character; use natural, everyday vocabulary appropriate to the scenario.
-
-TRACKING: Count turns. After 8–10 turns, provide a short summary: vocabulary learned, grammar points covered, and an accuracy/feedback note. Adapt difficulty (vocabulary and complexity) based on how the user is doing.
-$scenarioContext
-
-${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
-${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
-Current CEFR: ${_cefrInfo.level}. Difficulty: $_difficulty (1=Beginner, 5=Advanced).
-$examplesText
-
-${_languageFocusBlock()}
-${_scenarioHintsBlock()}
-
-Be encouraging, stay in character, and teach through natural dialogue.''';
-      return;
-    }
-    
-    if (_mode == PolieMode.conversation) {
-      final defaultTopicSuggestions = ['Greetings', 'Weather', 'Food', 'Travel', 'Hobbies', 'Family', 'Work', 'Shopping', 'Health', 'Education'];
-
-      _systemPrompt = '''You are Polie Premium: a warm, natural conversation partner for practicing $_targetLanguage.
-
-MODE: CONVERSATION
-
-BEHAVIOUR:
-- Start with a warm, natural greeting. Adapt to user's proficiency (CEFR: ${_cefrInfo.level}).
-- Engage naturally as a conversation partner while gently correcting errors. Corrections should be visible but not interrupting (e.g. "Nice! Small note: [correction]. You said '[attempt]' — the usual way is '[corrected]'.").
-- Note interesting or new vocabulary as you go. After every 5 exchanges, briefly summarize new words learned (e.g. "Words we used: [list with short meanings]").
-- Provide translations on demand: "Translation: [text]". Use topic suggestions when flow stalls: ${defaultTopicSuggestions.join(', ')}.
-
-DIACRITICS (MANDATORY):
-- ALWAYS use correct diacritics and tone marks for $_targetLanguage. This is non-negotiable.
-- For Yoruba: use ẹ, ọ, ṣ, and tone marks (à, á, è, é, ì, í, ò, ó, ù, ú, ǹ, ń). Example: "Ẹ káàrọ̀" not "E kaaro", "Báwo ni" not "Bawo ni".
-- For Igbo: use ụ, ọ, ị and proper marks. For Hausa: use ɓ, ɗ, ƙ where applicable.
-- Never omit diacritics even in casual conversation. Learners must see correct orthography at all times.
-
-${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
-${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
-
-${_languageFocusBlock()}
-${_scenarioHintsBlock()}
-
-Be warm, encouraging, and culturally sensitive.''';
-      return;
-    }
-    
-    if (_mode == PolieMode.vocab) {
-      _systemPrompt = '''You are Polie Premium: a vocabulary tutor for $_targetLanguage.
-
-MODE: VOCABULARY
-
-PRESENT EACH WORD WITH:
-- Word in target language (correct diacritics)
-- Pronunciation (phonetic / IPA)
-- Meaning (clear, brief)
-- 2 example sentences (target + translation)
-- Related words (synonyms, opposites, or same topic)
-
-SPACED REPETITION: Present new words, then mix in previously learned words for reinforcement. Do not only introduce new items; revisit earlier words in the same session.
-After presenting 5 new words, give a quick review quiz (e.g. "Quick quiz: What does [word] mean?" or match/translate) before introducing more.
-
-Progress is tracked; prioritize words due for review when relevant. Current CEFR: ${_cefrInfo.level}.
-
-${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
-${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
-
-${_languageFocusBlock()}
-${_scenarioHintsBlock()}
-
-Keep sessions engaging and reinforce retention.''';
-      return;
-    }
-    
-    if (_mode == PolieMode.review) {
-      _systemPrompt = '''You are Polie Premium: a review and quiz partner for $_targetLanguage.
-
-MODE: REVIEW
-
-FOCUS: Test previously learned material. Do not introduce new vocabulary as the main goal; reinforce what the user has already seen.
-
-QUESTION TYPES: Use a mix of multiple choice, fill-in-the-blank, and translation both ways (target→$_sourceLanguage and $_sourceLanguage→$_targetLanguage). One question at a time; give immediate feedback (correct/incorrect and brief explanation).
-
-ORDER: Start with the most recently learned words, then mix in older ones. Track correct vs incorrect in your feedback and adjust difficulty (easier items if many errors, slightly harder if they are doing well). Celebrate progress (e.g. "3 in a row!", "Nice recall!").
-
-After a batch of questions, give a short summary: how many correct, what to review again, and encouragement. Current CEFR: ${_cefrInfo.level}.
-
-${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
-${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
-
-${_languageFocusBlock()}
-${_scenarioHintsBlock()}
-
-Keep reviews efficient and motivating.''';
-      return;
-    }
-
-    if (_mode == PolieMode.pronunciation) {
-      _systemPrompt = '''You are Polie Premium: a pronunciation coach for $_targetLanguage.
-
-MODE: PRONUNCIATION
-
-RESPONSE FORMAT (required):
-1. Target phrase
-2. IPA / phonetic guide
-3. Mouth-position tip
-4. Minimal pair practice
-5. 1 short speaking drill
-
-RULES:
-1. Guide the learner through sounds, tones, and phonetic patterns of $_targetLanguage.
-2. Provide IPA transcriptions when helpful.
-3. Explain mouth/tongue positions for difficult sounds.
-4. Give minimal pairs to distinguish similar sounds.
-5. Encourage short, repeatable speaking drills.
-6. Be culturally sensitive about regional pronunciation variants.
-7. Keep each response practical and speaking-focused (no long grammar lectures).
-
-${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
-${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
-${_languageFocusBlock()}
-${_scenarioHintsBlock()}
-
-Always respond in English with $_targetLanguage examples. Mark pronunciation-critical words in **bold**.''';
-      return;
-    }
-
-    if (_mode == PolieMode.grammar) {
-      _systemPrompt = '''You are Polie Premium: a grammar tutor for $_targetLanguage.
-
-MODE: GRAMMAR
-
-RESPONSE FORMAT (required):
-1. Rule
-2. Pattern template
-3. Examples (target language + translation)
-4. Practice questions (2-3)
-5. Corrections rubric
-
-RULES:
-1. Teach grammar rules of $_targetLanguage with clear, simple explanations.
-2. Provide sentence pattern templates with fill-in exercises.
-3. Compare grammar structures to English when helpful.
-4. Focus on one grammar concept at a time.
-5. Give 2-3 practice sentences after each explanation.
-6. Correct grammar errors gently with short explanations.
-7. Keep explanations precise and avoid free-form conversation drift.
-
-${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
-${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
-${_languageFocusBlock()}
-${_scenarioHintsBlock()}
-
-Always respond in English with $_targetLanguage examples.
-Use structured format: Rule -> Example -> Practice.''';
-      return;
-    }
-
-    // Default: Tutor mode (already set above)
+    _systemPrompt = null;
   }
+
+  AiGatewayClient get _gateway => AiGatewayClient(ref.read(client));
+
+  Dio get _gatewayDio => ref.read(client);
+
+  String get _gatewayMode =>
+      AiGatewayClient.gatewayModeForPolie(_mode.name);
 
   Future<void> setLanguage(String language) async {
     // Save current chat history before switching languages
@@ -1158,7 +889,7 @@ Use structured format: Rule -> Example -> Practice.''';
           return;
         } catch (e) {
           logger.warn('Hybrid Polie failed, falling back to standard mode', tag: 'ai-chat', error: e);
-          // Fall through to standard Groq implementation
+
         }
       }
     }
@@ -1172,12 +903,12 @@ Use structured format: Rule -> Example -> Practice.''';
         _userInterrupt = false;
 
         // Try different model names if previous one failed
-        final currentModel = _modelNames[modelIndex];
+        final currentModel = _legacyModelLabels[modelIndex];
 
         // Ensure system prompt is not empty (use override if provided)
         final systemPrompt = (systemPromptOverride ?? _systemPrompt)?.trim() ?? 'You are Polie, a helpful AI language assistant for African languages.';
         
-        // Build messages array - CRITICAL: Groq API format
+        // Build messages array - CRITICAL: Gateway API format
         // Groq expects:
         // - messages: array of {role: "user"|"assistant", content: string}
         // - system messages are passed separately (not in messages array for some models)
@@ -1293,263 +1024,35 @@ Use structured format: Rule -> Example -> Practice.''';
           effectiveSystemPrompt = enhancedSystemPrompt;
         }
 
-        // When app has no Groq key, use backend completion proxy (no streaming)
-        if (_groqApiKey.isEmpty || _groqApiKey == 'YOUR_GROQ_API_KEY') {
-          try {
-            await ApiService.initialize();
-            final apiMessages = messagesList
-                .map<Map<String, dynamic>>((m) => {'role': m['role'] as String, 'content': m['content'] as String})
-                .toList();
-            final resp = await ApiService.post(
-              '/api/ai/chat/completion',
-              data: {
-                'messages': apiMessages,
-                'systemPrompt': effectiveSystemPrompt ?? systemPrompt,
-                'temperature': _temperatureForMode(),
-                'max_tokens': _maxTokensForMode(),
-                'language': _targetLanguage,
-                'languageCode': SupportedLanguages.getLanguageCode(_targetLanguage),
-                'sourceLanguage': SupportedLanguages.getLanguageCode(_sourceLanguage),
-                'targetLanguage': SupportedLanguages.getLanguageCode(_targetLanguage),
-                'cefr': _cefrInfo.level,
-                'mode': _mode.name,
-              },
-            );
-            if (resp.statusCode == 200 && resp.data != null) {
-              final content = (resp.data is Map) ? (resp.data['content']?.toString() ?? '').trim() : '';
-              if (content.isNotEmpty) {
-                final modeConstrained = _applyModeOutputContract(content);
-                final enforced = DiacriticsEnforcer.enforceWithMetadata(
-                  modeConstrained,
-                  _selectedLanguage,
-                  enableFuzzy: true,
-                  fuzzyThreshold: 0.75,
-                );
-                final correctedOutput = enforced['text'] as String;
-                final assistantMessage = ChatMessage(
-                  role: 'assistant',
-                  content: correctedOutput,
-                  timestamp: DateTime.now(),
-                );
-                _messages.add(assistantMessage);
-                _turn = ConversationTurn.user;
-                state = state.copyWith(isLoading: false);
-                return;
-              }
-              throw Exception('AI returned an empty response. Please try again.');
+        String output = '';
+        try {
+          final messagesForGateway = messagesList
+              .map((m) => {
+                    'role': m['role'] as String,
+                    'content': m['content'] as String,
+                  })
+              .toList();
+          await for (final delta in _gateway.streamChatTokens(
+            messages: messagesForGateway,
+            mode: _gatewayMode,
+            temperature: _temperatureForMode(),
+            maxTokens: _maxTokensForMode(),
+            language: _targetLanguage,
+            languageCode: SupportedLanguages.getLanguageCode(_targetLanguage),
+            sourceLanguage: SupportedLanguages.getLanguageCode(_sourceLanguage),
+            targetLanguage: SupportedLanguages.getLanguageCode(_targetLanguage),
+            cefr: _cefrInfo.level,
+            cancelToken: cancelToken,
+          )) {
+            if (_userInterrupt) {
+              state = state.copyWith(isLoading: false);
+              return;
             }
-            // Non-200 response (e.g. if validateStatus allowed it): extract error from body
-            final respData = resp.data;
-            String errMsg = 'Request failed. Please try again.';
-            if (respData is Map) {
-              errMsg = (respData['error'] ?? respData['message'] ?? respData['detail'] ?? errMsg).toString();
-            } else if (respData is String && respData.trim().isNotEmpty) {
-              errMsg = respData.trim();
-            }
-            throw Exception(errMsg);
-          } on DioException catch (e) {
-            throw Exception(TransportErrorPolicy.toUserMessage(e));
+            output += delta;
+            yield delta;
           }
-        }
-        
-        // Log the final message structure for debugging
-        logger.debug('Sending to Groq API', tag: 'ai-chat', context: {
-          'model': currentModel,
-          'systemPromptLength': systemPrompt.length,
-          'messagesCount': messagesList.length,
-        });
-        for (int i = 0; i < messagesList.length; i++) {
-          final msg = messagesList[i];
-          final content = msg["content"] as String;
-          logger.debug('Message details', tag: 'ai-chat', context: {
-            'index': i,
-            'role': msg["role"],
-            'contentLength': content.length,
-            'preview': content.substring(0, content.length > 50 ? 50 : content.length),
-          });
-        }
-        
-        // Validate model name
-        if (currentModel.isEmpty) {
-          throw Exception('Invalid model configuration. Please check your settings.');
-        }
-        
-        logger.debug('Sending to Groq', tag: 'ai-chat', context: {'model': currentModel, 'messagesCount': messagesList.length});
-        
-        // Track request start time for performance metrics
-        final requestStartTime = DateTime.now();
-        final performanceTrackingId = _performanceAnalytics.startTracking(
-          operationName: 'groq_api_call',
-          metadata: {
-            'model': currentModel,
-            'message_count': messagesList.length,
-            'mode': _mode.toString(),
-          },
-        );
-        
-        // Enhanced request with timeout, error recovery, and better error handling
-        final response = await _errorRecovery.executeWithRecovery(
-          operation: () => _dio.post(
-          _groqUrl,
-          cancelToken: cancelToken,
-          options: Options(
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer $_groqApiKey',
-            },
-            responseType: ResponseType.stream,
-            validateStatus: (status) => status! < 500, // Don't throw on 4xx, handle manually
-            receiveTimeout: const Duration(seconds: 60), // 60 second timeout for responses
-            sendTimeout: const Duration(seconds: 30), // 30 second timeout for sending
-          ),
-          data: {
-            "model": currentModel,
-            "messages": [
-              // Add system message as first message (Groq accepts this format)
-              if (systemPrompt.isNotEmpty)
-                {
-                  "role": "system",
-                  "content": systemPrompt,
-                },
-              // Add conversation messages
-              ...messagesList,
-            ],
-            "temperature": _temperatureForMode(),
-            "max_tokens": _maxTokensForMode(),
-            "stream": true,
-          },
-        ).timeout(
-          const Duration(seconds: 90), // Overall timeout
-          onTimeout: () {
-            throw TimeoutException('Request timed out. Please check your connection and try again.');
-          },
-        ),
-          maxRetries: 3,
-          operationName: 'groq_api_request',
-          shouldRetry: (error) {
-            // Retry on network errors and timeouts
-            return error is DioException || error is TimeoutException;
-          },
-        );
-        
-        // Stop performance tracking
-        _performanceAnalytics.stopTracking(
-          trackingId: performanceTrackingId,
-          operationName: 'groq_api_call',
-          additionalMetadata: {
-            'status_code': response.statusCode,
-            'duration_ms': DateTime.now().difference(requestStartTime).inMilliseconds,
-          },
-        );
-        
-        // Check for 4xx errors manually
-        if (response.statusCode != null && response.statusCode! >= 400 && response.statusCode! < 500) {
-          String errorDetail = 'Bad request';
-          try {
-            // Try to read error response if available
-            if (response.data != null) {
-              // For stream responses, we might not be able to read the body easily
-              // But we can log the status code for debugging
-              logger.error('Groq API error', tag: 'ai-chat', context: {'statusCode': response.statusCode});
-              errorDetail = 'Request validation failed. Please check your message format and API key.';
-            }
-          } catch (e) {
-            logger.error('Error reading response', tag: 'ai-chat', error: e);
-          }
-          
-          if (response.statusCode == 400) {
-            // Provide more helpful error message
-            throw Exception('Invalid request format. $errorDetail\n\nPlease ensure:\n- Your message is not empty\n- API key is valid\n- Message format is correct');
-          } else if (response.statusCode == 401) {
-            throw Exception('Invalid API key. Please check your Groq API key in settings.');
-          } else if (response.statusCode == 429) {
-            throw Exception('Rate limit exceeded. Please try again in a few moments.');
-          } else {
-            throw Exception('Request failed with status ${response.statusCode}: $errorDetail');
-          }
-        }
-
-        String buffer = "";
-        String output = "";
-
-        final responseBody = response.data;
-        // Check if response is a stream
-        if (responseBody == null) {
-          throw Exception('Unexpected response from Groq (missing stream body).');
-        }
-
-        // Handle stream response - Dio returns ResponseBody for stream responses
-        final byteStream = (responseBody as dynamic).stream.cast<List<int>>();
-
-        await for (final chunk in byteStream
-            .transform(utf8.decoder)
-            .transform(const LineSplitter())) {
-          if (_userInterrupt) {
-            state = state.copyWith(isLoading: false);
-            return;
-          }
-
-          if (chunk.startsWith("data: ")) {
-            final jsonStr = chunk.substring(6).trim();
-            if (jsonStr == "[DONE]") break;
-
-            try {
-              // Use enhanced JSON parsing with fallback
-              final jsonData = _parseJsonSafely(jsonStr);
-              if (jsonData == null) {
-                continue; // Skip malformed JSON chunks
-              }
-              
-              final delta = jsonData["choices"]?[0]?["delta"]?["content"];
-
-              if (delta != null && delta is String) {
-                buffer += delta;
-
-                final last = buffer.trim().isNotEmpty
-                    ? buffer.trim()[buffer.trim().length - 1]
-                    : '';
-
-                // Language-aware sentence segmentation
-                // Support for African language punctuation patterns
-                final isSentenceEnd = [".", "!", "?", "…", "\n"].contains(last);
-                
-                // Check for language-specific patterns (Yoruba, Swahili, etc.)
-                final hasLanguagePause = buffer.contains(":") || 
-                    buffer.contains(";") ||
-                    (buffer.length > 3 && buffer.substring(buffer.length - 3).contains(" "));
-
-                final isTurnHandOff = buffer.toLowerCase().contains("your turn") ||
-                    buffer.toLowerCase().contains("now you try") ||
-                    buffer.toLowerCase().contains("ask me") ||
-                    buffer.trim().endsWith("?");
-
-                // Smart buffering: emit on sentence boundaries or long pauses
-                if (isSentenceEnd || hasLanguagePause || buffer.length > 60) {
-                  output += buffer;
-                  yield buffer;
-                  buffer = "";
-
-                  // IMPORTANT: Do not cancel the stream early for conversation/roleplay.
-                  // Earlier heuristics caused short replies whenever Polie asked a question.
-                  if (isTurnHandOff &&
-                      _mode != PolieMode.conversation &&
-                      _mode != PolieMode.roleplay) {
-                    _turn = ConversationTurn.user;
-                    _currentStreamCancel?.call();
-                    break;
-                  }
-                }
-              }
-            } catch (_) {
-              // Ignore malformed JSON chunks
-            }
-          }
-        }
-
-        // Flush remaining buffer
-        if (buffer.isNotEmpty) {
-          yield buffer;
-          output += buffer;
+        } on AiGatewayException catch (e) {
+          throw Exception(AiGatewayClient.userMessageFor(e, body: e.body));
         }
 
         // Evaluate user performance and feed learning engine
@@ -1625,7 +1128,7 @@ Use structured format: Rule -> Example -> Practice.''';
 
         // Track Polie performance metrics
         try {
-          final responseTime = DateTime.now().difference(requestStartTime);
+          final responseTime = DateTime.now().difference(messageStartTime);
           final telemetry = ref.read(telemetryServiceProvider);
           await telemetry.trackPoliePerformance(
             mode: _mode.name,
@@ -1649,11 +1152,11 @@ Use structured format: Rule -> Example -> Practice.''';
 
         // Try next model name if we get a 404 (model not found)
         if (e is DioException && e.response?.statusCode == 404) {
-          if (modelIndex < _modelNames.length - 1) {
+          if (modelIndex < _legacyModelLabels.length - 1) {
             modelIndex++;
-            _modelName = _modelNames[modelIndex];
+            _modelName = _legacyModelLabels[modelIndex];
             if (kDebugMode) {
-              logger.warn('Model not found, trying alternative', tag: 'ai-chat', context: {'previousModel': _modelNames[modelIndex - 1], 'tryingModel': _modelName});
+              logger.warn('Model not found, trying alternative', tag: 'ai-chat', context: {'previousModel': _legacyModelLabels[modelIndex - 1], 'tryingModel': _modelName});
             }
             continue; // Try with next model
           }
@@ -1671,7 +1174,7 @@ Use structured format: Rule -> Example -> Practice.''';
           if (e.response != null) {
             final errorData = e.response!.data;
             if (e.response!.statusCode == 400) {
-              logger.error('Groq API 400 error', tag: 'ai-chat', context: {'errorData': errorData});
+              logger.error('Gateway API 400 error', tag: 'ai-chat', context: {'errorData': errorData});
             }
           }
           errorMessage = TransportErrorPolicy.toUserMessage(e);
@@ -1711,75 +1214,20 @@ Use structured format: Rule -> Example -> Practice.''';
     String userMessage, {
     String? groqModelOverride,
   }) async {
-    const jsonSystemPrompt =
-        'You are a JSON API. You MUST respond with ONLY valid JSON. '
-        'No markdown fences, no explanation, no prose before or after the JSON. '
-        'Follow the exact schema provided in the user message.';
-
-    final jsonModel = (groqModelOverride != null &&
-            groqModelOverride.isNotEmpty &&
-            _modelNames.contains(groqModelOverride))
-        ? groqModelOverride
-        : _modelName;
-
-    if (_groqApiKey.isEmpty || _groqApiKey == 'YOUR_GROQ_API_KEY') {
-      await ApiService.initialize();
-      final resp = await ApiService.post(
-        '/api/ai/chat/completion',
-        data: {
-          'messages': [
-            {'role': 'user', 'content': userMessage},
-          ],
-          'systemPrompt': jsonSystemPrompt,
-          'temperature': 0.3,
-          'max_tokens': _maxTokensForMode(),
-          'language': _targetLanguage,
-          'mode': _mode.name,
-          'model': jsonModel,
-          'response_format': {'type': 'json_object'},
-        },
+    try {
+      return await _gateway.completePolieJson(
+        polieModeName: _mode.name,
+        userMessage: userMessage,
+        temperature: 0.3,
+        maxTokens: _maxTokensForMode(),
+        language: _targetLanguage,
+        languageCode: SupportedLanguages.getLanguageCode(_targetLanguage),
+        sourceLanguage: SupportedLanguages.getLanguageCode(_sourceLanguage),
+        targetLanguage: SupportedLanguages.getLanguageCode(_targetLanguage),
       );
-      if (resp.statusCode == 200 && resp.data != null) {
-        final content = (resp.data is Map)
-            ? (resp.data['content']?.toString() ?? '').trim()
-            : '';
-        if (content.isNotEmpty) return content;
-      }
-      throw Exception('Backend returned empty response for JSON request.');
+    } on AiGatewayException catch (e) {
+      throw Exception(AiGatewayClient.userMessageFor(e, body: e.body));
     }
-
-    final response = await _dio.post(
-      _groqUrl,
-      options: Options(
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $_groqApiKey',
-        },
-        receiveTimeout: const Duration(seconds: 60),
-        sendTimeout: const Duration(seconds: 30),
-      ),
-      data: {
-        'model': jsonModel,
-        'messages': [
-          {'role': 'system', 'content': jsonSystemPrompt},
-          {'role': 'user', 'content': userMessage},
-        ],
-        'temperature': 0.3,
-        'max_tokens': _maxTokensForMode(),
-        'stream': false,
-        'response_format': {'type': 'json_object'},
-      },
-    );
-
-    if (response.statusCode == 200 && response.data != null) {
-      final choices = response.data['choices'] as List?;
-      if (choices != null && choices.isNotEmpty) {
-        final content =
-            choices[0]['message']?['content']?.toString().trim() ?? '';
-        if (content.isNotEmpty) return content;
-      }
-    }
-    throw Exception('Groq returned empty response for JSON request.');
   }
 
   // Random number generator for roleplay scenarios
@@ -1954,30 +1402,13 @@ Return only valid JSON.
 ''';
 
     try {
-      final response = await _dio.post(
-        _groqUrl,
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $_groqApiKey',
-            'Content-Type': 'application/json',
-          },
-        ),
-        data: {
-          "model": _modelName,
-          "messages": [
-            {"role": "system", "content": "You are a JSON-output grammar checker."},
-            {"role": "user", "content": prompt}
-          ],
-          "temperature": 0.0,
-          "max_tokens": 300,
-        },
+      final text = await _gateway.completePolieJson(
+        polieModeName: 'tutor',
+        userMessage: prompt,
+        temperature: 0.0,
+        maxTokens: 300,
+        language: language,
       );
-
-      if (response.statusCode != 200) {
-        throw Exception('Grammar API error: ${response.data}');
-      }
-
-      final text = response.data['choices'][0]['message']['content']?.toString() ?? '';
       final json = jsonDecode(text);
 
       final corrected = json['corrected'] as String? ?? userText;
@@ -2055,20 +1486,14 @@ Return only valid JSON.
   // ----- Audio Transcription -----
   Future<String> transcribeAudio(Uint8List audioData) async {
     try {
-      final response = await _dio.post(
-        UrlConstants.groqAudioTranscriptions,
+      final response = await _gatewayDio.post(
+        '/api/voice/stt/transcribe',
         data: FormData.fromMap({
           'file': MultipartFile.fromBytes(audioData, filename: 'audio.wav'),
-          'model': 'whisper-large-v3',
         }),
-        options: Options(
-          headers: {
-            "Authorization": "Bearer $_groqApiKey",
-          },
-        ),
       );
-
-      final text = response.data['text']?.toString() ?? '';
+      final data = response.data;
+      final text = data is Map ? data['text']?.toString() ?? '' : '';
       return text.trim();
     } catch (e) {
       logger.error('Audio transcription error', tag: 'ai-chat', error: e);
@@ -2079,20 +1504,15 @@ Return only valid JSON.
   // ----- Pronunciation Scoring -----
   Future<double> scorePronunciation(Uint8List audioData) async {
     try {
-      final response = await _dio.post(
-        UrlConstants.groqAudioTranscriptions,
+      final response = await _gatewayDio.post(
+        '/api/voice/stt/transcribe',
         data: FormData.fromMap({
           'file': MultipartFile.fromBytes(audioData, filename: 'audio.wav'),
-          'model': 'whisper-large-v3',
         }),
-        options: Options(
-          headers: {
-            "Authorization": "Bearer $_groqApiKey",
-          },
-        ),
       );
-
-      final raw = response.data['confidence'];
+      final data = response.data;
+      if (data is! Map) throw pronunciationUnavailable;
+      final raw = data['confidence'];
       if (raw is! num) throw pronunciationUnavailable;
       final confidence = raw.toDouble();
       _recordSessionMetrics(pron: confidence);
@@ -2116,14 +1536,12 @@ Return only valid JSON.
     try {
       // Transcribe user audio using Groq Whisper
       final transResp = await _dio.post(
-        UrlConstants.groqAudioTranscriptions,
+        '/api/voice/stt/transcribe',
         data: FormData.fromMap({
           'file': MultipartFile.fromBytes(userAudio, filename: 'speech.wav'),
           'model': 'whisper-large-v3',
         }),
-        options: Options(
-          headers: {'Authorization': 'Bearer $_groqApiKey'},
-        ),
+        options: Options(),
       );
 
       final userText = transResp.data['text']?.toString() ?? '';
@@ -2169,23 +1587,13 @@ Return only JSON.
 ''';
 
     try {
-      final resp = await _dio.post(
-        _groqUrl,
-        data: {
-          "model": _modelName,
-          "messages": [
-            {"role": "system", "content": "You are a JSON-output listening generator."},
-            {"role": "user", "content": prompt}
-          ],
-          "temperature": 0.3,
-          "max_tokens": 500,
-        },
-        options: Options(
-          headers: {'Authorization': 'Bearer $_groqApiKey'},
-        ),
+      final text = await _gateway.completePolieJson(
+        polieModeName: 'tutor',
+        userMessage: prompt,
+        temperature: 0.3,
+        maxTokens: 500,
+        language: language,
       );
-
-      final text = resp.data['choices'][0]['message']['content'];
       return jsonDecode(text);
     } catch (e) {
       logger.error('Listening passage generation error', tag: 'ai-chat', error: e);
@@ -2208,20 +1616,13 @@ Return only JSON.
 ''';
 
     try {
-      final resp = await _dio.post(
-        _groqUrl,
-        data: {
-          "model": _modelName,
-          "messages": [{"role": "user", "content": prompt}],
-          "temperature": 0.0,
-          "max_tokens": 150
-        },
-        options: Options(
-          headers: {'Authorization': 'Bearer $_groqApiKey'},
-        ),
+      final raw = await _gateway.completePolieJson(
+        polieModeName: 'tutor',
+        userMessage: prompt,
+        temperature: 0.0,
+        maxTokens: 150,
       );
-
-      final json = jsonDecode(resp.data['choices'][0]['message']['content']);
+      final json = jsonDecode(raw);
       final score = (json['score'] as num).toDouble();
       _recordSessionMetrics(comp: score);
       return score;
@@ -2251,23 +1652,13 @@ Return only JSON.
 ''';
 
     try {
-      final resp = await _dio.post(
-        _groqUrl,
-        data: {
-          "model": _modelName,
-          "messages": [
-            {"role": "system", "content": "You are a curriculum generator that outputs strict JSON."},
-            {"role": "user", "content": prompt}
-          ],
-          "temperature": 0.2,
-          "max_tokens": 1500,
-        },
-        options: Options(
-          headers: {'Authorization': 'Bearer $_groqApiKey'},
-        ),
+      final text = await _gateway.completePolieJson(
+        polieModeName: 'tutor',
+        userMessage: prompt,
+        temperature: 0.2,
+        maxTokens: 1500,
+        language: language,
       );
-
-      final text = resp.data['choices'][0]['message']['content'];
       return jsonDecode(text) as Map<String, dynamic>;
     } catch (e) {
       logger.error('Curriculum generation error', tag: 'ai-chat', error: e);

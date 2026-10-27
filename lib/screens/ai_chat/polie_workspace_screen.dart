@@ -14,6 +14,9 @@ import 'package:lingafriq/models/translation_history_model.dart';
 import 'package:lingafriq/models/tutor_progress_model.dart';
 import 'package:lingafriq/models/vocabulary_progress_model.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
+import 'package:lingafriq/providers/dio_provider.dart';
+import 'package:lingafriq/services/ai_gateway_client.dart';
+import 'package:lingafriq/utils/supported_languages.dart';
 import 'package:lingafriq/content/polie_conversation_prompt_builder.dart';
 import 'package:lingafriq/services/ai/conversation_persistence_service.dart';
 import 'package:lingafriq/services/ai/polie_conversation_stream_service.dart';
@@ -248,6 +251,7 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
     final modeIntroDismissed = useState<Set<String>>({});
 
     final chat = ref.read(groqChatProvider.notifier);
+    final gateway = AiGatewayClient(ref.read(client));
     Future<void> refreshTutorSavedCards() async {
       final saved = await PolieTutorSavedCardsService.loadSavedCards();
       tutorSavedCards.value = saved
@@ -330,18 +334,25 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
         sourceLanguage: src,
         targetLanguage: tgt,
       );
-      final snippets = await ref.read(poliePromptServiceProvider).loadSnippets();
-      final modes = snippets['modes'] as Map<String, dynamic>? ?? {};
-      final hint = modes[mode.name]?.toString();
-      if (hint != null && hint.isNotEmpty) {
-        chat.prependToSystemPrompt('MODE GUIDANCE: $hint');
-      }
     }
 
     Future<Map<String, dynamic>?> askForJson(String prompt) async {
       try {
-        final raw = await chat
-            .sendMessageForJson(prompt)
+        final tgt = activeMode.value == PolieMode.translation
+            ? translationTargetLang.value
+            : targetLanguage;
+        final src = activeMode.value == PolieMode.translation
+            ? translationSourceLang.value
+            : sourceLanguage;
+        final raw = await gateway
+            .completePolieJson(
+              polieModeName: activeMode.value.name,
+              userMessage: prompt,
+              language: tgt,
+              languageCode: SupportedLanguages.getLanguageCode(tgt),
+              sourceLanguage: SupportedLanguages.getLanguageCode(src),
+              targetLanguage: SupportedLanguages.getLanguageCode(tgt),
+            )
             .timeout(const Duration(seconds: 25));
         modeResponse.value = raw;
         final parsed = _tryParseJson(raw);
@@ -351,8 +362,11 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
           return null;
         }
         return parsed;
+      } on AiGatewayException catch (e) {
+        modeError.value = AiGatewayClient.userMessageFor(e, body: e.body);
+        return null;
       } catch (e) {
-        modeError.value = e.toString();
+        modeError.value = e.toString().replaceFirst('Exception: ', '');
         return null;
       }
     }
@@ -1508,10 +1522,12 @@ ${wantsEnglish ? '- After your reply, do NOT include the English translation in 
 User message: "$text"
 ''';
 
-          final raw = await chat.sendMessage(
-            chatPrompt,
-            systemPromptOverride:
-                'You are Polie. Follow the user message instructions exactly.',
+          final raw = await gateway.completePolieJson(
+            polieModeName: PolieMode.conversation.name,
+            userMessage: chatPrompt,
+            language: targetLanguage,
+            languageCode: SupportedLanguages.getLanguageCode(targetLanguage),
+            targetLanguage: SupportedLanguages.getLanguageCode(targetLanguage),
           );
           final targetReply = _cleanAiText(raw, fallback: raw).trim();
 
@@ -1842,15 +1858,7 @@ Language: $targetLanguage
 
     useEffect(() {
       final init = conversationOnly ? PolieMode.conversation : initialMode;
-      setMode(init).then((_) async {
-        if (init == PolieMode.conversation || conversationOnly) {
-          final prefix = await ref.read(polieConversationServiceProvider).buildPersonaSystemPrefix(
-            targetLanguage: targetLanguage,
-            roleplayScene: initialRoleplayScene,
-          );
-          ref.read(groqChatProvider.notifier).prependToSystemPrompt(prefix);
-        }
-      });
+      setMode(init);
       loadTranslationHistory();
       if (init == PolieMode.tutor) loadTutorLesson();
       if (init == PolieMode.vocab) loadVocabCard();
