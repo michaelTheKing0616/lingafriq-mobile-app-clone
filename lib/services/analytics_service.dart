@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
+import 'package:lingafriq/services/analytics_aggregator.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -63,12 +64,14 @@ class LearningAnalyticsService {
     String Function()? sessionIdFactory,
     DateTime Function()? now,
     int maxSendAttempts = 3,
+    LearningAnalyticsAggregator? aggregator,
   })  : _postBatch = postBatch ?? _defaultPostBatch,
         _loadPrefs = loadPrefs ?? SharedPreferences.getInstance,
         _isOnline = isOnline ?? (() async => true),
         _sessionIdFactory = sessionIdFactory ?? newSessionId,
         _now = now ?? DateTime.now,
-        _maxSendAttempts = maxSendAttempts;
+        _maxSendAttempts = maxSendAttempts,
+        _aggregator = aggregator ?? LearningAnalyticsAggregator(loadPrefs: loadPrefs, now: now);
 
   final AnalyticsBatchPost _postBatch;
   final AnalyticsPrefsLoader _loadPrefs;
@@ -76,6 +79,7 @@ class LearningAnalyticsService {
   final String Function() _sessionIdFactory;
   final DateTime Function() _now;
   final int _maxSendAttempts;
+  final LearningAnalyticsAggregator _aggregator;
 
   String? _activeSessionId;
   bool _sessionStartedEmitted = false;
@@ -106,7 +110,7 @@ class LearningAnalyticsService {
     _activeSessionId = sessionId ?? _sessionIdFactory();
     if (_sessionStartedEmitted) return;
     _sessionStartedEmitted = true;
-    await _enqueue(
+    await _submit(
       _envelope(
         eventName: 'session_started',
         metrics: const {},
@@ -123,7 +127,7 @@ class LearningAnalyticsService {
     required int latencyMs,
     required int hintsUsed,
   }) async {
-    await _enqueue(
+    await _submit(
       _envelope(
         eventName: 'exercise_answered',
         metrics: {
@@ -141,7 +145,7 @@ class LearningAnalyticsService {
     required String itemId,
     required ContentReportReasonCode reasonCode,
   }) async {
-    await _enqueue(
+    await _submit(
       _envelope(
         eventName: 'offline_operation',
         metrics: {
@@ -161,7 +165,7 @@ class LearningAnalyticsService {
     double? confidence,
   }) async {
     if (unsure) {
-      await _enqueue(
+      await _submit(
         _envelope(
           eventName: 'speech_attempt_scored',
           metrics: const {'unsure': true},
@@ -173,7 +177,7 @@ class LearningAnalyticsService {
       throw ArgumentError('phonesOk, toneOk and confidence required when not unsure');
     }
     final clamped = confidence.clamp(0.0, 1.0);
-    await _enqueue(
+    await _submit(
       _envelope(
         eventName: 'speech_attempt_scored',
         metrics: {
@@ -225,7 +229,7 @@ class LearningAnalyticsService {
     required int latencyMs,
     required bool fallbackUsed,
   }) async {
-    await _enqueue(
+    await _submit(
       _envelope(
         eventName: 'ai_turn',
         metrics: {
@@ -246,8 +250,21 @@ class LearningAnalyticsService {
     return _readQueue(prefs).length;
   }
 
+  /// AC1: send the closed UTC day rollup (one envelope) and flush the queue.
+  Future<void> flushDailyRollup() async {
+    final rollup = await _aggregator.closeCurrentDay();
+    if (rollup != null) {
+      await _enqueue(_rollupEnvelope(rollup));
+    }
+    if (await _isOnline()) {
+      await flush();
+    }
+  }
+
   Future<void> flush({bool forceWhileOffline = false}) async {
     if (!forceWhileOffline && !await _isOnline()) return;
+
+    await _enqueueStaleDayRollups();
 
     final prefs = await _loadPrefs();
     final queue = _readQueue(prefs);
@@ -322,6 +339,45 @@ class LearningAnalyticsService {
     final copy = Map<String, Object?>.from(row);
     copy.remove('_attempts');
     return copy;
+  }
+
+  Future<void> _submit(Map<String, Object?> envelope) async {
+    if (_aggregator.shouldPassthroughRaw(envelope)) {
+      await _enqueue(envelope);
+      return;
+    }
+    final completed = await _aggregator.record(envelope);
+    if (completed != null) {
+      await _enqueue(_rollupEnvelope(completed));
+    }
+  }
+
+  Future<void> _enqueueStaleDayRollups() async {
+    final today = utcDayKeyFrom(_now().toUtc());
+    while (true) {
+      final open = await _aggregator.loadedOpenDay();
+      if (open == null || open.utcDayKey == today) break;
+      final rollup = await _aggregator.closeCurrentDay();
+      if (rollup != null) {
+        await _enqueue(_rollupEnvelope(rollup));
+      }
+    }
+  }
+
+  Map<String, Object?> _rollupEnvelope(DailyLearningRollup rollup) {
+    final psn = _pseudonymousUserId;
+    if (psn == null || !psn.startsWith('psn_')) {
+      throw StateError('configureLearner before emitting analytics');
+    }
+    final context = <String, Object?>{
+      'platform': _platformName(),
+      if (_languageCode != null) 'language_code': _languageCode,
+    };
+    return _aggregator.rollupEnvelope(
+      rollup: rollup,
+      pseudonymousUserId: psn,
+      context: context,
+    );
   }
 
   Future<void> _enqueue(Map<String, Object?> envelope) async {

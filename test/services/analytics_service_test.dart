@@ -26,20 +26,23 @@ void main() {
     );
   }
 
-  test('session_started envelope shape and single emit per session', () async {
+  test('session_started buffers until daily rollup', () async {
     final posted = <List<Map<String, Object?>>>[];
     final service = buildService(posted: posted);
     service.configureLearner(accountId: '507f1f77bcf86cd799439011', languageCode: 'yo');
 
     await service.beginLearningSession();
     await service.beginLearningSession();
+    expect(posted, isEmpty);
 
+    await service.flushDailyRollup();
     expect(posted, hasLength(1));
     final event = posted.single.single;
-    expect(event['event_name'], 'session_started');
-    expect(event['schema_version'], '1');
+    expect(event['event_name'], 'offline_operation');
+    final metrics = event['metrics'] as Map<String, Object?>;
+    expect(metrics['daily_rollup'], isTrue);
+    expect(metrics['session_started_count'], 1);
     expect(event['pseudonymous_user_id'], pseudonymousIdFromAccountId('507f1f77bcf86cd799439011'));
-    expect(event['metrics'], isEmpty);
     expect(event.containsKey('answer'), isFalse);
   });
 
@@ -56,15 +59,16 @@ void main() {
       hintsUsed: 1,
     );
 
-    expect(posted, hasLength(2));
-    final answered = posted.last.single;
-    expect(answered['event_name'], 'exercise_answered');
-    final metrics = answered['metrics'] as Map<String, Object?>;
-    expect(metrics['correct'], isTrue);
-    expect(metrics['latency_ms'], 1200);
-    expect(metrics['hints'], 1);
-    expect(metrics['item_key'], stableItemKey('item-42'));
-    expect(answered.keys, isNot(contains('answer')));
+    expect(posted, isEmpty);
+    await service.flushDailyRollup();
+    expect(posted, hasLength(1));
+    final rollup = posted.single.single;
+    final metrics = rollup['metrics'] as Map<String, Object?>;
+    expect(metrics['exercise_count'], 1);
+    expect(metrics['exercise_correct_count'], 1);
+    expect(metrics['exercise_latency_ms_sum'], 1200);
+    expect(metrics.containsKey('item_key'), isFalse);
+    expect(rollup.keys, isNot(contains('answer')));
   });
 
   test('content_reported uses reason code and item key only', () async {
@@ -78,12 +82,14 @@ void main() {
       reasonCode: ContentReportReasonCode.toneSpelling,
     );
 
-    final event = posted.last.single;
+    expect(posted, hasLength(1));
+    final event = posted.single.single;
     expect(event['event_name'], 'offline_operation');
     final metrics = event['metrics'] as Map<String, Object?>;
     expect(metrics['reason_code'], 1);
     expect(metrics['content_report'], isTrue);
     expect(metrics.containsKey('reason'), isFalse);
+    expect(metrics['daily_rollup'], isNot(true));
   });
 
   test('offline queue preserves order and flushes after reconnect', () async {
@@ -103,13 +109,15 @@ void main() {
       hintsUsed: 0,
     );
     expect(posted, isEmpty);
-    expect(await service.pendingCount(), 2);
+    expect(await service.pendingCount(), 0);
+
+    await service.flushDailyRollup();
+    expect(await service.pendingCount(), 1);
 
     online = true;
     await service.flush();
-    expect(posted, hasLength(2));
-    expect(posted[0].single['event_name'], 'session_started');
-    expect(posted[1].single['event_name'], 'exercise_answered');
+    expect(posted, hasLength(1));
+    expect(posted.single.single['event_name'], 'offline_operation');
     expect(await service.pendingCount(), 0);
   });
 
@@ -120,11 +128,11 @@ void main() {
     await service.beginLearningSession();
 
     await service.trackSpeechAttemptScored(unsure: true);
+    await service.flushDailyRollup();
 
-    final event = posted.last.single;
-    expect(event['event_name'], 'speech_attempt_scored');
+    final event = posted.single.single;
     final metrics = event['metrics'] as Map<String, Object?>;
-    expect(metrics['unsure'], isTrue);
+    expect(metrics['speech_unsure_count'], 1);
     expect(metrics.containsKey('phones_ok'), isFalse);
     expect(metrics.containsKey('audio'), isFalse);
   });
@@ -141,11 +149,12 @@ void main() {
       toneOk: false,
       confidence: 0.812,
     );
+    await service.flushDailyRollup();
 
-    final metrics = posted.last.single['metrics'] as Map<String, Object?>;
-    expect(metrics['phones_ok'], isTrue);
-    expect(metrics['tone_ok'], isFalse);
-    expect(metrics['confidence'], 0.812);
+    final metrics = posted.single.single['metrics'] as Map<String, Object?>;
+    expect(metrics['speech_phones_ok_count'], 1);
+    expect(metrics['speech_tone_ok_count'], 0);
+    expect(metrics.containsKey('confidence'), isFalse);
   });
 
   test('ai_turn carries mode_ord tokens latency fallback_used', () async {
@@ -160,14 +169,13 @@ void main() {
       latencyMs: 450,
       fallbackUsed: true,
     );
+    await service.flushDailyRollup();
 
-    final event = posted.last.single;
-    expect(event['event_name'], 'ai_turn');
-    final metrics = event['metrics'] as Map<String, Object?>;
-    expect(metrics['mode_ord'], 0);
-    expect(metrics['tokens'], 120);
-    expect(metrics['latency_ms'], 450);
-    expect(metrics['fallback_used'], isTrue);
+    final metrics = posted.single.single['metrics'] as Map<String, Object?>;
+    expect(metrics['ai_tokens_sum'], 120);
+    expect(metrics['ai_latency_ms_sum'], 450);
+    expect(metrics['ai_fallback_count'], 1);
+    expect(metrics.containsKey('mode_ord'), isFalse);
   });
 
   test('failed send retries then drops with counter', () async {
@@ -186,6 +194,7 @@ void main() {
     );
     service.configureLearner(accountId: 'acct-4');
     await service.beginLearningSession();
+    await service.flushDailyRollup();
 
     await service.flush();
     expect(calls, 2);
