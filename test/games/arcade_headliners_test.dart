@@ -19,7 +19,7 @@ void main() {
       final toneForge = kArcadeHeadlinerOrder.first;
       expect(AllGamesRegistry.headlinerIsPlayable(toneForge), isTrue);
       final talkingDrum = kArcadeHeadlinerOrder[1];
-      expect(AllGamesRegistry.headlinerIsPlayable(talkingDrum), isFalse);
+      expect(AllGamesRegistry.headlinerIsPlayable(talkingDrum), isTrue);
     });
 
     test('headliner slots reference registry listings or future ids', () {

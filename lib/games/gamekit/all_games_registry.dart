@@ -37,6 +37,7 @@ class ArcadeHeadlinerSlot {
 /// Elevation cards shipped for Arcade headliners (CARD_STATUS Done).
 const Set<String> kArcadeHeadlinerShippedElevationCards = {
   'P8-914',
+  'P8-920',
 };
 
 /// Ten headliners in product order; Tone Forge carries the Featured badge.
@@ -48,7 +49,7 @@ const List<ArcadeHeadlinerSlot> kArcadeHeadlinerOrder = [
     showFeaturedBadge: true,
   ),
   ArcadeHeadlinerSlot(
-    gameId: 'drum_to_word_matching',
+    gameId: 'talking_drum',
     elevationCardId: 'P8-920',
     flagshipTitle: 'Talking Drum',
   ),
@@ -117,6 +118,7 @@ class ArcadeGameListing {
 /// This centralizes game definitions for easy migration
 class AllGamesRegistry {
   static const String toneForgeGameId = 'tone_forge';
+  static const String talkingDrumGameId = 'talking_drum';
 
   static bool headlinerElevationShipped(String elevationCardId) {
     return kArcadeHeadlinerShippedElevationCards.contains(elevationCardId);
@@ -182,6 +184,12 @@ class AllGamesRegistry {
       learningGoals: const ['tones', 'pronunciation', 'listening'],
       coreVerb: GameCoreVerb.choose,
     ),
+    talkingDrumGameId: GameDefinition(
+      gameId: talkingDrumGameId,
+      displayName: 'Talking Drum',
+      learningGoals: const ['tones', 'listening', 'pronunciation'],
+      coreVerb: GameCoreVerb.listen,
+    ),
   };
 
   static final Map<String, ArcadeGameListing> _arcadeListings = {
@@ -192,6 +200,14 @@ class AllGamesRegistry {
       featured: true,
       elevationPending: false,
       routeGameType: GameType.toneTrainer,
+    ),
+    talkingDrumGameId: ArcadeGameListing(
+      gameId: talkingDrumGameId,
+      shelf: ArcadeSkillShelf.tone,
+      elevationCardId: 'P8-920',
+      featured: false,
+      elevationPending: false,
+      routeGameType: GameType.drumToWordMatching,
     ),
     for (final entry in GameCatalog.entries)
       entry.type.name: ArcadeGameListing(
@@ -251,7 +267,7 @@ class AllGamesRegistry {
   }
 
   static bool _elevationPendingFor(String gameId) {
-    if (gameId == toneForgeGameId) return false;
+    if (gameId == toneForgeGameId || gameId == talkingDrumGameId) return false;
     return true;
   }
 
@@ -305,7 +321,7 @@ class AllGamesRegistry {
       }
     }
     for (final id in _arcadeListings.keys) {
-      if (id == toneForgeGameId) continue;
+      if (id == toneForgeGameId || id == talkingDrumGameId) continue;
       final inCatalog =
           GameCatalog.entries.any((e) => e.type.name == id);
       if (!inCatalog) {

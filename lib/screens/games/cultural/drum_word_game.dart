@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../../../games/talking_drum/talking_drum_screen.dart';
 import '../../../models/game/game_session_model.dart';
 import '../../../models/game/game_content_models.dart';
 import '../../../services/polie_content_generator.dart';
@@ -29,6 +30,16 @@ class DrumWordGame extends BaseGameScreen {
 
 class _DrumWordGameState extends BaseGameScreenState<DrumWordGame>
     with RoundProgressGameShellMixin<DrumWordGame> {
+
+  /// Legacy shelf route → flagship Talking Drum (P8-920 / ADR-036).
+  @override
+  Widget build(BuildContext context) {
+    return TalkingDrumScreen(
+      language: widget.language,
+      level: widget.level,
+      onBack: widget.onBack ?? () => Navigator.of(context).pop(),
+    );
+  }
 
   Future<void> _initializeGame() async {
     setLoading(true); setError(null);

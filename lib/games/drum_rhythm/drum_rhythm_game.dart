@@ -94,3 +94,14 @@ class DrumRhythmGameFactory {
   }
 }
 
+/// Harvested rhythm cues for [TalkingDrumScreen] (P8-920 / ADR-036).
+String drumRhythmShadowPatternForTurn(int seed) {
+  const patterns = [
+    'DUM · da-da · DUM',
+    'da · DUM · da-da',
+    'DUM-DUM · da · DUM',
+    'da-da · DUM · da',
+  ];
+  return patterns[seed.abs() % patterns.length];
+}
+
