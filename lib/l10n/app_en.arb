@@ -558,7 +558,7 @@
   "@personaBadgeAiRecreation": {
     "description": "copy_keys: persona.badge.ai_recreation — persistent non-dismissible persona badge"
   },
-  "personaOpeningHowBuilt": "This recreates {personaName} from {sourceSummary}. Speech and scenes are AI-generated, not a recording of the historical person.",
+  "personaOpeningHowBuilt": "AI version of {personaName} from {sourceSummary}.",
   "@personaOpeningHowBuilt": {
     "description": "copy_keys: persona.opening.how_built — spoken/read before the first in-character line",
     "placeholders": {
@@ -594,7 +594,7 @@
   "@personaChipNoSource": {
     "description": "Documented claim missing dossier source ids"
   },
-  "personaChipSourceSemantics": "Documented claim. Source available. Double tap to open the cited card.",
+  "personaChipSourceSemantics": "Documented claim. Source card ready. Double tap to open it.",
   "@personaChipSourceSemantics": {
     "description": "Screen reader label for Source chip on persona claims"
   },
@@ -602,11 +602,11 @@
   "@personaChipInferredSemantics": {
     "description": "Screen reader label for Inferred support on persona claims"
   },
-  "personaChipLegendSemantics": "Legend claim. Traditional or oral tradition, not a single document.",
+  "personaChipLegendSemantics": "Legend claim. Oral tradition, not one document.",
   "@personaChipLegendSemantics": {
     "description": "Screen reader label for Legend support on persona claims"
   },
-  "personaChipNoSourceSemantics": "Documented claim, but the cited source is not available yet.",
+  "personaChipNoSourceSemantics": "Documented claim. Source card is not ready yet.",
   "@personaChipNoSourceSemantics": {
     "description": "Screen reader label when documented claim has no source id"
   },
