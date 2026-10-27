@@ -932,7 +932,7 @@ P6-073	Done	Licensed open LLM finetune: manifest gate, diacritic promotion, rout
 P6-074	Done	ASR eval: evals/asr/run.ts, 300-utt sets, stt_routing.json, asr_eval_report.md	P6/P6-074.yaml
 P6-075	Done	LiveKit cascaded turn agent + session mint (realtime/agent.ts, session.ts, realtime_voice_client.dart)	P6/P6-075.yaml
 P6-076	Done	Per-language VAD thresholds + tonal pitch-drop gate (vad.ts, endOfTurn.ts)	P6/P6-076.yaml
-P6-077	Draft	Stream STT inside realtime pipeline	P6/P6-077.yaml
+P6-077	Done	Stream STT inside realtime pipeline (streamingStt.ts, partials + fallback)	P6/P6-077.yaml
 P6-078	Draft	Stream LLM output into streaming TTS to client	P6/P6-078.yaml
 P6-079	Draft	Support barge-in during agent speech	P6/P6-079.yaml
 P6-080	Draft	Gate realtime latency budgets in CI	P6/P6-080.yaml
