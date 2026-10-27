@@ -1013,7 +1013,7 @@ P8-925	Done	Griot Story Chain flagship: turns, grammar gate, playback, story_cha
 P8-926	Done	Word Forge morphology sw/zu (word_forge/*, grammar_jam route)	P8/P8-926.yaml
 P8-927	Done	'Flagship: Fidel Flight / Script Sprint' (script_sprint/*)	P8/P8-927.yaml
 P8-928	Done	Flagship Greeting Gauntlet (scenario_matrix, greeting_gauntlet_*, ADR-036 harvest)	P8/P8-928.yaml
-P8-929	Draft	'Flagship: Echo Karaoke with live pitch line'	P8/P8-929.yaml
+P8-929	Done	Echo Karaoke flagship: pitch line, licence catalog, legacy karaoke harvest (echo_karaoke/*)	P8/P8-929.yaml
 P8-930	Draft	'Word Forge: Yoruba serial-verb variant'	P8/P8-930.yaml
 P8-931	Draft	Weekly Village Festival themes rotating game content	P8/P8-931.yaml
 P8-932	Draft	Mastery Map showing skills improved per game	P8/P8-932.yaml

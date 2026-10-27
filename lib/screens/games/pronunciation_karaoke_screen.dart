@@ -12,6 +12,9 @@ import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
 import 'base_game_screen.dart';
+import '../../games/echo_karaoke/echo_karaoke_screen.dart';
+
+/// Pronunciation Karaoke — legacy shelf route → Echo Karaoke (P8-929 / ADR-036).
 
 /// Pronunciation Karaoke — follow along with advancing words and hold
 /// the mic button to speak each phrase in practice mode.
@@ -36,6 +39,14 @@ class PronunciationKaraokeGame extends BaseGameScreen {
 
 class _PronunciationKaraokeGameState
     extends BaseGameScreenState<PronunciationKaraokeGame> {
+  @override
+  Widget build(BuildContext context) {
+    return EchoKaraokeScreen(
+      language: widget.language,
+      onBack: widget.onBack ?? () => Navigator.of(context).pop(),
+    );
+  }
+
   final List<PhraseCard> _cards = [];
   int _currentPhraseIndex = 0;
   List<String> _words = [];

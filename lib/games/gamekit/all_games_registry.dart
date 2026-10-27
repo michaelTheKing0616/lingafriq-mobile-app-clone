@@ -3,6 +3,7 @@ import 'generic_game_template.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../models/game/game_session_model.dart' show GameTypeExtension, GameType;
 import '../../screens/games/game_catalog.dart';
+import '../echo_karaoke/echo_karaoke_screen.dart';
 import '../greeting_gauntlet/greeting_gauntlet_screen.dart';
 import '../script_sprint/script_sprint_screen.dart';
 import 'game_engine.dart';
@@ -47,6 +48,7 @@ const Set<String> kArcadeHeadlinerShippedElevationCards = {
   'P8-926',
   'P8-927',
   'P8-928',
+  'P8-929',
 };
 
 /// Ten headliners in product order; Tone Forge carries the Featured badge.
@@ -130,6 +132,7 @@ class AllGamesRegistry {
   static const String talkingDrumGameId = 'talking_drum';
   static const String minimalPairDuelGameId = 'minimal_pair_duel';
   static const String wordForgeGameId = 'word_forge';
+  static const String echoKaraokeGameId = 'pronunciation_karaoke';
 
   static bool headlinerElevationShipped(String elevationCardId) {
     return kArcadeHeadlinerShippedElevationCards.contains(elevationCardId);
@@ -294,7 +297,7 @@ class AllGamesRegistry {
     'grammar_jam': 'P8-926',
     'script_sprint': 'P8-927',
     'greeting_diplomacy_challenge': 'P8-928',
-    'pronunciation_karaoke': 'P8-935',
+    'pronunciation_karaoke': 'P8-929',
   };
 
   static String _elevationCardFor(String gameId) {
@@ -309,7 +312,8 @@ class AllGamesRegistry {
         gameId == GameType.clanLineageStoryBuilder.name ||
         gameId == GameType.grammarJam.name ||
         gameId == 'script_sprint' ||
-        gameId == GameType.greetingDiplomacyChallenge.name) {
+        gameId == GameType.greetingDiplomacyChallenge.name ||
+        gameId == echoKaraokeGameId) {
       return false;
     }
     return true;
@@ -326,6 +330,8 @@ class AllGamesRegistry {
         return ScriptSprintScreen(language: language, onBack: onBack);
       case 'greeting_diplomacy_challenge':
         return GreetingGauntletScreen(language: language, onBack: onBack);
+      case echoKaraokeGameId:
+        return EchoKaraokeScreen(language: language, onBack: onBack);
       default:
         return null;
     }
