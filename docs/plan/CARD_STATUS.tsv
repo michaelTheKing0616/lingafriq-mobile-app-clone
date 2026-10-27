@@ -900,7 +900,7 @@ P6-041	Done	Collect native 1-5 rating data per language (rating/api.ts, rating.m
 P6-042	Done	Calibrate scorer to native ratings (calibration.py, scorer_real.yaml)	P6/P6-042.yaml
 P6-043	Done	Enforce honesty rules: quality.py clipping/SNR, honesty.py unsure/retry, fuzz gate	P6/P6-043.yaml
 P6-044	Done	Verify Omnilingual 300M offline (offline_omnilingual_verify.py, omnilingual_offline ledger, no-go raw ship)	P6/P6-044.yaml
-P6-045	Draft	Decide TTS vendors per language and licence exclusions	P6/P6-045.yaml
+P6-045	Done	ADR-008: Stage-1 TTS vendors, licence exclusions, xh commissioned voice	P6/P6-045.yaml
 P6-046	Draft	Gate each voice on native tone-accuracy threshold	P6/P6-046.yaml
 P6-047	Draft	Route recorded audio first, TTS for dynamic turns only	P6/P6-047.yaml
 P6-048	Draft	Build commissioned-voice fine-tune pipeline	P6/P6-048.yaml

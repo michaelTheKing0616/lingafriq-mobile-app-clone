@@ -8,4 +8,5 @@ N-ATLaS,Awarri ORIL,no,1000,commercial licence required above cap
 N-ATLaS-LLM,Awarri ORIL,no,1000,same cap as N-ATLaS ASR
 facebook/nllb-200-distilled-600M,CC-BY-NC 4.0,no,,
 yarn-gpt,CC-BY-NC-SA 4.0,no,,
-mms-tts,CC-BY-NC 4.0,no,,
+mms-tts,CC-BY-NC 4.0,no,,excluded per ADR-008 P6-045
+coqui-xtts-v2,Coqui Public Model Licence (non-commercial),no,,excluded per ADR-008 P6-045
