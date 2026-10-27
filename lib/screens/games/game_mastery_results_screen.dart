@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../games/gamekit/game_result.dart';
 import '../../l10n/generated/app_localizations.dart';
+import 'game_mastery_map_screen.dart';
 import '../../utils/pan_african_design_system.dart';
 
 /// Standard post-game results for GameKit sessions (P8-915).
@@ -74,6 +75,23 @@ class GameMasteryResultsScreen extends ConsumerWidget {
                 (delta) => _SkillDeltaRow(delta: delta, l10n: l10n, reduceMotion: reduceMotion),
               ),
             SizedBox(height: PanAfricanSpacing.xl.h),
+            SizedBox(
+              width: double.infinity,
+              height: 48.h,
+              child: OutlinedButton.icon(
+                onPressed: () {
+                  HapticFeedback.selectionClick();
+                  Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => GameMasteryMapScreen(learnerId: session.userId),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.map_outlined),
+                label: Text(l10n.gamesMasteryMapTitle),
+              ),
+            ),
+            SizedBox(height: PanAfricanSpacing.sm.h),
             SizedBox(
               width: double.infinity,
               height: 48.h,
