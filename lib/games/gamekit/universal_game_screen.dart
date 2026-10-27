@@ -1,14 +1,19 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../screens/games/base_game_screen.dart';
 import '../../services/polie_game_client.dart';
 import '../../models/game/game_session_model.dart' show GameType, GameResult;
+import '../../l10n/generated/app_localizations.dart';
 import 'generic_game_template.dart';
 import 'game_session.dart';
 import 'all_games_registry.dart';
 import '../widgets/game_answer_tile.dart';
 import '../widgets/progress_meter.dart';
+import '../widgets/streak_indicator.dart';
+import 'game_feedback.dart';
 import 'game_result.dart';
 import '../../avatars/avatars.dart';
 
@@ -44,8 +49,14 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
   bool _showResult = false;
   GameTurnResult? _lastResult;
   int _score = 0;
+  int _correctStreak = 0;
   int _round = 0;
   final int _maxRounds = 10;
+  GameKitFeedbackPhase _feedbackPhase = GameKitFeedbackPhase.idle;
+  GameKitFeedbackTiming? _feedbackTiming;
+  Timer? _pendingFeedbackTimer;
+  bool _showCelebration = false;
+  bool? _immediateLocalCorrect;
   
   // Game avatar controller
   GameAvatarController? _avatarController;
@@ -82,6 +93,7 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
   
   @override
   void dispose() {
+    _pendingFeedbackTimer?.cancel();
     _avatarController?.dispose();
     super.dispose();
   }
@@ -103,6 +115,10 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
       _selectedAnswer = null;
       _textInput = null;
       _lastResult = null;
+      _feedbackPhase = GameKitFeedbackPhase.idle;
+      _feedbackTiming = null;
+      _immediateLocalCorrect = null;
+      _showCelebration = false;
     });
 
     try {
@@ -128,10 +144,44 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
   Future<void> _submitAnswer(String? answer, String? textInput) async {
     if (_showResult || _currentContent == null || session == null) return;
 
+    final tappedAt = DateTime.now();
+    final correctAnswer = _currentContent!.correctAnswer;
+    final locallyVerifiable = gameKitIsLocallyVerifiable(
+      selectedAnswer: answer,
+      correctAnswer: correctAnswer,
+      requiresServerScoring: textInput != null && textInput.isNotEmpty,
+    );
+    final localCorrect = locallyVerifiable && answer != null && correctAnswer != null
+        ? gameKitLocalVerdict(selectedAnswer: answer, correctAnswer: correctAnswer)
+        : null;
+
+    _pendingFeedbackTimer?.cancel();
+    _feedbackTiming = GameKitFeedbackTiming(
+      tappedAt: tappedAt,
+      locallyVerifiable: locallyVerifiable,
+      localCorrect: localCorrect,
+    );
+
     setState(() {
       _selectedAnswer = answer;
       _textInput = textInput;
+      _immediateLocalCorrect = localCorrect;
+      if (locallyVerifiable) {
+        _feedbackPhase = GameKitFeedbackPhase.localVerdict;
+      } else {
+        _feedbackPhase = GameKitFeedbackPhase.idle;
+      }
     });
+
+    if (!locallyVerifiable) {
+      _pendingFeedbackTimer = Timer(
+        const Duration(milliseconds: GameKitFeedbackBudget.tapToFeedbackP95Ms),
+        () {
+          if (!mounted || _showResult) return;
+          setState(() => _feedbackPhase = GameKitFeedbackPhase.pending);
+        },
+      );
+    }
 
     try {
       final gameSession = GameSession(
@@ -151,16 +201,22 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
 
       final result = await _game.playTurn(_currentContent!, input, gameSession);
 
+      _pendingFeedbackTimer?.cancel();
+
       setState(() {
         _lastResult = result;
         _showResult = true;
+        _feedbackPhase = GameKitFeedbackPhase.finalVerdict;
         if (result.score.isCorrect) {
           _score++;
-          // Avatar celebrates correct answer
+          _correctStreak++;
           _avatarController?.reactToCorrectAnswer(isPerfect: result.score.accuracy >= 1.0);
           (_avatarKey.currentState as dynamic)?.celebrate();
+          if (gameKitShouldTriggerCelebration(_correctStreak)) {
+            _showCelebration = true;
+          }
         } else {
-          // Avatar shows encouragement for incorrect answer
+          _correctStreak = 0;
           _avatarController?.reactToIncorrectAnswer();
           (_avatarKey.currentState as dynamic)?.showDisappointment();
         }
@@ -245,6 +301,8 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
     }
 
     final definition = AllGamesRegistry.getGame(widget.gameId);
+    final l10n = AppLocalizations.of(context)!;
+    final reduceMotion = MediaQuery.disableAnimationsOf(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -266,6 +324,7 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                StreakIndicator(streak: _correctStreak),
                 Text('Score: $_score/$_maxRounds', style: TextStyle(fontSize: 12.sp)),
                 Text('Round: $_round/$_maxRounds', style: TextStyle(fontSize: 10.sp)),
               ],
@@ -273,7 +332,9 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
           ),
         ],
       ),
-      body: SingleChildScrollView(
+      body: Stack(
+        children: [
+          SingleChildScrollView(
         padding: EdgeInsets.all(4.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -326,6 +387,9 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
                   isCorrect: isCorrectOption,
                   isSelected: isSelected,
                   showResult: _showResult,
+                  showImmediateLocal: _feedbackPhase == GameKitFeedbackPhase.localVerdict &&
+                      isSelected,
+                  immediateLocalCorrect: isSelected ? _immediateLocalCorrect : null,
                   onTap: () => _submitAnswer(option, null),
                 );
               }),
@@ -347,38 +411,39 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
                 child: const Text('Submit'),
               ),
             ],
-            if (_showResult && _lastResult != null) ...[
-              SizedBox(height: 2.h),
-              Card(
-                color: _lastResult!.score.isCorrect
-                    ? Colors.green.withOpacity(0.2)
-                    : Colors.red.withOpacity(0.2),
-                child: Padding(
-                  padding: EdgeInsets.all(4.w),
-                  child: Column(
-                    children: [
-                      Icon(
-                        _lastResult!.score.isCorrect ? Icons.check_circle : Icons.cancel,
-                        color: _lastResult!.score.isCorrect ? Colors.green : Colors.red,
-                        size: 32.sp,
-                      ),
-                      SizedBox(height: 1.h),
-                      Text(
-                        _lastResult!.feedback.message,
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
-                          color: _lastResult!.score.isCorrect ? Colors.green : Colors.red,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
+            GameKitVerdictSlot(
+              phase: _feedbackPhase,
+              isCorrect: _lastResult?.score.isCorrect ?? (_immediateLocalCorrect ?? false),
+              correctLabel: l10n.gamekitFeedbackCorrect,
+              wrongLabel: l10n.gamekitFeedbackWrong,
+              pendingLabel: l10n.gamekitFeedbackPending,
+              detailMessage: _showResult ? _lastResult?.feedback.message : null,
+            ),
+            if (_showCelebration && reduceMotion)
+              Padding(
+                padding: EdgeInsets.only(top: 2.h),
+                child: GameKitStaticCelebrationChip(
+                  message: l10n.gamekitFeedbackStreak(_correctStreak),
                 ),
               ),
-            ],
           ],
         ),
+      ),
+          if (_showCelebration && !reduceMotion)
+            Positioned(
+              top: 8.h,
+              left: 0,
+              right: 0,
+              child: GameKitStreakCelebration(
+                streak: _correctStreak,
+                message: l10n.gamekitFeedbackStreak(_correctStreak),
+                reduceMotion: reduceMotion,
+                onFinished: () {
+                  if (mounted) setState(() => _showCelebration = false);
+                },
+              ),
+            ),
+        ],
       ),
     );
   }

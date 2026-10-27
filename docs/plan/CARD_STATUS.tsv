@@ -988,7 +988,7 @@ P7-944	Done	ML Kit Latin OCR diacritic verify (ocr_diacritic_metrics, ledger, ve
 P8-900	Done	GameKit due-first turn queue, manifest gate, fallback/retry (game_engine.dart)	P8/P8-900.yaml
 P8-901	Done	GameKit learner-graph writer + FSRS parity, offline dedupe (game_result.dart)	P8/P8-901.yaml
 P8-902	Done	GameKit 60–180s session clock, core verb manifest, nightly median flag (game_engine.dart)	P8/P8-902.yaml
-P8-903	Draft	'GameKit: feedback within 160 ms and brief celebration'	P8/P8-903.yaml
+P8-903	Done	GameKit 160ms tap feedback, pending slot, streak celebration (game_feedback.dart)	P8/P8-903.yaml
 P8-904	Draft	'GameKit: ''why was I wrong'' explanation with audio'	P8/P8-904.yaml
 P8-905	Draft	'GameKit: adaptive difficulty targeting 80–85% success'	P8/P8-905.yaml
 P8-906	Draft	'GameKit: match multiplayer opponents by level'	P8/P8-906.yaml

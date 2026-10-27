@@ -6,16 +6,21 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class StreakIndicator extends StatelessWidget {
   final int streak;
   final Color? color;
+  final bool animate;
 
   const StreakIndicator({
     super.key,
     required this.streak,
     this.color,
+    this.animate = true,
   });
 
   @override
   Widget build(BuildContext context) {
     if (streak == 0) return const SizedBox.shrink();
+
+    final reduceMotion = MediaQuery.disableAnimationsOf(context);
+    final shouldAnimate = animate && !reduceMotion;
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
@@ -38,16 +43,7 @@ class StreakIndicator extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            Icons.local_fire_department,
-            color: Theme.of(context).colorScheme.onPrimary,
-            size: 20.sp,
-          )
-              .animate(onPlay: (controller) => controller.repeat())
-              .shimmer(
-                duration: 1000.ms,
-                color: Colors.yellow.withOpacity(0.8),
-              ),
+          _flameIcon(context, shouldAnimate),
           SizedBox(width: 1.w),
           Text(
             '$streak',
@@ -60,6 +56,22 @@ class StreakIndicator extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget _flameIcon(BuildContext context, bool shouldAnimate) {
+    final icon = Icon(
+      Icons.local_fire_department,
+      color: Theme.of(context).colorScheme.onPrimary,
+      size: 20.sp,
+      semanticLabel: 'Streak $streak',
+    );
+    if (!shouldAnimate) return icon;
+    return icon
+        .animate(onPlay: (controller) => controller.repeat())
+        .shimmer(
+          duration: 1000.ms,
+          color: Colors.yellow.withOpacity(0.8),
+        );
   }
 }
 

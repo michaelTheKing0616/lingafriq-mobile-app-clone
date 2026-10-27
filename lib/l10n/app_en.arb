@@ -357,6 +357,48 @@
     "description": "Game tutorial dialog title"
   },
 
+  "gamekitFeedbackTitle": "Your answer",
+  "@gamekitFeedbackTitle": {
+    "description": "GameKit feedback panel title"
+  },
+  "gamekitFeedbackInstructions": "Tap an answer when you are ready.",
+  "@gamekitFeedbackInstructions": {
+    "description": "GameKit playing-state hint"
+  },
+  "gamekitFeedbackCorrect": "Nice one!",
+  "@gamekitFeedbackCorrect": {
+    "description": "GameKit correct verdict"
+  },
+  "gamekitFeedbackWrong": "Not quite — try the next one.",
+  "@gamekitFeedbackWrong": {
+    "description": "GameKit wrong verdict"
+  },
+  "gamekitFeedbackPending": "Checking your answer…",
+  "@gamekitFeedbackPending": {
+    "description": "GameKit pending verdict while server scores"
+  },
+  "gamekitFeedbackWhyWrong": "Why was I wrong?",
+  "@gamekitFeedbackWhyWrong": {
+    "description": "GameKit explanation affordance (P8-904)"
+  },
+  "gamekitFeedbackPracticeLabel": "Practice mode",
+  "@gamekitFeedbackPracticeLabel": {
+    "description": "GameKit practice mode label"
+  },
+  "gamekitFeedbackError": "We could not score that turn. Try again.",
+  "@gamekitFeedbackError": {
+    "description": "GameKit scoring error"
+  },
+  "gamekitFeedbackStreak": "{count} in a row!",
+  "@gamekitFeedbackStreak": {
+    "description": "GameKit streak celebration",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
   "chatPeerTyping": "{name} is typing…",
   "@chatPeerTyping": {
     "description": "Typing indicator label",

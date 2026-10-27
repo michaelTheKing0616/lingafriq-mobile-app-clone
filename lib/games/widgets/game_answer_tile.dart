@@ -10,6 +10,8 @@ class GameAnswerTile extends StatefulWidget {
   final bool isCorrect;
   final bool isSelected;
   final bool showResult;
+  final bool showImmediateLocal;
+  final bool? immediateLocalCorrect;
   final VoidCallback? onTap;
   final IconData? icon;
 
@@ -19,6 +21,8 @@ class GameAnswerTile extends StatefulWidget {
     this.isCorrect = false,
     this.isSelected = false,
     this.showResult = false,
+    this.showImmediateLocal = false,
+    this.immediateLocalCorrect,
     this.onTap,
     this.icon,
   });
@@ -39,7 +43,21 @@ class _GameAnswerTileState extends State<GameAnswerTile> {
     IconData? trailingIcon;
     Color? iconColor;
 
-    if (widget.showResult) {
+    if (widget.showImmediateLocal && widget.immediateLocalCorrect != null) {
+      if (widget.immediateLocalCorrect!) {
+        backgroundColor = Colors.green.withOpacity(0.2);
+        borderColor = Colors.green;
+        textColor = Colors.green.shade900;
+        trailingIcon = Icons.check_circle;
+        iconColor = Colors.green;
+      } else if (widget.isSelected) {
+        backgroundColor = Colors.red.withOpacity(0.2);
+        borderColor = Colors.red;
+        textColor = Colors.red.shade900;
+        trailingIcon = Icons.cancel;
+        iconColor = Colors.red;
+      }
+    } else if (widget.showResult) {
       if (widget.isCorrect) {
         backgroundColor = Colors.green.withOpacity(0.2);
         borderColor = Colors.green;
@@ -67,7 +85,14 @@ class _GameAnswerTileState extends State<GameAnswerTile> {
       textColor = Theme.of(context).colorScheme.onSurface;
     }
 
-    return GestureDetector(
+    final label = widget.showImmediateLocal && widget.immediateLocalCorrect != null
+        ? (widget.immediateLocalCorrect! ? 'Correct answer' : 'Incorrect answer')
+        : widget.text;
+
+    return Semantics(
+      button: true,
+      label: label,
+      child: GestureDetector(
       onTapDown: (_) {
         setState(() => _isPressed = true);
         Vibrate.feedback(FeedbackType.selection);
@@ -133,6 +158,7 @@ class _GameAnswerTileState extends State<GameAnswerTile> {
             duration: 500.ms,
             color: widget.isCorrect ? Colors.green.withOpacity(0.3) : Colors.blue.withOpacity(0.3),
           ),
+    ),
     );
   }
 }

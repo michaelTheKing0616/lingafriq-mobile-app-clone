@@ -542,6 +542,33 @@ abstract class AppLocalizations {
   /// **'How to play'**
   String get gameTutorialHowToPlay;
 
+  /// GameKit feedback panel title
+  String get gamekitFeedbackTitle;
+
+  /// GameKit playing-state hint
+  String get gamekitFeedbackInstructions;
+
+  /// GameKit correct verdict
+  String get gamekitFeedbackCorrect;
+
+  /// GameKit wrong verdict
+  String get gamekitFeedbackWrong;
+
+  /// GameKit pending verdict while server scores
+  String get gamekitFeedbackPending;
+
+  /// GameKit explanation affordance (P8-904)
+  String get gamekitFeedbackWhyWrong;
+
+  /// GameKit practice mode label
+  String get gamekitFeedbackPracticeLabel;
+
+  /// GameKit scoring error
+  String get gamekitFeedbackError;
+
+  /// GameKit streak celebration
+  String gamekitFeedbackStreak(int count);
+
   /// Typing indicator label
   ///
   /// In en, this message translates to:

@@ -220,6 +220,36 @@ class AppLocalizationsHa extends AppLocalizations {
   @override
   String get gameTutorialHowToPlay => 'How to play';
 
+  
+  String get gamekitFeedbackTitle => 'Your answer';
+
+  
+  String get gamekitFeedbackInstructions => 'Tap an answer when you are ready.';
+
+  
+  String get gamekitFeedbackCorrect => 'Nice one!';
+
+  
+  String get gamekitFeedbackWrong => 'Not quite — try the next one.';
+
+  
+  String get gamekitFeedbackPending => 'Checking your answer…';
+
+  
+  String get gamekitFeedbackWhyWrong => 'Why was I wrong?';
+
+  
+  String get gamekitFeedbackPracticeLabel => 'Practice mode';
+
+  
+  String get gamekitFeedbackError =>
+      'We could not score that turn. Try again.';
+
+  
+  String gamekitFeedbackStreak(int count) => '$count in a row!';
+
+
+
   @override
   String chatPeerTyping(String name) {
     return '$name is typing…';
