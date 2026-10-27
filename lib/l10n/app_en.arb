@@ -385,6 +385,26 @@
   "@gamekitFeedbackPracticeLabel": {
     "description": "GameKit practice mode label"
   },
+  "gamekitPracticeModeTitle": "Practice round",
+  "@gamekitPracticeModeTitle": {
+    "description": "P8-911 practice session title"
+  },
+  "gamekitPracticeModeInstructions": "Listen, repeat, and compare. Nothing here is scored.",
+  "@gamekitPracticeModeInstructions": {
+    "description": "P8-911 practice instructions"
+  },
+  "gamekitPracticeModeWhyWrong": "Tips",
+  "@gamekitPracticeModeWhyWrong": {
+    "description": "P8-911 practice help (no wrong-answer scoring)"
+  },
+  "gamekitPracticeModePracticeLabel": "Practice, not scored",
+  "@gamekitPracticeModePracticeLabel": {
+    "description": "P8-911 visible practice banner"
+  },
+  "gamekitPracticeModeError": "Audio is not ready yet. You can still read the phrase.",
+  "@gamekitPracticeModeError": {
+    "description": "P8-911 practice audio missing"
+  },
   "gamekitFeedbackError": "We could not score that turn. Try again.",
   "@gamekitFeedbackError": {
     "description": "GameKit scoring error"

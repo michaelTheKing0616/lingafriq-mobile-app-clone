@@ -49,6 +49,9 @@ class GameSession {
 
   String? get queueSource => metadata['queue_source'] as String?;
 
+  /// P8-911: speaking games without live scorer — no XP, streak, or league credit.
+  bool get practiceNotScored => metadata['practice_not_scored'] == true;
+
   int get correctCount => turns.where((t) => t.score.isCorrect).length;
   int get totalTurns => turns.length;
   int get learnerEventsRecorded =>

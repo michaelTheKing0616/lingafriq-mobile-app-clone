@@ -543,30 +543,87 @@ abstract class AppLocalizations {
   String get gameTutorialHowToPlay;
 
   /// GameKit feedback panel title
+  ///
+  /// In en, this message translates to:
+  /// **'Your answer'**
   String get gamekitFeedbackTitle;
 
   /// GameKit playing-state hint
+  ///
+  /// In en, this message translates to:
+  /// **'Tap an answer when you are ready.'**
   String get gamekitFeedbackInstructions;
 
   /// GameKit correct verdict
+  ///
+  /// In en, this message translates to:
+  /// **'Nice one!'**
   String get gamekitFeedbackCorrect;
 
   /// GameKit wrong verdict
+  ///
+  /// In en, this message translates to:
+  /// **'Not quite — try the next one.'**
   String get gamekitFeedbackWrong;
 
   /// GameKit pending verdict while server scores
+  ///
+  /// In en, this message translates to:
+  /// **'Checking your answer…'**
   String get gamekitFeedbackPending;
 
   /// GameKit explanation affordance (P8-904)
+  ///
+  /// In en, this message translates to:
+  /// **'Why was I wrong?'**
   String get gamekitFeedbackWhyWrong;
 
   /// GameKit practice mode label
+  ///
+  /// In en, this message translates to:
+  /// **'Practice mode'**
   String get gamekitFeedbackPracticeLabel;
 
+  /// P8-911 practice session title
+  ///
+  /// In en, this message translates to:
+  /// **'Practice round'**
+  String get gamekitPracticeModeTitle;
+
+  /// P8-911 practice instructions
+  ///
+  /// In en, this message translates to:
+  /// **'Listen, repeat, and compare. Nothing here is scored.'**
+  String get gamekitPracticeModeInstructions;
+
+  /// P8-911 practice help (no wrong-answer scoring)
+  ///
+  /// In en, this message translates to:
+  /// **'Tips'**
+  String get gamekitPracticeModeWhyWrong;
+
+  /// P8-911 visible practice banner
+  ///
+  /// In en, this message translates to:
+  /// **'Practice, not scored'**
+  String get gamekitPracticeModePracticeLabel;
+
+  /// P8-911 practice audio missing
+  ///
+  /// In en, this message translates to:
+  /// **'Audio is not ready yet. You can still read the phrase.'**
+  String get gamekitPracticeModeError;
+
   /// GameKit scoring error
+  ///
+  /// In en, this message translates to:
+  /// **'We could not score that turn. Try again.'**
   String get gamekitFeedbackError;
 
   /// GameKit streak celebration
+  ///
+  /// In en, this message translates to:
+  /// **'{count} in a row!'**
   String gamekitFeedbackStreak(int count);
 
   /// Typing indicator label

@@ -289,13 +289,47 @@ class GameScore {
   }
 }
 
+/// Remote flag: when on, speaking games with a passing adapter use [RealScorerSpeakingEngine].
+const String gameKitRealSpeakingScorerFlagKey = 'gamekit_real_speaking_scorer';
+
+/// Adapter contract pass list (P8-910); only these IDs leave practice when the flag is on.
+const Set<String> gameKitRealScorerAdapterPassingGameIds = {
+  'tone_trainer',
+  'call_and_response',
+  'rapid_tongue_twister_race',
+  'cultural_etiquette_scenarios',
+  'market_bargaining_simulator',
+};
+
+bool gameKitRealScorerAdapterTestPasses(String gameId) {
+  return gameKitRealScorerAdapterPassingGameIds.contains(gameId.trim());
+}
+
+bool gameKitRealScorerLiveForGame({
+  required bool featureFlagOn,
+  required String gameId,
+  required bool isSpeakingGame,
+}) {
+  if (!isSpeakingGame) return false;
+  return featureFlagOn && gameKitRealScorerAdapterTestPasses(gameId);
+}
+
+/// Practice when a speaking game opens without a live scorer (P8-911 AC1–AC4).
+bool gameKitPracticeNotScoredMode({
+  required bool isSpeakingGame,
+  required bool realScorerLive,
+}) {
+  return isSpeakingGame && !realScorerLive;
+}
+
 /// Server-parity preview for GameKit session rewards (P8-909; authoritative value is claim response).
 int previewGameSessionXp({
   required int correctCount,
   required int totalTurns,
   required int durationMs,
+  bool practiceNotScored = false,
 }) {
-  if (totalTurns <= 0) return 0;
+  if (practiceNotScored || totalTurns <= 0) return 0;
   final accuracy = correctCount / totalTurns;
   const baseXp = 10;
   final accuracyBonus = (accuracy * 20).round();

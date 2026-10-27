@@ -19,8 +19,28 @@ class GameMetaLayer {
     required String gameId,
     required GameTurnResult result,
     bool duelOpponentIsBot = false,
+    bool practiceNotScored = false,
   }) async {
-    final countsForLeaderboard = !duelOpponentIsBot;
+    final countsForLeaderboard = !duelOpponentIsBot && !practiceNotScored;
+    if (practiceNotScored ||
+        result.score.honestPracticeMode ||
+        !result.score.countsForRewards) {
+      final streak = await masteryService.getStreak(
+        userId: userId,
+        language: language,
+      );
+      final mastery = await masteryService.getMasteryProfile(
+            userId: userId,
+            language: language,
+          ) ??
+          CulturalMasteryProfile(userId: userId, language: language);
+      return MetaGameUpdate(
+        mastery: mastery,
+        streak: streak,
+        badges: const [],
+        countsForLeaderboard: false,
+      );
+    }
     // Update mastery profile
     final learningSignal = result.feedback.metadata?['learning_signal'] as Map<String, dynamic>?;
     final signalValue = learningSignal?.values.first as num? ?? 0.0;

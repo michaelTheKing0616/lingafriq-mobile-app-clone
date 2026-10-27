@@ -244,11 +244,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gamekitFeedbackPracticeLabel => 'Practice mode';
 
   @override
-  String get gamekitFeedbackError =>
-      'We could not score that turn. Try again.';
+  String get gamekitPracticeModeTitle => 'Practice round';
 
   @override
-  String gamekitFeedbackStreak(int count) => '$count in a row!';
+  String get gamekitPracticeModeInstructions =>
+      'Listen, repeat, and compare. Nothing here is scored.';
+
+  @override
+  String get gamekitPracticeModeWhyWrong => 'Tips';
+
+  @override
+  String get gamekitPracticeModePracticeLabel => 'Practice, not scored';
+
+  @override
+  String get gamekitPracticeModeError =>
+      'Audio is not ready yet. You can still read the phrase.';
+
+  @override
+  String get gamekitFeedbackError => 'We could not score that turn. Try again.';
+
+  @override
+  String gamekitFeedbackStreak(int count) {
+    return '$count in a row!';
+  }
 
   @override
   String chatPeerTyping(String name) {
