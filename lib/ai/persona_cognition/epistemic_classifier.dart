@@ -1,6 +1,6 @@
-// Determines what a historical persona can plausibly know.
-// Uses persona's documented positions, inference matrix, and era bounds.
+// P11-004: epistemic status from injectable horizon classifier (no keyword post-death gates).
 
+import 'package:dio/dio.dart';
 import 'package:lingafriq/ai/personas/historical_persona_registry.dart';
 import 'package:lingafriq/ai/persona_cognition/intent_classifier.dart';
 
@@ -12,100 +12,65 @@ enum EpistemicStatus {
   outOfScope,
 }
 
+class HorizonCheckFailed implements Exception {
+  final String message;
+  const HorizonCheckFailed(this.message);
+
+  @override
+  String toString() => 'HorizonCheckFailed: $message';
+}
+
+/// Model output for knowledge-horizon classification (server LLM or test double).
+class KnowledgeHorizonDecision {
+  final bool referencesPostDeathEvents;
+  final bool inCharacterReplyOk;
+  final EpistemicStatus epistemicStatus;
+  final String reasoning;
+  final double confidence;
+  final bool requiresCuriosityReply;
+
+  const KnowledgeHorizonDecision({
+    required this.referencesPostDeathEvents,
+    required this.inCharacterReplyOk,
+    required this.epistemicStatus,
+    required this.reasoning,
+    required this.confidence,
+    required this.requiresCuriosityReply,
+  });
+}
+
+/// Port for the horizon classifier model (P11-004 — no keyword list gates).
+abstract class HorizonClassifierModel {
+  Future<KnowledgeHorizonDecision> classifyHorizon({
+    required String userInput,
+    required HistoricalPersona persona,
+    required IntentClassification intent,
+  });
+}
+
 class EpistemicClassification {
   final EpistemicStatus status;
   final double confidence;
   final String reasoning;
   final bool requiresUncertaintyLanguage;
+  final bool requiresCuriosityReply;
 
   const EpistemicClassification({
     required this.status,
     required this.confidence,
     required this.reasoning,
     required this.requiresUncertaintyLanguage,
+    this.requiresCuriosityReply = false,
   });
 }
 
 class EpistemicClassifier {
   EpistemicClassifier._();
 
-  /// Classifies epistemic status for [userInput] given [persona] and [intent].
-  static EpistemicClassification classify({
-    required String userInput,
-    required HistoricalPersona persona,
+  static EpistemicClassification fromHorizonDecision(
+    KnowledgeHorizonDecision horizon, {
     required IntentClassification intent,
   }) {
-    final lower = userInput.trim().toLowerCase();
-    final words = lower.split(RegExp(r'\s+')).where((w) => w.length > 2).toList();
-
-    // Anachronistic: references events after persona.endYear
-    final yearMatch = RegExp(r'\b(19|20)\d{2}\b').firstMatch(lower);
-    if (yearMatch != null) {
-      final year = int.tryParse(yearMatch.group(0) ?? '');
-      if (year != null && year > persona.endYear) {
-        return EpistemicClassification(
-          status: EpistemicStatus.anachronistic,
-          confidence: 0.95,
-          reasoning: 'User referenced year $year; persona lived until ${persona.endYear}.',
-          requiresUncertaintyLanguage: true,
-        );
-      }
-    }
-
-    // Modern/anachronistic domain from intent
-    if (intent.domain == UserIntentDomain.anachronistic ||
-        intent.domain == UserIntentDomain.modern) {
-      return EpistemicClassification(
-        status: EpistemicStatus.anachronistic,
-        confidence: intent.confidence,
-        reasoning: 'Topic appears modern or anachronistic for persona era.',
-        requiresUncertaintyLanguage: true,
-      );
-    }
-
-    // Documented: topic matches persona.documentedPositions
-    for (final entry in persona.documentedPositions.entries) {
-      final key = entry.key.toLowerCase();
-      if (lower.contains(key) || words.any((w) => key.contains(w))) {
-        return EpistemicClassification(
-          status: EpistemicStatus.documented,
-          confidence: 0.95,
-          reasoning: 'Topic aligns with documented position: $key.',
-          requiresUncertaintyLanguage: false,
-        );
-      }
-    }
-
-    // Core events: user asks about events in persona's life
-    for (final ev in persona.coreEvents) {
-      final eventLower = ev.event.toLowerCase();
-      if (lower.contains(eventLower.split(' ').take(3).join(' ')) ||
-          words.any((w) => eventLower.contains(w))) {
-        return EpistemicClassification(
-          status: EpistemicStatus.documented,
-          confidence: 0.9,
-          reasoning: 'Topic relates to persona core event.',
-          requiresUncertaintyLanguage: false,
-        );
-      }
-    }
-
-    // Inferred: topic in opinionInferenceMatrix
-    for (final entry in persona.opinionInferenceMatrix.entries) {
-      final key = entry.key.toLowerCase();
-      if (lower.contains(key) || words.any((w) => key.contains(w))) {
-        final conf = entry.value.confidence;
-        return EpistemicClassification(
-          status: EpistemicStatus.inferred,
-          confidence: conf,
-          reasoning:
-              'Topic in inference matrix (${entry.value.inferenceBasis.join(", ")}).',
-          requiresUncertaintyLanguage: true,
-        );
-      }
-    }
-
-    // Out of scope: offensive or clearly outside persona knowledge
     if (intent.domain == UserIntentDomain.offensive) {
       return const EpistemicClassification(
         status: EpistemicStatus.outOfScope,
@@ -115,12 +80,125 @@ class EpistemicClassifier {
       );
     }
 
-    // Default: uncertain
-    return const EpistemicClassification(
-      status: EpistemicStatus.uncertain,
-      confidence: 0.5,
-      reasoning: 'Topic not in documented positions or inference matrix.',
-      requiresUncertaintyLanguage: true,
+    final status = horizon.referencesPostDeathEvents
+        ? EpistemicStatus.anachronistic
+        : horizon.epistemicStatus;
+
+    final requiresUncertainty = horizon.requiresCuriosityReply ||
+        status == EpistemicStatus.anachronistic ||
+        status == EpistemicStatus.inferred ||
+        status == EpistemicStatus.uncertain;
+
+    return EpistemicClassification(
+      status: status,
+      confidence: horizon.confidence,
+      reasoning: horizon.reasoning,
+      requiresUncertaintyLanguage: requiresUncertainty,
+      requiresCuriosityReply: horizon.requiresCuriosityReply,
     );
+  }
+
+  /// Classifies epistemic status using [horizonModel] (required — no keyword horizon gates).
+  static Future<EpistemicClassification> classify({
+    required String userInput,
+    required HistoricalPersona persona,
+    required IntentClassification intent,
+    required HorizonClassifierModel horizonModel,
+  }) async {
+    if (intent.domain == UserIntentDomain.offensive) {
+      return fromHorizonDecision(
+        KnowledgeHorizonDecision(
+          referencesPostDeathEvents: false,
+          inCharacterReplyOk: false,
+          epistemicStatus: EpistemicStatus.outOfScope,
+          reasoning: 'Offensive input blocked before horizon check.',
+          confidence: 0.95,
+          requiresCuriosityReply: false,
+        ),
+        intent: intent,
+      );
+    }
+
+    try {
+      final horizon = await horizonModel.classifyHorizon(
+        userInput: userInput,
+        persona: persona,
+        intent: intent,
+      );
+      return fromHorizonDecision(horizon, intent: intent);
+    } on HorizonCheckFailed {
+      rethrow;
+    } catch (_) {
+      throw const HorizonCheckFailed('horizon_classifier_failed');
+    }
+  }
+}
+
+EpistemicStatus _parseEpistemicStatus(String raw) {
+  final normalized = raw.toLowerCase().replaceAll('_', '');
+  for (final e in EpistemicStatus.values) {
+    if (e.name.toLowerCase().replaceAll('_', '') == normalized) {
+      return e;
+    }
+  }
+  return EpistemicStatus.uncertain;
+}
+
+/// Server-backed horizon classifier (gateway `/api/ai/persona/knowledge-horizon`).
+class GatewayHorizonClassifierModel implements HorizonClassifierModel {
+  final Dio dio;
+
+  const GatewayHorizonClassifierModel(this.dio);
+
+  @override
+  Future<KnowledgeHorizonDecision> classifyHorizon({
+    required String userInput,
+    required HistoricalPersona persona,
+    required IntentClassification intent,
+  }) async {
+    try {
+      final response = await dio.post<Map<String, dynamic>>(
+        '/api/ai/persona/knowledge-horizon',
+        data: {
+          'user_question': userInput,
+          'persona_display_name': persona.displayName,
+          'birth_year': persona.startYear,
+          'death_year': persona.endYear,
+          'language_code': persona.primaryLanguages.isNotEmpty
+              ? persona.primaryLanguages.first
+              : 'en',
+        },
+      );
+      final data = response.data;
+      if (data == null || data['ok'] != true) {
+        throw const HorizonCheckFailed('horizon_classifier_rejected');
+      }
+      return KnowledgeHorizonDecision(
+        referencesPostDeathEvents: data['references_post_death_events'] == true,
+        inCharacterReplyOk: data['in_character_reply_ok'] == true,
+        epistemicStatus: _parseEpistemicStatus(
+          data['epistemic_status']?.toString() ?? 'uncertain',
+        ),
+        reasoning: data['reasoning']?.toString() ?? '',
+        confidence: (data['confidence'] as num?)?.toDouble() ?? 0.5,
+        requiresCuriosityReply: data['requires_curiosity_reply'] == true,
+      );
+    } on HorizonCheckFailed {
+      rethrow;
+    } on DioException catch (e) {
+      final code = e.response?.data is Map
+          ? (e.response!.data as Map)['error']?.toString()
+          : null;
+      if (code == 'HorizonCheckFailed') {
+        throw HorizonCheckFailed(
+          e.response?.data is Map
+              ? (e.response!.data as Map)['reason']?.toString() ?? 'horizon_failed'
+              : 'horizon_failed',
+        );
+      }
+      throw const HorizonCheckFailed('horizon_classifier_transport');
+    } catch (_) {
+      throw const HorizonCheckFailed('horizon_classifier_failed');
+    }
   }
 }

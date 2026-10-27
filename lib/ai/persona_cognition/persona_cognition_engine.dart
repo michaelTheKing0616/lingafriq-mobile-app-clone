@@ -44,11 +44,14 @@ class PersonaCognitionResult {
 class PersonaCognitionEngine {
   final PersonaCognitionGateway _gateway;
   final LearnerModelService _learnerModel;
+  final HorizonClassifierModel _horizonModel;
 
   PersonaCognitionEngine({
     required Dio dio,
+    required HorizonClassifierModel horizonModel,
     LearnerModelService? learnerModel,
   })  : _gateway = PersonaCognitionGateway(dio),
+        _horizonModel = horizonModel,
         _learnerModel = learnerModel ?? LearnerModelService.instance;
 
   /// Processes user input through intent → epistemic → gateway turn → learner update.
@@ -65,8 +68,12 @@ class PersonaCognitionEngine {
     }
 
     final intent = IntentClassifier.classify(userInput, personaId);
-    final epistemic =
-        EpistemicClassifier.classify(userInput: userInput, persona: persona, intent: intent);
+    final epistemic = await EpistemicClassifier.classify(
+      userInput: userInput,
+      persona: persona,
+      intent: intent,
+      horizonModel: _horizonModel,
+    );
 
     if (epistemic.status == EpistemicStatus.outOfScope) {
       return PersonaCognitionResult(
@@ -75,6 +82,16 @@ class PersonaCognitionEngine {
         epistemicStatus: EpistemicStatus.outOfScope,
         confidence: epistemic.confidence,
         emotionTone: 'calm',
+      );
+    }
+
+    if (epistemic.requiresCuriosityReply) {
+      return PersonaCognitionResult(
+        personaReply:
+            'I did not live to see that unfold — tell me what you know, so I may learn from you.',
+        epistemicStatus: EpistemicStatus.anachronistic,
+        confidence: epistemic.confidence,
+        emotionTone: 'curious',
       );
     }
 

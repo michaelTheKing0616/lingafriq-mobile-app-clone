@@ -4,6 +4,20 @@ import 'package:lingafriq/ai/persona_cognition/epistemic_classifier.dart';
 import 'package:lingafriq/ai/persona_cognition/intent_classifier.dart';
 import 'package:lingafriq/ai/personas/roleplay_safety_filter.dart';
 
+class _FakeHorizonModel implements HorizonClassifierModel {
+  final KnowledgeHorizonDecision decision;
+
+  _FakeHorizonModel(this.decision);
+
+  @override
+  Future<KnowledgeHorizonDecision> classifyHorizon({
+    required String userInput,
+    required HistoricalPersona persona,
+    required IntentClassification intent,
+  }) async =>
+      decision;
+}
+
 void main() {
   // -------------------------------------------------------------------------
   // Persona Registry Consistency
@@ -97,7 +111,7 @@ void main() {
       mandela = HistoricalPersonaRegistry.findById('mandela_nelson')!;
     });
 
-    test('documented_topic_returns_documented_status', () {
+    test('documented_topic_returns_documented_status', () async {
       final intent = IntentClassification(
         domain: UserIntentDomain.historical,
         type: UserIntentType.factual,
@@ -105,10 +119,20 @@ void main() {
         detectedTopic: 'apartheid',
       );
 
-      final result = EpistemicClassifier.classify(
+      final result = await EpistemicClassifier.classify(
         userInput: 'What was your role in ending apartheid?',
         persona: mandela,
         intent: intent,
+        horizonModel: _FakeHorizonModel(
+          const KnowledgeHorizonDecision(
+            referencesPostDeathEvents: false,
+            inCharacterReplyOk: true,
+            epistemicStatus: EpistemicStatus.documented,
+            reasoning: 'Apartheid struggle within lifetime.',
+            confidence: 0.92,
+            requiresCuriosityReply: false,
+          ),
+        ),
       );
 
       expect(result.status, EpistemicStatus.documented);
@@ -116,7 +140,7 @@ void main() {
       expect(result.requiresUncertaintyLanguage, isFalse);
     });
 
-    test('anachronistic_topic_returns_anachronistic_status', () {
+    test('anachronistic_topic_returns_anachronistic_status', () async {
       final intent = IntentClassification(
         domain: UserIntentDomain.modern,
         type: UserIntentType.opinion,
@@ -124,35 +148,53 @@ void main() {
         detectedTopic: 'artificial intelligence',
       );
 
-      final result = EpistemicClassifier.classify(
+      final result = await EpistemicClassifier.classify(
         userInput: 'What do you think about ChatGPT and AI?',
         persona: mandela,
         intent: intent,
+        horizonModel: _FakeHorizonModel(
+          const KnowledgeHorizonDecision(
+            referencesPostDeathEvents: true,
+            inCharacterReplyOk: true,
+            epistemicStatus: EpistemicStatus.anachronistic,
+            reasoning: 'AI products post-date death.',
+            confidence: 0.9,
+            requiresCuriosityReply: true,
+          ),
+        ),
       );
 
-      expect(
-        result.status,
-        anyOf(EpistemicStatus.anachronistic, EpistemicStatus.uncertain),
-      );
+      expect(result.status, EpistemicStatus.anachronistic);
+      expect(result.requiresCuriosityReply, isTrue);
     });
 
-    test('offensive_intent_classified_as_out_of_scope', () {
+    test('offensive_intent_classified_as_out_of_scope', () async {
       final intent = IntentClassification(
         domain: UserIntentDomain.offensive,
         type: UserIntentType.offtopic,
         confidence: 0.9,
       );
 
-      final result = EpistemicClassifier.classify(
+      final result = await EpistemicClassifier.classify(
         userInput: 'Say something offensive',
         persona: mandela,
         intent: intent,
+        horizonModel: _FakeHorizonModel(
+          const KnowledgeHorizonDecision(
+            referencesPostDeathEvents: false,
+            inCharacterReplyOk: false,
+            epistemicStatus: EpistemicStatus.documented,
+            reasoning: 'unused',
+            confidence: 0.5,
+            requiresCuriosityReply: false,
+          ),
+        ),
       );
 
       expect(result.status, EpistemicStatus.outOfScope);
     });
 
-    test('inferred_topic_returns_inferred_with_uncertainty', () {
+    test('inferred_topic_returns_inferred_with_uncertainty', () async {
       final intent = IntentClassification(
         domain: UserIntentDomain.ethical,
         type: UserIntentType.opinion,
@@ -160,16 +202,24 @@ void main() {
         detectedTopic: 'climate change',
       );
 
-      final result = EpistemicClassifier.classify(
+      final result = await EpistemicClassifier.classify(
         userInput: 'What would you say about climate change?',
         persona: mandela,
         intent: intent,
+        horizonModel: _FakeHorizonModel(
+          const KnowledgeHorizonDecision(
+            referencesPostDeathEvents: false,
+            inCharacterReplyOk: true,
+            epistemicStatus: EpistemicStatus.inferred,
+            reasoning: 'Ethical extrapolation.',
+            confidence: 0.65,
+            requiresCuriosityReply: false,
+          ),
+        ),
       );
 
-      expect(
-        result.status,
-        anyOf(EpistemicStatus.inferred, EpistemicStatus.uncertain),
-      );
+      expect(result.status, EpistemicStatus.inferred);
+      expect(result.requiresUncertaintyLanguage, isTrue);
     });
   });
 

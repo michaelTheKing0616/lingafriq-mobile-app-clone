@@ -4,6 +4,7 @@ import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/providers/dio_provider.dart';
 import 'package:lingafriq/services/ai_gateway_client.dart';
 
+import 'package:lingafriq/ai/persona_cognition/epistemic_classifier.dart';
 import 'package:lingafriq/ai/persona_cognition/persona_cognition_engine.dart';
 import 'package:lingafriq/ai/personas/historical_persona_registry.dart';
 import 'package:lingafriq/ai/personas/historical_roleplay_controller.dart';
@@ -20,7 +21,11 @@ import 'package:lingafriq/learning/pronunciation/persona_pronunciation_service.d
 // ---------------------------------------------------------------------------
 
 final personaCognitionEngineProvider = Provider<PersonaCognitionEngine>((ref) {
-  return PersonaCognitionEngine(dio: ref.watch(client));
+  final dio = ref.watch(client);
+  return PersonaCognitionEngine(
+    dio: dio,
+    horizonModel: GatewayHorizonClassifierModel(dio),
+  );
 });
 
 final historicalRoleplayControllerProvider =
