@@ -884,7 +884,7 @@ P6-025	Done	Tutor Explain mode: pattern-library RAG, L1 answer, pattern id citat
 P6-026	Done	Build Tutor Correct-my-writing hybrid with uncertainty (tutorCorrect.ts, tutor_correct.md, diacritics patchModelOutput)	P6/P6-026.yaml
 P6-027	Done	Story mode: story.ts, story.md, lib/screens/story (lexicon, approval gate, AI label)	P6/P6-027.yaml
 P6-028	Done	Shadowing coach on gateway scorer + pitch overlay (shadowing.ts, tutor_pronunciation_mode_screen.dart)	P6/P6-028.yaml
-P6-029	Draft	Build Translator-with-teaching behind per-pair quality gate	P6/P6-029.yaml
+P6-029	Done	Translator-with-teaching: pair gate, translate.md, meaning_preservation eval (translate.ts)	P6/P6-029.yaml
 P6-030	Draft	Build Live Translate with visible confidence indicator	P6/P6-030.yaml
 P6-031	Done	Stand up server-side scorer service (scorer/api.py, score.route.ts)	P6/P6-031.yaml
 P6-032	Done	Fine-tune Omnilingual CTC per language (finetune.py, licence_check.py; fixture train)	P6/P6-032.yaml
