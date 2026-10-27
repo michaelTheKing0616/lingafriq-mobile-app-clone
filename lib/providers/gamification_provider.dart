@@ -9,6 +9,8 @@ import 'base_provider.dart';
 import 'gamification_services_provider.dart';
 import '../services/rive_gamification_service.dart';
 import '../utils/api.dart';
+import '../config/api_contract.dart';
+import 'dio_provider.dart' show client;
 import '../utils/structured_logger.dart';
 import '../widgets/gamification/streak_milestone_overlay.dart';
 import 'notification_provider.dart';
@@ -19,11 +21,109 @@ final gamificationProvider =
   return GamificationProvider();
 });
 
+class CircleQuestMemberLabel {
+  const CircleQuestMemberLabel({
+    required this.slot,
+    required this.isViewer,
+    this.userId,
+  });
+  final String slot;
+  final bool isViewer;
+  final String? userId;
+}
+
+class CircleQuestSnapshot {
+  const CircleQuestSnapshot({
+    required this.empty,
+    required this.goalXp,
+    required this.progressXp,
+    required this.members,
+    this.complete = false,
+  });
+
+  final bool empty;
+  final int goalXp;
+  final int progressXp;
+  final List<CircleQuestMemberLabel> members;
+  final bool complete;
+
+  factory CircleQuestSnapshot.fromJson(Map<String, dynamic> json) {
+    final membersRaw = json['members'] as List<dynamic>? ?? [];
+    return CircleQuestSnapshot(
+      empty: json['empty'] == true,
+      goalXp: (json['goalXp'] as num?)?.toInt() ?? 0,
+      progressXp: (json['progressXp'] as num?)?.toInt() ?? 0,
+      complete: json['complete'] == true,
+      members: membersRaw
+          .map((e) => CircleQuestMemberLabel(
+                slot: (e as Map)['slot']?.toString() ?? 'Learner',
+                isViewer: (e as Map)['isViewer'] == true,
+                userId: (e as Map)['userId']?.toString(),
+              ))
+          .toList(),
+    );
+  }
+}
+
+class FamilyPhraseSnapshot {
+  const FamilyPhraseSnapshot({
+    required this.empty,
+    this.phrase = '',
+    this.gloss = '',
+  });
+
+  final bool empty;
+  final String phrase;
+  final String gloss;
+
+  factory FamilyPhraseSnapshot.fromJson(Map<String, dynamic> json) {
+    return FamilyPhraseSnapshot(
+      empty: json['empty'] == true,
+      phrase: json['phrase']?.toString() ?? '',
+      gloss: json['gloss']?.toString() ?? '',
+    );
+  }
+}
+
+class HeritageTreeSnapshot {
+  const HeritageTreeSnapshot({
+    required this.canDoCount,
+    required this.stage,
+    required this.members,
+  });
+
+  final int canDoCount;
+  final String stage;
+  final List<CircleQuestMemberLabel> members;
+
+  factory HeritageTreeSnapshot.fromJson(Map<String, dynamic> json) {
+    final membersRaw = json['members'] as List<dynamic>? ?? [];
+    return HeritageTreeSnapshot(
+      canDoCount: (json['canDoCount'] as num?)?.toInt() ?? 0,
+      stage: json['stage']?.toString() ?? 'seed',
+      members: membersRaw
+          .map((e) => CircleQuestMemberLabel(
+                slot: (e as Map)['slot']?.toString() ?? 'Learner',
+                isViewer: (e as Map)['isViewer'] == true,
+              ))
+          .toList(),
+    );
+  }
+}
+
 /// Core gamification engine - beats Duolingo, Babbel, and all competitors
 class GamificationProvider extends Notifier<BaseProviderState>
     with BaseProviderMixin {
   UserGamificationModel _gamification = UserGamificationModel();
   final List<Badge> _allBadges = BadgeDefinitions.getAllBadges();
+
+  CircleQuestSnapshot? _circleQuest;
+  FamilyPhraseSnapshot? _familyPhrase;
+  HeritageTreeSnapshot? _heritageTree;
+
+  CircleQuestSnapshot? get circleQuest => _circleQuest;
+  FamilyPhraseSnapshot? get familyPhrase => _familyPhrase;
+  HeritageTreeSnapshot? get heritageTree => _heritageTree;
 
   UserGamificationModel get gamification => _gamification;
   List<Badge> get allBadges => List.unmodifiable(_allBadges);
@@ -416,6 +516,62 @@ class GamificationProvider extends Notifier<BaseProviderState>
     await _saveGamification();
     await _syncToBackend();
     state = state.copyWith();
+  }
+
+  /// P10-909 — load circle quest + phrase for a group.
+  Future<void> refreshCircleQuest(String groupId) async {
+    try {
+      final dio = ref.read(client);
+      final questRes = await dio.get(
+        ApiContract.url('/api/gamification/advanced/quests/circle?groupId=$groupId'),
+      );
+      final phraseRes = await dio.get(
+        ApiContract.url('/api/gamification/advanced/quests/family-phrase?groupId=$groupId'),
+      );
+      if (questRes.data is Map<String, dynamic>) {
+        _circleQuest = CircleQuestSnapshot.fromJson(questRes.data as Map<String, dynamic>);
+      }
+      if (phraseRes.data is Map<String, dynamic>) {
+        _familyPhrase = FamilyPhraseSnapshot.fromJson(phraseRes.data as Map<String, dynamic>);
+      }
+      state = state.copyWith();
+    } catch (e) {
+      logger.error('refreshCircleQuest failed', tag: 'gamification', error: e);
+    }
+  }
+
+  Future<void> refreshHeritageTree(String groupId) async {
+    try {
+      final dio = ref.read(client);
+      final res = await dio.get(
+        ApiContract.url('/api/gamification/advanced/quests/heritage-tree?groupId=$groupId'),
+      );
+      if (res.data is Map<String, dynamic>) {
+        _heritageTree = HeritageTreeSnapshot.fromJson(res.data as Map<String, dynamic>);
+        state = state.copyWith();
+      }
+    } catch (e) {
+      logger.error('refreshHeritageTree failed', tag: 'gamification', error: e);
+    }
+  }
+
+  Future<void> confirmFamilyPhraseTeachBack({
+    required String groupId,
+    required String learnerId,
+  }) async {
+    try {
+      final api = ref.read(apiProvider.notifier);
+      await api.post(
+        ApiContract.url('/api/gamification/advanced/quests/family-phrase/confirm'),
+        data: {
+          'groupId': groupId,
+          'learnerId': learnerId,
+        },
+      );
+      await refreshCircleQuest(groupId);
+    } catch (e) {
+      logger.error('confirmFamilyPhraseTeachBack failed', tag: 'gamification', error: e);
+    }
   }
 
   /// Update quest progress
