@@ -131,5 +131,71 @@ void main() {
       expect(offered, isTrue);
       expect(client.pttState.captureMode, RealtimeCaptureMode.pushToTalk);
     });
+
+    test('P6-084 Opus bitrate clamped to 16–24 kbps', () {
+      expect(clampOpusBitrateKbps(10), RealtimeVoiceClient.opusBitrateMinKbps);
+      expect(clampOpusBitrateKbps(22), 22);
+      expect(clampOpusBitrateKbps(48), RealtimeVoiceClient.opusBitrateMaxKbps);
+      expect(negotiateRealtimeCodec(preferredBitrateKbps: 20).codec, 'opus');
+    });
+
+    test('P6-084 text fallback on 2G/3G with notice', () {
+      final dio = Dio();
+      final client = RealtimeVoiceClient(dio);
+      final notice = client.applyNetworkTransport(
+        const RealtimeCellularProfile(effectiveType: '3g'),
+      );
+      expect(notice, isNotNull);
+      expect(client.transportState.mode, RealtimeTransportMode.textFallback);
+      expect(
+        client.tryResumeVoiceTransport(const RealtimeCellularProfile(effectiveType: '3g')),
+        isFalse,
+      );
+      expect(
+        client.tryResumeVoiceTransport(const RealtimeCellularProfile(effectiveType: '4g')),
+        isTrue,
+      );
+      expect(client.transportState.mode, RealtimeTransportMode.voice);
+    });
+
+    test('P6-084 packet loss at 10% completes or errors', () {
+      final dio = Dio();
+      final client = RealtimeVoiceClient(dio);
+      final ok = client.evaluateTurnPacketLoss(
+        packetLossRatio: RealtimeVoiceClient.packetLossFailRatio,
+        turnCompleted: true,
+      );
+      expect(ok.ok, isTrue);
+      final fail = client.evaluateTurnPacketLoss(
+        packetLossRatio: RealtimeVoiceClient.packetLossFailRatio,
+        turnCompleted: false,
+      );
+      expect(fail.ok, isFalse);
+      expect(fail.errorCode, 'realtime_packet_loss');
+    });
+
+    test('P6-084 startSession parses optional codec hints', () async {
+      final dio = Dio();
+      dio.interceptors.add(
+        InterceptorsWrapper(
+          onRequest: (options, handler) {
+            handler.resolve(
+              Response(
+                requestOptions: options,
+                statusCode: 200,
+                data: {
+                  'livekit_token': 'jwt-fixture',
+                  'livekit_url': 'wss://example.livekit.cloud',
+                  'opus_bitrate_kbps': 18,
+                },
+              ),
+            );
+          },
+        ),
+      );
+      final client = RealtimeVoiceClient(dio);
+      final creds = await client.startSession(language: 'yo', mode: 'conversation');
+      expect(creds.codec?.bitrateKbps, 18);
+    });
   });
 }

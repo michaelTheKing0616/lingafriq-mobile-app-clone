@@ -20,9 +20,18 @@ class RealtimeVoiceClient {
   static const String cancelTtsControlType = 'control.cancelTts';
   static const String pttControlType = 'control.ptt';
 
+  /// P6-084: Opus bitrate band (kbps) for LiveKit publish options.
+  static const int opusBitrateMinKbps = 16;
+  static const int opusBitrateMaxKbps = 24;
+  static const double packetLossFailRatio = 0.1;
+
+  static const String textFallbackNotice =
+      'Connection is slow — switched to text. Voice resumes when bandwidth improves.';
+
   Room? _room;
   RealtimeBargeInState _bargeIn = const RealtimeBargeInState();
   RealtimePttState _ptt = const RealtimePttState();
+  RealtimeTransportState _transport = const RealtimeTransportState();
 
   /// Fetches a scoped LiveKit token from the gateway (never a vendor key).
   Future<RealtimeSessionCredentials> startSession({
@@ -46,10 +55,12 @@ class RealtimeVoiceClient {
         statusCode: response.statusCode,
       );
     }
+    final codec = parseNegotiatedRealtimeCodec(data);
     return RealtimeSessionCredentials(
       livekitToken: token,
       livekitUrl: url,
       roomName: roomName ?? '',
+      codec: codec,
     );
   }
 
@@ -65,6 +76,7 @@ class RealtimeVoiceClient {
     _room = null;
     _bargeIn = const RealtimeBargeInState();
     _ptt = const RealtimePttState();
+    _transport = const RealtimeTransportState();
     if (room != null) {
       await room.disconnect();
     }
@@ -73,6 +85,44 @@ class RealtimeVoiceClient {
   RealtimeBargeInState get bargeInState => _bargeIn;
 
   RealtimePttState get pttState => _ptt;
+
+  RealtimeTransportState get transportState => _transport;
+
+  /// P6-084 AC2: switch to text on 2G/3G; returns notice when fallback is newly active.
+  String? applyNetworkTransport(RealtimeCellularProfile profile) {
+    final decision = decideRealtimeTransport(profile);
+    final previous = _transport.mode;
+    _transport = decision.state;
+    if (decision.mode == RealtimeTransportMode.textFallback &&
+        previous != RealtimeTransportMode.textFallback) {
+      return decision.userNotice ?? textFallbackNotice;
+    }
+    return null;
+  }
+
+  /// P6-084 AC2: restore voice when effective type improves (e.g. 3G → 4G).
+  bool tryResumeVoiceTransport(RealtimeCellularProfile profile) {
+    if (_transport.mode != RealtimeTransportMode.textFallback) return false;
+    if (!shouldResumeVoiceFromTextFallback(profile)) return false;
+    _transport = RealtimeTransportState(
+      mode: RealtimeTransportMode.voice,
+      codec: negotiateRealtimeCodec(
+        preferredBitrateKbps: _transport.codec?.bitrateKbps,
+      ),
+    );
+    return true;
+  }
+
+  /// P6-084 AC3: never silently drop a turn under emulated packet loss.
+  RealtimeTurnPacketLossOutcome evaluateTurnPacketLoss({
+    required double packetLossRatio,
+    required bool turnCompleted,
+  }) {
+    return evaluateTurnUnderPacketLoss(
+      packetLossRatio: packetLossRatio,
+      turnCompleted: turnCompleted,
+    );
+  }
 
   /// User or auto-offer enabled push-to-talk; gateway VAD is bypassed while active.
   void configurePushToTalk({required bool enabled}) {
@@ -247,11 +297,13 @@ class RealtimeSessionCredentials {
     required this.livekitToken,
     required this.livekitUrl,
     required this.roomName,
+    this.codec,
   });
 
   final String livekitToken;
   final String livekitUrl;
   final String roomName;
+  final NegotiatedRealtimeCodec? codec;
 }
 
 class RealtimeVoiceException implements Exception {
@@ -332,6 +384,138 @@ Map<String, dynamic> buildPttControlEvent({
 enum RealtimeCaptureMode { vad, pushToTalk }
 
 enum RealtimePttPhase { idle, held, sending, error }
+
+enum RealtimeTransportMode { voice, textFallback }
+
+class NegotiatedRealtimeCodec {
+  const NegotiatedRealtimeCodec({
+    required this.codec,
+    required this.bitrateKbps,
+    this.dtx = true,
+  });
+
+  final String codec;
+  final int bitrateKbps;
+  final bool dtx;
+}
+
+class RealtimeTransportState {
+  const RealtimeTransportState({
+    this.mode = RealtimeTransportMode.voice,
+    this.codec,
+  });
+
+  final RealtimeTransportMode mode;
+  final NegotiatedRealtimeCodec? codec;
+}
+
+class RealtimeCellularProfile {
+  const RealtimeCellularProfile({this.effectiveType});
+
+  final String? effectiveType;
+}
+
+class RealtimeTransportDecision {
+  const RealtimeTransportDecision({
+    required this.mode,
+    required this.state,
+    this.userNotice,
+  });
+
+  final RealtimeTransportMode mode;
+  final RealtimeTransportState state;
+  final String? userNotice;
+}
+
+class RealtimeTurnPacketLossOutcome {
+  const RealtimeTurnPacketLossOutcome({
+    required this.ok,
+    required this.completed,
+    this.errorCode,
+  });
+
+  final bool ok;
+  final bool completed;
+  final String? errorCode;
+}
+
+int clampOpusBitrateKbps(int? preferred) {
+  final raw = preferred ?? 20;
+  if (raw < RealtimeVoiceClient.opusBitrateMinKbps) {
+    return RealtimeVoiceClient.opusBitrateMinKbps;
+  }
+  if (raw > RealtimeVoiceClient.opusBitrateMaxKbps) {
+    return RealtimeVoiceClient.opusBitrateMaxKbps;
+  }
+  return raw;
+}
+
+NegotiatedRealtimeCodec negotiateRealtimeCodec({int? preferredBitrateKbps}) {
+  return NegotiatedRealtimeCodec(
+    codec: 'opus',
+    bitrateKbps: clampOpusBitrateKbps(preferredBitrateKbps),
+    dtx: true,
+  );
+}
+
+NegotiatedRealtimeCodec? parseNegotiatedRealtimeCodec(Map<String, dynamic> data) {
+  final codec = data['realtime_codec']?.toString() ?? data['realtimeCodec']?.toString();
+  final bitrateRaw = data['opus_bitrate_kbps'] ?? data['opusBitrateKbps'];
+  if (codec == null && bitrateRaw == null) {
+    return negotiateRealtimeCodec();
+  }
+  final bitrate = bitrateRaw is num ? bitrateRaw.toInt() : int.tryParse('$bitrateRaw');
+  return NegotiatedRealtimeCodec(
+    codec: codec ?? 'opus',
+    bitrateKbps: clampOpusBitrateKbps(bitrate),
+    dtx: true,
+  );
+}
+
+bool _isSlowCellular(String? effectiveType) {
+  final t = (effectiveType ?? 'unknown').toLowerCase();
+  return t == '2g' || t == 'slow-2g' || t == '3g';
+}
+
+RealtimeTransportDecision decideRealtimeTransport(RealtimeCellularProfile profile) {
+  if (_isSlowCellular(profile.effectiveType)) {
+    return RealtimeTransportDecision(
+      mode: RealtimeTransportMode.textFallback,
+      state: const RealtimeTransportState(mode: RealtimeTransportMode.textFallback),
+      userNotice: RealtimeVoiceClient.textFallbackNotice,
+    );
+  }
+  final codec = negotiateRealtimeCodec();
+  return RealtimeTransportDecision(
+    mode: RealtimeTransportMode.voice,
+    state: RealtimeTransportState(mode: RealtimeTransportMode.voice, codec: codec),
+  );
+}
+
+bool shouldResumeVoiceFromTextFallback(RealtimeCellularProfile profile) {
+  return !_isSlowCellular(profile.effectiveType);
+}
+
+RealtimeTurnPacketLossOutcome evaluateTurnUnderPacketLoss({
+  required double packetLossRatio,
+  required bool turnCompleted,
+}) {
+  if (turnCompleted) {
+    return const RealtimeTurnPacketLossOutcome(ok: true, completed: true);
+  }
+  if (packetLossRatio >= RealtimeVoiceClient.packetLossFailRatio) {
+    return const RealtimeTurnPacketLossOutcome(
+      ok: false,
+      completed: false,
+      errorCode: 'realtime_packet_loss',
+    );
+  }
+  return const RealtimeTurnPacketLossOutcome(
+    ok: false,
+    completed: false,
+    errorCode: 'realtime_turn_incomplete',
+  );
+}
 
 /// Inputs for automatic PTT offer (AC2); keep pure for tests.
 class RealtimeVoiceNetworkProfile {
