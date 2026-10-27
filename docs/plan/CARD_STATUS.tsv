@@ -357,7 +357,7 @@ P10-916	Done	Proctored adaptive CAT (passport-cat.service.ts, proctored session 
 P10-917	Draft	Issue signed Verifiable Credentials in Open Badges 3.0	P10/P10-917.yaml
 P10-918	Draft	Revoke credentials and publish status	P10/P10-918.yaml
 P10-919	Draft	Write the DPIA for voice data and minors	P10/P10-919.yaml
-P10-920	Draft	Build the data map and retention schedule	P10/P10-920.yaml
+P10-920	Done	RETENTION.yaml + DATA_MAP.md + data_map_check.py (137 collections, CI --gate)	P10/P10-920.yaml
 P10-921	Draft	Run logged purge jobs per retention schedule	P10/P10-921.yaml
 P10-922	Draft	Gate voice recordings on opt-in with delete-after-scoring	P10/P10-922.yaml
 P10-923	Draft	Ask separate consent for model-training contributions	P10/P10-923.yaml

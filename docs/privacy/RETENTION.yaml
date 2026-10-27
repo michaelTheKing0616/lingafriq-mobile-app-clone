@@ -1,0 +1,1686 @@
+version: 1
+card: P10-920
+collections:
+  admin_activity_logs:
+    model: AdminActivityLog
+    source: node-backend/src/models/adminActivityLog.model.ts
+    owner: node-backend-platform
+    purpose: Security, reliability, and product analytics
+    legal_basis: legitimate_interest
+    personal_data_fields:
+    - pseudonymous_user_id
+    - event_payload
+    retention:
+      days: 365
+    high_risk: false
+  african_lexicon_entries:
+    model: AfricanLexiconEntry
+    source: node-backend/src/models/africanLexiconEntry.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  ai_gateway_usage:
+    model: AiGatewayUsage
+    source: node-backend/src/models/ai-usage.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  ai_prompt_definitions:
+    model: PromptDefinition
+    source: node-backend/src/models/prompt_version.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  ai_prompt_eval_runs:
+    model: PromptEvalRun
+    source: node-backend/src/models/prompt_version.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  ai_prompt_versions:
+    model: PromptVersion
+    source: node-backend/src/models/prompt_version.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  ancestry:
+    model: Ancestry
+    source: node-backend/src/models/gamification/ancestry.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  announcements:
+    model: Announcement
+    source: node-backend/src/models/announcement.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  appMetadatas:
+    model: AppMetadata
+    source: node-backend/src/models/appMetadata.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  app_configs:
+    model: AppConfig
+    source: node-backend/src/models/appConfig.model.ts
+    owner: node-backend-platform
+    purpose: Curriculum, product configuration, or reference catalogue
+    legal_basis: legitimate_interest
+    personal_data_fields: []
+    retention:
+      keep_until: content_deprecation_or_superseded
+    high_risk: false
+  auditLogs:
+    model: AuditLog
+    source: node-backend/src/models/auditLog.model.ts
+    owner: node-backend-platform
+    purpose: Security, reliability, and product analytics
+    legal_basis: legitimate_interest
+    personal_data_fields:
+    - pseudonymous_user_id
+    - event_payload
+    retention:
+      days: 365
+    high_risk: false
+  avatarConfigs:
+    model: AvatarConfig
+    source: node-backend/src/models/avatar/avatarConfig.model.ts
+    owner: node-backend-platform
+    purpose: Curriculum, product configuration, or reference catalogue
+    legal_basis: legitimate_interest
+    personal_data_fields: []
+    retention:
+      keep_until: content_deprecation_or_superseded
+    high_risk: false
+  call_logs:
+    model: CallLog
+    source: node-backend/src/models/callLog.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: apply_collection_retention_job
+  challenge_templates:
+    model: ChallengeTemplate
+    source: node-backend/src/models/challengeTemplate.model.ts
+    owner: node-backend-platform
+    purpose: Curriculum, product configuration, or reference catalogue
+    legal_basis: legitimate_interest
+    personal_data_fields: []
+    retention:
+      keep_until: content_deprecation_or_superseded
+    high_risk: false
+  chatMessages:
+    model: ChatMessage
+    source: node-backend/src/models/user.model.ts
+    owner: node-backend-platform
+    purpose: Social and messaging features
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    - message_body
+    - media_metadata
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  chat_drafts:
+    model: ChatDraft
+    source: node-backend/src/models/offline/chatDraft.model.ts
+    owner: node-backend-platform
+    purpose: Social and messaging features
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    - message_body
+    - media_metadata
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  classroom_assignment_submissions:
+    model: ClassroomAssignmentSubmission
+    source: node-backend/src/models/classroomAssignmentSubmission.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  classroom_assignments:
+    model: ClassroomAssignment
+    source: node-backend/src/models/classroomAssignment.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  classroom_notes:
+    model: ClassroomNote
+    source: node-backend/src/models/classroomNote.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  classroom_session_attendance:
+    model: ClassroomSessionAttendance
+    source: node-backend/src/models/classroomSessionAttendance.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  classroom_sessions:
+    model: ClassroomSession
+    source: node-backend/src/models/classroomSession.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  classroom_states:
+    model: ClassroomState
+    source: node-backend/src/models/classroomState.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  competenceAchievements:
+    model: CompetenceAchievement
+    source: node-backend/src/models/competenceAchievement.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  competition_scores:
+    model: CompetitionScore
+    source: node-backend/src/models/gamification/competitionScore.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  contentItems:
+    model: ContentItem
+    source: node-backend/src/models/item.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  content_engine_jobs:
+    model: ContentJob
+    source: node-backend/src/models/contentJob.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  content_item_workflow:
+    model: ContentItemWorkflow
+    source: node-backend/src/models/content_item_state.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  content_pack_manifests:
+    model: ContentPackManifest
+    source: node-backend/src/models/contentPackManifest.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  content_workflow_audit_events:
+    model: AuditEvent
+    source: node-backend/src/models/audit_event.model.ts
+    owner: node-backend-platform
+    purpose: Security, reliability, and product analytics
+    legal_basis: legitimate_interest
+    personal_data_fields:
+    - pseudonymous_user_id
+    - event_payload
+    retention:
+      days: 365
+    high_risk: false
+  cultureArticles:
+    model: CultureArticle
+    source: node-backend/src/models/cultureMagazine.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  dailyChallenges:
+    model: DailyChallenge
+    source: node-backend/src/models/dailyChallenge.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  devices:
+    model: device
+    source: node-backend/src/models/devices.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  dialect_preferences:
+    model: DialectPreference
+    source: node-backend/src/models/dialectPreference.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  economySettings:
+    model: economySettings
+    source: node-backend/src/models/gamification/economySettings.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  entitlements:
+    model: Entitlement
+    source: node-backend/src/models/entitlement.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  events:
+    model: Event
+    source: node-backend/src/models/gamification/event.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  feature_flags:
+    model: FeatureFlag
+    source: node-backend/src/models/featureFlag.model.ts
+    owner: node-backend-platform
+    purpose: Curriculum, product configuration, or reference catalogue
+    legal_basis: legitimate_interest
+    personal_data_fields: []
+    retention:
+      keep_until: content_deprecation_or_superseded
+    high_risk: false
+  feedBookmarks:
+    model: FeedBookmark
+    source: node-backend/src/models/feedInteraction.model.ts
+    owner: node-backend-platform
+    purpose: Social and messaging features
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    - message_body
+    - media_metadata
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  feedHashtags:
+    model: FeedHashtag
+    source: node-backend/src/models/feedInteraction.model.ts
+    owner: node-backend-platform
+    purpose: Social and messaging features
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    - message_body
+    - media_metadata
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  feedLikes:
+    model: FeedLike
+    source: node-backend/src/models/feedInteraction.model.ts
+    owner: node-backend-platform
+    purpose: Social and messaging features
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    - message_body
+    - media_metadata
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  feedNotifications:
+    model: FeedNotification
+    source: node-backend/src/models/feedInteraction.model.ts
+    owner: node-backend-platform
+    purpose: Social and messaging features
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    - message_body
+    - media_metadata
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  feedPosts:
+    model: FeedPost
+    source: node-backend/src/models/feedPost.model.ts
+    owner: node-backend-platform
+    purpose: Social and messaging features
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    - message_body
+    - media_metadata
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  feedReposts:
+    model: FeedRepost
+    source: node-backend/src/models/feedInteraction.model.ts
+    owner: node-backend-platform
+    purpose: Social and messaging features
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    - message_body
+    - media_metadata
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  feedUserLists:
+    model: FeedUserList
+    source: node-backend/src/models/feedInteraction.model.ts
+    owner: node-backend-platform
+    purpose: Account, learner profile, or child-safety policy
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    - birth_year_or_age_band
+    - guardian_consent_metadata
+    retention:
+      keep_until: account_deletion
+    high_risk: true
+    default_deletion_rule: erase_on_account_deletion_and_guardian_request
+  friendQuests:
+    model: FriendQuest
+    source: node-backend/src/models/friendQuest.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  game_catalog_entries:
+    model: GameCatalogEntry
+    source: node-backend/src/models/gameCatalogEntry.model.ts
+    owner: node-backend-platform
+    purpose: Curriculum, product configuration, or reference catalogue
+    legal_basis: legitimate_interest
+    personal_data_fields: []
+    retention:
+      keep_until: content_deprecation_or_superseded
+    high_risk: false
+  gamifications:
+    model: gamification
+    source: node-backend/src/models/user.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  grammarExercises:
+    model: GrammarExercise
+    source: node-backend/src/models/grammarExercise.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  grammarExplanations:
+    model: GrammarExplanation
+    source: node-backend/src/models/grammar.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  grammarprogress:
+    model: GrammarProgress
+    source: node-backend/src/models/grammarProgress.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  heritage_milestone_progress:
+    model: HeritageMilestoneProgress
+    source: node-backend/src/models/heritageMilestoneProgress.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  historicalpersonalities:
+    model: HistoricalPersonality
+    source: node-backend/src/models/historicalPersonality.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  item_history:
+    model: ItemHistory
+    source: node-backend/src/models/item_history.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  launch_event_participations:
+    model: LaunchEventParticipation
+    source: node-backend/src/models/gamification/launchEventParticipation.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  launch_events:
+    model: LaunchEvent
+    source: node-backend/src/models/gamification/launchEvent.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  leaderboard_scores:
+    model: LeaderboardScore
+    source: node-backend/src/models/gamification/leaderboardScore.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  leagueStandings:
+    model: LeagueStanding
+    source: node-backend/src/models/league.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  leaguehistories:
+    model: LeagueHistory
+    source: node-backend/src/models/league.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  learnerStates:
+    model: LearnerState
+    source: node-backend/src/models/learnerState.model.ts
+    owner: node-backend-platform
+    purpose: Account, learner profile, or child-safety policy
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    - birth_year_or_age_band
+    - guardian_consent_metadata
+    retention:
+      keep_until: account_deletion
+    high_risk: true
+    default_deletion_rule: apply_collection_retention_job
+  learnerprogress:
+    model: LearnerProgress
+    source: node-backend/src/models/learnerProgress.model.ts
+    owner: node-backend-platform
+    purpose: Account, learner profile, or child-safety policy
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    - birth_year_or_age_band
+    - guardian_consent_metadata
+    retention:
+      keep_until: account_deletion
+    high_risk: true
+    default_deletion_rule: apply_collection_retention_job
+  learningEvents:
+    model: LearningEvent
+    source: node-backend/src/models/learningEvent.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  learningPaths:
+    model: LearningPath
+    source: node-backend/src/models/learningPath.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  learningSessions:
+    model: LearningSession
+    source: node-backend/src/models/learnerProgress.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  lessonItemVerifications:
+    model: LessonItemVerification
+    source: node-backend/src/models/lessonItemVerification.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  lessonItems:
+    model: LessonItem
+    source: node-backend/src/models/lessonItem.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  lesson_drafts:
+    model: LessonDraft
+    source: node-backend/src/models/draft.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  lexicon_audio_attachments:
+    model: LexiconAudioAttachment
+    source: node-backend/src/models/lexiconAudio.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: delete_raw_audio_after_scoring_unless_training_opt_in
+  lexicon_suggestions:
+    model: LexiconSuggestion
+    source: node-backend/src/models/lexiconSuggestion.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  lifecycleMessageEvents:
+    model: LifecycleMessageEvent
+    source: node-backend/src/models/lifecycleMessageEvent.model.ts
+    owner: node-backend-platform
+    purpose: Social and messaging features
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    - message_body
+    - media_metadata
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  living_lexemes:
+    model: LivingLexeme
+    source: node-backend/src/models/livingLexeme.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  medias:
+    model: Media
+    source: node-backend/src/models/media.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  mentor_sessions:
+    model: MentorSession
+    source: node-backend/src/models/mentorSession.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: apply_collection_retention_job
+  messages:
+    model: message
+    source: node-backend/src/models/messages.model.ts
+    owner: node-backend-platform
+    purpose: Social and messaging features
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    - message_body
+    - media_metadata
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  micro_mentor_profiles:
+    model: MicroMentorProfile
+    source: node-backend/src/models/community/microMentorProfile.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: apply_collection_retention_job
+  micro_mentor_safety_reports:
+    model: MicroMentorSafetyReport
+    source: node-backend/src/models/community/microMentorSafetyReport.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: apply_collection_retention_job
+  micro_mentor_sessions:
+    model: MicroMentorSession
+    source: node-backend/src/models/community/microMentorSession.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: apply_collection_retention_job
+  moderation_appeals:
+    model: ModerationAppeal
+    source: node-backend/src/models/appeal.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  native_pronunciation_ratings:
+    model: NativePronunciationRating
+    source: node-backend/src/models/rating.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: apply_collection_retention_job
+  notifications:
+    model: Notification
+    source: node-backend/src/models/notification.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  offlineContents:
+    model: OfflineContent
+    source: node-backend/src/models/offlineContent.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  offlineanalytics:
+    model: OfflineAnalytics
+    source: node-backend/src/models/analytics/offlineAnalytics.model.ts
+    owner: node-backend-platform
+    purpose: Security, reliability, and product analytics
+    legal_basis: legitimate_interest
+    personal_data_fields:
+    - pseudonymous_user_id
+    - event_payload
+    retention:
+      days: 365
+    high_risk: false
+  passkeyChallenges:
+    model: PasskeyChallenge
+    source: node-backend/src/models/passkeyCredential.model.ts
+    owner: node-backend-platform
+    purpose: Account, learner profile, or child-safety policy
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    - birth_year_or_age_band
+    - guardian_consent_metadata
+    retention:
+      keep_until: account_deletion
+    high_risk: true
+    default_deletion_rule: erase_on_account_deletion_and_guardian_request
+  passkeyCredentials:
+    model: PasskeyCredential
+    source: node-backend/src/models/passkeyCredential.model.ts
+    owner: node-backend-platform
+    purpose: Account, learner profile, or child-safety policy
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    - birth_year_or_age_band
+    - guardian_consent_metadata
+    retention:
+      keep_until: account_deletion
+    high_risk: true
+    default_deletion_rule: erase_on_account_deletion_and_guardian_request
+  peerCorrections:
+    model: PeerCorrection
+    source: node-backend/src/models/peerCorrection.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  personalitychatsessions:
+    model: PersonalityChatSession
+    source: node-backend/src/models/personalityChatSession.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: apply_collection_retention_job
+  personalizations:
+    model: Personalization
+    source: node-backend/src/models/personalization.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  phrase_dna_attempts:
+    model: PhraseDnaAttempt
+    source: node-backend/src/models/learning/phraseDnaAttempt.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  phrase_dna_templates:
+    model: PhraseDnaTemplate
+    source: node-backend/src/models/learning/phraseDnaTemplate.model.ts
+    owner: node-backend-platform
+    purpose: Curriculum, product configuration, or reference catalogue
+    legal_basis: legitimate_interest
+    personal_data_fields: []
+    retention:
+      keep_until: content_deprecation_or_superseded
+    high_risk: false
+  point_and_say_events:
+    model: PointAndSayEvent
+    source: node-backend/src/models/pointAndSayEvent.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: apply_collection_retention_job
+  polie_requests:
+    model: PolieRequest
+    source: node-backend/src/models/polieRequest.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: apply_collection_retention_job
+  polie_usage:
+    model: PolieUsage
+    source: node-backend/src/models/polieUsage.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: apply_collection_retention_job
+  proficiency_credentials:
+    model: ProficiencyCredential
+    source: node-backend/src/models/proficiencyCredential.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: apply_collection_retention_job
+  proficiency_sessions:
+    model: ProficiencySession
+    source: node-backend/src/models/proficiencySession.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: apply_collection_retention_job
+  random_quiz:
+    model: randomQuiz
+    source: node-backend/src/models/randomQuiz.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  refreshTokens:
+    model: RefreshToken
+    source: node-backend/src/models/refreshToken.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  safetyReports:
+    model: SafetyReport
+    source: node-backend/src/models/report.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  snapMessages:
+    model: SnapMessage
+    source: node-backend/src/models/snapMessage.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: apply_collection_retention_job
+  snapScreenshotEvents:
+    model: SnapScreenshotEvent
+    source: node-backend/src/models/snapScreenshotEvent.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: apply_collection_retention_job
+  snapStickerPacks:
+    model: SnapStickerPack
+    source: node-backend/src/models/snapStickerPack.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: apply_collection_retention_job
+  snapStoryViews:
+    model: SnapStoryView
+    source: node-backend/src/models/snapStoryView.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: apply_collection_retention_job
+  snapStreaks:
+    model: SnapStreak
+    source: node-backend/src/models/snapStreak.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: apply_collection_retention_job
+  snapstories:
+    model: SnapStory
+    source: node-backend/src/models/snapStory.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: apply_collection_retention_job
+  socialAudioFollowings:
+    model: SocialAudioFollowing
+    source: node-backend/src/models/socialAudioFollowing.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: delete_raw_audio_after_scoring_unless_training_opt_in
+  socialAudioLearnings:
+    model: SocialAudioLearning
+    source: node-backend/src/models/socialAudioLearning.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: delete_raw_audio_after_scoring_unless_training_opt_in
+  socialAudioParticipants:
+    model: SocialAudioParticipant
+    source: node-backend/src/models/socialAudioParticipant.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: delete_raw_audio_after_scoring_unless_training_opt_in
+  socialAudioPronunciations:
+    model: SocialAudioPronunciation
+    source: node-backend/src/models/socialAudioLearning.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: delete_raw_audio_after_scoring_unless_training_opt_in
+  socialAudioRooms:
+    model: SocialAudioRoom
+    source: node-backend/src/models/socialAudioRoom.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: delete_raw_audio_after_scoring_unless_training_opt_in
+  socialAudioWordLearneds:
+    model: SocialAudioWordLearned
+    source: node-backend/src/models/socialAudioLearning.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: delete_raw_audio_after_scoring_unless_training_opt_in
+  speak_mission_attempts:
+    model: SpeakMissionAttempt
+    source: node-backend/src/models/learning/speakMissionAttempt.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: apply_collection_retention_job
+  speaker_queue_entries:
+    model: SpeakerQueueEntry
+    source: node-backend/src/models/speakerQueueEntry.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: apply_collection_retention_job
+  staff_role_assignments:
+    model: StaffRoleAssignment
+    source: node-backend/src/models/staff_role.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  starredMessages:
+    model: StarredMessage
+    source: node-backend/src/models/starredMessage.model.ts
+    owner: node-backend-platform
+    purpose: Social and messaging features
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    - message_body
+    - media_metadata
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  status:
+    model: Status
+    source: node-backend/src/models/status.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  subscriptionTiers:
+    model: SubscriptionTier
+    source: node-backend/src/models/subscriptionTier.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  subscriptions:
+    model: Subscription
+    source: node-backend/src/models/user.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  syncConflicts:
+    model: SyncConflict
+    source: node-backend/src/models/offline/syncConflict.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  syncOperationReceipts:
+    model: SyncOperationReceipt
+    source: node-backend/src/models/syncOperationReceipt.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  syncQueues:
+    model: SyncQueue
+    source: node-backend/src/models/offline/syncQueue.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  syncpreferences:
+    model: SyncPreferences
+    source: node-backend/src/models/offline/syncPreferences.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  synthetic_voice_preferences:
+    model: SyntheticVoicePreference
+    source: node-backend/src/models/syntheticVoicePreference.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: delete_raw_audio_after_scoring_unless_training_opt_in
+  telemetries:
+    model: Telemetry
+    source: node-backend/src/models/telemetry.model.ts
+    owner: node-backend-platform
+    purpose: Security, reliability, and product analytics
+    legal_basis: legitimate_interest
+    personal_data_fields:
+    - pseudonymous_user_id
+    - event_payload
+    retention:
+      days: 365
+    high_risk: false
+  tribe_members:
+    model: TribeMember
+    source: node-backend/src/models/gamification/tribeMember.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  userConnections:
+    model: UserConnection
+    source: node-backend/src/models/userConnection.model.ts
+    owner: node-backend-platform
+    purpose: Account, learner profile, or child-safety policy
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    - birth_year_or_age_band
+    - guardian_consent_metadata
+    retention:
+      keep_until: account_deletion
+    high_risk: true
+    default_deletion_rule: erase_on_account_deletion_and_guardian_request
+  userContents:
+    model: UserContent
+    source: node-backend/src/models/userContent.model.ts
+    owner: node-backend-platform
+    purpose: Account, learner profile, or child-safety policy
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    - birth_year_or_age_band
+    - guardian_consent_metadata
+    retention:
+      keep_until: account_deletion
+    high_risk: true
+    default_deletion_rule: erase_on_account_deletion_and_guardian_request
+  userMilestones:
+    model: UserMilestone
+    source: node-backend/src/models/userMilestone.model.ts
+    owner: node-backend-platform
+    purpose: Account, learner profile, or child-safety policy
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    - birth_year_or_age_band
+    - guardian_consent_metadata
+    retention:
+      keep_until: account_deletion
+    high_risk: true
+    default_deletion_rule: erase_on_account_deletion_and_guardian_request
+  user_badges:
+    model: UserBadge
+    source: node-backend/src/models/gamification/userBadge.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  user_items:
+    model: UserItem
+    source: node-backend/src/models/gamification/userItem.model.ts
+    owner: node-backend-platform
+    purpose: Account, learner profile, or child-safety policy
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    - birth_year_or_age_band
+    - guardian_consent_metadata
+    retention:
+      keep_until: account_deletion
+    high_risk: true
+    default_deletion_rule: erase_on_account_deletion_and_guardian_request
+  user_journey_progress:
+    model: UserJourneyProgress
+    source: node-backend/src/models/gamification/userJourneyProgress.model.ts
+    owner: node-backend-platform
+    purpose: Account, learner profile, or child-safety policy
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    - birth_year_or_age_band
+    - guardian_consent_metadata
+    retention:
+      keep_until: account_deletion
+    high_risk: true
+    default_deletion_rule: erase_on_account_deletion_and_guardian_request
+  user_preferences:
+    model: UserPreferences
+    source: node-backend/src/models/userPreferences.model.ts
+    owner: node-backend-platform
+    purpose: Account, learner profile, or child-safety policy
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    - birth_year_or_age_band
+    - guardian_consent_metadata
+    retention:
+      keep_until: account_deletion
+    high_risk: true
+    default_deletion_rule: erase_on_account_deletion_and_guardian_request
+  userhearts:
+    model: UserHearts
+    source: node-backend/src/models/userHearts.model.ts
+    owner: node-backend-platform
+    purpose: Account, learner profile, or child-safety policy
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    - birth_year_or_age_band
+    - guardian_consent_metadata
+    retention:
+      keep_until: account_deletion
+    high_risk: true
+    default_deletion_rule: erase_on_account_deletion_and_guardian_request
+  users:
+    model: User
+    source: node-backend/src/models/user.model.ts
+    owner: node-backend-platform
+    purpose: Account, learner profile, or child-safety policy
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    - birth_year_or_age_band
+    - guardian_consent_metadata
+    retention:
+      keep_until: account_deletion
+    high_risk: true
+    default_deletion_rule: erase_on_account_deletion_and_guardian_request
+  verified_lexicon_entries:
+    model: VerifiedLexiconEntry
+    source: node-backend/src/models/verifiedLexicon.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  vocabularyLists:
+    model: VocabularyList
+    source: node-backend/src/models/vocabulary.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  vocabularyWords:
+    model: VocabularyWord
+    source: node-backend/src/models/vocabulary.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  voiceContributions:
+    model: VoiceContribution
+    source: node-backend/src/models/voiceContribution.model.ts
+    owner: node-backend-platform
+    purpose: Speech practice, scoring, or licensed voice assets
+    legal_basis: consent
+    personal_data_fields:
+    - user_id
+    - audio_blob_or_url
+    - transcript_metadata
+    retention:
+      days: 0
+      note: Delete raw audio after scoring unless separate training consent (P10-923)
+    high_risk: true
+    default_deletion_rule: delete_raw_audio_after_scoring_unless_training_opt_in
+  webhookdeliveries:
+    model: WebhookDelivery
+    source: node-backend/src/models/entitlement.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
+  xPs:
+    model: XP
+    source: node-backend/src/models/gamification/xp.model.ts
+    owner: node-backend-platform
+    purpose: Learning progress and gamification state
+    legal_basis: contract
+    personal_data_fields:
+    - user_id
+    retention:
+      keep_until: account_deletion
+    high_risk: false
