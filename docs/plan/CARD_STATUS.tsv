@@ -965,7 +965,7 @@ P7-921	Done	Route corrections from Native Corrections and the Square (lexiconCor
 P7-922	Done	Word Card bottom sheet (word_card_sheet.dart, dialect_chips, tone_lens_contour)	P7/P7-922.yaml
 P7-923	Done	Build long-press Word Card on every text surface (lexicon_selectable_text.dart)	P7/P7-923.yaml
 P7-924	Done	Build full lexicon entry page (lexicon_entry_screen.dart)	P7/P7-924.yaml
-P7-925	Draft	Make Global Search lead with lexicon words	P7/P7-925.yaml
+P7-925	Done	Global Search lexicon-first (lexicon_search_service.dart, global_search_screen.dart)	P7/P7-925.yaml
 P7-926	Draft	Show word of the day with its story in Today	P7/P7-926.yaml
 P7-927	Draft	Build pan-African same-idea view	P7/P7-927.yaml
 P7-928	Done	Offline lexicon pack manifest + client verify/sync (lexiconPack.service.ts, lexicon_pack_service.dart)	P7/P7-928.yaml
