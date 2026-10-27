@@ -1,0 +1,26 @@
+{
+  "card": "P7-903",
+  "version": 1,
+  "entries": [
+    {
+      "object_set_id": "afr.cup",
+      "ml_kit_labels": ["Cup", "Mug", "Teacup"],
+      "living_dictionary_lexeme_id": "yo.lex.ọkọ.vehicle"
+    },
+    {
+      "object_set_id": "afr.chair",
+      "ml_kit_labels": ["Chair", "Seat"],
+      "living_dictionary_lexeme_id": "yo.lex.b26da58d1800"
+    },
+    {
+      "object_set_id": "afr.book",
+      "ml_kit_labels": ["Book"],
+      "living_dictionary_lexeme_id": "yo.lex.99128a1d25e2"
+    },
+    {
+      "object_set_id": "afr.phone",
+      "ml_kit_labels": ["Mobile phone", "Cell phone", "Telephone"],
+      "living_dictionary_lexeme_id": "yo.lex.03796a32b606"
+    }
+  ]
+}

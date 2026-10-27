@@ -191,6 +191,7 @@ flutter:
     - assets/data/word_repo_game_seed.json
     - assets/rive/
     - assets/models/point_say_mobilenetv4.tflite
+    - assets/lens/african_object_set.json
     - schemas/v2/
 
 

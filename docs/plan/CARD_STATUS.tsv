@@ -943,7 +943,7 @@ P6-084	Done	Opus 16–24 kbps + 2G/3G text fallback (codec.ts, realtime_voice_cl
 P7-900	Done	ADR-009 Lens hub + Point & Say pipeline; route point-and-say retained	P7/P7-900.yaml
 P7-901	Done	ADR-013 two-layer living lexicon (Verified + My Words, link rules)	P7/P7-901.yaml
 P7-902	Done	Build Lens full-screen camera with breathing boxes (lens_screen.dart, route alias)	P7/P7-902.yaml
-P7-903	Draft	Build on-device detection mapped to a curated African object set	P7/P7-903.yaml
+P7-903	Done	Build on-device detection mapped to a curated African object set (on_device_detector.dart, object_set_mapper.dart)	P7/P7-903.yaml
 P7-904	Draft	Build server vision recognition via the AI gateway	P7/P7-904.yaml
 P7-905	Draft	Replace NLLB and MyMemory with lexicon-grounded word lookup	P7/P7-905.yaml
 P7-906	Draft	Build Word Card content for Lens tags with native audio	P7/P7-906.yaml
