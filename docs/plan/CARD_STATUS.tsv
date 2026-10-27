@@ -392,7 +392,7 @@ P11-011	Done	kwame_nkrumah.json dossier + personas/index.ts (en/nzi, 50 probes; 
 P11-012	Done	shaka_kasenzangakhona.json + personas/index.ts (zu narrated_as_told_by, 50 probes; EXT-15 gates learner enable)	P11/P11-012.yaml
 P11-013	Done	Author Ahmed Baba persona dossier and prompts (ahmed_baba.json, index.ts)	P11/P11-013.yaml
 P11-014	Done	Author Thomas Mofolo persona dossier and prompts (thomas_mofolo.json, index.ts)	P11/P11-014.yaml
-P11-015	Draft	Define four persona packs pairing figures with languages	P11/P11-015.yaml
+P11-015	Done	Four persona packs with language pairings (packs.ts, persona_packs.dart)	P11/P11-015.yaml
 P11-016	Draft	Author Yaa Asantewaa quest chapter structure	P11/P11-016.yaml
 P11-017	Draft	Build quest scenes, ambient sound and Tone Lens moment	P11/P11-017.yaml
 P11-018	Draft	Build bilingual quest dialogue and comprehension checkpoint	P11/P11-018.yaml
