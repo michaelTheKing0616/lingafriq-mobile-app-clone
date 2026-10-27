@@ -1,7 +1,47 @@
+import '../../learning/pronunciation/tone_models.dart';
 import '../gamekit/game_scoring.dart';
 import '../gamekit/game_turn_context.dart';
 import 'tone_forge_models.dart';
 import 'tone_forge_audio.dart';
+
+/// Multiple-choice tone level vs lexicon pattern (P8-913).
+GameScore scoreToneInventoryChoice({
+  required ToneLanguageModel inventory,
+  required List<String> lexiconTonePattern,
+  required int syllableIndex,
+  required int selectedInventoryIndex,
+}) {
+  if (syllableIndex < 0 || syllableIndex >= lexiconTonePattern.length) {
+    return GameScore(
+      accuracy: 0,
+      isPerfect: false,
+      isFail: true,
+      details: {'reason': 'syllable_out_of_range'},
+    );
+  }
+  final expectedCode = lexiconTonePattern[syllableIndex];
+  final expectedIndex = inventory.levels.indexOf(expectedCode);
+  if (expectedIndex < 0) {
+    return GameScore(
+      accuracy: 0,
+      isPerfect: false,
+      isFail: true,
+      details: {'reason': 'tone_not_in_inventory', 'code': expectedCode},
+    );
+  }
+  final correct = selectedInventoryIndex == expectedIndex;
+  return GameScore(
+    accuracy: correct ? 1.0 : 0.0,
+    isPerfect: correct,
+    isFail: !correct,
+    details: {
+      'expected_level': expectedCode,
+      'expected_index': expectedIndex,
+      'selected_index': selectedInventoryIndex,
+      'inventory': inventory.levels,
+    },
+  );
+}
 
 /// ToneForge-specific scoring engine
 /// Uses real pitch analysis, not random logic

@@ -3,17 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../games/tone_forge/tone_forge_models.dart';
+import '../../learning/pronunciation/tone_models.dart';
 import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
-import '../../providers/game_provider.dart';
-import '../../providers/game_content_provider.dart';
-import '../../models/game/game_content_models.dart';
+import '../../services/offline/tone_trainer_queue_service.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../utils/pan_african_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
 import 'base_game_screen.dart';
-import 'game_scenario_loader.dart';
 
 class ToneTrainerGame extends BaseGameScreen {
   const ToneTrainerGame({
@@ -31,12 +30,12 @@ class ToneTrainerGame extends BaseGameScreen {
 }
 
 class _ToneTrainerGameState extends BaseGameScreenState<ToneTrainerGame> {
-  final List<PhraseCard> _cards = [];
   final List<_ToneQuestion> _questions = [];
   int _currentIndex = 0;
   int? _selectedTone;
   bool _answered = false;
   int _score = 0;
+  ToneLanguageModel? _inventory;
 
   @override
   int getCardCount() => 8;
@@ -44,101 +43,42 @@ class _ToneTrainerGameState extends BaseGameScreenState<ToneTrainerGame> {
   @override
   Future<void> onGameInitialized() async {
     final lang = widget.language.toLowerCase();
-    final tonalWords = ref
-        .read(
-          gameWordsProvider(
-            GameContentFilter(language: lang, gameTag: 'ToneTrainer'),
-          ),
-        )
-        .where((w) => w.tonalNote != null && w.tonalNote!.trim().isNotEmpty)
-        .toList();
-
-    if (tonalWords.isNotEmpty) {
-      final pool = List.of(tonalWords)..shuffle(Random());
-      for (final word in pool.take(getCardCount())) {
-        _cards.add(_phraseFromGameWord(word));
-        _questions.add(_ToneQuestion(
-          card: _cards.last,
-          correctToneIndex: _toneIndexFromNote(word.tonalNote!),
-          toneLabels: const ['á (High)', 'ā (Mid)', 'à (Low)'],
-          toneSymbols: const ['á', 'ā', 'à'],
-          tonalHint: word.tonalNote,
-        ));
-      }
+    final catalog = await loadToneModelsCatalogFromAsset();
+    if (!isToneTrainerAvailable(catalog, lang)) {
+      setState(() {});
+      return;
     }
 
-    final scenarios = loadBundledGameScenarios(
-      ref,
-      language: widget.language,
-      game: 'ToneTrainer',
-      max: getCardCount(),
+    final pool = await buildToneGamePool(
+      catalog: catalog,
+      languageCode: lang,
+      fetchLimit: 48,
     );
-    if (_questions.length < getCardCount() && scenarios.isNotEmpty) {
-      for (final scenario in scenarios) {
-        if (_questions.length >= getCardCount()) break;
-        _cards.add(PhraseCard(
-          cardId: 'tone_scenario_${scenario.id}',
-          language: widget.language,
-          text: scenario.prompt,
-          ascii: scenario.prompt,
-          gloss: scenario.expectedResponse ?? scenario.title,
-          level: scenario.cefr,
-          contextExamples: [
-            if (scenario.culturalNote != null) scenario.culturalNote!,
-          ],
-        ));
-        _questions.add(_ToneQuestion(
-          card: _cards.last,
-          correctToneIndex: _toneIndexFromNote(
-            scenario.culturalNote ?? scenario.expectedResponse ?? '',
-          ),
-          toneLabels: const ['á (High)', 'ā (Mid)', 'à (Low)'],
-          toneSymbols: const ['á', 'ā', 'à'],
-          tonalHint: scenario.culturalNote ?? scenario.title,
-        ));
-      }
+    ToneTrainerQueueService.instance
+        .recordPoolDiagnostics(pool.diagnostics.formatLine());
+    _inventory = pool.inventory;
+
+    if (pool.lexemes.isEmpty || pool.options.isEmpty || pool.inventory == null) {
+      setState(() {});
+      return;
     }
 
-    if (_questions.isEmpty) {
-      final gameProv = ref.read(gameProvider.notifier);
-      _cards.addAll(gameProv.availableCards);
-      _buildQuestionsFromCards();
+    final rng = Random();
+    final shuffled = List<ToneGameLexeme>.from(pool.lexemes)..shuffle(rng);
+    for (final lexeme in shuffled.take(getCardCount())) {
+      final syllableIndex = lexeme.tonePattern.length == 1
+          ? 0
+          : rng.nextInt(lexeme.tonePattern.length);
+      final spec = toneTrainerQuestionFromLexeme(
+        lexeme: lexeme,
+        options: pool.options,
+        inventory: pool.inventory!,
+        syllableIndex: syllableIndex,
+      );
+      if (spec == null) continue;
+      _questions.add(_ToneQuestion.fromSpec(spec));
     }
     setState(() {});
-  }
-
-  PhraseCard _phraseFromGameWord(GameWord word) => PhraseCard(
-        cardId: 'tone_word_${word.id}',
-        language: word.language,
-        text: word.word,
-        ascii: word.word,
-        gloss: word.englishMeaning,
-        ipa: word.phoneticGuide,
-        level: word.cefr,
-        contextExamples: [
-          if (word.culturalNote != null) word.culturalNote!,
-        ],
-      );
-
-  int _toneIndexFromNote(String note) {
-    final lower = note.toLowerCase();
-    if (lower.contains('low')) return 2;
-    if (lower.contains('mid')) return 1;
-    if (lower.contains('high')) return 0;
-    return 1;
-  }
-
-  void _buildQuestionsFromCards() {
-    final rng = Random(DateTime.now().millisecondsSinceEpoch);
-    for (final card in _cards) {
-      final correctTone = rng.nextInt(3);
-      _questions.add(_ToneQuestion(
-        card: card,
-        correctToneIndex: correctTone,
-        toneLabels: const ['á (High)', 'ā (Mid)', 'à (Low)'],
-        toneSymbols: const ['á', 'ā', 'à'],
-      ));
-    }
   }
 
   _ToneQuestion? get _currentQuestion =>
@@ -193,8 +133,13 @@ class _ToneTrainerGameState extends BaseGameScreenState<ToneTrainerGame> {
   Widget buildGameContent(BuildContext context) {
     if (_questions.isEmpty) {
       return Center(
-        child: Text('No tonal words available',
-            style: ModernGriotTypography.bodyLarge(context: context)),
+        child: Text(
+          _inventory == null
+              ? 'Tone Trainer is not available for this language yet.'
+              : 'No verified tonal words are ready yet. Check back after more lexicon review.',
+          style: ModernGriotTypography.bodyLarge(context: context),
+          textAlign: TextAlign.center,
+        ),
       );
     }
 
@@ -217,6 +162,17 @@ class _ToneTrainerGameState extends BaseGameScreenState<ToneTrainerGame> {
             Text(q.card.text,
                 style: ModernGriotTypography.displaySmall(context: context),
                 textAlign: TextAlign.center),
+            if (q.syllableLabel.isNotEmpty) ...[
+              SizedBox(height: PanAfricanSpacing.xxs),
+              Text(
+                q.syllableLabel,
+                style: ModernGriotTypography.labelMedium(
+                  context: context,
+                  color: ModernGriotColors.onSurfaceVariant,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
             if (q.card.ipa != null) ...[
               SizedBox(height: PanAfricanSpacing.xxs),
               Text('/${q.card.ipa}/',
@@ -253,11 +209,13 @@ class _ToneTrainerGameState extends BaseGameScreenState<ToneTrainerGame> {
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xl),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: List.generate(3, (i) {
-                      final heights = [0.15, 0.45, 0.75];
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: List.generate(q.options.length, (i) {
+                      final heights = _toneHeightsForCount(q.options.length);
+                      final heightFactor = i < heights.length ? heights[i] : 0.45;
+                      final opt = q.options[i];
                       return Padding(
-                        padding: EdgeInsets.only(top: heights[i] * 80.h),
+                        padding: EdgeInsets.only(top: heightFactor * 80.h),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -278,7 +236,7 @@ class _ToneTrainerGameState extends BaseGameScreenState<ToneTrainerGame> {
                               ),
                               child: Center(
                                 child: Text(
-                                  q.toneSymbols[i],
+                                  opt.symbol,
                                   style: ModernGriotTypography.titleMedium(
                                     context: context,
                                     color: _selectedTone == i
@@ -290,7 +248,7 @@ class _ToneTrainerGameState extends BaseGameScreenState<ToneTrainerGame> {
                             ),
                             SizedBox(height: 2.h),
                             Text(
-                              ['High', 'Mid', 'Low'][i],
+                              opt.label,
                               style: ModernGriotTypography.labelSmall(
                                   context: context),
                             ),
@@ -312,7 +270,8 @@ class _ToneTrainerGameState extends BaseGameScreenState<ToneTrainerGame> {
             SizedBox(height: PanAfricanSpacing.sm),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: List.generate(3, (i) {
+              children: List.generate(q.options.length, (i) {
+                final opt = q.options[i];
                 final isCorrect = _answered && i == q.correctToneIndex;
                 final isWrong = _answered && _selectedTone == i && !isCorrect;
                 final isActive = _selectedTone == i && !_answered;
@@ -348,11 +307,11 @@ class _ToneTrainerGameState extends BaseGameScreenState<ToneTrainerGame> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(q.toneSymbols[i],
+                        Text(opt.symbol,
                             style: ModernGriotTypography.headlineSmall(
                                 context: context)),
                         SizedBox(height: 2.h),
-                        Text(q.toneLabels[i],
+                        Text('${opt.symbol} (${opt.label})',
                             style: ModernGriotTypography.labelSmall(
                                 context: context),
                             textAlign: TextAlign.center),
@@ -535,18 +494,50 @@ class _SemanticShiftCard extends StatelessWidget {
   }
 }
 
+List<double> _toneHeightsForCount(int count) {
+  if (count <= 1) return const [0.45];
+  if (count == 2) return const [0.2, 0.7];
+  return const [0.15, 0.45, 0.75];
+}
+
 class _ToneQuestion {
   final PhraseCard card;
   final int correctToneIndex;
-  final List<String> toneLabels;
-  final List<String> toneSymbols;
+  final List<ToneInventoryOption> options;
+  final int syllableIndex;
   final String? tonalHint;
+  final String syllableLabel;
 
   const _ToneQuestion({
     required this.card,
     required this.correctToneIndex,
-    required this.toneLabels,
-    required this.toneSymbols,
+    required this.options,
+    required this.syllableIndex,
     this.tonalHint,
+    this.syllableLabel = '',
   });
+
+  factory _ToneQuestion.fromSpec(ToneTrainerQuestionSpec spec) {
+    final lex = spec.lexeme;
+    final syllable = spec.syllableIndex < lex.syllables.length
+        ? lex.syllables[spec.syllableIndex]
+        : '';
+    return _ToneQuestion(
+      card: PhraseCard(
+        cardId: 'tone_lex_${lex.lexemeId}',
+        language: lex.language,
+        text: lex.toneMarkedForm,
+        ascii: lex.toneMarkedForm,
+        gloss: lex.englishGloss ?? '',
+        level: 'A1',
+      ),
+      correctToneIndex: spec.correctInventoryIndex,
+      options: spec.options,
+      syllableIndex: spec.syllableIndex,
+      syllableLabel: lex.tonePattern.length > 1
+          ? 'Syllable ${spec.syllableIndex + 1}${syllable.isNotEmpty ? ': $syllable' : ''}'
+          : '',
+      tonalHint: lex.tonePattern.join('–'),
+    );
+  }
 }
