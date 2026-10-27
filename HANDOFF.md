@@ -139,6 +139,7 @@ Intron is set up and not connected. Do not put `INTRON_API_KEY` in the client.
 - UI-BELOW-BAR P10-927 UI 8/8/9/8/8/8/8/8/7/8 avg 8.0; reference: Apple Settings privacy policy page; gap: policy page is integrated, but AA/RTL/text-scale and locked/offline/child-mode matrix evidence is incomplete for gate pass.
 - UI-BELOW-BAR P11-005 UI 8/8/9/8/7/8/8/8/7/8 avg 7.9; reference: Duolingo inline claim/source chips; gap: `PersonaClaimRow` covers chip variants but lacks complete loading/empty/error/offline/locked/child-mode route-state evidence at screen level.
 - UI-BELOW-BAR P11-007 UI 8/8/9/8/8/8/8/8/7/8 avg 8.0; reference: Character.AI disclosure ribbon patterns; gap: disclosure badge and opening preamble are implemented, but reduced-motion/RTL/text-scale and full state-matrix evidence are below strict 9+ gate.
+- UI-BELOW-BAR P11-009 UI 8/8/9/8/8/8/8/8/7/8 avg 8.0; reference: Duolingo feature-unavailable interruption cards; gap: unavailable-state copy and persona gate logic exist, but no route-level visual state matrix proof (loading/error/offline/locked/child-mode, RTL/text-scale) for strict 9+ pass.
 
 ## Tope to switch on
 
