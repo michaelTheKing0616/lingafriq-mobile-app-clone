@@ -410,7 +410,7 @@ P11-029	Done	ADR-030 CharacterVM expression enum + Rive VM contract	P11/P11-029.
 P11-030	Done	ADR-032 avatar economy: mastery vs Cowries vs adult fiat; no loot boxes	P11/P11-030.yaml
 P11-031	Done	ADR-033 forced aligner: Omnilingual CTC primary, MFA/Rhubarb/Azure fallbacks per lang	P11/P11-031.yaml
 P11-032	Done	ADR-034 Rive Renderer on Impeller; 2 ms/frame budget math	P11/P11-032.yaml
-P11-033	Draft	Decide scarification and tribal marks policy (ADR-035)	P11/P11-033.yaml
+P11-033	Done	ADR-035 scarification/tribal marks: opt-in 18+, not v1, EXT-14 per pattern	P11/P11-033.yaml
 P11-034	Done	Avatar cultural design bible: hair/headwear/textiles, 12 skin tones, disability, EXT-14 review gates	P11/P11-034.yaml
 P11-035	Draft	Generate CharacterVM bindings and CI contract test	P11/P11-035.yaml
 P11-036	Draft	Version-control single .riv source with changelog	P11/P11-036.yaml
