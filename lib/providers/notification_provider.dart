@@ -1,12 +1,13 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/learning/reminders/reminder_policy.dart';
+import 'package:lingafriq/services/reminder_settings_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'gamification_provider.dart';
 import '../utils/structured_logger.dart';
 
 /// Time class for notification scheduling
-/// Represents a time of day with hour, minute, and second
 class Time {
   final int hour;
   final int minute;
@@ -27,7 +28,8 @@ class Time {
   int get hashCode => hour.hashCode ^ minute.hashCode ^ second.hashCode;
 }
 
-/// Provider for managing push notifications
+const int _studyReminderNotificationId = 0;
+
 class NotificationNotifier extends Notifier<NotificationState> {
   final FlutterLocalNotificationsPlugin _notifications = FlutterLocalNotificationsPlugin();
 
@@ -35,12 +37,19 @@ class NotificationNotifier extends Notifier<NotificationState> {
   NotificationState build() {
     _initializeNotifications();
     return NotificationState(
+      studyRemindersEnabled: true,
       streakRemindersEnabled: true,
       dailyGoalRemindersEnabled: true,
       achievementAlertsEnabled: true,
-      reminderTime: const Time(9, 0, 0), // 9 AM default
+      reminderTime: const Time(9, 0, 0),
+      timezone: tz.local.name,
+      hasCustomWindow: false,
     );
   }
+
+  bool get _anyReminderChannelEnabled =>
+      state.studyRemindersEnabled &&
+      (state.streakRemindersEnabled || state.dailyGoalRemindersEnabled);
 
   Future<void> _initializeNotifications() async {
     const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -59,86 +68,134 @@ class NotificationNotifier extends Notifier<NotificationState> {
       onDidReceiveNotificationResponse: _onNotificationTapped,
     );
 
-    // Load saved notification preferences
     try {
       final prefs = await SharedPreferences.getInstance();
       final savedHour = prefs.getInt('notif_reminder_hour');
       final savedMinute = prefs.getInt('notif_reminder_minute');
+      final studyEnabled = prefs.getBool('notif_study_enabled');
       final streakEnabled = prefs.getBool('notif_streak_enabled');
       final goalEnabled = prefs.getBool('notif_goal_enabled');
-      
+      final tzName = prefs.getString('notif_timezone');
+      final customWindow = prefs.getBool('notif_custom_window');
+
       if (savedHour != null && savedMinute != null) {
         state = state.copyWith(
           reminderTime: Time(savedHour, savedMinute),
+          studyRemindersEnabled: studyEnabled ?? true,
           streakRemindersEnabled: streakEnabled ?? true,
           dailyGoalRemindersEnabled: goalEnabled ?? true,
+          timezone: tzName ?? tz.local.name,
+          hasCustomWindow: customWindow ?? false,
         );
       }
+
+      await _syncFromServer();
+      await _rescheduleStudyReminder();
     } catch (e) {
       logger.warn('Failed to load notification preferences', tag: 'notifications', error: e);
     }
+  }
 
-    // Auto-schedule reminders on initialization.
-    // Idempotent: zonedSchedule with the same notification ID replaces any existing schedule.
-    // Uses saved reminder time if available, otherwise defaults to 9:00 AM.
+  Future<void> _syncFromServer() async {
     try {
-      final time = state.reminderTime;
-      if (state.streakRemindersEnabled) {
-        await scheduleStreakReminder(time);
-      }
-      if (state.dailyGoalRemindersEnabled) {
-        await scheduleDailyGoalReminder(time);
-      }
+      final remote = await ReminderSettingsService.fetchRemote();
+      if (remote == null) return;
+      final hour = (remote['reminderTime'] as Map?)?['hour'] as int? ?? state.reminderTime.hour;
+      final minute = (remote['reminderTime'] as Map?)?['minute'] as int? ?? state.reminderTime.minute;
+      final streak = remote['streakRemindersEnabled'] as bool? ?? state.streakRemindersEnabled;
+      final daily = remote['dailyGoalRemindersEnabled'] as bool? ?? state.dailyGoalRemindersEnabled;
+      final achievements = remote['achievementAlertsEnabled'] as bool? ?? state.achievementAlertsEnabled;
+      final timezone = remote['timezone'] as String? ?? state.timezone;
+      final studyOn = streak || daily;
+
+      state = state.copyWith(
+        studyRemindersEnabled: studyOn,
+        streakRemindersEnabled: streak,
+        dailyGoalRemindersEnabled: daily,
+        achievementAlertsEnabled: achievements,
+        reminderTime: Time(hour, minute),
+        timezone: timezone,
+        hasCustomWindow: timezone.isNotEmpty,
+      );
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setInt('notif_reminder_hour', hour);
+      await prefs.setInt('notif_reminder_minute', minute);
+      await prefs.setBool('notif_study_enabled', studyOn);
+      await prefs.setBool('notif_streak_enabled', streak);
+      await prefs.setBool('notif_goal_enabled', daily);
+      await prefs.setString('notif_timezone', timezone);
+      await prefs.setBool('notif_custom_window', timezone.isNotEmpty);
     } catch (e) {
-      // Non-fatal: notification permission may not be granted yet on first launch,
-      // or timezone data may not be initialized. Scheduling will succeed when
-      // user enables reminders in settings.
-      logger.warn('Auto-schedule reminders failed', tag: 'notifications', error: e);
+      logger.warn('Failed to sync reminder settings', tag: 'notifications', error: e);
     }
   }
 
-  void _onNotificationTapped(NotificationResponse response) {
-    // Handle notification tap
+  Future<void> _persistAndPush() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('notif_reminder_hour', state.reminderTime.hour);
+    await prefs.setInt('notif_reminder_minute', state.reminderTime.minute);
+    await prefs.setBool('notif_study_enabled', state.studyRemindersEnabled);
+    await prefs.setBool('notif_streak_enabled', state.streakRemindersEnabled);
+    await prefs.setBool('notif_goal_enabled', state.dailyGoalRemindersEnabled);
+    await prefs.setString('notif_timezone', state.timezone);
+    await prefs.setBool('notif_custom_window', state.hasCustomWindow);
+
+    await ReminderSettingsService.pushRemote({
+      'streakRemindersEnabled': state.studyRemindersEnabled && state.streakRemindersEnabled,
+      'dailyGoalRemindersEnabled': state.studyRemindersEnabled && state.dailyGoalRemindersEnabled,
+      'achievementAlertsEnabled': state.achievementAlertsEnabled,
+      'reminderTime': {
+        'hour': state.reminderTime.hour,
+        'minute': state.reminderTime.minute,
+      },
+      'timezone': state.timezone,
+    });
   }
 
-  Future<void> scheduleStreakReminder(Time time) async {
+  void _onNotificationTapped(NotificationResponse response) {}
+
+  int _localHourNow() {
+    try {
+      final location = tz.getLocation(state.timezone);
+      return tz.TZDateTime.now(location).hour;
+    } catch (_) {
+      return DateTime.now().hour;
+    }
+  }
+
+  Future<void> _rescheduleStudyReminder() async {
+    await _notifications.cancel(_studyReminderNotificationId);
+    await _notifications.cancel(1);
+
+    if (!_anyReminderChannelEnabled) return;
+
+    final localHour = _localHourNow();
+    if (ReminderPolicy.inQuietHours(localHour)) return;
+
+    final time = state.reminderTime;
     final streak = _getCurrentStreak();
-    final body = streak > 0
-        ? 'Don\'t break your $streak day streak!'
-        : 'Start your streak today — learn something new!';
-    await _notifications.zonedSchedule(
-      0,
-      'Keep your streak alive! 🔥',
-      body,
-      _nextInstanceOfTime(time),
-      const NotificationDetails(
-        android: AndroidNotificationDetails(
-          'streak_reminder',
-          'Streak Reminders',
-          channelDescription: 'Reminders to maintain your learning streak',
-          importance: Importance.high,
-          priority: Priority.high,
-        ),
-        iOS: DarwinNotificationDetails(),
-      ),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      matchDateTimeComponents: DateTimeComponents.time,
-    );
-  }
+    final copy = ReminderPolicy.composeStudyReminder(streakDays: streak, localHour: localHour);
 
-  Future<void> scheduleDailyGoalReminder(Time time) async {
+    tz.Location location;
+    try {
+      location = tz.getLocation(state.timezone);
+    } catch (_) {
+      location = tz.local;
+    }
+
     await _notifications.zonedSchedule(
-      1,
-      'Time to learn! 📚',
-      'Complete your daily goal and earn rewards!',
-      _nextInstanceOfTime(time),
+      _studyReminderNotificationId,
+      copy.title,
+      copy.body,
+      _nextInstanceOfTime(time, location),
       const NotificationDetails(
         android: AndroidNotificationDetails(
-          'daily_goal_reminder',
-          'Daily Goal Reminders',
-          channelDescription: 'Reminders to complete your daily learning goal',
-          importance: Importance.high,
-          priority: Priority.high,
+          'study_reminder',
+          'Study Reminders',
+          channelDescription: 'At most one gentle nudge per day to practise',
+          importance: Importance.defaultImportance,
+          priority: Priority.defaultPriority,
         ),
         iOS: DarwinNotificationDetails(),
       ),
@@ -148,10 +205,15 @@ class NotificationNotifier extends Notifier<NotificationState> {
   }
 
   Future<void> showAchievementAlert(String title, String body) async {
+    final sanitized = ReminderPolicy.sanitizePushCopy(
+      title: title,
+      body: body,
+      localHour: _localHourNow(),
+    );
     await _notifications.show(
       2,
-      title,
-      body,
+      sanitized.title,
+      sanitized.body,
       const NotificationDetails(
         android: AndroidNotificationDetails(
           'achievement_alert',
@@ -165,10 +227,10 @@ class NotificationNotifier extends Notifier<NotificationState> {
     );
   }
 
-  tz.TZDateTime _nextInstanceOfTime(Time time) {
-    final now = tz.TZDateTime.now(tz.local);
+  tz.TZDateTime _nextInstanceOfTime(Time time, tz.Location location) {
+    final now = tz.TZDateTime.now(location);
     var scheduledDate = tz.TZDateTime(
-      tz.local,
+      location,
       now.year,
       now.month,
       now.day,
@@ -179,74 +241,53 @@ class NotificationNotifier extends Notifier<NotificationState> {
     if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
+    while (ReminderPolicy.inQuietHours(scheduledDate.hour)) {
+      scheduledDate = scheduledDate.add(const Duration(hours: 1));
+    }
     return scheduledDate;
   }
 
   int _getCurrentStreak() {
-    // Get current streak from gamification provider
     try {
       final gamification = ref.read(gamificationProvider.notifier).gamification;
       return gamification.dailyStreak;
     } catch (e) {
-      // Fallback to 0 if gamification provider is not available
       return 0;
     }
   }
 
-  void updateReminderTime(Time time) {
-    state = state.copyWith(reminderTime: time);
-    // Persist reminder time
-    SharedPreferences.getInstance().then((prefs) {
-      prefs.setInt('notif_reminder_hour', time.hour);
-      prefs.setInt('notif_reminder_minute', time.minute);
-    }).catchError((e) {
-      logger.warn('Failed to persist reminder time', tag: 'notifications', error: e);
-    });
-    if (state.streakRemindersEnabled) {
-      scheduleStreakReminder(time).catchError((e) {
-        logger.warn('Failed to reschedule streak reminder', tag: 'notifications', error: e);
-      });
-    }
-    if (state.dailyGoalRemindersEnabled) {
-      scheduleDailyGoalReminder(time).catchError((e) {
-        logger.warn('Failed to reschedule daily goal reminder', tag: 'notifications', error: e);
-      });
-    }
+  Future<void> updateReminderTime(Time time) async {
+    state = state.copyWith(reminderTime: time, hasCustomWindow: true);
+    await _persistAndPush();
+    await _rescheduleStudyReminder();
+  }
+
+  Future<void> updateTimezone(String timezone) async {
+    state = state.copyWith(timezone: timezone, hasCustomWindow: true);
+    await _persistAndPush();
+    await _rescheduleStudyReminder();
+  }
+
+  Future<void> setStudyRemindersEnabled(bool enabled) async {
+    state = state.copyWith(studyRemindersEnabled: enabled);
+    await _persistAndPush();
+    await _rescheduleStudyReminder();
   }
 
   void toggleStreakReminders(bool enabled) {
     state = state.copyWith(streakRemindersEnabled: enabled);
-    // Persist toggle state
-    SharedPreferences.getInstance().then((prefs) {
-      prefs.setBool('notif_streak_enabled', enabled);
-    }).catchError((e) {
-      logger.warn('Failed to persist streak reminder preference', tag: 'notifications', error: e);
+    _persistAndPush().then((_) => _rescheduleStudyReminder()).catchError((e) {
+      logger.warn('Failed to update streak reminders', tag: 'notifications', error: e);
     });
-    if (enabled) {
-      scheduleStreakReminder(state.reminderTime).catchError((e) {
-        logger.warn('Failed to schedule streak reminder', tag: 'notifications', error: e);
-      });
-    } else {
-      _notifications.cancel(0);
-    }
   }
 
   void toggleDailyGoalReminders(bool enabled) {
     state = state.copyWith(dailyGoalRemindersEnabled: enabled);
-    // Persist toggle state
-    SharedPreferences.getInstance().then((prefs) {
-      prefs.setBool('notif_goal_enabled', enabled);
-    }).catchError((e) {
-      logger.warn('Failed to persist daily goal reminder preference', tag: 'notifications', error: e);
+    _persistAndPush().then((_) => _rescheduleStudyReminder()).catchError((e) {
+      logger.warn('Failed to update daily goal reminders', tag: 'notifications', error: e);
     });
-    if (enabled) {
-      scheduleDailyGoalReminder(state.reminderTime).catchError((e) {
-        logger.warn('Failed to schedule daily goal reminder', tag: 'notifications', error: e);
-      });
-    } else {
-      _notifications.cancel(1);
-    }
   }
+
 }
 
 final notificationProvider = NotifierProvider<NotificationNotifier, NotificationState>(() {
@@ -254,30 +295,41 @@ final notificationProvider = NotifierProvider<NotificationNotifier, Notification
 });
 
 class NotificationState {
+  final bool studyRemindersEnabled;
   final bool streakRemindersEnabled;
   final bool dailyGoalRemindersEnabled;
   final bool achievementAlertsEnabled;
   final Time reminderTime;
+  final String timezone;
+  final bool hasCustomWindow;
 
   NotificationState({
+    required this.studyRemindersEnabled,
     required this.streakRemindersEnabled,
     required this.dailyGoalRemindersEnabled,
     required this.achievementAlertsEnabled,
     required this.reminderTime,
+    required this.timezone,
+    required this.hasCustomWindow,
   });
 
   NotificationState copyWith({
+    bool? studyRemindersEnabled,
     bool? streakRemindersEnabled,
     bool? dailyGoalRemindersEnabled,
     bool? achievementAlertsEnabled,
     Time? reminderTime,
+    String? timezone,
+    bool? hasCustomWindow,
   }) {
     return NotificationState(
+      studyRemindersEnabled: studyRemindersEnabled ?? this.studyRemindersEnabled,
       streakRemindersEnabled: streakRemindersEnabled ?? this.streakRemindersEnabled,
       dailyGoalRemindersEnabled: dailyGoalRemindersEnabled ?? this.dailyGoalRemindersEnabled,
       achievementAlertsEnabled: achievementAlertsEnabled ?? this.achievementAlertsEnabled,
       reminderTime: reminderTime ?? this.reminderTime,
+      timezone: timezone ?? this.timezone,
+      hasCustomWindow: hasCustomWindow ?? this.hasCustomWindow,
     );
   }
 }
-

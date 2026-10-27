@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/learning/reminders/reminder_policy.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/utils/utils.dart';
 
@@ -67,10 +68,20 @@ class FirebaseMessagingProvider {
       final notification = message.notification;
       final android = message.notification?.android;
       if (notification != null && android != null) {
+        final localHour = DateTime.now().hour;
+        if (ReminderPolicy.inQuietHours(localHour) &&
+            (message.data['kind'] == 'reminder' || message.data['type'] == 'study_reminder')) {
+          return;
+        }
+        final sanitized = ReminderPolicy.sanitizePushCopy(
+          title: notification.title ?? 'LingAfriq',
+          body: notification.body ?? '',
+          localHour: localHour,
+        );
         flutterLocalNotificationsPlugin.show(
           notification.hashCode,
-          notification.title,
-          notification.body,
+          sanitized.title,
+          sanitized.body,
           NotificationDetails(
             android: AndroidNotificationDetails(
               channel.id,

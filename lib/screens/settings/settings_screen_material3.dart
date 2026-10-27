@@ -19,6 +19,7 @@ import 'package:lingafriq/services/performance/low_bandwidth_mode.dart';
 import 'package:lingafriq/screens/settings/edit_profile_screen.dart';
 import 'package:lingafriq/screens/settings/change_password_screen.dart';
 import 'package:lingafriq/screens/settings/privacy_settings_screen.dart';
+import 'package:lingafriq/screens/settings/reminder_settings_screen.dart';
 import 'package:lingafriq/screens/settings/synthetic_voice_styles_screen.dart';
 import 'package:lingafriq/providers/theme_mode_provider.dart';
 import 'package:lingafriq/providers/notification_provider.dart';
@@ -500,7 +501,10 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       ),
                       onTap: () {
                         HapticFeedback.lightImpact();
-                        _showStudyReminderSettings(context, ref);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const ReminderSettingsScreen()),
+                        );
                       },
                       isDark: isDark.value,
                     ),
