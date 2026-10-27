@@ -116,6 +116,8 @@ class HeritageTreeSnapshot {
 class GamificationProvider extends Notifier<BaseProviderState>
     with BaseProviderMixin {
   UserGamificationModel _gamification = UserGamificationModel();
+  String? _serverBalanceError;
+  String? get serverBalanceError => _serverBalanceError;
   final List<Badge> _allBadges = BadgeDefinitions.getAllBadges();
 
   CircleQuestSnapshot? _circleQuest;
@@ -169,12 +171,13 @@ class GamificationProvider extends Notifier<BaseProviderState>
           userId: user.id.toString(),
           source: backendSource,
           sourceId: uniqueSourceId,
-          amount: xpGain,
+          amount: 0,
           difficultyMultiplier: multiplier,
         );
 
         if (success) {
           backendAwarded = true;
+          _serverBalanceError = null;
           // Update local state from backend response (authoritative totals)
           try {
             final userXP = await ref.read(apiProvider.notifier).getUserXP(user.id.toString());
@@ -202,7 +205,13 @@ class GamificationProvider extends Notifier<BaseProviderState>
       logger.error('Error awarding XP via backend', tag: 'gamification', error: e, context: {'source': source});
     }
 
-    // 2. Apply optimistic local XP (for immediate UI feedback)
+    if (backendAwarded) {
+      await _saveGamification();
+      state = state.copyWith();
+      return xpGain;
+    }
+
+    // Offline fallback: no local balance mint; queue retry via outbox sync path.
     final ngwenyaGain = xpGain ~/ 5;
     final currentXP = _gamification.xp;
     final newXP = currentXP + xpGain;
@@ -626,14 +635,32 @@ class GamificationProvider extends Notifier<BaseProviderState>
     int? ngwenya,
     int? ancestralBeads,
   }) async {
-    _gamification = _gamification.copyWith(
-      cowries: _gamification.cowries + (cowries ?? 0),
-      ngwenya: _gamification.ngwenya + (ngwenya ?? 0),
-      ancestralBeads: _gamification.ancestralBeads + (ancestralBeads ?? 0),
-    );
-    await _saveGamification();
-    await _syncToBackend();
-    state = state.copyWith();
+    if ((ngwenya ?? 0) > 0 || (ancestralBeads ?? 0) > 0) {
+      logger.warn('Legacy currency earn blocked; server ledger only', tag: 'gamification');
+      return;
+    }
+    if ((cowries ?? 0) > 0) {
+      try {
+        final evidenceId = 'cowries_${DateTime.now().millisecondsSinceEpoch}';
+        final res = await client.post(
+          '/api/rewards/learning-event',
+          data: {
+            'evidence_id': evidenceId,
+            'rule_id': 'streak_bonus_cowries',
+          },
+        );
+        if (res.statusCode == 200) {
+          _serverBalanceError = null;
+          await _syncWithBackend();
+          return;
+        }
+      } catch (e) {
+        logger.error('Cowries award failed', tag: 'gamification', error: e);
+      }
+      _serverBalanceError = 'balance_unavailable';
+      state = state.copyWith();
+      return;
+    }
   }
 
   /// Spend currency (deduct from current balance)
@@ -723,14 +750,29 @@ class GamificationProvider extends Notifier<BaseProviderState>
       if (user == null) return;
       
       final api = ref.read(apiProvider.notifier);
-      final backendData = await api.getGamification(user.id.toString());
-      if (backendData != null && backendData.isNotEmpty) {
-        _gamification = UserGamificationModel.fromJson(backendData);
-        await _saveGamification();
-        state = state.copyWith();
+      final balanceRes = await client.get('/api/rewards/balance');
+      if (balanceRes.statusCode == 200 && balanceRes.data is Map) {
+        final data = (balanceRes.data as Map)['data'] as Map?;
+        final backendData = await api.getGamification(user.id.toString());
+        if (backendData != null && backendData.isNotEmpty) {
+          final merged = Map<String, dynamic>.from(backendData);
+          if (data != null) {
+            merged['xp'] = data['xp'];
+            merged['cowries'] = data['cowries'];
+          }
+          _gamification = UserGamificationModel.fromJson(merged);
+          _serverBalanceError = null;
+          await _saveGamification();
+          state = state.copyWith();
+          return;
+        }
       }
+      _serverBalanceError = 'balance_unavailable';
+      state = state.copyWith();
     } catch (e) {
+      _serverBalanceError = 'balance_unavailable';
       logger.error('Error syncing gamification with backend', tag: 'gamification', error: e);
+      state = state.copyWith();
     }
   }
 
@@ -743,7 +785,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
           type: 'gamification_sync',
           data: {
           'user_id': user.id.toString(),
-          'gamification': _gamification.toJson(),
+          'gamification': _gamification.toSyncPayload(),
           'timestamp': DateTime.now().toIso8601String(),
         },
       );

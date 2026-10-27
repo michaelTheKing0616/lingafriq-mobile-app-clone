@@ -14,7 +14,10 @@ import '../services/rive_gamification_service.dart';
 import '../models/daily_challenge_model.dart';
 
 /// Gamification Integration Helper
-/// 
+///
+/// XP and Cowries balances are server-ledger authoritative (P10-900); helpers
+/// call [GamificationProvider.awardXP] which never posts client amounts.
+///
 /// Provides easy-to-use methods for integrating gamification across all screens.
 /// 
 /// Usage:

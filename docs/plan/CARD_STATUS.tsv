@@ -337,7 +337,7 @@ P1-059	Done	Upgrade admin panel React and Vite	P1/P1-059.yaml
 P1-060	Done	Prepare penetration test scope document	P1/P1-060.yaml
 P1-061	Done	Add RevenueCat webhook receiver and entitlement table	P1/P1-061.yaml
 P1-062	Done	Enforce premium gates server-side from entitlements	P1/P1-062.yaml
-P10-900	Draft	Verify every reward on the server	P10/P10-900.yaml
+P10-900	Done	Server reward ledger; CLIENT_REWARD_REJECTED; /api/rewards/*	P10/P10-900.yaml
 P10-901	Draft	Compute XP from evidence with diminishing returns	P10/P10-901.yaml
 P10-902	Draft	Migrate all balances to the single Cowries currency	P10/P10-902.yaml
 P10-903	Draft	'Add Cowries sinks: cosmetics, repair, persona access'	P10/P10-903.yaml

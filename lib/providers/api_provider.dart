@@ -1377,11 +1377,8 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       final res = await ref.read(client).post(
         Api.xpAward,
         data: {
-          'user_id': userId,
           'source': source,
-          'source_id': sourceId,
-          'amount': amount,
-          'difficulty_multiplier': difficultyMultiplier,
+          'sourceId': sourceId,
         },
       );
       return res.statusCode == 200 || res.statusCode == 201;

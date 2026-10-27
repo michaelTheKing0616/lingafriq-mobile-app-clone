@@ -150,6 +150,23 @@ class UserGamificationModel {
         'voiceContributions': voiceContributions,
       };
 
+  /// Non-economic fields only — balances must come from the server ledger (P10-900).
+  Map<String, dynamic> toSyncPayload() {
+    final payload = Map<String, dynamic>.from(toJson());
+    for (final key in [
+      'xp',
+      'level',
+      'levelTitle',
+      'ngwenya',
+      'cowries',
+      'ancestralBeads',
+      'totalXP',
+    ]) {
+      payload.remove(key);
+    }
+    return payload;
+  }
+
   factory UserGamificationModel.fromJson(Map<String, dynamic> json) =>
       UserGamificationModel(
         xp: (json['xp'] as num?)?.toInt() ?? 0,
