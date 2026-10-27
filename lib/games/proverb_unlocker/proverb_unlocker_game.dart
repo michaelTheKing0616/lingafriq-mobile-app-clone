@@ -10,8 +10,7 @@ import 'proverb_unlocker_models.dart';
 import 'proverb_unlocker_scoring.dart';
 import 'proverb_unlocker_feedback.dart';
 
-/// ProverbUnlocker game - Refactored to use GameKit
-/// This replaces the old implementation with random logic
+/// GameKit engine adapter for proverb_unlocker (flagship UI: [ProverbWeaverScreen] P8-924).
 class ProverbUnlockerGame extends Game<ProverbUnlockerContent, ProverbUnlockerInput> {
   final PolieGameClient polieClient;
 

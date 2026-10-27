@@ -9,9 +9,10 @@ import '../../../models/game/game_content_models.dart';
 import '../../../utils/modern_griot_design_system.dart';
 import '../../../widgets/griot/griot_widgets.dart';
 import '../../../widgets/game/game_widgets.dart';
+import '../../../games/proverb_weaver/proverb_weaver_screen.dart';
 import '../base_game_screen.dart';
 
-/// Proverb Unlocker — fill-in-the-blank ancestral tablet UI.
+/// Arcade route → flagship Proverb Weaver (P8-924 / ADR-036).
 class ProverbUnlockerGame extends BaseGameScreen {
   const ProverbUnlockerGame({
     super.key,
@@ -25,11 +26,53 @@ class ProverbUnlockerGame extends BaseGameScreen {
 
   @override
   ConsumerState<ProverbUnlockerGame> createState() =>
+      _ProverbUnlockerShellState();
+}
+
+class _ProverbUnlockerShellState extends BaseGameScreenState<ProverbUnlockerGame> {
+  @override
+  Widget build(BuildContext context) {
+    return ProverbWeaverScreen(
+      language: widget.language,
+      learnerLevel: widget.level,
+      onBack: widget.onBack ?? () => Navigator.of(context).pop(),
+      onOpenLegacyUnlocker: () {
+        Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (_) => ProverbUnlockerLegacyTablet(
+              language: widget.language,
+              level: widget.level,
+              onBack: () => Navigator.of(context).pop(),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget buildGameContent(BuildContext context) => const SizedBox.shrink();
+}
+
+/// Legacy tablet unlocker (harvest source for P8-924).
+class ProverbUnlockerLegacyTablet extends BaseGameScreen {
+  const ProverbUnlockerLegacyTablet({
+    super.key,
+    required super.language,
+    super.level,
+    super.onBack,
+  });
+
+  @override
+  GameType getGameType() => GameType.proverbUnlocker;
+
+  @override
+  ConsumerState<ProverbUnlockerLegacyTablet> createState() =>
       _ProverbUnlockerGameState();
 }
 
 class _ProverbUnlockerGameState
-    extends BaseGameScreenState<ProverbUnlockerGame> {
+    extends BaseGameScreenState<ProverbUnlockerLegacyTablet> {
   List<GameProverb> _proverbs = [];
   int _currentIndex = 0;
   List<String> _proverbWords = [];
