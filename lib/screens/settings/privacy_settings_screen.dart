@@ -10,6 +10,7 @@ import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/services/lens/lens_privacy_policy.dart';
+import 'package:lingafriq/screens/settings/data_export_screen.dart';
 
 const String voiceStorageConsentApiPath = '/api/v2/voice-storage';
 const String trainingContributionConsentApiPath = '/api/v2/training-contribution';
@@ -661,6 +662,51 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                     ],
                   ),
                 ],
+                SizedBox(height: PanAfricanSpacing.lg),
+
+                _PrivacySection(
+                  title: 'Your data',
+                  isDark: isDark,
+                  index: 7,
+                  children: [
+                    Semantics(
+                      label: 'Export my data and delete account',
+                      button: true,
+                      child: ListTile(
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: PanAfricanSpacing.sm,
+                          vertical: PanAfricanSpacing.xs,
+                        ),
+                        leading: Icon(
+                          Icons.folder_zip_outlined,
+                          color: PanAfricanColors.primary,
+                        ),
+                        title: Text(
+                          'Export my data',
+                          style: PanAfricanTypography.bodyLarge(context),
+                        ),
+                        subtitle: Text(
+                          'Download your learning data or delete your account',
+                          style: PanAfricanTypography.bodySmall(context),
+                        ),
+                        trailing: Icon(
+                          Icons.chevron_right_rounded,
+                          color: isDark
+                              ? PanAfricanColors.textSecondaryDark
+                              : PanAfricanColors.textSecondaryLight,
+                        ),
+                        onTap: () {
+                          HapticFeedback.selectionClick();
+                          Navigator.of(context).push(
+                            MaterialPageRoute<void>(
+                              builder: (_) => const DataExportScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
                 SizedBox(height: PanAfricanSpacing.lg),
 
                 // Info Card
