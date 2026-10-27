@@ -461,7 +461,7 @@ class _GamificationHelper {
     _ref.read(riveGamificationServiceProvider).reactToMistake();
     
     // If challenge mode is off or unlimited, always continue
-    if (!heartsState.challengeModeEnabled || heartsState.isUnlimited) {
+    if (!heartsState.heartsApply) {
       return true;
     }
     
@@ -478,7 +478,7 @@ class _GamificationHelper {
   /// Call to check if user has hearts to continue (synchronous check)
   bool get canContinue {
     final heartsState = _ref.read(heartsProvider);
-    return !heartsState.challengeModeEnabled || heartsState.isUnlimited || heartsState.currentHearts > 0;
+    return heartsState.hasHearts;
   }
 
   /// Refill hearts using cowries

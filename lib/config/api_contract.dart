@@ -132,7 +132,9 @@ class _Gamification {
       '/api/gamification/advanced/league/leaderboard';
   String get heartsUse => '/api/gamification/hearts/use';
   String get heartsRefill => '/api/gamification/hearts/refill';
-  String get challengeMode => '/api/gamification/challenge-mode';
+  String get challengeMode => '/api/gamification/hearts/toggle-challenge-mode';
+  String get heartsCompleteChallengeRun =>
+      '/api/gamification/hearts/complete-challenge-run';
   String get launchEvents => '/api/gamification/launch-events/';
   String launchEventLeaderboard(String eventId) =>
       '/api/gamification/launch-events/$eventId/leaderboard';

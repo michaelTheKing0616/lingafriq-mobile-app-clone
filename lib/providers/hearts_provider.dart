@@ -5,7 +5,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/hearts_system_model.dart';
 import '../services/sound_effects_service.dart';
 import 'gamification_provider.dart';
+import '../config/api_contract.dart';
 import '../utils/structured_logger.dart';
+import 'api_provider.dart';
+import 'dio_provider.dart';
 
 /// Provider for hearts/lives system
 final heartsProvider = NotifierProvider<HeartsNotifier, HeartsState>(() {
@@ -37,7 +40,10 @@ class HeartsNotifier extends Notifier<HeartsState> {
         
         // Process any hearts that should have regenerated while app was closed
         loadedState = _processOfflineRegeneration(loadedState);
-        
+        if (loadedState.challengeRunActive) {
+          loadedState = loadedState.copyWith(challengeRunActive: false);
+        }
+
         state = loadedState;
         
         // Start regeneration timer if needed
@@ -132,8 +138,8 @@ class HeartsNotifier extends Notifier<HeartsState> {
   /// Use a heart (when user makes a mistake)
   /// Returns false if no hearts available
   bool useHeart() {
-    if (state.isUnlimited || !state.challengeModeEnabled) {
-      return true; // Unlimited hearts or challenge mode off
+    if (!state.heartsApply) {
+      return true;
     }
 
     if (state.currentHearts <= 0) {
@@ -205,12 +211,75 @@ class HeartsNotifier extends Notifier<HeartsState> {
     _saveState();
   }
 
-  /// Toggle challenge mode
+  /// Opt in/out of Challenge Mode (hearts stay off core lessons until a run starts).
   void setChallengeModeEnabled(bool enabled) {
     state = state.copyWith(
       challengeModeEnabled: enabled,
+      challengeRunActive: enabled ? state.challengeRunActive : false,
     );
     _saveState();
+  }
+
+  void beginChallengeRun() {
+    if (!state.challengeModeEnabled) return;
+    state = state.copyWith(
+      challengeRunActive: true,
+      currentHearts: state.maxHearts,
+      nextHeartAt: null,
+    );
+    _regenerationTimer?.cancel();
+    _saveState();
+  }
+
+  Future<ChallengeRunResult> endChallengeRun({
+    required bool won,
+    bool syncServer = true,
+  }) async {
+    final heartsLeft = state.currentHearts;
+    state = state.copyWith(challengeRunActive: false);
+    await _saveState();
+
+    if (!won || heartsLeft <= 0 || !syncServer) {
+      return ChallengeRunResult(
+        won: false,
+        heartsRemaining: heartsLeft,
+        badges: const [],
+      );
+    }
+
+    try {
+      final res = await ref.read(client).post(
+        ApiContract.url(ApiContract.gamification.heartsCompleteChallengeRun),
+        data: {'won': true, 'heartsRemaining': heartsLeft},
+      );
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        final data = res.data as Map<String, dynamic>? ?? {};
+        final badges = (data['badges'] as List<dynamic>?)
+                ?.map((e) => e.toString())
+                .toList() ??
+            const <String>[];
+        return ChallengeRunResult(
+          won: true,
+          heartsRemaining: heartsLeft,
+          badges: badges,
+          braggingRecorded: data['braggingEntry'] != null,
+        );
+      }
+    } catch (e) {
+      logger.error('Challenge run server sync failed', tag: 'hearts', error: e);
+    }
+
+    return ChallengeRunResult(
+      won: true,
+      heartsRemaining: heartsLeft,
+      badges: const [],
+      serverSyncFailed: true,
+    );
+  }
+
+  Future<void> syncChallengeModePreference(bool enabled) async {
+    setChallengeModeEnabled(enabled);
+    await ref.read(apiProvider.notifier).toggleChallengeMode(enabled);
   }
 
   /// Set unlimited hearts (for premium users)

@@ -57,8 +57,8 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
     final heartsState = ref.watch(heartsProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    if (!heartsState.challengeModeEnabled) {
-      return const SizedBox.shrink(); // Hidden when challenge mode is off
+    if (!heartsState.showHeartsUi) {
+      return const SizedBox.shrink();
     }
 
     if (heartsState.isUnlimited) {

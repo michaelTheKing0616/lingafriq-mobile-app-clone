@@ -722,7 +722,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
                 level: gamification.level,
                 xp: gamification.xp,
                 streak: gamification.dailyStreak,
-                showHearts: heartsState.challengeModeEnabled,
+                showHearts: heartsState.showHeartsUi,
               ),
             ),
             Positioned(
