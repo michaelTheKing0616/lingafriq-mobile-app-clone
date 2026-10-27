@@ -1,8 +1,12 @@
 import 'package:dio/dio.dart';
 
+import 'gamekit/batch_game_factory.dart';
 import 'gamekit/game_difficulty.dart';
 import 'gamekit/game_engine.dart';
+import 'gamekit/game_factory_helper.dart';
 import 'gamekit/game_scoring.dart';
+import '../models/game/game_content_models.dart';
+import '../services/offline/lexicon_pack_service.dart';
 import '../../services/lens/lens_scoring_client.dart';
 import 'gamekit/game_feedback.dart';
 import 'gamekit/game_animation_bridge.dart';
@@ -78,6 +82,31 @@ class LearningGameDifficultyEngine implements GameDifficultyEngine {
     }
 
     return GameDifficultyUpdate.maintain();
+  }
+}
+
+/// Loads GameKit vocabulary from verified lexicon (P8-912); surfaces typed failures.
+class GameKitLexiconPool {
+  GameKitLexiconPool._();
+
+  static Future<GameLexiconPoolBuildResult> load({
+    required String languageCode,
+    required int minimumItems,
+    bool requireAudio = false,
+    int fetchLimit = 100,
+    GameLexiconPoolFetch? fetch,
+    LexiconPackService? packService,
+  }) {
+    return GameFactoryHelper.buildLexiconWordPool(
+      GameLexiconPoolRequest(
+        languageCode: languageCode,
+        minimumItems: minimumItems,
+        requireAudio: requireAudio,
+        fetchLimit: fetchLimit,
+      ),
+      fetch: fetch,
+      packService: packService,
+    );
   }
 }
 

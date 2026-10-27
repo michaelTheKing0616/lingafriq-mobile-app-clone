@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'game_content_failure.dart';
+
 /// A vocabulary word sourced from the game content database.
 ///
 /// Each word carries linguistic metadata (phonetics, part of speech, tonal notes)
@@ -490,4 +492,87 @@ String? _firstNonEmptyString(Map<String, dynamic> metadata, List<String> keys) {
     }
   }
   return null;
+}
+
+/// Lexicon-sourced vocabulary for GameKit pools (P8-912).
+class GameLexiconPoolItem {
+  const GameLexiconPoolItem({
+    required this.id,
+    required this.language,
+    required this.toneMarkedForm,
+    required this.licenceTag,
+    this.audioUri,
+    this.englishGloss,
+  });
+
+  final String id;
+  final String language;
+  final String toneMarkedForm;
+  final String? audioUri;
+  final String licenceTag;
+  final String? englishGloss;
+
+  bool get hasPlayableAudio =>
+      audioUri != null && audioUri!.trim().isNotEmpty;
+
+  Map<String, dynamic> toMetadata() => {
+        'lexeme_id': id,
+        'language': language,
+        'tone_marked_form': toneMarkedForm,
+        if (audioUri != null) 'audio_uri': audioUri,
+        'licence_tag': licenceTag,
+        if (englishGloss != null) 'english_gloss': englishGloss,
+      };
+
+  GameWord toGameWord({String cefr = 'A1'}) {
+    final numericId = id.hashCode & 0x7fffffff;
+    return GameWord(
+      id: numericId,
+      language: language,
+      word: toneMarkedForm,
+      englishMeaning: englishGloss ?? '',
+      cefr: cefr,
+      gameTags: const [],
+    );
+  }
+}
+
+/// Request for building a GameKit word pool from verified lexicon only.
+class GameLexiconPoolRequest {
+  const GameLexiconPoolRequest({
+    required this.languageCode,
+    required this.minimumItems,
+    this.fetchLimit = 100,
+    this.requireAudio = false,
+    this.cefr,
+  });
+
+  final String languageCode;
+  final int minimumItems;
+  final int fetchLimit;
+  final bool requireAudio;
+  final String? cefr;
+}
+
+class GameLexiconPoolBuildResult {
+  const GameLexiconPoolBuildResult({
+    required this.items,
+    required this.failure,
+    required this.excludedMissingAudio,
+    required this.queriedCount,
+    required this.source,
+  });
+
+  final List<GameLexiconPoolItem> items;
+  final GameContentFailure failure;
+  final int excludedMissingAudio;
+  final int queriedCount;
+  final String source;
+
+  bool get isOk =>
+      failure.type == GameContentFailureType.none &&
+      items.length >= 1;
+
+  bool get hasVisibleFailure =>
+      failure.type != GameContentFailureType.none;
 }
