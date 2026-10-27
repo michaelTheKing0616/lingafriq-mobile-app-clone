@@ -1094,4 +1094,4 @@ P7-952	Done	Path banners, preview sheet, Drift-first lazy path (path_section_ban
 P7-953	Done	Licensed path scenery lookup, parchment/dim, Polie still gate (path_scene_art.dart, P7-953)	P7/P7-953.yaml
 P7-960	Done	Build a structured lesson from Import Media	P7/P7-960.yaml
 P7-961	Done	Full Import Media lesson: glosses, single-word guided cloze, cited flashcards	P7/P7-961.yaml
-P8-934	Draft	Add a camera word hunt on the Point and Say pipeline	P8/P8-934.yaml
+P8-934	Done	Word hunt on Point-and-Say classifier + dictionary gate (word_hunt_screen.dart)	P8/P8-934.yaml
