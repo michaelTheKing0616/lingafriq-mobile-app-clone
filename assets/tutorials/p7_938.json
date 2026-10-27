@@ -1,0 +1,108 @@
+{
+  "card": "P7-938",
+  "built": "2026-10-27",
+  "language_code": "am",
+  "pack_citation": "ELEVATION.md#§11.2:L1790; assets/data/scripts/tracks_catalog.json#geez_fidel; assets/data/game_content.json; assets/data/audio_manifest.json; P7-933",
+  "publish_status": "draft",
+  "native_reviewer_sign_offs": [],
+  "sign_off_requirements": [
+    {
+      "language_code": "am",
+      "tutorial_id": "am-sound-ejective-gemination"
+    }
+  ],
+  "tutorials": [
+    {
+      "id": "am-sound-ejective-gemination",
+      "title": "Ejectives and gemination",
+      "language_code": "am",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 22,
+          "body_en": "Amharic is written in Ge'ez Fidel (assets/data/scripts/tracks_catalog.json, geez_fidel for am). Ejective consonants and geminated (long) consonants are part of spoken Amharic sound patterns called out in ELEVATION §11.2 — this micro-lesson uses only phrases already in assets/data/game_content.json and licensed audio manifest rows, not invented lemmas.",
+          "source_ids": [
+            "ELEVATION.md#§11.2:L1790",
+            "assets/data/scripts/tracks_catalog.json#geez_fidel",
+            "assets/data/scripts/fidel_geez_lessons.json",
+            "P7-933"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 28,
+          "body_en": "Hear cited A1/A2 phrases, then replay slow-motion mouth placement when native video arrives (EXT-13). Notice ejective syllables ቀ and ቆ in the story and feelings phrases, and the lengthened ጣ in በጣም inside the very-good phrase.",
+          "source_ids": [
+            "assets/data/game_content.json#id=1008",
+            "assets/data/game_content.json#id=1011",
+            "assets/data/game_content.json#id=1045",
+            "assets/data/audio_manifest.json"
+          ],
+          "slow_motion_replay": true,
+          "ejective_syllable_examples": [
+            {
+              "syllable_fidel": "ቀ",
+              "feature": "ejective",
+              "phrase": "አንድ ቀን",
+              "gloss_en": "Story (topic label in game_content)",
+              "game_content_id": 1008,
+              "manifest_id": "amharic-4dab691099319301",
+              "manifest_key": "amharic|አንድ ቀን",
+              "audio_uri": null,
+              "mouth_video_uri": null,
+              "media_gate": "EXT-13_native_capture"
+            },
+            {
+              "syllable_fidel": "ቆ",
+              "feature": "ejective",
+              "phrase": "ተቆጥቻለሁ",
+              "gloss_en": "Feelings (topic label in game_content)",
+              "game_content_id": 1011,
+              "manifest_id": "amharic-80e0bfb39529104b",
+              "manifest_key": "amharic|ተቆጥቻለሁ",
+              "audio_uri": null,
+              "mouth_video_uri": null,
+              "media_gate": "EXT-13_native_capture"
+            }
+          ],
+          "gemination_examples": [
+            {
+              "geminate_spelling": "በጣም",
+              "feature": "gemination",
+              "phrase": "በጣም ጥሩ",
+              "gloss_en": "Close (topic label in game_content)",
+              "game_content_id": 1045,
+              "manifest_id": "amharic-eaaeddd329ab5607",
+              "manifest_key": "amharic|በጣም ጥሩ",
+              "contrast_phrase": "ጥሩ ነው",
+              "contrast_game_content_id": 1031,
+              "audio_uri": null,
+              "mouth_video_uri": null,
+              "media_gate": "EXT-13_native_capture"
+            }
+          ]
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 24,
+          "body_en": "Which phrase contains the geminated በጣም you heard in the see step?",
+          "source_ids": [
+            "assets/data/game_content.json#id=1045",
+            "assets/data/game_content.json#id=1031"
+          ],
+          "choices": [
+            {
+              "form": "በጣም ጥሩ",
+              "game_content_id": 1045
+            },
+            {
+              "form": "ጥሩ ነው",
+              "game_content_id": 1031
+            }
+          ],
+          "correct_game_content_id": 1045
+        }
+      ]
+    }
+  ]
+}
