@@ -8,6 +8,8 @@ import 'base_provider.dart';
 import 'gamification_services_provider.dart';
 import '../services/gamification/leaderboards_service.dart';
 import '../utils/structured_logger.dart';
+import '../config/api_contract.dart';
+import 'dio_provider.dart' show client;
 
 final leaderboardProvider =
     NotifierProvider<LeaderboardProvider, BaseProviderState>(() {
@@ -22,6 +24,14 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
   final Map<String, bool> _hasMoreByKey = {};
   final Map<String, bool> _isLoadingMoreByKey = {};
   static const Duration _cacheDuration = Duration(minutes: 5);
+
+  bool _leagueEnrolled = false;
+  List<String> _leagueAllowedKinds = const ['public', 'circle', 'class'];
+  String? _leagueStatusMessage;
+
+  bool get leagueEnrolled => _leagueEnrolled;
+  List<String> get leagueAllowedKinds => List.unmodifiable(_leagueAllowedKinds);
+  String? get leagueStatusMessage => _leagueStatusMessage;
 
   bool hasMore({
     LeaderboardType type = LeaderboardType.global,
@@ -524,5 +534,79 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
       country: country,
       continent: continent,
     );
+  }
+
+  /// P10-908 — server-backed league opt-in state.
+  Future<void> refreshLeagueMembership() async {
+    try {
+      final dio = ref.read(client);
+      final res = await dio.get(ApiContract.url(ApiContract.gamification.leagueMembership));
+      if (res.statusCode == 200 && res.data is Map) {
+        final data = res.data as Map<String, dynamic>;
+        _leagueEnrolled = data['enrolled'] == true;
+        final kinds = data['allowedKinds'];
+        if (kinds is List) {
+          _leagueAllowedKinds = kinds.map((e) => e.toString()).toList();
+        }
+        _leagueStatusMessage = null;
+        state = state.copyWith();
+      }
+    } catch (e) {
+      logger.error('League membership fetch failed', tag: 'leaderboard', error: e);
+      _leagueStatusMessage = 'We could not load leagues right now. Try again shortly.';
+      state = state.copyWith();
+    }
+  }
+
+  Future<bool> optInToLeagues({
+    required String timezone,
+    String leagueKind = 'public',
+    String? groupId,
+  }) async {
+    try {
+      final dio = ref.read(client);
+      final res = await dio.post(
+        ApiContract.url(ApiContract.gamification.leagueOptIn),
+        data: {
+          'timezone': timezone,
+          'leagueKind': leagueKind,
+          if (groupId != null) 'groupId': groupId,
+        },
+      );
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        _leagueEnrolled = true;
+        _leagueStatusMessage = null;
+        state = state.copyWith();
+        return true;
+      }
+      if (res.data is Map && res.data['code'] == 'PUBLIC_LEAGUE_FORBIDDEN') {
+        _leagueStatusMessage =
+            'For learners under 18, only circle or class leagues are available.';
+      }
+      state = state.copyWith();
+      return false;
+    } catch (e) {
+      logger.error('League opt-in failed', tag: 'leaderboard', error: e);
+      _leagueStatusMessage = 'Could not join leagues. Check your connection and try again.';
+      state = state.copyWith();
+      return false;
+    }
+  }
+
+  Future<bool> optOutOfLeagues() async {
+    try {
+      final dio = ref.read(client);
+      final res = await dio.post(ApiContract.url(ApiContract.gamification.leagueOptOut));
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        _leagueEnrolled = false;
+        _leagueStatusMessage = null;
+        state = state.copyWith();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      logger.error('League opt-out failed', tag: 'leaderboard', error: e);
+      return false;
+    }
   }
 }

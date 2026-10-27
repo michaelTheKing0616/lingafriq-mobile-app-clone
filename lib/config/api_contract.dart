@@ -141,6 +141,9 @@ class _Gamification {
   String get ubuntuDonate => '/api/gamification/ubuntu/donate';
   String get dailyChallenges => '/api/gamification/advanced/challenges';
   String get league => '/api/gamification/advanced/league';
+  String get leagueMembership => '/api/gamification/advanced/league/membership';
+  String get leagueOptIn => '/api/gamification/advanced/league/opt-in';
+  String get leagueOptOut => '/api/gamification/advanced/league/opt-out';
 }
 
 // =============================================================================
