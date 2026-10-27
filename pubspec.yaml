@@ -120,6 +120,7 @@ dependencies:
   http: any
   collection: any
   google_mlkit_object_detection: ^0.15.1
+  tflite_flutter: ^0.11.0
   passkeys: ^2.23.1
   google_sign_in: ^7.2.0
   sign_in_with_apple: ^8.2.0
@@ -189,6 +190,7 @@ flutter:
     - assets/data/review_checklist.json
     - assets/data/word_repo_game_seed.json
     - assets/rive/
+    - assets/models/point_say_mobilenetv4.tflite
     - schemas/v2/
 
 
