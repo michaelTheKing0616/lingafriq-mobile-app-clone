@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../avatar_engine.dart';
+import '../director/avatar_director.dart';
 import '../cast/cast_stage.dart';
 import '../personality_system.dart';
 

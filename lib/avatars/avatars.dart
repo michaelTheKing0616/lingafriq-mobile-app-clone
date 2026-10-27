@@ -39,10 +39,8 @@
 library;
 
 // Core systems
-export 'avatar_engine.dart';
-export 'emotion_system.dart';
+export 'director/avatar_director.dart';
 export 'personality_system.dart';
-export 'lip_sync_engine.dart';
 
 // Providers
 export 'avatar_providers.dart';

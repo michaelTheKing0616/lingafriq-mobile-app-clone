@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../avatar_engine.dart';
+import '../director/avatar_director.dart';
 import '../cast/cast_stage.dart';
 
 /// Polie Avatar Colors - Afro-futurist palette

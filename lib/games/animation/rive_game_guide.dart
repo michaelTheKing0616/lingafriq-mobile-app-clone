@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../avatars/avatar_engine.dart';
 import '../../avatars/cast/cast_stage.dart';
-import '../../avatars/emotion_system.dart';
+import '../../avatars/director/avatar_director.dart';
 import '../../avatars/personality_system.dart';
 
 /// Game guide. The cast file is the only character; legacy SMI inputs are gone.

@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'avatar_engine.dart';
-import 'emotion_system.dart';
+import 'director/avatar_director.dart';
 import 'personality_system.dart';
 import 'avatar_providers.dart';
 

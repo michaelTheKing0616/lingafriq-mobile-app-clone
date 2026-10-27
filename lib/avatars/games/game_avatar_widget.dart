@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../avatar_engine.dart';
 import '../cast/cast_stage.dart';
-import '../emotion_system.dart';
+import '../director/avatar_director.dart';
 import '../personality_system.dart';
 
 /// Game Avatar Widget - Displays the appropriate avatar for each game category

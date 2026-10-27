@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'avatar_engine.dart';
-import 'emotion_system.dart';
+import 'director/avatar_director.dart';
 import 'personality_system.dart';
 import 'social/user_avatar_customizer.dart';
 import '../providers/api_provider.dart';

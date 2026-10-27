@@ -426,7 +426,7 @@ P11-045	Done	Nested artboard slot_binding.dart: VM Artboard swaps, ≥6 hair/≥
 P11-046	Done	Build skin-tone and colour properties across ≥10 tones (palette.dart)	P11/P11-046.yaml
 P11-047	Done	Enforce avatar size, frame-cost and draw-call budgets (check_budgets.py, avatars_perf_test.dart)	P11/P11-047.yaml
 P11-048	Done	Upgrade to rive 0.14.11 with rive_native and controller cache	P11/P11-048.yaml
-P11-049	Draft	Build AvatarDirector and retire scaffolding engines	P11/P11-049.yaml
+P11-049	Done	AvatarDirector learning events → CharacterVM; retired engine scaffolding	P11/P11-049.yaml
 P11-050	Draft	Pause offscreen avatars and use static chips in lists	P11/P11-050.yaml
 P11-051	Draft	Add avatar reduced motion and screen-reader semantics	P11/P11-051.yaml
 P11-052	Draft	Expand cast to archetypes and per-language hosts	P11/P11-052.yaml

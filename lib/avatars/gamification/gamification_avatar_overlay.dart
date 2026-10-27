@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../avatar_engine.dart';
-import '../emotion_system.dart';
+import '../director/avatar_director.dart';
 import '../polie/polie_avatar.dart';
 
 /// Gamification avatar overlay position

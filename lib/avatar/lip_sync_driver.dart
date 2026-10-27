@@ -1,13 +1,10 @@
 import 'package:lingafriq/avatars/cast/phoneme_viseme.dart';
-import 'package:lingafriq/avatars/lip_sync_engine.dart';
 import 'package:lingafriq/avatars/lipsync/rms_jaw.dart';
 import 'package:lingafriq/avatars/lipsync/viseme_scheduler.dart';
 
 /// Drives avatar mouth state from gateway lip-sync payloads (P6-081).
 class LipSyncDriver {
-  LipSyncDriver({LipSyncEngine? engine}) : _engine = engine ?? LipSyncEngine();
-
-  final LipSyncEngine _engine;
+  LipSyncDriver();
   LipSyncTrack? _track;
   bool _neutralTalking = true;
   List<RmsSample> _rms = const [];
@@ -41,11 +38,7 @@ class LipSyncDriver {
     _neutralTalking = phonemes.isEmpty;
     _scheduler = VisemeScheduler(languageId: language, phonemes: phonemes);
     _rmsOnly = null;
-    _track = _engine.track(
-      language: language,
-      phonemes: phonemes,
-      rms: rms,
-    );
+    _track = LipSyncTrack(language: language, phonemes: phonemes, rms: rms);
   }
 
   void clear() {
