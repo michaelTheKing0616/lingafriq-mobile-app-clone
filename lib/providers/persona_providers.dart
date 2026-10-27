@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:lingafriq/config/api_contract.dart';
@@ -15,10 +16,41 @@ import 'package:lingafriq/services/voice/persona_tts_controller.dart';
 import 'package:lingafriq/services/classroom/classroom_persona_service.dart';
 import 'package:lingafriq/services/classroom/cross_class_persona_memory.dart';
 import 'package:lingafriq/learning/pronunciation/persona_pronunciation_service.dart';
+import 'package:lingafriq/ai/persona_cognition/groq_two_pass_orchestrator.dart';
+
+/// Shown when the server kill switch blocks a persona (P11-009).
+const kPersonaUnavailableCopy =
+    'This historical persona is temporarily unavailable. Try again later.';
 
 // ---------------------------------------------------------------------------
 // Singleton service providers
 // ---------------------------------------------------------------------------
+
+/// Server-backed persona availability (global or per-persona kill switch).
+class PersonaKillSwitchClient {
+  PersonaKillSwitchClient(this._dio);
+
+  final Dio _dio;
+
+  static const availabilityPath = '/api/ai/persona/availability';
+
+  Future<bool> isPersonaAvailable(String personaId) async {
+    try {
+      final response = await _dio.get<Map<String, dynamic>>(
+        '$availabilityPath/${personaId.trim().toLowerCase()}',
+      );
+      final data = response.data;
+      if (data == null || data['ok'] != true) return true;
+      return data['available'] == true;
+    } catch (_) {
+      return true;
+    }
+  }
+}
+
+final personaKillSwitchClientProvider = Provider<PersonaKillSwitchClient>((ref) {
+  return PersonaKillSwitchClient(ref.watch(client));
+});
 
 final personaCognitionEngineProvider = Provider<PersonaCognitionEngine>((ref) {
   final dio = ref.watch(client);
@@ -89,6 +121,7 @@ class PersonaChatState {
   final List<CognitionChatMessage> messages;
   final bool isProcessing;
   final bool isSpeaking;
+  final bool personaUnavailable;
   final String? error;
 
   const PersonaChatState({
@@ -97,6 +130,7 @@ class PersonaChatState {
     this.messages = const [],
     this.isProcessing = false,
     this.isSpeaking = false,
+    this.personaUnavailable = false,
     this.error,
   });
 
@@ -106,7 +140,9 @@ class PersonaChatState {
     List<CognitionChatMessage>? messages,
     bool? isProcessing,
     bool? isSpeaking,
+    bool? personaUnavailable,
     String? error,
+    bool clearError = false,
   }) =>
       PersonaChatState(
         activePersonaId: activePersonaId ?? this.activePersonaId,
@@ -114,7 +150,8 @@ class PersonaChatState {
         messages: messages ?? this.messages,
         isProcessing: isProcessing ?? this.isProcessing,
         isSpeaking: isSpeaking ?? this.isSpeaking,
-        error: error,
+        personaUnavailable: personaUnavailable ?? this.personaUnavailable,
+        error: clearError ? null : (error ?? this.error),
       );
 
   List<String> get conversationHistory => messages
@@ -132,13 +169,32 @@ class PersonaChatNotifier extends Notifier<PersonaChatState> {
   @override
   PersonaChatState build() => const PersonaChatState();
 
-  void setPersona(String personaId) {
+  Future<void> setPersona(String personaId) async {
     final persona = HistoricalPersonaRegistry.findById(personaId);
     state = PersonaChatState(
       activePersonaId: personaId,
       activePersona: persona,
+      personaUnavailable: false,
+      error: null,
     );
     ref.read(personaTtsControllerProvider).setPersona(personaId);
+
+    final available =
+        await ref.read(personaKillSwitchClientProvider).isPersonaAvailable(personaId);
+    if (!available) {
+      state = state.copyWith(
+        personaUnavailable: true,
+        error: kPersonaUnavailableCopy,
+      );
+    }
+  }
+
+  void markPersonaUnavailable([String message = kPersonaUnavailableCopy]) {
+    state = state.copyWith(
+      isProcessing: false,
+      personaUnavailable: true,
+      error: message,
+    );
   }
 
   Future<PersonaCognitionResult?> sendMessage(
@@ -147,7 +203,11 @@ class PersonaChatNotifier extends Notifier<PersonaChatState> {
     String? languageCode,
   }) async {
     if (state.activePersonaId == null) return null;
-    state = state.copyWith(isProcessing: true, error: null);
+    if (state.personaUnavailable) {
+      state = state.copyWith(error: kPersonaUnavailableCopy);
+      return null;
+    }
+    state = state.copyWith(isProcessing: true, clearError: true);
 
     state = state.copyWith(
       messages: [
@@ -185,6 +245,13 @@ class PersonaChatNotifier extends Notifier<PersonaChatState> {
 
       _speakResponse(result.personaReply);
       return result;
+    } on PersonaTurnGatewayError catch (e) {
+      if (e.code == 'PersonaDisabled') {
+        markPersonaUnavailable(kPersonaUnavailableCopy);
+      } else {
+        state = state.copyWith(isProcessing: false, error: e.message);
+      }
+      return null;
     } catch (e) {
       state = state.copyWith(isProcessing: false, error: e.toString());
       return null;
