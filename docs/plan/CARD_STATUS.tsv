@@ -888,7 +888,7 @@ P6-029	Draft	Build Translator-with-teaching behind per-pair quality gate	P6/P6-0
 P6-030	Draft	Build Live Translate with visible confidence indicator	P6/P6-030.yaml
 P6-031	Done	Stand up server-side scorer service (scorer/api.py, score.route.ts)	P6/P6-031.yaml
 P6-032	Done	Fine-tune Omnilingual CTC per language (finetune.py, licence_check.py; fixture train)	P6/P6-032.yaml
-P6-033	Draft	Compute GOP segmental scores with learner advice	P6/P6-033.yaml
+P6-033	Done	Compute GOP segmental scores with learner advice (gop.py, advice_map.py, test_gop.py)	P6/P6-033.yaml
 P6-034	Draft	Extract F0 and normalise per speaker in semitones	P6/P6-034.yaml
 P6-035	Draft	Compare per-syllable contour to native reference	P6/P6-035.yaml
 P6-036	Draft	Support Yoruba H/M/L with glides and Twi H/L	P6/P6-036.yaml
