@@ -1,0 +1,49 @@
+{
+  "card": "P7-941",
+  "built": "2026-10-27",
+  "pack_citation": "assets/data/tone/minimal_pairs.json; register:fsi-yoruba; CURRICULUM.md#§4:L566-L567; ELEVATION.md#§11.2:L1793-L1794; assets/data/audio/licensed_human.json#fsi-yoruba-tapes; P7-930; P7-933",
+  "publish_status": "draft",
+  "native_reviewer_sign_offs": [],
+  "sign_off_requirements": [
+    {
+      "language_code": "yo",
+      "pair_id": "yo.tone.oko_hoe_vehicle"
+    }
+  ],
+  "tone_drill_source": "assets/data/tone/minimal_pairs.json",
+  "demos": [
+    {
+      "language_code": "yo",
+      "pair_id": "yo.tone.oko_hoe_vehicle",
+      "title_en": "Why tone marks matter",
+      "intro_en": "In Yoruba, the same letters can mean different things when the tone changes. Listen to both words, then compare the marks.",
+      "drill_source_id": "assets/data/tone/minimal_pairs.json#yo.tone.oko_hoe_vehicle",
+      "words": [
+        {
+          "option_id": "yo.lex.ọkọ.hoe",
+          "form": "ọkọ́",
+          "gloss_en": "hoe",
+          "audio_uri": "assets/audio/yo/fsi_tone_oko_hoe.ogg",
+          "source_id": "register:fsi-yoruba; CURRICULUM.md#§4:L566-L567; ELEVATION.md#§6.2:L1172-L1178"
+        },
+        {
+          "option_id": "yo.lex.ọkọ.vehicle",
+          "form": "ọkọ̀",
+          "gloss_en": "vehicle",
+          "audio_uri": "assets/audio/yo/fsi_tone_oko_vehicle.ogg",
+          "source_id": "curriculum/lexicon/yo/vehicle-draft; assets/data/tone/minimal_pairs.json#yo.tone.oko_hoe_vehicle"
+        }
+      ]
+    }
+  ],
+  "pending_tonal_languages": [
+    {
+      "language_code": "ig",
+      "reason": "P5-026 drills list empty — no sourced Igbo minimal pair in repo"
+    },
+    {
+      "language_code": "ha",
+      "reason": "P5-026 drills list empty — no sourced Hausa minimal pair in repo"
+    }
+  ]
+}
