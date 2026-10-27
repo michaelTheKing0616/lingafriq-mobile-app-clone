@@ -930,7 +930,7 @@ P6-071	Done	L2 content gate: l2_language_gate.yaml, evals/gates/l2.ts, language_
 P6-072	Done	Per-language bakeoff table, Aya excluded, routes from generation_winners.json (evals/bakeoff/run.ts)	P6/P6-072.yaml
 P6-073	Done	Licensed open LLM finetune: manifest gate, diacritic promotion, route artefact (ml/finetune/llm)	P6/P6-073.yaml
 P6-074	Done	ASR eval: evals/asr/run.ts, 300-utt sets, stt_routing.json, asr_eval_report.md	P6/P6-074.yaml
-P6-075	Draft	Run LiveKit Agents cascaded session per turn	P6/P6-075.yaml
+P6-075	Done	LiveKit cascaded turn agent + session mint (realtime/agent.ts, session.ts, realtime_voice_client.dart)	P6/P6-075.yaml
 P6-076	Draft	Tune VAD and end-of-turn per language prosody	P6/P6-076.yaml
 P6-077	Draft	Stream STT inside realtime pipeline	P6/P6-077.yaml
 P6-078	Draft	Stream LLM output into streaming TTS to client	P6/P6-078.yaml
