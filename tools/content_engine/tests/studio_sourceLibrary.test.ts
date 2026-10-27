@@ -21,6 +21,7 @@ const ADMIN_PAGE = path.join(
   "sourceLibrary.tsx",
 );
 const ROUTE_FILE = path.join(LINGAFRIQ, "node-backend", "src", "routes", "sourceLibrary.routes.ts");
+const RBAC_FILE = path.join(LINGAFRIQ, "node-backend", "src", "middleware", "rbac.middleware.ts");
 const require = createRequire(pathToFileURL(path.join(LINGAFRIQ, "node-backend", "package.json")).href);
 const ts = require("typescript") as {
   transpileModule: (
@@ -95,7 +96,19 @@ type SaveResult = {
   record?: { copyKey: string; selectable: boolean; usesLocked: boolean; display: boolean; evidence: boolean; training: boolean; registerSaved: boolean };
 };
 
-const adminUser = { role: "content-admin" };
+const adminUser = { id: "507f1f77bcf86cd799439011", role: "content-admin" };
+
+async function primeStudioRoleCache(): Promise<void> {
+  const middleware = (await import(pathToFileURL(RBAC_FILE).href)) as {
+    bumpStaffRoleCache: (userId: string, next: { userId: string; role: "owner"; languages: string[]; version: number }) => void;
+  };
+  middleware.bumpStaffRoleCache(adminUser.id, {
+    userId: adminUser.id,
+    role: "owner",
+    languages: [],
+    version: 1,
+  });
+}
 
 function signedSource(overrides: Partial<SourceForm> = {}): SourceForm {
   return {
@@ -147,6 +160,7 @@ function invoke(
     };
     const req = {
       user: adminUser,
+      userId: adminUser.id,
       method,
       url,
       originalUrl: url,
@@ -168,6 +182,7 @@ function invoke(
 }
 
 test("test_P4_071_AC1_required_fields_before_save", async () => {
+  await primeStudioRoleCache();
   const route = await loadRoute();
   const saveSource = route.saveSource as (input: SourceForm) => SaveResult;
   const reset = route.resetSourceLibraryStore as () => void;
@@ -288,6 +303,7 @@ test("test_P4_071_AC2_excluded_licence_blocks_use", async () => {
 });
 
 test("test_P4_071_AC3_pending_signoff_not_selectable", async () => {
+  await primeStudioRoleCache();
   const route = await loadRoute();
   const saveSource = route.saveSource as (input: SourceForm) => SaveResult;
   const select = route.selectSourceForGeneration as (id: string) => SaveResult;
