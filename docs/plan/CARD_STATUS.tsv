@@ -906,7 +906,7 @@ P6-047	Done	Route recorded audio first, gateway TTS for dynamic turns (policy.ts
 P6-048	Done	Build commissioned-voice fine-tune pipeline (tts/licence_manifest.py, tts/finetune/)	P6/P6-048.yaml
 P6-049	Done	Yoruba gateway TTS Intron→Spitch behind voiceGate (providers/yo.ts)	P6/P6-049.yaml
 P6-050	Done	Igbo gateway TTS Intron→Spitch behind voiceGate (providers/ig.ts)	P6/P6-050.yaml
-P6-051	Draft	Ship Hausa TTS voice behind tone-accuracy gate	P6/P6-051.yaml
+P6-051	Done	Hausa gateway TTS Intron→Spitch→ElevenLabs v3 behind voiceGate (providers/ha.ts)	P6/P6-051.yaml
 P6-052	Draft	Ship Nigerian Pidgin TTS voice behind tone-accuracy gate	P6/P6-052.yaml
 P6-053	Draft	Ship Swahili TTS voice behind tone-accuracy gate	P6/P6-053.yaml
 P6-054	Draft	Ship isiZulu TTS voice behind tone-accuracy gate	P6/P6-054.yaml
