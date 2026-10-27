@@ -272,7 +272,7 @@ class AllGamesRegistry {
     'drum_to_word_matching': 'P8-930',
     'drum_rhythm_shadowing': 'P8-930',
     'market_bargaining_simulator': 'P8-931',
-    'taxi_bus_stop_survival': 'P8-932',
+    'taxi_bus_stop_survival': 'P8-923',
     'proverb_unlocker': 'P8-933',
     'greeting_diplomacy_challenge': 'P8-934',
     'pronunciation_karaoke': 'P8-935',
