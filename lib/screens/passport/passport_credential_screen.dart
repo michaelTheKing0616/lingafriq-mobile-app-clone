@@ -26,6 +26,10 @@ class PassportCredentialScreen extends StatefulWidget {
   final List<PassportPortfolioEntry>? debugPortfolioEntries;
   final Map<String, dynamic>? debugOpenBadgeCredential;
   final String? debugOpenBadgeError;
+  final String? debugPublicationStatus;
+  final String? debugRevokedReason;
+  final bool? debugPublicationStatusLoading;
+  final bool? debugPublicationStatusError;
 
   const PassportCredentialScreen({
     super.key,
@@ -40,6 +44,10 @@ class PassportCredentialScreen extends StatefulWidget {
     this.debugPortfolioEntries,
     this.debugOpenBadgeCredential,
     this.debugOpenBadgeError,
+    this.debugPublicationStatus,
+    this.debugRevokedReason,
+    this.debugPublicationStatusLoading,
+    this.debugPublicationStatusError,
   });
 
   @override
@@ -61,6 +69,11 @@ class _PassportCredentialScreenState extends State<PassportCredentialScreen> {
   Map<String, dynamic>? _openBadgeCredential;
   String? _openBadgeError;
 
+  bool _publicationLoading = false;
+  String? _publicationStatus;
+  String? _revokedReason;
+  bool _publicationStatusError = false;
+
   @override
   void initState() {
     super.initState();
@@ -68,19 +81,70 @@ class _PassportCredentialScreenState extends State<PassportCredentialScreen> {
       _openBadgeCredential = widget.debugOpenBadgeCredential;
       _openBadgeError = widget.debugOpenBadgeError;
     }
+    if (widget.debugPublicationStatus != null ||
+        widget.debugPublicationStatusLoading != null ||
+        widget.debugPublicationStatusError != null) {
+      _publicationLoading = widget.debugPublicationStatusLoading ?? false;
+      _publicationStatus = widget.debugPublicationStatus;
+      _revokedReason = widget.debugRevokedReason;
+      _publicationStatusError = widget.debugPublicationStatusError ?? false;
+      if (widget.debugPortfolioLoading == null &&
+          widget.debugPortfolioPrereqBlocked == null &&
+          widget.debugPortfolioEntries == null) {
+        return;
+      }
+    }
     if (widget.debugPortfolioLoading != null ||
         widget.debugPortfolioPrereqBlocked != null ||
         widget.debugPortfolioEntries != null) {
       _portfolioLoading = widget.debugPortfolioLoading ?? false;
       _portfolioPrereqBlocked = widget.debugPortfolioPrereqBlocked ?? false;
       _portfolioEntries = widget.debugPortfolioEntries ?? const [];
-      if (widget.credentialId != null && widget.debugOpenBadgeCredential == null) {
+      if (widget.credentialId != null &&
+          widget.debugOpenBadgeCredential == null &&
+          _effectivePublicationStatus != 'revoked') {
         _loadOpenBadge();
       }
       return;
     }
     _loadPortfolio();
-    if (widget.credentialId != null) _loadOpenBadge();
+    _loadPublicationStatus();
+    if (widget.credentialId != null && _effectivePublicationStatus != 'revoked') {
+      _loadOpenBadge();
+    }
+  }
+
+  Future<void> _loadPublicationStatus() async {
+    final id = widget.credentialId?.trim();
+    if (id == null || id.isEmpty) return;
+    setState(() {
+      _publicationLoading = true;
+      _publicationStatusError = false;
+    });
+    try {
+      await ApiService.initialize();
+      final res = await ApiService.get('/api/v2/credentials/status/$id');
+      final body = res.data;
+      if (body is Map) {
+        final status = body['status']?.toString();
+        setState(() {
+          _publicationStatus = status;
+          _revokedReason = body['reason']?.toString();
+        });
+      } else {
+        setState(() {
+          _publicationStatus = 'unknown';
+          _publicationStatusError = true;
+        });
+      }
+    } catch (_) {
+      setState(() {
+        _publicationStatus = 'unknown';
+        _publicationStatusError = true;
+      });
+    } finally {
+      if (mounted) setState(() => _publicationLoading = false);
+    }
   }
 
   Future<void> _loadOpenBadge() async {
@@ -376,6 +440,90 @@ class _PassportCredentialScreenState extends State<PassportCredentialScreen> {
   List<PassportPortfolioEntry> get _effectivePortfolioEntries =>
       widget.debugPortfolioEntries ?? _portfolioEntries;
 
+  bool get _effectivePublicationLoading =>
+      widget.debugPublicationStatusLoading ?? _publicationLoading;
+
+  String? get _effectivePublicationStatus =>
+      widget.debugPublicationStatus ?? _publicationStatus;
+
+  String? get _effectiveRevokedReason => widget.debugRevokedReason ?? _revokedReason;
+
+  bool get _effectivePublicationStatusError =>
+      widget.debugPublicationStatusError ?? _publicationStatusError;
+
+  bool get _treatAsRevoked => _effectivePublicationStatus == 'revoked';
+
+  bool get _treatAsUnknown =>
+      _effectivePublicationStatusError || _effectivePublicationStatus == 'unknown';
+
+  Widget _buildRevokedState(ColorScheme cs, TextTheme textTheme) {
+    final reason = (_effectiveRevokedReason ?? '').trim();
+    return Scaffold(
+      appBar: AppBar(title: const Text('Proficiency Passport')),
+      body: ListView(
+        padding: const EdgeInsets.all(24),
+        children: [
+          Semantics(
+            label: 'Credential revoked',
+            child: Icon(Icons.block_rounded, size: 56, color: cs.error),
+          ),
+          const SizedBox(height: 16),
+          Text('This credential was revoked', style: textTheme.headlineSmall),
+          const SizedBox(height: 12),
+          Text(
+            reason.isNotEmpty
+                ? reason
+                : 'LingAfriq withdrew publication of this Passport after a review.',
+            style: textTheme.bodyLarge,
+          ),
+          const SizedBox(height: 20),
+          Text(
+            'What you can do next',
+            style: textTheme.titleMedium?.copyWith(color: cs.primary),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Retake a proctored Passport session when you are ready, or contact support if you believe this was a mistake.',
+            style: textTheme.bodyMedium,
+          ),
+          const SizedBox(height: 24),
+          Semantics(
+            button: true,
+            label: 'Contact LingAfriq support about revoked credential',
+            child: FilledButton.tonalIcon(
+              onPressed: () => _copy('Support', 'support@lingafriq.com'),
+              icon: const Icon(Icons.mail_outline_rounded),
+              label: const Text('Email support'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUnknownPublicationBanner(ColorScheme cs, TextTheme textTheme) {
+    return Card(
+      color: cs.surfaceContainerHighest,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(Icons.cloud_off_rounded, color: cs.onSurfaceVariant),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                'We could not confirm whether this credential is still valid. '
+                'We will not show it as verified until status loads.',
+                style: textTheme.bodyMedium,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
@@ -386,11 +534,24 @@ class _PassportCredentialScreenState extends State<PassportCredentialScreen> {
       return _buildPrereqBlocked(cs, textTheme);
     }
 
+    if (!_effectivePublicationLoading && _treatAsRevoked) {
+      return _buildRevokedState(cs, textTheme);
+    }
+
     return Scaffold(
       appBar: AppBar(title: const Text('Proficiency Passport')),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          if (_effectivePublicationLoading)
+            const Padding(
+              padding: EdgeInsets.only(bottom: 12),
+              child: LinearProgressIndicator(minHeight: 3),
+            ),
+          if (_treatAsUnknown && !_effectivePublicationLoading) ...[
+            _buildUnknownPublicationBanner(cs, textTheme),
+            const SizedBox(height: 12),
+          ],
           Text('Your credential', style: textTheme.headlineSmall),
           const SizedBox(height: 4),
           Text(
@@ -484,7 +645,7 @@ class _PassportCredentialScreenState extends State<PassportCredentialScreen> {
                 label: const Text('Copy token'),
               ),
               FilledButton.icon(
-                onPressed: _verifying ? null : _verifyNow,
+                onPressed: (_verifying || _treatAsUnknown) ? null : _verifyNow,
                 icon: const Icon(Icons.verified_rounded),
                 label: Text(_verifying ? 'Verifying…' : 'Verify now'),
               ),

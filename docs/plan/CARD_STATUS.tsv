@@ -355,7 +355,7 @@ P10-914	Done	Publish Passport CEFR methodology (METHODOLOGY.md, passport-methodo
 P10-915	Done	Build an evidence portfolio of passed can-do tasks (passport-portfolio.service.ts)	P10/P10-915.yaml
 P10-916	Done	Proctored adaptive CAT (passport-cat.service.ts, proctored session UI)	P10/P10-916.yaml
 P10-917	Done	OB3 VC issue/verify (credential-issuer.service.ts, credentials.routes.ts, passport_credential_screen.dart)	P10/P10-917.yaml
-P10-918	Draft	Revoke credentials and publish status	P10/P10-918.yaml
+P10-918	Done	Revoke credentials and publish status (credential-status.service.ts, passport_credential_screen.dart)	P10/P10-918.yaml
 P10-919	Draft	Write the DPIA for voice data and minors	P10/P10-919.yaml
 P10-920	Done	RETENTION.yaml + DATA_MAP.md + data_map_check.py (137 collections, CI --gate)	P10/P10-920.yaml
 P10-921	Draft	Run logged purge jobs per retention schedule	P10/P10-921.yaml
