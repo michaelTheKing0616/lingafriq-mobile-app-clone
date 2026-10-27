@@ -402,6 +402,42 @@
     "description": "P8-911 visible practice banner"
   },
   "gamekitPracticeModeError": "Audio is not ready yet. You can still read the phrase.",
+  "gamesGameMasteryResultsTitle": "Round complete",
+  "@gamesGameMasteryResultsTitle": {
+    "description": "P8-915 mastery results screen title"
+  },
+  "gamesGameMasteryResultsInstructions": "Here is how this round touched your skills in the learner model.",
+  "@gamesGameMasteryResultsInstructions": {
+    "description": "P8-915 mastery results intro"
+  },
+  "gamesGameMasteryResultsSkillsHeading": "Skills this round",
+  "@gamesGameMasteryResultsSkillsHeading": {
+    "description": "P8-915 skills list heading"
+  },
+  "gamesGameMasteryResultsNoChange": "No change",
+  "@gamesGameMasteryResultsNoChange": {
+    "description": "P8-915 flat mastery delta"
+  },
+  "gamesGameMasteryResultsImproved": "Improved",
+  "@gamesGameMasteryResultsImproved": {
+    "description": "P8-915 positive mastery delta"
+  },
+  "gamesGameMasteryResultsDeclined": "Needs practice",
+  "@gamesGameMasteryResultsDeclined": {
+    "description": "P8-915 negative mastery delta"
+  },
+  "gamesGameMasteryResultsPracticeLabel": "Practice, not scored",
+  "@gamesGameMasteryResultsPracticeLabel": {
+    "description": "P8-915 practice banner"
+  },
+  "gamesGameMasteryResultsError": "Skill details are still syncing. Your practice was saved.",
+  "@gamesGameMasteryResultsError": {
+    "description": "P8-915 empty skill delta fallback"
+  },
+  "gamesGameMasteryResultsDone": "Back to Play",
+  "@gamesGameMasteryResultsDone": {
+    "description": "P8-915 dismiss results"
+  },
   "@gamekitPracticeModeError": {
     "description": "P8-911 practice audio missing"
   },

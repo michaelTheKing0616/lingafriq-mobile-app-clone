@@ -110,6 +110,9 @@ class LearnerSkillState {
   double get accuracy =>
       totalAttempts > 0 ? successfulAttempts / totalAttempts : 0.0;
 
+  /// Whole-number mastery for results UI (P8-915).
+  int masteryPercentRounded() => (mastery * 100).round().clamp(0, 100);
+
   /// The optimal day to schedule the next review.
   DateTime get nextOptimalReview {
     final daysUntilReview = const Fsrs6Scheduler().intervalDays(halfLifeDays, retention: 0.7).toDouble();

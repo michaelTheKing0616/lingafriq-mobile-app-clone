@@ -259,6 +259,35 @@ class AppLocalizationsFr extends AppLocalizations {
       'Audio is not ready yet. You can still read the phrase.';
 
   @override
+  String get gamesGameMasteryResultsTitle => 'Round complete';
+
+  @override
+  String get gamesGameMasteryResultsInstructions =>
+      'Here is how this round touched your skills in the learner model.';
+
+  @override
+  String get gamesGameMasteryResultsSkillsHeading => 'Skills this round';
+
+  @override
+  String get gamesGameMasteryResultsNoChange => 'No change';
+
+  @override
+  String get gamesGameMasteryResultsImproved => 'Improved';
+
+  @override
+  String get gamesGameMasteryResultsDeclined => 'Needs practice';
+
+  @override
+  String get gamesGameMasteryResultsPracticeLabel => 'Practice, not scored';
+
+  @override
+  String get gamesGameMasteryResultsError =>
+      'Skill details are still syncing. Your practice was saved.';
+
+  @override
+  String get gamesGameMasteryResultsDone => 'Back to Play';
+
+  @override
   String get gamekitFeedbackError => 'We could not score that turn. Try again.';
 
   @override

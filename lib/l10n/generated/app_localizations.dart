@@ -614,6 +614,60 @@ abstract class AppLocalizations {
   /// **'Audio is not ready yet. You can still read the phrase.'**
   String get gamekitPracticeModeError;
 
+  /// P8-915 mastery results screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Round complete'**
+  String get gamesGameMasteryResultsTitle;
+
+  /// P8-915 mastery results intro
+  ///
+  /// In en, this message translates to:
+  /// **'Here is how this round touched your skills in the learner model.'**
+  String get gamesGameMasteryResultsInstructions;
+
+  /// P8-915 skills list heading
+  ///
+  /// In en, this message translates to:
+  /// **'Skills this round'**
+  String get gamesGameMasteryResultsSkillsHeading;
+
+  /// P8-915 flat mastery delta
+  ///
+  /// In en, this message translates to:
+  /// **'No change'**
+  String get gamesGameMasteryResultsNoChange;
+
+  /// P8-915 positive mastery delta
+  ///
+  /// In en, this message translates to:
+  /// **'Improved'**
+  String get gamesGameMasteryResultsImproved;
+
+  /// P8-915 negative mastery delta
+  ///
+  /// In en, this message translates to:
+  /// **'Needs practice'**
+  String get gamesGameMasteryResultsDeclined;
+
+  /// P8-915 practice banner
+  ///
+  /// In en, this message translates to:
+  /// **'Practice, not scored'**
+  String get gamesGameMasteryResultsPracticeLabel;
+
+  /// P8-915 empty skill delta fallback
+  ///
+  /// In en, this message translates to:
+  /// **'Skill details are still syncing. Your practice was saved.'**
+  String get gamesGameMasteryResultsError;
+
+  /// P8-915 dismiss results
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Play'**
+  String get gamesGameMasteryResultsDone;
+
   /// GameKit scoring error
   ///
   /// In en, this message translates to:

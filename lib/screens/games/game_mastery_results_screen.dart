@@ -1,314 +1,221 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../utils/modern_griot_design_system.dart';
-import '../../widgets/griot/griot_widgets.dart';
-import '../../widgets/game/game_widgets.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class GameMasteryResultsScreen extends ConsumerStatefulWidget {
+import '../../games/gamekit/game_result.dart';
+import '../../l10n/generated/app_localizations.dart';
+import '../../utils/pan_african_design_system.dart';
+
+/// Standard post-game results for GameKit sessions (P8-915).
+class GameMasteryResultsScreen extends ConsumerWidget {
   const GameMasteryResultsScreen({
     super.key,
-    required this.masteryPercent,
-    required this.xpEarned,
-    required this.streakCount,
-    required this.coinsEarned,
-    required this.levelProgress,
-    required this.currentLevel,
-    required this.onNextChallenge,
-    this.onReviewMistakes,
+    required this.payload,
+    this.onDone,
   });
 
-  final int masteryPercent;
-  final int xpEarned;
-  final int streakCount;
-  final int coinsEarned;
-  final double levelProgress;
-  final int currentLevel;
-  final VoidCallback onNextChallenge;
-  final VoidCallback? onReviewMistakes;
+  final GameMasteryResultsPayload payload;
+  final VoidCallback? onDone;
 
   @override
-  ConsumerState<GameMasteryResultsScreen> createState() =>
-      _GameMasteryResultsScreenState();
-}
-
-class _GameMasteryResultsScreenState
-    extends ConsumerState<GameMasteryResultsScreen>
-    with TickerProviderStateMixin {
-  late final AnimationController _starController;
-  late final Animation<double> _starBounce;
-  late final AnimationController _particleController;
-  final List<_Particle> _particles = [];
-  final _rng = Random();
-
-  @override
-  void initState() {
-    super.initState();
-    _starController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1200),
-    )..repeat(reverse: true);
-    _starBounce = Tween<double>(begin: 0, end: -12).animate(
-      CurvedAnimation(parent: _starController, curve: Curves.easeInOut),
-    );
-
-    _particleController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 6),
-    )..repeat();
-
-    for (var i = 0; i < 24; i++) {
-      _particles.add(_Particle(
-        x: _rng.nextDouble(),
-        y: _rng.nextDouble(),
-        size: _rng.nextDouble() * 4 + 2,
-        speed: _rng.nextDouble() * 0.4 + 0.1,
-        phase: _rng.nextDouble() * 2 * pi,
-        color: [
-          ModernGriotColors.primaryContainer,
-          ModernGriotColors.primary,
-          ModernGriotColors.onPrimary,
-          ModernGriotColors.secondaryContainer,
-        ][_rng.nextInt(4)],
-      ));
-    }
-  }
-
-  @override
-  void dispose() {
-    _starController.dispose();
-    _particleController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final cs = Theme.of(context).colorScheme;
-    final safePadding = MediaQuery.of(context).padding;
+    final reduceMotion = MediaQuery.disableAnimationsOf(context);
+    final session = payload.session;
+    final accuracyPct = (session.accuracy * 100).round();
 
     return Scaffold(
       backgroundColor: cs.surface,
-      appBar: AppBar(title: const Text('Results')),
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    ModernGriotColors.primaryContainer.withAlpha(40),
-                    cs.surface,
-                  ],
+      appBar: AppBar(
+        title: Text(l10n.gamesGameMasteryResultsTitle),
+      ),
+      body: SafeArea(
+        child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.lg.w, vertical: PanAfricanSpacing.md.h),
+          children: [
+            if (payload.practiceNotScored)
+              Semantics(
+                label: l10n.gamesGameMasteryResultsPracticeLabel,
+                child: MaterialBanner(
+                  backgroundColor: cs.surfaceContainerHighest,
+                  leading: const Icon(Icons.hearing_outlined),
+                  content: Text(l10n.gamesGameMasteryResultsPracticeLabel),
+                  actions: const [SizedBox.shrink()],
                 ),
               ),
+            SizedBox(height: PanAfricanSpacing.md.h),
+            Text(
+              l10n.gamesGameMasteryResultsInstructions,
+              style: PanAfricanTypography.bodyLarge(context, color: cs.onSurfaceVariant),
             ),
-          ),
-          Positioned.fill(
-            child: AnimatedBuilder(
-              animation: _particleController,
-              builder: (context, _) => CustomPaint(
-                painter: _ParticlePainter(
-                  particles: _particles,
-                  progress: _particleController.value,
-                ),
+            SizedBox(height: PanAfricanSpacing.lg.h),
+            _SummaryCard(
+              accuracyLabel: '$accuracyPct%',
+              turnsLabel: '${session.correctCount}/${session.totalTurns}',
+              xpLabel: payload.serverXpAwarded != null
+                  ? '+${payload.serverXpAwarded}'
+                  : '—',
+            ),
+            SizedBox(height: PanAfricanSpacing.lg.h),
+            Text(
+              l10n.gamesGameMasteryResultsSkillsHeading,
+              style: PanAfricanTypography.titleMedium(context, color: cs.onSurface),
+            ),
+            SizedBox(height: PanAfricanSpacing.sm.h),
+            if (payload.skillDeltas.isEmpty)
+              Text(
+                l10n.gamesGameMasteryResultsError,
+                style: PanAfricanTypography.bodyMedium(context, color: cs.error),
+              )
+            else
+              ...payload.skillDeltas.map(
+                (delta) => _SkillDeltaRow(delta: delta, l10n: l10n, reduceMotion: reduceMotion),
+              ),
+            SizedBox(height: PanAfricanSpacing.xl.h),
+            SizedBox(
+              width: double.infinity,
+              height: 48.h,
+              child: FilledButton(
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  if (onDone != null) {
+                    onDone!();
+                  } else {
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                  }
+                },
+                child: Text(l10n.gamesGameMasteryResultsDone),
               ),
             ),
-          ),
-          SafeArea(
-            top: false,
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: Column(
-                children: [
-                  SizedBox(height: 8.h),
-                  _CelebrationHero(bounceAnim: _starBounce),
-                  SizedBox(height: 24.h),
-                  GriotMasteryRing(
-                    value: widget.masteryPercent / 100,
-                    size: 180,
-                    strokeWidth: 14,
-                    label: 'Mastery',
-                  ),
-                  SizedBox(height: 28.h),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: GriotStatCard(
-                          icon: Icons.star_rounded,
-                          iconColor: ModernGriotColors.primaryContainer,
-                          value: '+${widget.xpEarned}',
-                          label: 'XP Earned',
-                        ),
-                      ),
-                      SizedBox(width: 10.w),
-                      Expanded(
-                        child: GriotStatCard(
-                          icon: Icons.local_fire_department_rounded,
-                          iconColor: const Color(0xFFE65100),
-                          value: '${widget.streakCount}',
-                          label: 'Streak',
-                        ),
-                      ),
-                      SizedBox(width: 10.w),
-                      Expanded(
-                        child: GriotStatCard(
-                          icon: Icons.paid_rounded,
-                          iconColor: const Color(0xFFFFC107),
-                          value: '+${widget.coinsEarned}',
-                          label: 'Coins',
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 28.h),
-                  _LevelProgressSection(
-                    progress: widget.levelProgress,
-                    level: widget.currentLevel,
-                  ),
-                  SizedBox(height: 36.h),
-                  GriotGradientButton(
-                    label: 'Next Challenge',
-                    icon: Icons.arrow_forward_rounded,
-                    onPressed: widget.onNextChallenge,
-                  ),
-                  SizedBox(height: 10.h),
-                  GriotSecondaryButton(
-                    label: 'Review Mistakes',
-                    icon: Icons.replay_rounded,
-                    onPressed: widget.onReviewMistakes,
-                  ),
-                  SizedBox(height: safePadding.bottom + 16.h),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _CelebrationHero extends StatelessWidget {
-  const _CelebrationHero({required this.bounceAnim});
-  final Animation<double> bounceAnim;
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: bounceAnim,
-      builder: (context, child) => Transform.translate(
-        offset: Offset(0, bounceAnim.value),
-        child: child,
-      ),
-      child: Container(
-        width: 80.r,
-        height: 80.r,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: RadialGradient(
-            colors: [
-              ModernGriotColors.primaryContainer.withAlpha(180),
-              ModernGriotColors.primaryContainer.withAlpha(40),
-              Colors.transparent,
-            ],
-            stops: const [0.0, 0.5, 1.0],
-          ),
-        ),
-        child: Center(
-          child: Icon(
-            Icons.star_rounded,
-            size: 44.sp,
-            color: ModernGriotColors.primaryContainer,
-          ),
+          ],
         ),
       ),
     );
   }
 }
 
-class _LevelProgressSection extends StatelessWidget {
-  const _LevelProgressSection({required this.progress, required this.level});
-  final double progress;
-  final int level;
+class _SummaryCard extends StatelessWidget {
+  const _SummaryCard({
+    required this.accuracyLabel,
+    required this.turnsLabel,
+    required this.xpLabel,
+  });
+
+  final String accuracyLabel;
+  final String turnsLabel;
+  final String xpLabel;
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-
     return Container(
-      padding: EdgeInsets.all(16.r),
+      padding: EdgeInsets.all(PanAfricanSpacing.md.r),
       decoration: BoxDecoration(
         color: cs.surfaceContainerLow,
-        borderRadius: ModernGriotRadius.borderXl,
-        boxShadow: ModernGriotShadows.sm,
+        borderRadius: PanAfricanRadius.lgBR,
+        border: Border.all(color: cs.outlineVariant.withValues(alpha: 0.4)),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Level $level',
-                style: ModernGriotTypography.titleMedium(context: context, color: cs.onSurface),
-              ),
-              Text(
-                '${(progress * 100).round()}%',
-                style: ModernGriotTypography.labelLarge(context: context, color: cs.primary),
-              ),
-            ],
-          ),
-          SizedBox(height: 10.h),
-          GriotProgressBar(value: progress, showGlowTip: true),
+          Expanded(child: _StatTile(label: 'Accuracy', value: accuracyLabel)),
+          Expanded(child: _StatTile(label: 'Correct', value: turnsLabel)),
+          Expanded(child: _StatTile(label: 'XP', value: xpLabel)),
         ],
       ),
     );
   }
 }
 
-class _Particle {
-  _Particle({
-    required this.x,
-    required this.y,
-    required this.size,
-    required this.speed,
-    required this.phase,
-    required this.color,
-  });
-  final double x;
-  final double y;
-  final double size;
-  final double speed;
-  final double phase;
-  final Color color;
+class _StatTile extends StatelessWidget {
+  const _StatTile({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(value, style: PanAfricanTypography.titleLarge(context)),
+        Text(label, style: PanAfricanTypography.labelMedium(context)),
+      ],
+    );
+  }
 }
 
-class _ParticlePainter extends CustomPainter {
-  _ParticlePainter({required this.particles, required this.progress});
-  final List<_Particle> particles;
-  final double progress;
+class _SkillDeltaRow extends StatelessWidget {
+  const _SkillDeltaRow({
+    required this.delta,
+    required this.l10n,
+    required this.reduceMotion,
+  });
+
+  final GameMasterySkillDelta delta;
+  final AppLocalizations l10n;
+  final bool reduceMotion;
 
   @override
-  void paint(Canvas canvas, Size size) {
-    for (final p in particles) {
-      final t = (progress * p.speed + p.phase) % 1.0;
-      final dx = p.x * size.width + sin(t * 2 * pi) * 20;
-      final dy = (p.y - t * 0.3) % 1.0 * size.height;
-      final opacity = (1.0 - (t - 0.5).abs() * 2).clamp(0.15, 0.6);
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final changeLabel = switch (delta.changeKind) {
+      GameMasteryChangeKind.improved => l10n.gamesGameMasteryResultsImproved,
+      GameMasteryChangeKind.declined => l10n.gamesGameMasteryResultsDeclined,
+      GameMasteryChangeKind.noChange => l10n.gamesGameMasteryResultsNoChange,
+    };
+    final changeIcon = switch (delta.changeKind) {
+      GameMasteryChangeKind.improved => Icons.trending_up,
+      GameMasteryChangeKind.declined => Icons.trending_down,
+      GameMasteryChangeKind.noChange => Icons.horizontal_rule,
+    };
+    final changeColor = switch (delta.changeKind) {
+      GameMasteryChangeKind.improved => PanAfricanColors.primary,
+      GameMasteryChangeKind.declined => PanAfricanColors.kenteRed,
+      GameMasteryChangeKind.noChange => cs.onSurfaceVariant,
+    };
 
-      canvas.drawCircle(
-        Offset(dx, dy),
-        p.size,
-        Paint()..color = p.color.withAlpha((opacity * 255).round()),
-      );
-    }
+    return Semantics(
+      label:
+          '${delta.skillId}: ${delta.masteryBeforePercent()}% to ${delta.masteryAfterPercent()}%, $changeLabel',
+      child: Card(
+        margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm.h),
+        child: Padding(
+          padding: EdgeInsets.all(PanAfricanSpacing.md.r),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(changeIcon, color: changeColor, semanticLabel: changeLabel),
+              SizedBox(width: PanAfricanSpacing.sm.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _humanizeSkillId(delta.skillId),
+                      style: PanAfricanTypography.titleSmall(context),
+                    ),
+                    SizedBox(height: 4.h),
+                    Text(
+                      '${delta.masteryBeforePercent()}% → ${delta.masteryAfterPercent()}%',
+                      style: PanAfricanTypography.bodyMedium(context),
+                    ),
+                    SizedBox(height: 4.h),
+                    Text(
+                      changeLabel,
+                      style: PanAfricanTypography.labelLarge(context, color: changeColor),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
-  @override
-  bool shouldRepaint(_ParticlePainter oldDelegate) => true;
+  String _humanizeSkillId(String id) {
+    return id.replaceAll('_', ' ');
+  }
 }

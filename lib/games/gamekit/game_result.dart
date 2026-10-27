@@ -48,6 +48,90 @@ class GameTurnResult {
   }
 }
 
+const _masteryEpsilon = 0.0001;
+
+/// One skill's learner-model mastery before vs after a GameKit session (P8-915).
+class GameMasterySkillDelta {
+  const GameMasterySkillDelta({
+    required this.skillId,
+    required this.masteryBefore,
+    required this.masteryAfter,
+  });
+
+  final String skillId;
+  final double masteryBefore;
+  final double masteryAfter;
+
+  bool get hasMeasuredChange =>
+      (masteryAfter - masteryBefore).abs() > _masteryEpsilon;
+
+  bool get improved => masteryAfter > masteryBefore + _masteryEpsilon;
+
+  bool get declined => masteryBefore > masteryAfter + _masteryEpsilon;
+
+  /// Improved, declined, or flat — never label flat as improved.
+  GameMasteryChangeKind get changeKind {
+    if (improved) return GameMasteryChangeKind.improved;
+    if (declined) return GameMasteryChangeKind.declined;
+    return GameMasteryChangeKind.noChange;
+  }
+
+  int masteryBeforePercent() => (masteryBefore * 100).round().clamp(0, 100);
+
+  int masteryAfterPercent() => (masteryAfter * 100).round().clamp(0, 100);
+}
+
+enum GameMasteryChangeKind { improved, declined, noChange }
+
+/// Reads session metadata written during [GameKitLearnerGraphWriter.recordTurn].
+List<GameMasterySkillDelta> skillDeltasFromGameSession(GameSession session) {
+  final raw = session.metadata['skill_mastery_snapshots'];
+  if (raw is! Map) return const [];
+  final deltas = <GameMasterySkillDelta>[];
+  for (final entry in raw.entries) {
+    final skillId = entry.key.toString();
+    final map = entry.value;
+    if (map is! Map) continue;
+    final before = (map['before'] as num?)?.toDouble();
+    final after = (map['after'] as num?)?.toDouble();
+    if (before == null || after == null) continue;
+    deltas.add(GameMasterySkillDelta(
+      skillId: skillId,
+      masteryBefore: before,
+      masteryAfter: after,
+    ));
+  }
+  deltas.sort((a, b) => a.skillId.compareTo(b.skillId));
+  return deltas;
+}
+
+/// Payload for [GameMasteryResultsScreen].
+class GameMasteryResultsPayload {
+  const GameMasteryResultsPayload({
+    required this.session,
+    required this.skillDeltas,
+    this.serverXpAwarded,
+    this.practiceNotScored = false,
+  });
+
+  final GameSession session;
+  final List<GameMasterySkillDelta> skillDeltas;
+  final int? serverXpAwarded;
+  final bool practiceNotScored;
+
+  factory GameMasteryResultsPayload.fromSession(
+    GameSession session, {
+    int? serverXpAwarded,
+  }) {
+    return GameMasteryResultsPayload(
+      session: session,
+      skillDeltas: skillDeltasFromGameSession(session),
+      serverXpAwarded: serverXpAwarded,
+      practiceNotScored: session.practiceNotScored,
+    );
+  }
+}
+
 /// Writes GameKit turn outcomes to the learner graph and SRS (P8-901).
 class GameKitLearnerGraphWriter {
   GameKitLearnerGraphWriter({
@@ -106,6 +190,16 @@ class GameKitLearnerGraphWriter {
     }
 
     final ids = idsForTurn(context, result);
+    final snapshots = Map<String, dynamic>.from(
+      session.metadata['skill_mastery_snapshots'] as Map? ?? const {},
+    );
+    final prior = snapshots[ids.skillId];
+    final masteryBefore = prior is Map && prior['before'] is num
+        ? (prior['before'] as num).toDouble()
+        : _learnerModel
+            .getState(learnerId: session.userId, skillId: ids.skillId)
+            .mastery;
+
     await _learnerModel.recordPracticeEvent(
       turnId: turnId,
       sessionId: session.sessionId,
@@ -117,6 +211,14 @@ class GameKitLearnerGraphWriter {
       timestamp: result.timestamp,
       queueOnly: queueOnly,
     );
+
+    final masteryAfter = _learnerModel
+        .getState(learnerId: session.userId, skillId: ids.skillId)
+        .mastery;
+    snapshots[ids.skillId] = {
+      'before': masteryBefore,
+      'after': masteryAfter,
+    };
 
     if (queueOnly) {
       _pendingSrs.add((
@@ -162,6 +264,7 @@ class GameKitLearnerGraphWriter {
         ...session.metadata,
         'recorded_turn_ids': recorded,
         'learner_events_recorded': recorded.length,
+        'skill_mastery_snapshots': snapshots,
         if (scorerTraces.isNotEmpty) 'learner_scorer_traces': scorerTraces,
       },
     );

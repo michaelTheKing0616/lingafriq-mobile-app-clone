@@ -22,6 +22,9 @@ import '../../services/feature_flag_service.dart';
 import '../../avatars/avatars.dart';
 import '../../learning/learner_model/error_taxonomy.dart';
 import '../../models/game/game_content_models.dart';
+import '../../screens/games/game_mastery_results_screen.dart';
+import '../../providers/dio_provider.dart';
+import '../../providers/game_provider.dart';
 
 /// Universal game screen that works for any game using GenericGame
 /// This allows all 37+ games to use the same GameKit implementation
@@ -65,6 +68,7 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
   bool? _immediateLocalCorrect;
   String? _wrongAnswerErrorTypeId;
   final GameKitLearnerGraphWriter _learnerGraphWriter = GameKitLearnerGraphWriter();
+  GameSession? _kitSession;
   final FeatureFlagService _featureFlags = FeatureFlagService(safeDefault: false);
   bool _practiceNotScored = false;
   String? _lastLearnerRecordingPath;
@@ -133,6 +137,22 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
     await _loadNewContent();
   }
 
+  GameSession _baseKitSession() {
+    return GameSession(
+      sessionId: session!.sessionId,
+      userId: session!.userId,
+      gameId: widget.gameId,
+      language: widget.language,
+      level: widget.level,
+      startTime: session!.startTime,
+      turns: _kitSession?.turns ?? const [],
+      metadata: {
+        if (_practiceNotScored) 'practice_not_scored': true,
+        ...?_kitSession?.metadata,
+      },
+    );
+  }
+
   Future<void> _loadNewContent() async {
     if (session == null) return;
     if (_round >= _maxRounds) {
@@ -153,18 +173,9 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
     });
 
     try {
-      final gameSession = GameSession(
-        sessionId: session!.sessionId,
-        userId: session!.userId,
-        gameId: widget.gameId,
-        language: widget.language,
-        level: widget.level,
-        startTime: session!.startTime,
-        turns: [],
-        metadata: _practiceNotScored ? const {'practice_not_scored': true} : const {},
-      );
+      _kitSession = _baseKitSession();
 
-      _currentContent = await _game.loadContent(gameSession);
+      _currentContent = await _game.loadContent(_kitSession!);
       _round++;
       setState(() {});
     } catch (e) {
@@ -216,18 +227,8 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
     }
 
     try {
-      final gameSession = GameSession(
-        sessionId: session!.sessionId,
-        userId: session!.userId,
-        gameId: widget.gameId,
-        language: widget.language,
-        level: widget.level,
-        startTime: session!.startTime,
-        turns: [],
-        metadata: _practiceNotScored
-            ? const {'practice_not_scored': true, 'core_verb': 'speak'}
-            : const {},
-      );
+      _kitSession = _baseKitSession();
+      final gameSession = _kitSession!;
 
       final input = GenericGameInput(
         selectedAnswer: answer,
@@ -287,7 +288,7 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
         },
       );
       if (!practiceTurn) {
-        await _learnerGraphWriter.recordTurn(
+        _kitSession = await _learnerGraphWriter.recordTurn(
           session: gameSession,
           context: turnContext,
           result: result,
@@ -326,34 +327,35 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
   }
 
   Future<void> _endGame() async {
-    if (!_practiceNotScored) {
-      await finishGame();
+    final kit = _kitSession ?? _baseKitSession();
+    int? serverXp;
+    if (!_practiceNotScored && session != null) {
+      try {
+        final gameProv = ref.read(gameProvider.notifier);
+        final ended = await gameProv.endGame();
+        final claim = await claimGameSessionRewardVerified(
+          dio: ref.read(client),
+          session: ended,
+        );
+        serverXp = claim?.xpAwarded;
+      } catch (_) {
+        serverXp = null;
+      }
     }
 
-    if (mounted) {
-      final l10n = AppLocalizations.of(context)!;
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text(
-            _practiceNotScored
-                ? l10n.gamekitPracticeModeTitle
-                : 'Game Complete!',
-          ),
-          content: Text(
-            _practiceNotScored
-                ? l10n.gamekitPracticeModeInstructions
-                : 'You scored $_score out of $_maxRounds!\nAccuracy: ${((_score / _maxRounds) * 100).toStringAsFixed(0)}%',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Close'),
-            ),
-          ],
+    if (!mounted) return;
+    final payload = GameMasteryResultsPayload.fromSession(
+      kit.copyWith(turns: kit.turns),
+      serverXpAwarded: serverXp,
+    );
+    await Navigator.of(context).pushReplacement(
+      MaterialPageRoute<void>(
+        builder: (_) => GameMasteryResultsScreen(
+          payload: payload,
+          onDone: () => Navigator.of(context).pop(),
         ),
-      );
-    }
+      ),
+    );
   }
 
   @override
