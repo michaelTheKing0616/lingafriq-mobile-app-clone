@@ -60,6 +60,11 @@ jobs:
       - name: TTS purity gate (no flutter_tts outside AfricanTtsService)
         run: dart run tool/tts_purity_gate.dart
 
+      - name: GameKit dark-pattern lint (P8-907)
+        run: |
+          python3 scripts/lint_dark_patterns.py --self-test
+          python3 scripts/lint_dark_patterns.py
+
       - name: Placeholder / template bundle linter
         run: |
           python3 scripts/ci/placeholder_linter.py assets/data

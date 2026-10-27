@@ -17,6 +17,8 @@ import '../models/game_streak.dart';
 import 'notification_provider.dart';
 import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
 
+// P8-907: GameKit core sessions never gate on hearts/energy (GameKitRewardPolicy).
+
 final gamificationProvider =
     NotifierProvider<GamificationProvider, BaseProviderState>(() {
   return GamificationProvider();

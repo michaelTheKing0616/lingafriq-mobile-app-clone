@@ -1,5 +1,12 @@
 import 'game_turn_context.dart';
 
+/// P8-907 / EP-§10.2-12–13 — GameKit never gates play on energy or hearts, and
+/// never issues randomised loot-box rewards; payouts derive from [GameScore] only.
+abstract final class GameKitRewardPolicy {
+  static const bool allowsEnergyOrHeartGate = false;
+  static const bool allowsRandomLootMechanic = false;
+}
+
 /// Abstract scoring engine - each game can implement custom scoring
 abstract class GameScoringEngine {
   Future<GameScore> score(GameTurnContext context);

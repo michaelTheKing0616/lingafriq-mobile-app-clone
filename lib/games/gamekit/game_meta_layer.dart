@@ -2,8 +2,10 @@ import '../../models/cultural_mastery_profile.dart';
 import '../../models/game_streak.dart';
 import '../../services/cultural_mastery_service.dart';
 import 'game_result.dart';
+import 'game_scoring.dart';
 
 /// Meta-game layer - tracks streaks, mastery, badges
+/// Rewards follow [GameKitRewardPolicy] (deterministic badges from turn scores).
 /// This is what makes the app addictive
 class GameMetaLayer {
   final CulturalMasteryService masteryService;
