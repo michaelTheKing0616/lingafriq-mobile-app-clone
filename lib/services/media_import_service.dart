@@ -15,6 +15,7 @@ import 'package:image_picker/image_picker.dart';
 import 'performance/low_bandwidth_mode.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'hybrid_polie/translation_service.dart';
+import 'lens/ocr_mode_service.dart';
 
 /// Provider for media import service
 final mediaImportServiceProvider = Provider<MediaImportService>((ref) {
@@ -88,6 +89,7 @@ class MediaImportService {
   final ImagePicker _imagePicker = ImagePicker();
   final TranslationService _translationService = TranslationService();
   TextRecognizer? _textRecognizer;
+  LensOcrModeService? _lensOcrMode;
   
   /// Initialize the text recognizer
   void _initTextRecognizer() {
@@ -97,6 +99,40 @@ class MediaImportService {
   /// Dispose of resources
   void dispose() {
     _textRecognizer?.close();
+    _lensOcrMode?.dispose();
+    _lensOcrMode = null;
+  }
+
+  LensOcrModeService lensOcrMode({
+    LensOcrRestorePost? restorePost,
+    LensOcrTranslatePhrase? translatePhrase,
+    LensOcrLexiconLookup? lexiconLookup,
+  }) {
+    return _lensOcrMode ??= LensOcrModeService(
+      restorePost: restorePost,
+      translatePhrase: translatePhrase,
+      lexiconLookup: lexiconLookup,
+    );
+  }
+
+  /// Lens signs/menus OCR with diacritic restore (P7-912).
+  Future<LensOcrScanOutcome> scanSignMenuForLens({
+    required File image,
+    required String languageCode,
+    LensOcrRestorePost? restorePost,
+    LensOcrTranslatePhrase? translatePhrase,
+    LensOcrLexiconLookup? lexiconLookup,
+    String? imageBase64,
+  }) {
+    return lensOcrMode(
+      restorePost: restorePost,
+      translatePhrase: translatePhrase,
+      lexiconLookup: lexiconLookup,
+    ).scanSignPhoto(
+      image: image,
+      languageCode: languageCode,
+      imageBase64: imageBase64,
+    );
   }
   
   /// Pick an image from camera or gallery

@@ -103,7 +103,7 @@ risks:
 gate: HUB
 external_blockers: []
 p7_944_outcome: Latin ML Kit loses stacked yo/ig marks (yo/ig per-mark error 1.0 on fixture ledger); diacritic-restoring pass required (AC2); pipeline follows ledger (AC5).
-status: Draft
+status: Done
 skills:
   worker:
   - prime/mobile-app-ui-design
