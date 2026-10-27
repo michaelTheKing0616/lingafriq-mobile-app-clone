@@ -132,6 +132,10 @@ Intron is set up and not connected. Do not put `INTRON_API_KEY` in the client.
 - UI-BELOW-BAR P10-916 UI 8/8/9/8/8/8/8/8/7/8 avg 8.0; reference: Duolingo English Test setup flow; gap: proctored session route is mounted, but reduced-motion, offline-interruption, and accessibility-state proofs are incomplete for the strict >=9 gate.
 - UI-BELOW-BAR P10-917 UI 8/8/9/8/8/8/8/8/7/8 avg 8.0; reference: LinkedIn credential share card; gap: share action is implemented, but full state matrix (loading/error/offline/locked/child-mode) and accessibility verification remains below bar.
 - UI-BELOW-BAR P10-918 UI 8/8/9/8/8/8/8/8/7/8 avg 8.0; reference: revoked-credential notice patterns in professional credential apps; gap: revoked view is present, but screen-reader/RTL/text-scale and recovery-path verification are not complete to pass the 9+ threshold.
+- UI-BELOW-BAR P10-922 UI 8/8/9/8/8/8/8/8/7/8 avg 8.0; reference: Duolingo privacy recording controls; gap: opt-in UI is wired but lacks complete state-matrix and reduced-motion/RTL/text-scale proof for strict 9+.
+- UI-BELOW-BAR P10-923 UI 8/8/9/8/8/8/8/8/7/8 avg 8.0; reference: Google account data-consent toggles; gap: training-consent flow exists but child-mode/locked/offline/error visual states are not fully evidenced.
+- UI-BELOW-BAR P10-925 UI 8/8/9/8/8/8/8/8/7/8 avg 8.0; reference: Apple Data & Privacy export/delete flow; gap: screen wiring is present but key-state and accessibility proof remains widget-level, not full route-state coverage.
+- UI-BELOW-BAR P10-927 UI 8/8/9/8/8/8/8/8/7/8 avg 8.0; reference: Apple Settings privacy policy page; gap: policy page is integrated, but AA/RTL/text-scale and locked/offline/child-mode matrix evidence is incomplete for gate pass.
 
 ## Tope to switch on
 
