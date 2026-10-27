@@ -396,7 +396,7 @@ P11-015	Done	Four persona packs with language pairings (packs.ts, persona_packs.
 P11-016	Done	Yaa Golden Stool quest.json (4 ch, A2–B1, 25m) + quest_runner.dart replay vocab	P11/P11-016.yaml
 P11-017	Done	Chapter 1 scene: ambience manifest, Tone Lens scorer, kneel mapping (scene_chapter1.dart)	P11/P11-017.yaml
 P11-018	Done	Bilingual demand dialogue, 3-sentence checkpoint, council sentence builder (chapter3.dart)	P11/P11-018.yaml
-P11-019	Draft	Add historian note, mini-quiz and primary-source card to quest	P11/P11-019.yaml
+P11-019	Done	Historian note gate, mini-quiz, primary source card, idempotent deck merge (debrief.dart)	P11/P11-019.yaml
 P11-020	Draft	Author branch beats; keep model improvisation on rails	P11/P11-020.yaml
 P11-021	Draft	Add teacher persona-chapter assignment and debrief sheet	P11/P11-021.yaml
 P11-022	Draft	Specify persona voice casting, consent and labelling	P11/P11-022.yaml
