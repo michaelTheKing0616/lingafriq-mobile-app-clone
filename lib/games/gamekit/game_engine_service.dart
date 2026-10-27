@@ -16,6 +16,43 @@ import '../tone_forge/tone_forge_game.dart';
 import '../drum_rhythm/drum_rhythm_game.dart';
 import '../../models/game/game_session_model.dart' show GameType;
 
+/// Stable bot opponent id from matchmaking (P8-908).
+const String kGamekitBotUserId = 'gamekit_bot';
+
+/// Copy keys: games.gamekit_bot_label.* (l10n wired in a later card).
+abstract final class GamekitBotLabelCopy {
+  static const String title = 'Bot';
+  static const String practiceLabel = 'Practice opponent';
+  static const String levelSubtitle = 'Skill band';
+}
+
+/// Server-authoritative duel opponent bot flag (AC4).
+bool resolveDuelOpponentIsBot(Map<String, dynamic> payload) {
+  if (payload['isBot'] == true) return true;
+  final opponent = payload['opponent'];
+  if (opponent is Map) {
+    final map = Map<String, dynamic>.from(opponent);
+    if (map['isBot'] == true) return true;
+    if (map['userId'] == kGamekitBotUserId) return true;
+  }
+  return false;
+}
+
+/// Display name for duel HUD — never a human-style name for bots (AC2).
+String duelOpponentDisplayName({
+  required bool isBot,
+  String? serverDisplayName,
+  String? levelLabel,
+}) {
+  if (isBot) return GamekitBotLabelCopy.title;
+  final fromServer = serverDisplayName?.trim();
+  if (fromServer != null && fromServer.isNotEmpty) return fromServer;
+  return levelLabel?.trim().isNotEmpty == true ? levelLabel!.trim() : 'Opponent';
+}
+
+bool duelCountsForLeaderboard({required bool duelOpponentIsBot}) =>
+    !duelOpponentIsBot;
+
 /// Elite Game Engine Service
 /// 
 /// Unified service that provides game instances for ALL games in the system.
@@ -148,21 +185,47 @@ class GameEngineService {
   GameKitLearnerGraphWriter get graphWriter => _graphWriter;
 
   /// Duel match payload from `gamekit:duel:matched` (levels are server-resolved).
+  gamekit_session.GameSession applyDuelServerMatched(
+    gamekit_session.GameSession session,
+    Map<String, dynamic> payload,
+  ) {
+    if (resolveDuelOpponentIsBot(payload)) {
+      final opponent = payload['opponent'] as Map<String, dynamic>? ?? {};
+      return applyDuelBotMatch(
+        session,
+        matchId: payload['matchId']?.toString() ?? 'duel_bot',
+        botLevelLabel: opponent['levelLabel']?.toString() ??
+            payload['botLevelLabel']?.toString() ??
+            'Building',
+      );
+    }
+    return applyDuelHumanMatch(session, payload);
+  }
+
   gamekit_session.GameSession applyDuelHumanMatch(
     gamekit_session.GameSession session,
     Map<String, dynamic> payload,
   ) {
     final self = payload['self'] as Map<String, dynamic>? ?? {};
     final opponent = payload['opponent'] as Map<String, dynamic>? ?? {};
+    final isBot = resolveDuelOpponentIsBot(payload);
     return session.copyWith(
       metadata: {
         ...session.metadata,
         'duel_match_id': payload['matchId'],
-        'duel_matchmaking_status': 'matched_human',
+        'duel_matchmaking_status': isBot ? 'matched_bot' : 'matched_human',
         'duel_self_level_label': self['levelLabel'],
         'duel_opponent_user_id': opponent['userId'],
         'duel_opponent_level_label': opponent['levelLabel'],
-        'duel_opponent_is_bot': false,
+        'duel_opponent_is_bot': isBot,
+        'duel_opponent_display_name': duelOpponentDisplayName(
+          isBot: isBot,
+          serverDisplayName: opponent['displayName']?.toString(),
+          levelLabel: opponent['levelLabel']?.toString(),
+        ),
+        'duel_exclude_from_leaderboard': !duelCountsForLeaderboard(
+          duelOpponentIsBot: isBot,
+        ),
       },
     );
   }
@@ -196,6 +259,8 @@ class GameEngineService {
         'duel_opponent_user_id': 'gamekit_bot',
         'duel_opponent_level_label': botLevelLabel,
         'duel_opponent_is_bot': true,
+        'duel_opponent_display_name': GamekitBotLabelCopy.title,
+        'duel_exclude_from_leaderboard': true,
       },
     );
   }

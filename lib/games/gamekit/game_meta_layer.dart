@@ -18,7 +18,9 @@ class GameMetaLayer {
     required String language,
     required String gameId,
     required GameTurnResult result,
+    bool duelOpponentIsBot = false,
   }) async {
+    final countsForLeaderboard = !duelOpponentIsBot;
     // Update mastery profile
     final learningSignal = result.feedback.metadata?['learning_signal'] as Map<String, dynamic>?;
     final signalValue = learningSignal?.values.first as num? ?? 0.0;
@@ -52,6 +54,7 @@ class GameMetaLayer {
       mastery: mastery,
       streak: streak,
       badges: badges,
+      countsForLeaderboard: countsForLeaderboard,
     );
   }
 
@@ -96,11 +99,14 @@ class MetaGameUpdate {
   final CulturalMasteryProfile mastery;
   final GameStreak streak;
   final List<String> badges;
+  /// False when the duel opponent was a labelled bot (P8-908 AC3).
+  final bool countsForLeaderboard;
 
   MetaGameUpdate({
     required this.mastery,
     required this.streak,
     this.badges = const [],
+    this.countsForLeaderboard = true,
   });
 }
 

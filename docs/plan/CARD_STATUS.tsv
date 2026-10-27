@@ -993,7 +993,7 @@ P8-904	Done	GameKit why-wrong panel, taxonomy copy, cached audio, learner graph 
 P8-905	Done	GameKit adaptive difficulty 80–85% (game_difficulty.dart, resolveWithSession)	P8/P8-905.yaml
 P8-906	Done	GameKit level-band duel matchmaking (game_matchmaking.service.ts, socket)	P8/P8-906.yaml
 P8-907	Done	GameKit dark-pattern CI lint (lint_dark_patterns.py, GameKitRewardPolicy)	P8/P8-907.yaml
-P8-908	Draft	'GameKit: label bots as bots in every multiplayer surface'	P8/P8-908.yaml
+P8-908	Done	GameKit bot labels, server isBot, leaderboard exclude (game_engine_service, progress_meter, game_matchmaking)	P8/P8-908.yaml
 P8-909	Draft	'GameKit: server-verified rewards'	P8/P8-909.yaml
 P8-910	Draft	'GameKit: real-scorer adapter for speaking games'	P8/P8-910.yaml
 P8-911	Draft	'GameKit: honest practice mode until real scoring ships'	P8/P8-911.yaml
