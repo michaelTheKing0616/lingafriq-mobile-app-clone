@@ -272,7 +272,9 @@ class HistoricalRoleplayController {
     final content = _gateway.extractContent(data);
     final parsed = ResponseValidator.validateHistoricalRoleplayResponse(content);
 
-    final teachingPoints = (parsed['teaching_points'] as List<dynamic>?)
+    final teachingRaw = parsed['language_teaching_points'] as List<dynamic>? ??
+        parsed['teaching_points'] as List<dynamic>?;
+    final teachingPoints = teachingRaw
             ?.map((e) => TeachingPoint.fromJson(e as Map<String, dynamic>))
             .toList() ??
         [];
@@ -285,14 +287,19 @@ class HistoricalRoleplayController {
             .toList() ??
         [];
 
-    final nextState = parsed['next_state'] as String? ??
+    final nextState = parsed['next_beat'] as String? ??
+        parsed['next_state'] as String? ??
         parsed['conversation_state'] as String? ??
         'turn_${session.turns.length + 1}';
+
+    final emotion = parsed['emotion'] as String? ??
+        parsed['emotion_tone'] as String? ??
+        'neutral';
 
     return HistoricalRoleplayTurn(
       speechText: parsed['speech_text'] as String,
       teachingPoints: teachingPoints,
-      emotionTone: parsed['emotion_tone'] as String? ?? 'calm',
+      emotionTone: emotion,
       historicalCitations: citations,
       nextState: nextState,
       closureOptions: closureOptions,
@@ -344,14 +351,13 @@ RULES:
 - Stay in character. Do not reference being an AI.
 - When discussing topics not in your documented positions, indicate uncertainty where appropriate.
 - TEACHING POINTS ARE MANDATORY: every response must include at least one teaching_points entry (vocabulary, grammar, or pragmatics).
-- Respond with JSON only. Schema:
+- Respond with JSON only. Schema (P11-003):
 {
   "speech_text": "your in-character response",
-  "teaching_points": [{"type": "vocabulary|grammar|pragmatics", "content": "brief teaching note"}],
-  "emotion_tone": "string",
-  "historical_citations": [{"source": "string", "relevance": "string"}],
-  "next_state": "string",
-  "closure_options": ["string"]
+  "language_teaching_points": [{"type": "vocabulary|grammar|pragmatics", "content": "brief teaching note"}],
+  "claims": [{"text": "factual claim", "support": "documented|inferred|legend", "source_ids": []}],
+  "emotion": "neutral|happy|proud|curious|concerned|surprised|thinking|encouraging|playful|focused",
+  "next_beat": "string"
 }''';
 
     if (session.engagementType == HistoricalEngagementType.opinionDebate &&

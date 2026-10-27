@@ -380,7 +380,7 @@ P10-939	Done	Grade-7 readability + name continuity gates (readability_gate.py, n
 P10-940	Done	error_copy_check.py, COPY_RULES.md, app_en.arb three-part errors + character voice scope	P10/P10-940.yaml
 P11-001	Done	ADR-031 persona delivery modes + v1 roster; test_adr_031.py	P11/P11-001.yaml
 P11-002	Done	Define persona dossier schema and retrieval index (dossier.schema.ts, retrieval.service.ts, v1 dossiers, dossierRoster)	P11/P11-002.yaml
-P11-003	Draft	Validate persona answer contract server-side	P11/P11-003.yaml
+P11-003	Done	Validate persona answer contract server-side (answerContract.ts, answerValidator.ts)	P11/P11-003.yaml
 P11-004	Draft	Enforce knowledge horizon with a classifier	P11/P11-004.yaml
 P11-005	Draft	Show Source and Inferred chips on persona claims	P11/P11-005.yaml
 P11-006	Draft	Replace persona blocklist with sensitivity classifier and age tiers	P11/P11-006.yaml
@@ -406,7 +406,7 @@ P11-025	Draft	Build adversarial persona suite with age-tier policy	P11/P11-025.y
 P11-026	Draft	Verify persona language quality with native reviewers	P11/P11-026.yaml
 P11-027	Draft	Verify historian review for all five personas	P11/P11-027.yaml
 P11-028	Draft	Write one-page character bible per v1 character	P11/P11-028.yaml
-P11-029	Draft	Decide CharacterVM production contract (ADR-030)	P11/P11-029.yaml
+P11-029	Done	ADR-030 CharacterVM expression enum + Rive VM contract	P11/P11-029.yaml
 P11-030	Draft	Decide avatar economy and identity rules (ADR-032)	P11/P11-030.yaml
 P11-031	Draft	Decide forced aligner (ADR-033)	P11/P11-031.yaml
 P11-032	Draft	Decide avatar renderer (ADR-034)	P11/P11-032.yaml

@@ -85,9 +85,89 @@ class ResponseValidator {
     return json;
   }
 
+  /// ADR-030 / P11-003 production expression enum.
+  static const characterVmExpressions = <String>[
+    'neutral',
+    'happy',
+    'proud',
+    'curious',
+    'concerned',
+    'surprised',
+    'thinking',
+    'encouraging',
+    'playful',
+    'focused',
+  ];
+
+  /// Validates P11-003 persona answer contract (parity with server validator).
+  static Map<String, dynamic> validatePersonaAnswerContract(String rawResponse) {
+    final json = _parseJson(rawResponse);
+
+    if (json.containsKey('confidence') ||
+        json.containsKey('epistemic_confidence') ||
+        json.containsKey('model_confidence')) {
+      throw const AiResponseValidationError(
+        'Persona answer must not include confidence fields',
+      );
+    }
+
+    _requireField<String>(json, 'speech_text');
+    _requireField<String>(json, 'next_beat');
+
+    final emotionRaw = json['emotion'] as String? ?? json['emotion_tone'] as String?;
+    if (emotionRaw == null || emotionRaw.trim().isEmpty) {
+      throw const AiResponseValidationError('Required field "emotion" is missing');
+    }
+    final emotion = _mapLegacyEmotion(emotionRaw.trim());
+    if (!characterVmExpressions.contains(emotion)) {
+      throw AiResponseValidationError(
+        'Field "emotion" must be one of $characterVmExpressions, got "$emotionRaw"',
+      );
+    }
+    json['emotion'] = emotion;
+
+    _optionalListField<Map>(json, 'language_teaching_points');
+    if (json['language_teaching_points'] is List) {
+      for (final item in json['language_teaching_points'] as List) {
+        if (item is! Map<String, dynamic>) continue;
+        _requireField<String>(item, 'content');
+        _optionalField<String>(item, 'type');
+      }
+    }
+
+    if (json.containsKey('claims') && json['claims'] != null) {
+      final list = json['claims'] as List;
+      for (final item in list) {
+        if (item is! Map<String, dynamic>) continue;
+        _requireField<String>(item, 'text');
+        _requireField<String>(item, 'support', allowedValues: [
+          'documented',
+          'inferred',
+          'legend',
+        ]);
+        _optionalListField<String>(item, 'source_ids');
+      }
+    }
+
+    return json;
+  }
+
+  static String _mapLegacyEmotion(String raw) {
+    final key = raw.toLowerCase();
+    if (key == 'calm') return 'neutral';
+    if (characterVmExpressions.contains(key)) return key;
+    return raw;
+  }
+
   /// Validates a historical roleplay response (persona speech + teaching + citations).
   static Map<String, dynamic> validateHistoricalRoleplayResponse(String rawResponse) {
     final json = _parseJson(rawResponse);
+
+    final hasContract =
+        json.containsKey('next_beat') && (json.containsKey('emotion') || json.containsKey('emotion_tone'));
+    if (hasContract) {
+      return validatePersonaAnswerContract(rawResponse);
+    }
 
     _requireField<String>(json, 'speech_text');
     _optionalField<String>(json, 'emotion_tone');
