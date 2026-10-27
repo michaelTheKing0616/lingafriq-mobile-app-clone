@@ -402,6 +402,26 @@
     "description": "P8-911 visible practice banner"
   },
   "gamekitPracticeModeError": "Audio is not ready yet. You can still read the phrase.",
+  "gamesGreetingGauntletTitle": "Greeting Gauntlet",
+  "@gamesGreetingGauntletTitle": {
+    "description": "P8-928 flagship title"
+  },
+  "gamesGreetingGauntletInstructions": "Read the scene, pick the greeting and gesture that fit — before the timer runs out.",
+  "@gamesGreetingGauntletInstructions": {
+    "description": "P8-928 playing instructions"
+  },
+  "gamesGreetingGauntletWhyWrong": "Listen to why that greeting or gesture did not match the moment.",
+  "@gamesGreetingGauntletWhyWrong": {
+    "description": "P8-928 wrong-answer explanation affordance"
+  },
+  "gamesGreetingGauntletPracticeLabel": "Practice — cultural rounds do not affect rank until scoring is verified.",
+  "@gamesGreetingGauntletPracticeLabel": {
+    "description": "P8-928 practice banner"
+  },
+  "gamesGreetingGauntletError": "We could not load greeting scenarios for this language yet. Try again when you are online.",
+  "@gamesGreetingGauntletError": {
+    "description": "P8-928 load failure"
+  },
   "gamesGameMasteryResultsTitle": "Round complete",
   "@gamesGameMasteryResultsTitle": {
     "description": "P8-915 mastery results screen title"

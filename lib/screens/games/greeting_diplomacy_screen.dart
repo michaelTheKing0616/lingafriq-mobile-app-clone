@@ -12,6 +12,7 @@ import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
 import 'base_game_screen.dart';
+import '../../games/greeting_gauntlet/greeting_gauntlet_screen.dart';
 
 class GreetingDiplomacyGame extends BaseGameScreen {
   const GreetingDiplomacyGame({
@@ -31,6 +32,15 @@ class GreetingDiplomacyGame extends BaseGameScreen {
 
 class _GreetingDiplomacyGameState
     extends BaseGameScreenState<GreetingDiplomacyGame> {
+  /// Legacy shelf route → flagship Greeting Gauntlet (P8-928 / ADR-036).
+  @override
+  Widget build(BuildContext context) {
+    return GreetingGauntletScreen(
+      language: widget.language,
+      onBack: widget.onBack ?? () => Navigator.of(context).pop(),
+    );
+  }
+
   static const _characters = [
     _CharacterType(name: 'Chief', formality: 'Very Formal', icon: Icons.account_balance_rounded, color: Color(0xFF9E3D00)),
     _CharacterType(name: 'Trader', formality: 'Semi-Formal', icon: Icons.store_rounded, color: Color(0xFF526124)),

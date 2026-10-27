@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import '../../games/greeting_gauntlet/scenario_matrix.dart';
 import '../cast/cast_stage.dart';
 import '../director/avatar_director.dart';
 import '../personality_system.dart';
@@ -272,6 +273,27 @@ class GameAvatarController {
 
   void setListening() => _avatarController?.startListening();
   void setIdle() => _avatarController?.setEmotion(AvatarEmotion.idle);
+
+  /// P8-928: map verified greeting gestures to avatar motion (no new .riv assets).
+  void performCulturalGesture(CulturalGesture gesture) {
+    switch (gesture) {
+      case CulturalGesture.kneel:
+        _avatarController?.setEmotion(
+          AvatarEmotion.proud,
+          intensity: EmotionIntensity.strong,
+        );
+        break;
+      case CulturalGesture.bow:
+        _avatarController?.setEmotion(AvatarEmotion.thinking);
+        break;
+      case CulturalGesture.handshake:
+        _avatarController?.wave();
+        break;
+      case CulturalGesture.waveChild:
+        _avatarController?.wave();
+        break;
+    }
+  }
 
   String getEncouragement(String context) {
     return _avatarController?.getEncouragement(context) ?? 'Keep going!';

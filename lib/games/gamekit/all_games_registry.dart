@@ -3,6 +3,7 @@ import 'generic_game_template.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../models/game/game_session_model.dart' show GameTypeExtension, GameType;
 import '../../screens/games/game_catalog.dart';
+import '../greeting_gauntlet/greeting_gauntlet_screen.dart';
 import '../script_sprint/script_sprint_screen.dart';
 import 'game_engine.dart';
 
@@ -45,6 +46,7 @@ const Set<String> kArcadeHeadlinerShippedElevationCards = {
   'P8-925',
   'P8-926',
   'P8-927',
+  'P8-928',
 };
 
 /// Ten headliners in product order; Tone Forge carries the Featured badge.
@@ -291,7 +293,7 @@ class AllGamesRegistry {
     'clan_lineage_story_builder': 'P8-925',
     'grammar_jam': 'P8-926',
     'script_sprint': 'P8-927',
-    'greeting_diplomacy_challenge': 'P8-934',
+    'greeting_diplomacy_challenge': 'P8-928',
     'pronunciation_karaoke': 'P8-935',
   };
 
@@ -306,7 +308,8 @@ class AllGamesRegistry {
         gameId == GameType.proverbUnlocker.name ||
         gameId == GameType.clanLineageStoryBuilder.name ||
         gameId == GameType.grammarJam.name ||
-        gameId == 'script_sprint') {
+        gameId == 'script_sprint' ||
+        gameId == GameType.greetingDiplomacyChallenge.name) {
       return false;
     }
     return true;
@@ -321,6 +324,8 @@ class AllGamesRegistry {
     switch (gameId) {
       case 'script_sprint':
         return ScriptSprintScreen(language: language, onBack: onBack);
+      case 'greeting_diplomacy_challenge':
+        return GreetingGauntletScreen(language: language, onBack: onBack);
       default:
         return null;
     }
