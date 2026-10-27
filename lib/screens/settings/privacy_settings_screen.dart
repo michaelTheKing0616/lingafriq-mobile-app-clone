@@ -832,8 +832,11 @@ class _PrivacySection extends StatelessWidget {
             borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
             boxShadow: PanAfricanShadows.sm,
           ),
-          child: Column(
-            children: children,
+          child: Material(
+            color: Colors.transparent,
+            child: Column(
+              children: children,
+            ),
           ),
         ),
       ],
