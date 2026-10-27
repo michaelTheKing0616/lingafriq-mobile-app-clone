@@ -113,6 +113,9 @@ Intron is set up and not connected. Do not put `INTRON_API_KEY` in the client.
 - UI-BELOW-BAR P7-911 UI 8/8/9/8/7/8/7/8/7/7 avg 7.7; reference: Instagram share confirmation sheet; gap: share sheet had switch fall-through defect and still lacks explicit reduced-motion and child-mode UI state coverage.
 - UI-BELOW-BAR P7-909 UI 8/8/9/8/7/8/7/8/7/8 avg 7.8; reference: Anki saved items list; gap: `LensCollectionScreen` exists but no route-level invocation evidence in this review window.
 - UI-BELOW-BAR P7-919 UI 8/8/9/8/7/8/7/8/7/8 avg 7.8; reference: Duolingo My Words linking; gap: linked-badge state is present but locked/offline/error state coverage is partial.
+- UI-BELOW-BAR P7-923 UI 8/8/9/8/7/8/7/8/7/8 avg 7.8; reference: Kindle inline word-lookup; gap: long-press surfaces were added but end-to-end invocation coverage is partial across all target screens.
+- UI-BELOW-BAR P7-924 UI 8/8/9/8/7/8/7/8/7/8 avg 7.8; reference: Reverso entry detail pages; gap: lexicon detail page lacks evidence for offline/locked/child-mode states in this review window.
+- UI-BELOW-BAR P7-927 UI 8/8/9/8/7/8/7/8/7/8 avg 7.8; reference: Wikipedia language links; gap: same-idea relay view exists but no route-level exposure evidence outside tests in this review window.
 
 ## Tope to switch on
 
