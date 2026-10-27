@@ -38,6 +38,7 @@ class ArcadeHeadlinerSlot {
 const Set<String> kArcadeHeadlinerShippedElevationCards = {
   'P8-914',
   'P8-920',
+  'P8-922',
 };
 
 /// Ten headliners in product order; Tone Forge carries the Featured badge.
@@ -282,7 +283,11 @@ class AllGamesRegistry {
   }
 
   static bool _elevationPendingFor(String gameId) {
-    if (gameId == toneForgeGameId || gameId == talkingDrumGameId) return false;
+    if (gameId == toneForgeGameId ||
+        gameId == talkingDrumGameId ||
+        gameId == GameType.marketBargainingSimulator.name) {
+      return false;
+    }
     return true;
   }
 

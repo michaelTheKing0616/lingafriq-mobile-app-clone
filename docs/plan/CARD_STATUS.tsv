@@ -1006,7 +1006,7 @@ P8-917	Done	Play hub skill shelves: AllGamesRegistry coverage, GamesScreenEnhanc
 P8-918	Done	Play hub headliners row: kArcadeHeadlinerOrder, ArcadeHeadlinersSection, Coming soon gate	P8/P8-918.yaml
 P8-920	Done	Flagship Talking Drum (talking_drum/*, lexicon contours, real scorer overlay)	P8/P8-920.yaml
 P8-921	Done	Flagship Minimal Pair Duel: picture grid, async friend duel, league accuracy-first (minimal_pair_duel/*, game_matchmaking async)	P8/P8-921.yaml
-P8-922	Draft	'Flagship: Market Haggle voice roleplay'	P8/P8-922.yaml
+P8-922	Done	Market Haggle flagship: register rubric, gateway AI trader, scorer gate (market_haggle/*)	P8/P8-922.yaml
 P8-923	Draft	'Flagship: Danfo/Matatu Rush listening game'	P8/P8-923.yaml
 P8-924	Draft	'Flagship: Proverb Weaver'	P8/P8-924.yaml
 P8-925	Draft	'Flagship: Griot''s Story Chain'	P8/P8-925.yaml

@@ -12,6 +12,7 @@ import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
 import 'base_game_screen.dart';
+import '../../games/market_haggle/market_haggle_screen.dart';
 
 class MarketBargainingGame extends BaseGameScreen {
   const MarketBargainingGame({
@@ -31,6 +32,15 @@ class MarketBargainingGame extends BaseGameScreen {
 
 class _MarketBargainingGameState
     extends BaseGameScreenState<MarketBargainingGame> {
+  /// Legacy shelf route → flagship Market Haggle (P8-922 / ADR-036).
+  @override
+  Widget build(BuildContext context) {
+    return MarketHaggleScreen(
+      language: widget.language,
+      onBack: widget.onBack ?? () => Navigator.of(context).pop(),
+    );
+  }
+
   List<GameScenario> _scenarios = [];
   int _currentIndex = 0;
   int _inventory = 0;
