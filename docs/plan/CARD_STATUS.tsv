@@ -982,7 +982,7 @@ P7-938	Done	Amharic ejective/gemination tutorial (p7_938.json, game_content+mani
 P7-939	Done	Swahili noun class wheel tutorial pack (p7_939.json, class_wheel m/wa ki/vi)	P7/P7-939.yaml
 P7-940	Done	Keyboard bar typing tutorial (keyboard_bar_tutorial.dart, lingafriq_keyboard_bar.dart)	P7/P7-940.yaml
 P7-941	Done	Minimal-pair tone demo (minimal_pair_demo.dart, assets/tutorials/minimal_pairs.json)	P7/P7-941.yaml
-P7-942	Draft	Author culture tutorials on greetings, names and taboos	P7/P7-942.yaml
+P7-942	Done	Culture greeting/naming/taboo tutorial packs (culture_*.json, EXT-14 draft gate)	P7/P7-942.yaml
 P7-943	Done	JIT coaching on first pattern hit (jit_coaching_service.dart, coaching_tip.dart)	P7/P7-943.yaml
 P7-944	Done	ML Kit Latin OCR diacritic verify (ocr_diacritic_metrics, ledger, verify.py)	P7/P7-944.yaml
 P8-900	Draft	'GameKit: schedule due items first'	P8/P8-900.yaml
