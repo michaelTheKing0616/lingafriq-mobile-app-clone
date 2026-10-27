@@ -116,6 +116,13 @@ Intron is set up and not connected. Do not put `INTRON_API_KEY` in the client.
 - UI-BELOW-BAR P7-923 UI 8/8/9/8/7/8/7/8/7/8 avg 7.8; reference: Kindle inline word-lookup; gap: long-press surfaces were added but end-to-end invocation coverage is partial across all target screens.
 - UI-BELOW-BAR P7-924 UI 8/8/9/8/7/8/7/8/7/8 avg 7.8; reference: Reverso entry detail pages; gap: lexicon detail page lacks evidence for offline/locked/child-mode states in this review window.
 - UI-BELOW-BAR P7-927 UI 8/8/9/8/7/8/7/8/7/8 avg 7.8; reference: Wikipedia language links; gap: same-idea relay view exists but no route-level exposure evidence outside tests in this review window.
+- UI-BELOW-BAR P8-934 UI 8/8/9/8/7/8/7/8/8/8 avg 7.9; reference: Google Lens scavenger flow; gap: `WordHuntScreen` lacks route-level wiring evidence and key-state evidence is test-only (`test/games/word_hunt/word_hunt_session_test.dart`, goldens).
+- UI-BELOW-BAR P10-906 UI 8/8/9/8/7/8/8/8/7/8 avg 7.9; reference: Duolingo notification settings; gap: reminder settings are wired but offline/locked/child-mode/reduced-motion states are not evidenced beyond `test/reminders/reminder_settings_screen_test.dart`.
+- UI-BELOW-BAR P10-907 UI 8/8/9/8/7/8/7/7/7/8 avg 7.7; reference: Duolingo hearts challenge opt-in; gap: `ChallengeModeScreen` has no in-app route invocation evidence outside `test/screens/challenge_mode_screen_test.dart`.
+- UI-BELOW-BAR P10-908 UI 8/8/9/8/7/8/7/7/7/8 avg 7.7; reference: Duolingo leagues opt-in; gap: `LeaguesScreen` has no route-level wiring evidence and only widget-level validation in `test/screens/leagues_screen_test.dart`.
+- UI-BELOW-BAR P10-909 UI 8/8/9/8/7/8/7/7/7/8 avg 7.7; reference: Family challenge trees in Duolingo/Babbel; gap: `CircleQuestScreen` and `HeritageTreeScreen` are not wired from navigable app routes (tests: `test/screens/circle_quest_screen_test.dart`, `test/screens/heritage_tree_screen_test.dart`).
+- UI-BELOW-BAR P10-910 UI 8/8/9/8/7/8/7/7/7/8 avg 7.7; reference: LinkedIn skill-badge share cards; gap: `CandoBadgeScreen` is exported only, with no route invocation evidence outside `test/screens/passport/cando_badge_screen_test.dart`.
+- UI-BELOW-BAR P10-911 UI 8/8/9/8/7/8/8/8/7/8 avg 7.9; reference: Quizlet co-learner roster honesty states; gap: route exists (`flashcard-focus`) but no evidence for child-mode/offline/reduced-motion states beyond `test/screens/flashcard_focus_screen_test.dart`.
 
 ## Tope to switch on
 
