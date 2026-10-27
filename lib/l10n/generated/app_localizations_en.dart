@@ -451,4 +451,69 @@ class AppLocalizationsEn extends AppLocalizations {
   ) {
     return '$name looks $expression and is $activity';
   }
+
+  @override
+  String get avatarEditorTitle => 'Your avatar';
+
+  @override
+  String get avatarEditorLoadError =>
+      'We could not load avatar styles. Try again shortly.';
+
+  @override
+  String get avatarEditorSkinTone => 'Skin tone';
+
+  @override
+  String get avatarEditorSlotHair => 'Hair';
+
+  @override
+  String get avatarEditorSlotHeadwear => 'Headwear';
+
+  @override
+  String get avatarEditorSlotTop => 'Top';
+
+  @override
+  String get avatarEditorSlotBottom => 'Bottom';
+
+  @override
+  String get avatarEditorSlotAccessory => 'Accessory';
+
+  @override
+  String get avatarEditorSlotProp => 'Prop';
+
+  @override
+  String avatarItemLocked(String reason) {
+    return 'Locked — $reason';
+  }
+
+  @override
+  String get avatarItemLockedTitle => 'This look is still locked';
+
+  @override
+  String avatarItemNote(String note) {
+    return '$note';
+  }
+
+  @override
+  String get avatarItemLockedReasonGreetings =>
+      'Finish the Greetings & respect can-do to unlock this headwear.';
+
+  @override
+  String get avatarItemLockedReasonTone =>
+      'Pass a tone checkpoint to unlock this prop.';
+
+  @override
+  String get avatarItemLockedReasonCulturalReview =>
+      'This garment unlocks after our cultural review gate clears.';
+
+  @override
+  String get avatarItemLockedReasonIsicholo =>
+      'Isicholo needs cultural context — unlock with guided quest content.';
+
+  @override
+  String get avatarItemLockedReasonMastery =>
+      'Earn this look through a mastery milestone, not the shop.';
+
+  @override
+  String get avatarItemLockedReasonStreamPack =>
+      'Extra styles unlock when you complete a chapter can-do.';
 }

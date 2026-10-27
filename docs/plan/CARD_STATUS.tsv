@@ -430,7 +430,7 @@ P11-049	Done	AvatarDirector learning events → CharacterVM; retired engine scaf
 P11-050	Done	Pause offscreen avatars and use static chips in lists (visibility_pause.dart, chip_static.dart)	P11/P11-050.yaml
 P11-051	Done	Avatar reduced motion VM + screen-reader semantics (avatar_semantics.dart)	P11/P11-051.yaml
 P11-052	Draft	Expand cast to archetypes and per-language hosts	P11/P11-052.yaml
-P11-053	Draft	Build learner avatar editor on the shared rig	P11/P11-053.yaml
+P11-053	Done	Learner avatar editor on shared rig (avatar_editor_screen.dart, slot parity tests)	P11/P11-053.yaml
 P11-054	Draft	Verify avatar unlocks on the server	P11/P11-054.yaml
 P11-055	Draft	Generate stickers, reactions and speaking share cards	P11/P11-055.yaml
 P12-001	Draft	Remove duplicated curriculum JSONs from the bundle	P12/P12-001.yaml

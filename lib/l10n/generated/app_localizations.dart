@@ -929,6 +929,114 @@ abstract class AppLocalizations {
     String expression,
     String activity,
   );
+
+  /// Learner avatar editor screen title (P11-053)
+  ///
+  /// In en, this message translates to:
+  /// **'Your avatar'**
+  String get avatarEditorTitle;
+
+  /// Avatar editor rig load failure
+  ///
+  /// In en, this message translates to:
+  /// **'We could not load avatar styles. Try again shortly.'**
+  String get avatarEditorLoadError;
+
+  /// Skin tone row label
+  ///
+  /// In en, this message translates to:
+  /// **'Skin tone'**
+  String get avatarEditorSkinTone;
+
+  /// No description provided for @avatarEditorSlotHair.
+  ///
+  /// In en, this message translates to:
+  /// **'Hair'**
+  String get avatarEditorSlotHair;
+
+  /// No description provided for @avatarEditorSlotHeadwear.
+  ///
+  /// In en, this message translates to:
+  /// **'Headwear'**
+  String get avatarEditorSlotHeadwear;
+
+  /// No description provided for @avatarEditorSlotTop.
+  ///
+  /// In en, this message translates to:
+  /// **'Top'**
+  String get avatarEditorSlotTop;
+
+  /// No description provided for @avatarEditorSlotBottom.
+  ///
+  /// In en, this message translates to:
+  /// **'Bottom'**
+  String get avatarEditorSlotBottom;
+
+  /// No description provided for @avatarEditorSlotAccessory.
+  ///
+  /// In en, this message translates to:
+  /// **'Accessory'**
+  String get avatarEditorSlotAccessory;
+
+  /// No description provided for @avatarEditorSlotProp.
+  ///
+  /// In en, this message translates to:
+  /// **'Prop'**
+  String get avatarEditorSlotProp;
+
+  /// copy_keys: avatar.item.locked
+  ///
+  /// In en, this message translates to:
+  /// **'Locked — {reason}'**
+  String avatarItemLocked(String reason);
+
+  /// No description provided for @avatarItemLockedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This look is still locked'**
+  String get avatarItemLockedTitle;
+
+  /// copy_keys: avatar.item.note — one-line cultural note
+  ///
+  /// In en, this message translates to:
+  /// **'{note}'**
+  String avatarItemNote(String note);
+
+  /// No description provided for @avatarItemLockedReasonGreetings.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish the Greetings & respect can-do to unlock this headwear.'**
+  String get avatarItemLockedReasonGreetings;
+
+  /// No description provided for @avatarItemLockedReasonTone.
+  ///
+  /// In en, this message translates to:
+  /// **'Pass a tone checkpoint to unlock this prop.'**
+  String get avatarItemLockedReasonTone;
+
+  /// No description provided for @avatarItemLockedReasonCulturalReview.
+  ///
+  /// In en, this message translates to:
+  /// **'This garment unlocks after our cultural review gate clears.'**
+  String get avatarItemLockedReasonCulturalReview;
+
+  /// No description provided for @avatarItemLockedReasonIsicholo.
+  ///
+  /// In en, this message translates to:
+  /// **'Isicholo needs cultural context — unlock with guided quest content.'**
+  String get avatarItemLockedReasonIsicholo;
+
+  /// No description provided for @avatarItemLockedReasonMastery.
+  ///
+  /// In en, this message translates to:
+  /// **'Earn this look through a mastery milestone, not the shop.'**
+  String get avatarItemLockedReasonMastery;
+
+  /// No description provided for @avatarItemLockedReasonStreamPack.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra styles unlock when you complete a chapter can-do.'**
+  String get avatarItemLockedReasonStreamPack;
 }
 
 class _AppLocalizationsDelegate

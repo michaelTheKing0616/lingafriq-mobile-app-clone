@@ -660,5 +660,48 @@
         "type": "String"
       }
     }
-  }
+  },
+  "avatarEditorTitle": "Your avatar",
+  "@avatarEditorTitle": {
+    "description": "Learner avatar editor screen title (P11-053)"
+  },
+  "avatarEditorLoadError": "We could not load avatar styles. Try again shortly.",
+  "@avatarEditorLoadError": {
+    "description": "Avatar editor rig load failure"
+  },
+  "avatarEditorSkinTone": "Skin tone",
+  "@avatarEditorSkinTone": {
+    "description": "Skin tone row label"
+  },
+  "avatarEditorSlotHair": "Hair",
+  "avatarEditorSlotHeadwear": "Headwear",
+  "avatarEditorSlotTop": "Top",
+  "avatarEditorSlotBottom": "Bottom",
+  "avatarEditorSlotAccessory": "Accessory",
+  "avatarEditorSlotProp": "Prop",
+  "avatarItemLocked": "Locked — {reason}",
+  "@avatarItemLocked": {
+    "description": "copy_keys: avatar.item.locked",
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "avatarItemLockedTitle": "This look is still locked",
+  "avatarItemNote": "{note}",
+  "@avatarItemNote": {
+    "description": "copy_keys: avatar.item.note — one-line cultural note",
+    "placeholders": {
+      "note": {
+        "type": "String"
+      }
+    }
+  },
+  "avatarItemLockedReasonGreetings": "Finish the Greetings & respect can-do to unlock this headwear.",
+  "avatarItemLockedReasonTone": "Pass a tone checkpoint to unlock this prop.",
+  "avatarItemLockedReasonCulturalReview": "This garment unlocks after our cultural review gate clears.",
+  "avatarItemLockedReasonIsicholo": "Isicholo needs cultural context — unlock with guided quest content.",
+  "avatarItemLockedReasonMastery": "Earn this look through a mastery milestone, not the shop.",
+  "avatarItemLockedReasonStreamPack": "Extra styles unlock when you complete a chapter can-do."
 }
