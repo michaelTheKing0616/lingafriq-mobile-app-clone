@@ -879,7 +879,7 @@ P6-020	Done	Gateway STT: /ai/stt/transcribe, Intron→Omnilingual, yo/ig/ha whis
 P6-021	Done	Self-host Omnilingual ASR worker + gateway primary flag (speech-service)	P6/P6-021.yaml
 P6-022	Done	Forced aligner POST /v1/align, phone/syllable schema, low_confidence gate (speech-service)	P6/P6-022.yaml
 P6-023	Done	Build Polie Conversation mode with level grounding (modes/conversation.ts, conversation.md)	P6/P6-023.yaml
-P6-024	Draft	Build Scenario Roleplay mode over human-authored scripts	P6/P6-024.yaml
+P6-024	Done	Scenario roleplay: roleplay.ts, scenarios/catalog, scenario_unapproved gate (P6-024)	P6/P6-024.yaml
 P6-025	Draft	Build Tutor Explain mode with pattern-library RAG	P6/P6-025.yaml
 P6-026	Draft	Build Tutor Correct-my-writing hybrid with uncertainty	P6/P6-026.yaml
 P6-027	Draft	Build Story Mode from approved lexicon with AI labels	P6/P6-027.yaml
