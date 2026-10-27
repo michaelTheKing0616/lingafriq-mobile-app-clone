@@ -924,7 +924,7 @@ P6-065	Done	Add diacritic completeness metric (evals/metrics/diacritics.ts)	P6/P
 P6-066	Done	Add out-of-level vocabulary rate metric (evals/metrics/outOfLevel.ts)	P6/P6-066.yaml
 P6-067	Done	Culture factuality eval metric (cultureFactuality.ts, per-language accuracy)	P6/P6-067.yaml
 P6-068	Done	Add refusal correctness metric (evals/metrics/refusal.ts)	P6/P6-068.yaml
-P6-069	Draft	Add persona fidelity metric	P6/P6-069.yaml
+P6-069	Done	Add persona fidelity metric (evals/metrics/personaFidelity.ts)	P6/P6-069.yaml
 P6-070	Done	Build native-rater scoring workflow for evals (evals/native/rater_queue.ts, tools/rating_console)	P6/P6-070.yaml
 P6-071	Draft	Gate each language before it reaches L2	P6/P6-071.yaml
 P6-072	Draft	Evaluate frontier and open models per language	P6/P6-072.yaml
