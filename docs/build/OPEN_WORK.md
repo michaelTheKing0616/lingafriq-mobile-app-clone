@@ -191,3 +191,5 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-179 | open | P7-949 review, 2026-10-27 | `LessonSessionScreen` was added for pacing reason/override/reset but is not mounted by any route or navigation action; card AC3 UI is not reachable in-app. |
 | OW-180 | open | P6-082/P6-084 review, 2026-10-27 | `nativeModelGate.ts` and `codec.ts` are validated by unit tests but are not wired into any mounted realtime API route; gate/codec policy is not enforced on live session creation. |
 | OW-181 | open | P6-081/P6-083 review, 2026-10-27 | `LipSyncDriver` and `RealtimeVoiceClient` card logic compiles with unit tests but has no call site in app flows; lip-sync/PTT behaviour is not yet reachable from a mounted voice screen. |
+| OW-182 | open | P7-951 review, 2026-10-27 | `LearningPathScreen` passes `const PathPacingOverlay()` so FSRS review-due and pacing reachability/skipped overlays are not supplied by scheduler data at runtime. |
+| OW-183 | open | P7-952 review, 2026-10-27 | Frame budget sampling exists (`PathFrameBudgetSampler`) but no runtime gate/exported evidence path enforces or records the 16.7 ms low-end Android bar. |
