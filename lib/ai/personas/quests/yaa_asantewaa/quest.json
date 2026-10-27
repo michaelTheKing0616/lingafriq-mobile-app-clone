@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "quest_id": "yaa_asantewaa_golden_stool",
+  "persona_id": "yaa_asantewaa",
+  "title": "The Golden Stool",
+  "language_code": "tw",
+  "instruction_language": "en",
+  "cefr_min": "A2",
+  "cefr_max": "B1",
+  "runtime_minutes": 25,
+  "replayable": true,
+  "experience_layers": ["narrative", "language", "history"],
+  "historian_review_gate": "EXT-15",
+  "twi_surface_policy": "native_signoff_required",
+  "dossier_card_ids": [
+    "yaa.card.kumasi",
+    "yaa.card.golden_stool",
+    "yaa.card.queen_mother",
+    "yaa.card.exile"
+  ],
+  "vocabulary_deck_id": "deck.yaa_asantewaa_golden_stool",
+  "chapters": [
+    {
+      "index": 1,
+      "id": "kumasi_messenger",
+      "title": "Kumasi, 1900",
+      "setting_summary": "Illustrated courtyard scene with market ambience and talking drums.",
+      "learner_role": "young_messenger",
+      "objective_en": "Greet the Queen Mother with correct honorifics and the Twi greeting sequence.",
+      "beat_types": ["narrative", "language"],
+      "interaction_modes": ["tone_lens", "respectful_posture_choice", "honorific_branch"],
+      "twi_content_status": "native_review_required",
+      "language_skill_targets": ["greeting_sequence", "honorifics", "register_elder"],
+      "estimated_minutes": 6,
+      "history_focus": "Queen Mother role in Ashanti council per dossier yaa.card.queen_mother"
+    },
+    {
+      "index": 2,
+      "id": "the_demand",
+      "title": "The demand",
+      "setting_summary": "Council hearing; governor demand read in English with learner comprehension focus.",
+      "learner_role": "witness_messenger",
+      "objective_en": "Understand three key Twi sentences about the Golden Stool demand (comprehension checkpoint).",
+      "beat_types": ["narrative", "language", "history"],
+      "interaction_modes": ["subtitle_by_level", "comprehension_checkpoint"],
+      "twi_content_status": "native_review_required",
+      "language_skill_targets": ["listening", "key_sentence_comprehension"],
+      "estimated_minutes": 7,
+      "history_focus": "1900 demand and sovereignty framing per dossier yaa.card.golden_stool"
+    },
+    {
+      "index": 3,
+      "id": "the_council",
+      "title": "The council",
+      "setting_summary": "Learner argues a position with scaffolded sentence builders; persona responds in character.",
+      "learner_role": "council_delegate",
+      "objective_en": "Choose and speak a simplified Twi position using scaffolded builders; hear grounded in-character reply with inferred claims labelled.",
+      "beat_types": ["narrative", "language", "history"],
+      "interaction_modes": ["sentence_builder", "persona_turn", "inferred_claim_disclosure"],
+      "twi_content_status": "native_review_required",
+      "language_skill_targets": ["opinion_scaffold", "formal_register"],
+      "estimated_minutes": 7,
+      "history_focus": "Council mobilization per dossier; contested wording flagged not certain"
+    },
+    {
+      "index": 4,
+      "id": "aftermath",
+      "title": "Aftermath",
+      "setting_summary": "Historian note, mini-quiz, primary source card, vocabulary merge to learner deck.",
+      "learner_role": "learner",
+      "objective_en": "Review human-written historian note, pass mini-quiz, and add quest vocabulary to the deck (persists across replay).",
+      "beat_types": ["history", "language", "assessment"],
+      "interaction_modes": ["historian_note", "mini_quiz", "primary_source_card", "vocabulary_merge"],
+      "twi_content_status": "native_review_required",
+      "language_skill_targets": ["vocabulary_retention"],
+      "estimated_minutes": 5,
+      "history_focus": "Exile and archival primary source per dossier yaa.card.exile",
+      "primary_source_ref": "src-yaa-co-1900"
+    }
+  ]
+}
