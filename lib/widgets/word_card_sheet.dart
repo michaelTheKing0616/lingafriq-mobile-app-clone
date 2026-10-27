@@ -6,6 +6,7 @@ import 'package:lingafriq/services/lens/lexicon_label_resolver.dart';
 import 'package:lingafriq/services/lens/word_card_builder.dart';
 import 'package:lingafriq/widgets/dialect_chips.dart';
 import 'package:lingafriq/widgets/tone_contour_line.dart';
+import 'package:lingafriq/screens/lens/see_it_in_the_wild.dart';
 import 'package:lingafriq/widgets/tone_lens_contour.dart';
 
 /// copy_keys: wordcard.ai_draft, wordcard.save, wordcard.practise (P7-922).
@@ -355,6 +356,11 @@ class _WordCardSheetState extends State<WordCardSheet> {
                   ),
                 ),
             ],
+            const SizedBox(height: 16),
+            SeeItInTheWildButton(
+              language: widget.model.language,
+              targetLexemeId: widget.model.lexemeId,
+            ),
             const SizedBox(height: 24),
             Row(
               children: [

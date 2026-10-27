@@ -19,6 +19,7 @@ import 'picture_word_association_screen.dart';
 import 'memory_map_screen.dart';
 import 'pronunciation_karaoke_screen.dart';
 import 'cultural_games.dart';
+import 'flashcard_safari.dart';
 import 'market_bargaining_screen.dart';
 import 'taxi_survival_screen.dart';
 import 'greeting_diplomacy_screen.dart';
@@ -132,7 +133,7 @@ Widget buildGameScreen({
     case GameType.accentDecodingPuzzle:
       return AccentPuzzleGame(language: language, level: userLevel, onBack: onBack);
     case GameType.flashcardSafari:
-      return FlashcardSafariGame(language: language, level: userLevel, onBack: onBack);
+      return FlashcardSafari(language: language, level: userLevel, onBack: onBack);
     case GameType.rapidTongueTwisterRace:
       return TongueTwisterGame(language: language, level: userLevel, onBack: onBack);
     case GameType.emojiTranslator:
