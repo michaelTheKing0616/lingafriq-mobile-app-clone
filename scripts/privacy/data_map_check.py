@@ -28,7 +28,7 @@ MODEL_RE = re.compile(
 )
 COLLECTION_RE = re.compile(r"collection:\s*['\"]([^'\"]+)['\"]")
 THIRD_ARG_COLL_RE = re.compile(
-    r"model(?:<[^>]+>)?\(\s*['\"][^'\"]+['\"]\s*,\s*[^,]+,\s*['\"]([^'\"]+)['\"]",
+    r"model(?:<[^>]+>)?\(\s*['\"][^'\"]+['\"]\s*,\s*[^,\n]+,\s*['\"]([^'\"]+)['\"]\s*\)",
 )
 
 VOICE_HINTS = (
@@ -194,12 +194,32 @@ def validate_retention_doc(doc: dict[str, Any]) -> list[str]:
 
 
 def check_coverage(discovered: dict[str, dict[str, str]], doc: dict[str, Any]) -> list[str]:
+    def normalize_for_coverage(name: str) -> str:
+        value = name.replace("_", "").lower()
+        if value.endswith("ies"):
+            return value[:-3] + "y"
+        if value.endswith("s"):
+            return value[:-1]
+        return value
+
     errors: list[str] = []
     mapped = set((doc.get("collections") or {}).keys())
+    normalized_mapped: dict[str, str] = {
+        normalize_for_coverage(key): key for key in mapped
+    }
+    matched_mapped: set[str] = set()
     for coll in sorted(discovered):
+        if coll in mapped:
+            matched_mapped.add(coll)
+            continue
+        normalized = normalize_for_coverage(coll)
+        alias = normalized_mapped.get(normalized)
+        if alias:
+            matched_mapped.add(alias)
+            continue
         if coll not in mapped:
             errors.append(f"missing from RETENTION.yaml: {coll} ({discovered[coll]['model']})")
-    extra = mapped - set(discovered)
+    extra = mapped - matched_mapped
     for coll in sorted(extra):
         errors.append(f"stale RETENTION.yaml entry (no model file): {coll}")
     return errors
