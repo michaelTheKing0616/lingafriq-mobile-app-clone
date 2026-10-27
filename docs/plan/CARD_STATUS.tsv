@@ -948,7 +948,7 @@ P7-904	Draft	Build server vision recognition via the AI gateway	P7/P7-904.yaml
 P7-905	Done	Replace NLLB/MyMemory in Lens with verified lexicon resolver (lexicon_label_resolver.dart)	P7/P7-905.yaml
 P7-906	Done	Build Word Card content for Lens tags with native audio (word_card_builder.dart)	P7/P7-906.yaml
 P7-907	Done	Lens Word Card flip, tone contour line, 48dp mic (lens_word_card.dart)	P7/P7-907.yaml
-P7-908	Draft	Build Lens hold-to-speak with GOP and tone scoring	P7/P7-908.yaml
+P7-908	Done	Build Lens hold-to-speak with GOP and tone scoring (lens_speak_controller.dart)	P7/P7-908.yaml
 P7-909	Draft	Build Lens personal collection feeding FSRS review	P7/P7-909.yaml
 P7-910	Draft	Build weekly Home Safari quests	P7/P7-910.yaml
 P7-911	Draft	Build Lens Clip sharing with face blur	P7/P7-911.yaml

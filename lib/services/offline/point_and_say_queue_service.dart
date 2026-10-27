@@ -1,9 +1,10 @@
 import 'dart:io';
 
-import 'package:lingafriq/config/api_contract.dart';
+import 'package:dio/dio.dart';
+import 'package:lingafriq/screens/pronunciation/tone_overlay_view.dart';
+import 'package:lingafriq/services/lens/lens_scoring_client.dart';
 import 'package:lingafriq/services/offline/local_database_service.dart';
 import 'package:lingafriq/services/voice/voice_api_service.dart';
-import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:uuid/uuid.dart';
 
@@ -57,8 +58,11 @@ class PointAndSayQueueService {
   /// Returns number of removed (successful) records.
   Future<int> flushPending({
     required VoiceApiService voiceApi,
+    Dio? scoringDio,
+    LensScoringClient? scoringClient,
     int batchSize = 10,
   }) async {
+    final scorer = scoringClient ?? const LensScoringClient();
     await ensureOpen();
     final pending = _pendingRecords();
     if (pending.isEmpty) return 0;
@@ -85,35 +89,33 @@ class PointAndSayQueueService {
       }
 
       try {
-        // Quick pronunciation check
-        final quick = await voiceApi.quickPronunciationCheck(
-          audioPath: audioPath,
-          expectedText: expectedText,
-          language: language,
-        );
-        if (quick == null) {
-          throw Exception('quick_check_failed');
-        }
-
-        // Optional tone evaluation (uses learning v2 endpoint)
-        Map<String, dynamic>? tone;
         if (evaluateTone) {
-          await ApiService.initialize();
-          final res = await ApiService.uploadFile(
-            ApiContract.learningV2.toneTrainer,
-            audioPath,
-            fileFieldName: 'audio',
-            additionalData: {
-              'expectedText': expectedText,
-              'language': language,
-            },
+          if (scoringDio == null) {
+            throw Exception('scorer_dio_missing');
+          }
+          final outcome = await scorer.scoreUtterance(
+            post: (path, data) => scoringDio.post(path, data: data),
+            audioPath: audioPath,
+            expectedText: expectedText,
+            language: language,
           );
-          if (res.statusCode == 200 && res.data is Map) {
-            tone = (res.data as Map).cast<String, dynamic>();
+          if (outcome.retryable && outcome.phase == ToneOverlayStatus.error) {
+            throw Exception('scorer_unavailable');
+          }
+          if (outcome.phase == ToneOverlayStatus.error) {
+            throw Exception('scorer_failed');
+          }
+        } else {
+          final quick = await voiceApi.quickPronunciationCheck(
+            audioPath: audioPath,
+            expectedText: expectedText,
+            language: language,
+          );
+          if (quick == null) {
+            throw Exception('quick_check_failed');
           }
         }
 
-        // Success: remove record. (Results are shown live in-screen when user initiates sync.)
         await LocalDatabaseService().deletePointAndSay(id);
         removed++;
       } catch (e, st) {
