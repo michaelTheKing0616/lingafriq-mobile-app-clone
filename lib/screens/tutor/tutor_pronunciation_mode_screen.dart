@@ -12,6 +12,7 @@ import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show AppLanguage;
 import 'package:just_audio/just_audio.dart';
 import 'package:lingafriq/services/voice/audio_recording_service.dart';
+import 'package:lingafriq/screens/pronunciation/tone_overlay_view.dart';
 
 /// Pronunciation Mode — minimal layout, large record orb, waveform, phoneme heatmap, regional toggle, streak.
 class TutorPronunciationModeScreen extends HookConsumerWidget {
@@ -26,6 +27,10 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
     final recordingPath = useState<String?>(null);
     final analyzeStatus = useState<int?>(null);
     final analyzeBody = useState<Map<String, dynamic>?>(null);
+    final isScoring = useState(false);
+    final coachSyllables = useState<List<SyllableToneOverlayRow>>([]);
+    final coachPhase = useState<ToneOverlayStatus?>(null);
+    final coachRetry = useState(false);
     final useRegionalPronunciation = useState(false);
     final audioPlayer = useMemoized(() => AudioPlayer());
 
@@ -62,16 +67,20 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
           throw Exception('Failed to stop recording.');
         }
         recordingPath.value = path;
+        isScoring.value = true;
+        coachPhase.value = ToneOverlayStatus.loading;
+        coachSyllables.value = [];
+        coachRetry.value = false;
 
         final response = await ref.read(client).post(
-          ApiContract.pronunciation.advancedAnalyze,
+          '/api/ai/score/utterance',
           data: FormData.fromMap({
             'audio': await MultipartFile.fromFile(
               path,
               filename: 'pronunciation_audio.wav',
             ),
             'expected_text': textController.text,
-            'language': selectedLanguage.value.name,
+            'language': selectedLanguage.value.code,
           }),
           options: Options(
             validateStatus: (status) => status != null && status < 600,
@@ -81,8 +90,17 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
         final body = raw is Map ? Map<String, dynamic>.from(raw) : <String, dynamic>{};
         analyzeStatus.value = response.statusCode;
         analyzeBody.value = body;
+        isScoring.value = false;
         final unavailable =
             response.statusCode == 503 || body['retryable'] == true;
+        if (!unavailable && response.statusCode == 200) {
+          _applyShadowingCoachResult(
+            body,
+            coachSyllables,
+            coachPhase,
+            coachRetry,
+          );
+        }
         if (!unavailable && response.statusCode != 200) {
           throw DioException(
             requestOptions: response.requestOptions,
@@ -92,6 +110,7 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
         }
       } catch (e) {
         isRecording.value = false;
+        isScoring.value = false;
         if (e is DioException) {
           final status = e.response?.statusCode;
           final raw = e.response?.data;
@@ -257,6 +276,15 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
                       style: PolieTypography.bodySmall(context).copyWith(color: PolieColors.textSecondary),
                     ),
                   ),
+                  if (isScoring.value || coachPhase.value != null) ...[
+                    SizedBox(height: PolieSpacing.md),
+                    _ShadowingCoachPanel(
+                      status: coachPhase.value ?? ToneOverlayStatus.loading,
+                      syllables: coachSyllables.value,
+                      retryPrompt: coachRetry.value,
+                      onRetry: recordPractice,
+                    ),
+                  ],
                   if (recordingPath.value != null && !isRecording.value) ...[
                     SizedBox(height: PolieSpacing.md),
                     _ReplayButtons(
@@ -320,6 +348,91 @@ class _ReplayButtons extends StatelessWidget {
   }
 }
 
+void _applyShadowingCoachResult(
+  Map<String, dynamic> body,
+  ValueNotifier<List<SyllableToneOverlayRow>> syllables,
+  ValueNotifier<ToneOverlayStatus?> phase,
+  ValueNotifier<bool> retry,
+) {
+  final rawList = body['syllables'];
+  final rows = <SyllableToneOverlayRow>[];
+  if (rawList is List) {
+    for (final item in rawList) {
+      if (item is Map) {
+        rows.add(SyllableToneOverlayRow.fromJson(Map<String, dynamic>.from(item)));
+      }
+    }
+  }
+  syllables.value = rows;
+  final status = (body['status'] as String?)?.toLowerCase() ?? '';
+  final retryRequested = body['retry_requested'] == true || status == 'unsure';
+  final allUnsure = rows.isNotEmpty && rows.every((r) => r.isUnsure);
+  if (retryRequested || allUnsure) {
+    phase.value = ToneOverlayStatus.unsure;
+    retry.value = true;
+    return;
+  }
+  phase.value = rows.isEmpty ? ToneOverlayStatus.error : ToneOverlayStatus.scored;
+  retry.value = false;
+}
+
+/// copy_keys: shadow.retry_noise, shadow.unsure (P6-028)
+class _ShadowingCoachPanel extends StatelessWidget {
+  const _ShadowingCoachPanel({
+    required this.status,
+    required this.syllables,
+    required this.retryPrompt,
+    required this.onRetry,
+  });
+
+  static const retryNoiseKey = 'shadow.retry_noise';
+  static const unsureKey = 'shadow.unsure';
+  static const retryNoiseCopy =
+      'Background noise may have affected scoring. Try again in a quieter place.';
+  static const unsureCopy =
+      'We could not score this clearly. No score is shown — please try again.';
+
+  final ToneOverlayStatus status;
+  final List<SyllableToneOverlayRow> syllables;
+  final bool retryPrompt;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return PolieGlassCard(
+      padding: EdgeInsets.all(PolieSpacing.md),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          ToneOverlayView(status: status, syllables: syllables),
+          if (retryPrompt) ...[
+            SizedBox(height: PolieSpacing.sm),
+            Text(
+              unsureCopy,
+              key: const ValueKey(unsureKey),
+              style: PolieTypography.bodySmall(context).copyWith(color: PolieColors.textSecondary),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: PolieSpacing.sm),
+            Semantics(
+              button: true,
+              label: retryNoiseCopy,
+              child: TextButton(
+                onPressed: onRetry,
+                child: Text(
+                  'Try again',
+                  key: const ValueKey(retryNoiseKey),
+                  style: PolieTypography.label(context).copyWith(color: PolieColors.electricTeal),
+                ),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
 class _PronPracticeBanner extends StatelessWidget {
   const _PronPracticeBanner({this.analyzeStatus, this.analyzeBody});
 
@@ -328,7 +441,7 @@ class _PronPracticeBanner extends StatelessWidget {
 
   static const _copy = <String, String>{
     'pron.practice_mode': 'Practice mode',
-    'pron.scoring_soon': 'Scoring coming soon',
+    'pron.shadowing_hint': 'Listen, record, and compare your pitch to the model line.',
     'pron.unavailable': 'The scoring service is unavailable. No score is shown.',
   };
 
@@ -341,9 +454,7 @@ class _PronPracticeBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final practiceMode = _copy['pron.practice_mode']!;
-    final subtitle = _isUnavailable
-        ? _copy['pron.unavailable']!
-        : _copy['pron.scoring_soon']!;
+    final subtitle = _isUnavailable ? _copy['pron.unavailable']! : _copy['pron.shadowing_hint']!;
     return Semantics(
       liveRegion: true,
       excludeSemantics: true,
