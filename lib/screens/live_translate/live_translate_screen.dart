@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:lingafriq/providers/dio_provider.dart';
+import 'package:lingafriq/screens/translate/live_translate_screen.dart'
+    show LiveTranslateWithConfidenceScreen;
 import 'package:lingafriq/services/live_translate/live_translate_client.dart';
 import 'package:lingafriq/services/live_translate/live_translate_phase.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
@@ -513,6 +515,6 @@ class _LiveTranslateScreenState extends ConsumerState<LiveTranslateScreen> {
 /// Push helper for drawer / navigation.
 Route<void> liveTranslateRoute() {
   return SmoothPageRoute.platform<void>(
-    child: const LiveTranslateScreen(),
+    child: const LiveTranslateWithConfidenceScreen(),
   );
 }
