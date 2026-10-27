@@ -866,7 +866,7 @@ P6-007	Done	Kill switches + per-mode flags (killSwitch.ts, flags.ts, admin-ai.ro
 P6-008	Done	Ground prompts in curriculum KG and learner model (curriculumKg.ts, learnerModel.ts)	P6/P6-008.yaml
 P6-009	Done	Build persona source index retrieval (personaIndex.ts)	P6/P6-009.yaml
 P6-010	Done	lexiconConstraint.ts + outputValidator.ts: L0–L1 prompt constraint, out_of_level after 1 regen	P6/P6-010.yaml
-P6-011	Draft	Route model per language, task and tier with fallbacks	P6/P6-011.yaml
+P6-011	Done	Route model per language, task and tier with fallbacks	P6/P6-011.yaml
 P6-012	Draft	Enforce model licence allowlist in router	P6/P6-012.yaml
 P6-013	Draft	Cache deterministic outputs in gateway	P6/P6-013.yaml
 P6-014	Draft	Add input and output safety classifiers with age-tier policy	P6/P6-014.yaml
