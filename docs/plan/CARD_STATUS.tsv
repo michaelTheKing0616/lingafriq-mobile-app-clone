@@ -352,7 +352,7 @@ P10-911	Done	Replace fake co-learners and friend pushes (flashcard roster, frien
 P10-912	Done	Monetisation guardrails (purchase-guard.service.ts, sinks.service.ts, monetisation_guard_test.dart)	P10/P10-912.yaml
 P10-913	Done	Verify gamification guardrails AC1–AC7 (gamificationGuardrails.service.ts, p10_913_guardrails_test.dart, ledger)	P10/P10-913.yaml
 P10-914	Done	Publish Passport CEFR methodology (METHODOLOGY.md, passport-methodology.service.ts, credential screen)	P10/P10-914.yaml
-P10-915	Draft	Build an evidence portfolio of passed can-do tasks	P10/P10-915.yaml
+P10-915	Done	Build an evidence portfolio of passed can-do tasks (passport-portfolio.service.ts)	P10/P10-915.yaml
 P10-916	Draft	Add a proctored CAT to the Passport	P10/P10-916.yaml
 P10-917	Draft	Issue signed Verifiable Credentials in Open Badges 3.0	P10/P10-917.yaml
 P10-918	Draft	Revoke credentials and publish status	P10/P10-918.yaml

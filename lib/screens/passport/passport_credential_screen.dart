@@ -18,6 +18,11 @@ class PassportCredentialScreen extends StatefulWidget {
   final String? methodologyVersionId;
   final DateTime? issuedAt;
 
+  /// Golden / widget tests — skips network when set.
+  final bool? debugPortfolioPrereqBlocked;
+  final bool? debugPortfolioLoading;
+  final List<PassportPortfolioEntry>? debugPortfolioEntries;
+
   const PassportCredentialScreen({
     super.key,
     required this.verifyToken,
@@ -25,6 +30,9 @@ class PassportCredentialScreen extends StatefulWidget {
     required this.score,
     this.methodologyVersionId,
     this.issuedAt,
+    this.debugPortfolioPrereqBlocked,
+    this.debugPortfolioLoading,
+    this.debugPortfolioEntries,
   });
 
   @override
@@ -36,6 +44,45 @@ class _PassportCredentialScreenState extends State<PassportCredentialScreen> {
   bool _verifying = false;
   String? _verifyError;
   Map<String, dynamic>? _verifyResult;
+
+  bool _portfolioLoading = false;
+  bool _portfolioPrereqBlocked = false;
+  List<PassportPortfolioEntry> _portfolioEntries = const [];
+  String? _portfolioError;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.debugPortfolioLoading != null ||
+        widget.debugPortfolioPrereqBlocked != null ||
+        widget.debugPortfolioEntries != null) {
+      _portfolioLoading = widget.debugPortfolioLoading ?? false;
+      _portfolioPrereqBlocked = widget.debugPortfolioPrereqBlocked ?? false;
+      _portfolioEntries = widget.debugPortfolioEntries ?? const [];
+      return;
+    }
+    _loadPortfolio();
+  }
+
+  Future<void> _loadPortfolio() async {
+    setState(() {
+      _portfolioLoading = true;
+      _portfolioError = null;
+    });
+    try {
+      final result = await _svc.fetchPortfolio();
+      if (!mounted) return;
+      setState(() {
+        _portfolioPrereqBlocked = result.prereqBlocked;
+        _portfolioEntries = result.entries;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _portfolioError = e.toString());
+    } finally {
+      if (mounted) setState(() => _portfolioLoading = false);
+    }
+  }
 
   String get _verifyUrl => ApiContract.url(ApiContract.learningV2.passportVerify(widget.verifyToken));
 
@@ -158,11 +205,126 @@ class _PassportCredentialScreenState extends State<PassportCredentialScreen> {
     );
   }
 
+  Widget _buildPortfolioSection(ColorScheme cs, TextTheme textTheme) {
+    if (_effectivePortfolioLoading) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 24),
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
+    if (_portfolioError != null && widget.debugPortfolioEntries == null) {
+      return Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Text(
+            'We could not load your evidence portfolio. Pull to refresh later.',
+            style: textTheme.bodyMedium?.copyWith(color: cs.onSurfaceVariant),
+          ),
+        ),
+      );
+    }
+    if (_effectivePortfolioEntries.isEmpty) {
+      return Card(
+        color: cs.surfaceContainerHighest,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Evidence portfolio', style: textTheme.titleMedium),
+              const SizedBox(height: 8),
+              Text(
+                'Passed can-do tasks will appear here once verified on our servers — nothing you self-report.',
+                style: textTheme.bodyMedium,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Evidence portfolio', style: textTheme.titleMedium),
+        const SizedBox(height: 4),
+        Text(
+          'Can-dos you demonstrated with verified speaking evidence',
+          style: textTheme.bodySmall?.copyWith(color: cs.onSurfaceVariant),
+        ),
+        const SizedBox(height: 12),
+        ..._effectivePortfolioEntries.map((entry) {
+          final date = entry.passedAt.toLocal().toString().split(' ').first;
+          return Semantics(
+            label: 'Can-do ${entry.canDoId}, level ${entry.cefrLevel}, verified $date',
+            child: Card(
+              margin: const EdgeInsets.only(bottom: 10),
+              child: ListTile(
+                minVerticalPadding: 12,
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                leading: CircleAvatar(
+                  backgroundColor: cs.primaryContainer,
+                  child: Icon(Icons.check_rounded, color: cs.onPrimaryContainer),
+                ),
+                title: Text(entry.canDoId, style: textTheme.titleSmall),
+                subtitle: Text(
+                  '${entry.cefrLevel} · task ${entry.taskId} · $date',
+                  style: textTheme.bodySmall,
+                ),
+                trailing: entry.scorerConfidence != null
+                    ? Text(
+                        '${(entry.scorerConfidence! * 100).round()}%',
+                        style: textTheme.labelLarge?.copyWith(color: cs.primary),
+                      )
+                    : null,
+              ),
+            ),
+          );
+        }),
+      ],
+    );
+  }
+
+  Widget _buildPrereqBlocked(ColorScheme cs, TextTheme textTheme) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Proficiency Passport')),
+      body: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(Icons.hourglass_top_rounded, size: 48, color: cs.primary),
+            const SizedBox(height: 16),
+            Text('Passport is not available yet', style: textTheme.headlineSmall),
+            const SizedBox(height: 12),
+            Text(
+              'We are still calibrating real lesson content and speaking scores. '
+              'Your credential will unlock when both are ready — we will not show a Passport before then.',
+              style: textTheme.bodyLarge,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  bool get _effectivePortfolioLoading =>
+      widget.debugPortfolioLoading ?? _portfolioLoading;
+
+  bool get _effectivePortfolioPrereqBlocked =>
+      widget.debugPortfolioPrereqBlocked ?? _portfolioPrereqBlocked;
+
+  List<PassportPortfolioEntry> get _effectivePortfolioEntries =>
+      widget.debugPortfolioEntries ?? _portfolioEntries;
+
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final missingVersion = _methodologyVersionId.isEmpty;
+
+    if (!_effectivePortfolioLoading && _effectivePortfolioPrereqBlocked) {
+      return _buildPrereqBlocked(cs, textTheme);
+    }
 
     return Scaffold(
       appBar: AppBar(title: const Text('Proficiency Passport')),
@@ -269,6 +431,8 @@ class _PassportCredentialScreenState extends State<PassportCredentialScreen> {
             const SizedBox(height: 6),
             Text(_verifyResult.toString(), style: textTheme.bodySmall),
           ],
+          const SizedBox(height: 24),
+          _buildPortfolioSection(cs, textTheme),
         ],
       ),
     );

@@ -22,6 +22,9 @@ void main() {
           level: 'B1',
           score: 72,
           methodologyVersionId: kPassportMethodologyVersionId,
+          debugPortfolioLoading: false,
+          debugPortfolioPrereqBlocked: false,
+          debugPortfolioEntries: [],
         ),
       ),
     );

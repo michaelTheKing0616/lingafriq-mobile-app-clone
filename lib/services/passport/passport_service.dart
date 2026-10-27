@@ -33,7 +33,68 @@ class PassportSessionStart {
   PassportSessionStart({required this.sessionId, required this.rules, required this.prompts});
 }
 
+class PassportPortfolioEntry {
+  final String taskId;
+  final String canDoId;
+  final String cefrLevel;
+  final String scorerAttemptId;
+  final double? scorerConfidence;
+  final DateTime passedAt;
+
+  PassportPortfolioEntry({
+    required this.taskId,
+    required this.canDoId,
+    required this.cefrLevel,
+    required this.scorerAttemptId,
+    required this.scorerConfidence,
+    required this.passedAt,
+  });
+
+  factory PassportPortfolioEntry.fromJson(Map<String, dynamic> json) => PassportPortfolioEntry(
+        taskId: json['taskId']?.toString() ?? '',
+        canDoId: json['canDoId']?.toString() ?? '',
+        cefrLevel: json['cefrLevel']?.toString() ?? '',
+        scorerAttemptId: json['scorerAttemptId']?.toString() ?? '',
+        scorerConfidence: (json['scorerConfidence'] as num?)?.toDouble(),
+        passedAt: DateTime.tryParse(json['passedAt']?.toString() ?? '') ?? DateTime.fromMillisecondsSinceEpoch(0),
+      );
+}
+
+class PassportPortfolioResult {
+  final bool prereqBlocked;
+  final List<PassportPortfolioEntry> entries;
+
+  const PassportPortfolioResult({required this.prereqBlocked, required this.entries});
+}
+
 class PassportService {
+  Future<PassportPortfolioResult> fetchPortfolio() async {
+    await ApiService.initialize();
+    try {
+      final res = await ApiService.get('/api/v2/passport/portfolio');
+      final data = (res.data as Map).cast<String, dynamic>();
+      if (res.statusCode == 403 && data['code'] == 'PASSPORT_PREREQ_NOT_MET') {
+        return const PassportPortfolioResult(prereqBlocked: true, entries: []);
+      }
+      if (res.statusCode != 200 || data['success'] != true) {
+        throw Exception(data['error']?.toString() ?? 'Failed to load portfolio');
+      }
+      final raw = (data['entries'] as List?) ?? const [];
+      final entries = raw
+          .whereType<Map>()
+          .map((m) => PassportPortfolioEntry.fromJson(m.cast<String, dynamic>()))
+          .where((e) => e.taskId.isNotEmpty && e.canDoId.isNotEmpty)
+          .toList();
+      return PassportPortfolioResult(prereqBlocked: false, entries: entries);
+    } on DioException catch (e) {
+      final data = e.response?.data;
+      if (e.response?.statusCode == 403 && data is Map && data['code'] == 'PASSPORT_PREREQ_NOT_MET') {
+        return const PassportPortfolioResult(prereqBlocked: true, entries: []);
+      }
+      rethrow;
+    }
+  }
+
   Future<PassportSessionStart> startSession({
     required String language,
     required String proctorMode,
