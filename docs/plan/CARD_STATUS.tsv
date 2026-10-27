@@ -903,7 +903,7 @@ P6-044	Done	Verify Omnilingual 300M offline (offline_omnilingual_verify.py, omni
 P6-045	Done	ADR-008: Stage-1 TTS vendors, licence exclusions, xh commissioned voice	P6/P6-045.yaml
 P6-046	Done	Gate each voice on native tone-accuracy threshold (voiceGate.ts, tone_accuracy.yaml)	P6/P6-046.yaml
 P6-047	Done	Route recorded audio first, gateway TTS for dynamic turns (policy.ts, tts.route.ts, enhanced_tts_service.dart)	P6/P6-047.yaml
-P6-048	Draft	Build commissioned-voice fine-tune pipeline	P6/P6-048.yaml
+P6-048	Done	Build commissioned-voice fine-tune pipeline (tts/licence_manifest.py, tts/finetune/)	P6/P6-048.yaml
 P6-049	Draft	Ship Yoruba TTS voice behind tone-accuracy gate	P6/P6-049.yaml
 P6-050	Draft	Ship Igbo TTS voice behind tone-accuracy gate	P6/P6-050.yaml
 P6-051	Draft	Ship Hausa TTS voice behind tone-accuracy gate	P6/P6-051.yaml
