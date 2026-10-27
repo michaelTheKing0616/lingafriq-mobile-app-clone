@@ -394,7 +394,7 @@ P11-013	Done	Author Ahmed Baba persona dossier and prompts (ahmed_baba.json, ind
 P11-014	Done	Author Thomas Mofolo persona dossier and prompts (thomas_mofolo.json, index.ts)	P11/P11-014.yaml
 P11-015	Done	Four persona packs with language pairings (packs.ts, persona_packs.dart)	P11/P11-015.yaml
 P11-016	Done	Yaa Golden Stool quest.json (4 ch, A2–B1, 25m) + quest_runner.dart replay vocab	P11/P11-016.yaml
-P11-017	Draft	Build quest scenes, ambient sound and Tone Lens moment	P11/P11-017.yaml
+P11-017	Done	Chapter 1 scene: ambience manifest, Tone Lens scorer, kneel mapping (scene_chapter1.dart)	P11/P11-017.yaml
 P11-018	Draft	Build bilingual quest dialogue and comprehension checkpoint	P11/P11-018.yaml
 P11-019	Draft	Add historian note, mini-quiz and primary-source card to quest	P11/P11-019.yaml
 P11-020	Draft	Author branch beats; keep model improvisation on rails	P11/P11-020.yaml
