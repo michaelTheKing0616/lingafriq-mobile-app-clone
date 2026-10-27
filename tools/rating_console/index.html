@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>LingAfriq native pronunciation rating (P6-041)</title>
+    <style>
+      body { font-family: system-ui, sans-serif; max-width: 32rem; margin: 2rem auto; padding: 0 1rem; }
+      label { display: block; margin-top: 0.75rem; }
+      input, select, button { width: 100%; margin-top: 0.25rem; padding: 0.5rem; }
+      pre { background: #f4f4f4; padding: 0.75rem; overflow: auto; font-size: 0.85rem; }
+    </style>
+  </head>
+  <body>
+    <h1>Native rater console</h1>
+    <p>Submit 1–5 scores for scorer calibration. Requires staff session bearer token and <code>content.review.native</code>.</p>
+    <label>API base (e.g. https://api.example.com/api/ai)</label>
+    <input id="base" type="url" placeholder="https://localhost:4000/api/ai" />
+    <label>Bearer token</label>
+    <input id="token" type="password" autocomplete="off" />
+    <label>Attempt id</label>
+    <input id="attempt" required />
+    <label>Language</label>
+    <select id="language">
+      <option value="yo">yo</option>
+      <option value="ig">ig</option>
+      <option value="ha">ha</option>
+      <option value="sw">sw</option>
+      <option value="zu">zu</option>
+      <option value="xh">xh</option>
+      <option value="pcm">pcm</option>
+    </select>
+    <label>Score (1–5)</label>
+    <input id="score" type="number" min="1" max="5" step="1" required />
+    <button type="button" id="submit">Submit rating</button>
+    <button type="button" id="progress">Load progress</button>
+    <pre id="out"></pre>
+    <script>
+      const out = document.getElementById('out');
+      function headers() {
+        const token = document.getElementById('token').value.trim();
+        return token ? { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' };
+      }
+      document.getElementById('submit').onclick = async () => {
+        const base = document.getElementById('base').value.replace(/\/$/, '');
+        const body = {
+          attempt_id: document.getElementById('attempt').value.trim(),
+          language: document.getElementById('language').value,
+          score: Number(document.getElementById('score').value),
+        };
+        const res = await fetch(base + '/rating/submit', { method: 'POST', headers: headers(), body: JSON.stringify(body) });
+        out.textContent = res.status + '\n' + await res.text();
+      };
+      document.getElementById('progress').onclick = async () => {
+        const base = document.getElementById('base').value.replace(/\/$/, '');
+        const res = await fetch(base + '/rating/progress', { headers: headers() });
+        out.textContent = res.status + '\n' + await res.text();
+      };
+    </script>
+  </body>
+</html>
