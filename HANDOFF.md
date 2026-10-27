@@ -123,6 +123,10 @@ Intron is set up and not connected. Do not put `INTRON_API_KEY` in the client.
 - UI-BELOW-BAR P10-909 UI 8/8/9/8/7/8/7/7/7/8 avg 7.7; reference: Family challenge trees in Duolingo/Babbel; gap: `CircleQuestScreen` and `HeritageTreeScreen` are not wired from navigable app routes (tests: `test/screens/circle_quest_screen_test.dart`, `test/screens/heritage_tree_screen_test.dart`).
 - UI-BELOW-BAR P10-910 UI 8/8/9/8/7/8/7/7/7/8 avg 7.7; reference: LinkedIn skill-badge share cards; gap: `CandoBadgeScreen` is exported only, with no route invocation evidence outside `test/screens/passport/cando_badge_screen_test.dart`.
 - UI-BELOW-BAR P10-911 UI 8/8/9/8/7/8/8/8/7/8 avg 7.9; reference: Quizlet co-learner roster honesty states; gap: route exists (`flashcard-focus`) but no evidence for child-mode/offline/reduced-motion states beyond `test/screens/flashcard_focus_screen_test.dart`.
+- UI-BELOW-BAR P10-902 UI 8/8/9/8/7/8/8/8/7/8 avg 7.9; reference: Duolingo gem balance migration affordance; gap: `CowriesBalanceChip` and migration messaging are component-level only with no route-level empty/error/offline state evidence beyond `test/widgets/cowries_balance_chip_test.dart`.
+- UI-BELOW-BAR P10-903 UI 8/8/9/8/7/8/7/7/7/8 avg 7.7; reference: Duolingo gems shop; gap: `CowriesShopScreen` is not wired to a navigable app route and validation is widget-only (`test/screens/cowries_shop_screen_test.dart`).
+- UI-BELOW-BAR P10-905 UI 8/8/9/8/7/8/8/8/7/8 avg 7.9; reference: Duolingo streak repair controls; gap: streak freeze/repair UX is present but lacks explicit offline/locked/child-mode and reduced-motion evidence in UI tests (`test/streak/p10_905_ethical_streak_test.dart` is policy-centric).
+- UI-BELOW-BAR P10-914 UI 8/8/9/8/7/8/8/8/7/8 avg 7.9; reference: Coursera credential verification card; gap: methodology disclosure is visible but no end-to-end route/open action verification for the methodology path beyond golden coverage (`test/screens/passport/passport_credential_methodology_test.dart`).
 
 ## Tope to switch on
 
