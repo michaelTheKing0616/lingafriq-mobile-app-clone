@@ -263,6 +263,21 @@ class LearnerModelService {
     );
   }
 
+  /// Skill ids ordered by lowest mastery (GameKit fallback queue).
+  List<String> getLowestMasterySkillIds({
+    required String learnerId,
+    required String languageCode,
+    int count = 10,
+  }) {
+    final states = (_states[learnerId] ?? {}).values.where((s) {
+      final skill = SkillRegistry.instance.findSkill(s.skillId);
+      return skill?.languageCode == languageCode;
+    }).toList();
+    if (states.isEmpty) return [];
+    states.sort((a, b) => a.mastery.compareTo(b.mastery));
+    return states.take(count).map((s) => s.skillId).toList();
+  }
+
   /// Exports all learner data for sync.
   Map<String, dynamic> exportForSync(String learnerId) {
     final states = _states[learnerId] ?? {};

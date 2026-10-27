@@ -8,6 +8,7 @@ class GameTurnContext {
   final GameSession session;
   final DateTime turnStartTime;
   final Map<String, dynamic>? metadata;
+  final int? queueIndex;
 
   GameTurnContext({
     required this.content,
@@ -15,8 +16,16 @@ class GameTurnContext {
     required this.session,
     DateTime? turnStartTime,
     this.metadata,
+    this.queueIndex,
   }) : turnStartTime = turnStartTime ?? DateTime.now();
 
   int get durationMs => DateTime.now().difference(turnStartTime).inMilliseconds;
+
+  String? get queuedItemId {
+    if (queueIndex == null || queueIndex! < 0 || queueIndex! >= session.turnQueue.length) {
+      return null;
+    }
+    return session.turnQueue[queueIndex!];
+  }
 }
 

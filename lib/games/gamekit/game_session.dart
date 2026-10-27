@@ -10,6 +10,8 @@ class GameSession {
   final String? level;
   final DateTime startTime;
   final List<GameTurnResult> turns;
+  final List<String> turnQueue;
+  final bool queueLoadFailed;
   final Map<String, dynamic> metadata;
 
   GameSession({
@@ -20,8 +22,15 @@ class GameSession {
     this.level,
     required this.startTime,
     this.turns = const [],
+    this.turnQueue = const [],
+    this.queueLoadFailed = false,
     this.metadata = const {},
   });
+
+  /// Visible retry state when due-item query failed (never serves a hardcoded list).
+  bool get needsQueueRetry => queueLoadFailed;
+
+  String? get queueSource => metadata['queue_source'] as String?;
 
   int get correctCount => turns.where((t) => t.score.isCorrect).length;
   int get totalTurns => turns.length;
@@ -67,6 +76,8 @@ class GameSession {
     String? level,
     DateTime? startTime,
     List<GameTurnResult>? turns,
+    List<String>? turnQueue,
+    bool? queueLoadFailed,
     Map<String, dynamic>? metadata,
   }) {
     return GameSession(
@@ -77,6 +88,8 @@ class GameSession {
       level: level ?? this.level,
       startTime: startTime ?? this.startTime,
       turns: turns ?? this.turns,
+      turnQueue: turnQueue ?? this.turnQueue,
+      queueLoadFailed: queueLoadFailed ?? this.queueLoadFailed,
       metadata: metadata ?? this.metadata,
     );
   }
