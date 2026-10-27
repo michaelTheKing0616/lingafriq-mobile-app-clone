@@ -11,6 +11,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/services/lens/lens_privacy_policy.dart';
 import 'package:lingafriq/screens/settings/data_export_screen.dart';
+import 'package:lingafriq/screens/settings/privacy_policy_screen.dart';
 
 const String voiceStorageConsentApiPath = '/api/v2/voice-storage';
 const String trainingContributionConsentApiPath = '/api/v2/training-contribution';
@@ -702,6 +703,39 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                               builder: (_) => const DataExportScreen(),
                             ),
                           );
+                        },
+                      ),
+                    ),
+                    _PrivacyDivider(isDark: isDark),
+                    Semantics(
+                      label: 'Read privacy policy',
+                      button: true,
+                      child: ListTile(
+                        minVerticalPadding: 12,
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: PanAfricanSpacing.md,
+                        ),
+                        leading: Icon(
+                          Icons.description_outlined,
+                          color: PanAfricanColors.primary,
+                        ),
+                        title: Text(
+                          'Privacy policy',
+                          style: PanAfricanTypography.bodyLarge(context),
+                        ),
+                        subtitle: Text(
+                          'Plain words on what we collect and why',
+                          style: PanAfricanTypography.bodySmall(context),
+                        ),
+                        trailing: Icon(
+                          Icons.chevron_right_rounded,
+                          color: isDark
+                              ? PanAfricanColors.textSecondaryDark
+                              : PanAfricanColors.textSecondaryLight,
+                        ),
+                        onTap: () {
+                          HapticFeedback.selectionClick();
+                          PrivacyPolicyScreen.open(context);
                         },
                       ),
                     ),
