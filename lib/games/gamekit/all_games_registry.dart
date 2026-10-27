@@ -119,6 +119,7 @@ class ArcadeGameListing {
 class AllGamesRegistry {
   static const String toneForgeGameId = 'tone_forge';
   static const String talkingDrumGameId = 'talking_drum';
+  static const String minimalPairDuelGameId = 'minimal_pair_duel';
 
   static bool headlinerElevationShipped(String elevationCardId) {
     return kArcadeHeadlinerShippedElevationCards.contains(elevationCardId);
@@ -190,6 +191,12 @@ class AllGamesRegistry {
       learningGoals: const ['tones', 'listening', 'pronunciation'],
       coreVerb: GameCoreVerb.listen,
     ),
+    minimalPairDuelGameId: GameDefinition(
+      gameId: minimalPairDuelGameId,
+      displayName: 'Minimal Pair Duel',
+      learningGoals: const ['tones', 'listening', 'minimal_pairs'],
+      coreVerb: GameCoreVerb.choose,
+    ),
   };
 
   static final Map<String, ArcadeGameListing> _arcadeListings = {
@@ -208,6 +215,14 @@ class AllGamesRegistry {
       featured: false,
       elevationPending: false,
       routeGameType: GameType.drumToWordMatching,
+    ),
+    minimalPairDuelGameId: ArcadeGameListing(
+      gameId: minimalPairDuelGameId,
+      shelf: ArcadeSkillShelf.tone,
+      elevationCardId: 'P8-921',
+      featured: false,
+      elevationPending: false,
+      routeGameType: GameType.toneTrainer,
     ),
     for (final entry in GameCatalog.entries)
       entry.type.name: ArcadeGameListing(
