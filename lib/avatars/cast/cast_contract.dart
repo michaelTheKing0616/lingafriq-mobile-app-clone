@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 
+import '../customisation/slot_binding.dart';
+
 class CastPartSlot {
   const CastPartSlot({required this.name, required this.options});
 
@@ -29,6 +31,14 @@ class CastContract {
   static Future<CastContract> load() async {
     final raw = await rootBundle.loadString(assetPath);
     return parse(jsonDecode(raw) as Map<String, dynamic>);
+  }
+
+  static Future<AvatarPartCatalog> loadPartCatalog() async {
+    final raw = await rootBundle.loadString(assetPath);
+    final catalog =
+        AvatarPartCatalog.fromContractJson(jsonDecode(raw) as Map<String, dynamic>);
+    catalog.validateLibraryMinimums();
+    return catalog;
   }
 
   static CastContract parse(Map<String, dynamic> json) {

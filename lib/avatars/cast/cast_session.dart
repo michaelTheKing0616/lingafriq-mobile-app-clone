@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
+import '../customisation/slot_binding.dart';
 import 'phoneme_viseme.dart';
 
 class CastPose {
@@ -85,6 +86,8 @@ class CastSession extends ChangeNotifier {
 
   CastPose pose;
   File? _file;
+  AvatarPartCatalog? _partCatalog;
+  Map<String, File> _streamedPartFiles = const {};
   ViewModelInstance? _bound;
   ViewModelInstanceTrigger? _tapped;
   VoidCallback? onTapped;
@@ -93,6 +96,15 @@ class CastSession extends ChangeNotifier {
 
   ViewModelInstance? get bound => _bound;
   File? get file => _file;
+
+  void configurePartCatalog(
+    AvatarPartCatalog catalog, {
+    Map<String, File> streamedPartFiles = const {},
+  }) {
+    _partCatalog = catalog;
+    _streamedPartFiles = streamedPartFiles;
+    _writePose();
+  }
 
   void bind(File file, ViewModelInstance instance) {
     _tapped?.removeListener(_onTapped);
@@ -226,12 +238,12 @@ class CastSession extends ChangeNotifier {
     bound.enumerator('bodyType')?.value = pose.bodyType;
     bound.enumerator('faceShape')?.value = pose.faceShape;
     final file = _file;
-    if (file == null) return;
-    for (final entry in pose.parts.entries) {
-      final artboard = file.artboardToBind(entry.value);
-      if (artboard == null) continue;
-      bound.artboard(entry.key)?.value = artboard;
-    }
+    final catalog = _partCatalog;
+    if (file == null || catalog == null || pose.parts.isEmpty) return;
+    SlotBinding(
+      catalog: catalog,
+      streamedFiles: _streamedPartFiles,
+    ).applyParts(instance: bound, mainFile: file, parts: pose.parts);
   }
 
   void _onTapped(bool fired) {

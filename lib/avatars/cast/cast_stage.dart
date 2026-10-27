@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
+import '../customisation/slot_binding.dart';
 import 'cast_contract.dart';
 import 'cast_file_cache.dart';
 import 'cast_session.dart';
@@ -60,6 +61,7 @@ class _CastStageState extends State<CastStage> {
   Future<void> _load() async {
     try {
       final file = await CastFileCache.instance.load();
+      final catalog = await CastContract.loadPartCatalog();
       if (!mounted) return;
       final controller = RiveWidgetController(
         file,
@@ -69,6 +71,7 @@ class _CastStageState extends State<CastStage> {
       final instance = controller.dataBind(
         DataBind.byName(widget.session.pose.preset),
       );
+      widget.session.configurePartCatalog(catalog);
       widget.session.bind(file, instance);
       _applyReducedMotion();
       _controller = controller;
