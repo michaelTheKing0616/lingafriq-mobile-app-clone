@@ -372,7 +372,7 @@ P10-931	Done	LearningAnalyticsService v1 envelopes, offline queue, exercise_answ
 P10-932	Done	Emit speech and AI turn events (analytics_service, ai-gateway.analytics)	P10/P10-932.yaml
 P10-933	Done	Send on-device aggregates where possible (analytics_aggregator.dart)	P10/P10-933.yaml
 P10-934	Done	North-star dashboard (northstar.ts, metrics.service.ts, GET /admin/analytics/northstar)	P10/P10-934.yaml
-P10-935	Draft	Add feature-flag experiments with pre-registration	P10/P10-935.yaml
+P10-935	Done	experiments.service.ts, Experiment.ts, EXPERIMENT_RULES.md; pre-reg, sticky assign, guardrail stop	P10/P10-935.yaml
 P10-936	Draft	Prepare the efficacy study design brief	P10/P10-936.yaml
 P10-937	Draft	Decide the two efficacy-study languages	P10/P10-937.yaml
 P10-938	Draft	Lint UI strings for dashes, banned words and verbs	P10/P10-938.yaml
