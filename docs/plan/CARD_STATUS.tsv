@@ -929,7 +929,7 @@ P6-070	Done	Build native-rater scoring workflow for evals (evals/native/rater_qu
 P6-071	Done	L2 content gate: l2_language_gate.yaml, evals/gates/l2.ts, language_not_gated	P6/P6-071.yaml
 P6-072	Done	Per-language bakeoff table, Aya excluded, routes from generation_winners.json (evals/bakeoff/run.ts)	P6/P6-072.yaml
 P6-073	Done	Licensed open LLM finetune: manifest gate, diacritic promotion, route artefact (ml/finetune/llm)	P6/P6-073.yaml
-P6-074	Draft	Evaluate ASR on 300-utterance sets	P6/P6-074.yaml
+P6-074	Done	ASR eval: evals/asr/run.ts, 300-utt sets, stt_routing.json, asr_eval_report.md	P6/P6-074.yaml
 P6-075	Draft	Run LiveKit Agents cascaded session per turn	P6/P6-075.yaml
 P6-076	Draft	Tune VAD and end-of-turn per language prosody	P6/P6-076.yaml
 P6-077	Draft	Stream STT inside realtime pipeline	P6/P6-077.yaml
