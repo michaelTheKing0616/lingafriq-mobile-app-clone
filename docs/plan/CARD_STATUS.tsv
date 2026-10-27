@@ -999,7 +999,7 @@ P8-910	Done	RealScorerSpeakingEngine, unsure/honest-practice, learner_scorer_tra
 P8-911	Done	GameKit practice-not-scored for speaking games until flag+adapter (universal_game_screen)	P8/P8-911.yaml
 P8-912	Done	GameKit lexicon word pools via verified-lexicon API, audio filter, GameContentFailure	P8/P8-912.yaml
 P8-913	Done	GameKit per-language tone inventories in tone games (tone_forge_models, tone_trainer)	P8/P8-913.yaml
-P8-914	Draft	Revive Tone Forge as a featured tone game	P8/P8-914.yaml
+P8-914	Done	Featured Tone Forge on tone shelf; P8-913 pool + P8-901 graph; practice gate	P8/P8-914.yaml
 P8-915	Draft	Revive the game mastery results screen	P8/P8-915.yaml
 P8-916	Draft	Decide consolidation of six games into flagships	P8/P8-916.yaml
 P8-917	Draft	'Play hub: every existing game stays on a skill shelf'	P8/P8-917.yaml

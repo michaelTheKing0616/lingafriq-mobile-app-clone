@@ -4,14 +4,49 @@ import '../../models/game/game_session_model.dart' show GameTypeExtension, GameT
 import '../../screens/games/game_catalog.dart';
 import 'game_engine.dart';
 
+/// Skill shelves in the Arcade hub (P8-914 / P8-917).
+enum ArcadeSkillShelf {
+  tone('tone', 'Tone & pitch'),
+  listening('listening', 'Listening'),
+  speaking('speaking', 'Speaking'),
+  vocabulary('vocabulary', 'Words'),
+  grammar('grammar', 'Grammar'),
+  culture('culture', 'Culture'),
+  traditional('traditional', 'Traditional play');
+
+  const ArcadeSkillShelf(this.id, this.title);
+  final String id;
+  final String title;
+}
+
+/// Hub listing for one playable game (elevation card id only — §18.5).
+class ArcadeGameListing {
+  const ArcadeGameListing({
+    required this.gameId,
+    required this.shelf,
+    required this.elevationCardId,
+    this.featured = false,
+    this.elevationPending = true,
+    this.routeGameType,
+  });
+
+  final String gameId;
+  final ArcadeSkillShelf shelf;
+  final String elevationCardId;
+  final bool featured;
+  final bool elevationPending;
+  final GameType? routeGameType;
+}
+
 /// Registry of all 37+ games with their configurations
 /// This centralizes game definitions for easy migration
 class AllGamesRegistry {
+  static const String toneForgeGameId = 'tone_forge';
+
   static const Map<String, String> _canonicalAliases = {
     // Legacy/alternate IDs -> canonical GameType.name IDs
     'wordmatch_audio': 'wordmatch_audio',
     'speed_round': 'speed_round_remix',
-    'tone_forge': 'tone_trainer',
     'clan_story': 'clan_lineage_story_builder',
     'market_bargaining': 'market_bargaining_simulator',
     'taxi_survival': 'taxi_bus_stop_survival',
@@ -37,7 +72,103 @@ class AllGamesRegistry {
         learningGoals: _deriveLearningGoals(entry),
         coreVerb: _inferCoreVerb(entry.type.name, entry),
       ),
+    toneForgeGameId: GameDefinition(
+      gameId: toneForgeGameId,
+      displayName: 'Tone Forge',
+      learningGoals: const ['tones', 'pronunciation', 'listening'],
+      coreVerb: GameCoreVerb.choose,
+    ),
   };
+
+  static final Map<String, ArcadeGameListing> _arcadeListings = {
+    toneForgeGameId: ArcadeGameListing(
+      gameId: toneForgeGameId,
+      shelf: ArcadeSkillShelf.tone,
+      elevationCardId: 'P8-914',
+      featured: true,
+      elevationPending: false,
+      routeGameType: GameType.toneTrainer,
+    ),
+    for (final entry in GameCatalog.entries)
+      entry.type.name: ArcadeGameListing(
+        gameId: entry.type.name,
+        shelf: _shelfForCatalogEntry(entry),
+        elevationCardId: _elevationCardFor(entry.type.name),
+        featured: false,
+        elevationPending: true,
+        routeGameType: entry.type,
+      ),
+  };
+
+  static ArcadeSkillShelf _shelfForCatalogEntry(GameCatalogEntry entry) {
+    final category = entry.category.toLowerCase();
+    final id = entry.type.name.toLowerCase();
+    if (id.contains('tone') || category.contains('pronunciation')) {
+      return ArcadeSkillShelf.tone;
+    }
+    if (id.contains('drum') ||
+        id.contains('listen') ||
+        id.contains('accent') ||
+        category.contains('listening')) {
+      return ArcadeSkillShelf.listening;
+    }
+    if (id.contains('pronunciation') ||
+        id.contains('karaoke') ||
+        id.contains('tongue') ||
+        id.contains('call_and')) {
+      return ArcadeSkillShelf.speaking;
+    }
+    if (id.contains('ayo') ||
+        id.contains('suwe') ||
+        id.contains('ludo') ||
+        id.contains('snakes') ||
+        id.contains('whot')) {
+      return ArcadeSkillShelf.traditional;
+    }
+    if (category.contains('cultural')) return ArcadeSkillShelf.culture;
+    if (category.contains('grammar')) return ArcadeSkillShelf.grammar;
+    return ArcadeSkillShelf.vocabulary;
+  }
+
+  static String _elevationCardFor(String gameId) {
+    return 'P8-917';
+  }
+
+  static List<ArcadeGameListing> listingsOnShelf(ArcadeSkillShelf shelf) {
+    return _arcadeListings.values
+        .where((l) => l.shelf == shelf)
+        .toList(growable: false);
+  }
+
+  static ArcadeGameListing? listingFor(String gameId) {
+    final normalized = gameId.trim();
+    final direct = _arcadeListings[normalized];
+    if (direct != null) return direct;
+    final alias = _canonicalAliases[normalized];
+    if (alias != null) return _arcadeListings[alias];
+    return null;
+  }
+
+  static ArcadeGameListing? featuredOnShelf(ArcadeSkillShelf shelf) {
+    for (final listing in _arcadeListings.values) {
+      if (listing.shelf == shelf && listing.featured) return listing;
+    }
+    return null;
+  }
+
+  /// CI: every catalog game must appear on exactly one shelf.
+  static List<String> validateArcadeShelfCoverage() {
+    final missing = <String>[];
+    for (final entry in GameCatalog.entries) {
+      if (!_arcadeListings.containsKey(entry.type.name)) {
+        missing.add(entry.type.name);
+      }
+    }
+    if (!_arcadeListings.containsKey(toneForgeGameId)) {
+      missing.add(toneForgeGameId);
+    }
+    return missing;
+  }
 
   /// Get game definition by ID
   static GameDefinition? getGame(String gameId) {

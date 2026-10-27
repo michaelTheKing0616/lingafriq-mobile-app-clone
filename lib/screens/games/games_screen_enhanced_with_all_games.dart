@@ -19,6 +19,7 @@ import 'package:lingafriq/utils/error_handler.dart' hide ErrorBoundary;
 import 'package:lingafriq/utils/games_prefetch_language.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lingafriq/games/tone_forge/tone_forge_screen.dart';
 
 /// Enhanced Games Screen with ALL 35+ Games Properly Categorized
 class GamesScreenEnhanced extends HookConsumerWidget {
@@ -402,6 +403,25 @@ class GamesScreenEnhanced extends HookConsumerWidget {
                     if (value != null) selectedLanguage.value = value;
                   },
                 ),
+              ),
+
+              ToneForgeArcadeShelfStrip(
+                language: gamesBackendSlugFromAppLanguage(
+                  selectedLanguage.value,
+                ),
+                onOpenToneForge: () {
+                  final lang = gamesBackendSlugFromAppLanguage(
+                    selectedLanguage.value,
+                  );
+                  Navigator.of(context).push(
+                    SmoothPageRoute.platform(
+                      child: ToneForgeScreen(
+                        language: lang,
+                        onBack: () => Navigator.of(context).pop(),
+                      ),
+                    ),
+                  );
+                },
               ),
 
               // Section Tabs (Core vs Cultural)
