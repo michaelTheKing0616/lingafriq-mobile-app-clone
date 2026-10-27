@@ -974,7 +974,7 @@ P7-930	Done	Micro-lesson learn/see/try screen, 60–90s validator, resume + medi
 P7-931	Done	30-second tutorial perception check (perception_check.dart, in-memory session)	P7/P7-931.yaml
 P7-932	Done	Speaking try step with gateway scorer, unsure/skip/error (speaking_try.dart)	P7/P7-932.yaml
 P7-933	Done	Sound tutorial catalogue, mouth player, coming-soon gate (no stand-in)	P7/P7-933.yaml
-P7-934	Draft	Author Yoruba tone and subdot tutorials	P7/P7-934.yaml
+P7-934	Done	Author Yoruba tone and subdot tutorials (p7_934.json, kp gated)	P7/P7-934.yaml
 P7-935	Draft	Author Igbo vowel harmony tutorial	P7/P7-935.yaml
 P7-936	Draft	Author Hausa implosive and ejective tutorial	P7/P7-936.yaml
 P7-937	Draft	Author Zulu and Xhosa click tutorials	P7/P7-937.yaml
