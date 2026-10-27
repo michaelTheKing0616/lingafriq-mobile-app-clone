@@ -137,19 +137,32 @@ class MediaLearningPipeline {
     final words = _tokenize(model);
     final vocabulary = _extractVocabulary(words, sourceLanguage);
     final focus = vocabulary.isNotEmpty
-        ? vocabulary.first.word
+        ? _surfaceFormInText(model, vocabulary.first.word)
         : (words.isNotEmpty ? words.first : model);
     final cards = <ReviewItemFromMedia>[];
-    for (final item in vocabulary.take(10)) {
-      final context = item.context.trim().isEmpty ? model : item.context;
+    final seenAnswers = <String>{};
+    for (final item in vocabulary) {
+      if (cards.length >= 10) break;
+      final answer = _surfaceFormInText(source, item.word);
+      final key = answer.toLowerCase();
+      if (seenAnswers.contains(key)) continue;
+      if (!source.toLowerCase().contains(key)) continue;
+      seenAnswers.add(key);
       cards.add(ReviewItemFromMedia(
         skillId: item.skillId,
         type: MediaReviewType.cloze,
-        prompt: _generateCloze(item.word, context),
-        answer: item.word,
+        prompt: _singleWordCloze(model, answer),
+        answer: answer,
         context: model,
+        mediaId: id,
+        span: cite,
       ));
     }
+
+    final glosses = _buildUncitedGlosses(
+      words: _tokenize(model),
+      sourceLanguage: sourceLanguage,
+    );
 
     return ImportedMediaLesson(
       title: title ?? 'From your media',
@@ -160,8 +173,9 @@ class MediaLearningPipeline {
       objective: 'Notice and reuse one line from your media',
       modelText: model,
       focus: focus,
-      guidedPrompt: _generateCloze(focus, model),
+      guidedPrompt: _singleWordCloze(model, focus),
       guidedAnswer: focus,
+      glosses: glosses,
       checkQuestion: 'Which line is from your media?',
       checkAnswer: model,
       checkProvenance: 'AI-generated, unreviewed',
@@ -337,6 +351,47 @@ class MediaLearningPipeline {
       '____',
     );
   }
+
+  /// Hides exactly one token in [sentence] for guided practice.
+  String _surfaceFormInText(String text, String normalized) {
+    for (final token in _tokenize(text)) {
+      if (token.toLowerCase() == normalized.toLowerCase()) {
+        return token;
+      }
+    }
+    return normalized;
+  }
+
+  String _singleWordCloze(String sentence, String word) {
+    final escaped = RegExp.escape(word);
+    final pattern = RegExp('\\b$escaped\\b', caseSensitive: false);
+    if (!pattern.hasMatch(sentence)) {
+      return sentence.replaceFirst(word, '____');
+    }
+    return sentence.replaceFirst(pattern, '____');
+  }
+
+  /// Glosses without a lexicon citation stay unreviewed (no invented meanings).
+  List<MediaWordGloss> _buildUncitedGlosses({
+    required List<String> words,
+    required String sourceLanguage,
+  }) {
+    final glosses = <MediaWordGloss>[];
+    final seen = <String>{};
+    for (final raw in words) {
+      final token = raw.trim();
+      if (token.length < 2) continue;
+      final key = token.toLowerCase();
+      if (seen.contains(key)) continue;
+      seen.add(key);
+      glosses.add(MediaWordGloss(
+        word: token,
+        gloss: 'Confirm meaning in context ($sourceLanguage)',
+        provenance: 'AI-generated, unreviewed',
+      ));
+    }
+    return glosses;
+  }
 }
 
 // ─── Data classes ──────────────────────────────────────────────────
@@ -406,6 +461,8 @@ class ReviewItemFromMedia {
   final String prompt;
   final String answer;
   final String? context;
+  final String? mediaId;
+  final String? span;
 
   const ReviewItemFromMedia({
     required this.skillId,
@@ -413,6 +470,20 @@ class ReviewItemFromMedia {
     required this.prompt,
     required this.answer,
     this.context,
+    this.mediaId,
+    this.span,
+  });
+}
+
+class MediaWordGloss {
+  final String word;
+  final String gloss;
+  final String provenance;
+
+  const MediaWordGloss({
+    required this.word,
+    required this.gloss,
+    required this.provenance,
   });
 }
 
@@ -463,6 +534,7 @@ class ImportedMediaLesson {
   final String toneStep;
   final String shadowingText;
   final List<ReviewItemFromMedia> flashcards;
+  final List<MediaWordGloss> glosses;
 
   const ImportedMediaLesson({
     required this.title,
@@ -481,5 +553,6 @@ class ImportedMediaLesson {
     required this.toneStep,
     required this.shadowingText,
     required this.flashcards,
+    required this.glosses,
   });
 }

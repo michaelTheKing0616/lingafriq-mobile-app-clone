@@ -67,7 +67,7 @@ risks:
 - "It does not jump ahead of the open P2 queue. F-054 still draws the lesson on the Import screen."
 gate: G7
 external_blockers: []
-status: Ready
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging
