@@ -8,6 +8,10 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/services/lens/lens_privacy_policy.dart';
+
+const String voiceStorageConsentApiPath = '/api/v2/voice-storage';
 
 /// Privacy Settings Screen - Pan-African Design System
 class PrivacySettingsScreen extends HookConsumerWidget {
@@ -19,6 +23,9 @@ class PrivacySettingsScreen extends HookConsumerWidget {
   static const String _prefLocationTracking = 'privacy_location_tracking_enabled';
   static const String _prefProfileVisibility = 'privacy_profile_visibility';
   static const String _prefActivityStatus = 'privacy_activity_status_enabled';
+  static const String _prefAgeCategory = 'age_category';
+  static const String _prefGuardianVoiceStorage =
+      'guardian_voice_storage_consent_recorded';
 
   Future<void> _savePreference(String key, bool value) async {
     final prefs = await SharedPreferences.getInstance();
@@ -42,6 +49,10 @@ class PrivacySettingsScreen extends HookConsumerWidget {
     final locationTrackingEnabled = useState<bool?>(null);
     final profileVisibility = useState<String>('public');
     final activityStatusEnabled = useState<bool?>(null);
+    final voiceStorageEnabled = useState<bool>(false);
+    final voiceConsentVersion = useState<String?>(null);
+    final voiceConsentCopy = useState<String?>(null);
+    final voiceWithdrawing = useState(false);
     final isLoading = useState(true);
 
     Future<void> loadSettings(ApiProvider api) async {
@@ -80,7 +91,131 @@ class PrivacySettingsScreen extends HookConsumerWidget {
         profileVisibility.value =
             prefs.getString(_prefProfileVisibility) ?? 'public';
       }
+      try {
+        final voiceRes = await ApiService.get('$voiceStorageConsentApiPath/status');
+        final voiceData = voiceRes.data;
+        if (voiceData is Map) {
+          final consent = voiceData['consent'];
+          if (consent is Map) {
+            voiceStorageEnabled.value = consent['store_enabled'] == true;
+          }
+          voiceConsentVersion.value =
+              voiceData['consent_text_version'] as String?;
+          voiceConsentCopy.value = voiceData['consent_copy'] as String?;
+        }
+      } catch (_) {
+        // Offline — default remains off (delete-after-scoring).
+      }
       isLoading.value = false;
+    }
+
+    Future<bool> guardianVoiceStorageApproved(BuildContext context) async {
+      final approved = await showDialog<bool>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Guardian approval needed'),
+          content: const Text(
+            'Learners under 18 need a parent or guardian to approve storing practice recordings. '
+            'Only turn this on if your guardian has agreed in the Family hub.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: const Text('Not yet'),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.pop(ctx, true),
+              child: const Text('Guardian approved'),
+            ),
+          ],
+        ),
+      );
+      if (approved == true) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setBool(_prefGuardianVoiceStorage, true);
+      }
+      return approved == true;
+    }
+
+    Future<void> updateVoiceStorage(bool value, BuildContext context) async {
+      HapticFeedback.selectionClick();
+      if (!value) {
+        voiceWithdrawing.value = true;
+        try {
+          await ApiService.post('$voiceStorageConsentApiPath/withdraw');
+          voiceStorageEnabled.value = false;
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  'We turned off recording storage. Any saved clips will be removed within 30 days.',
+                ),
+              ),
+            );
+          }
+        } catch (_) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  'We could not update voice storage right now. Try again when you are online.',
+                ),
+              ),
+            );
+          }
+        } finally {
+          voiceWithdrawing.value = false;
+        }
+        return;
+      }
+
+      final prefs = await SharedPreferences.getInstance();
+      final ageCategory = prefs.getString(_prefAgeCategory) ??
+          prefs.getString('onboarding_age_category');
+      final privacyCtx = lensPrivacyContextFromPrefs(
+        ageCategory: ageCategory,
+        guardianPhotoConsentRecorded:
+            prefs.getBool(_prefGuardianVoiceStorage) ?? false,
+      );
+      if (privacyCtx.isMinor) {
+        final ok = await guardianVoiceStorageApproved(context);
+        if (!ok) return;
+      }
+
+      final version = voiceConsentVersion.value;
+      if (version == null || version.isEmpty) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Voice storage settings are not available offline yet. Connect and try again.',
+              ),
+            ),
+          );
+        }
+        return;
+      }
+
+      try {
+        await ApiService.post(
+          '$voiceStorageConsentApiPath/opt-in',
+          data: {
+            'consent_text_version': version,
+            'guardian_consent_recorded': privacyCtx.isMinor,
+          },
+        );
+        voiceStorageEnabled.value = true;
+      } catch (_) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'We could not save your choice. Check your connection and try again.',
+              ),
+            ),
+          );
+        }
+      }
     }
 
     useEffect(() {
@@ -347,6 +482,29 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                 ),
                 SizedBox(height: PanAfricanSpacing.lg),
 
+                _PrivacySection(
+                  title: 'Practice recordings',
+                  isDark: isDark,
+                  index: 5,
+                  children: [
+                    _PrivacySwitchTile(
+                      icon: Icons.mic_none_rounded,
+                      title: 'Save my practice recordings',
+                      subtitle: voiceConsentCopy.value ??
+                          'Off by default. We delete audio after scoring unless you turn this on. '
+                          'Stored clips are kept up to one year, or removed within 30 days after you turn this off.',
+                      value: voiceStorageEnabled.value,
+                      onChanged: voiceWithdrawing.value
+                          ? (_) {}
+                          : (v) => updateVoiceStorage(v, context),
+                      isDark: isDark,
+                      semanticsLabel:
+                          'Save my practice recordings. ${voiceStorageEnabled.value ? 'On' : 'Off'}.',
+                    ),
+                  ],
+                ),
+                SizedBox(height: PanAfricanSpacing.lg),
+
                 // Info Card
                 Container(
                   padding: EdgeInsets.all(PanAfricanSpacing.md),
@@ -455,6 +613,7 @@ class _PrivacySwitchTile extends StatelessWidget {
   final bool value;
   final ValueChanged<bool> onChanged;
   final bool isDark;
+  final String? semanticsLabel;
 
   const _PrivacySwitchTile({
     required this.icon,
@@ -463,6 +622,7 @@ class _PrivacySwitchTile extends StatelessWidget {
     required this.value,
     required this.onChanged,
     required this.isDark,
+    this.semanticsLabel,
   });
 
   @override
@@ -503,7 +663,7 @@ class _PrivacySwitchTile extends StatelessWidget {
             ),
           ),
           Semantics(
-            label: '$title. ${value ? 'On' : 'Off'}.',
+            label: semanticsLabel ?? '$title. ${value ? 'On' : 'Off'}.',
             toggled: value,
             child: Switch.adaptive(
               value: value,
