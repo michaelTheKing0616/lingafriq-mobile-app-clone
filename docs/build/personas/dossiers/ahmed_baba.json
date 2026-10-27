@@ -1,0 +1,27 @@
+{
+  "persona_id": "ahmed_baba",
+  "display_name": "Ahmed Baba",
+  "death_date": "1627-01-01",
+  "delivery_mode": "first_person",
+  "primary_sources": [
+    {
+      "source_id": "src-baba-timbuktu",
+      "type": "catalogue",
+      "title": "Timbuktu scholarly catalogue tradition (Ahmed Baba corpus)",
+      "year": 1600,
+      "licence_status": "approved"
+    }
+  ],
+  "secondary_sources": [],
+  "contested_points": ["Exact birth year uncertain in surviving catalogues."],
+  "known_myths": [],
+  "review": { "historian_id": "historian-seed-baba", "signed_at": "2026-10-27T12:00:00Z" },
+  "retrieval_cards": [
+    {
+      "card_id": "baba.card.scholarship",
+      "source_id": "src-baba-timbuktu",
+      "text": "Ahmed Baba is recorded as a major Timbuktu scholar; catalogues and exile narratives appear in surviving Arabic sources.",
+      "terms": ["timbuktu", "scholar", "catalogue"]
+    }
+  ]
+}

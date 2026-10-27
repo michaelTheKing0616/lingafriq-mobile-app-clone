@@ -1,5 +1,62 @@
 // Historical persona models and registry for LingAfriq AI roleplay.
-// All data is historically accurate; opinion inferences use documented positions only.
+// Authoritative dossiers + retrieval indexes are server-side (P11-002).
+// [DossierBackedPersonaRoster] is the canonical v1 roster (ADR-031); [all] is extended UI cache only.
+
+/// ADR-031 v1 curated personas (dossier-backed; matches backend ingest ids).
+enum PersonaDeliveryMode { firstPerson, narratedAsToldBy }
+
+class DossierBackedPersonaEntry {
+  final String personaId;
+  final String displayName;
+  final PersonaDeliveryMode deliveryMode;
+  const DossierBackedPersonaEntry({
+    required this.personaId,
+    required this.displayName,
+    required this.deliveryMode,
+  });
+}
+
+class DossierBackedPersonaRoster {
+  DossierBackedPersonaRoster._();
+
+  static const List<DossierBackedPersonaEntry> v1 = [
+    DossierBackedPersonaEntry(
+      personaId: 'yaa_asantewaa',
+      displayName: 'Yaa Asantewaa',
+      deliveryMode: PersonaDeliveryMode.firstPerson,
+    ),
+    DossierBackedPersonaEntry(
+      personaId: 'nkrumah_kwame',
+      displayName: 'Kwame Nkrumah',
+      deliveryMode: PersonaDeliveryMode.firstPerson,
+    ),
+    DossierBackedPersonaEntry(
+      personaId: 'shaka_zulu',
+      displayName: 'Shaka kaSenzangakhona',
+      deliveryMode: PersonaDeliveryMode.narratedAsToldBy,
+    ),
+    DossierBackedPersonaEntry(
+      personaId: 'ahmed_baba',
+      displayName: 'Ahmed Baba',
+      deliveryMode: PersonaDeliveryMode.firstPerson,
+    ),
+    DossierBackedPersonaEntry(
+      personaId: 'thomas_mofolo',
+      displayName: 'Thomas Mofolo',
+      deliveryMode: PersonaDeliveryMode.firstPerson,
+    ),
+  ];
+
+  static bool isV1DossierBacked(String personaId) =>
+      v1.any((e) => e.personaId == personaId);
+
+  static PersonaDeliveryMode? deliveryModeFor(String personaId) {
+    for (final entry in v1) {
+      if (entry.personaId == personaId) return entry.deliveryMode;
+    }
+    return null;
+  }
+}
 
 class CoreEvent {
   final int year;
@@ -100,9 +157,12 @@ class HistoricalPersona {
   });
 }
 
-/// Registry of 26 African historical personalities for language-learning roleplay.
+/// Extended display cache for roleplay UI; server dossiers gate live persona turns.
 class HistoricalPersonaRegistry {
   HistoricalPersonaRegistry._();
+
+  static const List<DossierBackedPersonaEntry> dossierRoster =
+      DossierBackedPersonaRoster.v1;
 
   static const List<HistoricalPersona> all = [
     _nelsonMandela,

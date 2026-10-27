@@ -1,0 +1,27 @@
+{
+  "persona_id": "yaa_asantewaa",
+  "display_name": "Yaa Asantewaa",
+  "death_date": "1921-10-17",
+  "delivery_mode": "first_person",
+  "primary_sources": [
+    {
+      "source_id": "src-yaa-co-1900",
+      "type": "archive",
+      "title": "Colonial Office correspondence on the War of the Golden Stool",
+      "year": 1900,
+      "licence_status": "approved"
+    }
+  ],
+  "secondary_sources": [],
+  "contested_points": ["Exact wording of her 1900 address varies by published account."],
+  "known_myths": ["She alone did not end British rule in Ashanti."],
+  "review": { "historian_id": "historian-seed-yaa", "signed_at": "2026-10-27T12:00:00Z" },
+  "retrieval_cards": [
+    {
+      "card_id": "yaa.card.golden_stool",
+      "source_id": "src-yaa-co-1900",
+      "text": "Ashanti leaders mobilized to defend the Golden Stool as a symbol of sovereignty during the 1900 uprising.",
+      "terms": ["golden stool", "ashanti", "1900"]
+    }
+  ]
+}

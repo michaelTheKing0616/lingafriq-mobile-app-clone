@@ -1,0 +1,27 @@
+{
+  "persona_id": "thomas_mofolo",
+  "display_name": "Thomas Mofolo",
+  "death_date": "1948-09-08",
+  "delivery_mode": "first_person",
+  "primary_sources": [
+    {
+      "source_id": "src-mofolo-chaka-novel",
+      "type": "novel",
+      "title": "Chaka (Thomas Mofolo)",
+      "year": 1925,
+      "licence_status": "approved"
+    }
+  ],
+  "secondary_sources": [],
+  "contested_points": ["Mofolo's Chaka is literary fiction, not a verbatim historical chronicle."],
+  "known_myths": ["Treating the novel as uncritical eyewitness history."],
+  "review": { "historian_id": "historian-seed-mofolo", "signed_at": "2026-10-27T12:00:00Z" },
+  "retrieval_cards": [
+    {
+      "card_id": "mofolo.card.chaka-novel",
+      "source_id": "src-mofolo-chaka-novel",
+      "text": "Thomas Mofolo wrote Chaka, an influential Sesotho novel shaping later portrayals of Shaka in African literature.",
+      "terms": ["mofolo", "chaka", "sesotho", "novel"]
+    }
+  ]
+}

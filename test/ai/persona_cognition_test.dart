@@ -8,6 +8,17 @@ void main() {
   // -------------------------------------------------------------------------
   // Persona Registry Consistency
   // -------------------------------------------------------------------------
+  group('DossierBackedPersonaRoster (P11-002)', () {
+    test('v1 roster matches ADR-031 ids and Shaka narrated mode', () {
+      expect(DossierBackedPersonaRoster.v1.length, 5);
+      expect(
+        DossierBackedPersonaRoster.deliveryModeFor('shaka_zulu'),
+        PersonaDeliveryMode.narratedAsToldBy,
+      );
+      expect(HistoricalPersonaRegistry.dossierRoster.length, 5);
+    });
+  });
+
   group('HistoricalPersonaRegistry consistency', () {
     test('registry_contains_at_least_20_personas', () {
       expect(HistoricalPersonaRegistry.all.length, greaterThanOrEqualTo(20));
