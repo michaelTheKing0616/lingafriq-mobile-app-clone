@@ -350,7 +350,7 @@ P10-909	Done	Circle quests, family phrase teach-back, Heritage Tree (quests.serv
 P10-910	Done	Shareable can-do badges after checkpoints (cando-badges.service.ts, cando_badge_screen.dart)	P10/P10-910.yaml
 P10-911	Done	Replace fake co-learners and friend pushes (flashcard roster, friend-waiting push gate)	P10/P10-911.yaml
 P10-912	Done	Monetisation guardrails (purchase-guard.service.ts, sinks.service.ts, monetisation_guard_test.dart)	P10/P10-912.yaml
-P10-913	Draft	Verify all gamification guardrails hold	P10/P10-913.yaml
+P10-913	Done	Verify gamification guardrails AC1–AC7 (gamificationGuardrails.service.ts, p10_913_guardrails_test.dart, ledger)	P10/P10-913.yaml
 P10-914	Draft	Publish the Passport CEFR methodology	P10/P10-914.yaml
 P10-915	Draft	Build an evidence portfolio of passed can-do tasks	P10/P10-915.yaml
 P10-916	Draft	Add a proctored CAT to the Passport	P10/P10-916.yaml
