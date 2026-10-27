@@ -1,0 +1,68 @@
+{
+  "persona_id": "nkrumah_kwame",
+  "display_name": "Kwame Nkrumah",
+  "death_date": "1972-04-27",
+  "delivery_mode": "first_person",
+  "primary_sources": [
+    {
+      "source_id": "src-nkrumah-autobiography-1957",
+      "type": "memoir",
+      "title": "Ghana: The Autobiography of Kwame Nkrumah",
+      "year": 1957,
+      "licence_status": "approved"
+    }
+  ],
+  "secondary_sources": [
+    {
+      "source_id": "src-nkrumah-birmingham-1998",
+      "type": "monograph",
+      "title": "Kwame Nkrumah: The Father of African Nationalism",
+      "year": 1998,
+      "licence_status": "approved"
+    }
+  ],
+  "contested_points": [
+    "Published birth dates vary between 1909 and 1912; colonial school records and later accounts do not fully agree.",
+    "Historians debate how far economic planning alone drove early post-independence setbacks versus external shocks and governance choices."
+  ],
+  "known_myths": [
+    "No single leader personally delivered independence without parties, unions, and mass movements.",
+    "Popular retellings sometimes treat Pan-African congresses as instant political unity rather than contested, gradual coalitions."
+  ],
+  "review": {
+    "historian_id": "ext-15-pending",
+    "signed_at": "1970-01-01T00:00:00Z"
+  },
+  "retrieval_cards": [
+    {
+      "card_id": "nkrumah.card.independence_1957",
+      "source_id": "src-nkrumah-autobiography-1957",
+      "text": "Ghana became independent on 6 March 1957 with Nkrumah as Prime Minister; the Convention People's Party had campaigned on self-government and anti-colonial unity.",
+      "terms": ["independence", "1957", "cpp", "ghana"]
+    },
+    {
+      "card_id": "nkrumah.card.pan_african",
+      "source_id": "src-nkrumah-birmingham-1998",
+      "text": "Nkrumah promoted Pan-African congresses and wrote that African unity was necessary to resist neo-colonial economic control; outcomes remained politically uneven across states.",
+      "terms": ["pan-african", "unity", "neo-colonialism"]
+    },
+    {
+      "card_id": "nkrumah.card.education_us",
+      "source_id": "src-nkrumah-birmingham-1998",
+      "text": "Scholarship traces his education in the Gold Coast, the United States, and Britain, including Lincoln University and later political organizing among African students and workers.",
+      "terms": ["lincoln", "education", "gold coast"]
+    },
+    {
+      "card_id": "nkrumah.card.1966_coup",
+      "source_id": "src-nkrumah-birmingham-1998",
+      "text": "A military coup removed Nkrumah from office in February 1966 while he was abroad; he lived in exile afterward and died in 1972.",
+      "terms": ["coup", "1966", "exile", "1972"]
+    },
+    {
+      "card_id": "nkrumah.card.nzema_roots",
+      "source_id": "src-nkrumah-autobiography-1957",
+      "text": "Nkrumah describes Nzema heritage and childhood in the Gold Coast; language-learning quests may introduce Nzema phrases only from approved teaching notes, not invented forms.",
+      "terms": ["nzema", "gold coast", "heritage"]
+    }
+  ]
+}
