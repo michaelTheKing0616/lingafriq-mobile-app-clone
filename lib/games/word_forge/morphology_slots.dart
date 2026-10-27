@@ -3,6 +3,8 @@ library;
 
 import 'dart:math';
 
+import 'yoruba_serial_verbs.dart';
+
 /// Publication labels allowed in slot pools (unverified / beta excluded).
 const Set<String> kWordForgeAllowedLabels = {'expert_reviewed'};
 
@@ -29,6 +31,9 @@ enum WordForgeSlotKind {
   tenseInfix,
   objectPrefix,
   verbStem,
+  yoSubject,
+  yoSerialV1,
+  yoSerialV2,
 }
 
 class WordForgeSlotDefinition {
@@ -364,6 +369,9 @@ const List<WordForgeTemplate> kWordForgeTemplatesZu = [
 
 List<WordForgeTemplate> wordForgeTemplatesForLanguage(String languageCode) {
   final lang = languageCode.toLowerCase();
+  if (lang == 'yo' || lang == 'yoruba') {
+    return yorubaSerialTemplates();
+  }
   if (lang == 'sw' || lang == 'swahili') {
     return List<WordForgeTemplate>.from(kWordForgeTemplatesSw);
   }
@@ -414,6 +422,9 @@ String joinSurface(List<String> parts) {
 }
 
 WordForgeComposeResult composeWordForge(WordForgeSelection selection) {
+  if (selection.byKind.containsKey(WordForgeSlotKind.yoSubject)) {
+    return composeYorubaSerial(selection);
+  }
   final subj = selection.byKind[WordForgeSlotKind.subjectPrefix]?.surface ?? '';
   final tense = selection.byKind[WordForgeSlotKind.tenseInfix]?.surface ?? '';
   final obj = selection.byKind[WordForgeSlotKind.objectPrefix]?.surface ?? '';
@@ -456,6 +467,9 @@ WordForgeValidation validateWordForge({
   required WordForgeTemplate template,
   required WordForgeSelection selection,
 }) {
+  if (isYorubaSerialTemplate(template)) {
+    return validateYorubaSerial(template: template, selection: selection);
+  }
   final composed = composeWordForge(selection);
   if (!_selectionComplete(template, selection)) {
     return WordForgeValidation.invalidForm(
@@ -478,6 +492,9 @@ WordForgeValidation validateWordForge({
 }
 
 String displaySlotsLine(WordForgeSelection selection) {
+  if (selection.byKind.containsKey(WordForgeSlotKind.yoSubject)) {
+    return displayYorubaSerialLine(selection);
+  }
   final subj = selection.byKind[WordForgeSlotKind.subjectPrefix]?.surface ?? '…';
   final tense = selection.byKind[WordForgeSlotKind.tenseInfix]?.surface ?? '…';
   final obj = selection.byKind[WordForgeSlotKind.objectPrefix];

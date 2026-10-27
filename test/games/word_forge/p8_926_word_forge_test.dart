@@ -105,7 +105,7 @@ void main() {
   testWidgets('word_forge error state for unsupported language', (tester) async {
     await pumpWordForge(
       tester,
-      const WordForgeScreen(language: 'yo'),
+      const WordForgeScreen(language: 'fr'),
     );
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 50));

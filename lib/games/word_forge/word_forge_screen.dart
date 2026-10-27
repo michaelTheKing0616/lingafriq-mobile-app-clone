@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/pan_african_design_system.dart';
 import 'morphology_slots.dart';
 import 'word_forge_game.dart';
+import 'yoruba_serial_verbs.dart';
 
 enum WordForgePhase {
   loading,
@@ -33,8 +34,7 @@ class WordForgeScreen extends StatefulWidget {
     this.initialPhase,
   });
 
-  static const errorCopy =
-      'Word Forge is ready for Swahili and Zulu. Pick one of those languages to play.';
+  static const errorCopy = YorubaSerialVerbsCopy.error;
 
   final String language;
   final VoidCallback? onBack;
@@ -47,14 +47,27 @@ class WordForgeScreen extends StatefulWidget {
 }
 
 class _WordForgeScreenState extends State<WordForgeScreen> {
-  static const title = 'Word Forge';
-  static const instructions =
-      'Tap each slot to build the verb. Watch the gloss update as you go.';
-  static const whyWrongCopy =
-      'That combination breaks the grammar rule for this prompt. Read the hint and try again.';
-  static const practiceLabel =
-      'Practice — morphology rounds do not affect league rank until scoring is verified.';
   static const invalidFormTitle = 'Invalid form';
+
+  bool get _isYoruba {
+    final lang = widget.language.toLowerCase();
+    return lang == 'yo' || lang == 'yoruba';
+  }
+
+  String get _title =>
+      _isYoruba ? YorubaSerialVerbsCopy.title : 'Word Forge';
+
+  String get _instructions => _isYoruba
+      ? YorubaSerialVerbsCopy.instructions
+      : 'Tap each slot to build the verb. Watch the gloss update as you go.';
+
+  String get _whyWrongCopy => _isYoruba
+      ? YorubaSerialVerbsCopy.whyWrong
+      : 'That combination breaks the grammar rule for this prompt. Read the hint and try again.';
+
+  String get _practiceLabel => _isYoruba
+      ? YorubaSerialVerbsCopy.practiceLabel
+      : 'Practice — morphology rounds do not affect league rank until scoring is verified.';
 
   WordForgePhase _phase = WordForgePhase.loading;
   WordForgeSessionPlan? _plan;
@@ -150,7 +163,7 @@ class _WordForgeScreenState extends State<WordForgeScreen> {
     }
     setState(() {
       _phase = WordForgePhase.wrong;
-      _lastInvalidRule = validation.invalidRule;
+      _lastInvalidRule = validation.invalidRule ?? _whyWrongCopy;
     });
   }
 
@@ -172,7 +185,7 @@ class _WordForgeScreenState extends State<WordForgeScreen> {
   Widget build(BuildContext context) {
     final reduceMotion = MediaQuery.disableAnimationsOf(context);
     return LingAfriqScaffoldLite(
-      title: title,
+      title: _title,
       onBack: widget.onBack,
       child: SafeArea(
         child: Padding(
@@ -184,7 +197,7 @@ class _WordForgeScreenState extends State<WordForgeScreen> {
                 Padding(
                   padding: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
                   child: Text(
-                    practiceLabel,
+                    _practiceLabel,
                     style: PanAfricanTypography.bodySmall(context).copyWith(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
@@ -227,7 +240,7 @@ class _WordForgeScreenState extends State<WordForgeScreen> {
           headline: _phase == WordForgePhase.invalidForm
               ? invalidFormTitle
               : 'Not quite',
-          detail: _lastInvalidRule ?? whyWrongCopy,
+          detail: _lastInvalidRule ?? _whyWrongCopy,
           isCorrect: false,
           showWhy: _phase == WordForgePhase.wrong,
           onWhy: () => setState(() => _phase = WordForgePhase.whyWrong),
@@ -308,6 +321,15 @@ class _PlayingPane extends StatelessWidget {
           round!.template.contextEn,
           style: PanAfricanTypography.bodySmall(context),
         ),
+        if (isYorubaSerialTemplate(round!.template)) ...[
+          SizedBox(height: PanAfricanSpacing.xs),
+          Text(
+            'Tone marks come from the lexicon — we never auto-generate them.',
+            style: PanAfricanTypography.bodySmall(context).copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ],
         SizedBox(height: PanAfricanSpacing.md),
         Semantics(
           label: 'Built form ${composed.surface}',
@@ -450,19 +472,27 @@ class _FeedbackPane extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Icon(
-          isCorrect ? Icons.check_circle_rounded : Icons.info_outline_rounded,
-          size: 48.sp,
-          color: isCorrect
-              ? PanAfricanColors.primary
-              : PanAfricanColors.error,
-          semanticLabel: isCorrect ? 'Correct' : 'Incorrect',
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Icon(
+                  isCorrect ? Icons.check_circle_rounded : Icons.info_outline_rounded,
+                  size: 48.sp,
+                  color: isCorrect
+                      ? PanAfricanColors.primary
+                      : PanAfricanColors.error,
+                  semanticLabel: isCorrect ? 'Correct' : 'Incorrect',
+                ),
+                SizedBox(height: PanAfricanSpacing.md),
+                Text(headline, style: PanAfricanTypography.titleMedium(context)),
+                SizedBox(height: PanAfricanSpacing.sm),
+                Text(detail, style: PanAfricanTypography.bodyMedium(context)),
+              ],
+            ),
+          ),
         ),
-        SizedBox(height: PanAfricanSpacing.md),
-        Text(headline, style: PanAfricanTypography.titleMedium(context)),
-        SizedBox(height: PanAfricanSpacing.sm),
-        Text(detail, style: PanAfricanTypography.bodyMedium(context)),
-        const Spacer(),
         if (showWhy && onWhy != null)
           TextButton(onPressed: onWhy, child: const Text('Why?')),
         FilledButton(onPressed: onContinue, child: const Text('Continue')),
