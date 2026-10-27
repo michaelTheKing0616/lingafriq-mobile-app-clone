@@ -970,7 +970,7 @@ P7-926	Draft	Show word of the day with its story in Today	P7/P7-926.yaml
 P7-927	Draft	Build pan-African same-idea view	P7/P7-927.yaml
 P7-928	Done	Offline lexicon pack manifest + client verify/sync (lexiconPack.service.ts, lexicon_pack_service.dart)	P7/P7-928.yaml
 P7-929	Done	Wire lexicon entry points (words_tab, lens_results_lexicon_link, contribute_hub)	P7/P7-929.yaml
-P7-930	Draft	'Build micro-lesson shape: learn it, see it, try it'	P7/P7-930.yaml
+P7-930	Done	Micro-lesson learn/see/try screen, 60–90s validator, resume + media retry (P7-930)	P7/P7-930.yaml
 P7-931	Draft	Build 30-second perception check for tutorials	P7/P7-931.yaml
 P7-932	Draft	Build speaking try step with real scoring	P7/P7-932.yaml
 P7-933	Draft	Build sound tutorial catalogue with native mouth video	P7/P7-933.yaml
