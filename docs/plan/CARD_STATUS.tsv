@@ -979,7 +979,7 @@ P7-935	Done	Igbo vowel harmony tutorial (p7_935.json, lexicon/pattern cited)	P7/
 P7-936	Done	Hausa ɓ ɗ ƙ tutorial (p7_936.json, lexicon-cited, draft until native sign-off)	P7/P7-936.yaml
 P7-937	Done	Zulu/Xhosa click tutorials (p7_937.json, WAXAL drills, EXT-13 mouth gate)	P7/P7-937.yaml
 P7-938	Done	Amharic ejective/gemination tutorial (p7_938.json, game_content+manifest anchors)	P7/P7-938.yaml
-P7-939	Draft	Build Swahili noun class wheel tutorial	P7/P7-939.yaml
+P7-939	Done	Swahili noun class wheel tutorial pack (p7_939.json, class_wheel m/wa ki/vi)	P7/P7-939.yaml
 P7-940	Draft	Build diacritic typing tutorial for the keyboard bar	P7/P7-940.yaml
 P7-941	Draft	Build minimal-pair demo on why tone marks matter	P7/P7-941.yaml
 P7-942	Draft	Author culture tutorials on greetings, names and taboos	P7/P7-942.yaml

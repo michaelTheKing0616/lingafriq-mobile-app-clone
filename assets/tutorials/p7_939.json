@@ -1,0 +1,185 @@
+{
+  "card": "P7-939",
+  "built": "2026-10-27",
+  "language_code": "sw",
+  "pack_citation": "tools/content_engine/kits/sw/kit.yaml#noun_class; assets/data/patterns/sw.json#sw.pat.present-na; assets/data/lexicon/a1/sw.json; assets/data/game_content.json; assets/data/audio_manifest.json; ELEVATION.md#§11.2:L1791; P7-933",
+  "publish_status": "draft",
+  "native_reviewer_sign_offs": [],
+  "sign_off_requirements": [
+    {
+      "language_code": "sw",
+      "tutorial_id": "sw-sound-noun-classes"
+    }
+  ],
+  "tutorials": [
+    {
+      "id": "sw-sound-noun-classes",
+      "title": "Noun classes (class wheel)",
+      "language_code": "sw",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 22,
+          "body_en": "Kiswahili groups nouns into classes shown by prefixes on singular and plural forms. LingAfriq Stage-1 concord checks only the §3.3 pairs m/wa and ki/vi (tools/content_engine/kits/sw/kit.yaml; DECISIONS P4-044). The see step uses a class wheel: spin to browse, or tap a segment when reduced motion is on (P7-933).",
+          "source_ids": [
+            "tools/content_engine/kits/sw/kit.yaml#noun_class",
+            "CURRICULUM.md#§3.3:L529-L531",
+            "ELEVATION.md#§11.2:L1791",
+            "register:fsi-swahili",
+            "P7-933"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 30,
+          "body_en": "Spin the class wheel or tap a segment. Each segment shows the cited singular and plural prefixes, then example nouns from the A1 lexicon or game_content with manifest audio when licensed clips are present.",
+          "source_ids": [
+            "assets/data/lexicon/a1/sw.json",
+            "assets/data/game_content.json",
+            "assets/data/audio_manifest.json",
+            "assets/data/patterns/sw.json#sw.pat.present-na"
+          ],
+          "presentation": "class_wheel",
+          "class_wheel": {
+            "rotate_when_motion_allowed": true,
+            "reduced_motion": {
+              "rotate_wheel": false,
+              "selection_mode": "tap_segment"
+            },
+            "segments": [
+              {
+                "segment_id": "sw.seg.m-wa",
+                "class_pair": "m/wa",
+                "singular_prefix": "m-",
+                "plural_prefix": "wa-",
+                "concord_prefixes_citation": "tools/content_engine/tests/test_concord_sw.py#concord_table.m/wa",
+                "example_nouns": [
+                  {
+                    "lemma": "mtoto",
+                    "gloss_en": "child",
+                    "number": "singular",
+                    "visible_prefix": "m-",
+                    "lexicon_id": "sw.lex.db52fe58daf3",
+                    "frequency_source_id": "leipzig",
+                    "licence_id": "leipzig",
+                    "game_content_id": null,
+                    "manifest_id": null,
+                    "manifest_key": null,
+                    "audio_uri": null,
+                    "media_gate": "manifest_audio_pending"
+                  },
+                  {
+                    "lemma": "watu",
+                    "gloss_en": "people",
+                    "number": "plural",
+                    "visible_prefix": "wa-",
+                    "lexicon_id": "sw.lex.a02caed6d370",
+                    "frequency_source_id": "leipzig",
+                    "licence_id": "leipzig",
+                    "game_content_id": null,
+                    "manifest_id": null,
+                    "manifest_key": null,
+                    "audio_uri": null,
+                    "media_gate": "manifest_audio_pending"
+                  },
+                  {
+                    "lemma": "Baba",
+                    "gloss_en": "Father (topic label in game_content)",
+                    "number": "singular",
+                    "visible_prefix": null,
+                    "lexicon_id": "sw.lex.c1f122938f50",
+                    "frequency_source_id": "leipzig",
+                    "licence_id": "leipzig",
+                    "game_content_id": 349,
+                    "manifest_id": "swahili-2d884cb47b573f7e",
+                    "manifest_key": "swahili|Baba",
+                    "audio_uri": null,
+                    "media_gate": "manifest_audio_pending"
+                  }
+                ]
+              },
+              {
+                "segment_id": "sw.seg.ki-vi",
+                "class_pair": "ki/vi",
+                "singular_prefix": "ki-",
+                "plural_prefix": "vi-",
+                "concord_prefixes_citation": "tools/content_engine/tests/test_concord_sw.py#concord_table.ki/vi",
+                "example_nouns": [
+                  {
+                    "lemma": "kitabu",
+                    "gloss_en": "book",
+                    "number": "singular",
+                    "visible_prefix": "ki-",
+                    "lexicon_id": "sw.lex.2287215c0da4",
+                    "frequency_source_id": "leipzig",
+                    "licence_id": "leipzig",
+                    "pattern_example": "Anasoma kitabu",
+                    "pattern_id": "sw.pat.present-na",
+                    "game_content_id": null,
+                    "manifest_id": null,
+                    "manifest_key": null,
+                    "audio_uri": null,
+                    "media_gate": "manifest_audio_pending"
+                  },
+                  {
+                    "lemma": "vitabu",
+                    "gloss_en": "books",
+                    "number": "plural",
+                    "visible_prefix": "vi-",
+                    "lexicon_id": "sw.lex.3556f91d9ab5",
+                    "frequency_source_id": "leipzig",
+                    "licence_id": "leipzig",
+                    "game_content_id": null,
+                    "manifest_id": null,
+                    "manifest_key": null,
+                    "audio_uri": null,
+                    "media_gate": "manifest_audio_pending"
+                  },
+                  {
+                    "lemma": "Chakula",
+                    "gloss_en": "Food (topic label in game_content)",
+                    "number": "singular",
+                    "visible_prefix": null,
+                    "lexicon_id": "sw.lex.de1a474fdb17",
+                    "frequency_source_id": "leipzig",
+                    "licence_id": "leipzig",
+                    "pattern_example": "Wanakula chakula",
+                    "pattern_id": "sw.pat.present-na",
+                    "game_content_id": 351,
+                    "manifest_id": "swahili-ac485ac3c4d5885e",
+                    "manifest_key": "swahili|Chakula",
+                    "audio_uri": null,
+                    "media_gate": "manifest_audio_pending"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 24,
+          "body_en": "Which cited A1 noun shows the ki- singular prefix on the class wheel?",
+          "source_ids": [
+            "assets/data/lexicon/a1/sw.json#sw.lex.2287215c0da4",
+            "assets/data/patterns/sw.json#sw.pat.present-na"
+          ],
+          "choices": [
+            {
+              "form": "kitabu",
+              "lexicon_id": "sw.lex.2287215c0da4",
+              "segment_id": "sw.seg.ki-vi"
+            },
+            {
+              "form": "mtoto",
+              "lexicon_id": "sw.lex.db52fe58daf3",
+              "segment_id": "sw.seg.m-wa"
+            }
+          ],
+          "correct_lexicon_id": "sw.lex.2287215c0da4",
+          "correct_segment_id": "sw.seg.ki-vi"
+        }
+      ]
+    }
+  ]
+}
