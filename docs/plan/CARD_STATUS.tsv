@@ -967,7 +967,7 @@ P7-923	Done	Build long-press Word Card on every text surface (lexicon_selectable
 P7-924	Done	Build full lexicon entry page (lexicon_entry_screen.dart)	P7/P7-924.yaml
 P7-925	Done	Global Search lexicon-first (lexicon_search_service.dart, global_search_screen.dart)	P7/P7-925.yaml
 P7-926	Done	Word of the day card + deterministic verified-lexicon story picker (P7-926)	P7/P7-926.yaml
-P7-927	Draft	Build pan-African same-idea view	P7/P7-927.yaml
+P7-927	Done	Pan-African same-idea view + relay concept links (same_idea_view.dart, multilingual_relay_lexicon.dart)	P7/P7-927.yaml
 P7-928	Done	Offline lexicon pack manifest + client verify/sync (lexiconPack.service.ts, lexicon_pack_service.dart)	P7/P7-928.yaml
 P7-929	Done	Wire lexicon entry points (words_tab, lens_results_lexicon_link, contribute_hub)	P7/P7-929.yaml
 P7-930	Done	Micro-lesson learn/see/try screen, 60–90s validator, resume + media retry (P7-930)	P7/P7-930.yaml
