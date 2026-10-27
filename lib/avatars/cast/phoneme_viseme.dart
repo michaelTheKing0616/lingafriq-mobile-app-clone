@@ -1,17 +1,20 @@
-import 'dart:math' as math;
-
 import 'package:lingafriq/avatars/lipsync/phoneme_viseme_map.dart';
+import 'package:lingafriq/avatars/lipsync/rms_jaw.dart';
 import 'package:lingafriq/avatars/lipsync/timing_sidecar.dart';
+import 'package:lingafriq/avatars/lipsync/viseme_scheduler.dart';
 
 export 'package:lingafriq/avatars/lipsync/phoneme_viseme_map.dart';
+export 'package:lingafriq/avatars/lipsync/rms_jaw.dart';
 export 'package:lingafriq/avatars/lipsync/timing_sidecar.dart'
     show AlignedPhoneme, LipSyncTimingSidecar, LipSyncSample, RmsSample;
+export 'package:lingafriq/avatars/lipsync/viseme_scheduler.dart';
 
 const Map<String, double> visemeOpenness = visemeOpennessByWire;
 
-const Duration lipSyncAttack = Duration(milliseconds: 30);
-const Duration lipSyncRelease = Duration(milliseconds: 80);
-const double rmsGate = 0.08;
+/// Legacy aliases for tests and callers.
+const Duration lipSyncAttack = rmsJawAttack;
+const Duration lipSyncRelease = rmsJawRelease;
+const double rmsGate = rmsJawGate;
 
 /// Audio-clock lip sync. [at] is the playback position, not a letter index.
 class LipSyncTrack {
@@ -19,59 +22,37 @@ class LipSyncTrack {
     required this.language,
     required List<AlignedPhoneme> phonemes,
     List<RmsSample> rms = const [],
-  }) : phonemes = List<AlignedPhoneme>.unmodifiable(phonemes),
-       rms = List<RmsSample>.unmodifiable(rms);
+  })  : phonemes = List<AlignedPhoneme>.unmodifiable(phonemes),
+        rms = List<RmsSample>.unmodifiable(rms),
+        _scheduler = VisemeScheduler(languageId: language, phonemes: phonemes),
+        _rmsJaw = RmsJawDriver(samples: rms);
 
   final String language;
   final List<AlignedPhoneme> phonemes;
   final List<RmsSample> rms;
 
-  double _jaw = 0;
+  final VisemeScheduler _scheduler;
+  final RmsJawDriver _rmsJaw;
 
   LipSyncSample at(
     Duration position, {
     Duration delta = const Duration(milliseconds: 16),
   }) {
-    final raw = _rmsAt(position);
-    final phoneme = _phonemeAt(position);
-    final mapped =
-        phoneme == null ? null : visemeWireForPhoneme(language, phoneme);
-    final String viseme;
-    final double target;
-    if (phonemes.isEmpty) {
-      viseme = raw >= rmsGate ? 'aa' : 'sil';
-      target = _smooth(raw, delta);
-    } else {
-      viseme = mapped ?? 'sil';
-      final openness = visemeOpenness[viseme] ?? 0;
-      target = _smooth((raw * openness).clamp(0, 1), delta);
-    }
-    return LipSyncSample(viseme: viseme, jawOpen: target);
-  }
+    final smoothedRms = _rmsJaw.advance(position, delta);
 
-  String? _phonemeAt(Duration position) {
-    for (final token in phonemes) {
-      if (position >= token.start && position < token.end) return token.phoneme;
+    if (!_scheduler.isAligned) {
+      _scheduler.logUnalignedIfNeeded();
+      final viseme = smoothedRms >= rmsJawGate ? 'aa' : 'sil';
+      return LipSyncSample(viseme: viseme, jawOpen: smoothedRms);
     }
-    return null;
-  }
 
-  double _rmsAt(Duration position) {
-    if (rms.isEmpty) return 0;
-    var chosen = rms.first.level;
-    for (final sample in rms) {
-      if (sample.at > position) break;
-      chosen = sample.level;
-    }
-    return chosen.clamp(0, 1);
-  }
-
-  double _smooth(double target, Duration delta) {
-    final tau = target >= _jaw ? lipSyncAttack : lipSyncRelease;
-    final dt = delta.inMicroseconds / 1000000;
-    final time = tau.inMicroseconds / 1000000;
-    final alpha = time <= 0 ? 1.0 : 1 - math.exp(-dt / time);
-    _jaw = (_jaw + (target - _jaw) * alpha).clamp(0, 1);
-    return _jaw;
+    final mapped = _scheduler.visemeWireAt(position);
+    final viseme = mapped ?? 'sil';
+    final openness = visemeOpenness[viseme] ?? 0;
+    final jawOpen = combineJawOpen(
+      visemeOpenness: openness,
+      smoothedRms: smoothedRms,
+    );
+    return LipSyncSample(viseme: viseme, jawOpen: jawOpen);
   }
 }

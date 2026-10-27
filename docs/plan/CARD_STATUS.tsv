@@ -420,7 +420,7 @@ P11-039	Done	chip_artboard_spec.md: 128 canvas, ≥2px@64, silhouette gate, cont
 P11-040	Done	Golden CharacterChip renders at 32/48/64 px × five expressions (chip_golden_test.dart)	P11/P11-040.yaml
 P11-041	Done	Polie activity states, idle micro-motion, ≤300 ms transitions (state_transition_test.dart)	P11/P11-041.yaml
 P11-042	Done	Viseme enum, timing sidecar JSON, per-language phoneme maps (lipsync/)	P11/P11-042.yaml
-P11-043	Draft	Schedule visemes on audio clock with RMS jaw fallback	P11/P11-043.yaml
+P11-043	Done	Schedule visemes on audio clock with RMS jaw fallback (viseme_scheduler.dart, rms_jaw.dart)	P11/P11-043.yaml
 P11-044	Draft	Verify lip-sync rated natural by native viewers	P11/P11-044.yaml
 P11-045	Draft	Build nested artboard customisation for hair, headwear, garments	P11/P11-045.yaml
 P11-046	Draft	Build skin-tone and colour properties across ≥10 tones	P11/P11-046.yaml

@@ -1,5 +1,7 @@
 import 'package:lingafriq/avatars/cast/phoneme_viseme.dart';
 import 'package:lingafriq/avatars/lip_sync_engine.dart';
+import 'package:lingafriq/avatars/lipsync/rms_jaw.dart';
+import 'package:lingafriq/avatars/lipsync/viseme_scheduler.dart';
 
 /// Drives avatar mouth state from gateway lip-sync payloads (P6-081).
 class LipSyncDriver {
@@ -9,6 +11,8 @@ class LipSyncDriver {
   LipSyncTrack? _track;
   bool _neutralTalking = true;
   List<RmsSample> _rms = const [];
+  VisemeScheduler? _scheduler;
+  RmsJawDriver? _rmsOnly;
 
   static const int maxDriftMs = 80;
 
@@ -25,6 +29,9 @@ class LipSyncDriver {
     if (mode != 'viseme' || phonemeList.isEmpty) {
       _neutralTalking = true;
       _track = null;
+      _scheduler = VisemeScheduler(languageId: language, phonemes: const []);
+      _rmsOnly = RmsJawDriver(samples: rms);
+      _scheduler!.logUnalignedIfNeeded();
       return;
     }
 
@@ -32,6 +39,8 @@ class LipSyncDriver {
     final phonemes = sidecar.phonemes;
 
     _neutralTalking = phonemes.isEmpty;
+    _scheduler = VisemeScheduler(languageId: language, phonemes: phonemes);
+    _rmsOnly = null;
     _track = _engine.track(
       language: language,
       phonemes: phonemes,
@@ -42,6 +51,9 @@ class LipSyncDriver {
   void clear() {
     _track = null;
     _neutralTalking = true;
+    _scheduler = null;
+    _rmsOnly = null;
+    _rms = const [];
   }
 
   LipSyncSample sampleAt(
@@ -50,24 +62,19 @@ class LipSyncDriver {
   }) {
     final track = _track;
     if (track == null) {
+      final rmsOnly = _rmsOnly;
+      if (rmsOnly != null) {
+        final jaw = rmsOnly.advance(position, delta);
+        return LipSyncSample(viseme: 'sil', jawOpen: jaw);
+      }
       return const LipSyncSample(viseme: 'sil', jawOpen: 0);
     }
     if (_neutralTalking) {
-      final level = _rmsAt(position);
-      final jaw = (level * 0.15).clamp(0.0, 0.2);
+      final rmsOnly = _rmsOnly ?? RmsJawDriver(samples: _rms);
+      final jaw = rmsOnly.advance(position, delta);
       return LipSyncSample(viseme: 'sil', jawOpen: jaw);
     }
     return track.at(position, delta: delta);
-  }
-
-  double _rmsAt(Duration position) {
-    if (_rms.isEmpty) return 0;
-    var chosen = _rms.first.level;
-    for (final sample in _rms) {
-      if (sample.at > position) break;
-      chosen = sample.level;
-    }
-    return chosen.clamp(0, 1);
   }
 
   /// Returns drift from the active phoneme window (for tests); null when idle.
