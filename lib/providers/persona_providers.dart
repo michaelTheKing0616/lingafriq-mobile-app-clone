@@ -30,9 +30,7 @@ final personaCognitionEngineProvider = Provider<PersonaCognitionEngine>((ref) {
 
 final historicalRoleplayControllerProvider =
     Provider<HistoricalRoleplayController>((ref) {
-  return HistoricalRoleplayController(
-    gateway: AiGatewayClient(ref.watch(client)),
-  );
+  return HistoricalRoleplayController(dio: ref.watch(client));
 });
 
 final roleplayAssessmentEngineProvider =

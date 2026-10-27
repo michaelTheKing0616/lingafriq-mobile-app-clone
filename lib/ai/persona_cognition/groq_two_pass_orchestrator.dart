@@ -1,6 +1,56 @@
-// Pass result types only — LLM orchestration runs on the gateway (P6-018).
+// Pass result types only — LLM orchestration runs on the gateway (P6-018 / P11-008).
 
+import 'package:dio/dio.dart';
 import 'package:lingafriq/ai/persona_cognition/epistemic_classifier.dart';
+
+/// Typed failure from POST /api/ai/persona/historical-roleplay/turn (no silent fallback).
+class PersonaTurnGatewayError implements Exception {
+  const PersonaTurnGatewayError({
+    required this.code,
+    required this.message,
+    this.statusCode,
+  });
+
+  final String code;
+  final String message;
+  final int? statusCode;
+
+  bool get retryable =>
+      statusCode == null || statusCode! >= 500 || statusCode == 429;
+
+  static PersonaTurnGatewayError fromDio(DioException e) {
+    final status = e.response?.statusCode;
+    final data = e.response?.data;
+    String code = 'persona_gateway_unavailable';
+    String message = 'The persona could not reply. Try again.';
+    if (data is Map) {
+      final err = data['error']?.toString();
+      if (err != null && err.isNotEmpty) code = err;
+      final reason = data['reason']?.toString();
+      if (reason != null && reason.isNotEmpty) {
+        message = reason;
+      }
+    }
+    return PersonaTurnGatewayError(
+      code: code,
+      message: message,
+      statusCode: status,
+    );
+  }
+
+  static PersonaTurnGatewayError fromResponse(int? status, Map<String, dynamic>? data) {
+    final code = data?['error']?.toString() ?? 'persona_gateway_failed';
+    final reason = data?['reason']?.toString();
+    return PersonaTurnGatewayError(
+      code: code,
+      message: reason ?? 'The persona could not reply. Try again.',
+      statusCode: status,
+    );
+  }
+
+  @override
+  String toString() => message;
+}
 
 class Pass1Result {
   final EpistemicStatus epistemicStatus;

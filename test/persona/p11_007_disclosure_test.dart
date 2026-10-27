@@ -5,7 +5,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:lingafriq/ai/personas/historical_persona_registry.dart';
 import 'package:lingafriq/ai/personas/historical_roleplay_controller.dart';
 import 'package:lingafriq/ai/personas/persona_disclosure_badge.dart';
-import 'package:lingafriq/services/ai_gateway_client.dart';
 
 const _personasDir = 'lib/ai/personas';
 
@@ -27,7 +26,7 @@ void main() {
     final persona = HistoricalPersonaRegistry.findById('mandela_nelson');
     expect(persona, isNotNull);
     final controller = HistoricalRoleplayController(
-      gateway: AiGatewayClient(Dio(BaseOptions(baseUrl: 'http://127.0.0.1/'))),
+      dio: Dio(BaseOptions(baseUrl: 'http://127.0.0.1/')),
     );
     final prompt = controller.buildRoleplaySystemPromptForTest(
       persona: persona!,
@@ -51,17 +50,20 @@ void main() {
               requestOptions: options,
               statusCode: 200,
               data: {
-                'content':
-                    '{"speech_text":"Sawubona, friend.","language_teaching_points":[{"type":"vocabulary","content":"sawubona = hello"}],"emotion":"encouraging","next_beat":"greet"}',
+                'ok': true,
+                'speech_text': 'Sawubona, friend.',
+                'language_teaching_points': [
+                  {'type': 'vocabulary', 'content': 'sawubona = hello'},
+                ],
+                'emotion': 'encouraging',
+                'next_beat': 'greet',
               },
             ),
           );
         },
       ),
     );
-    final controller = HistoricalRoleplayController(
-      gateway: AiGatewayClient(dio),
-    );
+    final controller = HistoricalRoleplayController(dio: dio);
     final start = await controller.startPersonaSession(
       learnerId: 'p11_007',
       languageCode: 'en',

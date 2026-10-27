@@ -8,13 +8,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/ai/personas/historical_roleplay_controller.dart';
-import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/providers/dio_provider.dart';
 import 'package:lingafriq/providers/persona_providers.dart';
 import 'package:lingafriq/services/env_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const _gatewayPath = '/api/ai/chat/completion';
+const _gatewayPath = '/api/ai/persona/historical-roleplay/turn';
 const _arbPath = 'lib/l10n/app_en.arb';
 const _gatewayClientPath = 'lib/services/ai_gateway_client.dart';
 const _providersPath = 'lib/providers/persona_providers.dart';
@@ -71,15 +70,15 @@ class _RecordingGateway {
 }
 
 Map<String, dynamic> _fixtureGatewayBody() {
-  const speechJson =
-      '{"speech_text":"Sawubona, mntwana wam.","teaching_points":[{"type":"vocabulary","content":"Sawubona"}],"emotion_tone":"warm","next_state":"greet","closure_options":[]}';
   return {
-    'content': speechJson,
-    'choices': [
-      {
-        'message': {'content': speechJson},
-      },
+    'ok': true,
+    'speech_text': 'Sawubona, mntwana wam.',
+    'language_teaching_points': [
+      {'type': 'vocabulary', 'content': 'Sawubona'},
     ],
+    'emotion': 'warm',
+    'next_beat': 'greet',
+    'closure_options': <String>[],
   };
 }
 
@@ -107,11 +106,9 @@ String _retryCopy() {
 void _assertGatewayRequest(RequestOptions request) {
   final uri = request.uri.toString();
   expect(
-    uri.contains(_gatewayPath) ||
-        uri.contains(ApiContract.ai.chatCompletion) ||
-        request.path.contains(_gatewayPath),
+    uri.contains(_gatewayPath) || request.path.contains(_gatewayPath),
     isTrue,
-    reason: 'persona mission must POST $_gatewayPath, got $uri',
+    reason: 'persona turn must POST $_gatewayPath, got $uri',
   );
   expect(
     uri.contains('api.groq.com'),
@@ -120,11 +117,8 @@ void _assertGatewayRequest(RequestOptions request) {
   );
   final body = request.data;
   expect(body, isA<Map>());
-  expect(
-    (body as Map)['mode'],
-    'roleplay',
-    reason: 'gateway body must send mode roleplay',
-  );
+  expect((body as Map)['persona_id'], isNotNull);
+  expect((body as Map)['persona'], isNotNull);
 }
 
 void _assertNoClientAiKeyRead() {

@@ -1,11 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
+import 'package:lingafriq/ai/persona_cognition/groq_two_pass_orchestrator.dart';
 import 'package:lingafriq/ai/personas/historical_persona_registry.dart';
 import 'package:lingafriq/ai/personas/persona_disclosure_badge.dart';
-import 'package:lingafriq/ai/validation/response_validator.dart';
 import 'package:lingafriq/learning/learner_model/learner_model_service.dart';
 import 'package:lingafriq/learning/learner_model/learner_skill_state.dart';
-import 'package:lingafriq/services/ai_gateway_client.dart';
 
 /// Engagement type for historical roleplay sessions.
 enum HistoricalEngagementType {
@@ -129,9 +129,95 @@ class HistoricalRoleplayReport {
 /// Injects persona behavior, documented positions, and (for opinion_debate)
 /// opinion inference matrix into prompts. Enforces JSON response schema
 /// and updates learner model after each turn.
+/// Single gateway endpoint for historical persona turns (P11-008).
+class PersonaHistoricalRoleplayGateway {
+  PersonaHistoricalRoleplayGateway(this._dio);
+
+  final Dio _dio;
+
+  static const turnPath = '/api/ai/persona/historical-roleplay/turn';
+
+  Future<Map<String, dynamic>> runTurn({
+    required String personaId,
+    required String languageCode,
+    required HistoricalEngagementType engagementType,
+    required bool isOpening,
+    required HistoricalPersona persona,
+    required double learnerMastery,
+    String? userMessage,
+    String? dominantErrorType,
+    List<String> turnHistory = const [],
+    List<String> contextMemory = const [],
+  }) async {
+    try {
+      final response = await _dio.post<Map<String, dynamic>>(
+        turnPath,
+        data: {
+          'persona_id': personaId,
+          'language_code': languageCode,
+          'engagement_type': engagementType.name,
+          'is_opening': isOpening,
+          if (userMessage != null) 'user_message': userMessage,
+          'learner_mastery': learnerMastery,
+          if (dominantErrorType != null) 'dominant_error_type': dominantErrorType,
+          'turn_history': turnHistory,
+          'context_memory': contextMemory,
+          'persona': _personaPayload(persona),
+        },
+        options: Options(contentType: Headers.jsonContentType),
+      );
+      if (response.statusCode != 200) {
+        throw PersonaTurnGatewayError.fromResponse(
+          response.statusCode,
+          response.data,
+        );
+      }
+      final data = response.data;
+      if (data == null || data['ok'] != true) {
+        throw PersonaTurnGatewayError.fromResponse(response.statusCode, data);
+      }
+      return data;
+    } on DioException catch (e) {
+      throw PersonaTurnGatewayError.fromDio(e);
+    }
+  }
+
+  static Map<String, dynamic> _personaPayload(HistoricalPersona persona) {
+    return {
+      'display_name': persona.displayName,
+      'start_year': persona.startYear,
+      'end_year': persona.endYear,
+      'short_bio': persona.shortBio,
+      'primary_language': persona.primaryLanguages.isNotEmpty
+          ? persona.primaryLanguages.first
+          : 'English',
+      'voice_style': persona.voiceStyle,
+      'pace': persona.pace,
+      'tone': persona.tone,
+      'openness': persona.openness,
+      'formality': persona.formality,
+      'humor_level': persona.humorLevel,
+      'emotion_range': persona.emotionRange,
+      'core_events': persona.coreEvents
+          .take(10)
+          .map((e) => {'year': e.year, 'event': e.event})
+          .toList(),
+      'documented_positions': persona.documentedPositions,
+      'common_vocabulary': persona.commonVocabulary.take(12).toList(),
+      'grammar_patterns': persona.grammarPatterns.take(8).toList(),
+      'cultural_pragmatics': persona.culturalPragmatics.take(8).toList(),
+      'opinion_inference_matrix': persona.opinionInferenceMatrix.map(
+        (k, v) => MapEntry(k, {
+          'inference_basis': v.inferenceBasis,
+          'confidence': v.confidence,
+        }),
+      ),
+    };
+  }
+}
+
 class HistoricalRoleplayController {
-  final AiGatewayClient _gateway;
-  final String _model;
+  final PersonaHistoricalRoleplayGateway _turnGateway;
   final LearnerModelService _learnerModel;
 
   final Map<String, HistoricalRoleplaySession> _sessions = {};
@@ -140,11 +226,9 @@ class HistoricalRoleplayController {
   static const int _maxTurnsBeforeClosure = 25;
 
   HistoricalRoleplayController({
-    required AiGatewayClient gateway,
-    String model = 'llama-3.3-70b-versatile',
+    required Dio dio,
     LearnerModelService? learnerModel,
-  })  : _gateway = gateway,
-        _model = model,
+  })  : _turnGateway = PersonaHistoricalRoleplayGateway(dio),
         _learnerModel = learnerModel ?? LearnerModelService.instance;
 
   /// Starts a new historical roleplay session. Returns how-built facts plus opening turn.
@@ -279,18 +363,28 @@ class HistoricalRoleplayController {
     required bool isOpening,
     String? userMessage,
   }) async {
-    final messages =
-        _buildMessages(session, persona, state, isOpening, userMessage);
+    final language = persona.primaryLanguages.isNotEmpty
+        ? persona.primaryLanguages.first
+        : session.languageCode;
+    final historyLines = <String>[];
+    for (final t in session.turns) {
+      historyLines.add('Persona: ${t.speechText}');
+    }
 
-    final data = await _gateway.completeChat(
-      messages: messages,
-      mode: 'roleplay',
-      temperature: 0.35,
-      maxTokens: 500,
-      model: _model,
+    final data = await _turnGateway.runTurn(
+      personaId: session.personaId,
+      languageCode: language,
+      engagementType: session.engagementType,
+      isOpening: isOpening,
+      persona: persona,
+      learnerMastery: state.mastery,
+      userMessage: userMessage,
+      dominantErrorType: state.dominantErrorType,
+      turnHistory: historyLines,
+      contextMemory: session.contextMemory,
     );
-    final content = _gateway.extractContent(data);
-    final parsed = ResponseValidator.validateHistoricalRoleplayResponse(content);
+
+    final parsed = Map<String, dynamic>.from(data);
 
     final teachingRaw = parsed['language_teaching_points'] as List<dynamic>? ??
         parsed['teaching_points'] as List<dynamic>?;
