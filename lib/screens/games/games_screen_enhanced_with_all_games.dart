@@ -21,6 +21,7 @@ import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/games/tone_forge/tone_forge_screen.dart';
 import 'package:lingafriq/games/word_forge/word_forge_screen.dart';
+import 'package:lingafriq/games/minimal_pair_duel/minimal_pair_duel_screen.dart';
 import 'package:lingafriq/screens/games/game_catalog.dart';
 import 'package:lingafriq/games/gamekit/all_games_registry.dart';
 import 'package:lingafriq/screens/games/games_screen.dart';
@@ -72,6 +73,17 @@ class GamesScreenEnhanced extends HookConsumerWidget {
         await Navigator.of(context).push(
           SmoothPageRoute.platform(
             child: WordForgeScreen(
+              language: lang,
+              onBack: () => Navigator.of(context).pop(),
+            ),
+          ),
+        );
+        return;
+      }
+      if (listing.gameId == AllGamesRegistry.minimalPairDuelGameId) {
+        await Navigator.of(context).push(
+          SmoothPageRoute.platform(
+            child: MinimalPairDuelScreen(
               language: lang,
               onBack: () => Navigator.of(context).pop(),
             ),
