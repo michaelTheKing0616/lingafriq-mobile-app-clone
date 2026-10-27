@@ -994,7 +994,7 @@ P8-905	Done	GameKit adaptive difficulty 80–85% (game_difficulty.dart, resolveW
 P8-906	Done	GameKit level-band duel matchmaking (game_matchmaking.service.ts, socket)	P8/P8-906.yaml
 P8-907	Done	GameKit dark-pattern CI lint (lint_dark_patterns.py, GameKitRewardPolicy)	P8/P8-907.yaml
 P8-908	Done	GameKit bot labels, server isBot, leaderboard exclude (game_engine_service, progress_meter, game_matchmaking)	P8/P8-908.yaml
-P8-909	Draft	'GameKit: server-verified rewards'	P8/P8-909.yaml
+P8-909	Done	GameKit server-verified rewards (game_rewards.service, claim-reward, gamification_provider)	P8/P8-909.yaml
 P8-910	Draft	'GameKit: real-scorer adapter for speaking games'	P8/P8-910.yaml
 P8-911	Draft	'GameKit: honest practice mode until real scoring ships'	P8/P8-911.yaml
 P8-912	Draft	'GameKit: draw game word pools from the lexicon with audio'	P8/P8-912.yaml

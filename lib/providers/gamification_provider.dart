@@ -16,6 +16,9 @@ import '../widgets/gamification/streak_milestone_overlay.dart';
 import '../models/game_streak.dart';
 import 'notification_provider.dart';
 import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
+import '../games/gamekit/game_result.dart';
+import '../models/game/game_session_model.dart';
+import 'game_provider.dart';
 
 // P8-907: GameKit core sessions never gate on hearts/energy (GameKitRewardPolicy).
 
@@ -198,7 +201,46 @@ class GamificationProvider extends Notifier<BaseProviderState>
   /// 2. If backend fails → apply optimistic local XP but mark as *pending* so
   ///    the next sync does NOT blindly overwrite backend state and cause a
   ///    double-count.
+  /// P8-909 — server recomputes XP from synced turn log; client never posts amounts.
+  Future<int> claimVerifiedGameSessionReward(GameSession session) async {
+    try {
+      final dio = ref.read(client);
+      final claim = await claimGameSessionRewardVerified(dio: dio, session: session);
+      if (claim == null) {
+        logger.warn('Game reward claim rejected', tag: 'gamification', context: {
+          'sessionId': session.sessionId,
+        });
+        return 0;
+      }
+      if (claim.practice) {
+        return 0;
+      }
+      final total = claim.xpTotal;
+      if (total != null) {
+        final newLevel = LevelTitles.getLevelFromXP(total);
+        _gamification = _gamification.copyWith(
+          xp: total,
+          level: newLevel,
+          levelTitle: LevelTitles.getTitleForLevel(newLevel),
+        );
+        await _saveGamification();
+        state = state.copyWith();
+      }
+      return claim.xpAwarded;
+    } catch (e) {
+      logger.error('Game reward claim failed', tag: 'gamification', error: e);
+      return 0;
+    }
+  }
+
   Future<int> awardXP(String source, {double multiplier = 1.0, String? sourceId}) async {
+    if (source == 'game_complete') {
+      final active = ref.read(gameProvider.notifier).currentSession;
+      if (active != null) {
+        return claimVerifiedGameSessionReward(active);
+      }
+    }
+
     final baseXP = XPSources.getXP(source);
     final xpGain = (baseXP * multiplier).round();
 

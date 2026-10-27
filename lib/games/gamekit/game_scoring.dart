@@ -59,3 +59,18 @@ class GameScore {
   }
 }
 
+/// Server-parity preview for GameKit session rewards (P8-909; authoritative value is claim response).
+int previewGameSessionXp({
+  required int correctCount,
+  required int totalTurns,
+  required int durationMs,
+}) {
+  if (totalTurns <= 0) return 0;
+  final accuracy = correctCount / totalTurns;
+  const baseXp = 10;
+  final accuracyBonus = (accuracy * 20).round();
+  final speedBonus = durationMs < 30000 ? 10 : (durationMs < 60000 ? 5 : 0);
+  final perfectBonus = accuracy >= 1.0 ? 25 : 0;
+  return baseXp + accuracyBonus + speedBonus + perfectBonus;
+}
+

@@ -8,6 +8,9 @@ import '../../models/game/game_session_model.dart' as backend;
 import '../../learning/learner_model/learner_model_service.dart';
 import '../../learning/learner_model/error_taxonomy.dart';
 import '../../services/learning/spaced_repetition_service.dart';
+import '../../config/api_contract.dart';
+import '../../providers/dio_provider.dart';
+import 'package:dio/dio.dart';
 
 /// Complete result of a game turn
 class GameTurnResult {
@@ -158,6 +161,62 @@ class GameKitLearnerGraphWriter {
     _pendingSrs.clear();
     return applied;
   }
+}
+
+/// Server-verified GameKit session reward (P8-909).
+class GameSessionRewardClaim {
+  final String sessionId;
+  final int xpAwarded;
+  final bool practice;
+  final bool duplicate;
+  final int? xpTotal;
+
+  const GameSessionRewardClaim({
+    required this.sessionId,
+    required this.xpAwarded,
+    required this.practice,
+    required this.duplicate,
+    this.xpTotal,
+  });
+
+  factory GameSessionRewardClaim.fromJson(Map<String, dynamic> json) {
+    return GameSessionRewardClaim(
+      sessionId: json['session_id'] as String? ?? '',
+      xpAwarded: (json['xp_awarded'] as num?)?.toInt() ?? 0,
+      practice: json['practice'] == true,
+      duplicate: json['duplicate'] == true,
+      xpTotal: (json['xp_total'] as num?)?.toInt(),
+    );
+  }
+}
+
+/// POST /api/games/session/:id/claim-reward/ — never sends client XP totals.
+Future<GameSessionRewardClaim?> claimGameSessionRewardVerified({
+  required Dio dio,
+  required backend.GameSession session,
+}) async {
+  final response = await dio.post<Map<String, dynamic>>(
+    ApiContract.url('/api/games/session/${session.sessionId}/claim-reward/'),
+    data: const <String, dynamic>{},
+    options: Options(
+      validateStatus: (status) => status != null && status < 500,
+    ),
+  );
+  final status = response.statusCode ?? 0;
+  if (status == 401 || status == 403) {
+    throw DioException(
+      requestOptions: response.requestOptions,
+      response: response,
+      type: DioExceptionType.badResponse,
+      message: 'game_reward_auth_failed',
+    );
+  }
+  if (status >= 400) {
+    return null;
+  }
+  final data = response.data?['data'];
+  if (data is! Map<String, dynamic>) return null;
+  return GameSessionRewardClaim.fromJson(data);
 }
 
 /// Result of resolving a turn and recording it on the learner graph.

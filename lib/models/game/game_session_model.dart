@@ -30,6 +30,11 @@ class GameSession {
   int get totalTurns => turns.length;
   double get accuracy => totalTurns > 0 ? correctCount / totalTurns : 0.0;
 
+  bool get practiceMode =>
+      metadata['practice_mode'] == true ||
+      metadata['practice'] == true ||
+      (metadata['mode']?.toString().toLowerCase() == 'practice');
+
   Map<String, dynamic> toJson() => {
         'session_id': sessionId,
         'user_id': userId,
