@@ -95,8 +95,8 @@ dependencies:
   # (same WebRTC-SDK version), avoiding CocoaPods WebRTC-SDK conflicts on main.
   livekit_client: ^2.3.6
   # Game Engine & Animation
-  rive: 0.14.11
-  rive_native: 0.1.11
+  rive: ^0.14.11
+  rive_native: ^0.1.11
   flame: ^1.18.0
   # Audio Analysis
   # pitch_detector: ^0.1.0  # Package not available on pub.dev - removed

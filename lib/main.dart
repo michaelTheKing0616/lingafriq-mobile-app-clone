@@ -34,6 +34,7 @@ import 'services/performance_monitor.dart';
 import 'services/deep_link_service.dart';
 import 'config/secrets_manager.dart';
 import 'package:rive/rive.dart';
+import 'avatars/runtime/rive_file_cache.dart';
 import 'utils/performance_utils.dart';
 import 'utils/structured_logger.dart';
 import 'utils/polie_design_tokens.dart';
@@ -74,6 +75,7 @@ void main() async {
       deferred: {
         'offline': _startDeferredServices,
         'recommendations': () => SmartRecommendationsService().initialize(),
+        'rive_cast': () => RiveFileCache.instance.load(RiveRuntimeAssets.cast),
       },
       onFirstFrame: (task) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
