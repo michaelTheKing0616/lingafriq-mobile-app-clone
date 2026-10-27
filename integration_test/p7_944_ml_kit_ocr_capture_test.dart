@@ -29,12 +29,15 @@ void main() {
       final imagePath = map['image_asset'] as String;
       final input = InputImage.fromFilePath(imagePath);
       final recognized = await recognizer.processImage(input);
+      expect(recognized.text.trim(), isNotEmpty,
+          reason: 'OCR result should produce text for ${map['id']}');
       runs.add({
         'fixture_id': map['id'] as String,
         'ml_kit_text': recognized.text.trim(),
       });
     }
     await recognizer.close();
+    expect(runs, hasLength((fixtures['fixtures'] as List<dynamic>).length));
 
     stdout.writeln(jsonEncode({
       'platform': Platform.operatingSystem,
