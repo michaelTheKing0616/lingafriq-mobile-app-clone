@@ -868,7 +868,7 @@ P6-009	Done	Build persona source index retrieval (personaIndex.ts)	P6/P6-009.yam
 P6-010	Done	lexiconConstraint.ts + outputValidator.ts: L0–L1 prompt constraint, out_of_level after 1 regen	P6/P6-010.yaml
 P6-011	Done	Route model per language, task and tier with fallbacks	P6/P6-011.yaml
 P6-012	Done	Enforce model licence allowlist in router (`licenceAllowlist.ts`, `licence_register.csv`)	P6/P6-012.yaml
-P6-013	Draft	Cache deterministic outputs in gateway	P6/P6-013.yaml
+P6-013	Done	Cache deterministic outputs in gateway (`cache.ts`, tutor_explain/story)	P6/P6-013.yaml
 P6-014	Draft	Add input and output safety classifiers with age-tier policy	P6/P6-014.yaml
 P6-015	Draft	Scrub PII and log without PII	P6/P6-015.yaml
 P6-016	Draft	Emit traces, token cost, latency and eval samples	P6/P6-016.yaml
