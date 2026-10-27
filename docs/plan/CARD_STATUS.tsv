@@ -893,7 +893,7 @@ P6-034	Done	Extract F0 and normalise per speaker in semitones (f0.py, normalise.
 P6-035	Done	Compare per-syllable contour to native reference (syllable_contour.py, tone_classifier.py)	P6/P6-035.yaml
 P6-036	Done	Support Yoruba H/M/L with glides and Twi H/L (tones/yoruba.py, tones/twi.py)	P6/P6-036.yaml
 P6-037	Done	Support Igbo downstep, Hausa falling and Zulu depressors (igbo.py, hausa.py, zulu.py)	P6/P6-037.yaml
-P6-038	Draft	Return per-syllable tone correctness with confidence	P6/P6-038.yaml
+P6-038	Done	Per-syllable tone correctness with confidence (tone_result.py, score.route.ts)	P6/P6-038.yaml
 P6-039	Draft	Show learner contour overlaid on native contour	P6/P6-039.yaml
 P6-040	Draft	'Score fluency: rate, pauses, self-repairs'	P6/P6-040.yaml
 P6-041	Draft	Collect native 1-5 rating data per language	P6/P6-041.yaml
