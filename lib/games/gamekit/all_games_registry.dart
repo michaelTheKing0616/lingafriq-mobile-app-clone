@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
 import 'generic_game_template.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../models/game/game_session_model.dart' show GameTypeExtension, GameType;
 import '../../screens/games/game_catalog.dart';
+import '../script_sprint/script_sprint_screen.dart';
 import 'game_engine.dart';
 
 /// Skill shelves in the Arcade hub (P8-914 / P8-917).
@@ -42,6 +44,7 @@ const Set<String> kArcadeHeadlinerShippedElevationCards = {
   'P8-924',
   'P8-925',
   'P8-926',
+  'P8-927',
 };
 
 /// Ten headliners in product order; Tone Forge carries the Featured badge.
@@ -229,6 +232,13 @@ class AllGamesRegistry {
       elevationPending: false,
       routeGameType: GameType.toneTrainer,
     ),
+    'script_sprint': ArcadeGameListing(
+      gameId: 'script_sprint',
+      shelf: ArcadeSkillShelf.vocabulary,
+      elevationCardId: 'P8-927',
+      featured: false,
+      elevationPending: false,
+    ),
     for (final entry in GameCatalog.entries)
       entry.type.name: ArcadeGameListing(
         gameId: entry.type.name,
@@ -280,6 +290,7 @@ class AllGamesRegistry {
     'proverb_unlocker': 'P8-924',
     'clan_lineage_story_builder': 'P8-925',
     'grammar_jam': 'P8-926',
+    'script_sprint': 'P8-927',
     'greeting_diplomacy_challenge': 'P8-934',
     'pronunciation_karaoke': 'P8-935',
   };
@@ -294,10 +305,25 @@ class AllGamesRegistry {
         gameId == GameType.marketBargainingSimulator.name ||
         gameId == GameType.proverbUnlocker.name ||
         gameId == GameType.clanLineageStoryBuilder.name ||
-        gameId == GameType.grammarJam.name) {
+        gameId == GameType.grammarJam.name ||
+        gameId == 'script_sprint') {
       return false;
     }
     return true;
+  }
+
+  /// Headliners that ship a dedicated screen (P8-927 Fidel Flight).
+  static Widget? buildHeadlinerScreen({
+    required String gameId,
+    required String language,
+    VoidCallback? onBack,
+  }) {
+    switch (gameId) {
+      case 'script_sprint':
+        return ScriptSprintScreen(language: language, onBack: onBack);
+      default:
+        return null;
+    }
   }
 
   static GameCatalogEntry? catalogEntryFor(String gameId) {

@@ -1011,7 +1011,7 @@ P8-923	Done	Danfo/Matatu Rush listening game (danfo_rush/*, taxi_survival harves
 P8-924	Done	Proverb Weaver flagship: fragment weave, situation match, B1 gate, legacy unlocker link	P8/P8-924.yaml
 P8-925	Done	Griot Story Chain flagship: turns, grammar gate, playback, story_chain.service (P8-925)	P8/P8-925.yaml
 P8-926	Done	Word Forge morphology sw/zu (word_forge/*, grammar_jam route)	P8/P8-926.yaml
-P8-927	Draft	'Flagship: Fidel Flight / Script Sprint'	P8/P8-927.yaml
+P8-927	Done	'Flagship: Fidel Flight / Script Sprint' (script_sprint/*)	P8/P8-927.yaml
 P8-928	Draft	'Flagship: Greeting Gauntlet'	P8/P8-928.yaml
 P8-929	Draft	'Flagship: Echo Karaoke with live pitch line'	P8/P8-929.yaml
 P8-930	Draft	'Word Forge: Yoruba serial-verb variant'	P8/P8-930.yaml
