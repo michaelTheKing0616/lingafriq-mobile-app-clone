@@ -875,7 +875,7 @@ P6-016	Done	Emit traces, token cost, latency and eval samples (telemetry.ts, eva
 P6-017	Done	Stream all chat with first token under 400 ms (stream.ts, chat.route.ts)	P6/P6-017.yaml
 P6-018	Done	Server two-pass persona cognition + mobile gateway client (P6-018)	P6/P6-018.yaml
 P6-019	Done	Migrate client to gateway and remove keys and mode logic (ai_gateway_client.dart, groq provider, polie_workspace)	P6/P6-019.yaml
-P6-020	Draft	Serve authenticated STT via gateway with Intron primary	P6/P6-020.yaml
+P6-020	Done	Gateway STT: /ai/stt/transcribe, Intron→Omnilingual, yo/ig/ha whisper block (P6-020)	P6/P6-020.yaml
 P6-021	Draft	Self-host Omnilingual ASR fine-tuned for Stage-1 languages	P6/P6-021.yaml
 P6-022	Draft	Provide forced aligner service	P6/P6-022.yaml
 P6-023	Draft	Build Polie Conversation mode with level grounding	P6/P6-023.yaml
