@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/services/passport/passport_service.dart';
+import 'package:lingafriq/utils/api_service.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 /// Published methodology version (keep in sync with `docs/passport/METHODOLOGY.md`).
@@ -15,6 +16,7 @@ class PassportCredentialScreen extends StatefulWidget {
   final String verifyToken;
   final String level;
   final int score;
+  final String? credentialId;
   final String? methodologyVersionId;
   final DateTime? issuedAt;
 
@@ -22,17 +24,22 @@ class PassportCredentialScreen extends StatefulWidget {
   final bool? debugPortfolioPrereqBlocked;
   final bool? debugPortfolioLoading;
   final List<PassportPortfolioEntry>? debugPortfolioEntries;
+  final Map<String, dynamic>? debugOpenBadgeCredential;
+  final String? debugOpenBadgeError;
 
   const PassportCredentialScreen({
     super.key,
     required this.verifyToken,
     required this.level,
     required this.score,
+    this.credentialId,
     this.methodologyVersionId,
     this.issuedAt,
     this.debugPortfolioPrereqBlocked,
     this.debugPortfolioLoading,
     this.debugPortfolioEntries,
+    this.debugOpenBadgeCredential,
+    this.debugOpenBadgeError,
   });
 
   @override
@@ -50,18 +57,71 @@ class _PassportCredentialScreenState extends State<PassportCredentialScreen> {
   List<PassportPortfolioEntry> _portfolioEntries = const [];
   String? _portfolioError;
 
+  bool _openBadgeLoading = false;
+  Map<String, dynamic>? _openBadgeCredential;
+  String? _openBadgeError;
+
   @override
   void initState() {
     super.initState();
+    if (widget.debugOpenBadgeCredential != null || widget.debugOpenBadgeError != null) {
+      _openBadgeCredential = widget.debugOpenBadgeCredential;
+      _openBadgeError = widget.debugOpenBadgeError;
+    }
     if (widget.debugPortfolioLoading != null ||
         widget.debugPortfolioPrereqBlocked != null ||
         widget.debugPortfolioEntries != null) {
       _portfolioLoading = widget.debugPortfolioLoading ?? false;
       _portfolioPrereqBlocked = widget.debugPortfolioPrereqBlocked ?? false;
       _portfolioEntries = widget.debugPortfolioEntries ?? const [];
+      if (widget.credentialId != null && widget.debugOpenBadgeCredential == null) {
+        _loadOpenBadge();
+      }
       return;
     }
     _loadPortfolio();
+    if (widget.credentialId != null) _loadOpenBadge();
+  }
+
+  Future<void> _loadOpenBadge() async {
+    final id = widget.credentialId?.trim();
+    if (id == null || id.isEmpty) return;
+    setState(() {
+      _openBadgeLoading = true;
+      _openBadgeError = null;
+    });
+    try {
+      await ApiService.initialize();
+      final res = await ApiService.post(
+        '/api/v2/credentials/issue',
+        data: {'credentialId': id},
+      );
+      final body = res.data;
+      if (body is Map && body['verifiableCredential'] is Map) {
+        setState(() => _openBadgeCredential = Map<String, dynamic>.from(body['verifiableCredential'] as Map));
+      } else {
+        setState(() => _openBadgeError = 'We could not load your Open Badge yet.');
+      }
+    } catch (e) {
+      setState(() => _openBadgeError = 'Your Open Badge is not ready to share yet.');
+    } finally {
+      if (mounted) setState(() => _openBadgeLoading = false);
+    }
+  }
+
+  String get _evidenceSummary {
+    final count = _effectivePortfolioEntries.length;
+    if (count == 0) {
+      return 'Proctored speaking at level ${widget.level}';
+    }
+    return '$count verified can-do${count == 1 ? '' : 's'} plus level ${widget.level}';
+  }
+
+  Future<void> _shareOpenBadge() async {
+    final vc = _openBadgeCredential;
+    if (vc == null) return;
+    final json = const JsonEncoder.withIndent('  ').convert(vc);
+    await _copy('Open Badge JSON', json);
   }
 
   Future<void> _loadPortfolio() async {
@@ -337,6 +397,13 @@ class _PassportCredentialScreenState extends State<PassportCredentialScreen> {
             'CEFR-aligned level ${widget.level} · score ${widget.score}',
             style: textTheme.titleMedium?.copyWith(color: cs.primary),
           ),
+          if (_issuedAt != null) ...[
+            const SizedBox(height: 6),
+            Text(
+              'Issued ${_issuedAt!.toLocal().toString().split(' ').first} · $_evidenceSummary',
+              style: textTheme.bodyMedium?.copyWith(color: cs.onSurfaceVariant),
+            ),
+          ],
           const SizedBox(height: 16),
           Container(
             padding: const EdgeInsets.all(16),
@@ -421,6 +488,31 @@ class _PassportCredentialScreenState extends State<PassportCredentialScreen> {
                 icon: const Icon(Icons.verified_rounded),
                 label: Text(_verifying ? 'Verifying…' : 'Verify now'),
               ),
+              if (_openBadgeLoading)
+                OutlinedButton.icon(
+                  onPressed: null,
+                  icon: const SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                  label: const Text('Preparing badge…'),
+                )
+              else if (_openBadgeCredential != null)
+                Semantics(
+                  button: true,
+                  label: 'Share Open Badge credential',
+                  child: FilledButton.tonalIcon(
+                    onPressed: _shareOpenBadge,
+                    icon: const Icon(Icons.ios_share_rounded),
+                    label: const Text('Share Open Badge'),
+                  ),
+                )
+              else if (_openBadgeError != null)
+                Text(
+                  _openBadgeError!,
+                  style: textTheme.bodySmall?.copyWith(color: cs.onSurfaceVariant),
+                ),
             ],
           ),
           const SizedBox(height: 16),
