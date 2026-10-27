@@ -336,8 +336,7 @@ Future<int> main(List<String> args) async {
       schemaPath: 'schemas/v2/curriculum_bundle.schema.json',
       targetGlobs: [
         'assets/data/lingafriq_authentic_curriculum_a1.json',
-        'assets/data/lingafriq_authentic_curriculum_a1_a2_b1.json',
-        'assets/data/lingafriq_authentic_curriculum_a1_c1.json',
+        'assets/data/lingafriq_authentic_curriculum_a1_c2.json',
       ],
     ),
     _ValidationJob(

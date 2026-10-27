@@ -184,8 +184,6 @@ flutter:
     - assets/data/cms_manifests/
     - assets/data/game_content.json
     - assets/data/lingafriq_authentic_curriculum_a1.json
-    - assets/data/lingafriq_authentic_curriculum_a1_a2_b1.json
-    - assets/data/lingafriq_authentic_curriculum_a1_c1.json
     - assets/data/lingafriq_authentic_curriculum_a1_c2.json
     - assets/data/magazine_articles_seed.json
     - assets/data/persona_missions.json
