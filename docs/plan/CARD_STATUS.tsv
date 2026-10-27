@@ -920,7 +920,7 @@ P6-061	Draft	Author Nigerian Pidgin eval set of at least 300 items	P6/P6-061.yam
 P6-062	Draft	Author Swahili eval set of at least 300 items	P6/P6-062.yaml
 P6-063	Draft	Author isiZulu eval set of at least 300 items	P6/P6-063.yaml
 P6-064	Draft	Author isiXhosa eval set of at least 300 items	P6/P6-064.yaml
-P6-065	Draft	Add diacritic completeness metric	P6/P6-065.yaml
+P6-065	Done	Add diacritic completeness metric (evals/metrics/diacritics.ts)	P6/P6-065.yaml
 P6-066	Draft	Add out-of-level vocabulary rate metric	P6/P6-066.yaml
 P6-067	Draft	Add culture factuality metric	P6/P6-067.yaml
 P6-068	Draft	Add refusal correctness metric	P6/P6-068.yaml
