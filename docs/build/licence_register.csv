@@ -1,0 +1,11 @@
+model_id,licence,commercial_use,user_cap_without_licence,notes
+gemini-3-flash,Google Gemini API commercial terms,yes,,
+gemini-3-flash-lite,Google Gemini API commercial terms,yes,,
+gpt-5-mini,OpenAI API commercial terms,yes,,
+aya-8b,CC-BY-NC 4.0,no,,
+cohere-aya-expanse-8b,CC-BY-NC 4.0,no,,
+N-ATLaS,Awarri ORIL,no,1000,commercial licence required above cap
+N-ATLaS-LLM,Awarri ORIL,no,1000,same cap as N-ATLaS ASR
+facebook/nllb-200-distilled-600M,CC-BY-NC 4.0,no,,
+yarn-gpt,CC-BY-NC-SA 4.0,no,,
+mms-tts,CC-BY-NC 4.0,no,,
