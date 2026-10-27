@@ -944,7 +944,7 @@ P7-900	Done	ADR-009 Lens hub + Point & Say pipeline; route point-and-say retaine
 P7-901	Done	ADR-013 two-layer living lexicon (Verified + My Words, link rules)	P7/P7-901.yaml
 P7-902	Done	Build Lens full-screen camera with breathing boxes (lens_screen.dart, route alias)	P7/P7-902.yaml
 P7-903	Done	Build on-device detection mapped to a curated African object set (on_device_detector.dart, object_set_mapper.dart)	P7/P7-903.yaml
-P7-904	Draft	Build server vision recognition via the AI gateway	P7/P7-904.yaml
+P7-904	Done	Server SigLIP recognize via POST /api/ai/lens/recognize; server_recognizer.dart (P7-904)	P7/P7-904.yaml
 P7-905	Done	Replace NLLB/MyMemory in Lens with verified lexicon resolver (lexicon_label_resolver.dart)	P7/P7-905.yaml
 P7-906	Done	Build Word Card content for Lens tags with native audio (word_card_builder.dart)	P7/P7-906.yaml
 P7-907	Done	Lens Word Card flip, tone contour line, 48dp mic (lens_word_card.dart)	P7/P7-907.yaml
