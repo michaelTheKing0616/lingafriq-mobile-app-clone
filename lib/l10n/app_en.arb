@@ -538,9 +538,17 @@
   "@pron_scoring_soon": {
     "description": "States that pronunciation scoring is not available yet"
   },
-  "pron_unavailable": "The scoring service is unavailable. No score is shown.",
+  "pron_unavailable": "We cannot score your speech right now. No score is shown.",
   "@pron_unavailable": {
     "description": "Shown when pronunciation scoring returns 503/retryable; no numeric score is displayed"
+  },
+  "contentPublishAction": "Publish",
+  "@contentPublishAction": {
+    "description": "Button label to publish reviewed content to learners"
+  },
+  "contentPublishDone": "Published",
+  "@contentPublishDone": {
+    "description": "Success state after content publish completes; must match Publish action wording"
   },
   "persona_ai_disclosure": "This is an AI recreation based on sources.",
   "@persona_ai_disclosure": {
