@@ -1,7 +1,17 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/utils/curriculum_languages.dart';
+import 'package:lingafriq/db/app_database.dart';
+import 'package:lingafriq/lessons/models/lesson_response.dart';
+import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/models/onboarding_data_model.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/onboarding_provider.dart';
+import 'package:lingafriq/services/offline/local_database_service.dart';
 import 'package:lingafriq/utils/supported_languages.dart';
 
 /// Provider for structured learning paths
@@ -419,6 +429,275 @@ class LearningModule {
       isCompleted: isCompleted ?? this.isCompleted,
       isLocked: isLocked ?? this.isLocked,
     );
+  }
+}
+
+// --- F-007 path screen (P7-952) ---
+
+enum PathLessonSource { drift, network }
+
+class PathLessonsSnapshot {
+  const PathLessonsSnapshot({
+    required this.lessons,
+    required this.source,
+  });
+
+  final List<Lesson> lessons;
+  final PathLessonSource source;
+}
+
+class PathUnitBannerData {
+  const PathUnitBannerData({
+    required this.unitKey,
+    required this.unitName,
+    required this.cefrLevel,
+    required this.canDoStatement,
+    required this.firstLessonIndex,
+  });
+
+  final String unitKey;
+  final String unitName;
+  final String cefrLevel;
+  final String canDoStatement;
+  final int firstLessonIndex;
+}
+
+sealed class PathScrollItem {
+  const PathScrollItem();
+}
+
+class PathScrollBannerItem extends PathScrollItem {
+  const PathScrollBannerItem(this.banner);
+  final PathUnitBannerData banner;
+}
+
+class PathScrollNodeItem extends PathScrollItem {
+  const PathScrollNodeItem({
+    required this.lessonIndex,
+    required this.lesson,
+  });
+
+  final int lessonIndex;
+  final Lesson lesson;
+}
+
+const double kPathScrollItemExtent = 132;
+const double kPathBannerExtent = 108;
+const double kPathFrameBudgetMs = 16.7;
+
+Map<String, List<PathUnitBannerData>>? _candoUnitsCache;
+
+Future<List<PathUnitBannerData>> loadPathUnitsForKit(String kitLang) async {
+  _candoUnitsCache ??= await _parseCandoUnits();
+  final units = _candoUnitsCache![kitLang] ?? const [];
+  return units;
+}
+
+Future<Map<String, List<PathUnitBannerData>>> _parseCandoUnits() async {
+  final raw = await rootBundle.loadString('assets/data/cando_map.json');
+  final root = jsonDecode(raw) as Map<String, dynamic>;
+  final unitsMap = root['units'] as Map<String, dynamic>? ?? {};
+  final byKit = <String, List<PathUnitBannerData>>{};
+
+  for (final entry in unitsMap.entries) {
+    final unit = Map<String, dynamic>.from(entry.value as Map);
+    final kit = unit['kit_lang'] as String? ?? '';
+    if (kit.isEmpty) continue;
+    final canDos = unit['can_dos'] as List<dynamic>? ?? [];
+    final statement = canDos.isEmpty
+        ? ''
+        : (canDos.first as Map<String, dynamic>)['statement_en']?.toString() ??
+            '';
+    final cefr = unit['cefr_band']?.toString() ?? 'A1';
+    final list = byKit.putIfAbsent(kit, () => []);
+    list.add(
+      PathUnitBannerData(
+        unitKey: entry.key,
+        unitName: pathUnitDisplayName(entry.key),
+        cefrLevel: cefr,
+        canDoStatement: statement,
+        firstLessonIndex: 0,
+      ),
+    );
+  }
+
+  for (final list in byKit.values) {
+    list.sort((a, b) => a.unitKey.compareTo(b.unitKey));
+  }
+  return byKit;
+}
+
+String pathUnitDisplayName(String unitKey) {
+  final match = RegExp(r'-u(\d+)$', caseSensitive: false).firstMatch(unitKey);
+  if (match != null) {
+    return 'Unit ${match.group(1)}';
+  }
+  return unitKey;
+}
+
+List<PathScrollItem> buildPathScrollItems({
+  required List<Lesson> lessons,
+  required List<PathUnitBannerData> units,
+}) {
+  if (lessons.isEmpty) return const [];
+
+  final items = <PathScrollItem>[];
+  final unitCount = units.isEmpty ? 1 : units.length;
+  final lessonsPerUnit = (lessons.length / unitCount).ceil().clamp(1, lessons.length);
+
+  for (var u = 0; u < unitCount; u++) {
+    final start = u * lessonsPerUnit;
+    if (start >= lessons.length) break;
+
+    if (units.isNotEmpty && u < units.length) {
+      final banner = PathUnitBannerData(
+        unitKey: units[u].unitKey,
+        unitName: units[u].unitName,
+        cefrLevel: units[u].cefrLevel,
+        canDoStatement: units[u].canDoStatement,
+        firstLessonIndex: start,
+      );
+      items.add(PathScrollBannerItem(banner));
+    }
+
+    final end = (u == unitCount - 1) ? lessons.length : (start + lessonsPerUnit);
+    for (var i = start; i < end && i < lessons.length; i++) {
+      items.add(PathScrollNodeItem(lessonIndex: i, lesson: lessons[i]));
+    }
+  }
+  return items;
+}
+
+int pathScrollIndexForLesson(List<PathScrollItem> items, int lessonIndex) {
+  for (var i = 0; i < items.length; i++) {
+    final item = items[i];
+    if (item is PathScrollNodeItem && item.lessonIndex == lessonIndex) {
+      return i;
+    }
+  }
+  return 0;
+}
+
+double pathScrollOffsetForIndex(List<PathScrollItem> items, int scrollIndex) {
+  var offset = 0.0;
+  for (var i = 0; i < scrollIndex && i < items.length; i++) {
+    offset += items[i] is PathScrollBannerItem
+        ? kPathBannerExtent
+        : kPathScrollItemExtent;
+  }
+  return offset;
+}
+
+Future<List<Lesson>> _lessonsFromDrift(int languageId) async {
+  final db = LocalDatabaseService();
+  if (!db.isInitialized) return const [];
+  final payloads = await readPayloads(db.database, 'lessons');
+  final lessons = <Lesson>[];
+  for (final row in payloads) {
+    final map = Map<String, dynamic>.from(row);
+    final lesson = Lesson.fromMap(map);
+    if (lesson.lessons_language == languageId) {
+      lessons.add(lesson);
+    }
+  }
+  lessons.sort((a, b) => a.id.compareTo(b.id));
+  return lessons;
+}
+
+Future<void> _persistLessonsToDrift(List<Lesson> lessons) async {
+  final db = LocalDatabaseService();
+  if (!db.isInitialized) return;
+  for (final lesson in lessons) {
+    await storeLessonPayload(db.database, lesson.toMap());
+  }
+}
+
+final pathLessonsProvider =
+    FutureProvider.autoDispose.family<PathLessonsSnapshot, Language>((ref, language) async {
+  final languageId = language.id;
+  final driftLessons = await _lessonsFromDrift(languageId);
+  if (driftLessons.isNotEmpty) {
+    unawaited(
+      ref.read(apiProvider.notifier).getLessons(languageId).then((response) async {
+        final network = response.results
+            .where((e) => e.lessons_language == languageId)
+            .toList();
+        if (network.isNotEmpty) {
+          await _persistLessonsToDrift(network);
+        }
+      }),
+    );
+    return PathLessonsSnapshot(
+      lessons: driftLessons,
+      source: PathLessonSource.drift,
+    );
+  }
+
+  final response = await ref.read(apiProvider.notifier).getLessons(languageId);
+  final lessons = response.results
+      .where((e) => e.lessons_language == languageId)
+      .toList();
+  if (lessons.isNotEmpty) {
+    await _persistLessonsToDrift(lessons);
+  }
+  return PathLessonsSnapshot(
+    lessons: lessons,
+    source: PathLessonSource.network,
+  );
+});
+
+final pathUnitsProvider =
+    FutureProvider.autoDispose.family<List<PathUnitBannerData>, Language>((ref, language) async {
+  final langKey = CurriculumLanguages.keyForApiLanguage(language);
+  final kit = SupportedLanguages.getLanguageCode(langKey);
+  return loadPathUnitsForKit(kit);
+});
+
+/// Median frame duration from [TimingsCallback] samples (P7-952 AC5/AC7).
+class PathFrameBudgetSampler {
+  PathFrameBudgetSampler();
+
+  final List<double> _frameMs = [];
+  bool _attached = false;
+
+  void attach() {
+    if (_attached) return;
+    _attached = true;
+    SchedulerBinding.instance.addTimingsCallback(_onTimings);
+  }
+
+  void _onTimings(List<FrameTiming> timings) {
+    for (final timing in timings) {
+      final ms = timing.totalSpan.inMicroseconds / 1000.0;
+      if (ms > 0) {
+        _frameMs.add(ms);
+      }
+    }
+  }
+
+  void detach() {
+    if (!_attached) return;
+    SchedulerBinding.instance.removeTimingsCallback(_onTimings);
+    _attached = false;
+  }
+
+  double? medianFrameMs() {
+    if (_frameMs.isEmpty) return null;
+    final sorted = List<double>.from(_frameMs)..sort();
+    return sorted[sorted.length ~/ 2];
+  }
+
+  bool exceedsBudget({double budgetMs = kPathFrameBudgetMs}) {
+    final median = medianFrameMs();
+    if (median == null) return false;
+    return median > budgetMs;
+  }
+
+  void reset() => _frameMs.clear();
+
+  /// Test hook for frame budget without a live [TimingsCallback].
+  void recordFrameMs(double ms) {
+    if (ms > 0) _frameMs.add(ms);
   }
 }
 
