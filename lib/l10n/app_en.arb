@@ -27,7 +27,7 @@
     "description": "Loading indicator text"
   },
   
-  "errorOccurred": "An error occurred",
+  "errorOccurred": "Something went wrong on our side. The app lost the last step. Try again or restart the lesson.",
   "@errorOccurred": {
     "description": "Generic error message"
   },
@@ -282,7 +282,7 @@
     "description": "Empty state when no heritage items match"
   },
 
-  "flbHeritageLoadError": "Could not load heritage archive. Pull to retry.",
+  "flbHeritageLoadError": "Could not load the heritage archive. The network or server timed out. Pull to retry.",
   "@flbHeritageLoadError": {
     "description": "Error when heritage API and bundle fail"
   },
@@ -297,7 +297,7 @@
     "description": "Heritage detail screen short title"
   },
 
-  "flbHeritageMissingContent": "Missing heritage content",
+  "flbHeritageMissingContent": "This heritage page is missing. The link did not include an item. Go back and pick another entry.",
   "@flbHeritageMissingContent": {
     "description": "Route error when heritage detail has no arguments"
   },
@@ -458,45 +458,45 @@
   "@liveTranslatePlaceholderDash": {
     "description": "Placeholder when no caption is available (ellipsis, not em dash)"
   },
-  "liveTranslateSpeechUnavailable": "Speech recognition not available on this device.",
+  "liveTranslateSpeechUnavailable": "Speech input did not start. This phone cannot run live speech here. Type your phrase or use another device.",
   "@liveTranslateSpeechUnavailable": {
     "description": "Error when speech recognition is not available"
   },
-  "liveTranslateMicPermissionRequired": "Microphone permission is required.",
+  "liveTranslateMicPermissionRequired": "The mic is blocked. LingAfriq needs the mic to hear you. Open Settings and allow the mic.",
   "@liveTranslateMicPermissionRequired": {
     "description": "Error when microphone permission is missing"
   },
-  "liveTranslateInvalidSession": "Invalid session from server.",
+  "liveTranslateInvalidSession": "Could not start live translate. The server sent an invalid session. Tap Reconnect and try again.",
   "@liveTranslateInvalidSession": {
     "description": "Error when backend returns invalid session payload"
   },
-  "liveTranslateStartSessionFirst": "Start a session first.",
+  "liveTranslateStartSessionFirst": "Listening is not active yet. You have not started a session. Tap Start session, then speak.",
   "@liveTranslateStartSessionFirst": {
     "description": "Error shown when user tries to listen before starting a session"
   },
-  "liveTranslateConnectionLost": "Connection lost. Tap Reconnect to continue.",
+  "liveTranslateConnectionLost": "Connection lost. Your network cut out. Tap reconnect to try again.",
   "@liveTranslateConnectionLost": {
     "description": "Error shown when socket disconnects"
   },
-  "liveTranslateSocketError": "Socket error: {error}",
+  "liveTranslateSocketError": "Could not connect for live translate. The socket failed: {error}. Check your network and tap Reconnect.",
   "@liveTranslateSocketError": {
     "description": "Error shown when socket connection fails",
     "placeholders": {
       "error": {}
     }
   },
-  "liveTranslateSessionFailed": "Session failed",
+  "liveTranslateSessionFailed": "Could not start a live translate session. The server rejected the request. Wait a moment and try again.",
   "@liveTranslateSessionFailed": {
     "description": "Fallback error shown when session creation fails"
   },
-  "liveTranslateCouldNotPlayAudio": "Could not play translation audio: {error}",
+  "liveTranslateCouldNotPlayAudio": "Could not play the translation audio. Playback failed: {error}. Tap Hear it again or check your volume.",
   "@liveTranslateCouldNotPlayAudio": {
     "description": "Error shown when TTS audio playback fails",
     "placeholders": {
       "error": {}
     }
   },
-  "liveTranslateSessionError": "Session error",
+  "liveTranslateSessionError": "Live translate hit a session error. Something went wrong on the connection. Leave the session and start again.",
   "@liveTranslateSessionError": {
     "description": "Fallback error message when a live translate session error has no message"
   },
@@ -538,7 +538,7 @@
   "@pron_scoring_soon": {
     "description": "States that pronunciation scoring is not available yet"
   },
-  "pron_unavailable": "We cannot score your speech right now. No score is shown.",
+  "pron_unavailable": "We could not score your speech. The scorer is temporarily unavailable. Try again in a moment; no score is shown.",
   "@pron_unavailable": {
     "description": "Shown when pronunciation scoring returns 503/retryable; no numeric score is displayed"
   },
@@ -554,9 +554,15 @@
   "@persona_ai_disclosure": {
     "description": "Persistent disclosure that the historical persona chat is an AI recreation based on sources"
   },
-  "persona_error_retry": "Couldn't reach the persona. Retry when you're ready.",
+  "persona_error_retry": "Couldn't reach the persona. The network or server timed out. Retry when you're ready.",
   "@persona_error_retry": {
-    "description": "Shown when a persona mission reply fails; paired with a Retry action"
+    "description": "Error shown when a persona mission reply fails; paired with a Retry action"
+  },
+
+  "persona_dialogue_welcome": "Eh, welcome back, friend. The path waits for you today.",
+  "@persona_dialogue_welcome": {
+    "description": "Sample in-character persona greeting; village voice allowed here only",
+    "voice": "character"
   },
 
   "labelBetaCopy": "AI-assisted, machine-checked. Spotted a problem? Tell us.",

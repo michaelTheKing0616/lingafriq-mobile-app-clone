@@ -1,0 +1,7 @@
+# P10-940: folktale / village register — allowed only on keys with voice: character.
+eh, friend
+listen well
+small one
+my child
+na so
+re:\beh[,!]
