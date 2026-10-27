@@ -161,6 +161,8 @@ Intron is set up and not connected. Do not put `INTRON_API_KEY` in the client.
 - UI-BELOW-BAR P11-051 UI 8/8/9/8/8/8/8/8/8/8 avg 8.1; reference: Duolingo reduced-motion avatar accessibility affordances; gap: `avatar_semantics.dart` adds semantics/reduced-motion behaviour, but route-level proof for loading/error/offline/locked/child-mode and text-scale/RTL coverage is not complete for strict 9+.
 - UI-BELOW-BAR P11-053 UI 8/8/9/8/8/8/8/8/8/8 avg 8.1; reference: Duolingo avatar editor; gap: `AvatarEditorScreen` has slot/lock widget evidence but no golden/state matrix for loading/empty/error/offline/success/locked/child-mode and no route-wiring evidence in this review window.
 - UI-BELOW-BAR P11-055 UI 8/8/9/8/8/8/8/8/8/8 avg 8.1; reference: Duolingo speaking share card; gap: `SpeakingShareCard` renders happy-path and minor sanitisation tests, but render-error state proof and full a11y/RTL/text-scale/reduced-motion state evidence are below strict 9+ gate.
+- UI-BELOW-BAR P8-933 UI 8/8/8/8/7/8/7/8/8/8 avg 7.8; reference: Duolingo Friend Quests progress page; gap: `CircleGoalScreen` is test-mounted only (`test/games/p8_933_circle_goals_test.dart`) and has no in-app route wiring, so state coverage cannot be validated in production flow.
+- UI-RESCORE P8-932 UI 8/8/8/8/7/8/7/8/8/8 avg 7.8; reviewer fix shipped in `[P8-932] review fix: wire mastery map navigation from results` so the screen is now reachable from `GameMasteryResultsScreen`.
 
 ## Tope to switch on
 
