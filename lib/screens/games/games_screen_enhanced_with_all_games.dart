@@ -22,6 +22,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/games/tone_forge/tone_forge_screen.dart';
 import 'package:lingafriq/screens/games/game_catalog.dart';
 import 'package:lingafriq/games/gamekit/all_games_registry.dart';
+import 'package:lingafriq/screens/games/games_screen.dart';
 
 /// Enhanced Games Screen with ALL 35+ Games Properly Categorized
 class GamesScreenEnhanced extends HookConsumerWidget {
@@ -157,6 +158,10 @@ class GamesScreenEnhanced extends HookConsumerWidget {
                 ),
               ),
 
+              ArcadeHeadlinersSection(
+                onOpenListing: (listing) => openListing(context, listing),
+              ),
+              SizedBox(height: PanAfricanSpacing.md),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
                 child: Text(

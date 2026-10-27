@@ -1175,6 +1175,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Extra styles unlock when you complete a chapter can-do.'**
   String get avatarItemLockedReasonStreamPack;
+
+  /// copy_keys: games.arcade_headliners.title
+  ///
+  /// In en, this message translates to:
+  /// **'Headliners'**
+  String get gamesArcadeHeadlinersTitle;
+
+  /// copy_keys: games.arcade_headliners.instructions
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a flagship to play — more are on the way.'**
+  String get gamesArcadeHeadlinersInstructions;
+
+  /// copy_keys: games.arcade_headliners.practice_label
+  ///
+  /// In en, this message translates to:
+  /// **'Featured'**
+  String get gamesArcadeHeadlinersFeatured;
+
+  /// Headliner tile when elevation card is not Done
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get gamesArcadeHeadlinersComingSoon;
+
+  /// copy_keys: games.arcade_headliners.error
+  ///
+  /// In en, this message translates to:
+  /// **'This game is not ready yet. Try another headliner.'**
+  String get gamesArcadeHeadlinersError;
+
+  /// copy_keys: games.arcade_headliners.why_wrong
+  ///
+  /// In en, this message translates to:
+  /// **'We will add a short tip here after you play.'**
+  String get gamesArcadeHeadlinersWhyWrong;
 }
 
 class _AppLocalizationsDelegate

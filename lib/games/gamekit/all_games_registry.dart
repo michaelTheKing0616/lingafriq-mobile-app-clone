@@ -19,6 +19,81 @@ enum ArcadeSkillShelf {
   final String title;
 }
 
+/// §10.3 headliner slot (P8-918): config-only, not widget literals.
+class ArcadeHeadlinerSlot {
+  const ArcadeHeadlinerSlot({
+    required this.gameId,
+    required this.elevationCardId,
+    required this.flagshipTitle,
+    this.showFeaturedBadge = false,
+  });
+
+  final String gameId;
+  final String elevationCardId;
+  final String flagshipTitle;
+  final bool showFeaturedBadge;
+}
+
+/// Elevation cards shipped for Arcade headliners (CARD_STATUS Done).
+const Set<String> kArcadeHeadlinerShippedElevationCards = {
+  'P8-914',
+};
+
+/// Ten headliners in product order; Tone Forge carries the Featured badge.
+const List<ArcadeHeadlinerSlot> kArcadeHeadlinerOrder = [
+  ArcadeHeadlinerSlot(
+    gameId: 'tone_forge',
+    elevationCardId: 'P8-914',
+    flagshipTitle: 'Tone Forge',
+    showFeaturedBadge: true,
+  ),
+  ArcadeHeadlinerSlot(
+    gameId: 'drum_to_word_matching',
+    elevationCardId: 'P8-920',
+    flagshipTitle: 'Talking Drum',
+  ),
+  ArcadeHeadlinerSlot(
+    gameId: 'market_bargaining_simulator',
+    elevationCardId: 'P8-922',
+    flagshipTitle: 'Market Haggle',
+  ),
+  ArcadeHeadlinerSlot(
+    gameId: 'taxi_bus_stop_survival',
+    elevationCardId: 'P8-923',
+    flagshipTitle: 'Danfo / Matatu Rush',
+  ),
+  ArcadeHeadlinerSlot(
+    gameId: 'proverb_unlocker',
+    elevationCardId: 'P8-924',
+    flagshipTitle: 'Proverb Weaver',
+  ),
+  ArcadeHeadlinerSlot(
+    gameId: 'clan_lineage_story_builder',
+    elevationCardId: 'P8-925',
+    flagshipTitle: "Griot's Story Chain",
+  ),
+  ArcadeHeadlinerSlot(
+    gameId: 'grammar_jam',
+    elevationCardId: 'P8-926',
+    flagshipTitle: 'Word Forge',
+  ),
+  ArcadeHeadlinerSlot(
+    gameId: 'script_sprint',
+    elevationCardId: 'P8-927',
+    flagshipTitle: 'Fidel Flight',
+  ),
+  ArcadeHeadlinerSlot(
+    gameId: 'greeting_diplomacy_challenge',
+    elevationCardId: 'P8-928',
+    flagshipTitle: 'Greeting Gauntlet',
+  ),
+  ArcadeHeadlinerSlot(
+    gameId: 'pronunciation_karaoke',
+    elevationCardId: 'P8-929',
+    flagshipTitle: 'Echo Karaoke',
+  ),
+];
+
 /// Hub listing for one playable game (elevation card id only — §18.5).
 class ArcadeGameListing {
   const ArcadeGameListing({
@@ -42,6 +117,35 @@ class ArcadeGameListing {
 /// This centralizes game definitions for easy migration
 class AllGamesRegistry {
   static const String toneForgeGameId = 'tone_forge';
+
+  static bool headlinerElevationShipped(String elevationCardId) {
+    return kArcadeHeadlinerShippedElevationCards.contains(elevationCardId);
+  }
+
+  static bool headlinerIsPlayable(ArcadeHeadlinerSlot slot) {
+    if (headlinerElevationShipped(slot.elevationCardId)) {
+      return true;
+    }
+    final listing = listingFor(slot.gameId);
+    if (listing != null && !listing.elevationPending) {
+      return true;
+    }
+    return false;
+  }
+
+  static List<String> validateHeadlinerConfig() {
+    final problems = <String>[];
+    if (kArcadeHeadlinerOrder.length != 10) {
+      problems.add('headliner_count:${kArcadeHeadlinerOrder.length}');
+    }
+    final featured =
+        kArcadeHeadlinerOrder.where((s) => s.showFeaturedBadge).toList();
+    if (featured.length != 1 ||
+        featured.single.gameId != toneForgeGameId) {
+      problems.add('featured_tone_forge');
+    }
+    return problems;
+  }
 
   static const Map<String, String> _canonicalAliases = {
     // Legacy/alternate IDs -> canonical GameType.name IDs

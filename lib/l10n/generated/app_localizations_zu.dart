@@ -589,4 +589,25 @@ class AppLocalizationsZu extends AppLocalizations {
   @override
   String get avatarItemLockedReasonStreamPack =>
       'Extra styles unlock when you complete a chapter can-do.';
+
+  @override
+  String get gamesArcadeHeadlinersTitle => 'Headliners';
+
+  @override
+  String get gamesArcadeHeadlinersInstructions =>
+      'Tap a flagship to play — more are on the way.';
+
+  @override
+  String get gamesArcadeHeadlinersFeatured => 'Featured';
+
+  @override
+  String get gamesArcadeHeadlinersComingSoon => 'Coming soon';
+
+  @override
+  String get gamesArcadeHeadlinersError =>
+      'This game is not ready yet. Try another headliner.';
+
+  @override
+  String get gamesArcadeHeadlinersWhyWrong =>
+      'We will add a short tip here after you play.';
 }

@@ -801,5 +801,29 @@
   "avatarItemLockedReasonCulturalReview": "This garment unlocks after our cultural review gate clears.",
   "avatarItemLockedReasonIsicholo": "Isicholo needs cultural context — unlock with guided quest content.",
   "avatarItemLockedReasonMastery": "Earn this look through a mastery milestone, not the shop.",
-  "avatarItemLockedReasonStreamPack": "Extra styles unlock when you complete a chapter can-do."
+  "avatarItemLockedReasonStreamPack": "Extra styles unlock when you complete a chapter can-do.",
+  "gamesArcadeHeadlinersTitle": "Headliners",
+  "@gamesArcadeHeadlinersTitle": {
+    "description": "copy_keys: games.arcade_headliners.title"
+  },
+  "gamesArcadeHeadlinersInstructions": "Tap a flagship to play — more are on the way.",
+  "@gamesArcadeHeadlinersInstructions": {
+    "description": "copy_keys: games.arcade_headliners.instructions"
+  },
+  "gamesArcadeHeadlinersFeatured": "Featured",
+  "@gamesArcadeHeadlinersFeatured": {
+    "description": "copy_keys: games.arcade_headliners.practice_label"
+  },
+  "gamesArcadeHeadlinersComingSoon": "Coming soon",
+  "@gamesArcadeHeadlinersComingSoon": {
+    "description": "Headliner tile when elevation card is not Done"
+  },
+  "gamesArcadeHeadlinersError": "This game is not ready yet. Try another headliner.",
+  "@gamesArcadeHeadlinersError": {
+    "description": "copy_keys: games.arcade_headliners.error"
+  },
+  "gamesArcadeHeadlinersWhyWrong": "We will add a short tip here after you play.",
+  "@gamesArcadeHeadlinersWhyWrong": {
+    "description": "copy_keys: games.arcade_headliners.why_wrong"
+  }
 }

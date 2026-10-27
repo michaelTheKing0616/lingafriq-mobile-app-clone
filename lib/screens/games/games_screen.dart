@@ -18,8 +18,8 @@ import 'package:lingafriq/screens/games/word_match_game.dart';
 import 'package:lingafriq/screens/games/fill_in_the_blank_game.dart';
 import 'package:lingafriq/screens/games/speed_challenge_game.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
-import 'package:lingafriq/screens/games/games_screen_enhanced_with_all_games.dart';
 import 'package:lingafriq/games/gamekit/all_games_registry.dart';
+import 'package:lingafriq/l10n/generated/app_localizations.dart';
 
 final languagesForGamesProvider = FutureProvider.autoDispose((ref) {
   return ref.read(apiProvider.notifier).getLanguages();
@@ -359,12 +359,7 @@ class GameTypesScreen extends StatelessWidget {
             child: TextButton.icon(
               onPressed: () {
                 HapticFeedback.lightImpact();
-                Navigator.push(
-                  context,
-                  SmoothPageRoute.platform(
-                    child: const GamesScreenEnhanced(),
-                  ),
-                );
+                Navigator.pushNamed(context, 'games_enhanced_catalog');
               },
               icon: Icon(Icons.view_carousel_rounded, size: 20.sp),
               label: const Text('Arcade'),
@@ -459,6 +454,168 @@ class GameTypesScreen extends StatelessWidget {
                 },
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Horizontal headliner row for Arcade home (P8-918).
+class ArcadeHeadlinersSection extends StatelessWidget {
+  const ArcadeHeadlinersSection({
+    super.key,
+    required this.onOpenListing,
+  });
+
+  final Future<void> Function(ArcadeGameListing listing) onOpenListing;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final reduceMotion = MediaQuery.disableAnimationsOf(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
+          child: Text(
+            l10n.gamesArcadeHeadlinersTitle,
+            style: PanAfricanTypography.titleSmall(context),
+          ),
+        ),
+        SizedBox(height: PanAfricanSpacing.xxs),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
+          child: Text(
+            l10n.gamesArcadeHeadlinersInstructions,
+            style: PanAfricanTypography.bodySmall(context),
+          ),
+        ),
+        SizedBox(height: PanAfricanSpacing.sm),
+        SizedBox(
+          height: 168.h,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
+            itemCount: kArcadeHeadlinerOrder.length,
+            separatorBuilder: (_, __) => SizedBox(width: PanAfricanSpacing.sm),
+            itemBuilder: (context, index) {
+              final slot = kArcadeHeadlinerOrder[index];
+              final playable = AllGamesRegistry.headlinerIsPlayable(slot);
+              final listing = AllGamesRegistry.listingFor(slot.gameId);
+              final catalog = AllGamesRegistry.catalogEntryFor(slot.gameId);
+              final icon =
+                  catalog?.icon ?? Icons.sports_esports_rounded;
+
+              return ArcadeHeadlinerTile(
+                title: slot.flagshipTitle,
+                icon: icon,
+                elevationCardId: slot.elevationCardId,
+                featured: slot.showFeaturedBadge,
+                comingSoon: !playable,
+                onTap: playable && listing != null
+                    ? () => onOpenListing(listing)
+                    : null,
+              );
+            },
+          ),
+        ),
+        if (!reduceMotion) SizedBox(height: PanAfricanSpacing.xs),
+      ],
+    );
+  }
+}
+
+class ArcadeHeadlinerTile extends StatelessWidget {
+  const ArcadeHeadlinerTile({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.elevationCardId,
+    required this.featured,
+    required this.comingSoon,
+    this.onTap,
+  });
+
+  final String title;
+  final IconData icon;
+  final String elevationCardId;
+  final bool featured;
+  final bool comingSoon;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
+    final accent = PanAfricanColors.primary;
+    final label = comingSoon
+        ? '$title, ${l10n.gamesArcadeHeadlinersComingSoon}'
+        : '$title${featured ? ', ${l10n.gamesArcadeHeadlinersFeatured}' : ''}';
+
+    return Semantics(
+      button: onTap != null,
+      label: label,
+      child: SizedBox(
+        width: 148.w,
+        height: 168.h,
+        child: Material(
+          color: colorScheme.surfaceContainerHighest.withOpacity(
+            comingSoon ? 0.65 : 1,
+          ),
+          borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+            child: Padding(
+              padding: EdgeInsets.all(PanAfricanSpacing.md),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(icon, size: 28.sp, color: accent),
+                      if (featured) ...[
+                        SizedBox(width: PanAfricanSpacing.xs),
+                        Flexible(
+                          child: Text(
+                            l10n.gamesArcadeHeadlinersFeatured,
+                            style: PanAfricanTypography.labelSmall(
+                              context,
+                              color: accent,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                  SizedBox(height: PanAfricanSpacing.sm),
+                  Text(
+                    title,
+                    style: PanAfricanTypography.titleSmall(context),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const Spacer(),
+                  Text(
+                    comingSoon
+                        ? l10n.gamesArcadeHeadlinersComingSoon
+                        : elevationCardId,
+                    style: PanAfricanTypography.labelSmall(
+                      context,
+                      color: comingSoon
+                          ? PanAfricanColors.kenteBlue
+                          : PanAfricanColors.neutralMedium,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),
