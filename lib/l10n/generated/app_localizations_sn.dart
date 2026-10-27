@@ -378,7 +378,7 @@ class AppLocalizationsSn extends AppLocalizations {
 
   @override
   String personaOpeningHowBuilt(String personaName, String sourceSummary) {
-    return 'This recreates $personaName from $sourceSummary. Speech and scenes are AI-generated, not a recording of the historical person.';
+    return 'AI version of $personaName from $sourceSummary.';
   }
 
   @override
@@ -405,7 +405,7 @@ class AppLocalizationsSn extends AppLocalizations {
 
   @override
   String get personaChipSourceSemantics =>
-      'Documented claim. Source available. Double tap to open the cited card.';
+      'Documented claim. Source card ready. Double tap to open it.';
 
   @override
   String get personaChipInferredSemantics =>
@@ -413,11 +413,11 @@ class AppLocalizationsSn extends AppLocalizations {
 
   @override
   String get personaChipLegendSemantics =>
-      'Legend claim. Traditional or oral tradition, not a single document.';
+      'Legend claim. Oral tradition, not one document.';
 
   @override
   String get personaChipNoSourceSemantics =>
-      'Documented claim, but the cited source is not available yet.';
+      'Documented claim. Source card is not ready yet.';
 
   @override
   String get persona_dialogue_welcome =>
@@ -435,4 +435,18 @@ class AppLocalizationsSn extends AppLocalizations {
 
   @override
   String get audioSynthetic => 'Synthetic voice';
+
+  @override
+  String avatarSemanticsExpression(String name, String expression) {
+    return '$name looks $expression';
+  }
+
+  @override
+  String avatarSemanticsExpressionActivity(
+    String name,
+    String expression,
+    String activity,
+  ) {
+    return '$name looks $expression and is $activity';
+  }
 }

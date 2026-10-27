@@ -107,10 +107,6 @@ class _CharacterVisibilityPauseState extends State<CharacterVisibilityPause>
 
   @override
   Widget build(BuildContext context) {
-    final reduced = MediaQuery.disableAnimationsOf(context);
-    if (reduced && widget.controller.isAttached) {
-      widget.controller.active = false;
-    }
     return _AvatarViewportGate(
       onVisible: _onVisible,
       child: widget.child,

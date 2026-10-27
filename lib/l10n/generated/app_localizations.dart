@@ -815,7 +815,7 @@ abstract class AppLocalizations {
   /// copy_keys: persona.opening.how_built — spoken/read before the first in-character line
   ///
   /// In en, this message translates to:
-  /// **'This recreates {personaName} from {sourceSummary}. Speech and scenes are AI-generated, not a recording of the historical person.'**
+  /// **'AI version of {personaName} from {sourceSummary}.'**
   String personaOpeningHowBuilt(String personaName, String sourceSummary);
 
   /// copy_keys: persona.voice.synthesised — label while persona TTS plays
@@ -863,7 +863,7 @@ abstract class AppLocalizations {
   /// Screen reader label for Source chip on persona claims
   ///
   /// In en, this message translates to:
-  /// **'Documented claim. Source available. Double tap to open the cited card.'**
+  /// **'Documented claim. Source card ready. Double tap to open it.'**
   String get personaChipSourceSemantics;
 
   /// Screen reader label for Inferred support on persona claims
@@ -875,13 +875,13 @@ abstract class AppLocalizations {
   /// Screen reader label for Legend support on persona claims
   ///
   /// In en, this message translates to:
-  /// **'Legend claim. Traditional or oral tradition, not a single document.'**
+  /// **'Legend claim. Oral tradition, not one document.'**
   String get personaChipLegendSemantics;
 
   /// Screen reader label when documented claim has no source id
   ///
   /// In en, this message translates to:
-  /// **'Documented claim, but the cited source is not available yet.'**
+  /// **'Documented claim. Source card is not ready yet.'**
   String get personaChipNoSourceSemantics;
 
   /// Sample in-character persona greeting; village voice allowed here only
@@ -913,6 +913,22 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Synthetic voice'**
   String get audioSynthetic;
+
+  /// copy_keys: avatar.semantics.expression — screen reader when idle
+  ///
+  /// In en, this message translates to:
+  /// **'{name} looks {expression}'**
+  String avatarSemanticsExpression(String name, String expression);
+
+  /// copy_keys: avatar.semantics.expression — screen reader with activity
+  ///
+  /// In en, this message translates to:
+  /// **'{name} looks {expression} and is {activity}'**
+  String avatarSemanticsExpressionActivity(
+    String name,
+    String expression,
+    String activity,
+  );
 }
 
 class _AppLocalizationsDelegate

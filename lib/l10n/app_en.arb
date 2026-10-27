@@ -632,5 +632,33 @@
   "audioSynthetic": "Synthetic voice",
   "@audioSynthetic": {
     "description": "copy_keys: audio.synthetic — tag on TTS audio"
+  },
+
+  "avatarSemanticsExpression": "{name} looks {expression}",
+  "@avatarSemanticsExpression": {
+    "description": "copy_keys: avatar.semantics.expression — screen reader when idle",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "expression": {
+        "type": "String"
+      }
+    }
+  },
+  "avatarSemanticsExpressionActivity": "{name} looks {expression} and is {activity}",
+  "@avatarSemanticsExpressionActivity": {
+    "description": "copy_keys: avatar.semantics.expression — screen reader with activity",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "expression": {
+        "type": "String"
+      },
+      "activity": {
+        "type": "String"
+      }
+    }
   }
 }

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 
+import '../a11y/avatar_semantics.dart';
 import '../customisation/slot_binding.dart';
 
 class CastPartSlot {
@@ -94,7 +95,9 @@ String castSemanticsLabel({
   required String name,
   required String expression,
   required String activity,
-}) {
-  if (activity == 'idle') return '$name looks $expression';
-  return '$name looks $expression and is $activity';
-}
+}) =>
+    avatarSemanticsLabel(
+      name: name,
+      expression: expression,
+      activity: activity,
+    );

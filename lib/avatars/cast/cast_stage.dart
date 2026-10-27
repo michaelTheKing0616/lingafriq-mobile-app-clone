@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
+import '../a11y/avatar_semantics.dart';
 import '../customisation/slot_binding.dart';
 import 'cast_contract.dart';
 import 'cast_file_cache.dart';
@@ -73,7 +74,6 @@ class _CastStageState extends State<CastStage> {
       );
       widget.session.configurePartCatalog(catalog);
       widget.session.bind(file, instance);
-      _applyReducedMotion();
       _controller = controller;
       _applyActive();
       setState(() => _error = null);
@@ -81,17 +81,6 @@ class _CastStageState extends State<CastStage> {
       if (!mounted) return;
       setState(() => _error = error);
     }
-  }
-
-  void _applyReducedMotion() {
-    final reduced = MediaQuery.disableAnimationsOf(context);
-    widget.session.reducedMotion(reduced);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (_controller != null) _applyReducedMotion();
   }
 
   void _applyActive() {
@@ -120,19 +109,13 @@ class _CastStageState extends State<CastStage> {
   @override
   Widget build(BuildContext context) {
     final controller = _controller;
-    final label = castSemanticsLabel(
-      name: castSpokenName(widget.session.pose.preset),
-      expression: widget.session.pose.expression,
-      activity: widget.session.pose.activity,
-    );
     return ViewportGate(
       onVisible: (visible) {
         _onScreen = visible;
         _applyActive();
       },
-      child: Semantics(
-        label: label,
-        liveRegion: true,
+      child: AvatarCastSemantics(
+        session: widget.session,
         child: controller == null
             ? _Placeholder(
                 preset: widget.session.pose.preset,
