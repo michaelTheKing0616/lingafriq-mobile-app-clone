@@ -417,7 +417,7 @@ P11-036	Done	Version-control single .riv source with changelog (CHANGELOG.md, ch
 P11-037	Done	Polie rig in lingafriq_cast.riv: Character/Chip/Bust, L1–L5 SM, contract tests	P11/P11-037.yaml
 P11-038	Done	Layer isolation gate L1–L5 (check_layer_isolation.py, layer_isolation_test.dart)	P11/P11-038.yaml
 P11-039	Done	chip_artboard_spec.md: 128 canvas, ≥2px@64, silhouette gate, contract-aligned	P11/P11-039.yaml
-P11-040	Draft	Add golden chip render tests at 32/48/64 px	P11/P11-040.yaml
+P11-040	Done	Golden CharacterChip renders at 32/48/64 px × five expressions (chip_golden_test.dart)	P11/P11-040.yaml
 P11-041	Draft	Build Polie states, idle micro-motion and transitions	P11/P11-041.yaml
 P11-042	Draft	Define viseme enum, sidecar JSON and phoneme map	P11/P11-042.yaml
 P11-043	Draft	Schedule visemes on audio clock with RMS jaw fallback	P11/P11-043.yaml
