@@ -190,3 +190,4 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-178 | open | P4-071 | sourceLibrary router is not mounted. routes.tsx and the server index are outside the allowlist. The library is process memory. The admin screen was not opened in a browser. |
 | OW-179 | open | P7-949 review, 2026-10-27 | `LessonSessionScreen` was added for pacing reason/override/reset but is not mounted by any route or navigation action; card AC3 UI is not reachable in-app. |
 | OW-180 | open | P6-082/P6-084 review, 2026-10-27 | `nativeModelGate.ts` and `codec.ts` are validated by unit tests but are not wired into any mounted realtime API route; gate/codec policy is not enforced on live session creation. |
+| OW-181 | open | P6-081/P6-083 review, 2026-10-27 | `LipSyncDriver` and `RealtimeVoiceClient` card logic compiles with unit tests but has no call site in app flows; lip-sync/PTT behaviour is not yet reachable from a mounted voice screen. |
