@@ -885,7 +885,7 @@ P6-026	Done	Build Tutor Correct-my-writing hybrid with uncertainty (tutorCorrect
 P6-027	Done	Story mode: story.ts, story.md, lib/screens/story (lexicon, approval gate, AI label)	P6/P6-027.yaml
 P6-028	Done	Shadowing coach on gateway scorer + pitch overlay (shadowing.ts, tutor_pronunciation_mode_screen.dart)	P6/P6-028.yaml
 P6-029	Done	Translator-with-teaching: pair gate, translate.md, meaning_preservation eval (translate.ts)	P6/P6-029.yaml
-P6-030	Draft	Build Live Translate with visible confidence indicator	P6/P6-030.yaml
+P6-030	Done	Live translate confidence mapping + voice/camera UI (liveTranslate.ts, screens/translate/)	P6/P6-030.yaml
 P6-031	Done	Stand up server-side scorer service (scorer/api.py, score.route.ts)	P6/P6-031.yaml
 P6-032	Done	Fine-tune Omnilingual CTC per language (finetune.py, licence_check.py; fixture train)	P6/P6-032.yaml
 P6-033	Done	Compute GOP segmental scores with learner advice (gop.py, advice_map.py, test_gop.py)	P6/P6-033.yaml
