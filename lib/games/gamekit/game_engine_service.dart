@@ -147,6 +147,74 @@ class GameEngineService {
 
   GameKitLearnerGraphWriter get graphWriter => _graphWriter;
 
+  /// Duel match payload from `gamekit:duel:matched` (levels are server-resolved).
+  gamekit_session.GameSession applyDuelHumanMatch(
+    gamekit_session.GameSession session,
+    Map<String, dynamic> payload,
+  ) {
+    final self = payload['self'] as Map<String, dynamic>? ?? {};
+    final opponent = payload['opponent'] as Map<String, dynamic>? ?? {};
+    return session.copyWith(
+      metadata: {
+        ...session.metadata,
+        'duel_match_id': payload['matchId'],
+        'duel_matchmaking_status': 'matched_human',
+        'duel_self_level_label': self['levelLabel'],
+        'duel_opponent_user_id': opponent['userId'],
+        'duel_opponent_level_label': opponent['levelLabel'],
+        'duel_opponent_is_bot': false,
+      },
+    );
+  }
+
+  /// Timeout path: labelled bot or retry — never silent out-of-band pairing.
+  gamekit_session.GameSession applyDuelTimeoutOffer(
+    gamekit_session.GameSession session,
+    Map<String, dynamic> payload,
+  ) {
+    return session.copyWith(
+      metadata: {
+        ...session.metadata,
+        'duel_matchmaking_status': 'timeout',
+        'duel_timeout_offer_bot': payload['offerBot'] == true,
+        'duel_bot_level_label': payload['botLevelLabel'],
+        'duel_retry_allowed': payload['retryAllowed'] == true,
+      },
+    );
+  }
+
+  gamekit_session.GameSession applyDuelBotMatch(
+    gamekit_session.GameSession session, {
+    required String matchId,
+    required String botLevelLabel,
+  }) {
+    return session.copyWith(
+      metadata: {
+        ...session.metadata,
+        'duel_match_id': matchId,
+        'duel_matchmaking_status': 'matched_bot',
+        'duel_opponent_user_id': 'gamekit_bot',
+        'duel_opponent_level_label': botLevelLabel,
+        'duel_opponent_is_bot': true,
+      },
+    );
+  }
+
+  /// Request body for duel matchmaking — deliberately omits client level (AC4).
+  Map<String, dynamic> buildDuelMatchRequest({
+    required String requestId,
+    required String language,
+    required String skillId,
+    required String gameId,
+  }) {
+    return {
+      'requestId': requestId,
+      'language': language,
+      'skillId': skillId,
+      'gameId': gameId,
+    };
+  }
+
   /// Create a GameKit session from parameters
   /// Used by GameScreenIntegration to eliminate manual session creation
   gamekit_session.GameSession createGameKitSession({

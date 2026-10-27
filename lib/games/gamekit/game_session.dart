@@ -15,6 +15,14 @@ class GameSession {
   final bool queueLoadFailed;
   final Map<String, dynamic> metadata;
 
+  /// P8-906 duel matchmaking (server-authoritative levels; never trust client level).
+  String? get duelMatchId => metadata['duel_match_id'] as String?;
+  String? get duelOpponentUserId => metadata['duel_opponent_user_id'] as String?;
+  String? get duelOpponentLevelLabel => metadata['duel_opponent_level_label'] as String?;
+  String? get duelSelfLevelLabel => metadata['duel_self_level_label'] as String?;
+  bool get duelOpponentIsBot => metadata['duel_opponent_is_bot'] == true;
+  String? get duelMatchmakingStatus => metadata['duel_matchmaking_status'] as String?;
+
   GameSession({
     required this.sessionId,
     required this.userId,

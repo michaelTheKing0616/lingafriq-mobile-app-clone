@@ -56,6 +56,10 @@ class _GameAnswerTileState extends State<GameAnswerTile> {
         textColor = Colors.red.shade900;
         trailingIcon = Icons.cancel;
         iconColor = Colors.red;
+      } else {
+        backgroundColor = Theme.of(context).colorScheme.surface;
+        borderColor = Colors.grey.shade300;
+        textColor = Theme.of(context).colorScheme.onSurface;
       }
     } else if (widget.showResult) {
       if (widget.isCorrect) {

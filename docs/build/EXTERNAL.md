@@ -6,7 +6,7 @@ Each item: owner, due-by gate, the artefact an agent prepares, and the RTM rows 
 
 | ID | Item | Owner | Due gate | Agent-prepared artefact | Unblocks (RTM) | Status |
 |---|---|---|---|---|---|---|
-| EXT-01 | Companion doc `LINGAFRIQ_AI_MODEL_STACK.md` (model/vendor choices, licences, pricing) — not in repo or Downloads | Tope | G0 (or per card) | list of the exact sections needed: §1.1 commercial replacements, §2, §2.4, §3.1, §3.5, §3.7, §3.8, §3.9, §4, §7, pricing | all `companion:` rows (EP-§4.3-33, EP-§6.4-07/69, EP-§7.2-01, EP-§7.5-18, EP-§7.6-10, CP-§3.1-25/26, CP-§7-09, CP-§9.4-17 …) | Open |
+| EXT-01 | Companion doc `docs/plan/LINGAFRIQ_AI_MODEL_STACK.md` (model/vendor choices, licences, pricing) | Tope | G0 (or per card) | §1.1 commercial replacements, §2, §2.4, §3.1, §3.5, §3.7, §3.8, §3.9, §4, §7, pricing | all `companion:` rows (EP-§4.3-33, EP-§6.4-07/69, EP-§7.2-01, EP-§7.5-18, EP-§7.6-10, CP-§3.1-25/26, CP-§7-09, CP-§9.4-17 …) | Done |
 | EXT-02 | Companion `LINGAFRIQ_ELEVATION_PLAN.md` — superseded by `_3.pdf` (section numbers match); no action | — | — | — | CP-§pre-11, CP-§4-31, CP-§5-27/28 | Resolved |
 | EXT-03 | Counsel sign-off on the licence register | Tope → counsel | G4 | register CSV + per-source compatibility checklist (arXiv 2606.28867 matrix) | CP-§pre-08, CP-§2.1-03, CP-§2.1-08, CP-§9.2-06 | Open |
 | EXT-04 | Oxford Languages datasets (yo, ig, ha, xh; sw via API) quote + licence | Tope | G4 | RFQ: tone-marked headwords, examples, display rights, API terms | CP-§2.3 Oxford, CP-§2.4-*-lexicon, D2 | Open |
