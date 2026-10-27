@@ -39,6 +39,10 @@ class GameTurnResult {
         'accuracy': score.accuracy,
         'is_perfect': score.isPerfect,
         'is_fail': score.isFail,
+        if (score.isUnsure) 'unsure': true,
+        if (score.honestPracticeMode) 'honest_practice': true,
+        if (score.scorerVersion != null) 'scorer_version': score.scorerVersion,
+        if (score.confidence != null) 'confidence': score.confidence,
       },
     );
   }
@@ -137,12 +141,28 @@ class GameKitLearnerGraphWriter {
       turnId,
     ];
 
+    final scorerTraces = <Map<String, dynamic>>[
+      ...((session.metadata['learner_scorer_traces'] as List<dynamic>?)
+              ?.whereType<Map>()
+              .map((e) => Map<String, dynamic>.from(e)) ??
+          const []),
+    ];
+    if (result.score.scorerTrace != null) {
+      scorerTraces.add({
+        'turnId': turnId,
+        'itemId': ids.itemId,
+        'skillId': ids.skillId,
+        ...result.score.scorerTrace!,
+      });
+    }
+
     return session.copyWith(
       turns: updatedTurns,
       metadata: {
         ...session.metadata,
         'recorded_turn_ids': recorded,
         'learner_events_recorded': recorded.length,
+        if (scorerTraces.isNotEmpty) 'learner_scorer_traces': scorerTraces,
       },
     );
   }

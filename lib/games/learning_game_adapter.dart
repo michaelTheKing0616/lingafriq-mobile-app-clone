@@ -1,6 +1,9 @@
+import 'package:dio/dio.dart';
+
 import 'gamekit/game_difficulty.dart';
 import 'gamekit/game_engine.dart';
 import 'gamekit/game_scoring.dart';
+import '../../services/lens/lens_scoring_client.dart';
 import 'gamekit/game_feedback.dart';
 import 'gamekit/game_animation_bridge.dart';
 import 'gamekit/game_turn_context.dart';
@@ -197,5 +200,52 @@ class AdaptiveLearningGameEngine {
       feedback: DefaultGameFeedbackEngine(),
       animation: animationBridge,
     );
+  }
+
+  /// Speaking games: scores only via [RealScorerSpeakingEngine] + gateway POST.
+  static GameEngine createWithRealSpeakingScorer({
+    required String learnerId,
+    required List<String> skillIds,
+    required GameAnimationBridge animationBridge,
+    required Future<Response<dynamic>> Function(String path, FormData data) post,
+    LensScoringClient? scoringClient,
+  }) {
+    final skillId = skillIds.isNotEmpty ? skillIds.first : '';
+    final difficulty = skillId.isNotEmpty
+        ? LearningGameDifficultyEngine(learnerId: learnerId, skillId: skillId)
+        : DefaultGameDifficultyEngine();
+    return GameEngine(
+      scoring: RealScorerSpeakingEngine(
+        client: scoringClient,
+        post: post,
+      ),
+      difficulty: difficulty,
+      feedback: SpeakingGameFeedbackEngine(),
+      animation: animationBridge,
+    );
+  }
+}
+
+/// Feedback for real-scorer speaking turns (unsure + honest practice).
+class SpeakingGameFeedbackEngine implements GameFeedbackEngine {
+  @override
+  Future<GameFeedback> generate(GameTurnContext context, GameScore score) async {
+    if (score.isUnsure) {
+      return GameFeedback.neutral(
+        message: score.details?['message'] as String? ??
+            'We could not score this clearly. Try again.',
+        animationEvent: AnimationEvent.listening,
+        metadata: const {'retry': true, 'unsure': true},
+      );
+    }
+    if (score.honestPracticeMode) {
+      return GameFeedback.neutral(
+        message: score.details?['message'] as String? ??
+            'Practice mode — scoring is unavailable.',
+        animationEvent: AnimationEvent.encouraging,
+        metadata: const {'honest_practice': true, 'retry': true},
+      );
+    }
+    return DefaultGameFeedbackEngine().generate(context, score);
   }
 }

@@ -429,6 +429,30 @@ List<String> _parseGameTags(dynamic value) {
   return const [];
 }
 
+/// Speaking prompt routed through E-P6-SCORER (P8-910).
+class GameKitSpeakingPrompt {
+  const GameKitSpeakingPrompt({
+    required this.expectedText,
+    this.itemId,
+    this.requiresServerScoring = true,
+  });
+
+  final String expectedText;
+  final String? itemId;
+  final bool requiresServerScoring;
+
+  Map<String, dynamic> toTurnMetadata() => {
+        'requiresServerScoring': requiresServerScoring,
+        'coreVerb': 'speak',
+        if (itemId != null) 'itemId': itemId,
+      };
+
+  Map<String, dynamic> toContentMap() => {
+        'expectedText': expectedText,
+        'requiresServerScoring': requiresServerScoring,
+      };
+}
+
 /// Licensed human audio for the correct answer on a GameKit item (P8-904).
 class GameKitCorrectItemAudio {
   final String? uri;
