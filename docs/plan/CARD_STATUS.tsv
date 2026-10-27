@@ -1088,7 +1088,7 @@ P7-945	Done	On-device MobileNetV4 TFLite classifier (on_device_object_classifier
 P7-946	Done	Map Point and Say labels to dictionary entries (point_say_dictionary.dart)	P7/P7-946.yaml
 P7-947	Draft	Fine-tune the Point and Say classifier on a licensed dataset	P7/P7-947.yaml
 P7-949	Done	lesson_pacing.dart, lesson_session_screen.dart, pacing replay harness (P7-949)	P7/P7-949.yaml
-P7-950	Draft	Fall back from MobileNetV4 to the SigLIP gateway	P7/P7-950.yaml
+P7-950	Done	MobileNetV4 low-confidence → SigLIP gateway with image opt-in (point_say_fallback.dart)	P7/P7-950.yaml
 P7-951	Done	Draw the winding lesson path and its node states (path_node_state.dart, learning_path_widget.dart)	P7/P7-951.yaml
 P7-952	Done	Path banners, preview sheet, Drift-first lazy path (path_section_banner.dart, P7-952)	P7/P7-952.yaml
 P7-953	Done	Licensed path scenery lookup, parchment/dim, Polie still gate (path_scene_art.dart, P7-953)	P7/P7-953.yaml
