@@ -192,6 +192,7 @@ flutter:
     - assets/data/polie_prompt_snippets.json
     - assets/data/review_checklist.json
     - assets/data/word_repo_game_seed.json
+    - assets/lipsync/maps/
     - assets/rive/
     - assets/models/point_say_mobilenetv4.tflite
     - assets/lens/african_object_set.json

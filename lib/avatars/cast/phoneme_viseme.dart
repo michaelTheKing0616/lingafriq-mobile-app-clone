@@ -1,77 +1,17 @@
 import 'dart:math' as math;
 
-/// One aligner token. [phoneme] is an IPA or MFA symbol, never an orthographic letter.
-class AlignedPhoneme {
-  const AlignedPhoneme({
-    required this.phoneme,
-    required this.start,
-    required this.end,
-  });
+import 'package:lingafriq/avatars/lipsync/phoneme_viseme_map.dart';
+import 'package:lingafriq/avatars/lipsync/timing_sidecar.dart';
 
-  final String phoneme;
-  final Duration start;
-  final Duration end;
-}
+export 'package:lingafriq/avatars/lipsync/phoneme_viseme_map.dart';
+export 'package:lingafriq/avatars/lipsync/timing_sidecar.dart'
+    show AlignedPhoneme, LipSyncTimingSidecar, LipSyncSample, RmsSample;
 
-class RmsSample {
-  const RmsSample({required this.at, required this.level});
-
-  final Duration at;
-
-  /// Linear amplitude, 0..1.
-  final double level;
-}
-
-class LipSyncSample {
-  const LipSyncSample({required this.viseme, required this.jawOpen});
-
-  final String viseme;
-  final double jawOpen;
-}
-
-/// Per-language phoneme → viseme. Unknown tokens stay unresolved so orthography
-/// cannot leak into the mouth. Tone is ignored by the caller: do not pass tone marks.
-const Map<String, Map<String, String>> phonemeVisemeTables = {
-  'yo': _yoruba,
-  'zu': _zulu,
-  'am': _ethiopian,
-  'ti': _ethiopian,
-  'default': _shared,
-};
-
-const Map<String, double> visemeOpenness = {
-  'sil': 0,
-  'PP': 0.12,
-  'FF': 0.18,
-  'TH': 0.22,
-  'DD': 0.28,
-  'kk': 0.22,
-  'CH': 0.24,
-  'SS': 0.16,
-  'nn': 0.2,
-  'RR': 0.34,
-  'aa': 0.85,
-  'E': 0.42,
-  'I': 0.28,
-  'O': 0.5,
-  'U': 0.32,
-  'KP': 0.12,
-  'GB': 0.14,
-  'C': 0.2,
-  'Q': 0.3,
-  'X': 0.16,
-  'Nnasal': 0.36,
-};
+const Map<String, double> visemeOpenness = visemeOpennessByWire;
 
 const Duration lipSyncAttack = Duration(milliseconds: 30);
 const Duration lipSyncRelease = Duration(milliseconds: 80);
 const double rmsGate = 0.08;
-
-String? visemeForPhoneme(String language, String phoneme) {
-  final table =
-      phonemeVisemeTables[language] ?? phonemeVisemeTables['default']!;
-  return table[phoneme] ?? phonemeVisemeTables['default']![phoneme];
-}
 
 /// Audio-clock lip sync. [at] is the playback position, not a letter index.
 class LipSyncTrack {
@@ -94,7 +34,8 @@ class LipSyncTrack {
   }) {
     final raw = _rmsAt(position);
     final phoneme = _phonemeAt(position);
-    final mapped = phoneme == null ? null : visemeForPhoneme(language, phoneme);
+    final mapped =
+        phoneme == null ? null : visemeWireForPhoneme(language, phoneme);
     final String viseme;
     final double target;
     if (phonemes.isEmpty) {
@@ -134,65 +75,3 @@ class LipSyncTrack {
     return _jaw;
   }
 }
-
-const Map<String, String> _shared = {
-  'sil': 'sil',
-  'a': 'aa',
-  'ɑ': 'aa',
-  'e': 'E',
-  'ɛ': 'E',
-  'i': 'I',
-  'ɪ': 'I',
-  'o': 'O',
-  'ɔ': 'O',
-  'u': 'U',
-  'ʊ': 'U',
-  'p': 'PP',
-  'b': 'PP',
-  'm': 'PP',
-  'f': 'FF',
-  'v': 'FF',
-  'θ': 'TH',
-  'ð': 'TH',
-  't': 'DD',
-  'd': 'DD',
-  'k': 'kk',
-  'g': 'kk',
-  's': 'SS',
-  'z': 'SS',
-  'ʃ': 'CH',
-  'ʒ': 'CH',
-  'tʃ': 'CH',
-  'dʒ': 'CH',
-  'n': 'nn',
-  'ŋ': 'nn',
-  'ɲ': 'nn',
-  'r': 'RR',
-  'ɾ': 'RR',
-  'l': 'DD',
-  'h': 'aa',
-  'w': 'U',
-  'j': 'I',
-};
-
-const Map<String, String> _yoruba = {
-  'kp': 'KP',
-  'gb': 'GB',
-  'ã': 'Nnasal',
-  'ɛ̃': 'Nnasal',
-  'ĩ': 'Nnasal',
-  'ɔ̃': 'Nnasal',
-  'ũ': 'Nnasal',
-};
-
-const Map<String, String> _zulu = {'ǀ': 'C', 'ǃ': 'C', 'ǁ': 'C', 'ǂ': 'C'};
-
-const Map<String, String> _ethiopian = {
-  'kʼ': 'Q',
-  'tʼ': 'Q',
-  'pʼ': 'Q',
-  'sʼ': 'Q',
-  'tʃʼ': 'Q',
-  'x': 'X',
-  'χ': 'X',
-};

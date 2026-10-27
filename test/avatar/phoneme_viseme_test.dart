@@ -11,6 +11,8 @@ void main() {
 
   test('zulu clicks and ethiopian ejectives use their own tables', () {
     expect(visemeForPhoneme('zu', 'ǀ'), 'C');
+    expect(visemeForPhoneme('zu', 'ǁ'), 'Q');
+    expect(visemeForPhoneme('zu', 'ǃ'), 'X');
     expect(visemeForPhoneme('zu', 'x'), isNull);
     expect(visemeForPhoneme('am', 'kʼ'), 'Q');
     expect(visemeForPhoneme('am', 'x'), 'X');

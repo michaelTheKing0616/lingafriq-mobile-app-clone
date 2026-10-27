@@ -419,7 +419,7 @@ P11-038	Done	Layer isolation gate L1–L5 (check_layer_isolation.py, layer_isola
 P11-039	Done	chip_artboard_spec.md: 128 canvas, ≥2px@64, silhouette gate, contract-aligned	P11/P11-039.yaml
 P11-040	Done	Golden CharacterChip renders at 32/48/64 px × five expressions (chip_golden_test.dart)	P11/P11-040.yaml
 P11-041	Done	Polie activity states, idle micro-motion, ≤300 ms transitions (state_transition_test.dart)	P11/P11-041.yaml
-P11-042	Draft	Define viseme enum, sidecar JSON and phoneme map	P11/P11-042.yaml
+P11-042	Done	Viseme enum, timing sidecar JSON, per-language phoneme maps (lipsync/)	P11/P11-042.yaml
 P11-043	Draft	Schedule visemes on audio clock with RMS jaw fallback	P11/P11-043.yaml
 P11-044	Draft	Verify lip-sync rated natural by native viewers	P11/P11-044.yaml
 P11-045	Draft	Build nested artboard customisation for hair, headwear, garments	P11/P11-045.yaml

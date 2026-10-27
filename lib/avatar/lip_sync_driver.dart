@@ -28,14 +28,8 @@ class LipSyncDriver {
       return;
     }
 
-    final phonemes = phonemeList.map((raw) {
-      final map = Map<String, dynamic>.from(raw as Map);
-      return AlignedPhoneme(
-        phoneme: (map['label'] as String?) ?? '',
-        start: Duration(milliseconds: (map['start_ms'] as num?)?.round() ?? 0),
-        end: Duration(milliseconds: (map['end_ms'] as num?)?.round() ?? 0),
-      );
-    }).where((p) => p.phoneme.isNotEmpty).toList(growable: false);
+    final sidecar = LipSyncTimingSidecar.fromGatewayPayload(payload);
+    final phonemes = sidecar.phonemes;
 
     _neutralTalking = phonemes.isEmpty;
     _track = _engine.track(
