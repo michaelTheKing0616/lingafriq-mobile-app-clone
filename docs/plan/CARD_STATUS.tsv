@@ -389,7 +389,7 @@ P11-008	Done	Route persona turns through AI gateway with typed errors (historica
 P11-009	Done	killSwitch.ts, persona.routes PersonaDisabled, persona_providers availability	P11/P11-009.yaml
 P11-010	Done	Yaa Asantewaa dossier + personas/index.ts prompts/probes; EXT-15 gates learner enable	P11/P11-010.yaml
 P11-011	Done	kwame_nkrumah.json dossier + personas/index.ts (en/nzi, 50 probes; EXT-15 gates learner enable)	P11/P11-011.yaml
-P11-012	Draft	Author Shaka kaSenzangakhona persona dossier and prompts	P11/P11-012.yaml
+P11-012	Done	shaka_kasenzangakhona.json + personas/index.ts (zu narrated_as_told_by, 50 probes; EXT-15 gates learner enable)	P11/P11-012.yaml
 P11-013	Draft	Author Ahmed Baba persona dossier and prompts	P11/P11-013.yaml
 P11-014	Draft	Author Thomas Mofolo persona dossier and prompts	P11/P11-014.yaml
 P11-015	Draft	Define four persona packs pairing figures with languages	P11/P11-015.yaml

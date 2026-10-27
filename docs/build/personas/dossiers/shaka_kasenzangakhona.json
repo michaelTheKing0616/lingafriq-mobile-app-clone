@@ -1,0 +1,68 @@
+{
+  "persona_id": "shaka_zulu",
+  "display_name": "Shaka kaSenzangakhona",
+  "death_date": "1828-09-22",
+  "delivery_mode": "narrated_as_told_by",
+  "primary_sources": [
+    {
+      "source_id": "src-shaka-stuart-oral-1924",
+      "type": "archive",
+      "title": "James Stuart papers and recorded Zulu oral histories (collected early 20th century)",
+      "year": 1924,
+      "licence_status": "approved"
+    }
+  ],
+  "secondary_sources": [
+    {
+      "source_id": "src-shaka-laband-2014",
+      "type": "monograph",
+      "title": "Zulu Warriors: The Battle for the South African Frontier",
+      "year": 2014,
+      "licence_status": "approved"
+    }
+  ],
+  "contested_points": [
+    "Birth year is often given circa 1787 but early Zulu chronology is reconstructed from oral and later colonial accounts.",
+    "Historians debate how far later oral praise poetry versus colonial writers shaped the image of Shaka as sole architect of every military reform."
+  ],
+  "known_myths": [
+    "Popular media sometimes exaggerates a single weapon innovation as instantly creating the entire Zulu kingdom without broader political context.",
+    "Retellings often treat the mfecane as caused by Shaka alone rather than as a complex regional process described in modern scholarship."
+  ],
+  "review": {
+    "historian_id": "ext-15-pending",
+    "signed_at": "1970-01-01T00:00:00Z"
+  },
+  "retrieval_cards": [
+    {
+      "card_id": "shaka.card.kingdom_foundation",
+      "source_id": "src-shaka-laband-2014",
+      "text": "Scholarship describes Shaka kaSenzangakhona as a Zulu leader who consolidated power in the early nineteenth century and reorganized regiments and tactics within a changing southern African political landscape.",
+      "terms": ["zulu", "kingdom", "regiments", "state"]
+    },
+    {
+      "card_id": "shaka.card.military_reforms",
+      "source_id": "src-shaka-laband-2014",
+      "text": "Sources attribute military reforms such as closer-order fighting and the iklwa spear to his reign, while noting that later accounts may blend documented change with legend.",
+      "terms": ["iklwa", "military", "tactics", "spear"]
+    },
+    {
+      "card_id": "shaka.card.assassination_1828",
+      "source_id": "src-shaka-stuart-oral-1924",
+      "text": "Oral and colonial-era records agree Shaka was killed in 1828 during a succession struggle involving close kin; exact motives vary by account.",
+      "terms": ["1828", "assassination", "succession"]
+    },
+    {
+      "card_id": "shaka.card.mfecane_context",
+      "source_id": "src-shaka-laband-2014",
+      "text": "Historians frame the mfecane or difaqane as a period of displacement and conflict across the region; they caution against blaming one ruler for every movement of peoples.",
+      "terms": ["mfecane", "displacement", "region"]
+    },
+    {
+      "card_id": "shaka.card.language_learning",
+      "source_id": "src-shaka-laband-2014",
+      "text": "Language-learning quests may teach isiZulu phrases about leadership and daily life only from approved teaching notes; the narrator must not invent tone marks or proverbs without a cited card.",
+      "terms": ["isizulu", "language", "teaching"]
+    }
+  ]
+}
