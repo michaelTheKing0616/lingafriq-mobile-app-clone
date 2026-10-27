@@ -899,7 +899,7 @@ P6-040	Done	Fluency rate, pauses, self-repairs (fluency.py)	P6/P6-040.yaml
 P6-041	Done	Collect native 1-5 rating data per language (rating/api.ts, rating.model.ts, tools/rating_console)	P6/P6-041.yaml
 P6-042	Done	Calibrate scorer to native ratings (calibration.py, scorer_real.yaml)	P6/P6-042.yaml
 P6-043	Done	Enforce honesty rules: quality.py clipping/SNR, honesty.py unsure/retry, fuzz gate	P6/P6-043.yaml
-P6-044	Draft	Verify Omnilingual 300M for offline on-device scoring	P6/P6-044.yaml
+P6-044	Done	Verify Omnilingual 300M offline (offline_omnilingual_verify.py, omnilingual_offline ledger, no-go raw ship)	P6/P6-044.yaml
 P6-045	Draft	Decide TTS vendors per language and licence exclusions	P6/P6-045.yaml
 P6-046	Draft	Gate each voice on native tone-accuracy threshold	P6/P6-046.yaml
 P6-047	Draft	Route recorded audio first, TTS for dynamic turns only	P6/P6-047.yaml
