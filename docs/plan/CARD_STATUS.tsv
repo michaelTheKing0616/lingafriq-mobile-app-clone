@@ -946,7 +946,7 @@ P7-902	Done	Build Lens full-screen camera with breathing boxes (lens_screen.dart
 P7-903	Done	Build on-device detection mapped to a curated African object set (on_device_detector.dart, object_set_mapper.dart)	P7/P7-903.yaml
 P7-904	Draft	Build server vision recognition via the AI gateway	P7/P7-904.yaml
 P7-905	Done	Replace NLLB/MyMemory in Lens with verified lexicon resolver (lexicon_label_resolver.dart)	P7/P7-905.yaml
-P7-906	Draft	Build Word Card content for Lens tags with native audio	P7/P7-906.yaml
+P7-906	Done	Build Word Card content for Lens tags with native audio (word_card_builder.dart)	P7/P7-906.yaml
 P7-907	Draft	Build Lens Word Card flip with tone contour and mic	P7/P7-907.yaml
 P7-908	Draft	Build Lens hold-to-speak with GOP and tone scoring	P7/P7-908.yaml
 P7-909	Draft	Build Lens personal collection feeding FSRS review	P7/P7-909.yaml
