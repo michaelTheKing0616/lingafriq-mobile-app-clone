@@ -27,10 +27,16 @@ class PassportPrompt {
 
 class PassportSessionStart {
   final String sessionId;
+  final String sessionToken;
   final Map<String, dynamic> rules;
   final List<PassportPrompt> prompts;
 
-  PassportSessionStart({required this.sessionId, required this.rules, required this.prompts});
+  PassportSessionStart({
+    required this.sessionId,
+    required this.sessionToken,
+    required this.rules,
+    required this.prompts,
+  });
 }
 
 class PassportPortfolioEntry {
@@ -121,9 +127,73 @@ class PassportService {
         .toList();
     return PassportSessionStart(
       sessionId: data['sessionId']?.toString() ?? '',
+      sessionToken: data['sessionToken']?.toString() ?? '',
       rules: (data['rules'] as Map?)?.cast<String, dynamic>() ?? const {},
       prompts: prompts,
     );
+  }
+
+  Future<PassportSessionStart> resumeSession(String sessionId) async {
+    await ApiService.initialize();
+    final res = await ApiService.get('/api/v2/passport/sessions/$sessionId/resume');
+    final data = (res.data as Map).cast<String, dynamic>();
+    if (res.statusCode == 410 && data['code'] == 'CAT_SESSION_EXPIRED') {
+      throw PassportCatException('CAT_SESSION_EXPIRED');
+    }
+    if (res.statusCode != 200 || data['success'] != true) {
+      throw Exception(data['error']?.toString() ?? 'Resume failed');
+    }
+    final promptsRaw = (data['prompts'] as List?) ?? const [];
+    final prompts = promptsRaw
+        .whereType<Map>()
+        .map((m) => PassportPrompt.fromJson(m.cast<String, dynamic>()))
+        .where((p) => p.promptId.isNotEmpty)
+        .toList();
+    return PassportSessionStart(
+      sessionId: data['sessionId']?.toString() ?? sessionId,
+      sessionToken: data['sessionToken']?.toString() ?? '',
+      rules: (data['rules'] as Map?)?.cast<String, dynamic>() ?? const {},
+      prompts: prompts,
+    );
+  }
+
+  Future<void> reportIntegrityViolation({
+    required String sessionId,
+    required String sessionToken,
+    required String reason,
+  }) async {
+    await ApiService.initialize();
+    await ApiService.post(
+      '/api/v2/passport/sessions/$sessionId/integrity',
+      data: {'sessionToken': sessionToken, 'reason': reason},
+    );
+  }
+
+  Future<PassportPrompt?> advanceCatStep({
+    required String sessionId,
+    required String sessionToken,
+    required String promptId,
+    required double itemScore,
+  }) async {
+    await ApiService.initialize();
+    final res = await ApiService.post(
+      '/api/v2/passport/sessions/$sessionId/cat-step',
+      data: {
+        'sessionToken': sessionToken,
+        'promptId': promptId,
+        'itemScore': itemScore,
+      },
+    );
+    final data = (res.data as Map).cast<String, dynamic>();
+    if (res.statusCode != 200 || data['success'] != true) {
+      throw Exception(data['error']?.toString() ?? 'CAT step failed');
+    }
+    if (data['complete'] == true) return null;
+    final next = data['nextPrompt'];
+    if (next is Map) {
+      return PassportPrompt.fromJson(next.cast<String, dynamic>());
+    }
+    return null;
   }
 
   Future<Map<String, dynamic>> uploadRecording({
@@ -158,6 +228,7 @@ class PassportService {
 
   Future<Map<String, dynamic>> submit({
     required String sessionId,
+    required String sessionToken,
     required List<Map<String, dynamic>> recordings,
     required Map<String, dynamic> rubric,
     required Map<String, dynamic> integritySignals,
@@ -166,6 +237,7 @@ class PassportService {
     final res = await ApiService.post(
       '/api/v2/passport/sessions/$sessionId/submit',
       data: {
+        'sessionToken': sessionToken,
         'recordings': recordings,
         'rubric': rubric,
         'integritySignals': integritySignals,
@@ -191,5 +263,12 @@ class PassportService {
     }
     return (res.data as Map).cast<String, dynamic>();
   }
+}
+
+class PassportCatException implements Exception {
+  PassportCatException(this.code);
+  final String code;
+  @override
+  String toString() => code;
 }
 
