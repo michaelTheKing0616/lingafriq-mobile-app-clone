@@ -153,6 +153,91 @@ class LearningAnalyticsService {
     );
   }
 
+  /// P10-932: scored speech attempt (no audio). Unsure omits score fields.
+  Future<void> trackSpeechAttemptScored({
+    required bool unsure,
+    bool? phonesOk,
+    bool? toneOk,
+    double? confidence,
+  }) async {
+    if (unsure) {
+      await _enqueue(
+        _envelope(
+          eventName: 'speech_attempt_scored',
+          metrics: const {'unsure': true},
+        ),
+      );
+      return;
+    }
+    if (phonesOk == null || toneOk == null || confidence == null) {
+      throw ArgumentError('phonesOk, toneOk and confidence required when not unsure');
+    }
+    final clamped = confidence.clamp(0.0, 1.0);
+    await _enqueue(
+      _envelope(
+        eventName: 'speech_attempt_scored',
+        metrics: {
+          'phones_ok': phonesOk,
+          'tone_ok': toneOk,
+          'confidence': (clamped * 1000).round() / 1000,
+        },
+      ),
+    );
+  }
+
+  /// Maps gateway scorer JSON to [trackSpeechAttemptScored] (numeric fields only).
+  Future<void> trackSpeechAttemptFromScoreJson(Map<String, dynamic> body) async {
+    final status = (body['status'] as String?)?.toLowerCase() ?? '';
+    final retryRequested = body['retry_requested'] == true || status == 'unsure';
+    if (retryRequested) {
+      await trackSpeechAttemptScored(unsure: true);
+      return;
+    }
+    final segmental = body['segmental'];
+    final tone = body['tone'];
+    bool fieldOk(dynamic block) {
+      if (block is! Map) return false;
+      final value = block['value'];
+      final reason = block['reason'];
+      return value is num && reason == null;
+    }
+    double confidenceFrom(dynamic block) {
+      if (block is! Map) return 0;
+      final value = block['value'];
+      if (value is! num) return 0;
+      return value.toDouble().clamp(0.0, 1.0);
+    }
+    final segConf = confidenceFrom(segmental);
+    final toneConf = confidenceFrom(tone);
+    final avg = segConf > 0 || toneConf > 0 ? (segConf + toneConf) / (segConf > 0 && toneConf > 0 ? 2 : 1) : 0.0;
+    await trackSpeechAttemptScored(
+      unsure: false,
+      phonesOk: fieldOk(segmental),
+      toneOk: fieldOk(tone),
+      confidence: avg,
+    );
+  }
+
+  /// P10-932: AI gateway turn complete (client-side mirror; server also emits).
+  Future<void> trackAiTurn({
+    required int modeOrd,
+    required int tokens,
+    required int latencyMs,
+    required bool fallbackUsed,
+  }) async {
+    await _enqueue(
+      _envelope(
+        eventName: 'ai_turn',
+        metrics: {
+          'mode_ord': modeOrd,
+          'tokens': tokens,
+          'latency_ms': latencyMs,
+          'fallback_used': fallbackUsed,
+        },
+      ),
+    );
+  }
+
   /// AC3: `cando_demonstrated` is emitted by the server after verification — not on device.
   void noteCandoDemonstratedServerSide() {}
 

@@ -30,7 +30,9 @@
         "lesson_completed",
         "exercise_answered",
         "session_started",
-        "session_ended"
+        "session_ended",
+        "speech_attempt_scored",
+        "ai_turn"
       ]
     },
     "occurred_at": {

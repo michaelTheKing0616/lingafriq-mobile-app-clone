@@ -369,7 +369,7 @@ P10-928	Draft	Verify POPIA and other jurisdiction duties with counsel	P10/P10-92
 P10-929	Draft	Label AI content and personas under EU AI Act Art. 50	P10/P10-929.yaml
 P10-930	Done	Define the versioned analytics event schema (events.v1.json, analytics-schema.service.ts, lint_schema.py)	P10/P10-930.yaml
 P10-931	Done	LearningAnalyticsService v1 envelopes, offline queue, exercise_answered/content_report	P10/P10-931.yaml
-P10-932	Draft	Emit speech and AI turn events	P10/P10-932.yaml
+P10-932	Done	Emit speech and AI turn events (analytics_service, ai-gateway.analytics)	P10/P10-932.yaml
 P10-933	Draft	Send on-device aggregates where possible	P10/P10-933.yaml
 P10-934	Draft	Build the north-star and guardrail metrics dashboard	P10/P10-934.yaml
 P10-935	Draft	Add feature-flag experiments with pre-registration	P10/P10-935.yaml

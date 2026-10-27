@@ -113,6 +113,63 @@ void main() {
     expect(await service.pendingCount(), 0);
   });
 
+  test('speech_attempt_scored unsure omits score fields', () async {
+    final posted = <List<Map<String, Object?>>>[];
+    final service = buildService(posted: posted);
+    service.configureLearner(accountId: 'acct-5');
+    await service.beginLearningSession();
+
+    await service.trackSpeechAttemptScored(unsure: true);
+
+    final event = posted.last.single;
+    expect(event['event_name'], 'speech_attempt_scored');
+    final metrics = event['metrics'] as Map<String, Object?>;
+    expect(metrics['unsure'], isTrue);
+    expect(metrics.containsKey('phones_ok'), isFalse);
+    expect(metrics.containsKey('audio'), isFalse);
+  });
+
+  test('speech_attempt_scored carries phones_ok tone_ok confidence', () async {
+    final posted = <List<Map<String, Object?>>>[];
+    final service = buildService(posted: posted);
+    service.configureLearner(accountId: 'acct-6');
+    await service.beginLearningSession();
+
+    await service.trackSpeechAttemptScored(
+      unsure: false,
+      phonesOk: true,
+      toneOk: false,
+      confidence: 0.812,
+    );
+
+    final metrics = posted.last.single['metrics'] as Map<String, Object?>;
+    expect(metrics['phones_ok'], isTrue);
+    expect(metrics['tone_ok'], isFalse);
+    expect(metrics['confidence'], 0.812);
+  });
+
+  test('ai_turn carries mode_ord tokens latency fallback_used', () async {
+    final posted = <List<Map<String, Object?>>>[];
+    final service = buildService(posted: posted);
+    service.configureLearner(accountId: 'acct-7');
+    await service.beginLearningSession();
+
+    await service.trackAiTurn(
+      modeOrd: 0,
+      tokens: 120,
+      latencyMs: 450,
+      fallbackUsed: true,
+    );
+
+    final event = posted.last.single;
+    expect(event['event_name'], 'ai_turn');
+    final metrics = event['metrics'] as Map<String, Object?>;
+    expect(metrics['mode_ord'], 0);
+    expect(metrics['tokens'], 120);
+    expect(metrics['latency_ms'], 450);
+    expect(metrics['fallback_used'], isTrue);
+  });
+
   test('failed send retries then drops with counter', () async {
     SharedPreferences.setMockInitialValues({});
     var calls = 0;
