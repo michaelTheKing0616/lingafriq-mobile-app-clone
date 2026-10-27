@@ -911,7 +911,7 @@ P6-052	Draft	Ship Nigerian Pidgin TTS voice behind tone-accuracy gate	P6/P6-052.
 P6-053	Draft	Ship Swahili TTS voice behind tone-accuracy gate	P6/P6-053.yaml
 P6-054	Draft	Ship isiZulu TTS voice behind tone-accuracy gate	P6/P6-054.yaml
 P6-055	Draft	Ship isiXhosa TTS voice behind tone-accuracy gate	P6/P6-055.yaml
-P6-056	Draft	Build eval harness with CI deploy blocker	P6/P6-056.yaml
+P6-056	Done	Gateway eval harness: evals/harness/run.ts, thresholds.yaml, ai_eval.yml (P6-056)	P6/P6-056.yaml
 P6-057	Draft	Define eval set schema requiring 300 items per language	P6/P6-057.yaml
 P6-058	Draft	Author Yoruba eval set of at least 300 items	P6/P6-058.yaml
 P6-059	Draft	Author Igbo eval set of at least 300 items	P6/P6-059.yaml
