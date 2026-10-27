@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/gamification_provider.dart';
+import '../../models/game_streak.dart';
 
 /// Displays user's streak with fire animation
 class StreakDisplayWidget extends ConsumerStatefulWidget {
@@ -47,13 +48,15 @@ class _StreakDisplayWidgetState extends ConsumerState<StreakDisplayWidget>
 
   @override
   Widget build(BuildContext context) {
-    final gamification = ref.watch(gamificationProvider.notifier).gamification;
+    final notifier = ref.watch(gamificationProvider.notifier);
+    final gamification = notifier.gamification;
+    final cadence = notifier.streakCadence;
 
     if (widget.compact) {
       return _buildCompact(context, gamification);
     }
 
-    return _buildFull(context, gamification);
+    return _buildFull(context, gamification, cadence, notifier);
   }
 
   Widget _buildCompact(BuildContext context, gamification) {
@@ -115,7 +118,12 @@ class _StreakDisplayWidgetState extends ConsumerState<StreakDisplayWidget>
     );
   }
 
-  Widget _buildFull(BuildContext context, gamification) {
+  Widget _buildFull(
+    BuildContext context,
+    gamification,
+    StreakCadence cadence,
+    GamificationProvider notifier,
+  ) {
     final streakCount = gamification.dailyStreak;
     final opacity = (0.7 + (streakCount.clamp(0, 30) / 30) * 0.3).clamp(0.7, 1.0);
     
@@ -180,7 +188,7 @@ class _StreakDisplayWidgetState extends ConsumerState<StreakDisplayWidget>
                           ),
                     ),
                     Text(
-                      'Day Streak',
+                      cadence == StreakCadence.weekly ? 'Week streak' : 'Day streak',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: Colors.orange.shade700,
                           ),
@@ -205,6 +213,25 @@ class _StreakDisplayWidgetState extends ConsumerState<StreakDisplayWidget>
                 ],
               ),
             ],
+            const SizedBox(height: 12),
+            SegmentedButton<StreakCadence>(
+              segments: const [
+                ButtonSegment(
+                  value: StreakCadence.daily,
+                  label: Text('Daily'),
+                  icon: Icon(Icons.today_outlined),
+                ),
+                ButtonSegment(
+                  value: StreakCadence.weekly,
+                  label: Text('Weekly'),
+                  icon: Icon(Icons.date_range_outlined),
+                ),
+              ],
+              selected: {cadence},
+              onSelectionChanged: (value) {
+                notifier.setStreakCadence(value.first);
+              },
+            ),
             if (widget.showFreeze && gamification.freezeLeft > 0) ...[
               const SizedBox(height: 12),
               Container(

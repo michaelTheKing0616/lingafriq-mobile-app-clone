@@ -13,6 +13,7 @@ import '../config/api_contract.dart';
 import 'dio_provider.dart' show client;
 import '../utils/structured_logger.dart';
 import '../widgets/gamification/streak_milestone_overlay.dart';
+import '../models/game_streak.dart';
 import 'notification_provider.dart';
 import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
 
@@ -120,8 +121,12 @@ class GamificationProvider extends Notifier<BaseProviderState>
   CircleQuestSnapshot? _circleQuest;
   FamilyPhraseSnapshot? _familyPhrase;
   HeritageTreeSnapshot? _heritageTree;
+  StreakCadence _streakCadence = StreakCadence.daily;
+  List<String> _practiceDaysThisWeek = [];
+  DateTime? _streakBrokenAt;
 
   CircleQuestSnapshot? get circleQuest => _circleQuest;
+  StreakCadence get streakCadence => _streakCadence;
   FamilyPhraseSnapshot? get familyPhrase => _familyPhrase;
   HeritageTreeSnapshot? get heritageTree => _heritageTree;
 
@@ -321,6 +326,17 @@ class GamificationProvider extends Notifier<BaseProviderState>
     }
   }
 
+  Future<void> setStreakCadence(StreakCadence cadence) async {
+    _streakCadence = cadence;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('streak_cadence', cadence.name);
+    } catch (e) {
+      logger.error('Error saving streak cadence', tag: 'gamification', error: e);
+    }
+    state = state.copyWith();
+  }
+
   /// Daily check-in with streak management
   Future<void> dailyCheckIn() async {
     final now = DateTime.now();
@@ -329,31 +345,31 @@ class GamificationProvider extends Notifier<BaseProviderState>
     final lastLoginDate =
         lastLogin != null ? DateTime(lastLogin.year, lastLogin.month, lastLogin.day) : null;
 
-    int newStreak = _gamification.dailyStreak;
-    int newFreezeLeft = _gamification.freezeLeft;
-
     if (lastLoginDate == today) {
-      // Already checked in today
       return;
     }
 
-    if (lastLoginDate == today.subtract(const Duration(days: 1))) {
-      // Consecutive day
-      newStreak = _gamification.dailyStreak + 1;
-    } else if (lastLoginDate == today.subtract(const Duration(days: 2)) &&
-        _gamification.freezeLeft > 0) {
-      // Use freeze (Ask the Ancestors)
-      newStreak = _gamification.dailyStreak;
-      newFreezeLeft = _gamification.freezeLeft - 1;
+    final ethicalState = EthicalStreakState(
+      cadence: _streakCadence,
+      currentStreak: _gamification.dailyStreak,
+      freezeTokens: _gamification.freezeLeft,
+      lastPracticeAt: lastLogin,
+      practiceDaysThisWeek: _practiceDaysThisWeek,
+      brokenAt: _streakBrokenAt,
+    );
+    final practice = EthicalStreakPolicy.recordPractice(ethicalState, now);
+    _practiceDaysThisWeek = practice.state.practiceDaysThisWeek;
+    _streakBrokenAt = practice.state.brokenAt;
+
+    int newStreak = practice.state.currentStreak;
+    int newFreezeLeft = practice.state.freezeTokens;
+
+    if (practice.streakBroken && _gamification.ubuntuStreakActive) {
+      logger.info('Ubuntu streak: Donating lessons to help others', tag: 'gamification');
+      await _donateLessonsToCommunity();
+    }
+    if (practice.freezeSpent) {
       logger.info('Used streak freeze', tag: 'gamification', context: {'remaining': newFreezeLeft});
-    } else {
-      // Streak broken
-      if (_gamification.ubuntuStreakActive) {
-        // Ubuntu mode: donate lessons instead of breaking
-        logger.info('Ubuntu streak: Donating lessons to help others', tag: 'gamification');
-        await _donateLessonsToCommunity();
-      }
-      newStreak = 1;
     }
 
     // Streak bonuses
@@ -663,6 +679,13 @@ class GamificationProvider extends Notifier<BaseProviderState>
       final prefs = await SharedPreferences.getInstance();
       final json = _gamification.toJson();
       await prefs.setString('user_gamification', jsonEncode(json));
+      await prefs.setString('streak_cadence', _streakCadence.name);
+      await prefs.setStringList('streak_practice_week_days', _practiceDaysThisWeek);
+      if (_streakBrokenAt != null) {
+        await prefs.setString('streak_broken_at', _streakBrokenAt!.toIso8601String());
+      } else {
+        await prefs.remove('streak_broken_at');
+      }
     } catch (e) {
       logger.error('Error saving gamification', tag: 'gamification', error: e);
     }
@@ -675,6 +698,15 @@ class GamificationProvider extends Notifier<BaseProviderState>
       if (jsonStr != null) {
         final json = jsonDecode(jsonStr) as Map<String, dynamic>;
         _gamification = UserGamificationModel.fromJson(json);
+      }
+      final cadenceName = prefs.getString('streak_cadence');
+      if (cadenceName == StreakCadence.weekly.name) {
+        _streakCadence = StreakCadence.weekly;
+      }
+      _practiceDaysThisWeek = prefs.getStringList('streak_practice_week_days') ?? [];
+      final brokenRaw = prefs.getString('streak_broken_at');
+      if (brokenRaw != null) {
+        _streakBrokenAt = DateTime.tryParse(brokenRaw);
       }
     } catch (e) {
       logger.error('Error loading gamification', tag: 'gamification', error: e);
