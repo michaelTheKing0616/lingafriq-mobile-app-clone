@@ -147,12 +147,12 @@
     "description": "Incorrect answer feedback"
   },
   
-  "next": "Next",
+  "next": "Go on",
   "@next": {
     "description": "Next button"
   },
   
-  "back": "Back",
+  "back": "Go back",
   "@back": {
     "description": "Back button"
   },
@@ -172,7 +172,7 @@
     "description": "Save button"
   },
   
-  "done": "Done",
+  "done": "Finish",
   "@done": {
     "description": "Done button"
   },
@@ -454,9 +454,9 @@
   "@liveTranslateInterruptBargeIn": {
     "description": "Button label to interrupt playback and barge in"
   },
-  "liveTranslatePlaceholderDash": "—",
+  "liveTranslatePlaceholderDash": "\u2026",
   "@liveTranslatePlaceholderDash": {
-    "description": "Placeholder when no caption is available"
+    "description": "Placeholder when no caption is available (ellipsis, not em dash)"
   },
   "liveTranslateSpeechUnavailable": "Speech recognition not available on this device.",
   "@liveTranslateSpeechUnavailable": {
