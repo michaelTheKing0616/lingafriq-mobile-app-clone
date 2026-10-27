@@ -63,7 +63,7 @@ risks:
 - Measure download (compressed) size, not installed size; state which in the gate output
 gate: G12
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/08-coding-and-debugging

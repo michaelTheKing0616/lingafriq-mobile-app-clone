@@ -436,7 +436,7 @@ P11-055	Done	Generate stickers, reactions and speaking share cards (sticker_gene
 P12-001	Done	Remove duplicated curriculum JSONs from the bundle (dedupe_assets_check.py, pubspec)	P12/P12-001.yaml
 P12-002	Done	asset_audit.py, dev/examples, Dosis trim (golden Regular+Bold only)	P12/P12-002.yaml
 P12-003	Done	Downloadable CMS language packs: pack_catalog, PackDownloadService, core Yo bundled	P12/P12-003.yaml
-P12-004	Draft	Gate release APK download size under 40 MB in CI	P12/P12-004.yaml
+P12-004	Done	Per-ABI APK download size gate in CI (apk_size_gate.sh, 40MB)	P12/P12-004.yaml
 P12-005	Draft	Split polie_workspace_screen into feature modules	P12/P12-005.yaml
 P12-006	Draft	Split ai_chat_provider_groq and api_provider	P12/P12-006.yaml
 P12-007	Draft	Split game_provider and enforce module boundaries	P12/P12-007.yaml

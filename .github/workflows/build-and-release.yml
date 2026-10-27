@@ -255,6 +255,22 @@ jobs:
           tail -n 80 build-retry.log || true
           exit 1
 
+      - name: Build per-ABI release APKs (download size gate)
+        env:
+          GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.caching=false -Dorg.gradle.console=plain"
+          VERSION_NAME: ${{ needs.increment-version.outputs.version_name }}
+          BUILD_NUMBER: ${{ needs.increment-version.outputs.build_number }}
+        run: |
+          chmod +x android/gradlew || true
+          flutter build apk --release --split-per-abi --obfuscate --split-debug-info=build/symbols-apk \
+            --dart-define=CERTIFICATE_PIN_HASHES="${{ secrets.CERTIFICATE_PIN_HASHES }}" \
+            --build-name="$VERSION_NAME" --build-number="$BUILD_NUMBER"
+
+      - name: APK download size gate (P12-004)
+        run: |
+          chmod +x scripts/ci/apk_size_gate.sh
+          bash scripts/ci/apk_size_gate.sh
+
       - name: 🚚 Package AAB and mapping file
         run: |
           mkdir -p build/release
