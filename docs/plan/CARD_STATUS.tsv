@@ -424,7 +424,7 @@ P11-043	Done	Schedule visemes on audio clock with RMS jaw fallback (viseme_sched
 P11-044	Draft	Verify lip-sync rated natural by native viewers (Blocked-External EXT-13)	P11/P11-044.yaml
 P11-045	Done	Nested artboard slot_binding.dart: VM Artboard swaps, ≥6 hair/≥4 headwear, stream >10	P11/P11-045.yaml
 P11-046	Done	Build skin-tone and colour properties across ≥10 tones (palette.dart)	P11/P11-046.yaml
-P11-047	Draft	Enforce avatar size, frame-cost and draw-call budgets	P11/P11-047.yaml
+P11-047	Done	Enforce avatar size, frame-cost and draw-call budgets (check_budgets.py, avatars_perf_test.dart)	P11/P11-047.yaml
 P11-048	Draft	Upgrade to rive 0.14.11 with rive_native and controller cache	P11/P11-048.yaml
 P11-049	Draft	Build AvatarDirector and retire scaffolding engines	P11/P11-049.yaml
 P11-050	Draft	Pause offscreen avatars and use static chips in lists	P11/P11-050.yaml
