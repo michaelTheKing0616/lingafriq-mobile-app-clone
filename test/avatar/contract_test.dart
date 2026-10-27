@@ -95,4 +95,47 @@ void main() {
       );
     }
   });
+
+  test('P11-037 Polie preset and modular part slots on CharacterVM', () {
+    final vm = file.viewModelByName('CharacterVM')!;
+    expect(vm.createInstanceByName('Polie'), isNotNull);
+    final inst = vm.createInstanceByName('Polie')!;
+    for (final slot in ['hair', 'headwear', 'top', 'bottom', 'accessory']) {
+      expect(inst.artboard(slot), isNotNull, reason: 'missing slot $slot');
+    }
+    final props = contract['properties'] as List;
+    final polieParts = [
+      'Headwear/PolieCrest',
+      'Top/PolieSuit',
+      'Bottom/PolieHover',
+      'Accessory/PolieOrbit',
+    ];
+    for (final part in polieParts) {
+      final category = part.split('/').first.toLowerCase();
+      final slotName = category == 'headwear'
+          ? 'headwear'
+          : category == 'accessory'
+              ? 'accessory'
+              : category;
+      final row = props.cast<Map<String, dynamic>>().firstWhere(
+        (p) => p['name'] == slotName,
+      );
+      expect(row['options'], contains(part));
+    }
+  });
+
+  test('P11-037 CharacterSM layer contract lists L1–L5 on Character', () {
+    final layers = (contract['artboards'] as Map)['Character']['layers'] as List;
+    const required = [
+      'L1 Body',
+      'L2 Face',
+      'L3 Gaze/Head',
+      'L4 Blink',
+      'L5 Mouth',
+    ];
+    for (final layer in required) {
+      expect(layers, contains(layer));
+      expect((contract['layerOwnership'] as Map)[layer], isA<String>());
+    }
+  });
 }
