@@ -1,6 +1,7 @@
 import '../../models/cultural_mastery_profile.dart';
 import '../../models/game_streak.dart';
 import '../../services/cultural_mastery_service.dart';
+import '../festival/festival_theme_service.dart';
 import 'game_result.dart';
 import 'game_scoring.dart';
 
@@ -39,6 +40,8 @@ class GameMetaLayer {
         streak: streak,
         badges: const [],
         countsForLeaderboard: false,
+        festivalWeekKey: FestivalThemeService.instance.cached?.weekKey,
+        festivalThemeId: FestivalThemeService.instance.cached?.themeId.name,
       );
     }
     // Update mastery profile
@@ -75,6 +78,8 @@ class GameMetaLayer {
       streak: streak,
       badges: badges,
       countsForLeaderboard: countsForLeaderboard,
+      festivalWeekKey: FestivalThemeService.instance.cached?.weekKey,
+      festivalThemeId: FestivalThemeService.instance.cached?.themeId.name,
     );
   }
 
@@ -121,12 +126,16 @@ class MetaGameUpdate {
   final List<String> badges;
   /// False when the duel opponent was a labelled bot (P8-908 AC3).
   final bool countsForLeaderboard;
+  final String? festivalWeekKey;
+  final String? festivalThemeId;
 
   MetaGameUpdate({
     required this.mastery,
     required this.streak,
     this.badges = const [],
     this.countsForLeaderboard = true,
+    this.festivalWeekKey,
+    this.festivalThemeId,
   });
 }
 

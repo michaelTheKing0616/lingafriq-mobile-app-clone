@@ -35,11 +35,13 @@ class GameFactoryHelper {
     GameLexiconPoolRequest request, {
     GameLexiconPoolFetch? fetch,
     LexiconPackService? packService,
+    String? gameId,
   }) {
     return BatchGameFactory.buildLexiconWordPool(
       request,
       fetch: fetch,
       packService: packService,
+      gameId: gameId,
     );
   }
 }

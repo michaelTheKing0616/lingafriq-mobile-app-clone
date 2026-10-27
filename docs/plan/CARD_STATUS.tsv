@@ -1015,7 +1015,7 @@ P8-927	Done	'Flagship: Fidel Flight / Script Sprint' (script_sprint/*)	P8/P8-927
 P8-928	Done	Flagship Greeting Gauntlet (scenario_matrix, greeting_gauntlet_*, ADR-036 harvest)	P8/P8-928.yaml
 P8-929	Done	Echo Karaoke flagship: pitch line, licence catalog, legacy karaoke harvest (echo_karaoke/*)	P8/P8-929.yaml
 P8-930	Done	Word Forge Yoruba serial verbs (yoruba_serial_verbs.dart, grammar records, goldens)	P8/P8-930.yaml
-P8-931	Draft	Weekly Village Festival themes rotating game content	P8/P8-931.yaml
+P8-931	Done	Weekly Village Festival themes (`festival_theme_service.dart`, `festival.service.ts`)	P8/P8-931.yaml
 P8-932	Draft	Mastery Map showing skills improved per game	P8/P8-932.yaml
 P8-933	Draft	Circle co-op goals for the game meta-layer	P8/P8-933.yaml
 P9-900	Draft	'Decide realtime stack: self-hosted Socket.IO+Redis vs managed'	P9/P9-900.yaml

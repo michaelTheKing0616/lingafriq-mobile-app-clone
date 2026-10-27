@@ -16,6 +16,7 @@ import 'game_feedback.dart';
 import 'game_difficulty.dart';
 import 'game_migration_helper.dart';
 import 'game_turn_context.dart';
+import '../festival/festival_theme_service.dart';
 
 /// Fetches ranked lexicon rows for GameKit (verified lexicon API or offline pack).
 typedef GameLexiconPoolFetch = Future<List<VerifiedLexeme>> Function(
@@ -151,7 +152,10 @@ class GameLexiconPoolBuilder {
   final GameLexiconPoolFetch _fetch;
   final LexiconPackService? _packService;
 
-  Future<GameLexiconPoolBuildResult> build(GameLexiconPoolRequest request) async {
+  Future<GameLexiconPoolBuildResult> build(
+    GameLexiconPoolRequest request, {
+    String? gameId,
+  }) async {
     final lang = request.languageCode.trim().toLowerCase();
     if (lang.isEmpty) {
       return GameLexiconPoolBuildResult(
@@ -241,13 +245,26 @@ class GameLexiconPoolBuilder {
       );
     }
 
-    return GameLexiconPoolBuildResult(
+    var result = GameLexiconPoolBuildResult(
       items: poolItems,
       failure: GameContentFailure.none(),
       excludedMissingAudio: excludedAudio,
       queriedCount: lexemes.length,
       source: source,
     );
+    try {
+      final festival = FestivalThemeService.instance.cached ??
+          await FestivalThemeService.instance.loadActive();
+      result = FestivalThemeService.instance.applyToPool(
+        base: result,
+        sourceLexemes: lexemes,
+        festival: festival,
+        gameId: gameId,
+      );
+    } catch (_) {
+      // Pool stays unweighted when festival metadata is unavailable.
+    }
+    return result;
   }
 }
 
@@ -262,11 +279,12 @@ class BatchGameFactory {
     GameLexiconPoolRequest request, {
     GameLexiconPoolFetch? fetch,
     LexiconPackService? packService,
+    String? gameId,
   }) {
     final builder = fetch != null || packService != null
         ? GameLexiconPoolBuilder(fetch: fetch, packService: packService)
         : _lexiconPoolBuilder;
-    return builder.build(request);
+    return builder.build(request, gameId: gameId);
   }
 
   /// Create a standard game engine with Polie evaluation and Rive integration
