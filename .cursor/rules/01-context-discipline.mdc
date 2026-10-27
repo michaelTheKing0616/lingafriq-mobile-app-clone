@@ -1,0 +1,10 @@
+---
+description: Keep the orchestrator's context small so each chat builds many cards
+alwaysApply: true
+---
+# Context discipline (orchestrator and subagents)
+- Never read whole large files (docs/plan/CARD_STATUS.tsv ~84KB, docs/build/DECISIONS.md ~33KB, docs/plan/LINGAFRIQ_AI_MODEL_STACK.md ~59KB). Use grep to find the one card or decision needed and read only that entry.
+- On resume: read only the "Next steps" and "Blockers" sections of docs/build/HANDOFF.md, then the single next card.
+- Subagent briefs are short (card id, files allowed, acceptance criteria). Subagent reports are 10 lines or fewer: verdict, files changed, test result. No logs, diffs or file dumps in the report.
+- The orchestrator never pastes command output or file contents into its own context beyond what a decision needs.
+- Keep HANDOFF.md short: replace stale status, never append duplicate paragraphs. Move old history to docs/build/HANDOFF_ARCHIVE.md.
