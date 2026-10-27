@@ -20,7 +20,11 @@ void main() {
     test('rejects manifest without practice target', () {
       expect(
         () => GameKitCatalog.register(
-          const GameManifest(gameId: 'bad_game', practiceTargets: {}),
+          GameManifest(
+            gameId: 'bad_game',
+            practiceTargets: {},
+            coreVerb: GameCoreVerb.choose,
+          ),
         ),
         throwsA(isA<GameManifestError>()),
       );
@@ -28,9 +32,10 @@ void main() {
 
     test('accepts retrieval target', () {
       GameKitCatalog.register(
-        const GameManifest(
+        GameManifest(
           gameId: 'tone_trainer',
           practiceTargets: {GamePracticeTarget.perception},
+          coreVerb: GameCoreVerb.listen,
         ),
       );
       expect(GameKitCatalog.isRegistered('tone_trainer'), isTrue);
@@ -112,9 +117,10 @@ void main() {
   group('GameEngine.startSessionWithQueue', () {
     test('marks session retry when due query fails', () async {
       GameKitCatalog.register(
-        const GameManifest(
+        GameManifest(
           gameId: 'wordmatch_audio',
           practiceTargets: {GamePracticeTarget.retrieval},
+          coreVerb: GameCoreVerb.match,
         ),
       );
       final planner = GameTurnQueuePlanner();

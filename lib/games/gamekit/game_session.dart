@@ -9,6 +9,7 @@ class GameSession {
   final String language;
   final String? level;
   final DateTime startTime;
+  final int plannedDurationSeconds;
   final List<GameTurnResult> turns;
   final List<String> turnQueue;
   final bool queueLoadFailed;
@@ -21,11 +22,19 @@ class GameSession {
     required this.language,
     this.level,
     required this.startTime,
+    int? plannedDurationSeconds,
     this.turns = const [],
     this.turnQueue = const [],
     this.queueLoadFailed = false,
     this.metadata = const {},
-  });
+  }) : plannedDurationSeconds = plannedDurationSeconds ??
+            (metadata['planned_duration_seconds'] as int?) ??
+            120;
+
+  DateTime get plannedEndTime =>
+      startTime.add(Duration(seconds: plannedDurationSeconds));
+
+  int elapsedSeconds(DateTime now) => now.difference(startTime).inSeconds;
 
   /// Visible retry state when due-item query failed (never serves a hardcoded list).
   bool get needsQueueRetry => queueLoadFailed;
@@ -77,6 +86,7 @@ class GameSession {
     String? language,
     String? level,
     DateTime? startTime,
+    int? plannedDurationSeconds,
     List<GameTurnResult>? turns,
     List<String>? turnQueue,
     bool? queueLoadFailed,
@@ -89,6 +99,8 @@ class GameSession {
       language: language ?? this.language,
       level: level ?? this.level,
       startTime: startTime ?? this.startTime,
+      plannedDurationSeconds:
+          plannedDurationSeconds ?? this.plannedDurationSeconds,
       turns: turns ?? this.turns,
       turnQueue: turnQueue ?? this.turnQueue,
       queueLoadFailed: queueLoadFailed ?? this.queueLoadFailed,

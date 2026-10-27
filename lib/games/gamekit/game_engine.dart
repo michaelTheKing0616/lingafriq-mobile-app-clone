@@ -14,6 +14,92 @@ enum GamePracticeTarget {
   perception,
 }
 
+/// Single core player action per game (EP-§10.2-05).
+enum GameCoreVerb {
+  listen,
+  speak,
+  choose,
+  match,
+  tap,
+  trace,
+  build,
+  assemble,
+}
+
+/// Planned session length bounds in seconds (EP-§10.2-04).
+class GameKitSessionDuration {
+  static const int minSeconds = 60;
+  static const int maxSeconds = 180;
+  static const int defaultSeconds = 120;
+
+  static int clampPlanned(int? seconds) {
+    final value = seconds ?? defaultSeconds;
+    if (value < minSeconds || value > maxSeconds) {
+      return value < minSeconds ? minSeconds : maxSeconds;
+    }
+    return value;
+  }
+}
+
+/// Session timing and turn gating (P8-902).
+class GameSessionClock {
+  /// Whether a new turn may start; an in-flight turn may finish past the hard cap.
+  static bool mayBeginTurn(
+    GameSession session,
+    DateTime now, {
+    bool turnInProgress = false,
+  }) {
+    if (turnInProgress) return true;
+    final elapsed = now.difference(session.startTime).inSeconds;
+    if (elapsed >= GameKitSessionDuration.maxSeconds) return false;
+    return now.isBefore(session.plannedEndTime);
+  }
+
+  /// After a turn resolves, show results when no further turn is allowed.
+  static bool shouldShowResultsAfterTurn(GameSession session, DateTime now) {
+    return !mayBeginTurn(session, now);
+  }
+}
+
+/// Nightly telemetry flag for games whose median session length is outside 60–180 s.
+class GameSessionDurationReport {
+  final Map<String, double> medianSecondsByGame;
+  final List<String> flaggedGameIds;
+
+  const GameSessionDurationReport({
+    required this.medianSecondsByGame,
+    required this.flaggedGameIds,
+  });
+
+  static GameSessionDurationReport fromSamples(
+    List<({String gameId, int durationSeconds})> samples,
+  ) {
+    final buckets = <String, List<int>>{};
+    for (final sample in samples) {
+      buckets.putIfAbsent(sample.gameId, () => []).add(sample.durationSeconds);
+    }
+    final medians = <String, double>{};
+    final flagged = <String>[];
+    for (final entry in buckets.entries) {
+      final sorted = [...entry.value]..sort();
+      final mid = sorted.length ~/ 2;
+      final median = sorted.length.isOdd
+          ? sorted[mid].toDouble()
+          : (sorted[mid - 1] + sorted[mid]) / 2.0;
+      medians[entry.key] = median;
+      if (median < GameKitSessionDuration.minSeconds ||
+          median > GameKitSessionDuration.maxSeconds) {
+        flagged.add(entry.key);
+      }
+    }
+    flagged.sort();
+    return GameSessionDurationReport(
+      medianSecondsByGame: medians,
+      flaggedGameIds: flagged,
+    );
+  }
+}
+
 /// Typed failure when a game manifest is invalid for GameKit registration.
 class GameManifestError implements Exception {
   final String code;
@@ -29,13 +115,20 @@ class GameManifestError implements Exception {
 class GameManifest {
   final String gameId;
   final Set<GamePracticeTarget> practiceTargets;
+  final GameCoreVerb coreVerb;
   final int defaultQueueLength;
+  final int plannedDurationSeconds;
 
-  const GameManifest({
+  GameManifest({
     required this.gameId,
     required this.practiceTargets,
+    required this.coreVerb,
     this.defaultQueueLength = 10,
-  });
+    int? plannedDurationSeconds,
+  }) : plannedDurationSeconds =
+            GameKitSessionDuration.clampPlanned(plannedDurationSeconds);
+
+  static final Set<GameCoreVerb> allowedCoreVerbs = GameCoreVerb.values.toSet();
 }
 
 /// Registered GameKit games (in-memory; populated at app bootstrap / tests).
@@ -47,6 +140,12 @@ class GameKitCatalog {
       throw const GameManifestError(
         'missing_practice_target',
         'Game must declare retrieval or perception practice target',
+      );
+    }
+    if (!GameManifest.allowedCoreVerbs.contains(manifest.coreVerb)) {
+      throw GameManifestError(
+        'invalid_core_verb',
+        'Core verb must be one of: ${GameManifest.allowedCoreVerbs.map((v) => v.name).join(', ')}',
       );
     }
     _byId[manifest.gameId] = manifest;
@@ -189,6 +288,7 @@ class GameEngine {
     required String languageCode,
     String? level,
     int? queueLength,
+    int? plannedDurationSeconds,
   }) async {
     final manifest = GameKitCatalog.manifestFor(gameId);
     if (manifest == null) {
@@ -205,19 +305,27 @@ class GameEngine {
       queueLength: length,
     );
 
+    final planned = GameKitSessionDuration.clampPlanned(
+      plannedDurationSeconds ?? manifest.plannedDurationSeconds,
+    );
+
     final metadata = <String, dynamic>{
       'queue_source': plan.loadFailed ? 'retry' : plan.source.name,
       'due_items_served': plan.dueItemsServed,
+      'planned_duration_seconds': planned,
+      'core_verb': manifest.coreVerb.name,
       if (plan.loadFailed) 'queue_load_failed': true,
     };
 
+    final startedAt = DateTime.now();
     return GameSession(
       sessionId: sessionId,
       userId: userId,
       gameId: gameId,
       language: languageCode,
       level: level,
-      startTime: DateTime.now(),
+      startTime: startedAt,
+      plannedDurationSeconds: planned,
       turnQueue: plan.itemIds,
       queueLoadFailed: plan.loadFailed,
       metadata: metadata,

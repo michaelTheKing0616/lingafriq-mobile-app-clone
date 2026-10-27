@@ -2,6 +2,7 @@ import 'generic_game_template.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../models/game/game_session_model.dart' show GameTypeExtension, GameType;
 import '../../screens/games/game_catalog.dart';
+import 'game_engine.dart';
 
 /// Registry of all 37+ games with their configurations
 /// This centralizes game definitions for easy migration
@@ -34,6 +35,7 @@ class AllGamesRegistry {
         gameId: entry.type.name,
         displayName: entry.name,
         learningGoals: _deriveLearningGoals(entry),
+        coreVerb: _inferCoreVerb(entry.type.name, entry),
       ),
   };
 
@@ -78,6 +80,77 @@ class AllGamesRegistry {
     if (category.contains('cultural')) return ['culture', 'context'];
     return ['vocabulary', 'recall'];
   }
+
+  static GameCoreVerb _inferCoreVerb(String gameId, GameCatalogEntry entry) {
+    final id = gameId.toLowerCase();
+    if (id.contains('drum') ||
+        id.contains('listen') ||
+        id.contains('accent') ||
+        id.contains('danfo') ||
+        id.contains('taxi') ||
+        id.contains('bus_stop')) {
+      return GameCoreVerb.listen;
+    }
+    if (id.contains('speak') ||
+        id.contains('shadow') ||
+        id.contains('call_and_response') ||
+        id.contains('haggle') ||
+        id.contains('roleplay')) {
+      return GameCoreVerb.speak;
+    }
+    if (id.contains('match') || id.contains('wordmatch') || id.contains('picture_word')) {
+      return GameCoreVerb.match;
+    }
+    if (id.contains('trace') || id.contains('script') || id.contains('fidel')) {
+      return GameCoreVerb.trace;
+    }
+    if (id.contains('proverb') ||
+        id.contains('story') ||
+        id.contains('folktale') ||
+        id.contains('clan')) {
+      return GameCoreVerb.assemble;
+    }
+    if (id.contains('morph') || id.contains('word_forge') || id.contains('grammar')) {
+      return GameCoreVerb.build;
+    }
+    if (id.contains('speed') || id.contains('rush') || id.contains('gauntlet')) {
+      return GameCoreVerb.tap;
+    }
+    final category = entry.category.toLowerCase();
+    if (category.contains('pronunciation')) return GameCoreVerb.listen;
+    if (category.contains('grammar')) return GameCoreVerb.build;
+    if (category.contains('cultural')) return GameCoreVerb.assemble;
+    return GameCoreVerb.choose;
+  }
+
+  static GamePracticeTarget _practiceTargetFor(GameDefinition definition) {
+    final goals = definition.learningGoals.map((g) => g.toLowerCase()).toList();
+    if (goals.any((g) => g.contains('listen') || g.contains('pronunciation'))) {
+      return GamePracticeTarget.perception;
+    }
+    return GamePracticeTarget.retrieval;
+  }
+
+  /// Registers every catalog game with [GameKitCatalog] (one core verb each).
+  static void registerGameKitManifests() {
+    for (final definition in games.values) {
+      GameKitCatalog.register(
+        GameManifest(
+          gameId: definition.gameId,
+          practiceTargets: {_practiceTargetFor(definition)},
+          coreVerb: definition.coreVerb,
+        ),
+      );
+    }
+  }
+
+  static GameManifest manifestForDefinition(GameDefinition definition) {
+    return GameManifest(
+      gameId: definition.gameId,
+      practiceTargets: {_practiceTargetFor(definition)},
+      coreVerb: definition.coreVerb,
+    );
+  }
 }
 
 /// Game definition
@@ -85,11 +158,13 @@ class GameDefinition {
   final String gameId;
   final String displayName;
   final List<String> learningGoals;
+  final GameCoreVerb coreVerb;
 
   GameDefinition({
     required this.gameId,
     required this.displayName,
     this.learningGoals = const [],
+    required this.coreVerb,
   });
 }
 
