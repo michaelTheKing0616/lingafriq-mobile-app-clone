@@ -348,7 +348,7 @@ P10-907	Done	Challenge Mode opt-in; hearts only in runs (challenge_mode_screen.d
 P10-908	Done	Opt-in leagues, learning-XP ranks, minor circle-only (leagues.service.ts, leagues_screen.dart)	P10/P10-908.yaml
 P10-909	Done	Circle quests, family phrase teach-back, Heritage Tree (quests.service.ts, circle_quest_screen.dart, heritage_tree_screen.dart)	P10/P10-909.yaml
 P10-910	Done	Shareable can-do badges after checkpoints (cando-badges.service.ts, cando_badge_screen.dart)	P10/P10-910.yaml
-P10-911	Draft	Replace fake co-learners and friend pushes	P10/P10-911.yaml
+P10-911	Done	Replace fake co-learners and friend pushes (flashcard roster, friend-waiting push gate)	P10/P10-911.yaml
 P10-912	Draft	Enforce monetisation guardrails in code	P10/P10-912.yaml
 P10-913	Draft	Verify all gamification guardrails hold	P10/P10-913.yaml
 P10-914	Draft	Publish the Passport CEFR methodology	P10/P10-914.yaml
