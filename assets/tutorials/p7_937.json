@@ -1,0 +1,176 @@
+{
+  "card": "P7-937",
+  "built": "2026-10-27",
+  "pack_citation": "register:waxal-other; assets/data/sound/clicks_vowels.json; ELEVATION.md#§11.2:L1790; CURRICULUM.md#§4:L567; P7-933",
+  "publish_status": "draft",
+  "native_reviewer_sign_offs": [],
+  "sign_off_requirements": [
+    {
+      "language_code": "zu",
+      "tutorial_id": "zu-sound-clicks"
+    },
+    {
+      "language_code": "xh",
+      "tutorial_id": "xh-sound-clicks"
+    }
+  ],
+  "tutorials": [
+    {
+      "id": "zu-sound-clicks",
+      "title": "Clicks c, q and x",
+      "language_code": "zu",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 22,
+          "body_en": "Zulu spelling uses c (dental), q (alveolar), and x (lateral) for the three click types (ELEVATION.md#§11.2:L1790; register:peace-corps-zulu). Watch slow-motion mouth placement in the see step — each clip can be replayed (P7-933).",
+          "source_ids": [
+            "ELEVATION.md#§11.2:L1790",
+            "register:peace-corps-zulu",
+            "assets/data/sound/clicks_vowels.json#languages.zu.waxal_licence"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 28,
+          "body_en": "Hear each click in a cited A1 lemma, then replay the slow-motion mouth view for c, q, and x. Licensed WAXAL drill audio paths are listed; native mouth video fills in after EXT-13 capture.",
+          "source_ids": [
+            "assets/data/lexicon/a1/zu.json",
+            "assets/data/sound/clicks_vowels.json"
+          ],
+          "slow_motion_replay": true,
+          "click_examples": [
+            {
+              "click_letter": "c",
+              "click_type": "dental",
+              "lemma": "cela",
+              "gloss_en": "ask; beg",
+              "lexicon_id": "zu.lex.4c4e676939e2",
+              "frequency_source_id": "leipzig",
+              "licence_id": "leipzig",
+              "drill_audio_ref": "assets/data/sound/clicks_vowels.json#zu (contrast drills; dental c in cited lemmas)",
+              "audio_uri": null,
+              "mouth_video_uri": null,
+              "media_gate": "EXT-13_native_capture"
+            },
+            {
+              "click_letter": "q",
+              "click_type": "alveolar",
+              "lemma": "qaphela",
+              "gloss_en": "be careful; notice",
+              "lexicon_id": "zu.lex.44a38fc52bf1",
+              "frequency_source_id": "leipzig",
+              "licence_id": "leipzig",
+              "drill_audio_ref": "assets/data/sound/clicks_vowels.json#zu.click.qaphela_vs_amanzi",
+              "audio_uri": "assets/audio/zulu/native/d96b6ee752d117f3.mp3",
+              "mouth_video_uri": null,
+              "media_gate": "EXT-13_native_capture"
+            },
+            {
+              "click_letter": "x",
+              "click_type": "lateral",
+              "lemma": "xhumana",
+              "gloss_en": "communicate; contact each other",
+              "lexicon_id": "zu.lex.9b2c2006bfe8",
+              "frequency_source_id": "leipzig",
+              "licence_id": "leipzig",
+              "drill_audio_ref": "assets/data/sound/clicks_vowels.json#zu (lateral x; native clip EXT-13)",
+              "audio_uri": null,
+              "mouth_video_uri": null,
+              "media_gate": "EXT-13_native_capture"
+            }
+          ]
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 24,
+          "body_en": "Which phrase contains the alveolar click q you heard?",
+          "source_ids": [
+            "assets/data/sound/clicks_vowels.json#zu.click.qaphela_vs_amanzi"
+          ],
+          "drill_id": "zu.click.qaphela_vs_amanzi",
+          "correct_option_id": "zu.opt.qaphela"
+        }
+      ]
+    },
+    {
+      "id": "xh-sound-clicks",
+      "title": "Clicks c, q and x",
+      "language_code": "xh",
+      "steps": [
+        {
+          "kind": "learn",
+          "duration_seconds": 22,
+          "body_en": "Xhosa uses the same c / q / x click letters as Zulu; dental clicks often appear as nc in spelling (e.g. nceda) (ELEVATION.md#§11.2:L1790; register:sadilar-xhosa-annotated). Slow-motion mouth video replays per click in the see step (P7-933).",
+          "source_ids": [
+            "ELEVATION.md#§11.2:L1790",
+            "register:sadilar-xhosa-annotated",
+            "assets/data/sound/clicks_vowels.json#languages.xh.waxal_licence"
+          ]
+        },
+        {
+          "kind": "see",
+          "duration_seconds": 28,
+          "body_en": "Match each click letter to a cited lemma and replay slow-motion mouth placement. WAXAL drill audio is referenced where licensed; native mouth capture is EXT-13 gated.",
+          "source_ids": [
+            "assets/data/lexicon/a1/xh.json",
+            "assets/data/sound/clicks_vowels.json"
+          ],
+          "slow_motion_replay": true,
+          "click_examples": [
+            {
+              "click_letter": "c",
+              "click_type": "dental",
+              "lemma": "nceda",
+              "gloss_en": "please",
+              "orthography_note_en": "Dental click spelled nc in nceda",
+              "lexicon_id": "xh.lex.1813f923b982",
+              "frequency_source_id": "leipzig",
+              "licence_id": "leipzig",
+              "drill_audio_ref": "assets/data/sound/clicks_vowels.json#xh.click.nceda_vs_molo",
+              "audio_uri": "assets/audio/xhosa/native/e75bbf5268c060e0.mp3",
+              "mouth_video_uri": null,
+              "media_gate": "EXT-13_native_capture"
+            },
+            {
+              "click_letter": "q",
+              "click_type": "alveolar",
+              "lemma": "qonda",
+              "gloss_en": "understand; reach",
+              "lexicon_id": "xh.lex.77f91c127a0e",
+              "frequency_source_id": "leipzig",
+              "licence_id": "leipzig",
+              "drill_audio_ref": "assets/data/sound/clicks_vowels.json#xh (alveolar q in cited lemmas)",
+              "audio_uri": null,
+              "mouth_video_uri": null,
+              "media_gate": "EXT-13_native_capture"
+            },
+            {
+              "click_letter": "x",
+              "click_type": "lateral",
+              "lemma": "xoxa",
+              "gloss_en": "speak; tell",
+              "lexicon_id": "xh.lex.11bfbc6fc920",
+              "frequency_source_id": "leipzig",
+              "licence_id": "leipzig",
+              "drill_audio_ref": "assets/data/sound/clicks_vowels.json#xh.click.wcwecwe_vs_molo",
+              "audio_uri": "assets/audio/xhosa/native/b70fac9d316dde60.mp3",
+              "mouth_video_uri": null,
+              "media_gate": "EXT-13_native_capture"
+            }
+          ]
+        },
+        {
+          "kind": "try",
+          "duration_seconds": 24,
+          "body_en": "Which word contains the dental click you heard?",
+          "source_ids": [
+            "assets/data/sound/clicks_vowels.json#xh.click.nceda_vs_molo"
+          ],
+          "drill_id": "xh.click.nceda_vs_molo",
+          "correct_option_id": "xh.opt.nceda"
+        }
+      ]
+    }
+  ]
+}
