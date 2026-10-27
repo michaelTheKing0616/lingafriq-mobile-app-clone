@@ -934,7 +934,7 @@ P6-075	Done	LiveKit cascaded turn agent + session mint (realtime/agent.ts, sessi
 P6-076	Done	Per-language VAD thresholds + tonal pitch-drop gate (vad.ts, endOfTurn.ts)	P6/P6-076.yaml
 P6-077	Done	Stream STT inside realtime pipeline (streamingStt.ts, partials + fallback)	P6/P6-077.yaml
 P6-078	Done	Stream LLM output into streaming TTS to client (llmTtsPipe.ts)	P6/P6-078.yaml
-P6-079	Draft	Support barge-in during agent speech	P6/P6-079.yaml
+P6-079	Done	Support barge-in during agent speech (bargeIn.ts, realtime_voice_client.dart)	P6/P6-079.yaml
 P6-080	Draft	Gate realtime latency budgets in CI	P6/P6-080.yaml
 P6-081	Draft	Drive avatar lip-sync from TTS alignments	P6/P6-081.yaml
 P6-082	Draft	Allow speech-native realtime models only after blind tests	P6/P6-082.yaml
