@@ -941,7 +941,7 @@ P6-082	Done	Allow speech-native realtime models only after blind tests (nativeMo
 P6-083	Done	Push-to-talk fallback: hold capture, VAD bypass, low-bandwidth auto-offer (ptt_button.dart)	P6/P6-083.yaml
 P6-084	Done	Opus 16–24 kbps + 2G/3G text fallback (codec.ts, realtime_voice_client.dart)	P6/P6-084.yaml
 P7-900	Done	ADR-009 Lens hub + Point & Say pipeline; route point-and-say retained	P7/P7-900.yaml
-P7-901	Draft	Decide the two-layer living lexicon architecture	P7/P7-901.yaml
+P7-901	Done	ADR-013 two-layer living lexicon (Verified + My Words, link rules)	P7/P7-901.yaml
 P7-902	Draft	Build Lens full-screen camera with breathing boxes	P7/P7-902.yaml
 P7-903	Draft	Build on-device detection mapped to a curated African object set	P7/P7-903.yaml
 P7-904	Draft	Build server vision recognition via the AI gateway	P7/P7-904.yaml
