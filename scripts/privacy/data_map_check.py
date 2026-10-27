@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parents[2]
 REPO_ROOT = ROOT.parent
 BACKEND_MODELS = REPO_ROOT / "node-backend" / "src" / "models"
 BACKEND_ADMIN_MODEL = REPO_ROOT / "node-backend" / "src" / "routes" / "admin" / "historyQuiz.model.ts"
+BACKEND_PURGE_LOG_MODEL = REPO_ROOT / "node-backend" / "src" / "models" / "PurgeLog.ts"
 RETENTION_PATH = ROOT / "docs" / "privacy" / "RETENTION.yaml"
 DATA_MAP_PATH = ROOT / "docs" / "privacy" / "DATA_MAP.md"
 
@@ -65,6 +66,8 @@ def discover_models() -> dict[str, dict[str, str]]:
         files.extend(sorted(BACKEND_MODELS.rglob("*.model.ts")))
     if BACKEND_ADMIN_MODEL.is_file():
         files.append(BACKEND_ADMIN_MODEL)
+    if BACKEND_PURGE_LOG_MODEL.is_file():
+        files.append(BACKEND_PURGE_LOG_MODEL)
 
     discovered: dict[str, dict[str, str]] = {}
     for path in files:

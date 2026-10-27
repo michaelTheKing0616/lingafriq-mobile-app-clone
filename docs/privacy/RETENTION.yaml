@@ -1109,6 +1109,16 @@ collections:
       note: Delete raw audio after scoring unless separate training consent (P10-923)
     high_risk: true
     default_deletion_rule: apply_collection_retention_job
+  purge_logs:
+    model: PurgeLog
+    source: node-backend/src/models/PurgeLog.ts
+    owner: node-backend-platform
+    purpose: Security, reliability, and product analytics
+    legal_basis: legitimate_interest
+    personal_data_fields: []
+    retention:
+      days: 730
+    high_risk: false
   random_quiz:
     model: randomQuiz
     source: node-backend/src/models/randomQuiz.model.ts
