@@ -961,7 +961,7 @@ P7-917	Done	Attach 2-3 native recordings per lexicon entry (lexiconAudio.service
 P7-918	Done	Merge admin lexicon and user entries (lexiconMigration.service.ts, link table, migrate routes)	P7/P7-918.yaml
 P7-919	Done	My Words screen, verified link badges, offline banner (living_dictionary)	P7/P7-919.yaml
 P7-920	Done	Build suggest-and-verify loop with native approvals (lexiconSuggestion.service.ts, verify_queue_screen.dart)	P7/P7-920.yaml
-P7-921	Draft	Route corrections from Native Corrections and the Square	P7/P7-921.yaml
+P7-921	Done	Route corrections from Native Corrections and the Square (lexiconCorrectionBridge)	P7/P7-921.yaml
 P7-922	Done	Word Card bottom sheet (word_card_sheet.dart, dialect_chips, tone_lens_contour)	P7/P7-922.yaml
 P7-923	Draft	Build long-press Word Card on every text surface	P7/P7-923.yaml
 P7-924	Draft	Build full lexicon entry page	P7/P7-924.yaml
