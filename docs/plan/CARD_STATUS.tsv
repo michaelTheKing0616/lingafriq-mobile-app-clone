@@ -1017,7 +1017,7 @@ P8-929	Done	Echo Karaoke flagship: pitch line, licence catalog, legacy karaoke h
 P8-930	Done	Word Forge Yoruba serial verbs (yoruba_serial_verbs.dart, grammar records, goldens)	P8/P8-930.yaml
 P8-931	Done	Weekly Village Festival themes (`festival_theme_service.dart`, `festival.service.ts`)	P8/P8-931.yaml
 P8-932	Done	Mastery map from learner-model events (game_mastery_map_screen.dart, game_result archive)	P8/P8-932.yaml
-P8-933	Draft	Circle co-op goals for the game meta-layer	P8/P8-933.yaml
+P8-933	Done	Circle co-op word goals (circle_goals.service.ts, circle_goal_screen.dart)	P8/P8-933.yaml
 P9-900	Draft	'Decide realtime stack: self-hosted Socket.IO+Redis vs managed'	P9/P9-900.yaml
 P9-901	Draft	Scale sockets horizontally with Redis adapter and sticky sessions	P9/P9-901.yaml
 P9-902	Draft	Move presence to Redis TTL with scoped delivery	P9/P9-902.yaml

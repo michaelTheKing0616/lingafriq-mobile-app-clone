@@ -1,9 +1,11 @@
 import '../../models/cultural_mastery_profile.dart';
 import '../../models/game_streak.dart';
 import '../../services/cultural_mastery_service.dart';
+import '../circles/circle_goal_service.dart';
 import '../festival/festival_theme_service.dart';
 import 'game_result.dart';
 import 'game_scoring.dart';
+import 'game_session.dart';
 
 /// Meta-game layer - tracks streaks, mastery, badges
 /// Rewards follow [GameKitRewardPolicy] (deterministic badges from turn scores).
@@ -81,6 +83,20 @@ class GameMetaLayer {
       festivalWeekKey: FestivalThemeService.instance.cached?.weekKey,
       festivalThemeId: FestivalThemeService.instance.cached?.themeId.name,
     );
+  }
+
+  /// After a scored session, sync newly learned skills to the circle co-op goal (P8-933).
+  Future<int> syncCircleWordGoalAfterSession({
+    required GameSession session,
+    required String? circleGroupId,
+    CircleGoalService? circleGoals,
+  }) async {
+    if (circleGroupId == null || circleGroupId.isEmpty) return 0;
+    if (session.practiceNotScored) return 0;
+    if (newlyLearnedSkillIdsFromSession(session).isEmpty) return 0;
+    final svc = circleGoals;
+    if (svc == null) return 0;
+    return svc.claimSessionLearnedWords(groupId: circleGroupId, session: session);
   }
 
   List<String> _checkBadges(
