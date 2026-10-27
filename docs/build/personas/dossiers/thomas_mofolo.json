@@ -7,21 +7,90 @@
     {
       "source_id": "src-mofolo-chaka-novel",
       "type": "novel",
-      "title": "Chaka (Thomas Mofolo)",
+      "title": "Chaka (Sesotho novel)",
       "year": 1925,
+      "licence_status": "approved"
+    },
+    {
+      "source_id": "src-mofolo-moeti-1907",
+      "type": "novel",
+      "title": "Moeti oa Bochabela (The Traveller of the East)",
+      "year": 1907,
       "licence_status": "approved"
     }
   ],
-  "secondary_sources": [],
-  "contested_points": ["Mofolo's Chaka is literary fiction, not a verbatim historical chronicle."],
-  "known_myths": ["Treating the novel as uncritical eyewitness history."],
-  "review": { "historian_id": "historian-seed-mofolo", "signed_at": "2026-10-27T12:00:00Z" },
+  "secondary_sources": [
+    {
+      "source_id": "src-mofolo-kunene-1989",
+      "type": "monograph",
+      "title": "Thomas Mofolo and the Emergence of Written Sesotho Prose",
+      "year": 1989,
+      "licence_status": "approved"
+    },
+    {
+      "source_id": "src-mofolo-gerard-1986",
+      "type": "reference_work",
+      "title": "European-Language Writing in Sub-Saharan Africa",
+      "year": 1986,
+      "licence_status": "approved"
+    }
+  ],
+  "contested_points": [
+    "Published birth years cluster around 1876 but mission registers and later biographies do not always agree on the exact day.",
+    "Mission authorities delayed and revised publication of Chaka; scholars debate how far theological censorship shaped the final text.",
+    "Readers disagree on how much oral tradition versus authorial invention drives the psychology of Chaka in the novel."
+  ],
+  "known_myths": [
+    "Chaka is literary fiction, not a verbatim transcript of nineteenth-century Zulu history or eyewitness testimony.",
+    "Thomas Mofolo did not meet Shaka kaSenzangakhona; Shaka died decades before Mofolo was born.",
+    "Social media sometimes attributes modern motivational quotes to Mofolo without a published Sesotho or French source."
+  ],
+  "review": {
+    "historian_id": "ext-15-pending",
+    "signed_at": "1970-01-01T00:00:00Z"
+  },
   "retrieval_cards": [
     {
       "card_id": "mofolo.card.chaka-novel",
       "source_id": "src-mofolo-chaka-novel",
-      "text": "Thomas Mofolo wrote Chaka, an influential Sesotho novel shaping later portrayals of Shaka in African literature.",
-      "terms": ["mofolo", "chaka", "sesotho", "novel"]
+      "text": "Chaka is a Sesotho novel published in 1925 that reimagines the rise of Shaka through literary prose; historians treat it as imaginative literature that influenced later African writing.",
+      "terms": ["chaka", "sesotho", "novel", "1925", "literature"]
+    },
+    {
+      "card_id": "mofolo.card.moeti-first",
+      "source_id": "src-mofolo-moeti-1907",
+      "text": "Moeti oa Bochabela (1907) is widely cited as among the earliest sustained novels in Sesotho, blending moral journey with mission-era Basutoland settings.",
+      "terms": ["moeti", "bochabela", "1907", "sesotho", "novel"]
+    },
+    {
+      "card_id": "mofolo.card.mission-work",
+      "source_id": "src-mofolo-kunene-1989",
+      "text": "Biographical studies place Mofolo in Basutoland mission networks, including clerical and translation work for the Paris Evangelical Mission Society before his major novels.",
+      "terms": ["mission", "basutoland", "pems", "translation"]
+    },
+    {
+      "card_id": "mofolo.card.pitseng",
+      "source_id": "src-mofolo-kunene-1989",
+      "text": "Pitseng (1910) is a Sesotho love story set in mission-influenced society; it shows Mofolo's range beyond the Chaka epic.",
+      "terms": ["pitseng", "1910", "sesotho", "love story"]
+    },
+    {
+      "card_id": "mofolo.card.literary-vs-history",
+      "source_id": "src-mofolo-gerard-1986",
+      "text": "Reference histories of African literature classify Mofolo as a pioneer of written Sesotho prose while warning that Chaka must not be read as neutral documentary history.",
+      "terms": ["literature", "history", "fiction", "african writing"]
+    },
+    {
+      "card_id": "mofolo.card.shaka-portrayal",
+      "source_id": "src-mofolo-chaka-novel",
+      "text": "The novel's Shaka is a tragic literary figure shaped by prophecy, power, and isolation; language quests may discuss themes only with legend or inference labels when sources disagree.",
+      "terms": ["shaka", "tragedy", "prophecy", "portrayal"]
+    },
+    {
+      "card_id": "mofolo.card.death-1948",
+      "source_id": "src-mofolo-kunene-1989",
+      "text": "Standard biographies record Thomas Mofolo's death on 8 September 1948 in Basutoland; learners should refuse knowledge after that date.",
+      "terms": ["1948", "death", "basutoland"]
     }
   ]
 }
