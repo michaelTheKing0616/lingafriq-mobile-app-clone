@@ -963,7 +963,7 @@ P7-919	Done	My Words screen, verified link badges, offline banner (living_dictio
 P7-920	Done	Build suggest-and-verify loop with native approvals (lexiconSuggestion.service.ts, verify_queue_screen.dart)	P7/P7-920.yaml
 P7-921	Done	Route corrections from Native Corrections and the Square (lexiconCorrectionBridge)	P7/P7-921.yaml
 P7-922	Done	Word Card bottom sheet (word_card_sheet.dart, dialect_chips, tone_lens_contour)	P7/P7-922.yaml
-P7-923	Draft	Build long-press Word Card on every text surface	P7/P7-923.yaml
+P7-923	Done	Build long-press Word Card on every text surface (lexicon_selectable_text.dart)	P7/P7-923.yaml
 P7-924	Draft	Build full lexicon entry page	P7/P7-924.yaml
 P7-925	Draft	Make Global Search lead with lexicon words	P7/P7-925.yaml
 P7-926	Draft	Show word of the day with its story in Today	P7/P7-926.yaml
