@@ -29,6 +29,17 @@ class LearnerModelService {
   /// In-memory cache: learnerId -> skillId -> state
   final Map<String, Map<String, LearnerSkillState>> _states = {};
 
+  /// Practice events keyed by session id (GameKit + lesson graph writes).
+  final Map<String, List<LearnerPracticeEvent>> _eventsBySession = {};
+
+  /// Turn ids already applied (dedupe after offline sync).
+  final Set<String> _appliedTurnIds = {};
+
+  /// Events waiting for connectivity / flush.
+  final List<LearnerPracticeEvent> _pendingEvents = [];
+
+  bool _offlineQueueOnly = false;
+
   bool _isInitialized = false;
   bool get isInitialized => _isInitialized;
 
@@ -119,6 +130,131 @@ class LearnerModelService {
     _propagateMasteryChange(learnerId, skillId, updated);
 
     return updated;
+  }
+
+  /// Records a structured practice event and updates skill state (P8-901).
+  ///
+  /// When [queueOnly] is true, the event is persisted to the offline queue and
+  /// not applied until [flushPendingPracticeEvents].
+  Future<LearnerPracticeEvent> recordPracticeEvent({
+    required String turnId,
+    required String sessionId,
+    required String learnerId,
+    required String itemId,
+    required String skillId,
+    required bool wasCorrect,
+    List<String> errorTypeIds = const [],
+    DateTime? timestamp,
+    String source = 'gamekit',
+    bool queueOnly = false,
+  }) async {
+    if (_appliedTurnIds.contains(turnId)) {
+      return _findEventByTurnId(turnId) ??
+          LearnerPracticeEvent(
+            turnId: turnId,
+            sessionId: sessionId,
+            learnerId: learnerId,
+            itemId: itemId,
+            skillId: skillId,
+            wasCorrect: wasCorrect,
+            errorTypeIds: errorTypeIds,
+            timestamp: timestamp ?? DateTime.now(),
+            source: source,
+          );
+    }
+
+    final event = LearnerPracticeEvent(
+      turnId: turnId,
+      sessionId: sessionId,
+      learnerId: learnerId,
+      itemId: itemId,
+      skillId: skillId,
+      wasCorrect: wasCorrect,
+      errorTypeIds: errorTypeIds,
+      timestamp: timestamp ?? DateTime.now(),
+      source: source,
+    );
+
+    if (queueOnly || _offlineQueueOnly) {
+      _pendingEvents.add(event);
+      await _persistPendingQueue();
+      return event;
+    }
+
+    await _applyPracticeEvent(event);
+    return event;
+  }
+
+  LearnerPracticeEvent? _findEventByTurnId(String turnId) {
+    for (final list in _eventsBySession.values) {
+      for (final e in list) {
+        if (e.turnId == turnId) return e;
+      }
+    }
+    for (final e in _pendingEvents) {
+      if (e.turnId == turnId) return e;
+    }
+    return null;
+  }
+
+  Future<void> _applyPracticeEvent(LearnerPracticeEvent event) async {
+    _appliedTurnIds.add(event.turnId);
+    _eventsBySession.putIfAbsent(event.sessionId, () => []).add(event);
+
+    await recordAttempt(
+      learnerId: event.learnerId,
+      skillId: event.skillId,
+      wasCorrect: event.wasCorrect,
+      errorTypeIds: event.errorTypeIds,
+      responseTimeSeconds: 0,
+    );
+
+    await _persistPendingQueue();
+  }
+
+  /// Applies queued events in timestamp order; skips duplicate turn ids.
+  Future<int> flushPendingPracticeEvents() async {
+    _pendingEvents.sort((a, b) => a.timestamp.compareTo(b.timestamp));
+    var applied = 0;
+    final batch = List<LearnerPracticeEvent>.from(_pendingEvents);
+    _pendingEvents.clear();
+
+    for (final event in batch) {
+      if (_appliedTurnIds.contains(event.turnId)) continue;
+      await _applyPracticeEvent(event);
+      applied++;
+    }
+    await _persistPendingQueue();
+    return applied;
+  }
+
+  List<LearnerPracticeEvent> eventsForSession(String sessionId) {
+    return List.unmodifiable(_eventsBySession[sessionId] ?? const []);
+  }
+
+  int pendingPracticeEventCount() => _pendingEvents.length;
+
+  /// Test / offline simulation hook.
+  void setOfflineQueueOnly(bool value) {
+    _offlineQueueOnly = value;
+  }
+
+  /// Clears in-memory practice events for unit tests.
+  void resetPracticeEventStateForTests() {
+    _eventsBySession.clear();
+    _appliedTurnIds.clear();
+    _pendingEvents.clear();
+    _offlineQueueOnly = false;
+  }
+
+  Future<void> _persistPendingQueue() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final payload = _pendingEvents.map((e) => e.toJson()).toList();
+      await prefs.setString('learner_practice_event_queue', jsonEncode(payload));
+    } catch (_) {
+      // In-memory queue remains; flush retried later.
+    }
   }
 
   /// Returns the next optimal skills to practice, ordered by priority.
@@ -406,6 +542,60 @@ class LearnerModelService {
     } catch (_) {
       // Non-critical — state is in memory and will be retried
     }
+  }
+}
+
+/// One learner-graph write from practice (lessons, GameKit, etc.).
+class LearnerPracticeEvent {
+  final String turnId;
+  final String sessionId;
+  final String learnerId;
+  final String itemId;
+  final String skillId;
+  final bool wasCorrect;
+  final List<String> errorTypeIds;
+  final DateTime timestamp;
+  final String source;
+
+  const LearnerPracticeEvent({
+    required this.turnId,
+    required this.sessionId,
+    required this.learnerId,
+    required this.itemId,
+    required this.skillId,
+    required this.wasCorrect,
+    this.errorTypeIds = const [],
+    required this.timestamp,
+    required this.source,
+  });
+
+  Map<String, dynamic> toJson() => {
+        'turnId': turnId,
+        'sessionId': sessionId,
+        'learnerId': learnerId,
+        'itemId': itemId,
+        'skillId': skillId,
+        'wasCorrect': wasCorrect,
+        'errorTypeIds': errorTypeIds,
+        'timestamp': timestamp.toIso8601String(),
+        'source': source,
+      };
+
+  factory LearnerPracticeEvent.fromJson(Map<String, dynamic> json) {
+    return LearnerPracticeEvent(
+      turnId: json['turnId'] as String,
+      sessionId: json['sessionId'] as String,
+      learnerId: json['learnerId'] as String,
+      itemId: json['itemId'] as String,
+      skillId: json['skillId'] as String,
+      wasCorrect: json['wasCorrect'] as bool,
+      errorTypeIds: (json['errorTypeIds'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      timestamp: DateTime.parse(json['timestamp'] as String),
+      source: json['source'] as String? ?? 'gamekit',
+    );
   }
 }
 

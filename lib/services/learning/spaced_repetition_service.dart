@@ -91,6 +91,35 @@ class SpacedRepetitionService {
     return newCard;
   }
 
+  /// FSRS quality (0–5) from a practice outcome — shared by lessons and GameKit (P8-901).
+  int qualityFromPracticeOutcome({
+    required bool wasCorrect,
+    double accuracy = 1.0,
+  }) {
+    if (!wasCorrect) {
+      return qualityScoreToSM2(accuracy.clamp(0.0, 0.59));
+    }
+    return qualityScoreToSM2(accuracy.clamp(0.0, 1.0));
+  }
+
+  /// Updates SRS for a practice answer using the same quality mapping as lesson review.
+  SRCard reviewFromPracticeOutcome({
+    required String userId,
+    required String lessonItemId,
+    required bool wasCorrect,
+    double accuracy = 1.0,
+  }) {
+    final quality = qualityFromPracticeOutcome(
+      wasCorrect: wasCorrect,
+      accuracy: accuracy,
+    );
+    return reviewCard(
+      userId: userId,
+      lessonItemId: lessonItemId,
+      quality: quality,
+    );
+  }
+
   /// Review a card with quality rating (0-5)
   SRCard reviewCard({
     required String userId,

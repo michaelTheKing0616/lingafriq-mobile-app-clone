@@ -4,6 +4,9 @@ import 'gamekit/game_scoring.dart';
 import 'gamekit/game_feedback.dart';
 import 'gamekit/game_animation_bridge.dart';
 import 'gamekit/game_turn_context.dart';
+import 'gamekit/game_result.dart';
+import 'gamekit/game_session.dart' as gamekit_session;
+import '../services/learning/spaced_repetition_service.dart';
 import '../learning/game_integration/learning_game.dart';
 import '../learning/learner_model/learner_model_service.dart';
 import '../learning/learner_model/error_taxonomy.dart';
@@ -72,6 +75,41 @@ class LearningGameDifficultyEngine implements GameDifficultyEngine {
     }
 
     return GameDifficultyUpdate.maintain();
+  }
+}
+
+/// Single entry for GameKit turn → learner graph + SRS (do not call [GameEngine.resolve] alone).
+class GameKitPracticeRecorder {
+  GameKitPracticeRecorder._();
+
+  static final GameKitLearnerGraphWriter _writer = GameKitLearnerGraphWriter();
+
+  static Future<gamekit_session.GameSession> afterTurn({
+    required gamekit_session.GameSession session,
+    required GameTurnContext context,
+    required GameTurnResult result,
+    required String turnId,
+    bool queueOnly = false,
+  }) {
+    return _writer.recordTurn(
+      session: session,
+      context: context,
+      result: result,
+      turnId: turnId,
+      queueOnly: queueOnly,
+    );
+  }
+
+  static Future<int> flushOfflineQueue() {
+    return _writer.flushOfflineQueue();
+  }
+
+  /// SRS quality mapping shared with lesson practice.
+  static int srsQuality({required bool wasCorrect, double accuracy = 1.0}) {
+    return SpacedRepetitionService().qualityFromPracticeOutcome(
+      wasCorrect: wasCorrect,
+      accuracy: accuracy,
+    );
   }
 }
 

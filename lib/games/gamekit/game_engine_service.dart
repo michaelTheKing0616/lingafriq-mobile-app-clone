@@ -2,6 +2,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'game_engine.dart';
 import 'game.dart';
 import 'game_session.dart' as gamekit_session;
+import 'game_result.dart';
+import 'game_turn_context.dart';
 import 'game_animation_bridge.dart';
 import 'all_games_registry.dart';
 import 'generic_game_template.dart';
@@ -116,6 +118,34 @@ class GameEngineService {
     final game = getGame(gameId);
     return game.config;
   }
+
+  final GameKitLearnerGraphWriter _graphWriter = GameKitLearnerGraphWriter();
+
+  /// Resolves a turn and writes learner-graph + SRS before returning (P8-901).
+  Future<GameTurnResolution> resolveTurnWithGraphWrite({
+    required GameEngine engine,
+    required gamekit_session.GameSession session,
+    required GameTurnContext context,
+    required String turnId,
+    bool queueOnly = false,
+  }) async {
+    final ctx = GameTurnContext(
+      content: context.content,
+      input: context.input,
+      session: session,
+      turnStartTime: context.turnStartTime,
+      metadata: context.metadata,
+      queueIndex: context.queueIndex,
+    );
+    return engine.resolveTurnRecording(
+      _graphWriter,
+      ctx,
+      turnId: turnId,
+      queueOnly: queueOnly,
+    );
+  }
+
+  GameKitLearnerGraphWriter get graphWriter => _graphWriter;
 
   /// Create a GameKit session from parameters
   /// Used by GameScreenIntegration to eliminate manual session creation

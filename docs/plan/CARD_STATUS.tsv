@@ -986,7 +986,7 @@ P7-942	Done	Culture greeting/naming/taboo tutorial packs (culture_*.json, EXT-14
 P7-943	Done	JIT coaching on first pattern hit (jit_coaching_service.dart, coaching_tip.dart)	P7/P7-943.yaml
 P7-944	Done	ML Kit Latin OCR diacritic verify (ocr_diacritic_metrics, ledger, verify.py)	P7/P7-944.yaml
 P8-900	Done	GameKit due-first turn queue, manifest gate, fallback/retry (game_engine.dart)	P8/P8-900.yaml
-P8-901	Draft	'GameKit: write results to learner graph and SRS'	P8/P8-901.yaml
+P8-901	Done	GameKit learner-graph writer + FSRS parity, offline dedupe (game_result.dart)	P8/P8-901.yaml
 P8-902	Draft	'GameKit: enforce session length and one core verb'	P8/P8-902.yaml
 P8-903	Draft	'GameKit: feedback within 160 ms and brief celebration'	P8/P8-903.yaml
 P8-904	Draft	'GameKit: ''why was I wrong'' explanation with audio'	P8/P8-904.yaml

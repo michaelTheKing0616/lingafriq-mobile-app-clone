@@ -34,6 +34,8 @@ class GameSession {
 
   int get correctCount => turns.where((t) => t.score.isCorrect).length;
   int get totalTurns => turns.length;
+  int get learnerEventsRecorded =>
+      (metadata['learner_events_recorded'] as int?) ?? turns.length;
   double get accuracy => totalTurns > 0 ? correctCount / totalTurns : 0.0;
   int get streak => _calculateStreak();
   double get averageConfidence => _calculateAverageConfidence();
