@@ -92,6 +92,19 @@ Copies are in `docs/plan/`. Originals:
 
 Intron is set up and not connected. Do not put `INTRON_API_KEY` in the client.
 
+## Reviewer UI gate (last 3h)
+
+- UI-BELOW-BAR P7-933 UI 8/8/9/8/7/8/7/7/7/7 avg 7.6; reference: Duolingo pronunciation tips; gap: `SoundTutorialsScreen` is not referenced outside its own file (unwired).
+- UI-BELOW-BAR P7-930 UI 8/8/9/8/7/8/7/7/7/7 avg 7.6; reference: Duolingo lesson flow; gap: `MicroLessonScreen` is not referenced outside its own file (unwired).
+- UI-BELOW-BAR P7-931 UI 8/8/9/8/7/8/7/7/7/7 avg 7.6; reference: ELSA speaking checks; gap: `TutorialPerceptionCheck` is not referenced outside its own file (unwired).
+- UI-BELOW-BAR P7-932 UI 8/8/9/8/7/8/7/7/7/7 avg 7.6; reference: Busuu speaking practice; gap: `TutorialSpeakingTryStep` is not referenced outside its own file (unwired).
+- UI-BELOW-BAR P7-925 UI 8/8/9/8/7/8/7/7/7/7 avg 7.6; reference: Spotify search hierarchy; gap: `GlobalSearchScreen` is not referenced outside its own file (unwired).
+- UI-BELOW-BAR P7-926 UI 8/8/9/8/7/8/7/7/7/7 avg 7.6; reference: Duolingo Daily refresh card; gap: `WordOfTheDayCard` is not referenced outside its own file (unwired).
+- UI-BELOW-BAR P7-910 UI 8/8/9/8/7/8/7/7/7/7 avg 7.6; reference: Duolingo quest cards; gap: `HomeSafariCard` is not referenced outside its own file (unwired).
+- UI-BELOW-BAR P7-920 UI 8/8/9/8/7/8/7/8/7/7 avg 7.7; reference: Reddit mod queue; gap: `VerifyQueueScreen` has only one in-lib reference and no route evidence in this review window.
+- UI-BELOW-BAR P7-929 UI 8/8/9/8/7/8/7/8/7/7 avg 7.7; reference: Duolingo words tab; gap: `WordsTab` card entry points added but destination screen route evidence is incomplete in this review window.
+- UI-BELOW-BAR P7-922 UI 8/8/9/8/7/8/7/8/7/7 avg 7.7; reference: Google Lens bottom sheet; gap: bottom sheet component exists but route-level invocation coverage is partial in this review window.
+
 ## Tope to switch on
 
 Decisions for 2026-10-22 are signed in `docs/build/DECISIONS.md`. These still need the live account. None of them stops the build.
