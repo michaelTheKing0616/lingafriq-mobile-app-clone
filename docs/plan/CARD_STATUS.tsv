@@ -926,7 +926,7 @@ P6-067	Done	Culture factuality eval metric (cultureFactuality.ts, per-language a
 P6-068	Done	Add refusal correctness metric (evals/metrics/refusal.ts)	P6/P6-068.yaml
 P6-069	Done	Add persona fidelity metric (evals/metrics/personaFidelity.ts)	P6/P6-069.yaml
 P6-070	Done	Build native-rater scoring workflow for evals (evals/native/rater_queue.ts, tools/rating_console)	P6/P6-070.yaml
-P6-071	Draft	Gate each language before it reaches L2	P6/P6-071.yaml
+P6-071	Done	L2 content gate: l2_language_gate.yaml, evals/gates/l2.ts, language_not_gated	P6/P6-071.yaml
 P6-072	Draft	Evaluate frontier and open models per language	P6/P6-072.yaml
 P6-073	Draft	Fine-tune licensed open model on licensed data	P6/P6-073.yaml
 P6-074	Draft	Evaluate ASR on 300-utterance sets	P6/P6-074.yaml
