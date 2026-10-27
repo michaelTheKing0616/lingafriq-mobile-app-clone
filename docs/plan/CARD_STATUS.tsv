@@ -863,7 +863,7 @@ P6-004	Done	JSON-schema structured output with retries (structured.ts, mode sche
 P6-005	Done	Tier daily budgets in ai-gateway/quota.ts; gateway reads tier from entitlement	P6/P6-005.yaml
 P6-006	Done	Per-mode monthly cost budgets with 80% alert and economy degrade (costBudget.ts, pricing.ts)	P6/P6-006.yaml
 P6-007	Done	Kill switches + per-mode flags (killSwitch.ts, flags.ts, admin-ai.route.ts)	P6/P6-007.yaml
-P6-008	Draft	Ground prompts in curriculum KG and learner model	P6/P6-008.yaml
+P6-008	Done	Ground prompts in curriculum KG and learner model (curriculumKg.ts, learnerModel.ts)	P6/P6-008.yaml
 P6-009	Draft	Build persona source index retrieval	P6/P6-009.yaml
 P6-010	Draft	Constrain generation to approved lexicon at lower levels	P6/P6-010.yaml
 P6-011	Draft	Route model per language, task and tier with fallbacks	P6/P6-011.yaml
