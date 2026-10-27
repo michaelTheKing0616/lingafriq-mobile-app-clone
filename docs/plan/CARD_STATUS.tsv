@@ -408,7 +408,7 @@ P11-027	Draft	Verify historian review for all five personas	P11/P11-027.yaml
 P11-028	Draft	Write one-page character bible per v1 character	P11/P11-028.yaml
 P11-029	Done	ADR-030 CharacterVM expression enum + Rive VM contract	P11/P11-029.yaml
 P11-030	Done	ADR-032 avatar economy: mastery vs Cowries vs adult fiat; no loot boxes	P11/P11-030.yaml
-P11-031	Draft	Decide forced aligner (ADR-033)	P11/P11-031.yaml
+P11-031	Done	ADR-033 forced aligner: Omnilingual CTC primary, MFA/Rhubarb/Azure fallbacks per lang	P11/P11-031.yaml
 P11-032	Draft	Decide avatar renderer (ADR-034)	P11/P11-032.yaml
 P11-033	Draft	Decide scarification and tribal marks policy (ADR-035)	P11/P11-033.yaml
 P11-034	Draft	Write avatar cultural design bible	P11/P11-034.yaml
