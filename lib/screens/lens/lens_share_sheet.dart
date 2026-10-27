@@ -80,18 +80,22 @@ class _LensShareSheetState extends State<LensShareSheet> {
         setState(() => _phase = LensClipSharePhase.done);
         widget.onShared?.call(result.clipId!);
         Navigator.of(context).pop(true);
+        return;
       case LensClipSharePhase.cancelled:
         setState(() => _phase = LensClipSharePhase.cancelled);
         Navigator.of(context).pop(false);
+        return;
       case LensClipSharePhase.blocked:
         setState(() {
           _phase = LensClipSharePhase.blocked;
           _blockedMessage = _messageFor(result.blockReason);
         });
+        return;
       case LensClipSharePhase.blurring:
       case LensClipSharePhase.uploading:
       case LensClipSharePhase.idle:
         setState(() => _phase = result.phase);
+        return;
     }
   }
 
