@@ -953,7 +953,7 @@ P7-909	Draft	Build Lens personal collection feeding FSRS review	P7/P7-909.yaml
 P7-910	Draft	Build weekly Home Safari quests	P7/P7-910.yaml
 P7-911	Draft	Build Lens Clip sharing with face blur	P7/P7-911.yaml
 P7-912	Draft	Build Lens signs and menus OCR with read-aloud	P7/P7-912.yaml
-P7-913	Draft	Build offline Lens pack of top 300 objects with queue sync	P7/P7-913.yaml
+P7-913	Done	Offline Lens pack manifest + cached audio; PointAndSay queue sync states (P7-913)	P7/P7-913.yaml
 P7-914	Draft	Enforce Lens photo privacy and minor consent	P7/P7-914.yaml
 P7-915	Draft	Wire Lens entry points across tabs and lessons	P7/P7-915.yaml
 P7-916	Done	Verified Lexicon v2 lexeme schema, `/api/v2/verified-lexicon`, `verified_lexeme.dart`	P7/P7-916.yaml

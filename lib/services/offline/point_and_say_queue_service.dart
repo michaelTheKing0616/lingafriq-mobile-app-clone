@@ -13,11 +13,33 @@ import 'package:uuid/uuid.dart';
 /// Why this exists (instead of the persisted outbox):
 /// - evaluations require uploading audio files (multipart),
 /// - persisted outbox currently pushes JSON-only operations.
+/// Visible sync state for queued Lens / Point & Say scores (P7-913).
+enum PointAndSaySyncState {
+  pending,
+  syncing,
+  failed,
+}
+
+PointAndSaySyncState pointAndSaySyncStateFromRecord(Map<String, dynamic> rec) {
+  final raw = rec['syncState']?.toString();
+  switch (raw) {
+    case 'syncing':
+      return PointAndSaySyncState.syncing;
+    case 'failed':
+      return PointAndSaySyncState.failed;
+    default:
+      return PointAndSaySyncState.pending;
+  }
+}
+
 class PointAndSayQueueService {
   PointAndSayQueueService._();
   static final PointAndSayQueueService instance = PointAndSayQueueService._();
 
   static const _uuid = Uuid();
+
+  /// Ids successfully uploaded in this process; prevents duplicate flush after crash.
+  final Set<String> _syncedThisSession = {};
 
   Future<void> ensureOpen() async {
     await LocalDatabaseService().init();
@@ -44,9 +66,19 @@ class PointAndSayQueueService {
       'createdAt': DateTime.now().toUtc().toIso8601String(),
       'attempts': 0,
       'lastError': null,
+      'syncState': 'pending',
     };
     await LocalDatabaseService().savePointAndSay(rec);
     return id;
+  }
+
+  List<Map<String, dynamic>> pendingWithState() {
+    return _pendingRecords()
+        .map((rec) => {
+              ...rec,
+              'syncState': pointAndSaySyncStateFromRecord(rec).name,
+            })
+        .toList();
   }
 
   List<Map<String, dynamic>> _pendingRecords() {
@@ -71,6 +103,11 @@ class PointAndSayQueueService {
     for (final rec in pending.take(batchSize)) {
       final id = rec['id']?.toString();
       if (id == null || id.isEmpty) continue;
+      if (_syncedThisSession.contains(id)) {
+        await LocalDatabaseService().deletePointAndSay(id);
+        removed++;
+        continue;
+      }
 
       final audioPath = rec['audioPath']?.toString() ?? '';
       final expectedText = rec['expectedText']?.toString() ?? '';
@@ -87,6 +124,10 @@ class PointAndSayQueueService {
         removed++;
         continue;
       }
+
+      rec['syncState'] = 'syncing';
+      rec['lastError'] = null;
+      await LocalDatabaseService().savePointAndSay(rec);
 
       try {
         if (evaluateTone) {
@@ -116,6 +157,7 @@ class PointAndSayQueueService {
           }
         }
 
+        _syncedThisSession.add(id);
         await LocalDatabaseService().deletePointAndSay(id);
         removed++;
       } catch (e, st) {
@@ -126,12 +168,26 @@ class PointAndSayQueueService {
         final attempts = (rec['attempts'] is num) ? (rec['attempts'] as num).toInt() : 0;
         rec['attempts'] = attempts + 1;
         rec['lastError'] = e.toString();
+        rec['syncState'] = 'failed';
         await LocalDatabaseService().savePointAndSay(rec);
         // Stop early on first failure to avoid thrashing when connectivity is flaky.
         break;
       }
     }
     return removed;
+  }
+
+  /// Clears failed state so [flushPending] retries visible queue items.
+  Future<void> markFailedAsPending() async {
+    await ensureOpen();
+    for (final rec in _pendingRecords()) {
+      if (pointAndSaySyncStateFromRecord(rec) != PointAndSaySyncState.failed) {
+        continue;
+      }
+      rec['syncState'] = 'pending';
+      rec['lastError'] = null;
+      await LocalDatabaseService().savePointAndSay(rec);
+    }
   }
 }
 
