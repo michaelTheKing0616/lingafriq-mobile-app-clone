@@ -86,6 +86,44 @@ class FamilyPhraseSnapshot {
   }
 }
 
+class CowriesShopItem {
+  const CowriesShopItem({
+    required this.id,
+    required this.sink,
+    required this.cost,
+    required this.title,
+    required this.does,
+    this.personaId,
+    this.chapterId,
+  });
+
+  final String id;
+  final String sink;
+  final int cost;
+  final String title;
+  final String does;
+  final String? personaId;
+  final String? chapterId;
+
+  factory CowriesShopItem.fromJson(Map<String, dynamic> json) {
+    return CowriesShopItem(
+      id: json['id']?.toString() ?? '',
+      sink: json['sink']?.toString() ?? '',
+      cost: (json['cost'] as num?)?.toInt() ?? 0,
+      title: json['title']?.toString() ?? '',
+      does: json['does']?.toString() ?? '',
+      personaId: json['persona_id']?.toString(),
+      chapterId: json['chapter_id']?.toString(),
+    );
+  }
+}
+
+class CowriesShopPurchaseResult {
+  const CowriesShopPurchaseResult({required this.ok, this.message = ''});
+  final bool ok;
+  final String message;
+}
+
 class HeritageTreeSnapshot {
   const HeritageTreeSnapshot({
     required this.canDoCount,
@@ -126,8 +164,13 @@ class GamificationProvider extends Notifier<BaseProviderState>
   StreakCadence _streakCadence = StreakCadence.daily;
   List<String> _practiceDaysThisWeek = [];
   DateTime? _streakBrokenAt;
+  int _streakBeforeBreak = 0;
+  List<CowriesShopItem> _shopCatalog = [];
+  bool _shopCatalogLoading = false;
 
   CircleQuestSnapshot? get circleQuest => _circleQuest;
+  List<CowriesShopItem> get shopCatalog => List.unmodifiable(_shopCatalog);
+  bool get shopCatalogLoading => _shopCatalogLoading;
   StreakCadence get streakCadence => _streakCadence;
   FamilyPhraseSnapshot? get familyPhrase => _familyPhrase;
   HeritageTreeSnapshot? get heritageTree => _heritageTree;
@@ -371,6 +414,11 @@ class GamificationProvider extends Notifier<BaseProviderState>
     int newStreak = practice.state.currentStreak;
     int newFreezeLeft = practice.state.freezeTokens;
 
+    if (practice.streakBroken) {
+      _streakBeforeBreak = _gamification.dailyStreak > 0
+          ? _gamification.dailyStreak
+          : _streakBeforeBreak;
+    }
     if (practice.streakBroken && _gamification.ubuntuStreakActive) {
       logger.info('Ubuntu streak: Donating lessons to help others', tag: 'gamification');
       await _donateLessonsToCommunity();
@@ -644,7 +692,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
     if ((cowries ?? 0) > 0) {
       try {
         final evidenceId = 'cowries_${DateTime.now().millisecondsSinceEpoch}';
-        final res = await client.post(
+        final res = await ref.read(client).post(
           '/api/rewards/learning-event',
           data: {
             'evidence_id': evidenceId,
@@ -662,6 +710,135 @@ class GamificationProvider extends Notifier<BaseProviderState>
       _serverBalanceError = 'balance_unavailable';
       state = state.copyWith();
       return;
+    }
+  }
+
+  bool ownsShopItem(CowriesShopItem item) {
+    if (item.sink == 'cosmetic_avatar') {
+      return _gamification.unlockedBadges.contains('cosmetic:${item.id}');
+    }
+    if (item.sink == 'persona_early_access' &&
+        item.personaId != null &&
+        item.chapterId != null) {
+      final key = 'persona_access:${item.personaId}:${item.chapterId}';
+      return (_gamification.questProgress[key] ?? 0) >= 1;
+    }
+    return false;
+  }
+
+  Future<void> loadCowriesShopCatalog() async {
+    _shopCatalogLoading = true;
+    state = state.copyWith();
+    try {
+      final res = await ref.read(client).get('/api/rewards/shop/catalog');
+      if (res.statusCode == 200 && res.data is Map) {
+        final data = (res.data as Map)['data'] as Map?;
+        final items = data?['items'] as List<dynamic>? ?? [];
+        _shopCatalog = items
+            .map((e) => CowriesShopItem.fromJson(Map<String, dynamic>.from(e as Map)))
+            .where((item) => item.id.isNotEmpty)
+            .toList();
+      }
+    } catch (e) {
+      logger.error('Cowries shop catalog failed', tag: 'gamification', error: e);
+    } finally {
+      _shopCatalogLoading = false;
+      state = state.copyWith();
+    }
+  }
+
+  Future<CowriesShopPurchaseResult> purchaseCowriesShopItem(String itemId) async {
+    final item = _shopCatalog.firstWhere(
+      (e) => e.id == itemId,
+      orElse: () => const CowriesShopItem(
+        id: '',
+        sink: '',
+        cost: 0,
+        title: '',
+        does: '',
+      ),
+    );
+    if (item.id.isEmpty) {
+      return const CowriesShopPurchaseResult(ok: false, message: 'Item not found.');
+    }
+    if (_gamification.cowries < item.cost) {
+      return const CowriesShopPurchaseResult(ok: false, message: 'Not enough Cowries.');
+    }
+
+    final evidenceId = 'shop_${itemId}_${DateTime.now().millisecondsSinceEpoch}';
+    final payload = <String, dynamic>{
+      'evidence_id': evidenceId,
+      'item_id': itemId,
+    };
+
+    if (item.sink == 'streak_repair') {
+      final now = DateTime.now();
+      final streakState = EthicalStreakState(
+        cadence: _streakCadence,
+        currentStreak: _gamification.dailyStreak,
+        freezeTokens: _gamification.freezeLeft,
+        lastPracticeAt: _gamification.lastLogin,
+        practiceDaysThisWeek: _practiceDaysThisWeek,
+        brokenAt: _streakBrokenAt,
+      );
+      if (!EthicalStreakPolicy.repairOfferVisible(streakState, now)) {
+        return const CowriesShopPurchaseResult(
+          ok: false,
+          message: 'Streak repair is not available right now.',
+        );
+      }
+      final restoreTo =
+          _streakBeforeBreak > 0 ? _streakBeforeBreak : _gamification.dailyStreak;
+      payload['streak_to_restore'] = restoreTo;
+      payload['streak_state'] = {
+        'cadence': _streakCadence.name,
+        'currentStreak': streakState.currentStreak,
+        'freezeTokens': streakState.freezeTokens,
+        'lastPracticeAt': streakState.lastPracticeAt?.toIso8601String(),
+        'practiceDaysThisWeek': streakState.practiceDaysThisWeek,
+        'brokenAt': streakState.brokenAt?.toIso8601String(),
+        'practiceDaysSinceFreezeAward': streakState.practiceDaysSinceFreezeAward,
+      };
+    }
+
+    try {
+      final res = await ref.read(client).post('/api/rewards/shop/purchase', data: payload);
+      if (res.statusCode == 200 && res.data is Map) {
+        final data = (res.data as Map)['data'] as Map?;
+        if (item.sink == 'streak_repair') {
+          final restored = (data?['streak_restored_to'] as num?)?.toInt();
+          if (restored != null && restored > 0) {
+            _gamification = _gamification.copyWith(dailyStreak: restored);
+            _streakBrokenAt = null;
+          }
+        }
+        if (item.sink == 'cosmetic_avatar') {
+          final keys = (data?['inventory_keys_added'] as List<dynamic>?) ?? [];
+          final badges = List<String>.from(_gamification.unlockedBadges);
+          for (final key in keys) {
+            badges.add(key.toString());
+          }
+          _gamification = _gamification.copyWith(unlockedBadges: badges);
+        }
+        if (item.sink == 'persona_early_access') {
+          final keys = (data?['inventory_keys_added'] as List<dynamic>?) ?? [];
+          final progress = Map<String, int>.from(_gamification.questProgress);
+          for (final key in keys) {
+            progress[key.toString()] = 1;
+          }
+          _gamification = _gamification.copyWith(questProgress: progress);
+        }
+        await _syncWithBackend();
+        await _saveGamification();
+        state = state.copyWith();
+        return const CowriesShopPurchaseResult(ok: true);
+      }
+      final body = res.data is Map ? res.data as Map : {};
+      final message = body['error']?.toString() ?? 'Purchase could not complete.';
+      return CowriesShopPurchaseResult(ok: false, message: message);
+    } catch (e) {
+      logger.error('Cowries shop purchase failed', tag: 'gamification', error: e);
+      return const CowriesShopPurchaseResult(ok: false, message: 'Purchase could not complete.');
     }
   }
 
@@ -744,7 +921,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
       if (user == null) return;
       
       final api = ref.read(apiProvider.notifier);
-      final balanceRes = await client.get('/api/rewards/balance');
+      final balanceRes = await ref.read(client).get('/api/rewards/balance');
       if (balanceRes.statusCode == 200 && balanceRes.data is Map) {
         final data = (balanceRes.data as Map)['data'] as Map?;
         final backendData = await api.getGamification(user.id.toString());
