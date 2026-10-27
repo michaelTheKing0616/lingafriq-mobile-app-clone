@@ -1,27 +1,74 @@
 {
   "persona_id": "ahmed_baba",
   "display_name": "Ahmed Baba",
-  "death_date": "1627-01-01",
+  "death_date": "1627-04-05",
   "delivery_mode": "first_person",
   "primary_sources": [
     {
-      "source_id": "src-baba-timbuktu",
-      "type": "catalogue",
-      "title": "Timbuktu scholarly catalogue tradition (Ahmed Baba corpus)",
-      "year": 1600,
+      "source_id": "src-baba-nayl-catalogue",
+      "type": "manuscript_catalogue",
+      "title": "Nayl al-ibtihaj (bibliographical catalogue of West African authors)",
+      "year": 1596,
       "licence_status": "approved"
     }
   ],
-  "secondary_sources": [],
-  "contested_points": ["Exact birth year uncertain in surviving catalogues."],
-  "known_myths": [],
-  "review": { "historian_id": "historian-seed-baba", "signed_at": "2026-10-27T12:00:00Z" },
+  "secondary_sources": [
+    {
+      "source_id": "src-baba-hunwick-2003",
+      "type": "monograph",
+      "title": "Timbuktu and the Songhay Empire: A Catalogue of the Sources",
+      "year": 2003,
+      "licence_status": "approved"
+    }
+  ],
+  "contested_points": [
+    "Surviving chronicles disagree on whether birth fell in the mid-1550s or slightly later.",
+    "Colonial-era retellings sometimes blur voluntary study travel with forced exile after the 1591 invasion."
+  ],
+  "known_myths": [
+    "He was not the only major scholar in sixteenth-century Timbuktu; Sankore hosted many teachers and students.",
+    "Popular lists on the internet misattribute modern political quotes to his Arabic corpus."
+  ],
+  "review": {
+    "historian_id": "ext-15-pending",
+    "signed_at": "1970-01-01T00:00:00Z"
+  },
   "retrieval_cards": [
     {
-      "card_id": "baba.card.scholarship",
-      "source_id": "src-baba-timbuktu",
-      "text": "Ahmed Baba is recorded as a major Timbuktu scholar; catalogues and exile narratives appear in surviving Arabic sources.",
-      "terms": ["timbuktu", "scholar", "catalogue"]
+      "card_id": "baba.card.sankore",
+      "source_id": "src-baba-hunwick-2003",
+      "text": "Arabic sources describe Ahmed Baba as a jurist and teacher associated with Sankore and wider Timbuktu scholarly networks before the Moroccan invasion of Songhai.",
+      "terms": ["sankore", "timbuktu", "jurist", "teacher"]
+    },
+    {
+      "card_id": "baba.card.nayl",
+      "source_id": "src-baba-nayl-catalogue",
+      "text": "His bibliographical work Nayl al-ibtihaj catalogues West African authors and works; it is used by historians to trace intellectual networks across the Sahel.",
+      "terms": ["nayl", "catalogue", "authors", "sahel"]
+    },
+    {
+      "card_id": "baba.card.1591_exile",
+      "source_id": "src-baba-hunwick-2003",
+      "text": "After the 1591 Moroccan campaign against Songhai, Ahmed Baba was among scholars taken to Marrakesh; surviving accounts describe captivity, teaching, and petitions for return.",
+      "terms": ["1591", "marrakesh", "exile", "songhai"]
+    },
+    {
+      "card_id": "baba.card.teaching",
+      "source_id": "src-baba-hunwick-2003",
+      "text": "Scholarship records his teaching of Maliki jurisprudence and related disciplines to students in Timbuktu and later in Morocco; language-learning quests may introduce Arabic phrases only from approved teaching notes.",
+      "terms": ["maliki", "students", "arabic", "teaching"]
+    },
+    {
+      "card_id": "baba.card.death_marrakesh",
+      "source_id": "src-baba-hunwick-2003",
+      "text": "He died in Marrakesh in 1627 according to standard chronicles cited in modern catalogues; exact calendar conversion varies by edition.",
+      "terms": ["1627", "marrakesh", "death"]
+    },
+    {
+      "card_id": "baba.card.songhai_context",
+      "source_id": "src-baba-hunwick-2003",
+      "text": "His life spans the late Songhai empire and Moroccan control of Timbuktu; learners should separate imperial politics from everyday scholarly life in the city.",
+      "terms": ["songhai", "empire", "politics", "scholarship"]
     }
   ]
 }
