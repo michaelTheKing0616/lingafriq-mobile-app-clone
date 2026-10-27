@@ -968,7 +968,7 @@ P7-924	Draft	Build full lexicon entry page	P7/P7-924.yaml
 P7-925	Draft	Make Global Search lead with lexicon words	P7/P7-925.yaml
 P7-926	Draft	Show word of the day with its story in Today	P7/P7-926.yaml
 P7-927	Draft	Build pan-African same-idea view	P7/P7-927.yaml
-P7-928	Draft	Build offline lexicon pack of top 5k entries with audio	P7/P7-928.yaml
+P7-928	Done	Offline lexicon pack manifest + client verify/sync (lexiconPack.service.ts, lexicon_pack_service.dart)	P7/P7-928.yaml
 P7-929	Draft	Wire lexicon entry points in Learn, Lens and Village	P7/P7-929.yaml
 P7-930	Draft	'Build micro-lesson shape: learn it, see it, try it'	P7/P7-930.yaml
 P7-931	Draft	Build 30-second perception check for tutorials	P7/P7-931.yaml
