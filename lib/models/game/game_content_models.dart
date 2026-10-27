@@ -428,3 +428,42 @@ List<String> _parseGameTags(dynamic value) {
   }
   return const [];
 }
+
+/// Licensed human audio for the correct answer on a GameKit item (P8-904).
+class GameKitCorrectItemAudio {
+  final String? uri;
+  final bool syntheticDisallowed;
+
+  const GameKitCorrectItemAudio({
+    this.uri,
+    this.syntheticDisallowed = false,
+  });
+
+  bool get hasPlayableAudio => uri != null && uri!.trim().isNotEmpty;
+
+  static GameKitCorrectItemAudio fromMetadata(
+    Map<String, dynamic> metadata, {
+    required bool tonalLanguage,
+  }) {
+    final uri = _firstNonEmptyString(metadata, const [
+      'correct_audio_url',
+      'correct_audio_asset',
+      'correct_audio_uri',
+      'audio_url',
+    ]);
+    return GameKitCorrectItemAudio(
+      uri: uri,
+      syntheticDisallowed: tonalLanguage,
+    );
+  }
+}
+
+String? _firstNonEmptyString(Map<String, dynamic> metadata, List<String> keys) {
+  for (final key in keys) {
+    final value = metadata[key];
+    if (value is String && value.trim().isNotEmpty) {
+      return value.trim();
+    }
+  }
+  return null;
+}

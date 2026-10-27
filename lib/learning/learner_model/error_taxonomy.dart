@@ -212,6 +212,13 @@ class ErrorType {
       severity: 0.3,
       remediation: RemediationType.speedDrill,
     ),
+    ErrorType(
+      id: 'game_incorrect',
+      name: 'Answer Mismatch',
+      description: 'The choice did not match the taught form for this item.',
+      domain: ErrorDomain.semantic,
+      severity: 0.5,
+    ),
   ];
 
   // ─── Tonal language errors ─────────────────────────────────────────
@@ -452,4 +459,67 @@ class ErrorDistribution {
         'rates': rates,
         'totalObservations': totalObservations,
       };
+}
+
+/// Learner-facing one-liner for GameKit "why wrong" copy (P8-904).
+String gameKitLearnerExplanationLine(String errorTypeId) {
+  final type = ErrorType.byId(errorTypeId);
+  if (type == null) {
+    return 'Let us look at what happened on this turn.';
+  }
+  return '${type.name}: ${type.description}';
+}
+
+/// Resolves the primary error type id for a wrong GameKit turn.
+String gameKitInferWrongAnswerErrorType({
+  Map<String, dynamic> metadata = const {},
+  String? gameCategory,
+  String languageCode = '',
+}) {
+  final explicit = metadata['error_type_id'] as String?;
+  if (explicit != null && ErrorType.byId(explicit) != null) {
+    return explicit;
+  }
+  final fromMetaList = metadata['errorTypeIds'];
+  if (fromMetaList is List && fromMetaList.isNotEmpty) {
+    final first = fromMetaList.first.toString();
+    if (ErrorType.byId(first) != null) return first;
+  }
+  final category = (gameCategory ?? '').toLowerCase();
+  if (category.contains('pronunciation') || category.contains('tone')) {
+    return gameKitLanguageIsTonal(languageCode)
+        ? 'tone_substitution'
+        : 'phoneme_substitution';
+  }
+  if (category.contains('grammar')) {
+    return 'agreement_error';
+  }
+  return 'lexical_choice';
+}
+
+bool gameKitLanguageIsTonal(String languageCode) {
+  final code = languageCode.toLowerCase();
+  const tonal = {'yo', 'yoruba', 'ig', 'igbo', 'ha', 'hausa', 'tw', 'twi'};
+  return tonal.contains(code);
+}
+
+/// Every registered error type must have non-empty learner copy.
+void gameKitAssertEveryErrorTypeHasCopy() {
+  final all = <ErrorType>[
+    ...ErrorType.universal,
+    ...ErrorType.tonal,
+    ...ErrorType.agglutinative,
+    ...ErrorType.clickConsonant,
+    ...ErrorType.nounClass,
+    ...ErrorType.bantu,
+  ];
+  for (final type in all) {
+    final line = gameKitLearnerExplanationLine(type.id);
+    if (line.trim().isEmpty) {
+      throw StateError('Missing GameKit copy for ${type.id}');
+    }
+    if (!line.contains(type.name)) {
+      throw StateError('GameKit copy must name error type for ${type.id}');
+    }
+  }
 }

@@ -15,7 +15,11 @@ import '../widgets/progress_meter.dart';
 import '../widgets/streak_indicator.dart';
 import 'game_feedback.dart';
 import 'game_result.dart';
+import 'game_turn_context.dart';
+import 'generic_game_template.dart';
 import '../../avatars/avatars.dart';
+import '../../learning/learner_model/error_taxonomy.dart';
+import '../../models/game/game_content_models.dart';
 
 /// Universal game screen that works for any game using GenericGame
 /// This allows all 37+ games to use the same GameKit implementation
@@ -57,6 +61,8 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
   Timer? _pendingFeedbackTimer;
   bool _showCelebration = false;
   bool? _immediateLocalCorrect;
+  String? _wrongAnswerErrorTypeId;
+  final GameKitLearnerGraphWriter _learnerGraphWriter = GameKitLearnerGraphWriter();
   
   // Game avatar controller
   GameAvatarController? _avatarController;
@@ -119,6 +125,7 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
       _feedbackTiming = null;
       _immediateLocalCorrect = null;
       _showCelebration = false;
+      _wrongAnswerErrorTypeId = null;
     });
 
     try {
@@ -203,10 +210,19 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
 
       _pendingFeedbackTimer?.cancel();
 
+      final wrongErrorId = result.score.isCorrect
+          ? null
+          : gameKitInferWrongAnswerErrorType(
+              metadata: _currentContent!.metadata,
+              gameCategory: _gameCategory.name,
+              languageCode: widget.language,
+            );
+
       setState(() {
         _lastResult = result;
         _showResult = true;
         _feedbackPhase = GameKitFeedbackPhase.finalVerdict;
+        _wrongAnswerErrorTypeId = wrongErrorId;
         if (result.score.isCorrect) {
           _score++;
           _correctStreak++;
@@ -221,6 +237,24 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
           (_avatarKey.currentState as dynamic)?.showDisappointment();
         }
       });
+
+      final turnContext = GameTurnContext(
+        content: _currentContent,
+        input: input,
+        session: gameSession,
+        metadata: {
+          'itemId': _currentContent!.contentId,
+          'skillId': _currentContent!.contentId,
+          'gameCategory': _gameCategory.name,
+          if (wrongErrorId != null) 'errorTypeIds': [wrongErrorId],
+        },
+      );
+      await _learnerGraphWriter.recordTurn(
+        session: gameSession,
+        context: turnContext,
+        result: result,
+        turnId: '${gameSession.sessionId}_${_round}_${_currentContent!.contentId}',
+      );
 
       // Record turn
       await completeTurn(
@@ -419,6 +453,26 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
               pendingLabel: l10n.gamekitFeedbackPending,
               detailMessage: _showResult ? _lastResult?.feedback.message : null,
             ),
+            if (_showResult &&
+                _lastResult != null &&
+                !_lastResult!.score.isCorrect &&
+                _wrongAnswerErrorTypeId != null &&
+                _currentContent != null) ...[
+              SizedBox(height: 2.h),
+              GameKitWhyWrongPanel(
+                errorTypeId: _wrongAnswerErrorTypeId!,
+                correctAnswerText: _currentContent!.correctAnswer ?? '',
+                audio: GameKitCorrectItemAudio.fromMetadata(
+                  _currentContent!.metadata,
+                  tonalLanguage: gameKitLanguageIsTonal(widget.language),
+                ),
+                title: l10n.gamekitFeedbackTitle,
+                whyWrongLabel: l10n.gamekitFeedbackWhyWrong,
+                playAudioLabel: l10n.gamekitFeedbackTitle,
+                noAudioLabel: 'No audio yet for this answer',
+                loadingLabel: l10n.gamekitFeedbackPending,
+              ),
+            ],
             if (_showCelebration && reduceMotion)
               Padding(
                 padding: EdgeInsets.only(top: 2.h),

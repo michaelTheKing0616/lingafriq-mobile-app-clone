@@ -6,6 +6,7 @@ import 'game_session.dart';
 import 'game_turn_context.dart';
 import '../../models/game/game_session_model.dart' as backend;
 import '../../learning/learner_model/learner_model_service.dart';
+import '../../learning/learner_model/error_taxonomy.dart';
 import '../../services/learning/spaced_repetition_service.dart';
 
 /// Complete result of a game turn
@@ -66,9 +67,18 @@ class GameKitLearnerGraphWriter {
         'unknown_item';
     final skillId = (meta['skillId'] as String?) ?? itemId;
     final errorTypeIds = (meta['errorTypeIds'] as List<dynamic>?)
-            ?.map((e) => e as String)
+            ?.map((e) => e.toString())
+            .where((id) => ErrorType.byId(id) != null)
             .toList() ??
-        (result.score.isCorrect ? const <String>[] : const ['game_incorrect']);
+        (result.score.isCorrect
+            ? const <String>[]
+            : [
+                gameKitInferWrongAnswerErrorType(
+                  metadata: meta,
+                  gameCategory: meta['gameCategory'] as String?,
+                  languageCode: context.session.language,
+                ),
+              ]);
     return (itemId: itemId, skillId: skillId, errorTypeIds: errorTypeIds);
   }
 

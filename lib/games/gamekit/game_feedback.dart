@@ -2,7 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
+import 'package:just_audio/just_audio.dart';
 
+import '../../learning/learner_model/error_taxonomy.dart';
+import '../../models/game/game_content_models.dart';
 import 'game_turn_context.dart';
 import 'game_scoring.dart';
 
@@ -367,5 +370,234 @@ enum AnimationEvent {
   disappointed,
   encouraging,
   confused,
+}
+
+/// Warm URIs replay within the 300 ms GameKit budget (P8-904 AC3).
+final Set<String> gameKitExplanationAudioWarmCache = <String>{};
+
+/// Clears warm-cache state between tests.
+void gameKitResetExplanationAudioCacheForTests() {
+  gameKitExplanationAudioWarmCache.clear();
+}
+
+typedef GameKitExplanationAudioPlayFn = Future<void> Function(String uri);
+
+/// Plays correct-answer audio; inject [playFn] in tests.
+Future<void> gameKitPlayExplanationAudio(
+  String uri, {
+  GameKitExplanationAudioPlayFn? playFn,
+  AudioPlayer? player,
+}) async {
+  if (playFn != null) {
+    await playFn(uri);
+    return;
+  }
+  final p = player ?? AudioPlayer();
+  try {
+    if (uri.startsWith('asset:')) {
+      await p.setAsset(uri.substring(6));
+    } else if (uri.startsWith('assets/')) {
+      await p.setAsset(uri);
+    } else {
+      await p.setUrl(uri);
+    }
+    await p.play();
+  } finally {
+    if (player == null) {
+      await p.dispose();
+    }
+  }
+}
+
+enum GameKitWhyWrongAudioPhase { idle, loading, playing, noAudio }
+
+/// Expandable wrong-answer explanation with taxonomy copy + audio (P8-904).
+class GameKitWhyWrongPanel extends StatefulWidget {
+  final String errorTypeId;
+  final String correctAnswerText;
+  final GameKitCorrectItemAudio audio;
+  final String title;
+  final String whyWrongLabel;
+  final String playAudioLabel;
+  final String noAudioLabel;
+  final String loadingLabel;
+  final GameKitExplanationAudioPlayFn? playFn;
+  final bool initiallyExpanded;
+
+  const GameKitWhyWrongPanel({
+    super.key,
+    required this.errorTypeId,
+    required this.correctAnswerText,
+    required this.audio,
+    required this.title,
+    required this.whyWrongLabel,
+    required this.playAudioLabel,
+    required this.noAudioLabel,
+    required this.loadingLabel,
+    this.playFn,
+    this.initiallyExpanded = true,
+  });
+
+  @override
+  State<GameKitWhyWrongPanel> createState() => _GameKitWhyWrongPanelState();
+}
+
+class _GameKitWhyWrongPanelState extends State<GameKitWhyWrongPanel> {
+  late bool _expanded;
+  GameKitWhyWrongAudioPhase _audioPhase = GameKitWhyWrongAudioPhase.idle;
+
+  @override
+  void initState() {
+    super.initState();
+    _expanded = widget.initiallyExpanded;
+    _syncAudioPhase();
+  }
+
+  @override
+  void didUpdateWidget(covariant GameKitWhyWrongPanel oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.audio.uri != widget.audio.uri) {
+      _audioPhase = GameKitWhyWrongAudioPhase.idle;
+      _syncAudioPhase();
+    }
+  }
+
+  void _syncAudioPhase() {
+    if (!widget.audio.hasPlayableAudio) {
+      _audioPhase = GameKitWhyWrongAudioPhase.noAudio;
+    }
+  }
+
+  Future<void> _onPlayAudio() async {
+    final uri = widget.audio.uri;
+    if (uri == null || uri.isEmpty) return;
+    if (widget.audio.syntheticDisallowed && uri.startsWith('tts:')) {
+      return;
+    }
+
+    final cached = gameKitExplanationAudioWarmCache.contains(uri);
+    if (cached) {
+      setState(() => _audioPhase = GameKitWhyWrongAudioPhase.playing);
+    } else {
+      setState(() => _audioPhase = GameKitWhyWrongAudioPhase.loading);
+    }
+
+    await gameKitPlayExplanationAudio(uri, playFn: widget.playFn);
+    gameKitExplanationAudioWarmCache.add(uri);
+    if (!mounted) return;
+    setState(() => _audioPhase = GameKitWhyWrongAudioPhase.playing);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final explanation = gameKitLearnerExplanationLine(widget.errorTypeId);
+    final reduceMotion = MediaQuery.disableAnimationsOf(context);
+
+    return Semantics(
+      container: true,
+      label: widget.title,
+      child: Material(
+        elevation: 2,
+        borderRadius: BorderRadius.circular(16),
+        color: theme.colorScheme.errorContainer.withValues(alpha: 0.35),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              InkWell(
+                onTap: () => setState(() => _expanded = !_expanded),
+                borderRadius: BorderRadius.circular(12),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.help_outline,
+                        color: theme.colorScheme.error,
+                        semanticLabel: widget.whyWrongLabel,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          widget.whyWrongLabel,
+                          style: theme.textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      Icon(_expanded ? Icons.expand_less : Icons.expand_more),
+                    ],
+                  ),
+                ),
+              ),
+              if (_expanded) ...[
+                const SizedBox(height: 8),
+                Text(
+                  explanation,
+                  style: theme.textTheme.bodyMedium,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  widget.correctAnswerText,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                _buildAudioControl(theme, reduceMotion),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAudioControl(ThemeData theme, bool reduceMotion) {
+    if (_audioPhase == GameKitWhyWrongAudioPhase.noAudio ||
+        !widget.audio.hasPlayableAudio) {
+      return Row(
+        children: [
+          Icon(Icons.volume_off, color: theme.colorScheme.onSurfaceVariant),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              widget.noAudioLabel,
+              style: theme.textTheme.bodySmall,
+            ),
+          ),
+        ],
+      );
+    }
+
+    if (_audioPhase == GameKitWhyWrongAudioPhase.loading) {
+      return Row(
+        children: [
+          SizedBox(
+            width: 20,
+            height: 20,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
+          const SizedBox(width: 12),
+          Text(widget.loadingLabel, style: theme.textTheme.bodySmall),
+        ],
+      );
+    }
+
+    return SizedBox(
+      height: 48,
+      child: FilledButton.tonalIcon(
+        onPressed: _onPlayAudio,
+        icon: Icon(
+          _audioPhase == GameKitWhyWrongAudioPhase.playing
+              ? Icons.graphic_eq
+              : Icons.volume_up,
+        ),
+        label: Text(widget.playAudioLabel),
+      ),
+    );
+  }
 }
 
