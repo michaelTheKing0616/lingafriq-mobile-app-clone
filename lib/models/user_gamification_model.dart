@@ -3,9 +3,9 @@ class UserGamificationModel {
   final int xp;
   final int level;
   final String levelTitle;
-  final int ngwenya; // Daily earn currency
-  final int cowries; // Premium currency
-  final int ancestralBeads; // Ultra-rare achievement currency
+  final int ngwenya;
+  final int cowries;
+  final int ancestralBeads;
   final int dailyStreak;
   final int perfectWeekStreak;
   final int tonalMasteryStreak;
@@ -36,7 +36,7 @@ class UserGamificationModel {
     this.levelTitle = 'Stranger at the Village Gate',
     this.ngwenya = 0,
     this.cowries = 0,
-    this.ancestralBeads = 0,
+    this.ancestralBeads = 0, // P10-902: always 0; server migration folds legacy into cowries
     this.dailyStreak = 0,
     this.perfectWeekStreak = 0,
     this.tonalMasteryStreak = 0,
@@ -120,13 +120,20 @@ class UserGamificationModel {
     );
   }
 
+  static int _cowriesFromServerJson(Map<String, dynamic> json) {
+    final cowries = (json['cowries'] as num?)?.toInt() ?? 0;
+    final legacyDaily = (json['ngwenya'] as num?)?.toInt() ?? 0;
+    final legacyRare = (json['ancestralBeads'] as num?)?.toInt() ??
+        (json['ancestral_beads'] as num?)?.toInt() ??
+        0;
+    return cowries + legacyDaily + legacyRare;
+  }
+
   Map<String, dynamic> toJson() => {
         'xp': xp,
         'level': level,
         'levelTitle': levelTitle,
-        'ngwenya': ngwenya,
         'cowries': cowries,
-        'ancestralBeads': ancestralBeads,
         'dailyStreak': dailyStreak,
         'perfectWeekStreak': perfectWeekStreak,
         'tonalMasteryStreak': tonalMasteryStreak,
@@ -172,9 +179,9 @@ class UserGamificationModel {
         xp: (json['xp'] as num?)?.toInt() ?? 0,
         level: (json['level'] as num?)?.toInt() ?? 1,
         levelTitle: json['levelTitle'] as String? ?? 'Stranger at the Village Gate',
-        ngwenya: (json['ngwenya'] as num?)?.toInt() ?? 0,
-        cowries: (json['cowries'] as num?)?.toInt() ?? 0,
-        ancestralBeads: (json['ancestralBeads'] as num?)?.toInt() ?? 0,
+        ngwenya: 0,
+        cowries: _cowriesFromServerJson(json),
+        ancestralBeads: 0,
         dailyStreak: (json['dailyStreak'] as num?)?.toInt() ?? 0,
         perfectWeekStreak: (json['perfectWeekStreak'] as num?)?.toInt() ?? 0,
         tonalMasteryStreak: (json['tonalMasteryStreak'] as num?)?.toInt() ?? 0,

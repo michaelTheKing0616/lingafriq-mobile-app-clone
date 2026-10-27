@@ -212,7 +212,6 @@ class GamificationProvider extends Notifier<BaseProviderState>
     }
 
     // Offline fallback: no local balance mint; queue retry via outbox sync path.
-    final ngwenyaGain = xpGain ~/ 5;
     final currentXP = _gamification.xp;
     final newXP = currentXP + xpGain;
     final newLevel = LevelTitles.getLevelFromXP(newXP);
@@ -222,7 +221,6 @@ class GamificationProvider extends Notifier<BaseProviderState>
       xp: newXP,
       level: newLevel,
       levelTitle: newTitle,
-      ngwenya: _gamification.ngwenya + ngwenyaGain,
     );
 
     // Level up bonus
@@ -446,11 +444,10 @@ class GamificationProvider extends Notifier<BaseProviderState>
 
     final newBadges = List<String>.from(_gamification.unlockedBadges)..add(badgeId);
 
+    final cowriesBonus = badge.cowriesReward + badge.beadsReward;
     _gamification = _gamification.copyWith(
       unlockedBadges: newBadges,
-      ngwenya: _gamification.ngwenya + badge.cowriesReward,
-      cowries: _gamification.cowries + badge.cowriesReward,
-      ancestralBeads: _gamification.ancestralBeads + badge.beadsReward,
+      cowries: _gamification.cowries + cowriesBonus,
     );
 
     // Award XP for badge
@@ -632,10 +629,15 @@ class GamificationProvider extends Notifier<BaseProviderState>
   /// Award currency directly
   Future<void> awardCurrency({
     int? cowries,
-    int? ngwenya,
-    int? ancestralBeads,
+    @Deprecated('Cowries only (P10-902)') int? ngwenya,
+    @Deprecated('Cowries only (P10-902)') int? ancestralBeads,
   }) async {
-    if ((ngwenya ?? 0) > 0 || (ancestralBeads ?? 0) > 0) {
+    final legacySpend = (ngwenya ?? 0) + (ancestralBeads ?? 0);
+    if (legacySpend < 0) {
+      await spendCurrency(cowries: -legacySpend);
+      return;
+    }
+    if (legacySpend > 0) {
       logger.warn('Legacy currency earn blocked; server ledger only', tag: 'gamification');
       return;
     }
@@ -666,19 +668,11 @@ class GamificationProvider extends Notifier<BaseProviderState>
   /// Spend currency (deduct from current balance)
   Future<bool> spendCurrency({
     required int cowries,
-    int? ngwenya,
-    int? ancestralBeads,
   }) async {
-    // Check if user has enough currency
     if (_gamification.cowries < cowries) return false;
-    if (ngwenya != null && _gamification.ngwenya < ngwenya) return false;
-    if (ancestralBeads != null && _gamification.ancestralBeads < ancestralBeads) return false;
 
-    // Deduct currency
     _gamification = _gamification.copyWith(
       cowries: _gamification.cowries - cowries,
-      ngwenya: ngwenya != null ? _gamification.ngwenya - ngwenya : _gamification.ngwenya,
-      ancestralBeads: ancestralBeads != null ? _gamification.ancestralBeads - ancestralBeads : _gamification.ancestralBeads,
     );
     await _saveGamification();
     await _syncToBackend();

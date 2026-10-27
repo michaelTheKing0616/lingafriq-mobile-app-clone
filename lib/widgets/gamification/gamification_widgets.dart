@@ -18,6 +18,64 @@ export 'league_widget.dart';
 export 'hearts_widget.dart';
 export '../../screens/passport/cando_badge_screen.dart';
 
+/// P10-902 — single soft currency (Cowries only; ADR-020).
+class CowriesBalanceChip extends StatelessWidget {
+  const CowriesBalanceChip({
+    super.key,
+    required this.amount,
+    this.compact = false,
+  });
+
+  final int amount;
+  final bool compact;
+
+  @override
+  Widget build(BuildContext context) {
+    final label = compact ? '$amount cowries' : 'Cowries balance';
+    return Semantics(
+      label: label,
+      button: false,
+      child: Material(
+        color: Theme.of(context).colorScheme.surfaceContainerHigh,
+        borderRadius: BorderRadius.circular(PanAfricanSpacing.sm),
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: compact ? PanAfricanSpacing.sm : PanAfricanSpacing.md,
+            vertical: PanAfricanSpacing.xs,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.waves, size: compact ? 18 : 22, color: PanAfricanColors.primary),
+              SizedBox(width: PanAfricanSpacing.xs),
+              Text(
+                _format(amount),
+                style: PanAfricanTypography.labelLarge(context).copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: PanAfricanColors.primary,
+                    ),
+              ),
+              if (!compact) ...[
+                SizedBox(width: PanAfricanSpacing.xs),
+                Text(
+                  'Cowries',
+                  style: PanAfricanTypography.bodySmall(context),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  static String _format(int amount) {
+    if (amount >= 1000000) return '${(amount / 1000000).toStringAsFixed(1)}M';
+    if (amount >= 1000) return '${(amount / 1000).toStringAsFixed(1)}K';
+    return amount.toString();
+  }
+}
+
 /// P10-910 — generic badge gallery is gated; meaningful status is can-do badges only.
 class VerifiedCanDoStatusBanner extends StatelessWidget {
   const VerifiedCanDoStatusBanner({super.key});

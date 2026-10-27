@@ -339,7 +339,7 @@ P1-061	Done	Add RevenueCat webhook receiver and entitlement table	P1/P1-061.yaml
 P1-062	Done	Enforce premium gates server-side from entitlements	P1/P1-062.yaml
 P10-900	Done	Server reward ledger; CLIENT_REWARD_REJECTED; /api/rewards/*	P10/P10-900.yaml
 P10-901	Done	Compute XP from evidence with diminishing returns (xp.rules.ts, xp.service.ts, competence_gamification.dart)	P10/P10-901.yaml
-P10-902	Draft	Migrate all balances to the single Cowries currency	P10/P10-902.yaml
+P10-902	Done	Migrate legacy balances to Cowries (migrate-currencies.ts, ADR-020 1:1 ledger)	P10/P10-902.yaml
 P10-903	Draft	'Add Cowries sinks: cosmetics, repair, persona access'	P10/P10-903.yaml
 P10-904	Draft	Add the language-preservation fund donation sink	P10/P10-904.yaml
 P10-905	Done	Ethical streaks: weekly/daily cadence, freezes, repair window (streak.service.ts, game_streak.dart)	P10/P10-905.yaml
