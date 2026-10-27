@@ -877,7 +877,7 @@ P6-018	Done	Server two-pass persona cognition + mobile gateway client (P6-018)	P
 P6-019	Done	Migrate client to gateway and remove keys and mode logic (ai_gateway_client.dart, groq provider, polie_workspace)	P6/P6-019.yaml
 P6-020	Done	Gateway STT: /ai/stt/transcribe, Intron→Omnilingual, yo/ig/ha whisper block (P6-020)	P6/P6-020.yaml
 P6-021	Done	Self-host Omnilingual ASR worker + gateway primary flag (speech-service)	P6/P6-021.yaml
-P6-022	Draft	Provide forced aligner service	P6/P6-022.yaml
+P6-022	Done	Forced aligner POST /v1/align, phone/syllable schema, low_confidence gate (speech-service)	P6/P6-022.yaml
 P6-023	Draft	Build Polie Conversation mode with level grounding	P6/P6-023.yaml
 P6-024	Draft	Build Scenario Roleplay mode over human-authored scripts	P6/P6-024.yaml
 P6-025	Draft	Build Tutor Explain mode with pattern-library RAG	P6/P6-025.yaml
