@@ -882,7 +882,7 @@ P6-023	Done	Build Polie Conversation mode with level grounding (modes/conversati
 P6-024	Done	Scenario roleplay: roleplay.ts, scenarios/catalog, scenario_unapproved gate (P6-024)	P6/P6-024.yaml
 P6-025	Done	Tutor Explain mode: pattern-library RAG, L1 answer, pattern id citation (tutorExplain.ts)	P6/P6-025.yaml
 P6-026	Done	Build Tutor Correct-my-writing hybrid with uncertainty (tutorCorrect.ts, tutor_correct.md, diacritics patchModelOutput)	P6/P6-026.yaml
-P6-027	Draft	Build Story Mode from approved lexicon with AI labels	P6/P6-027.yaml
+P6-027	Done	Story mode: story.ts, story.md, lib/screens/story (lexicon, approval gate, AI label)	P6/P6-027.yaml
 P6-028	Draft	Build Shadowing coach on real scorer, replace fake toneScore	P6/P6-028.yaml
 P6-029	Draft	Build Translator-with-teaching behind per-pair quality gate	P6/P6-029.yaml
 P6-030	Draft	Build Live Translate with visible confidence indicator	P6/P6-030.yaml
