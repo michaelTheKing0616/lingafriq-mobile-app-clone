@@ -458,6 +458,34 @@
   "@gamesGameMasteryResultsDone": {
     "description": "P8-915 dismiss results"
   },
+  "gamesMasteryMapTitle": "Mastery map",
+  "@gamesMasteryMapTitle": {
+    "description": "P8-932 mastery map screen title"
+  },
+  "gamesMasteryMapInstructions": "See which arcade games moved each skill in your learner model.",
+  "@gamesMasteryMapInstructions": {
+    "description": "P8-932 mastery map intro"
+  },
+  "gamesMasteryMapGamesHeading": "Games that moved this skill",
+  "@gamesMasteryMapGamesHeading": {
+    "description": "P8-932 per-skill game chips heading"
+  },
+  "gamesMasteryMapNotMeasured": "Not measured",
+  "@gamesMasteryMapNotMeasured": {
+    "description": "P8-932 skill with no learner events"
+  },
+  "gamesMasteryMapUnsure": "Unsure",
+  "@gamesMasteryMapUnsure": {
+    "description": "P8-932 scorer below confidence gate"
+  },
+  "gamesMasteryMapPracticeLabel": "Practice, not scored",
+  "@gamesMasteryMapPracticeLabel": {
+    "description": "P8-932 practice session row"
+  },
+  "gamesMasteryMapError": "We could not load your mastery map. Finish a scored arcade round and try again.",
+  "@gamesMasteryMapError": {
+    "description": "P8-932 load failure"
+  },
   "@gamekitPracticeModeError": {
     "description": "P8-911 practice audio missing"
   },

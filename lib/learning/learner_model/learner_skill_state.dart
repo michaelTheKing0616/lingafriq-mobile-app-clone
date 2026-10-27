@@ -258,3 +258,37 @@ class LearnerSkillState {
         if (bktParams != null) 'bktParams': bktParams!.toJson(),
       };
 }
+
+/// P8-932: pronunciation/tone skills must surface scorer-backed values only.
+bool learnerSkillIdExpectsScorerMeasurement(String skillId) {
+  final id = skillId.toLowerCase();
+  return id.contains('tone') ||
+      id.contains('pronunciation') ||
+      id.contains('phonetic') ||
+      id.contains('speaking');
+}
+
+/// How a skill row on the mastery map should render its headline value.
+enum MasteryMapSkillValueKind {
+  notMeasured,
+  masteryPercent,
+  scorerPercent,
+  unsure,
+}
+
+/// Aggregated skill row for the mastery map (P8-932).
+class MasteryMapSkillRow {
+  const MasteryMapSkillRow({
+    required this.skillId,
+    required this.valueKind,
+    this.masteryPercent,
+    required this.gameIds,
+    required this.sessionIds,
+  });
+
+  final String skillId;
+  final MasteryMapSkillValueKind valueKind;
+  final int? masteryPercent;
+  final List<String> gameIds;
+  final List<String> sessionIds;
+}

@@ -1016,7 +1016,7 @@ P8-928	Done	Flagship Greeting Gauntlet (scenario_matrix, greeting_gauntlet_*, AD
 P8-929	Done	Echo Karaoke flagship: pitch line, licence catalog, legacy karaoke harvest (echo_karaoke/*)	P8/P8-929.yaml
 P8-930	Done	Word Forge Yoruba serial verbs (yoruba_serial_verbs.dart, grammar records, goldens)	P8/P8-930.yaml
 P8-931	Done	Weekly Village Festival themes (`festival_theme_service.dart`, `festival.service.ts`)	P8/P8-931.yaml
-P8-932	Draft	Mastery Map showing skills improved per game	P8/P8-932.yaml
+P8-932	Done	Mastery map from learner-model events (game_mastery_map_screen.dart, game_result archive)	P8/P8-932.yaml
 P8-933	Draft	Circle co-op goals for the game meta-layer	P8/P8-933.yaml
 P9-900	Draft	'Decide realtime stack: self-hosted Socket.IO+Redis vs managed'	P9/P9-900.yaml
 P9-901	Draft	Scale sockets horizontally with Redis adapter and sticky sessions	P9/P9-901.yaml

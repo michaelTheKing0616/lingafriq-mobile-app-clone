@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'game_feedback.dart';
 import 'game_difficulty.dart';
 import 'game_scoring.dart';
@@ -6,11 +9,13 @@ import 'game_session.dart';
 import 'game_turn_context.dart';
 import '../../models/game/game_session_model.dart' as backend;
 import '../../learning/learner_model/learner_model_service.dart';
+import '../../learning/learner_model/learner_skill_state.dart';
 import '../../learning/learner_model/error_taxonomy.dart';
 import '../../services/learning/spaced_repetition_service.dart';
 import '../../config/api_contract.dart';
 import '../../providers/dio_provider.dart';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Complete result of a game turn
 class GameTurnResult {
@@ -123,6 +128,7 @@ class GameMasteryResultsPayload {
     GameSession session, {
     int? serverXpAwarded,
   }) {
+    unawaited(archiveGameSessionForMasteryMap(session));
     return GameMasteryResultsPayload(
       session: session,
       skillDeltas: skillDeltasFromGameSession(session),
@@ -130,6 +136,312 @@ class GameMasteryResultsPayload {
       practiceNotScored: session.practiceNotScored,
     );
   }
+}
+
+/// Archived completed session for mastery-map indexing (P8-932).
+class GameMasterySessionRecord {
+  const GameMasterySessionRecord({
+    required this.sessionId,
+    required this.gameId,
+    required this.learnerId,
+    required this.language,
+    required this.completedAt,
+    required this.practiceNotScored,
+    required this.skillIdsTouched,
+    required this.skillDeltas,
+    this.scorerBySkill = const {},
+  });
+
+  final String sessionId;
+  final String gameId;
+  final String learnerId;
+  final String language;
+  final DateTime completedAt;
+  final bool practiceNotScored;
+  final List<String> skillIdsTouched;
+  final List<GameMasterySkillDelta> skillDeltas;
+  final Map<String, ScorerSkillSnapshot> scorerBySkill;
+
+  bool touchedSkill(String skillId) => skillIdsTouched.contains(skillId);
+
+  Map<String, dynamic> toJson() => {
+        'sessionId': sessionId,
+        'gameId': gameId,
+        'learnerId': learnerId,
+        'language': language,
+        'completedAt': completedAt.toIso8601String(),
+        'practiceNotScored': practiceNotScored,
+        'skillIdsTouched': skillIdsTouched,
+        'skillDeltas': skillDeltas
+            .map(
+              (d) => {
+                'skillId': d.skillId,
+                'before': d.masteryBefore,
+                'after': d.masteryAfter,
+              },
+            )
+            .toList(),
+        'scorerBySkill': scorerBySkill.map(
+          (k, v) => MapEntry(k, v.toJson()),
+        ),
+      };
+
+  factory GameMasterySessionRecord.fromJson(Map<String, dynamic> json) {
+    final deltasRaw = json['skillDeltas'] as List<dynamic>? ?? const [];
+    return GameMasterySessionRecord(
+      sessionId: json['sessionId'] as String,
+      gameId: json['gameId'] as String,
+      learnerId: json['learnerId'] as String,
+      language: json['language'] as String? ?? '',
+      completedAt: DateTime.parse(json['completedAt'] as String),
+      practiceNotScored: json['practiceNotScored'] == true,
+      skillIdsTouched: (json['skillIdsTouched'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          const [],
+      skillDeltas: deltasRaw.map((e) {
+        final m = e as Map<String, dynamic>;
+        return GameMasterySkillDelta(
+          skillId: m['skillId'] as String,
+          masteryBefore: (m['before'] as num).toDouble(),
+          masteryAfter: (m['after'] as num).toDouble(),
+        );
+      }).toList(),
+      scorerBySkill: (json['scorerBySkill'] as Map<String, dynamic>?)?.map(
+            (k, v) => MapEntry(
+              k,
+              ScorerSkillSnapshot.fromJson(Map<String, dynamic>.from(v as Map)),
+            ),
+          ) ??
+          const {},
+    );
+  }
+
+  factory GameMasterySessionRecord.fromSession(GameSession session) {
+    final deltas = skillDeltasFromGameSession(session);
+    final scorerBySkill = scorerSnapshotsFromSession(session);
+    final touched = <String>{
+      ...deltas.where((d) => d.hasMeasuredChange).map((d) => d.skillId),
+      for (final e in LearnerModelService.instance.eventsForSession(session.sessionId))
+        e.skillId,
+    };
+    return GameMasterySessionRecord(
+      sessionId: session.sessionId,
+      gameId: session.gameId,
+      learnerId: session.userId,
+      language: session.language,
+      completedAt: DateTime.now().toUtc(),
+      practiceNotScored: session.practiceNotScored,
+      skillIdsTouched: touched.toList()..sort(),
+      skillDeltas: deltas,
+      scorerBySkill: scorerBySkill,
+    );
+  }
+}
+
+class ScorerSkillSnapshot {
+  const ScorerSkillSnapshot({
+    this.accuracyPercent,
+    this.unsure = false,
+    this.fromPractice = false,
+  });
+
+  final int? accuracyPercent;
+  final bool unsure;
+  final bool fromPractice;
+
+  Map<String, dynamic> toJson() => {
+        if (accuracyPercent != null) 'accuracyPercent': accuracyPercent,
+        'unsure': unsure,
+        'fromPractice': fromPractice,
+      };
+
+  factory ScorerSkillSnapshot.fromJson(Map<String, dynamic> json) {
+    return ScorerSkillSnapshot(
+      accuracyPercent: (json['accuracyPercent'] as num?)?.toInt(),
+      unsure: json['unsure'] == true,
+      fromPractice: json['fromPractice'] == true,
+    );
+  }
+}
+
+Map<String, ScorerSkillSnapshot> scorerSnapshotsFromSession(GameSession session) {
+  final traces = session.metadata['learner_scorer_traces'] as List<dynamic>? ?? const [];
+  final out = <String, ScorerSkillSnapshot>{};
+  for (final raw in traces) {
+    if (raw is! Map) continue;
+    final map = Map<String, dynamic>.from(raw);
+    final skillId = map['skillId'] as String?;
+    if (skillId == null) continue;
+    final confidence = (map['confidence'] as num?)?.toDouble();
+    final unsureFlag = map['unsure'] == true;
+    final lowConfidence = confidence != null && confidence < gameKitSpeakingLowConfidence;
+    final unsure = unsureFlag || lowConfidence || confidence == null;
+    final accuracy = (map['accuracy'] as num?)?.toDouble();
+    out[skillId] = ScorerSkillSnapshot(
+      accuracyPercent: unsure ? null : ((accuracy ?? confidence!) * 100).round().clamp(0, 100),
+      unsure: unsure,
+      fromPractice: session.practiceNotScored,
+    );
+  }
+  return out;
+}
+
+String _masteryMapPrefsKey(String learnerId) => 'game_mastery_map_sessions_$learnerId';
+
+Future<void> archiveGameSessionForMasteryMap(GameSession session) async {
+  final record = GameMasterySessionRecord.fromSession(session);
+  if (record.skillIdsTouched.isEmpty && record.skillDeltas.isEmpty) return;
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    final key = _masteryMapPrefsKey(session.userId);
+    final existing = prefs.getStringList(key) ?? const [];
+    final encoded = jsonEncode(record.toJson());
+    final withoutDup = existing.where((e) {
+      try {
+        final m = jsonDecode(e) as Map<String, dynamic>;
+        return m['sessionId'] != session.sessionId;
+      } catch (_) {
+        return true;
+      }
+    }).toList();
+    withoutDup.add(encoded);
+    const cap = 200;
+    final trimmed = withoutDup.length > cap
+        ? withoutDup.sublist(withoutDup.length - cap)
+        : withoutDup;
+    await prefs.setStringList(key, trimmed);
+  } catch (_) {
+    // Map degrades to live learner-model events only.
+  }
+}
+
+Future<List<GameMasterySessionRecord>> loadMasteryMapSessionRecords(
+  String learnerId,
+) async {
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    final raw = prefs.getStringList(_masteryMapPrefsKey(learnerId)) ?? const [];
+    return raw
+        .map((e) => GameMasterySessionRecord.fromJson(
+              jsonDecode(e) as Map<String, dynamic>,
+            ))
+        .toList();
+  } catch (_) {
+    return const [];
+  }
+}
+
+/// Builds mastery-map rows from archived sessions + learner-model states (P8-932).
+List<MasteryMapSkillRow> buildMasteryMapSkillRows({
+  required String learnerId,
+  required List<GameMasterySessionRecord> records,
+  required LearnerModelService learnerModel,
+}) {
+  final bySkill = <String, Set<String>>{};
+  final gamesBySkill = <String, Set<String>>{};
+  final sessionsBySkill = <String, Set<String>>{};
+
+  for (final record in records) {
+    if (record.learnerId != learnerId) continue;
+    for (final skillId in record.skillIdsTouched) {
+      bySkill.putIfAbsent(skillId, () => {}).add(record.sessionId);
+      gamesBySkill.putIfAbsent(skillId, () => {}).add(record.gameId);
+      sessionsBySkill.putIfAbsent(skillId, () => {}).add(record.sessionId);
+    }
+    for (final event in learnerModel.eventsForSession(record.sessionId)) {
+      if (event.source != 'gamekit') continue;
+      gamesBySkill.putIfAbsent(event.skillId, () => {}).add(record.gameId);
+      sessionsBySkill.putIfAbsent(event.skillId, () => {}).add(record.sessionId);
+    }
+  }
+
+  final skillIds = {...bySkill.keys, ...gamesBySkill.keys}.toList()..sort();
+  final rows = <MasteryMapSkillRow>[];
+
+  for (final skillId in skillIds) {
+    final sessions = sessionsBySkill[skillId] ?? const {};
+    final games = (gamesBySkill[skillId] ?? const {}).toList()..sort();
+    if (sessions.isEmpty) {
+      rows.add(MasteryMapSkillRow(
+        skillId: skillId,
+        valueKind: MasteryMapSkillValueKind.notMeasured,
+        gameIds: games,
+        sessionIds: const [],
+      ));
+      continue;
+    }
+
+    final expectsScorer = learnerSkillIdExpectsScorerMeasurement(skillId);
+    if (expectsScorer) {
+      ScorerSkillSnapshot? best;
+      for (final record in records) {
+        if (!record.touchedSkill(skillId)) continue;
+        final snap = record.scorerBySkill[skillId];
+        if (snap == null) continue;
+        if (snap.fromPractice || record.practiceNotScored) continue;
+        if (snap.unsure) {
+          best = const ScorerSkillSnapshot(unsure: true);
+          break;
+        }
+        best = snap;
+      }
+      if (best == null) {
+        rows.add(MasteryMapSkillRow(
+          skillId: skillId,
+          valueKind: MasteryMapSkillValueKind.notMeasured,
+          gameIds: games,
+          sessionIds: sessions.toList()..sort(),
+        ));
+      } else if (best.unsure) {
+        rows.add(MasteryMapSkillRow(
+          skillId: skillId,
+          valueKind: MasteryMapSkillValueKind.unsure,
+          gameIds: games,
+          sessionIds: sessions.toList()..sort(),
+        ));
+      } else {
+        rows.add(MasteryMapSkillRow(
+          skillId: skillId,
+          valueKind: MasteryMapSkillValueKind.scorerPercent,
+          masteryPercent: best.accuracyPercent,
+          gameIds: games,
+          sessionIds: sessions.toList()..sort(),
+        ));
+      }
+      continue;
+    }
+
+    final state = learnerModel.getState(learnerId: learnerId, skillId: skillId);
+    final hasEvents = sessions.isNotEmpty && state.totalAttempts > 0;
+    rows.add(MasteryMapSkillRow(
+      skillId: skillId,
+      valueKind:
+          hasEvents ? MasteryMapSkillValueKind.masteryPercent : MasteryMapSkillValueKind.notMeasured,
+      masteryPercent: hasEvents ? state.masteryPercentRounded() : null,
+      gameIds: games,
+      sessionIds: sessions.toList()..sort(),
+    ));
+  }
+
+  return rows;
+}
+
+List<GameMasterySessionRecord> sessionsForGameAndSkill({
+  required List<GameMasterySessionRecord> records,
+  required String learnerId,
+  required String gameId,
+  required String skillId,
+}) {
+  return records
+      .where(
+        (r) =>
+            r.learnerId == learnerId &&
+            r.gameId == gameId &&
+            r.touchedSkill(skillId),
+      )
+      .toList()
+    ..sort((a, b) => b.completedAt.compareTo(a.completedAt));
 }
 
 /// Writes GameKit turn outcomes to the learner graph and SRS (P8-901).

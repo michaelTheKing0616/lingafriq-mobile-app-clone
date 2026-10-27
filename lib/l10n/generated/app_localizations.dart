@@ -614,6 +614,36 @@ abstract class AppLocalizations {
   /// **'Audio is not ready yet. You can still read the phrase.'**
   String get gamekitPracticeModeError;
 
+  /// P8-928 flagship title
+  ///
+  /// In en, this message translates to:
+  /// **'Greeting Gauntlet'**
+  String get gamesGreetingGauntletTitle;
+
+  /// P8-928 playing instructions
+  ///
+  /// In en, this message translates to:
+  /// **'Read the scene, pick the greeting and gesture that fit — before the timer runs out.'**
+  String get gamesGreetingGauntletInstructions;
+
+  /// P8-928 wrong-answer explanation affordance
+  ///
+  /// In en, this message translates to:
+  /// **'Listen to why that greeting or gesture did not match the moment.'**
+  String get gamesGreetingGauntletWhyWrong;
+
+  /// P8-928 practice banner
+  ///
+  /// In en, this message translates to:
+  /// **'Practice — cultural rounds do not affect rank until scoring is verified.'**
+  String get gamesGreetingGauntletPracticeLabel;
+
+  /// P8-928 load failure
+  ///
+  /// In en, this message translates to:
+  /// **'We could not load greeting scenarios for this language yet. Try again when you are online.'**
+  String get gamesGreetingGauntletError;
+
   /// P8-915 mastery results screen title
   ///
   /// In en, this message translates to:
@@ -667,6 +697,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Back to Play'**
   String get gamesGameMasteryResultsDone;
+
+  /// P8-932 mastery map screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Mastery map'**
+  String get gamesMasteryMapTitle;
+
+  /// P8-932 mastery map intro
+  ///
+  /// In en, this message translates to:
+  /// **'See which arcade games moved each skill in your learner model.'**
+  String get gamesMasteryMapInstructions;
+
+  /// P8-932 per-skill game chips heading
+  ///
+  /// In en, this message translates to:
+  /// **'Games that moved this skill'**
+  String get gamesMasteryMapGamesHeading;
+
+  /// P8-932 skill with no learner events
+  ///
+  /// In en, this message translates to:
+  /// **'Not measured'**
+  String get gamesMasteryMapNotMeasured;
+
+  /// P8-932 scorer below confidence gate
+  ///
+  /// In en, this message translates to:
+  /// **'Unsure'**
+  String get gamesMasteryMapUnsure;
+
+  /// P8-932 practice session row
+  ///
+  /// In en, this message translates to:
+  /// **'Practice, not scored'**
+  String get gamesMasteryMapPracticeLabel;
+
+  /// P8-932 load failure
+  ///
+  /// In en, this message translates to:
+  /// **'We could not load your mastery map. Finish a scored arcade round and try again.'**
+  String get gamesMasteryMapError;
 
   /// GameKit scoring error
   ///

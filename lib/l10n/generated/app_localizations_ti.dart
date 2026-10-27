@@ -259,6 +259,25 @@ class AppLocalizationsTi extends AppLocalizations {
       'Audio is not ready yet. You can still read the phrase.';
 
   @override
+  String get gamesGreetingGauntletTitle => 'Greeting Gauntlet';
+
+  @override
+  String get gamesGreetingGauntletInstructions =>
+      'Read the scene, pick the greeting and gesture that fit — before the timer runs out.';
+
+  @override
+  String get gamesGreetingGauntletWhyWrong =>
+      'Listen to why that greeting or gesture did not match the moment.';
+
+  @override
+  String get gamesGreetingGauntletPracticeLabel =>
+      'Practice — cultural rounds do not affect rank until scoring is verified.';
+
+  @override
+  String get gamesGreetingGauntletError =>
+      'We could not load greeting scenarios for this language yet. Try again when you are online.';
+
+  @override
   String get gamesGameMasteryResultsTitle => 'Round complete';
 
   @override
@@ -286,6 +305,29 @@ class AppLocalizationsTi extends AppLocalizations {
 
   @override
   String get gamesGameMasteryResultsDone => 'Back to Play';
+
+  @override
+  String get gamesMasteryMapTitle => 'Mastery map';
+
+  @override
+  String get gamesMasteryMapInstructions =>
+      'See which arcade games moved each skill in your learner model.';
+
+  @override
+  String get gamesMasteryMapGamesHeading => 'Games that moved this skill';
+
+  @override
+  String get gamesMasteryMapNotMeasured => 'Not measured';
+
+  @override
+  String get gamesMasteryMapUnsure => 'Unsure';
+
+  @override
+  String get gamesMasteryMapPracticeLabel => 'Practice, not scored';
+
+  @override
+  String get gamesMasteryMapError =>
+      'We could not load your mastery map. Finish a scored arcade round and try again.';
 
   @override
   String get gamekitFeedbackError => 'We could not score that turn. Try again.';
