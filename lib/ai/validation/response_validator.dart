@@ -126,13 +126,17 @@ class ResponseValidator {
     }
     json['emotion'] = emotion;
 
-    _optionalListField<Map>(json, 'language_teaching_points');
-    if (json['language_teaching_points'] is List) {
-      for (final item in json['language_teaching_points'] as List) {
-        if (item is! Map<String, dynamic>) continue;
-        _requireField<String>(item, 'content');
-        _optionalField<String>(item, 'type');
-      }
+    _requireField<List>(json, 'language_teaching_points');
+    final teachingPoints = json['language_teaching_points'] as List;
+    if (teachingPoints.isEmpty) {
+      throw const AiResponseValidationError(
+        'Persona answer must include at least one language_teaching_points entry',
+      );
+    }
+    for (final item in teachingPoints) {
+      if (item is! Map<String, dynamic>) continue;
+      _requireField<String>(item, 'content');
+      _optionalField<String>(item, 'type');
     }
 
     if (json.containsKey('claims') && json['claims'] != null) {

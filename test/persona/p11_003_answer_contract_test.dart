@@ -28,4 +28,18 @@ void main() {
     expect(parsed['emotion'], 'neutral');
     expect(parsed['next_beat'], 'reflect');
   });
+
+  test('P11-003 requires at least one teaching point', () {
+    expect(
+      () => ResponseValidator.validatePersonaAnswerContract('''
+{
+  "speech_text": "Hello learner",
+  "language_teaching_points": [],
+  "claims": [],
+  "emotion": "neutral",
+  "next_beat": "continue"
+}'''),
+      throwsA(isA<AiResponseValidationError>()),
+    );
+  });
 }
