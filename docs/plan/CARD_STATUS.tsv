@@ -356,7 +356,7 @@ P10-915	Done	Build an evidence portfolio of passed can-do tasks (passport-portfo
 P10-916	Done	Proctored adaptive CAT (passport-cat.service.ts, proctored session UI)	P10/P10-916.yaml
 P10-917	Done	OB3 VC issue/verify (credential-issuer.service.ts, credentials.routes.ts, passport_credential_screen.dart)	P10/P10-917.yaml
 P10-918	Done	Revoke credentials and publish status (credential-status.service.ts, passport_credential_screen.dart)	P10/P10-918.yaml
-P10-919	Draft	Write the DPIA for voice data and minors	P10/P10-919.yaml
+P10-919	Done	DPIA draft (docs/privacy/DPIA.md, dpia_check.py); counsel pending EXT-18	P10/P10-919.yaml
 P10-920	Done	RETENTION.yaml + DATA_MAP.md + data_map_check.py (137 collections, CI --gate)	P10/P10-920.yaml
 P10-921	Done	Run logged purge jobs per RETENTION.yaml (retention-purge.job.ts, PurgeLog)	P10/P10-921.yaml
 P10-922	Done	Voice storage opt-in, delete-after-scoring, guardian gate (voice-consent, audio-retention)	P10/P10-922.yaml
