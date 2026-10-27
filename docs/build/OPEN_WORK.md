@@ -186,3 +186,7 @@ A row is required for: skipped acceptance criteria, allowlist leftovers, unmeasu
 | OW-174 | open | P4-055 | Stays Draft. EXT-01 is Open. P4-056 through P4-059 and P4-062 wait on that chain. P4-060 and P4-061 wait on P4-042, which stays Draft while P4-038 is Blocked-External. |
 | OW-175 | closed 2026-10-25 | P4-069 | Curriculum Studio scaffold. 3 tests passed. New-file coverage 99% lines. Reviewer PASS. |
 | OW-176 | open | P4-069 | studio router is not mounted. index.route.ts is outside the allowlist. The admin screen was not opened in a browser. |
+| OW-177 | closed 2026-10-25 | P4-071 | Source library. 3 tests passed. Missing licence fields return LICENCE_FIELD_MISSING. NC and excluded licences lock display, evidence, and training. Pending sign-off cannot be selected. Route line coverage 93%. |
+| OW-178 | open | P4-071 | sourceLibrary router is not mounted. routes.tsx and the server index are outside the allowlist. The library is process memory. The admin screen was not opened in a browser. |
+| OW-179 | open | P7-949 review, 2026-10-27 | `LessonSessionScreen` was added for pacing reason/override/reset but is not mounted by any route or navigation action; card AC3 UI is not reachable in-app. |
+| OW-180 | open | P6-082/P6-084 review, 2026-10-27 | `nativeModelGate.ts` and `codec.ts` are validated by unit tests but are not wired into any mounted realtime API route; gate/codec policy is not enforced on live session creation. |
