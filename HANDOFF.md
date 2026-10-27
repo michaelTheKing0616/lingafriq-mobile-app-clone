@@ -104,6 +104,15 @@ Intron is set up and not connected. Do not put `INTRON_API_KEY` in the client.
 - UI-BELOW-BAR P7-920 UI 8/8/9/8/7/8/7/8/7/7 avg 7.7; reference: Reddit mod queue; gap: `VerifyQueueScreen` has only one in-lib reference and no route evidence in this review window.
 - UI-BELOW-BAR P7-929 UI 8/8/9/8/7/8/7/8/7/7 avg 7.7; reference: Duolingo words tab; gap: `WordsTab` card entry points added but destination screen route evidence is incomplete in this review window.
 - UI-BELOW-BAR P7-922 UI 8/8/9/8/7/8/7/8/7/7 avg 7.7; reference: Google Lens bottom sheet; gap: bottom sheet component exists but route-level invocation coverage is partial in this review window.
+- UI-BELOW-BAR P7-950 UI 8/8/9/8/7/8/7/8/7/8 avg 7.8; reference: Google Lens confidence fallback; gap: fallback sheet path lacks explicit RTL/text-scale and reduced-motion verification for key states.
+- UI-BELOW-BAR P7-946 UI 8/8/9/8/7/8/7/8/7/8 avg 7.8; reference: Google Translate camera dictionary sheet; gap: dictionary save/suggest flows exist but no offline/locked/child-mode UI state evidence.
+- UI-BELOW-BAR P7-943 UI 8/8/9/8/7/8/8/8/7/8 avg 7.9; reference: Duolingo inline coach card; gap: coaching tip component is implemented but route-level trigger evidence is limited to service tests in this window.
+- UI-BELOW-BAR P7-941 UI 8/8/9/8/7/8/7/7/7/8 avg 7.7; reference: Babbel minimal-pair compare drill; gap: `MinimalPairDemoScreen` has no in-app route wiring evidence outside tests.
+- UI-BELOW-BAR P7-940 UI 8/8/9/8/7/8/7/7/7/8 avg 7.7; reference: Duolingo character-bar drill; gap: `KeyboardBarTutorialScreen` has no in-app route wiring evidence outside tests.
+- UI-BELOW-BAR P7-915 UI 8/8/9/8/7/8/7/8/7/8 avg 7.8; reference: Google Lens multi-entry affordances; gap: entry-point wiring improved but no full end-to-end navigation/state matrix evidence.
+- UI-BELOW-BAR P7-911 UI 8/8/9/8/7/8/7/8/7/7 avg 7.7; reference: Instagram share confirmation sheet; gap: share sheet had switch fall-through defect and still lacks explicit reduced-motion and child-mode UI state coverage.
+- UI-BELOW-BAR P7-909 UI 8/8/9/8/7/8/7/8/7/8 avg 7.8; reference: Anki saved items list; gap: `LensCollectionScreen` exists but no route-level invocation evidence in this review window.
+- UI-BELOW-BAR P7-919 UI 8/8/9/8/7/8/7/8/7/8 avg 7.8; reference: Duolingo My Words linking; gap: linked-badge state is present but locked/offline/error state coverage is partial.
 
 ## Tope to switch on
 
