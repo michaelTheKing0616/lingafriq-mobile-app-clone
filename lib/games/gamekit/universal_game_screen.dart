@@ -138,6 +138,7 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
   }
 
   GameSession _baseKitSession() {
+    final upstreamMetadata = Map<String, dynamic>.from(session?.metadata ?? const {});
     return GameSession(
       sessionId: session!.sessionId,
       userId: session!.userId,
@@ -147,9 +148,23 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
       startTime: session!.startTime,
       turns: _kitSession?.turns ?? const [],
       metadata: {
-        if (_practiceNotScored) 'practice_not_scored': true,
+        ...upstreamMetadata,
         ...?_kitSession?.metadata,
+        if (_practiceNotScored) 'practice_not_scored': true,
       },
+    );
+  }
+
+  GamekitDuelOpponentStrip? _duelOpponentStrip() {
+    final kit = _kitSession;
+    if (kit == null) return null;
+    final levelLabel = (kit.duelOpponentLevelLabel ?? '').trim();
+    if (levelLabel.isEmpty) return null;
+    return GamekitDuelOpponentStrip(
+      isBot: kit.duelOpponentIsBot,
+      levelLabel: levelLabel,
+      phase: GamekitDuelSurfacePhase.playing,
+      selfScore: _score,
     );
   }
 
@@ -443,6 +458,7 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
             ProgressMeter(
               progress: _round / _maxRounds,
               label: 'Progress',
+              duelOpponent: _duelOpponentStrip(),
             ),
             SizedBox(height: 4.h),
             // Content Display
