@@ -1085,7 +1085,7 @@ P4-169	Done	Import course items only from the canonical curriculum packs (import
 P6-085	Done	Point-and-Say human audio before licensed TTS (point_say_audio.dart, tts_service.dart)	P6/P6-085.yaml
 P6-086	Done	Match a Point and Say frame with SigLIP behind the gateway (siglipMatch.service.ts)	P6/P6-086.yaml
 P7-945	Done	On-device MobileNetV4 TFLite classifier (on_device_object_classifier.dart, point_say_mobilenetv4.tflite)	P7/P7-945.yaml
-P7-946	Draft	Map Point and Say labels to dictionary entries	P7/P7-946.yaml
+P7-946	Done	Map Point and Say labels to dictionary entries (point_say_dictionary.dart)	P7/P7-946.yaml
 P7-947	Draft	Fine-tune the Point and Say classifier on a licensed dataset	P7/P7-947.yaml
 P7-949	Done	lesson_pacing.dart, lesson_session_screen.dart, pacing replay harness (P7-949)	P7/P7-949.yaml
 P7-950	Draft	Fall back from MobileNetV4 to the SigLIP gateway	P7/P7-950.yaml

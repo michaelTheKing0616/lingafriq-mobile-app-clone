@@ -44,12 +44,14 @@ class LensScreen extends ConsumerStatefulWidget {
     this.debugPreview,
     this.debugDetections,
     this.skipCameraInit = false,
+    this.onDetectionLabelTap,
   });
 
   final String fallbackLanguage;
   final Widget? debugPreview;
   final List<LensDetection>? debugDetections;
   final bool skipCameraInit;
+  final void Function(String mlKitLabel)? onDetectionLabelTap;
 
   @override
   ConsumerState<LensScreen> createState() => _LensScreenState();
@@ -283,6 +285,7 @@ class _LensScreenState extends ConsumerState<LensScreen>
             LensDetectionOverlay(
               detections: _detections,
               reducedMotion: MediaQuery.disableAnimationsOf(context),
+              onLabelTap: widget.onDetectionLabelTap,
             ),
           ],
         );
@@ -336,10 +339,12 @@ class LensDetectionOverlay extends StatelessWidget {
     super.key,
     required this.detections,
     required this.reducedMotion,
+    this.onLabelTap,
   });
 
   final List<LensDetection> detections;
   final bool reducedMotion;
+  final void Function(String mlKitLabel)? onLabelTap;
 
   @override
   Widget build(BuildContext context) {
@@ -356,6 +361,7 @@ class LensDetectionOverlay extends StatelessWidget {
                 child: BreathingDetectionBox(
                   label: d.label,
                   animate: !reducedMotion,
+                  onTap: onLabelTap == null ? null : () => onLabelTap!(d.label),
                 ),
               ),
           ],
@@ -370,10 +376,12 @@ class BreathingDetectionBox extends StatefulWidget {
     super.key,
     required this.label,
     required this.animate,
+    this.onTap,
   });
 
   final String label;
   final bool animate;
+  final VoidCallback? onTap;
 
   @override
   State<BreathingDetectionBox> createState() => _BreathingDetectionBoxState();
@@ -429,27 +437,34 @@ class _BreathingDetectionBoxState extends State<BreathingDetectionBox>
         );
       },
       child: Semantics(
-        button: true,
+        button: widget.onTap != null,
         label: widget.label,
         child: Material(
           color: Colors.transparent,
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.white.withValues(alpha: 0.85), width: 2),
-              color: Colors.black.withValues(alpha: 0.25),
-            ),
-            alignment: Alignment.bottomCenter,
-            padding: const EdgeInsets.all(6),
-            child: Text(
-              widget.label,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
+          child: InkWell(
+            onTap: widget.onTap,
+            borderRadius: BorderRadius.circular(16),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: Colors.white.withValues(alpha: 0.85),
+                  width: 2,
+                ),
+                color: Colors.black.withValues(alpha: 0.25),
               ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+              alignment: Alignment.bottomCenter,
+              padding: const EdgeInsets.all(6),
+              child: Text(
+                widget.label,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           ),
         ),
