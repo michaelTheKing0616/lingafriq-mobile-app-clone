@@ -954,7 +954,7 @@ P7-910	Done	Weekly Home Safari quests (`home_safari_service.dart`, `home_safari_
 P7-911	Draft	Build Lens Clip sharing with face blur	P7/P7-911.yaml
 P7-912	Draft	Build Lens signs and menus OCR with read-aloud	P7/P7-912.yaml
 P7-913	Done	Offline Lens pack manifest + cached audio; PointAndSay queue sync states (P7-913)	P7/P7-913.yaml
-P7-914	Draft	Enforce Lens photo privacy and minor consent	P7/P7-914.yaml
+P7-914	Done	Enforce Lens photo privacy and minor consent (lens_privacy_policy.dart, retention.service.ts)	P7/P7-914.yaml
 P7-915	Draft	Wire Lens entry points across tabs and lessons	P7/P7-915.yaml
 P7-916	Done	Verified Lexicon v2 lexeme schema, `/api/v2/verified-lexicon`, `verified_lexeme.dart`	P7/P7-916.yaml
 P7-917	Done	Attach 2-3 native recordings per lexicon entry (lexiconAudio.service.ts, lexicon_audio_client.dart)	P7/P7-917.yaml
