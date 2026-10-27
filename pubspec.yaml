@@ -181,7 +181,8 @@ flutter:
     - assets/data/audio_manifest.json
     - assets/data/sound/clicks_vowels.json
     - assets/audio/
-    - assets/data/cms_manifests/
+    - assets/data/cms_manifests/pack_catalog.json
+    - assets/data/cms_manifests/1/
     - assets/data/game_content.json
     - assets/data/lingafriq_authentic_curriculum_a1.json
     - assets/data/lingafriq_authentic_curriculum_a1_c2.json
