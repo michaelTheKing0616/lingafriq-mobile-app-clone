@@ -60,7 +60,7 @@ dod_evidence:
 risks: []
 gate: G8
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/14-safety-and-high-stakes
