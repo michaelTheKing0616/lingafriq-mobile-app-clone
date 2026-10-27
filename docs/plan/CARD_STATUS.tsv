@@ -909,7 +909,7 @@ P6-050	Done	Igbo gateway TTS Intron→Spitch behind voiceGate (providers/ig.ts)	
 P6-051	Done	Hausa gateway TTS Intron→Spitch→ElevenLabs v3 behind voiceGate (providers/ha.ts)	P6/P6-051.yaml
 P6-052	Done	Ship Nigerian Pidgin TTS voice behind tone-accuracy gate (providers/pcm.ts, voiceGate)	P6/P6-052.yaml
 P6-053	Done	Ship Swahili TTS voice behind tone-accuracy gate (providers/sw.ts, voiceGate)	P6/P6-053.yaml
-P6-054	Draft	Ship isiZulu TTS voice behind tone-accuracy gate	P6/P6-054.yaml
+P6-054	Done	Ship isiZulu TTS voice behind tone-accuracy gate (providers/zu.ts, voiceGate)	P6/P6-054.yaml
 P6-055	Draft	Ship isiXhosa TTS voice behind tone-accuracy gate	P6/P6-055.yaml
 P6-056	Done	Gateway eval harness: evals/harness/run.ts, thresholds.yaml, ai_eval.yml (P6-056)	P6/P6-056.yaml
 P6-057	Draft	Define eval set schema requiring 300 items per language	P6/P6-057.yaml
