@@ -1056,7 +1056,7 @@ P9-934	Done	Verify safety lead, incident response and moderator training exist (
 P9-935	Draft	Remediate pen-test findings on sockets, auth and minors' surfaces	P9/P9-935.yaml
 P9-936	Done	G9 gate packet NO-GO (EXT-17/EXT-25 open); g9_gate_check.py policy matrix	P9/P9-936.yaml
 P9-937	Done	ADR-039: MLS RFC 9420 (openmls 3.3.0, @wireapp/openmls-js 0.1.0); Signal/libsignal rejected	P9/P9-937.yaml
-P9-938	Draft	Run MLS delivery service storing ciphertext and key packages only	P9/P9-938.yaml
+P9-938	Done	MLS delivery: ciphertext/commits only, key packages, MLS_COMMIT_INVALID (deliveryService.ts, keyPackages.ts)	P9/P9-938.yaml
 P9-939	Draft	Enable MLS E2EE for adult 1:1 and small-group chats by default	P9/P9-939.yaml
 P9-940	Draft	Run learning overlays on device and gate server models per message	P9/P9-940.yaml
 P9-941	Draft	Send content-free pushes for E2EE chats	P9/P9-941.yaml
