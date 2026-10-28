@@ -314,7 +314,7 @@ P1-036	Done	Use authenticated encryption for cached data	P1/P1-036.yaml
 P1-037	Done	Run one leader-elected notification scheduler	P1/P1-037.yaml
 P1-038	Done	Send one reminder per day in local time with quiet hours (reminders.service.ts, P1-038.scheduler.test.ts)	P1/P1-038.yaml
 P1-039	Draft	Verify live scheduler count and RevenueCat key injection	P1/P1-039.yaml
-P1-040	Draft	Remove MMS-TTS, XTTS-v2 and NLLB services and config	P1/P1-040.yaml
+P1-040	Done	Remove MMS-TTS, XTTS-v2 and NLLB client config; piper-only routing; 503 sidecars (P1-040)	P1/P1-040.yaml
 P1-041	Draft	Choose commercial TTS and MT replacements named in source	P1/P1-041.yaml
 P1-042	Draft	Remove unofficial Google Translate scraper	P1/P1-042.yaml
 P1-043	Draft	Return generic login errors and stop logging credentials metadata	P1/P1-043.yaml

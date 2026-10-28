@@ -82,7 +82,6 @@ class SecretsManager {
     _secrets['MFA_SERVICE_URL'] = _getEnv('MFA_SERVICE_URL');
     _secrets['TONE_ANALYSIS_URL'] = _getEnv('TONE_ANALYSIS_URL');
     _secrets['AFRITEVA_URL'] = _getEnv('AFRITEVA_URL');
-    _secrets['NLLB_API_URL'] = _getEnv('NLLB_API_URL');
     _secrets['MIXPANEL_TOKEN'] = _getEnv('MIXPANEL_TOKEN');
     _secrets['AMPLITUDE_API_KEY'] = _getEnv('AMPLITUDE_API_KEY');
     _secrets['REVENUECAT_API_KEY_IOS'] = _getEnv('REVENUECAT_API_KEY_IOS');
@@ -148,7 +147,6 @@ class SecretsManager {
       'MFA_SERVICE_URL': 'MFA_SERVICE_URL',
       'TONE_ANALYSIS_URL': 'TONE_ANALYSIS_URL',
       'AFRITEVA_URL': 'AFRITEVA_URL',
-      'NLLB_API_URL': 'NLLB_API_URL',
       'MIXPANEL_TOKEN': 'MIXPANEL_TOKEN',
       'AMPLITUDE_API_KEY': 'AMPLITUDE_API_KEY',
       'REVENUECAT_API_KEY_IOS': 'REVENUECAT_API_KEY_IOS',
@@ -301,9 +299,6 @@ class SecretsManager {
 
   /// Get AfriTeVa URL
   String? get afritevaUrl => getSecret('AFRITEVA_URL');
-
-  /// Get NLLB API URL
-  String? get nllbApiUrl => getSecret('NLLB_API_URL');
 
   /// Get Mixpanel token
   String? get mixpanelToken => getSecret('MIXPANEL_TOKEN');
