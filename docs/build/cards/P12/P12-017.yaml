@@ -58,7 +58,7 @@ risks:
 - Run once before G12 and after any rollout-process change
 gate: G12
 external_blockers: []
-status: Draft
+status: Done
 skills:
   worker:
   - adaptive/07-research-and-fact-checking
