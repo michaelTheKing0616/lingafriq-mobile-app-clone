@@ -7,6 +7,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:lingafriq/widgets/safety/safety_actions_sheet.dart';
 
 /// Moderation Tools for Global and Community Chat
 class ModerationToolsScreen extends HookConsumerWidget {
@@ -81,6 +82,23 @@ class ModerationToolsScreen extends HookConsumerWidget {
         title: const Text('Moderation Tools'),
         backgroundColor: Colors.transparent,
         elevation: 0,
+        actions: [
+          IconButton(
+            tooltip: SafetyCopy.report,
+            icon: const Icon(Icons.shield_outlined),
+            onPressed: () {
+              showSafetyActionsSheet(
+                context,
+                target: SafetyActionTarget(
+                  kind: SafetyTargetKind.profile,
+                  targetId: chatId ?? 'global',
+                  peerUserId: chatId,
+                  peerDisplayName: chatType == 'global' ? 'Village member' : 'Community member',
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -129,6 +147,23 @@ class ModerationToolsScreen extends HookConsumerWidget {
                         message: message,
                         onModerate: moderateMessage,
                         isDark: isDark,
+                        onSafety: () {
+                          final sender = message['sender_id'];
+                          final senderId = sender is Map
+                              ? sender['_id']?.toString()
+                              : sender?.toString();
+                          showSafetyActionsSheet(
+                            context,
+                            target: SafetyActionTarget(
+                              kind: SafetyTargetKind.message,
+                              targetId: message['_id']?.toString() ?? '',
+                              peerUserId: senderId,
+                              peerDisplayName:
+                                  message['sender']?['username']?.toString() ?? 'Member',
+                              previewText: message['message']?.toString(),
+                            ),
+                          );
+                        },
                       )
                           .animate(delay: (index * 50).ms)
                           .fadeIn(duration: 300.ms)
@@ -143,11 +178,13 @@ class ModerationToolsScreen extends HookConsumerWidget {
 class _FlaggedMessageCard extends StatelessWidget {
   final Map<String, dynamic> message;
   final Function(String, String) onModerate;
+  final VoidCallback onSafety;
   final bool isDark;
 
   const _FlaggedMessageCard({
     required this.message,
     required this.onModerate,
+    required this.onSafety,
     required this.isDark,
   });
 
@@ -201,6 +238,11 @@ class _FlaggedMessageCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    TextButton.icon(
+                      onPressed: onSafety,
+                      icon: const Icon(Icons.shield_outlined),
+                      label: const Text('Safety'),
+                    ),
                     ElevatedButton.icon(
                       onPressed: () => onModerate(message['_id'], 'approve'),
                       icon: const Icon(Icons.check),
