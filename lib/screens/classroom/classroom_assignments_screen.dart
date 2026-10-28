@@ -6,6 +6,21 @@ import 'package:lingafriq/providers/gamification_services_provider.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 
+/// P9-953 — parse server grade envelope for display/tests.
+bool assignmentGradeIsUnsure(Map<String, dynamic>? gradeMap) {
+  if (gradeMap == null) return false;
+  if (gradeMap['status']?.toString() == 'unsure') return true;
+  final auto = gradeMap['autoGrade'];
+  return auto is Map && auto['unsure'] == true;
+}
+
+String? assignmentDisplayScore(Map<String, dynamic>? gradeMap) {
+  if (gradeMap == null) return null;
+  final score = gradeMap['displayScore'];
+  if (score == null) return null;
+  return score.toString();
+}
+
 class ClassroomAssignmentsScreen extends ConsumerStatefulWidget {
   final String tribeId;
   final String tribeName;
@@ -23,6 +38,7 @@ class ClassroomAssignmentsScreen extends ConsumerStatefulWidget {
 class _ClassroomAssignmentsScreenState extends ConsumerState<ClassroomAssignmentsScreen> {
   bool _loading = true;
   String? _error;
+  String? _accessBlocked;
   List<Map<String, dynamic>> _assignments = const [];
 
   @override
@@ -37,6 +53,7 @@ class _ClassroomAssignmentsScreenState extends ConsumerState<ClassroomAssignment
       _error = null;
     });
     try {
+      await ref.read(classroomServiceProvider).checkAssignmentsAccessV2(widget.tribeId);
       final res = await ref.read(classroomServiceProvider).listAssignmentsV2(widget.tribeId);
       final raw = res['assignments'];
       final list = <Map<String, dynamic>>[];
@@ -51,7 +68,17 @@ class _ClassroomAssignmentsScreenState extends ConsumerState<ClassroomAssignment
         _loading = false;
       });
     } catch (e) {
-      if (mounted) ErrorHandler.showError(context, e);
+      if (mounted) {
+        final msg = e.toString();
+        if (msg.contains('AGE_TIER') || msg.contains('guardian')) {
+          setState(() {
+            _accessBlocked = 'Complete age setup with a guardian before class assignments open.';
+            _loading = false;
+          });
+          return;
+        }
+        ErrorHandler.showError(context, e);
+      }
       setState(() {
         _error = 'Unable to load assignments right now.';
         _loading = false;
@@ -87,7 +114,7 @@ class _ClassroomAssignmentsScreenState extends ConsumerState<ClassroomAssignment
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Assignments: ${widget.tribeName}',
+          'Class assignments',
           style: PanAfricanTypography.titleLarge(context),
         ),
         actions: [
@@ -101,7 +128,18 @@ class _ClassroomAssignmentsScreenState extends ConsumerState<ClassroomAssignment
           ),
         ],
       ),
-      body: _loading
+      body: _accessBlocked != null
+          ? Center(
+              child: Padding(
+                padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                child: Text(
+                  _accessBlocked!,
+                  style: PanAfricanTypography.bodyLarge(context),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            )
+          : _loading
           ? const Center(child: CircularProgressIndicator())
           : _error != null
               ? Center(
@@ -127,19 +165,50 @@ class _ClassroomAssignmentsScreenState extends ConsumerState<ClassroomAssignment
                     separatorBuilder: (_, __) => SizedBox(height: PanAfricanSpacing.sm),
                     itemBuilder: (context, i) {
                       final a = _assignments[i];
-                      return _AssignmentCard(isDark: isDark, assignment: a);
+                      return _AssignmentCard(
+                        isDark: isDark,
+                        assignment: a,
+                        onSubmitSpeaking: () => _submitSpeakingSample(a),
+                      );
                     },
                   ),
                 ),
     );
   }
+
+  Future<void> _submitSpeakingSample(Map<String, dynamic> assignment) async {
+    final id = assignment['id']?.toString();
+    if (id == null || id.isEmpty) return;
+    try {
+      await ref.read(classroomServiceProvider).submitAssignmentV2(
+            widget.tribeId,
+            id,
+            answers: const {
+              'language': 'yo',
+              'expected_text': 'báwo ni',
+            },
+          );
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Speaking task submitted — check your grade below.')),
+      );
+      await _load();
+    } catch (e) {
+      if (mounted) ErrorHandler.showError(context, e);
+    }
+  }
 }
 
 class _AssignmentCard extends StatelessWidget {
-  const _AssignmentCard({required this.isDark, required this.assignment});
+  const _AssignmentCard({
+    required this.isDark,
+    required this.assignment,
+    required this.onSubmitSpeaking,
+  });
 
   final bool isDark;
   final Map<String, dynamic> assignment;
+  final VoidCallback onSubmitSpeaking;
 
   @override
   Widget build(BuildContext context) {
@@ -148,6 +217,8 @@ class _AssignmentCard extends StatelessWidget {
     final type = assignment['type']?.toString() ?? 'custom';
     final dueAtRaw = assignment['dueAt']?.toString();
     final mySubmission = assignment['mySubmission'];
+    final myGrade = assignment['myGrade'];
+    final publishStatus = assignment['publishStatus']?.toString() ?? 'published';
     DateTime? dueAt;
     if (dueAtRaw != null && dueAtRaw.isNotEmpty) {
       dueAt = DateTime.tryParse(dueAtRaw);
@@ -155,8 +226,19 @@ class _AssignmentCard extends StatelessWidget {
     final dueLabel = dueAt == null ? null : DateFormat.yMMMEd().add_Hm().format(dueAt.toLocal());
 
     final submitted = mySubmission is Map ? (mySubmission['status']?.toString() ?? '').isNotEmpty : false;
+    final gradeMap = myGrade is Map ? myGrade.cast<String, dynamic>() : null;
+    final gradeStatus = gradeMap?['status']?.toString();
+    final displayScore = gradeMap?['displayScore'];
+    final autoGrade = gradeMap?['autoGrade'];
+    final teacherOverride = gradeMap?['teacherOverride'];
+    final canDoOutcomes = gradeMap?['canDoOutcomes'];
+    final isUnsure = assignmentGradeIsUnsure(gradeMap);
+    final l10nUnsure = 'We could not score this confidently — your teacher may review it.';
+    final l10nOverride = 'Teacher score';
 
-    return Container(
+    return Semantics(
+      label: '$title assignment',
+      child: Container(
       padding: EdgeInsets.all(PanAfricanSpacing.md),
       decoration: BoxDecoration(
         color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
@@ -196,6 +278,10 @@ class _AssignmentCard extends StatelessWidget {
             SizedBox(height: PanAfricanSpacing.xs),
             Text('Due: $dueLabel', style: PanAfricanTypography.labelSmall(context)),
           ],
+          if (publishStatus == 'draft') ...[
+            SizedBox(height: PanAfricanSpacing.xs),
+            Text('Draft — not visible to learners yet', style: PanAfricanTypography.labelSmall(context)),
+          ],
           SizedBox(height: PanAfricanSpacing.sm),
           Row(
             children: [
@@ -211,7 +297,63 @@ class _AssignmentCard extends StatelessWidget {
               ),
             ],
           ),
+          if (isUnsure) ...[
+            SizedBox(height: PanAfricanSpacing.sm),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(Icons.help_outline_rounded, color: PanAfricanColors.warning, size: 20),
+                SizedBox(width: PanAfricanSpacing.xs),
+                Expanded(
+                  child: Text(l10nUnsure, style: PanAfricanTypography.bodySmall(context)),
+                ),
+              ],
+            ),
+          ] else if (displayScore != null) ...[
+            SizedBox(height: PanAfricanSpacing.sm),
+            Text(
+              'Score: $displayScore',
+              style: PanAfricanTypography.titleSmall(context),
+            ),
+          ],
+          if (teacherOverride is Map) ...[
+            SizedBox(height: PanAfricanSpacing.xs),
+            Text(
+              '$l10nOverride: ${teacherOverride['score']} — ${teacherOverride['reason']}',
+              style: PanAfricanTypography.bodySmall(context),
+            ),
+            if (autoGrade is Map && autoGrade['compositeScore'] != null)
+              Text(
+                'Auto-grade: ${autoGrade['compositeScore']}',
+                style: PanAfricanTypography.labelSmall(context),
+              ),
+          ],
+          if (canDoOutcomes is List && canDoOutcomes.isNotEmpty) ...[
+            SizedBox(height: PanAfricanSpacing.sm),
+            Text('Can-do progress', style: PanAfricanTypography.labelSmall(context)),
+            for (final row in canDoOutcomes)
+              if (row is Map)
+                Padding(
+                  padding: EdgeInsets.only(top: PanAfricanSpacing.xxxs),
+                  child: Text(
+                    '${row['statementEn'] ?? row['canDoId']}: ${row['status']}',
+                    style: PanAfricanTypography.bodySmall(context),
+                  ),
+                ),
+          ],
+          if (type == 'speaking_mission' && !submitted && publishStatus == 'published') ...[
+            SizedBox(height: PanAfricanSpacing.md),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                onPressed: onSubmitSpeaking,
+                style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(48)),
+                child: const Text('Submit speaking task'),
+              ),
+            ),
+          ],
         ],
+      ),
       ),
     );
   }

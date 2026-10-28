@@ -765,6 +765,7 @@ class _Classroom {
   String v2RosterImport(String tribeId) => '/api/v2/classroom/$tribeId/roster/import';
   String v2Privacy(String tribeId) => '/api/v2/classroom/$tribeId/privacy';
   String v2Assignments(String tribeId) => '/api/v2/classroom/$tribeId/assignments';
+  String v2AssignmentsAccess(String tribeId) => '/api/v2/classroom/$tribeId/assignments/access';
   String v2SubmitAssignment(String tribeId, String assignmentId) =>
       '/api/v2/classroom/$tribeId/assignments/$assignmentId/submit';
   String get v2SchoolDashboard => '/api/v2/classroom/school/dashboard';

@@ -306,6 +306,20 @@ class ClassroomService {
     return Map<String, dynamic>.from(data);
   }
 
+  Future<Map<String, dynamic>> checkAssignmentsAccessV2(String tribeId) async {
+    final res = await _dio.get<Map<String, dynamic>>(
+      ApiContract.url(ApiContract.classroom.v2AssignmentsAccess(tribeId)),
+    );
+    final data = res.data;
+    if (data == null || data['success'] != true) {
+      throw DioException(
+        requestOptions: res.requestOptions,
+        message: data?['code']?.toString() ?? data?['error']?.toString() ?? 'Assignments blocked',
+      );
+    }
+    return Map<String, dynamic>.from(data);
+  }
+
   Future<Map<String, dynamic>> listAssignmentsV2(String tribeId) async {
     final res = await _dio.get<Map<String, dynamic>>(
       ApiContract.url(ApiContract.classroom.v2Assignments(tribeId)),
