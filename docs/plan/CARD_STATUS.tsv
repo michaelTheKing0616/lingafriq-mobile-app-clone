@@ -1077,7 +1077,7 @@ P9-955	Done	Festival calendar + live/replay Practice Rooms (events.service.ts, e
 P9-956	Done	Square feed + Tone Lens + moderation (square.service.ts, square_screen.dart)	P9/P9-956.yaml
 P9-957	Done	Circle stories 24h + member scope (stories.service.ts, circle_stories_screen.dart)	P9/P9-957.yaml
 P9-958	Done	Replace mock co-learners in Village flashcards with real or empty state	P9/P9-958.yaml
-P9-959	Draft	Verify every Village surface creates language practice	P9/P9-959.yaml
+P9-959	Done	Village practice audit EP-§9.2 (village_practice_audit.md, village_practice_audit_check.py)	P9/P9-959.yaml
 P2-058	Done	Estimate per-skill mastery on the device	P2/P2-058.yaml
 P2-059	Done	Raise lib/learning line coverage to the 70% gate	P2/P2-059.yaml
 P4-168	Done	Register MobileNetV4 and SigLIP weights and reject YOLO (check_register.py)	P4/P4-168.yaml
