@@ -1042,7 +1042,7 @@ P9-920	Done	Minor moderated messaging policy + guardian E2EE explainer (messagin
 P9-921	Done	Moderation pipeline orchestrator (pipeline.ts, verdict.ts, moderationCase.model.ts)	P9/P9-921.yaml
 P9-922	Done	Hosted moderation adapter: category map, LANGUAGE_UNSUPPORTED, circuit breaker (hostedApi.adapter.ts)	P9/P9-922.yaml
 P9-923	Done	Multilingual moderation eval harness (evalSets.ts, eval_harness.py, severe recall gate)	P9/P9-923.yaml
-P9-924	Draft	Match word-boundary-aware moderator lexicons per language	P9/P9-924.yaml
+P9-924	Done	Match word-boundary-aware moderator lexicons per language (lexicon.engine.ts)	P9/P9-924.yaml
 P9-925	Draft	Detect grooming patterns in conversations	P9/P9-925.yaml
 P9-926	Draft	Classify images and video and compute perceptual hashes	P9/P9-926.yaml
 P9-927	Draft	Integrate known-CSAM hash matching on unencrypted uploads	P9/P9-927.yaml
