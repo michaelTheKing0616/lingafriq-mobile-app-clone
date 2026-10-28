@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/screens/safety/community_guidelines_screen.dart';
 
-const _enArb = 'lib/l10n/community_guidelines_en.arb';
+const _enArb = 'lib/l10n/guidelines/community_guidelines_en.arb';
 
 List<String> get _requiredRuleKeys => [
   for (var i = 1; i <= kCommunityGuidelineRuleCount; i++) ...[
@@ -27,7 +27,7 @@ void main() {
       expect(enKeys, contains(key), reason: 'English template missing $key');
     }
     for (final locale in AppLocalizations.supportedLocales) {
-      final path = 'lib/l10n/community_guidelines_${locale.languageCode}.arb';
+      final path = 'lib/l10n/guidelines/community_guidelines_${locale.languageCode}.arb';
       expect(File(path).existsSync(), isTrue, reason: 'missing $path');
       final arb = jsonDecode(File(path).readAsStringSync()) as Map<String, dynamic>;
       final keys = _messageKeys(arb);

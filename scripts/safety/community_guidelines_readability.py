@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-ARB = ROOT / "lib" / "l10n" / "community_guidelines_en.arb"
+ARB = ROOT / "lib" / "l10n" / "guidelines" / "community_guidelines_en.arb"
 MAX_GRADE = 8.0
 RULE_BODY_PREFIX = "guidelines.rule."
 EXAMPLE_SUFFIX = ".example"

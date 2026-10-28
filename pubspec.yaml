@@ -177,26 +177,26 @@ flutter:
   assets:
     - docs/privacy/PRIVACY_POLICY.md
     - docs/safety/community_guidelines.md
-    - lib/l10n/community_guidelines_am.arb
-    - lib/l10n/community_guidelines_ar.arb
-    - lib/l10n/community_guidelines_en.arb
-    - lib/l10n/community_guidelines_es.arb
-    - lib/l10n/community_guidelines_fr.arb
-    - lib/l10n/community_guidelines_ha.arb
-    - lib/l10n/community_guidelines_ig.arb
-    - lib/l10n/community_guidelines_ln.arb
-    - lib/l10n/community_guidelines_mg.arb
-    - lib/l10n/community_guidelines_pcm.arb
-    - lib/l10n/community_guidelines_pt.arb
-    - lib/l10n/community_guidelines_rw.arb
-    - lib/l10n/community_guidelines_sn.arb
-    - lib/l10n/community_guidelines_st.arb
-    - lib/l10n/community_guidelines_sw.arb
-    - lib/l10n/community_guidelines_ti.arb
-    - lib/l10n/community_guidelines_tn.arb
-    - lib/l10n/community_guidelines_tw.arb
-    - lib/l10n/community_guidelines_yo.arb
-    - lib/l10n/community_guidelines_zu.arb
+    - lib/l10n/guidelines/community_guidelines_am.arb
+    - lib/l10n/guidelines/community_guidelines_ar.arb
+    - lib/l10n/guidelines/community_guidelines_en.arb
+    - lib/l10n/guidelines/community_guidelines_es.arb
+    - lib/l10n/guidelines/community_guidelines_fr.arb
+    - lib/l10n/guidelines/community_guidelines_ha.arb
+    - lib/l10n/guidelines/community_guidelines_ig.arb
+    - lib/l10n/guidelines/community_guidelines_ln.arb
+    - lib/l10n/guidelines/community_guidelines_mg.arb
+    - lib/l10n/guidelines/community_guidelines_pcm.arb
+    - lib/l10n/guidelines/community_guidelines_pt.arb
+    - lib/l10n/guidelines/community_guidelines_rw.arb
+    - lib/l10n/guidelines/community_guidelines_sn.arb
+    - lib/l10n/guidelines/community_guidelines_st.arb
+    - lib/l10n/guidelines/community_guidelines_sw.arb
+    - lib/l10n/guidelines/community_guidelines_ti.arb
+    - lib/l10n/guidelines/community_guidelines_tn.arb
+    - lib/l10n/guidelines/community_guidelines_tw.arb
+    - lib/l10n/guidelines/community_guidelines_yo.arb
+    - lib/l10n/guidelines/community_guidelines_zu.arb
     - assets/images/
     - assets/alphabets/
     - assets/fonts/

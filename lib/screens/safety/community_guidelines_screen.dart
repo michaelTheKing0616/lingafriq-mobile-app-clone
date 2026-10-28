@@ -372,7 +372,7 @@ abstract final class CommunityGuidelinesLoader {
     Object? lastError;
     for (final code in codes.toSet()) {
       try {
-        final raw = await rootBundle.loadString('lib/l10n/community_guidelines_$code.arb');
+        final raw = await rootBundle.loadString('lib/l10n/guidelines/community_guidelines_$code.arb');
         final decoded = jsonDecode(raw) as Map<String, dynamic>;
         final strings = <String, String>{};
         for (final key in _requiredKeys) {

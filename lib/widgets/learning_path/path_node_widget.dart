@@ -5,13 +5,16 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/lessons/models/lesson_response.dart';
 import 'package:lingafriq/navigation/learning_experience_navigation.dart';
 import 'package:lingafriq/utils/modern_griot_design_system.dart';
+import 'package:lingafriq/widgets/learning_path/path_motion.dart';
 import 'package:lingafriq/widgets/learning_path/path_node_state.dart';
 import 'package:lingafriq/widgets/learning_path/path_tokens.dart';
 
 /// Clay path node — 72px soft token with lip depth (v3 sunlit-clay brief).
 ///
 /// State is communicated by colour **and** shape/icon so colour is never the
-/// sole cue. Checkpoints (every 5th) use Gold reward chrome.
+/// sole cue. Checkpoints (every 5th) use Gold reward chrome. Done = gold
+/// check (never Duo green). Current CTA is a gold BEGIN pill with dark text
+/// (not a coral Duo START bubble).
 class PathNodeWidget extends ConsumerStatefulWidget {
   /// Default bubble diameter (logical px, before `.w` scaling).
   static const double defaultSize = PathLayout.nodeSize;
@@ -33,6 +36,9 @@ class PathNodeWidget extends ConsumerStatefulWidget {
   /// Busuu-style checkpoint / treasure every 5 nodes.
   final bool isCheckpoint;
 
+  /// When true, plays the 300 ms gold-fill completion motion.
+  final bool playDoneFill;
+
   const PathNodeWidget({
     super.key,
     required this.lesson,
@@ -43,10 +49,11 @@ class PathNodeWidget extends ConsumerStatefulWidget {
     this.studyLanguageKey,
     this.reducedMotion = false,
     this.reviewDueLabel = 'Review due',
-    this.playNowFallback = 'Play now',
+    this.playNowFallback = 'Begin',
     this.totalLessons,
     this.savedOffline = false,
     this.isCheckpoint = false,
+    this.playDoneFill = false,
   });
 
   @override
@@ -201,27 +208,32 @@ class _PathNodeWidgetState extends ConsumerState<PathNodeWidget>
                       top: 0,
                       child: Hero(
                         tag: 'path_node_${widget.lesson.id}',
-                        child: Container(
-                          width: size,
-                          height: size,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: fill,
-                            border: widget.isCheckpoint
-                                ? Border.all(
-                                    color: PathBrandColors.gold,
-                                    width: 3.w,
-                                  )
-                                : null,
+                        child: PathDoneGoldFill(
+                          play: widget.playDoneFill &&
+                              widget.state == PathNodeVisualState.done,
+                          reducedMotion: widget.reducedMotion,
+                          child: Container(
+                            width: size,
+                            height: size,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: fill,
+                              border: widget.isCheckpoint
+                                  ? Border.all(
+                                      color: PathBrandColors.gold,
+                                      width: 3.w,
+                                    )
+                                  : null,
+                            ),
+                            child: _buildContent(context, size, isDark),
                           ),
-                          child: _buildContent(context, size, isDark),
                         ),
                       ),
                     ),
                     if (widget.state == PathNodeVisualState.current)
                       Positioned(
                         bottom: -4.h,
-                        child: _StartSpeechBubble(
+                        child: _BeginClayPill(
                           label: widget.playNowFallback,
                           reducedMotion: widget.reducedMotion,
                         ),
@@ -403,15 +415,17 @@ class _PathNodeWidgetState extends ConsumerState<PathNodeWidget>
   }
 }
 
-/// Speech-bubble CTA under the current node (recipe + clay BEGIN mass).
-class _StartSpeechBubble extends StatelessWidget {
-  const _StartSpeechBubble({
+/// Gold clay BEGIN pill under the current node (v3 brief — not Duo START).
+class _BeginClayPill extends StatelessWidget {
+  const _BeginClayPill({
     required this.label,
     required this.reducedMotion,
   });
 
   final String label;
   final bool reducedMotion;
+
+  static const Color _ink = Color(0xFF3A1500);
 
   @override
   Widget build(BuildContext context) {
@@ -423,58 +437,30 @@ class _StartSpeechBubble extends StatelessWidget {
       curve: Curves.easeOut,
       builder: (context, scale, child) =>
           Transform.scale(scale: scale, child: child),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          CustomPaint(
-            size: Size(10.w, 6.h),
-            painter: _BubbleTailPainter(color: PathBrandColors.coral),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
-            decoration: BoxDecoration(
-              color: PathBrandColors.coral,
-              borderRadius: BorderRadius.circular(12.r),
-              boxShadow: [
-                BoxShadow(
-                  color: PathBrandColors.coral.withValues(alpha: 0.4),
-                  blurRadius: 8,
-                  offset: const Offset(0, 3),
-                ),
-              ],
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 5.h),
+        decoration: BoxDecoration(
+          color: PathBrandColors.gold,
+          borderRadius: BorderRadius.circular(999),
+          border: Border.all(color: PathBrandColors.doneLip, width: 2),
+          boxShadow: [
+            BoxShadow(
+              color: PathBrandColors.gold.withValues(alpha: 0.45),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
             ),
-            child: Text(
-              label.toUpperCase(),
-              style: ModernGriotTypography.labelSmall(context: context).copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w900,
-                letterSpacing: 0.5,
-                fontSize: 10.sp,
-              ),
-            ),
+          ],
+        ),
+        child: Text(
+          label.toUpperCase(),
+          style: ModernGriotTypography.labelSmall(context: context).copyWith(
+            color: _ink,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 0.8,
+            fontSize: 10.sp,
           ),
-        ],
+        ),
       ),
     );
   }
-}
-
-class _BubbleTailPainter extends CustomPainter {
-  _BubbleTailPainter({required this.color});
-
-  final Color color;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final path = Path()
-      ..moveTo(size.width / 2, 0)
-      ..lineTo(size.width, size.height)
-      ..lineTo(0, size.height)
-      ..close();
-    canvas.drawPath(path, Paint()..color = color);
-  }
-
-  @override
-  bool shouldRepaint(covariant _BubbleTailPainter oldDelegate) =>
-      oldDelegate.color != color;
 }

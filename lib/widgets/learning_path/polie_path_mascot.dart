@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lingafriq/avatars/runtime/rive_file_cache.dart';
 import 'package:lingafriq/widgets/learning_path/path_tokens.dart';
+import 'package:rive/rive.dart' as rive;
 
 /// Polie moods from polie_path.riv / PolieVM (v3).
 enum PoliePathMood { idle, cheer, pointUp, sleepy }
@@ -53,6 +55,9 @@ class _PoliePathMascotState extends State<PoliePathMascot>
     with SingleTickerProviderStateMixin {
   late final AnimationController _bob;
   bool _assetOk = false;
+  rive.RiveWidgetController? _controller;
+  rive.ViewModelInstance? _vm;
+  bool _riveFailed = false;
 
   @override
   void initState() {
@@ -64,20 +69,41 @@ class _PoliePathMascotState extends State<PoliePathMascot>
     if (!widget.reducedMotion) {
       _bob.repeat(reverse: true);
     }
-    _probeAsset();
+    _probeAndLoad();
   }
 
-  Future<void> _probeAsset() async {
+  Future<void> _probeAndLoad() async {
     if (!widget.bundleLicensed) return;
-    if (widget.rivAssetPresent) {
-      if (mounted) setState(() => _assetOk = true);
-      return;
-    }
     try {
       await rootBundle.load(kPoliePathRivAsset);
       if (mounted) setState(() => _assetOk = true);
     } catch (_) {
-      // Still frame is fine.
+      return;
+    }
+    if (!widget.rivAssetPresent && !_assetOk) return;
+    try {
+      final file = await RiveFileCache.instance.load(kPoliePathRivAsset);
+      if (!mounted) return;
+      final controller = rive.RiveWidgetController(
+        file,
+        artboardSelector: rive.ArtboardSelector.byName('PoliePath'),
+        stateMachineSelector: rive.StateMachineSelector.byName('PolieSM'),
+      );
+      final vi = controller.dataBind(rive.DataBind.auto());
+      vi.enumerator('mood')?.value = poliePathMoodWireName(widget.mood);
+      vi.boolean('reducedMotion')?.value = widget.reducedMotion;
+      if (!mounted) {
+        vi.dispose();
+        controller.dispose();
+        return;
+      }
+      setState(() {
+        _controller = controller;
+        _vm = vi;
+        _riveFailed = false;
+      });
+    } catch (_) {
+      if (mounted) setState(() => _riveFailed = true);
     }
   }
 
@@ -91,36 +117,48 @@ class _PoliePathMascotState extends State<PoliePathMascot>
       } else {
         _bob.repeat(reverse: true);
       }
+      _vm?.boolean('reducedMotion')?.value = widget.reducedMotion;
+    }
+    if (oldWidget.mood != widget.mood) {
+      _vm?.enumerator('mood')?.value = poliePathMoodWireName(widget.mood);
     }
   }
 
   @override
   void dispose() {
+    _vm?.dispose();
+    _controller?.dispose();
     _bob.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // Painted Polie silhouette is the reliable default; Rive artboard is
-    // probed so INTEGRATION contracts stay wired for when GPU decode works.
-    final child = PoliePathStillFrame(
-      mood: widget.mood,
-      label: widget.polieLabel,
-      animate: !widget.reducedMotion,
-      bob: _bob,
-      hintRiveReady: _assetOk,
-      compact: widget.compact,
-    );
-
     final w = widget.compact ? 56.w : 120.w;
     final h = widget.compact ? 68.h : 140.h;
+
+    Widget child;
+    if (_controller != null && !_riveFailed) {
+      child = rive.RiveWidget(controller: _controller!, fit: rive.Fit.contain);
+    } else {
+      child = PoliePathStillFrame(
+        mood: widget.mood,
+        label: widget.polieLabel,
+        animate: !widget.reducedMotion,
+        bob: _bob,
+        hintRiveReady: _assetOk,
+        compact: widget.compact,
+      );
+    }
 
     return Semantics(
       button: widget.onTap != null,
       label: widget.polieLabel,
       child: GestureDetector(
-        onTap: widget.onTap,
+        onTap: () {
+          _vm?.trigger('tapped')?.trigger();
+          widget.onTap?.call();
+        },
         behavior: HitTestBehavior.opaque,
         child: SizedBox(width: w, height: h, child: child),
       ),

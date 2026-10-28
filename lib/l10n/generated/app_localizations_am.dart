@@ -652,4 +652,13 @@ class AppLocalizationsAm extends AppLocalizations {
   @override
   String get gamesArcadeHeadlinersWhyWrong =>
       'We will add a short tip here after you play.';
+
+  @override
+  String get duetStart => 'Start duet';
+
+  @override
+  String get duetBlocked => 'Duet unavailable';
+
+  @override
+  String get stitchLabel => 'Native correction';
 }

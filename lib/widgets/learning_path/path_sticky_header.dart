@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/utils/modern_griot_design_system.dart';
+import 'package:lingafriq/widgets/learning_path/path_motion.dart';
 import 'package:lingafriq/widgets/learning_path/path_tokens.dart';
 
 /// Sticky 56px path chrome: language chip · streak · cowries (never hearts).
@@ -26,6 +27,7 @@ class PathStickyHeader extends StatelessWidget {
     this.welcomeBack = false,
     this.freezeAvailable = true,
     this.reducedMotion = false,
+    this.playDayOneFlameBurst = false,
   });
 
   final String languageName;
@@ -43,6 +45,9 @@ class PathStickyHeader extends StatelessWidget {
   final bool welcomeBack;
   final bool freezeAvailable;
   final bool reducedMotion;
+
+  /// Day's first lesson: flame burst 600 ms + week dots (recipe).
+  final bool playDayOneFlameBurst;
 
   @override
   Widget build(BuildContext context) {
@@ -117,35 +122,40 @@ class PathStickyHeader extends StatelessWidget {
                           accent: welcomeBack
                               ? PathBrandColors.gold.withValues(alpha: 0.35)
                               : null,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              _StreakFlameIcon(
-                                welcomeBack: welcomeBack,
-                                streakCount: streakCount,
-                                reducedMotion: reducedMotion,
-                                idleColor: streakCount > 0
-                                    ? PathBrandColors.coral
-                                    : cs.onSurfaceVariant,
-                              ),
-                              SizedBox(width: 2.w),
-                              Text(
-                                welcomeBack && streakCount == 0
-                                    ? 'Welcome'
-                                    : '$streakCount',
-                                maxLines: 1,
-                                style: ModernGriotTypography.labelLarge(
-                                  context: context,
-                                ).copyWith(
-                                  fontWeight: FontWeight.w800,
-                                  color: welcomeBack
-                                      ? cs.onSurface
-                                      : (streakCount > 0
-                                          ? PathBrandColors.coral
-                                          : cs.onSurface),
+                          child: PathStreakFlameBurst(
+                            play: playDayOneFlameBurst && !welcomeBack,
+                            reducedMotion: reducedMotion,
+                            streakCount: streakCount,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                _StreakFlameIcon(
+                                  welcomeBack: welcomeBack,
+                                  streakCount: streakCount,
+                                  reducedMotion: reducedMotion,
+                                  idleColor: streakCount > 0
+                                      ? PathBrandColors.coral
+                                      : cs.onSurfaceVariant,
                                 ),
-                              ),
-                            ],
+                                SizedBox(width: 2.w),
+                                Text(
+                                  welcomeBack && streakCount == 0
+                                      ? 'Welcome'
+                                      : '$streakCount',
+                                  maxLines: 1,
+                                  style: ModernGriotTypography.labelLarge(
+                                    context: context,
+                                  ).copyWith(
+                                    fontWeight: FontWeight.w800,
+                                    color: welcomeBack
+                                        ? cs.onSurface
+                                        : (streakCount > 0
+                                            ? PathBrandColors.coral
+                                            : cs.onSurface),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         SizedBox(width: 4.w),

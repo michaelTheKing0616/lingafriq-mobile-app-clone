@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lingafriq/avatars/runtime/rive_file_cache.dart';
+import 'package:rive/rive.dart' as rive;
 
 /// L10n keys (ARB): [kPathPolieLabelKey], [kPathArtMissingKey].
 const String kPathPolieLabelKey = 'learn.f_007.polie';
@@ -419,22 +421,105 @@ class _SceneryRiveHost extends StatefulWidget {
 }
 
 class _SceneryRiveHostState extends State<_SceneryRiveHost> {
-  // Rive widget is wired when Factory.rive / flutter decode succeeds;
-  // until then (and in headless tests) we keep the clay island.
+  rive.RiveWidgetController? _controller;
+  rive.ViewModelInstance? _vm;
   bool _failed = false;
+  bool _loading = true;
 
   @override
   void initState() {
     super.initState();
-    // Prefer painting the island immediately; optional Rive upgrade is
-    // intentionally deferred so low-end / test environments stay stable.
-    _failed = true;
+    _load();
+  }
+
+  @override
+  void didUpdateWidget(covariant _SceneryRiveHost oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.artboard != widget.artboard ||
+        oldWidget.reducedMotion != widget.reducedMotion) {
+      _disposeRive();
+      _load();
+    }
+  }
+
+  Future<void> _load() async {
+    setState(() {
+      _loading = true;
+      _failed = false;
+    });
+    try {
+      // Prefer per-item artboard (lighter than Scenery wrapper). Fall back to
+      // wrapper + enum if the named artboard is missing in older assets.
+      final file =
+          await RiveFileCache.instance.load(kPathSceneryRivAsset);
+      if (!mounted) return;
+      rive.RiveWidgetController? controller;
+      try {
+        controller = rive.RiveWidgetController(
+          file,
+          artboardSelector: rive.ArtboardSelector.byName(widget.artboard),
+          stateMachineSelector:
+              rive.StateMachineSelector.byName('SceneSM'),
+        );
+      } catch (_) {
+        controller = rive.RiveWidgetController(
+          file,
+          artboardSelector: rive.ArtboardSelector.byName('Scenery'),
+          stateMachineSelector:
+              rive.StateMachineSelector.byName('SceneSM'),
+        );
+      }
+      final vi = controller.dataBind(rive.DataBind.auto());
+      vi.boolean('reducedMotion')?.value = widget.reducedMotion;
+      try {
+        vi.enumerator('item')?.value = widget.artboard;
+      } catch (_) {
+        // Item enum only exists on the Scenery wrapper.
+      }
+      if (!mounted) {
+        vi.dispose();
+        controller.dispose();
+        return;
+      }
+      setState(() {
+        _controller = controller;
+        _vm = vi;
+        _loading = false;
+        _failed = false;
+      });
+    } catch (_) {
+      // Headless tests / missing GPU / corrupt asset → clay island.
+      if (mounted) {
+        setState(() {
+          _failed = true;
+          _loading = false;
+        });
+      }
+    }
+  }
+
+  void _disposeRive() {
+    _vm?.dispose();
+    _vm = null;
+    _controller?.dispose();
+    _controller = null;
+  }
+
+  @override
+  void dispose() {
+    _disposeRive();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_failed) return widget.fallback;
-    return widget.fallback;
+    if (_failed || _loading || _controller == null) {
+      return widget.fallback;
+    }
+    return rive.RiveWidget(
+      controller: _controller!,
+      fit: rive.Fit.contain,
+    );
   }
 }
 

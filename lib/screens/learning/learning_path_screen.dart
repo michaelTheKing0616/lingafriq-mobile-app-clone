@@ -14,6 +14,7 @@ import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/widgets/griot/griot_widgets.dart';
 import 'package:lingafriq/widgets/learning_path/lesson_preview_sheet.dart';
 import 'package:lingafriq/widgets/learning_path/path_journey_node_row.dart';
+import 'package:lingafriq/widgets/learning_path/path_motion.dart';
 import 'package:lingafriq/widgets/learning_path/path_node_state.dart';
 import 'package:lingafriq/widgets/learning_path/path_node_widget.dart';
 import 'package:lingafriq/widgets/learning_path/path_scene_art.dart';
@@ -24,9 +25,10 @@ import 'package:lingafriq/widgets/learning_path/polie_path_mascot.dart';
 
 /// Journey learning path — Mimo units on a Candy Crush clay map.
 ///
-/// Sticky Duo-style unit banner only. Busuu checkpoints every 5. Finch kind
-/// streak. Drift-first via [pathLessonsProvider] / [pathUnitsProvider]
-/// (P7-952). Never gates on hearts/energy (P8-907).
+/// Place-themed clay road (not Duo hairline). Busuu checkpoints every 5.
+/// Finch kind streak. Gold BEGIN CTAs. Drift-first via
+/// [pathLessonsProvider] / [pathUnitsProvider] (P7-952). Never gates on
+/// hearts/energy/loot boxes (P8-907).
 class LearningPathScreen extends ConsumerStatefulWidget {
   final Language language;
 
@@ -45,6 +47,14 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
   bool _listView = false;
   double _scrollPixels = 0;
   int _stickyUnitOrdinal = 0;
+
+  /// Completion choreography (done fill → trail → unlock → Polie hop).
+  int? _celebrateDoneLessonIndex;
+  int? _celebrateTrailToLessonIndex;
+  bool _playDayOneFlameBurst = false;
+  bool _playUnitUnlockShine = false;
+  int? _lastKnownCompletedCount;
+  int? _lastKnownStreak;
 
   @override
   void initState() {
@@ -235,6 +245,14 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
                 ? PoliePathMood.pointUp
                 : (pathComplete ? PoliePathMood.cheer : PoliePathMood.idle));
 
+        _syncCompletionChoreography(
+          lessons: lessons,
+          completedCount: completedCount,
+          streak: gamification.dailyStreak,
+          active: active,
+          reducedMotion: reducedMotion,
+        );
+
         if (pathComplete && !_didShowPathCompleteCelebration) {
           _didShowPathCompleteCelebration = true;
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -277,6 +295,7 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
                   welcomeBack: welcomeBack,
                   listViewActive: _listView,
                   reducedMotion: reducedMotion,
+                  playDayOneFlameBurst: _playDayOneFlameBurst,
                   onBack: () => Navigator.maybePop(context),
                   onLanguageTap: () {
                     HapticFeedback.selectionClick();
@@ -295,7 +314,7 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
                         content: Text(
                           welcomeBack
                               ? 'Welcome back. Your freeze is ready. No shame, just the next step.'
-                              : 'Streak: ${gamification.dailyStreak} day${gamification.dailyStreak == 1 ? '' : 's'}',
+                              : 'Streak: ${gamification.dailyStreak} day${gamification.dailyStreak == 1 ? '' : 's'} · 1 freeze/week',
                         ),
                       ),
                     );
@@ -335,9 +354,15 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
                     completedInUnit: unitProgress.completed,
                     totalInUnit: unitProgress.total,
                     reducedMotion: reducedMotion,
+                    playUnlockShine: _playUnitUnlockShine,
                     locked: active != null &&
                         stickyBanner.firstLessonIndex > active,
                     onGuideTap: () => _showUnitGuide(context, stickyBanner),
+                    onUnlockShineCompleted: () {
+                      if (mounted) {
+                        setState(() => _playUnitUnlockShine = false);
+                      }
+                    },
                   ),
                 if (welcomeBack)
                   Padding(
@@ -455,6 +480,13 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
                               parallaxScroll: _scrollPixels,
                               showSideScenery: i % 2 == 0,
                               polieMood: mascotMood,
+                              playDoneFill:
+                                  _celebrateDoneLessonIndex == i,
+                              playTrailDraw:
+                                  _celebrateTrailToLessonIndex == i,
+                              playPolieHop:
+                                  state == PathNodeVisualState.current &&
+                                      _celebrateTrailToLessonIndex == i,
                               onTap: state == PathNodeVisualState.locked
                                   ? null
                                   : () {
@@ -487,6 +519,82 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
       error: (e, _) => _errorState(context),
     );
   }
+
+  void _syncCompletionChoreography({
+    required List<Lesson> lessons,
+    required int completedCount,
+    required int streak,
+    required int? active,
+    required bool reducedMotion,
+  }) {
+    final prevCompleted = _lastKnownCompletedCount;
+    final prevStreak = _lastKnownStreak;
+    _lastKnownCompletedCount = completedCount;
+    _lastKnownStreak = streak;
+
+    // First paint: seed baselines, no celebration flash.
+    if (prevCompleted == null || prevStreak == null) return;
+
+    if (completedCount > prevCompleted) {
+      // Newly completed lesson is the highest contiguous done before active.
+      var doneIdx = -1;
+      for (var i = 0; i < lessons.length; i++) {
+        if (_sectionCompleted(lessons[i])) {
+          doneIdx = i;
+        } else {
+          break;
+        }
+      }
+      if (doneIdx >= 0) {
+        final trailTo = (doneIdx + 1 < lessons.length) ? doneIdx + 1 : doneIdx;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
+          setState(() {
+            _celebrateDoneLessonIndex = doneIdx;
+            _celebrateTrailToLessonIndex = trailTo;
+            // Unit complete when every lesson in sticky unit is done.
+            final unitDone = active == null ||
+                (doneIdx >= 0 &&
+                    _sectionCompleted(lessons[doneIdx]) &&
+                    (active > doneIdx || pathCompleteForLessons(lessons)));
+            _playUnitUnlockShine = unitDone ||
+                (doneIdx >= 0 && PathLayout.isCheckpoint(doneIdx));
+          });
+          final clearAfter = PathMotion.resolve(
+            PathMotion.trailDraw + PathMotion.polieHop,
+            reducedMotion: reducedMotion,
+          );
+          Future<void>.delayed(clearAfter, () {
+            if (!mounted) return;
+            setState(() {
+              _celebrateDoneLessonIndex = null;
+              _celebrateTrailToLessonIndex = null;
+            });
+          });
+        });
+      }
+    }
+
+    // Day-1 first lesson: streak ticks 0→1 (or any increase while == 1).
+    if (streak > prevStreak && streak == 1) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        setState(() => _playDayOneFlameBurst = true);
+        Future<void>.delayed(
+          PathMotion.resolve(
+            PathMotion.flameBurst,
+            reducedMotion: reducedMotion,
+          ),
+          () {
+            if (mounted) setState(() => _playDayOneFlameBurst = false);
+          },
+        );
+      });
+    }
+  }
+
+  bool pathCompleteForLessons(List<Lesson> lessons) =>
+      lessons.isNotEmpty && lessons.every(_sectionCompleted);
 
   PathUnitBannerData? _resolveStickyBanner({
     required List<PathScrollItem> items,

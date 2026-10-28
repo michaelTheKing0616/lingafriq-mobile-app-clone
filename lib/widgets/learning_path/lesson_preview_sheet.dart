@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/lessons/models/lesson_response.dart';
 import 'package:lingafriq/utils/modern_griot_design_system.dart';
 import 'package:lingafriq/widgets/learning_path/path_node_state.dart';
+import 'package:lingafriq/widgets/learning_path/path_tokens.dart';
 
 const String kPathPreviewSheetKey = 'learn.f_007.preview';
 
@@ -109,6 +110,12 @@ class LessonPreviewSheet extends StatelessWidget {
           ),
           SizedBox(height: 24.h),
           FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: PathBrandColors.gold,
+              foregroundColor: const Color(0xFF3A1500),
+              textStyle: const TextStyle(fontWeight: FontWeight.w900),
+              minimumSize: Size.fromHeight(48.h),
+            ),
             onPressed: onPrimaryAction,
             child: Text(primaryLabel),
           ),

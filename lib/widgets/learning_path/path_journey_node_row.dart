@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/lessons/models/lesson_response.dart';
 import 'package:lingafriq/widgets/learning_path/learning_path_painter.dart';
 import 'package:lingafriq/widgets/learning_path/path_checkpoint_card.dart';
+import 'package:lingafriq/widgets/learning_path/path_motion.dart';
 import 'package:lingafriq/widgets/learning_path/path_node_state.dart';
 import 'package:lingafriq/widgets/learning_path/path_node_widget.dart';
 import 'package:lingafriq/widgets/learning_path/path_scene_art.dart';
@@ -10,7 +11,7 @@ import 'package:lingafriq/widgets/learning_path/path_tokens.dart';
 import 'package:lingafriq/widgets/learning_path/polie_path_mascot.dart';
 
 /// One Candy Crush-style journey stop: clay road, sine node, side scenery,
-/// and Polie standing beside the current lesson.
+/// and Polie standing beside the current lesson only.
 class PathJourneyNodeRow extends StatelessWidget {
   const PathJourneyNodeRow({
     super.key,
@@ -28,6 +29,9 @@ class PathJourneyNodeRow extends StatelessWidget {
     required this.showSideScenery,
     this.onTap,
     this.polieMood = PoliePathMood.pointUp,
+    this.playTrailDraw = false,
+    this.playDoneFill = false,
+    this.playPolieHop = false,
   });
 
   final Lesson lesson;
@@ -44,6 +48,15 @@ class PathJourneyNodeRow extends StatelessWidget {
   final bool showSideScenery;
   final VoidCallback? onTap;
   final PoliePathMood polieMood;
+
+  /// Completion choreography: dotted trail draws toward this row (400 ms).
+  final bool playTrailDraw;
+
+  /// Completion choreography: gold fill on a newly done node (300 ms).
+  final bool playDoneFill;
+
+  /// Completion choreography: Polie hops onto current (500 ms arc).
+  final bool playPolieHop;
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +81,7 @@ class PathJourneyNodeRow extends StatelessWidget {
               child: _BesidePolie(
                 mood: polieMood,
                 reducedMotion: reducedMotion || lowEndStatic,
+                playHop: playPolieHop,
               ),
             ),
         ],
@@ -83,8 +97,8 @@ class PathJourneyNodeRow extends StatelessWidget {
     final place = PathLayout.placeThemeForUnit(unitOrdinal);
     final sceneryEnd = PathLayout.sceneryOnEndSide(lessonIndex);
 
-    return SizedBox(
-      height: PathLayout.nodeRowExtent.h + (isCurrent ? 28.h : 8.h),
+    final row = SizedBox(
+      height: PathLayout.nodeRowExtent.h + (isCurrent ? 36.h : 8.h),
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -98,12 +112,12 @@ class PathJourneyNodeRow extends StatelessWidget {
                     pathPlaceWashColor(
                       place,
                       isDark: Theme.of(context).brightness == Brightness.dark,
-                    ).withValues(alpha: 0.35),
+                    ).withValues(alpha: 0.45),
                     Colors.transparent,
                     pathPlaceWashColor(
                       place,
                       isDark: Theme.of(context).brightness == Brightness.dark,
-                    ).withValues(alpha: 0.35),
+                    ).withValues(alpha: 0.45),
                   ],
                 ),
               ),
@@ -115,8 +129,9 @@ class PathJourneyNodeRow extends StatelessWidget {
               toLane: 0,
               fromOffsetX: prevDx.w * rtlSign,
               toOffsetX: dx.w * rtlSign,
-              traveled: traveled,
+              traveled: traveled && !playTrailDraw,
               clayRoad: true,
+              drawProgress: playTrailDraw ? null : (traveled ? 1.0 : 0.0),
             ),
           ),
           if (showSideScenery && !lowEndStatic)
@@ -150,44 +165,73 @@ class PathJourneyNodeRow extends StatelessWidget {
             alignment: Alignment.center,
             child: Transform.translate(
               offset: Offset(dx.w * rtlSign, 0),
-              child: Row(
+              child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (isCurrent && !sceneryEnd)
-                    Padding(
-                      padding: EdgeInsets.only(right: 6.w),
-                      child: _BesidePolie(
-                        mood: polieMood,
-                        reducedMotion: reducedMotion || lowEndStatic,
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (isCurrent && !sceneryEnd)
+                        Padding(
+                          padding: EdgeInsets.only(right: 6.w),
+                          child: _BesidePolie(
+                            mood: polieMood,
+                            reducedMotion: reducedMotion || lowEndStatic,
+                            playHop: playPolieHop,
+                          ),
+                        ),
+                      Stack(
+                        alignment: Alignment.bottomCenter,
+                        clipBehavior: Clip.none,
+                        children: [
+                          if (isCurrent)
+                            Positioned(
+                              bottom: -2.h,
+                              child: PathCurrentPedestal(
+                                size: PathLayout.nodeSize.w,
+                                reducedMotion: reducedMotion || lowEndStatic,
+                              ),
+                            ),
+                          PathNodeWidget(
+                            lesson: lesson,
+                            state: state,
+                            index: lessonIndex,
+                            size: PathLayout.nodeSize,
+                            studyLanguageKey: languageKey,
+                            reducedMotion: reducedMotion || lowEndStatic,
+                            totalLessons: totalLessons,
+                            savedOffline: savedOffline,
+                            isCheckpoint: false,
+                            playNowFallback: 'Begin',
+                            playDoneFill: playDoneFill,
+                            onTap: onTap,
+                          ),
+                        ],
                       ),
-                    ),
-                  PathNodeWidget(
-                    lesson: lesson,
-                    state: state,
-                    index: lessonIndex,
-                    size: PathLayout.nodeSize,
-                    studyLanguageKey: languageKey,
-                    reducedMotion: reducedMotion || lowEndStatic,
-                    totalLessons: totalLessons,
-                    savedOffline: savedOffline,
-                    isCheckpoint: false,
-                    playNowFallback: 'Start',
-                    onTap: onTap,
+                      if (isCurrent && sceneryEnd)
+                        Padding(
+                          padding: EdgeInsets.only(left: 6.w),
+                          child: _BesidePolie(
+                            mood: polieMood,
+                            reducedMotion: reducedMotion || lowEndStatic,
+                            playHop: playPolieHop,
+                          ),
+                        ),
+                    ],
                   ),
-                  if (isCurrent && sceneryEnd)
-                    Padding(
-                      padding: EdgeInsets.only(left: 6.w),
-                      child: _BesidePolie(
-                        mood: polieMood,
-                        reducedMotion: reducedMotion || lowEndStatic,
-                      ),
-                    ),
                 ],
               ),
             ),
           ),
         ],
       ),
+    );
+
+    if (!playTrailDraw) return row;
+    return PathTrailDrawOverlay(
+      play: true,
+      reducedMotion: reducedMotion || lowEndStatic,
+      child: row,
     );
   }
 }
@@ -196,10 +240,12 @@ class _BesidePolie extends StatelessWidget {
   const _BesidePolie({
     required this.mood,
     required this.reducedMotion,
+    this.playHop = false,
   });
 
   final PoliePathMood mood;
   final bool reducedMotion;
+  final bool playHop;
 
   @override
   Widget build(BuildContext context) {
@@ -214,10 +260,14 @@ class _BesidePolie extends StatelessWidget {
         polieLabel: 'Polie',
       ),
     );
-    if (reducedMotion) return mascot;
+    if (reducedMotion && !playHop) return mascot;
     return TweenAnimationBuilder<double>(
-      tween: Tween(begin: 0, end: 1),
-      duration: const Duration(milliseconds: 500),
+      key: ValueKey('polie-hop-$playHop'),
+      tween: Tween(begin: playHop || !reducedMotion ? 0.0 : 1.0, end: 1),
+      duration: PathMotion.resolve(
+        PathMotion.polieHop,
+        reducedMotion: reducedMotion,
+      ),
       curve: Curves.easeOutCubic,
       builder: (context, t, child) {
         final arc = (1 - t) * 28.h;

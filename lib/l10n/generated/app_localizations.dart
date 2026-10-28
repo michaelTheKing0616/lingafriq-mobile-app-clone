@@ -1283,6 +1283,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'We will add a short tip here after you play.'**
   String get gamesArcadeHeadlinersWhyWrong;
+
+  /// copy_keys: duet.start
+  ///
+  /// In en, this message translates to:
+  /// **'Start duet'**
+  String get duetStart;
+
+  /// copy_keys: duet.blocked
+  ///
+  /// In en, this message translates to:
+  /// **'Duet unavailable'**
+  String get duetBlocked;
+
+  /// copy_keys: stitch.label
+  ///
+  /// In en, this message translates to:
+  /// **'Native correction'**
+  String get stitchLabel;
 }
 
 class _AppLocalizationsDelegate

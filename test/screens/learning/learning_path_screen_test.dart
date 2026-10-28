@@ -294,5 +294,62 @@ void main() {
       expect(find.textContaining('Unit 1'), findsWidgets);
       expect(find.byIcon(Icons.chat_bubble_outline_rounded), findsWidgets);
     });
+
+    testWidgets('current node shows gold Begin pill (not Duo START DNA)',
+        (tester) async {
+      setPhoneSurface(tester);
+      final lessons = [
+        lesson(id: 1, name: 'Greetings', count: 5, completed: 0),
+      ];
+      await tester.pumpWidget(harness(lessons: lessons, reducedMotion: true));
+      await settle(tester);
+
+      expect(find.text('BEGIN'), findsOneWidget);
+      expect(find.text('START'), findsNothing);
+      expect(find.byIcon(Icons.favorite), findsNothing);
+      expect(find.byIcon(Icons.favorite_border), findsNothing);
+    });
+
+    testWidgets('cowries chip is present and hearts are absent',
+        (tester) async {
+      setPhoneSurface(tester);
+      final lessons = [
+        lesson(id: 1, name: 'Greetings', count: 5, completed: 0),
+      ];
+      await tester.pumpWidget(harness(lessons: lessons, reducedMotion: true));
+      await settle(tester);
+
+      expect(find.byIcon(Icons.monetization_on_rounded), findsOneWidget);
+      expect(find.byIcon(Icons.favorite), findsNothing);
+    });
+
+    testWidgets('done node uses gold check icon semantics, not green DNA',
+        (tester) async {
+      setPhoneSurface(tester);
+      final lessons = [
+        lesson(id: 1, name: 'Greetings', count: 5, completed: 5),
+        lesson(id: 2, name: 'Numbers', count: 5, completed: 0),
+      ];
+      await tester.pumpWidget(harness(lessons: lessons, reducedMotion: true));
+      await settle(tester);
+
+      expect(find.byIcon(Icons.check_rounded), findsWidgets);
+      expect(find.text('BEGIN'), findsOneWidget);
+    });
+
+    testWidgets('motion-reduced path settles without scheduled frames',
+        (tester) async {
+      setPhoneSurface(tester);
+      final lessons = [
+        lesson(id: 1, name: 'Greetings', count: 5, completed: 5),
+        lesson(id: 2, name: 'Numbers', count: 5, completed: 0),
+        lesson(id: 3, name: 'Colors', count: 5, completed: 0),
+      ];
+      await tester.pumpWidget(harness(lessons: lessons, reducedMotion: true));
+      await settle(tester);
+      await tester.pump(const Duration(milliseconds: 200));
+      expect(tester.takeException(), isNull);
+      expect(tester.binding.hasScheduledFrame, isFalse);
+    });
   });
 }

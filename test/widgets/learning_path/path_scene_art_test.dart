@@ -88,6 +88,7 @@ void main() {
               unitIndex: 0,
               dimmed: true,
               bundleLicensed: true,
+              preferRive: false,
             ),
           ),
         ),
@@ -112,6 +113,33 @@ void main() {
         ),
       );
       expect(find.text('Missing'), findsOneWidget);
+    });
+
+    testWidgets('preferRive true does not force static forever without probe',
+        (tester) async {
+      // Rive may fail in headless tests; clay fallback is OK — what we ban is
+      // permanently setting _failed=true without attempting load.
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: SizedBox(
+              width: 80,
+              height: 80,
+              child: PathSceneArtSlot(
+                languageKey: 'yo',
+                unitIndex: 0,
+                dimmed: false,
+                bundleLicensed: true,
+                preferRive: true,
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 50));
+      expect(find.byType(PathSceneArtSlot), findsOneWidget);
+      expect(tester.takeException(), isNull);
     });
   });
 

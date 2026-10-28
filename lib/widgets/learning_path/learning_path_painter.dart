@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lingafriq/widgets/learning_path/path_motion.dart';
 import 'package:lingafriq/widgets/learning_path/path_tokens.dart';
 
 /// Decorative connector joining consecutive path nodes.
@@ -7,6 +8,9 @@ import 'package:lingafriq/widgets/learning_path/path_tokens.dart';
 /// Supports legacy lane signs (`fromLane`/`toLane`) and absolute sine offsets
 /// (`fromOffsetX`/`toOffsetX`). With [clayRoad], paints a Candy Crush-style
 /// parchment ribbon under a coral travelled centre line.
+///
+/// [drawProgress] (0→1) animates the travelled centre line / dotted reveal
+/// during completion choreography (recipe: 400 ms trail draw).
 class PathRowConnectorPainter extends CustomPainter {
   PathRowConnectorPainter({
     this.fromLane = 0,
@@ -17,6 +21,7 @@ class PathRowConnectorPainter extends CustomPainter {
     this.fromOffsetX,
     this.toOffsetX,
     this.clayRoad = false,
+    this.drawProgress = 1.0,
     double? strokeWidth,
   })  : travelledColor = travelledColor ?? PathBrandColors.coral,
         untravelledColor = untravelledColor ?? PathBrandColors.lockedLip,
@@ -31,6 +36,9 @@ class PathRowConnectorPainter extends CustomPainter {
   final double? toOffsetX;
   final bool clayRoad;
   final double strokeWidth;
+
+  /// 0 = empty trail, 1 = fully drawn. Used for completion motion.
+  final double drawProgress;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -52,6 +60,8 @@ class PathRowConnectorPainter extends CustomPainter {
         0,
       );
 
+    final progress = drawProgress.clamp(0.0, 1.0);
+
     if (clayRoad) {
       final road = Paint()
         ..style = PaintingStyle.stroke
@@ -67,13 +77,21 @@ class PathRowConnectorPainter extends CustomPainter {
       canvas.drawPath(path, lip);
       canvas.drawPath(path, road);
 
-      if (traveled) {
+      if (traveled || progress > 0) {
         final centre = Paint()
           ..style = PaintingStyle.stroke
           ..strokeCap = StrokeCap.round
           ..strokeWidth = 4.w
           ..color = travelledColor;
-        canvas.drawPath(path, centre);
+        _drawProgressed(canvas, path, centre, progress);
+        if (progress < 1) {
+          final remaining = Paint()
+            ..style = PaintingStyle.stroke
+            ..strokeCap = StrokeCap.round
+            ..strokeWidth = 3.w
+            ..color = untravelledColor;
+          _drawDashedFrom(canvas, path, remaining, progress);
+        }
       } else {
         final dashed = Paint()
           ..style = PaintingStyle.stroke
@@ -93,17 +111,34 @@ class PathRowConnectorPainter extends CustomPainter {
       ..color = traveled ? travelledColor : untravelledColor;
 
     if (traveled) {
-      canvas.drawPath(path, paint);
+      _drawProgressed(canvas, path, paint, progress);
     } else {
       _drawDashed(canvas, path, paint);
     }
   }
 
+  void _drawProgressed(Canvas canvas, Path path, Paint paint, double progress) {
+    for (final metric in path.computeMetrics()) {
+      final end = metric.length * progress;
+      if (end <= 0) continue;
+      canvas.drawPath(metric.extractPath(0, end), paint);
+    }
+  }
+
   void _drawDashed(Canvas canvas, Path path, Paint paint) {
+    _drawDashedFrom(canvas, path, paint, 0);
+  }
+
+  void _drawDashedFrom(
+    Canvas canvas,
+    Path path,
+    Paint paint,
+    double fromProgress,
+  ) {
     final dashWidth = 8.w;
     final dashSpace = 6.w;
     for (final metric in path.computeMetrics()) {
-      var distance = 0.0;
+      var distance = metric.length * fromProgress;
       while (distance < metric.length) {
         final extract = metric.extractPath(
           distance,
@@ -124,7 +159,8 @@ class PathRowConnectorPainter extends CustomPainter {
         oldDelegate.traveled != traveled ||
         oldDelegate.travelledColor != travelledColor ||
         oldDelegate.untravelledColor != untravelledColor ||
-        oldDelegate.clayRoad != clayRoad;
+        oldDelegate.clayRoad != clayRoad ||
+        oldDelegate.drawProgress != drawProgress;
   }
 }
 
@@ -146,6 +182,7 @@ class PathRowConnector extends StatelessWidget {
     this.fromOffsetX,
     this.toOffsetX,
     this.clayRoad = false,
+    this.drawProgress,
   });
 
   final double fromLane;
@@ -155,11 +192,15 @@ class PathRowConnector extends StatelessWidget {
   final double? toOffsetX;
   final bool clayRoad;
 
+  /// When null, reads [pathTrailDrawProgressOf] if an ancestor provides it.
+  final double? drawProgress;
+
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final travelled = isDark ? PathBrandColors.gold : PathBrandColors.coral;
+    final progress = drawProgress ?? pathTrailDrawProgressOf(context);
     return IgnorePointer(
       child: CustomPaint(
         painter: PathRowConnectorPainter(
@@ -171,6 +212,7 @@ class PathRowConnector extends StatelessWidget {
           travelledColor: travelled,
           untravelledColor: cs.outlineVariant,
           clayRoad: clayRoad,
+          drawProgress: progress,
         ),
         size: Size.infinite,
       ),

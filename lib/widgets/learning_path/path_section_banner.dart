@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/utils/modern_griot_design_system.dart';
+import 'package:lingafriq/widgets/learning_path/path_motion.dart';
 import 'package:lingafriq/widgets/learning_path/path_scene_art.dart';
 import 'package:lingafriq/widgets/learning_path/path_tokens.dart';
 
@@ -226,7 +227,7 @@ class PathSectionBanner extends StatelessWidget {
   }
 }
 
-/// Sticky unit banner with 250ms ease-out swap (Duolingo sticky pattern only).
+/// Sticky unit banner with 250ms ease-out swap + optional unlock shine (~700ms).
 class PathStickyUnitBanner extends StatelessWidget {
   const PathStickyUnitBanner({
     super.key,
@@ -238,7 +239,9 @@ class PathStickyUnitBanner extends StatelessWidget {
     this.completedInUnit = 0,
     this.totalInUnit = 0,
     this.locked = false,
+    this.playUnlockShine = false,
     this.onGuideTap,
+    this.onUnlockShineCompleted,
   });
 
   final String unitName;
@@ -249,7 +252,9 @@ class PathStickyUnitBanner extends StatelessWidget {
   final int completedInUnit;
   final int totalInUnit;
   final bool locked;
+  final bool playUnlockShine;
   final VoidCallback? onGuideTap;
+  final VoidCallback? onUnlockShineCompleted;
 
   @override
   Widget build(BuildContext context) {
@@ -272,18 +277,24 @@ class PathStickyUnitBanner extends StatelessWidget {
           child: SlideTransition(position: offset, child: child),
         );
       },
-      child: PathSectionBanner(
-        key: ValueKey('unit-$unitOrdinal-$unitName'),
-        unitName: unitName,
-        cefrLevel: cefrLevel,
-        canDoStatement: canDoStatement,
-        unitOrdinal: unitOrdinal,
-        completedInUnit: completedInUnit,
-        totalInUnit: totalInUnit,
-        sticky: true,
-        locked: locked,
-        onGuideTap: onGuideTap,
+      child: PathUnitUnlockShine(
+        key: ValueKey('unit-shine-$unitOrdinal-$playUnlockShine'),
+        play: playUnlockShine,
         reducedMotion: reducedMotion,
+        onCompleted: onUnlockShineCompleted,
+        child: PathSectionBanner(
+          key: ValueKey('unit-$unitOrdinal-$unitName'),
+          unitName: unitName,
+          cefrLevel: cefrLevel,
+          canDoStatement: canDoStatement,
+          unitOrdinal: unitOrdinal,
+          completedInUnit: completedInUnit,
+          totalInUnit: totalInUnit,
+          sticky: true,
+          locked: locked,
+          onGuideTap: onGuideTap,
+          reducedMotion: reducedMotion,
+        ),
       ),
     );
   }
