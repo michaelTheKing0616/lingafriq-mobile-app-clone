@@ -83,6 +83,55 @@ Finder continueButtonFinder() {
   );
 }
 
+Future<void> tapVisible(WidgetTester tester, Finder finder) async {
+  await tester.ensureVisible(finder);
+  await tester.pump();
+  await tester.tap(finder);
+  await tester.pump();
+}
+
+Future<void> advanceToFirstWin(WidgetTester tester) async {
+  await tapVisible(tester, find.text('Get started'));
+  await settleOnce(tester);
+  await tapVisible(tester, find.text('Yoruba'));
+  await tapVisible(tester, find.text('Continue').first);
+  await settleOnce(tester);
+  await tapVisible(tester, find.text('Talk to family'));
+  await tapVisible(tester, find.text('Continue').first);
+  await settleOnce(tester);
+  await tapVisible(tester, find.text("I'm new"));
+  await tapVisible(tester, find.text('Continue').first);
+  await settleOnce(tester);
+}
+
+Future<void> completeFirstWin(WidgetTester tester) async {
+  await tester.ensureVisible(find.text('Play greeting'));
+  await tester.tap(find.text('Play greeting'));
+  await tester.pump();
+  await tester.pump(const Duration(milliseconds: 50));
+  await tester.ensureVisible(find.text('Continue').first);
+  await tester.tap(find.text('Continue').first);
+  await settleOnce(tester);
+
+  await tester.ensureVisible(find.text('Báwo ni'));
+  await tester.tap(find.text('Báwo ni'));
+  await tester.pump();
+  await tester.ensureVisible(find.text('Continue').first);
+  await tester.tap(find.text('Continue').first);
+  await settleOnce(tester);
+
+  await tester.ensureVisible(find.text('I said it'));
+  await tester.tap(find.text('I said it'));
+  await tester.pump();
+  await tester.ensureVisible(find.text('Finish lesson'));
+  await tester.tap(find.text('Finish lesson'));
+  await settleOnce(tester);
+
+  await tester.ensureVisible(find.text('Keep going'));
+  await tester.tap(find.text('Keep going'));
+  await settleOnce(tester);
+}
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   CastFileCache.instance.renderer = Factory.flutter;
@@ -125,7 +174,7 @@ void main() {
       await pumpOnboarding(tester);
       await settleOnce(tester);
 
-      await tester.tap(find.text('Get started'));
+      await tapVisible(tester, find.text('Get started'));
       await settleOnce(tester);
 
       expect(find.text('What do you want to learn?'), findsOneWidget);
@@ -141,16 +190,13 @@ void main() {
     testWidgets('selecting a language enables Continue', (tester) async {
       await pumpOnboarding(tester);
       await settleOnce(tester);
-      await tester.tap(find.text('Get started'));
+      await tapVisible(tester, find.text('Get started'));
       await settleOnce(tester);
 
       var continueButton = tester.widget<FilledButton>(continueButtonFinder());
       expect(continueButton.onPressed, isNull);
 
-      final yoruba = find.text('Yoruba');
-      await tester.ensureVisible(yoruba);
-      await tester.tap(yoruba);
-      await tester.pump();
+      await tapVisible(tester, find.text('Yoruba'));
 
       continueButton = tester.widget<FilledButton>(continueButtonFinder());
       expect(continueButton.onPressed, isNotNull);
@@ -159,7 +205,7 @@ void main() {
     testWidgets('language search empty state is announced', (tester) async {
       await pumpOnboarding(tester);
       await settleOnce(tester);
-      await tester.tap(find.text('Get started'));
+      await tapVisible(tester, find.text('Get started'));
       await settleOnce(tester);
 
       await tester.enterText(find.byType(TextField).first, 'zzzz-not-a-lang');
@@ -172,13 +218,11 @@ void main() {
       final handle = tester.ensureSemantics();
       await pumpOnboarding(tester);
       await settleOnce(tester);
-      await tester.tap(find.text('Get started'));
+      await tapVisible(tester, find.text('Get started'));
       await settleOnce(tester);
 
       expect(find.bySemanticsLabel('Yoruba'), findsOneWidget);
-      await tester.ensureVisible(find.text('Yoruba'));
-      await tester.tap(find.text('Yoruba'));
-      await tester.pump();
+      await tapVisible(tester, find.text('Yoruba'));
       expect(find.bySemanticsLabel('Yoruba, selected'), findsOneWidget);
       handle.dispose();
     });
@@ -189,7 +233,7 @@ void main() {
       final handle = tester.ensureSemantics();
       await pumpOnboarding(tester);
       await settleOnce(tester);
-      await tester.tap(find.text('Get started'));
+      await tapVisible(tester, find.text('Get started'));
       await settleOnce(tester);
 
       expect(
@@ -238,61 +282,13 @@ void main() {
       },
     );
 
-    testWidgets('birth-year child band shows Ask a parent path', (tester) async {
+    testWidgets('birth-year child band shows Ask a parent path and wired Skip', (
+      tester,
+    ) async {
       await pumpOnboarding(tester);
       await settleOnce(tester);
-
-      // Welcome → Language
-      await tester.tap(find.text('Get started'));
-      await settleOnce(tester);
-      await tester.ensureVisible(find.text('Yoruba'));
-      await tester.tap(find.text('Yoruba'));
-      await tester.pump();
-      await tester.ensureVisible(find.text('Continue').first);
-      await tester.tap(find.text('Continue').first);
-      await settleOnce(tester);
-
-      // Goal
-      await tester.ensureVisible(find.text('Talk to family'));
-      await tester.tap(find.text('Talk to family'));
-      await tester.pump();
-      await tester.ensureVisible(find.text('Continue').first);
-      await tester.tap(find.text('Continue').first);
-      await settleOnce(tester);
-
-      // Level
-      await tester.ensureVisible(find.text("I'm new"));
-      await tester.tap(find.text("I'm new"));
-      await tester.pump();
-      await tester.ensureVisible(find.text('Continue').first);
-      await tester.tap(find.text('Continue').first);
-      await settleOnce(tester);
-
-      // First win: hear → tap correct greeting → say → celebration
-      await tester.ensureVisible(find.text('Play greeting'));
-      await tester.tap(find.text('Play greeting'));
-      await tester.pump();
-      await tester.ensureVisible(find.text('Continue').first);
-      await tester.tap(find.text('Continue').first);
-      await settleOnce(tester);
-
-      await tester.ensureVisible(find.text('Báwo ni'));
-      await tester.tap(find.text('Báwo ni'));
-      await tester.pump();
-      await tester.ensureVisible(find.text('Continue').first);
-      await tester.tap(find.text('Continue').first);
-      await settleOnce(tester);
-
-      await tester.ensureVisible(find.text('I said it'));
-      await tester.tap(find.text('I said it'));
-      await tester.pump();
-      await tester.ensureVisible(find.text('Finish lesson'));
-      await tester.tap(find.text('Finish lesson'));
-      await settleOnce(tester);
-
-      await tester.ensureVisible(find.text('Keep going'));
-      await tester.tap(find.text('Keep going'));
-      await settleOnce(tester);
+      await advanceToFirstWin(tester);
+      await completeFirstWin(tester);
 
       expect(find.text('When were you born?'), findsOneWidget);
       expect(find.textContaining('Ask a parent'), findsNothing);
@@ -318,7 +314,37 @@ void main() {
           matching: find.byType(TextButton),
         ),
       );
-      expect(skipAccount.onPressed, isNull);
+      // Skip must advance + persist even without parent email.
+      expect(skipAccount.onPressed, isNotNull);
+
+      expect(find.text('Continue with Google'), findsOneWidget);
+      expect(find.text('Continue with Apple'), findsOneWidget);
+      expect(find.text('Continue with Email'), findsOneWidget);
+    });
+
+    testWidgets('account Skip for now persists progress on device', (
+      tester,
+    ) async {
+      SharedPreferences.setMockInitialValues({});
+      await pumpOnboarding(tester);
+      await settleOnce(tester);
+      await advanceToFirstWin(tester);
+      await completeFirstWin(tester);
+
+      final yearField = find.byType(TextField).first;
+      await tester.enterText(yearField, '${DateTime.now().year - 10}');
+      await tester.pump();
+
+      await tapVisible(
+        tester,
+        find.text('Skip for now. Progress stays on this device'),
+      );
+      await settleOnce(tester);
+
+      final prefs = await SharedPreferences.getInstance();
+      expect(prefs.getString('age_category'), 'child');
+      expect(prefs.getBool('needs_guardian_consent'), isTrue);
+      expect(prefs.getBool('onboarding_account_skipped'), isTrue);
     });
 
     testWidgets('welcome survives 200% text scale without overflow', (
@@ -333,6 +359,7 @@ void main() {
       expect(tester.takeException(), isNull);
       expect(find.text('Get started'), findsOneWidget);
       expect(find.text('LingAfriq'), findsOneWidget);
+      expect(find.text('Works offline · about 2 MB per unit'), findsOneWidget);
     });
 
     testWidgets('first-win Continue stays disabled until hear action', (
@@ -340,27 +367,58 @@ void main() {
     ) async {
       await pumpOnboarding(tester);
       await settleOnce(tester);
-      await tester.tap(find.text('Get started'));
-      await settleOnce(tester);
-      await tester.ensureVisible(find.text('Yoruba'));
-      await tester.tap(find.text('Yoruba'));
-      await tester.pump();
-      await tester.tap(find.text('Continue').first);
-      await settleOnce(tester);
-      await tester.tap(find.text('Talk to family'));
-      await tester.pump();
-      await tester.tap(find.text('Continue').first);
-      await settleOnce(tester);
-      await tester.tap(find.text("I'm new"));
-      await tester.pump();
-      await tester.tap(find.text('Continue').first);
-      await settleOnce(tester);
+      await advanceToFirstWin(tester);
 
       expect(find.text('Play greeting'), findsOneWidget);
       final continueBtn = tester.widget<FilledButton>(
         continueButtonFinder(),
       );
       expect(continueBtn.onPressed, isNull);
+    });
+
+    testWidgets('Play greeting never stays silent — shows honest audio state', (
+      tester,
+    ) async {
+      await pumpOnboarding(tester);
+      await settleOnce(tester);
+      await advanceToFirstWin(tester);
+
+      await tester.tap(find.text('Play greeting'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 50));
+
+      // In tests the audio pipeline is unavailable — must disclose that.
+      expect(find.text('Audio unavailable'), findsOneWidget);
+      expect(
+        find.textContaining('could not play sound'),
+        findsOneWidget,
+      );
+
+      final continueBtn = tester.widget<FilledButton>(continueButtonFinder());
+      expect(continueBtn.onPressed, isNotNull);
+    });
+
+    testWidgets('first-win uses selected language copy (Hausa path)', (
+      tester,
+    ) async {
+      await pumpOnboarding(tester);
+      await settleOnce(tester);
+
+      await tapVisible(tester, find.text('Get started'));
+      await settleOnce(tester);
+      await tapVisible(tester, find.text('Hausa'));
+      await tapVisible(tester, find.text('Continue').first);
+      await settleOnce(tester);
+      await tapVisible(tester, find.text('Travel'));
+      await tapVisible(tester, find.text('Continue').first);
+      await settleOnce(tester);
+      await tapVisible(tester, find.text("I'm new"));
+      await tapVisible(tester, find.text('Continue').first);
+      await settleOnce(tester);
+
+      expect(find.textContaining('Hausa'), findsWidgets);
+      expect(find.textContaining('Sannu'), findsWidgets);
+      expect(find.textContaining('Yoruba'), findsNothing);
     });
   });
 }

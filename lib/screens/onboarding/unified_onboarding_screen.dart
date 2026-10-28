@@ -30,6 +30,40 @@ import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
 import 'package:lingafriq/services/connectivity_service.dart';
 import 'package:lingafriq/providers/onboarding_provider.dart';
 import 'package:lingafriq/providers/firebase_messaging_provider.dart';
+import 'package:lingafriq/providers/tts_provider.dart';
+
+/// Documented Modern Griot opacity roles — never invent ad-hoc alphas in UI.
+abstract final class _GriotAlpha {
+  /// Ghost border for inputs / quiet outlines (design system rule 3).
+  static const double ghostBorder = 0.15;
+
+  /// Soft selected fill over brandGold.
+  static const double softSelected = 0.18;
+
+  /// Selected chip / filter fill over brandGold.
+  static const double chipSelected = 0.35;
+
+  /// Progress track under coral fill.
+  static const double progressTrack = 0.12;
+
+  /// Back / icon button wash.
+  static const double iconWash = 0.08;
+
+  /// Gold accent border on value cards.
+  static const double goldBorder = 0.55;
+
+  /// Completing overlay scrim on onSurface.
+  static const double completingScrim = 0.72;
+
+  /// Quiet label wash when CTA disabled.
+  static const double disabledLabel = 0.5;
+
+  /// Signal-bar empty segment.
+  static const double signalEmpty = 0.45;
+
+  /// Ask-a-parent panel wash on primaryContainer.
+  static const double parentPanel = 0.45;
+}
 
 /// Mirrors server `agePolicy` default thresholds (P1-020).
 /// Child threshold is configurable per country (default 13, DE 16).
@@ -420,7 +454,9 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                   liveRegion: true,
                   label: 'Setting up your language village, please wait',
                   child: Container(
-                    color: ModernGriotColors.onSurface.withValues(alpha: 0.72),
+                    color: ModernGriotColors.onSurface.withValues(
+                      alpha: _GriotAlpha.completingScrim,
+                    ),
                     child: Center(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -488,7 +524,9 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                     child: const BackButtonIcon(),
                   ),
                   style: IconButton.styleFrom(
-                    backgroundColor: foregroundColor.withValues(alpha: 0.08),
+                    backgroundColor: foregroundColor.withValues(
+                      alpha: _GriotAlpha.iconWash,
+                    ),
                     minimumSize: const Size(
                       ModernGriotLayout.minTouchTarget,
                       ModernGriotLayout.minTouchTarget,
@@ -515,7 +553,9 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                           children: [
                             Container(
                               height: ModernGriotSpacing.xxs.h,
-                              color: foregroundColor.withValues(alpha: 0.12),
+                              color: foregroundColor.withValues(
+                                alpha: _GriotAlpha.progressTrack,
+                              ),
                             ),
                             AnimatedContainer(
                               duration: _motionDuration(
@@ -550,7 +590,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                     'Skip',
                     style: ModernGriotTypography.labelLarge(
                       context: context,
-                      color: foregroundColor.withValues(alpha: 0.9),
+                      color: foregroundColor,
                     ),
                   ),
                 ),
@@ -885,7 +925,7 @@ class _PrimaryCta extends StatelessWidget {
             foregroundColor: foreground,
             disabledBackgroundColor: ModernGriotColors.surfaceContainerHighest,
             disabledForegroundColor: ModernGriotColors.onSurfaceVariant
-                .withValues(alpha: 0.5),
+                .withValues(alpha: _GriotAlpha.disabledLabel),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
             ),
@@ -936,13 +976,17 @@ class _SelectRow extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: ModernGriotSpacing.md.w, vertical: ModernGriotSpacing.sm.h),
             decoration: BoxDecoration(
               color: isSelected
-                  ? ModernGriotColors.brandGold.withValues(alpha: 0.18)
+                  ? ModernGriotColors.brandGold.withValues(
+                      alpha: _GriotAlpha.softSelected,
+                    )
                   : ModernGriotColors.surfaceContainerLowest,
-              borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
+              borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
               border: Border.all(
                 color: isSelected
                     ? ModernGriotColors.brandCoral
-                    : ModernGriotColors.outlineVariant.withValues(alpha: 0.35),
+                    : ModernGriotColors.outlineVariant.withValues(
+                        alpha: _GriotAlpha.ghostBorder,
+                      ),
                 width: isSelected ? 2 : 1,
               ),
             ),
@@ -991,7 +1035,7 @@ class _SelectRow extends StatelessWidget {
 }
 
 // =============================================================================
-// 1. Welcome — Finch mascot + Speak promise
+// 1. Welcome — Finch mascot + Speak promise (Polie ~55%)
 // =============================================================================
 
 class _WelcomeStep extends StatelessWidget {
@@ -999,6 +1043,153 @@ class _WelcomeStep extends StatelessWidget {
 
   final VoidCallback onNext;
   final VoidCallback onHaveAccount;
+
+  Widget _poliePlane(BuildContext context, double side) {
+    return Semantics(
+      label:
+          'LingAfriq. Speak African languages with confidence. '
+          'Learn with Polie. Works offline.',
+      child: ExcludeSemantics(
+        child: Center(
+          child: SizedBox(
+            width: side,
+            height: side,
+            child: ClipRect(
+              child: OverflowBox(
+                maxHeight: double.infinity,
+                alignment: Alignment.topCenter,
+                child: OnboardingAvatarWidget(
+                  step: OnboardingStep.welcome,
+                  size: side,
+                  animate: true,
+                  showDialogue: false,
+                ),
+              ),
+            ),
+          )
+              .animate()
+              .scale(
+                delay: _motionDelay(context, 200.ms),
+                duration: _motionDuration(context, 600.ms),
+                curve: Curves.easeOut,
+              )
+              .fadeIn(duration: _motionDuration(context, 500.ms)),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _copyAndActions(BuildContext context) {
+    return [
+      Text(
+        'Welcome to',
+        textAlign: TextAlign.center,
+        style: ModernGriotTypography.titleMedium(
+          context: context,
+          color: ModernGriotColors.onSurfaceVariant,
+        ),
+      ).animate().fadeIn(
+        delay: _motionDelay(context, 400.ms),
+        duration: _motionDuration(context, 300.ms),
+      ),
+      SizedBox(height: ModernGriotSpacing.xxs.h),
+      Text(
+        'LingAfriq',
+        textAlign: TextAlign.center,
+        style: ModernGriotTypography.displaySmall(
+          context: context,
+          color: ModernGriotColors.onSurface,
+        ).copyWith(height: 1.05),
+      ),
+      SizedBox(height: ModernGriotSpacing.xs.h),
+      Text(
+        'The language village that gets you speaking.',
+        textAlign: TextAlign.center,
+        style: ModernGriotTypography.headlineSmall(
+          context: context,
+          color: ModernGriotColors.onSurface,
+        ).copyWith(height: 1.25),
+      ),
+      SizedBox(height: ModernGriotSpacing.xxs.h),
+      Text(
+        'Short lessons with Polie. Hear, tap, and say real phrases.',
+        textAlign: TextAlign.center,
+        style: ModernGriotTypography.bodyMedium(
+          context: context,
+          color: ModernGriotColors.onSurfaceVariant,
+        ),
+      ),
+      SizedBox(height: ModernGriotSpacing.sm.h),
+      Semantics(
+        label: 'Works offline, about 2 megabytes per unit',
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: ModernGriotSpacing.sm.w,
+            vertical: ModernGriotSpacing.xxs.h,
+          ),
+          decoration: BoxDecoration(
+            color: ModernGriotColors.surfaceContainerHigh,
+            borderRadius: BorderRadius.circular(ModernGriotRadius.pill),
+          ),
+          child: Text(
+            'Works offline · about 2 MB per unit',
+            textAlign: TextAlign.center,
+            style: ModernGriotTypography.labelMedium(
+              context: context,
+              color: ModernGriotColors.onSurface,
+            ),
+          ),
+        ),
+      ),
+      SizedBox(height: ModernGriotSpacing.md.h),
+      SizedBox(
+        width: double.infinity,
+        height: math.max(
+          ModernGriotLayout.minTouchTarget.h,
+          ModernGriotLayout.minTouchTarget.toDouble(),
+        ),
+        child: FilledButton(
+          onPressed: () {
+            HapticFeedback.mediumImpact();
+            onNext();
+          },
+          style: FilledButton.styleFrom(
+            backgroundColor: ModernGriotColors.brandGold,
+            foregroundColor: ModernGriotColors.onBrandGold,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
+            ),
+          ),
+          child: Text(
+            'Get started',
+            style: ModernGriotTypography.titleMedium(
+              context: context,
+              color: ModernGriotColors.onBrandGold,
+            ),
+          ),
+        ),
+      ).animate().fadeIn(
+        delay: _motionDelay(context, 800.ms),
+        duration: _motionDuration(context, 300.ms),
+      ),
+      TextButton(
+        onPressed: onHaveAccount,
+        style: TextButton.styleFrom(
+          minimumSize: const Size(
+            ModernGriotLayout.minTouchTarget,
+            ModernGriotLayout.minTouchTarget,
+          ),
+        ),
+        child: Text(
+          'I already have an account',
+          style: ModernGriotTypography.labelLarge(
+            context: context,
+            color: ModernGriotColors.onSurface,
+          ),
+        ),
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1010,7 +1201,7 @@ class _WelcomeStep extends StatelessWidget {
           colors: [
             ModernGriotColors.tertiaryContainer,
             ModernGriotColors.surface,
-            ModernGriotColors.surfaceContainer,
+            ModernGriotColors.surfaceContainerLow,
           ],
           stops: [0.0, 0.55, 1.0],
         ),
@@ -1018,165 +1209,47 @@ class _WelcomeStep extends StatelessWidget {
       child: ResponsiveSafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
-            final mascotSide = math.min(
+            final textScale = MediaQuery.textScalerOf(context).scale(1);
+            final useScroll = textScale >= 1.5;
+            final polieSide = math.min(
               constraints.maxWidth - ModernGriotSpacing.lg.w * 2,
-              constraints.maxHeight * 0.42,
+              // ~55% of the viewport at default scale; shrink when text grows.
+              constraints.maxHeight * (useScroll ? 0.28 : 0.55),
             );
-            return SingleChildScrollView(
-              padding: EdgeInsets.symmetric(
-                horizontal: ModernGriotSpacing.lg.w,
-              ),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+
+            if (useScroll) {
+              return SingleChildScrollView(
+                padding: EdgeInsets.symmetric(
+                  horizontal: ModernGriotSpacing.lg.w,
+                ),
                 child: Column(
                   children: [
-                    SizedBox(height: ModernGriotSpacing.xxl.h),
-                    Semantics(
-                      label:
-                          'LingAfriq. Speak African languages with confidence. '
-                          'Learn with Polie. Works offline.',
-                      child: ExcludeSemantics(
-                        child: SizedBox(
-                          width: mascotSide,
-                          height: mascotSide,
-                          child: ClipRect(
-                            child: OverflowBox(
-                              maxHeight: double.infinity,
-                              alignment: Alignment.topCenter,
-                              child: OnboardingAvatarWidget(
-                                step: OnboardingStep.welcome,
-                                size: mascotSide,
-                                animate: true,
-                                showDialogue: false,
-                              ),
-                            ),
-                          ),
-                        )
-                            .animate()
-                            .scale(
-                              delay: _motionDelay(context, 200.ms),
-                              duration: _motionDuration(context, 600.ms),
-                              curve: Curves.easeOut,
-                            )
-                            .fadeIn(
-                              duration: _motionDuration(context, 500.ms),
-                            ),
-                      ),
-                    ),
-                    SizedBox(height: ModernGriotSpacing.md.h),
-                    Text(
-                      'Welcome to',
-                      textAlign: TextAlign.center,
-                      style: ModernGriotTypography.titleMedium(
-                        context: context,
-                        color: ModernGriotColors.onSurfaceVariant,
-                      ),
-                    ).animate().fadeIn(
-                      delay: _motionDelay(context, 400.ms),
-                      duration: _motionDuration(context, 300.ms),
-                    ),
-                    SizedBox(height: ModernGriotSpacing.xxs.h),
-                    Text(
-                      'LingAfriq',
-                      textAlign: TextAlign.center,
-                      style: ModernGriotTypography.displaySmall(
-                        context: context,
-                        color: ModernGriotColors.onSurface,
-                      ).copyWith(height: 1.05),
-                    ),
-                    SizedBox(height: ModernGriotSpacing.xs.h),
-                    Text(
-                      'The language village that gets you speaking.',
-                      textAlign: TextAlign.center,
-                      style: ModernGriotTypography.headlineSmall(
-                        context: context,
-                        color: ModernGriotColors.onSurface,
-                      ).copyWith(height: 1.2),
-                    ),
-                    SizedBox(height: ModernGriotSpacing.xxs.h),
-                    Text(
-                      'Short lessons with Polie. Hear, tap, and say real phrases.',
-                      textAlign: TextAlign.center,
-                      style: ModernGriotTypography.bodyMedium(
-                        context: context,
-                        color: ModernGriotColors.onSurfaceVariant,
-                      ),
-                    ),
-                    SizedBox(height: ModernGriotSpacing.sm.h),
-                    Semantics(
-                      label: 'Works offline, about 2 megabytes per unit',
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: ModernGriotSpacing.sm.w,
-                          vertical: ModernGriotSpacing.xxs.h,
-                        ),
-                        decoration: BoxDecoration(
-                          color: ModernGriotColors.surfaceContainerHigh,
-                          borderRadius: BorderRadius.circular(
-                            ModernGriotRadius.pill,
-                          ),
-                        ),
-                        child: Text(
-                          'Works offline · about 2 MB per unit',
-                          style: ModernGriotTypography.labelMedium(
-                            context: context,
-                            color: ModernGriotColors.onSurface,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: ModernGriotSpacing.md.h),
+                    SizedBox(height: ModernGriotSpacing.xl.h),
                     SizedBox(
+                      height: polieSide,
                       width: double.infinity,
-                      height: math.max(
-                        ModernGriotLayout.minTouchTarget.h,
-                        ModernGriotLayout.minTouchTarget.toDouble(),
-                      ),
-                      child: FilledButton(
-                        onPressed: () {
-                          HapticFeedback.mediumImpact();
-                          onNext();
-                        },
-                        style: FilledButton.styleFrom(
-                          backgroundColor: ModernGriotColors.brandGold,
-                          foregroundColor: ModernGriotColors.onBrandGold,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              ModernGriotRadius.xl,
-                            ),
-                          ),
-                        ),
-                        child: Text(
-                          'Get started',
-                          style: ModernGriotTypography.titleMedium(
-                            context: context,
-                            color: ModernGriotColors.onBrandGold,
-                          ),
-                        ),
-                      ),
-                    ).animate().fadeIn(
-                      delay: _motionDelay(context, 800.ms),
-                      duration: _motionDuration(context, 300.ms),
+                      child: _poliePlane(context, polieSide),
                     ),
-                    TextButton(
-                      onPressed: onHaveAccount,
-                      style: TextButton.styleFrom(
-                        minimumSize: const Size(
-                          ModernGriotLayout.minTouchTarget,
-                          ModernGriotLayout.minTouchTarget,
-                        ),
-                      ),
-                      child: Text(
-                        'I already have an account',
-                        style: ModernGriotTypography.labelLarge(
-                          context: context,
-                          color: ModernGriotColors.onSurface,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: ModernGriotSpacing.xs.h),
+                    SizedBox(height: ModernGriotSpacing.md.h),
+                    ..._copyAndActions(context),
+                    SizedBox(height: ModernGriotSpacing.md.h),
                   ],
                 ),
+              );
+            }
+
+            // Finch/Speak composition: Polie owns the top ~55%; CTA stays on-screen.
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: ModernGriotSpacing.lg.w),
+              child: Column(
+                children: [
+                  Expanded(
+                    flex: 55,
+                    child: _poliePlane(context, polieSide),
+                  ),
+                  ..._copyAndActions(context),
+                  SizedBox(height: ModernGriotSpacing.xs.h),
+                ],
               ),
             );
           },
@@ -1305,9 +1378,17 @@ class _LanguagePickStep extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedLearn = useState<String?>(null);
-    final selectedHome = useState<String>('en');
+    // Null until the learner overrides — defaults from device locale in build.
+    final selectedHomeOverride = useState<String?>(null);
     final query = useState('');
     final searchController = useTextEditingController();
+
+    final deviceLang =
+        Localizations.localeOf(context).languageCode.toLowerCase();
+    final deviceHome = _homeLanguages.any((h) => h['code'] == deviceLang)
+        ? deviceLang
+        : 'en';
+    final selectedHome = selectedHomeOverride.value ?? deviceHome;
 
     final filtered = _learnLanguages.where((lang) {
       final q = query.value.trim().toLowerCase();
@@ -1329,20 +1410,20 @@ class _LanguagePickStep extends HookConsumerWidget {
         enabled: selectedLearn.value != null,
         onPressed: () async {
           try {
-            await DynamicLocalizationService.setLanguage(selectedHome.value);
+            await DynamicLocalizationService.setLanguage(selectedHome);
           } catch (e) {
             logger.error('Error setting language', error: e);
           }
           try {
             final prefs = await SharedPreferences.getInstance();
-            await prefs.setString('proficiency_language', selectedHome.value);
+            await prefs.setString('proficiency_language', selectedHome);
             await prefs.setString('learning_language', selectedLearn.value!);
             scheduleGamesPreloadAfterLearningLanguageSaved(ref);
           } catch (e) {
             logger.error('Error saving languages', error: e);
           }
           onNext({
-            'proficiency_language': selectedHome.value,
+            'proficiency_language': selectedHome,
             'learning_language': selectedLearn.value,
           });
         },
@@ -1360,10 +1441,10 @@ class _LanguagePickStep extends HookConsumerWidget {
                   padding: EdgeInsets.all(ModernGriotSpacing.sm.w),
                   decoration: BoxDecoration(
                     color: ModernGriotColors.surfaceContainerLowest,
-                    borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
+                    borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
                     border: Border.all(
                       color: ModernGriotColors.outlineVariant.withValues(
-                        alpha: 0.35,
+                        alpha: _GriotAlpha.ghostBorder,
                       ),
                     ),
                   ),
@@ -1395,15 +1476,17 @@ class _LanguagePickStep extends HookConsumerWidget {
                   Padding(
                     padding: EdgeInsetsDirectional.only(end: ModernGriotSpacing.xs.w),
                     child: FilterChip(
-                      selected: selectedHome.value == home['code'],
+                      selected: selectedHome == home['code'],
                       label: Text(home['name']!),
                       onSelected: (_) {
                         HapticFeedback.selectionClick();
-                        selectedHome.value = home['code']!;
+                        selectedHomeOverride.value = home['code']!;
                       },
                       materialTapTargetSize: MaterialTapTargetSize.padded,
                       visualDensity: VisualDensity.standard,
-                      selectedColor: ModernGriotColors.brandGold.withValues(alpha: 0.35),
+                      selectedColor: ModernGriotColors.brandGold.withValues(
+                        alpha: _GriotAlpha.chipSelected,
+                      ),
                       checkmarkColor: ModernGriotColors.brandCoral,
                       labelStyle: ModernGriotTypography.labelLarge(
                         context: context,
@@ -1431,7 +1514,7 @@ class _LanguagePickStep extends HookConsumerWidget {
                 borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
                 borderSide: BorderSide(
                   color: ModernGriotColors.outlineVariant.withValues(
-                    alpha: 0.35,
+                    alpha: _GriotAlpha.ghostBorder,
                   ),
                 ),
               ),
@@ -1439,7 +1522,7 @@ class _LanguagePickStep extends HookConsumerWidget {
                 borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
                 borderSide: BorderSide(
                   color: ModernGriotColors.outlineVariant.withValues(
-                    alpha: 0.35,
+                    alpha: _GriotAlpha.ghostBorder,
                   ),
                 ),
               ),
@@ -1531,7 +1614,9 @@ class _ScriptGlyphBadge extends StatelessWidget {
         color: ModernGriotColors.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(ModernGriotRadius.md),
         border: Border.all(
-          color: ModernGriotColors.outlineVariant.withValues(alpha: 0.4),
+          color: ModernGriotColors.outlineVariant.withValues(
+            alpha: _GriotAlpha.ghostBorder,
+          ),
         ),
       ),
       child: Text(
@@ -1689,7 +1774,9 @@ class _GoalStep extends HookConsumerWidget {
                     },
                     materialTapTargetSize: MaterialTapTargetSize.padded,
                     visualDensity: VisualDensity.standard,
-                    selectedColor: ModernGriotColors.brandGold.withValues(alpha: 0.4),
+                    selectedColor: ModernGriotColors.brandGold.withValues(
+                      alpha: _GriotAlpha.chipSelected,
+                    ),
                     labelStyle: ModernGriotTypography.labelLarge(
                       context: context,
                       color: ModernGriotColors.onSurface,
@@ -1791,10 +1878,10 @@ class _LevelPlacementStep extends HookConsumerWidget {
                   padding: EdgeInsets.all(ModernGriotSpacing.sm.w),
                   decoration: BoxDecoration(
                     color: ModernGriotColors.surfaceContainerLowest,
-                    borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
+                    borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
                     border: Border.all(
                       color: ModernGriotColors.outlineVariant.withValues(
-                        alpha: 0.35,
+                        alpha: _GriotAlpha.ghostBorder,
                       ),
                     ),
                   ),
@@ -1848,7 +1935,7 @@ class _LevelPlacementStep extends HookConsumerWidget {
             Wrap(
               spacing: ModernGriotSpacing.xs.w,
               children: [
-                for (final word in const ['Báwo', 'Ẹ káàárọ̀', 'Oúnjẹ'])
+                for (final word in _quickCheckWords(learningLanguage))
                   FilterChip(
                     label: Text(word),
                     selected: quickAnswers.value > 0,
@@ -1866,6 +1953,24 @@ class _LevelPlacementStep extends HookConsumerWidget {
         ],
       ),
     );
+  }
+}
+
+List<String> _quickCheckWords(String code) {
+  final copy = _lessonCopyFor(code);
+  switch (code) {
+    case 'ha':
+      return [copy.hear, 'Na gode', 'Ina kwana'];
+    case 'ig':
+      return [copy.hear, 'Kedu', 'Daalụ'];
+    case 'sw':
+      return [copy.hear, 'Asante', 'Jambo'];
+    case 'am':
+      return [copy.hear, 'አመሰግናለሁ', 'እንደምን'];
+    case 'zu':
+      return [copy.hear, 'Ngiyabonga', 'Unjani'];
+    default:
+      return [copy.hear, 'Ẹ káàárọ̀', 'Oúnjẹ'];
   }
 }
 
@@ -1893,7 +1998,9 @@ class _SignalBars extends StatelessWidget {
               decoration: BoxDecoration(
                 color: on
                     ? ModernGriotColors.primary
-                    : ModernGriotColors.outlineVariant.withValues(alpha: 0.45),
+                    : ModernGriotColors.outlineVariant.withValues(
+                        alpha: _GriotAlpha.signalEmpty,
+                      ),
                 borderRadius: BorderRadius.circular(ModernGriotRadius.xs / 2),
               ),
             ),
@@ -2027,15 +2134,53 @@ class _FirstWinStep extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final phase = useState(0); // 0 hear, 1 tap, 2 say, 3 celebration
     final heard = useState(false);
+    final audioStatus = useState<_GreetingAudioStatus>(
+      _GreetingAudioStatus.idle,
+    );
     final pickedTap = useState<String?>(null);
     final saidReady = useState(false);
     final reduceMotion = MediaQuery.disableAnimationsOf(context);
     final copy = _lessonCopyFor(learningLanguage);
-    final tapChoices = [
-      copy.tap,
-      'Hello',
-      learningLanguage == 'sw' ? 'Jambo' : 'Sannu',
-    ];
+    final decoy = switch (learningLanguage) {
+      'sw' => 'Jambo',
+      'ha' => 'Ina kwana',
+      'ig' => 'Kedu',
+      'am' => 'ታደለ',
+      'zu' => 'Unjani',
+      _ => 'Sannu',
+    };
+    final tapChoices = [copy.tap, 'Hello', decoy];
+
+    Future<void> playGreeting() async {
+      if (audioStatus.value == _GreetingAudioStatus.playing) return;
+      HapticFeedback.selectionClick();
+      audioStatus.value = _GreetingAudioStatus.playing;
+      // Widget tests have no audio pipeline — still show an honest outcome.
+      if (Platform.environment.containsKey('FLUTTER_TEST')) {
+        audioStatus.value = _GreetingAudioStatus.unavailable;
+        heard.value = true;
+        return;
+      }
+      var played = false;
+      try {
+        played = await ref
+            .read(ttsProvider.notifier)
+            .speak(
+              copy.hear,
+              languageName: copy.name.toLowerCase(),
+            )
+            .timeout(const Duration(seconds: 4), onTimeout: () => false);
+      } catch (e) {
+        logger.warn('First-win greeting TTS failed', error: e);
+        played = false;
+      }
+      if (!context.mounted) return;
+      // Honest outcome: real audio OR explicit unavailable — never silent.
+      audioStatus.value = played
+          ? _GreetingAudioStatus.heard
+          : _GreetingAudioStatus.unavailable;
+      heard.value = true;
+    }
 
     if (phase.value >= 3) {
       return _StepScaffold(
@@ -2179,14 +2324,17 @@ class _FirstWinStep extends HookConsumerWidget {
             Center(
               child: Semantics(
                 button: true,
-                label: heard.value
-                    ? 'Greeting played'
-                    : 'Play greeting ${copy.hear}',
+                liveRegion: true,
+                label: switch (audioStatus.value) {
+                  _GreetingAudioStatus.heard => 'Greeting played',
+                  _GreetingAudioStatus.unavailable => 'Audio unavailable',
+                  _GreetingAudioStatus.playing => 'Playing greeting',
+                  _GreetingAudioStatus.idle => 'Play greeting ${copy.hear}',
+                },
                 child: OutlinedButton.icon(
-                  onPressed: () {
-                    HapticFeedback.selectionClick();
-                    heard.value = true;
-                  },
+                  onPressed: audioStatus.value == _GreetingAudioStatus.playing
+                      ? null
+                      : playGreeting,
                   style: OutlinedButton.styleFrom(
                     minimumSize: Size(
                       ModernGriotLayout.minTouchTarget * 2.5,
@@ -2196,14 +2344,37 @@ class _FirstWinStep extends HookConsumerWidget {
                     side: const BorderSide(color: ModernGriotColors.brandCoral),
                   ),
                   icon: Icon(
-                    heard.value
-                        ? Icons.check_circle_rounded
-                        : Icons.volume_up_rounded,
+                    switch (audioStatus.value) {
+                      _GreetingAudioStatus.heard =>
+                        Icons.check_circle_rounded,
+                      _GreetingAudioStatus.unavailable =>
+                        Icons.volume_off_rounded,
+                      _GreetingAudioStatus.playing => Icons.graphic_eq_rounded,
+                      _GreetingAudioStatus.idle => Icons.volume_up_rounded,
+                    },
                   ),
-                  label: Text(heard.value ? 'Heard it' : 'Play greeting'),
+                  label: Text(
+                    switch (audioStatus.value) {
+                      _GreetingAudioStatus.heard => 'Heard it',
+                      _GreetingAudioStatus.unavailable => 'Audio unavailable',
+                      _GreetingAudioStatus.playing => 'Playing…',
+                      _GreetingAudioStatus.idle => 'Play greeting',
+                    },
+                  ),
                 ),
               ),
             ),
+            if (audioStatus.value == _GreetingAudioStatus.unavailable) ...[
+              SizedBox(height: ModernGriotSpacing.xs.h),
+              Text(
+                'We could not play sound right now. You can still continue.',
+                textAlign: TextAlign.center,
+                style: ModernGriotTypography.bodySmall(
+                  context: context,
+                  color: ModernGriotColors.onSurfaceVariant,
+                ),
+              ),
+            ],
           ] else if (phase.value == 1) ...[
             Center(
               child: Text(
@@ -2286,6 +2457,8 @@ class _FirstWinStep extends HookConsumerWidget {
   }
 }
 
+enum _GreetingAudioStatus { idle, playing, heard, unavailable }
+
 class _ConfettiBurst extends StatelessWidget {
   const _ConfettiBurst();
 
@@ -2354,7 +2527,9 @@ class _StatTile extends StatelessWidget {
           color: ModernGriotColors.surfaceContainerLowest,
           borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
           border: Border.all(
-            color: ModernGriotColors.outlineVariant.withValues(alpha: 0.3),
+            color: ModernGriotColors.outlineVariant.withValues(
+              alpha: _GriotAlpha.ghostBorder,
+            ),
           ),
         ),
         child: Column(
@@ -2383,7 +2558,7 @@ class _StatTile extends StatelessWidget {
 }
 
 // =============================================================================
-// 6. Account + age — birth-year wheel, Ask-a-parent, sign-in offer
+// 6. Account + age — birth-year wheel, Ask-a-parent, distinct sign-in
 // =============================================================================
 
 class _AccountAgeStep extends HookConsumerWidget {
@@ -2416,24 +2591,29 @@ class _AccountAgeStep extends HookConsumerWidget {
     final emailOk = !isChild ||
         RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(parentEmail.value.trim());
 
-    Future<void> persistAndContinue() async {
+    Future<void> persistAndContinue({required bool requireParentEmail}) async {
       final year = selectedYear.value;
-      final ageBand = band!;
+      final ageBand = band;
+      if (ageBand == null) return;
+      if (requireParentEmail && isChild && !emailOk) return;
       try {
         await ref
             .read(onboardingProvider.notifier)
             .persistRegistrationBirthYear(year, ageBand);
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('age_category', ageBand);
+        await prefs.setInt('birth_year', year);
         if (existingReasons.isNotEmpty) {
           await prefs.setStringList('learning_reasons', existingReasons);
         }
         if (isChild) {
-          await prefs.setString(
-            'guardian_email',
-            parentEmail.value.trim(),
-          );
+          final email = parentEmail.value.trim();
+          if (email.isNotEmpty) {
+            await prefs.setString('guardian_email', email);
+          }
+          await prefs.setBool('needs_guardian_consent', true);
         }
+        await prefs.setBool('onboarding_account_skipped', !requireParentEmail);
       } catch (e) {
         logger.error('Error saving age', error: e);
         if (context.mounted) {
@@ -2457,8 +2637,10 @@ class _AccountAgeStep extends HookConsumerWidget {
         'age_band': ageBand,
         'age_category': ageBand,
         if (existingReasons.isNotEmpty) 'learning_reasons': existingReasons,
-        if (isChild) 'guardian_email': parentEmail.value.trim(),
+        if (isChild && parentEmail.value.trim().isNotEmpty)
+          'guardian_email': parentEmail.value.trim(),
         if (isChild) 'needs_guardian_consent': true,
+        'account_skipped': !requireParentEmail,
       });
     }
 
@@ -2466,11 +2648,12 @@ class _AccountAgeStep extends HookConsumerWidget {
       bottom: _PrimaryCta(
         label: isChild ? 'Ask a parent to continue' : 'Continue',
         enabled: band != null && emailOk,
-        onPressed: persistAndContinue,
+        onPressed: () => persistAndContinue(requireParentEmail: true),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // ── Section A: Age ──────────────────────────────────────────────
           Text(
             'When were you born?',
             style: ModernGriotTypography.headlineSmall(
@@ -2524,8 +2707,6 @@ class _AccountAgeStep extends HookConsumerWidget {
               ),
             ),
           ),
-          // Accessible fallback for tests / screen readers that prefer
-          // typed input over a wheel.
           SizedBox(height: ModernGriotSpacing.xs.h),
           Semantics(
             label: 'Birth year',
@@ -2566,7 +2747,7 @@ class _AccountAgeStep extends HookConsumerWidget {
                 width: double.infinity,
                 padding: EdgeInsets.all(ModernGriotSpacing.md.w),
                 decoration: BoxDecoration(
-                  color: ModernGriotColors.primaryContainer.withValues(alpha: 0.45),
+                  color: ModernGriotColors.secondaryContainer,
                   borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
                 ),
                 child: Column(
@@ -2576,7 +2757,7 @@ class _AccountAgeStep extends HookConsumerWidget {
                       'Ask a parent',
                       style: ModernGriotTypography.titleMedium(
                         context: context,
-                        color: ModernGriotColors.onSurface,
+                        color: ModernGriotColors.onSecondaryContainer,
                       ),
                     ),
                     SizedBox(height: ModernGriotSpacing.xxs.h),
@@ -2585,7 +2766,7 @@ class _AccountAgeStep extends HookConsumerWidget {
                       'and we will send a kind invite. No dead ends.',
                       style: ModernGriotTypography.bodyMedium(
                         context: context,
-                        color: ModernGriotColors.onSurface,
+                        color: ModernGriotColors.onSecondaryContainer,
                       ),
                     ),
                     SizedBox(height: ModernGriotSpacing.sm.h),
@@ -2625,50 +2806,142 @@ class _AccountAgeStep extends HookConsumerWidget {
               ),
             ),
           ],
-          SizedBox(height: ModernGriotSpacing.lg.h),
-          Text(
-            'Save progress with an account',
-            style: ModernGriotTypography.titleMedium(
-              context: context,
-              color: ModernGriotColors.onSurface,
+
+          SizedBox(height: ModernGriotSpacing.xl.h),
+
+          // ── Section B: Account (visually separated) ─────────────────────
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(ModernGriotSpacing.md.w),
+            decoration: BoxDecoration(
+              color: ModernGriotColors.surfaceContainerLow,
+              borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Save progress with an account',
+                  style: ModernGriotTypography.titleMedium(
+                    context: context,
+                    color: ModernGriotColors.onSurface,
+                  ),
+                ),
+                SizedBox(height: ModernGriotSpacing.xxs.h),
+                Text(
+                  'Optional. Your answers already stay on this device.',
+                  style: ModernGriotTypography.bodySmall(
+                    context: context,
+                    color: ModernGriotColors.onSurfaceVariant,
+                  ),
+                ),
+                SizedBox(height: ModernGriotSpacing.md.h),
+                _AuthProviderButton(
+                  label: 'Continue with Google',
+                  icon: Icons.g_mobiledata_rounded,
+                  background: ModernGriotColors.surfaceContainerLowest,
+                  foreground: ModernGriotColors.onSurface,
+                  border: ModernGriotColors.outline,
+                  onPressed: onSignIn,
+                ),
+                SizedBox(height: ModernGriotSpacing.xs.h),
+                _AuthProviderButton(
+                  label: 'Continue with Apple',
+                  icon: Icons.apple,
+                  background: ModernGriotColors.inverseSurface,
+                  foreground: ModernGriotColors.onInverseSurface,
+                  border: ModernGriotColors.inverseSurface,
+                  onPressed: onSignIn,
+                ),
+                SizedBox(height: ModernGriotSpacing.xs.h),
+                _AuthProviderButton(
+                  label: 'Continue with Email',
+                  icon: Icons.mail_outline_rounded,
+                  background: ModernGriotColors.tertiaryContainer,
+                  foreground: ModernGriotColors.onTertiaryContainer,
+                  border: ModernGriotColors.tertiary,
+                  onPressed: onSignIn,
+                ),
+              ],
             ),
           ),
-          SizedBox(height: ModernGriotSpacing.xs.h),
-          Wrap(
-            spacing: ModernGriotSpacing.xs.w,
-            children: [
-              OutlinedButton(
-                onPressed: onSignIn,
-                child: const Text('Google'),
+          SizedBox(height: ModernGriotSpacing.sm.h),
+          // Skip MUST advance and persist — never a dead no-op.
+          Center(
+            child: TextButton(
+              onPressed: band == null
+                  ? null
+                  : () => persistAndContinue(requireParentEmail: false),
+              style: TextButton.styleFrom(
+                minimumSize: const Size(
+                  ModernGriotLayout.minTouchTarget,
+                  ModernGriotLayout.minTouchTarget,
+                ),
               ),
-              OutlinedButton(
-                onPressed: onSignIn,
-                child: const Text('Apple'),
-              ),
-              OutlinedButton(
-                onPressed: onSignIn,
-                child: const Text('Email'),
-              ),
-            ],
-          ),
-          TextButton(
-            onPressed: (band != null && emailOk) ? persistAndContinue : null,
-            style: TextButton.styleFrom(
-              minimumSize: const Size(
-                ModernGriotLayout.minTouchTarget,
-                ModernGriotLayout.minTouchTarget,
-              ),
-            ),
-            child: Text(
-              'Skip for now. Progress stays on this device',
-              style: ModernGriotTypography.labelMedium(
-                context: context,
-                color: ModernGriotColors.onSurfaceVariant,
+              child: Text(
+                'Skip for now. Progress stays on this device',
+                textAlign: TextAlign.center,
+                style: ModernGriotTypography.labelMedium(
+                  context: context,
+                  color: ModernGriotColors.onSurfaceVariant,
+                ),
               ),
             ),
           ),
           SizedBox(height: ModernGriotSpacing.lg.h),
         ],
+      ),
+    );
+  }
+}
+
+class _AuthProviderButton extends StatelessWidget {
+  const _AuthProviderButton({
+    required this.label,
+    required this.icon,
+    required this.background,
+    required this.foreground,
+    required this.border,
+    required this.onPressed,
+  });
+
+  final String label;
+  final IconData icon;
+  final Color background;
+  final Color foreground;
+  final Color border;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: math.max(
+        ModernGriotLayout.minTouchTarget.h,
+        ModernGriotLayout.minTouchTarget.toDouble(),
+      ),
+      child: Semantics(
+        button: true,
+        label: label,
+        child: OutlinedButton.icon(
+          onPressed: onPressed,
+          icon: Icon(icon, color: foreground),
+          label: Text(
+            label,
+            style: ModernGriotTypography.labelLarge(
+              context: context,
+              color: foreground,
+            ),
+          ),
+          style: OutlinedButton.styleFrom(
+            backgroundColor: background,
+            foregroundColor: foreground,
+            side: BorderSide(color: border, width: 1.5),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -2786,7 +3059,9 @@ class _NotificationsStep extends HookConsumerWidget {
               color: ModernGriotColors.surfaceContainerLowest,
               borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
               border: Border.all(
-                color: ModernGriotColors.brandGold.withValues(alpha: 0.55),
+                color: ModernGriotColors.brandGold.withValues(
+                  alpha: _GriotAlpha.goldBorder,
+                ),
                 width: 2,
               ),
             ),
@@ -2818,7 +3093,9 @@ class _NotificationsStep extends HookConsumerWidget {
                     vertical: ModernGriotSpacing.xxs.h,
                   ),
                   decoration: BoxDecoration(
-                    color: ModernGriotColors.brandGold.withValues(alpha: 0.35),
+                    color: ModernGriotColors.brandGold.withValues(
+                      alpha: _GriotAlpha.chipSelected,
+                    ),
                     borderRadius: BorderRadius.circular(ModernGriotRadius.pill),
                   ),
                   child: Text(
@@ -3150,8 +3427,9 @@ class _ProfileStep extends HookConsumerWidget {
               onTap: pickAvatar,
               child: CircleAvatar(
                 radius: ModernGriotSpacing.xxl.r,
-                backgroundColor:
-                    ModernGriotColors.brandGold.withValues(alpha: 0.35),
+                backgroundColor: ModernGriotColors.brandGold.withValues(
+                  alpha: _GriotAlpha.chipSelected,
+                ),
                 backgroundImage: avatarPath.value != null
                     ? FileImage(File(avatarPath.value!))
                     : null,
