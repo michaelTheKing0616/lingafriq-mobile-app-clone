@@ -455,7 +455,7 @@ P12-019	Done	Chaos/offline resilience: fault injector, harness, AC1–AC4 tests	
 P12-020	Done	Rehearse schema-versioned local migrations drill (local_migration_drill_harness.dart, local_migration_drill.py)	P12/P12-020.yaml
 P12-021	Draft	Conduct accessibility audit with disabled users	P12/P12-021.yaml
 P12-022	Done	Release readiness from CI evidence only (release_readiness_checklist.py, items yaml)	P12/P12-022.yaml
-P13-001	Draft	Create later-wave language admission template	P13/P13-001.yaml
+P13-001	Done	Later-wave admission YAML template + validator (later_wave_admission.py)	P13/P13-001.yaml
 P13-002	Draft	Add Lanfrica source discovery and FSI/Peace Corps cross-check	P13/P13-002.yaml
 P13-003	Draft	Block later-wave languages beyond L0 without a lexicon	P13/P13-003.yaml
 P13-004	Draft	Decide moonshot start gate respecting new-breadth stop	P13/P13-004.yaml

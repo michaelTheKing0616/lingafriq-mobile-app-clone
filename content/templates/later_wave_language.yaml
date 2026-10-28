@@ -1,0 +1,22 @@
+# Later-wave language admission file (P13-001, CURRICULUM §2.4).
+# Copy this file per candidate language; replace {{LANGUAGE_ID}} and {{DISPLAY_NAME}} only.
+card_id: P13-001
+language_id: "{{LANGUAGE_ID}}"
+display_name: "{{DISPLAY_NAME}}"
+admission:
+  orthography_authority:
+    title: ""
+    register_id: ""
+    licence: ""
+  lexicon:
+    title: ""
+    register_id: ""
+    licence: ""
+  reference_grammar:
+    title: ""
+    register_id: ""
+    licence: ""
+  corpus:
+    title: ""
+    register_id: ""
+    licence: ""
