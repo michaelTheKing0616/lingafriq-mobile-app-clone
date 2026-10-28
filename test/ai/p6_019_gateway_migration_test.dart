@@ -8,6 +8,8 @@ import 'package:lingafriq/services/ai_gateway_client.dart';
 
 const _providerPath = 'lib/providers/ai_chat_provider_groq.dart';
 const _screenPath = 'lib/screens/ai_chat/polie_workspace_screen.dart';
+const _workspaceLibraryPath =
+    'lib/features/polie_workspace/polie_workspace_screen_body.dart';
 const _clientPath = 'lib/services/ai_gateway_client.dart';
 
 String _stripped(String path) {
@@ -56,7 +58,7 @@ void main() {
     });
 
     test('polie workspace imports gateway client', () {
-      final src = File(_screenPath).readAsStringSync();
+      final src = File(_workspaceLibraryPath).readAsStringSync();
       expect(src.contains('ai_gateway_client.dart'), isTrue);
     });
 
