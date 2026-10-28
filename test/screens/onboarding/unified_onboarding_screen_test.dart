@@ -347,6 +347,28 @@ void main() {
       expect(prefs.getBool('onboarding_account_skipped'), isTrue);
     });
 
+    testWidgets('Continue with Email persists birth year before leaving', (
+      tester,
+    ) async {
+      SharedPreferences.setMockInitialValues({});
+      await pumpOnboarding(tester);
+      await settleOnce(tester);
+      await advanceToFirstWin(tester);
+      await completeFirstWin(tester);
+
+      final year = DateTime.now().year - 25;
+      final yearField = find.byType(TextField).first;
+      await tester.enterText(yearField, '$year');
+      await tester.pump();
+
+      await tapVisible(tester, find.text('Continue with Email'));
+      await settleOnce(tester);
+
+      final prefs = await SharedPreferences.getInstance();
+      expect(prefs.getInt('birth_year'), year);
+      expect(prefs.getString('age_category'), 'adult');
+    });
+
     testWidgets('welcome survives 200% text scale without overflow', (
       tester,
     ) async {

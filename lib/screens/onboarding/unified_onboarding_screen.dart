@@ -1836,7 +1836,7 @@ class _LevelPlacementStep extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selected = useState<String?>(null);
     final showQuickCheck = useState(false);
-    final quickAnswers = useState<int>(0);
+    final recognizedWords = useState<Set<String>>({});
 
     return _StepScaffold(
       bottom: _PrimaryCta(
@@ -1911,7 +1911,10 @@ class _LevelPlacementStep extends HookConsumerWidget {
           TextButton(
             onPressed: () {
               showQuickCheck.value = !showQuickCheck.value;
-              if (!showQuickCheck.value) return;
+              if (!showQuickCheck.value) {
+                recognizedWords.value = {};
+                return;
+              }
               selected.value = 'unsure';
             },
             child: Text(
@@ -1938,12 +1941,23 @@ class _LevelPlacementStep extends HookConsumerWidget {
                 for (final word in _quickCheckWords(learningLanguage))
                   FilterChip(
                     label: Text(word),
-                    selected: quickAnswers.value > 0,
-                    onSelected: (_) {
-                      quickAnswers.value++;
-                      selected.value = quickAnswers.value >= 2
-                          ? 'words'
-                          : 'new';
+                    selected: recognizedWords.value.contains(word),
+                    onSelected: (isOn) {
+                      HapticFeedback.selectionClick();
+                      final next = Set<String>.from(recognizedWords.value);
+                      if (isOn) {
+                        next.add(word);
+                      } else {
+                        next.remove(word);
+                      }
+                      recognizedWords.value = next;
+                      if (next.isEmpty) {
+                        selected.value = 'unsure';
+                      } else if (next.length >= 2) {
+                        selected.value = 'words';
+                      } else {
+                        selected.value = 'new';
+                      }
                     },
                   ),
               ],
@@ -2591,11 +2605,16 @@ class _AccountAgeStep extends HookConsumerWidget {
     final emailOk = !isChild ||
         RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(parentEmail.value.trim());
 
-    Future<void> persistAndContinue({required bool requireParentEmail}) async {
+    /// Persists birth year / guardian flags. Returns payload or null if invalid.
+    /// Auth CTAs must call this before leaving — never abandon answers.
+    Future<Map<String, dynamic>?> persistAge({
+      required bool requireParentEmail,
+      required bool accountSkipped,
+    }) async {
       final year = selectedYear.value;
       final ageBand = band;
-      if (ageBand == null) return;
-      if (requireParentEmail && isChild && !emailOk) return;
+      if (ageBand == null) return null;
+      if (requireParentEmail && isChild && !emailOk) return null;
       try {
         await ref
             .read(onboardingProvider.notifier)
@@ -2613,7 +2632,7 @@ class _AccountAgeStep extends HookConsumerWidget {
           }
           await prefs.setBool('needs_guardian_consent', true);
         }
-        await prefs.setBool('onboarding_account_skipped', !requireParentEmail);
+        await prefs.setBool('onboarding_account_skipped', accountSkipped);
       } catch (e) {
         logger.error('Error saving age', error: e);
         if (context.mounted) {
@@ -2632,7 +2651,7 @@ class _AccountAgeStep extends HookConsumerWidget {
           );
         }
       }
-      onNext({
+      return {
         'birth_year': year,
         'age_band': ageBand,
         'age_category': ageBand,
@@ -2640,8 +2659,27 @@ class _AccountAgeStep extends HookConsumerWidget {
         if (isChild && parentEmail.value.trim().isNotEmpty)
           'guardian_email': parentEmail.value.trim(),
         if (isChild) 'needs_guardian_consent': true,
-        'account_skipped': !requireParentEmail,
-      });
+        'account_skipped': accountSkipped,
+      };
+    }
+
+    Future<void> persistAndContinue({required bool requireParentEmail}) async {
+      final payload = await persistAge(
+        requireParentEmail: requireParentEmail,
+        accountSkipped: !requireParentEmail,
+      );
+      if (payload == null) return;
+      onNext(payload);
+    }
+
+    Future<void> persistThenSignIn() async {
+      // Save age/progress first — auth must not wipe the wheel answers.
+      final payload = await persistAge(
+        requireParentEmail: false,
+        accountSkipped: false,
+      );
+      if (payload == null || !context.mounted) return;
+      onSignIn();
     }
 
     return _StepScaffold(
@@ -2842,7 +2880,7 @@ class _AccountAgeStep extends HookConsumerWidget {
                   background: ModernGriotColors.surfaceContainerLowest,
                   foreground: ModernGriotColors.onSurface,
                   border: ModernGriotColors.outline,
-                  onPressed: onSignIn,
+                  onPressed: band == null ? null : persistThenSignIn,
                 ),
                 SizedBox(height: ModernGriotSpacing.xs.h),
                 _AuthProviderButton(
@@ -2851,7 +2889,7 @@ class _AccountAgeStep extends HookConsumerWidget {
                   background: ModernGriotColors.inverseSurface,
                   foreground: ModernGriotColors.onInverseSurface,
                   border: ModernGriotColors.inverseSurface,
-                  onPressed: onSignIn,
+                  onPressed: band == null ? null : persistThenSignIn,
                 ),
                 SizedBox(height: ModernGriotSpacing.xs.h),
                 _AuthProviderButton(
@@ -2860,7 +2898,7 @@ class _AccountAgeStep extends HookConsumerWidget {
                   background: ModernGriotColors.tertiaryContainer,
                   foreground: ModernGriotColors.onTertiaryContainer,
                   border: ModernGriotColors.tertiary,
-                  onPressed: onSignIn,
+                  onPressed: band == null ? null : persistThenSignIn,
                 ),
               ],
             ),
@@ -2910,7 +2948,7 @@ class _AuthProviderButton extends StatelessWidget {
   final Color background;
   final Color foreground;
   final Color border;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
