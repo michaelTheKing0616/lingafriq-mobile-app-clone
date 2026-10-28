@@ -27,6 +27,19 @@ import 'package:lingafriq/avatars/avatars.dart';
 import 'package:lingafriq/models/onboarding_answers.dart';
 import 'placement_test_screen.dart';
 import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
+import 'package:lingafriq/services/connectivity_service.dart';
+
+/// Returns [Duration.zero] when the platform/OS has requested reduced
+/// motion (MediaQuery.disableAnimations), so every entrance animation in
+/// this flow snaps straight to its final state instead of animating.
+Duration _motionDuration(BuildContext context, Duration normal) {
+  return MediaQuery.disableAnimationsOf(context) ? Duration.zero : normal;
+}
+
+/// Same reduced-motion guard for `flutter_animate`'s `delay:` parameter.
+Duration _motionDelay(BuildContext context, Duration normal) {
+  return MediaQuery.disableAnimationsOf(context) ? Duration.zero : normal;
+}
 
 /// Unified Onboarding: "Kijiji cha Lugha" - The Language Village
 ///
@@ -44,9 +57,13 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
     final currentStep = useState(0);
     final onboardingData = useState<Map<String, dynamic>>({});
     final reask =
-        ref.read(sharedPreferencesProvider).prefs.getStringList('onboarding_reask') ??
-            const <String>[];
-    bool ask(Iterable<String> keys) => reask.isEmpty || keys.any(reask.contains);
+        ref
+            .read(sharedPreferencesProvider)
+            .prefs
+            .getStringList('onboarding_reask') ??
+        const <String>[];
+    bool ask(Iterable<String> keys) =>
+        reask.isEmpty || keys.any(reask.contains);
     final isCompleting = useState(false);
 
     // Animation controller for character entrances
@@ -61,10 +78,40 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
 
     // Village characters guide the journey
     final stepCount = <int>[0];
+    // Mirrors `steps`' own conditions exactly so `stepsLight[i]` always
+    // tells the floating progress bar/back/skip chrome (which overlays
+    // whichever step is currently showing through the `Stack` below)
+    // whether that step's background is one of the near-white
+    // `PanAfricanGradients.earth`/`sunset` tints - the only steps where the
+    // cream `colorScheme.onPrimary` this chrome used to hardcode would be
+    // close to invisible.
+    final stepsLight = <bool>[
+      if (reask.isEmpty) false, // _VillageWelcomeStep: dark primary green
+      if (ask(const ['proficiency_language'])) true, // _ElderStep: earth
+      if (ask(const ['learning_language'])) true, // _WeaverStep: sunset
+      if (ask(const ['age_category', 'learning_reasons']))
+        true, // _ElderQuestionStep: earth
+      if (ask(const ['primary_goal'])) false, // _PathChooserStep: forest
+      if (ask(const ['learning_style'])) true, // _RhythmMasterStep: sunset
+      if (ask(const [
+        'daily_duration_minutes',
+        'preferred_time_of_day',
+        'reminders_enabled',
+      ]))
+        true, // _TimekeeperStep: earth
+      if (ask(const ['app_tone', 'gamification_level']))
+        true, // _GriotStep: sunset
+      if (reask.isEmpty) false, // _NamingCeremonyStep: dark forest
+    ];
     final steps = <Widget>[
       if (reask.isEmpty)
         _VillageWelcomeStep(
-          onNext: () => _goToNext(pageController, currentStep, animationController),
+          onNext: () => _goToNext(
+            context,
+            pageController,
+            currentStep,
+            animationController,
+          ),
         ),
       if (ask(const ['proficiency_language']))
         _ElderStep(
@@ -136,7 +183,11 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
             ref: ref,
           ),
         ),
-      if (ask(const ['daily_duration_minutes', 'preferred_time_of_day', 'reminders_enabled']))
+      if (ask(const [
+        'daily_duration_minutes',
+        'preferred_time_of_day',
+        'reminders_enabled',
+      ]))
         _TimekeeperStep(
           onNext: (data) => _captureOnboardingAnswer(
             data,
@@ -205,15 +256,58 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
               ref,
               currentStep.value,
               totalSteps,
-              onBack: currentStep.value > 0
+              isLightBackground: stepsLight[currentStep.value],
+              onBack: (!isCompleting.value && currentStep.value > 0)
                   ? () => _goToPrevious(
+                      context,
                       pageController,
                       currentStep,
                       animationController,
                     )
                   : null,
-              onSkip: () => _skipOnboarding(context, ref),
+              onSkip: isCompleting.value
+                  ? null
+                  : () => _skipOnboarding(context, ref),
             ),
+            // Completion loading state: shown while local save, backend
+            // sync queueing, and the placement-test offer are in flight so
+            // the learner never sees an unresponsive screen.
+            if (isCompleting.value)
+              Positioned.fill(
+                child: Semantics(
+                  liveRegion: true,
+                  label: 'Setting up your language village, please wait',
+                  child: Container(
+                    color: PanAfricanColors.neutralDarkest.withValues(
+                      alpha: 0.72,
+                    ),
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(
+                            width: 36.w,
+                            height: 36.w,
+                            child: const CircularProgressIndicator(
+                              strokeWidth: 3,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                PanAfricanColors.secondary,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: PanAfricanSpacing.md.h),
+                          Text(
+                            'Preparing your village...',
+                            style: PanAfricanTypography.bodyMedium(
+                              context,
+                            ).copyWith(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
@@ -225,98 +319,119 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
     WidgetRef ref,
     int current,
     int total, {
+    required bool isLightBackground,
     VoidCallback? onBack,
     VoidCallback? onSkip,
   }) {
+    // This chrome floats over whichever step is currently showing (see the
+    // `Stack` in `build`), so it can't rely on `colorScheme.onPrimary` -
+    // which is designed for the app's *dark* primary surfaces - whenever
+    // the step underneath is one of the near-white
+    // `PanAfricanGradients.earth`/`sunset` steps; see `isLightBackground` on
+    // `_CharacterStepTemplate` for the full contrast-math rationale.
+    final Color foregroundColor = isLightBackground
+        ? PanAfricanColors.textPrimary
+        : Theme.of(context).colorScheme.onPrimary;
+    final Color progressFillColor = isLightBackground
+        ? PanAfricanColors.primary
+        : Theme.of(context).colorScheme.primaryContainer;
     return Positioned(
-      top: MediaQuery.of(context).padding.top + 8.h,
+      top: MediaQuery.of(context).padding.top + PanAfricanSpacing.xs.h,
       left: 0,
       right: 0,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md.w),
         child: Row(
           children: [
-            // Back button
+            // Back button: BackButtonIcon auto-mirrors for RTL locales
+            // (Arabic, Darija) instead of a hardcoded LTR chevron.
             if (onBack != null)
-              IconButton(
-                onPressed: onBack,
-                icon: Icon(
-                  Icons.arrow_back_ios_rounded,
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  size: 20.sp,
-                ),
-                style: IconButton.styleFrom(
-                  backgroundColor: Theme.of(
-                    context,
-                  ).colorScheme.onPrimary.withValues(alpha: 0.15),
+              Semantics(
+                label: 'Go back to the previous step',
+                button: true,
+                child: IconButton(
+                  onPressed: onBack,
+                  icon: IconTheme(
+                    data: IconThemeData(color: foregroundColor, size: 20.sp),
+                    child: const BackButtonIcon(),
+                  ),
+                  style: IconButton.styleFrom(
+                    backgroundColor: foregroundColor.withValues(alpha: 0.15),
+                    minimumSize: const Size(
+                      AdaptiveLayout.minTouchTarget,
+                      AdaptiveLayout.minTouchTarget,
+                    ),
+                  ),
                 ),
               )
             else
-              SizedBox(width: 48.w),
+              SizedBox(width: PanAfricanSpacing.xxl.w),
 
             // Progress bar
             Expanded(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-                decoration: BoxDecoration(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onPrimary.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(PanAfricanRadius.pill),
-                  border: Border.all(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onPrimary.withValues(alpha: 0.2),
+              child: Semantics(
+                label: 'Onboarding progress',
+                value: 'Step ${current + 1} of $total',
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PanAfricanSpacing.sm.w,
+                    vertical: PanAfricanSpacing.xs.h,
                   ),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(
-                          PanAfricanRadius.pill,
-                        ),
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            final progress = total == 0
-                                ? 0.0
-                                : ((current + 1) / total).clamp(0.0, 1.0);
-                            return Stack(
-                              children: [
-                                Container(
-                                  height: 6.h,
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onPrimary.withValues(alpha: 0.2),
-                                ),
-                                AnimatedContainer(
-                                  duration: const Duration(milliseconds: 300),
-                                  height: 6.h,
-                                  width: constraints.maxWidth * progress,
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.primaryContainer,
+                  decoration: BoxDecoration(
+                    color: foregroundColor.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(PanAfricanRadius.pill),
+                    border: Border.all(
+                      color: foregroundColor.withValues(alpha: 0.2),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                            PanAfricanRadius.pill,
+                          ),
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              final progress = total == 0
+                                  ? 0.0
+                                  : ((current + 1) / total).clamp(0.0, 1.0);
+                              return Stack(
+                                children: [
+                                  Container(
+                                    height: PanAfricanSpacing.xxs.h,
+                                    color: foregroundColor.withValues(
+                                      alpha: 0.2,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            );
-                          },
+                                  AnimatedContainer(
+                                    duration: _motionDuration(
+                                      context,
+                                      const Duration(milliseconds: 300),
+                                    ),
+                                    height: PanAfricanSpacing.xxs.h,
+                                    width: constraints.maxWidth * progress,
+                                    decoration: BoxDecoration(
+                                      color: progressFillColor,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(width: 10.w),
-                    Text(
-                      '${current + 1}/$total',
-                      style: TextStyle(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onPrimary.withValues(alpha: 0.9),
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w600,
+                      SizedBox(width: PanAfricanSpacing.sm.w),
+                      Text(
+                        '${current + 1}/$total',
+                        style: TextStyle(
+                          color: foregroundColor.withValues(alpha: 0.9),
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -331,9 +446,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                   child: Text(
                     'Skip',
                     style: TextStyle(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                      color: foregroundColor.withValues(alpha: 0.9),
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
                     ),
@@ -341,7 +454,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                 ),
               )
             else
-              SizedBox(width: 48.w),
+              SizedBox(width: PanAfricanSpacing.xxl.w),
           ],
         ),
       ),
@@ -349,13 +462,17 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
   }
 
   void _goToNext(
+    BuildContext context,
     PageController controller,
     ValueNotifier<int> step,
     AnimationController anim,
   ) {
     step.value++;
     controller.nextPage(
-      duration: const Duration(milliseconds: 400),
+      // Runs on every one of this flow's step transitions, so it's the
+      // single most frequent motion in onboarding - it must respect
+      // reduced-motion like every other animation here.
+      duration: _motionDuration(context, 400.ms),
       curve: Curves.easeInOut,
     );
   }
@@ -376,10 +493,11 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
       await _completeOnboarding(onboardingData.value, context, ref);
       return;
     }
-    _goToNext(pageController, currentStep, animationController);
+    _goToNext(context, pageController, currentStep, animationController);
   }
 
   void _goToPrevious(
+    BuildContext context,
     PageController controller,
     ValueNotifier<int> step,
     AnimationController anim,
@@ -387,7 +505,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
     if (step.value <= 0) return;
     step.value--;
     controller.previousPage(
-      duration: const Duration(milliseconds: 300),
+      duration: _motionDuration(context, 300.ms),
       curve: Curves.easeOut,
     );
   }
@@ -427,7 +545,10 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
       await prefs.setString('onboarding_complete', 'true');
       await prefs.setString(
         'onboarding_data',
-        OnboardingAnswers.encodeStored(prefs.getString('onboarding_data'), data),
+        OnboardingAnswers.encodeStored(
+          prefs.getString('onboarding_data'),
+          data,
+        ),
       );
       await prefs.remove('onboarding_reask');
       await prefs.setBool('onboarding_seen', true);
@@ -435,14 +556,34 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
       logger.error('Error saving onboarding completion locally', error: e);
     }
 
-    // Queue backend sync
+    // Queue backend sync: this always succeeds locally even offline,
+    // because PersistedOutboxService is a durable, offline-first queue.
+    var isOnline = true;
     try {
+      isOnline = await ConnectivityService.hasInternet();
       await PersistedOutboxService.instance.enqueue(
-          type: 'onboarding_sync',
-          data: {...data, 'completed_at': DateTime.now().toIso8601String()},
+        type: 'onboarding_sync',
+        data: {...data, 'completed_at': DateTime.now().toIso8601String()},
       );
     } catch (e) {
       logger.warn('Backend sync failed for onboarding completion', error: e);
+    }
+    if (!isOnline && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: PanAfricanColors.neutralDark,
+          content: Text(
+            "You're offline right now, but we've saved your answers and "
+            'will sync them the moment you reconnect.',
+            style: PanAfricanTypography.bodyMedium(
+              context,
+              color: Colors.white,
+            ),
+          ),
+          duration: const Duration(seconds: 4),
+        ),
+      );
     }
 
     // Offer placement test
@@ -452,38 +593,42 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
         final alreadyPrompted =
             prefs.getBool('placement_test_prompt_shown') ?? false;
         if (!alreadyPrompted) {
-          final shouldTakeTest = await showDialog<bool>(
+          // Reuses the shared Pan-African dialog component instead of a
+          // one-off AlertDialog, so styling stays consistent with the rest
+          // of the design system.
+          final shouldTakeTest = await PanAfricanDialog.show<bool>(
             context: context,
-            builder: (context) => AlertDialog(
-              backgroundColor: PanAfricanColors.surfaceLight,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
-              ),
-              title: Text(
-                'Take Placement Test?',
-                style: PanAfricanTypography.titleLarge(context),
-              ),
-              content: Text(
-                'Would you like to take a quick placement test to assess your current level in $learningLanguage?\n\nYou can skip this and take it later.',
-                style: PanAfricanTypography.bodyMedium(context),
-              ),
-              actions: [
-                TextButton(
+            title: 'Take a quick placement test?',
+            subtitle:
+                "We'll ask a few short questions to find your starting "
+                'level in $learningLanguage. You can always take it later '
+                'from your profile.',
+            child: const SizedBox.shrink(),
+            actions: [
+              Expanded(
+                child: TextButton(
                   onPressed: () => Navigator.pop(context, false),
                   child: const Text(
-                    'Skip',
+                    'Maybe later',
                     style: TextStyle(color: PanAfricanColors.textSecondary),
                   ),
                 ),
-                FilledButton(
+              ),
+              SizedBox(width: PanAfricanSpacing.sm.w),
+              Expanded(
+                child: FilledButton(
                   onPressed: () => Navigator.pop(context, true),
                   style: FilledButton.styleFrom(
                     backgroundColor: PanAfricanColors.primary,
+                    minimumSize: const Size(
+                      double.infinity,
+                      AdaptiveLayout.minTouchTarget,
+                    ),
                   ),
-                  child: const Text('Take Test'),
+                  child: const Text('Take the test'),
                 ),
-              ],
-            ),
+              ),
+            ],
           );
 
           await prefs.setBool('placement_test_prompt_shown', true);
@@ -537,91 +682,167 @@ class _VillageWelcomeStep extends StatelessWidget {
             SizedBox(height: 80.h),
             Expanded(
               child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                          width: 200.w,
-                          height: 200.w,
-                          child: OnboardingAvatarWidget(
-                            step: OnboardingStep.welcome,
-                            size: 200.w,
-                            animate: true,
-                          ),
-                        )
-                        .animate()
-                        .scale(
-                          delay: 200.ms,
-                          duration: 700.ms,
-                          curve: Curves.elasticOut,
-                        )
-                        .fadeIn(duration: 500.ms),
-                    SizedBox(height: 48.h),
-                    Text(
-                      'Welcome to',
-                      style: PanAfricanTypography.titleMedium(context).copyWith(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onPrimary.withValues(alpha: 0.9),
-                        letterSpacing: 1,
+                child: Semantics(
+                  // Group the welcome narrative into one readable block so a
+                  // screen reader announces it as a coherent sentence rather
+                  // than four separate fragments.
+                  label:
+                      'Welcome to Kijiji cha Lugha, The Language Village. '
+                      'Your journey to mastering African languages begins here.',
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ExcludeSemantics(
+                        child:
+                            // `OnboardingAvatarWidget` always renders a
+                            // name/title caption beneath the portrait, so it
+                            // needs more height than this hero's 200x200
+                            // footprint. `OverflowBox` lets it lay itself out
+                            // without tripping its own internal `RenderFlex`
+                            // overflow assertion, and the outer `SizedBox` +
+                            // `ClipRect` crop the result back down to exactly
+                            // the intended portrait size.
+                            SizedBox(
+                                  width: 200.w,
+                                  height: 200.w,
+                                  child: ClipRect(
+                                    child: OverflowBox(
+                                      maxHeight: double.infinity,
+                                      alignment: Alignment.topCenter,
+                                      child: OnboardingAvatarWidget(
+                                        step: OnboardingStep.welcome,
+                                        size: 200.w,
+                                        animate: true,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .animate()
+                                .scale(
+                                  delay: _motionDelay(context, 200.ms),
+                                  duration: _motionDuration(context, 700.ms),
+                                  curve: Curves.elasticOut,
+                                )
+                                .fadeIn(
+                                  duration: _motionDuration(context, 500.ms),
+                                ),
                       ),
-                    ).animate().fadeIn(delay: 400.ms),
-                    SizedBox(height: 8.h),
-                    Text(
-                          'Kijiji cha Lugha',
-                          textAlign: TextAlign.center,
-                          style: PanAfricanTypography.displaySmall(
-                            context,
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          ).copyWith(height: 1.1, letterSpacing: -1),
-                        )
-                        .animate()
-                        .fadeIn(delay: 500.ms)
-                        .slideY(begin: 0.2, end: 0),
-                    SizedBox(height: 12.h),
-                    Text(
-                      'The Language Village',
-                      textAlign: TextAlign.center,
-                      style: PanAfricanTypography.titleMedium(context).copyWith(
-                        color: PanAfricanColors.secondary,
-                        letterSpacing: 0.5,
-                      ),
-                    ).animate().fadeIn(delay: 600.ms),
-                    SizedBox(height: 24.h),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 48.w),
-                      child: Text(
-                        'Your journey to mastering African languages begins here.',
-                        textAlign: TextAlign.center,
-                        style: PanAfricanTypography.bodyMedium(context)
-                            .copyWith(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.onPrimary.withValues(alpha: 0.85),
+                      SizedBox(height: PanAfricanSpacing.xxl.h),
+                      ExcludeSemantics(
+                        child:
+                            Text(
+                              'Welcome to',
+                              style: PanAfricanTypography.titleMedium(context)
+                                  .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary
+                                        .withValues(alpha: 0.9),
+                                    letterSpacing: 1,
+                                  ),
+                            ).animate().fadeIn(
+                              delay: _motionDelay(context, 400.ms),
+                              duration: _motionDuration(context, 300.ms),
                             ),
                       ),
-                    ).animate().fadeIn(delay: 700.ms),
-                  ],
+                      SizedBox(height: PanAfricanSpacing.xs.h),
+                      ExcludeSemantics(
+                        child:
+                            Text(
+                                  'Kijiji cha Lugha',
+                                  textAlign: TextAlign.center,
+                                  style: PanAfricanTypography.displaySmall(
+                                    context,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onPrimary,
+                                  ).copyWith(height: 1.1, letterSpacing: -1),
+                                )
+                                .animate()
+                                .fadeIn(
+                                  delay: _motionDelay(context, 500.ms),
+                                  duration: _motionDuration(context, 300.ms),
+                                )
+                                .slideY(
+                                  begin: 0.2,
+                                  end: 0,
+                                  duration: _motionDuration(context, 300.ms),
+                                ),
+                      ),
+                      SizedBox(height: PanAfricanSpacing.sm.h),
+                      ExcludeSemantics(
+                        child:
+                            Text(
+                              'The Language Village',
+                              textAlign: TextAlign.center,
+                              style: PanAfricanTypography.titleMedium(context)
+                                  .copyWith(
+                                    color: PanAfricanColors.secondary,
+                                    letterSpacing: 0.5,
+                                  ),
+                            ).animate().fadeIn(
+                              delay: _motionDelay(context, 600.ms),
+                              duration: _motionDuration(context, 300.ms),
+                            ),
+                      ),
+                      SizedBox(height: PanAfricanSpacing.lg.h),
+                      ExcludeSemantics(
+                        child:
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: PanAfricanSpacing.xxl.w,
+                              ),
+                              child: Text(
+                                'Your journey to mastering African languages begins here.',
+                                textAlign: TextAlign.center,
+                                style: PanAfricanTypography.bodyMedium(context)
+                                    .copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary
+                                          .withValues(alpha: 0.85),
+                                    ),
+                              ),
+                            ).animate().fadeIn(
+                              delay: _motionDelay(context, 700.ms),
+                              duration: _motionDuration(context, 300.ms),
+                            ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(24.w),
-              child: SizedBox(
-                width: double.infinity,
-                child: PanAfricanButton(
-                  label: 'Begin Your Journey',
-                  onPressed: () {
-                    HapticFeedback.mediumImpact();
-                    onNext();
-                  },
-                  backgroundColor: PanAfricanColors.primary,
-                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                  height: 56.h,
-                ),
-              ).animate().fadeIn(delay: 800.ms).slideY(begin: 0.3, end: 0),
+              padding: EdgeInsets.all(PanAfricanSpacing.lg.w),
+              child:
+                  SizedBox(
+                        width: double.infinity,
+                        child: PanAfricanButton(
+                          label: 'Begin Your Journey',
+                          onPressed: () {
+                            HapticFeedback.mediumImpact();
+                            onNext();
+                          },
+                          backgroundColor: PanAfricanColors.primary,
+                          foregroundColor: Theme.of(
+                            context,
+                          ).colorScheme.onPrimary,
+                          height: 56.h,
+                        ),
+                      )
+                      .animate()
+                      .fadeIn(
+                        delay: _motionDelay(context, 800.ms),
+                        duration: _motionDuration(context, 300.ms),
+                      )
+                      .slideY(
+                        begin: 0.3,
+                        end: 0,
+                        duration: _motionDuration(context, 300.ms),
+                      ),
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: PanAfricanSpacing.md.h),
           ],
         ),
       ),
@@ -656,38 +877,43 @@ class _ElderStep extends HookConsumerWidget {
 
     return _CharacterStepTemplate(
       gradient: PanAfricanGradients.earth,
+      isLightBackground: true,
       characterIcon: Icons.elderly_rounded,
       characterName: 'Pa LingAfriq',
       dialogue:
           'Karibu, traveler! I am Pa LingAfriq,\nkeeper of the village memory.',
-      question: 'Tell me — what language flows from your tongue?',
+      question: 'Tell me, what language flows from your tongue?',
       avatarStep: OnboardingStep.welcome,
       child: Column(
         children: [
-          Expanded(
-            child: GridView.builder(
-              padding: EdgeInsets.all(16.w),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 2.2,
-                crossAxisSpacing: 12.w,
-                mainAxisSpacing: 12.h,
-              ),
-              itemCount: _languages.length,
-              itemBuilder: (context, index) {
-                final lang = _languages[index];
-                final isSelected = selectedLanguage.value == lang['code'];
-                return _LanguageCard(
-                  flag: lang['flag']!,
-                  name: lang['name']!,
-                  isSelected: isSelected,
-                  onTap: () {
-                    HapticFeedback.selectionClick();
-                    selectedLanguage.value = lang['code'];
-                  },
-                );
-              },
+          // `shrinkWrap` + `NeverScrollableScrollPhysics` sizes this grid to
+          // its own content instead of needing an `Expanded` ancestor to
+          // tell it how tall to be - `_CharacterStepTemplate` now owns the
+          // single scrollable that this whole step scrolls within.
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.all(PanAfricanSpacing.md.w),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 2.2,
+              crossAxisSpacing: PanAfricanSpacing.sm.w,
+              mainAxisSpacing: PanAfricanSpacing.sm.h,
             ),
+            itemCount: _languages.length,
+            itemBuilder: (context, index) {
+              final lang = _languages[index];
+              final isSelected = selectedLanguage.value == lang['code'];
+              return _LanguageCard(
+                flag: lang['flag']!,
+                name: lang['name']!,
+                isSelected: isSelected,
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  selectedLanguage.value = lang['code'];
+                },
+              );
+            },
           ),
           _ContinueButton(
             enabled: selectedLanguage.value != null,
@@ -756,6 +982,7 @@ class _WeaverStep extends HookConsumerWidget {
 
     return _CharacterStepTemplate(
       gradient: PanAfricanGradients.sunset,
+      isLightBackground: true,
       characterIcon: Icons.auto_fix_high_rounded,
       characterName: 'Adisa the Weaver',
       dialogue:
@@ -764,28 +991,32 @@ class _WeaverStep extends HookConsumerWidget {
       avatarStep: OnboardingStep.languageSelection,
       child: Column(
         children: [
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              itemCount: _africanLanguages.length,
-              itemBuilder: (context, index) {
-                final lang = _africanLanguages[index];
-                final isSelected = selectedLanguage.value == lang['code'];
-                return Padding(
-                  padding: EdgeInsets.only(bottom: 10.h),
-                  child: _LanguageListTile(
-                    flag: lang['flag']!,
-                    name: lang['name']!,
-                    region: lang['region']!,
-                    isSelected: isSelected,
-                    onTap: () {
-                      HapticFeedback.selectionClick();
-                      selectedLanguage.value = lang['code'];
-                    },
-                  ),
-                );
-              },
-            ),
+          // `shrinkWrap` + `NeverScrollableScrollPhysics` sizes this list to
+          // its own content instead of needing an `Expanded` ancestor -
+          // `_CharacterStepTemplate` now owns the single scrollable that
+          // this whole step scrolls within.
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md.w),
+            itemCount: _africanLanguages.length,
+            itemBuilder: (context, index) {
+              final lang = _africanLanguages[index];
+              final isSelected = selectedLanguage.value == lang['code'];
+              return Padding(
+                padding: EdgeInsets.only(bottom: PanAfricanSpacing.sm.h),
+                child: _LanguageListTile(
+                  flag: lang['flag']!,
+                  name: lang['name']!,
+                  region: lang['region']!,
+                  isSelected: isSelected,
+                  onTap: () {
+                    HapticFeedback.selectionClick();
+                    selectedLanguage.value = lang['code'];
+                  },
+                ),
+              );
+            },
           ),
           _ContinueButton(
             enabled: selectedLanguage.value != null,
@@ -843,32 +1074,37 @@ class _ElderQuestionStep extends HookConsumerWidget {
 
     return _CharacterStepTemplate(
       gradient: PanAfricanGradients.earth,
+      isLightBackground: true,
       characterIcon: Icons.elderly_rounded,
       characterName: 'Pa LingAfriq',
       dialogue: 'Every learner has a story.\nShare yours with me.',
       question: 'Who are you, and why do you seek knowledge?',
       avatarStep: OnboardingStep.welcome,
+      // The guardian note below only appears once a child age band is
+      // selected, growing this step's content on the fly; the reasons grid
+      // is already `shrinkWrap`-sized rather than `Expanded`, so it's safe
+      // to size this whole step naturally - `_CharacterStepTemplate` owns
+      // the single scrollable this step (and its header above) scrolls
+      // within.
       child: Column(
         children: [
           // Age selection
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Your Season of Life',
                   style: TextStyle(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                    color: PanAfricanColors.textPrimary.withValues(alpha: 0.9),
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                SizedBox(height: 12.h),
+                SizedBox(height: PanAfricanSpacing.sm.h),
                 Wrap(
-                  spacing: 10.w,
+                  spacing: PanAfricanSpacing.sm.w,
                   children: _ageCategories.map((age) {
                     final isSelected = selectedAge.value == age;
                     return ChoiceChip(
@@ -878,83 +1114,109 @@ class _ElderQuestionStep extends HookConsumerWidget {
                         HapticFeedback.selectionClick();
                         selectedAge.value = sel ? age : null;
                       },
-                      backgroundColor: Theme.of(
-                        context,
-                      ).colorScheme.onPrimary.withValues(alpha: 0.25),
+                      backgroundColor: PanAfricanColors.textPrimary.withValues(
+                        alpha: 0.25,
+                      ),
                       selectedColor: PanAfricanColors.secondary,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: PanAfricanSpacing.sm.w,
+                        vertical: PanAfricanSpacing.xs.h,
+                      ),
+                      // `PanAfricanColors.secondary` (gold) is ~1.5:1
+                      // against this light step's background - below WCAG
+                      // 1.4.11's 3:1 non-text minimum for a selection
+                      // border; the brand's dark green stays ~5.5:1 here
+                      // instead - same fix as the selection cards below.
                       side: BorderSide(
                         color: isSelected
-                            ? PanAfricanColors.secondary
-                            : Theme.of(
-                                context,
-                              ).colorScheme.onPrimary.withValues(alpha: 0.4),
+                            ? PanAfricanColors.primary
+                            : PanAfricanColors.textPrimary.withValues(
+                                alpha: 0.4,
+                              ),
                         width: 1.2,
                       ),
                       labelStyle: TextStyle(
                         color: isSelected
                             ? Theme.of(context).colorScheme.onSurface
-                            : Theme.of(context).colorScheme.onPrimary,
+                            : PanAfricanColors.textPrimary,
                         fontWeight: FontWeight.w600,
                         fontSize: 13.sp,
                       ),
                     );
                   }).toList(),
                 ),
+                // Child mode: a warm, honest note that a grown-up will be
+                // part of the setup, rather than silently treating a child
+                // the same as an adult learner.
+                if (selectedAge.value == 'child') ...[
+                  SizedBox(height: PanAfricanSpacing.xs.h),
+                  Semantics(
+                    liveRegion: true,
+                    child: Text(
+                      "Lovely! We'll keep things simple and fun, and a "
+                      'guardian can help set up the rest with you.',
+                      style: TextStyle(
+                        color: PanAfricanColors.secondary,
+                        fontSize: 12.sp,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
-          SizedBox(height: 24.h),
+          SizedBox(height: PanAfricanSpacing.lg.h),
           // Reasons grid
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Why are you learning? (Select all that apply)',
                   style: TextStyle(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                    color: PanAfricanColors.textPrimary.withValues(alpha: 0.9),
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                SizedBox(height: 12.h),
+                SizedBox(height: PanAfricanSpacing.sm.h),
               ],
             ),
           ),
-          Expanded(
-            child: GridView.builder(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                childAspectRatio: 1.1,
-                crossAxisSpacing: 10.w,
-                mainAxisSpacing: 10.h,
-              ),
-              itemCount: _reasons.length,
-              itemBuilder: (context, index) {
-                final reason = _reasons[index];
-                final isSelected = selectedReasons.value.contains(reason['id']);
-                return _ReasonCard(
-                  icon: reason['icon'] as IconData,
-                  label: reason['label'] as String,
-                  isSelected: isSelected,
-                  onTap: () {
-                    HapticFeedback.selectionClick();
-                    final newSet = Set<String>.from(selectedReasons.value);
-                    if (isSelected) {
-                      newSet.remove(reason['id']);
-                    } else {
-                      newSet.add(reason['id'] as String);
-                    }
-                    selectedReasons.value = newSet;
-                  },
-                );
-              },
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md.w),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              childAspectRatio: 1.1,
+              crossAxisSpacing: PanAfricanSpacing.sm.w,
+              mainAxisSpacing: PanAfricanSpacing.sm.h,
             ),
+            itemCount: _reasons.length,
+            itemBuilder: (context, index) {
+              final reason = _reasons[index];
+              final isSelected = selectedReasons.value.contains(reason['id']);
+              return _ReasonCard(
+                icon: reason['icon'] as IconData,
+                label: reason['label'] as String,
+                isSelected: isSelected,
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  final newSet = Set<String>.from(selectedReasons.value);
+                  if (isSelected) {
+                    newSet.remove(reason['id']);
+                  } else {
+                    newSet.add(reason['id'] as String);
+                  }
+                  selectedReasons.value = newSet;
+                },
+              );
+            },
           ),
+          SizedBox(height: PanAfricanSpacing.md.h),
           _ContinueButton(
             enabled:
                 selectedAge.value != null && selectedReasons.value.isNotEmpty,
@@ -1042,31 +1304,35 @@ class _PathChooserStep extends HookConsumerWidget {
       avatarStep: OnboardingStep.goals,
       child: Column(
         children: [
-          Expanded(
-            child: GridView.builder(
-              padding: EdgeInsets.all(16.w),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 1.2,
-                crossAxisSpacing: 12.w,
-                mainAxisSpacing: 12.h,
-              ),
-              itemCount: _goals.length,
-              itemBuilder: (context, index) {
-                final goal = _goals[index];
-                final isSelected = selectedGoal.value == goal['id'];
-                return _GoalCard(
-                  icon: goal['icon'] as IconData,
-                  title: goal['title'] as String,
-                  description: goal['desc'] as String,
-                  isSelected: isSelected,
-                  onTap: () {
-                    HapticFeedback.selectionClick();
-                    selectedGoal.value = goal['id'] as String;
-                  },
-                );
-              },
+          // `shrinkWrap` + `NeverScrollableScrollPhysics` sizes this grid to
+          // its own content instead of needing an `Expanded` ancestor -
+          // `_CharacterStepTemplate` now owns the single scrollable that
+          // this whole step scrolls within.
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.all(PanAfricanSpacing.md.w),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 1.2,
+              crossAxisSpacing: PanAfricanSpacing.sm.w,
+              mainAxisSpacing: PanAfricanSpacing.sm.h,
             ),
+            itemCount: _goals.length,
+            itemBuilder: (context, index) {
+              final goal = _goals[index];
+              final isSelected = selectedGoal.value == goal['id'];
+              return _GoalCard(
+                icon: goal['icon'] as IconData,
+                title: goal['title'] as String,
+                description: goal['desc'] as String,
+                isSelected: isSelected,
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  selectedGoal.value = goal['id'] as String;
+                },
+              );
+            },
           ),
           _ContinueButton(
             enabled: selectedGoal.value != null,
@@ -1139,6 +1405,7 @@ class _RhythmMasterStep extends HookConsumerWidget {
 
     return _CharacterStepTemplate(
       gradient: PanAfricanGradients.sunset,
+      isLightBackground: true,
       characterIcon: Icons.music_note_rounded,
       characterName: 'Nuru the Rhythm Master',
       dialogue: 'Language is music, traveler.\nEach soul dances differently.',
@@ -1146,31 +1413,35 @@ class _RhythmMasterStep extends HookConsumerWidget {
       avatarStep: OnboardingStep.learningStyle,
       child: Column(
         children: [
-          Expanded(
-            child: GridView.builder(
-              padding: EdgeInsets.all(16.w),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 1.3,
-                crossAxisSpacing: 12.w,
-                mainAxisSpacing: 12.h,
-              ),
-              itemCount: _styles.length,
-              itemBuilder: (context, index) {
-                final style = _styles[index];
-                final isSelected = selectedStyle.value == style['id'];
-                return _StyleCard(
-                  icon: style['icon'] as IconData,
-                  title: style['title'] as String,
-                  description: style['desc'] as String,
-                  isSelected: isSelected,
-                  onTap: () {
-                    HapticFeedback.selectionClick();
-                    selectedStyle.value = style['id'] as String;
-                  },
-                );
-              },
+          // `shrinkWrap` + `NeverScrollableScrollPhysics` sizes this grid to
+          // its own content instead of needing an `Expanded` ancestor -
+          // `_CharacterStepTemplate` now owns the single scrollable that
+          // this whole step scrolls within.
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.all(PanAfricanSpacing.md.w),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 1.3,
+              crossAxisSpacing: PanAfricanSpacing.sm.w,
+              mainAxisSpacing: PanAfricanSpacing.sm.h,
             ),
+            itemCount: _styles.length,
+            itemBuilder: (context, index) {
+              final style = _styles[index];
+              final isSelected = selectedStyle.value == style['id'];
+              return _StyleCard(
+                icon: style['icon'] as IconData,
+                title: style['title'] as String,
+                description: style['desc'] as String,
+                isSelected: isSelected,
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  selectedStyle.value = style['id'] as String;
+                },
+              );
+            },
           ),
           _ContinueButton(
             enabled: selectedStyle.value != null,
@@ -1233,183 +1504,193 @@ class _TimekeeperStep extends HookConsumerWidget {
 
     return _CharacterStepTemplate(
       gradient: PanAfricanGradients.earth,
+      isLightBackground: true,
       characterIcon: Icons.schedule_rounded,
       characterName: 'Kofi the Timekeeper',
       dialogue:
           'Time is the gift we give ourselves.\nHow much will you invest?',
       question: 'When and how long shall we train?',
       avatarStep: OnboardingStep.schedule,
-      child: SingleChildScrollView(
-        padding: EdgeInsets.only(bottom: 16.h),
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.all(16.w),
-              child: Column(
-                children: [
-                  // Duration slider
-                  Container(
-                    padding: EdgeInsets.all(20.w),
-                    decoration: BoxDecoration(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onPrimary.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
+      // `_CharacterStepTemplate` now owns the single scrollable this step
+      // (and its header above) scrolls within, so this no longer needs its
+      // own nested `SingleChildScrollView`; the time grid below is already
+      // `shrinkWrap`-sized rather than `Expanded`.
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(PanAfricanSpacing.md.w),
+            child: Column(
+              children: [
+                // Duration slider
+                Container(
+                  padding: EdgeInsets.all(20.w),
+                  decoration: BoxDecoration(
+                    color: PanAfricanColors.textPrimary.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // `Flexible` + ellipsis keeps this label from
+                          // forcing a `RenderFlex` overflow in this fixed-
+                          // width row at larger text scales or on
+                          // narrower devices; the minutes value (the
+                          // slider's actual live readout) keeps its full,
+                          // unclipped width since it's the more important
+                          // of the two to always show in full.
+                          Flexible(
+                            child: Text(
                               'Daily Goal',
                               style: TextStyle(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                                color: PanAfricanColors.textPrimary.withValues(
+                                  alpha: 0.9,
+                                ),
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w600,
                               ),
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            Text(
-                              '${duration.value} minutes',
-                              style: TextStyle(
-                                color: PanAfricanColors.secondary,
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 12.h),
-                        SliderTheme(
-                          data: SliderTheme.of(context).copyWith(
-                            activeTrackColor: PanAfricanColors.secondary,
-                            inactiveTrackColor: Theme.of(
-                              context,
-                            ).colorScheme.onPrimary.withValues(alpha: 0.2),
-                            thumbColor: PanAfricanColors.secondary,
-                            overlayColor: PanAfricanColors.secondary
-                                .withValues(alpha: 0.2),
                           ),
-                          child: Slider(
-                            value: duration.value.toDouble(),
-                            min: 5,
-                            max: 60,
-                            divisions: 11,
-                            label: '${duration.value} min',
-                            onChanged: (v) => duration.value = v.toInt(),
+                          SizedBox(width: PanAfricanSpacing.sm.w),
+                          Text(
+                            '${duration.value} minutes',
+                            style: TextStyle(
+                              color: PanAfricanColors.secondary,
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: PanAfricanSpacing.sm.h),
+                      SliderTheme(
+                        data: SliderTheme.of(context).copyWith(
+                          activeTrackColor: PanAfricanColors.secondary,
+                          inactiveTrackColor: PanAfricanColors.textPrimary
+                              .withValues(alpha: 0.2),
+                          thumbColor: PanAfricanColors.secondary,
+                          overlayColor: PanAfricanColors.secondary.withValues(
+                            alpha: 0.2,
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '5 min',
-                              style: TextStyle(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onPrimary.withValues(alpha: 0.54),
-                                fontSize: 12.sp,
-                              ),
-                            ),
-                            Text(
-                              '60 min',
-                              style: TextStyle(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onPrimary.withValues(alpha: 0.54),
-                                fontSize: 12.sp,
-                              ),
-                            ),
-                          ],
+                        child: Slider(
+                          value: duration.value.toDouble(),
+                          min: 5,
+                          max: 60,
+                          divisions: 11,
+                          label: '${duration.value} min',
+                          onChanged: (v) => duration.value = v.toInt(),
                         ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20.h),
-                  // Time of day
-                  Text(
-                    'Best Time to Learn',
-                    style: TextStyle(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onPrimary.withValues(alpha: 0.9),
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(height: 12.h),
-                ],
-              ),
-            ),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 1.8,
-                crossAxisSpacing: 10.w,
-                mainAxisSpacing: 10.h,
-              ),
-              itemCount: _times.length,
-              itemBuilder: (context, index) {
-                final time = _times[index];
-                final isSelected = selectedTime.value == time['id'];
-                return _TimeCard(
-                  icon: time['icon'] as IconData,
-                  label: time['label'] as String,
-                  time: time['time'] as String,
-                  isSelected: isSelected,
-                  onTap: () {
-                    HapticFeedback.selectionClick();
-                    selectedTime.value = time['id'] as String;
-                  },
-                );
-              },
-            ),
-            SizedBox(height: 8.h),
-            // Reminders toggle
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: SwitchListTile(
-                title: Text(
-                  'Enable Daily Reminders',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    fontSize: 14.sp,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '5 min',
+                            style: TextStyle(
+                              color: PanAfricanColors.textPrimary.withValues(
+                                alpha: 0.54,
+                              ),
+                              fontSize: 12.sp,
+                            ),
+                          ),
+                          Text(
+                            '60 min',
+                            style: TextStyle(
+                              color: PanAfricanColors.textPrimary.withValues(
+                                alpha: 0.54,
+                              ),
+                              fontSize: 12.sp,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-                value: remindersEnabled.value,
-                onChanged: (v) => remindersEnabled.value = v,
-                activeThumbColor: PanAfricanColors.secondary,
-                contentPadding: EdgeInsets.zero,
+                SizedBox(height: 20.h),
+                // Time of day
+                Text(
+                  'Best Time to Learn',
+                  style: TextStyle(
+                    color: PanAfricanColors.textPrimary.withValues(alpha: 0.9),
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(height: PanAfricanSpacing.sm.h),
+              ],
+            ),
+          ),
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md.w),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 1.8,
+              crossAxisSpacing: PanAfricanSpacing.sm.w,
+              mainAxisSpacing: PanAfricanSpacing.sm.h,
+            ),
+            itemCount: _times.length,
+            itemBuilder: (context, index) {
+              final time = _times[index];
+              final isSelected = selectedTime.value == time['id'];
+              return _TimeCard(
+                icon: time['icon'] as IconData,
+                label: time['label'] as String,
+                time: time['time'] as String,
+                isSelected: isSelected,
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  selectedTime.value = time['id'] as String;
+                },
+              );
+            },
+          ),
+          SizedBox(height: PanAfricanSpacing.xs.h),
+          // Reminders toggle
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md.w),
+            child: SwitchListTile(
+              title: Text(
+                'Enable Daily Reminders',
+                style: TextStyle(
+                  color: PanAfricanColors.textPrimary,
+                  fontSize: 14.sp,
+                ),
               ),
+              value: remindersEnabled.value,
+              onChanged: (v) => remindersEnabled.value = v,
+              activeThumbColor: PanAfricanColors.secondary,
+              contentPadding: EdgeInsets.zero,
             ),
-            _ContinueButton(
-              enabled: selectedTime.value != null,
-              onPressed: () async {
-                try {
-                  final prefs = await SharedPreferences.getInstance();
-                  await prefs.setInt('daily_duration', duration.value);
-                  await prefs.setString('preferred_time', selectedTime.value!);
-                  await prefs.setBool(
-                    'reminders_enabled',
-                    remindersEnabled.value,
-                  );
-                } catch (e) {
-                  logger.error('Error saving schedule', error: e);
-                }
-                onNext({
-                  'daily_duration_minutes': duration.value,
-                  'preferred_time_of_day': selectedTime.value,
-                  'reminders_enabled': remindersEnabled.value,
-                });
-              },
-            ),
-          ],
-        ),
+          ),
+          _ContinueButton(
+            enabled: selectedTime.value != null,
+            onPressed: () async {
+              try {
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.setInt('daily_duration', duration.value);
+                await prefs.setString('preferred_time', selectedTime.value!);
+                await prefs.setBool(
+                  'reminders_enabled',
+                  remindersEnabled.value,
+                );
+              } catch (e) {
+                logger.error('Error saving schedule', error: e);
+              }
+              onNext({
+                'daily_duration_minutes': duration.value,
+                'preferred_time_of_day': selectedTime.value,
+                'reminders_enabled': remindersEnabled.value,
+              });
+            },
+          ),
+          SizedBox(height: PanAfricanSpacing.md.h),
+        ],
       ),
     );
   }
@@ -1463,83 +1744,95 @@ class _GriotStep extends HookConsumerWidget {
 
     return _CharacterStepTemplate(
       gradient: PanAfricanGradients.sunset,
+      isLightBackground: true,
       characterIcon: Icons.campaign_rounded,
       characterName: 'Amara the Griot',
       dialogue: 'I am the storyteller, the voice\nthat guides your journey.',
       question: 'How shall I speak to you?',
       avatarStep: OnboardingStep.story,
-      child: SingleChildScrollView(
-        padding: EdgeInsets.only(bottom: 16.h),
-        child: Column(
-          children: [
-            // Tone selection
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Communication Style',
-                    style: TextStyle(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onPrimary.withValues(alpha: 0.9),
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
+      // `_CharacterStepTemplate` now owns the single scrollable this step
+      // (and its header above) scrolls within, so this no longer needs its
+      // own nested `SingleChildScrollView`. The horizontal tone-row
+      // `SingleChildScrollView` below is unrelated (it scrolls sideways).
+      child: Column(
+        children: [
+          // Tone selection
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Communication Style',
+                  style: TextStyle(
+                    color: PanAfricanColors.textPrimary.withValues(alpha: 0.9),
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
                   ),
-                  SizedBox(height: 12.h),
-                ],
-              ),
+                ),
+                SizedBox(height: PanAfricanSpacing.sm.h),
+              ],
             ),
-            SizedBox(
-              height: 90.h,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                itemCount: _tones.length,
-                itemBuilder: (context, index) {
-                  final tone = _tones[index];
-                  final isSelected = selectedTone.value == tone['id'];
-                  return Padding(
-                    padding: EdgeInsets.only(right: 10.w),
+          ),
+          // `_ToneCard` is an icon plus two lines of text with no slack
+          // budget, so a fixed `SizedBox` height (tuned for 1.0x text
+          // scale) overflows once a learner's OS text-scale setting grows
+          // the label/description lines. `SingleChildScrollView` + `Row`
+          // (there are only 4 tones, so no list virtualization is needed)
+          // sizes this row to its own content's height instead, so it
+          // never clips or overflows at any text scale.
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md.w),
+            child: Row(
+              children: [
+                for (final tone in _tones)
+                  Padding(
+                    padding: EdgeInsetsDirectional.only(
+                      end: PanAfricanSpacing.sm.w,
+                    ),
                     child: _ToneCard(
                       icon: tone['icon'] as IconData,
                       label: tone['label'] as String,
                       description: tone['desc'] as String,
-                      isSelected: isSelected,
+                      isSelected: selectedTone.value == tone['id'],
                       onTap: () {
                         HapticFeedback.selectionClick();
                         selectedTone.value = tone['id'] as String;
                       },
                     ),
-                  );
-                },
-              ),
-            ),
-            SizedBox(height: 24.h),
-            // Gamification level
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Gamification Level',
-                    style: TextStyle(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onPrimary.withValues(alpha: 0.9),
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
                   ),
-                  SizedBox(height: 12.h),
-                  ..._gamificationLevels.map((level) {
-                    final isSelected =
-                        selectedGamification.value == level['id'];
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 10.h),
+              ],
+            ),
+          ),
+          SizedBox(height: PanAfricanSpacing.lg.h),
+          // Gamification level
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Gamification Level',
+                  style: TextStyle(
+                    color: PanAfricanColors.textPrimary.withValues(alpha: 0.9),
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(height: PanAfricanSpacing.sm.h),
+                ..._gamificationLevels.map((level) {
+                  final isSelected = selectedGamification.value == level['id'];
+                  final levelLabel = level['label'] as String;
+                  final levelDesc = level['desc'] as String;
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: PanAfricanSpacing.sm.h),
+                    child: Semantics(
+                      button: true,
+                      selected: isSelected,
+                      label: isSelected
+                          ? '$levelLabel, $levelDesc, selected'
+                          : '$levelLabel, $levelDesc',
                       child: Material(
                         color: Colors.transparent,
                         child: InkWell(
@@ -1551,22 +1844,34 @@ class _GriotStep extends HookConsumerWidget {
                             PanAfricanRadius.md,
                           ),
                           child: Container(
-                            padding: EdgeInsets.all(16.w),
+                            constraints: const BoxConstraints(
+                              minHeight: AdaptiveLayout.minTouchTarget,
+                            ),
+                            padding: EdgeInsets.all(PanAfricanSpacing.md.w),
                             decoration: BoxDecoration(
                               color: isSelected
-                                  ? PanAfricanColors.secondary.withValues(alpha: 0.2)
-                                  : Theme.of(
-                                      context,
-                                    ).colorScheme.onPrimary.withValues(alpha: 0.1),
+                                  ? PanAfricanColors.secondary.withValues(
+                                      alpha: 0.2,
+                                    )
+                                  : PanAfricanColors.textPrimary.withValues(
+                                      alpha: 0.1,
+                                    ),
                               borderRadius: BorderRadius.circular(
                                 PanAfricanRadius.md,
                               ),
+                              // `PanAfricanColors.secondary` (gold) is
+                              // ~1.5:1 against this row's light background -
+                              // below WCAG 1.4.11's 3:1 non-text minimum for
+                              // a selection border/icon; the brand's dark
+                              // green stays ~5.5:1 here instead - same fix
+                              // as the `_LanguageCard`/`_ReasonCard`/etc.
+                              // selection cards above.
                               border: Border.all(
                                 color: isSelected
-                                    ? PanAfricanColors.secondary
-                                    : Theme.of(
-                                        context,
-                                      ).colorScheme.onPrimary.withValues(alpha: 0.2),
+                                    ? PanAfricanColors.primary
+                                    : PanAfricanColors.textPrimary.withValues(
+                                        alpha: 0.2,
+                                      ),
                                 width: isSelected ? 2 : 1,
                               ),
                             ),
@@ -1580,19 +1885,23 @@ class _GriotStep extends HookConsumerWidget {
                                       Text(
                                         level['label'] as String,
                                         style: TextStyle(
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.onPrimary,
+                                          color: PanAfricanColors.textPrimary,
                                           fontSize: 16.sp,
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
                                       Text(
                                         level['desc'] as String,
+                                        // This step is a light `sunset`
+                                        // gradient (`isLightBackground:
+                                        // true` above); `colorScheme.
+                                        // onPrimary` is for the app's *dark*
+                                        // primary surfaces and was missed in
+                                        // the earlier contrast pass - fixed
+                                        // to the same fixed dark text token
+                                        // used by every other label here.
                                         style: TextStyle(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onPrimary
+                                          color: PanAfricanColors.textPrimary
                                               .withValues(alpha: 0.7),
                                           fontSize: 13.sp,
                                         ),
@@ -1603,7 +1912,7 @@ class _GriotStep extends HookConsumerWidget {
                                 if (isSelected)
                                   Icon(
                                     Icons.check_circle_rounded,
-                                    color: PanAfricanColors.secondary,
+                                    color: PanAfricanColors.primary,
                                     size: 24.sp,
                                   ),
                               ],
@@ -1611,33 +1920,34 @@ class _GriotStep extends HookConsumerWidget {
                           ),
                         ),
                       ),
-                    );
-                  }),
-                ],
-              ),
-            ),
-            SizedBox(height: 24.h),
-            _ContinueButton(
-              enabled: selectedTone.value != null,
-              onPressed: () async {
-                try {
-                  final prefs = await SharedPreferences.getInstance();
-                  await prefs.setString('app_tone', selectedTone.value!);
-                  await prefs.setString(
-                    'gamification_level',
-                    selectedGamification.value!,
+                    ),
                   );
-                } catch (e) {
-                  logger.error('Error saving tone/gamification', error: e);
-                }
-                onNext({
-                  'app_tone': selectedTone.value,
-                  'gamification_level': selectedGamification.value,
-                });
-              },
+                }),
+              ],
             ),
-          ],
-        ),
+          ),
+          SizedBox(height: PanAfricanSpacing.lg.h),
+          _ContinueButton(
+            enabled: selectedTone.value != null,
+            onPressed: () async {
+              try {
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.setString('app_tone', selectedTone.value!);
+                await prefs.setString(
+                  'gamification_level',
+                  selectedGamification.value!,
+                );
+              } catch (e) {
+                logger.error('Error saving tone/gamification', error: e);
+              }
+              onNext({
+                'app_tone': selectedTone.value,
+                'gamification_level': selectedGamification.value,
+              });
+            },
+          ),
+          SizedBox(height: PanAfricanSpacing.md.h),
+        ],
       ),
     );
   }
@@ -1754,7 +2064,7 @@ class _NamingCeremonyStep extends HookConsumerWidget {
       avatarStep: OnboardingStep.profile,
       child: Column(
         children: [
-          SizedBox(height: 16.h),
+          SizedBox(height: PanAfricanSpacing.md.h),
           // Avatar
           GestureDetector(
             onTap: pickAvatar,
@@ -1762,7 +2072,9 @@ class _NamingCeremonyStep extends HookConsumerWidget {
               children: [
                 CircleAvatar(
                   radius: 55.r,
-                  backgroundColor: PanAfricanColors.secondary.withValues(alpha: 0.3),
+                  backgroundColor: PanAfricanColors.secondary.withValues(
+                    alpha: 0.3,
+                  ),
                   backgroundImage: avatarPath.value != null
                       ? FileImage(File(avatarPath.value!))
                       : null,
@@ -1778,7 +2090,7 @@ class _NamingCeremonyStep extends HookConsumerWidget {
                   bottom: 0,
                   right: 0,
                   child: Container(
-                    padding: EdgeInsets.all(8.w),
+                    padding: EdgeInsets.all(PanAfricanSpacing.xs.w),
                     decoration: const BoxDecoration(
                       color: PanAfricanColors.secondary,
                       shape: BoxShape.circle,
@@ -1793,18 +2105,20 @@ class _NamingCeremonyStep extends HookConsumerWidget {
               ],
             ),
           ),
-          SizedBox(height: 8.h),
+          SizedBox(height: PanAfricanSpacing.xs.h),
           Text(
             'Tap to add photo (optional)',
             style: TextStyle(
-              color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.7),
+              color: Theme.of(
+                context,
+              ).colorScheme.onPrimary.withValues(alpha: 0.7),
               fontSize: 12.sp,
             ),
           ),
-          SizedBox(height: 24.h),
+          SizedBox(height: PanAfricanSpacing.lg.h),
           // Username field
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.w),
+            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.lg.w),
             child: TextField(
               controller: usernameController,
               style: TextStyle(
@@ -1856,7 +2170,7 @@ class _NamingCeremonyStep extends HookConsumerWidget {
                         width: 20.w,
                         height: 20.h,
                         child: Padding(
-                          padding: EdgeInsets.all(12.w),
+                          padding: EdgeInsets.all(PanAfricanSpacing.sm.w),
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
                             color: Theme.of(
@@ -1874,7 +2188,12 @@ class _NamingCeremonyStep extends HookConsumerWidget {
               ),
             ),
           ),
-          const Spacer(),
+          // `Spacer()` required a bounded-height `Column` to push this
+          // button to the bottom of the screen; `_CharacterStepTemplate`'s
+          // header+content now scroll together as one unbounded-height
+          // unit, which `Spacer`/`Expanded` can't live inside. A fixed gap
+          // keeps the button directly below the form instead.
+          SizedBox(height: PanAfricanSpacing.xl.h),
           _ContinueButton(
             label: 'Complete Setup',
             enabled: canComplete,
@@ -1908,7 +2227,10 @@ class _NamingCeremonyStep extends HookConsumerWidget {
       case _UsernameStatus.tooShort:
       case _UsernameStatus.tooLong:
       case _UsernameStatus.invalidFormat:
-        return const Icon(Icons.warning_rounded, color: PanAfricanColors.warning);
+        return const Icon(
+          Icons.warning_rounded,
+          color: PanAfricanColors.warning,
+        );
       default:
         return null;
     }
@@ -1917,21 +2239,21 @@ class _NamingCeremonyStep extends HookConsumerWidget {
   String? _getUsernameHelperText(_UsernameStatus status) {
     switch (status) {
       case _UsernameStatus.initial:
-        return '3-30 characters, letters, numbers, underscores';
+        return 'Use 3 to 30 letters, numbers, or underscores';
       case _UsernameStatus.checking:
-        return 'Checking availability...';
+        return 'Checking if that name is free...';
       case _UsernameStatus.available:
-        return '✓ Username is available';
+        return 'That name is yours';
       case _UsernameStatus.taken:
-        return '✗ Username is already taken';
+        return "Someone's already using that one, try another";
       case _UsernameStatus.tooShort:
-        return 'Username must be at least 3 characters';
+        return 'Needs at least 3 characters';
       case _UsernameStatus.tooLong:
-        return 'Username must be 30 characters or less';
+        return 'Keep it to 30 characters or fewer';
       case _UsernameStatus.invalidFormat:
-        return 'Only letters, numbers, and underscores allowed';
+        return 'Only letters, numbers, and underscores, please';
       case _UsernameStatus.error:
-        return 'Could not verify. You can still continue.';
+        return "We couldn't check that just now, but you can still continue";
     }
   }
 
@@ -1976,6 +2298,16 @@ class _CharacterStepTemplate extends StatelessWidget {
   final Widget child;
   final OnboardingStep? avatarStep;
 
+  /// `PanAfricanGradients.earth`/`sunset` are fixed, theme-independent
+  /// near-white tints (they don't darken in dark mode). Pairing them with
+  /// `colorScheme.onPrimary` - meant for the app's *dark* primary surfaces -
+  /// produces ~1.05:1 text contrast (needs 4.5:1), making dialogue
+  /// effectively invisible. Steps on a light/pale [gradient] must set this
+  /// to `true` so text/icons use a fixed dark color instead; steps on a
+  /// genuinely dark gradient (e.g. `forest`) leave this `false` and keep
+  /// using the theme's `onPrimary`, which is designed for dark surfaces.
+  final bool isLightBackground;
+
   const _CharacterStepTemplate({
     required this.gradient,
     required this.characterIcon,
@@ -1984,100 +2316,169 @@ class _CharacterStepTemplate extends StatelessWidget {
     required this.question,
     required this.child,
     this.avatarStep,
+    this.isLightBackground = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    // PanAfricanColors.textPrimary/textSecondary are the same file's fixed
+    // dark text tokens (not theme-aware), matching the fixed, theme-aware
+    // gradients they pair with here: textPrimary vs earth/sunset computes to
+    // ~16-17:1 contrast and textSecondary to ~6.5-6.8:1, both comfortably
+    // above the 4.5:1 WCAG AA body-text threshold.
+    final Color foregroundColor = isLightBackground
+        ? PanAfricanColors.textPrimary
+        : Theme.of(context).colorScheme.onPrimary;
+    final Color mutedForegroundColor = isLightBackground
+        ? PanAfricanColors.textSecondary
+        : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.85);
     return Container(
       decoration: BoxDecoration(gradient: gradient),
       child: ResponsiveSafeArea(
-        child: Column(
-          children: [
-            SizedBox(height: 60.h),
-            // Character avatar — use OnboardingAvatarWidget when step is provided
-            if (avatarStep != null)
-              SizedBox(
-                width: 100.w,
-                height: 100.w,
-                child: OnboardingAvatarWidget(
-                  step: avatarStep!,
-                  size: 100.w,
-                  animate: true,
-                ),
-              ).animate().scale(duration: 400.ms, curve: Curves.easeOut)
-            else
-              Container(
-                width: 100.w,
-                height: 100.w,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onPrimary.withValues(alpha: 0.15),
-                  border: Border.all(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onPrimary.withValues(alpha: 0.3),
-                    width: 2,
-                  ),
-                ),
-                child: Icon(
-                  characterIcon,
-                  size: 50.sp,
-                  color: Theme.of(context).colorScheme.onPrimary,
-                ),
-              ).animate().scale(duration: 400.ms, curve: Curves.easeOut),
-            SizedBox(height: 12.h),
-            // Dialogue + Question panel
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 18.h),
-                decoration: BoxDecoration(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onPrimary.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-                  border: Border.all(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onPrimary.withValues(alpha: 0.2),
-                    width: 1,
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      dialogue,
-                      textAlign: TextAlign.center,
-                      style: PanAfricanTypography.headlineSmall(
-                        context,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ).copyWith(height: 1.3),
-                    ),
-                    SizedBox(height: 10.h),
-                    Text(
-                      question,
-                      textAlign: TextAlign.center,
-                      style:
-                          PanAfricanTypography.bodyMedium(
-                            context,
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          ).copyWith(
-                            fontStyle: FontStyle.italic,
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onPrimary.withValues(alpha: 0.85),
+        // This avatar+dialogue header is fixed, non-collapsing chrome sitting
+        // above `child`. At large system text-scale settings (e.g. the
+        // ~200% Android/iOS accessibility maximum - a real, reachable
+        // setting, not a hypothetical edge case) the dialogue/question text
+        // grows uncapped, and the header's own natural height alone can
+        // exceed the full screen height before `child` even starts. An
+        // `Expanded` sibling can't claim negative space, so a plain `Column`
+        // here overflowed instead of letting the learner scroll to see the
+        // rest - on every one of this template's 8 steps, not just one.
+        // Scrolling the *whole* header+content column as a single unit
+        // (the same approach already used for this step's own body - see
+        // `_ElderQuestionStep`) fixes this for every device size and every
+        // text scale. Every step's `child` was updated to match: a plain,
+        // non-expanding `Column` (shrink-wrapped grids/lists instead of
+        // `Expanded` + their own separate scrollable), since only one
+        // scrollable should own the vertical axis here.
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: PanAfricanSpacing.xl.h),
+              // Character avatar: use OnboardingAvatarWidget when step is provided
+              Semantics(
+                label: '$characterName, your guide for this step',
+                image: true,
+                child: ExcludeSemantics(
+                  child: avatarStep != null
+                      ? SizedBox(
+                          // OnboardingAvatarWidget always renders a name/title
+                          // caption beneath the portrait, needing far more
+                          // height than this compact per-step header can
+                          // spare (the language/goal/schedule content below
+                          // needs that room instead). `OverflowBox` gives the
+                          // widget the extra height it wants to lay itself out
+                          // without tripping its own internal RenderFlex
+                          // overflow assertion, and `ClipRect` then crops the
+                          // result back down to exactly the portrait — instead
+                          // of the pre-existing behaviour, where a plain
+                          // `SizedBox` here produced a debug-only overflow
+                          // warning while still painting the caption text
+                          // bleeding into the dialogue panel below in release
+                          // builds.
+                          width: 100.w,
+                          height: 100.w,
+                          child: ClipRect(
+                            child: OverflowBox(
+                              maxHeight: double.infinity,
+                              alignment: Alignment.topCenter,
+                              child: OnboardingAvatarWidget(
+                                step: avatarStep!,
+                                size: 100.w,
+                                animate: true,
+                              ),
+                            ),
                           ),
-                    ),
-                  ],
+                        ).animate().scale(
+                          duration: _motionDuration(context, 400.ms),
+                          curve: Curves.easeOut,
+                        )
+                      : Container(
+                          width: 100.w,
+                          height: 100.w,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: foregroundColor.withValues(alpha: 0.15),
+                            border: Border.all(
+                              color: foregroundColor.withValues(alpha: 0.3),
+                              width: 2,
+                            ),
+                          ),
+                          child: Icon(
+                            characterIcon,
+                            size: 50.sp,
+                            color: foregroundColor,
+                          ),
+                        ).animate().scale(
+                          duration: _motionDuration(context, 400.ms),
+                          curve: Curves.easeOut,
+                        ),
                 ),
               ),
-            ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.08, end: 0),
-            SizedBox(height: 24.h),
-            // Content
-            Expanded(child: child),
-          ],
+              SizedBox(height: PanAfricanSpacing.sm.h),
+              // Dialogue + Question panel
+              Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: PanAfricanSpacing.lg.w,
+                    ),
+                    child: Semantics(
+                      label: '$characterName says: $dialogue $question',
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20.w,
+                          vertical: 18.h,
+                        ),
+                        decoration: BoxDecoration(
+                          color: foregroundColor.withValues(alpha: 0.12),
+                          borderRadius: BorderRadius.circular(
+                            PanAfricanRadius.lg,
+                          ),
+                          border: Border.all(
+                            color: foregroundColor.withValues(alpha: 0.2),
+                            width: 1,
+                          ),
+                        ),
+                        child: ExcludeSemantics(
+                          child: Column(
+                            children: [
+                              Text(
+                                dialogue,
+                                textAlign: TextAlign.center,
+                                style: PanAfricanTypography.headlineSmall(
+                                  context,
+                                  color: foregroundColor,
+                                ).copyWith(height: 1.3),
+                              ),
+                              SizedBox(height: PanAfricanSpacing.sm.h),
+                              Text(
+                                question,
+                                textAlign: TextAlign.center,
+                                style: PanAfricanTypography.bodyMedium(
+                                  context,
+                                  color: mutedForegroundColor,
+                                ).copyWith(fontStyle: FontStyle.italic),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                  .animate()
+                  .fadeIn(
+                    delay: _motionDelay(context, 300.ms),
+                    duration: _motionDuration(context, 300.ms),
+                  )
+                  .slideY(
+                    begin: 0.08,
+                    end: 0,
+                    duration: _motionDuration(context, 300.ms),
+                  ),
+              SizedBox(height: PanAfricanSpacing.md.h),
+              // Content
+              child,
+            ],
+          ),
         ),
       ),
     );
@@ -2139,56 +2540,77 @@ class _LanguageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-        child: Container(
-          decoration: BoxDecoration(
-            color: isSelected
-                ? PanAfricanColors.secondary.withValues(alpha: 0.25)
-                : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-            border: Border.all(
-              color: isSelected
-                  ? PanAfricanColors.secondary
-                  : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
-              width: isSelected ? 2 : 1,
+    return Semantics(
+      button: true,
+      selected: isSelected,
+      label: isSelected ? '$name, selected' : name,
+      // Without this, the explicit label above merges with the child
+      // Row's own flag-emoji and name `Text` semantics into one messy,
+      // duplicated node instead of the clean label set here.
+      excludeSemantics: true,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+          child: Container(
+            constraints: const BoxConstraints(
+              minHeight: AdaptiveLayout.minTouchTarget,
             ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: isSelected ? 0.2 : 0.12),
-                blurRadius: isSelected ? 16 : 10,
-                offset: const Offset(0, 6),
+            decoration: BoxDecoration(
+              color: isSelected
+                  ? PanAfricanColors.secondary.withValues(alpha: 0.25)
+                  : PanAfricanColors.textPrimary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+              // `PanAfricanColors.secondary` (gold) is ~1.5:1 against this
+              // card's light background - below WCAG 1.4.11's 3:1 non-text
+              // minimum for a selection border/icon. The brand's dark green
+              // stays ~5.5:1 here instead; see `_GoalCard.selectedAccent`
+              // for the equivalent fix on a shared light/dark card.
+              border: Border.all(
+                color: isSelected
+                    ? PanAfricanColors.primary
+                    : PanAfricanColors.textPrimary.withValues(alpha: 0.2),
+                width: isSelected ? 2 : 1,
               ),
-            ],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(flag, style: TextStyle(fontSize: 28.sp)),
-              SizedBox(width: 10.w),
-              Flexible(
-                child: Text(
-                  name,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    fontSize: 14.sp,
-                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(
+                    alpha: isSelected ? 0.2 : 0.12,
                   ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              if (isSelected) ...[
-                SizedBox(width: 8.w),
-                Icon(
-                  Icons.check_circle_rounded,
-                  color: PanAfricanColors.secondary,
-                  size: 18.sp,
+                  blurRadius: isSelected ? 16 : 10,
+                  offset: const Offset(0, 6),
                 ),
               ],
-            ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(flag, style: TextStyle(fontSize: 28.sp)),
+                SizedBox(width: PanAfricanSpacing.sm.w),
+                Flexible(
+                  child: Text(
+                    name,
+                    style: TextStyle(
+                      color: PanAfricanColors.textPrimary,
+                      fontSize: 14.sp,
+                      fontWeight: isSelected
+                          ? FontWeight.w700
+                          : FontWeight.w500,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                if (isSelected) ...[
+                  SizedBox(width: PanAfricanSpacing.xs.w),
+                  Icon(
+                    Icons.check_circle_rounded,
+                    color: PanAfricanColors.primary,
+                    size: 18.sp,
+                  ),
+                ],
+              ],
+            ),
           ),
         ),
       ),
@@ -2214,70 +2636,88 @@ class _LanguageListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
-          decoration: BoxDecoration(
-            color: isSelected
-                ? PanAfricanColors.secondary.withValues(alpha: 0.2)
-                : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-            border: Border.all(
-              color: isSelected
-                  ? PanAfricanColors.secondary
-                  : Colors.transparent,
-              width: 2,
+    return Semantics(
+      button: true,
+      selected: isSelected,
+      label: isSelected ? '$name, $region, selected' : '$name, $region',
+      excludeSemantics: true,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+          child: Container(
+            constraints: const BoxConstraints(
+              minHeight: AdaptiveLayout.minTouchTarget,
             ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: isSelected ? 0.18 : 0.12),
-                blurRadius: isSelected ? 18 : 12,
-                offset: const Offset(0, 6),
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              Text(flag, style: TextStyle(fontSize: 32.sp)),
-              SizedBox(width: 16.w),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      name,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Text(
-                      region,
-                      style: TextStyle(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onPrimary.withValues(alpha: 0.6),
-                        fontSize: 12.sp,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Icon(
-                isSelected
-                    ? Icons.check_circle_rounded
-                    : Icons.radio_button_unchecked_rounded,
+            padding: EdgeInsets.symmetric(
+              horizontal: PanAfricanSpacing.md.w,
+              vertical: 14.h,
+            ),
+            decoration: BoxDecoration(
+              color: isSelected
+                  ? PanAfricanColors.secondary.withValues(alpha: 0.2)
+                  : PanAfricanColors.textPrimary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+              // `PanAfricanColors.secondary` (gold) is ~1.5:1 against this
+              // tile's light background - below WCAG 1.4.11's 3:1 non-text
+              // minimum for a selection border/icon; the brand's dark green
+              // stays ~5.5:1 here instead.
+              border: Border.all(
                 color: isSelected
-                    ? PanAfricanColors.secondary
-                    : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.54),
-                size: 24.sp,
+                    ? PanAfricanColors.primary
+                    : Colors.transparent,
+                width: 2,
               ),
-            ],
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(
+                    alpha: isSelected ? 0.18 : 0.12,
+                  ),
+                  blurRadius: isSelected ? 18 : 12,
+                  offset: const Offset(0, 6),
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                Text(flag, style: TextStyle(fontSize: 32.sp)),
+                SizedBox(width: PanAfricanSpacing.md.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name,
+                        style: TextStyle(
+                          color: PanAfricanColors.textPrimary,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        region,
+                        style: TextStyle(
+                          color: PanAfricanColors.textPrimary.withValues(
+                            alpha: 0.6,
+                          ),
+                          fontSize: 12.sp,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(
+                  isSelected
+                      ? Icons.check_circle_rounded
+                      : Icons.radio_button_unchecked_rounded,
+                  color: isSelected
+                      ? PanAfricanColors.primary
+                      : PanAfricanColors.textPrimary.withValues(alpha: 0.54),
+                  size: 24.sp,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -2301,64 +2741,85 @@ class _ReasonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-        child: Container(
-          decoration: BoxDecoration(
-            color: isSelected
-                ? PanAfricanColors.secondary.withValues(alpha: 0.25)
-                : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-            border: Border.all(
-              color: isSelected
-                  ? PanAfricanColors.secondary
-                  : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
-              width: isSelected ? 2 : 1,
+    return Semantics(
+      button: true,
+      selected: isSelected,
+      label: isSelected ? '$label, selected' : label,
+      excludeSemantics: true,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+          child: Container(
+            constraints: const BoxConstraints(
+              minHeight: AdaptiveLayout.minTouchTarget,
+              minWidth: AdaptiveLayout.minTouchTarget,
             ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: isSelected ? 0.2 : 0.12),
-                blurRadius: isSelected ? 16 : 10,
-                offset: const Offset(0, 6),
+            decoration: BoxDecoration(
+              color: isSelected
+                  ? PanAfricanColors.secondary.withValues(alpha: 0.25)
+                  : PanAfricanColors.textPrimary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+              // `PanAfricanColors.secondary` (gold) is ~1.5:1 against this
+              // card's light background - below WCAG 1.4.11's 3:1 non-text
+              // minimum for a selection border/icon; the brand's dark green
+              // stays ~5.5:1 here instead.
+              border: Border.all(
+                color: isSelected
+                    ? PanAfricanColors.primary
+                    : PanAfricanColors.textPrimary.withValues(alpha: 0.2),
+                width: isSelected ? 2 : 1,
               ),
-            ],
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 44.w,
-                height: 44.w,
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? PanAfricanColors.secondary.withValues(alpha: 0.2)
-                      : Theme.of(
-                          context,
-                        ).colorScheme.onPrimary.withValues(alpha: 0.08),
-                  shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(
+                    alpha: isSelected ? 0.2 : 0.12,
+                  ),
+                  blurRadius: isSelected ? 16 : 10,
+                  offset: const Offset(0, 6),
                 ),
-                child: Icon(
-                  icon,
-                  color: isSelected
-                      ? PanAfricanColors.secondary
-                      : Theme.of(context).colorScheme.onPrimary,
-                  size: 24.sp,
+              ],
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 44.w,
+                  height: 44.w,
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? PanAfricanColors.secondary.withValues(alpha: 0.2)
+                        : PanAfricanColors.textPrimary.withValues(alpha: 0.08),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    icon,
+                    color: isSelected
+                        ? PanAfricanColors.primary
+                        : PanAfricanColors.textPrimary,
+                    size: 24.sp,
+                  ),
                 ),
-              ),
-              SizedBox(height: 6.h),
-              Text(
-                label,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  fontSize: 11.sp,
-                  fontWeight: FontWeight.w600,
+                SizedBox(height: PanAfricanSpacing.xxs.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PanAfricanSpacing.xxs.w,
+                  ),
+                  child: Text(
+                    label,
+                    style: TextStyle(
+                      color: PanAfricanColors.textPrimary,
+                      fontSize: 11.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-                textAlign: TextAlign.center,
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -2374,83 +2835,113 @@ class _GoalCard extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
 
+  /// `_GoalCard` is reused by `_PathChooserStep` (dark `forest` gradient)
+  /// directly and, via `_StyleCard`, by `_RhythmMasterStep` (near-white
+  /// `sunset` gradient). It can't hardcode either `colorScheme.onPrimary`
+  /// (invisible on the light gradient) or a fixed dark color (invisible on
+  /// the dark one) - callers on a light background must set this `true`.
+  final bool isLightBackground;
+
   const _GoalCard({
     required this.icon,
     required this.title,
     required this.description,
     required this.isSelected,
     required this.onTap,
+    this.isLightBackground = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-        child: Container(
-          decoration: BoxDecoration(
-            color: isSelected
-                ? PanAfricanColors.secondary.withValues(alpha: 0.2)
-                : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-            border: Border.all(
-              color: isSelected
-                  ? PanAfricanColors.secondary
-                  : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
-              width: isSelected ? 2 : 1,
+    final Color baseColor = isLightBackground
+        ? PanAfricanColors.textPrimary
+        : Theme.of(context).colorScheme.onPrimary;
+    // `PanAfricanColors.secondary` (gold) is ~1.5:1 against the light
+    // gradients - swap the selected-state accent for the brand's dark
+    // green on light backgrounds instead, which stays ~5.5:1.
+    final Color selectedAccent = isLightBackground
+        ? PanAfricanColors.primary
+        : PanAfricanColors.secondary;
+    return Semantics(
+      button: true,
+      selected: isSelected,
+      label: isSelected
+          ? '$title, $description, selected'
+          : '$title, $description',
+      excludeSemantics: true,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+          child: Container(
+            constraints: const BoxConstraints(
+              minHeight: AdaptiveLayout.minTouchTarget,
             ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: isSelected ? 0.2 : 0.12),
-                blurRadius: isSelected ? 18 : 12,
-                offset: const Offset(0, 8),
+            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xxs.w),
+            decoration: BoxDecoration(
+              color: isSelected
+                  ? PanAfricanColors.secondary.withValues(alpha: 0.2)
+                  : baseColor.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+              border: Border.all(
+                color: isSelected
+                    ? selectedAccent
+                    : baseColor.withValues(alpha: 0.2),
+                width: isSelected ? 2 : 1,
               ),
-            ],
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 56.w,
-                height: 56.w,
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? PanAfricanColors.secondary.withValues(alpha: 0.2)
-                      : Theme.of(
-                          context,
-                        ).colorScheme.onPrimary.withValues(alpha: 0.08),
-                  shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(
+                    alpha: isSelected ? 0.2 : 0.12,
+                  ),
+                  blurRadius: isSelected ? 18 : 12,
+                  offset: const Offset(0, 8),
                 ),
-                child: Icon(
-                  icon,
-                  color: isSelected
-                      ? PanAfricanColors.secondary
-                      : Theme.of(context).colorScheme.onPrimary,
-                  size: 28.sp,
+              ],
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 56.w,
+                  height: 56.w,
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? PanAfricanColors.secondary.withValues(alpha: 0.2)
+                        : baseColor.withValues(alpha: 0.08),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    icon,
+                    color: isSelected ? selectedAccent : baseColor,
+                    size: 28.sp,
+                  ),
                 ),
-              ),
-              SizedBox(height: 8.h),
-              Text(
-                title,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w700,
+                SizedBox(height: PanAfricanSpacing.xs.h),
+                Text(
+                  title,
+                  style: TextStyle(
+                    color: baseColor,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-              SizedBox(height: 2.h),
-              Text(
-                description,
-                style: TextStyle(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onPrimary.withValues(alpha: 0.6),
-                  fontSize: 11.sp,
+                SizedBox(height: PanAfricanSpacing.xxxs.h),
+                Text(
+                  description,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: baseColor.withValues(alpha: 0.6),
+                    fontSize: 11.sp,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -2466,7 +2957,7 @@ class _StyleCard extends _GoalCard {
     required super.description,
     required super.isSelected,
     required super.onTap,
-  });
+  }) : super(isLightBackground: true);
 }
 
 /// Time selection card
@@ -2487,78 +2978,98 @@ class _TimeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-        child: Container(
-          decoration: BoxDecoration(
-            color: isSelected
-                ? PanAfricanColors.secondary.withValues(alpha: 0.2)
-                : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-            border: Border.all(
-              color: isSelected
-                  ? PanAfricanColors.secondary
-                  : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
-              width: isSelected ? 2 : 1,
+    return Semantics(
+      button: true,
+      selected: isSelected,
+      label: isSelected ? '$label, $time, selected' : '$label, $time',
+      excludeSemantics: true,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+          child: Container(
+            constraints: const BoxConstraints(
+              minHeight: AdaptiveLayout.minTouchTarget,
             ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: isSelected ? 0.2 : 0.12),
-                blurRadius: isSelected ? 16 : 10,
-                offset: const Offset(0, 6),
+            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xs.w),
+            decoration: BoxDecoration(
+              color: isSelected
+                  ? PanAfricanColors.secondary.withValues(alpha: 0.2)
+                  : PanAfricanColors.textPrimary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+              // `PanAfricanColors.secondary` (gold) is ~1.5:1 against this
+              // card's light background - below WCAG 1.4.11's 3:1 non-text
+              // minimum for a selection border/icon; the brand's dark green
+              // stays ~5.5:1 here instead.
+              border: Border.all(
+                color: isSelected
+                    ? PanAfricanColors.primary
+                    : PanAfricanColors.textPrimary.withValues(alpha: 0.2),
+                width: isSelected ? 2 : 1,
               ),
-            ],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 40.w,
-                height: 40.w,
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? PanAfricanColors.secondary.withValues(alpha: 0.2)
-                      : Theme.of(
-                          context,
-                        ).colorScheme.onPrimary.withValues(alpha: 0.08),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  icon,
-                  color: isSelected
-                      ? PanAfricanColors.secondary
-                      : Theme.of(context).colorScheme.onPrimary,
-                  size: 20.sp,
-                ),
-              ),
-              SizedBox(width: 10.w),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    label,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(
+                    alpha: isSelected ? 0.2 : 0.12,
                   ),
-                  Text(
-                    time,
-                    style: TextStyle(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onPrimary.withValues(alpha: 0.54),
-                      fontSize: 11.sp,
-                    ),
+                  blurRadius: isSelected ? 16 : 10,
+                  offset: const Offset(0, 6),
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 40.w,
+                  height: 40.w,
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? PanAfricanColors.secondary.withValues(alpha: 0.2)
+                        : PanAfricanColors.textPrimary.withValues(alpha: 0.08),
+                    shape: BoxShape.circle,
                   ),
-                ],
-              ),
-            ],
+                  child: Icon(
+                    icon,
+                    color: isSelected
+                        ? PanAfricanColors.primary
+                        : PanAfricanColors.textPrimary,
+                    size: 20.sp,
+                  ),
+                ),
+                SizedBox(width: PanAfricanSpacing.sm.w),
+                Flexible(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        label,
+                        style: TextStyle(
+                          color: PanAfricanColors.textPrimary,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        time,
+                        style: TextStyle(
+                          color: PanAfricanColors.textPrimary.withValues(
+                            alpha: 0.54,
+                          ),
+                          fontSize: 11.sp,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -2584,75 +3095,93 @@ class _ToneCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-        child: Container(
-          width: 100.w,
-          padding: EdgeInsets.all(12.w),
-          decoration: BoxDecoration(
-            color: isSelected
-                ? PanAfricanColors.secondary.withValues(alpha: 0.2)
-                : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-            border: Border.all(
-              color: isSelected
-                  ? PanAfricanColors.secondary
-                  : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
-              width: isSelected ? 2 : 1,
+    return Semantics(
+      button: true,
+      selected: isSelected,
+      label: isSelected
+          ? '$label, $description, selected'
+          : '$label, $description',
+      excludeSemantics: true,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+          child: Container(
+            width: 100.w,
+            constraints: const BoxConstraints(
+              minHeight: AdaptiveLayout.minTouchTarget,
             ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: isSelected ? 0.2 : 0.12),
-                blurRadius: isSelected ? 16 : 10,
-                offset: const Offset(0, 6),
+            padding: EdgeInsets.all(PanAfricanSpacing.sm.w),
+            decoration: BoxDecoration(
+              color: isSelected
+                  ? PanAfricanColors.secondary.withValues(alpha: 0.2)
+                  : PanAfricanColors.textPrimary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+              // `PanAfricanColors.secondary` (gold) is ~1.5:1 against this
+              // card's light background - below WCAG 1.4.11's 3:1 non-text
+              // minimum for a selection border/icon; the brand's dark green
+              // stays ~5.5:1 here instead.
+              border: Border.all(
+                color: isSelected
+                    ? PanAfricanColors.primary
+                    : PanAfricanColors.textPrimary.withValues(alpha: 0.2),
+                width: isSelected ? 2 : 1,
               ),
-            ],
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 44.w,
-                height: 44.w,
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? PanAfricanColors.secondary.withValues(alpha: 0.2)
-                      : Theme.of(
-                          context,
-                        ).colorScheme.onPrimary.withValues(alpha: 0.08),
-                  shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(
+                    alpha: isSelected ? 0.2 : 0.12,
+                  ),
+                  blurRadius: isSelected ? 16 : 10,
+                  offset: const Offset(0, 6),
                 ),
-                child: Icon(
-                  icon,
-                  color: isSelected
-                      ? PanAfricanColors.secondary
-                      : Theme.of(context).colorScheme.onPrimary,
-                  size: 24.sp,
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 44.w,
+                  height: 44.w,
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? PanAfricanColors.secondary.withValues(alpha: 0.2)
+                        : PanAfricanColors.textPrimary.withValues(alpha: 0.08),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    icon,
+                    color: isSelected
+                        ? PanAfricanColors.primary
+                        : PanAfricanColors.textPrimary,
+                    size: 24.sp,
+                  ),
                 ),
-              ),
-              SizedBox(height: 6.h),
-              Text(
-                label,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w600,
+                SizedBox(height: PanAfricanSpacing.xxs.h),
+                Text(
+                  label,
+                  style: TextStyle(
+                    color: PanAfricanColors.textPrimary,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-              Text(
-                description,
-                style: TextStyle(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onPrimary.withValues(alpha: 0.54),
-                  fontSize: 10.sp,
+                Text(
+                  description,
+                  style: TextStyle(
+                    color: PanAfricanColors.textPrimary.withValues(alpha: 0.54),
+                    fontSize: 10.sp,
+                  ),
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                textAlign: TextAlign.center,
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
