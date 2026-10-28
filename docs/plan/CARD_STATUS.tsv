@@ -1054,7 +1054,7 @@ P9-932	Done	Learner appeals API + transparency job + appeal_screen (appeals.serv
 P9-933	Done	Publish plain-language community guidelines in supported UI languages	P9/P9-933.yaml
 P9-934	Done	Verify safety lead, incident response and moderator training exist (INCIDENT_RESPONSE.md, MODERATOR_TRAINING.md, safety_ops_check.py)	P9/P9-934.yaml
 P9-935	Draft	Remediate pen-test findings on sockets, auth and minors' surfaces	P9/P9-935.yaml
-P9-936	Draft	Verify G9 guardian and moderation gate for under-18 social	P9/P9-936.yaml
+P9-936	Done	G9 gate packet NO-GO (EXT-17/EXT-25 open); g9_gate_check.py policy matrix	P9/P9-936.yaml
 P9-937	Draft	Decide MLS versus Signal protocol for private messaging	P9/P9-937.yaml
 P9-938	Draft	Run MLS delivery service storing ciphertext and key packages only	P9/P9-938.yaml
 P9-939	Draft	Enable MLS E2EE for adult 1:1 and small-group chats by default	P9/P9-939.yaml
