@@ -64,6 +64,8 @@ dist/
 # CI logs / local artifacts (do not commit)
 logs_*/
 output/
+.coverage
+.venv-ml/
 
 # Cursor / IDE artifacts
 Curosr_Chat_History/
