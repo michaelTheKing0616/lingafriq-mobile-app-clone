@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/gamification_provider.dart';
+import 'package:lingafriq/services/capability_gate.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/gamification/gamification_widgets.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
@@ -28,6 +29,12 @@ class _CowriesShopScreenState extends ConsumerState<CowriesShopScreen> {
   }
 
   Future<void> _confirmPurchase(CowriesShopItem item) async {
+    final gate = CapabilityGate();
+    if (!await gate.mayPurchase()) {
+      if (!mounted) return;
+      await CapabilityBlockedSheet.showPurchaseBlocked(context);
+      return;
+    }
     final balance = ref.read(gamificationProvider.notifier).gamification.cowries;
     if (balance < item.cost) {
       setState(() => _statusMessage = 'You need ${item.cost - balance} more Cowries for this.');
