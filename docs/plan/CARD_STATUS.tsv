@@ -1029,7 +1029,7 @@ P9-907	Done	10k socket soak harness (socket_10k.js, loadtest_report.md, --self-t
 P9-908	Done	Build durable message log with per-device cursors and idempotent ids (messageLog.ts, messageSync.service.ts, P9-908.messageSync.test.ts)	P9/P9-908.yaml
 P9-909	Done	Offline chat outbox + data-only FCM push (outbox_message_queue, data_push_handler, push.service)	P9/P9-909.yaml
 P9-910	Done	Signed chat media uploads, transcode, EXIF strip (mediaUpload/Transcode, P9-910.media.test.ts)	P9/P9-910.yaml
-P9-911	Draft	Hard-delete expiring media and make disappearing content real	P9/P9-911.yaml
+P9-911	Done	Hard-delete expiring media; sealed moderation hold; migration count (mediaExpiry.job.ts)	P9/P9-911.yaml
 P9-912	Draft	Assess age at sign-up and enforce age tiers	P9/P9-912.yaml
 P9-913	Draft	Link guardian accounts and collect verifiable consent	P9/P9-913.yaml
 P9-914	Draft	Let guardians approve circles and classrooms for children	P9/P9-914.yaml
