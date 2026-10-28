@@ -1,6 +1,36 @@
 import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/utils/api_service.dart';
 
+/// Read receipts only for mutual 1:1 contacts (P9-944 AC3).
+class WaReadReceiptPolicy {
+  const WaReadReceiptPolicy._();
+
+  static bool showReadReceipts({
+    required bool isDirectMessage,
+    required bool isMutualContact,
+  }) {
+    if (!isDirectMessage) return false;
+    return isMutualContact;
+  }
+}
+
+class WaDmThreadPolicy {
+  const WaDmThreadPolicy({
+    required this.e2eeEnabled,
+    required this.requiresModeration,
+  });
+
+  final bool e2eeEnabled;
+  final bool requiresModeration;
+
+  factory WaDmThreadPolicy.fromJson(Map<String, dynamic> json) {
+    return WaDmThreadPolicy(
+      e2eeEnabled: json['e2ee_enabled'] == true,
+      requiresModeration: json['requires_moderation'] == true,
+    );
+  }
+}
+
 /// Row for the private chat inbox — backed by `GET /api/wa/conversations`.
 class WaPrivateConversationRow {
   const WaPrivateConversationRow({
@@ -185,6 +215,7 @@ class WaPrivateChatService {
     required String message,
     String? clientMessageId,
     bool firstDmIntro = false,
+    String? replyToId,
   }) async {
     final res = await ApiService.post(
       Api.waMessages,
@@ -195,6 +226,7 @@ class WaPrivateChatService {
         if (firstDmIntro) 'first_dm_intro': true,
         if (clientMessageId != null && clientMessageId.isNotEmpty)
           'client_message_id': clientMessageId,
+        if (replyToId != null && replyToId.isNotEmpty) 'reply_to_id': replyToId,
       },
     );
     final raw = res.data;
@@ -203,6 +235,151 @@ class WaPrivateChatService {
     }
     if (raw is Map) return Map<String, dynamic>.from(raw);
     return null;
+  }
+
+  static Future<String?> uploadChatMediaFile(
+    String localPath, {
+    String type = 'audio',
+  }) async {
+    final res = await ApiService.uploadFile(
+      Api.mediaUpload(),
+      localPath,
+      additionalData: {'type': type},
+    );
+    final raw = res.data;
+    if (raw is! Map) return null;
+    final data = raw['data'];
+    if (data is Map) {
+      for (final k in ['url', 'file_url', 'mediaUrl', 'publicUrl']) {
+        final v = data[k];
+        if (v is String && v.isNotEmpty) return v;
+      }
+    }
+    for (final k in ['url', 'file_url']) {
+      final v = raw[k];
+      if (v is String && v.isNotEmpty) return v;
+    }
+    return null;
+  }
+
+  static Future<Map<String, dynamic>?> sendVoiceNote({
+    required String recipientId,
+    required String localFilePath,
+    int? durationMs,
+    String? replyToId,
+    String? clientMessageId,
+  }) async {
+    final url = await uploadChatMediaFile(localFilePath, type: 'audio');
+    if (url == null || url.isEmpty) {
+      throw StateError('VOICE_UPLOAD_FAILED');
+    }
+    final label = durationMs != null && durationMs > 0
+        ? 'Voice message (${(durationMs / 1000).ceil()}s)'
+        : 'Voice message';
+    final res = await ApiService.post(
+      Api.waMessages,
+      data: {
+        'recipientId': recipientId,
+        'message': label,
+        'message_type': 'audio',
+        'file_url': url,
+        if (replyToId != null && replyToId.isNotEmpty) 'reply_to_id': replyToId,
+        if (clientMessageId != null && clientMessageId.isNotEmpty)
+          'client_message_id': clientMessageId,
+      },
+    );
+    final raw = res.data;
+    if (raw is Map && raw['data'] is Map) {
+      return Map<String, dynamic>.from(raw['data'] as Map);
+    }
+    if (raw is Map) return Map<String, dynamic>.from(raw);
+    return null;
+  }
+
+  static Future<Map<String, dynamic>?> sendGroupTextMessage({
+    required String tribeId,
+    required String message,
+    String messageType = 'text',
+    String? fileUrl,
+    String? replyToId,
+  }) async {
+    final res = await ApiService.post(
+      'chat/tribe/$tribeId',
+      data: {
+        'message': message,
+        'message_type': messageType,
+        if (fileUrl != null && fileUrl.isNotEmpty) 'file_url': fileUrl,
+        if (replyToId != null && replyToId.isNotEmpty) 'reply_to_id': replyToId,
+      },
+    );
+    final raw = res.data;
+    if (raw is Map && raw['data'] is Map) {
+      return Map<String, dynamic>.from(raw['data'] as Map);
+    }
+    if (raw is Map) return Map<String, dynamic>.from(raw);
+    return null;
+  }
+
+  static Future<WaDmThreadPolicy> fetchDmThreadPolicy(int peerUserId) async {
+    final res = await ApiService.post(
+      'api/v2/messaging-policy/dm-thread',
+      data: {'peer_user_id': peerUserId},
+    );
+    final raw = res.data;
+    if (raw is Map && raw['ok'] == true) {
+      return WaDmThreadPolicy.fromJson(Map<String, dynamic>.from(raw));
+    }
+    return const WaDmThreadPolicy(
+      e2eeEnabled: false,
+      requiresModeration: false,
+    );
+  }
+
+  static Future<List<Map<String, dynamic>>> toggleReaction({
+    required String messageId,
+    required String emoji,
+  }) async {
+    final res = await ApiService.post(
+      'api/wa/messages/$messageId/reaction',
+      data: {'emoji': emoji},
+    );
+    final raw = res.data;
+    if (raw is Map && raw['data'] is Map) {
+      final data = Map<String, dynamic>.from(raw['data'] as Map);
+      final reactions = data['reactions'];
+      if (reactions is List) {
+        return reactions.whereType<Map>().map((e) => Map<String, dynamic>.from(e)).toList();
+      }
+    }
+    return const [];
+  }
+
+  static Future<bool> toggleStarMessage(String messageId) async {
+    final res = await ApiService.post('api/wa/messages/$messageId/star');
+    final raw = res.data;
+    if (raw is Map && raw['data'] is Map) {
+      return raw['data']['starred'] == true;
+    }
+    return false;
+  }
+
+  static Future<void> markRoomRead({required String roomId}) async {
+    await ApiService.post(
+      'api/wa/messages/read',
+      data: {'roomId': roomId},
+    );
+  }
+
+  static String? mediaUrlFromMessageMap(Map<String, dynamic> m) {
+    for (final k in ['file_url', 'fileUrl', 'media_url', 'mediaUrl']) {
+      final v = m[k];
+      if (v is String && v.trim().isNotEmpty) return v.trim();
+    }
+    return null;
+  }
+
+  static String messageTypeFromMap(Map<String, dynamic> m) {
+    return (m['message_type'] ?? m['messageType'] ?? 'text').toString();
   }
 
   /// P9-929: `GET /api/v2/first-dm/state` → kind string from server payload.
