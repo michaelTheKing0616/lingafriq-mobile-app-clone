@@ -1060,7 +1060,7 @@ P9-938	Done	MLS delivery: ciphertext/commits only, key packages, MLS_COMMIT_INVA
 P9-939	Done	MLS E2EE default adult DMs (mls_session_service.dart, private_chat_screen.dart)	P9/P9-939.yaml
 P9-940	Done	E2EE on-device gloss/Tone Lens + per-message server assist consent (on_device_overlay_service.dart, server_assist_consent_sheet.dart)	P9/P9-940.yaml
 P9-941	Done	Content-free E2EE wake pushes; minor/age-unknown gate; local notify after sync (push.service.ts, data_push_handler.dart)	P9/P9-941.yaml
-P9-942	Draft	Add group calls for adult and approved-circle members	P9/P9-942.yaml
+P9-942	Done	Group calls LiveKit member authz moderated minors (groupCall.service.ts, group_call_screen.dart)	P9/P9-942.yaml
 P9-943	Done	Circles engine: caps, tribe migration, guardian/teacher adult join, /api/v2/circles (circles.service.ts, circles_screen.dart)	P9/P9-943.yaml
 P9-944	Done	Chat engine: voice notes, reactions/reply sync, read-receipt policy, minor moderation banner, WA menu (private_chat_screen.dart, wa_private_chat_service.dart, voice_note_recorder.dart)	P9/P9-944.yaml
 P9-945	Done	Chat learning service + Tone Lens sheet + language status chips (chat_room_learning_service.dart)	P9/P9-945.yaml
