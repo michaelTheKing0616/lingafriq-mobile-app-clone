@@ -202,6 +202,7 @@ flutter:
     - assets/fonts/
     - assets/data/audio_manifest.json
     - assets/data/sound/clicks_vowels.json
+    - assets/data/tone/minimal_pairs.json
     - assets/audio/
     - assets/data/cms_manifests/pack_catalog.json
     - assets/data/cms_manifests/1/

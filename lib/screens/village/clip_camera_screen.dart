@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lingafriq/models/clip_template.dart';
 import 'package:lingafriq/services/clips/clip_upload_service.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
@@ -55,6 +56,13 @@ class _ClipCameraScreenState extends State<ClipCameraScreen> {
   @override
   void initState() {
     super.initState();
+    final preset = ClipTemplatePendingStore.take();
+    if (preset != null) {
+      if (_languageOptions.contains(preset.languageTag)) {
+        _languageTag = preset.languageTag;
+      }
+      _captionController.text = preset.suggestedCaption;
+    }
     if (widget.loadCirclesOnInit) {
       unawaited(_loadCircles());
     }
