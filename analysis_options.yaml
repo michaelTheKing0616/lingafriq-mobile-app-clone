@@ -12,6 +12,10 @@ include: package:flutter_lints/flutter.yaml
 analyzer:
   # Warnings stay visible. scripts/ci/analyze_new_code.sh fails a change that
   # adds one, and leaves a legacy file alone when its warning count does not grow.
+  #
+  # P12-007: cross-feature game imports must use
+  # package:lingafriq/features/games/providers/games_providers.dart (enforced in
+  # test/providers/game_provider_test.dart).
   exclude:
     # Curriculum JSON bundles: exclude only the known patched provider experiments.
     # Use explicit paths (not **) so analyzer globs cannot over-match app lib/ files.

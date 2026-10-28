@@ -439,7 +439,7 @@ P12-003	Done	Downloadable CMS language packs: pack_catalog, PackDownloadService,
 P12-004	Done	Per-ABI APK download size gate in CI (apk_size_gate.sh, 40MB)	P12/P12-004.yaml
 P12-005	Done	Split polie_workspace into modules ≤500 lines (build_host mixins + scaffold)	P12/P12-005.yaml
 P12-006	Done	Split ai_chat_provider_groq and api_provider (feature mixins ≤500 lines)	P12/P12-006.yaml
-P12-007	Draft	Split game_provider and enforce module boundaries	P12/P12-007.yaml
+P12-007	Done	Split game_provider into games mixins + barrel; boundary test (P12-007)	P12/P12-007.yaml
 P12-008	Draft	Delete superseded duplicate screens after consolidation	P12/P12-008.yaml
 P12-009	Draft	Enforce image and Rive asset budgets in CI	P12/P12-009.yaml
 P12-010	Draft	Enforce const widgets and list virtualisation lints	P12/P12-010.yaml
