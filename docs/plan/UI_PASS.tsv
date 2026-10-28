@@ -189,7 +189,7 @@ mobile	lib/screens/onboarding/modern_onboarding_screen.dart	todo
 mobile	lib/screens/onboarding/onboarding_screen.dart	todo			
 mobile	lib/screens/onboarding/onboarding_screen_material3.dart	todo			
 mobile	lib/screens/onboarding/placement_quiz_screen.dart	todo			
-mobile	lib/screens/onboarding/unified_onboarding_screen.dart	passed	9/9/9/9/9/9/9/9/9/9 avg9.0	Finch+Speak+Duolingo+Opal+Headspace	2026-10-28
+mobile	lib/screens/onboarding/unified_onboarding_screen.dart	below-bar	8/8/9/7/8/9/8/8/7/8 avg8.0	Finch+Speak+Duolingo+Opal+Headspace; independent review failed worker 9s (white-on-coral 3.46, dead Skip, fake first-win, emoji flags, Yoruba hardcode)	2026-10-28
 mobile	lib/screens/passport/cando_badge_screen.dart	todo			
 mobile	lib/screens/passport/passport_credential_screen.dart	todo			
 mobile	lib/screens/passport/passport_proctored_session_screen.dart	todo			

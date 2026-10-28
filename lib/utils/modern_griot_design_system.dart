@@ -124,6 +124,16 @@ class ModernGriotColors {
   static const Color shadow = Color(0xFF322E25);
   static const Color scrim = Color(0xFF322E25);
   static const Color surfaceTint = primary;
+
+  // ── Brand kit accents (LingAfriq Gold / Coral) ────────────────────────────
+  /// CTA fill. Pair only with [onBrandGold] (AA ≥ 8:1).
+  static const Color brandGold = Color(0xFFFFC53D);
+
+  /// Text/icons on [brandGold].
+  static const Color onBrandGold = Color(0xFF322E25);
+
+  /// Selection border / check accent. Do not use as a text fill (fails AA).
+  static const Color brandCoral = Color(0xFFE5603B);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
