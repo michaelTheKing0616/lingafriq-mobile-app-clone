@@ -461,7 +461,7 @@ P13-003	Done	Block later-wave languages beyond L0 without a lexicon (lexicon_gat
 P13-004	Done	ADR-037 moonshot start gate + rm_stop_01 evidence (moonshot_start_gate.py)	P13/P13-004.yaml
 P13-005	Done	Living Archive path design (living_archive_path.md, build_cards.json)	P13/P13-005.yaml
 P13-006	Draft	Design open tone corpus and on-device tone model	P13/P13-006.yaml
-P13-007	Draft	Design Grandma Mode family dialect recordings	P13/P13-007.yaml
+P13-007	Done	Grandma Mode design: consent, family_sourced label, purge SLA (grandma_mode_design.md)	P13/P13-007.yaml
 P13-008	Draft	Design living history and AR grounded in archives	P13/P13-008.yaml
 P13-009	Draft	Design Ajami, Nsibidi, Adinkra and Ge'ez script journeys	P13/P13-009.yaml
 P13-010	Draft	Decide Heritage Language Fund mechanics and in-app progress	P13/P13-010.yaml

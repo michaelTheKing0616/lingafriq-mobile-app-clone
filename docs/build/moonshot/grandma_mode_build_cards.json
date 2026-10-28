@@ -1,0 +1,39 @@
+{
+  "charter": "v2",
+  "card_id": "P13-007",
+  "provenance_tag": "family_sourced",
+  "consent_before_storage": true,
+  "licence_choice_required": true,
+  "voice_storage_service": "node-backend/src/services/voice-consent.service.ts",
+  "training_consent_service": "node-backend/src/services/training-consent.service.ts",
+  "withdraw_purge_days": 30,
+  "wider_sharing_requires_native_review": true,
+  "minor_guardian_rules": "E-P9-SAFETY",
+  "proposed_build_cards": [
+    {
+      "id": "P13-007a",
+      "title": "Family circle invite + Grandma record flow (consent script, licence picker, upload gate)",
+      "size": "L"
+    },
+    {
+      "id": "P13-007b",
+      "title": "family_sourced provenance on v2 items + studio review queue",
+      "size": "M"
+    },
+    {
+      "id": "P13-007c",
+      "title": "Lesson generator from aligned family clip (phrase cards, listen-repeat, scorer)",
+      "size": "L"
+    },
+    {
+      "id": "P13-007d",
+      "title": "Heritage milestones + phrase-of-the-week teach-back (circle goals)",
+      "size": "M"
+    },
+    {
+      "id": "P13-007e",
+      "title": "Withdraw + purge orchestration for family blobs and derived packs",
+      "size": "S"
+    }
+  ]
+}
