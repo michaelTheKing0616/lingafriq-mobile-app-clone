@@ -1068,7 +1068,7 @@ P9-946	Done	Opt-in voice-note transcription with gloss (voiceNoteTranscribe.serv
 P9-947	Done	Practice Rooms host/topic/level, turn order, AI facilitator (practiceRoom.service.ts)	P9/P9-947.yaml
 P9-948	Done	Clips capture/post 15–60s, moderation + minor circle scope (clip_camera_screen.dart, clips.service.ts)	P9/P9-948.yaml
 P9-949	Done	Clip templates: verified phrase/proverb/twister + camera preset (clip_templates_screen.dart)	P9/P9-949.yaml
-P9-950	Draft	Add duets and stitch-style native corrections to clips	P9/P9-950.yaml
+P9-950	Done	Clip duets + native stitch (clipDuet.service.ts, clip_duet_screen.dart)	P9/P9-950.yaml
 P9-951	Done	Native corrections queue, reputation, QA routing (nativeCorrections.service.ts, community_corrections_screen.dart)	P9/P9-951.yaml
 P9-952	Draft	Build teacher dashboard with roster import for Classrooms	P9/P9-952.yaml
 P9-953	Draft	Assign work, auto-grade speaking with override, show can-do progress	P9/P9-953.yaml

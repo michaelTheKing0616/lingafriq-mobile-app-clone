@@ -873,5 +873,17 @@
   "gamesArcadeHeadlinersWhyWrong": "We will add a short tip here after you play.",
   "@gamesArcadeHeadlinersWhyWrong": {
     "description": "copy_keys: games.arcade_headliners.why_wrong"
+  },
+  "duetStart": "Start duet",
+  "@duetStart": {
+    "description": "copy_keys: duet.start"
+  },
+  "duetBlocked": "Duet unavailable",
+  "@duetBlocked": {
+    "description": "copy_keys: duet.blocked"
+  },
+  "stitchLabel": "Native correction",
+  "@stitchLabel": {
+    "description": "copy_keys: stitch.label"
   }
 }
