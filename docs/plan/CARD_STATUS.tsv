@@ -443,7 +443,7 @@ P12-007	Done	Split game_provider into games mixins + barrel; boundary test (P12-
 P12-008	Done	Delete superseded duplicate screens; dead_screen_report.py (P12-008)	P12/P12-008.yaml
 P12-009	Done	Enforce image and Rive asset budgets in CI (asset_budget_check.py)	P12/P12-009.yaml
 P12-010	Done	Const lints + list virtualisation CI (list_virtualisation_check.py)	P12/P12-010.yaml
-P12-011	Draft	Remove rebuild storms from large Riverpod providers	P12/P12-011.yaml
+P12-011	Done	GamificationState + rebuild_slice_providers + rebuild_count_test (P12-011)	P12/P12-011.yaml
 P12-012	Draft	Gate cold start under 2 s on Tecno/Infinix-class device	P12/P12-012.yaml
 P12-013	Draft	Enforce frame-cost budget on the reference device	P12/P12-013.yaml
 P12-014	Draft	Add API read load test with p95 under 300 ms	P12/P12-014.yaml

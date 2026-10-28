@@ -5,7 +5,8 @@ import '../models/user_gamification_model.dart';
 import '../models/badge_model.dart';
 import 'api_provider.dart';
 import 'user_provider.dart';
-import 'base_provider.dart';
+import 'gamification_snapshots.dart';
+import 'gamification_state.dart';
 import 'gamification_services_provider.dart';
 import '../services/rive_gamification_service.dart';
 import '../utils/api.dart';
@@ -20,177 +21,38 @@ import '../games/gamekit/game_result.dart';
 import '../models/game/game_session_model.dart';
 import 'game_provider.dart';
 
+export 'gamification_snapshots.dart';
+
 // P8-907: GameKit core sessions never gate on hearts/energy (GameKitRewardPolicy).
 
 final gamificationProvider =
-    NotifierProvider<GamificationProvider, BaseProviderState>(() {
+    NotifierProvider<GamificationProvider, GamificationState>(() {
   return GamificationProvider();
 });
 
-class CircleQuestMemberLabel {
-  const CircleQuestMemberLabel({
-    required this.slot,
-    required this.isViewer,
-    this.userId,
-  });
-  final String slot;
-  final bool isViewer;
-  final String? userId;
-}
-
-class CircleQuestSnapshot {
-  const CircleQuestSnapshot({
-    required this.empty,
-    required this.goalXp,
-    required this.progressXp,
-    required this.members,
-    this.complete = false,
-  });
-
-  final bool empty;
-  final int goalXp;
-  final int progressXp;
-  final List<CircleQuestMemberLabel> members;
-  final bool complete;
-
-  factory CircleQuestSnapshot.fromJson(Map<String, dynamic> json) {
-    final membersRaw = json['members'] as List<dynamic>? ?? [];
-    return CircleQuestSnapshot(
-      empty: json['empty'] == true,
-      goalXp: (json['goalXp'] as num?)?.toInt() ?? 0,
-      progressXp: (json['progressXp'] as num?)?.toInt() ?? 0,
-      complete: json['complete'] == true,
-      members: membersRaw
-          .map((e) => CircleQuestMemberLabel(
-                slot: (e as Map)['slot']?.toString() ?? 'Learner',
-                isViewer: (e)['isViewer'] == true,
-                userId: (e)['userId']?.toString(),
-              ))
-          .toList(),
-    );
-  }
-}
-
-class FamilyPhraseSnapshot {
-  const FamilyPhraseSnapshot({
-    required this.empty,
-    this.phrase = '',
-    this.gloss = '',
-  });
-
-  final bool empty;
-  final String phrase;
-  final String gloss;
-
-  factory FamilyPhraseSnapshot.fromJson(Map<String, dynamic> json) {
-    return FamilyPhraseSnapshot(
-      empty: json['empty'] == true,
-      phrase: json['phrase']?.toString() ?? '',
-      gloss: json['gloss']?.toString() ?? '',
-    );
-  }
-}
-
-class CowriesShopItem {
-  const CowriesShopItem({
-    required this.id,
-    required this.sink,
-    required this.cost,
-    required this.title,
-    required this.does,
-    this.personaId,
-    this.chapterId,
-  });
-
-  final String id;
-  final String sink;
-  final int cost;
-  final String title;
-  final String does;
-  final String? personaId;
-  final String? chapterId;
-
-  factory CowriesShopItem.fromJson(Map<String, dynamic> json) {
-    return CowriesShopItem(
-      id: json['id']?.toString() ?? '',
-      sink: json['sink']?.toString() ?? '',
-      cost: (json['cost'] as num?)?.toInt() ?? 0,
-      title: json['title']?.toString() ?? '',
-      does: json['does']?.toString() ?? '',
-      personaId: json['persona_id']?.toString(),
-      chapterId: json['chapter_id']?.toString(),
-    );
-  }
-}
-
-class CowriesShopPurchaseResult {
-  const CowriesShopPurchaseResult({required this.ok, this.message = ''});
-  final bool ok;
-  final String message;
-}
-
-class HeritageTreeSnapshot {
-  const HeritageTreeSnapshot({
-    required this.canDoCount,
-    required this.stage,
-    required this.members,
-  });
-
-  final int canDoCount;
-  final String stage;
-  final List<CircleQuestMemberLabel> members;
-
-  factory HeritageTreeSnapshot.fromJson(Map<String, dynamic> json) {
-    final membersRaw = json['members'] as List<dynamic>? ?? [];
-    return HeritageTreeSnapshot(
-      canDoCount: (json['canDoCount'] as num?)?.toInt() ?? 0,
-      stage: json['stage']?.toString() ?? 'seed',
-      members: membersRaw
-          .map((e) => CircleQuestMemberLabel(
-                slot: (e as Map)['slot']?.toString() ?? 'Learner',
-                isViewer: (e)['isViewer'] == true,
-              ))
-          .toList(),
-    );
-  }
-}
-
 /// Core gamification engine - beats Duolingo, Babbel, and all competitors
-class GamificationProvider extends Notifier<BaseProviderState>
-    with BaseProviderMixin {
-  UserGamificationModel _gamification = UserGamificationModel();
-  String? _serverBalanceError;
-  String? get serverBalanceError => _serverBalanceError;
+class GamificationProvider extends Notifier<GamificationState> {
   final List<Badge> _allBadges = BadgeDefinitions.getAllBadges();
 
-  CircleQuestSnapshot? _circleQuest;
-  FamilyPhraseSnapshot? _familyPhrase;
-  HeritageTreeSnapshot? _heritageTree;
-  StreakCadence _streakCadence = StreakCadence.daily;
-  List<String> _practiceDaysThisWeek = [];
-  DateTime? _streakBrokenAt;
-  int _streakBeforeBreak = 0;
-  List<CowriesShopItem> _shopCatalog = [];
-  bool _shopCatalogLoading = false;
+  String? get serverBalanceError => state.serverBalanceError;
+  CircleQuestSnapshot? get circleQuest => state.circleQuest;
+  List<CowriesShopItem> get shopCatalog => List.unmodifiable(state.shopCatalog);
+  bool get shopCatalogLoading => state.shopCatalogLoading;
+  StreakCadence get streakCadence => state.streakCadence;
+  FamilyPhraseSnapshot? get familyPhrase => state.familyPhrase;
+  HeritageTreeSnapshot? get heritageTree => state.heritageTree;
 
-  CircleQuestSnapshot? get circleQuest => _circleQuest;
-  List<CowriesShopItem> get shopCatalog => List.unmodifiable(_shopCatalog);
-  bool get shopCatalogLoading => _shopCatalogLoading;
-  StreakCadence get streakCadence => _streakCadence;
-  FamilyPhraseSnapshot? get familyPhrase => _familyPhrase;
-  HeritageTreeSnapshot? get heritageTree => _heritageTree;
-
-  UserGamificationModel get gamification => _gamification;
+  UserGamificationModel get gamification => state.gamification;
   List<Badge> get allBadges => List.unmodifiable(_allBadges);
   List<Badge> get unlockedBadges => _allBadges
-      .where((b) => _gamification.unlockedBadges.contains(b.id))
+      .where((b) => state.gamification.unlockedBadges.contains(b.id))
       .toList();
 
   @override
-  BaseProviderState build() {
+  GamificationState build() {
     _loadGamification();
     _syncWithBackend();
-    return BaseProviderState();
+    return GamificationState();
   }
 
   /// Award XP and handle level ups, currency rewards.
@@ -218,11 +80,11 @@ class GamificationProvider extends Notifier<BaseProviderState>
       final total = claim.xpTotal;
       if (total != null) {
         final newLevel = LevelTitles.getLevelFromXP(total);
-        _gamification = _gamification.copyWith(
+        state = state.copyWith(gamification: state.gamification.copyWith(
           xp: total,
           level: newLevel,
           levelTitle: LevelTitles.getTitleForLevel(newLevel),
-        );
+        ));
         await _saveGamification();
         state = state.copyWith();
       }
@@ -264,21 +126,21 @@ class GamificationProvider extends Notifier<BaseProviderState>
 
         if (success) {
           backendAwarded = true;
-          _serverBalanceError = null;
+          state = state.copyWith(serverBalanceError: null);
           // Update local state from backend response (authoritative totals)
           try {
             final userXP = await ref.read(apiProvider.notifier).getUserXP(user.id.toString());
             if (userXP != null) {
-              final totalXP = (userXP['totalXP'] as num?)?.toInt() ?? _gamification.xp;
+              final totalXP = (userXP['totalXP'] as num?)?.toInt() ?? state.gamification.xp;
               final backendLevel = (userXP['level'] as num?)?.toInt();
               final newLevel = backendLevel ?? LevelTitles.getLevelFromXP(totalXP);
               final newTitle = LevelTitles.getTitleForLevel(newLevel);
 
-              _gamification = _gamification.copyWith(
+              state = state.copyWith(gamification: state.gamification.copyWith(
                 xp: totalXP,
                 level: newLevel,
                 levelTitle: newTitle,
-              );
+              ));
             }
           } catch (e) {
             logger.error('Error updating local XP from backend', tag: 'gamification', error: e);
@@ -299,23 +161,23 @@ class GamificationProvider extends Notifier<BaseProviderState>
     }
 
     // Offline fallback: no local balance mint; queue retry via outbox sync path.
-    final currentXP = _gamification.xp;
+    final currentXP = state.gamification.xp;
     final newXP = currentXP + xpGain;
     final newLevel = LevelTitles.getLevelFromXP(newXP);
     final newTitle = LevelTitles.getTitleForLevel(newLevel);
 
-    _gamification = _gamification.copyWith(
+    state = state.copyWith(gamification: state.gamification.copyWith(
       xp: newXP,
       level: newLevel,
       levelTitle: newTitle,
-    );
+    ));
 
     // Level up bonus
-    if (newLevel > _gamification.level) {
-      final levelUpBonus = 50 * (newLevel - _gamification.level);
-      _gamification = _gamification.copyWith(
-        cowries: _gamification.cowries + levelUpBonus,
-      );
+    if (newLevel > state.gamification.level) {
+      final levelUpBonus = 50 * (newLevel - state.gamification.level);
+      state = state.copyWith(gamification: state.gamification.copyWith(
+        cowries: state.gamification.cowries + levelUpBonus,
+      ));
       logger.info('Level up!', tag: 'gamification', context: {'newLevel': newLevel, 'newTitle': newTitle});
 
       // React with Rive
@@ -327,7 +189,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
 
       // Emit level up event
       await _emitEvent('level_up', {
-        'old_level': _gamification.level,
+        'old_level': state.gamification.level,
         'new_level': newLevel,
         'bonus': levelUpBonus,
       });
@@ -421,7 +283,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
   }
 
   Future<void> setStreakCadence(StreakCadence cadence) async {
-    _streakCadence = cadence;
+    state = state.copyWith(streakCadence: cadence);
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('streak_cadence', cadence.name);
@@ -435,7 +297,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
   Future<void> dailyCheckIn() async {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
-    final lastLogin = _gamification.lastLogin;
+    final lastLogin = state.gamification.lastLogin;
     final lastLoginDate =
         lastLogin != null ? DateTime(lastLogin.year, lastLogin.month, lastLogin.day) : null;
 
@@ -444,26 +306,26 @@ class GamificationProvider extends Notifier<BaseProviderState>
     }
 
     final ethicalState = EthicalStreakState(
-      cadence: _streakCadence,
-      currentStreak: _gamification.dailyStreak,
-      freezeTokens: _gamification.freezeLeft,
+      cadence: state.streakCadence,
+      currentStreak: state.gamification.dailyStreak,
+      freezeTokens: state.gamification.freezeLeft,
       lastPracticeAt: lastLogin,
-      practiceDaysThisWeek: _practiceDaysThisWeek,
-      brokenAt: _streakBrokenAt,
+      practiceDaysThisWeek: state.practiceDaysThisWeek,
+      brokenAt: state.streakBrokenAt,
     );
     final practice = EthicalStreakPolicy.recordPractice(ethicalState, now);
-    _practiceDaysThisWeek = practice.state.practiceDaysThisWeek;
-    _streakBrokenAt = practice.state.brokenAt;
+    state = state.copyWith(practiceDaysThisWeek: practice.state.practiceDaysThisWeek);
+    state = state.copyWith(streakBrokenAt: practice.state.brokenAt);
 
     int newStreak = practice.state.currentStreak;
     int newFreezeLeft = practice.state.freezeTokens;
 
     if (practice.streakBroken) {
-      _streakBeforeBreak = _gamification.dailyStreak > 0
-          ? _gamification.dailyStreak
-          : _streakBeforeBreak;
+      state = state.copyWith(streakBeforeBreak: state.gamification.dailyStreak > 0
+          ? state.gamification.dailyStreak
+          : state.streakBeforeBreak);
     }
-    if (practice.streakBroken && _gamification.ubuntuStreakActive) {
+    if (practice.streakBroken && state.gamification.ubuntuStreakActive) {
       logger.info('Ubuntu streak: Donating lessons to help others', tag: 'gamification');
       await _donateLessonsToCommunity();
     }
@@ -478,12 +340,12 @@ class GamificationProvider extends Notifier<BaseProviderState>
       await _checkPerfectWeekStreak(newStreak);
     }
 
-    _gamification = _gamification.copyWith(
+    state = state.copyWith(gamification: state.gamification.copyWith(
       dailyStreak: newStreak,
       freezeLeft: newFreezeLeft,
       lastLogin: now,
-      cowries: _gamification.cowries + streakBonus,
-    );
+      cowries: state.gamification.cowries + streakBonus,
+    ));
 
     // Award XP for daily check-in
     await awardXP('daily_checkin');
@@ -515,16 +377,16 @@ class GamificationProvider extends Notifier<BaseProviderState>
   /// Check perfect week streak
   Future<void> _checkPerfectWeekStreak(int streak) async {
     if (streak >= 7 && streak % 7 == 0) {
-      _gamification = _gamification.copyWith(
-        perfectWeekStreak: _gamification.perfectWeekStreak + 1,
-      );
+      state = state.copyWith(gamification: state.gamification.copyWith(
+        perfectWeekStreak: state.gamification.perfectWeekStreak + 1,
+      ));
       await awardXP('perfect_week');
     }
   }
 
   /// Unlock a badge
   Future<bool> unlockBadge(String badgeId) async {
-    if (_gamification.unlockedBadges.contains(badgeId)) {
+    if (state.gamification.unlockedBadges.contains(badgeId)) {
       return false; // Already unlocked
     }
 
@@ -534,13 +396,13 @@ class GamificationProvider extends Notifier<BaseProviderState>
       return false;
     }
 
-    final newBadges = List<String>.from(_gamification.unlockedBadges)..add(badgeId);
+    final newBadges = List<String>.from(state.gamification.unlockedBadges)..add(badgeId);
 
     final cowriesBonus = badge.cowriesReward + badge.beadsReward;
-    _gamification = _gamification.copyWith(
+    state = state.copyWith(gamification: state.gamification.copyWith(
       unlockedBadges: newBadges,
-      cowries: _gamification.cowries + cowriesBonus,
-    );
+      cowries: state.gamification.cowries + cowriesBonus,
+    ));
 
     // Award XP for badge
     await awardXP('unlock_badge', multiplier: badge.xpReward / 50.0);
@@ -573,25 +435,25 @@ class GamificationProvider extends Notifier<BaseProviderState>
   /// Check and unlock badges based on current progress
   Future<void> _checkBadges() async {
     // Streak badges
-    if (_gamification.dailyStreak >= 7 && !_gamification.unlockedBadges.contains('streak_7')) {
+    if (state.gamification.dailyStreak >= 7 && !state.gamification.unlockedBadges.contains('streak_7')) {
       await unlockBadge('streak_7');
     }
-    if (_gamification.dailyStreak >= 30 && !_gamification.unlockedBadges.contains('streak_30')) {
+    if (state.gamification.dailyStreak >= 30 && !state.gamification.unlockedBadges.contains('streak_30')) {
       await unlockBadge('streak_30');
     }
-    if (_gamification.dailyStreak >= 100 && !_gamification.unlockedBadges.contains('streak_100')) {
+    if (state.gamification.dailyStreak >= 100 && !state.gamification.unlockedBadges.contains('streak_100')) {
       await unlockBadge('streak_100');
     }
 
     // Perfect week badge
-    if (_gamification.perfectWeekStreak >= 1 &&
-        !_gamification.unlockedBadges.contains('perfect_week')) {
+    if (state.gamification.perfectWeekStreak >= 1 &&
+        !state.gamification.unlockedBadges.contains('perfect_week')) {
       // Add perfect week badge if needed
     }
 
     // Tonal mastery badge
-    if (_gamification.tonalMasteryStreak >= 7 &&
-        !_gamification.unlockedBadges.contains('tonal_master')) {
+    if (state.gamification.tonalMasteryStreak >= 7 &&
+        !state.gamification.unlockedBadges.contains('tonal_master')) {
       await unlockBadge('tonal_master');
     }
   }
@@ -602,7 +464,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
       throw ArgumentError('Invalid tribe: $tribe');
     }
 
-    _gamification = _gamification.copyWith(tribe: tribe);
+    state = state.copyWith(gamification: state.gamification.copyWith(tribe: tribe));
     await _saveGamification();
     await _syncToBackend();
     state = state.copyWith();
@@ -612,12 +474,12 @@ class GamificationProvider extends Notifier<BaseProviderState>
   Future<bool> activateBooster(String boosterId, [int durationHours = 0]) async {
     // Check if user has the item (would need item inventory system)
     // For now, just track active boosters
-    if (_gamification.activeBoosters.contains(boosterId)) {
+    if (state.gamification.activeBoosters.contains(boosterId)) {
       return false; // Already active
     }
 
-    final newBoosters = List<String>.from(_gamification.activeBoosters)..add(boosterId);
-    _gamification = _gamification.copyWith(activeBoosters: newBoosters);
+    final newBoosters = List<String>.from(state.gamification.activeBoosters)..add(boosterId);
+    state = state.copyWith(gamification: state.gamification.copyWith(activeBoosters: newBoosters));
 
     await _saveGamification();
     state = state.copyWith();
@@ -626,7 +488,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
 
   /// Select tribe
   Future<void> selectTribe(String tribeId) async {
-    _gamification = _gamification.copyWith(tribe: tribeId);
+    state = state.copyWith(gamification: state.gamification.copyWith(tribe: tribeId));
     await _saveGamification();
     await _syncToBackend();
     state = state.copyWith();
@@ -643,10 +505,10 @@ class GamificationProvider extends Notifier<BaseProviderState>
         ApiContract.url('/api/gamification/advanced/quests/family-phrase?groupId=$groupId'),
       );
       if (questRes.data is Map<String, dynamic>) {
-        _circleQuest = CircleQuestSnapshot.fromJson(questRes.data as Map<String, dynamic>);
+        state = state.copyWith(circleQuest: CircleQuestSnapshot.fromJson(questRes.data as Map<String, dynamic>));
       }
       if (phraseRes.data is Map<String, dynamic>) {
-        _familyPhrase = FamilyPhraseSnapshot.fromJson(phraseRes.data as Map<String, dynamic>);
+        state = state.copyWith(familyPhrase: FamilyPhraseSnapshot.fromJson(phraseRes.data as Map<String, dynamic>));
       }
       state = state.copyWith();
     } catch (e) {
@@ -661,7 +523,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
         ApiContract.url('/api/gamification/advanced/quests/heritage-tree?groupId=$groupId'),
       );
       if (res.data is Map<String, dynamic>) {
-        _heritageTree = HeritageTreeSnapshot.fromJson(res.data as Map<String, dynamic>);
+        state = state.copyWith(heritageTree: HeritageTreeSnapshot.fromJson(res.data as Map<String, dynamic>));
         state = state.copyWith();
       }
     } catch (e) {
@@ -690,13 +552,13 @@ class GamificationProvider extends Notifier<BaseProviderState>
 
   /// Update quest progress
   Future<void> updateQuestProgress(String questId, int progress) async {
-    final currentProgress = _gamification.questProgress[questId] ?? 0;
+    final currentProgress = state.gamification.questProgress[questId] ?? 0;
     final newProgress = currentProgress + progress;
 
-    final updatedProgress = Map<String, int>.from(_gamification.questProgress)
+    final updatedProgress = Map<String, int>.from(state.gamification.questProgress)
       ..[questId] = newProgress;
 
-    _gamification = _gamification.copyWith(questProgress: updatedProgress);
+    state = state.copyWith(gamification: state.gamification.copyWith(questProgress: updatedProgress));
 
     await _saveGamification();
     await _syncToBackend();
@@ -706,12 +568,12 @@ class GamificationProvider extends Notifier<BaseProviderState>
   /// Update tonal mastery streak
   Future<void> updateTonalMasteryStreak(bool perfect) async {
     if (perfect) {
-      _gamification = _gamification.copyWith(
-        tonalMasteryStreak: _gamification.tonalMasteryStreak + 1,
-      );
+      state = state.copyWith(gamification: state.gamification.copyWith(
+        tonalMasteryStreak: state.gamification.tonalMasteryStreak + 1,
+      ));
       await _checkBadges();
     } else {
-      _gamification = _gamification.copyWith(tonalMasteryStreak: 0);
+      state = state.copyWith(gamification: state.gamification.copyWith(tonalMasteryStreak: 0));
     }
 
     await _saveGamification();
@@ -744,14 +606,14 @@ class GamificationProvider extends Notifier<BaseProviderState>
           },
         );
         if (res.statusCode == 200) {
-          _serverBalanceError = null;
+          state = state.copyWith(serverBalanceError: null);
           await _syncWithBackend();
           return;
         }
       } catch (e) {
         logger.error('Cowries award failed', tag: 'gamification', error: e);
       }
-      _serverBalanceError = 'balance_unavailable';
+      state = state.copyWith(serverBalanceError: 'balance_unavailable');
       state = state.copyWith();
       return;
     }
@@ -759,40 +621,40 @@ class GamificationProvider extends Notifier<BaseProviderState>
 
   bool ownsShopItem(CowriesShopItem item) {
     if (item.sink == 'cosmetic_avatar') {
-      return _gamification.unlockedBadges.contains('cosmetic:${item.id}');
+      return state.gamification.unlockedBadges.contains('cosmetic:${item.id}');
     }
     if (item.sink == 'persona_early_access' &&
         item.personaId != null &&
         item.chapterId != null) {
       final key = 'persona_access:${item.personaId}:${item.chapterId}';
-      return (_gamification.questProgress[key] ?? 0) >= 1;
+      return (state.gamification.questProgress[key] ?? 0) >= 1;
     }
     return false;
   }
 
   Future<void> loadCowriesShopCatalog() async {
-    _shopCatalogLoading = true;
+    state = state.copyWith(shopCatalogLoading: true);
     state = state.copyWith();
     try {
       final res = await ref.read(client).get('/api/rewards/shop/catalog');
       if (res.statusCode == 200 && res.data is Map) {
         final data = (res.data as Map)['data'] as Map?;
         final items = data?['items'] as List<dynamic>? ?? [];
-        _shopCatalog = items
+        state = state.copyWith(shopCatalog: items
             .map((e) => CowriesShopItem.fromJson(Map<String, dynamic>.from(e as Map)))
             .where((item) => item.id.isNotEmpty)
-            .toList();
+            .toList());
       }
     } catch (e) {
       logger.error('Cowries shop catalog failed', tag: 'gamification', error: e);
     } finally {
-      _shopCatalogLoading = false;
+      state = state.copyWith(shopCatalogLoading: false);
       state = state.copyWith();
     }
   }
 
   Future<CowriesShopPurchaseResult> purchaseCowriesShopItem(String itemId) async {
-    final item = _shopCatalog.firstWhere(
+    final item = state.shopCatalog.firstWhere(
       (e) => e.id == itemId,
       orElse: () => const CowriesShopItem(
         id: '',
@@ -805,7 +667,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
     if (item.id.isEmpty) {
       return const CowriesShopPurchaseResult(ok: false, message: 'Item not found.');
     }
-    if (_gamification.cowries < item.cost) {
+    if (state.gamification.cowries < item.cost) {
       return const CowriesShopPurchaseResult(ok: false, message: 'Not enough Cowries.');
     }
 
@@ -818,12 +680,12 @@ class GamificationProvider extends Notifier<BaseProviderState>
     if (item.sink == 'streak_repair') {
       final now = DateTime.now();
       final streakState = EthicalStreakState(
-        cadence: _streakCadence,
-        currentStreak: _gamification.dailyStreak,
-        freezeTokens: _gamification.freezeLeft,
-        lastPracticeAt: _gamification.lastLogin,
-        practiceDaysThisWeek: _practiceDaysThisWeek,
-        brokenAt: _streakBrokenAt,
+        cadence: state.streakCadence,
+        currentStreak: state.gamification.dailyStreak,
+        freezeTokens: state.gamification.freezeLeft,
+        lastPracticeAt: state.gamification.lastLogin,
+        practiceDaysThisWeek: state.practiceDaysThisWeek,
+        brokenAt: state.streakBrokenAt,
       );
       if (!EthicalStreakPolicy.repairOfferVisible(streakState, now)) {
         return const CowriesShopPurchaseResult(
@@ -832,10 +694,10 @@ class GamificationProvider extends Notifier<BaseProviderState>
         );
       }
       final restoreTo =
-          _streakBeforeBreak > 0 ? _streakBeforeBreak : _gamification.dailyStreak;
+          state.streakBeforeBreak > 0 ? state.streakBeforeBreak : state.gamification.dailyStreak;
       payload['streak_to_restore'] = restoreTo;
       payload['streak_state'] = {
-        'cadence': _streakCadence.name,
+        'cadence': state.streakCadence.name,
         'currentStreak': streakState.currentStreak,
         'freezeTokens': streakState.freezeTokens,
         'lastPracticeAt': streakState.lastPracticeAt?.toIso8601String(),
@@ -852,25 +714,25 @@ class GamificationProvider extends Notifier<BaseProviderState>
         if (item.sink == 'streak_repair') {
           final restored = (data?['streak_restored_to'] as num?)?.toInt();
           if (restored != null && restored > 0) {
-            _gamification = _gamification.copyWith(dailyStreak: restored);
-            _streakBrokenAt = null;
+            state = state.copyWith(gamification: state.gamification.copyWith(dailyStreak: restored));
+            state = state.copyWith(clearStreakBrokenAt: true);
           }
         }
         if (item.sink == 'cosmetic_avatar') {
           final keys = (data?['inventory_keys_added'] as List<dynamic>?) ?? [];
-          final badges = List<String>.from(_gamification.unlockedBadges);
+          final badges = List<String>.from(state.gamification.unlockedBadges);
           for (final key in keys) {
             badges.add(key.toString());
           }
-          _gamification = _gamification.copyWith(unlockedBadges: badges);
+          state = state.copyWith(gamification: state.gamification.copyWith(unlockedBadges: badges));
         }
         if (item.sink == 'persona_early_access') {
           final keys = (data?['inventory_keys_added'] as List<dynamic>?) ?? [];
-          final progress = Map<String, int>.from(_gamification.questProgress);
+          final progress = Map<String, int>.from(state.gamification.questProgress);
           for (final key in keys) {
             progress[key.toString()] = 1;
           }
-          _gamification = _gamification.copyWith(questProgress: progress);
+          state = state.copyWith(gamification: state.gamification.copyWith(questProgress: progress));
         }
         await _syncWithBackend();
         await _saveGamification();
@@ -890,11 +752,11 @@ class GamificationProvider extends Notifier<BaseProviderState>
   Future<bool> spendCurrency({
     required int cowries,
   }) async {
-    if (_gamification.cowries < cowries) return false;
+    if (state.gamification.cowries < cowries) return false;
 
-    _gamification = _gamification.copyWith(
-      cowries: _gamification.cowries - cowries,
-    );
+    state = state.copyWith(gamification: state.gamification.copyWith(
+      cowries: state.gamification.cowries - cowries,
+    ));
     await _saveGamification();
     await _syncToBackend();
     state = state.copyWith();
@@ -903,14 +765,14 @@ class GamificationProvider extends Notifier<BaseProviderState>
 
   /// Enable Ubuntu streak (never break - help others if you do)
   Future<void> enableUbuntuStreak() async {
-    _gamification = _gamification.copyWith(ubuntuStreakActive: true);
+    state = state.copyWith(gamification: state.gamification.copyWith(ubuntuStreakActive: true));
     await _saveGamification();
     state = state.copyWith();
   }
 
   /// Toggle Ubuntu streak on/off (used by the Ubuntu card switch).
   Future<void> setUbuntuStreakActive(bool isActive) async {
-    _gamification = _gamification.copyWith(ubuntuStreakActive: isActive);
+    state = state.copyWith(gamification: state.gamification.copyWith(ubuntuStreakActive: isActive));
     await _saveGamification();
     state = state.copyWith();
   }
@@ -919,12 +781,12 @@ class GamificationProvider extends Notifier<BaseProviderState>
   Future<void> _saveGamification() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final json = _gamification.toJson();
+      final json = state.gamification.toJson();
       await prefs.setString('user_gamification', jsonEncode(json));
-      await prefs.setString('streak_cadence', _streakCadence.name);
-      await prefs.setStringList('streak_practice_week_days', _practiceDaysThisWeek);
-      if (_streakBrokenAt != null) {
-        await prefs.setString('streak_broken_at', _streakBrokenAt!.toIso8601String());
+      await prefs.setString('streak_cadence', state.streakCadence.name);
+      await prefs.setStringList('streak_practice_week_days', state.practiceDaysThisWeek);
+      if (state.streakBrokenAt != null) {
+        await prefs.setString('streak_broken_at', state.streakBrokenAt!.toIso8601String());
       } else {
         await prefs.remove('streak_broken_at');
       }
@@ -939,16 +801,16 @@ class GamificationProvider extends Notifier<BaseProviderState>
       final jsonStr = prefs.getString('user_gamification');
       if (jsonStr != null) {
         final json = jsonDecode(jsonStr) as Map<String, dynamic>;
-        _gamification = UserGamificationModel.fromJson(json);
+        state = state.copyWith(gamification: UserGamificationModel.fromJson(json));
       }
       final cadenceName = prefs.getString('streak_cadence');
       if (cadenceName == StreakCadence.weekly.name) {
-        _streakCadence = StreakCadence.weekly;
+        state = state.copyWith(streakCadence: StreakCadence.weekly);
       }
-      _practiceDaysThisWeek = prefs.getStringList('streak_practice_week_days') ?? [];
+      state = state.copyWith(practiceDaysThisWeek: prefs.getStringList('streak_practice_week_days') ?? []);
       final brokenRaw = prefs.getString('streak_broken_at');
       if (brokenRaw != null) {
-        _streakBrokenAt = DateTime.tryParse(brokenRaw);
+        state = state.copyWith(streakBrokenAt: DateTime.tryParse(brokenRaw));
       }
     } catch (e) {
       logger.error('Error loading gamification', tag: 'gamification', error: e);
@@ -975,17 +837,17 @@ class GamificationProvider extends Notifier<BaseProviderState>
             merged['xp'] = data['xp'];
             merged['cowries'] = data['cowries'];
           }
-          _gamification = UserGamificationModel.fromJson(merged);
-          _serverBalanceError = null;
+          state = state.copyWith(gamification: UserGamificationModel.fromJson(merged));
+          state = state.copyWith(serverBalanceError: null);
           await _saveGamification();
           state = state.copyWith();
           return;
         }
       }
-      _serverBalanceError = 'balance_unavailable';
+      state = state.copyWith(serverBalanceError: 'balance_unavailable');
       state = state.copyWith();
     } catch (e) {
-      _serverBalanceError = 'balance_unavailable';
+      state = state.copyWith(serverBalanceError: 'balance_unavailable');
       logger.error('Error syncing gamification with backend', tag: 'gamification', error: e);
       state = state.copyWith();
     }
@@ -1000,7 +862,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
           type: 'gamification_sync',
           data: {
           'user_id': user.id.toString(),
-          'gamification': _gamification.toSyncPayload(),
+          'gamification': state.gamification.toSyncPayload(),
           'timestamp': DateTime.now().toIso8601String(),
         },
       );
@@ -1019,7 +881,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
       final response = await api.post(
         Api.ubuntuDonate,
         data: {
-          'streakBefore': _gamification.dailyStreak,
+          'streakBefore': state.gamification.dailyStreak,
           'donatedLessons': 1, // Donate 1 lesson per broken streak
           'language': user.learningLanguage ?? 'yoruba',
         },
