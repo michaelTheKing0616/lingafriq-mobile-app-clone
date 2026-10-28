@@ -11,6 +11,7 @@ import 'package:socket_io_client/socket_io_client.dart' as io;
 import '../../models/profile_model.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/onboarding_provider.dart';
+import '../../services/chat/mls_session_service.dart';
 import '../../services/chat/wa_private_chat_service.dart';
 import '../../widgets/chat/voice_note_recorder.dart';
 import 'package:just_audio/just_audio.dart';
@@ -71,6 +72,8 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
   bool _inboundRequestSheetShown = false;
   String _firstDmKind = 'accepted';
   bool _requiresModeration = false;
+  MlsSessionSnapshot? _mlsSnapshot;
+  final MlsSessionService _mlsSession = MlsSessionService();
   _ChatMessage? _replyTarget;
   final GlobalKey<VoiceNoteRecorderState> _voiceNoteKey =
       GlobalKey<VoiceNoteRecorderState>();
@@ -294,11 +297,150 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
 
   Future<void> _refreshMessagingPolicy() async {
     final peer = _peerNumericId;
-    if (peer == null || !mounted) return;
+    final me = ref.read(userProvider);
+    if (peer == null || me == null || !mounted) return;
     try {
-      final policy = await WaPrivateChatService.fetchDmThreadPolicy(peer);
-      if (mounted) setState(() => _requiresModeration = policy.requiresModeration);
+      final snapshot = await _mlsSession.bootstrapDirectMessage(
+        peerUserId: peer,
+        myNumericUserId: me.id,
+      );
+      if (mounted) {
+        setState(() {
+          _mlsSnapshot = snapshot;
+          _requiresModeration = snapshot.requiresModeration;
+        });
+      }
     } catch (_) {}
+  }
+
+  Future<void> _sendDmText({
+    required int peer,
+    required String message,
+    String? replyToId,
+    bool firstDmIntro = false,
+  }) async {
+    var snapshot = _mlsSnapshot;
+    if (snapshot == null) {
+      await _refreshMessagingPolicy();
+      snapshot = _mlsSnapshot;
+    }
+    if (snapshot != null && snapshot.e2eeActive) {
+      await _mlsSession.sendDirectMessage(
+        snapshot: snapshot,
+        recipientId: peer.toString(),
+        message: message,
+        replyToId: replyToId,
+        firstDmIntro: firstDmIntro,
+      );
+      return;
+    }
+    await WaPrivateChatService.sendTextMessage(
+      recipientId: peer.toString(),
+      message: message,
+      firstDmIntro: firstDmIntro,
+      replyToId: replyToId,
+    );
+  }
+
+  Future<void> _acknowledgeKeyChange() async {
+    final key = _mlsSnapshot?.threadKey;
+    if (key == null) return;
+    final updated = await _mlsSession.acknowledgeKeyChange(key);
+    if (!mounted) return;
+    setState(() => _mlsSnapshot = updated);
+    await _loadMessages();
+  }
+
+  List<Widget> _buildE2eeStatusStrip(ColorScheme cs) {
+    final snapshot = _mlsSnapshot;
+    if (snapshot == null) return const [];
+
+    switch (snapshot.uiState) {
+      case MlsEncryptionUiState.encrypted:
+        return [
+          Semantics(
+            label: snapshot.accessibilityLabel(snapshot.uiState),
+            child: Material(
+              color: cs.primaryContainer.withValues(alpha: 0.35),
+              child: SizedBox(
+                height: 48,
+                child: Row(
+                  children: [
+                    SizedBox(width: PanAfricanSpacing.md),
+                    Icon(Icons.lock_rounded, color: cs.primary, size: 20),
+                    SizedBox(width: PanAfricanSpacing.xs),
+                    Expanded(
+                      child: Text(
+                        kE2eeOnLabel,
+                        style: ModernGriotTypography.labelSmall(
+                          color: cs.onPrimaryContainer,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ];
+      case MlsEncryptionUiState.keyChanged:
+        return [
+          Material(
+            color: cs.errorContainer,
+            child: Padding(
+              padding: EdgeInsets.all(PanAfricanSpacing.sm),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    kE2eeKeyChangeTitle,
+                    style: ModernGriotTypography.titleSmall(
+                      color: cs.onErrorContainer,
+                    ),
+                  ),
+                  SizedBox(height: PanAfricanSpacing.xs),
+                  Text(
+                    kE2eeKeyChangeBody,
+                    style: ModernGriotTypography.bodySmall(
+                      color: cs.onErrorContainer,
+                    ),
+                  ),
+                  SizedBox(height: PanAfricanSpacing.sm),
+                  Semantics(
+                    button: true,
+                    label: 'Continue after encryption key change',
+                    child: SizedBox(
+                      height: 48,
+                      child: FilledButton(
+                        onPressed: _acknowledgeKeyChange,
+                        child: const Text('Continue'),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ];
+      case MlsEncryptionUiState.recoveryFailed:
+        return [
+          Material(
+            color: cs.errorContainer,
+            child: ListTile(
+              minVerticalPadding: 12,
+              leading: Icon(Icons.key_off_rounded, color: cs.onErrorContainer),
+              title: Text(
+                kE2eeRecoveryLost,
+                style: ModernGriotTypography.labelSmall(
+                  color: cs.onErrorContainer,
+                ),
+              ),
+            ),
+          ),
+        ];
+      case MlsEncryptionUiState.notEncryptedMinor:
+        return const [];
+    }
   }
 
   void _ensureTypingPresence() {
@@ -589,8 +731,8 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
         mode: FirstDmSheetMode.outboundIntro,
         peerDisplayName: _contactName,
         onSendIntro: (msg) async {
-          await WaPrivateChatService.sendTextMessage(
-            recipientId: peer.toString(),
+          await _sendDmText(
+            peer: peer,
             message: msg,
             firstDmIntro: true,
           );
@@ -638,8 +780,8 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
     }
     _messageController.clear();
     try {
-      await WaPrivateChatService.sendTextMessage(
-        recipientId: peer.toString(),
+      await _sendDmText(
+        peer: peer,
         message: text,
         replyToId: _replyTarget?.id,
       );
@@ -786,18 +928,21 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
                       color: cs.secondaryContainer,
                       child: ListTile(
                         dense: true,
+                        minVerticalPadding: 12,
+                        minLeadingWidth: 48,
                         leading: Icon(
                           Icons.shield_outlined,
                           color: cs.onSecondaryContainer,
                         ),
                         title: Text(
-                          'Guardian-safe chat: messages may be reviewed to keep learners safe.',
+                          kE2eeMinorNotice,
                           style: ModernGriotTypography.labelSmall(
                             color: cs.onSecondaryContainer,
                           ),
                         ),
                       ),
                     ),
+                  ..._buildE2eeStatusStrip(cs),
                   if (_replyTarget != null) _buildReplyComposerStrip(cs),
                   if (_loadError != null)
                     Material(
@@ -902,14 +1047,24 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
                       ),
                     ),
                     SizedBox(width: 4.w),
-                    Text(
-                      _contactOnline ? 'Online' : 'Offline',
-                      style: ModernGriotTypography.labelSmall(
-                        color: _contactOnline
-                            ? ModernGriotColors.secondary
-                            : cs.onSurfaceVariant,
+                    if (_mlsSnapshot?.showEncryptionIndicator == true) ...[
+                      Icon(Icons.lock_rounded, size: 14.sp, color: cs.primary),
+                      SizedBox(width: 4.w),
+                      Text(
+                        kE2eeOnLabel,
+                        style: ModernGriotTypography.labelSmall(
+                          color: cs.primary,
+                        ),
                       ),
-                    ),
+                    ] else
+                      Text(
+                        _contactOnline ? 'Online' : 'Offline',
+                        style: ModernGriotTypography.labelSmall(
+                          color: _contactOnline
+                              ? ModernGriotColors.secondary
+                              : cs.onSurfaceVariant,
+                        ),
+                      ),
                   ],
                 ),
               ],
@@ -1064,6 +1219,14 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
   }
 
   Widget _buildMessageBubble(_ChatMessage msg, ColorScheme cs, int index) {
+    final snapshot = _mlsSnapshot;
+    final readable = snapshot == null ||
+        _mlsSession.messageReadableOnDevice(
+          snapshot: snapshot,
+          messageSortMs: msg.sortMs,
+        );
+    final displayText =
+        readable ? msg.text : 'Earlier message — not readable on this device';
     final bubbleColor = msg.isFromPolie
         ? ModernGriotColors.primaryContainer.withAlpha(140)
         : msg.isMe
@@ -1168,7 +1331,7 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
                               ),
                               SizedBox(width: 8.w),
                               Text(
-                                msg.text,
+                                displayText,
                                 style: ModernGriotTypography.bodyMedium(
                                   color: textColor,
                                 ),
@@ -1178,7 +1341,7 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
                         )
                       else
                         Text(
-                          msg.text,
+                          displayText,
                           style: ModernGriotTypography.bodyMedium(
                             color: textColor,
                           ),
