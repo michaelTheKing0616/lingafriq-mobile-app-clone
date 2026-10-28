@@ -12,4 +12,11 @@ void main() {
       20,
     );
   });
+
+  test('otherUserIdFromRoomId rejects rooms that do not include me', () {
+    expect(
+      WaPrivateChatService.otherUserIdFromRoomId('private_5_20', 11),
+      isNull,
+    );
+  });
 }

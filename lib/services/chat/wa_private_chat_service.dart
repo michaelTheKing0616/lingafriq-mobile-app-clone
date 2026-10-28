@@ -58,7 +58,7 @@ class WaPrivateChatService {
     if (a == null || b == null) return null;
     if (a == myNumericId) return b;
     if (b == myNumericId) return a;
-    return b;
+    return null;
   }
 
   static int? _readUserId(Map<String, dynamic> user) {
