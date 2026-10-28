@@ -1041,7 +1041,7 @@ P9-919	Done	Apply stricter AI conversation policy and no memory for children (mi
 P9-920	Done	Minor moderated messaging policy + guardian E2EE explainer (messagingPolicy.service.ts, messaging_explainer_screen.dart)	P9/P9-920.yaml
 P9-921	Done	Moderation pipeline orchestrator (pipeline.ts, verdict.ts, moderationCase.model.ts)	P9/P9-921.yaml
 P9-922	Done	Hosted moderation adapter: category map, LANGUAGE_UNSUPPORTED, circuit breaker (hostedApi.adapter.ts)	P9/P9-922.yaml
-P9-923	Draft	Evaluate toxicity detection on African languages and code-switching	P9/P9-923.yaml
+P9-923	Done	Multilingual moderation eval harness (evalSets.ts, eval_harness.py, severe recall gate)	P9/P9-923.yaml
 P9-924	Draft	Match word-boundary-aware moderator lexicons per language	P9/P9-924.yaml
 P9-925	Draft	Detect grooming patterns in conversations	P9/P9-925.yaml
 P9-926	Draft	Classify images and video and compute perceptual hashes	P9/P9-926.yaml
