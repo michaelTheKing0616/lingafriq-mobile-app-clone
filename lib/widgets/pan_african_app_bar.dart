@@ -77,11 +77,15 @@ class PanAfricanAppBar extends ConsumerWidget implements PreferredSizeWidget {
       children: [
         Text(
           title,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: PanAfricanTypography.titleLarge(context, color: foregroundColor),
         ),
         if (subtitle != null)
           Text(
             subtitle!,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: PanAfricanTypography.bodySmall(context, color: foregroundColor.withValues(alpha: 0.8)),
           ),
       ],
