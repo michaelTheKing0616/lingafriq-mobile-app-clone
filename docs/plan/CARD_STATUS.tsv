@@ -295,7 +295,7 @@ P1-017	Done	Make currency grants server-only via event rules	P1/P1-017.yaml
 P1-018	Done	Compute XP server-side with idempotency keys and daily caps	P1/P1-018.yaml
 P1-019	Done	Reconcile and remove fraudulent currency and XP balances	P1/P1-019.yaml
 P1-020	Done	Age gate before account creation: birth year only, server band validation, child blocked without consent	P1/P1-020.yaml
-P1-021	Draft	Enforce DM, call, snap and feed restrictions for under-18 and unknown age	P1/P1-021.yaml
+P1-021	Done	ageRestriction.middleware.ts: DM/snap/public feed + socket acks, age_restricted (P1/P1-021.yaml)
 P1-022	Draft	Hide social surfaces for under-18 and unknown age in app	P1/P1-022.yaml
 P1-023	Done	Replace toxicity filter with hosted moderation API	P1/P1-023.yaml
 P1-024	Done	Add report and block endpoints and UX	P1/P1-024.yaml
