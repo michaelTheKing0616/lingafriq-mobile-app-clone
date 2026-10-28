@@ -17,6 +17,15 @@ void main() {
     }
   });
 
+  test('P12-005: mode_surface dart files <= $_maxLinesPerFile lines', () {
+    final modeDir = Directory('$_featureRoot/mode_surface');
+    for (final entity in modeDir.listSync()) {
+      if (entity is! File || !entity.path.endsWith('.dart')) continue;
+      final count = entity.readAsLinesSync().length;
+      expect(count, lessThanOrEqualTo(_maxLinesPerFile), reason: entity.path);
+    }
+  });
+
   test('P12-005: import boundary — parts do not import provider internals', () {
     void checkDir(Directory dir) {
       for (final entity in dir.listSync(recursive: true)) {

@@ -437,7 +437,7 @@ P12-001	Done	Remove duplicated curriculum JSONs from the bundle (dedupe_assets_c
 P12-002	Done	asset_audit.py, dev/examples, Dosis trim (golden Regular+Bold only)	P12/P12-002.yaml
 P12-003	Done	Downloadable CMS language packs: pack_catalog, PackDownloadService, core Yo bundled	P12/P12-003.yaml
 P12-004	Done	Per-ABI APK download size gate in CI (apk_size_gate.sh, 40MB)	P12/P12-004.yaml
-P12-005	Draft	Polie workspace modules; top-level ≤500; impl chunk AC1 pending	P12/P12-005.yaml
+P12-005	Draft	Mode surface split ≤500; build_host impl chunk AC1 next	P12/P12-005.yaml
 P12-006	Draft	Split ai_chat_provider_groq and api_provider	P12/P12-006.yaml
 P12-007	Draft	Split game_provider and enforce module boundaries	P12/P12-007.yaml
 P12-008	Draft	Delete superseded duplicate screens after consolidation	P12/P12-008.yaml
