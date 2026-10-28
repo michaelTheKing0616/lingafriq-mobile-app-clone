@@ -454,7 +454,7 @@ P12-018	Done	Quarterly Mongo PIT restore drill (mongo_pit_restore_drill.py, mong
 P12-019	Done	Chaos/offline resilience: fault injector, harness, AC1–AC4 tests	P12/P12-019.yaml
 P12-020	Done	Rehearse schema-versioned local migrations drill (local_migration_drill_harness.dart, local_migration_drill.py)	P12/P12-020.yaml
 P12-021	Draft	Conduct accessibility audit with disabled users	P12/P12-021.yaml
-P12-022	Draft	Complete release-readiness checklist and generated status	P12/P12-022.yaml
+P12-022	Done	Release readiness from CI evidence only (release_readiness_checklist.py, items yaml)	P12/P12-022.yaml
 P13-001	Draft	Create later-wave language admission template	P13/P13-001.yaml
 P13-002	Draft	Add Lanfrica source discovery and FSI/Peace Corps cross-check	P13/P13-002.yaml
 P13-003	Draft	Block later-wave languages beyond L0 without a lexicon	P13/P13-003.yaml
