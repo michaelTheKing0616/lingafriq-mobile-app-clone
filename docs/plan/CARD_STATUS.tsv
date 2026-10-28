@@ -1023,7 +1023,7 @@ P9-901	Done	Redis Socket.IO adapter, Redis online registry, PM2 cluster, nginx s
 P9-902	Done	Redis TTL presence (45s), heartbeat, scoped fan-out, minor lookup gate (P9-902.presenceRedis.test.ts)	P9/P9-902.yaml
 P9-903	Done	Socket handshake: production origin allowlist, TOKEN_TRANSPORT_INVALID, single init path (cors.ts)	P9/P9-903.yaml
 P9-904	Done	Authorise every room join and emit per room (roomAuthz.ts, subscriptions.ts)	P9/P9-904.yaml
-P9-905	Draft	Version and validate socket events with zod on both sides	P9/P9-905.yaml
+P9-905	Done	Versioned zod socket events (events.schema.ts, socket_event_schemas.dart, P9-905 tests)	P9/P9-905.yaml
 P9-906	Draft	Add per-socket rate limits and backpressure	P9/P9-906.yaml
 P9-907	Draft	Load-test 10k concurrent sockets per node	P9/P9-907.yaml
 P9-908	Draft	Build durable message log with per-device cursors and idempotent ids	P9/P9-908.yaml
