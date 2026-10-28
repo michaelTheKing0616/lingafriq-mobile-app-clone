@@ -299,7 +299,7 @@ P1-021	Done	ageRestriction.middleware.ts: DM/snap/public feed + socket acks, age
 P1-022	Done	Hide social for under-18/unknown: age_policy_provider, home_screen, chat_list_screen	P1/P1-022.yaml
 P1-023	Done	Replace toxicity filter with hosted moderation API	P1/P1-023.yaml
 P1-024	Done	Add report and block endpoints and UX	P1/P1-024.yaml
-P1-025	Draft	Hard-delete expired snaps and require signed upload URLs	P1/P1-025.yaml
+P1-025	Done	Hard-delete expired snaps, signed upload URLs, external URL reject (snapStorage, snapExpiry.worker)	P1/P1-025.yaml
 P1-026	Done	Disclose AI persona and remove deny-being-AI instruction	P1/P1-026.yaml
 P1-027	Done	Replace persona substring filter with policy classifier	P1/P1-027.yaml
 P1-028	Done	Correct Nkrumah persona data and independence claim	P1/P1-028.yaml
