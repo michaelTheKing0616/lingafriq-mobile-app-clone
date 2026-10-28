@@ -204,7 +204,7 @@ F-110	Draft	Elevate Matching Pairs (group)	P9/F-110.yaml
 F-111	Draft	Elevate Tribes as Circles	P9/F-111.yaml
 F-112	Draft	Elevate Circle Clash competitions	P9/F-112.yaml
 F-113	Draft	Elevate Global Chat as Language Squares	P9/F-113.yaml
-F-114	Draft	Elevate Private Chat (DMs)	P9/F-114.yaml
+F-114	Done	Elevate private chat: learning tools + voice transcript + contact report/block (private_chat_screen.dart)	P9/F-114.yaml
 F-115	Draft	Elevate Call History	P9/F-115.yaml
 F-116	Draft	Elevate Chat Welcome and Community Guidelines	P9/F-116.yaml
 F-117	Draft	Elevate Moderation Tools for Community Stewards	P9/F-117.yaml

@@ -4,9 +4,12 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../utils/api.dart';
+import '../../utils/api_service.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../utils/pan_african_design_system.dart' show PanAfricanSpacing;
 import '../../widgets/griot/griot_widgets.dart';
+import 'report_block_sheet.dart';
 
 class ContactInfoScreen extends ConsumerWidget {
   const ContactInfoScreen({
@@ -428,7 +431,7 @@ class ContactInfoScreen extends ConsumerWidget {
               cs,
               icon: Icons.block_rounded,
               label: 'Block $contactName',
-              onTap: () => HapticFeedback.heavyImpact(),
+              onTap: () => _openReportBlock(context),
             ),
             SizedBox(height: PanAfricanSpacing.sm),
             _buildDangerButton(
@@ -436,10 +439,41 @@ class ContactInfoScreen extends ConsumerWidget {
               cs,
               icon: Icons.thumb_down_alt_outlined,
               label: 'Report $contactName',
-              onTap: () => HapticFeedback.heavyImpact(),
+              onTap: () => _openReportBlock(context),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Future<void> _openReportBlock(BuildContext context) async {
+    HapticFeedback.heavyImpact();
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (ctx) => ReportBlockSheet(
+        onReport: (reason) async {
+          final response = await ApiService.post(
+            'chat/users/$contactId/report',
+            data: {'reason': reason},
+          );
+          final body = response.data;
+          final referenceId =
+              body is Map ? body['referenceId']?.toString() ?? '' : '';
+          if (referenceId.isEmpty) {
+            throw StateError('missing reference');
+          }
+          return referenceId;
+        },
+        onBlock: () async {
+          await ApiService.post(
+            Api.connectionBlock(),
+            data: {'targetUserId': contactId},
+          );
+          if (context.mounted) Navigator.of(context).pop();
+        },
       ),
     );
   }

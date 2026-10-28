@@ -11,9 +11,15 @@ import 'package:socket_io_client/socket_io_client.dart' as io;
 import '../../models/profile_model.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/onboarding_provider.dart';
+import '../../services/chat/chat_room_learning_service.dart';
 import '../../services/chat/mls_session_service.dart';
 import '../../services/chat/wa_private_chat_service.dart';
+import '../../utils/api.dart';
+import '../../utils/api_service.dart';
+import '../../widgets/chat/language_status_chip.dart';
+import '../../widgets/chat/tone_lens_sheet.dart';
 import '../../widgets/chat/voice_note_recorder.dart';
+import '../../widgets/chat/voice_note_transcript.dart';
 import 'package:just_audio/just_audio.dart';
 import '../../services/polie_mention_handler.dart';
 import '../../services/polie_rate_limiter.dart';
@@ -25,6 +31,7 @@ import '../../utils/transport_error_policy.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import 'package:dio/dio.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
+import 'contact_info_screen.dart';
 import 'first_dm_prompt_sheet.dart';
 import 'report_block_sheet.dart';
 
@@ -79,6 +86,12 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
       GlobalKey<VoiceNoteRecorderState>();
   final AudioPlayer _voicePlayer = AudioPlayer();
   String? _playingVoiceId;
+  ChatRoomLearningService? _learningService;
+  ChatLearningSurfacePolicy _learningPolicy =
+      ChatLearningSurfacePolicy.hiddenForMinorOrUnknownAge;
+  List<ChatLanguageStatusEntry> _peerLanguageStatuses = const [];
+  final Map<String, VoiceNoteTranscriptController> _transcriptControllers = {};
+  bool _messageCheckRunning = false;
 
   static String _socketOriginFromBaseUrl(String baseUrl) {
     final raw = baseUrl.trim();
@@ -226,6 +239,7 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
         _ensureTypingPresence();
         unawaited(_refreshFirstDmState(showInboundSheet: true));
         unawaited(_refreshMessagingPolicy());
+        unawaited(_refreshLearningSurfaces());
         final room = _dmRoomId;
         if (room != null) {
           unawaited(WaPrivateChatService.markRoomRead(roomId: room));
@@ -643,7 +657,194 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
       _socket?.dispose();
     } catch (_) {}
     unawaited(_voicePlayer.dispose());
+    for (final c in _transcriptControllers.values) {
+      c.dispose();
+    }
+    _transcriptControllers.clear();
     super.dispose();
+  }
+
+  String _learningLanguageCode(ProfileModel? me) {
+    final fromProfile = me?.learningLanguage?.trim();
+    if (fromProfile != null && fromProfile.isNotEmpty) return fromProfile;
+    return 'yo';
+  }
+
+  bool get _learningUiEnabled =>
+      _learningPolicy == ChatLearningSurfacePolicy.available &&
+      _learningService != null;
+
+  Future<void> _refreshLearningSurfaces() async {
+    final me = ref.read(userProvider);
+    final peer = _peerNumericId;
+    if (me == null || peer == null || !mounted) return;
+    final service = ChatRoomLearningService(
+      languageCode: _learningLanguageCode(me),
+      learnerUserId: me.id.toString(),
+    );
+    final policy = await service.resolveSurfacePolicy();
+    var statuses = const <ChatLanguageStatusEntry>[];
+    if (policy == ChatLearningSurfacePolicy.available) {
+      statuses = await service.fetchPeerLanguageStatus(peer);
+    }
+    if (!mounted) return;
+    setState(() {
+      _learningService = service;
+      _learningPolicy = policy;
+      _peerLanguageStatuses = statuses;
+    });
+  }
+
+  bool _messageE2eeActive(_ChatMessage msg) {
+    final snapshot = _mlsSnapshot;
+    if (snapshot == null || !snapshot.e2eeActive) return false;
+    return _mlsSession.messageReadableOnDevice(
+      snapshot: snapshot,
+      messageSortMs: msg.sortMs,
+    );
+  }
+
+  VoiceNoteTranscriptController _transcriptControllerFor(_ChatMessage msg) {
+    final existing = _transcriptControllers[msg.id];
+    if (existing != null) return existing;
+    final me = ref.read(userProvider);
+    final controller = VoiceNoteTranscriptController(
+      messageId: msg.id,
+      languageCode: _learningLanguageCode(me),
+      e2ee: _messageE2eeActive(msg),
+    );
+    _transcriptControllers[msg.id] = controller;
+    return controller;
+  }
+
+  Future<void> _openToneLensForMessage(_ChatMessage msg) async {
+    final service = _learningService;
+    if (service == null || !_learningUiEnabled || msg.isVoice) return;
+    final word = msg.text.trim().split(RegExp(r'\s+')).firstWhere(
+          (w) => w.isNotEmpty,
+          orElse: () => '',
+        );
+    if (word.isEmpty) return;
+    await showToneLensSheet(
+      context: context,
+      service: service,
+      messageId: msg.id,
+      word: word,
+      e2ee: _messageE2eeActive(msg),
+    );
+  }
+
+  Future<void> _tapWordGloss(_ChatMessage msg, String word) async {
+    final service = _learningService;
+    if (service == null || !_learningUiEnabled || word.trim().isEmpty) return;
+    await showToneLensSheet(
+      context: context,
+      service: service,
+      messageId: msg.id,
+      word: word.trim(),
+      e2ee: _messageE2eeActive(msg),
+    );
+  }
+
+  Future<void> _runMessageCheckBeforeSend() async {
+    final service = _learningService;
+    if (service == null || !_learningUiEnabled || _messageCheckRunning) return;
+    final draft = _messageController.text.trim();
+    if (draft.isEmpty) return;
+    setState(() => _messageCheckRunning = true);
+    try {
+      final result = await service.checkMessageBeforeSend(draft);
+      if (!mounted) return;
+      await showDialog<void>(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            title: const Text('Check message'),
+            content: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(result.explanation),
+                  if (result.hasSuggestion) ...[
+                    const SizedBox(height: 12),
+                    Text(
+                      result.suggestedText,
+                      style: Theme.of(ctx).textTheme.titleMedium,
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: const Text('Keep mine'),
+              ),
+              if (result.hasSuggestion)
+                FilledButton(
+                  onPressed: () {
+                    _messageController.text = result.suggestedText;
+                    _messageController.selection = TextSelection.collapsed(
+                      offset: result.suggestedText.length,
+                    );
+                    Navigator.pop(ctx);
+                    setState(() {});
+                  },
+                  child: const Text('Use suggestion'),
+                ),
+            ],
+          );
+        },
+      );
+    } finally {
+      if (mounted) setState(() => _messageCheckRunning = false);
+    }
+  }
+
+  Future<void> _showPeerReportBlockSheet() async {
+    final peer = _peerNumericId;
+    if (peer == null || !mounted) return;
+    final peerId = peer.toString();
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (ctx) => ReportBlockSheet(
+        onReport: (reason) async {
+          final response = await ApiService.post(
+            'chat/users/$peerId/report',
+            data: {'reason': reason},
+          );
+          final body = response.data;
+          final referenceId =
+              body is Map ? body['referenceId']?.toString() ?? '' : '';
+          if (referenceId.isEmpty) {
+            throw StateError('missing reference');
+          }
+          return referenceId;
+        },
+        onBlock: () async {
+          await ApiService.post(
+            Api.connectionBlock(),
+            data: {'targetUserId': peerId},
+          );
+        },
+      ),
+    );
+  }
+
+  void _openContactInfo() {
+    final peer = _peerNumericId;
+    if (peer == null) return;
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => ContactInfoScreen(
+          contactName: _contactName,
+          contactId: peer.toString(),
+        ),
+      ),
+    );
   }
 
   Future<void> _refreshFirstDmState({bool showInboundSheet = false}) async {
@@ -1034,6 +1235,11 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
+                if (_learningUiEnabled && _peerLanguageStatuses.isNotEmpty)
+                  Padding(
+                    padding: EdgeInsets.only(top: 2.h),
+                    child: LanguageStatusChipRow(entries: _peerLanguageStatuses),
+                  ),
                 Row(
                   children: [
                     Container(
@@ -1106,6 +1312,10 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
           onSelected: (value) {
             HapticFeedback.selectionClick();
             switch (value) {
+              case 'contact':
+                _openContactInfo();
+              case 'report':
+                unawaited(_showPeerReportBlockSheet());
               case 'status':
                 Navigator.pushNamed(context, 'wa-status');
               case 'starred':
@@ -1115,6 +1325,8 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
             }
           },
           itemBuilder: (ctx) => const [
+            PopupMenuItem(value: 'contact', child: Text('Contact info')),
+            PopupMenuItem(value: 'report', child: Text('Report or block')),
             PopupMenuItem(value: 'status', child: Text('Status updates')),
             PopupMenuItem(value: 'starred', child: Text('Starred messages')),
             PopupMenuItem(value: 'media', child: Text('Media gallery')),
@@ -1196,6 +1408,44 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
       });
       await _loadMessages();
     }
+  }
+
+  Widget _buildPeerLearningText({
+    required _ChatMessage msg,
+    required String displayText,
+    required Color textColor,
+  }) {
+    final words = displayText.split(RegExp(r'(\s+)'));
+    return Wrap(
+      spacing: 0,
+      runSpacing: 2,
+      children: [
+        for (final token in words)
+          if (token.trim().isEmpty)
+            Text(token, style: ModernGriotTypography.bodyMedium(color: textColor))
+          else
+            Semantics(
+              button: true,
+              label: 'Show gloss for $token',
+              child: InkWell(
+                onTap: () => _tapWordGloss(msg, token),
+                borderRadius: BorderRadius.circular(4),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 2),
+                  child: Text(
+                    token,
+                    style: ModernGriotTypography.bodyMedium(
+                      color: textColor,
+                    ).copyWith(
+                      decoration: TextDecoration.underline,
+                      decorationColor: textColor.withValues(alpha: 0.35),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+      ],
+    );
   }
 
   Widget _buildReplyComposerStrip(ColorScheme cs) {
@@ -1339,11 +1589,51 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
                             ],
                           ),
                         )
+                      else if (_learningUiEnabled &&
+                          !msg.isMe &&
+                          readable &&
+                          !msg.isFromPolie)
+                        _buildPeerLearningText(
+                          msg: msg,
+                          displayText: displayText,
+                          textColor: textColor,
+                        )
                       else
                         Text(
                           displayText,
                           style: ModernGriotTypography.bodyMedium(
                             color: textColor,
+                          ),
+                        ),
+                      if (msg.isVoice &&
+                          _learningUiEnabled &&
+                          msg.id.isNotEmpty &&
+                          readable)
+                        Padding(
+                          padding: EdgeInsets.only(top: 6.h),
+                          child: VoiceNoteTranscriptPanel(
+                            controller: _transcriptControllerFor(msg),
+                          ),
+                        ),
+                      if (_learningUiEnabled &&
+                          !msg.isMe &&
+                          !msg.isVoice &&
+                          readable &&
+                          displayText.trim().isNotEmpty)
+                        Padding(
+                          padding: EdgeInsets.only(top: 4.h),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: TextButton.icon(
+                              onPressed: () => _openToneLensForMessage(msg),
+                              icon: Icon(Icons.graphic_eq, size: 16.sp),
+                              label: const Text('Tone Lens'),
+                              style: TextButton.styleFrom(
+                                foregroundColor: textColor,
+                                padding: EdgeInsets.zero,
+                                minimumSize: const Size(48, 48),
+                              ),
+                            ),
                           ),
                         ),
                       SizedBox(height: 4.h),
@@ -1604,6 +1894,23 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
             icon: Icon(Icons.camera_alt_outlined, color: cs.onSurfaceVariant),
             onPressed: () => HapticFeedback.selectionClick(),
           ),
+          if (_learningUiEnabled)
+            IconButton(
+              tooltip: 'Check message',
+              icon: _messageCheckRunning
+                  ? SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2, color: cs.primary),
+                    )
+                  : Icon(Icons.spellcheck_outlined, color: cs.primary),
+              onPressed: _messageCheckRunning
+                  ? null
+                  : () {
+                      HapticFeedback.selectionClick();
+                      unawaited(_runMessageCheckBeforeSend());
+                    },
+            ),
           Expanded(
             child: Container(
               constraints: BoxConstraints(maxHeight: 120.h),
