@@ -183,6 +183,7 @@ class WaPrivateChatService {
   static Future<Map<String, dynamic>?> sendTextMessage({
     required String recipientId,
     required String message,
+    String? clientMessageId,
   }) async {
     final res = await ApiService.post(
       Api.waMessages,
@@ -190,6 +191,8 @@ class WaPrivateChatService {
         'recipientId': recipientId,
         'message': message,
         'message_type': 'text',
+        if (clientMessageId != null && clientMessageId.isNotEmpty)
+          'client_message_id': clientMessageId,
       },
     );
     final raw = res.data;
@@ -198,6 +201,72 @@ class WaPrivateChatService {
     }
     if (raw is Map) return Map<String, dynamic>.from(raw);
     return null;
+  }
+
+  /// Durable log catch-up for one device (`GET /api/wa/messages/sync`).
+  static Future<WaMessageSyncBatch?> syncMessagesSinceCursor({
+    required String roomId,
+    required String deviceId,
+    int afterSeq = 0,
+  }) async {
+    final res = await ApiService.get(
+      'api/wa/messages/sync',
+      queryParameters: {
+        'roomId': roomId,
+        'deviceId': deviceId,
+        'afterSeq': afterSeq,
+      },
+    );
+    final raw = res.data;
+    if (raw is! Map) return null;
+    final data = raw['data'];
+    if (data is! Map) return null;
+    final messages = data['messages'];
+    final cursor = data['cursor'];
+    final parsed = <WaSyncedMessage>[];
+    if (messages is List) {
+      for (final item in messages) {
+        if (item is! Map) continue;
+        final m = Map<String, dynamic>.from(item);
+        parsed.add(
+          WaSyncedMessage(
+            seq: int.tryParse(m['seq']?.toString() ?? '') ?? 0,
+            serverMessageId: m['serverMessageId']?.toString() ?? '',
+            clientMessageId: m['clientMessageId']?.toString(),
+            message: m['message']?.toString() ?? '',
+            read: m['read'] == true,
+          ),
+        );
+      }
+    }
+    return WaMessageSyncBatch(
+      messages: parsed,
+      cursor: int.tryParse(cursor?.toString() ?? '') ?? afterSeq,
+    );
+  }
+
+  /// Per-device read cursor (`POST /api/wa/messages/read-cursor`).
+  static Future<WaDeviceReadCursor?> pushReadCursor({
+    required String roomId,
+    required String deviceId,
+    required int readSeq,
+  }) async {
+    final res = await ApiService.post(
+      'api/wa/messages/read-cursor',
+      data: {
+        'roomId': roomId,
+        'deviceId': deviceId,
+        'readSeq': readSeq,
+      },
+    );
+    final raw = res.data;
+    if (raw is! Map) return null;
+    final data = raw['data'];
+    if (data is! Map) return null;
+    return WaDeviceReadCursor(
+      deliveredSeq: int.tryParse(data['deliveredSeq']?.toString() ?? '') ?? 0,
+      readSeq: int.tryParse(data['readSeq']?.toString() ?? '') ?? readSeq,
+    );
   }
 
   /// Normalized `private_low_high` room id (matches Node `normalizePrivateRoomId`).
@@ -239,4 +308,34 @@ class WaPrivateChatService {
       return false;
     }
   }
+}
+
+class WaSyncedMessage {
+  const WaSyncedMessage({
+    required this.seq,
+    required this.serverMessageId,
+    this.clientMessageId,
+    required this.message,
+    required this.read,
+  });
+
+  final int seq;
+  final String serverMessageId;
+  final String? clientMessageId;
+  final String message;
+  final bool read;
+}
+
+class WaMessageSyncBatch {
+  const WaMessageSyncBatch({required this.messages, required this.cursor});
+
+  final List<WaSyncedMessage> messages;
+  final int cursor;
+}
+
+class WaDeviceReadCursor {
+  const WaDeviceReadCursor({required this.deliveredSeq, required this.readSeq});
+
+  final int deliveredSeq;
+  final int readSeq;
 }

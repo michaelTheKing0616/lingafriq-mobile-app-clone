@@ -1026,7 +1026,7 @@ P9-904	Done	Authorise every room join and emit per room (roomAuthz.ts, subscript
 P9-905	Done	Versioned zod socket events (events.schema.ts, socket_event_schemas.dart, P9-905 tests)	P9/P9-905.yaml
 P9-906	Done	Per-socket token bucket RATE_LIMITED + outbound backpressure (rateLimit.ts)	P9/P9-906.yaml
 P9-907	Done	10k socket soak harness (socket_10k.js, loadtest_report.md, --self-test)	P9/P9-907.yaml
-P9-908	Draft	Build durable message log with per-device cursors and idempotent ids	P9/P9-908.yaml
+P9-908	Done	Build durable message log with per-device cursors and idempotent ids (messageLog.ts, messageSync.service.ts, P9-908.messageSync.test.ts)	P9/P9-908.yaml
 P9-909	Draft	Queue messages offline and send data-only pushes	P9/P9-909.yaml
 P9-910	Draft	'Process chat media: signed uploads, transcode, size limits, EXIF strip'	P9/P9-910.yaml
 P9-911	Draft	Hard-delete expiring media and make disappearing content real	P9/P9-911.yaml
