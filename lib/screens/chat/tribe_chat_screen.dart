@@ -34,11 +34,13 @@ int? _numericSenderIdFromTribeMessage(Map<String, dynamic> message) {
 class TribeChatScreen extends HookConsumerWidget {
   final String tribeId;
   final String tribeName;
+  final bool circleMode;
 
   const TribeChatScreen({
     super.key,
     required this.tribeId,
     required this.tribeName,
+    this.circleMode = false,
   });
 
   @override
@@ -54,7 +56,7 @@ class TribeChatScreen extends HookConsumerWidget {
     final currentUser = ref.watch(userProvider);
     final socketNotifier = ref.read(chatSocketProvider.notifier);
     final socketState = ref.watch(chatSocketProvider);
-    final tribeRoom = 'tribe_$tribeId';
+    final tribeRoom = circleMode ? 'circle:$tribeId' : 'tribe_$tribeId';
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
 

@@ -487,10 +487,10 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
       sheet: FirstDmPromptSheet(
         mode: FirstDmSheetMode.outboundIntro,
         peerDisplayName: _contactName,
-        onSendIntro: () async {
+        onSendIntro: (msg) async {
           await WaPrivateChatService.sendTextMessage(
             recipientId: peer.toString(),
-            message: text,
+            message: msg,
             firstDmIntro: true,
           );
           sent = true;

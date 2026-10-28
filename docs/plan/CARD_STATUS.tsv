@@ -1061,7 +1061,7 @@ P9-939	Draft	Enable MLS E2EE for adult 1:1 and small-group chats by default	P9/P
 P9-940	Draft	Run learning overlays on device and gate server models per message	P9/P9-940.yaml
 P9-941	Draft	Send content-free pushes for E2EE chats	P9/P9-941.yaml
 P9-942	Draft	Add group calls for adult and approved-circle members	P9/P9-942.yaml
-P9-943	Draft	Build Circles engine for small groups of 5 to 50	P9/P9-943.yaml
+P9-943	Done	Circles engine: caps, tribe migration, guardian/teacher adult join, /api/v2/circles (circles.service.ts, circles_screen.dart)	P9/P9-943.yaml
 P9-944	Draft	Build Chat engine for 1:1 and group text and voice notes	P9/P9-944.yaml
 P9-945	Draft	Add Language Status, Tone Lens, tap-to-gloss and message check to chat	P9/P9-945.yaml
 P9-946	Draft	Offer opt-in transcription of voice notes with gloss	P9/P9-946.yaml
