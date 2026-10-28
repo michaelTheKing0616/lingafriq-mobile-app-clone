@@ -762,6 +762,7 @@ class _Classroom {
 
   // V2 classroom admin (roster + assignments + staff dashboard)
   String v2Roster(String tribeId) => '/api/v2/classroom/$tribeId/roster';
+  String v2RosterImport(String tribeId) => '/api/v2/classroom/$tribeId/roster/import';
   String v2Privacy(String tribeId) => '/api/v2/classroom/$tribeId/privacy';
   String v2Assignments(String tribeId) => '/api/v2/classroom/$tribeId/assignments';
   String v2SubmitAssignment(String tribeId, String assignmentId) =>

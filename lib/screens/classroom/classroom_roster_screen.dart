@@ -1,9 +1,11 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/gamification_services_provider.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/utils/roster_import_feedback.dart';
 
 class ClassroomRosterScreen extends ConsumerStatefulWidget {
   final String tribeId;
@@ -24,6 +26,9 @@ class _ClassroomRosterScreenState extends ConsumerState<ClassroomRosterScreen> {
   String? _error;
   Map<String, dynamic>? _data;
   bool _shareEmails = true;
+  bool _importing = false;
+  List<Map<String, dynamic>> _importErrors = const [];
+  String? _importSummary;
 
   @override
   void initState() {
@@ -49,9 +54,47 @@ class _ClassroomRosterScreenState extends ConsumerState<ClassroomRosterScreen> {
     } catch (e) {
       if (mounted) ErrorHandler.showError(context, e);
       setState(() {
-        _error = 'Unable to load roster right now.';
+        _error = 'We couldn\'t load your class list. Pull to refresh or try again.';
         _loading = false;
       });
+    }
+  }
+
+  Future<void> _importCsv() async {
+    setState(() {
+      _importErrors = const [];
+      _importSummary = null;
+    });
+    final pick = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: const ['csv'],
+      withData: true,
+    );
+    if (pick == null || pick.files.isEmpty) return;
+    final bytes = pick.files.single.bytes;
+    if (bytes == null) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Could not read that file.', style: PanAfricanTypography.bodyMedium(context))),
+        );
+      }
+      return;
+    }
+    setState(() => _importing = true);
+    try {
+      final csv = String.fromCharCodes(bytes);
+      final result = await ref.read(classroomServiceProvider).importRosterCsvV2(widget.tribeId, csv);
+      if (!mounted) return;
+      final feedback = summarizeRosterImportResult(result);
+      setState(() {
+        _importErrors = List<Map<String, dynamic>>.from(feedback['errors'] as List);
+        _importSummary = feedback['summary'] as String;
+        _importing = false;
+      });
+      await _load();
+    } catch (e) {
+      if (mounted) ErrorHandler.showError(context, e);
+      setState(() => _importing = false);
     }
   }
 
@@ -70,6 +113,17 @@ class _ClassroomRosterScreenState extends ConsumerState<ClassroomRosterScreen> {
           style: PanAfricanTypography.titleLarge(context),
         ),
         actions: [
+          IconButton(
+            tooltip: 'Import roster CSV',
+            icon: _importing
+                ? SizedBox(
+                    width: 22,
+                    height: 22,
+                    child: CircularProgressIndicator(strokeWidth: 2, color: Theme.of(context).colorScheme.onSurface),
+                  )
+                : const Icon(Icons.upload_file_rounded),
+            onPressed: _importing ? null : _importCsv,
+          ),
           if (classroomCode != null && classroomCode.isNotEmpty)
             IconButton(
               tooltip: 'Copy class code',
@@ -112,10 +166,23 @@ class _ClassroomRosterScreenState extends ConsumerState<ClassroomRosterScreen> {
                     separatorBuilder: (_, __) => SizedBox(height: PanAfricanSpacing.sm),
                     itemBuilder: (context, index) {
                       if (index == 0) {
-                        return _HeaderCard(
-                          isDark: isDark,
-                          classroomCode: classroomCode,
-                          count: roster.length,
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            _HeaderCard(
+                              isDark: isDark,
+                              classroomCode: classroomCode,
+                              count: roster.length,
+                            ),
+                            if (_importSummary != null) ...[
+                              SizedBox(height: PanAfricanSpacing.sm),
+                              _ImportBanner(message: _importSummary!, isDark: isDark),
+                            ],
+                            if (_importErrors.isNotEmpty) ...[
+                              SizedBox(height: PanAfricanSpacing.sm),
+                              _ImportErrorsList(errors: _importErrors, isDark: isDark),
+                            ],
+                          ],
                         );
                       }
                       final m = roster[index - 1];
@@ -155,6 +222,63 @@ class _HeaderCard extends StatelessWidget {
             SizedBox(height: PanAfricanSpacing.xs),
             Text('Join code: $classroomCode', style: PanAfricanTypography.bodySmall(context)),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+class _ImportBanner extends StatelessWidget {
+  const _ImportBanner({required this.message, required this.isDark});
+
+  final String message;
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      liveRegion: true,
+      child: Container(
+        padding: EdgeInsets.all(PanAfricanSpacing.md),
+        decoration: BoxDecoration(
+          color: PanAfricanColors.primaryContainer.withValues(alpha: 0.35),
+          borderRadius: PanAfricanRadius.lgBR,
+        ),
+        child: Text(message, style: PanAfricanTypography.bodyMedium(context)),
+      ),
+    );
+  }
+}
+
+class _ImportErrorsList extends StatelessWidget {
+  const _ImportErrorsList({required this.errors, required this.isDark});
+
+  final List<Map<String, dynamic>> errors;
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(PanAfricanSpacing.md),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.errorContainer.withValues(alpha: 0.25),
+        borderRadius: PanAfricanRadius.lgBR,
+        border: Border.all(color: Theme.of(context).colorScheme.error.withValues(alpha: 0.4)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Fix these rows in your spreadsheet', style: PanAfricanTypography.titleSmall(context)),
+          SizedBox(height: PanAfricanSpacing.xs),
+          ...errors.take(8).map(
+                (e) => Padding(
+                  padding: EdgeInsets.only(bottom: PanAfricanSpacing.xxxs),
+                  child: Text(
+                    'Line ${e['lineNumber']}: ${e['reason']}',
+                    style: PanAfricanTypography.bodySmall(context),
+                  ),
+                ),
+              ),
         ],
       ),
     );
