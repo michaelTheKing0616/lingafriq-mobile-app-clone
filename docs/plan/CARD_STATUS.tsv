@@ -1035,7 +1035,7 @@ P9-913	Done	Link guardian accounts and collect verifiable consent (guardianLink.
 P9-914	Done	Guardian group join approvals (guardianApproval.service.ts, approvals_screen.dart, P9-914 tests)	P9/P9-914.yaml
 P9-915	Done	Guardian daily limits + child progress (guardianLimits.service.ts, limits_progress_screen.dart)	P9/P9-915.yaml
 P9-916	Done	School consent + teacher provisioning (schoolAccount.service.ts, school_provisioning_screen.dart)	P9/P9-916.yaml
-P9-917	Draft	Default minors to private profiles, no location, no contact discovery	P9/P9-917.yaml
+P9-917	Done	Minor privacy defaults: privacyDefaults.service.ts, minorPolicy.ts, locked privacy UI	P9/P9-917.yaml
 P9-918	Draft	'Enforce child capability policy: no outside DMs, snaps, ads, purchases'	P9/P9-918.yaml
 P9-919	Draft	Apply stricter AI conversation policy and no memory for children	P9/P9-919.yaml
 P9-920	Draft	Keep minors' messages moderated and explain the E2EE trade-off to families	P9/P9-920.yaml

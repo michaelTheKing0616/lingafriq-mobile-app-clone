@@ -62,6 +62,8 @@ class PrivacySettingsScreen extends HookConsumerWidget {
     final trainingOffered = useState<bool>(true);
     final trainingWithdrawing = useState(false);
     final isLoading = useState(true);
+    final minorPrivacyLocked = useState(false);
+    final minorPrivacyReason = useState<String?>(null);
 
     Future<void> loadSettings(ApiProvider api) async {
       // Load from backend first; fall back to local
@@ -79,6 +81,16 @@ class PrivacySettingsScreen extends HookConsumerWidget {
         locationTrackingEnabled.value = l;
         profileVisibility.value = v;
         activityStatusEnabled.value = s;
+        minorPrivacyLocked.value = remote['minor_privacy_locked'] == true;
+        minorPrivacyReason.value =
+            remote['minor_privacy_reason'] as String? ??
+                (minorPrivacyLocked.value
+                    ? 'Your profile stays private while you learn.'
+                    : null);
+        if (minorPrivacyLocked.value) {
+          profileVisibility.value = 'private';
+          locationTrackingEnabled.value = false;
+        }
         await _savePreference(_prefAnalytics, a);
         await _savePreference(_prefDataSharing, d);
         await _savePreference(_prefPersonalizedAds, p);
@@ -393,6 +405,20 @@ class PrivacySettingsScreen extends HookConsumerWidget {
     }
 
     Future<void> updateLocationTracking(bool value) async {
+      if (minorPrivacyLocked.value && value) {
+        HapticFeedback.heavyImpact();
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                minorPrivacyReason.value ??
+                    'Location stays off for young learner accounts.',
+              ),
+            ),
+          );
+        }
+        return;
+      }
       HapticFeedback.selectionClick();
       locationTrackingEnabled.value = value;
       await _savePreference(_prefLocationTracking, value);
@@ -407,6 +433,20 @@ class PrivacySettingsScreen extends HookConsumerWidget {
     }
 
     Future<void> updateProfileVisibility(String value) async {
+      if (minorPrivacyLocked.value && value != 'private') {
+        HapticFeedback.heavyImpact();
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                minorPrivacyReason.value ??
+                    'Young learner accounts stay private for your safety.',
+              ),
+            ),
+          );
+        }
+        return;
+      }
       HapticFeedback.selectionClick();
       profileVisibility.value = value;
       final prefs = await SharedPreferences.getInstance();
@@ -549,12 +589,18 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                   isDark: isDark,
                   index: 2,
                   children: [
+                    if (minorPrivacyLocked.value)
+                      _MinorPrivacyLockBanner(
+                        message: minorPrivacyReason.value ??
+                            'Location stays off for young learner accounts.',
+                        isDark: isDark,
+                      ),
                     _PrivacySwitchTile(
                       icon: Icons.location_on_outlined,
                       title: 'Location Tracking',
                       subtitle: 'Allow app to access your location',
                       value: locationTrackingEnabled.value ?? false,
-                      onChanged: updateLocationTracking,
+                      onChanged: minorPrivacyLocked.value ? null : updateLocationTracking,
                       isDark: isDark,
                     ),
                   ],
@@ -567,13 +613,21 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                   isDark: isDark,
                   index: 3,
                   children: [
+                    if (minorPrivacyLocked.value)
+                      _MinorPrivacyLockBanner(
+                        message: minorPrivacyReason.value ??
+                            'Your profile stays private while you learn.',
+                        isDark: isDark,
+                      ),
                     _PrivacyRadioTile(
                       icon: Icons.public_rounded,
                       title: 'Public',
                       subtitle: 'Anyone can see your profile',
                       value: 'public',
                       groupValue: profileVisibility.value,
-                      onChanged: updateProfileVisibility,
+                      onChanged: minorPrivacyLocked.value
+                          ? (_) => updateProfileVisibility('public')
+                          : updateProfileVisibility,
                       isDark: isDark,
                     ),
                     _PrivacyDivider(isDark: isDark),
@@ -583,7 +637,9 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                       subtitle: 'Only your friends can see your profile',
                       value: 'friends',
                       groupValue: profileVisibility.value,
-                      onChanged: updateProfileVisibility,
+                      onChanged: minorPrivacyLocked.value
+                          ? (_) => updateProfileVisibility('friends')
+                          : updateProfileVisibility,
                       isDark: isDark,
                     ),
                     _PrivacyDivider(isDark: isDark),
@@ -847,12 +903,62 @@ class _PrivacySection extends StatelessWidget {
   }
 }
 
+class _MinorPrivacyLockBanner extends StatelessWidget {
+  const _MinorPrivacyLockBanner({
+    required this.message,
+    required this.isDark,
+  });
+
+  final String message;
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      label: 'Privacy locked for young learners',
+      child: Container(
+        width: double.infinity,
+        margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
+        padding: EdgeInsets.all(PanAfricanSpacing.md),
+        decoration: BoxDecoration(
+          color: PanAfricanColors.primary.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+          border: Border.all(
+            color: PanAfricanColors.primary.withValues(alpha: 0.35),
+          ),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              Icons.lock_rounded,
+              color: PanAfricanColors.primary,
+              size: 22.sp,
+            ),
+            SizedBox(width: PanAfricanSpacing.sm),
+            Expanded(
+              child: Text(
+                message,
+                style: PanAfricanTypography.bodyMedium(context).copyWith(
+                  color: isDark
+                      ? PanAfricanColors.textSecondaryDark
+                      : PanAfricanColors.textSecondaryLight,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _PrivacySwitchTile extends StatelessWidget {
   final IconData icon;
   final String title;
   final String subtitle;
   final bool value;
-  final ValueChanged<bool> onChanged;
+  final ValueChanged<bool>? onChanged;
   final bool isDark;
   final String? semanticsLabel;
 
