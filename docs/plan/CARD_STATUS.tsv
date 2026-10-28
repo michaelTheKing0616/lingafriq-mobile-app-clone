@@ -1021,7 +1021,7 @@ P8-933	Done	Circle co-op word goals (circle_goals.service.ts, circle_goal_screen
 P9-900	Done	ADR-038 self-hosted Socket.IO+Redis vs Ably/Pusher/Stream (ADR-038-realtime-stack.md)	P9/P9-900.yaml
 P9-901	Draft	Scale sockets horizontally with Redis adapter and sticky sessions	P9/P9-901.yaml
 P9-902	Draft	Move presence to Redis TTL with scoped delivery	P9/P9-902.yaml
-P9-903	Draft	'Harden socket handshake: origins, token transport, single server'	P9/P9-903.yaml
+P9-903	Done	Socket handshake: production origin allowlist, TOKEN_TRANSPORT_INVALID, single init path (cors.ts)	P9/P9-903.yaml
 P9-904	Draft	Authorise every room join and emit per room	P9/P9-904.yaml
 P9-905	Draft	Version and validate socket events with zod on both sides	P9/P9-905.yaml
 P9-906	Draft	Add per-socket rate limits and backpressure	P9/P9-906.yaml
