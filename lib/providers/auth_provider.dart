@@ -7,7 +7,7 @@ import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/models/onboarding_answers.dart';
 import 'package:lingafriq/models/profile_model.dart';
 import 'package:lingafriq/providers/user_provider.dart';
-import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
+import 'package:lingafriq/screens/home_screen.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/services/auth/credential_storage_service.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
@@ -121,7 +121,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
       
       // Already logged in and verified, navigate to tabs view
-      ref.read(navigationProvider).navigateOffAll(const TabsViewMaterial3());
+      ref.read(navigationProvider).navigateOffAll(const HomeScreen());
       return;
     }
 
@@ -146,7 +146,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
             );
             return;
           }
-          ref.read(navigationProvider).navigateOffAll(const TabsViewMaterial3());
+          ref.read(navigationProvider).navigateOffAll(const HomeScreen());
           return;
         }
       }
@@ -220,7 +220,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         } else {
           final isOnboardingSeen = ref.read(sharedPreferencesProvider).isOnboardingSeen;
           ref.read(navigationProvider).navigateOffAll(
-            isOnboardingSeen ? const TabsViewMaterial3() : const OnboardingScreenMaterial3(),
+            isOnboardingSeen ? const HomeScreen() : const OnboardingScreenMaterial3(),
           );
         }
       }

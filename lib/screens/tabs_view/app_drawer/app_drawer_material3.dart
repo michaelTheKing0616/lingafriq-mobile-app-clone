@@ -31,8 +31,10 @@ import 'package:lingafriq/screens/learning/tone_rhythm/tone_rhythm_trainer_scree
 import 'package:lingafriq/screens/ar/point_and_say_screen.dart';
 import 'package:lingafriq/screens/live_translate/live_translate_screen.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen_material3.dart';
-import 'package:lingafriq/screens/chat/private_chat_list_screen.dart';
 import 'package:lingafriq/screens/feed/x_feed_home_screen.dart';
+import 'package:lingafriq/providers/age_policy_provider.dart';
+import 'package:lingafriq/screens/chat/chat_list_screen.dart';
+import 'package:lingafriq/screens/home_screen.dart';
 import 'package:lingafriq/screens/community/micro_mentor_hub_screen.dart';
 import 'package:lingafriq/screens/staff/micro_mentor_reports_screen.dart';
 import 'package:lingafriq/screens/chat/live_classroom_screen_material3.dart';
@@ -53,6 +55,10 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final currentUser = ref.watch(userProvider);
+    final socialBlocked = ref.watch(agePolicyProvider).maybeWhen(
+          data: (p) => p.socialSurfacesBlocked,
+          orElse: () => true,
+        );
 
     Future<void> toggleDarkMode() async {
       await ref.read(themeModeProvider.notifier).toggleDarkMode();
@@ -399,34 +405,38 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                   _DrawerSection(
                     title: 'Community',
                     children: [
-                      _DrawerItem(
-                        icon: PanAfricanIcons.chat,
-                        label: 'Global Chat',
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.push(
-                            context,
-                            SmoothPageRoute.platform(
-                              child: const GlobalChatScreenMaterial3(),
-                            ),
-                          );
-                        },
-                        isDark: isDark,
-                      ),
-                      _DrawerItem(
-                        icon: Icons.dynamic_feed_rounded,
-                        label: 'Community Feed',
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.push(
-                            context,
-                            SmoothPageRoute.platform(
-                              child: const XFeedHomeScreen(),
-                            ),
-                          );
-                        },
-                        isDark: isDark,
-                      ),
+                      if (!socialBlocked) ...[
+                        _DrawerItem(
+                          icon: PanAfricanIcons.chat,
+                          label: 'Global Chat',
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              SmoothPageRoute.platform(
+                                child: const GlobalChatScreenMaterial3(),
+                              ),
+                            );
+                          },
+                          isDark: isDark,
+                        ),
+                        _DrawerItem(
+                          icon: Icons.dynamic_feed_rounded,
+                          label: 'Community Feed',
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              SmoothPageRoute.platform(
+                                child: const AgePolicyRouteShell(
+                                  child: XFeedHomeScreen(),
+                                ),
+                              ),
+                            );
+                          },
+                          isDark: isDark,
+                        ),
+                      ],
                       _DrawerItem(
                         icon: Icons.volunteer_activism_rounded,
                         label: 'Micro‑Mentors',
@@ -441,20 +451,21 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                         },
                         isDark: isDark,
                       ),
-                      _DrawerItem(
-                        icon: Icons.chat_bubble_outline,
-                        label: 'Private Chat',
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.push(
-                            context,
-                            SmoothPageRoute.platform(
-                              child: const PrivateChatListScreen(),
-                            ),
-                          );
-                        },
-                        isDark: isDark,
-                      ),
+                      if (!socialBlocked)
+                        _DrawerItem(
+                          icon: Icons.chat_bubble_outline,
+                          label: 'Private Chat',
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              SmoothPageRoute.platform(
+                                child: const ChatListScreen(),
+                              ),
+                            );
+                          },
+                          isDark: isDark,
+                        ),
                       _DrawerItem(
                         icon: Icons.school_outlined,
                         label: 'Live Classroom',
@@ -483,20 +494,21 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                         },
                         isDark: isDark,
                       ),
-                      _DrawerItem(
-                        icon: Icons.radio,
-                        label: 'Practice Rooms',
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const RoomDiscoveryScreen(),
-                            ),
-                          );
-                        },
-                        isDark: isDark,
-                      ),
+                      if (!socialBlocked)
+                        _DrawerItem(
+                          icon: Icons.radio,
+                          label: 'Practice Rooms',
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const RoomDiscoveryScreen(),
+                              ),
+                            );
+                          },
+                          isDark: isDark,
+                        ),
                       _DrawerItem(
                         icon: PanAfricanIcons.tribe,
                         label: 'My Tribes',

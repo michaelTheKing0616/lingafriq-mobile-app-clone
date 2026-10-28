@@ -16,6 +16,8 @@ import 'package:lingafriq/widgets/lingafriq_scaffold.dart';
 import 'package:lingafriq/avatars/avatars.dart';
 import 'package:lingafriq/providers/offline_download_provider.dart';
 import 'package:lingafriq/providers/curriculum_provider.dart';
+import 'package:lingafriq/providers/age_policy_provider.dart';
+import 'package:lingafriq/screens/home_screen.dart';
 import 'package:lingafriq/services/connectivity_service.dart';
 
 // Re-export for consumers that imported from tabs_view_material3
@@ -74,6 +76,12 @@ class _TabsViewMaterial3State extends ConsumerState<TabsViewMaterial3> {
   Widget build(BuildContext context) {
     final index = ref.watch(tabIndexProvider);
     final scaffoldKey = ref.watch(scaffoldKeyProvider);
+    final socialBlocked = ref.watch(agePolicyProvider).maybeWhen(
+          data: (p) => p.socialSurfacesBlocked,
+          orElse: () => true,
+        );
+    final navIndex =
+        socialBlocked ? _navBarIndexWhenSocialHidden(index) : index;
 
     return LingafriqScaffold(
       scaffoldKey: scaffoldKey,
@@ -109,11 +117,15 @@ class _TabsViewMaterial3State extends ConsumerState<TabsViewMaterial3> {
         ),
       ),
       bottomNavigationBar: _Material3BottomNavigationBar(
-        currentIndex: index,
+        currentIndex: navIndex,
+        hideSocialTab: socialBlocked,
         onTap: (value) {
+          final logicalIndex = socialBlocked
+              ? _logicalTabIndexWhenSocialHidden(value)
+              : value;
           // Refresh languages provider when tab is changed to courses tab
           // CRITICAL FIX: Only invalidate if not already loading/refreshing to prevent excessive API calls
-          if (value == 1) {
+          if (logicalIndex == 1) {
             final languagesAsync = ref.read(languagesProvider);
             // Only invalidate if data is not loading, not refreshing, and not in error state
             if (!languagesAsync.isLoading && 
@@ -123,20 +135,33 @@ class _TabsViewMaterial3State extends ConsumerState<TabsViewMaterial3> {
             }
           }
           HapticFeedback.lightImpact();
-          ref.read(tabIndexProvider.notifier).setIndex(value);
+          ref.read(tabIndexProvider.notifier).setIndex(logicalIndex);
         },
       ),
     );
   }
 }
 
+int _navBarIndexWhenSocialHidden(int logicalIndex) {
+  if (logicalIndex <= 2) return logicalIndex;
+  if (logicalIndex == kSocialTabIndex) return 0;
+  return 3;
+}
+
+int _logicalTabIndexWhenSocialHidden(int navIndex) {
+  if (navIndex <= 2) return navIndex;
+  return 4;
+}
+
 class _Material3BottomNavigationBar extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
+  final bool hideSocialTab;
 
   const _Material3BottomNavigationBar({
     required this.currentIndex,
     required this.onTap,
+    this.hideSocialTab = false,
   });
 
   @override
@@ -188,15 +213,16 @@ class _Material3BottomNavigationBar extends StatelessWidget {
               label: 'AI',
             ),
           ),
-          Semantics(
-            label: 'Social tab',
-            button: true,
-            child: const NavigationDestination(
-              icon: Icon(PanAfricanIcons.social),
-              selectedIcon: Icon(PanAfricanIcons.socialSelected),
-              label: 'Social',
+          if (!hideSocialTab)
+            Semantics(
+              label: 'Social tab',
+              button: true,
+              child: const NavigationDestination(
+                icon: Icon(PanAfricanIcons.social),
+                selectedIcon: Icon(PanAfricanIcons.socialSelected),
+                label: 'Social',
+              ),
             ),
-          ),
           Semantics(
             label: 'Profile tab',
             button: true,

@@ -70,7 +70,8 @@ import 'screens/media/import_media_screen.dart';
 import 'screens/settings/settings_screen_material3.dart';
 import 'screens/help/features_guide_screen.dart';
 import 'screens/help/stitch_navigation_hub_screen.dart';
-import 'screens/chat/private_chat_list_screen.dart';
+import 'screens/chat/chat_list_screen.dart';
+import 'package:lingafriq/screens/home_screen.dart';
 import 'screens/chat/call_history_screen.dart';
 import 'screens/chat/live_classroom_screen_material3.dart';
 import 'screens/classroom/classroom_lobby_screen.dart';
@@ -365,8 +366,8 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'import_media': (_) => const ImportMediaScreen(),
     'settings': (_) => const SettingsScreenMaterial3(),
     'stitch-hub': (_) => const StitchNavigationHubScreen(),
-    'private-chat-inbox': (_) => const PrivateChatListScreen(),
-    'call-history': (_) => const CallHistoryScreen(),
+    'private-chat-inbox': (_) => const ChatListScreen(),
+    'call-history': (_) => const AgePolicyRouteShell(child: CallHistoryScreen()),
     'live-classroom': (_) {
       final args = settings.arguments as Map<String, dynamic>?;
       return LiveClassroomScreenMaterial3(
@@ -636,10 +637,10 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'wa-starred': (_) => const WaStarredMessagesScreen(),
     'wa-media-gallery': (_) => const WaMediaGalleryScreen(),
     // Snapchat upgrade screens
-    'snap-inbox': (_) => const SnapInboxScreen(),
-    'snap-story-feed': (_) => const SnapStoryFeedScreen(),
-    'snap-camera': (_) => const SnapCameraScreen(),
-    'snap-streaks': (_) => const SnapStreaksScreen(),
+    'snap-inbox': (_) => const AgePolicyRouteShell(child: SnapInboxScreen()),
+    'snap-story-feed': (_) => const AgePolicyRouteShell(child: SnapStoryFeedScreen()),
+    'snap-camera': (_) => const AgePolicyRouteShell(child: SnapCameraScreen()),
+    'snap-streaks': (_) => const AgePolicyRouteShell(child: SnapStreaksScreen()),
     'snap-viewer': (ctx) {
       final args = settings.arguments as Map<String, dynamic>?;
       final snapId = args?['snapId']?.toString();
@@ -650,13 +651,15 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
           'Missing required arguments for SnapViewerScreen',
         );
       }
-      return SnapViewerScreen(
-        snapId: (snapId != null && snapId.isNotEmpty) ? snapId : null,
-        storyId: (storyId != null && storyId.isNotEmpty) ? storyId : null,
+      return AgePolicyRouteShell(
+        child: SnapViewerScreen(
+          snapId: (snapId != null && snapId.isNotEmpty) ? snapId : null,
+          storyId: (storyId != null && storyId.isNotEmpty) ? storyId : null,
+        ),
       );
     },
     // X feed upgrade screens
-    'x-feed-home': (_) => const XFeedHomeScreen(),
+    'x-feed-home': (_) => const AgePolicyRouteShell(child: XFeedHomeScreen()),
     'x-compose': (_) => const XComposeScreen(),
     'x-post-detail': (ctx) {
       final args = settings.arguments as Map<String, dynamic>?;
