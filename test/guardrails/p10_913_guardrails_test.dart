@@ -19,15 +19,19 @@ void main() {
   });
 
   test('AC6 default flashcard roster is solo without fake co-learners', () {
-    const screen = FlashcardFocusScreen();
-    expect(screen.roster.mode, FlashcardStudyMode.solo);
-    expect(screen.roster.peers, isEmpty);
+    const roster = FlashcardGroupStudyRoster.solo();
+    expect(roster.mode, FlashcardStudyMode.solo);
+    expect(roster.peers, isEmpty);
     expect(
       GamificationGuardrails.flashcardDefaultIsSolo(
         challengeRunActive: false,
-        peerCount: screen.roster.peers.length,
+        peerCount: roster.peers.length,
       ),
       isTrue,
+    );
+    expect(
+      flashcardRosterFromApi({'ok': false}).peers,
+      isEmpty,
     );
   });
 }

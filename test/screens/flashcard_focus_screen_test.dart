@@ -40,7 +40,41 @@ void main() {
     await pumpStrip(tester, roster: const FlashcardGroupStudyRoster.solo());
     expect(find.text('Amina'), findsNothing);
     expect(find.text('Kwame'), findsNothing);
-    expect(find.text('You are studying on your own'), findsOneWidget);
+    expect(find.text(kFlashcardCoLearnersEmpty), findsOneWidget);
+  });
+
+  test('flashcardRosterFromApi never fabricates peers on failure', () {
+    expect(
+      flashcardRosterFromApi({'ok': false}),
+      const FlashcardGroupStudyRoster.solo(),
+    );
+    expect(
+      flashcardRosterFromApi({
+        'ok': true,
+        'roster': {
+          'mode': 'matched_peers',
+          'peers': [
+            {'display_name': '  ', 'is_practice_bot': false},
+          ],
+        },
+      }),
+      const FlashcardGroupStudyRoster.solo(),
+    );
+  });
+
+  test('flashcardRosterFromApi parses matched peers from server', () {
+    final roster = flashcardRosterFromApi({
+      'ok': true,
+      'roster': {
+        'mode': 'matched_peers',
+        'peers': [
+          {'display_name': 'Circle peer', 'is_practice_bot': false, 'has_mic': true},
+        ],
+      },
+    });
+    expect(roster.mode, FlashcardStudyMode.matchedPeers);
+    expect(roster.peers.single.displayName, 'Circle peer');
+    expect(roster.peers.single.hasMic, isTrue);
   });
 
   testWidgets('practice_bot_label visible for bot roster', (tester) async {

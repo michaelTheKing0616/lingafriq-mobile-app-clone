@@ -4,7 +4,72 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/modern_griot_design_system.dart';
+import '../../utils/api_service.dart';
+import '../../services/capability_gate.dart';
 import '../../widgets/griot/griot_widgets.dart';
+
+/// copy_keys: flashcard.colearners.empty (P9-958).
+const String kFlashcardCoLearnersEmpty =
+    'No one else is studying with you right now. Keep going on your own or invite friends from your circle.';
+
+/// copy_keys: flashcard.group_study.minor_blocked (P9-958).
+const String kFlashcardGroupStudyMinorBlocked =
+    'Group flashcard study is for verified adult learners. You can still review cards on your own.';
+
+typedef FlashcardRosterLoader = Future<Map<String, dynamic>> Function({
+  String? sessionId,
+});
+
+Future<Map<String, dynamic>> defaultFlashcardRosterLoader({
+  String? sessionId,
+}) async {
+  await ApiService.initialize();
+  final path = sessionId == null || sessionId.isEmpty
+      ? '/api/v2/village/flashcards/roster'
+      : '/api/v2/village/flashcards/roster?session_id=${Uri.encodeComponent(sessionId)}';
+  final response = await ApiService.get(path);
+  final json = response.data;
+  if (json is Map<String, dynamic>) return json;
+  return <String, dynamic>{'ok': false};
+}
+
+@visibleForTesting
+FlashcardGroupStudyRoster flashcardRosterFromApi(Map<String, dynamic> json) {
+  if (json['ok'] != true) {
+    return const FlashcardGroupStudyRoster.solo();
+  }
+  final roster = json['roster'];
+  if (roster is! Map<String, dynamic>) {
+    return const FlashcardGroupStudyRoster.solo();
+  }
+  final mode = roster['mode'] as String? ?? 'solo';
+  final rawPeers = roster['peers'];
+  if (mode == 'practice_bot') {
+    return const FlashcardGroupStudyRoster.practiceBot();
+  }
+  if (mode != 'matched_peers' || rawPeers is! List) {
+    return const FlashcardGroupStudyRoster.solo();
+  }
+  final peers = <FlashcardCoLearner>[];
+  for (final item in rawPeers) {
+    if (item is! Map) continue;
+    final map = Map<String, dynamic>.from(item);
+    if (map['is_practice_bot'] == true) {
+      peers.add(const FlashcardCoLearner.practiceBot());
+      continue;
+    }
+    final name = (map['display_name'] as String?)?.trim();
+    if (name == null || name.isEmpty) continue;
+    peers.add(FlashcardCoLearner.matched(
+      displayName: name,
+      hasMic: map['has_mic'] == true,
+    ));
+  }
+  if (peers.isEmpty) {
+    return const FlashcardGroupStudyRoster.solo();
+  }
+  return FlashcardGroupStudyRoster.matched(peers);
+}
 
 /// Group-study roster for Village flashcards (P10-911).
 enum FlashcardStudyMode { solo, matchedPeers, practiceBot }
@@ -42,12 +107,19 @@ class FlashcardGroupStudyRoster {
 class FlashcardFocusScreen extends ConsumerStatefulWidget {
   const FlashcardFocusScreen({
     super.key,
-    this.roster = const FlashcardGroupStudyRoster.solo(),
+    this.sessionId,
+    this.rosterOverride,
+    this.rosterLoader = defaultFlashcardRosterLoader,
+    this.capabilityGate,
   });
 
-  /// When omitted, learners study solo — never fake co-learners.
-  final FlashcardGroupStudyRoster roster;
+  final String? sessionId;
+  /// Test / preview injection — skips network roster fetch.
+  final FlashcardGroupStudyRoster? rosterOverride;
+  final FlashcardRosterLoader rosterLoader;
+  final CapabilityGate? capabilityGate;
 
+  /// When omitted, roster loads from GET `/api/v2/village/flashcards/roster`.
   static const practiceBotLabel = 'Practice bot';
 
   @override
@@ -61,6 +133,9 @@ class _FlashcardFocusScreenState extends ConsumerState<FlashcardFocusScreen>
   int _currentIndex = 0;
   late final AnimationController _flipController;
   late final Animation<double> _flipAnimation;
+  FlashcardGroupStudyRoster _roster = const FlashcardGroupStudyRoster.solo();
+  bool _rosterLoading = true;
+  bool _groupStudyMinorBlocked = false;
 
   static const _mockCards = [
     _FlashcardData(
@@ -93,6 +168,38 @@ class _FlashcardFocusScreenState extends ConsumerState<FlashcardFocusScreen>
     _flipAnimation = Tween<double>(begin: 0, end: pi).animate(
       CurvedAnimation(parent: _flipController, curve: Curves.easeInOutCubic),
     );
+    _loadRoster();
+  }
+
+  Future<void> _loadRoster() async {
+    if (widget.rosterOverride != null) {
+      setState(() {
+        _roster = widget.rosterOverride!;
+        _rosterLoading = false;
+      });
+      return;
+    }
+    final gate = widget.capabilityGate ?? CapabilityGate();
+    try {
+      final caps = await gate.load(forceRefresh: true);
+      final blocked = caps.isMinor || caps.tier == null;
+      final json = await widget.rosterLoader(sessionId: widget.sessionId);
+      if (!mounted) return;
+      setState(() {
+        _groupStudyMinorBlocked = blocked || json['group_study_allowed'] == false;
+        _roster = flashcardRosterFromApi(json);
+        if (_groupStudyMinorBlocked) {
+          _roster = const FlashcardGroupStudyRoster.solo();
+        }
+        _rosterLoading = false;
+      });
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _roster = const FlashcardGroupStudyRoster.solo();
+        _rosterLoading = false;
+      });
+    }
   }
 
   @override
@@ -132,7 +239,30 @@ class _FlashcardFocusScreenState extends ConsumerState<FlashcardFocusScreen>
         child: Column(
           children: [
             SizedBox(height: 8.h),
-            FlashcardCoLearnerStrip(roster: widget.roster),
+            if (_groupStudyMinorBlocked)
+              Padding(
+                padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 8.h),
+                child: Semantics(
+                  label: kFlashcardGroupStudyMinorBlocked,
+                  child: Text(
+                    kFlashcardGroupStudyMinorBlocked,
+                    style: ModernGriotTypography.bodySmall(
+                      context: context,
+                      color: cs.onSurfaceVariant,
+                    ),
+                  ),
+                ),
+              ),
+            if (_rosterLoading)
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+                child: LinearProgressIndicator(
+                  minHeight: 2.h,
+                  borderRadius: ModernGriotRadius.borderFull,
+                ),
+              )
+            else
+              FlashcardCoLearnerStrip(roster: _roster),
             SizedBox(height: 12.h),
             Expanded(child: _buildFlashcard(cs, card)),
             SizedBox(height: 12.h),
@@ -422,7 +552,7 @@ class FlashcardCoLearnerStrip extends StatelessWidget {
       return Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Semantics(
-          label: 'Solo group study',
+          label: kFlashcardCoLearnersEmpty,
           child: Container(
             width: double.infinity,
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
@@ -437,7 +567,7 @@ class FlashcardCoLearnerStrip extends StatelessWidget {
                 SizedBox(width: 8.w),
                 Expanded(
                   child: Text(
-                    'You are studying on your own',
+                    kFlashcardCoLearnersEmpty,
                     style: ModernGriotTypography.bodySmall(
                       context: context,
                       color: cs.onSurfaceVariant,
