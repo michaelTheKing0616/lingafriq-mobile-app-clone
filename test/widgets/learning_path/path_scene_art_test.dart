@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lingafriq/widgets/learning_path/path_scene_art.dart';
 import 'package:lingafriq/widgets/learning_path/polie_path_mascot.dart';
@@ -116,16 +117,25 @@ void main() {
 
   group('PoliePathMascot', () {
     testWidgets('still frame when riv not present', (tester) async {
+      // `PoliePathStillFrame` now uses `.w`/`.h`/`.r`/`.sp` (ScreenUtil
+      // scaling, added so its dimensions stay consistent with the rest of
+      // the path screen instead of unscaled raw literals), which throws a
+      // `LateInitializationError` without a `ScreenUtilInit` ancestor to
+      // seed `ScreenUtil`'s singleton first.
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: PoliePathMascot(
-              mood: PoliePathMood.pointUp,
-              rivAssetPresent: false,
+        ScreenUtilInit(
+          designSize: const Size(390, 844),
+          builder: (_, __) => const MaterialApp(
+            home: Scaffold(
+              body: PoliePathMascot(
+                mood: PoliePathMood.pointUp,
+                rivAssetPresent: false,
+              ),
             ),
           ),
         ),
       );
+      await tester.pump();
       expect(find.text('pointUp'), findsOneWidget);
     });
   });

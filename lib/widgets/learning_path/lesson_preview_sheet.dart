@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/lessons/models/lesson_response.dart';
-import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/utils/modern_griot_design_system.dart';
 import 'package:lingafriq/widgets/learning_path/path_node_state.dart';
 
 const String kPathPreviewSheetKey = 'learn.f_007.preview';
@@ -63,12 +63,12 @@ class LessonPreviewSheet extends StatelessWidget {
         children: [
           Text(
             lesson.name.isNotEmpty ? lesson.name : 'Lesson',
-            style: PanAfricanTypography.titleLarge(context),
+            style: ModernGriotTypography.titleLarge(context: context),
           ),
           SizedBox(height: 12.h),
           Text(
             goal,
-            style: PanAfricanTypography.bodyLarge(context),
+            style: ModernGriotTypography.bodyLarge(context: context),
           ),
           SizedBox(height: 20.h),
           Row(
@@ -115,7 +115,7 @@ class _MetricChip extends StatelessWidget {
         children: [
           Icon(icon, size: 18.sp, color: cs.onSurfaceVariant),
           SizedBox(width: 6.w),
-          Text(label, style: PanAfricanTypography.labelLarge(context)),
+          Text(label, style: ModernGriotTypography.labelLarge(context: context)),
         ],
       ),
     );

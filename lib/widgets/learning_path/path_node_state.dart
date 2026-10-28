@@ -149,13 +149,17 @@ String pathNodeSemanticsLabel({
   required String title,
   required PathNodeVisualState state,
   required String reviewDueLabel,
+  int? totalLessons,
 }) {
   final stateText = switch (state) {
-    PathNodeVisualState.locked => 'Locked',
-    PathNodeVisualState.current => 'Current lesson',
+    PathNodeVisualState.locked => 'Locked. Finish the lesson before this one to unlock it',
+    PathNodeVisualState.current => 'Current lesson. Double tap to start',
     PathNodeVisualState.done => 'Completed',
     PathNodeVisualState.reviewDue => reviewDueLabel,
     PathNodeVisualState.skipped => 'Skipped ahead',
   };
-  return 'Lesson $nodeNumber: $title. $stateText.';
+  final position = totalLessons != null && totalLessons > 0
+      ? 'Lesson $nodeNumber of $totalLessons'
+      : 'Lesson $nodeNumber';
+  return '$position: $title. $stateText.';
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Polie moods from polie_path.riv / PolieVM (v3).
 enum PoliePathMood { idle, cheer, pointUp, sleepy }
@@ -53,7 +54,7 @@ class PoliePathMascot extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         behavior: HitTestBehavior.opaque,
-        child: SizedBox(width: 120, height: 140, child: child),
+        child: SizedBox(width: 120.w, height: 140.h, child: child),
       ),
     );
   }
@@ -78,26 +79,55 @@ class PoliePathStillFrame extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: cs.surfaceContainerHigh,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(24.r),
           border: Border.all(color: cs.outlineVariant.withValues(alpha: 0.4)),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(_moodIcon(mood), size: 48, color: cs.primary),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.labelMedium,
-            ),
-            Text(
-              poliePathMoodWireName(mood),
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: cs.onSurfaceVariant,
+        // This frame renders inside a fixed-size box (see
+        // `PoliePathMascot.build`'s `SizedBox(width: 120.w, height: 140.h)`),
+        // but `label`/the mood name scale with the OS text-scale setting.
+        // `maxLines`/`overflow` on the `Text`s below cap *wrapping*, not the
+        // font's own height, so at large text-scale factors (e.g. 2.0x) the
+        // Column's natural height still exceeds the fixed box. `FittedBox`
+        // scales the whole frame contents down uniformly to fit instead of
+        // overflowing, same remediation as the header's `GriotBadgePill`s.
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(_moodIcon(mood), size: 48.sp, color: cs.primary),
+              SizedBox(height: 8.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 6.w),
+                // `FittedBox` gives its child unbounded width to measure its
+                // natural size, which would otherwise render `label` as one
+                // un-wrapped line instead of respecting `maxLines: 2` below.
+                // Pinning a width here (matching the frame's own ~120.w
+                // minus horizontal padding) keeps the intended two-line wrap
+                // so `FittedBox` only has to scale down for genuine overflow
+                // (e.g. large text-scale factors), not reflow the text.
+                child: SizedBox(
+                  width: 108.w,
+                  child: Text(
+                    label,
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.labelMedium,
                   ),
-            ),
-          ],
+                ),
+              ),
+              Text(
+                poliePathMoodWireName(mood),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: cs.onSurfaceVariant,
+                    ),
+              ),
+            ],
+          ),
         ),
       ),
     );
