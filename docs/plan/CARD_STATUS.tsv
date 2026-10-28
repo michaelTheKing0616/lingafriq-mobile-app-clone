@@ -1018,7 +1018,7 @@ P8-930	Done	Word Forge Yoruba serial verbs (yoruba_serial_verbs.dart, grammar re
 P8-931	Done	Weekly Village Festival themes (`festival_theme_service.dart`, `festival.service.ts`)	P8/P8-931.yaml
 P8-932	Done	Mastery map from learner-model events (game_mastery_map_screen.dart, game_result archive)	P8/P8-932.yaml
 P8-933	Done	Circle co-op word goals (circle_goals.service.ts, circle_goal_screen.dart)	P8/P8-933.yaml
-P9-900	Draft	'Decide realtime stack: self-hosted Socket.IO+Redis vs managed'	P9/P9-900.yaml
+P9-900	Done	ADR-038 self-hosted Socket.IO+Redis vs Ably/Pusher/Stream (ADR-038-realtime-stack.md)	P9/P9-900.yaml
 P9-901	Draft	Scale sockets horizontally with Redis adapter and sticky sessions	P9/P9-901.yaml
 P9-902	Draft	Move presence to Redis TTL with scoped delivery	P9/P9-902.yaml
 P9-903	Draft	'Harden socket handshake: origins, token transport, single server'	P9/P9-903.yaml
