@@ -1063,7 +1063,7 @@ P9-941	Done	Content-free E2EE wake pushes; minor/age-unknown gate; local notify 
 P9-942	Draft	Add group calls for adult and approved-circle members	P9/P9-942.yaml
 P9-943	Done	Circles engine: caps, tribe migration, guardian/teacher adult join, /api/v2/circles (circles.service.ts, circles_screen.dart)	P9/P9-943.yaml
 P9-944	Done	Chat engine: voice notes, reactions/reply sync, read-receipt policy, minor moderation banner, WA menu (private_chat_screen.dart, wa_private_chat_service.dart, voice_note_recorder.dart)	P9/P9-944.yaml
-P9-945	Draft	Add Language Status, Tone Lens, tap-to-gloss and message check to chat	P9/P9-945.yaml
+P9-945	Done	Chat learning service + Tone Lens sheet + language status chips (chat_room_learning_service.dart)	P9/P9-945.yaml
 P9-946	Draft	Offer opt-in transcription of voice notes with gloss	P9/P9-946.yaml
 P9-947	Draft	Build Practice Rooms with host, topic, level and AI facilitator	P9/P9-947.yaml
 P9-948	Draft	Build Clips capture and post flow for 15 to 60 second video or audio	P9/P9-948.yaml
