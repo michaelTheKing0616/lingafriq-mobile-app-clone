@@ -237,14 +237,14 @@ class _PathNodeWidgetState extends ConsumerState<PathNodeWidget>
                             color: Theme.of(context).colorScheme.surface,
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: PathBrandColors.done,
+                              color: PathBrandColors.savedOk,
                               width: 1.5,
                             ),
                           ),
                           child: Icon(
                             Icons.check_rounded,
                             size: 12.sp,
-                            color: PathBrandColors.done,
+                            color: PathBrandColors.savedOk,
                           ),
                         ),
                       ),
@@ -368,7 +368,7 @@ class _PathNodeWidgetState extends ConsumerState<PathNodeWidget>
           widget.isCheckpoint
               ? Icons.emoji_events_rounded
               : Icons.check_rounded,
-          color: widget.isCheckpoint ? const Color(0xFF3A1500) : glyph,
+          color: const Color(0xFF3A1500),
           size: size * 0.48,
           semanticLabel: 'Completed',
         );

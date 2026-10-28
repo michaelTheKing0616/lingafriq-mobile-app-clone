@@ -25,6 +25,7 @@ class PathStickyHeader extends StatelessWidget {
     this.isOffline = false,
     this.welcomeBack = false,
     this.freezeAvailable = true,
+    this.reducedMotion = false,
   });
 
   final String languageName;
@@ -41,6 +42,7 @@ class PathStickyHeader extends StatelessWidget {
   final bool isOffline;
   final bool welcomeBack;
   final bool freezeAvailable;
+  final bool reducedMotion;
 
   @override
   Widget build(BuildContext context) {
@@ -118,16 +120,13 @@ class PathStickyHeader extends StatelessWidget {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(
-                                welcomeBack
-                                    ? Icons.ac_unit_rounded
-                                    : Icons.local_fire_department_rounded,
-                                size: 16.sp,
-                                color: welcomeBack
-                                    ? PathBrandColors.gold
-                                    : (streakCount > 0
-                                        ? PathBrandColors.coral
-                                        : cs.onSurfaceVariant),
+                              _StreakFlameIcon(
+                                welcomeBack: welcomeBack,
+                                streakCount: streakCount,
+                                reducedMotion: reducedMotion,
+                                idleColor: streakCount > 0
+                                    ? PathBrandColors.coral
+                                    : cs.onSurfaceVariant,
                               ),
                               SizedBox(width: 2.w),
                               Text(
@@ -306,16 +305,111 @@ class _StatChip extends StatelessWidget {
           borderRadius: BorderRadius.circular(999),
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              minHeight: 36.h,
-              minWidth: 36.w,
+              minHeight: PathLayout.minTapTarget.h,
+              minWidth: PathLayout.minTapTarget.w,
             ),
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-              child: child,
+              child: Align(
+                alignment: Alignment.center,
+                child: child,
+              ),
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Resting streak flicker (~2s). Reduce Motion keeps a static flame.
+class _StreakFlameIcon extends StatefulWidget {
+  const _StreakFlameIcon({
+    required this.welcomeBack,
+    required this.streakCount,
+    required this.reducedMotion,
+    required this.idleColor,
+  });
+
+  final bool welcomeBack;
+  final int streakCount;
+  final bool reducedMotion;
+  final Color idleColor;
+
+  @override
+  State<_StreakFlameIcon> createState() => _StreakFlameIconState();
+}
+
+class _StreakFlameIconState extends State<_StreakFlameIcon>
+    with SingleTickerProviderStateMixin {
+  AnimationController? _flicker;
+
+  @override
+  void initState() {
+    super.initState();
+    _sync();
+  }
+
+  @override
+  void didUpdateWidget(covariant _StreakFlameIcon oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.reducedMotion != widget.reducedMotion ||
+        oldWidget.welcomeBack != widget.welcomeBack ||
+        oldWidget.streakCount != widget.streakCount) {
+      _sync();
+    }
+  }
+
+  void _sync() {
+    final shouldFlicker = !widget.reducedMotion &&
+        !widget.welcomeBack &&
+        widget.streakCount > 0;
+    if (!shouldFlicker) {
+      _flicker?.dispose();
+      _flicker = null;
+      return;
+    }
+    _flicker ??= AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2000),
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _flicker?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.welcomeBack) {
+      return Icon(
+        Icons.ac_unit_rounded,
+        size: 16.sp,
+        color: PathBrandColors.gold,
+      );
+    }
+    final icon = Icon(
+      Icons.local_fire_department_rounded,
+      size: 16.sp,
+      color: widget.idleColor,
+    );
+    final controller = _flicker;
+    if (controller == null) return icon;
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (context, child) {
+        final t = controller.value;
+        return Transform.scale(
+          scale: 0.92 + (t * 0.16),
+          child: Opacity(
+            opacity: 0.82 + (t * 0.18),
+            child: child,
+          ),
+        );
+      },
+      child: icon,
     );
   }
 }

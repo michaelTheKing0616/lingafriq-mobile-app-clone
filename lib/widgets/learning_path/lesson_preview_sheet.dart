@@ -16,6 +16,8 @@ class LessonPreviewSheet extends StatelessWidget {
     required this.xpReward,
     required this.isReview,
     required this.onPrimaryAction,
+    this.lessonNumber,
+    this.totalLessons,
   });
 
   final Lesson lesson;
@@ -24,6 +26,8 @@ class LessonPreviewSheet extends StatelessWidget {
   final int xpReward;
   final bool isReview;
   final VoidCallback onPrimaryAction;
+  final int? lessonNumber;
+  final int? totalLessons;
 
   static Future<void> show(
     BuildContext context, {
@@ -33,6 +37,8 @@ class LessonPreviewSheet extends StatelessWidget {
     required int xpReward,
     required bool isReview,
     required VoidCallback onPrimaryAction,
+    int? lessonNumber,
+    int? totalLessons,
   }) {
     return showModalBottomSheet<void>(
       context: context,
@@ -44,6 +50,8 @@ class LessonPreviewSheet extends StatelessWidget {
         estimatedMinutes: estimatedMinutes,
         xpReward: xpReward,
         isReview: isReview,
+        lessonNumber: lessonNumber,
+        totalLessons: totalLessons,
         onPrimaryAction: () {
           Navigator.of(ctx).pop();
           onPrimaryAction();
@@ -55,12 +63,27 @@ class LessonPreviewSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final primaryLabel = isReview ? 'Review' : 'Start';
+    final progressLabel = (lessonNumber != null &&
+            totalLessons != null &&
+            totalLessons! > 0)
+        ? 'Lesson $lessonNumber of $totalLessons'
+        : null;
     return Padding(
       padding: EdgeInsets.fromLTRB(24.w, 8.h, 24.w, 24.h + MediaQuery.paddingOf(context).bottom),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          if (progressLabel != null) ...[
+            Text(
+              progressLabel,
+              style: ModernGriotTypography.labelLarge(context: context).copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            SizedBox(height: 6.h),
+          ],
           Text(
             lesson.name.isNotEmpty ? lesson.name : 'Lesson',
             style: ModernGriotTypography.titleLarge(context: context),

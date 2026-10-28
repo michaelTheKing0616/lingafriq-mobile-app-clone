@@ -16,6 +16,7 @@ class PathCheckpointCard extends StatelessWidget {
     required this.nodeNumber,
     required this.state,
     required this.onTap,
+    this.unitOrdinal = 0,
     this.savedOffline = false,
   });
 
@@ -23,6 +24,7 @@ class PathCheckpointCard extends StatelessWidget {
   final int nodeNumber;
   final PathNodeVisualState state;
   final VoidCallback? onTap;
+  final int unitOrdinal;
   final bool savedOffline;
 
   @override
@@ -32,12 +34,17 @@ class PathCheckpointCard extends StatelessWidget {
         state == PathNodeVisualState.reviewDue;
     final current = state == PathNodeVisualState.current;
     final cs = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final place = PathLayout.placeThemeForUnit(unitOrdinal);
+    final wash = pathPlaceWashColor(place, isDark: isDark);
+    final ribbon = pathUnitRibbonColor(unitOrdinal);
 
     final bg = locked
         ? PathBrandColors.locked.withValues(alpha: 0.55)
-        : (done
-            ? PathBrandColors.gold.withValues(alpha: 0.28)
-            : PathBrandColors.parchment);
+        : Color.alphaBlend(
+            PathBrandColors.gold.withValues(alpha: done ? 0.35 : 0.18),
+            wash,
+          );
     final border = locked
         ? PathBrandColors.lockedLip
         : (current ? PathBrandColors.coral : PathBrandColors.gold);
@@ -63,7 +70,7 @@ class PathCheckpointCard extends StatelessWidget {
                     onTap?.call();
                   },
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+              padding: EdgeInsets.fromLTRB(10.w, 12.h, 14.w, 12.h),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(18.r),
                 border: Border.all(color: border, width: current ? 2.5 : 1.5),
@@ -71,10 +78,19 @@ class PathCheckpointCard extends StatelessWidget {
               child: Row(
                 children: [
                   Container(
+                    width: 6.w,
+                    height: 48.h,
+                    decoration: BoxDecoration(
+                      color: ribbon,
+                      borderRadius: BorderRadius.circular(999),
+                    ),
+                  ),
+                  SizedBox(width: 10.w),
+                  Container(
                     width: 48.w,
                     height: 48.w,
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle,
+                      borderRadius: BorderRadius.circular(14.r),
                       color: locked
                           ? PathBrandColors.lockedLip
                           : (done
@@ -95,8 +111,8 @@ class PathCheckpointCard extends StatelessWidget {
                       locked
                           ? Icons.lock_rounded
                           : (done
-                              ? Icons.flag_rounded
-                              : Icons.flag_circle_rounded),
+                              ? Icons.workspace_premium_rounded
+                              : Icons.flag_rounded),
                       color: locked
                           ? PathBrandColors.lockedLabel
                           : (done ? const Color(0xFF3A1500) : Colors.white),
@@ -109,7 +125,9 @@ class PathCheckpointCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Checkpoint',
+                          '${pathPlaceThemeLabel(place)} gate · $lessonTitle',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: ModernGriotTypography.titleSmall(
                             context: context,
                           ).copyWith(
@@ -124,7 +142,7 @@ class PathCheckpointCard extends StatelessWidget {
                           locked
                               ? 'Finish earlier lessons to unlock this gate.'
                               : (done
-                                  ? 'Skills checked — keep journeying.'
+                                  ? 'Skills checked. Keep journeying.'
                                   : 'Test your skills to open the next stretch.'),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -145,7 +163,7 @@ class PathCheckpointCard extends StatelessWidget {
                       child: Icon(
                         Icons.check_circle_rounded,
                         size: 18.sp,
-                        color: PathBrandColors.done,
+                        color: PathBrandColors.savedOk,
                       ),
                     ),
                 ],

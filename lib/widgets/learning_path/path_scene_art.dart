@@ -378,16 +378,15 @@ class _SceneryClayIsland extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final label = artboard.replaceAll('_', ' ');
     return Opacity(
       opacity: reducedMotion ? 0.92 : 1.0,
       child: Center(
         child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          width: 56,
+          height: 56,
           decoration: BoxDecoration(
             color: const Color(0xFFE8D9C0),
-            borderRadius: BorderRadius.circular(28),
+            shape: BoxShape.circle,
             boxShadow: const [
               BoxShadow(
                 color: Color(0x332A1C0A),
@@ -395,26 +394,9 @@ class _SceneryClayIsland extends StatelessWidget {
                 offset: Offset(0, 4),
               ),
             ],
-            border: Border.all(color: const Color(0xFFC7B79C), width: 2),
+            border: Border.all(color: const Color(0xFFC7B79C), width: 2.5),
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(_icon, color: const Color(0xFF7B5733), size: 28),
-              const SizedBox(width: 10),
-              Flexible(
-                child: Text(
-                  label,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: const Color(0xFF5C4A32),
-                        fontWeight: FontWeight.w700,
-                      ),
-                ),
-              ),
-            ],
-          ),
+          child: Icon(_icon, color: const Color(0xFF7B5733), size: 28),
         ),
       ),
     );

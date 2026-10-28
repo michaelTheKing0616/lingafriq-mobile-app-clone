@@ -163,7 +163,7 @@ mobile	lib/screens/language/search_languages_page.dart	todo
 mobile	lib/screens/learn/lesson_session_screen.dart	todo			
 mobile	lib/screens/learning/dialect_preference_screen.dart	todo			
 mobile	lib/screens/learning/heritage_milestones_screen.dart	todo			
-mobile	lib/screens/learning/learning_path_screen.dart	passed	9/9/9/9/9/9/9/9/9/9 avg9.0	Mimo+CandyCrush+Busuu+Finch	2026-10-28
+mobile	lib/screens/learning/learning_path_screen.dart	below-bar	9/9/9/8/9/9/9/9/8/8 avg8.7	Mimo+CandyCrush+Busuu+Finch	2026-10-28
 mobile	lib/screens/learning/lesson_recap_screen.dart	todo			
 mobile	lib/screens/learning/phrase_dna/phrase_dna_session_screen.dart	todo			
 mobile	lib/screens/learning/phrase_dna/phrase_dna_templates_screen.dart	todo			

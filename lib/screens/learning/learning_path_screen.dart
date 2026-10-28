@@ -46,8 +46,6 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
   double _scrollPixels = 0;
   int _stickyUnitOrdinal = 0;
 
-  static const double _kPathMascotClearanceBottomPadding = 100;
-
   @override
   void initState() {
     super.initState();
@@ -111,6 +109,8 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
     required Lesson lesson,
     required PathNodeVisualState state,
     required VoidCallback onStart,
+    int? lessonIndex,
+    int? totalLessons,
   }) {
     LessonPreviewSheet.show(
       context,
@@ -119,6 +119,8 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
       estimatedMinutes: estimatePathLessonMinutes(lesson),
       xpReward: estimatePathLessonXp(lesson),
       isReview: pathLessonIsReview(state),
+      lessonNumber: lessonIndex == null ? null : lessonIndex + 1,
+      totalLessons: totalLessons,
       onPrimaryAction: onStart,
     );
   }
@@ -264,239 +266,218 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
         return GriotScaffold(
           backgroundColor: parchment,
           body: SafeArea(
-            child: Stack(
+            child: Column(
               children: [
-                Column(
-                  children: [
-                    PathStickyHeader(
-                      languageName: widget.language.name,
-                      streakCount: gamification.dailyStreak,
-                      cowriesCount: gamification.cowries,
-                      scrollPixels: _scrollPixels,
-                      isOffline: snapshot.source == PathLessonSource.drift,
-                      welcomeBack: welcomeBack,
-                      listViewActive: _listView,
-                      onBack: () => Navigator.maybePop(context),
-                      onLanguageTap: () {
-                        HapticFeedback.selectionClick();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'Studying ${widget.language.name}',
-                            ),
-                          ),
-                        );
-                      },
-                      onStreakTap: () {
-                        HapticFeedback.selectionClick();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              welcomeBack
-                                  ? 'Welcome back — your freeze is ready. No shame, just the next step.'
-                                  : 'Streak: ${gamification.dailyStreak} day${gamification.dailyStreak == 1 ? '' : 's'}',
-                            ),
-                          ),
-                        );
-                      },
-                      onCowriesTap: () {
-                        HapticFeedback.selectionClick();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              '${gamification.cowries} cowries',
-                            ),
-                          ),
-                        );
-                      },
-                      onToggleListView: () {
-                        HapticFeedback.selectionClick();
-                        setState(() => _listView = !_listView);
-                      },
-                      onDialectTap: () async {
-                        HapticFeedback.lightImpact();
-                        await showModalBottomSheet<bool>(
-                          context: context,
-                          isScrollControlled: true,
-                          builder: (_) => DialectVariantPicker(
-                            umbrellaLanguage:
-                                widget.language.name.toLowerCase(),
-                          ),
-                        );
-                      },
-                    ),
-                    if (stickyBanner != null)
-                      PathStickyUnitBanner(
-                        unitName: stickyBanner.unitName,
-                        cefrLevel: stickyBanner.cefrLevel,
-                        canDoStatement: stickyBanner.canDoStatement,
-                        unitOrdinal: _stickyUnitOrdinal,
-                        completedInUnit: unitProgress.completed,
-                        totalInUnit: unitProgress.total,
-                        reducedMotion: reducedMotion,
-                        locked: active != null &&
-                            stickyBanner.firstLessonIndex > active,
-                        onGuideTap: () => _showUnitGuide(context, stickyBanner),
-                      ),
-                    if (welcomeBack)
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 8.h),
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: PathBrandColors.gold.withValues(alpha: 0.22),
-                            borderRadius: BorderRadius.circular(14.r),
-                            border: Border.all(
-                              color: PathBrandColors.gold.withValues(alpha: 0.55),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 12.w,
-                              vertical: 8.h,
-                            ),
-                            child: Text(
-                              'Welcome back — freeze ok. Pick up kindly where you left off.',
-                              style: ModernGriotTypography.bodySmall(
-                                context: context,
-                              ).copyWith(
-                                color: isDark
-                                    ? PathBrandColors.parchment
-                                    : const Color(0xFF5C3A12),
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
+                PathStickyHeader(
+                  languageName: widget.language.name,
+                  streakCount: gamification.dailyStreak,
+                  cowriesCount: gamification.cowries,
+                  scrollPixels: _scrollPixels,
+                  isOffline: snapshot.source == PathLessonSource.drift,
+                  welcomeBack: welcomeBack,
+                  listViewActive: _listView,
+                  reducedMotion: reducedMotion,
+                  onBack: () => Navigator.maybePop(context),
+                  onLanguageTap: () {
+                    HapticFeedback.selectionClick();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Studying ${widget.language.name}',
                         ),
                       ),
-                    Expanded(
-                      child: _listView
-                          ? _buildListAlternate(
-                              context,
-                              lessons: lessons,
-                              studyKey: studyKey,
-                              active: active,
-                              reducedMotion: reducedMotion,
-                              isOffline:
-                                  snapshot.source == PathLessonSource.drift,
-                            )
-                          : ListView.builder(
-                              controller: _scrollController,
-                              reverse: true,
-                              padding: EdgeInsets.only(
-                                bottom: _kPathMascotClearanceBottomPadding.h,
-                                top: 8.h,
-                              ),
-                              itemCount: items.length,
-                              itemBuilder: (context, index) {
-                                final item = items[index];
-                                if (item is PathScrollBannerItem) {
-                                  final b = item.banner;
-                                  final ordinal =
-                                      bannerOrdinalByItemIndex[index] ?? 0;
-                                  final dimmed = pathSceneDimmedForLesson(
-                                    lessonIndex: b.firstLessonIndex,
-                                    activeLessonIndex: active,
-                                  );
-                                  final progress = _unitProgress(
-                                    items: items,
-                                    lessons: lessons,
-                                    unitOrdinal: ordinal,
-                                  );
-                                  return PathSectionBanner(
-                                    unitName: b.unitName,
-                                    cefrLevel: b.cefrLevel,
-                                    canDoStatement: b.canDoStatement,
-                                    unitOrdinal: ordinal,
-                                    completedInUnit: progress.completed,
-                                    totalInUnit: progress.total,
-                                    showSceneArt: !lowEndStatic,
-                                    languageKey: studyKey,
-                                    unitIndex: ordinal,
-                                    sceneDimmed: dimmed,
-                                    reducedMotion:
-                                        reducedMotion || lowEndStatic,
-                                    parallaxOffset: _scrollPixels,
-                                    onGuideTap: () =>
-                                        _showUnitGuide(context, b),
-                                  );
-                                }
-                                final node = item as PathScrollNodeItem;
-                                final i = node.lessonIndex;
-                                final lesson = node.lesson;
-                                final seqUnlocked =
-                                    _sectionUnlocked(i, lessons);
-                                final progress = PathLessonProgress(
-                                  lessonId: lesson.id.toString(),
-                                  title: lesson.name,
-                                  index: i,
-                                  isCompleted: _sectionCompleted(lesson),
-                                );
-                                final state = resolvePathNodeState(
-                                  lesson: progress,
-                                  activeIndex: active,
-                                  pacing: const PathPacingOverlay(),
-                                  sequentiallyUnlocked: seqUnlocked,
-                                );
-                                final unitOrd =
-                                    _unitOrdinalForLesson(items, i);
-                                return PathJourneyNodeRow(
-                                  lesson: lesson,
-                                  lessonIndex: i,
-                                  state: state,
-                                  unitOrdinal: unitOrd,
-                                  languageKey: studyKey,
-                                  reducedMotion: reducedMotion,
-                                  lowEndStatic: lowEndStatic,
-                                  isRtl: isRtl,
-                                  savedOffline: snapshot.source ==
-                                      PathLessonSource.drift,
-                                  totalLessons: lessons.length,
-                                  parallaxScroll: _scrollPixels,
-                                  showSideScenery: i % 2 == 0,
-                                  polieMood: mascotMood,
-                                  onTap: state == PathNodeVisualState.locked
-                                      ? null
-                                      : () {
-                                          _openPreview(
-                                            context,
-                                            lesson: lesson,
-                                            state: state,
-                                            onStart: () {
-                                              LearningExperienceNavigation
-                                                  .openLessonSections(
-                                                context,
-                                                lesson: lesson,
-                                                studyLanguageKey: studyKey,
-                                              );
-                                            },
-                                          );
-                                        },
-                                );
-                              },
-                            ),
-                    ),
-                  ],
+                    );
+                  },
+                  onStreakTap: () {
+                    HapticFeedback.selectionClick();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          welcomeBack
+                              ? 'Welcome back. Your freeze is ready. No shame, just the next step.'
+                              : 'Streak: ${gamification.dailyStreak} day${gamification.dailyStreak == 1 ? '' : 's'}',
+                        ),
+                      ),
+                    );
+                  },
+                  onCowriesTap: () {
+                    HapticFeedback.selectionClick();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          '${gamification.cowries} cowries',
+                        ),
+                      ),
+                    );
+                  },
+                  onToggleListView: () {
+                    HapticFeedback.selectionClick();
+                    setState(() => _listView = !_listView);
+                  },
+                  onDialectTap: () async {
+                    HapticFeedback.lightImpact();
+                    await showModalBottomSheet<bool>(
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (_) => DialectVariantPicker(
+                        umbrellaLanguage:
+                            widget.language.name.toLowerCase(),
+                      ),
+                    );
+                  },
                 ),
-                if (!_listView)
-                  PositionedDirectional(
-                    bottom: 12.h,
-                    end: 10.w,
-                    child: SizedBox(
-                      width: 64.w,
-                      height: 76.h,
-                      child: FittedBox(
-                        fit: BoxFit.contain,
-                        child: PoliePathMascot(
-                          mood: mascotMood,
-                          reducedMotion: reducedMotion || lowEndStatic,
-                          rivAssetPresent: true,
-                          compact: true,
-                          onTap: () =>
-                              _showPolieEncouragement(context, mascotMood),
+                if (stickyBanner != null)
+                  PathStickyUnitBanner(
+                    unitName: stickyBanner.unitName,
+                    cefrLevel: stickyBanner.cefrLevel,
+                    canDoStatement: stickyBanner.canDoStatement,
+                    unitOrdinal: _stickyUnitOrdinal,
+                    completedInUnit: unitProgress.completed,
+                    totalInUnit: unitProgress.total,
+                    reducedMotion: reducedMotion,
+                    locked: active != null &&
+                        stickyBanner.firstLessonIndex > active,
+                    onGuideTap: () => _showUnitGuide(context, stickyBanner),
+                  ),
+                if (welcomeBack)
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 8.h),
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: PathBrandColors.gold.withValues(alpha: 0.22),
+                        borderRadius: BorderRadius.circular(14.r),
+                        border: Border.all(
+                          color: PathBrandColors.gold.withValues(alpha: 0.55),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12.w,
+                          vertical: 8.h,
+                        ),
+                        child: Text(
+                          'Welcome back. Your freeze is ready. Pick up where you left off.',
+                          style: ModernGriotTypography.bodySmall(
+                            context: context,
+                          ).copyWith(
+                            color: isDark
+                                ? PathBrandColors.parchment
+                                : const Color(0xFF5C3A12),
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),
                   ),
+                Expanded(
+                  child: _listView
+                      ? _buildListAlternate(
+                          context,
+                          lessons: lessons,
+                          studyKey: studyKey,
+                          active: active,
+                          reducedMotion: reducedMotion,
+                          isOffline:
+                              snapshot.source == PathLessonSource.drift,
+                        )
+                      : ListView.builder(
+                          controller: _scrollController,
+                          reverse: true,
+                          padding: EdgeInsets.only(
+                            bottom: 24.h,
+                            top: 8.h,
+                          ),
+                          itemCount: items.length,
+                          itemBuilder: (context, index) {
+                            final item = items[index];
+                            if (item is PathScrollBannerItem) {
+                              final b = item.banner;
+                              final ordinal =
+                                  bannerOrdinalByItemIndex[index] ?? 0;
+                              final dimmed = pathSceneDimmedForLesson(
+                                lessonIndex: b.firstLessonIndex,
+                                activeLessonIndex: active,
+                              );
+                              final progress = _unitProgress(
+                                items: items,
+                                lessons: lessons,
+                                unitOrdinal: ordinal,
+                              );
+                              return PathSectionBanner(
+                                unitName: b.unitName,
+                                cefrLevel: b.cefrLevel,
+                                canDoStatement: b.canDoStatement,
+                                unitOrdinal: ordinal,
+                                completedInUnit: progress.completed,
+                                totalInUnit: progress.total,
+                                showSceneArt: !lowEndStatic,
+                                languageKey: studyKey,
+                                unitIndex: ordinal,
+                                sceneDimmed: dimmed,
+                                reducedMotion:
+                                    reducedMotion || lowEndStatic,
+                                parallaxOffset: _scrollPixels,
+                                onGuideTap: () =>
+                                    _showUnitGuide(context, b),
+                              );
+                            }
+                            final node = item as PathScrollNodeItem;
+                            final i = node.lessonIndex;
+                            final lesson = node.lesson;
+                            final seqUnlocked =
+                                _sectionUnlocked(i, lessons);
+                            final progress = PathLessonProgress(
+                              lessonId: lesson.id.toString(),
+                              title: lesson.name,
+                              index: i,
+                              isCompleted: _sectionCompleted(lesson),
+                            );
+                            final state = resolvePathNodeState(
+                              lesson: progress,
+                              activeIndex: active,
+                              pacing: const PathPacingOverlay(),
+                              sequentiallyUnlocked: seqUnlocked,
+                            );
+                            final unitOrd =
+                                _unitOrdinalForLesson(items, i);
+                            return PathJourneyNodeRow(
+                              lesson: lesson,
+                              lessonIndex: i,
+                              state: state,
+                              unitOrdinal: unitOrd,
+                              languageKey: studyKey,
+                              reducedMotion: reducedMotion,
+                              lowEndStatic: lowEndStatic,
+                              isRtl: isRtl,
+                              savedOffline: snapshot.source ==
+                                  PathLessonSource.drift,
+                              totalLessons: lessons.length,
+                              parallaxScroll: _scrollPixels,
+                              showSideScenery: i % 2 == 0,
+                              polieMood: mascotMood,
+                              onTap: state == PathNodeVisualState.locked
+                                  ? null
+                                  : () {
+                                      _openPreview(
+                                        context,
+                                        lesson: lesson,
+                                        lessonIndex: i,
+                                        totalLessons: lessons.length,
+                                        state: state,
+                                        onStart: () {
+                                          LearningExperienceNavigation
+                                              .openLessonSections(
+                                            context,
+                                            lesson: lesson,
+                                            studyLanguageKey: studyKey,
+                                          );
+                                        },
+                                      );
+                                    },
+                            );
+                          },
+                        ),
+                ),
               ],
             ),
           ),
@@ -579,6 +560,8 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
                   : () => _openPreview(
                         context,
                         lesson: lesson,
+                        lessonIndex: i,
+                        totalLessons: lessons.length,
                         state: state,
                         onStart: () {
                           LearningExperienceNavigation.openLessonSections(
@@ -592,15 +575,17 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
                 child: Row(
                   children: [
-                    PathNodeWidget(
-                      lesson: lesson,
-                      state: state,
-                      index: i,
-                      size: 48,
-                      reducedMotion: true,
-                      savedOffline: isOffline,
-                      isCheckpoint: isCheckpoint,
-                      onTap: locked ? null : () {},
+                    ExcludeSemantics(
+                      child: PathNodeWidget(
+                        lesson: lesson,
+                        state: state,
+                        index: i,
+                        size: 48,
+                        reducedMotion: true,
+                        savedOffline: isOffline,
+                        isCheckpoint: isCheckpoint,
+                        onTap: null,
+                      ),
                     ),
                     SizedBox(width: 12.w),
                     Expanded(
@@ -660,7 +645,7 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
             Text(
               banner.canDoStatement.isNotEmpty
                   ? banner.canDoStatement
-                  : 'Explore the phrases and goals for this unit.',
+                  : 'Browse the phrases and goals for this unit.',
               style: ModernGriotTypography.bodyLarge(context: ctx),
             ),
             if (banner.cefrLevel.isNotEmpty) ...[
@@ -672,8 +657,20 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
             ],
             SizedBox(height: 20.h),
             FilledButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+                Navigator.of(context).push(
+                  SmoothPageRoute.platform(
+                    child: LessonsListScreen(language: widget.language),
+                  ),
+                );
+              },
+              child: const Text('Open phrase list'),
+            ),
+            SizedBox(height: 8.h),
+            TextButton(
               onPressed: () => Navigator.pop(ctx),
-              child: const Text('Got it'),
+              child: const Text('Close'),
             ),
           ],
         ),
@@ -727,22 +724,6 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
         ),
       ),
     );
-  }
-
-  void _showPolieEncouragement(BuildContext context, PoliePathMood mood) {
-    final message = switch (mood) {
-      PoliePathMood.pointUp =>
-        "Let's take the first step together — tap any unlocked stop to begin.",
-      PoliePathMood.cheer =>
-        "You've walked the whole path — I'm so proud of you!",
-      PoliePathMood.sleepy =>
-        'Welcome back — the path is still here when you are.',
-      PoliePathMood.idle => 'Keep going — every lesson gets you closer.',
-    };
-    HapticFeedback.selectionClick();
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text(message)));
   }
 
   Widget _emptyState(BuildContext context) {

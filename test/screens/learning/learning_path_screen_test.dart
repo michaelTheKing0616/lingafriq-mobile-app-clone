@@ -278,7 +278,8 @@ void main() {
       await settle(tester);
 
       expect(find.byType(PathCheckpointCard), findsOneWidget);
-      expect(find.text('Checkpoint'), findsOneWidget);
+      expect(find.textContaining('gate'), findsOneWidget);
+      expect(find.textContaining('Lesson 5'), findsWidgets);
     });
 
     testWidgets('sticky unit banner shows Unit N · Title pattern',

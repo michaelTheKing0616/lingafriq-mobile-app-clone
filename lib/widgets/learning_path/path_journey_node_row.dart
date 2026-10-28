@@ -48,13 +48,29 @@ class PathJourneyNodeRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isCheckpoint = PathLayout.isCheckpoint(lessonIndex);
+    final isCurrent = state == PathNodeVisualState.current;
     if (isCheckpoint) {
-      return PathCheckpointCard(
-        lessonTitle: lesson.name,
-        nodeNumber: lessonIndex + 1,
-        state: state,
-        savedOffline: savedOffline,
-        onTap: onTap,
+      return Stack(
+        clipBehavior: Clip.none,
+        children: [
+          PathCheckpointCard(
+            lessonTitle: lesson.name,
+            nodeNumber: lessonIndex + 1,
+            state: state,
+            unitOrdinal: unitOrdinal,
+            savedOffline: savedOffline,
+            onTap: onTap,
+          ),
+          if (isCurrent)
+            PositionedDirectional(
+              end: 10.w,
+              bottom: -6.h,
+              child: _BesidePolie(
+                mood: polieMood,
+                reducedMotion: reducedMotion || lowEndStatic,
+              ),
+            ),
+        ],
       );
     }
 
@@ -65,7 +81,6 @@ class PathJourneyNodeRow extends StatelessWidget {
     final rtlSign = isRtl ? -1.0 : 1.0;
     final traveled = state != PathNodeVisualState.locked;
     final place = PathLayout.placeThemeForUnit(unitOrdinal);
-    final isCurrent = state == PathNodeVisualState.current;
     final sceneryEnd = PathLayout.sceneryOnEndSide(lessonIndex);
 
     return SizedBox(
@@ -112,7 +127,7 @@ class PathJourneyNodeRow extends StatelessWidget {
               child: Transform.translate(
                 offset: Offset(
                   0,
-                  -parallaxScroll * PathLayout.sceneryParallax * 0.15,
+                  -parallaxScroll * PathLayout.sceneryParallax,
                 ),
                 child: SizedBox(
                   width: 72.w,
@@ -188,7 +203,7 @@ class _BesidePolie extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    final mascot = SizedBox(
       width: 56.w,
       height: 68.h,
       child: PoliePathMascot(
@@ -198,6 +213,21 @@ class _BesidePolie extends StatelessWidget {
         compact: true,
         polieLabel: 'Polie',
       ),
+    );
+    if (reducedMotion) return mascot;
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeOutCubic,
+      builder: (context, t, child) {
+        final arc = (1 - t) * 28.h;
+        final lift = (4 * t * (1 - t)) * 18.h;
+        return Transform.translate(
+          offset: Offset(arc * 0.35, arc - lift),
+          child: Opacity(opacity: t.clamp(0.0, 1.0), child: child),
+        );
+      },
+      child: mascot,
     );
   }
 }

@@ -10,8 +10,11 @@ abstract final class PathBrandColors {
   static const Color parchment = Color(0xFFF6EAD3);
   static const Color parchmentDark = Color(0xFF2A241C);
 
-  static const Color done = Color(0xFF5BC236);
-  static const Color doneLip = Color(0xFF3F9A22);
+  /// Recipe: done nodes are gold with a check (not Duo green).
+  static const Color done = Color(0xFFFFC53D);
+  static const Color doneLip = Color(0xFFD4A017);
+  /// Offline-saved tick — distinct from done-node gold.
+  static const Color savedOk = Color(0xFF5BC236);
   static const Color current = Color(0xFFFF9F1C);
   static const Color currentLip = Color(0xFFD9770A);
   static const Color reviewDue = Color(0xFF3DB2F0);
