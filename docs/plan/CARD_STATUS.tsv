@@ -1059,7 +1059,7 @@ P9-937	Done	ADR-039: MLS RFC 9420 (openmls 3.3.0, @wireapp/openmls-js 0.1.0); Si
 P9-938	Done	MLS delivery: ciphertext/commits only, key packages, MLS_COMMIT_INVALID (deliveryService.ts, keyPackages.ts)	P9/P9-938.yaml
 P9-939	Draft	Enable MLS E2EE for adult 1:1 and small-group chats by default	P9/P9-939.yaml
 P9-940	Done	E2EE on-device gloss/Tone Lens + per-message server assist consent (on_device_overlay_service.dart, server_assist_consent_sheet.dart)	P9/P9-940.yaml
-P9-941	Draft	Send content-free pushes for E2EE chats	P9/P9-941.yaml
+P9-941	Done	Content-free E2EE wake pushes; minor/age-unknown gate; local notify after sync (push.service.ts, data_push_handler.dart)	P9/P9-941.yaml
 P9-942	Draft	Add group calls for adult and approved-circle members	P9/P9-942.yaml
 P9-943	Done	Circles engine: caps, tribe migration, guardian/teacher adult join, /api/v2/circles (circles.service.ts, circles_screen.dart)	P9/P9-943.yaml
 P9-944	Done	Chat engine: voice notes, reactions/reply sync, read-receipt policy, minor moderation banner, WA menu (private_chat_screen.dart, wa_private_chat_service.dart, voice_note_recorder.dart)	P9/P9-944.yaml
