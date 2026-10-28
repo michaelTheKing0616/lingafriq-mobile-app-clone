@@ -441,7 +441,7 @@ P12-005	Done	Split polie_workspace into modules ≤500 lines (build_host mixins 
 P12-006	Done	Split ai_chat_provider_groq and api_provider (feature mixins ≤500 lines)	P12/P12-006.yaml
 P12-007	Done	Split game_provider into games mixins + barrel; boundary test (P12-007)	P12/P12-007.yaml
 P12-008	Done	Delete superseded duplicate screens; dead_screen_report.py (P12-008)	P12/P12-008.yaml
-P12-009	Draft	Enforce image and Rive asset budgets in CI	P12/P12-009.yaml
+P12-009	Done	Enforce image and Rive asset budgets in CI (asset_budget_check.py)	P12/P12-009.yaml
 P12-010	Draft	Enforce const widgets and list virtualisation lints	P12/P12-010.yaml
 P12-011	Draft	Remove rebuild storms from large Riverpod providers	P12/P12-011.yaml
 P12-012	Draft	Gate cold start under 2 s on Tecno/Infinix-class device	P12/P12-012.yaml

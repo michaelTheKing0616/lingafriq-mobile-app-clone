@@ -1,0 +1,22 @@
+{
+  "card": "P12-009",
+  "version": 1,
+  "comment": "Per-extension ceilings set from repo audit 2026-10-28; Rive character cap 300 KB per ELEVATION §13.6 / P11-047.",
+  "scan_roots": ["assets/images", "assets/rive"],
+  "rive_character_file_max_bytes": 307200,
+  "rive_character_basenames": ["lingafriq_cast.riv"],
+  "rive_default_max_bytes": 307200,
+  "no_extension_max_bytes": 16,
+  "extension_max_bytes": {
+    ".png": 2100000,
+    ".gif": 650000,
+    ".jpg": 500000,
+    ".jpeg": 500000,
+    ".webp": 500000,
+    ".svg": 200000,
+    ".html": 3900000,
+    ".json": 12000,
+    ".md": 32000
+  },
+  "path_overrides": {}
+}

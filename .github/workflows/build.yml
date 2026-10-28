@@ -74,6 +74,8 @@ jobs:
           python3 scripts/ci/claim_lint.py --baseline scripts/ci/lint_baseline.tsv
           python3 scripts/ci/dedupe_assets_check.py
           python3 scripts/ci/asset_audit.py
+          python3 scripts/ci/asset_budget_check.py --self-test
+          python3 scripts/ci/asset_budget_check.py
           chmod +x scripts/ci/apk_size_gate.sh
           bash scripts/ci/apk_size_gate.sh --self-test
           python3 test/ci/lint_fixtures_test.py
