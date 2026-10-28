@@ -169,6 +169,8 @@ Intron is set up and not connected. Do not put `INTRON_API_KEY` in the client.
 - UI-BELOW-BAR P8-928 UI 8/8/8/8/8/8/8/8/8/8 avg 8.0; reference: Babbel social register roleplay drills; gap: `greeting_gauntlet_screen.dart` ships core states, but no evidence that all required route states and reduced-motion behavior hit the >=9 bar.
 - UI-BELOW-BAR P8-927 UI 8/8/8/8/8/8/8/8/8/8 avg 8.0; reference: Duolingo script tracing minigame; gap: `script_sprint_screen.dart` works but lacks complete route-level proofs for loading/error/offline/locked/child-mode and RTL/text-scale.
 - UI-BELOW-BAR P12-005 UI 8/8/8/8/7/8/8/8/8/8 avg 7.9; reference: Notion AI workspace builder panes; gap: Polie workspace module split preserved behavior, but there is no independent evidence for complete state design and accessibility verification after the UI-surface refactor.
+- UI-BELOW-BAR P12-008 UI 8/8/8/8/7/8/8/8/8/8 avg 7.9; reference: Discord in-app consolidated chat hub; gap: removed duplicate chat routes improve consistency, but the merged chat surfaces still lack route-level proof for full loading/error/offline/locked/child-mode and reduced-motion states.
+- UI-BELOW-BAR P12-010 UI 8/8/8/8/7/8/8/8/8/8 avg 7.9; reference: Duolingo polished list-heavy game hubs; gap: const/list-virtualisation sweep touched many screens, yet there is no independent golden/state-matrix evidence that visual hierarchy, accessibility states, and reduced-motion behavior remain at 9+.
 - UI-RESCORE P8-932 UI 8/8/8/8/7/8/7/8/8/8 avg 7.8; reviewer fix shipped in `[P8-932] review fix: wire mastery map navigation from results` so the screen is now reachable from `GameMasteryResultsScreen`.
 
 ## Tope to switch on
