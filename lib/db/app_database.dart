@@ -4,6 +4,7 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 
 import 'migrations/local_sql.dart';
+import 'schema_version_policy.dart';
 import 'tables/knowledge_nodes.dart';
 
 /// A schema step failed. The surrounding transaction is rolled back and
@@ -43,6 +44,15 @@ class LingAfriqDatabase extends GeneratedDatabase {
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
+        beforeOpen: (details) async {
+          final stored = details.versionBefore;
+          if (stored != null && stored > schemaVersion) {
+            throw SchemaNewerThanAppException(
+              storedVersion: stored,
+              appVersion: schemaVersion,
+            );
+          }
+        },
         onCreate: (migrator) async {
           await transaction(() async {
             await applyMigrationStep(this, 1);
@@ -53,6 +63,12 @@ class LingAfriqDatabase extends GeneratedDatabase {
           });
         },
         onUpgrade: (migrator, from, to) async {
+          if (from > schemaVersion) {
+            throw SchemaNewerThanAppException(
+              storedVersion: from,
+              appVersion: schemaVersion,
+            );
+          }
           try {
             await transaction(() async {
               for (var version = from + 1; version <= to; version++) {
@@ -66,6 +82,9 @@ class LingAfriqDatabase extends GeneratedDatabase {
               }
             });
           } catch (error) {
+            if (error is SchemaNewerThanAppException) {
+              throw error;
+            }
             throw DriftMigrationFailure(
               fromVersion: from,
               toVersion: to,

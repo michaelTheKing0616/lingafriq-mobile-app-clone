@@ -452,7 +452,7 @@ P12-016	Done	Staged rollout gate + staged-rollout.yml (rollout_gate.py, release/
 P12-017	Done	Rollback drill at 10% gate failure (rollback_drill.py, rollback-drill.yml)	P12/P12-017.yaml
 P12-018	Done	Quarterly Mongo PIT restore drill (mongo_pit_restore_drill.py, mongo-pit-restore-drill.yml)	P12/P12-018.yaml
 P12-019	Done	Chaos/offline resilience: fault injector, harness, AC1–AC4 tests	P12/P12-019.yaml
-P12-020	Draft	Rehearse schema-versioned local migrations drill	P12/P12-020.yaml
+P12-020	Done	Rehearse schema-versioned local migrations drill (local_migration_drill_harness.dart, local_migration_drill.py)	P12/P12-020.yaml
 P12-021	Draft	Conduct accessibility audit with disabled users	P12/P12-021.yaml
 P12-022	Draft	Complete release-readiness checklist and generated status	P12/P12-022.yaml
 P13-001	Draft	Create later-wave language admission template	P13/P13-001.yaml

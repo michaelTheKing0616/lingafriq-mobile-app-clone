@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import '../../db/app_database.dart';
+import '../../db/schema_version_policy.dart';
 import '../../models/offline/local_lesson.dart';
 import '../../models/offline/local_vocabulary.dart';
 import '../../models/offline/local_progress.dart';
@@ -116,6 +117,14 @@ class LocalDatabaseService {
     }
     try {
       await db.customSelect('SELECT 1').get();
+    } on SchemaNewerThanAppException catch (error) {
+      await db.close();
+      throw SchemaMigrationFailure(
+        code: 'schema_newer_than_app',
+        fromVersion: error.storedVersion,
+        toVersion: error.appVersion,
+        cause: error,
+      );
     } on DriftMigrationFailure catch (error) {
       await db.close();
       throw SchemaMigrationFailure(
@@ -230,6 +239,17 @@ class LocalDatabaseService {
   Future<void> _migrateSchemaIfNeeded() async {
     final metadata = _metadataBox;
     if (metadata == null) return;
+    final stored = metadata.get('schemaVersion') as int? ?? 0;
+    if (stored > _schemaVersion) {
+      throw SchemaMigrationFailure(
+        code: 'schema_newer_than_app',
+        fromVersion: stored,
+        toVersion: _schemaVersion,
+        cause: StateError(
+          'local Hive metadata was written by a newer app ($stored > $_schemaVersion)',
+        ),
+      );
+    }
     final store = _HiveSchemaStore(metadata, _vocabularyBox);
     await LocalSchemaMigrator(
       targetVersion: _schemaVersion,
