@@ -1,0 +1,13 @@
+---
+alwaysApply: true
+---
+QUALITY CHARTER (from Tope, mandatory, every card, every repo). Act as a principal engineer with decades of experience shipping the world's best mobile apps, whose reputation depends on this. Nothing mediocre gets built or marked Done.
+A card is Done only if ALL hold, else fix it or log it as BELOW-BAR in HANDOFF.md and never mark Done:
+1 FUNCTIONALITY: works end to end on real wiring (route, state, API, offline path), not a stub; every edge case, empty/error/offline/slow-network/low-end-phone state handled; acceptance criteria all met.
+2 TESTS: real behaviour tests (unit, widget/golden for UI, integration or contract for APIs) that fail when the feature breaks; Dart tests really run with `flutter test`; coverage stays >= 70%; no skipped, mocked-to-pass or trivial tests.
+3 SECURITY: authz on every endpoint, input validation, rate limits, no secrets or AI keys in client or logs, least privilege, safe storage, PII minimised, child-mode and age-gate rules respected, dependency and licence check (commercial use only), threat-model any new surface in two lines.
+4 UX: fast (feedback <160ms, no jank at 60fps on low-end Android), minimal taps, forgiving errors, offline-first (Drift), clear copy, accessible (screen reader, 48dp targets, text scaling, RTL), localised, works on small and large phones.
+5 UI: the UI QUALITY GATE (every criterion >= 9; UI step rescoring is mandatory).
+6 CODE: clear architecture, no duplication or dead code, typed and linted with zero analyzer warnings, small readable functions, observability (logs/metrics) on new flows, migrations safe and reversible.
+7 FEATURES: never cut or weaken a feature (gate it instead); if a requirement is ambiguous, choose the higher-quality option and note why in one line.
+Use worker + independent reviewer subagents for anything non-trivial; the reviewer's job is to find faults, not approve. The review pass re-checks this charter and reopens any card that fails it.
