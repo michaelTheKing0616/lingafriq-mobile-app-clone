@@ -70,7 +70,7 @@ void main() {
           home: Consumer(
             builder: (context, ref, _) {
               ref.watch(_testCowriesSlice);
-              return _RebuildCounter(child: const SizedBox());
+              return const _RebuildCounter(child: SizedBox());
             },
           ),
         ),
@@ -101,7 +101,7 @@ void main() {
           home: Consumer(
             builder: (context, ref, _) {
               ref.watch(_testStreakSlice);
-              return _RebuildCounter(child: const SizedBox());
+              return const _RebuildCounter(child: SizedBox());
             },
           ),
         ),

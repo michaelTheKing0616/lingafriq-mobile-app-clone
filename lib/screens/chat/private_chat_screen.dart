@@ -1089,5 +1089,9 @@ class _ChatMessage {
     required this.isRead,
     this.isFromPolie = false,
     this.sortMs = 0,
-  }) : translation = null : vocabWord : vocabPronunciation : vocabMeaning;
+    this.translation,
+    this.vocabWord,
+    this.vocabPronunciation,
+    this.vocabMeaning,
+  });
 }

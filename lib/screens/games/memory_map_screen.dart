@@ -410,5 +410,6 @@ class _MemoryTile {
     required this.pairId,
     required this.isForeign,
     required this.cardId,
-  }) : isFlipped = false : isMatched = false;
+  })  : isFlipped = false,
+        isMatched = false;
 }

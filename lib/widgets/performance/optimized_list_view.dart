@@ -36,7 +36,7 @@ class OptimizedListView extends StatelessWidget {
     if (itemExtent != null) {
       // Use ListView.builder with itemExtent for better performance
       return ListView.builder(
-        scrollCacheExtent: ScrollCacheExtent.pixels(cacheExtent), itemCount: itemCount,
+        cacheExtent: cacheExtent, itemCount: itemCount,
         itemBuilder: itemBuilder,
         padding: padding,
         controller: controller,
@@ -47,7 +47,7 @@ class OptimizedListView extends StatelessWidget {
     } else {
       // Use regular ListView.builder
       return ListView.builder(
-        scrollCacheExtent: ScrollCacheExtent.pixels(cacheExtent), itemCount: itemCount,
+        cacheExtent: cacheExtent, itemCount: itemCount,
         itemBuilder: itemBuilder,
         padding: padding,
         controller: controller,
@@ -142,7 +142,7 @@ class _OptimizedListViewHorizontal extends StatelessWidget {
   Widget build(BuildContext context) {
     if (itemExtent != null) {
       return ListView.builder(
-        scrollCacheExtent: ScrollCacheExtent.pixels(cacheExtent), scrollDirection: Axis.horizontal,
+        cacheExtent: cacheExtent, scrollDirection: Axis.horizontal,
         itemCount: itemCount,
         itemBuilder: itemBuilder,
         padding: padding,
@@ -153,7 +153,7 @@ class _OptimizedListViewHorizontal extends StatelessWidget {
       );
     } else {
       return ListView.builder(
-        scrollCacheExtent: ScrollCacheExtent.pixels(cacheExtent), scrollDirection: Axis.horizontal,
+        cacheExtent: cacheExtent, scrollDirection: Axis.horizontal,
         itemCount: itemCount,
         itemBuilder: itemBuilder,
         padding: padding,
@@ -229,7 +229,7 @@ class OptimizedListViewWithSeparators extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      scrollCacheExtent: ScrollCacheExtent.pixels(250.0), itemCount: itemCount,
+      cacheExtent: 250.0, itemCount: itemCount,
       itemBuilder: itemBuilder,
       separatorBuilder: separatorBuilder,
       padding: padding,
