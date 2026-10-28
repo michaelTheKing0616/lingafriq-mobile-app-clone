@@ -458,7 +458,7 @@ P12-022	Done	Release readiness from CI evidence only (release_readiness_checklis
 P13-001	Done	Later-wave admission YAML template + validator (later_wave_admission.py)	P13/P13-001.yaml
 P13-002	Done	Lanfrica discovery worksheet + FSI/Peace Corps cross-check (lanfrica_discovery.py)	P13/P13-002.yaml
 P13-003	Done	Block later-wave languages beyond L0 without a lexicon (lexicon_gate.py)	P13/P13-003.yaml
-P13-004	Draft	Decide moonshot start gate respecting new-breadth stop	P13/P13-004.yaml
+P13-004	Done	ADR-037 moonshot start gate + rm_stop_01 evidence (moonshot_start_gate.py)	P13/P13-004.yaml
 P13-005	Draft	Design Living Archive path to 95+ languages	P13/P13-005.yaml
 P13-006	Draft	Design open tone corpus and on-device tone model	P13/P13-006.yaml
 P13-007	Draft	Design Grandma Mode family dialect recordings	P13/P13-007.yaml

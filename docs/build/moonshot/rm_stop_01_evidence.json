@@ -1,0 +1,25 @@
+{
+  "charter": "v2",
+  "req_id": "RM-STOP-01",
+  "sign_off_owner": "Tope",
+  "evidence_location": "docs/build/moonshot/rm_stop_01_evidence.json",
+  "tope_signed_off": false,
+  "signed_off_at": null,
+  "feature_cards_total": 151,
+  "feature_cards_done": 0,
+  "feature_cards_unreachable": 33,
+  "rm_stop_01_satisfied": false,
+  "refreshed_at": "2026-10-28T02:07:36+00:00",
+  "refusal_log": [
+    {
+      "at": "2026-10-28T02:07:37+00:00",
+      "card_id": "P13-005",
+      "target_status": "Ready",
+      "reasons": [
+        "FEATURES_NOT_DONE_0_OF_151",
+        "FEATURES_UNREACHABLE_33",
+        "TOPE_SIGN_OFF_PENDING"
+      ]
+    }
+  ]
+}
