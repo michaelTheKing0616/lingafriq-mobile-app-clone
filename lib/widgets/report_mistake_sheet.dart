@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:lingafriq/screens/safety/community_guidelines_screen.dart';
 import 'package:lingafriq/utils/api_service.dart';
 
 /// POST `/api/v2/content-flags` (P5-012).
@@ -227,6 +228,17 @@ class _ReportMistakeSheetState extends State<ReportMistakeSheet> {
               ],
             ),
           ),
+          if (_selected != null)
+            Builder(
+              builder: (context) {
+                final clauseId =
+                    CommunityGuidelinesCatalog.contentFlagClauseId(_selected!.apiValue);
+                if (clauseId == null) {
+                  return const SizedBox.shrink();
+                }
+                return CommunityGuidelinesRuleLink(clauseId: clauseId);
+              },
+            ),
           const SizedBox(height: 16),
           Semantics(
             button: true,

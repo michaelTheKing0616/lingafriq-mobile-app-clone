@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/screens/safety/community_guidelines_screen.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 
 /// Copy keys from P1-024: report.title, report.reasons, block.confirm.
@@ -136,6 +137,15 @@ class _ReportBlockSheetState extends State<ReportBlockSheet> {
                         ),
                     ],
                   ),
+                ),
+                Builder(
+                  builder: (context) {
+                    final clauseId = CommunityGuidelinesCatalog.socialReportClauseId(_reason);
+                    if (clauseId == null) {
+                      return const SizedBox.shrink();
+                    }
+                    return CommunityGuidelinesRuleLink(clauseId: clauseId);
+                  },
                 ),
                 const SizedBox(height: 8),
                 FilledButton(
