@@ -1,0 +1,33 @@
+{
+  "p95_limit_ms": 300,
+  "concurrency": 12,
+  "duration_seconds": 30,
+  "warmup_seconds": 5,
+  "routes": [
+    {
+      "id": "healthcheck",
+      "method": "GET",
+      "path": "/healthcheck"
+    },
+    {
+      "id": "health_ready",
+      "method": "GET",
+      "path": "/health/ready"
+    },
+    {
+      "id": "health_live",
+      "method": "GET",
+      "path": "/health/live"
+    },
+    {
+      "id": "languages",
+      "method": "GET",
+      "path": "/language"
+    },
+    {
+      "id": "milestone_definitions",
+      "method": "GET",
+      "path": "/api/gamification/milestones/definitions"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+# charter: v2
+# P12-014+: API read load tests (self-test in CI; staging via workflow_dispatch).
+name: Load test
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/loadtest/**'
+      - '.github/workflows/loadtest.yml'
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: Staging API base URL (must not be production)
+        required: true
+        type: string
+
+jobs:
+  loadtest-self-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+
+      - name: API read p95 self-test
+        run: node scripts/loadtest/api_read_p95.js --self-test
+
+  loadtest-staging-read:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    needs: loadtest-self-test
+    steps:
+      - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+
+      - name: Run read load profile on staging
+        env:
+          LOADTEST_BASE_URL: ${{ github.event.inputs.base_url }}
+          LOADTEST_BEARER_TOKEN: ${{ secrets.LOADTEST_BEARER_TOKEN }}
+          LOADTEST_RESULTS_PATH: build/loadtest/api_read_p95.json
+        run: node scripts/loadtest/api_read_p95.js
+
+      - name: Upload loadtest report
+        if: always()
+        uses: actions/upload-artifact@50769540e7f4bd0814dae7ce8ddf424b8d5067fa # v4
+        with:
+          name: api-read-p95
+          path: build/loadtest/api_read_p95.json
