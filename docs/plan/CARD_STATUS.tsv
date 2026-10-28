@@ -1033,7 +1033,7 @@ P9-911	Done	Hard-delete expiring media; sealed moderation hold; migration count 
 P9-912	Done	Assess age at sign-up and enforce age tiers (ageAssurance.service.ts, age_gate_screen.dart)	P9/P9-912.yaml
 P9-913	Done	Link guardian accounts and collect verifiable consent (guardianLink.service.ts, guardian screens)	P9/P9-913.yaml
 P9-914	Done	Guardian group join approvals (guardianApproval.service.ts, approvals_screen.dart, P9-914 tests)	P9/P9-914.yaml
-P9-915	Draft	Offer guardian time limits and child progress view	P9/P9-915.yaml
+P9-915	Done	Guardian daily limits + child progress (guardianLimits.service.ts, limits_progress_screen.dart)	P9/P9-915.yaml
 P9-916	Draft	Provision school accounts through teachers with school consent	P9/P9-916.yaml
 P9-917	Draft	Default minors to private profiles, no location, no contact discovery	P9/P9-917.yaml
 P9-918	Draft	'Enforce child capability policy: no outside DMs, snaps, ads, purchases'	P9/P9-918.yaml
