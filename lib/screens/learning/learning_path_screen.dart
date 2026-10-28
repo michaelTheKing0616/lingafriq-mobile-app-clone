@@ -6,21 +6,27 @@ import 'package:lingafriq/lessons/models/lesson_response.dart';
 import 'package:lingafriq/lessons/screens/lessons_list_screen.dart';
 import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/navigation/learning_experience_navigation.dart';
+import 'package:lingafriq/providers/gamification_provider.dart';
 import 'package:lingafriq/providers/learning_path_provider.dart';
 import 'package:lingafriq/screens/learning/dialect_variant_picker.dart';
 import 'package:lingafriq/utils/modern_griot_design_system.dart';
-import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/widgets/griot/griot_widgets.dart';
-import 'package:lingafriq/widgets/learning_path/learning_path_painter.dart';
 import 'package:lingafriq/widgets/learning_path/lesson_preview_sheet.dart';
+import 'package:lingafriq/widgets/learning_path/path_journey_node_row.dart';
 import 'package:lingafriq/widgets/learning_path/path_node_state.dart';
 import 'package:lingafriq/widgets/learning_path/path_node_widget.dart';
 import 'package:lingafriq/widgets/learning_path/path_scene_art.dart';
 import 'package:lingafriq/widgets/learning_path/path_section_banner.dart';
+import 'package:lingafriq/widgets/learning_path/path_sticky_header.dart';
+import 'package:lingafriq/widgets/learning_path/path_tokens.dart';
 import 'package:lingafriq/widgets/learning_path/polie_path_mascot.dart';
 
-/// Winding learning path with unit banners, preview sheet, and Drift-first rows (P7-952).
+/// Journey learning path — Mimo units on a Candy Crush clay map.
+///
+/// Sticky Duo-style unit banner only. Busuu checkpoints every 5. Finch kind
+/// streak. Drift-first via [pathLessonsProvider] / [pathUnitsProvider]
+/// (P7-952). Never gates on hearts/energy (P8-907).
 class LearningPathScreen extends ConsumerStatefulWidget {
   final Language language;
 
@@ -33,53 +39,36 @@ class LearningPathScreen extends ConsumerStatefulWidget {
 class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
   final ScrollController _scrollController = ScrollController();
   final PathFrameBudgetSampler _frameSampler = PathFrameBudgetSampler();
-  final Set<int> _builtScrollIndices = {};
   int? _pendingScrollLessonIndex;
   bool _didInitialScroll = false;
   bool _didShowPathCompleteCelebration = false;
+  bool _listView = false;
+  double _scrollPixels = 0;
+  int _stickyUnitOrdinal = 0;
 
-  /// Horizontal distance a node is pushed from the row's centre to form the
-  /// zig-zag; kept as a named constant (not an inline literal) per row so
-  /// its one usage below is self-documenting.
-  static const double _kPathNodeHorizontalInset = 28;
-
-  /// Vertical breathing room between consecutive node bubbles. Without this
-  /// the circles render edge-to-edge in the list with zero gap, which read
-  /// as a visual bug rather than a path.
-  static const double _kPathNodeVerticalGap = 18;
-
-  /// Reserved space below the last (bottom-most, since the list is
-  /// `reverse: true`) row so it can never sit under the floating
-  /// `PoliePathMascot`.
-  ///
-  /// Verified by walking the actual numbers rather than eyeballing it: the
-  /// mascot's `PositionedDirectional` floats `PanAfricanSpacing.md` (16) off
-  /// the screen bottom with a 90-tall box, i.e. its top edge sits 106 above
-  /// the screen bottom. The first on-screen row's lane alternates by
-  /// `lessonIndex.isOdd` (see the zig-zag logic below), so only every other
-  /// row ever shares the mascot's side of the screen — but the very next
-  /// row up (the first "end lane" row, on the mascot's side) would, with the
-  /// previous flat `24` bottom padding, have landed with its bottom edge at
-  /// exactly `24 + PathNodeWidget.defaultSize(64) + _kPathNodeVerticalGap(18)
-  /// = 106` above the screen bottom — precisely flush against the mascot's
-  /// top edge, a zero-margin coincidence rather than a real guarantee (and
-  /// one that doesn't hold once `.w` vs `.h` ScreenUtil scale factors
-  /// diverge on non-design-ratio screens). Reserving `106 + 16` of bottom
-  /// padding instead guarantees a real 16px clearance gap under the mascot
-  /// on every device, independent of that coincidence.
-  static const double _kPathMascotClearanceBottomPadding = 122;
+  static const double _kPathMascotClearanceBottomPadding = 100;
 
   @override
   void initState() {
     super.initState();
     _frameSampler.attach();
+    _scrollController.addListener(_onScroll);
   }
 
   @override
   void dispose() {
+    _scrollController.removeListener(_onScroll);
     _frameSampler.detach();
     _scrollController.dispose();
     super.dispose();
+  }
+
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+    final px = _scrollController.offset;
+    if ((px - _scrollPixels).abs() >= 1) {
+      setState(() => _scrollPixels = px);
+    }
   }
 
   bool _sectionUnlocked(int index, List<Lesson> lessons) {
@@ -103,10 +92,15 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
     _pendingScrollLessonIndex = lessonIndex;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted || _pendingScrollLessonIndex == null) return;
-      final scrollIndex = pathScrollIndexForLesson(items, _pendingScrollLessonIndex!);
-      final offset = pathScrollOffsetForIndex(items, scrollIndex);
-      final max = _scrollController.position.maxScrollExtent;
-      _scrollController.jumpTo(offset.clamp(0.0, max));
+      if (!_scrollController.hasClients) return;
+      final scrollIndex =
+          pathScrollIndexForLesson(items, _pendingScrollLessonIndex!);
+      final raw = pathScrollOffsetForIndex(items, scrollIndex);
+      final viewport = _scrollController.position.viewportDimension;
+      final target = (raw -
+              viewport * (1 - PathLayout.currentNodeViewportFraction))
+          .clamp(0.0, _scrollController.position.maxScrollExtent);
+      _scrollController.jumpTo(target);
       _pendingScrollLessonIndex = null;
       _didInitialScroll = true;
     });
@@ -129,22 +123,69 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
     );
   }
 
+  void _updateStickyUnit(List<PathScrollItem> items, int? active) {
+    if (items.isEmpty) return;
+    final lessonIdx = active ?? 0;
+    var ordinal = 0;
+    var found = 0;
+    for (final item in items) {
+      if (item is PathScrollBannerItem) {
+        if (item.banner.firstLessonIndex <= lessonIdx) {
+          found = ordinal;
+        }
+        ordinal++;
+      }
+    }
+    if (found != _stickyUnitOrdinal) {
+      setState(() => _stickyUnitOrdinal = found);
+    }
+  }
+
+  ({int completed, int total}) _unitProgress({
+    required List<PathScrollItem> items,
+    required List<Lesson> lessons,
+    required int unitOrdinal,
+  }) {
+    final banners = items.whereType<PathScrollBannerItem>().toList();
+    if (banners.isEmpty) {
+      final done = lessons.where(_sectionCompleted).length;
+      return (completed: done, total: lessons.length);
+    }
+    final idx = unitOrdinal.clamp(0, banners.length - 1);
+    final start = banners[idx].banner.firstLessonIndex;
+    final end = idx + 1 < banners.length
+        ? banners[idx + 1].banner.firstLessonIndex
+        : lessons.length;
+    var completed = 0;
+    for (var i = start; i < end && i < lessons.length; i++) {
+      if (_sectionCompleted(lessons[i])) completed++;
+    }
+    return (completed: completed, total: (end - start).clamp(0, lessons.length));
+  }
+
+  int _unitOrdinalForLesson(List<PathScrollItem> items, int lessonIndex) {
+    var ordinal = 0;
+    var found = 0;
+    for (final item in items) {
+      if (item is PathScrollBannerItem) {
+        if (item.banner.firstLessonIndex <= lessonIndex) {
+          found = ordinal;
+        }
+        ordinal++;
+      }
+    }
+    return found;
+  }
+
   @override
   Widget build(BuildContext context) {
     final lessonsAsync = ref.watch(pathLessonsProvider(widget.language));
     final unitsAsync = ref.watch(pathUnitsProvider(widget.language));
-    // Respects the OS-level "reduce motion" accessibility setting. Every
-    // animated affordance below (node pulse, path glow) is gated on this so
-    // the screen degrades to an equally legible static layout.
+    final gamification = ref.watch(gamificationProvider).gamification;
     final reducedMotion = MediaQuery.of(context).disableAnimations;
     final isRtl = Directionality.of(context) == TextDirection.rtl;
+    final lowEndStatic = _frameSampler.exceedsBudget();
 
-    // Riverpod's `FutureProvider` retries failed futures in the background
-    // by default, so a failure never settles into a plain `AsyncError` —
-    // it stays `AsyncLoading` with the error attached while it retries
-    // (see `AsyncValue.isLoading`/`hasError` both true). Checked ahead of
-    // `.when()` so learners see the error-and-retry affordance immediately
-    // instead of an infinite spinner.
     if (lessonsAsync.hasError && !lessonsAsync.hasValue) {
       debugPrint(
         '[LearningPathScreen] failed to load lessons: ${lessonsAsync.error}',
@@ -168,10 +209,8 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
         if (!_didInitialScroll && active != null) {
           _scheduleScrollToLesson(active, items);
         }
+        _updateStickyUnit(items, active);
 
-        // One pass to label each banner with its running unit number, so the
-        // scene-art slot can pick a stable (not repeating) artboard per unit
-        // without recomputing this inside every list item build.
         final bannerOrdinalByItemIndex = <int, int>{};
         var bannerOrdinal = 0;
         for (var idx = 0; idx < items.length; idx++) {
@@ -182,11 +221,17 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
         }
 
         final completedCount = lessons.where(_sectionCompleted).length;
-        final studyKey = LearningExperienceNavigation.languageKeyFor(widget.language);
+        final studyKey =
+            LearningExperienceNavigation.languageKeyFor(widget.language) ??
+                widget.language.name;
         final pathComplete = completedCount == lessons.length;
-        final mascotMood = completedCount == 0
-            ? PoliePathMood.pointUp
-            : (pathComplete ? PoliePathMood.cheer : PoliePathMood.idle);
+        final welcomeBack =
+            gamification.dailyStreak == 0 && completedCount > 0;
+        final mascotMood = welcomeBack
+            ? PoliePathMood.sleepy
+            : (completedCount == 0
+                ? PoliePathMood.pointUp
+                : (pathComplete ? PoliePathMood.cheer : PoliePathMood.idle));
 
         if (pathComplete && !_didShowPathCompleteCelebration) {
           _didShowPathCompleteCelebration = true;
@@ -195,299 +240,454 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
           });
         }
 
+        final stickyBanner = _resolveStickyBanner(
+          items: items,
+          ordinal: _stickyUnitOrdinal,
+          active: active,
+          lessons: lessons,
+        );
+        final unitProgress = _unitProgress(
+          items: items,
+          lessons: lessons,
+          unitOrdinal: _stickyUnitOrdinal,
+        );
+
+        final isDark = Theme.of(context).brightness == Brightness.dark;
+        final place = PathLayout.placeThemeForUnit(_stickyUnitOrdinal);
+        final parchment = isDark
+            ? PathBrandColors.parchmentDark
+            : Color.alphaBlend(
+                pathPlaceWashColor(place, isDark: false).withValues(alpha: 0.45),
+                pathParchmentColorFor(studyKey),
+              );
+
         return GriotScaffold(
+          backgroundColor: parchment,
           body: SafeArea(
             child: Stack(
               children: [
                 Column(
                   children: [
-                    _header(context, completedCount, lessons.length, snapshot.source),
-                    Expanded(
-                      child: ListView.builder(
-                        controller: _scrollController,
-                        reverse: true,
-                        padding: EdgeInsets.only(
-                          bottom: _kPathMascotClearanceBottomPadding.h,
-                          top: 8.h,
+                    PathStickyHeader(
+                      languageName: widget.language.name,
+                      streakCount: gamification.dailyStreak,
+                      cowriesCount: gamification.cowries,
+                      scrollPixels: _scrollPixels,
+                      isOffline: snapshot.source == PathLessonSource.drift,
+                      welcomeBack: welcomeBack,
+                      listViewActive: _listView,
+                      onBack: () => Navigator.maybePop(context),
+                      onLanguageTap: () {
+                        HapticFeedback.selectionClick();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Studying ${widget.language.name}',
+                            ),
+                          ),
+                        );
+                      },
+                      onStreakTap: () {
+                        HapticFeedback.selectionClick();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              welcomeBack
+                                  ? 'Welcome back — your freeze is ready. No shame, just the next step.'
+                                  : 'Streak: ${gamification.dailyStreak} day${gamification.dailyStreak == 1 ? '' : 's'}',
+                            ),
+                          ),
+                        );
+                      },
+                      onCowriesTap: () {
+                        HapticFeedback.selectionClick();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              '${gamification.cowries} cowries',
+                            ),
+                          ),
+                        );
+                      },
+                      onToggleListView: () {
+                        HapticFeedback.selectionClick();
+                        setState(() => _listView = !_listView);
+                      },
+                      onDialectTap: () async {
+                        HapticFeedback.lightImpact();
+                        await showModalBottomSheet<bool>(
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (_) => DialectVariantPicker(
+                            umbrellaLanguage:
+                                widget.language.name.toLowerCase(),
+                          ),
+                        );
+                      },
+                    ),
+                    if (stickyBanner != null)
+                      PathStickyUnitBanner(
+                        unitName: stickyBanner.unitName,
+                        cefrLevel: stickyBanner.cefrLevel,
+                        canDoStatement: stickyBanner.canDoStatement,
+                        unitOrdinal: _stickyUnitOrdinal,
+                        completedInUnit: unitProgress.completed,
+                        totalInUnit: unitProgress.total,
+                        reducedMotion: reducedMotion,
+                        locked: active != null &&
+                            stickyBanner.firstLessonIndex > active,
+                        onGuideTap: () => _showUnitGuide(context, stickyBanner),
+                      ),
+                    if (welcomeBack)
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 8.h),
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: PathBrandColors.gold.withValues(alpha: 0.22),
+                            borderRadius: BorderRadius.circular(14.r),
+                            border: Border.all(
+                              color: PathBrandColors.gold.withValues(alpha: 0.55),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 12.w,
+                              vertical: 8.h,
+                            ),
+                            child: Text(
+                              'Welcome back — freeze ok. Pick up kindly where you left off.',
+                              style: ModernGriotTypography.bodySmall(
+                                context: context,
+                              ).copyWith(
+                                color: isDark
+                                    ? PathBrandColors.parchment
+                                    : const Color(0xFF5C3A12),
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
                         ),
-                        itemCount: items.length,
-                        itemBuilder: (context, index) {
-                          _builtScrollIndices.add(index);
-                          final item = items[index];
-                          if (item is PathScrollBannerItem) {
-                            final b = item.banner;
-                            final dimmed = pathSceneDimmedForLesson(
-                              lessonIndex: b.firstLessonIndex,
-                              activeLessonIndex: active,
-                            );
-                            return PathSectionBanner(
-                              unitName: b.unitName,
-                              cefrLevel: b.cefrLevel,
-                              canDoStatement: b.canDoStatement,
-                              showSceneArt: true,
-                              languageKey: studyKey,
-                              unitIndex: bannerOrdinalByItemIndex[index] ?? 0,
-                              sceneDimmed: dimmed,
-                            );
-                          }
-                          final node = item as PathScrollNodeItem;
-                          final i = node.lessonIndex;
-                          final lesson = node.lesson;
-                          final seqUnlocked = _sectionUnlocked(i, lessons);
-                          final progress = PathLessonProgress(
-                            lessonId: lesson.id.toString(),
-                            title: lesson.name,
-                            index: i,
-                            isCompleted: _sectionCompleted(lesson),
-                          );
-                          final state = resolvePathNodeState(
-                            lesson: progress,
-                            activeIndex: active,
-                            pacing: const PathPacingOverlay(),
-                            sequentiallyUnlocked: seqUnlocked,
-                          );
-
-                          // `true` = this lesson's bubble sits in the
-                          // writing-direction "end" lane (right in LTR,
-                          // left in RTL); alternates every row to form the
-                          // zig-zag. The *previous* row's lane is derived
-                          // the same way so the decorative connector below
-                          // lines up across row boundaries.
-                          final thisIsEndLane = i.isOdd;
-                          final prevIsEndLane = i > 0 ? (i - 1).isOdd : thisIsEndLane;
-                          final traveled = state != PathNodeVisualState.locked;
-
-                          return SizedBox(
-                            height: PathNodeWidget.defaultSize.w + _kPathNodeVerticalGap.h,
-                            child: Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                Positioned.fill(
-                                  child: PathRowConnector(
-                                    fromLane: pathLaneSign(
-                                      isEndLane: prevIsEndLane,
-                                      isRtl: isRtl,
-                                    ),
-                                    toLane: pathLaneSign(
-                                      isEndLane: thisIsEndLane,
-                                      isRtl: isRtl,
-                                    ),
-                                    traveled: traveled,
-                                  ),
-                                ),
-                                Align(
-                                  alignment: thisIsEndLane
-                                      ? AlignmentDirectional.centerEnd
-                                      : AlignmentDirectional.centerStart,
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.only(
-                                      start: _kPathNodeHorizontalInset.w,
-                                      end: _kPathNodeHorizontalInset.w,
-                                    ),
-                                    child: PathNodeWidget(
-                                      lesson: lesson,
-                                      state: state,
-                                      index: i,
-                                      studyLanguageKey: studyKey,
-                                      reducedMotion: reducedMotion,
-                                      totalLessons: lessons.length,
-                                      onTap: state == PathNodeVisualState.locked
-                                          ? null
-                                          : () {
-                                              HapticFeedback.lightImpact();
-                                              _openPreview(
+                      ),
+                    Expanded(
+                      child: _listView
+                          ? _buildListAlternate(
+                              context,
+                              lessons: lessons,
+                              studyKey: studyKey,
+                              active: active,
+                              reducedMotion: reducedMotion,
+                              isOffline:
+                                  snapshot.source == PathLessonSource.drift,
+                            )
+                          : ListView.builder(
+                              controller: _scrollController,
+                              reverse: true,
+                              padding: EdgeInsets.only(
+                                bottom: _kPathMascotClearanceBottomPadding.h,
+                                top: 8.h,
+                              ),
+                              itemCount: items.length,
+                              itemBuilder: (context, index) {
+                                final item = items[index];
+                                if (item is PathScrollBannerItem) {
+                                  final b = item.banner;
+                                  final ordinal =
+                                      bannerOrdinalByItemIndex[index] ?? 0;
+                                  final dimmed = pathSceneDimmedForLesson(
+                                    lessonIndex: b.firstLessonIndex,
+                                    activeLessonIndex: active,
+                                  );
+                                  final progress = _unitProgress(
+                                    items: items,
+                                    lessons: lessons,
+                                    unitOrdinal: ordinal,
+                                  );
+                                  return PathSectionBanner(
+                                    unitName: b.unitName,
+                                    cefrLevel: b.cefrLevel,
+                                    canDoStatement: b.canDoStatement,
+                                    unitOrdinal: ordinal,
+                                    completedInUnit: progress.completed,
+                                    totalInUnit: progress.total,
+                                    showSceneArt: !lowEndStatic,
+                                    languageKey: studyKey,
+                                    unitIndex: ordinal,
+                                    sceneDimmed: dimmed,
+                                    reducedMotion:
+                                        reducedMotion || lowEndStatic,
+                                    parallaxOffset: _scrollPixels,
+                                    onGuideTap: () =>
+                                        _showUnitGuide(context, b),
+                                  );
+                                }
+                                final node = item as PathScrollNodeItem;
+                                final i = node.lessonIndex;
+                                final lesson = node.lesson;
+                                final seqUnlocked =
+                                    _sectionUnlocked(i, lessons);
+                                final progress = PathLessonProgress(
+                                  lessonId: lesson.id.toString(),
+                                  title: lesson.name,
+                                  index: i,
+                                  isCompleted: _sectionCompleted(lesson),
+                                );
+                                final state = resolvePathNodeState(
+                                  lesson: progress,
+                                  activeIndex: active,
+                                  pacing: const PathPacingOverlay(),
+                                  sequentiallyUnlocked: seqUnlocked,
+                                );
+                                final unitOrd =
+                                    _unitOrdinalForLesson(items, i);
+                                return PathJourneyNodeRow(
+                                  lesson: lesson,
+                                  lessonIndex: i,
+                                  state: state,
+                                  unitOrdinal: unitOrd,
+                                  languageKey: studyKey,
+                                  reducedMotion: reducedMotion,
+                                  lowEndStatic: lowEndStatic,
+                                  isRtl: isRtl,
+                                  savedOffline: snapshot.source ==
+                                      PathLessonSource.drift,
+                                  totalLessons: lessons.length,
+                                  parallaxScroll: _scrollPixels,
+                                  showSideScenery: i % 2 == 0,
+                                  polieMood: mascotMood,
+                                  onTap: state == PathNodeVisualState.locked
+                                      ? null
+                                      : () {
+                                          _openPreview(
+                                            context,
+                                            lesson: lesson,
+                                            state: state,
+                                            onStart: () {
+                                              LearningExperienceNavigation
+                                                  .openLessonSections(
                                                 context,
                                                 lesson: lesson,
-                                                state: state,
-                                                onStart: () {
-                                                  LearningExperienceNavigation
-                                                      .openLessonSections(
-                                                    context,
-                                                    lesson: lesson,
-                                                    studyLanguageKey: studyKey,
-                                                  );
-                                                },
+                                                studyLanguageKey: studyKey,
                                               );
                                             },
-                                    ),
-                                  ),
-                                ),
-                              ],
+                                          );
+                                        },
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
                     ),
                   ],
                 ),
-                PositionedDirectional(
-                  bottom: PanAfricanSpacing.md,
-                  end: PanAfricanSpacing.md,
-                  child: SizedBox(
-                    width: 76.w,
-                    height: 90.h,
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: PoliePathMascot(
-                        mood: mascotMood,
-                        reducedMotion: reducedMotion,
-                        onTap: () => _showPolieEncouragement(context, mascotMood),
+                if (!_listView)
+                  PositionedDirectional(
+                    bottom: 12.h,
+                    end: 10.w,
+                    child: SizedBox(
+                      width: 64.w,
+                      height: 76.h,
+                      child: FittedBox(
+                        fit: BoxFit.contain,
+                        child: PoliePathMascot(
+                          mood: mascotMood,
+                          reducedMotion: reducedMotion || lowEndStatic,
+                          rivAssetPresent: true,
+                          compact: true,
+                          onTap: () =>
+                              _showPolieEncouragement(context, mascotMood),
+                        ),
                       ),
                     ),
                   ),
-                ),
               ],
             ),
           ),
         );
       },
       loading: () => _loadingState(context, reducedMotion),
-      // Unreachable in practice (the `hasError` check above intercepts
-      // failures first) but kept as a defensive fallback so this remains
-      // exhaustive and safe if that retry behavior ever changes upstream.
       error: (e, _) => _errorState(context),
     );
   }
 
-  Widget _header(
-    BuildContext context,
-    int completed,
-    int total,
-    PathLessonSource source,
-  ) {
-    final isOffline = source == PathLessonSource.drift;
-    final percent = total > 0 ? (completed / total * 100).round() : 0;
-    final isRtl = Directionality.of(context) == TextDirection.rtl;
-    // Material's "back" glyph points left; mirror it for RTL locales
-    // (Arabic / Darija) instead of relying on an auto-mirror that Icons
-    // don't get for free.
-    final backIcon = isRtl ? Icons.arrow_forward_rounded : Icons.arrow_back_rounded;
+  PathUnitBannerData? _resolveStickyBanner({
+    required List<PathScrollItem> items,
+    required int ordinal,
+    required int? active,
+    required List<Lesson> lessons,
+  }) {
+    final banners = items.whereType<PathScrollBannerItem>().toList();
+    if (banners.isEmpty) {
+      return PathUnitBannerData(
+        unitKey: 'path',
+        unitName: widget.language.name,
+        cefrLevel: widget.language.level_language,
+        canDoStatement: '${lessons.length} lessons on your path',
+        firstLessonIndex: 0,
+      );
+    }
+    final idx = ordinal.clamp(0, banners.length - 1);
+    return banners[idx].banner;
+  }
 
-    return Padding(
-      padding: EdgeInsets.all(PanAfricanSpacing.md),
-      child: Row(
-        children: [
-          Semantics(
-            button: true,
-            label: 'Back',
-            excludeSemantics: true,
-            child: GestureDetector(
-              onTap: () => Navigator.maybePop(context),
-              child: Container(
-                width: AdaptiveLayout.minTouchTarget.w,
-                height: AdaptiveLayout.minTouchTarget.w,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerLow,
-                  shape: BoxShape.circle,
+  Widget _buildListAlternate(
+    BuildContext context, {
+    required List<Lesson> lessons,
+    required String studyKey,
+    required int? active,
+    required bool reducedMotion,
+    required bool isOffline,
+  }) {
+    return ListView.separated(
+      padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 120.h),
+      itemCount: lessons.length,
+      separatorBuilder: (_, __) => SizedBox(height: 8.h),
+      itemBuilder: (context, i) {
+        final lesson = lessons[i];
+        final seqUnlocked = _sectionUnlocked(i, lessons);
+        final progress = PathLessonProgress(
+          lessonId: lesson.id.toString(),
+          title: lesson.name,
+          index: i,
+          isCompleted: _sectionCompleted(lesson),
+        );
+        final state = resolvePathNodeState(
+          lesson: progress,
+          activeIndex: active,
+          pacing: const PathPacingOverlay(),
+          sequentiallyUnlocked: seqUnlocked,
+        );
+        final cs = Theme.of(context).colorScheme;
+        final locked = state == PathNodeVisualState.locked;
+        final isCheckpoint = PathLayout.isCheckpoint(i);
+        return Semantics(
+          button: true,
+          enabled: !locked,
+          label: pathNodeSemanticsLabel(
+            nodeNumber: i + 1,
+            title: lesson.name,
+            state: state,
+            reviewDueLabel: 'Review due',
+            totalLessons: lessons.length,
+          ),
+          child: Material(
+            color: isCheckpoint
+                ? PathBrandColors.gold.withValues(alpha: 0.18)
+                : cs.surfaceContainerLow,
+            borderRadius: BorderRadius.circular(16.r),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(16.r),
+              onTap: locked
+                  ? null
+                  : () => _openPreview(
+                        context,
+                        lesson: lesson,
+                        state: state,
+                        onStart: () {
+                          LearningExperienceNavigation.openLessonSections(
+                            context,
+                            lesson: lesson,
+                            studyLanguageKey: studyKey,
+                          );
+                        },
+                      ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+                child: Row(
+                  children: [
+                    PathNodeWidget(
+                      lesson: lesson,
+                      state: state,
+                      index: i,
+                      size: 48,
+                      reducedMotion: true,
+                      savedOffline: isOffline,
+                      isCheckpoint: isCheckpoint,
+                      onTap: locked ? null : () {},
+                    ),
+                    SizedBox(width: 12.w),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            isCheckpoint ? 'Checkpoint · ${lesson.name}' : lesson.name,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: ModernGriotTypography.titleSmall(
+                              context: context,
+                            ),
+                          ),
+                          Text(
+                            locked
+                                ? 'Locked'
+                                : (state == PathNodeVisualState.current
+                                    ? 'Current'
+                                    : (state == PathNodeVisualState.done
+                                        ? 'Done'
+                                        : state.name)),
+                            style: ModernGriotTypography.bodySmall(
+                              context: context,
+                            ).copyWith(color: cs.onSurfaceVariant),
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (!locked)
+                      Icon(Icons.chevron_right_rounded, color: cs.onSurfaceVariant),
+                  ],
                 ),
-                child: Icon(backIcon, size: 20.sp),
               ),
             ),
           ),
-          SizedBox(width: PanAfricanSpacing.sm),
-          Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Learning Path',
-                  // At large text-scale factors this `Expanded` column gets
-                  // squeezed by its `Flexible` siblings (the Offline/percent
-                  // badges) and the fixed-size back/dialect buttons. Without
-                  // a line cap, unbounded wrapping here is what actually
-                  // drove the header's `Column` past the screen height (see
-                  // the 2.0x text-scale regression test) — one line with
-                  // ellipsis keeps this row's height bounded no matter how
-                  // narrow it gets squeezed.
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: ModernGriotTypography.titleLarge(context: context),
-                ),
-                Text(
-                  '$completed of $total sections',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: ModernGriotTypography.bodySmall(context: context),
-                ),
-              ],
+        );
+      },
+    );
+  }
+
+  void _showUnitGuide(BuildContext context, PathUnitBannerData banner) {
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (ctx) => Padding(
+        padding: EdgeInsets.fromLTRB(24.w, 8.h, 24.w, 24.h),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              banner.unitName,
+              style: ModernGriotTypography.titleLarge(context: ctx),
             ),
-          ),
-          if (isOffline) ...[
-            // `GriotBadgePill`'s own `Text` has no `maxLines`/`overflow` (it's
-            // outside this screen's edit scope to change), so its width grows
-            // unbounded at large text-scale factors. `Flexible` + `FittedBox`
-            // guarantees this header `Row` never overflows regardless — the
-            // pill shrinks to fit rather than pushing past its allotted space.
-            Flexible(
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: AlignmentDirectional.centerEnd,
-                child: Semantics(
-                  label: 'Offline — showing your last saved progress',
-                  excludeSemantics: true,
-                  child: GriotBadgePill(
-                    label: 'Offline',
-                    icon: Icons.cloud_off_rounded,
-                    color: Theme.of(context).colorScheme.surfaceContainerHigh,
-                    textColor: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-                ),
+            SizedBox(height: 8.h),
+            Text(
+              banner.canDoStatement.isNotEmpty
+                  ? banner.canDoStatement
+                  : 'Explore the phrases and goals for this unit.',
+              style: ModernGriotTypography.bodyLarge(context: ctx),
+            ),
+            if (banner.cefrLevel.isNotEmpty) ...[
+              SizedBox(height: 12.h),
+              Text(
+                'Level ${banner.cefrLevel}',
+                style: ModernGriotTypography.labelLarge(context: ctx),
               ),
+            ],
+            SizedBox(height: 20.h),
+            FilledButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text('Got it'),
             ),
-            SizedBox(width: PanAfricanSpacing.xs),
           ],
-          Flexible(
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              alignment: AlignmentDirectional.centerEnd,
-              child: Semantics(
-                label: '$percent percent complete',
-                excludeSemantics: true,
-                child: GriotBadgePill(
-                  label: '$percent%',
-                  icon: Icons.trending_up_rounded,
-                  color: Theme.of(context).colorScheme.secondaryContainer,
-                  textColor: Theme.of(context).colorScheme.onSecondaryContainer,
-                ),
-              ),
-            ),
-          ),
-          SizedBox(width: PanAfricanSpacing.xs + 2.w),
-          IconButton(
-            tooltip: 'Dialect mode (Common vs Local)',
-            icon: const Icon(Icons.tune_rounded),
-            onPressed: () async {
-              HapticFeedback.lightImpact();
-              await showModalBottomSheet<bool>(
-                context: context,
-                isScrollControlled: true,
-                builder: (_) => DialectVariantPicker(
-                  umbrellaLanguage: widget.language.name.toLowerCase(),
-                ),
-              );
-            },
-          ),
-        ],
+        ),
       ),
     );
   }
 
-  /// Lightweight full-screen celebration once every section on the path is
-  /// mastered. Shown once per screen lifetime via `_didShowPathCompleteCelebration`
-  /// (not every rebuild) and gated on `pathComplete`, which is already derived
-  /// from `completedCount == lessons.length`. A modal bottom sheet rather than
-  /// a confetti overlay so it stays reduced-motion safe by construction (no
-  /// animation to gate) and consistent with the rest of the app's sheet
-  /// pattern (e.g. `DialectVariantPicker`, `LessonPreviewSheet`).
   void _showPathCompleteCelebration(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
     HapticFeedback.mediumImpact();
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       builder: (sheetContext) => Padding(
-        padding: EdgeInsets.all(PanAfricanSpacing.lg),
+        padding: EdgeInsets.all(24.w),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -497,27 +697,32 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
               child: Icon(
                 Icons.emoji_events_rounded,
                 size: 56.sp,
-                color: cs.primary,
+                color: PathBrandColors.gold,
               ),
             ),
-            SizedBox(height: PanAfricanSpacing.md),
+            SizedBox(height: 16.h),
             Text(
               'Path complete!',
               textAlign: TextAlign.center,
               style: ModernGriotTypography.titleLarge(context: sheetContext),
             ),
-            SizedBox(height: PanAfricanSpacing.xs),
+            SizedBox(height: 8.h),
             Text(
               "You've mastered every lesson in ${widget.language.name}. "
               "Polie couldn't be prouder.",
               textAlign: TextAlign.center,
               style: ModernGriotTypography.bodySmall(context: sheetContext),
             ),
-            SizedBox(height: PanAfricanSpacing.lg),
+            SizedBox(height: 20.h),
             FilledButton(
+              style: FilledButton.styleFrom(
+                backgroundColor: PathBrandColors.coral,
+                foregroundColor: Colors.white,
+              ),
               onPressed: () => Navigator.of(sheetContext).pop(),
               child: const Text('Keep practicing'),
             ),
+            SizedBox(height: MediaQuery.paddingOf(sheetContext).bottom),
           ],
         ),
       ),
@@ -528,9 +733,11 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
     final message = switch (mood) {
       PoliePathMood.pointUp =>
         "Let's take the first step together — tap any unlocked stop to begin.",
-      PoliePathMood.cheer => "You've walked the whole path — I'm so proud of you!",
-      PoliePathMood.idle || PoliePathMood.sleepy =>
-        'Keep going — every lesson gets you closer.',
+      PoliePathMood.cheer =>
+        "You've walked the whole path — I'm so proud of you!",
+      PoliePathMood.sleepy =>
+        'Welcome back — the path is still here when you are.',
+      PoliePathMood.idle => 'Keep going — every lesson gets you closer.',
     };
     HapticFeedback.selectionClick();
     ScaffoldMessenger.of(context)
@@ -542,7 +749,7 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
     return GriotScaffold(
       body: Center(
         child: Padding(
-          padding: EdgeInsets.all(PanAfricanSpacing.lg),
+          padding: EdgeInsets.all(24.w),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -552,22 +759,22 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
                 child: Icon(
                   Icons.auto_stories_outlined,
                   size: 48.sp,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: PathBrandColors.coral,
                 ),
               ),
-              SizedBox(height: PanAfricanSpacing.md),
+              SizedBox(height: 16.h),
               Text(
                 "We're still weaving your ${widget.language.name} path",
                 textAlign: TextAlign.center,
                 style: ModernGriotTypography.titleSmall(context: context),
               ),
-              SizedBox(height: PanAfricanSpacing.xs),
+              SizedBox(height: 8.h),
               Text(
                 'Hop into the lesson list for now — your path will be ready soon.',
                 textAlign: TextAlign.center,
                 style: ModernGriotTypography.bodySmall(context: context),
               ),
-              SizedBox(height: PanAfricanSpacing.lg),
+              SizedBox(height: 20.h),
               FilledButton(
                 onPressed: () {
                   Navigator.of(context).push(
@@ -594,19 +801,14 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // An indeterminate spinner communicates required state (we
-              // don't yet know how long the load will take) even with
-              // reduced motion on — platform guidance treats this as
-              // essential, not decorative, motion. We still swap to a
-              // static icon so nothing spins when the OS asks for it.
               reducedMotion
                   ? Icon(
                       Icons.hourglass_top_rounded,
                       size: 32.sp,
-                      color: Theme.of(context).colorScheme.primary,
+                      color: PathBrandColors.coral,
                     )
                   : const CircularProgressIndicator(),
-              SizedBox(height: PanAfricanSpacing.md),
+              SizedBox(height: 16.h),
               Text(
                 'Loading your path…',
                 style: ModernGriotTypography.bodySmall(context: context),
@@ -622,7 +824,7 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
     return GriotScaffold(
       body: Center(
         child: Padding(
-          padding: EdgeInsets.all(PanAfricanSpacing.lg),
+          padding: EdgeInsets.all(24.w),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -631,18 +833,18 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
                 size: 40.sp,
                 color: Theme.of(context).colorScheme.error,
               ),
-              SizedBox(height: PanAfricanSpacing.md),
+              SizedBox(height: 16.h),
               Text(
                 "We couldn't load your path",
                 style: ModernGriotTypography.titleSmall(context: context),
               ),
-              SizedBox(height: PanAfricanSpacing.xs),
+              SizedBox(height: 8.h),
               Text(
                 'Your progress is saved — check your connection and try again.',
                 textAlign: TextAlign.center,
                 style: ModernGriotTypography.bodySmall(context: context),
               ),
-              SizedBox(height: PanAfricanSpacing.md),
+              SizedBox(height: 16.h),
               FilledButton(
                 onPressed: () =>
                     ref.invalidate(pathLessonsProvider(widget.language)),

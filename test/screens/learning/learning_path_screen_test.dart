@@ -8,12 +8,9 @@ import 'package:lingafriq/lessons/models/lesson_response.dart';
 import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/providers/learning_path_provider.dart';
 import 'package:lingafriq/screens/learning/learning_path_screen.dart';
+import 'package:lingafriq/widgets/learning_path/path_checkpoint_card.dart';
+import 'package:lingafriq/widgets/learning_path/path_sticky_header.dart';
 
-/// Widget tests for [LearningPathScreen] covering the states the strict UI
-/// quality gate pass requires: locked/current/mastered nodes, a brand-new
-/// learner's empty path, offline (Drift-cached) data, a load error, and a
-/// reduced-motion render. Mirrors the provider-override pattern used by
-/// `test/games/game_mastery_map_screen_test.dart`.
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -47,10 +44,6 @@ void main() {
     );
   }
 
-  /// Builds the screen inside a `ProviderScope` with `pathLessonsProvider`
-  /// stubbed for one of three scenarios: resolved [lessons] data, a
-  /// [pendingFuture] that never resolves (loading), or a [throwError]
-  /// (error state). Exactly one of these should be supplied per test.
   Widget harness({
     List<Lesson>? lessons,
     PathLessonSource source = PathLessonSource.network,
@@ -86,27 +79,12 @@ void main() {
     );
   }
 
-  // The "current" node runs a deliberately endless `..repeat(reverse: true)`
-  // pulse `AnimationController` (see `PathNodeWidget`), and `ScreenUtilInit`
-  // needs one extra frame after the first to swap in its real `builder`
-  // output. Together that means a plain `pumpAndSettle()` either times out
-  // (endless pulse) or fires too early (ScreenUtil bootstrap frame). A
-  // bounded pump sequence sidesteps both without weakening the assertions.
   Future<void> settle(WidgetTester tester) async {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 50));
     await tester.pump(const Duration(milliseconds: 50));
   }
 
-  // `flutter_screenutil` reads the device size straight from
-  // `View.maybeOf(context).physicalSize` / `.devicePixelRatio` (see
-  // `ScreenUtilInit._newData()`), not from `tester.binding.setSurfaceSize`'s
-  // `_surfaceSize` field. Using `setSurfaceSize` alone silently leaves the
-  // test view at its default 800x600-logical size, so every `.w`/`.h`/`.sp`
-  // value comes out ~2x too large against our 390x844 design size and
-  // overflows the header `Row`. Setting `tester.view` directly (the API the
-  // framework's own `setSurfaceSize` docs now recommend) is what actually
-  // drives ScreenUtil's scale factor to 1.0 here.
   void setPhoneSurface(WidgetTester tester) {
     tester.view.devicePixelRatio = 1.0;
     tester.view.physicalSize = const Size(390, 844);
@@ -115,7 +93,8 @@ void main() {
   }
 
   group('LearningPathScreen states', () {
-    testWidgets('loading state shows a friendly, non-technical message', (tester) async {
+    testWidgets('loading state shows a friendly, non-technical message',
+        (tester) async {
       setPhoneSurface(tester);
       final neverCompletes = Completer<PathLessonsSnapshot>();
       await tester.pumpWidget(harness(pendingFuture: neverCompletes.future));
@@ -125,7 +104,8 @@ void main() {
       expect(find.textContaining('Exception'), findsNothing);
     });
 
-    testWidgets('empty path (brand-new learner) shows warm copy and a way forward',
+    testWidgets(
+        'empty path (brand-new learner) shows warm copy and a way forward',
         (tester) async {
       setPhoneSurface(tester);
       await tester.pumpWidget(harness(lessons: const []));
@@ -133,11 +113,11 @@ void main() {
 
       expect(find.textContaining("weaving your Yoruba path"), findsOneWidget);
       expect(find.text('Open lesson list'), findsOneWidget);
-      // Warm, human copy — not a bare placeholder like "No data".
       expect(find.text('No data available'), findsNothing);
     });
 
-    testWidgets('offline (Drift-cached) snapshot shows a dedicated Offline badge',
+    testWidgets(
+        'offline (Drift-cached) snapshot shows Offline badge in sticky header',
         (tester) async {
       setPhoneSurface(tester);
       final lessons = [
@@ -148,10 +128,13 @@ void main() {
       );
       await settle(tester);
 
+      expect(find.byType(PathStickyHeader), findsOneWidget);
       expect(find.text('Offline'), findsOneWidget);
+      expect(find.text('Yoruba'), findsWidgets);
     });
 
-    testWidgets('load error shows a retry affordance without leaking raw exception text',
+    testWidgets(
+        'load error shows a retry affordance without leaking raw exception text',
         (tester) async {
       setPhoneSurface(tester);
       await tester.pumpWidget(
@@ -161,7 +144,6 @@ void main() {
 
       expect(find.text('Try again'), findsOneWidget);
       expect(find.textContaining("couldn't load your path"), findsOneWidget);
-      // The raw exception string must never reach the learner.
       expect(find.textContaining('socket timeout'), findsNothing);
       expect(find.textContaining('Exception'), findsNothing);
     });
@@ -172,9 +154,9 @@ void main() {
       final handle = tester.ensureSemantics();
       setPhoneSurface(tester);
       final lessons = [
-        lesson(id: 1, name: 'Greetings', count: 5, completed: 5), // mastered/done
-        lesson(id: 2, name: 'Numbers', count: 5, completed: 0), // current
-        lesson(id: 3, name: 'Colors', count: 5, completed: 0), // locked
+        lesson(id: 1, name: 'Greetings', count: 5, completed: 5),
+        lesson(id: 2, name: 'Numbers', count: 5, completed: 0),
+        lesson(id: 3, name: 'Colors', count: 5, completed: 0),
       ];
       await tester.pumpWidget(harness(lessons: lessons));
       await settle(tester);
@@ -201,16 +183,14 @@ void main() {
     testWidgets('locked node cannot be tapped into a lesson', (tester) async {
       setPhoneSurface(tester);
       final lessons = [
-        lesson(id: 1, name: 'Greetings', count: 5, completed: 0), // current
-        lesson(id: 2, name: 'Numbers', count: 5, completed: 0), // locked
+        lesson(id: 1, name: 'Greetings', count: 5, completed: 0),
+        lesson(id: 2, name: 'Numbers', count: 5, completed: 0),
       ];
       await tester.pumpWidget(harness(lessons: lessons));
       await settle(tester);
 
       expect(find.byIcon(Icons.lock_rounded), findsOneWidget);
 
-      // Tapping the locked node must not open the lesson preview sheet
-      // (which would render the lesson's name as its title).
       await tester.tap(find.byIcon(Icons.lock_rounded));
       await settle(tester);
 
@@ -221,14 +201,11 @@ void main() {
         (tester) async {
       setPhoneSurface(tester);
       final lessons = [
-        lesson(id: 1, name: 'Greetings', count: 5, completed: 0), // current
-        lesson(id: 2, name: 'Numbers', count: 5, completed: 0), // locked
+        lesson(id: 1, name: 'Greetings', count: 5, completed: 0),
+        lesson(id: 2, name: 'Numbers', count: 5, completed: 0),
       ];
       await tester.pumpWidget(harness(lessons: lessons, reducedMotion: true));
       await settle(tester);
-      // Pump a few more frames; if a pulse AnimationController had been
-      // created despite reduced motion, `pumpAndSettle` would time out, so
-      // we assert directly that no frame is scheduled instead.
       await tester.pump(const Duration(milliseconds: 500));
       expect(tester.binding.hasScheduledFrame, isFalse);
 
@@ -238,7 +215,7 @@ void main() {
     });
 
     testWidgets(
-        'header (title, section count, Offline + percent badges) does not overflow at 2.0x text scale',
+        'sticky header with Offline does not overflow at 2.0x text scale',
         (tester) async {
       setPhoneSurface(tester);
       final lessons = [
@@ -248,20 +225,73 @@ void main() {
       await tester.pumpWidget(
         harness(
           lessons: lessons,
-          source: PathLessonSource.drift, // also renders the Offline pill
+          source: PathLessonSource.drift,
           textScale: 2.0,
         ),
       );
       await settle(tester);
 
-      // A RenderFlex overflow throws during layout/paint and would surface
-      // here as a caught FlutterError; asserting no exception is the direct
-      // regression check for `GriotBadgePill`'s unbounded width at large
-      // text-scale factors (see `Flexible`/`FittedBox` wrapping in `_header`).
       expect(tester.takeException(), isNull);
-      expect(find.text('Learning Path'), findsOneWidget);
+      expect(find.byType(PathStickyHeader), findsOneWidget);
       expect(find.text('Offline'), findsOneWidget);
-      expect(find.text('50%'), findsOneWidget);
+    });
+
+    testWidgets('list-view toggle shows accessible lesson rows', (tester) async {
+      setPhoneSurface(tester);
+      final lessons = [
+        lesson(id: 1, name: 'Greetings', count: 5, completed: 0),
+        lesson(id: 2, name: 'Numbers', count: 5, completed: 0),
+      ];
+      await tester.pumpWidget(harness(lessons: lessons, reducedMotion: true));
+      await settle(tester);
+
+      expect(find.byTooltip('List view'), findsOneWidget);
+      await tester.tap(find.byTooltip('List view'));
+      await settle(tester);
+
+      expect(find.text('Greetings'), findsOneWidget);
+      expect(find.text('Current'), findsOneWidget);
+      expect(find.text('Locked'), findsOneWidget);
+      expect(find.byTooltip('Path view'), findsOneWidget);
+    });
+
+    testWidgets('fifth lesson renders Busuu-style checkpoint card',
+        (tester) async {
+      setPhoneSurface(tester);
+      final lessons = List.generate(
+        5,
+        (i) => lesson(
+          id: i + 1,
+          name: 'Lesson ${i + 1}',
+          count: 5,
+          completed: i == 0 ? 0 : 0,
+        ),
+      );
+      // Unlock through lesson 5 as current path stretch.
+      lessons[0] = lesson(id: 1, name: 'Lesson 1', count: 5, completed: 5);
+      lessons[1] = lesson(id: 2, name: 'Lesson 2', count: 5, completed: 5);
+      lessons[2] = lesson(id: 3, name: 'Lesson 3', count: 5, completed: 5);
+      lessons[3] = lesson(id: 4, name: 'Lesson 4', count: 5, completed: 5);
+      lessons[4] = lesson(id: 5, name: 'Lesson 5', count: 5, completed: 0);
+
+      await tester.pumpWidget(harness(lessons: lessons, reducedMotion: true));
+      await settle(tester);
+
+      expect(find.byType(PathCheckpointCard), findsOneWidget);
+      expect(find.text('Checkpoint'), findsOneWidget);
+    });
+
+    testWidgets('sticky unit banner shows Unit N · Title pattern',
+        (tester) async {
+      setPhoneSurface(tester);
+      final lessons = [
+        lesson(id: 1, name: 'Greetings', count: 5, completed: 0),
+      ];
+      await tester.pumpWidget(harness(lessons: lessons, reducedMotion: true));
+      await settle(tester);
+
+      expect(find.textContaining('Unit 1'), findsWidgets);
+      expect(find.byIcon(Icons.chat_bubble_outline_rounded), findsWidgets);
     });
   });
 }

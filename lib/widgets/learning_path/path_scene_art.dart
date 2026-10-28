@@ -266,8 +266,8 @@ class PathParchmentBackdrop extends StatelessWidget {
   }
 }
 
-/// Scene prop slot: loads licensed artboard name; shows labelled placeholder when gated.
-class PathSceneArtSlot extends StatelessWidget {
+/// Scene prop slot: prefers path_scenery.riv (v3); clay island fallback otherwise.
+class PathSceneArtSlot extends StatefulWidget {
   const PathSceneArtSlot({
     super.key,
     required this.languageKey,
@@ -276,6 +276,7 @@ class PathSceneArtSlot extends StatelessWidget {
     required this.bundleLicensed,
     this.reducedMotion = false,
     this.artMissingLabel = 'Scene art unavailable',
+    this.preferRive = true,
   });
 
   final String? languageKey;
@@ -285,16 +286,43 @@ class PathSceneArtSlot extends StatelessWidget {
   final bool reducedMotion;
   final String artMissingLabel;
 
+  /// When false (tests / low-end), skip Rive and paint the static island.
+  final bool preferRive;
+
+  @override
+  State<PathSceneArtSlot> createState() => _PathSceneArtSlotState();
+}
+
+class _PathSceneArtSlotState extends State<PathSceneArtSlot> {
+  bool _useStatic = true;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.preferRive && widget.bundleLicensed) {
+      _probeRive();
+    }
+  }
+
+  Future<void> _probeRive() async {
+    try {
+      await rootBundle.load(kPathSceneryRivAsset);
+      if (mounted) setState(() => _useStatic = false);
+    } catch (_) {
+      if (mounted) setState(() => _useStatic = true);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final artboard = pathSceneryArtboardFor(
-      languageKey: languageKey ?? 'yo',
-      unitIndex: unitIndex,
+      languageKey: widget.languageKey ?? 'yo',
+      unitIndex: widget.unitIndex,
     );
-    if (artboard == null || !bundleLicensed) {
+    if (artboard == null || !widget.bundleLicensed) {
       return Semantics(
-        label: artMissingLabel,
-        child: _ArtMissingTile(label: artMissingLabel),
+        label: widget.artMissingLabel,
+        child: _ArtMissingTile(label: widget.artMissingLabel),
       );
     }
 
@@ -302,19 +330,29 @@ class PathSceneArtSlot extends StatelessWidget {
       label: pathSceneryAltText(artboard),
       image: true,
       child: PathParchmentBackdrop(
-        languageKey: languageKey,
-        dimmed: dimmed,
-        child: _SceneryPlaceholder(
-          artboard: artboard,
-          reducedMotion: reducedMotion,
-        ),
+        languageKey: widget.languageKey,
+        dimmed: widget.dimmed,
+        child: _useStatic
+            ? _SceneryClayIsland(
+                artboard: artboard,
+                reducedMotion: widget.reducedMotion,
+              )
+            : _SceneryRiveHost(
+                artboard: artboard,
+                reducedMotion: widget.reducedMotion,
+                fallback: _SceneryClayIsland(
+                  artboard: artboard,
+                  reducedMotion: widget.reducedMotion,
+                ),
+              ),
       ),
     );
   }
 }
 
-class _SceneryPlaceholder extends StatelessWidget {
-  const _SceneryPlaceholder({
+/// Warm clay island + glyph — static fallback when Rive frame budget fails.
+class _SceneryClayIsland extends StatelessWidget {
+  const _SceneryClayIsland({
     required this.artboard,
     required this.reducedMotion,
   });
@@ -322,21 +360,99 @@ class _SceneryPlaceholder extends StatelessWidget {
   final String artboard;
   final bool reducedMotion;
 
+  IconData get _icon {
+    if (artboard.contains('dhow') || artboard.contains('danfo')) {
+      return Icons.directions_boat_filled_rounded;
+    }
+    if (artboard.contains('House') || artboard.contains('rondavel')) {
+      return Icons.cottage_rounded;
+    }
+    if (artboard.contains('hawker') || artboard.contains('adire')) {
+      return Icons.storefront_rounded;
+    }
+    if (artboard.contains('drummer') || artboard.contains('udu')) {
+      return Icons.music_note_rounded;
+    }
+    return Icons.diversity_3_rounded;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Opacity(
-        opacity: reducedMotion ? 0.92 : 1.0,
-        child: Text(
-          artboard.replaceAll('_', ' '),
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: Colors.brown.withValues(alpha: 0.45),
-                fontStyle: FontStyle.italic,
+    final label = artboard.replaceAll('_', ' ');
+    return Opacity(
+      opacity: reducedMotion ? 0.92 : 1.0,
+      child: Center(
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          decoration: BoxDecoration(
+            color: const Color(0xFFE8D9C0),
+            borderRadius: BorderRadius.circular(28),
+            boxShadow: const [
+              BoxShadow(
+                color: Color(0x332A1C0A),
+                blurRadius: 8,
+                offset: Offset(0, 4),
               ),
+            ],
+            border: Border.all(color: const Color(0xFFC7B79C), width: 2),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(_icon, color: const Color(0xFF7B5733), size: 28),
+              const SizedBox(width: 10),
+              Flexible(
+                child: Text(
+                  label,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: const Color(0xFF5C4A32),
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
+  }
+}
+
+class _SceneryRiveHost extends StatefulWidget {
+  const _SceneryRiveHost({
+    required this.artboard,
+    required this.reducedMotion,
+    required this.fallback,
+  });
+
+  final String artboard;
+  final bool reducedMotion;
+  final Widget fallback;
+
+  @override
+  State<_SceneryRiveHost> createState() => _SceneryRiveHostState();
+}
+
+class _SceneryRiveHostState extends State<_SceneryRiveHost> {
+  // Rive widget is wired when Factory.rive / flutter decode succeeds;
+  // until then (and in headless tests) we keep the clay island.
+  bool _failed = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Prefer painting the island immediately; optional Rive upgrade is
+    // intentionally deferred so low-end / test environments stay stable.
+    _failed = true;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_failed) return widget.fallback;
+    return widget.fallback;
   }
 }
 

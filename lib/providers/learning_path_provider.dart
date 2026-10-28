@@ -481,8 +481,10 @@ class PathScrollNodeItem extends PathScrollItem {
   final Lesson lesson;
 }
 
-const double kPathScrollItemExtent = 132;
-const double kPathBannerExtent = 108;
+/// Node row extent: 72px node + 24px gap (path recipe) + BEGIN pill slack.
+const double kPathScrollItemExtent = 96;
+/// Inline unit block (scene strip + ribbon).
+const double kPathBannerExtent = 160;
 const double kPathFrameBudgetMs = 16.7;
 
 Map<String, List<PathUnitBannerData>>? _candoUnitsCache;
