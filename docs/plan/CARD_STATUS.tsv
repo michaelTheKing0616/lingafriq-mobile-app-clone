@@ -284,7 +284,7 @@ P1-006	Draft	Strip AI provider keys from client builds and add guard	P1/P1-006.y
 P1-007	Done	Build authenticated AI gateway with server-owned prompt templates	P1/P1-007.yaml
 P1-008	Done	Enforce token clamps, per-user quotas and cost budgets in gateway	P1/P1-008.yaml
 P1-009	Draft	Move Groq, HF, Stability, Replicate and Leonardo calls server-side	P1/P1-009.yaml
-P1-010	Draft	Verify Play Integrity and App Attest on gateway and reward calls	P1/P1-010.yaml
+P1-010	Done	Play Integrity + App Attest gate (integrityVerify.service.ts, app_attest_service.dart, log/enforce, replay/outage)	P1/P1-010.yaml
 P1-011	Draft	Route client AI chat providers through the gateway	P1/P1-011.yaml
 P1-012	Done	Route persona missions through gateway with honest error state	P1/P1-012.yaml
 P1-013	Done	Add server-side room membership ACL and opaque room ids	P1/P1-013.yaml

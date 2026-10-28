@@ -15,6 +15,7 @@ import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:lingafriq/utils/certificate_pinning.dart';
 import 'package:lingafriq/utils/transport_error_policy.dart';
 
+import '../services/integrity/app_attest_service.dart';
 import '../services/monitoring/otel_tracer.dart';
 import '../utils/api.dart';
 
@@ -77,6 +78,7 @@ final client = Provider<Dio>(
     // Retry interceptor for transient DNS / connection failures.
     // Must be added BEFORE the logger so retries are transparent.
     dio.interceptors.add(_DnsRetryInterceptor());
+    dio.interceptors.add(AppAttestInterceptor(AppAttestService()));
     dio.interceptors.add(_TraceparentInterceptor());
     dio.interceptors.add(_DioLogger(ref));
     return dio;

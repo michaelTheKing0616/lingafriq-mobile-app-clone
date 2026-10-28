@@ -172,6 +172,8 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
+    // P1-010: Play Integrity token requests (server verifies via Google API + Doppler creds).
+    implementation 'com.google.android.play:integrity:1.4.0'
     
     // Note: Play Core is NOT included - it's incompatible with SDK 34+
     // Flutter references it for deferred components, but we don't use that feature
