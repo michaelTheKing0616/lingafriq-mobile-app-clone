@@ -119,23 +119,29 @@ class DownloadsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Downloads')),
-      body: ListView(
+      body: ListView.builder(
         padding: const EdgeInsets.all(16),
-        children: [
-          SwitchListTile(
-            contentPadding: EdgeInsets.zero,
-            title: const Text('Wi-Fi only'),
-            value: wifiOnly,
-            onChanged: onWifiOnlyChanged,
-          ),
-          if (lowStorage)
-            Semantics(
+        itemCount: 1 + (lowStorage ? 1 : 0) + units.length,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text('Wi-Fi only'),
+              value: wifiOnly,
+              onChanged: onWifiOnlyChanged,
+            );
+          }
+          if (lowStorage && index == 1) {
+            return Semantics(
               liveRegion: true,
               label: 'Not enough storage',
               child: const Text('Not enough storage'),
-            ),
-          for (final unit in units) _UnitTile(unit: unit, onDownload: onDownload, onDelete: onDelete),
-        ],
+            );
+          }
+          final unitIndex = index - 1 - (lowStorage ? 1 : 0);
+          final unit = units[unitIndex];
+          return _UnitTile(unit: unit, onDownload: onDownload, onDelete: onDelete);
+        },
       ),
     );
   }

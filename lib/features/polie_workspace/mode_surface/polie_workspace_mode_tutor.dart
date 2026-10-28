@@ -1,21 +1,8 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_tx_helpers.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lingafriq/data/polie_translate_language_options.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_models.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_parsing.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_providers.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_language_sheet.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_ui_helpers.dart';
-import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
-import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
-import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_layout.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_args.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_tutor_practice.dart';
 
@@ -58,7 +45,7 @@ Widget buildPolieTutorModeSurface(PolieModeSurfaceArgs a) {
                     ),
                     const SizedBox(height: 8),
                     DropdownButtonFormField<String>(
-                      value: a.tutorDifficulty.value,
+                      initialValue: a.tutorDifficulty.value,
                       dropdownColor: const Color(0xFF2A1F14),
                       style: const TextStyle(color: Color(0xFFFAF3E0)),
                       decoration: polieInputDecoration(
@@ -143,7 +130,7 @@ Widget buildPolieTutorModeSurface(PolieModeSurfaceArgs a) {
                             ),
                             const SizedBox(height: 8),
                             DropdownButtonFormField<String>(
-                              value: a.tutorDifficulty.value,
+                              initialValue: a.tutorDifficulty.value,
                               dropdownColor: const Color(0xFF2A1F14),
                               style: const TextStyle(color: Color(0xFFFAF3E0)),
                               decoration: polieInputDecoration(
@@ -338,7 +325,7 @@ Widget buildPolieTutorModeSurface(PolieModeSurfaceArgs a) {
                                           children: [
                                             Text(
                                               a.tutorLesson!
-                                                      ?.example.targetLang ??
+                                                      .example.targetLang ??
                                                   '-',
                                               style: GoogleFonts.nunito(
                                                 fontSize:
@@ -355,7 +342,7 @@ Widget buildPolieTutorModeSurface(PolieModeSurfaceArgs a) {
                                             ),
                                             Text(
                                               a.tutorLesson!
-                                                      ?.example.english ??
+                                                      .example.english ??
                                                   '-',
                                               style: layout.bodyStyle.copyWith(
                                                 fontSize:

@@ -1,8 +1,6 @@
 import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
@@ -166,7 +164,7 @@ class _LessonRecapScreenState extends State<LessonRecapScreen>
   Widget _buildStatsBento() {
     return Row(
       children: [
-        Expanded(
+        const Expanded(
           child: GriotStatCard(
             icon: Icons.bolt_rounded,
             value: '+85',
@@ -175,7 +173,7 @@ class _LessonRecapScreenState extends State<LessonRecapScreen>
           ),
         ),
         SizedBox(width: 12.w),
-        Expanded(
+        const Expanded(
           child: GriotStatCard(
             icon: Icons.timer_rounded,
             value: '4:32',
@@ -184,12 +182,12 @@ class _LessonRecapScreenState extends State<LessonRecapScreen>
           ),
         ),
         SizedBox(width: 12.w),
-        Expanded(
+        const Expanded(
           child: GriotStatCard(
             icon: Icons.check_circle_rounded,
             value: '92%',
             label: 'Accuracy',
-            iconColor: const Color(0xFF4CAF50),
+            iconColor: Color(0xFF4CAF50),
           ),
         ),
       ],

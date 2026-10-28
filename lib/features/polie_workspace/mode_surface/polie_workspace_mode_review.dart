@@ -1,21 +1,7 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_tx_helpers.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lingafriq/data/polie_translate_language_options.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_models.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_parsing.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_providers.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_language_sheet.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_ui_helpers.dart';
-import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
-import 'package:lingafriq/widgets/polie/polie_components.dart';
-import 'package:lingafriq/l10n/generated/app_localizations.dart';
-import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_layout.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_args.dart';
 
 Widget buildPolieReviewModeSurface(PolieModeSurfaceArgs a) {
@@ -230,7 +216,7 @@ return SingleChildScrollView(
                       a.reviewPayload!.coachingParagraph,
                       style: GoogleFonts.nunito(
                         fontSize: 14,
-                        color: Colors.white.withOpacity(0.95),
+                        color: Colors.white.withValues(alpha: 0.95),
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -248,7 +234,7 @@ return SingleChildScrollView(
                         margin: const EdgeInsets.only(bottom: 8),
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
+                          color: Colors.white.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
@@ -274,7 +260,7 @@ return SingleChildScrollView(
                         margin: const EdgeInsets.only(bottom: 8),
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
+                          color: Colors.white.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(

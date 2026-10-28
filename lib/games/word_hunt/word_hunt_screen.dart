@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/games/word_hunt/word_hunt_session.dart';
-import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/services/connectivity_service.dart';
 import 'package:lingafriq/services/lens/object_set_mapper.dart';
 import 'package:lingafriq/services/lens/on_device_object_classifier.dart';
@@ -142,7 +141,7 @@ class _WordHuntScreenState extends ConsumerState<WordHuntScreen> {
         if (widget.onSpeakWord != null) {
           await widget.onSpeakWord!(spoken);
         } else {
-          await dictionary.playEntry(entry!);
+          await dictionary.playEntry(entry);
         }
       }
 
@@ -168,7 +167,7 @@ class _WordHuntScreenState extends ConsumerState<WordHuntScreen> {
       case WordHuntFrameOutcomeKind.found:
       case WordHuntFrameOutcomeKind.huntComplete:
         SemanticsService.announce(
-          '${wordHuntFoundAnnouncement} ${outcome.spokenWord ?? outcome.matchedLabel ?? ''}',
+          '$wordHuntFoundAnnouncement ${outcome.spokenWord ?? outcome.matchedLabel ?? ''}',
           TextDirection.ltr,
         );
         break;

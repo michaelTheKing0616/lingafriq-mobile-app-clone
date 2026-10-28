@@ -184,7 +184,7 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: info.primaryColor.withOpacity(0.3),
+            color: info.primaryColor.withValues(alpha: 0.3),
             blurRadius: 20,
             spreadRadius: 5,
           ),
@@ -221,8 +221,8 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
               shape: BoxShape.circle,
               gradient: RadialGradient(
                 colors: [
-                  info.primaryColor.withOpacity(0.25),
-                  info.primaryColor.withOpacity(0.08),
+                  info.primaryColor.withValues(alpha: 0.25),
+                  info.primaryColor.withValues(alpha: 0.08),
                   Colors.transparent,
                 ],
                 stops: const [0.6, 0.85, 1.0],
@@ -234,7 +234,7 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
           CustomPaint(
             size: Size(widget.size * 0.92, widget.size * 0.92),
             painter: _OrbitRingPainter(
-              color: info.primaryColor.withOpacity(0.3),
+              color: info.primaryColor.withValues(alpha: 0.3),
               dotCount: 12,
             ),
           ),
@@ -251,24 +251,24 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
                 colors: [
                   info.primaryColor,
                   info.secondaryColor,
-                  info.secondaryColor.withOpacity(0.85),
+                  info.secondaryColor.withValues(alpha: 0.85),
                 ],
                 stops: const [0.0, 0.6, 1.0],
               ),
               border: Border.all(
                 color: Theme.of(
                   context,
-                ).colorScheme.onPrimary.withOpacity(0.35),
+                ).colorScheme.onPrimary.withValues(alpha: 0.35),
                 width: 2.5,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: info.primaryColor.withOpacity(0.45),
+                  color: info.primaryColor.withValues(alpha: 0.45),
                   blurRadius: 24,
                   spreadRadius: 2,
                 ),
                 BoxShadow(
-                  color: info.secondaryColor.withOpacity(0.2),
+                  color: info.secondaryColor.withValues(alpha: 0.2),
                   blurRadius: 40,
                   spreadRadius: 8,
                 ),
@@ -293,8 +293,8 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
                 borderRadius: BorderRadius.circular(100),
                 gradient: LinearGradient(
                   colors: [
-                    Theme.of(context).colorScheme.onPrimary.withOpacity(0.45),
-                    Theme.of(context).colorScheme.onPrimary.withOpacity(0.0),
+                    Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.45),
+                    Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.0),
                   ],
                 ),
               ),
@@ -312,12 +312,12 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
                 shape: BoxShape.circle,
                 color: Theme.of(context).colorScheme.surface,
                 border: Border.all(
-                  color: info.primaryColor.withOpacity(0.5),
+                  color: info.primaryColor.withValues(alpha: 0.5),
                   width: 2,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.15),
+                    color: Colors.black.withValues(alpha: 0.15),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
@@ -343,10 +343,10 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: info.primaryColor.withOpacity(0.3), width: 2),
+        border: Border.all(color: info.primaryColor.withValues(alpha: 0.3), width: 2),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),

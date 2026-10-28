@@ -73,26 +73,26 @@ class PolieElevation {
   static List<BoxShadow> level0 = [];
   static List<BoxShadow> level1(BuildContext context) => [
         BoxShadow(
-          color: Colors.black.withOpacity(0.15),
+          color: Colors.black.withValues(alpha: 0.15),
           blurRadius: 16,
           offset: const Offset(0, 4),
         ),
       ];
   static List<BoxShadow> level2(BuildContext context, {Color? glowColor}) => [
         BoxShadow(
-          color: (glowColor ?? PolieColors.royalAmethyst).withOpacity(0.25),
+          color: (glowColor ?? PolieColors.royalAmethyst).withValues(alpha: 0.25),
           blurRadius: 24,
           spreadRadius: 0,
         ),
         BoxShadow(
-          color: Colors.black.withOpacity(0.2),
+          color: Colors.black.withValues(alpha: 0.2),
           blurRadius: 24,
           offset: const Offset(0, 6),
         ),
       ];
   static List<BoxShadow> level3(BuildContext context) => [
         BoxShadow(
-          color: Colors.black.withOpacity(0.25),
+          color: Colors.black.withValues(alpha: 0.25),
           blurRadius: 32,
           offset: const Offset(0, 8),
         ),

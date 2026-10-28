@@ -138,7 +138,7 @@ class PolieModeSelectionScreen extends ConsumerWidget {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    SizedBox(width: 48),
+                    const SizedBox(width: 48),
                   ],
                 ),
               ),
@@ -207,7 +207,7 @@ class PolieModeSelectionScreen extends ConsumerWidget {
                                 Container(
                                   padding: EdgeInsets.all(PolieSpacing.md),
                                   decoration: BoxDecoration(
-                                    color: data.accentColor.withOpacity(0.25),
+                                    color: data.accentColor.withValues(alpha: 0.25),
                                     borderRadius: BorderRadius.circular(PolieRadius.md),
                                   ),
                                   child: Icon(data.icon, color: data.accentColor, size: 28),

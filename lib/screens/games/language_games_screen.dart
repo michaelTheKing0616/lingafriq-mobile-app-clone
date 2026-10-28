@@ -60,7 +60,7 @@ class LanguageGamesScreen extends HookConsumerWidget {
           Container(
             height: 30.h,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
@@ -80,7 +80,7 @@ class LanguageGamesScreen extends HookConsumerWidget {
                 Positioned.fill(
                   child: CustomPaint(
                     painter: _PatternPainter(
-                      color: colorScheme.onPrimary.withOpacity(0.1),
+                      color: colorScheme.onPrimary.withValues(alpha: 0.1),
                     ),
                   ),
                 ),
@@ -103,7 +103,7 @@ class LanguageGamesScreen extends HookConsumerWidget {
                                 backAction();
                               },
                               style: IconButton.styleFrom(
-                              backgroundColor: colorScheme.onPrimary.withOpacity(0.2),
+                              backgroundColor: colorScheme.onPrimary.withValues(alpha: 0.2),
                                 shape: const CircleBorder(),
                               ),
                             ),
@@ -130,14 +130,14 @@ class LanguageGamesScreen extends HookConsumerWidget {
                         SizedBox(height: PanAfricanSpacing.xs),
                         Text(
                           'Learn while having fun!',
-                          style: PanAfricanTypography.bodyMedium(context, color: colorScheme.onPrimary.withOpacity(0.9)),
+                          style: PanAfricanTypography.bodyMedium(context, color: colorScheme.onPrimary.withValues(alpha: 0.9)),
                         ),
                         SizedBox(height: PanAfricanSpacing.sm),
                         Wrap(
                           spacing: PanAfricanSpacing.xs,
                           runSpacing: PanAfricanSpacing.xs,
                           alignment: WrapAlignment.center,
-                          children: [
+                          children: const [
                             PanAfricanBadge(
                               label: '37 games',
                               color: PanAfricanColors.secondary,

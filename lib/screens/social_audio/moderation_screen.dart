@@ -223,7 +223,7 @@ class _ModerationScreenState extends ConsumerState<ModerationScreen> {
                                 Chip(
                                   label: Text(participant.role.name.toUpperCase()),
                                   labelStyle: TextStyle(fontSize: 10.sp),
-                                  backgroundColor: _getRoleColor(participant.role).withOpacity(0.2),
+                                  backgroundColor: _getRoleColor(participant.role).withValues(alpha: 0.2),
                                 ),
                                 if (participant.isMuted)
                                   Row(

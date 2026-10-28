@@ -1,64 +1,24 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lingafriq/content/lingafriq_ux_voice.dart';
-import 'package:lingafriq/models/correction_result.dart';
-import 'package:lingafriq/models/translation_history_model.dart';
-import 'package:lingafriq/models/tutor_progress_model.dart';
-import 'package:lingafriq/models/vocabulary_progress_model.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_providers.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_models.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_parsing.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_language_sheet.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_ui_helpers.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_mode_surface.dart';
-import 'package:lingafriq/services/ai_gateway_client.dart';
-import 'package:lingafriq/utils/supported_languages.dart';
-import 'package:lingafriq/content/polie_conversation_prompt_builder.dart';
-import 'package:lingafriq/services/ai/conversation_persistence_service.dart';
-import 'package:lingafriq/services/ai/polie_conversation_stream_service.dart';
 import 'package:lingafriq/services/ai/polie_voice_input_service.dart';
-import 'package:lingafriq/services/content/polie_prompt_service.dart';
-import 'package:lingafriq/services/content/polie_conversation_service.dart';
-import 'package:lingafriq/services/review_progress_service.dart';
-import 'package:lingafriq/services/translation_history_service.dart';
-import 'package:lingafriq/services/tutor_progress_service.dart';
-import 'package:lingafriq/services/vocabulary/vocabulary_service.dart';
-import 'package:lingafriq/services/vocabulary_progress_service.dart';
-import 'package:lingafriq/services/hybrid_polie/translation_service.dart';
 import 'package:lingafriq/services/polie_tutor_saved_cards_service.dart';
-import 'package:lingafriq/services/telemetry_service.dart';
-import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
-import 'package:lingafriq/utils/diacritics_enforcer.dart';
-import 'package:lingafriq/widgets/polie/polie_components.dart';
-import 'package:lingafriq/data/polie_translate_language_options.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uuid/uuid.dart' as uuid;
 
-import 'package:lingafriq/features/polie_workspace/polie_workspace_history_helpers.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_screen_widget.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_tx_helpers.dart';
 
 import 'package:lingafriq/features/polie_workspace/build_host/polie_workspace_host_state.dart';
 import 'package:lingafriq/features/polie_workspace/build_host/polie_workspace_host_handlers_1.dart';
 
 mixin PolieWorkspaceHostHandlers2 on PolieWorkspaceHostState, PolieWorkspaceHostHandlers1 {
 Future<void> loadTutorLesson() async {
-  if (this.tutorAutoLoadInFlight.value) return;
-  this.tutorAutoLoadInFlight.value = true;
-  this.isBusy.value = true;
-  this.tutorFeedback.value = null;
-  this.tutorFlipped.value = false;
+  if (tutorAutoLoadInFlight.value) return;
+  tutorAutoLoadInFlight.value = true;
+  isBusy.value = true;
+  tutorFeedback.value = null;
+  tutorFlipped.value = false;
   try {
-    final difficultyGuide = switch (this.tutorDifficulty.value) {
+    final difficultyGuide = switch (tutorDifficulty.value) {
       'beginner' =>
         'Focus on simple vocabulary, basic greetings, common phrases. Include heavy transliteration. Keep explanations simple and encouraging.',
       'intermediate' =>
@@ -67,7 +27,7 @@ Future<void> loadTutorLesson() async {
         'Focus on idiomatic expressions, literary devices, nuanced usage, proverbs. Minimal transliteration. Challenge the learner.',
       _ => '',
     };
-    final seenConceptList = this.tutorSeenConcepts.value.take(20).join(', ');
+    final seenConceptList = tutorSeenConcepts.value.take(20).join(', ');
     final noveltyConstraint = seenConceptList.isEmpty
         ? ''
         : 'Do NOT repeat previously used concepts: $seenConceptList';
@@ -84,20 +44,20 @@ Return STRICT JSON only.
  "practice_hint":"a subtle hint to help answer the practice question"
 }
 
-Generate a tutor card for $targetLanguage at ${this.tutorDifficulty.value} level.
+Generate a tutor card for $targetLanguage at ${tutorDifficulty.value} level.
 $difficultyGuide
 $noveltyConstraint
 Use a fresh concept each time. Nonce: $nonce
 Make the card intelligent, informative, and culturally rich.
 ''');
     if (json != null) {
-      final parsed = TutorLessonPayload.fromJson(json, this.modeResponse.value);
+      final parsed = TutorLessonPayload.fromJson(json, modeResponse.value);
       final hasCoreFields =
           parsed.concept.trim().isNotEmpty &&
           parsed.explanation.trim().isNotEmpty;
       if (hasCoreFields) {
         final conceptKey = parsed.concept.trim().toLowerCase();
-        if (this.tutorSeenConcepts.value.contains(conceptKey)) {
+        if (tutorSeenConcepts.value.contains(conceptKey)) {
           final retryJson = await askForJson('''
 Return STRICT JSON only with all fields populated.
 {
@@ -109,40 +69,40 @@ Return STRICT JSON only with all fields populated.
  "practice_question":"an instructive question for the learner to practice this concept",
  "practice_hint":"a subtle hint to help answer the practice question"
 }
-Generate a COMPLETE and DIFFERENT tutor card concept for $targetLanguage at ${this.tutorDifficulty.value} level.
+Generate a COMPLETE and DIFFERENT tutor card concept for $targetLanguage at ${tutorDifficulty.value} level.
 Do not use this concept again: ${parsed.concept}
-Do not use any of these prior concepts: ${this.tutorSeenConcepts.value.take(20).join(', ')}
+Do not use any of these prior concepts: ${tutorSeenConcepts.value.take(20).join(', ')}
 Nonce: ${DateTime.now().microsecondsSinceEpoch}
 ''');
           if (retryJson != null) {
             final retryParsed = TutorLessonPayload.fromJson(
               retryJson,
-              this.modeResponse.value,
+              modeResponse.value,
             );
-            this.tutorSeenConcepts.value = {
+            tutorSeenConcepts.value = {
               ...tutorSeenConcepts.value,
               retryParsed.concept.trim().toLowerCase(),
             };
             await PolieTutorSavedCardsService.addSeenConceptKey(
               targetLanguage: targetLanguage,
-              difficulty: this.tutorDifficulty.value,
+              difficulty: tutorDifficulty.value,
               conceptKey: retryParsed.concept.trim().toLowerCase(),
             );
-            this.tutorLesson.value = retryParsed;
+            tutorLesson.value = retryParsed;
             await refreshTutorSavedCards();
           } else {
-            this.tutorLesson.value = parsed;
+            tutorLesson.value = parsed;
             await refreshTutorSavedCards();
           }
           return;
         }
-        this.tutorSeenConcepts.value = {...tutorSeenConcepts.value, conceptKey};
+        tutorSeenConcepts.value = {...tutorSeenConcepts.value, conceptKey};
         await PolieTutorSavedCardsService.addSeenConceptKey(
           targetLanguage: targetLanguage,
-          difficulty: this.tutorDifficulty.value,
+          difficulty: tutorDifficulty.value,
           conceptKey: conceptKey,
         );
-        this.tutorLesson.value = parsed;
+        tutorLesson.value = parsed;
         await refreshTutorSavedCards();
       } else {
         // Retry once with stricter completeness constraints.
@@ -158,19 +118,19 @@ Return STRICT JSON only with all fields populated.
  "practice_hint":"a subtle hint to help answer the practice question"
 }
 Do not leave concept or explanation empty.
-Generate a complete tutor card for $targetLanguage at ${this.tutorDifficulty.value} level.
+Generate a complete tutor card for $targetLanguage at ${tutorDifficulty.value} level.
 ''');
         if (retryJson != null) {
-          this.tutorLesson.value = TutorLessonPayload.fromJson(
+          tutorLesson.value = TutorLessonPayload.fromJson(
             retryJson,
-            this.modeResponse.value,
+            modeResponse.value,
           );
-          final ck = this.tutorLesson.value!.concept.trim().toLowerCase();
+          final ck = tutorLesson.value!.concept.trim().toLowerCase();
           if (ck.isNotEmpty) {
-            this.tutorSeenConcepts.value = {...tutorSeenConcepts.value, ck};
+            tutorSeenConcepts.value = {...tutorSeenConcepts.value, ck};
             await PolieTutorSavedCardsService.addSeenConceptKey(
               targetLanguage: targetLanguage,
-              difficulty: this.tutorDifficulty.value,
+              difficulty: tutorDifficulty.value,
               conceptKey: ck,
             );
           }
@@ -179,24 +139,24 @@ Generate a complete tutor card for $targetLanguage at ${this.tutorDifficulty.val
       }
     }
   } catch (e) {
-    this.modeError.value =
+    modeError.value =
         'Failed to load tutor card: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
   } finally {
-    this.isBusy.value = false;
-    this.tutorAutoLoadInFlight.value = false;
+    isBusy.value = false;
+    tutorAutoLoadInFlight.value = false;
   }
 }
 
 
 Future<void> saveCurrentTutorCard() async {
-  final lesson = this.tutorLesson.value;
+  final lesson = tutorLesson.value;
   if (lesson == null) return;
   final conceptKey = lesson.concept.trim().toLowerCase();
   if (conceptKey.isEmpty) return;
   await PolieTutorSavedCardsService.saveCard(
     PolieTutorSavedCard(
       targetLanguage: targetLanguage,
-      difficulty: this.tutorDifficulty.value,
+      difficulty: tutorDifficulty.value,
       conceptKey: conceptKey,
       concept: lesson.concept,
       explanation: lesson.explanation,
@@ -215,14 +175,14 @@ Future<void> saveCurrentTutorCard() async {
 
 
 Future<void> openTutorSavedCards() async {
-  final l10n = AppLocalizations.of(this.context)!;
+  final l10n = AppLocalizations.of(context)!;
   await refreshTutorSavedCards();
   await showModalBottomSheet<void>(
-    context: this.context,
+    context: context,
     isScrollControlled: true,
     builder: (sheetContext) => StatefulBuilder(
       builder: (sheetContext, setSheetState) {
-        final items = this.tutorSavedCards.value;
+        final items = tutorSavedCards.value;
         return SafeArea(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
@@ -267,7 +227,7 @@ Future<void> openTutorSavedCards() async {
                             overflow: TextOverflow.ellipsis,
                           ),
                           onTap: () {
-                            this.tutorLesson.value = TutorLessonPayload(
+                            tutorLesson.value = TutorLessonPayload(
                               concept: c.concept,
                               explanation: c.explanation,
                               example: TutorExample(
@@ -280,8 +240,8 @@ Future<void> openTutorSavedCards() async {
                               practiceQuestion: c.practiceQuestion,
                               practiceHint: c.practiceHint,
                             );
-                            this.tutorFeedback.value = null;
-                            this.tutorFlipped.value = false;
+                            tutorFeedback.value = null;
+                            tutorFlipped.value = false;
                             Navigator.of(sheetContext).pop();
                             refreshTutorSavedCards();
                           },
@@ -310,13 +270,13 @@ Future<void> openTutorSavedCards() async {
 
 
 Future<void> checkTutorAnswer() async {
-  final answer = this.tutorInput.text.trim();
-  if (answer.isEmpty || this.tutorLesson.value == null) return;
-  this.isBusy.value = true;
+  final answer = tutorInput.text.trim();
+  if (answer.isEmpty || tutorLesson.value == null) return;
+  isBusy.value = true;
   try {
-    final questionCtx = this.tutorLesson.value!.practiceQuestion != null
-        ? 'Practice question: ${this.tutorLesson.value!.practiceQuestion}'
-        : 'Expected style example: ${this.tutorLesson.value!.example.targetLang}';
+    final questionCtx = tutorLesson.value!.practiceQuestion != null
+        ? 'Practice question: ${tutorLesson.value!.practiceQuestion}'
+        : 'Expected style example: ${tutorLesson.value!.example.targetLang}';
     final json = await askForJson('''
 Return STRICT JSON only.
 {
@@ -331,7 +291,7 @@ Return STRICT JSON only.
 }
 
 Language: $targetLanguage
-Concept: ${this.tutorLesson.value!.concept}
+Concept: ${tutorLesson.value!.concept}
 $questionCtx
 User answer: "$answer"
 Evaluate pedagogically:
@@ -340,37 +300,37 @@ Evaluate pedagogically:
 - Give one next action and one micro drill
 ''');
     if (json != null) {
-      this.tutorFeedback.value = TutorFeedbackPayload.fromJson(
+      tutorFeedback.value = TutorFeedbackPayload.fromJson(
         json,
-        this.modeResponse.value,
+        modeResponse.value,
       );
-      await this.tutorProgress.recordSession(
+      await tutorProgress.recordSession(
         polieBuildTutorSessionResult(
           language: targetLanguage,
           answer: answer,
-          verdict: this.tutorFeedback.value!,
-          concept: this.tutorLesson.value!.concept,
+          verdict: tutorFeedback.value!,
+          concept: tutorLesson.value!.concept,
         ),
       );
     }
   } catch (e) {
-    this.modeError.value =
+    modeError.value =
         'Failed to check answer: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
   } finally {
-    this.isBusy.value = false;
+    isBusy.value = false;
   }
 }
 
 
 Future<void> sendRoleplayTurn() async {
-  final input = this.roleplayInput.text.trim();
+  final input = roleplayInput.text.trim();
   if (input.isEmpty) return;
-  this.roleplayMessages.value = [
+  roleplayMessages.value = [
     ...roleplayMessages.value,
     RoleplayTurn.user(input),
   ];
-  this.roleplayInput.clear();
-  this.isBusy.value = true;
+  roleplayInput.clear();
+  isBusy.value = true;
   try {
     final json = await askForJson('''
 Return STRICT JSON only. Do NOT include any text outside the JSON object.
@@ -390,32 +350,32 @@ Return STRICT JSON only. Do NOT include any text outside the JSON object.
  }
 }
 
-Roleplay scene: ${this.roleplayScene.value}
-Difficulty: ${this.roleplayDifficulty.value}
+Roleplay scene: ${roleplayScene.value}
+Difficulty: ${roleplayDifficulty.value}
 Target language: $targetLanguage
 User line: "$input"
 Stay in character. Respond naturally for the scene.
 ''');
     if (json != null) {
-      this.roleplayMessages.value = [
+      roleplayMessages.value = [
         ...roleplayMessages.value,
         RoleplayTurn.ai(
-          RoleplayPayload.fromJson(json, this.modeResponse.value),
+          RoleplayPayload.fromJson(json, modeResponse.value),
         ),
       ];
     } else {
-      this.roleplayMessages.value = [
+      roleplayMessages.value = [
         ...roleplayMessages.value,
         RoleplayTurn.ai(
-          RoleplayPayload(
-            characterResponse: const RoleplayCharacterResponse(
+          const RoleplayPayload(
+            characterResponse: RoleplayCharacterResponse(
               targetLang: '...',
               transliteration: '-',
               english: '(Polie could not parse this response. Try again!)',
               emotion: 'neutral',
               action: null,
             ),
-            coaching: const RoleplayCoaching(
+            coaching: RoleplayCoaching(
               userAccuracy: 0,
               feedbackType: 'encouragement',
               feedback:
@@ -427,53 +387,53 @@ Stay in character. Respond naturally for the scene.
       ];
     }
   } catch (e) {
-    this.modeError.value =
+    modeError.value =
         'Roleplay error: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';
   } finally {
-    this.isBusy.value = false;
+    isBusy.value = false;
   }
 }
 
 
 Future<void> toggleConversationVoiceInput() async {
-  this.voiceErrorMessage.value = null;
-  if (this.voiceListening.value) {
-    await this.voiceService.stop();
-    this.voiceListening.value = false;
+  voiceErrorMessage.value = null;
+  if (voiceListening.value) {
+    await voiceService.stop();
+    voiceListening.value = false;
     return;
   }
   try {
     // Subscribe before starting so we don't miss the first transcript.
     late StreamSubscription<PolieVoiceTranscript> sub;
-    sub = this.voiceService.transcripts.listen(
+    sub = voiceService.transcripts.listen(
       (t) {
-        this.conversationInput.text = t.text;
-        this.conversationInput.selection = TextSelection.fromPosition(
-          TextPosition(offset: this.conversationInput.text.length),
+        conversationInput.text = t.text;
+        conversationInput.selection = TextSelection.fromPosition(
+          TextPosition(offset: conversationInput.text.length),
         );
         if (t.isFinal) {
-          this.voiceListening.value = false;
+          voiceListening.value = false;
           sub.cancel();
           if (t.text.trim().isNotEmpty) {
             // Auto-send after [sendConversation] is defined (see effect below).
-            this.pendingVoiceConversationText.value = t.text.trim();
+            pendingVoiceConversationText.value = t.text.trim();
           }
         }
       },
       onError: (e) {
-        this.voiceErrorMessage.value = e.toString();
-        this.voiceListening.value = false;
+        voiceErrorMessage.value = e.toString();
+        voiceListening.value = false;
         sub.cancel();
       },
       onDone: () {
         sub.cancel();
       },
     );
-    this.voiceListening.value = true;
-    await this.voiceService.start(language: targetLanguage);
+    voiceListening.value = true;
+    await voiceService.start(language: targetLanguage);
   } catch (e) {
-    this.voiceErrorMessage.value = e.toString();
-    this.voiceListening.value = false;
+    voiceErrorMessage.value = e.toString();
+    voiceListening.value = false;
   }
 }
 

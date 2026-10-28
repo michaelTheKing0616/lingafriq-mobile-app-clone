@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/providers/tts_provider.dart';
 import 'package:lingafriq/services/tts/dynamic_tts_label.dart';
-import 'story_library.dart';
 import 'story_tts_policy.dart';
 import 'story_types.dart';
 
@@ -68,9 +67,11 @@ class StoryModeScreen extends HookConsumerWidget {
             ),
         ],
       ),
-      body: ListView(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        children: [
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
           Wrap(
             spacing: 8,
             runSpacing: 4,
@@ -91,35 +92,41 @@ class StoryModeScreen extends HookConsumerWidget {
                 style: TextStyle(fontStyle: FontStyle.italic),
               ),
             ),
-          ...session.paragraphs.map(
-            (paragraph) => Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SelectableText(
-                    paragraph,
-                    onTap: () {
-                      for (final gloss in session.glosses) {
-                        if (paragraph.contains(gloss.surface)) {
-                          selectedGloss.value = gloss;
-                          HapticFeedback.selectionClick();
-                          break;
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: session.paragraphs.length,
+            itemBuilder: (context, index) {
+              final paragraph = session.paragraphs[index];
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SelectableText(
+                      paragraph,
+                      onTap: () {
+                        for (final gloss in session.glosses) {
+                          if (paragraph.contains(gloss.surface)) {
+                            selectedGloss.value = gloss;
+                            HapticFeedback.selectionClick();
+                            break;
+                          }
                         }
-                      }
-                    },
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: TextButton.icon(
-                      onPressed: () => narrateParagraph(paragraph),
-                      icon: const Icon(Icons.volume_up, size: 18),
-                      label: const Text('Listen'),
+                      },
                     ),
-                  ),
-                ],
-              ),
-            ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton.icon(
+                        onPressed: () => narrateParagraph(paragraph),
+                        icon: const Icon(Icons.volume_up, size: 18),
+                        label: const Text('Listen'),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
           if (selectedGloss.value != null)
             Card(
@@ -137,33 +144,39 @@ class StoryModeScreen extends HookConsumerWidget {
             'Comprehension',
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          ...List.generate(session.comprehension.length, (index) {
-            final q = session.comprehension[index];
-            return Card(
-              child: ExpansionTile(
-                title: Text(q.questionL1),
-                onExpansionChanged: (open) {
-                  quizIndex.value = open ? index : null;
-                },
-                children: q.optionsL1
-                    .map(
-                      (opt) => ListTile(
-                        title: Text(opt),
-                        onTap: () {
-                          final correct = q.optionsL1[q.correctIndex] == opt;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(correct ? 'Correct' : 'Try again'),
-                            ),
-                          );
-                        },
-                      ),
-                    )
-                    .toList(growable: false),
-              ),
-            );
-          }),
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: session.comprehension.length,
+            itemBuilder: (context, index) {
+              final q = session.comprehension[index];
+              return Card(
+                child: ExpansionTile(
+                  title: Text(q.questionL1),
+                  onExpansionChanged: (open) {
+                    quizIndex.value = open ? index : null;
+                  },
+                  children: q.optionsL1
+                      .map(
+                        (opt) => ListTile(
+                          title: Text(opt),
+                          onTap: () {
+                            final correct = q.optionsL1[q.correctIndex] == opt;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(correct ? 'Correct' : 'Try again'),
+                              ),
+                            );
+                          },
+                        ),
+                      )
+                      .toList(growable: false),
+                ),
+              );
+            },
+          ),
         ],
+        ),
       ),
     );
   }

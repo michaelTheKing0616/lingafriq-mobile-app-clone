@@ -75,7 +75,7 @@ class LearningPathWidget extends StatelessWidget {
             nodePositions: positions,
             activeIndex: activeIndex ?? 0,
             primaryColor: PanAfricanColors.primary,
-            inactiveColor: PanAfricanColors.neutralMedium.withOpacity(0.3),
+            inactiveColor: PanAfricanColors.neutralMedium.withValues(alpha: 0.3),
           ),
           child: Stack(
             clipBehavior: Clip.none,

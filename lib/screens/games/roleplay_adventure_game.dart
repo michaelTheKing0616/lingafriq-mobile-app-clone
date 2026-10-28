@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
-import '../../providers/game_provider.dart';
 import '../../providers/game_content_provider.dart';
 import '../../models/game/game_content_models.dart';
 import '../../utils/modern_griot_design_system.dart';
@@ -91,13 +89,13 @@ class _RoleplayAdventureGameState
         color: ModernGriotColors.secondary,
         isCorrect: true,
       ),
-      _DecisionOption(
+      const _DecisionOption(
         text: 'Switch to English casually',
         icon: Icons.language_rounded,
         color: ModernGriotColors.tertiary,
         isCorrect: false,
       ),
-      _DecisionOption(
+      const _DecisionOption(
         text: 'Stay silent and walk away',
         icon: Icons.directions_walk_rounded,
         color: ModernGriotColors.error,
@@ -208,7 +206,7 @@ class _RoleplayAdventureGameState
               children: [
                 CircleAvatar(
                   radius: 56.r,
-                  backgroundColor: Colors.white.withOpacity(0.25),
+                  backgroundColor: Colors.white.withValues(alpha: 0.25),
                   child: Icon(iconData, size: 48.sp, color: Colors.white),
                 ),
                 SizedBox(height: 16.h),
@@ -224,7 +222,7 @@ class _RoleplayAdventureGameState
                   'Chapter ${_currentIndex + 1}',
                   style: ModernGriotTypography.labelLarge(
                     context: context,
-                    color: Colors.white.withOpacity(0.8),
+                    color: Colors.white.withValues(alpha: 0.8),
                   ),
                 ),
               ],
@@ -259,7 +257,7 @@ class _RoleplayAdventureGameState
         Container(
           height: 12.h,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             borderRadius: ModernGriotRadius.borderPill,
           ),
           child: FractionallySizedBox(
@@ -290,7 +288,7 @@ class _RoleplayAdventureGameState
             children: [
               CircleAvatar(
                 radius: 18.r,
-                backgroundColor: ModernGriotColors.primaryContainer.withOpacity(0.3),
+                backgroundColor: ModernGriotColors.primaryContainer.withValues(alpha: 0.3),
                 child: Icon(Icons.person_rounded, size: 20.sp,
                     color: ModernGriotColors.primary),
               ),
@@ -338,11 +336,11 @@ class _RoleplayAdventureGameState
 
     Color bgColor;
     if (showCorrect) {
-      bgColor = ModernGriotColors.secondary.withOpacity(0.15);
+      bgColor = ModernGriotColors.secondary.withValues(alpha: 0.15);
     } else if (showWrong) {
-      bgColor = ModernGriotColors.error.withOpacity(0.15);
+      bgColor = ModernGriotColors.error.withValues(alpha: 0.15);
     } else if (isSelected) {
-      bgColor = option.color.withOpacity(0.12);
+      bgColor = option.color.withValues(alpha: 0.12);
     } else {
       bgColor = cs.surfaceContainerLow;
     }
@@ -359,8 +357,8 @@ class _RoleplayAdventureGameState
           boxShadow: isSelected ? ModernGriotShadows.md : ModernGriotShadows.sm,
           border: Border.all(
             color: isSelected
-                ? option.color.withOpacity(0.5)
-                : cs.outlineVariant.withOpacity(0.15),
+                ? option.color.withValues(alpha: 0.5)
+                : cs.outlineVariant.withValues(alpha: 0.15),
             width: isSelected ? 2 : 1,
           ),
         ),
@@ -369,7 +367,7 @@ class _RoleplayAdventureGameState
             Container(
               width: 40.r, height: 40.r,
               decoration: BoxDecoration(
-                color: option.color.withOpacity(0.15),
+                color: option.color.withValues(alpha: 0.15),
                 shape: BoxShape.circle,
               ),
               child: Icon(option.icon, size: 20.sp, color: option.color),

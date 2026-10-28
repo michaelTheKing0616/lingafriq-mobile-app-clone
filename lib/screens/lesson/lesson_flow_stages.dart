@@ -175,7 +175,7 @@ class _LessonGuidedPracticeStageState extends State<LessonGuidedPracticeStage> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
                 side: BorderSide(
-                  color: border ?? Colors.grey.withOpacity(0.3),
+                  color: border ?? Colors.grey.withValues(alpha: 0.3),
                   width: border != null ? 2 : 1,
                 ),
               ),

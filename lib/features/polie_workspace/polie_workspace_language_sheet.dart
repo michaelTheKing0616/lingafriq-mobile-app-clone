@@ -4,7 +4,7 @@ import 'package:lingafriq/data/polie_translate_language_options.dart';
 
 /// Searchable bottom sheet for FLORES / NLLB language selection.
 class PolieLanguageSearchSheet extends StatefulWidget {
-  const PolieLanguageSearchSheet({
+  const PolieLanguageSearchSheet({super.key, 
     required this.title,
     required this.selectedDisplayName,
     required this.onSelected,

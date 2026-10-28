@@ -74,7 +74,7 @@ class LingAfriqEmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final textColor = isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7) : PanAfricanColors.textSecondary;
+    final textColor = isDark ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7) : PanAfricanColors.textSecondary;
     return Center(
       child: Padding(
         padding: EdgeInsets.all(PanAfricanSpacing.xl),

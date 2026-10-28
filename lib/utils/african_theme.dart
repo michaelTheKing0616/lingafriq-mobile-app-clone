@@ -41,8 +41,8 @@ class AfricanTheme {
         end: Alignment.bottomRight,
         colors: [
           baseColor,
-          baseColor.withOpacity(0.8),
-          baseColor.withOpacity(0.6),
+          baseColor.withValues(alpha: 0.8),
+          baseColor.withValues(alpha: 0.6),
         ],
         stops: const [0.0, 0.5, 1.0],
       ),
@@ -70,7 +70,7 @@ class AfricanTheme {
   static Color textSecondary(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final base = isDark ? textLight : textDark;
-    return base.withOpacity(0.8);
+    return base.withValues(alpha: 0.8);
   }
 
   static TextStyle headingStyle(BuildContext context) {
@@ -115,7 +115,7 @@ class AfricanPatternDecoration extends StatelessWidget {
         Positioned.fill(
           child: CustomPaint(
             painter: _AfricanPatternPainter(
-              color: (patternColor ?? AfricanTheme.primaryGreen).withOpacity(opacity),
+              color: (patternColor ?? AfricanTheme.primaryGreen).withValues(alpha: opacity),
             ),
           ),
         ),

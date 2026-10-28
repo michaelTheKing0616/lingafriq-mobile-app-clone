@@ -60,7 +60,7 @@ class DeleteAccountDialog extends StatelessWidget {
   static Future showDeleteAccountDialog(BuildContext context) async {
     return await showDialog(
       context: context,
-      barrierColor: Theme.of(context).colorScheme.scrim.withOpacity(0.85),
+      barrierColor: Theme.of(context).colorScheme.scrim.withValues(alpha: 0.85),
       builder: (context) => const DeleteAccountDialog(),
     );
   }
@@ -98,7 +98,7 @@ class EnterPasswordDialog extends HookConsumerWidget {
   static Future show(BuildContext context) async {
     return await showDialog(
       context: context,
-      barrierColor: Theme.of(context).colorScheme.scrim.withOpacity(0.85),
+      barrierColor: Theme.of(context).colorScheme.scrim.withValues(alpha: 0.85),
       builder: (context) => const EnterPasswordDialog(),
     );
   }

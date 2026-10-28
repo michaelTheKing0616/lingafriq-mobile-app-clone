@@ -45,13 +45,13 @@ class _GameAnswerTileState extends State<GameAnswerTile> {
 
     if (widget.showImmediateLocal && widget.immediateLocalCorrect != null) {
       if (widget.immediateLocalCorrect!) {
-        backgroundColor = Colors.green.withOpacity(0.2);
+        backgroundColor = Colors.green.withValues(alpha: 0.2);
         borderColor = Colors.green;
         textColor = Colors.green.shade900;
         trailingIcon = Icons.check_circle;
         iconColor = Colors.green;
       } else if (widget.isSelected) {
-        backgroundColor = Colors.red.withOpacity(0.2);
+        backgroundColor = Colors.red.withValues(alpha: 0.2);
         borderColor = Colors.red;
         textColor = Colors.red.shade900;
         trailingIcon = Icons.cancel;
@@ -63,24 +63,24 @@ class _GameAnswerTileState extends State<GameAnswerTile> {
       }
     } else if (widget.showResult) {
       if (widget.isCorrect) {
-        backgroundColor = Colors.green.withOpacity(0.2);
+        backgroundColor = Colors.green.withValues(alpha: 0.2);
         borderColor = Colors.green;
         textColor = Colors.green.shade900;
         trailingIcon = Icons.check_circle;
         iconColor = Colors.green;
       } else if (widget.isSelected && !widget.isCorrect) {
-        backgroundColor = Colors.red.withOpacity(0.2);
+        backgroundColor = Colors.red.withValues(alpha: 0.2);
         borderColor = Colors.red;
         textColor = Colors.red.shade900;
         trailingIcon = Icons.cancel;
         iconColor = Colors.red;
       } else {
-        backgroundColor = Colors.grey.withOpacity(0.1);
+        backgroundColor = Colors.grey.withValues(alpha: 0.1);
         borderColor = Colors.grey.shade300;
         textColor = Colors.grey.shade700;
       }
     } else if (widget.isSelected) {
-      backgroundColor = Colors.blue.withOpacity(0.2);
+      backgroundColor = Colors.blue.withValues(alpha: 0.2);
       borderColor = Colors.blue;
       textColor = Colors.blue.shade900;
     } else {
@@ -121,7 +121,7 @@ class _GameAnswerTileState extends State<GameAnswerTile> {
           boxShadow: widget.isSelected
               ? [
                   BoxShadow(
-                    color: borderColor.withOpacity(0.3),
+                    color: borderColor.withValues(alpha: 0.3),
                     blurRadius: 8,
                     spreadRadius: 2,
                   ),
@@ -160,7 +160,7 @@ class _GameAnswerTileState extends State<GameAnswerTile> {
           .shimmer(
             delay: 100.ms,
             duration: 500.ms,
-            color: widget.isCorrect ? Colors.green.withOpacity(0.3) : Colors.blue.withOpacity(0.3),
+            color: widget.isCorrect ? Colors.green.withValues(alpha: 0.3) : Colors.blue.withValues(alpha: 0.3),
           ),
     ),
     );

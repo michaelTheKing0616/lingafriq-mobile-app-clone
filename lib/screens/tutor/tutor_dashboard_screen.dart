@@ -93,14 +93,14 @@ class _TutorDashboardScreenState extends State<TutorDashboardScreen>
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      appBar: StandardAppBar(
+      appBar: const StandardAppBar(
         title: 'Polie Tutor',
         showBackButton: true,
         showDrawerButton: true,
       ),
       drawer: const AppDrawerMaterial3(),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -255,7 +255,7 @@ class _ModeCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(PolieRadius.lg),
           boxShadow: PolieElevation.level1(context),
           border: Border.all(
-            color: mode.color.withOpacity(0.4),
+            color: mode.color.withValues(alpha: 0.4),
             width: 1.5,
           ),
         ),
@@ -265,7 +265,7 @@ class _ModeCard extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(PolieSpacing.sm),
               decoration: BoxDecoration(
-                color: mode.color.withOpacity(0.2),
+                color: mode.color.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
               child: Icon(

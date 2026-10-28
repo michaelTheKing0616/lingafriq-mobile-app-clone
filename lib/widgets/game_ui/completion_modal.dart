@@ -119,9 +119,9 @@ class _StatChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
-        color: PanAfricanColors.primary.withOpacity(0.1),
+        color: PanAfricanColors.primary.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: PanAfricanColors.primary.withOpacity(0.35)),
+        border: Border.all(color: PanAfricanColors.primary.withValues(alpha: 0.35)),
       ),
       child: Text(
         '$label: $value',

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lingafriq/theme/stitch_theme_extensions.dart';
 import 'package:lingafriq/utils/modern_griot_design_system.dart';
@@ -25,12 +26,12 @@ final lightTheme = ThemeData(
   scaffoldBackgroundColor: ModernGriotColors.surface,
   cardColor: ModernGriotColors.surfaceContainerLowest,
   dividerColor: ModernGriotColors.onSurface.withValues(alpha: 0.08),
-  appBarTheme: AppBarTheme(
+  appBarTheme: const AppBarTheme(
     backgroundColor: Colors.transparent,
     elevation: 0,
     scrolledUnderElevation: 0,
-    iconTheme: const IconThemeData(color: ModernGriotColors.onSurface),
-    titleTextStyle: const TextStyle(
+    iconTheme: IconThemeData(color: ModernGriotColors.onSurface),
+    titleTextStyle: TextStyle(
       color: ModernGriotColors.onSurface,
       fontSize: 20,
       fontWeight: FontWeight.w600,
@@ -151,7 +152,7 @@ final lightTheme = ThemeData(
       fontFamily: 'Plus Jakarta Sans',
     ),
   ),
-  bottomSheetTheme: BottomSheetThemeData(
+  bottomSheetTheme: const BottomSheetThemeData(
     backgroundColor: ModernGriotColors.surfaceContainerLow,
     elevation: 0,
     shape: RoundedRectangleBorder(
@@ -222,7 +223,7 @@ final lightTheme = ThemeData(
       );
     }),
   ),
-  extensions: <ThemeExtension>[
+  extensions: const <ThemeExtension>[
     ModernGriotThemeExtension.light,
     FlbEditorialTheme.light,
     StitchArcadeTheme.light,
@@ -240,7 +241,7 @@ final darkTheme = ThemeData(
   scaffoldBackgroundColor: ModernGriotColorsDark.surface,
   cardColor: ModernGriotColorsDark.surfaceContainerLowest,
   dividerColor: ModernGriotColorsDark.onSurface.withValues(alpha: 0.08),
-  appBarTheme: AppBarTheme(
+  appBarTheme: const AppBarTheme(
     backgroundColor: Colors.transparent,
     elevation: 0,
     scrolledUnderElevation: 0,
@@ -315,7 +316,7 @@ final darkTheme = ThemeData(
     ),
     focusedBorder: UnderlineInputBorder(
       borderRadius: BorderRadius.circular(ModernGriotRadius.md),
-      borderSide: BorderSide(
+      borderSide: const BorderSide(
         color: ModernGriotColorsDark.primary,
         width: 2,
       ),
@@ -328,7 +329,7 @@ final darkTheme = ThemeData(
       ),
     ),
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-    hintStyle: TextStyle(
+    hintStyle: const TextStyle(
       color: ModernGriotColorsDark.onSurfaceVariant,
       fontFamily: 'Plus Jakarta Sans',
     ),
@@ -345,19 +346,19 @@ final darkTheme = ThemeData(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(ModernGriotRadius.xl),
     ),
-    titleTextStyle: TextStyle(
+    titleTextStyle: const TextStyle(
       color: ModernGriotColorsDark.onSurface,
       fontSize: 20,
       fontWeight: FontWeight.w600,
       fontFamily: 'Plus Jakarta Sans',
     ),
-    contentTextStyle: TextStyle(
+    contentTextStyle: const TextStyle(
       color: ModernGriotColorsDark.onSurfaceVariant,
       fontSize: 16,
       fontFamily: 'Plus Jakarta Sans',
     ),
   ),
-  bottomSheetTheme: BottomSheetThemeData(
+  bottomSheetTheme: const BottomSheetThemeData(
     backgroundColor: ModernGriotColorsDark.surfaceContainerLow,
     elevation: 0,
     shape: RoundedRectangleBorder(
@@ -370,7 +371,7 @@ final darkTheme = ThemeData(
   chipTheme: ChipThemeData(
     backgroundColor: ModernGriotColorsDark.surfaceVariant,
     selectedColor: ModernGriotColorsDark.primaryContainer,
-    labelStyle: TextStyle(
+    labelStyle: const TextStyle(
       color: ModernGriotColorsDark.onSurface,
       fontSize: 12,
       fontWeight: FontWeight.w600,
@@ -388,13 +389,13 @@ final darkTheme = ThemeData(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(ModernGriotRadius.lg),
     ),
-    titleTextStyle: TextStyle(
+    titleTextStyle: const TextStyle(
       color: ModernGriotColorsDark.onSurface,
       fontSize: 16,
       fontWeight: FontWeight.w500,
       fontFamily: 'Plus Jakarta Sans',
     ),
-    subtitleTextStyle: TextStyle(
+    subtitleTextStyle: const TextStyle(
       color: ModernGriotColorsDark.onSurfaceVariant,
       fontSize: 14,
       fontFamily: 'Plus Jakarta Sans',
@@ -413,14 +414,14 @@ final darkTheme = ThemeData(
     indicatorColor: ModernGriotColorsDark.primaryContainer.withValues(alpha: 0.2),
     labelTextStyle: WidgetStateProperty.resolveWith((states) {
       if (states.contains(WidgetState.selected)) {
-        return TextStyle(
+        return const TextStyle(
           color: ModernGriotColorsDark.primary,
           fontSize: 12,
           fontWeight: FontWeight.w600,
           fontFamily: 'Plus Jakarta Sans',
         );
       }
-      return TextStyle(
+      return const TextStyle(
         color: ModernGriotColorsDark.onSurfaceVariant,
         fontSize: 12,
         fontWeight: FontWeight.w500,
@@ -428,7 +429,7 @@ final darkTheme = ThemeData(
       );
     }),
   ),
-  extensions: <ThemeExtension>[
+  extensions: const <ThemeExtension>[
     ModernGriotThemeExtension.dark,
     FlbEditorialTheme.dark,
     StitchArcadeTheme.dark,

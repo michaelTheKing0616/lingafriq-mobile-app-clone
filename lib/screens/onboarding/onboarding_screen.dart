@@ -113,7 +113,7 @@ You can do this by going to your profile tab, and selecting the "Feedback" optio
                                     width: selected ? 24 : 6,
                                     height: 6,
                                     decoration: BoxDecoration(
-                                      color: selected ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.38),
+                                      color: selected ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.38),
                                       borderRadius: BorderRadius.circular(100),
                                     ),
                                   );

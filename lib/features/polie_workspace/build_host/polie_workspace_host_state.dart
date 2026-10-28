@@ -5,7 +5,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_models.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_screen_widget.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_ui_helpers.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart' hide ConversationTurn;
 import 'package:lingafriq/services/polie_tutor_saved_cards_service.dart';
 import 'package:lingafriq/services/ai/conversation_persistence_service.dart';

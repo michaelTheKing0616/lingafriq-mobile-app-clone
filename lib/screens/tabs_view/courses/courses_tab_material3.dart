@@ -15,7 +15,6 @@ import 'package:lingafriq/widgets/pan_african_app_bar.dart';
 import 'package:lingafriq/navigation/learning_experience_navigation.dart';
 import 'package:lingafriq/screens/tabs_view/home/language_detail_screen.dart';
 import 'package:lingafriq/utils/curriculum_languages.dart';
-import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart' show languagesProvider;
 import 'package:lingafriq/providers/tab_scaffold_provider.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
@@ -242,7 +241,7 @@ class _ProgressCard extends StatelessWidget {
                         width: 60.w,
                         height: 60.w,
                         color: PanAfricanColors.neutralLight,
-                        child: Icon(
+                        child: const Icon(
                           Icons.language,
                           color: PanAfricanColors.neutralMedium,
                         ),
@@ -251,7 +250,7 @@ class _ProgressCard extends StatelessWidget {
                         width: 60.w,
                         height: 60.w,
                         color: PanAfricanColors.neutralLight,
-                        child: Icon(
+                        child: const Icon(
                           Icons.language,
                           color: PanAfricanColors.neutralMedium,
                         ),
@@ -283,7 +282,7 @@ class _ProgressCard extends StatelessWidget {
                   ),
                   Semantics(
                     excludeSemantics: true,
-                    child: Icon(
+                    child: const Icon(
                       Icons.chevron_right_rounded,
                       color: PanAfricanColors.neutralMedium,
                     ),
@@ -321,7 +320,7 @@ class _ProgressCard extends StatelessWidget {
                       child: LinearProgressIndicator(
                         value: progress,
                         backgroundColor: PanAfricanColors.neutralLight,
-                        valueColor: AlwaysStoppedAnimation<Color>(
+                        valueColor: const AlwaysStoppedAnimation<Color>(
                           PanAfricanColors.primary,
                         ),
                         minHeight: 8.h,

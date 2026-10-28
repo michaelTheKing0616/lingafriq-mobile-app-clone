@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/chat/live_classroom_screen_material3.dart';
@@ -75,7 +74,7 @@ class _MicroMentorSessionDetailScreenState extends ConsumerState<MicroMentorSess
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     DropdownButtonFormField<String>(
-                      value: category,
+                      initialValue: category,
                       decoration: const InputDecoration(labelText: 'Category'),
                       items: _reportCategories
                           .map((e) => DropdownMenuItem<String>(value: e.$1, child: Text(e.$2)))

@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
-import '../../providers/game_content_provider.dart';
-import '../../models/game/game_content_models.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
@@ -452,7 +449,7 @@ class _ClanStoryLegacyTabletState
           if (_currentStep < _maxSteps)
             Padding(
               padding: EdgeInsets.only(top: 12.h),
-              child: GameCulturalNoteCard(
+              child: const GameCulturalNoteCard(
                 title: 'Cultural Note',
                 body: 'In many African traditions, lineage stories are '
                     'passed down through griots — oral historians who '
@@ -479,8 +476,7 @@ class _Ancestor {
     required this.description,
     required this.cardId,
     this.scenario,
-    this.completed = false,
-  });
+  }) : completed = false;
 }
 
 class _AncestralTreePainter extends CustomPainter {
@@ -564,7 +560,7 @@ class _AncestralTreePainter extends CustomPainter {
         final tp = TextPainter(
           text: TextSpan(
             text: ancestor.name.split(' ').first,
-            style: TextStyle(color: Colors.white, fontSize: 8, fontWeight: FontWeight.bold),
+            style: const TextStyle(color: Colors.white, fontSize: 8, fontWeight: FontWeight.bold),
           ),
           textDirection: TextDirection.ltr,
         )..layout(maxWidth: radius * 2);

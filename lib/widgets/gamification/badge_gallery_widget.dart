@@ -112,7 +112,7 @@ class _BadgeCard extends StatelessWidget {
               padding: EdgeInsets.all(PanAfricanSpacing.xs),
               decoration: BoxDecoration(
                 color: isUnlocked
-                    ? PanAfricanColors.secondary.withOpacity(0.2)
+                    ? PanAfricanColors.secondary.withValues(alpha: 0.2)
                     : Colors.transparent,
                 shape: BoxShape.circle,
               ),
@@ -145,7 +145,7 @@ class _BadgeCard extends StatelessWidget {
                   vertical: PanAfricanSpacing.xxxs,
                 ),
                 decoration: BoxDecoration(
-                  color: PanAfricanColors.secondary.withOpacity(0.2),
+                  color: PanAfricanColors.secondary.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                 ),
                 child: Text(
@@ -216,8 +216,8 @@ class BadgeDetailDialog extends StatelessWidget {
               padding: EdgeInsets.all(PanAfricanSpacing.md),
               decoration: BoxDecoration(
                 color: isUnlocked
-                    ? PanAfricanColors.secondary.withOpacity(0.2)
-                    : Colors.grey.withOpacity(0.2),
+                    ? PanAfricanColors.secondary.withValues(alpha: 0.2)
+                    : Colors.grey.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -253,8 +253,8 @@ class BadgeDetailDialog extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 color: isUnlocked
-                    ? PanAfricanColors.secondary.withOpacity(0.2)
-                    : Colors.grey.withOpacity(0.2),
+                    ? PanAfricanColors.secondary.withValues(alpha: 0.2)
+                    : Colors.grey.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(PanAfricanRadius.round),
               ),
               child: Text(

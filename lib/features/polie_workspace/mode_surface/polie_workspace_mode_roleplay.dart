@@ -1,21 +1,7 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_tx_helpers.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lingafriq/data/polie_translate_language_options.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_models.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_parsing.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_providers.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_language_sheet.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_ui_helpers.dart';
-import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
-import 'package:lingafriq/widgets/polie/polie_components.dart';
-import 'package:lingafriq/l10n/generated/app_localizations.dart';
-import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_layout.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_args.dart';
 
 Widget buildPolieRoleplayModeSurface(PolieModeSurfaceArgs a) {
@@ -72,7 +58,7 @@ Widget buildPolieRoleplayModeSurface(PolieModeSurfaceArgs a) {
                         FilledButton(
                           onPressed: () {},
                           style: FilledButton.styleFrom(
-                            backgroundColor: Colors.white.withOpacity(0.2),
+                            backgroundColor: Colors.white.withValues(alpha: 0.2),
                             foregroundColor: Colors.white,
                           ),
                           child: const Text('Change Scene'),
@@ -84,7 +70,7 @@ Widget buildPolieRoleplayModeSurface(PolieModeSurfaceArgs a) {
                       sceneSubtitle[a.roleplayScene.value] ??
                           'Practice natural conversation in a.context',
                       style: GoogleFonts.nunito(
-                        color: Colors.white.withOpacity(0.9),
+                        color: Colors.white.withValues(alpha: 0.9),
                         fontSize: 18,
                       ),
                     ),
@@ -187,7 +173,7 @@ Widget buildPolieRoleplayModeSurface(PolieModeSurfaceArgs a) {
                     ],
                   ),
                 ),
-                color: Colors.black.withOpacity(0.35),
+                color: Colors.black.withValues(alpha: 0.35),
               ),
             ),
             const SizedBox(height: 10),
@@ -223,7 +209,7 @@ Widget buildPolieRoleplayModeSurface(PolieModeSurfaceArgs a) {
                         color: const Color(0xFF15110D),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: const Color(0xFFD4822A).withOpacity(0.4),
+                          color: const Color(0xFFD4822A).withValues(alpha: 0.4),
                         ),
                       ),
                       child: Column(
@@ -292,7 +278,7 @@ Widget buildPolieRoleplayModeSurface(PolieModeSurfaceArgs a) {
                     );
                   },
                 ),
-                color: Colors.black.withOpacity(0.28),
+                color: Colors.black.withValues(alpha: 0.28),
               ),
             ),
             const SizedBox(height: 8),

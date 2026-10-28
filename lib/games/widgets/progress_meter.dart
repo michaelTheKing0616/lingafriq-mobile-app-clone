@@ -185,13 +185,13 @@ class ProgressMeter extends StatelessWidget {
                     gradient: LinearGradient(
                       colors: [
                         progressColor,
-                        progressColor.withOpacity(0.7),
+                        progressColor.withValues(alpha: 0.7),
                       ],
                     ),
                     borderRadius: BorderRadius.circular(height / 2),
                     boxShadow: [
                       BoxShadow(
-                        color: progressColor.withOpacity(0.5),
+                        color: progressColor.withValues(alpha: 0.5),
                         blurRadius: 4,
                         spreadRadius: 1,
                       ),

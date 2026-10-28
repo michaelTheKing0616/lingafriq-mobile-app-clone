@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/models/coaching_pattern.dart';
 import 'package:lingafriq/services/tutorials/jit_coaching_service.dart';
@@ -35,7 +34,7 @@ class CoachingTip extends StatelessWidget {
 
     Widget banner = Material(
       key: const ValueKey('coach-tip'),
-      color: tipColor.withOpacity(isOffline ? 0.92 : 1),
+      color: tipColor.withValues(alpha: isOffline ? 0.92 : 1),
       elevation: 0,
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -61,7 +60,7 @@ class CoachingTip extends StatelessWidget {
                     minimumSize: const Size(48, 48),
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
-                  child: Text(CoachingCopyKeys.defaultDismiss),
+                  child: const Text(CoachingCopyKeys.defaultDismiss),
                 ),
               ),
             ),

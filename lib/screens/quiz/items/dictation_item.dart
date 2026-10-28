@@ -65,7 +65,7 @@ class _DictationItemState extends State<DictationItem> {
         key: ValueKey<String>('phase-$_phase'),
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(ItemBuildCopy.dictation),
+          const Text(ItemBuildCopy.dictation),
           TextField(
             controller: _controller,
             enabled: _grade == null,

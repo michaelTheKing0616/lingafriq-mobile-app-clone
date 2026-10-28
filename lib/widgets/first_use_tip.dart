@@ -175,7 +175,7 @@ class FirstUseTip extends StatelessWidget {
 
     return Material(
       key: const ValueKey('phase-shown'),
-      color: PanAfricanColors.primary.withOpacity(0.08),
+      color: PanAfricanColors.primary.withValues(alpha: 0.08),
       child: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: PanAfricanSpacing.md,

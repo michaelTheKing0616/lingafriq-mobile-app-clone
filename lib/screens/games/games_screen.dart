@@ -40,7 +40,7 @@ class GamesScreen extends ConsumerWidget {
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : LinearGradient(
+              : const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -86,7 +86,7 @@ class GamesScreen extends ConsumerWidget {
                               'Learn through play',
                               style: PanAfricanTypography.bodyMedium(
                                 context,
-                                color: colorScheme.onPrimary.withOpacity(0.9),
+                                color: colorScheme.onPrimary.withValues(alpha: 0.9),
                               ),
                             ),
                           ],
@@ -96,7 +96,7 @@ class GamesScreen extends ConsumerWidget {
                       Container(
                         padding: EdgeInsets.all(PanAfricanSpacing.sm),
                         decoration: BoxDecoration(
-                          color: colorScheme.onPrimary.withOpacity(0.2),
+                          color: colorScheme.onPrimary.withValues(alpha: 0.2),
                           borderRadius: PanAfricanRadius.roundBR,
                         ),
                         child: Icon(
@@ -277,7 +277,7 @@ class _GameLanguageCard extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [color, color.withOpacity(0.7)],
+                  colors: [color, color.withValues(alpha: 0.7)],
                 ),
                 shape: BoxShape.circle,
                 boxShadow: PanAfricanShadows.glow(color),
@@ -306,7 +306,7 @@ class _GameLanguageCard extends StatelessWidget {
                 vertical: PanAfricanSpacing.xxs,
               ),
               decoration: BoxDecoration(
-                color: color.withOpacity(0.15),
+                color: color.withValues(alpha: 0.15),
                 borderRadius: PanAfricanRadius.roundBR,
               ),
               child: Text(
@@ -371,7 +371,7 @@ class GameTypesScreen extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : LinearGradient(
+              : const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -562,8 +562,8 @@ class ArcadeHeadlinerTile extends StatelessWidget {
         width: 148.w,
         height: 168.h,
         child: Material(
-          color: colorScheme.surfaceContainerHighest.withOpacity(
-            comingSoon ? 0.65 : 1,
+          color: colorScheme.surfaceContainerHighest.withValues(
+            alpha: comingSoon ? 0.65 : 1,
           ),
           borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
           child: InkWell(
@@ -672,7 +672,7 @@ class _GameTypeCard extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [color, color.withOpacity(0.7)],
+                  colors: [color, color.withValues(alpha: 0.7)],
                 ),
                 borderRadius: PanAfricanRadius.mdBR,
                 boxShadow: PanAfricanShadows.sm,
@@ -696,7 +696,7 @@ class _GameTypeCard extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(PanAfricanSpacing.xs),
               decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
+                color: color.withValues(alpha: 0.1),
                 borderRadius: PanAfricanRadius.roundBR,
               ),
               child: Icon(Icons.play_arrow_rounded, color: color, size: 24.sp),

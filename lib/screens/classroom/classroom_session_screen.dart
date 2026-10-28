@@ -289,9 +289,15 @@ class _ClassroomSessionScreenState extends ConsumerState<ClassroomSessionScreen>
                       Text('Recent sessions',
                           style: PanAfricanTypography.titleMedium(context)),
                       SizedBox(height: PanAfricanSpacing.sm),
-                      ..._sessions
-                          .map((s) => _SessionRow(isDark: isDark, session: s))
-                          ,
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: _sessions.length,
+                        itemBuilder: (context, index) => _SessionRow(
+                          isDark: isDark,
+                          session: _sessions[index],
+                        ),
+                      ),
                     ],
                   ),
                 ),

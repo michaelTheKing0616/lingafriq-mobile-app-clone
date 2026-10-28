@@ -46,7 +46,7 @@ class TakeQuizScreen extends ConsumerWidget {
               children: [
                 BackButton(color: Theme.of(context).colorScheme.onPrimary),
                 // PointsAndProfileImageBuilder(size: Size(0.1.sh, 0.1.sh)),
-                GreetingsBuilder(
+                const GreetingsBuilder(
                   greetingTitle: '',
                   pageTitle: "Take Quiz",
                 )
@@ -89,9 +89,9 @@ class TakeQuizScreen extends ConsumerWidget {
                                       vertical: 8.sp,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: Colors.black.withOpacity(0.35),
+                                      color: Colors.black.withValues(alpha: 0.35),
                                       borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(color: Colors.white.withOpacity(0.15)),
+                                      border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
                                     ),
                                     child: Text(
                                       'Choose a quiz type',
@@ -398,9 +398,9 @@ class _QuizTypeChip extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 10.sp, vertical: 7.sp),
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.42),
+            color: Colors.black.withValues(alpha: 0.42),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withOpacity(0.25)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.25)),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,

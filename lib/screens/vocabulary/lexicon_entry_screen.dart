@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/models/verified_lexeme.dart';
-import 'package:lingafriq/services/lens/lexicon_label_resolver.dart';
 import 'package:lingafriq/widgets/word_card_sheet.dart';
 
 /// copy_keys: entry.proverbs, entry.culture (P7-924).
@@ -260,13 +259,13 @@ class LexiconEntryScreen extends StatelessWidget {
             ),
             if (proverbs.isNotEmpty) ...[
               const SizedBox(height: 8),
-              _SectionHeading(title: kLexiconEntryProverbsTitle),
+              const _SectionHeading(title: kLexiconEntryProverbsTitle),
               for (final proverb in proverbs)
                 _ProverbTile(line: proverb),
             ],
             if (culture.isNotEmpty) ...[
               const SizedBox(height: 16),
-              _SectionHeading(title: kLexiconEntryCultureTitle),
+              const _SectionHeading(title: kLexiconEntryCultureTitle),
               for (final note in culture)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
@@ -278,7 +277,7 @@ class LexiconEntryScreen extends StatelessWidget {
             ],
             if (sameIdea.isNotEmpty) ...[
               const SizedBox(height: 16),
-              _SectionHeading(title: kLexiconEntrySameIdeaTitle),
+              const _SectionHeading(title: kLexiconEntrySameIdeaTitle),
               _SameIdeaStrip(rows: sameIdea),
             ],
           ],

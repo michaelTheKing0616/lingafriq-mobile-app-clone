@@ -115,7 +115,7 @@ class CreateQuizScreenEnhanced extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create Quiz'),
+        title: const Text('Create Quiz'),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -123,7 +123,7 @@ class CreateQuizScreenEnhanced extends HookConsumerWidget {
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : LinearGradient(
+              : const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -141,7 +141,7 @@ class CreateQuizScreenEnhanced extends HookConsumerWidget {
                 // Quality Badges Preview
                 if (qualityBadges.value.isNotEmpty)
                   Card(
-                    color: PanAfricanColors.primaryContainer.withOpacity(0.3),
+                    color: PanAfricanColors.primaryContainer.withValues(alpha: 0.3),
                     child: Padding(
                       padding: EdgeInsets.all(PanAfricanSpacing.md),
                       child: UGCQualityBadgesWidget(
@@ -287,8 +287,8 @@ class CreateQuizScreenEnhanced extends HookConsumerWidget {
                 // Add Question Button
                 ElevatedButton.icon(
                   onPressed: addQuestion,
-                  icon: Icon(Icons.add),
-                  label: Text('Add Question'),
+                  icon: const Icon(Icons.add),
+                  label: const Text('Add Question'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: PanAfricanColors.secondary,
                     foregroundColor: Theme.of(context).colorScheme.onSecondary,
@@ -305,8 +305,8 @@ class CreateQuizScreenEnhanced extends HookConsumerWidget {
                     padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
                   ),
                   child: isSubmitting.value
-                      ? CircularProgressIndicator()
-                      : Text('Create Quiz'),
+                      ? const CircularProgressIndicator()
+                      : const Text('Create Quiz'),
                 ),
               ],
             ),

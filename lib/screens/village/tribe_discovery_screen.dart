@@ -1,5 +1,3 @@
-import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -173,7 +171,7 @@ class TribeDiscoveryScreen extends ConsumerWidget {
                 color.withAlpha(80),
               ],
             ),
-            borderRadius: BorderRadius.vertical(
+            borderRadius: const BorderRadius.vertical(
               top: Radius.circular(ModernGriotRadius.lg),
             ),
           ),

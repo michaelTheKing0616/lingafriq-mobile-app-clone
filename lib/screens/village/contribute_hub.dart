@@ -42,7 +42,7 @@ class ContributeHubScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(title: Text(kVillageContributeTitle)),
+      appBar: AppBar(title: const Text(kVillageContributeTitle)),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [

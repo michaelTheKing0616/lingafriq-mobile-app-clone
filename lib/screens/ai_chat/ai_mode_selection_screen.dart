@@ -121,8 +121,8 @@ class AIModeSelectionScreen extends ConsumerWidget {
                     PolieColors.obsidian,
                   ]
                 : [
-                    PolieColors.primary.withOpacity(0.92),
-                    PolieColors.primaryDark.withOpacity(0.88),
+                    PolieColors.primary.withValues(alpha: 0.92),
+                    PolieColors.primaryDark.withValues(alpha: 0.88),
                   ],
           ),
         ),
@@ -237,7 +237,7 @@ class _ModeJourneyCard extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(PolieSpacing.md),
               decoration: BoxDecoration(
-                color: color.withOpacity(0.2),
+                color: color.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
               child: Icon(

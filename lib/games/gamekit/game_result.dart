@@ -13,7 +13,6 @@ import '../../learning/learner_model/learner_skill_state.dart';
 import '../../learning/learner_model/error_taxonomy.dart';
 import '../../services/learning/spaced_repetition_service.dart';
 import '../../config/api_contract.dart';
-import '../../providers/dio_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -279,7 +278,7 @@ Map<String, ScorerSkillSnapshot> scorerSnapshotsFromSession(GameSession session)
     final unsure = unsureFlag || lowConfidence || confidence == null;
     final accuracy = (map['accuracy'] as num?)?.toDouble();
     out[skillId] = ScorerSkillSnapshot(
-      accuracyPercent: unsure ? null : ((accuracy ?? confidence!) * 100).round().clamp(0, 100),
+      accuracyPercent: unsure ? null : ((accuracy ?? confidence) * 100).round().clamp(0, 100),
       unsure: unsure,
       fromPractice: session.practiceNotScored,
     );

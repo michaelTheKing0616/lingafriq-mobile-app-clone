@@ -417,7 +417,7 @@ class _ConversationScenariosScreenState extends ConsumerState<ConversationScenar
     return Scaffold(
       backgroundColor: isDark ? PolieColors.obsidian : PolieColors.surfaceLight,
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -434,7 +434,7 @@ class _ConversationScenariosScreenState extends ConsumerState<ConversationScenar
               _buildHeader(context),
               Expanded(
                 child: _isLoading
-                    ? Center(child: CircularProgressIndicator(color: PolieColors.electricTeal))
+                    ? const Center(child: CircularProgressIndicator(color: PolieColors.electricTeal))
                     : Column(
                         children: [
                           _buildPracticeTypeFilter(context),
@@ -455,7 +455,7 @@ class _ConversationScenariosScreenState extends ConsumerState<ConversationScenar
       child: Row(
         children: [
           IconButton(
-            icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary),
+            icon: const Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary),
             onPressed: () {
               HapticFeedback.lightImpact();
               Navigator.of(context).pop();
@@ -504,7 +504,7 @@ class _ConversationScenariosScreenState extends ConsumerState<ConversationScenar
           return ChoiceChip(
             selected: isSelected,
             label: Text(filter['label']!),
-            selectedColor: PolieColors.electricTeal.withOpacity(0.25),
+            selectedColor: PolieColors.electricTeal.withValues(alpha: 0.25),
             onSelected: (_) {
               HapticFeedback.selectionClick();
               setState(() {
@@ -633,12 +633,12 @@ class _ScenarioCard extends StatelessWidget {
         color: isDark ? PolieColors.surfaceContainer : PolieColors.surfaceContainerLight,
         borderRadius: BorderRadius.circular(PolieRadius.lg),
         border: Border.all(
-          color: difficultyColor.withOpacity(0.3),
+          color: difficultyColor.withValues(alpha: 0.3),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: difficultyColor.withOpacity(0.15),
+            color: difficultyColor.withValues(alpha: 0.15),
             blurRadius: 16,
             spreadRadius: 0,
           ),
@@ -665,7 +665,7 @@ class _ScenarioCard extends StatelessWidget {
                   width: 80.w,
                   height: 80.w,
                   decoration: BoxDecoration(
-                    color: difficultyColor.withOpacity(0.2),
+                    color: difficultyColor.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(PolieRadius.md),
                   ),
                   child: scenario.contextImage != null
@@ -731,7 +731,7 @@ class _ScenarioCard extends StatelessWidget {
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                              color: difficultyColor.withOpacity(0.2),
+                              color: difficultyColor.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(PolieRadius.sm),
                             ),
                             child: Text(
@@ -749,7 +749,7 @@ class _ScenarioCard extends StatelessWidget {
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                              color: PolieColors.primary.withOpacity(0.15),
+                              color: PolieColors.primary.withValues(alpha: 0.15),
                               borderRadius: BorderRadius.circular(PolieRadius.sm),
                             ),
                             child: Text(
@@ -766,7 +766,7 @@ class _ScenarioCard extends StatelessWidget {
                             size: 14.sp,
                             color: PolieColors.textSecondary,
                           ),
-                          SizedBox(width: 4),
+                          const SizedBox(width: 4),
                           Text(
                             '${scenario.estimatedTime} min',
                             style: PolieTypography.bodySmall(context).copyWith(

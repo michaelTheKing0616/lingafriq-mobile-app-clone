@@ -95,7 +95,7 @@ class ModernOnboardingScreen extends HookConsumerWidget {
                         decoration: BoxDecoration(
                           color: isActive 
                               ? Theme.of(context).colorScheme.onPrimary 
-                              : Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
+                              : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.3),
                           borderRadius: PanAfricanRadius.smBR,
                         ),
                       );
@@ -120,7 +120,7 @@ class ModernOnboardingScreen extends HookConsumerWidget {
                   },
                   child: Text(
                     'Skip',
-                    style: PanAfricanTypography.labelLarge(context, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9)),
+                    style: PanAfricanTypography.labelLarge(context, color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9)),
                   ),
                 ),
               ),
@@ -144,7 +144,7 @@ class _WelcomeScreen extends StatelessWidget {
     return FadeTransition(
       opacity: animationController,
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: PanAfricanGradients.forest,
         ),
         child: ResponsiveSafeArea(
@@ -182,7 +182,7 @@ class _WelcomeScreen extends StatelessWidget {
                               color: Theme.of(context).colorScheme.onPrimary,
                             )
                                 .animate(onPlay: (controller) => controller.repeat())
-                                .shimmer(duration: 2000.ms, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3))
+                                .shimmer(duration: 2000.ms, color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.3))
                                 .then()
                                 .scale(begin: const Offset(1.0, 1.0), end: const Offset(1.1, 1.1), duration: 1000.ms)
                                 .then()
@@ -210,7 +210,7 @@ class _WelcomeScreen extends StatelessWidget {
                             letterSpacing: -0.5,
                             shadows: [
                               Shadow(
-                                color: Colors.black.withOpacity(0.3),
+                                color: Colors.black.withValues(alpha: 0.3),
                                 blurRadius: 8,
                                 offset: const Offset(0, 2),
                               ),
@@ -224,7 +224,7 @@ class _WelcomeScreen extends StatelessWidget {
                         child: Text(
                           'Discover the beauty of African languages',
                           textAlign: TextAlign.center,
-                          style: PanAfricanTypography.bodyLarge(context, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9)),
+                          style: PanAfricanTypography.bodyLarge(context, color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9)),
                         ),
                       ),
                     ],
@@ -350,7 +350,7 @@ class _FeatureCard extends StatelessWidget {
         borderRadius: PanAfricanRadius.xlBR,
         boxShadow: PanAfricanShadows.md,
         border: Border.all(
-          color: color.withOpacity(0.2),
+          color: color.withValues(alpha: 0.2),
           width: 2,
         ),
       ),
@@ -360,7 +360,7 @@ class _FeatureCard extends StatelessWidget {
             width: 64.w,
             height: 64.w,
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               borderRadius: PanAfricanRadius.lgBR,
             ),
             child: Icon(
@@ -403,7 +403,7 @@ class _AdventureScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: PanAfricanGradients.forest,
       ),
       child: Stack(
@@ -476,7 +476,7 @@ class _AdventureScreen extends StatelessWidget {
                               letterSpacing: -1,
                               shadows: [
                                 Shadow(
-                                  color: Colors.black.withOpacity(0.3),
+                                  color: Colors.black.withValues(alpha: 0.3),
                                   blurRadius: 12,
                                   offset: const Offset(0, 4),
                                 ),
@@ -490,7 +490,7 @@ class _AdventureScreen extends StatelessWidget {
                           child: Text(
                             'Explore 54 countries, 2000+ languages,\nand connect with 1+ billion voices',
                             textAlign: TextAlign.center,
-                            style: PanAfricanTypography.bodyLarge(context, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9)),
+                            style: PanAfricanTypography.bodyLarge(context, color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9)),
                           ),
                         ),
                       ],
@@ -638,7 +638,7 @@ class _GetStartedScreen extends StatelessWidget {
                                 borderRadius: PanAfricanRadius.roundBR,
                               ),
                               elevation: 8,
-                              shadowColor: PanAfricanColors.primary.withOpacity(0.4),
+                              shadowColor: PanAfricanColors.primary.withValues(alpha: 0.4),
                             ),
                             child: Text(
                               'Get Started',
@@ -715,7 +715,7 @@ class _PathCard extends StatelessWidget {
             width: 56.w,
             height: 56.w,
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: Icon(

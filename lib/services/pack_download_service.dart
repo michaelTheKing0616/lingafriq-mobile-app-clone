@@ -79,7 +79,7 @@ class PackDownloadService {
   LanguagePackCatalog? _cachedCatalog;
 
   Future<Directory> _root() async {
-    if (_packRoot != null) return _packRoot!;
+    if (_packRoot != null) return _packRoot;
     final base = await getApplicationDocumentsDirectory();
     return Directory('${base.path}/language_packs');
   }
@@ -192,7 +192,7 @@ class PackDownloadService {
       } on PackDownloadError catch (e) {
         if (e.code == 'PACK_CHECKSUM_MISMATCH') {
           await _purgeInstalledPack(root, entry.id);
-          throw e;
+          rethrow;
         }
         if (attempt >= maxRetries) {
           throw PackDownloadError(

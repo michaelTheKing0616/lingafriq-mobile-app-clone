@@ -80,17 +80,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Clear Offline Data'),
-        content: Text('This will delete all downloaded lessons and cached data. This action cannot be undone.'),
+        title: const Text('Clear Offline Data'),
+        content: const Text('This will delete all downloaded lessons and cached data. This action cannot be undone.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: Text('Cancel'),
+            child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
             style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: Text('Clear'),
+            child: const Text('Clear'),
           ),
         ],
       ),
@@ -111,7 +111,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text('Offline data cleared successfully'),
               backgroundColor: Colors.green,
             ),
@@ -188,7 +188,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     Container(
                       padding: EdgeInsets.all(PanAfricanSpacing.md),
                       decoration: BoxDecoration(
-                      color: colorScheme.onPrimary.withOpacity(0.15),
+                      color: colorScheme.onPrimary.withValues(alpha: 0.15),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
@@ -256,7 +256,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         icon: Icons.timer_rounded,
                         title: 'Daily Goal',
                         value: _dailyGoal,
-                        options: ['10 minutes', '20 minutes', '30 minutes'],
+                        options: const ['10 minutes', '20 minutes', '30 minutes'],
                         onChanged: (v) {
                           HapticFeedback.selectionClick();
                           setState(() => _dailyGoal = v!);
@@ -362,7 +362,7 @@ class _HeaderIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return Material(
-      color: colorScheme.onPrimary.withOpacity(0.15),
+      color: colorScheme.onPrimary.withValues(alpha: 0.15),
       shape: const CircleBorder(),
       child: InkWell(
         onTap: onTap,
@@ -454,7 +454,7 @@ class _SettingsSwitchTile extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(PanAfricanSpacing.sm),
             decoration: BoxDecoration(
-              color: PanAfricanColors.primary.withOpacity(0.1),
+              color: PanAfricanColors.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(PanAfricanRadius.md),
             ),
             child: Icon(
@@ -520,7 +520,7 @@ class _SettingsDropdownTile extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(PanAfricanSpacing.sm),
             decoration: BoxDecoration(
-              color: PanAfricanColors.primary.withOpacity(0.1),
+              color: PanAfricanColors.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(PanAfricanRadius.md),
             ),
             child: Icon(
@@ -542,14 +542,14 @@ class _SettingsDropdownTile extends StatelessWidget {
               vertical: PanAfricanSpacing.xs,
             ),
             decoration: BoxDecoration(
-              color: PanAfricanColors.primary.withOpacity(0.1),
+              color: PanAfricanColors.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(PanAfricanRadius.sm),
             ),
             child: DropdownButton<String>(
               value: value,
               underline: const SizedBox(),
               isDense: true,
-              icon: Icon(
+              icon: const Icon(
                 Icons.arrow_drop_down_rounded,
                 color: PanAfricanColors.primary,
               ),
@@ -614,7 +614,7 @@ class _SettingsInfoTile extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(PanAfricanSpacing.sm),
             decoration: BoxDecoration(
-              color: PanAfricanColors.primary.withOpacity(0.1),
+              color: PanAfricanColors.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(PanAfricanRadius.md),
             ),
             child: Icon(
@@ -684,7 +684,7 @@ class _SettingsActionTile extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(PanAfricanSpacing.sm),
               decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
+                color: color.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(PanAfricanRadius.md),
               ),
               child: Icon(

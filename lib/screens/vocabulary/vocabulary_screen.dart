@@ -159,7 +159,7 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
         backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
         leading: IconButton(
-          icon: Icon(PanAfricanIcons.back),
+          icon: const Icon(PanAfricanIcons.back),
           onPressed: () {
             HapticFeedback.lightImpact();
             Navigator.of(context).pop();
@@ -219,11 +219,11 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 4),
+                          const SizedBox(height: 4),
                           Text(
                             'Review now to strengthen your memory',
                             style: PanAfricanTypography.bodySmall(context).copyWith(
-                              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                              color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9),
                             ),
                           ),
                         ],

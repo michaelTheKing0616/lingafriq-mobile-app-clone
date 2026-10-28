@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
-import '../../providers/game_provider.dart';
 import '../../providers/game_content_provider.dart';
 import '../../models/game/game_content_models.dart';
 import '../../utils/modern_griot_design_system.dart';
@@ -95,9 +93,9 @@ class _MarketBargainingGameState
     _budget = (_askingPrice * 0.6).round();
 
     _options = [
-      _BargainOption(text: 'Polite Greeting', icon: Icons.waving_hand_rounded, color: const Color(0xFF526124), isCorrect: true),
-      _BargainOption(text: 'Firm Counter', icon: Icons.gavel_rounded, color: const Color(0xFF9E3D00), isCorrect: false),
-      _BargainOption(text: 'Complement Quality', icon: Icons.thumb_up_rounded, color: const Color(0xFF7B5733), isCorrect: false),
+      const _BargainOption(text: 'Polite Greeting', icon: Icons.waving_hand_rounded, color: Color(0xFF526124), isCorrect: true),
+      const _BargainOption(text: 'Firm Counter', icon: Icons.gavel_rounded, color: Color(0xFF9E3D00), isCorrect: false),
+      const _BargainOption(text: 'Complement Quality', icon: Icons.thumb_up_rounded, color: Color(0xFF7B5733), isCorrect: false),
     ]..shuffle(rng);
 
     setState(() {
@@ -221,13 +219,13 @@ class _MarketBargainingGameState
           Positioned(
             right: 24.w, bottom: 20.h,
             child: Icon(Icons.storefront_rounded, size: 80.sp,
-                color: Colors.white.withOpacity(0.3)),
+                color: Colors.white.withValues(alpha: 0.3)),
           ),
           Positioned(
             left: 24.w, top: 24.h,
             child: CircleAvatar(
               radius: 36.r,
-              backgroundColor: Colors.white.withOpacity(0.3),
+              backgroundColor: Colors.white.withValues(alpha: 0.3),
               child: Icon(Icons.person_rounded, size: 36.sp, color: Colors.white),
             ),
           ),
@@ -276,9 +274,9 @@ class _MarketBargainingGameState
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
             decoration: BoxDecoration(
-              color: ModernGriotColors.error.withOpacity(0.1),
+              color: ModernGriotColors.error.withValues(alpha: 0.1),
               borderRadius: ModernGriotRadius.borderXl,
-              border: Border.all(color: ModernGriotColors.error.withOpacity(0.3)),
+              border: Border.all(color: ModernGriotColors.error.withValues(alpha: 0.3)),
             ),
             child: Column(
               children: [
@@ -295,9 +293,9 @@ class _MarketBargainingGameState
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
             decoration: BoxDecoration(
-              color: ModernGriotColors.secondary.withOpacity(0.1),
+              color: ModernGriotColors.secondary.withValues(alpha: 0.1),
               borderRadius: ModernGriotRadius.borderXl,
-              border: Border.all(color: ModernGriotColors.secondary.withOpacity(0.3)),
+              border: Border.all(color: ModernGriotColors.secondary.withValues(alpha: 0.3)),
             ),
             child: Column(
               children: [
@@ -321,11 +319,11 @@ class _MarketBargainingGameState
 
     Color bg;
     if (showCorrect) {
-      bg = ModernGriotColors.secondary.withOpacity(0.15);
+      bg = ModernGriotColors.secondary.withValues(alpha: 0.15);
     } else if (showWrong) {
-      bg = ModernGriotColors.error.withOpacity(0.15);
+      bg = ModernGriotColors.error.withValues(alpha: 0.15);
     } else {
-      bg = option.color.withOpacity(isSelected ? 0.12 : 0.06);
+      bg = option.color.withValues(alpha: isSelected ? 0.12 : 0.06);
     }
 
     return GestureDetector(
@@ -337,8 +335,8 @@ class _MarketBargainingGameState
           color: bg,
           borderRadius: ModernGriotRadius.borderPill,
           border: Border.all(
-            color: isSelected ? option.color.withOpacity(0.5)
-                : option.color.withOpacity(0.2), width: 1.5,
+            color: isSelected ? option.color.withValues(alpha: 0.5)
+                : option.color.withValues(alpha: 0.2), width: 1.5,
           ),
         ),
         child: Row(

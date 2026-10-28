@@ -250,7 +250,7 @@ class CreateFriendQuestScreen extends HookConsumerWidget {
                       Container(
                         padding: EdgeInsets.all(PanAfricanSpacing.sm),
                         decoration: BoxDecoration(
-                          color: PanAfricanColors.primary.withOpacity(0.1),
+                          color: PanAfricanColors.primary.withValues(alpha: 0.1),
                           borderRadius: PanAfricanRadius.mdBR,
                         ),
                         child: Icon(
@@ -450,7 +450,7 @@ class CreateFriendQuestScreen extends HookConsumerWidget {
           Center(
             child: Padding(
               padding: EdgeInsets.all(PanAfricanSpacing.xl),
-              child: CircularProgressIndicator(color: PanAfricanColors.primary),
+              child: const CircularProgressIndicator(color: PanAfricanColors.primary),
             ),
           )
         else if (friends.isEmpty)

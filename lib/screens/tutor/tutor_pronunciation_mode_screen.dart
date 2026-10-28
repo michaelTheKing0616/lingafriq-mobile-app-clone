@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/providers/dio_provider.dart';
 import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/widgets/polie/polie_components.dart';
@@ -129,7 +128,7 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
 
     return Scaffold(
         body: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -183,9 +182,9 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
                         child: PolieGlassCard(
                           padding: EdgeInsets.symmetric(horizontal: PolieSpacing.md, vertical: PolieSpacing.sm),
                           child: DropdownButtonFormField<AppLanguage>(
-                            value: selectedLanguage.value,
+                            initialValue: selectedLanguage.value,
                             dropdownColor: isDark ? PolieColors.surfaceContainer : PolieColors.surfaceContainerLight,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               labelText: 'Language',
                               border: InputBorder.none,
                             ),
@@ -213,7 +212,7 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
                                 HapticFeedback.selectionClick();
                                 useRegionalPronunciation.value = v;
                               },
-                              activeColor: PolieColors.electricTeal,
+                              activeThumbColor: PolieColors.electricTeal,
                             ),
                           ],
                         ),
@@ -239,23 +238,23 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
                             end: Alignment.bottomRight,
                             colors: [
                               PolieColors.electricTeal,
-                              PolieColors.electricTealLight.withOpacity(0.9),
+                              PolieColors.electricTealLight.withValues(alpha: 0.9),
                             ],
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: PolieColors.electricTeal.withOpacity(0.5),
+                              color: PolieColors.electricTeal.withValues(alpha: 0.5),
                               blurRadius: isRecording.value ? 32 : 24,
                               spreadRadius: isRecording.value ? 4 : 0,
                             ),
                             BoxShadow(
-                              color: PolieColors.electricTeal.withOpacity(0.3),
+                              color: PolieColors.electricTeal.withValues(alpha: 0.3),
                               blurRadius: 48,
                               spreadRadius: -8,
                             ),
                           ],
                           border: Border.all(
-                            color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
+                            color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.3),
                             width: 2,
                           ),
                         ),
@@ -330,7 +329,7 @@ class _ReplayButtons extends StatelessWidget {
               HapticFeedback.lightImpact();
               _playAtSpeed(context, 1.0);
             },
-            icon: Icon(Icons.play_arrow_rounded, color: PolieColors.electricTeal, size: 24),
+            icon: const Icon(Icons.play_arrow_rounded, color: PolieColors.electricTeal, size: 24),
             label: Text('Replay', style: PolieTypography.label(context).copyWith(color: PolieColors.electricTeal)),
           ),
           SizedBox(width: PolieSpacing.md),
@@ -339,7 +338,7 @@ class _ReplayButtons extends StatelessWidget {
               HapticFeedback.lightImpact();
               _playAtSpeed(context, 0.5);
             },
-            icon: Icon(Icons.slow_motion_video_rounded, color: PolieColors.royalAmethyst, size: 24),
+            icon: const Icon(Icons.slow_motion_video_rounded, color: PolieColors.royalAmethyst, size: 24),
             label: Text('Slow motion', style: PolieTypography.label(context).copyWith(color: PolieColors.royalAmethyst)),
           ),
         ],

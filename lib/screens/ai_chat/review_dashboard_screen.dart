@@ -34,8 +34,8 @@ class ReviewDashboardScreen extends HookConsumerWidget {
 
     if (isLoading.value || statistics.value == null) {
       return Scaffold(
-        appBar: AppBar(title: Text('Review Statistics')),
-        body: Center(child: CircularProgressIndicator()),
+        appBar: AppBar(title: const Text('Review Statistics')),
+        body: const Center(child: CircularProgressIndicator()),
       );
     }
 
@@ -44,12 +44,12 @@ class ReviewDashboardScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Review Statistics'),
+        title: const Text('Review Statistics'),
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
           IconButton(
-            icon: Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh),
             onPressed: () => _loadStatistics(reviewService, statistics, isLoading),
           ),
         ],
@@ -58,7 +58,7 @@ class ReviewDashboardScreen extends HookConsumerWidget {
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : LinearGradient(
+              : const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -178,7 +178,7 @@ class _OverallStatsCard extends StatelessWidget {
               ],
             ),
             SizedBox(height: PanAfricanSpacing.lg),
-            Divider(),
+            const Divider(),
             SizedBox(height: PanAfricanSpacing.lg),
             Text(
               'Average Accuracy',
@@ -196,7 +196,7 @@ class _OverallStatsCard extends StatelessWidget {
             LinearProgressIndicator(
               value: statistics.averageAccuracy / 100.0,
               backgroundColor: PanAfricanColors.neutralLight,
-              valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.accent),
+              valueColor: const AlwaysStoppedAnimation<Color>(PanAfricanColors.accent),
               minHeight: 8.h,
             ),
           ],
@@ -262,7 +262,7 @@ class _AccuracyTrendCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.trending_up, color: PanAfricanColors.accent),
+                const Icon(Icons.trending_up, color: PanAfricanColors.accent),
                 SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   'Accuracy Trend (Last 7 Days)',
@@ -337,7 +337,7 @@ class _AccuracyByTypeCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.bar_chart, color: PanAfricanColors.secondary),
+                const Icon(Icons.bar_chart, color: PanAfricanColors.secondary),
                 SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   'Accuracy by Type',
@@ -441,7 +441,7 @@ class _RecentSessionsCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.history, color: PanAfricanColors.tertiary),
+                const Icon(Icons.history, color: PanAfricanColors.tertiary),
                 SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   'Recent Sessions',

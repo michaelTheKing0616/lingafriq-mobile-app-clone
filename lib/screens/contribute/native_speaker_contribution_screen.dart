@@ -263,7 +263,7 @@ class _NativeSpeakerContributionScreenState
     return Container(
       padding: EdgeInsets.all(16.sp),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -314,7 +314,7 @@ class _NativeSpeakerContributionScreenState
             color: isDark ? const Color(0xFF1F3527) : Theme.of(context).colorScheme.surface,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 10,
               ),
             ],
@@ -323,7 +323,7 @@ class _NativeSpeakerContributionScreenState
             children: [
               // Language dropdown
               DropdownButtonFormField<String>(
-                value: _selectedLanguage,
+                initialValue: _selectedLanguage,
                 decoration: InputDecoration(
                   labelText: 'Your Native Language',
                   border: OutlineInputBorder(

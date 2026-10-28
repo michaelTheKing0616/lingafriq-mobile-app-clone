@@ -244,7 +244,7 @@ class _UserAvatarCustomizerState extends State<UserAvatarCustomizer>
         color: SkinToneOption.options[_config.skinTone].color,
         boxShadow: [
           BoxShadow(
-            color: OutfitOption.options[_config.outfit].primaryColor.withOpacity(0.4),
+            color: OutfitOption.options[_config.outfit].primaryColor.withValues(alpha: 0.4),
             blurRadius: 20,
             spreadRadius: 5,
           ),
@@ -257,7 +257,7 @@ class _UserAvatarCustomizerState extends State<UserAvatarCustomizer>
           Icon(
             Icons.person,
             size: 80,
-            color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.8),
+            color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.8),
           ),
           
           // Outfit indicator
@@ -292,7 +292,7 @@ class _UserAvatarCustomizerState extends State<UserAvatarCustomizer>
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
+                      color: Colors.black.withValues(alpha: 0.2),
                       blurRadius: 4,
                     ),
                   ],
@@ -335,7 +335,7 @@ class _UserAvatarCustomizerState extends State<UserAvatarCustomizer>
                 width: 3,
               ),
               boxShadow: isSelected
-                  ? [BoxShadow(color: option.color.withOpacity(0.5), blurRadius: 10)]
+                  ? [BoxShadow(color: option.color.withValues(alpha: 0.5), blurRadius: 10)]
                   : null,
             ),
             child: Center(
@@ -416,7 +416,7 @@ class _UserAvatarCustomizerState extends State<UserAvatarCustomizer>
               gradient: LinearGradient(
                 colors: [
                   option.primaryColor,
-                  option.primaryColor.withOpacity(0.7),
+                  option.primaryColor.withValues(alpha: 0.7),
                 ],
               ),
               borderRadius: BorderRadius.circular(16),
@@ -425,7 +425,7 @@ class _UserAvatarCustomizerState extends State<UserAvatarCustomizer>
                 width: 3,
               ),
               boxShadow: isSelected
-                  ? [BoxShadow(color: option.primaryColor.withOpacity(0.5), blurRadius: 10)]
+                  ? [BoxShadow(color: option.primaryColor.withValues(alpha: 0.5), blurRadius: 10)]
                   : null,
             ),
             child: Stack(
@@ -437,7 +437,7 @@ class _UserAvatarCustomizerState extends State<UserAvatarCustomizer>
                     option.region,
                     style: TextStyle(
                       fontSize: 10,
-                      color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.8),
+                      color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.8),
                     ),
                   ),
                 ),
@@ -520,7 +520,7 @@ class _UserAvatarCustomizerState extends State<UserAvatarCustomizer>
                         option.description,
                         style: TextStyle(
                           fontSize: 10,
-                          color: isSelected ? Theme.of(context).colorScheme.onPrimary.withOpacity(0.7) : Colors.grey[600],
+                          color: isSelected ? Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.7) : Colors.grey[600],
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -604,7 +604,7 @@ class UserAvatarDisplay extends StatelessWidget {
             : null,
         boxShadow: [
           BoxShadow(
-            color: outfitColor.withOpacity(0.25),
+            color: outfitColor.withValues(alpha: 0.25),
             blurRadius: 8,
             spreadRadius: 1,
           ),
@@ -617,7 +617,7 @@ class UserAvatarDisplay extends StatelessWidget {
           Icon(
             hairIcon,
             size: size * 0.5,
-            color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+            color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9),
           ),
           // Accessory badge (small, positioned at bottom-right)
           if (accessoryIcon != null)
@@ -693,7 +693,7 @@ class LingAfriqAvatar extends ConsumerWidget {
           color: color,
           boxShadow: [
             BoxShadow(
-              color: color.withOpacity(0.3),
+              color: color.withValues(alpha: 0.3),
               blurRadius: 6,
             ),
           ],

@@ -149,7 +149,7 @@ class _CulturalHubScreenState extends ConsumerState<CulturalHubScreen>
     return Scaffold(
       backgroundColor: isDark ? PolieColors.obsidian : PolieColors.surfaceLight,
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -167,7 +167,7 @@ class _CulturalHubScreenState extends ConsumerState<CulturalHubScreen>
               _buildTabBar(context),
               Expanded(
                 child: _isLoading
-                    ? Center(child: CircularProgressIndicator(color: PolieColors.electricTeal))
+                    ? const Center(child: CircularProgressIndicator(color: PolieColors.electricTeal))
                     : _buildTabContent(context),
               ),
             ],
@@ -186,7 +186,7 @@ class _CulturalHubScreenState extends ConsumerState<CulturalHubScreen>
             label: 'Go back',
             button: true,
             child: IconButton(
-              icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
+              icon: const Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
               onPressed: () {
                 HapticFeedback.lightImpact();
                 Navigator.of(context).pop();
@@ -220,7 +220,7 @@ class _CulturalHubScreenState extends ConsumerState<CulturalHubScreen>
 
   Widget _buildTabBar(BuildContext context) {
     return Container(
-      color: PolieColors.surfaceContainerLight.withOpacity(0.1),
+      color: PolieColors.surfaceContainerLight.withValues(alpha: 0.1),
       child: TabBar(
         controller: _tabController,
         isScrollable: true,
@@ -282,7 +282,7 @@ class _CulturalHubScreenState extends ConsumerState<CulturalHubScreen>
               SizedBox(height: PolieSpacing.lg),
               TextButton.icon(
                 onPressed: _loadContent,
-                icon: Icon(Icons.refresh_rounded, color: PolieColors.electricTeal),
+                icon: const Icon(Icons.refresh_rounded, color: PolieColors.electricTeal),
                 label: Text(
                   'Retry',
                   style: PolieTypography.label(context).copyWith(
@@ -322,7 +322,7 @@ class _CulturalHubScreenState extends ConsumerState<CulturalHubScreen>
               SizedBox(height: PolieSpacing.lg),
               TextButton.icon(
                 onPressed: _loadContent,
-                icon: Icon(Icons.refresh_rounded, color: PolieColors.electricTeal),
+                icon: const Icon(Icons.refresh_rounded, color: PolieColors.electricTeal),
                 label: Text(
                   'Retry',
                   style: PolieTypography.label(context).copyWith(
@@ -468,12 +468,12 @@ class _ContentCard extends StatelessWidget {
         color: isDark ? PolieColors.surfaceContainer : PolieColors.surfaceContainerLight,
         borderRadius: BorderRadius.circular(PolieRadius.lg),
         border: Border.all(
-          color: isCompleted ? PolieColors.success.withOpacity(0.5) : typeColor.withOpacity(0.3),
+          color: isCompleted ? PolieColors.success.withValues(alpha: 0.5) : typeColor.withValues(alpha: 0.3),
           width: isCompleted ? 2 : 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: typeColor.withOpacity(0.15),
+            color: typeColor.withValues(alpha: 0.15),
             blurRadius: 16,
             spreadRadius: 0,
           ),
@@ -498,7 +498,7 @@ class _ContentCard extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(PolieSpacing.md),
                   decoration: BoxDecoration(
-                    color: typeColor.withOpacity(0.2),
+                    color: typeColor.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(PolieRadius.md),
                   ),
                   child: Icon(
@@ -552,14 +552,14 @@ class _ContentCard extends StatelessWidget {
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                              color: PolieColors.goldEmber.withOpacity(0.2),
+                              color: PolieColors.goldEmber.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(PolieRadius.sm),
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Icon(Icons.star, size: 12.sp, color: PolieColors.goldEmber),
-                                SizedBox(width: 4),
+                                const SizedBox(width: 4),
                                 Text(
                                   '${content.xpReward} XP',
                                   style: PolieTypography.bodySmall(context).copyWith(
@@ -633,7 +633,7 @@ class _ContentDetailSheet extends StatelessWidget {
               width: 40.w,
               height: 4.h,
               decoration: BoxDecoration(
-                color: PolieColors.textSecondary.withOpacity(0.3),
+                color: PolieColors.textSecondary.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -650,7 +650,7 @@ class _ContentDetailSheet extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.all(PolieSpacing.md),
                         decoration: BoxDecoration(
-                          color: typeColor.withOpacity(0.2),
+                          color: typeColor.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(PolieRadius.md),
                         ),
                         child: Icon(
@@ -694,7 +694,7 @@ class _ContentDetailSheet extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.all(PolieSpacing.md),
                       decoration: BoxDecoration(
-                        color: typeColor.withOpacity(0.1),
+                        color: typeColor.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(PolieRadius.md),
                       ),
                       child: Column(
@@ -758,7 +758,7 @@ class _ContentDetailSheet extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.all(PolieSpacing.md),
                       decoration: BoxDecoration(
-                        color: PolieColors.royalAmethyst.withOpacity(0.1),
+                        color: PolieColors.royalAmethyst.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(PolieRadius.md),
                       ),
                       child: Column(
@@ -783,7 +783,7 @@ class _ContentDetailSheet extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.all(PolieSpacing.md),
                     decoration: BoxDecoration(
-                      color: PolieColors.electricTeal.withOpacity(0.1),
+                      color: PolieColors.electricTeal.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(PolieRadius.md),
                     ),
                     child: Column(
@@ -806,7 +806,7 @@ class _ContentDetailSheet extends StatelessWidget {
                                 vertical: PolieSpacing.xs,
                               ),
                               decoration: BoxDecoration(
-                                color: PolieColors.electricTeal.withOpacity(0.2),
+                                color: PolieColors.electricTeal.withValues(alpha: 0.2),
                                 borderRadius: BorderRadius.circular(PolieRadius.sm),
                               ),
                               child: Text(

@@ -40,14 +40,14 @@ class PrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final effectiveColor = color ?? PanAfricanColors.primary;
     final effectiveTextColor = textColor ?? (isOutline ? effectiveColor : Theme.of(context).colorScheme.onPrimary);
-    final disabledColor = effectiveColor.withOpacity(0.4);
+    final disabledColor = effectiveColor.withValues(alpha: 0.4);
     
     return SizedBox(
       width: width ?? double.infinity,
       height: height ?? 52.h,
       child: MaterialButton(
-        splashColor: isOutline ? effectiveColor.withOpacity(0.12) : Theme.of(context).colorScheme.onPrimary.withOpacity(0.12),
-        highlightColor: effectiveColor.withOpacity(0.08),
+        splashColor: isOutline ? effectiveColor.withValues(alpha: 0.12) : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.12),
+        highlightColor: effectiveColor.withValues(alpha: 0.08),
         elevation: elevation,
         highlightElevation: elevation,
         disabledColor: isOutline ? Colors.transparent : disabledColor,
@@ -94,7 +94,7 @@ class PrimaryButton extends StatelessWidget {
                         text ?? '',
                         style: PanAfricanTypography.labelLarge(
                           context, 
-                          color: enabled ? effectiveTextColor : effectiveTextColor.withOpacity(0.6),
+                          color: enabled ? effectiveTextColor : effectiveTextColor.withValues(alpha: 0.6),
                         ),
                       ),
                     ],

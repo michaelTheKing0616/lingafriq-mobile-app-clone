@@ -395,9 +395,9 @@ class _PassportProctoredSessionScreenState extends ConsumerState<PassportProctor
           Container(
             padding: EdgeInsets.all(PolieSpacing.md),
             decoration: BoxDecoration(
-              color: PolieColors.error.withOpacity(0.15),
+              color: PolieColors.error.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(PolieRadius.md),
-              border: Border.all(color: PolieColors.error.withOpacity(0.4)),
+              border: Border.all(color: PolieColors.error.withValues(alpha: 0.4)),
             ),
             child: Text(
               _error!,

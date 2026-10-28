@@ -15,7 +15,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -75,7 +74,7 @@ class AfricanTtsService {
 
   /// Stats counters used by [telemetrySnapshot]; instrumentation only.
   int _goldHits = 0;
-  int _silverHits = 0;
+  final int _silverHits = 0;
   int _bronzeHits = 0;
   int _deviceFallbackHits = 0;
   int _failures = 0;

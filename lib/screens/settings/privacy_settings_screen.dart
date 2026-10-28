@@ -120,7 +120,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
             prefs.getString('onboarding_age_category');
         final privacyCtx = lensPrivacyContextFromPrefs(ageCategory: ageCategory);
         final trainingRes = await ApiService.get(
-          trainingContributionConsentApiPath + '/status',
+          '$trainingContributionConsentApiPath/status',
         );
         final trainingData = trainingRes.data;
         if (trainingData is Map) {
@@ -438,7 +438,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
           ),
           backgroundColor: PanAfricanColors.primary,
         ),
-        body: Center(
+        body: const Center(
           child: CircularProgressIndicator(
             color: PanAfricanColors.primary,
           ),
@@ -478,7 +478,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    PanAfricanColors.primary.withOpacity(0.05),
+                    PanAfricanColors.primary.withValues(alpha: 0.05),
                     PanAfricanColors.surfaceLight,
                   ],
                 ),
@@ -678,7 +678,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                           horizontal: PanAfricanSpacing.sm,
                           vertical: PanAfricanSpacing.xs,
                         ),
-                        leading: Icon(
+                        leading: const Icon(
                           Icons.folder_zip_outlined,
                           color: PanAfricanColors.primary,
                         ),
@@ -715,7 +715,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                         contentPadding: EdgeInsets.symmetric(
                           horizontal: PanAfricanSpacing.md,
                         ),
-                        leading: Icon(
+                        leading: const Icon(
                           Icons.description_outlined,
                           color: PanAfricanColors.primary,
                         ),
@@ -747,7 +747,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                 Container(
                   padding: EdgeInsets.all(PanAfricanSpacing.md),
                   decoration: BoxDecoration(
-                    color: PanAfricanColors.primary.withOpacity(0.1),
+                    color: PanAfricanColors.primary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
                   ),
                   child: Row(
@@ -756,7 +756,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                       Container(
                         padding: EdgeInsets.all(PanAfricanSpacing.sm),
                         decoration: BoxDecoration(
-                          color: PanAfricanColors.primary.withOpacity(0.1),
+                          color: PanAfricanColors.primary.withValues(alpha: 0.1),
                           borderRadius:
                               BorderRadius.circular(PanAfricanRadius.md),
                         ),
@@ -878,7 +878,7 @@ class _PrivacySwitchTile extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(PanAfricanSpacing.sm),
             decoration: BoxDecoration(
-              color: PanAfricanColors.primary.withOpacity(0.1),
+              color: PanAfricanColors.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(PanAfricanRadius.md),
             ),
             child: Icon(
@@ -958,8 +958,8 @@ class _PrivacyRadioTile extends StatelessWidget {
               padding: EdgeInsets.all(PanAfricanSpacing.sm),
               decoration: BoxDecoration(
                 color: isSelected
-                    ? PanAfricanColors.primary.withOpacity(0.2)
-                    : PanAfricanColors.primary.withOpacity(0.1),
+                    ? PanAfricanColors.primary.withValues(alpha: 0.2)
+                    : PanAfricanColors.primary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(PanAfricanRadius.md),
               ),
               child: Icon(

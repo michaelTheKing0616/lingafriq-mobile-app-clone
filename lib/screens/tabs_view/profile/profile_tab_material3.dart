@@ -160,7 +160,7 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                       child: Column(
                         children: [
                           // Currency Display
-                          CurrencyDisplayWidget(compact: false),
+                          const CurrencyDisplayWidget(compact: false),
                           SizedBox(height: PanAfricanSpacing.md),
 
                           // Achievements Summary
@@ -174,7 +174,7 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                               children: [
                                 Row(
                                   children: [
-                                    Icon(Icons.workspace_premium_rounded,
+                                    const Icon(Icons.workspace_premium_rounded,
                                         color: PanAfricanColors.secondary),
                                     SizedBox(width: PanAfricanSpacing.sm),
                                     Text(
@@ -233,7 +233,7 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                               isDark: isDark,
                               child: Row(
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.emoji_events_rounded,
                                     color: PanAfricanColors.secondary,
                                   ),
@@ -267,7 +267,7 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                           // Menu Items
                           _ProfileCard(
                             isDark: isDark,
-                            child: PanAfricanListTile(
+                            child: const PanAfricanListTile(
                               title: 'Change Password',
                               subtitle: 'Update your credentials securely',
                               leading: Icon(
@@ -288,7 +288,7 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
 
                           _ProfileCard(
                             isDark: isDark,
-                            child: PanAfricanListTile(
+                            child: const PanAfricanListTile(
                               title: 'Give us Feedback',
                               subtitle: 'Help us improve LingAfriq',
                               leading: Icon(
@@ -309,7 +309,7 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
 
                           _ProfileCard(
                             isDark: isDark,
-                            child: PanAfricanListTile(
+                            child: const PanAfricanListTile(
                               title: 'Who are we?',
                               subtitle: 'Learn about the LingAfriq mission',
                               leading: Icon(
@@ -328,7 +328,7 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
 
                           _ProfileCard(
                             isDark: isDark,
-                            child: PanAfricanListTile(
+                            child: const PanAfricanListTile(
                               title: 'Privacy & User Policy',
                               subtitle: 'Read how your data is protected',
                               leading: Icon(
@@ -347,7 +347,7 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
 
                           _ProfileCard(
                             isDark: isDark,
-                            child: PanAfricanListTile(
+                            child: const PanAfricanListTile(
                               title: 'Delete your account',
                               subtitle: 'This action is permanent',
                               leading: Icon(

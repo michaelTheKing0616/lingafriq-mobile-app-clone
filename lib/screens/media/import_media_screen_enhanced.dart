@@ -334,7 +334,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
           foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
           elevation: 0,
           leading: IconButton(
-            icon: Icon(PanAfricanIcons.back),
+            icon: const Icon(PanAfricanIcons.back),
             onPressed: () {
               HapticFeedback.lightImpact();
               Navigator.of(context).pop();
@@ -345,7 +345,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
           decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : LinearGradient(
+              : const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -365,7 +365,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                   'Import audio or video to get a transcription and an optional lesson. '
                   'Pick a file, choose the language, then upload.',
                   style: PanAfricanTypography.bodyMedium(context).copyWith(
-                    color: isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7) : PanAfricanColors.textSecondary,
+                    color: isDark ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7) : PanAfricanColors.textSecondary,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -381,7 +381,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
 
                 // Language Selector
                 DropdownButtonFormField<String>(
-                  value: selectedLanguage.value,
+                  initialValue: selectedLanguage.value,
                   decoration: InputDecoration(
                     labelText: 'Language',
                     border: OutlineInputBorder(
@@ -443,7 +443,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                       backgroundColor: isDark
                           ? PanAfricanColors.surfaceContainerDark
                           : PanAfricanColors.surfaceContainerLight,
-                      valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
+                      valueColor: const AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
                     ),
                   ),
                   SizedBox(height: PanAfricanSpacing.xs),
@@ -474,8 +474,8 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                 if (transcriptionResult.value != null && !showTranscriptionPreview.value)
                   TextButton.icon(
                     onPressed: () => showTranscriptionPreview.value = true,
-                    icon: Icon(Icons.edit),
-                    label: Text('Edit Transcription'),
+                    icon: const Icon(Icons.edit),
+                    label: const Text('Edit Transcription'),
                   ),
 
                 // Generate Lesson Button
@@ -488,7 +488,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                     textColor: Theme.of(context).colorScheme.onSecondary,
                     onTap: generateLesson,
                     child: isGeneratingLesson.value
-                        ? SizedBox(
+                        ? const SizedBox(
                             height: 48,
                             child: Center(
                               child: SizedBox(
@@ -541,7 +541,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
           color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
           borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
           border: Border.all(
-            color: PanAfricanColors.primary.withOpacity(0.3),
+            color: PanAfricanColors.primary.withValues(alpha: 0.3),
             width: 2,
             style: BorderStyle.solid,
           ),
@@ -607,7 +607,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                 ),
                 if (result['translation'] != null) ...[
                   SizedBox(height: PanAfricanSpacing.md),
-                  Divider(),
+                  const Divider(),
                   SizedBox(height: PanAfricanSpacing.md),
                   Text(
                     'Translation',
@@ -639,8 +639,8 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                           ),
                         );
                       },
-                      icon: Icon(Icons.edit),
-                      label: Text('Edit'),
+                      icon: const Icon(Icons.edit),
+                      label: const Text('Edit'),
                     ),
                     SizedBox(width: PanAfricanSpacing.sm),
                     TextButton.icon(
@@ -661,8 +661,8 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                           ),
                         );
                       },
-                      icon: Icon(Icons.tune),
-                      label: Text('Customize'),
+                      icon: const Icon(Icons.tune),
+                      label: const Text('Customize'),
                     ),
                   ],
                 ),
@@ -733,8 +733,8 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                           ),
                         );
                       },
-                      icon: Icon(Icons.edit),
-                      label: Text('Edit'),
+                      icon: const Icon(Icons.edit),
+                      label: const Text('Edit'),
                     ),
                     SizedBox(width: PanAfricanSpacing.sm),
                     PrimaryButton(
@@ -789,7 +789,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                           }
                         }
                       },
-                      child: Row(
+                      child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(Icons.save, size: 20),

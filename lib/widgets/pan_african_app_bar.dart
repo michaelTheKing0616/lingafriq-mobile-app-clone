@@ -82,7 +82,7 @@ class PanAfricanAppBar extends ConsumerWidget implements PreferredSizeWidget {
         if (subtitle != null)
           Text(
             subtitle!,
-            style: PanAfricanTypography.bodySmall(context, color: foregroundColor.withOpacity(0.8)),
+            style: PanAfricanTypography.bodySmall(context, color: foregroundColor.withValues(alpha: 0.8)),
           ),
       ],
     );
@@ -189,7 +189,7 @@ class PanAfricanHeader extends StatelessWidget {
             Positioned.fill(
               child: CustomPaint(
                 painter: _AfricanPatternPainter(
-                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.05),
+                  color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.05),
                 ),
               ),
             ),
@@ -219,7 +219,7 @@ class PanAfricanHeader extends StatelessWidget {
                             subtitle!,
                             style: PanAfricanTypography.bodyMedium(
                               context,
-                              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.8),
+                              color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.8),
                             ),
                           ),
                         ],

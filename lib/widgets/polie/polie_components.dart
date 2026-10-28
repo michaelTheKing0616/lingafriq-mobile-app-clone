@@ -34,7 +34,7 @@ class PolieGlassCard extends StatelessWidget {
             ? PolieElevation.level2(context, glowColor: glowColor ?? PolieColors.royalAmethyst)
             : PolieElevation.level1(context),
         border: Border.all(
-          color: isDark ? colorScheme.outline.withOpacity(0.24) : colorScheme.outline.withOpacity(0.18),
+          color: isDark ? colorScheme.outline.withValues(alpha: 0.24) : colorScheme.outline.withValues(alpha: 0.18),
           width: 1,
         ),
       ),
@@ -79,16 +79,16 @@ class PolieLanguagePill extends StatelessWidget {
           vertical: PolieSpacing.sm,
         ),
         decoration: BoxDecoration(
-          color: isSelected ? color.withOpacity(0.2) : Colors.transparent,
+          color: isSelected ? color.withValues(alpha: 0.2) : Colors.transparent,
           borderRadius: BorderRadius.circular(PolieRadius.pill),
           border: Border.all(
-            color: isSelected ? color : Theme.of(context).colorScheme.outline.withOpacity(0.2),
+            color: isSelected ? color : Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
             width: isSelected ? 2 : 1,
           ),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: color.withOpacity(0.3),
+                    color: color.withValues(alpha: 0.3),
                     blurRadius: 12,
                     spreadRadius: 0,
                   ),
@@ -156,11 +156,11 @@ class PolieChatBubble extends StatelessWidget {
     Color textColor;
     Alignment alignment;
     if (isCorrection) {
-      bubbleColor = PolieColors.errorMuted.withOpacity(0.2);
+      bubbleColor = PolieColors.errorMuted.withValues(alpha: 0.2);
       textColor = PolieColors.error;
       alignment = Alignment.centerLeft;
     } else if (isUser) {
-      bubbleColor = PolieColors.royalAmethyst.withOpacity(0.25);
+      bubbleColor = PolieColors.royalAmethyst.withValues(alpha: 0.25);
       textColor = PolieColors.textPrimary;
       alignment = Alignment.centerRight;
     } else {
@@ -190,13 +190,13 @@ class PolieChatBubble extends StatelessWidget {
           ),
           border: Border.all(
             color: isUser
-                ? PolieColors.royalAmethyst.withOpacity(0.4)
-                : Theme.of(context).colorScheme.outline.withOpacity(0.08),
+                ? PolieColors.royalAmethyst.withValues(alpha: 0.4)
+                : Theme.of(context).colorScheme.outline.withValues(alpha: 0.08),
             width: 1,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.08),
+              color: Colors.black.withValues(alpha: 0.08),
               blurRadius: 12,
               offset: const Offset(0, 2),
             ),
@@ -270,13 +270,13 @@ class PoliePrimaryButton extends StatelessWidget {
                 end: Alignment.bottomRight,
                 colors: [
                   PolieColors.royalAmethyst,
-                  PolieColors.royalAmethystLight.withOpacity(0.9),
+                  PolieColors.royalAmethystLight.withValues(alpha: 0.9),
                 ],
               ),
               borderRadius: BorderRadius.circular(PolieRadius.md),
               boxShadow: [
                 BoxShadow(
-                  color: PolieColors.royalAmethyst.withOpacity(0.4),
+                  color: PolieColors.royalAmethyst.withValues(alpha: 0.4),
                   blurRadius: 16,
                   offset: const Offset(0, 4),
                 ),
@@ -349,8 +349,8 @@ class PolieInputField extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final colorScheme = Theme.of(context).colorScheme;
     final borderColor = isDark
-        ? colorScheme.outline.withOpacity(0.32)
-        : colorScheme.outline.withOpacity(0.22);
+        ? colorScheme.outline.withValues(alpha: 0.32)
+        : colorScheme.outline.withValues(alpha: 0.22);
 
     return Container(
       padding: EdgeInsets.symmetric(
@@ -496,7 +496,7 @@ class PolieModeSwitcherRail<T> extends StatelessWidget {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.06),
+                      color: Colors.black.withValues(alpha: 0.06),
                       blurRadius: 8,
                       offset: const Offset(0, 1),
                     ),
@@ -511,7 +511,7 @@ class PolieModeSwitcherRail<T> extends StatelessWidget {
                         item.label,
                         style: PolieTypography.label(context).copyWith(
                           fontWeight: FontWeight.w800,
-                          color: activeTextColor.withOpacity(0.98),
+                          color: activeTextColor.withValues(alpha: 0.98),
                           fontSize: compact ? 12 : null,
                         ),
                       ),

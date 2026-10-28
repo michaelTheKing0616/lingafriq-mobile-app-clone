@@ -111,7 +111,7 @@ class AuthenticLessonFlowScreen extends HookConsumerWidget {
                 LinearProgressIndicator(
                   value: (stageIndex.value + 1) / _stages.length,
                   backgroundColor: isDark ? Colors.grey[800] : Colors.grey[300],
-                  valueColor: AlwaysStoppedAnimation(PanAfricanColors.primary),
+                  valueColor: const AlwaysStoppedAnimation(PanAfricanColors.primary),
                 ),
               ],
             ),

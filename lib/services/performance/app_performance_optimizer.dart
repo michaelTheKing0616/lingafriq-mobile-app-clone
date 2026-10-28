@@ -80,7 +80,7 @@ class AppPerformanceOptimizer {
       for (final font in fontsToPreload) {
         try {
           // Fonts are automatically loaded by Flutter, but we can ensure they're ready
-          await Future.delayed(Duration(milliseconds: 10));
+          await Future.delayed(const Duration(milliseconds: 10));
         } catch (e) {
           debugPrint('Error preloading font $font: $e');
         }

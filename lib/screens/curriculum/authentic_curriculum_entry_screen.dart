@@ -96,13 +96,13 @@ class AuthenticCurriculumEntryScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _FeatureRow(
+                            const _FeatureRow(
                               icon: Icons.menu_book_outlined,
                               title: 'Original Lessons',
                               subtitle: 'Stays on the map under “Lessons” — your existing learning path from the server.',
                             ),
                             Divider(height: PanAfricanSpacing.lg),
-                            _FeatureRow(
+                            const _FeatureRow(
                               icon: Icons.auto_awesome_rounded,
                               title: 'Authentic Path (this)',
                               subtitle: 'Ten-stage flow, unit quizzes, persona missions, magazine tie-ins — all from bundled curriculum.',

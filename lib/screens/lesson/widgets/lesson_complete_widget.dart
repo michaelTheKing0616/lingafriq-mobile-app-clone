@@ -143,10 +143,10 @@ class LessonCompleteWidget extends StatelessWidget {
             SizedBox(height: 16.h),
             PanAfricanCard(
               padding: EdgeInsets.all(16.w),
-              backgroundColor: Colors.orange.withOpacity(0.1),
+              backgroundColor: Colors.orange.withValues(alpha: 0.1),
               child: Row(
                 children: [
-                  Icon(Icons.local_fire_department, color: Colors.orange),
+                  const Icon(Icons.local_fire_department, color: Colors.orange),
                   SizedBox(width: 12.w),
                   Expanded(
                     child: Text(
@@ -174,8 +174,8 @@ class LessonCompleteWidget extends StatelessWidget {
                     button: true,
                     child: OutlinedButton.icon(
                       onPressed: onShare,
-                      icon: Icon(Icons.share_rounded, semanticLabel: 'Share'),
-                      label: Text('Share'),
+                      icon: const Icon(Icons.share_rounded, semanticLabel: 'Share'),
+                      label: const Text('Share'),
                       style: OutlinedButton.styleFrom(
                         padding: EdgeInsets.symmetric(vertical: 16.h),
                       ),

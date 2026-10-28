@@ -181,7 +181,7 @@ class EnhancedTTSService {
     }
 
     if (isRecordedTurn && !hasHuman) {
-      return EnhancedTtsPlaybackPlan(
+      return const EnhancedTtsPlaybackPlan(
         kind: EnhancedTtsPlaybackKind.noVoice,
         unavailableCode: 'recorded_audio_required',
       );

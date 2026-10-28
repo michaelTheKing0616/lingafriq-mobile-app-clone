@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
-import '../../providers/game_provider.dart';
 import '../../providers/game_content_provider.dart';
-import '../../models/game/game_content_models.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
@@ -105,8 +102,8 @@ class _GreetingDiplomacyGameState
     final rng = Random();
 
     final correct = _GreetingResponse(label: 'A', text: challenge.correctResponse, isCorrect: true);
-    final wrong1 = _GreetingResponse(label: 'B', text: 'Wave from a distance', isCorrect: false);
-    final wrong2 = _GreetingResponse(label: 'C', text: 'Nod silently', isCorrect: false);
+    final wrong1 = const _GreetingResponse(label: 'B', text: 'Wave from a distance', isCorrect: false);
+    final wrong2 = const _GreetingResponse(label: 'C', text: 'Nod silently', isCorrect: false);
     final responses = [correct, wrong1, wrong2]..shuffle(rng);
     for (var i = 0; i < responses.length; i++) {
       responses[i] = _GreetingResponse(
@@ -208,11 +205,11 @@ class _GreetingDiplomacyGameState
           duration: const Duration(milliseconds: 250),
           decoration: BoxDecoration(
             color: isActive
-                ? c.color.withOpacity(0.15)
+                ? c.color.withValues(alpha: 0.15)
                 : cs.surfaceContainerLow,
             borderRadius: ModernGriotRadius.borderXl,
             border: Border.all(
-              color: isActive ? c.color : cs.outlineVariant.withOpacity(0.15),
+              color: isActive ? c.color : cs.outlineVariant.withValues(alpha: 0.15),
               width: isActive ? 2 : 1,
             ),
             boxShadow: isActive ? ModernGriotShadows.md : ModernGriotShadows.sm,
@@ -222,7 +219,7 @@ class _GreetingDiplomacyGameState
             children: [
               CircleAvatar(
                 radius: 22.r,
-                backgroundColor: c.color.withOpacity(0.15),
+                backgroundColor: c.color.withValues(alpha: 0.15),
                 child: Icon(c.icon, size: 22.sp, color: c.color),
               ),
               SizedBox(height: 6.h),
@@ -246,14 +243,14 @@ class _GreetingDiplomacyGameState
         children: [
           CircleAvatar(
             radius: 32.r,
-            backgroundColor: c.color.withOpacity(0.15),
+            backgroundColor: c.color.withValues(alpha: 0.15),
             child: Icon(c.icon, size: 32.sp, color: c.color),
           ),
           SizedBox(height: 12.h),
           Container(
             padding: EdgeInsets.all(14.r),
             decoration: BoxDecoration(
-              color: c.color.withOpacity(0.08),
+              color: c.color.withValues(alpha: 0.08),
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(ModernGriotRadius.xl.r),
                 bottomLeft: Radius.circular(ModernGriotRadius.xl.r),
@@ -304,9 +301,9 @@ class _GreetingDiplomacyGameState
 
     Color bg;
     if (showCorrect) {
-      bg = ModernGriotColors.secondary.withOpacity(0.12);
+      bg = ModernGriotColors.secondary.withValues(alpha: 0.12);
     } else if (showWrong) {
-      bg = ModernGriotColors.error.withOpacity(0.12);
+      bg = ModernGriotColors.error.withValues(alpha: 0.12);
     } else {
       bg = cs.surfaceContainerLow;
     }
@@ -321,8 +318,8 @@ class _GreetingDiplomacyGameState
           borderRadius: ModernGriotRadius.borderXl,
           border: Border.all(
             color: isSelected
-                ? ModernGriotColors.primary.withOpacity(0.5)
-                : cs.outlineVariant.withOpacity(0.15),
+                ? ModernGriotColors.primary.withValues(alpha: 0.5)
+                : cs.outlineVariant.withValues(alpha: 0.15),
             width: isSelected ? 2 : 1,
           ),
           boxShadow: ModernGriotShadows.sm,
@@ -332,7 +329,7 @@ class _GreetingDiplomacyGameState
             Container(
               width: 36.r, height: 36.r,
               decoration: BoxDecoration(
-                color: ModernGriotColors.primary.withOpacity(0.1),
+                color: ModernGriotColors.primary.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Center(child: Text(resp.label,

@@ -325,7 +325,7 @@ class _PitchContourPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     // Draw reference pitch (if available)
     if (referencePitch != null && referencePitch!.isNotEmpty) {
-      _drawPitchLine(canvas, size, referencePitch!, Colors.green.withOpacity(0.5), 3);
+      _drawPitchLine(canvas, size, referencePitch!, Colors.green.withValues(alpha: 0.5), 3);
     }
     
     // Draw learner pitch
@@ -382,7 +382,7 @@ class _PitchContourPainter extends CustomPainter {
       
       // Draw dashed line
       final linePaint = Paint()
-        ..color = color.withOpacity(0.3)
+        ..color = color.withValues(alpha: 0.3)
         ..strokeWidth = 1;
       
       canvas.drawLine(
@@ -690,7 +690,7 @@ class _RecordingButtonState extends State<RecordingButton>
                 boxShadow: [
                   BoxShadow(
                     color: (widget.isRecording ? Colors.red : Colors.blue)
-                        .withOpacity(0.3),
+                        .withValues(alpha: 0.3),
                     blurRadius: 20,
                     spreadRadius: widget.isRecording ? 10 * _currentAmplitude : 0,
                   ),

@@ -36,25 +36,23 @@ class OptimizedListView extends StatelessWidget {
     if (itemExtent != null) {
       // Use ListView.builder with itemExtent for better performance
       return ListView.builder(
-        itemCount: itemCount,
+        scrollCacheExtent: ScrollCacheExtent.pixels(cacheExtent), itemCount: itemCount,
         itemBuilder: itemBuilder,
         padding: padding,
         controller: controller,
         itemExtent: itemExtent,
         shrinkWrap: shrinkWrap,
         physics: physics,
-        cacheExtent: cacheExtent,
       );
     } else {
       // Use regular ListView.builder
       return ListView.builder(
-        itemCount: itemCount,
+        scrollCacheExtent: ScrollCacheExtent.pixels(cacheExtent), itemCount: itemCount,
         itemBuilder: itemBuilder,
         padding: padding,
         controller: controller,
         shrinkWrap: shrinkWrap,
         physics: physics,
-        cacheExtent: cacheExtent,
       );
     }
   }
@@ -144,7 +142,7 @@ class _OptimizedListViewHorizontal extends StatelessWidget {
   Widget build(BuildContext context) {
     if (itemExtent != null) {
       return ListView.builder(
-        scrollDirection: Axis.horizontal,
+        scrollCacheExtent: ScrollCacheExtent.pixels(cacheExtent), scrollDirection: Axis.horizontal,
         itemCount: itemCount,
         itemBuilder: itemBuilder,
         padding: padding,
@@ -152,18 +150,16 @@ class _OptimizedListViewHorizontal extends StatelessWidget {
         itemExtent: itemExtent,
         shrinkWrap: shrinkWrap,
         physics: physics,
-        cacheExtent: cacheExtent,
       );
     } else {
       return ListView.builder(
-        scrollDirection: Axis.horizontal,
+        scrollCacheExtent: ScrollCacheExtent.pixels(cacheExtent), scrollDirection: Axis.horizontal,
         itemCount: itemCount,
         itemBuilder: itemBuilder,
         padding: padding,
         controller: controller,
         shrinkWrap: shrinkWrap,
         physics: physics,
-        cacheExtent: cacheExtent,
       );
     }
   }
@@ -233,14 +229,13 @@ class OptimizedListViewWithSeparators extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      itemCount: itemCount,
+      scrollCacheExtent: ScrollCacheExtent.pixels(250.0), itemCount: itemCount,
       itemBuilder: itemBuilder,
       separatorBuilder: separatorBuilder,
       padding: padding,
       controller: controller,
       shrinkWrap: shrinkWrap,
       physics: physics,
-      cacheExtent: 250.0,
     );
   }
 }

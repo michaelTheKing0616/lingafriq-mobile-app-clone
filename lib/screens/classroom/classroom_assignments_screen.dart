@@ -315,7 +315,7 @@ class _CreateAssignmentDialogState extends State<_CreateAssignmentDialog> {
               maxLength: 4000,
             ),
             DropdownButtonFormField<String>(
-              value: _type,
+              initialValue: _type,
               decoration: const InputDecoration(labelText: 'Type'),
               items: const [
                 DropdownMenuItem(value: 'custom', child: Text('Custom')),

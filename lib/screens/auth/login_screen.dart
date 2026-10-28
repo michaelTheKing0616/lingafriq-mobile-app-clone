@@ -43,7 +43,7 @@ class LoginScreen extends HookConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   SizedBox(height: 0.15.sh),
-                  Center(child: const TitleLogo()),
+                  const Center(child: TitleLogo()),
                   SizedBox(height: PanAfricanSpacing.lg),
                   
                   // Email field
@@ -227,14 +227,14 @@ class LoginScreen extends HookConsumerWidget {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: PanAfricanRadius.lgBR,
-        borderSide: BorderSide(
+        borderSide: const BorderSide(
           color: PanAfricanColors.primary,
           width: 2,
         ),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: PanAfricanRadius.lgBR,
-        borderSide: BorderSide(color: PanAfricanColors.error, width: 2),
+        borderSide: const BorderSide(color: PanAfricanColors.error, width: 2),
       ),
       contentPadding: EdgeInsets.symmetric(
         horizontal: PanAfricanSpacing.md,

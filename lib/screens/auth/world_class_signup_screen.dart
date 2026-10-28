@@ -70,8 +70,8 @@ class WorldClassSignupScreen extends HookConsumerWidget {
                       PanAfricanColors.secondaryDark,
                     ]
                   : [
-                      PanAfricanColors.primaryLight.withOpacity(0.1),
-                      PanAfricanColors.secondaryLight.withOpacity(0.1),
+                      PanAfricanColors.primaryLight.withValues(alpha: 0.1),
+                      PanAfricanColors.secondaryLight.withValues(alpha: 0.1),
                     ],
             ),
           ),
@@ -97,7 +97,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
                           _buildLogo(context)
                               .animate()
                               .fadeIn(duration: 400.ms)
-                              .scale(begin: Offset(0.8, 0.8), duration: 400.ms),
+                              .scale(begin: const Offset(0.8, 0.8), duration: 400.ms),
                           
                           SizedBox(height: PanAfricanSpacing.xl),
                           
@@ -253,7 +253,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
         height: 100.h,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
             colors: [
               PanAfricanColors.primaryLight,
               PanAfricanColors.secondaryLight,
@@ -261,7 +261,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: PanAfricanColors.primaryLight.withOpacity(0.3),
+              color: PanAfricanColors.primaryLight.withValues(alpha: 0.3),
               blurRadius: 20,
               spreadRadius: 5,
             ),
@@ -403,7 +403,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
               prefixIcon: Semantics(
                 label: 'Password lock icon',
                 excludeSemantics: true,
-                child: Icon(Icons.lock_outline, color: PanAfricanColors.primary),
+                child: const Icon(Icons.lock_outline, color: PanAfricanColors.primary),
               ),
               suffixIcon: Semantics(
                 label: showPassword.value ? 'Hide password' : 'Show password',
@@ -435,7 +435,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: PanAfricanRadius.lgBR,
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: PanAfricanColors.primary,
                 width: 2,
               ),
@@ -508,12 +508,12 @@ class WorldClassSignupScreen extends HookConsumerWidget {
           label: 'Country of residence',
           button: true,
           child: DropdownButtonFormField<String>(
-          value: selectedCountry.value,
+          initialValue: selectedCountry.value,
           decoration: InputDecoration(
             hintText: 'Select your country',
             prefixIcon: Semantics(
               excludeSemantics: true,
-              child: Icon(Icons.public, color: PanAfricanColors.primary),
+              child: const Icon(Icons.public, color: PanAfricanColors.primary),
             ),
             filled: true,
             fillColor: isDark
@@ -531,7 +531,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: PanAfricanRadius.lgBR,
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: PanAfricanColors.primary,
                 width: 2,
               ),
@@ -558,7 +558,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
   }
 
   Widget _buildPasswordStrengthIndicator(BuildContext context, String password, bool isDark) {
-    if (password.isEmpty) return SizedBox.shrink();
+    if (password.isEmpty) return const SizedBox.shrink();
 
     int strength = 0;
     if (password.length >= 8) strength++;
@@ -668,14 +668,14 @@ class WorldClassSignupScreen extends HookConsumerWidget {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: PanAfricanRadius.lgBR,
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: PanAfricanColors.primary,
                 width: 2,
               ),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: PanAfricanRadius.lgBR,
-              borderSide: BorderSide(color: PanAfricanColors.error, width: 2),
+              borderSide: const BorderSide(color: PanAfricanColors.error, width: 2),
             ),
             contentPadding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md, vertical: PanAfricanSpacing.md),
           ),
@@ -765,8 +765,8 @@ class WorldClassSignupScreen extends HookConsumerWidget {
                   if (!available) {
                     if (!context.mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: const Text('That username is already taken. Please choose another.'),
+                      const SnackBar(
+                        content: Text('That username is already taken. Please choose another.'),
                         backgroundColor: Colors.red,
                       ),
                     );

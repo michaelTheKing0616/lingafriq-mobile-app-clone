@@ -155,7 +155,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindi
                       }
                     },
               icon: buffering
-                  ? SizedBox(
+                  ? const SizedBox(
                       width: 24,
                       height: 24,
                       child: CircularProgressIndicator(

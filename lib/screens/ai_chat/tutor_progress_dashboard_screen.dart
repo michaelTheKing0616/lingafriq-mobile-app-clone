@@ -35,8 +35,8 @@ class TutorProgressDashboardScreen extends HookConsumerWidget {
 
     if (isLoading.value || progress.value == null) {
       return Scaffold(
-        appBar: AppBar(title: Text('Tutor Progress')),
-        body: Center(child: CircularProgressIndicator()),
+        appBar: AppBar(title: const Text('Tutor Progress')),
+        body: const Center(child: CircularProgressIndicator()),
       );
     }
 
@@ -45,12 +45,12 @@ class TutorProgressDashboardScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tutor Progress'),
+        title: const Text('Tutor Progress'),
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
           IconButton(
-            icon: Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh),
             onPressed: () => _loadProgress(progressService, progress, adaptiveSettings, isLoading),
           ),
         ],
@@ -59,7 +59,7 @@ class TutorProgressDashboardScreen extends HookConsumerWidget {
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : LinearGradient(
+              : const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -223,7 +223,7 @@ class _CefrProgressCard extends StatelessWidget {
             LinearProgressIndicator(
               value: progress.cefrScore / 100.0,
               backgroundColor: PanAfricanColors.neutralLight,
-              valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
+              valueColor: const AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
               minHeight: 8.h,
             ),
             SizedBox(height: PanAfricanSpacing.sm),
@@ -236,13 +236,13 @@ class _CefrProgressCard extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(PanAfricanSpacing.md),
                 decoration: BoxDecoration(
-                  color: PanAfricanColors.accent.withOpacity(0.1),
+                  color: PanAfricanColors.accent.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.star, color: PanAfricanColors.accent),
+                    const Icon(Icons.star, color: PanAfricanColors.accent),
                     SizedBox(width: PanAfricanSpacing.sm),
                     Text(
                       'Ready for $nextLevel!',
@@ -318,7 +318,7 @@ class _SkillLevelsCard extends StatelessWidget {
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.sm, vertical: 2),
                             decoration: BoxDecoration(
-                              color: PanAfricanColors.error.withOpacity(0.1),
+                              color: PanAfricanColors.error.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(PanAfricanRadius.xs),
                             ),
                             child: Text(
@@ -381,7 +381,7 @@ class _AdaptiveRecommendationsCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.lightbulb, color: PanAfricanColors.accent),
+                const Icon(Icons.lightbulb, color: PanAfricanColors.accent),
                 SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   'Adaptive Recommendations',
@@ -406,7 +406,7 @@ class _AdaptiveRecommendationsCard extends StatelessWidget {
                 children: weakAreas.map((area) {
                   return Chip(
                     label: Text(area),
-                    backgroundColor: PanAfricanColors.error.withOpacity(0.1),
+                    backgroundColor: PanAfricanColors.error.withValues(alpha: 0.1),
                     labelStyle: PanAfricanTypography.labelSmall(context).copyWith(
                       color: PanAfricanColors.error,
                     ),
@@ -429,7 +429,7 @@ class _AdaptiveRecommendationsCard extends StatelessWidget {
                 children: recommendedTopics.map((topic) {
                   return Chip(
                     label: Text(topic),
-                    backgroundColor: PanAfricanColors.primary.withOpacity(0.1),
+                    backgroundColor: PanAfricanColors.primary.withValues(alpha: 0.1),
                     labelStyle: PanAfricanTypography.labelSmall(context).copyWith(
                       color: PanAfricanColors.primary,
                     ),
@@ -493,7 +493,7 @@ class _StatisticsCard extends StatelessWidget {
               ],
             ),
             SizedBox(height: PanAfricanSpacing.md),
-            Divider(),
+            const Divider(),
             SizedBox(height: PanAfricanSpacing.md),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,

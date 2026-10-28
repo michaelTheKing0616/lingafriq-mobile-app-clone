@@ -136,7 +136,7 @@ class GlobalHandleEditScreen extends HookConsumerWidget {
     Future<void> saveHandle() async {
       if (!isValid.value || handleController.text.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please enter a valid handle')),
+          const SnackBar(content: Text('Please enter a valid handle')),
         );
         return;
       }
@@ -156,7 +156,7 @@ class GlobalHandleEditScreen extends HookConsumerWidget {
           
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
+              const SnackBar(
                 content: Text('Global handle updated successfully!'),
                 backgroundColor: PanAfricanColors.success,
               ),
@@ -180,7 +180,7 @@ class GlobalHandleEditScreen extends HookConsumerWidget {
       message: 'Updating handle...',
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Edit Global Handle'),
+          title: const Text('Edit Global Handle'),
           backgroundColor: Colors.transparent,
           elevation: 0,
         ),
@@ -188,7 +188,7 @@ class GlobalHandleEditScreen extends HookConsumerWidget {
           decoration: BoxDecoration(
             gradient: isDark
                 ? PanAfricanGradients.darkSurface
-                : LinearGradient(
+                : const LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
@@ -223,7 +223,7 @@ class GlobalHandleEditScreen extends HookConsumerWidget {
                         padding: EdgeInsets.all(PanAfricanSpacing.md),
                         child: Row(
                           children: [
-                            Icon(Icons.info_outline, color: PanAfricanColors.primary),
+                            const Icon(Icons.info_outline, color: PanAfricanColors.primary),
                             SizedBox(width: PanAfricanSpacing.sm),
                             Expanded(
                               child: Column(
@@ -272,7 +272,7 @@ class GlobalHandleEditScreen extends HookConsumerWidget {
                               child: SizedBox(
                                 width: 20.w,
                                 height: 20.h,
-                                child: CircularProgressIndicator(strokeWidth: 2),
+                                child: const CircularProgressIndicator(strokeWidth: 2),
                               ),
                             )
                           : null,
@@ -303,8 +303,8 @@ class GlobalHandleEditScreen extends HookConsumerWidget {
                       padding: EdgeInsets.all(PanAfricanSpacing.md),
                       decoration: BoxDecoration(
                         color: isValid.value
-                            ? PanAfricanColors.success.withOpacity(0.1)
-                            : PanAfricanColors.error.withOpacity(0.1),
+                            ? PanAfricanColors.success.withValues(alpha: 0.1)
+                            : PanAfricanColors.error.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                         border: Border.all(
                           color: isValid.value
@@ -348,7 +348,7 @@ class GlobalHandleEditScreen extends HookConsumerWidget {
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.rule, color: PanAfricanColors.primary),
+                              const Icon(Icons.rule, color: PanAfricanColors.primary),
                               SizedBox(width: PanAfricanSpacing.sm),
                               Text(
                                 'Handle Rules',

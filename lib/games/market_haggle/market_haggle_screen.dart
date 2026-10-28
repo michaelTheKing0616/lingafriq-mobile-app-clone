@@ -16,7 +16,6 @@ import '../../services/voice/audio_recording_service.dart';
 import '../../utils/pan_african_design_system.dart';
 import 'haggle_rubric.dart';
 import 'market_haggle_game.dart';
-import 'trader_personalities.dart';
 
 enum MarketHagglePhase {
   loading,
@@ -248,7 +247,7 @@ class _MarketHaggleScreenState extends ConsumerState<MarketHaggleScreen> {
       return;
     }
 
-    final scorer = LensScoringClient();
+    final scorer = const LensScoringClient();
     final dio = ref.read(client);
     final outcome = await scorer.scoreUtterance(
       post: (p, data) => dio.post(p, data: data),

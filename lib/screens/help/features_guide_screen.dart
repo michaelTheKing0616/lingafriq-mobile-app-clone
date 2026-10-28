@@ -637,7 +637,7 @@ class _FeaturesGuideScreenState extends State<FeaturesGuideScreen>
           children: [
             Row(
               children: [
-                Icon(Icons.info_outline_rounded, color: PanAfricanColors.primary),
+                const Icon(Icons.info_outline_rounded, color: PanAfricanColors.primary),
                 SizedBox(width: 8.w),
                 Text(
                   'Terminology',

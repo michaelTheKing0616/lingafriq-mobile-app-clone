@@ -71,7 +71,7 @@ class _ClassroomDashboardScreenState
               SizedBox(height: PanAfricanSpacing.xxs),
               Text(
                 status.isEmpty ? '—' : status,
-                style: PanAfricanTypography.bodySmall(context, color: colorScheme.onSurface.withOpacity(0.75)),
+                style: PanAfricanTypography.bodySmall(context, color: colorScheme.onSurface.withValues(alpha: 0.75)),
               ),
               if (agenda != null && agenda.trim().isNotEmpty) ...[
                 SizedBox(height: PanAfricanSpacing.md),
@@ -221,7 +221,7 @@ class _ClassroomDashboardScreenState
         ],
       ),
       body: _isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(
                 color: PanAfricanColors.primary,
               ),
@@ -348,7 +348,7 @@ class _ClassroomDashboardScreenState
           SizedBox(height: PanAfricanSpacing.sm),
           Text(
             'Languages: ${languages.isEmpty ? 'None yet' : languages.join(', ')}',
-            style: PanAfricanTypography.bodySmall(context, color: colorScheme.onPrimary.withOpacity(0.85)),
+            style: PanAfricanTypography.bodySmall(context, color: colorScheme.onPrimary.withValues(alpha: 0.85)),
           ),
           if (recentSessions.isNotEmpty) ...[
             SizedBox(height: PanAfricanSpacing.md),
@@ -368,8 +368,8 @@ class _ClassroomDashboardScreenState
                   final barHeight = (rate.clamp(0, 100) / 100.0) * 34.0;
                   final status = s['status']?.toString() ?? '';
                   final barColor = status.toLowerCase().contains('ended')
-                      ? Colors.white.withOpacity(0.95)
-                      : Colors.white.withOpacity(0.75);
+                      ? Colors.white.withValues(alpha: 0.95)
+                      : Colors.white.withValues(alpha: 0.75);
                   return Expanded(
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 3.w),
@@ -400,7 +400,7 @@ class _ClassroomDashboardScreenState
             SizedBox(height: PanAfricanSpacing.xxxs),
             Text(
               'Tap a bar for details',
-              style: PanAfricanTypography.labelSmall(context, color: colorScheme.onPrimary.withOpacity(0.8)),
+              style: PanAfricanTypography.labelSmall(context, color: colorScheme.onPrimary.withValues(alpha: 0.8)),
             ),
           ],
           if (recentAssignments.isNotEmpty) ...[
@@ -421,7 +421,7 @@ class _ClassroomDashboardScreenState
                   '$title — $rate% ($submitted/$size)',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: PanAfricanTypography.bodySmall(context, color: colorScheme.onPrimary.withOpacity(0.9)),
+                  style: PanAfricanTypography.bodySmall(context, color: colorScheme.onPrimary.withValues(alpha: 0.9)),
                 ),
               );
             }),
@@ -444,7 +444,7 @@ class _ClassroomDashboardScreenState
           ),
           Text(
             label,
-            style: PanAfricanTypography.labelSmall(context, color: colorScheme.onPrimary.withOpacity(0.85)),
+            style: PanAfricanTypography.labelSmall(context, color: colorScheme.onPrimary.withValues(alpha: 0.85)),
           ),
         ],
       ),
@@ -478,7 +478,7 @@ class _ClassroomDashboardScreenState
               Container(
                 width: 44.w,
                 height: 44.w,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: PanAfricanColors.primary,
                   shape: BoxShape.circle,
                 ),
@@ -574,7 +574,7 @@ class _ClassroomDashboardScreenState
         color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         borderRadius: PanAfricanRadius.lgBR,
         border: Border.all(
-          color: PanAfricanColors.ankaraPurple.withOpacity(0.3),
+          color: PanAfricanColors.ankaraPurple.withValues(alpha: 0.3),
         ),
         boxShadow: PanAfricanShadows.sm,
       ),
@@ -587,7 +587,7 @@ class _ClassroomDashboardScreenState
                 width: 36.w,
                 height: 36.w,
                 decoration: BoxDecoration(
-                  color: PanAfricanColors.ankaraPurple.withOpacity(0.15),
+                  color: PanAfricanColors.ankaraPurple.withValues(alpha: 0.15),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(

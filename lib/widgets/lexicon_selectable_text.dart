@@ -39,7 +39,7 @@ Future<void> showLexiconNotFoundSheet(
                     Navigator.of(ctx).pop();
                     onSuggest(surface);
                   },
-                  child: Text(kWordCardSuggestCopyKey),
+                  child: const Text(kWordCardSuggestCopyKey),
                 ),
             ],
           ),
@@ -64,7 +64,7 @@ Future<void> showLexiconOfflineMissingSheet(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(kWordCardOfflineMissingCopyKey),
+              const Text(kWordCardOfflineMissingCopyKey),
               const SizedBox(height: 8),
               Text(surface, style: Theme.of(ctx).textTheme.titleLarge),
             ],
@@ -218,7 +218,7 @@ class _LexiconWordTapTarget extends StatelessWidget {
   final Future<void> Function() onOpen;
 
   static final CustomSemanticsAction _openWordCardAction =
-      CustomSemanticsAction(label: kLexiconWordCardSemanticsAction);
+      const CustomSemanticsAction(label: kLexiconWordCardSemanticsAction);
 
   @override
   Widget build(BuildContext context) {

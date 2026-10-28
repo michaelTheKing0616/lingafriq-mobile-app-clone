@@ -122,7 +122,7 @@ List<RankedHomeModule> rankHomeModules({
   required int streakDays,
 }) {
   final ranked = <RankedHomeModule>[
-    RankedHomeModule(
+    const RankedHomeModule(
       module: MotivationModule.competenceGrowth,
       prominence: HomeProminence.hero,
     ),

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -7,9 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
-import '../../providers/game_content_provider.dart';
 import '../../widgets/content/vocab_audio_controls.dart';
-import '../../models/game/game_content_models.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../utils/pan_african_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
@@ -65,12 +62,12 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame>
       duration: const Duration(seconds: 8),
     )..repeat(reverse: true);
     _bgColor1 = ColorTween(
-      begin: ModernGriotColors.primaryContainer.withOpacity(0.15),
-      end: ModernGriotColors.secondaryContainer.withOpacity(0.12),
+      begin: ModernGriotColors.primaryContainer.withValues(alpha: 0.15),
+      end: ModernGriotColors.secondaryContainer.withValues(alpha: 0.12),
     ).animate(CurvedAnimation(parent: _bgController, curve: Curves.easeInOut));
     _bgColor2 = ColorTween(
-      begin: ModernGriotColors.tertiaryContainer.withOpacity(0.08),
-      end: ModernGriotColors.primaryContainer.withOpacity(0.10),
+      begin: ModernGriotColors.tertiaryContainer.withValues(alpha: 0.08),
+      end: ModernGriotColors.primaryContainer.withValues(alpha: 0.10),
     ).animate(CurvedAnimation(parent: _bgController, curve: Curves.easeInOut));
   }
 
@@ -197,10 +194,10 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame>
                   vertical: PanAfricanSpacing.sm,
                 ),
                 decoration: BoxDecoration(
-                  color: cs.surface.withOpacity(0.82),
+                  color: cs.surface.withValues(alpha: 0.82),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.06),
+                      color: Colors.black.withValues(alpha: 0.06),
                       blurRadius: 24,
                       offset: const Offset(0, 12),
                     ),
@@ -213,7 +210,7 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame>
                       children: [
                         IconButton(
                           onPressed: widget.onBack,
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.close_rounded,
                             color: ModernGriotColors.onSurfaceVariant,
                           ),
@@ -251,7 +248,7 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame>
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: ModernGriotColors.error.withOpacity(0.25),
+                            color: ModernGriotColors.error.withValues(alpha: 0.25),
                             blurRadius: 18,
                             spreadRadius: 2,
                           ),
@@ -396,9 +393,9 @@ class _ActionButton extends StatelessWidget {
         child: Ink(
           height: 64.h,
           decoration: BoxDecoration(
-            color: color.withOpacity(0.12),
+            color: color.withValues(alpha: 0.12),
             borderRadius: ModernGriotRadius.borderXl,
-            border: Border.all(color: color.withOpacity(0.4), width: 1.5),
+            border: Border.all(color: color.withValues(alpha: 0.4), width: 1.5),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

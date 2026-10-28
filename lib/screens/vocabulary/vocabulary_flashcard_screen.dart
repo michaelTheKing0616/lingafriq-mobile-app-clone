@@ -57,14 +57,14 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
           backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
           foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
           leading: IconButton(
-            icon: Icon(PanAfricanIcons.back),
+            icon: const Icon(PanAfricanIcons.back),
             onPressed: () {
               HapticFeedback.lightImpact();
               Navigator.of(context).pop();
             },
           ),
         ),
-        body: Center(child: CircularProgressIndicator(color: PanAfricanColors.primary)),
+        body: const Center(child: CircularProgressIndicator(color: PanAfricanColors.primary)),
       );
     }
 
@@ -76,7 +76,7 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
           backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
           foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
           leading: IconButton(
-            icon: Icon(PanAfricanIcons.back),
+            icon: const Icon(PanAfricanIcons.back),
             onPressed: () {
               HapticFeedback.lightImpact();
               Navigator.of(context).pop();
@@ -109,7 +109,7 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
         foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(PanAfricanIcons.back),
+          icon: const Icon(PanAfricanIcons.back),
           onPressed: () {
             HapticFeedback.lightImpact();
             Navigator.of(context).pop();
@@ -118,7 +118,7 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
         actions: [
           Builder(
             builder: (context) => IconButton(
-              icon: Icon(Icons.filter_list),
+              icon: const Icon(Icons.filter_list),
               onPressed: () async {
                 HapticFeedback.lightImpact();
                 await _showCategoryFilter(context, vocabService, words, isLoading);
@@ -131,7 +131,7 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : LinearGradient(
+              : const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -165,7 +165,7 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
                     LinearProgressIndicator(
                       value: progress,
                       backgroundColor: PanAfricanColors.neutralLight,
-                      valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
+                      valueColor: const AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
                       minHeight: 4.h,
                     ),
                   ],
@@ -185,7 +185,7 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
                     },
                     child: Center(
                       child: AnimatedSwitcher(
-                        duration: Duration(milliseconds: 300),
+                        duration: const Duration(milliseconds: 300),
                         transitionBuilder: (child, animation) {
                           return ScaleTransition(
                             scale: animation,
@@ -253,7 +253,7 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     IconButton(
-                      icon: Icon(Icons.skip_previous),
+                      icon: const Icon(Icons.skip_previous),
                       onPressed: currentIndex.value > 0
                           ? () {
                               HapticFeedback.lightImpact();
@@ -270,7 +270,7 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
                     ),
                     SizedBox(width: PanAfricanSpacing.lg),
                     IconButton(
-                      icon: Icon(Icons.skip_next),
+                      icon: const Icon(Icons.skip_next),
                       onPressed: currentIndex.value < words.value.length - 1
                           ? () {
                               HapticFeedback.lightImpact();
@@ -353,16 +353,16 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
               SizedBox(height: PanAfricanSpacing.md),
               ListTile(
                 title: Text('All Categories', style: PanAfricanTypography.bodyLarge(context)),
-                leading: Icon(Icons.all_inclusive, color: PanAfricanColors.primary),
+                leading: const Icon(Icons.all_inclusive, color: PanAfricanColors.primary),
                 onTap: () {
                   HapticFeedback.lightImpact();
                   Navigator.pop(context, null);
                 },
               ),
-              Divider(),
+              const Divider(),
               ...categories.map((cat) => ListTile(
                 title: Text(cat, style: PanAfricanTypography.bodyLarge(context)),
-                leading: Icon(Icons.category, color: PanAfricanColors.primary),
+                leading: const Icon(Icons.category, color: PanAfricanColors.primary),
                 onTap: () {
                   HapticFeedback.lightImpact();
                   Navigator.pop(context, cat);
@@ -485,7 +485,7 @@ class _Flashcard extends StatelessWidget {
               if (word.category.isNotEmpty)
                 Chip(
                   label: Text(word.category),
-                  backgroundColor: PanAfricanColors.primary.withOpacity(0.1),
+                  backgroundColor: PanAfricanColors.primary.withValues(alpha: 0.1),
                   labelStyle: PanAfricanTypography.labelSmall(context).copyWith(
                     color: PanAfricanColors.primary,
                   ),
@@ -520,7 +520,7 @@ class _Flashcard extends StatelessWidget {
                 ),
                 if (_getWordExample(word) != null) ...[
                   SizedBox(height: PanAfricanSpacing.lg),
-                  Divider(),
+                  const Divider(),
                   SizedBox(height: PanAfricanSpacing.md),
                   Text(
                     _getWordExample(word)!,
@@ -563,7 +563,7 @@ class _Flashcard extends StatelessWidget {
     )
         .animate()
         .fadeIn(duration: 300.ms)
-        .scale(begin: Offset(0.9, 0.9));
+        .scale(begin: const Offset(0.9, 0.9));
   }
 }
 
@@ -588,7 +588,7 @@ class _ActionButton extends StatelessWidget {
           width: 60.w,
           height: 60.w,
           decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
+            color: color.withValues(alpha: 0.1),
             shape: BoxShape.circle,
             border: Border.all(color: color, width: 2),
           ),

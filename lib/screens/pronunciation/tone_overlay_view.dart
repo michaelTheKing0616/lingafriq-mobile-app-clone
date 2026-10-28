@@ -173,7 +173,7 @@ class ToneOverlayView extends StatelessWidget {
       case ToneOverlayStatus.scored:
         final segments = segmentsFromRows(syllables);
         if (segments.every((s) => s.nativeSemitones.isEmpty && s.learnerSemitones.isEmpty)) {
-          return Center(child: Text(ToneOverlayCopyKeys.error));
+          return const Center(child: Text(ToneOverlayCopyKeys.error));
         }
         return CustomPaint(
           painter: PitchContourPainter(segments: segments),

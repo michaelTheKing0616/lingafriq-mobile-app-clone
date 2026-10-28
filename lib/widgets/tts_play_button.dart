@@ -50,10 +50,10 @@ class TtsPlayButton extends HookConsumerWidget {
             IconButton(
               tooltip: playing ? 'Stop' : 'Play pronunciation',
               icon: (loading.value || buffering)
-                  ? SizedBox(
+                  ? const SizedBox(
                       width: 20,
                       height: 20,
-                      child: const CircularProgressIndicator(strokeWidth: 2),
+                      child: CircularProgressIndicator(strokeWidth: 2),
                     )
                   : Icon(
                       playing ? Icons.stop_rounded : Icons.volume_up_rounded,

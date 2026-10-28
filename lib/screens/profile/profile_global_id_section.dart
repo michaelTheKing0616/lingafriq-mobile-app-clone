@@ -27,21 +27,21 @@ class ProfileGlobalIdSection extends HookConsumerWidget {
       final newHandle = handleController.text.trim();
       if (newHandle.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Handle cannot be empty')),
+          const SnackBar(content: Text('Handle cannot be empty')),
         );
         return;
       }
 
       if (newHandle.length < 3 || newHandle.length > 30) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Handle must be between 3 and 30 characters')),
+          const SnackBar(content: Text('Handle must be between 3 and 30 characters')),
         );
         return;
       }
 
       if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(newHandle)) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Handle may only contain letters, numbers, and underscores')),
+          const SnackBar(content: Text('Handle may only contain letters, numbers, and underscores')),
         );
         return;
       }
@@ -62,7 +62,7 @@ class ProfileGlobalIdSection extends HookConsumerWidget {
           isEditing.value = false;
           HapticFeedback.mediumImpact();
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text('Handle updated successfully!'),
               backgroundColor: PanAfricanColors.success,
             ),
@@ -132,7 +132,7 @@ class ProfileGlobalIdSection extends HookConsumerWidget {
                     HapticFeedback.lightImpact();
                   },
                   icon: Icon(Icons.edit, size: 16.sp),
-                  label: Text('Edit'),
+                  label: const Text('Edit'),
                   style: TextButton.styleFrom(
                     foregroundColor: PanAfricanColors.primary,
                   ),
@@ -145,10 +145,10 @@ class ProfileGlobalIdSection extends HookConsumerWidget {
             Container(
               padding: EdgeInsets.all(PanAfricanSpacing.md),
               decoration: BoxDecoration(
-                color: PanAfricanColors.primaryContainer.withOpacity(0.3),
+                color: PanAfricanColors.primaryContainer.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                 border: Border.all(
-                  color: PanAfricanColors.primary.withOpacity(0.3),
+                  color: PanAfricanColors.primary.withValues(alpha: 0.3),
                   width: 1,
                 ),
               ),
@@ -202,7 +202,7 @@ class ProfileGlobalIdSection extends HookConsumerWidget {
                               .replaceFirst('u_', '');
                           handleController.text = editableHandle;
                         },
-                        child: Text('Cancel'),
+                        child: const Text('Cancel'),
                       ),
                     ),
                     SizedBox(width: PanAfricanSpacing.sm),
@@ -224,7 +224,7 @@ class ProfileGlobalIdSection extends HookConsumerWidget {
                                   ),
                                 ),
                               )
-                            : Text('Save'),
+                            : const Text('Save'),
                       ),
                     ),
                   ],

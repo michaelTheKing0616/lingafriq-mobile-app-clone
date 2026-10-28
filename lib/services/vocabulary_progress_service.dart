@@ -75,7 +75,7 @@ class VocabularyProgressService {
           timesSeen: 1,
           firstSeen: now,
           lastSeen: now,
-          nextReview: now.add(Duration(days: 1)),
+          nextReview: now.add(const Duration(days: 1)),
           category: category,
         );
 

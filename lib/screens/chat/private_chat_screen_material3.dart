@@ -155,7 +155,7 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
               decoration: BoxDecoration(
                 gradient: isDark
                     ? PanAfricanGradients.darkSurface
-                    : LinearGradient(
+                    : const LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
@@ -258,7 +258,7 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: PanAfricanRadius.lgBR,
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               color: PanAfricanColors.primary,
                               width: 2,
                             ),
@@ -289,9 +289,9 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
                           ? SizedBox(
                               width: 20.w,
                               height: 20.h,
-                              child: CircularProgressIndicator(strokeWidth: 2),
+                              child: const CircularProgressIndicator(strokeWidth: 2),
                             )
-                          : Icon(Icons.send),
+                          : const Icon(Icons.send),
                       onPressed: isLoading.value
                           ? null
                           : () {
@@ -368,7 +368,7 @@ class _PrivateMessageBubble extends StatelessWidget {
                 _formatTimestamp(timestamp.toString()),
                 style: PanAfricanTypography.labelSmall(context).copyWith(
                   color: isMe
-                      ? colorScheme.onPrimary.withOpacity(0.7)
+                      ? colorScheme.onPrimary.withValues(alpha: 0.7)
                       : PanAfricanColors.neutralMedium,
                 ),
               ),

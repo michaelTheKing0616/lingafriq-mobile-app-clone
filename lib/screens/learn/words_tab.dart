@@ -111,7 +111,7 @@ class _WordsTabState extends ConsumerState<WordsTab> {
       appBar: AppBar(
         title: Semantics(
           label: '$kLearnWordsCopyKey: $kLearnWordsTitle',
-          child: Text(kLearnWordsTitle),
+          child: const Text(kLearnWordsTitle),
         ),
       ),
       body: ListView(

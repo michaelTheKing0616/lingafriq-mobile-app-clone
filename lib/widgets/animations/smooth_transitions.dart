@@ -1,7 +1,6 @@
 import 'dart:io' show Platform;
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 /// Smooth page route for navigation with custom transitions
 class SmoothPageRoute<T> extends PageRouteBuilder<T> {

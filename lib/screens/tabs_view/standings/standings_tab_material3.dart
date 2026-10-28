@@ -117,8 +117,8 @@ class StandingsTabMaterial3 extends HookConsumerWidget {
                         ),
                         ),
                       ),
-                      Expanded(
-                        child: const _StandingsBuilder(),
+                      const Expanded(
+                        child: _StandingsBuilder(),
                       ),
                     ],
                   ),

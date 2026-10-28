@@ -168,7 +168,7 @@ Please provide your response in this format:
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Translation'),
+        title: const Text('Translation'),
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
@@ -190,7 +190,7 @@ Please provide your response in this format:
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : LinearGradient(
+              : const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -229,10 +229,10 @@ Please provide your response in this format:
                           ? SizedBox(
                               width: 20.w,
                               height: 20.h,
-                              child: CircularProgressIndicator(strokeWidth: 2),
+                              child: const CircularProgressIndicator(strokeWidth: 2),
                             )
-                          : Icon(Icons.translate),
-                      label: Text('Translate'),
+                          : const Icon(Icons.translate),
+                      label: const Text('Translate'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PanAfricanColors.primary,
                         foregroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -279,7 +279,7 @@ Please provide your response in this format:
                               children: [
                                 Expanded(
                                   child: FilterChip(
-                                    label: Text('Alternatives'),
+                                    label: const Text('Alternatives'),
                                     selected: showAlternatives.value,
                                     onSelected: (val) => showAlternatives.value = val,
                                   ),
@@ -287,7 +287,7 @@ Please provide your response in this format:
                                 SizedBox(width: PanAfricanSpacing.sm),
                                 Expanded(
                                   child: FilterChip(
-                                    label: Text('Grammar'),
+                                    label: const Text('Grammar'),
                                     selected: showGrammar.value,
                                     onSelected: (val) => showGrammar.value = val,
                                   ),
@@ -295,7 +295,7 @@ Please provide your response in this format:
                                 SizedBox(width: PanAfricanSpacing.sm),
                                 Expanded(
                                   child: FilterChip(
-                                    label: Text('Culture'),
+                                    label: const Text('Culture'),
                                     selected: showCultural.value,
                                     onSelected: (val) => showCultural.value = val,
                                   ),
@@ -794,7 +794,7 @@ class _PrimaryTranslationCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.translate, color: PanAfricanColors.primary),
+                const Icon(Icons.translate, color: PanAfricanColors.primary),
                 SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   'Translation',
@@ -810,7 +810,7 @@ class _PrimaryTranslationCard extends StatelessWidget {
               style: PanAfricanTypography.bodyLarge(context),
             ),
             SizedBox(height: PanAfricanSpacing.md),
-            Divider(),
+            const Divider(),
             SizedBox(height: PanAfricanSpacing.md),
             Text(
               entry.primaryTranslation,
@@ -846,7 +846,7 @@ class _AlternativesCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.alt_route, color: PanAfricanColors.secondary),
+                const Icon(Icons.alt_route, color: PanAfricanColors.secondary),
                 SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   'Alternative Translations',
@@ -867,7 +867,7 @@ class _AlternativesCard extends StatelessWidget {
                       width: 24.w,
                       height: 24.h,
                       decoration: BoxDecoration(
-                        color: PanAfricanColors.secondary.withOpacity(0.2),
+                        color: PanAfricanColors.secondary.withValues(alpha: 0.2),
                         shape: BoxShape.circle,
                       ),
                       child: Center(
@@ -918,7 +918,7 @@ class _GrammarBreakdownCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.menu_book, color: PanAfricanColors.accent),
+                const Icon(Icons.menu_book, color: PanAfricanColors.accent),
                 SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   'Grammar Breakdown',
@@ -946,7 +946,7 @@ class _GrammarBreakdownCard extends StatelessWidget {
                         SizedBox(width: PanAfricanSpacing.sm),
                         Chip(
                           label: Text(item.partOfSpeech),
-                          backgroundColor: PanAfricanColors.accent.withOpacity(0.1),
+                          backgroundColor: PanAfricanColors.accent.withValues(alpha: 0.1),
                           labelStyle: PanAfricanTypography.labelSmall(context).copyWith(
                             color: PanAfricanColors.accent,
                           ),
@@ -991,7 +991,7 @@ class _CulturalContextCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.public, color: PanAfricanColors.tertiary),
+                const Icon(Icons.public, color: PanAfricanColors.tertiary),
                 SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   'Cultural Context',
@@ -1013,7 +1013,7 @@ class _CulturalContextCard extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(PanAfricanSpacing.md),
                 decoration: BoxDecoration(
-                  color: PanAfricanColors.tertiary.withOpacity(0.1),
+                  color: PanAfricanColors.tertiary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                 ),
                 child: Row(

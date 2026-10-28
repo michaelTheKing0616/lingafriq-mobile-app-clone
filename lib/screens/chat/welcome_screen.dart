@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/modern_griot_design_system.dart';
@@ -270,7 +269,7 @@ class _PortraitColumn extends StatelessWidget {
               Positioned(
                 bottom: 16.h,
                 left: -6.w,
-                child: _GlassBadge(label: 'Active Echo'),
+                child: const _GlassBadge(label: 'Active Echo'),
               ),
             ],
           ),

@@ -17,7 +17,7 @@ bool proverbWeaverUnlockedForLevel(String? level) =>
 
 /// Review gate: elder or linguist id required (AC3).
 bool proverbHasReviewer(ProverbWeaverRecord record) {
-  final id = record.reviewedBy?.trim() ?? '';
+  final id = record.reviewedBy.trim() ?? '';
   if (id.isEmpty) return false;
   final role = record.reviewerRole.trim().toLowerCase();
   return role == 'linguist' || role == 'elder';

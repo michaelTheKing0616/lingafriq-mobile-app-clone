@@ -479,9 +479,9 @@ bool _isSlowCellular(String? effectiveType) {
 
 RealtimeTransportDecision decideRealtimeTransport(RealtimeCellularProfile profile) {
   if (_isSlowCellular(profile.effectiveType)) {
-    return RealtimeTransportDecision(
+    return const RealtimeTransportDecision(
       mode: RealtimeTransportMode.textFallback,
-      state: const RealtimeTransportState(mode: RealtimeTransportMode.textFallback),
+      state: RealtimeTransportState(mode: RealtimeTransportMode.textFallback),
       userNotice: RealtimeVoiceClient.textFallbackNotice,
     );
   }

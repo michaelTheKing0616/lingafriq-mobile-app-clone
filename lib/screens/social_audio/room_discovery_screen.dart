@@ -55,11 +55,11 @@ class _RoomDiscoveryScreenState extends ConsumerState<RoomDiscoveryScreen>
 
     return Scaffold(
       appBar: AppBar(
-        title: Column(
+        title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('Language Practice Rooms'),
+            Text('Language Practice Rooms'),
             Text('LingAfriq', style: TextStyle(fontSize: 12, color: PanAfricanColors.textSecondary)),
           ],
         ),
@@ -169,7 +169,7 @@ class _RoomDiscoveryScreenState extends ConsumerState<RoomDiscoveryScreen>
             children: [
               Expanded(
                 child: DropdownButtonFormField<String?>(
-                  value: _selectedLanguage,
+                  initialValue: _selectedLanguage,
                   decoration: InputDecoration(
                     labelText: 'Language',
                     border: OutlineInputBorder(
@@ -200,7 +200,7 @@ class _RoomDiscoveryScreenState extends ConsumerState<RoomDiscoveryScreen>
               SizedBox(width: 2.w),
               Expanded(
                 child: DropdownButtonFormField<RoomType>(
-                  value: _selectedType,
+                  initialValue: _selectedType,
                   decoration: InputDecoration(
                     labelText: 'Type',
                     border: OutlineInputBorder(
@@ -351,13 +351,13 @@ class _RoomDiscoveryScreenState extends ConsumerState<RoomDiscoveryScreen>
                   // Language badge
                   Chip(
                     label: Text(room.language),
-                    backgroundColor: PanAfricanColors.primary.withOpacity(0.1),
+                    backgroundColor: PanAfricanColors.primary.withValues(alpha: 0.1),
                   ),
                   SizedBox(width: 2.w),
                   // Type badge
                   Chip(
                     label: Text(_getRoomTypeLabel(room.type)),
-                    backgroundColor: PanAfricanColors.kenteRed.withOpacity(0.1),
+                    backgroundColor: PanAfricanColors.kenteRed.withValues(alpha: 0.1),
                   ),
                   const Spacer(),
                   // Host info

@@ -53,7 +53,7 @@ class FriendProfileScreen extends HookConsumerWidget {
       label: 'Friend profile. Profile info, stats, and action buttons.',
       child: Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -66,7 +66,7 @@ class FriendProfileScreen extends HookConsumerWidget {
         ),
         child: SafeArea(
           child: isLoading.value
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(color: PolieColors.goldEmber),
                 )
               : friendData.value == null
@@ -131,7 +131,7 @@ class FriendProfileScreen extends HookConsumerWidget {
             label: 'Back',
             button: true,
             child: IconButton(
-            icon: Icon(Icons.arrow_back, color: PolieColors.textPrimary, semanticLabel: 'Back'),
+            icon: const Icon(Icons.arrow_back, color: PolieColors.textPrimary, semanticLabel: 'Back'),
             onPressed: () {
               HapticFeedback.lightImpact();
               Navigator.of(context).pop();
@@ -158,7 +158,7 @@ class FriendProfileScreen extends HookConsumerWidget {
         children: [
           CircleAvatar(
             radius: 50.r,
-            backgroundColor: PolieColors.royalAmethyst.withOpacity(0.2),
+            backgroundColor: PolieColors.royalAmethyst.withValues(alpha: 0.2),
             child: Text(
               username[0].toUpperCase(),
               style: PolieTypography.h1(context).copyWith(
@@ -255,9 +255,9 @@ class FriendProfileScreen extends HookConsumerWidget {
                   vertical: PolieSpacing.xs,
                 ),
                 decoration: BoxDecoration(
-                  color: PolieColors.electricTeal.withOpacity(0.2),
+                  color: PolieColors.electricTeal.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(PolieRadius.pill),
-                  border: Border.all(color: PolieColors.electricTeal.withOpacity(0.5)),
+                  border: Border.all(color: PolieColors.electricTeal.withValues(alpha: 0.5)),
                 ),
                 child: Text(
                   langName,
@@ -301,11 +301,11 @@ class FriendProfileScreen extends HookConsumerWidget {
                         width: 60.w,
                         height: 60.w,
                         decoration: BoxDecoration(
-                          color: PolieColors.goldEmber.withOpacity(0.2),
+                          color: PolieColors.goldEmber.withValues(alpha: 0.2),
                           shape: BoxShape.circle,
                           border: Border.all(color: PolieColors.goldEmber),
                         ),
-                        child: Icon(
+                        child: const Icon(
                           Icons.workspace_premium_rounded,
                           color: PolieColors.goldEmber,
                           size: 32,
@@ -383,9 +383,9 @@ class FriendProfileScreen extends HookConsumerWidget {
                     },
                     style: OutlinedButton.styleFrom(
                     foregroundColor: PolieColors.error,
-                    side: BorderSide(color: PolieColors.error),
+                    side: const BorderSide(color: PolieColors.error),
                     ),
-                    child: Text('Remove Friend'),
+                    child: const Text('Remove Friend'),
                   ),
                 ),
               ),
@@ -398,9 +398,9 @@ class FriendProfileScreen extends HookConsumerWidget {
                   },
                   style: OutlinedButton.styleFrom(
                     foregroundColor: PolieColors.error,
-                    side: BorderSide(color: PolieColors.error),
+                    side: const BorderSide(color: PolieColors.error),
                   ),
-                  child: Text('Block'),
+                  child: const Text('Block'),
                 ),
               ),
             ],

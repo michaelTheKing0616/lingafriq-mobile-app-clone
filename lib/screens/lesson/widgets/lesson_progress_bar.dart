@@ -57,7 +57,7 @@ class LessonProgressBar extends StatelessWidget {
                   color: isCurrent
                       ? PanAfricanColors.primary
                       : isCompleted || isPast
-                          ? PanAfricanColors.primary.withOpacity(0.5)
+                          ? PanAfricanColors.primary.withValues(alpha: 0.5)
                           : PanAfricanColors.borderLight,
                 ),
               );

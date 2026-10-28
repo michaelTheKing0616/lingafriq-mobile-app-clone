@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -328,7 +326,7 @@ class _GreetingGauntletScreenState extends ConsumerState<GreetingGauntletScreen>
           if (showTimer)
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.timer_outlined,
                   semanticLabel: 'Time remaining',
                 ),
@@ -367,7 +365,7 @@ class _GreetingGauntletScreenState extends ConsumerState<GreetingGauntletScreen>
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(GreetingGauntletScreen.instructions),
+            const Text(GreetingGauntletScreen.instructions),
             const Spacer(),
             FilledButton(
               onPressed: _onPlayTap,

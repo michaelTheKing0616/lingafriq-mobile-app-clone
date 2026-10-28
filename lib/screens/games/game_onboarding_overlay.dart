@@ -35,7 +35,7 @@ class GameOnboardingOverlay extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Material(
-      color: Colors.black.withOpacity(0.6),
+      color: Colors.black.withValues(alpha: 0.6),
       child: Center(
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xl),

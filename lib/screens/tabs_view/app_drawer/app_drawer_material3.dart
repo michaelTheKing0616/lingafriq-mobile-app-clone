@@ -125,7 +125,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                                     .copyWith(
                                       color: Theme.of(
                                         context,
-                                      ).colorScheme.onPrimary.withOpacity(0.7),
+                                      ).colorScheme.onPrimary.withValues(alpha: 0.7),
                                     ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -243,7 +243,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.push(
                             context,
                             SmoothPageRoute.platform(
-                              child: GamesScreenMaterial3(),
+                              child: const GamesScreenMaterial3(),
                             ),
                           );
                         },
@@ -257,7 +257,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.push(
                             context,
                             SmoothPageRoute.platform(
-                              child: CultureMagazineScreenEnhanced(),
+                              child: const CultureMagazineScreenEnhanced(),
                             ),
                           );
                         },
@@ -315,7 +315,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.push(
                             context,
                             SmoothPageRoute.platform(
-                              child: ImportMediaScreenEnhanced(),
+                              child: const ImportMediaScreenEnhanced(),
                             ),
                           );
                         },
@@ -386,7 +386,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.push(
                             context,
                             SmoothPageRoute.platform(
-                              child: CreateLessonScreenEnhanced(),
+                              child: const CreateLessonScreenEnhanced(),
                             ),
                           );
                         },
@@ -407,7 +407,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.push(
                             context,
                             SmoothPageRoute.platform(
-                              child: GlobalChatScreenMaterial3(),
+                              child: const GlobalChatScreenMaterial3(),
                             ),
                           );
                         },
@@ -449,7 +449,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.push(
                             context,
                             SmoothPageRoute.platform(
-                              child: PrivateChatListScreen(),
+                              child: const PrivateChatListScreen(),
                             ),
                           );
                         },
@@ -463,7 +463,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.push(
                             context,
                             SmoothPageRoute.platform(
-                              child: LiveClassroomScreenMaterial3(),
+                              child: const LiveClassroomScreenMaterial3(),
                             ),
                           );
                         },
@@ -561,7 +561,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.push(
                             context,
                             SmoothPageRoute.platform(
-                              child: BadgeCollectionScreenMaterial3(),
+                              child: const BadgeCollectionScreenMaterial3(),
                             ),
                           );
                         },
@@ -596,7 +596,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.push(
                             context,
                             SmoothPageRoute.platform(
-                              child: ProfileScreenMaterial3(),
+                              child: const ProfileScreenMaterial3(),
                             ),
                           );
                         },
@@ -610,7 +610,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.push(
                             context,
                             SmoothPageRoute.platform(
-                              child: SettingsScreenMaterial3(),
+                              child: const SettingsScreenMaterial3(),
                             ),
                           );
                         },
@@ -624,8 +624,8 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                         child: SwitchListTile(
                           value: isDark,
                           onChanged: (_) => toggleDarkMode(),
-                          title: Text('Dark Mode'),
-                          subtitle: Text('Toggle theme'),
+                          title: const Text('Dark Mode'),
+                          subtitle: const Text('Toggle theme'),
                           secondary: Semantics(
                             excludeSemantics: true,
                             child: Icon(
@@ -633,7 +633,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                               color: PanAfricanColors.primary,
                             ),
                           ),
-                          activeColor: PanAfricanColors.primary,
+                          activeThumbColor: PanAfricanColors.primary,
                         ),
                       ),
                     ],
@@ -667,12 +667,12 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                     final shouldLogout = await showDialog<bool>(
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: Text('Logout'),
-                        content: Text('Are you sure you want to logout?'),
+                        title: const Text('Logout'),
+                        content: const Text('Are you sure you want to logout?'),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(context, false),
-                            child: Text('Cancel'),
+                            child: const Text('Cancel'),
                           ),
                           ElevatedButton(
                             onPressed: () => Navigator.pop(context, true),
@@ -682,7 +682,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                                 context,
                               ).colorScheme.onPrimary,
                             ),
-                            child: Text('Logout'),
+                            child: const Text('Logout'),
                           ),
                         ],
                       ),

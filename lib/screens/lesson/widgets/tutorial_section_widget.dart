@@ -77,7 +77,7 @@ class _TutorialSectionWidgetState extends ConsumerState<TutorialSectionWidget> {
                         placeholder: (context, url) => Container(
                           height: 200.h,
                           color: PanAfricanColors.cardDark,
-                          child: Center(
+                          child: const Center(
                             child: CircularProgressIndicator(
                               color: PanAfricanColors.primary,
                             ),

@@ -107,7 +107,7 @@ class _ToneTrainerGameState extends BaseGameScreenState<ToneTrainerGame> {
       result: correct ? GameResult.correct : GameResult.incorrect,
       durationMs: duration,
       confidence: correct ? 1.0 : 0.0,
-      userAction: 'tone_selected_${_selectedTone}',
+      userAction: 'tone_selected_$_selectedTone',
     );
 
     setState(() => _answered = true);
@@ -195,7 +195,7 @@ class _ToneTrainerGameState extends BaseGameScreenState<ToneTrainerGame> {
                 color: cs.surfaceContainerLow,
                 borderRadius: ModernGriotRadius.borderXl,
                 border: Border.all(
-                    color: ModernGriotColors.outlineVariant.withOpacity(0.3)),
+                    color: ModernGriotColors.outlineVariant.withValues(alpha: 0.3)),
               ),
               child: CustomPaint(
                 painter: _ToneArcPainter(
@@ -279,13 +279,13 @@ class _ToneTrainerGameState extends BaseGameScreenState<ToneTrainerGame> {
                 Color bg;
                 Color border;
                 if (isCorrect) {
-                  bg = ModernGriotColors.secondary.withOpacity(0.15);
+                  bg = ModernGriotColors.secondary.withValues(alpha: 0.15);
                   border = ModernGriotColors.secondary;
                 } else if (isWrong) {
-                  bg = ModernGriotColors.error.withOpacity(0.12);
+                  bg = ModernGriotColors.error.withValues(alpha: 0.12);
                   border = ModernGriotColors.error;
                 } else if (isActive) {
-                  bg = ModernGriotColors.primaryContainer.withOpacity(0.3);
+                  bg = ModernGriotColors.primaryContainer.withValues(alpha: 0.3);
                   border = ModernGriotColors.primary;
                 } else {
                   bg = cs.surfaceContainerLowest;
@@ -388,13 +388,13 @@ class _ToneArcPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = surfaceColor.withOpacity(0.4)
+      ..color = surfaceColor.withValues(alpha: 0.4)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0
       ..strokeCap = StrokeCap.round;
 
     final dashPaint = Paint()
-      ..color = primaryColor.withOpacity(0.5)
+      ..color = primaryColor.withValues(alpha: 0.5)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0
       ..strokeCap = StrokeCap.round;
@@ -455,7 +455,7 @@ class _SemanticShiftCard extends StatelessWidget {
         color: ModernGriotColors.surfaceContainerLow,
         borderRadius: ModernGriotRadius.borderLg,
         border: Border.all(
-            color: ModernGriotColors.tertiary.withOpacity(0.3)),
+            color: ModernGriotColors.tertiary.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

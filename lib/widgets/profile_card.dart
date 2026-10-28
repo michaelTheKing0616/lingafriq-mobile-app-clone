@@ -33,7 +33,7 @@ class ProfileCard extends StatelessWidget {
       gradientEnd: PanAfricanColors.secondary,
       child: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
@@ -115,7 +115,7 @@ class ProfileCard extends StatelessWidget {
                     Text(
                       email!,
                       style: PanAfricanTypography.bodySmall(context)
-                          .copyWith(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9)),
+                          .copyWith(color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9)),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -128,10 +128,10 @@ class ProfileCard extends StatelessWidget {
                         vertical: PanAfricanSpacing.xxs,
                       ),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                        color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(PanAfricanRadius.pill),
                         border: Border.all(
-                          color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
+                          color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.3),
                           width: 1,
                         ),
                       ),
@@ -166,7 +166,7 @@ class ProfileCard extends StatelessWidget {
 
   Widget _buildDefaultAvatar(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [
             PanAfricanColors.secondary,
@@ -218,7 +218,7 @@ class ProfileMenuItem extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(PanAfricanSpacing.sm),
             decoration: BoxDecoration(
-              color: defaultIconColor.withOpacity(0.1),
+              color: defaultIconColor.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(PanAfricanRadius.md),
             ),
             child: Icon(

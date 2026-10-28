@@ -219,7 +219,7 @@ class _ConversationPracticeScreenState extends ConsumerState<ConversationPractic
                           child: Text(
                             _formatTime(message['timestamp'] as DateTime),
                             style: TextStyle(
-                              color: isUser ? Theme.of(context).colorScheme.onPrimary.withOpacity(0.7) : Theme.of(context).colorScheme.onSurfaceVariant,
+                              color: isUser ? Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.7) : Theme.of(context).colorScheme.onSurfaceVariant,
                               fontSize: 10,
                             ),
                           ),
@@ -243,7 +243,7 @@ class _ConversationPracticeScreenState extends ConsumerState<ConversationPractic
         color: Theme.of(context).colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 4,
             offset: const Offset(0, -2),
           ),

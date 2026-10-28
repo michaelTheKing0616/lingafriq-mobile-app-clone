@@ -59,7 +59,7 @@ class _PictureMatchItemState extends State<PictureMatchItem> {
         key: ValueKey<String>('phase-$_phase'),
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(ItemCopy.picture),
+          const Text(ItemCopy.picture),
           if (_grade != null)
             Text(
               _grade!.correct ? ItemCopy.correct : ItemCopy.wrong,

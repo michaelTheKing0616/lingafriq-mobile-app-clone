@@ -216,7 +216,7 @@ class _LiarLiarGameState extends BaseGameScreenState<LiarLiarGame>
   Widget buildGameContent(BuildContext context) {
     try {
       if (isLoading) {
-        return DynamicLoadingScreen();
+        return const DynamicLoadingScreen();
       }
 
       if (error != null) {
@@ -319,8 +319,8 @@ class _LiarLiarGameState extends BaseGameScreenState<LiarLiarGame>
               SizedBox(height: 2.h),
               Card(
                 color: (_hasError == (_userSelected ? true : false))
-                    ? Colors.green.withOpacity(0.2)
-                    : Colors.red.withOpacity(0.2),
+                    ? Colors.green.withValues(alpha: 0.2)
+                    : Colors.red.withValues(alpha: 0.2),
                 child: Padding(
                   padding: EdgeInsets.all(4.w),
                   child: Column(

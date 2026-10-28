@@ -1,5 +1,3 @@
-import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -190,7 +188,7 @@ class AILanguageSelectionScreen extends HookConsumerWidget {
                     ),
                   ),
                   SizedBox(height: 12.h),
-                  GriotBadgePill(
+                  const GriotBadgePill(
                     label: 'Pro Tip: Start with greetings!',
                     icon: Icons.lightbulb_rounded,
                     bounce: true,
@@ -253,7 +251,7 @@ class _LanguageCard extends StatelessWidget {
               height: 6.h,
               decoration: BoxDecoration(
                 color: data.accent,
-                borderRadius: BorderRadius.vertical(
+                borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(ModernGriotRadius.xl),
                 ),
               ),

@@ -119,13 +119,13 @@ class PersonalityChatScreen extends HookConsumerWidget {
             Text(personality.name),
             Text(
               personality.country,
-              style: TextStyle(fontSize: 12),
+              style: const TextStyle(fontSize: 12),
             ),
           ],
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.info_outline),
+            icon: const Icon(Icons.info_outline),
             onPressed: () {
               _showPersonalityInfo(context, personality);
             },
@@ -189,7 +189,7 @@ class PersonalityChatScreen extends HookConsumerWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.chat_bubble_outline, size: 64, color: Colors.grey),
+                        const Icon(Icons.chat_bubble_outline, size: 64, color: Colors.grey),
                         SizedBox(height: PanAfricanSpacing.md),
                         Text(
                           'Start a conversation with ${personality.name}',
@@ -227,9 +227,9 @@ class PersonalityChatScreen extends HookConsumerWidget {
               color: Theme.of(context).colorScheme.surface,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black.withValues(alpha: 0.1),
                   blurRadius: 4,
-                  offset: Offset(0, -2),
+                  offset: const Offset(0, -2),
                 ),
               ],
             ),
@@ -252,12 +252,12 @@ class PersonalityChatScreen extends HookConsumerWidget {
                 SizedBox(width: PanAfricanSpacing.sm),
                 IconButton(
                   icon: isLoading.value
-                      ? SizedBox(
+                      ? const SizedBox(
                           width: 20,
                           height: 20,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : Icon(Icons.send),
+                      : const Icon(Icons.send),
                   onPressed: (isLoading.value || session.value == null) ? null : sendMessage,
                 ),
               ],
@@ -338,7 +338,7 @@ class PersonalityChatScreen extends HookConsumerWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Close'),
+            child: const Text('Close'),
           ),
         ],
       ),

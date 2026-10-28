@@ -78,15 +78,15 @@ class LazyGameList extends HookConsumerWidget {
                   isLoadingMore.value = false;
                 },
                 icon: isLoadingMore.value
-                    ? SizedBox(
+                    ? const SizedBox(
                         width: 16,
                         height: 16,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : const Icon(Icons.expand_more),
-                label: Text('Load More Core Games'),
+                label: const Text('Load More Core Games'),
                 style: FilledButton.styleFrom(
-                  backgroundColor: Colors.blue.withOpacity(0.1),
+                  backgroundColor: Colors.blue.withValues(alpha: 0.1),
                   foregroundColor: Colors.blue,
                 ),
               ),
@@ -109,15 +109,15 @@ class LazyGameList extends HookConsumerWidget {
                   isLoadingMore.value = false;
                 },
                 icon: isLoadingMore.value
-                    ? SizedBox(
+                    ? const SizedBox(
                         width: 16,
                         height: 16,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : const Icon(Icons.expand_more),
-                label: Text('Load More Cultural Games'),
+                label: const Text('Load More Cultural Games'),
                 style: FilledButton.styleFrom(
-                  backgroundColor: Colors.purple.withOpacity(0.1),
+                  backgroundColor: Colors.purple.withValues(alpha: 0.1),
                   foregroundColor: Colors.purple,
                 ),
               ),

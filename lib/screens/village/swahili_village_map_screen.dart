@@ -1,5 +1,3 @@
-import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -80,7 +78,7 @@ class SwahiliVillageMapScreen extends HookConsumerWidget {
                       style: ModernGriotTypography.titleSmall(),
                     ),
                     SizedBox(width: 6.w),
-                    Text('•',
+                    const Text('•',
                         style: TextStyle(
                             color: ModernGriotColors.onSurfaceVariant)),
                     SizedBox(width: 6.w),

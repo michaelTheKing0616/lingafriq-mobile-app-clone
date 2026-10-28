@@ -120,7 +120,7 @@ class ReviewProgressService {
     updatedDailyCounts[today] = (updatedDailyCounts[today] ?? 0) + 1;
     
     // Keep only last 30 days
-    final cutoff = now.subtract(Duration(days: 30));
+    final cutoff = now.subtract(const Duration(days: 30));
     updatedDailyCounts.removeWhere((date, _) => date.isBefore(cutoff));
 
     final updatedStats = stats.copyWith(
@@ -170,7 +170,7 @@ class ReviewProgressService {
           .expand((session) => session.itemsReviewed)
           .where((item) => 
               !item.isCorrect && 
-              item.reviewedAt.isBefore(DateTime.now().subtract(Duration(days: 1))))
+              item.reviewedAt.isBefore(DateTime.now().subtract(const Duration(days: 1))))
           .length;
       
       return dueWords.length + recentItemsNeedingReview;

@@ -517,7 +517,7 @@ class AvatarEditorItemTile extends StatelessWidget {
                               size: 28,
                               color: Theme.of(context).colorScheme.onSurfaceVariant,
                             )
-                          : Icon(
+                          : const Icon(
                               Icons.checkroom_outlined,
                               size: 28,
                               color: PanAfricanColors.primary,

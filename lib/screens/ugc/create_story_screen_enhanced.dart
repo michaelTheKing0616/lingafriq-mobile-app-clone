@@ -92,7 +92,7 @@ class CreateStoryScreenEnhanced extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create Story'),
+        title: const Text('Create Story'),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -100,7 +100,7 @@ class CreateStoryScreenEnhanced extends HookConsumerWidget {
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : LinearGradient(
+              : const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -118,7 +118,7 @@ class CreateStoryScreenEnhanced extends HookConsumerWidget {
                 // Quality Badges Preview
                 if (qualityBadges.value.isNotEmpty)
                   Card(
-                    color: PanAfricanColors.primaryContainer.withOpacity(0.3),
+                    color: PanAfricanColors.primaryContainer.withValues(alpha: 0.3),
                     child: Padding(
                       padding: EdgeInsets.all(PanAfricanSpacing.md),
                       child: UGCQualityBadgesWidget(
@@ -166,8 +166,8 @@ class CreateStoryScreenEnhanced extends HookConsumerWidget {
                 // Validate Button
                 ElevatedButton.icon(
                   onPressed: validateContent,
-                  icon: Icon(Icons.check_circle),
-                  label: Text('Validate Story'),
+                  icon: const Icon(Icons.check_circle),
+                  label: const Text('Validate Story'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: PanAfricanColors.secondary,
                     foregroundColor: Theme.of(context).colorScheme.onSecondary,
@@ -184,8 +184,8 @@ class CreateStoryScreenEnhanced extends HookConsumerWidget {
                     padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
                   ),
                   child: isSubmitting.value
-                      ? CircularProgressIndicator()
-                      : Text('Create Story'),
+                      ? const CircularProgressIndicator()
+                      : const Text('Create Story'),
                 ),
               ],
             ),

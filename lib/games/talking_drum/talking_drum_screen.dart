@@ -249,7 +249,7 @@ class _TalkingDrumScreenState extends ConsumerState<TalkingDrumScreen> {
       });
       return;
     }
-    final scorer = LensScoringClient();
+    final scorer = const LensScoringClient();
     final dio = ref.read(client);
     final outcome = await scorer.scoreUtterance(
       post: (p, data) => dio.post(p, data: data),
@@ -453,7 +453,7 @@ class _TalkingDrumScreenState extends ConsumerState<TalkingDrumScreen> {
               ),
               child: Text(
                 'Hold to speak',
-                style: PanAfricanTypography.labelLarge(context)?.copyWith(
+                style: PanAfricanTypography.labelLarge(context).copyWith(
                   color: Theme.of(context).colorScheme.onPrimary,
                 ),
               ),

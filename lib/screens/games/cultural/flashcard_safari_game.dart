@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
-import '../../../models/game/game_content_models.dart';
 import '../../../services/polie_content_generator.dart';
 import '../../../widgets/error_boundary.dart';
 import '../../loading/dynamic_loading_screen.dart';
@@ -216,7 +215,7 @@ class _FlashcardSafariGameState extends BaseGameScreenState<FlashcardSafariGame>
   Widget buildGameContent(BuildContext context) {
     try {
       if (isLoading) {
-        return DynamicLoadingScreen();
+        return const DynamicLoadingScreen();
       }
 
       if (error != null) {

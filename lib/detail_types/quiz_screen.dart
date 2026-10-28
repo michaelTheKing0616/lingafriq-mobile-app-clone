@@ -341,7 +341,7 @@ class QuizScreen extends HookConsumerWidget {
                 width: 44.w,
                 height: 44.w,
                 decoration: BoxDecoration(
-                  color: accent.withOpacity(0.15),
+                  color: accent.withValues(alpha: 0.15),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -468,13 +468,13 @@ class QuizItem extends HookWidget {
 
     Color optionBackground(String option) {
       if (isReview && option == quiz.answer) {
-        return PanAfricanColors.success.withOpacity(0.12);
+        return PanAfricanColors.success.withValues(alpha: 0.12);
       }
       if (isReview && selectedValue == option && option != quiz.answer) {
-        return PanAfricanColors.error.withOpacity(0.12);
+        return PanAfricanColors.error.withValues(alpha: 0.12);
       }
       if (!isReview && selectedValue == option) {
-        return PanAfricanColors.primary.withOpacity(0.12);
+        return PanAfricanColors.primary.withValues(alpha: 0.12);
       }
       return surfaceColor;
     }
@@ -536,7 +536,7 @@ class QuizItem extends HookWidget {
                       shape: BoxShape.circle,
                       border: Border.all(color: optionBorder(option), width: 2),
                       color: isSelected || (isReview && isCorrect)
-                          ? optionBorder(option).withOpacity(0.15)
+                          ? optionBorder(option).withValues(alpha: 0.15)
                           : Colors.transparent,
                     ),
                     child: Icon(
@@ -564,7 +564,7 @@ class QuizItem extends HookWidget {
                     ),
                   ),
                   if (isReview && isCorrect)
-                    PanAfricanBadge(
+                    const PanAfricanBadge(
                       label: 'Correct',
                       color: PanAfricanColors.success,
                       icon: Icons.check_circle_rounded,

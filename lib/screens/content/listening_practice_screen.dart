@@ -168,7 +168,7 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
     if (audioUrl == null || audioUrl.isEmpty) {
       // Show message that audio is not available
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Audio not available')),
+        const SnackBar(content: Text('Audio not available')),
       );
       return;
     }
@@ -183,7 +183,7 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
     } catch (e) {
       debugPrint('Error playing audio: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error playing audio')),
+        const SnackBar(content: Text('Error playing audio')),
       );
     }
   }
@@ -225,7 +225,7 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Exercise Complete!'),
+          title: const Text('Exercise Complete!'),
           content: Text('Score: $score%\nCorrect: $correct/${_currentExercise!.questions.length}'),
           actions: [
             TextButton(
@@ -236,7 +236,7 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
                   _answers = {};
                 });
               },
-              child: Text('Done'),
+              child: const Text('Done'),
             ),
           ],
         ),
@@ -251,7 +251,7 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
     return Scaffold(
       backgroundColor: isDark ? PolieColors.obsidian : PolieColors.surfaceLight,
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -278,7 +278,7 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
         _buildDifficultySelector(context),
         Expanded(
           child: _isLoading
-              ? Center(child: CircularProgressIndicator(color: PolieColors.electricTeal))
+              ? const Center(child: CircularProgressIndicator(color: PolieColors.electricTeal))
               : _buildExercisesList(context),
         ),
       ],
@@ -294,7 +294,7 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
             label: 'Go back',
             button: true,
             child: IconButton(
-              icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
+              icon: const Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
               onPressed: () {
                 HapticFeedback.lightImpact();
                 Navigator.of(context).pop();
@@ -331,7 +331,7 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
       margin: EdgeInsets.symmetric(horizontal: PolieSpacing.md),
       padding: EdgeInsets.all(PolieSpacing.sm),
       decoration: BoxDecoration(
-        color: PolieColors.surfaceContainerLight.withOpacity(0.1),
+        color: PolieColors.surfaceContainerLight.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(PolieRadius.md),
       ),
       child: Row(
@@ -404,7 +404,7 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
   }
 
   Widget _buildExerciseView(BuildContext context) {
-    if (_currentExercise == null) return SizedBox.shrink();
+    if (_currentExercise == null) return const SizedBox.shrink();
 
     return Column(
       children: [
@@ -471,7 +471,7 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
             label: 'Go back to exercise list',
             button: true,
             child: IconButton(
-              icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
+              icon: const Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
               onPressed: () {
                 HapticFeedback.lightImpact();
                 setState(() {
@@ -499,7 +499,7 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
     return Container(
       padding: EdgeInsets.all(PolieSpacing.lg),
       decoration: BoxDecoration(
-        color: PolieColors.surfaceContainerLight.withOpacity(0.1),
+        color: PolieColors.surfaceContainerLight.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(PolieRadius.lg),
       ),
       child: Column(
@@ -585,7 +585,7 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
                   padding: EdgeInsets.all(PolieSpacing.md),
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? PolieColors.electricTeal.withOpacity(0.2)
+                        ? PolieColors.electricTeal.withValues(alpha: 0.2)
                         : PolieColors.surfaceContainer,
                     borderRadius: BorderRadius.circular(PolieRadius.md),
                     border: Border.all(
@@ -720,7 +720,7 @@ class _DifficultyChip extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             color: selected
-                ? PolieColors.electricTeal.withOpacity(0.3)
+                ? PolieColors.electricTeal.withValues(alpha: 0.3)
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(PolieRadius.pill),
             border: Border.all(
@@ -774,7 +774,7 @@ class _ExerciseCard extends StatelessWidget {
         color: isDark ? PolieColors.surfaceContainer : PolieColors.surfaceContainerLight,
         borderRadius: BorderRadius.circular(PolieRadius.lg),
         border: Border.all(
-          color: isCompleted ? PolieColors.success.withOpacity(0.5) : difficultyColor.withOpacity(0.3),
+          color: isCompleted ? PolieColors.success.withValues(alpha: 0.5) : difficultyColor.withValues(alpha: 0.3),
           width: isCompleted ? 2 : 1,
         ),
       ),
@@ -796,7 +796,7 @@ class _ExerciseCard extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(PolieSpacing.md),
                   decoration: BoxDecoration(
-                    color: difficultyColor.withOpacity(0.2),
+                    color: difficultyColor.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(PolieRadius.md),
                   ),
                   child: Icon(
@@ -841,7 +841,7 @@ class _ExerciseCard extends StatelessWidget {
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                              color: difficultyColor.withOpacity(0.2),
+                              color: difficultyColor.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(PolieRadius.sm),
                             ),
                             child: Text(

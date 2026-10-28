@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
-import '../../providers/game_content_provider.dart';
-import '../../models/game/game_content_models.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
@@ -239,16 +236,16 @@ class _GrammarDetectiveGameState
               Color chipBg;
               Color chipText;
               if (showCorrect) {
-                chipBg = ModernGriotColors.error.withOpacity(0.15);
+                chipBg = ModernGriotColors.error.withValues(alpha: 0.15);
                 chipText = ModernGriotColors.error;
               } else if (showMissed) {
-                chipBg = Colors.orange.withOpacity(0.15);
+                chipBg = Colors.orange.withValues(alpha: 0.15);
                 chipText = Colors.orange.shade800;
               } else if (showFalse) {
-                chipBg = ModernGriotColors.onSurfaceVariant.withOpacity(0.1);
+                chipBg = ModernGriotColors.onSurfaceVariant.withValues(alpha: 0.1);
                 chipText = ModernGriotColors.onSurfaceVariant;
               } else if (isMarked) {
-                chipBg = ModernGriotColors.error.withOpacity(0.12);
+                chipBg = ModernGriotColors.error.withValues(alpha: 0.12);
                 chipText = ModernGriotColors.error;
               } else {
                 chipBg = Colors.transparent;
@@ -290,7 +287,7 @@ class _GrammarDetectiveGameState
             sentence.translation,
             style: ModernGriotTypography.bodySmall(context: context).copyWith(
               fontStyle: FontStyle.italic,
-              color: ModernGriotColors.onSurfaceVariant.withOpacity(0.7),
+              color: ModernGriotColors.onSurfaceVariant.withValues(alpha: 0.7),
             ),
           ),
         ],
@@ -333,7 +330,7 @@ class _GrammarDetectiveGameState
               ),
             ],
           ),
-          Divider(color: cs.outlineVariant.withOpacity(0.2), height: 16.h),
+          Divider(color: cs.outlineVariant.withValues(alpha: 0.2), height: 16.h),
           ...entries.map((e) => Padding(
                 padding: EdgeInsets.only(bottom: 8.h),
                 child: Row(
@@ -343,7 +340,7 @@ class _GrammarDetectiveGameState
                         padding: EdgeInsets.symmetric(
                             horizontal: 10.w, vertical: 6.h),
                         decoration: BoxDecoration(
-                          color: ModernGriotColors.error.withOpacity(0.08),
+                          color: ModernGriotColors.error.withValues(alpha: 0.08),
                           borderRadius: ModernGriotRadius.borderSm,
                         ),
                         child: Text(
@@ -366,7 +363,7 @@ class _GrammarDetectiveGameState
                             horizontal: 10.w, vertical: 6.h),
                         decoration: BoxDecoration(
                           color:
-                              ModernGriotColors.secondary.withOpacity(0.08),
+                              ModernGriotColors.secondary.withValues(alpha: 0.08),
                           borderRadius: ModernGriotRadius.borderSm,
                         ),
                         child: Text(
@@ -397,12 +394,12 @@ class _GrammarDetectiveGameState
             width: 64.r,
             height: 64.r,
             decoration: BoxDecoration(
-              color: ModernGriotColors.primaryContainer.withOpacity(0.3),
+              color: ModernGriotColors.primaryContainer.withValues(alpha: 0.3),
               borderRadius: ModernGriotRadius.borderLg,
             ),
             child: Icon(Icons.temple_hindu_rounded,
                 size: 32.sp,
-                color: ModernGriotColors.primary.withOpacity(0.6)),
+                color: ModernGriotColors.primary.withValues(alpha: 0.6)),
           ),
           SizedBox(width: 12.w),
           Expanded(

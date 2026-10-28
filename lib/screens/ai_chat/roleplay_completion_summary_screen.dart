@@ -47,7 +47,7 @@ class RoleplayCompletionSummaryScreen extends HookConsumerWidget {
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : LinearGradient(
+              : const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -121,7 +121,7 @@ class RoleplayCompletionSummaryScreen extends HookConsumerWidget {
                   )
                       .animate(delay: 200.ms)
                       .fadeIn(duration: 300.ms)
-                      .scale(begin: Offset(0.8, 0.8)),
+                      .scale(begin: const Offset(0.8, 0.8)),
                 SizedBox(height: PanAfricanSpacing.lg),
 
                 // Performance Metrics
@@ -175,8 +175,8 @@ class RoleplayCompletionSummaryScreen extends HookConsumerWidget {
                             ),
                           );
                         },
-                        icon: Icon(Icons.refresh),
-                        label: Text('Try Another'),
+                        icon: const Icon(Icons.refresh),
+                        label: const Text('Try Another'),
                         style: OutlinedButton.styleFrom(
                           padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
                           shape: RoundedRectangleBorder(
@@ -201,10 +201,10 @@ class RoleplayCompletionSummaryScreen extends HookConsumerWidget {
                             ? SizedBox(
                                 width: 20.w,
                                 height: 20.h,
-                                child: CircularProgressIndicator(strokeWidth: 2),
+                                child: const CircularProgressIndicator(strokeWidth: 2),
                               )
-                            : Icon(Icons.check),
-                        label: Text('Continue'),
+                            : const Icon(Icons.check),
+                        label: const Text('Continue'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: PanAfricanColors.primary,
                           foregroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -301,7 +301,7 @@ class _ScoreCard extends StatelessWidget {
               style: PanAfricanTypography.bodyMedium(context),
             ),
             SizedBox(height: PanAfricanSpacing.lg),
-            Divider(),
+            const Divider(),
             SizedBox(height: PanAfricanSpacing.lg),
             // Metrics
             Row(
@@ -477,7 +477,7 @@ class _VocabularySection extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.book, color: PanAfricanColors.primary),
+                const Icon(Icons.book, color: PanAfricanColors.primary),
                 SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   'Vocabulary Learned',
@@ -494,7 +494,7 @@ class _VocabularySection extends StatelessWidget {
               children: vocabulary.map((word) {
                 return Chip(
                   label: Text(word),
-                  backgroundColor: PanAfricanColors.primary.withOpacity(0.1),
+                  backgroundColor: PanAfricanColors.primary.withValues(alpha: 0.1),
                   labelStyle: PanAfricanTypography.bodySmall(context).copyWith(
                     color: PanAfricanColors.primary,
                   ),
@@ -528,7 +528,7 @@ class _GrammarSection extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.menu_book, color: PanAfricanColors.secondary),
+                const Icon(Icons.menu_book, color: PanAfricanColors.secondary),
                 SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   'Grammar Points',

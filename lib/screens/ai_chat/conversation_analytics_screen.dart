@@ -33,7 +33,7 @@ class ConversationAnalyticsScreen extends HookConsumerWidget {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -114,7 +114,7 @@ class ConversationAnalyticsScreen extends HookConsumerWidget {
           SizedBox(
             width: 48.w,
             height: 48.w,
-            child: CircularProgressIndicator(
+            child: const CircularProgressIndicator(
               strokeWidth: 3,
               valueColor: AlwaysStoppedAnimation<Color>(PolieColors.royalAmethyst),
             ),
@@ -226,7 +226,7 @@ class _OverallStatsCard extends StatelessWidget {
           SizedBox(height: PolieSpacing.lg),
           Container(
             height: 1,
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
           ),
           SizedBox(height: PolieSpacing.lg),
           Row(
@@ -272,7 +272,7 @@ class _StatItem extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(PolieSpacing.sm),
           decoration: BoxDecoration(
-            color: color.withOpacity(0.2),
+            color: color.withValues(alpha: 0.2),
             shape: BoxShape.circle,
           ),
           child: Icon(icon, color: color, size: 28.sp),
@@ -316,7 +316,7 @@ class _FluencyCard extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(PolieSpacing.sm),
                 decoration: BoxDecoration(
-                  color: fluencyColor.withOpacity(0.2),
+                  color: fluencyColor.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(PolieRadius.sm),
                 ),
                 child: Icon(Icons.speed_rounded, color: fluencyColor, size: 24.sp),
@@ -346,7 +346,7 @@ class _FluencyCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(PolieRadius.pill),
             child: LinearProgressIndicator(
               value: analytics.averageFluency / 100.0,
-              backgroundColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+              backgroundColor: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
               valueColor: AlwaysStoppedAnimation<Color>(fluencyColor),
               minHeight: 8.h,
             ),
@@ -396,7 +396,7 @@ class _TopTopicsCard extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(PolieSpacing.sm),
                 decoration: BoxDecoration(
-                  color: PolieColors.royalAmethyst.withOpacity(0.2),
+                  color: PolieColors.royalAmethyst.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(PolieRadius.sm),
                 ),
                 child: Icon(Icons.topic_rounded, color: PolieColors.royalAmethyst, size: 24.sp),
@@ -422,7 +422,7 @@ class _TopTopicsCard extends StatelessWidget {
                     width: 28.w,
                     height: 28.w,
                     decoration: BoxDecoration(
-                      color: PolieColors.royalAmethyst.withOpacity(0.2),
+                      color: PolieColors.royalAmethyst.withValues(alpha: 0.2),
                       shape: BoxShape.circle,
                     ),
                     child: Center(
@@ -450,7 +450,7 @@ class _TopTopicsCard extends StatelessWidget {
                       vertical: PolieSpacing.xs,
                     ),
                     decoration: BoxDecoration(
-                      color: PolieColors.royalAmethyst.withOpacity(0.2),
+                      color: PolieColors.royalAmethyst.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(PolieRadius.pill),
                     ),
                     child: Text(
@@ -486,7 +486,7 @@ class _TopVocabularyCard extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(PolieSpacing.sm),
                 decoration: BoxDecoration(
-                  color: PolieColors.electricTeal.withOpacity(0.2),
+                  color: PolieColors.electricTeal.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(PolieRadius.sm),
                 ),
                 child: Icon(Icons.book_rounded, color: PolieColors.electricTeal, size: 24.sp),
@@ -511,10 +511,10 @@ class _TopVocabularyCard extends StatelessWidget {
                   vertical: PolieSpacing.sm,
                 ),
                 decoration: BoxDecoration(
-                  color: PolieColors.electricTeal.withOpacity(0.15),
+                  color: PolieColors.electricTeal.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(PolieRadius.pill),
                   border: Border.all(
-                    color: PolieColors.electricTeal.withOpacity(0.3),
+                    color: PolieColors.electricTeal.withValues(alpha: 0.3),
                     width: 1,
                   ),
                 ),
@@ -564,7 +564,7 @@ class _PolieGlassCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(PolieRadius.lg),
         color: Theme.of(context).colorScheme.surfaceContainerHighest,
         border: Border.all(
-          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
           width: 1,
         ),
         boxShadow: glowColor != null
@@ -600,7 +600,7 @@ class _GlassIconButton extends StatelessWidget {
           color: PolieColors.surfaceContainerLight,
           shape: BoxShape.circle,
           border: Border.all(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
             width: 1,
           ),
         ),

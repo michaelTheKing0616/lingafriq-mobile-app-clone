@@ -23,7 +23,7 @@ class HintButton extends StatelessWidget {
         style: PanAfricanTypography.labelMedium(context),
       ),
       style: OutlinedButton.styleFrom(
-        side: BorderSide(color: PanAfricanColors.secondary),
+        side: const BorderSide(color: PanAfricanColors.secondary),
         foregroundColor: PanAfricanColors.secondary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(PanAfricanRadius.md),

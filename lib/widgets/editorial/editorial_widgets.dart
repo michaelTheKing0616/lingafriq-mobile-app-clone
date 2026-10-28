@@ -2,7 +2,7 @@
 ///
 /// Barrel file exporting all editorial-specific widgets used by
 /// the FLB Studio and Heritage Archive features.
-library editorial_widgets;
+library;
 
 export 'editorial_hero.dart';
 export 'editorial_article_card.dart';

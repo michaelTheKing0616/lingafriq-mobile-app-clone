@@ -1,5 +1,3 @@
-import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -426,11 +424,11 @@ class VillageMarketScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                GriotBadgePill(
+                const GriotBadgePill(
                   label: 'LIMITED',
                   icon: Icons.local_fire_department_rounded,
-                  color: const Color(0xFFFFC107),
-                  textColor: const Color(0xFF3A1500),
+                  color: Color(0xFFFFC107),
+                  textColor: Color(0xFF3A1500),
                 ),
                 SizedBox(height: 12.h),
                 Text('Weekend Culture Bundle',

@@ -53,7 +53,7 @@ class _LanguageQuizSectionsListScreenState extends State<LanguageQuizSectionsLis
               children: [
                 BackButton(color: Theme.of(context).colorScheme.onPrimary),
                 // PointsAndProfileImageBuilder(size: Size(0.1.sh, 0.1.sh)),
-                GreetingsBuilder(
+                const GreetingsBuilder(
                   greetingTitle: '',
                   pageTitle: "Language Quiz",
                 )

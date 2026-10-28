@@ -138,7 +138,7 @@ class _PolieAvatarState extends State<PolieAvatar>
           child: Container(
             width: widget.size * 1.4,
             height: widget.size * 1.4,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               gradient: PolieAvatarColors.auraGradient,
             ),
@@ -175,7 +175,7 @@ class _PolieAvatarState extends State<PolieAvatar>
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: PolieAvatarColors.electricTeal.withOpacity(0.3),
+            color: PolieAvatarColors.electricTeal.withValues(alpha: 0.3),
             blurRadius: 20,
             spreadRadius: 5,
           ),
@@ -199,7 +199,7 @@ class _PolieAvatarState extends State<PolieAvatar>
             gradient: PolieAvatarColors.glowGradient,
             boxShadow: [
               BoxShadow(
-                color: PolieAvatarColors.electricTeal.withOpacity(0.4),
+                color: PolieAvatarColors.electricTeal.withValues(alpha: 0.4),
                 blurRadius: 30,
                 spreadRadius: 10,
               ),
@@ -216,7 +216,7 @@ class _PolieAvatarState extends State<PolieAvatar>
         .animate(onPlay: (c) => c.repeat(reverse: true))
         .shimmer(
           duration: 2.seconds,
-          color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.24),
+          color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.24),
         );
   }
 
@@ -231,7 +231,7 @@ class _PolieAvatarState extends State<PolieAvatar>
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
-              color: PolieAvatarColors.electricTeal.withOpacity(opacity),
+              color: PolieAvatarColors.electricTeal.withValues(alpha: opacity),
               width: 2,
             ),
           ),
@@ -257,7 +257,7 @@ class _ParticlePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = color.withOpacity(0.6)
+      ..color = color.withValues(alpha: 0.6)
       ..style = PaintingStyle.fill;
 
     final center = Offset(size.width / 2, size.height / 2);
@@ -273,7 +273,7 @@ class _ParticlePainter extends CustomPainter {
       final particleSize = 2.0 + (i % 3);
       final opacity = 0.3 + ((i % 4) * 0.15);
 
-      paint.color = color.withOpacity(opacity);
+      paint.color = color.withValues(alpha: opacity);
       canvas.drawCircle(Offset(x, y), particleSize, paint);
     }
   }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_models.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_providers.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_ui_helpers.dart';
 import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_layout.dart';
 

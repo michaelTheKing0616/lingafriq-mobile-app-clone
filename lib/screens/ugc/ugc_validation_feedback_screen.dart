@@ -54,7 +54,7 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Content Validation'),
+        title: const Text('Content Validation'),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -62,7 +62,7 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : LinearGradient(
+              : const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -72,7 +72,7 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
                 ),
         ),
         child: isLoading.value
-            ? Center(child: CircularProgressIndicator())
+            ? const Center(child: CircularProgressIndicator())
             : validationResult.value == null
                 ? Center(
                     child: Text(
@@ -197,12 +197,12 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
             SizedBox(height: PanAfricanSpacing.md),
             Chip(
               label: Text(status.toUpperCase()),
-              backgroundColor: _getStatusColor(status).withOpacity(0.2),
+              backgroundColor: _getStatusColor(status).withValues(alpha: 0.2),
             ),
           ],
         ),
       ),
-    ).animate().fadeIn(duration: 300.ms).scale(begin: Offset(0.9, 0.9));
+    ).animate().fadeIn(duration: 300.ms).scale(begin: const Offset(0.9, 0.9));
   }
 
   Widget _buildCheckSection(
@@ -240,9 +240,9 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
                   ...issues.map((issue) {
                     return Card(
                       margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
-                      color: PanAfricanColors.error.withOpacity(0.1),
+                      color: PanAfricanColors.error.withValues(alpha: 0.1),
                       child: ListTile(
-                        leading: Icon(Icons.warning, color: PanAfricanColors.error),
+                        leading: const Icon(Icons.warning, color: PanAfricanColors.error),
                         title: Text(issue['message'] ?? ''),
                         subtitle: issue['location'] != null
                             ? Text('Location: ${issue['location']}')
@@ -268,9 +268,9 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
                   ...suggestions.map((suggestion) {
                     return Card(
                       margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
-                      color: PanAfricanColors.info.withOpacity(0.1),
+                      color: PanAfricanColors.info.withValues(alpha: 0.1),
                       child: ListTile(
-                        leading: Icon(Icons.lightbulb, color: PanAfricanColors.info),
+                        leading: const Icon(Icons.lightbulb, color: PanAfricanColors.info),
                         title: Text(suggestion),
                       ),
                     );
@@ -290,7 +290,7 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
     bool isDark,
   ) {
     return Card(
-      color: PanAfricanColors.primaryContainer.withOpacity(0.3),
+      color: PanAfricanColors.primaryContainer.withValues(alpha: 0.3),
       child: Padding(
         padding: EdgeInsets.all(PanAfricanSpacing.lg),
         child: Column(
@@ -298,7 +298,7 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.recommend, color: PanAfricanColors.primary),
+                const Icon(Icons.recommend, color: PanAfricanColors.primary),
                 SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   'Recommendations',
@@ -313,7 +313,7 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.check_circle_outline, color: PanAfricanColors.primary),
+                    const Icon(Icons.check_circle_outline, color: PanAfricanColors.primary),
                     SizedBox(width: PanAfricanSpacing.sm),
                     Expanded(
                       child: Text(

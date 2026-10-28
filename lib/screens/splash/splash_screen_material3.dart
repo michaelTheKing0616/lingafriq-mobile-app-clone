@@ -80,7 +80,7 @@ class _SplashScreenMaterial3State extends ConsumerState<SplashScreenMaterial3> {
                     .then()
                     .shimmer(
                       duration: 1000.ms,
-                      color: PanAfricanColors.secondary.withOpacity(0.3),
+                      color: PanAfricanColors.secondary.withValues(alpha: 0.3),
                     ),
 
                 SizedBox(height: 32.h),

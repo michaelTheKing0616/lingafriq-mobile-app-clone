@@ -122,7 +122,7 @@ class TribeAvatarWidget extends StatelessWidget {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: tribe.primaryColor.withOpacity(0.4),
+                    color: tribe.primaryColor.withValues(alpha: 0.4),
                     blurRadius: 12,
                     spreadRadius: 2,
                   ),
@@ -148,7 +148,7 @@ class TribeAvatarWidget extends StatelessWidget {
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
+                        color: Colors.black.withValues(alpha: 0.2),
                         blurRadius: 4,
                       ),
                     ],
@@ -398,8 +398,8 @@ class _BattleAvatarWidgetState extends State<BattleAvatarWidget>
         shape: BoxShape.circle,
         gradient: RadialGradient(
           colors: [
-            widget.tribe.primaryColor.withOpacity(0.5),
-            widget.tribe.primaryColor.withOpacity(0.0),
+            widget.tribe.primaryColor.withValues(alpha: 0.5),
+            widget.tribe.primaryColor.withValues(alpha: 0.0),
           ],
         ),
       ),
@@ -423,7 +423,7 @@ class _BattleAvatarWidgetState extends State<BattleAvatarWidget>
       height: widget.size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.grey.withOpacity(0.5),
+        color: Colors.grey.withValues(alpha: 0.5),
       ),
     ).animate().fadeIn(duration: 500.ms);
   }

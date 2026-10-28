@@ -125,7 +125,7 @@ class _PathNodeWidgetState extends ConsumerState<PathNodeWidget>
                         !widget.reducedMotion
                     ? [
                         BoxShadow(
-                          color: _borderColor(isDark).withOpacity(0.35),
+                          color: _borderColor(isDark).withValues(alpha: 0.35),
                           blurRadius: 12.w,
                           spreadRadius: 2.w,
                         ),
@@ -160,14 +160,14 @@ class _PathNodeWidgetState extends ConsumerState<PathNodeWidget>
       case PathNodeVisualState.reviewDue:
         return PanAfricanColors.warning;
       case PathNodeVisualState.skipped:
-        return PanAfricanColors.neutralMedium.withOpacity(0.25);
+        return PanAfricanColors.neutralMedium.withValues(alpha: 0.25);
     }
   }
 
   Color _borderColor(bool isDark) {
     switch (widget.state) {
       case PathNodeVisualState.locked:
-        return PanAfricanColors.neutralMedium.withOpacity(0.3);
+        return PanAfricanColors.neutralMedium.withValues(alpha: 0.3);
       case PathNodeVisualState.current:
         return PanAfricanColors.primaryLight;
       case PathNodeVisualState.done:
@@ -175,7 +175,7 @@ class _PathNodeWidgetState extends ConsumerState<PathNodeWidget>
       case PathNodeVisualState.reviewDue:
         return PanAfricanColors.warning;
       case PathNodeVisualState.skipped:
-        return PanAfricanColors.neutralMedium.withOpacity(0.5);
+        return PanAfricanColors.neutralMedium.withValues(alpha: 0.5);
     }
   }
 
@@ -184,7 +184,7 @@ class _PathNodeWidgetState extends ConsumerState<PathNodeWidget>
       case PathNodeVisualState.locked:
         return Icon(
           Icons.lock_rounded,
-          color: PanAfricanColors.neutralMedium.withOpacity(0.5),
+          color: PanAfricanColors.neutralMedium.withValues(alpha: 0.5),
           size: size * 0.4,
           semanticLabel: 'Locked',
         );

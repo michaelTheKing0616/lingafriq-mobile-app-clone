@@ -169,7 +169,7 @@ class _MicroLessonScreenState extends State<MicroLessonScreen>
               ),
               if (_paused) ...[
                 SizedBox(height: 8.h),
-                Text(
+                const Text(
                   'Paused',
                   style: TextStyle(color: PanAfricanColors.neutralMedium),
                 ),
@@ -259,7 +259,7 @@ class _MediaErrorPanel extends StatelessWidget {
         children: [
           Text(
             'Media error: ${error.code}',
-            style: TextStyle(color: PanAfricanColors.error),
+            style: const TextStyle(color: PanAfricanColors.error),
           ),
           if (error.detail != null) Text(error.detail!),
           SizedBox(height: 8.h),

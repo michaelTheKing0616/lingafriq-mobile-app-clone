@@ -6,8 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
-import '../../providers/game_content_provider.dart';
-import '../../models/game/game_content_models.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../utils/pan_african_design_system.dart';
 import '../../widgets/content/vocab_audio_controls.dart';
@@ -200,7 +198,7 @@ class _PronunciationDuelGameState
                 color: cs.surfaceContainerLow,
                 borderRadius: ModernGriotRadius.borderXl,
                 border: Border.all(
-                    color: ModernGriotColors.outlineVariant.withOpacity(0.3)),
+                    color: ModernGriotColors.outlineVariant.withValues(alpha: 0.3)),
               ),
               child: Column(
                 children: [
@@ -246,7 +244,7 @@ class _PronunciationDuelGameState
                 border: Border.all(
                   color: _isRecording
                       ? ModernGriotColors.primary
-                      : ModernGriotColors.outlineVariant.withOpacity(0.3),
+                      : ModernGriotColors.outlineVariant.withValues(alpha: 0.3),
                   width: _isRecording ? 2 : 1,
                   strokeAlign: BorderSide.strokeAlignInside,
                 ),

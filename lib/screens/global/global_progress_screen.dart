@@ -122,7 +122,7 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
                           icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onPrimary),
                           onPressed: () => Navigator.of(context).pop(),
                           style: IconButton.styleFrom(
-                            backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                            backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                             shape: const CircleBorder(),
                           ),
                         ),
@@ -132,7 +132,7 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
                             Scaffold.maybeOf(context)?.openDrawer();
                           },
                           style: IconButton.styleFrom(
-                            backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                            backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                             shape: const CircleBorder(),
                           ),
                         ),
@@ -154,7 +154,7 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
                     Text(
                       'Top learners worldwide',
                       style: PanAfricanTypography.bodyMedium(context).copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                        color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9),
                       ),
                     ),
                   ],
@@ -279,8 +279,8 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            PanAfricanColors.primary.withOpacity(0.8),
-            PanAfricanColors.tertiary.withOpacity(0.6),
+            PanAfricanColors.primary.withValues(alpha: 0.8),
+            PanAfricanColors.tertiary.withValues(alpha: 0.6),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -308,7 +308,7 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
           Text(
             title,
             style: PanAfricanTypography.labelSmall(context).copyWith(
-              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+              color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9),
             ),
           ),
         ],
@@ -365,17 +365,17 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
                       },
                     ),
                   ),
-                  leftTitles: AxisTitles(
+                  leftTitles: const AxisTitles(
                     sideTitles: SideTitles(showTitles: false),
                   ),
-                  topTitles: AxisTitles(
+                  topTitles: const AxisTitles(
                     sideTitles: SideTitles(showTitles: false),
                   ),
-                  rightTitles: AxisTitles(
+                  rightTitles: const AxisTitles(
                     sideTitles: SideTitles(showTitles: false),
                   ),
                 ),
-                gridData: FlGridData(show: false),
+                gridData: const FlGridData(show: false),
                 borderData: FlBorderData(show: false),
                 barGroups: languages.asMap().entries.map((entry) {
                   final index = entry.key;
@@ -503,7 +503,7 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
                   height: 40.sp,
                   decoration: BoxDecoration(
                     color: isTopThree
-                        ? PanAfricanColors.primary.withOpacity(0.2)
+                        ? PanAfricanColors.primary.withValues(alpha: 0.2)
                         : Colors.transparent,
                     shape: BoxShape.circle,
                   ),

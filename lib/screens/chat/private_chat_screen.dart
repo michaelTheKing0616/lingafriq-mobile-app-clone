@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -326,7 +325,7 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
     socket.on('chat:typing_indicator', (dynamic payload) {
       if (!mounted) return;
       if (payload is! Map) return;
-      final p = Map<String, dynamic>.from(payload as Map);
+      final p = Map<String, dynamic>.from(payload);
       final pRoom = p['roomId']?.toString();
       if (pRoom == null || pRoom != roomId) return;
       final from = p['userId']?.toString();
@@ -513,7 +512,7 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
     return Scaffold(
       backgroundColor: ModernGriotColors.surface,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight),
+        preferredSize: const Size.fromHeight(kToolbarHeight),
         child: _buildChatAppBar(cs),
       ),
       body: GriotSvgPatternBackground(
@@ -732,8 +731,8 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
                         : null,
                     color: bubbleColor,
                     borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(ModernGriotRadius.lg),
-                      topRight: Radius.circular(ModernGriotRadius.lg),
+                      topLeft: const Radius.circular(ModernGriotRadius.lg),
+                      topRight: const Radius.circular(ModernGriotRadius.lg),
                       bottomLeft: Radius.circular(
                         msg.isMe ? ModernGriotRadius.lg : ModernGriotRadius.xs,
                       ),
@@ -872,7 +871,7 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
                 child: Container(
                   width: 32.r,
                   height: 32.r,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     gradient: ModernGriotGradients.signatureGradient,
                     shape: BoxShape.circle,
                   ),
@@ -1050,7 +1049,7 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
                 child: _sending
                     ? Padding(
                         padding: EdgeInsets.all(10.r),
-                        child: CircularProgressIndicator(
+                        child: const CircularProgressIndicator(
                           strokeWidth: 2,
                           color: ModernGriotColors.onPrimary,
                         ),
@@ -1090,9 +1089,5 @@ class _ChatMessage {
     required this.isRead,
     this.isFromPolie = false,
     this.sortMs = 0,
-    this.translation,
-    this.vocabWord,
-    this.vocabPronunciation,
-    this.vocabMeaning,
-  });
+  }) : translation = null : vocabWord : vocabPronunciation : vocabMeaning;
 }

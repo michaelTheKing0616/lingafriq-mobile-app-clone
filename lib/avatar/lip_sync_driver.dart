@@ -1,6 +1,4 @@
 import 'package:lingafriq/avatars/cast/phoneme_viseme.dart';
-import 'package:lingafriq/avatars/lipsync/rms_jaw.dart';
-import 'package:lingafriq/avatars/lipsync/viseme_scheduler.dart';
 
 /// Drives avatar mouth state from gateway lip-sync payloads (P6-081).
 class LipSyncDriver {

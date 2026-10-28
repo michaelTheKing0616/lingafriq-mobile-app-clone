@@ -320,7 +320,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
                     height: 100.sp,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         colors: [
                           PanAfricanColors.secondary,
                           PanAfricanColors.tertiary,
@@ -328,7 +328,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: PanAfricanColors.secondary.withOpacity(0.3),
+                          color: PanAfricanColors.secondary.withValues(alpha: 0.3),
                           blurRadius: 30,
                           spreadRadius: 5,
                         ),
@@ -357,7 +357,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
                 'Polie is generating personalized content for "${widget.lesson.title}" in ${widget.language}',
                 textAlign: TextAlign.center,
                 style: PanAfricanTypography.bodyMedium(context).copyWith(
-                  color: isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7) : PanAfricanColors.textSecondary,
+                  color: isDark ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7) : PanAfricanColors.textSecondary,
                 ),
               ),
             ),
@@ -365,8 +365,8 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
             SizedBox(
               width: 200.sp,
               child: LinearProgressIndicator(
-                backgroundColor: isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.12) : Colors.grey[300],
-                valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.secondary),
+                backgroundColor: isDark ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.12) : Colors.grey[300],
+                valueColor: const AlwaysStoppedAnimation<Color>(PanAfricanColors.secondary),
               ),
             ),
             SizedBox(height: 48.sp),
@@ -375,10 +375,10 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
               margin: EdgeInsets.symmetric(horizontal: 32.sp),
               padding: EdgeInsets.all(16.sp),
               decoration: BoxDecoration(
-                color: PanAfricanColors.secondary.withOpacity(0.1),
+                color: PanAfricanColors.secondary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: PanAfricanColors.secondary.withOpacity(0.3),
+                  color: PanAfricanColors.secondary.withValues(alpha: 0.3),
                 ),
               ),
               child: Row(
@@ -394,7 +394,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
                     child: Text(
                       'Tip: Practice pronunciation by saying words aloud!',
                       style: PanAfricanTypography.bodySmall(context).copyWith(
-                        color: isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7) : PanAfricanColors.textSecondary,
+                        color: isDark ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7) : PanAfricanColors.textSecondary,
                       ),
                     ),
                   ),
@@ -412,7 +412,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
     final explanations = _generatedContent?['grammar_explanations'] as List? ?? [];
     
     if (grammar.isEmpty && explanations.isEmpty) {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
 
     return Padding(
@@ -528,7 +528,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
             Text(
               _errorMessage ?? 'Failed to generate lesson content.',
               style: PanAfricanTypography.bodyMedium(context).copyWith(
-                color: isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7) : PanAfricanColors.textSecondary,
+                color: isDark ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7) : PanAfricanColors.textSecondary,
               ),
               textAlign: TextAlign.center,
             ),
@@ -555,7 +555,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
               child: Text(
                 'Go Back',
                 style: TextStyle(
-                  color: isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7) : PanAfricanColors.textSecondary,
+                  color: isDark ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7) : PanAfricanColors.textSecondary,
                 ),
               ),
             ),
@@ -607,7 +607,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
                   SizedBox(height: 4.sp),
                   Chip(
                     label: Text(word.pos!),
-                    backgroundColor: PanAfricanColors.primary.withOpacity(0.2),
+                    backgroundColor: PanAfricanColors.primary.withValues(alpha: 0.2),
                   ),
                 ],
                 if (word.example != null) ...[
@@ -697,7 +697,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
           padding: EdgeInsets.all(16.sp),
           decoration: BoxDecoration(
             color: speaker == 'A'
-                ? PanAfricanColors.primary.withOpacity(0.2)
+                ? PanAfricanColors.primary.withValues(alpha: 0.2)
                 : (isDark ? const Color(0xFF2A4A35) : Colors.grey[100]),
             borderRadius: BorderRadius.circular(12),
           ),
@@ -804,7 +804,7 @@ class _GrammarTipsCardState extends State<_GrammarTipsCard> {
   @override
   Widget build(BuildContext context) {
     final hasContent = widget.grammar.isNotEmpty || widget.explanations.isNotEmpty;
-    if (!hasContent) return SizedBox.shrink();
+    if (!hasContent) return const SizedBox.shrink();
 
     return Card(
       color: widget.isDark 
@@ -875,7 +875,7 @@ class _GrammarTipsCardState extends State<_GrammarTipsCard> {
                             margin: EdgeInsets.only(top: 4.sp, right: PanAfricanSpacing.sm),
                             width: 6.w,
                             height: 6.w,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: PanAfricanColors.secondary,
                               shape: BoxShape.circle,
                             ),

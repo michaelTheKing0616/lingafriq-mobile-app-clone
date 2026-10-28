@@ -125,7 +125,7 @@ class _ShadowingExerciseScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -148,7 +148,7 @@ class _ShadowingExerciseScreenState
                       label: 'Go back',
                       button: true,
                       child: IconButton(
-                        icon: Icon(PanAfricanIcons.back, color: PolieColors.textPrimary, semanticLabel: 'Back'),
+                        icon: const Icon(PanAfricanIcons.back, color: PolieColors.textPrimary, semanticLabel: 'Back'),
                         onPressed: () {
                           HapticFeedback.lightImpact();
                           Navigator.pop(context);
@@ -221,13 +221,13 @@ class _ShadowingExerciseScreenState
                               boxShadow: [
                                 BoxShadow(
                                   color: (_isRecording ? PolieColors.error : PolieColors.electricTeal)
-                                      .withOpacity(0.5),
+                                      .withValues(alpha: 0.5),
                                   blurRadius: _isRecording ? 32 : 24,
                                   spreadRadius: _isRecording ? 4 : 0,
                                 ),
                               ],
                               border: Border.all(
-                                color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
+                                color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.3),
                                 width: 2,
                               ),
                             ),
@@ -252,7 +252,7 @@ class _ShadowingExerciseScreenState
                       ),
                       if (_isEvaluating) ...[
                         SizedBox(height: PolieSpacing.xl),
-                        Center(
+                        const Center(
                           child: CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation<Color>(PolieColors.electricTeal),
                           ),
@@ -299,7 +299,7 @@ class _ShadowingExerciseScreenState
                               if (_feedback!['userText'] != null &&
                                   (_feedback!['userText'] as String).isNotEmpty) ...[
                                 SizedBox(height: PolieSpacing.lg),
-                                Divider(color: PolieColors.textSecondary.withOpacity(0.3)),
+                                Divider(color: PolieColors.textSecondary.withValues(alpha: 0.3)),
                                 SizedBox(height: PolieSpacing.md),
                                 Text(
                                   'You said:',
@@ -314,7 +314,7 @@ class _ShadowingExerciseScreenState
                               if (_feedback!['corrections'] != null &&
                                   (_feedback!['corrections'] as List).isNotEmpty) ...[
                                 SizedBox(height: PolieSpacing.lg),
-                                Divider(color: PolieColors.textSecondary.withOpacity(0.3)),
+                                Divider(color: PolieColors.textSecondary.withValues(alpha: 0.3)),
                                 SizedBox(height: PolieSpacing.md),
                                 Text(
                                   'Corrections:',
@@ -364,7 +364,7 @@ class _ShadowingExerciseScreenState
       decoration: BoxDecoration(
         color: PolieColors.surfaceContainerLight,
         borderRadius: BorderRadius.circular(PolieRadius.md),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Column(
         children: [

@@ -50,13 +50,13 @@ class ThemeToggleButton extends ConsumerWidget {
             ),
         decoration: BoxDecoration(
           color: isDark
-              ? PanAfricanColors.primary.withOpacity(0.1)
-              : PanAfricanColors.secondary.withOpacity(0.1),
+              ? PanAfricanColors.primary.withValues(alpha: 0.1)
+              : PanAfricanColors.secondary.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(PanAfricanRadius.round),
           border: Border.all(
             color: isDark
-                ? PanAfricanColors.primary.withOpacity(0.3)
-                : PanAfricanColors.secondary.withOpacity(0.3),
+                ? PanAfricanColors.primary.withValues(alpha: 0.3)
+                : PanAfricanColors.secondary.withValues(alpha: 0.3),
             width: 1,
           ),
         ),

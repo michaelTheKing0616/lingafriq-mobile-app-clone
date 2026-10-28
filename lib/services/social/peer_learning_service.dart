@@ -91,7 +91,7 @@ class PeerLearningService {
     final correctorQualified = correctorState.mastery > targetState.mastery + 0.1;
 
     if (!correctorQualified) {
-      return PeerCorrectionResult(
+      return const PeerCorrectionResult(
         accepted: false,
         reason: 'Corrector needs higher mastery than the target learner.',
         correctorMasteryDelta: 0,
@@ -239,7 +239,7 @@ class PeerLearningService {
       requiredCorrect: requiredCorrect,
       totalItems: totalItems,
       expiresAt: DateTime.now().add(const Duration(hours: 24)),
-      reward: TribeChallengeReward(
+      reward: const TribeChallengeReward(
         xpPerMember: 50,
         masteryBonus: 0.03,
         description: 'Tribe Recall Challenge',

@@ -88,8 +88,8 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
       });
       if (!ok && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Could not play pronunciation. Try again.'),
+          const SnackBar(
+            content: Text('Could not play pronunciation. Try again.'),
             backgroundColor: PanAfricanColors.error,
           ),
         );
@@ -232,7 +232,7 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
           ),
         title: Text('Pronunciation Practice - ${widget.language.name}'),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [PanAfricanColors.tertiary, PanAfricanColors.error],
             ),
@@ -300,13 +300,13 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
                           width: 120.sp,
                           height: 120.sp,
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
+                            gradient: const LinearGradient(
                               colors: [PanAfricanColors.tertiary, PanAfricanColors.error],
                             ),
                             shape: BoxShape.circle,
                             boxShadow: [
                               BoxShadow(
-                                color: PanAfricanColors.tertiary.withOpacity(0.4),
+                                color: PanAfricanColors.tertiary.withValues(alpha: 0.4),
                                 blurRadius: 20,
                                 spreadRadius: 5,
                               ),
@@ -374,8 +374,8 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
                               decoration: BoxDecoration(
                                 color: isSelected
                                     ? (isCorrect 
-                                        ? PanAfricanColors.success.withOpacity(0.2)
-                                        : PanAfricanColors.error.withOpacity(0.2))
+                                        ? PanAfricanColors.success.withValues(alpha: 0.2)
+                                        : PanAfricanColors.error.withValues(alpha: 0.2))
                                     : null,
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
@@ -431,7 +431,7 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
                       label: _currentIndex < _questions.length - 1 ? 'Next' : 'Finish',
                       backgroundColor: _selectedAnswer != null
                           ? PanAfricanColors.tertiary
-                          : PanAfricanColors.tertiary.withOpacity(0.5),
+                          : PanAfricanColors.tertiary.withValues(alpha: 0.5),
                       foregroundColor: colorScheme.onPrimary,
                     ),
                   ),
@@ -450,9 +450,9 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Game Complete'),
+        title: const Text('Game Complete'),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [PanAfricanColors.tertiary, PanAfricanColors.error],
             ),
@@ -467,7 +467,7 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
             children: [
               Container(
                 padding: EdgeInsets.all(32.sp),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     colors: [PanAfricanColors.tertiary, PanAfricanColors.error],
                   ),
@@ -494,9 +494,9 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
               ),
               SizedBox(height: 8.sp),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 decoration: BoxDecoration(
-                  color: PanAfricanColors.tertiary.withOpacity(0.1),
+                  color: PanAfricanColors.tertiary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(color: PanAfricanColors.tertiary, width: 2),
                 ),
@@ -504,7 +504,7 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(Icons.star, color: PanAfricanColors.secondary, size: 24.sp),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Text(
                       '+$_score Points Earned!',
                       style: TextStyle(
@@ -549,7 +549,7 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
                         Navigator.pop(context);
                       },
                       label: 'Return to Games',
-                      backgroundColor: PanAfricanColors.tertiary.withOpacity(0.7),
+                      backgroundColor: PanAfricanColors.tertiary.withValues(alpha: 0.7),
                       foregroundColor: colorScheme.onPrimary,
                     ),
                   ),

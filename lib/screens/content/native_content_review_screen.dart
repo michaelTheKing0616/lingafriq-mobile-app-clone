@@ -141,82 +141,94 @@ class _NativeContentReviewScreenState
                 style: PanAfricanTypography.titleMedium(context),
               ),
               SizedBox(height: PanAfricanSpacing.sm),
-              ...checks.map(
-                (c) => Padding(
-                  padding: EdgeInsets.only(bottom: 6.h),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Icon(
-                        Icons.check_circle_outline,
-                        size: 18.sp,
-                        color: PanAfricanColors.primary,
-                      ),
-                      SizedBox(width: 8.w),
-                      Expanded(
-                        child: Text(
-                          c,
-                          style: PanAfricanTypography.bodySmall(context),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: checks.length,
+                itemBuilder: (context, index) {
+                  final c = checks[index];
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: 6.h),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(
+                          Icons.check_circle_outline,
+                          size: 18.sp,
+                          color: PanAfricanColors.primary,
                         ),
-                      ),
-                    ],
-                  ),
-                ),
+                        SizedBox(width: 8.w),
+                        Expanded(
+                          child: Text(
+                            c,
+                            style: PanAfricanTypography.bodySmall(context),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
             ],
           ),
         ),
         SizedBox(height: PanAfricanSpacing.md),
-        ...keys.map((key) {
-          final entry = Map<String, dynamic>.from(
-            languages[key] as Map<String, dynamic>,
-          );
-          final status = (entry['status'] as String?) ?? 'pending';
-          final reviewer = (entry['reviewer'] as String?) ?? '';
-          return Padding(
-            padding: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
-            child: PanAfricanCard(
-              padding: EdgeInsets.all(PanAfricanSpacing.md),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          CurriculumLanguages.displayName(key),
-                          style: PanAfricanTypography.titleSmall(context),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: keys.length,
+          itemBuilder: (context, index) {
+            final key = keys[index];
+            final entry = Map<String, dynamic>.from(
+              languages[key] as Map<String, dynamic>,
+            );
+            final status = (entry['status'] as String?) ?? 'pending';
+            final reviewer = (entry['reviewer'] as String?) ?? '';
+            return Padding(
+              padding: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
+              child: PanAfricanCard(
+                padding: EdgeInsets.all(PanAfricanSpacing.md),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            CurriculumLanguages.displayName(key),
+                            style: PanAfricanTypography.titleSmall(context),
+                          ),
                         ),
+                        _StatusChip(status: status),
+                      ],
+                    ),
+                    if (reviewer.isNotEmpty) ...[
+                      SizedBox(height: 4.h),
+                      Text(
+                        'Reviewer: $reviewer',
+                        style: PanAfricanTypography.bodySmall(context),
                       ),
-                      _StatusChip(status: status),
                     ],
-                  ),
-                  if (reviewer.isNotEmpty) ...[
-                    SizedBox(height: 4.h),
-                    Text(
-                      'Reviewer: $reviewer',
-                      style: PanAfricanTypography.bodySmall(context),
+                    SizedBox(height: PanAfricanSpacing.sm),
+                    Wrap(
+                      spacing: 8.w,
+                      children: [
+                        OutlinedButton(
+                          onPressed: () => _setStatus(key, 'in_review'),
+                          child: const Text('In review'),
+                        ),
+                        FilledButton(
+                          onPressed: () => _setStatus(key, 'certified'),
+                          child: const Text('Certify'),
+                        ),
+                      ],
                     ),
                   ],
-                  SizedBox(height: PanAfricanSpacing.sm),
-                  Wrap(
-                    spacing: 8.w,
-                    children: [
-                      OutlinedButton(
-                        onPressed: () => _setStatus(key, 'in_review'),
-                        child: const Text('In review'),
-                      ),
-                      FilledButton(
-                        onPressed: () => _setStatus(key, 'certified'),
-                        child: const Text('Certify'),
-                      ),
-                    ],
-                  ),
-                ],
+                ),
               ),
-            ),
-          );
-        }),
+            );
+          },
+        ),
       ],
     );
   }
@@ -243,7 +255,7 @@ class _StatusChip extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.15),
+        color: color.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(20.r),
       ),
       child: Text(

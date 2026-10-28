@@ -54,7 +54,7 @@ class DailyChallengesScreen extends HookConsumerWidget {
                           ),
                           onPressed: onBack,
                           style: IconButton.styleFrom(
-                            backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                            backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                             shape: const CircleBorder(),
                           ),
                         ),
@@ -76,7 +76,7 @@ class DailyChallengesScreen extends HookConsumerWidget {
                     Text(
                       'Complete challenges to earn extra XP',
                       style: PanAfricanTypography.bodyMedium(context).copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                        color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9),
                       ),
                     ),
                   ],

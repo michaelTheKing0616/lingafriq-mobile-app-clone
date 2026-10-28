@@ -323,8 +323,8 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  PanAfricanColors.primary.withOpacity(0.15),
-                  PanAfricanColors.secondary.withOpacity(0.10),
+                  PanAfricanColors.primary.withValues(alpha: 0.15),
+                  PanAfricanColors.secondary.withValues(alpha: 0.10),
                 ],
               ),
               borderRadius: PanAfricanRadius.lgBR,
@@ -436,7 +436,7 @@ class _LeaderboardCardState extends State<_LeaderboardCard> {
           shape: BoxShape.circle,
           border: rank == 1
               ? Border.all(
-                  color: PanAfricanColors.secondary.withOpacity(0.5),
+                  color: PanAfricanColors.secondary.withValues(alpha: 0.5),
                   width: 1,
                 )
               : null,

@@ -190,7 +190,7 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
                     label: const Text('Tribe Chat'),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: PanAfricanColors.primary,
-                      side: BorderSide(color: PanAfricanColors.primary),
+                      side: const BorderSide(color: PanAfricanColors.primary),
                       shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
                     ),
                   ),
@@ -213,7 +213,7 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
                     label: const Text('Leaderboard'),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: PanAfricanColors.secondary,
-                      side: BorderSide(color: PanAfricanColors.secondary),
+                      side: const BorderSide(color: PanAfricanColors.secondary),
                       shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
                     ),
                   ),
@@ -369,7 +369,7 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
                   Text(
                     'Tribes compete in leaderboards and events. '
                     'Choose the tribe that represents your heritage or interests!',
-                    style: PanAfricanTypography.bodyMedium(context, color: colorScheme.onPrimary.withOpacity(0.9)),
+                    style: PanAfricanTypography.bodyMedium(context, color: colorScheme.onPrimary.withValues(alpha: 0.9)),
                   ),
                 ],
               ),
@@ -454,7 +454,7 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
                           height: 48.w,
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? PanAfricanColors.success.withOpacity(0.15)
+                                ? PanAfricanColors.success.withValues(alpha: 0.15)
                                 : PanAfricanColors.primaryContainer,
                             shape: BoxShape.circle,
                           ),
@@ -489,7 +489,7 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
                           Container(
                             padding: EdgeInsets.all(PanAfricanSpacing.xxs),
                             decoration: BoxDecoration(
-                              color: PanAfricanColors.success.withOpacity(0.15),
+                              color: PanAfricanColors.success.withValues(alpha: 0.15),
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
@@ -502,7 +502,7 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
                           SizedBox(
                             width: 24.w,
                             height: 24.w,
-                            child: CircularProgressIndicator(
+                            child: const CircularProgressIndicator(
                               strokeWidth: 2,
                               color: PanAfricanColors.primary,
                             ),

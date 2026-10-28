@@ -134,7 +134,7 @@ class _PolieReactionWidgetState extends State<PolieReactionWidget>
                   color: _getBackgroundColor(isDark),
                   boxShadow: [
                     BoxShadow(
-                      color: _getBackgroundColor(isDark).withOpacity(0.3),
+                      color: _getBackgroundColor(isDark).withValues(alpha: 0.3),
                       blurRadius: 12,
                       spreadRadius: 2,
                     ),
@@ -396,7 +396,7 @@ class _SleepingFacePainter extends CustomPainter {
 
     // Zzz (sleeping indicator)
     final zzzPaint = Paint()
-      ..color = Colors.white.withOpacity(0.8)
+      ..color = Colors.white.withValues(alpha: 0.8)
       ..style = PaintingStyle.stroke
       ..strokeWidth = radius * 0.06
       ..strokeCap = StrokeCap.round;

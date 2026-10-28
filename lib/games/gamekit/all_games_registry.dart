@@ -213,7 +213,7 @@ class AllGamesRegistry {
   };
 
   static final Map<String, ArcadeGameListing> _arcadeListings = {
-    toneForgeGameId: ArcadeGameListing(
+    toneForgeGameId: const ArcadeGameListing(
       gameId: toneForgeGameId,
       shelf: ArcadeSkillShelf.tone,
       elevationCardId: 'P8-914',
@@ -221,7 +221,7 @@ class AllGamesRegistry {
       elevationPending: false,
       routeGameType: GameType.toneTrainer,
     ),
-    talkingDrumGameId: ArcadeGameListing(
+    talkingDrumGameId: const ArcadeGameListing(
       gameId: talkingDrumGameId,
       shelf: ArcadeSkillShelf.tone,
       elevationCardId: 'P8-920',
@@ -229,7 +229,7 @@ class AllGamesRegistry {
       elevationPending: false,
       routeGameType: GameType.drumToWordMatching,
     ),
-    minimalPairDuelGameId: ArcadeGameListing(
+    minimalPairDuelGameId: const ArcadeGameListing(
       gameId: minimalPairDuelGameId,
       shelf: ArcadeSkillShelf.tone,
       elevationCardId: 'P8-921',
@@ -237,7 +237,7 @@ class AllGamesRegistry {
       elevationPending: false,
       routeGameType: GameType.toneTrainer,
     ),
-    'script_sprint': ArcadeGameListing(
+    'script_sprint': const ArcadeGameListing(
       gameId: 'script_sprint',
       shelf: ArcadeSkillShelf.vocabulary,
       elevationCardId: 'P8-927',

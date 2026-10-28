@@ -123,12 +123,12 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
         elevation: 0,
         actions: [
           IconButton(
-            icon: Icon(Icons.edit),
+            icon: const Icon(Icons.edit),
             onPressed: () => isWhiteboardVisible.value = !isWhiteboardVisible.value,
             tooltip: 'Whiteboard',
           ),
           IconButton(
-            icon: Icon(Icons.people),
+            icon: const Icon(Icons.people),
             onPressed: () {
               _showParticipantsList(
                 context,
@@ -145,7 +145,7 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : LinearGradient(
+              : const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -155,7 +155,7 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
                 ),
         ),
         child: isLoading.value
-            ? Center(child: CircularProgressIndicator())
+            ? const Center(child: CircularProgressIndicator())
             : Column(
                 children: [
                   // Video Grid
@@ -313,7 +313,7 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
             iconSize: 32.sp,
           ),
           IconButton(
-            icon: Icon(Icons.screen_share),
+            icon: const Icon(Icons.screen_share),
             onPressed: () {
               // Screen sharing
             },
@@ -330,8 +330,8 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
                 Navigator.pop(context);
               }
             },
-            icon: Icon(Icons.call_end),
-            label: Text('Leave'),
+            icon: const Icon(Icons.call_end),
+            label: const Text('Leave'),
             style: ElevatedButton.styleFrom(
               backgroundColor: PanAfricanColors.error,
               foregroundColor: colorScheme.onPrimary,
@@ -362,7 +362,7 @@ class _VideoTile extends StatelessWidget {
         color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         borderRadius: BorderRadius.circular(PanAfricanRadius.md),
         border: Border.all(
-          color: PanAfricanColors.primary.withOpacity(0.3),
+          color: PanAfricanColors.primary.withValues(alpha: 0.3),
           width: 2,
         ),
       ),
@@ -380,7 +380,7 @@ class _VideoTile extends StatelessWidget {
                 vertical: PanAfricanSpacing.xxs,
               ),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.scrim.withOpacity(0.6),
+                color: Theme.of(context).colorScheme.scrim.withValues(alpha: 0.6),
                 borderRadius: BorderRadius.circular(PanAfricanRadius.sm),
               ),
               child: Text(
@@ -447,7 +447,7 @@ void _showParticipantsList(
 ) {
   showModalBottomSheet(
     context: context,
-    shape: RoundedRectangleBorder(
+    shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
     builder: (context) => Container(

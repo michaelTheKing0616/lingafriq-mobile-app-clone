@@ -434,12 +434,12 @@ class _LivingDictionaryScreenState
                                   : Theme.of(context)
                                         .colorScheme
                                         .surfaceContainerHighest
-                                        .withOpacity(0.55),
+                                        .withValues(alpha: 0.55),
                               borderRadius: BorderRadius.circular(18),
                               border: Border.all(
                                 color: Theme.of(
                                   context,
-                                ).dividerColor.withOpacity(0.12),
+                                ).dividerColor.withValues(alpha: 0.12),
                               ),
                             ),
                             child: Row(
@@ -549,7 +549,7 @@ class _LivingDictionaryScreenState
                             border: Border.all(
                               color: Theme.of(
                                 context,
-                              ).dividerColor.withOpacity(0.25),
+                              ).dividerColor.withValues(alpha: 0.25),
                             ),
                           ),
                           child: Column(

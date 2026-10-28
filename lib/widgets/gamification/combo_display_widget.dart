@@ -76,7 +76,7 @@ class _ComboDisplayWidgetState extends State<ComboDisplayWidget> {
           vertical: 8.h,
         ),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
             colors: [
               PanAfricanColors.secondary,
               PanAfricanColors.tertiary,
@@ -85,7 +85,7 @@ class _ComboDisplayWidgetState extends State<ComboDisplayWidget> {
           borderRadius: BorderRadius.circular(20.r),
           boxShadow: [
             BoxShadow(
-              color: PanAfricanColors.secondary.withOpacity(0.4),
+              color: PanAfricanColors.secondary.withValues(alpha: 0.4),
               blurRadius: 12,
               spreadRadius: 2,
             ),
@@ -142,7 +142,7 @@ class _ComboDisplayWidgetState extends State<ComboDisplayWidget> {
                 vertical: 4.h,
               ),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(12.r),
               ),
               child: Text(
@@ -163,7 +163,7 @@ class _ComboDisplayWidgetState extends State<ComboDisplayWidget> {
                 .shimmer(
                   delay: 100.ms,
                   duration: 500.ms,
-                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.5),
+                  color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.5),
                 ),
           ],
         ),
@@ -186,7 +186,7 @@ class _ComboDisplayWidgetState extends State<ComboDisplayWidget> {
               Positioned.fill(
                 child: IgnorePointer(
                   child: Container(
-                    color: PanAfricanColors.secondary.withOpacity(0.15),
+                    color: PanAfricanColors.secondary.withValues(alpha: 0.15),
                   )
                       .animate(key: const ValueKey('flash'))
                       .fadeIn(duration: 50.ms)
@@ -218,7 +218,7 @@ class _ComboDisplayWidgetState extends State<ComboDisplayWidget> {
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFFFF6B35).withOpacity(0.6),
+                                color: const Color(0xFFFF6B35).withValues(alpha: 0.6),
                                 blurRadius: 4,
                               ),
                             ],

@@ -198,10 +198,10 @@ Rules:
       messageController.clear();
 
       // Scroll to bottom
-      Future.delayed(Duration(milliseconds: 100), () {
+      Future.delayed(const Duration(milliseconds: 100), () {
         scrollController.animateTo(
           scrollController.position.maxScrollExtent,
-          duration: Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut,
         );
       });
@@ -247,7 +247,7 @@ Rules:
       message: 'Sending message...',
       child: Scaffold(
         body: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -270,7 +270,7 @@ Rules:
                         label: 'Go back',
                         button: true,
                         child: IconButton(
-                          icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
+                          icon: const Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
                           onPressed: () {
                             HapticFeedback.lightImpact();
                             Navigator.pop(context);
@@ -416,7 +416,7 @@ Rules:
                           label: 'Type your message',
                           child: TextField(
                             controller: messageController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               hintText: 'Type your message...',
                               border: InputBorder.none,
                               filled: false,
@@ -435,12 +435,12 @@ Rules:
                               ? SizedBox(
                                   width: 24.w,
                                   height: 24.h,
-                                  child: CircularProgressIndicator(
+                                  child: const CircularProgressIndicator(
                                     strokeWidth: 2,
                                     valueColor: AlwaysStoppedAnimation<Color>(PolieColors.electricTeal),
                                   ),
                                 )
-                              : Icon(Icons.send_rounded, color: PolieColors.electricTeal, semanticLabel: 'Send'),
+                              : const Icon(Icons.send_rounded, color: PolieColors.electricTeal, semanticLabel: 'Send'),
                           onPressed: isLoading.value ? null : sendMessage,
                         ),
                       ),
@@ -668,7 +668,7 @@ class _PolieAvatarAnimatedState extends State<_PolieAvatarAnimated>
               height: 40.w,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
@@ -678,13 +678,13 @@ class _PolieAvatarAnimatedState extends State<_PolieAvatarAnimated>
                 ),
                 border: Border.all(
                   color: isEncouraging
-                      ? PolieColors.goldEmber.withOpacity(0.8)
-                      : PolieColors.goldEmber.withOpacity(0.5),
+                      ? PolieColors.goldEmber.withValues(alpha: 0.8)
+                      : PolieColors.goldEmber.withValues(alpha: 0.5),
                   width: isEncouraging ? 2.0 : 1.5,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: PolieColors.royalAmethyst.withOpacity(0.35),
+                    color: PolieColors.royalAmethyst.withValues(alpha: 0.35),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
@@ -780,7 +780,7 @@ class _PolieFaceExpression extends StatelessWidget {
         width: 10.w,
         height: 4.w,
         decoration: BoxDecoration(
-          color: onPrimary.withOpacity(0.9),
+          color: onPrimary.withValues(alpha: 0.9),
           borderRadius: BorderRadius.circular(2),
         ),
       );
@@ -789,7 +789,7 @@ class _PolieFaceExpression extends StatelessWidget {
       width: 8.w,
       height: 2.w,
       decoration: BoxDecoration(
-        color: onPrimary.withOpacity(smile ? 0.95 : 0.8),
+        color: onPrimary.withValues(alpha: smile ? 0.95 : 0.8),
         borderRadius: BorderRadius.circular(1),
       ),
       transform: Matrix4.translationValues(0, smile ? -1 : 0, 0),

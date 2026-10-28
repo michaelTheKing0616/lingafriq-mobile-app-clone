@@ -1,5 +1,3 @@
-import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -329,7 +327,7 @@ class _LiveClassroomMobileScreenState
                 children: [
                   Stack(
                     children: [
-                      GriotAvatar(size: 40),
+                      const GriotAvatar(size: 40),
                       if (listener.$2)
                         Positioned(
                           right: 0,

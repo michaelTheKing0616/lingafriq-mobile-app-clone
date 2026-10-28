@@ -1,5 +1,3 @@
-import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -197,7 +195,7 @@ class _RankCard extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 8.h),
-                GriotProgressBar(
+                const GriotProgressBar(
                   value: 0.72,
                   height: 8,
                   showGlowTip: true,

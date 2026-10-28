@@ -106,7 +106,7 @@ class _GameAvatarWidgetState extends State<GameAvatarWidget>
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: _getCategoryColor().withOpacity(0.3),
+            color: _getCategoryColor().withValues(alpha: 0.3),
             blurRadius: 15,
             spreadRadius: 3,
           ),
@@ -127,12 +127,12 @@ class _GameAvatarWidgetState extends State<GameAvatarWidget>
               end: Alignment.bottomRight,
               colors: [
                 _getCategoryColor(),
-                _getCategoryColor().withOpacity(0.7),
+                _getCategoryColor().withValues(alpha: 0.7),
               ],
             ),
             boxShadow: [
               BoxShadow(
-                color: _getCategoryColor().withOpacity(0.4),
+                color: _getCategoryColor().withValues(alpha: 0.4),
                 blurRadius: 15,
                 spreadRadius: 3,
               ),
@@ -163,7 +163,7 @@ class _GameAvatarWidgetState extends State<GameAvatarWidget>
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),

@@ -345,7 +345,7 @@ class _PronunciationPracticeScreenState extends ConsumerState<PronunciationPract
           child: CircularProgressIndicator(
             value: score,
             strokeWidth: 6,
-            backgroundColor: color.withOpacity(0.2),
+            backgroundColor: color.withValues(alpha: 0.2),
             valueColor: AlwaysStoppedAnimation<Color>(color),
           ),
         ),

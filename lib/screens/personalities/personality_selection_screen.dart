@@ -25,7 +25,7 @@ class PersonalitySelectionScreen extends HookConsumerWidget {
     final searchQuery = useState('');
     final selectedCountry = useState<String?>(null);
     final selectedLanguage = useState<String?>(null);
-    final searchDebouncer = useMemoized(() => Debouncer(delay: Duration(milliseconds: 500)));
+    final searchDebouncer = useMemoized(() => Debouncer(delay: const Duration(milliseconds: 500)));
 
     // Load personalities
     useEffect(() {
@@ -85,7 +85,7 @@ class PersonalitySelectionScreen extends HookConsumerWidget {
         elevation: 0,
       ),
       body: isLoading.value
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : RefreshIndicator(
               onRefresh: () => _loadPersonalities(
                 context, personalityService, personalities, isLoading,
@@ -120,7 +120,7 @@ class PersonalitySelectionScreen extends HookConsumerWidget {
                       TextField(
                         decoration: InputDecoration(
                           hintText: 'Search personalities...',
-                          prefixIcon: Icon(Icons.search),
+                          prefixIcon: const Icon(Icons.search),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                           ),
@@ -138,7 +138,7 @@ class PersonalitySelectionScreen extends HookConsumerWidget {
                         children: [
                           Expanded(
                             child: DropdownButtonFormField<String>(
-                              value: selectedCountry.value,
+                              initialValue: selectedCountry.value,
                               decoration: InputDecoration(
                                 labelText: 'Country',
                                 border: OutlineInputBorder(
@@ -146,7 +146,7 @@ class PersonalitySelectionScreen extends HookConsumerWidget {
                                 ),
                               ),
                               items: [
-                                DropdownMenuItem(value: null, child: Text('All Countries')),
+                                const DropdownMenuItem(value: null, child: Text('All Countries')),
                                 ...personalities.value
                                     .map((p) => p.country)
                                     .toSet()
@@ -163,7 +163,7 @@ class PersonalitySelectionScreen extends HookConsumerWidget {
                           SizedBox(width: PanAfricanSpacing.sm),
                           Expanded(
                             child: DropdownButtonFormField<String>(
-                              value: selectedLanguage.value,
+                              initialValue: selectedLanguage.value,
                               decoration: InputDecoration(
                                 labelText: 'Language',
                                 border: OutlineInputBorder(
@@ -171,7 +171,7 @@ class PersonalitySelectionScreen extends HookConsumerWidget {
                                 ),
                               ),
                               items: [
-                                DropdownMenuItem(value: null, child: Text('All Languages')),
+                                const DropdownMenuItem(value: null, child: Text('All Languages')),
                                 ...personalities.value
                                     .map((p) => p.language)
                                     .toSet()
@@ -197,7 +197,7 @@ class PersonalitySelectionScreen extends HookConsumerWidget {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.people_outline, size: 48, color: Colors.grey),
+                              const Icon(Icons.people_outline, size: 48, color: Colors.grey),
                               SizedBox(height: PanAfricanSpacing.md),
                               Text(
                                 personalities.value.isEmpty
@@ -309,9 +309,9 @@ class _PersonalityCard extends StatelessWidget {
                         width: 60,
                         height: 60,
                         fit: BoxFit.cover,
-                        errorWidget: Icon(Icons.person, size: 30),
+                        errorWidget: const Icon(Icons.person, size: 30),
                       )
-                    : Icon(Icons.person, size: 30),
+                    : const Icon(Icons.person, size: 30),
               ),
               SizedBox(width: PanAfricanSpacing.md),
               // Info
@@ -328,15 +328,15 @@ class _PersonalityCard extends StatelessWidget {
                     SizedBox(height: PanAfricanSpacing.xs),
                     Row(
                       children: [
-                        Icon(Icons.location_on, size: 14),
-                        SizedBox(width: 4),
+                        const Icon(Icons.location_on, size: 14),
+                        const SizedBox(width: 4),
                         Text(
                           personality.country,
                           style: PanAfricanTypography.bodySmall(context),
                         ),
                         SizedBox(width: PanAfricanSpacing.sm),
-                        Icon(Icons.language, size: 14),
-                        SizedBox(width: 4),
+                        const Icon(Icons.language, size: 14),
+                        const SizedBox(width: 4),
                         Text(
                           personality.language,
                           style: PanAfricanTypography.bodySmall(context),
@@ -355,7 +355,7 @@ class _PersonalityCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Icon(Icons.arrow_forward_ios, size: 16),
+              const Icon(Icons.arrow_forward_ios, size: 16),
             ],
           ),
         ),

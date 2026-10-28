@@ -219,7 +219,7 @@ Quality requirements:
     Future<void> explainGrammar() async {
       if (topicController.text.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please enter a grammar topic')),
+          const SnackBar(content: Text('Please enter a grammar topic')),
         );
         return;
       }
@@ -245,7 +245,7 @@ Quality requirements:
       message: 'Generating grammar explanation...',
         child: Scaffold(
         body: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -307,10 +307,10 @@ Quality requirements:
                                       vertical: PolieSpacing.xs,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: PolieColors.royalAmethyst.withOpacity(0.2),
+                                      color: PolieColors.royalAmethyst.withValues(alpha: 0.2),
                                       borderRadius: BorderRadius.circular(PolieRadius.pill),
                                       border: Border.all(
-                                        color: PolieColors.royalAmethyst.withOpacity(0.5),
+                                        color: PolieColors.royalAmethyst.withValues(alpha: 0.5),
                                       ),
                                     ),
                                     child: Text(
@@ -347,7 +347,7 @@ Quality requirements:
                           decoration: BoxDecoration(
                             color: PolieColors.surfaceContainerLight,
                             borderRadius: BorderRadius.circular(PolieRadius.md),
-                            border: Border.all(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1)),
+                            border: Border.all(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1)),
                           ),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<String>(
@@ -457,9 +457,9 @@ Quality requirements:
               Container(
                 padding: EdgeInsets.symmetric(horizontal: PolieSpacing.sm, vertical: PolieSpacing.xs),
                 decoration: BoxDecoration(
-                  color: PolieColors.goldEmber.withOpacity(0.25),
+                  color: PolieColors.goldEmber.withValues(alpha: 0.25),
                   borderRadius: BorderRadius.circular(PolieRadius.pill),
-                  border: Border.all(color: PolieColors.goldEmber.withOpacity(0.5)),
+                  border: Border.all(color: PolieColors.goldEmber.withValues(alpha: 0.5)),
                 ),
                 child: Text(
                   'Lesson view',
@@ -475,7 +475,7 @@ Quality requirements:
           Text(result['canonicalRule'] ?? '', style: PolieTypography.body(context)),
           if (result['grammarTree'] != null && (result['grammarTree'] as String).trim().isNotEmpty) ...[
             SizedBox(height: PolieSpacing.md),
-            Divider(color: PolieColors.textSecondary.withOpacity(0.3)),
+            Divider(color: PolieColors.textSecondary.withValues(alpha: 0.3)),
             SizedBox(height: PolieSpacing.sm),
             Text('Structure', style: PolieTypography.label(context)),
             SizedBox(height: PolieSpacing.xs),
@@ -483,9 +483,9 @@ Quality requirements:
               width: double.infinity,
               padding: EdgeInsets.all(PolieSpacing.md),
               decoration: BoxDecoration(
-                color: PolieColors.obsidian.withOpacity(0.5),
+                color: PolieColors.obsidian.withValues(alpha: 0.5),
                 borderRadius: BorderRadius.circular(PolieRadius.sm),
-                border: Border.all(color: PolieColors.goldEmber.withOpacity(0.3)),
+                border: Border.all(color: PolieColors.goldEmber.withValues(alpha: 0.3)),
               ),
               child: SelectableText(
                 result['grammarTree'].toString().trim(),
@@ -495,7 +495,7 @@ Quality requirements:
           ],
           if (result['sentenceAnatomy'] != null && (result['sentenceAnatomy'] as List).isNotEmpty) ...[
             SizedBox(height: PolieSpacing.md),
-            Divider(color: PolieColors.textSecondary.withOpacity(0.3)),
+            Divider(color: PolieColors.textSecondary.withValues(alpha: 0.3)),
             SizedBox(height: PolieSpacing.sm),
             Text('Sentence anatomy', style: PolieTypography.label(context)),
             SizedBox(height: PolieSpacing.xs),
@@ -518,9 +518,9 @@ Quality requirements:
                 return Container(
                   padding: EdgeInsets.symmetric(horizontal: PolieSpacing.sm, vertical: PolieSpacing.xs),
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.2),
+                    color: color.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(PolieRadius.sm),
-                    border: Border.all(color: color.withOpacity(0.5)),
+                    border: Border.all(color: color.withValues(alpha: 0.5)),
                   ),
                   child: Text('$part ($label)', style: PolieTypography.bodySmall(context).copyWith(color: color)),
                 );
@@ -529,23 +529,23 @@ Quality requirements:
           ],
           if (result['compareENFR'] != null && (result['compareENFR'] as String).trim().isNotEmpty) ...[
             SizedBox(height: PolieSpacing.md),
-            Divider(color: PolieColors.textSecondary.withOpacity(0.3)),
+            Divider(color: PolieColors.textSecondary.withValues(alpha: 0.3)),
             SizedBox(height: PolieSpacing.sm),
             Text('Compare EN / FR', style: PolieTypography.label(context)),
             SizedBox(height: PolieSpacing.xs),
             Container(
               padding: EdgeInsets.all(PolieSpacing.sm),
               decoration: BoxDecoration(
-                color: PolieColors.electricTeal.withOpacity(0.1),
+                color: PolieColors.electricTeal.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(PolieRadius.sm),
-                border: Border.all(color: PolieColors.electricTeal.withOpacity(0.3)),
+                border: Border.all(color: PolieColors.electricTeal.withValues(alpha: 0.3)),
               ),
               child: Text(result['compareENFR'].toString().trim(), style: PolieTypography.bodySmall(context)),
             ),
           ],
           SizedBox(height: PolieSpacing.lg),
           if (result['examples'] != null && (result['examples'] as List).isNotEmpty) ...[
-            Divider(color: PolieColors.textSecondary.withOpacity(0.3)),
+            Divider(color: PolieColors.textSecondary.withValues(alpha: 0.3)),
             SizedBox(height: PolieSpacing.md),
             Text('Examples', style: PolieTypography.label(context)),
             SizedBox(height: PolieSpacing.sm),
@@ -573,7 +573,7 @@ Quality requirements:
           ],
           if (result['commonMistakes'] != null && (result['commonMistakes'] as List).isNotEmpty) ...[
             SizedBox(height: PolieSpacing.lg),
-            Divider(color: PolieColors.textSecondary.withOpacity(0.3)),
+            Divider(color: PolieColors.textSecondary.withValues(alpha: 0.3)),
             SizedBox(height: PolieSpacing.md),
             Text('Common Mistakes', style: PolieTypography.label(context)),
             SizedBox(height: PolieSpacing.sm),
@@ -582,7 +582,7 @@ Quality requirements:
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.warning_amber_rounded, color: PolieColors.error, size: 20),
+                  const Icon(Icons.warning_amber_rounded, color: PolieColors.error, size: 20),
                   SizedBox(width: PolieSpacing.xs),
                   Expanded(child: Text(mistake.toString(), style: PolieTypography.bodySmall(context))),
                 ],
@@ -591,7 +591,7 @@ Quality requirements:
           ],
           if (result['practice'] != null && (result['practice'] as List).isNotEmpty) ...[
             SizedBox(height: PolieSpacing.lg),
-            Divider(color: PolieColors.textSecondary.withOpacity(0.3)),
+            Divider(color: PolieColors.textSecondary.withValues(alpha: 0.3)),
             SizedBox(height: PolieSpacing.md),
             Row(
               children: [
@@ -613,7 +613,7 @@ Quality requirements:
                 child: Container(
                   padding: EdgeInsets.all(PolieSpacing.md),
                   decoration: BoxDecoration(
-                    color: PolieColors.royalAmethyst.withOpacity(0.15),
+                    color: PolieColors.royalAmethyst.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(PolieRadius.sm),
                   ),
                   child: Column(
@@ -694,7 +694,7 @@ class _TryItDrawerContentState extends State<_TryItDrawerContent> {
       decoration: BoxDecoration(
         color: isDark ? PolieColors.surfaceContainer : PolieColors.surfaceContainerLight,
         borderRadius: BorderRadius.vertical(top: Radius.circular(PolieRadius.xl)),
-        border: Border.all(color: PolieColors.royalAmethyst.withOpacity(0.3)),
+        border: Border.all(color: PolieColors.royalAmethyst.withValues(alpha: 0.3)),
       ),
       child: SafeArea(
         top: false,
@@ -712,7 +712,7 @@ class _TryItDrawerContentState extends State<_TryItDrawerContent> {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: PolieSpacing.sm, vertical: 2),
                   decoration: BoxDecoration(
-                    color: PolieColors.goldEmber.withOpacity(0.25),
+                    color: PolieColors.goldEmber.withValues(alpha: 0.25),
                     borderRadius: BorderRadius.circular(PolieRadius.pill),
                   ),
                   child: Text(
@@ -735,7 +735,7 @@ class _TryItDrawerContentState extends State<_TryItDrawerContent> {
                 hintStyle: PolieTypography.body(context).copyWith(color: PolieColors.textSecondary),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(PolieRadius.md)),
                 filled: true,
-                fillColor: isDark ? PolieColors.obsidian.withOpacity(0.5) : Theme.of(context).colorScheme.surface.withOpacity(0.9),
+                fillColor: isDark ? PolieColors.obsidian.withValues(alpha: 0.5) : Theme.of(context).colorScheme.surface.withValues(alpha: 0.9),
               ),
               style: PolieTypography.body(context),
               maxLines: 2,
@@ -756,7 +756,7 @@ class _TryItDrawerContentState extends State<_TryItDrawerContent> {
                 if (hasNext) ...[
                   SizedBox(width: PolieSpacing.sm),
                   IconButton(
-                    icon: Icon(Icons.arrow_forward_rounded, color: PolieColors.royalAmethyst),
+                    icon: const Icon(Icons.arrow_forward_rounded, color: PolieColors.royalAmethyst),
                     onPressed: () {
                       HapticFeedback.selectionClick();
                       _answerController.clear();

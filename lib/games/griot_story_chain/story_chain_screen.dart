@@ -388,7 +388,7 @@ class _StoryChainScreenState extends ConsumerState<StoryChainScreen> {
                   if (line.moderation == StorySentenceModeration.flagged)
                     Text(
                       'Held for review',
-                      style: PanAfricanTypography.bodySmall(context)?.copyWith(
+                      style: PanAfricanTypography.bodySmall(context).copyWith(
                         color: PanAfricanColors.error,
                       ),
                     ),

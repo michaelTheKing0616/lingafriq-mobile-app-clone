@@ -73,7 +73,7 @@ class UserProfileScreen extends ConsumerWidget {
                     ),
                     child: CustomPaint(
                       painter: _PatternPainter(
-                        color: colorScheme.onPrimary.withOpacity(0.1),
+                        color: colorScheme.onPrimary.withValues(alpha: 0.1),
                       ),
                     ),
                   ),
@@ -139,7 +139,7 @@ class UserProfileScreen extends ConsumerWidget {
                           user?.email ?? '',
                           style: PanAfricanTypography.bodyMedium(context)
                               .copyWith(
-                                  color: colorScheme.onPrimary.withOpacity(0.9)),
+                                  color: colorScheme.onPrimary.withValues(alpha: 0.9)),
                         ),
                         SizedBox(height: PanAfricanSpacing.lg),
 
@@ -236,11 +236,11 @@ class UserProfileScreen extends ConsumerWidget {
                     builder: (context, ref, _) {
                       return Column(
                         children: [
-                          LevelDisplayWidget(showXP: true),
+                          const LevelDisplayWidget(showXP: true),
                           SizedBox(height: PanAfricanSpacing.md),
-                          CurrencyDisplayWidget(compact: false, showLabels: true),
+                          const CurrencyDisplayWidget(compact: false, showLabels: true),
                           SizedBox(height: PanAfricanSpacing.md),
-                          StreakDisplayWidget(showFreeze: true),
+                          const StreakDisplayWidget(showFreeze: true),
                         ],
                       );
                     },
@@ -309,7 +309,7 @@ class _HeaderIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return Material(
-      color: colorScheme.onPrimary.withOpacity(0.2),
+      color: colorScheme.onPrimary.withValues(alpha: 0.2),
       shape: const CircleBorder(),
       child: InkWell(
         onTap: onTap,
@@ -363,7 +363,7 @@ class _HeaderStatItem extends StatelessWidget {
         Text(
           label,
           style: PanAfricanTypography.bodySmall(context)
-              .copyWith(color: colorScheme.onPrimary.withOpacity(0.8)),
+              .copyWith(color: colorScheme.onPrimary.withValues(alpha: 0.8)),
         ),
       ],
     );
@@ -392,7 +392,7 @@ class _InfoRow extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(PanAfricanSpacing.sm),
           decoration: BoxDecoration(
-            color: iconColor.withOpacity(0.1),
+            color: iconColor.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(PanAfricanRadius.md),
           ),
           child: Icon(
@@ -443,7 +443,7 @@ class _ActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: isDestructive
-          ? PanAfricanColors.error.withOpacity(0.1)
+          ? PanAfricanColors.error.withValues(alpha: 0.1)
           : (isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight),
       borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
       child: InkWell(
@@ -459,7 +459,7 @@ class _ActionButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
             border: Border.all(
               color: isDestructive
-                  ? PanAfricanColors.error.withOpacity(0.3)
+                  ? PanAfricanColors.error.withValues(alpha: 0.3)
                   : (isDark
                       ? PanAfricanColors.borderDark
                       : PanAfricanColors.borderLight),
@@ -471,8 +471,8 @@ class _ActionButton extends StatelessWidget {
                 padding: EdgeInsets.all(PanAfricanSpacing.sm),
                 decoration: BoxDecoration(
                   color: isDestructive
-                      ? PanAfricanColors.error.withOpacity(0.1)
-                      : PanAfricanColors.primary.withOpacity(0.1),
+                      ? PanAfricanColors.error.withValues(alpha: 0.1)
+                      : PanAfricanColors.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                 ),
                 child: Icon(

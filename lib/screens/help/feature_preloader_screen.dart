@@ -199,7 +199,7 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
           Text(
             widget.featureDescription,
             style: PanAfricanTypography.bodyMedium(context).copyWith(
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
             ),
             textAlign: TextAlign.center,
           )
@@ -248,7 +248,7 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
                 Container(
                   padding: EdgeInsets.all(8.w),
                   decoration: BoxDecoration(
-                    color: PanAfricanColors.primary.withOpacity(0.1),
+                    color: PanAfricanColors.primary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   child: Icon(
@@ -280,10 +280,10 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
               Container(
                 padding: EdgeInsets.all(12.w),
                 decoration: BoxDecoration(
-                  color: PanAfricanColors.primary.withOpacity(0.05),
+                  color: PanAfricanColors.primary.withValues(alpha: 0.05),
                   borderRadius: BorderRadius.circular(8.r),
                   border: Border.all(
-                    color: PanAfricanColors.primary.withOpacity(0.2),
+                    color: PanAfricanColors.primary.withValues(alpha: 0.2),
                   ),
                 ),
                 child: Row(
@@ -349,7 +349,7 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
             Container(
               padding: EdgeInsets.all(8.w),
               decoration: BoxDecoration(
-                color: PanAfricanColors.secondary.withOpacity(0.1),
+                color: PanAfricanColors.secondary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8.r),
               ),
               child: Icon(

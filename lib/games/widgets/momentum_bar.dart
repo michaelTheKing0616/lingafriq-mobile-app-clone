@@ -53,7 +53,7 @@ class MomentumBar extends StatelessWidget {
                       .animate(onPlay: (controller) => controller.repeat())
                       .shimmer(
                         duration: 1500.ms,
-                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.5),
+                        color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.5),
                       ),
                 ),
               ],

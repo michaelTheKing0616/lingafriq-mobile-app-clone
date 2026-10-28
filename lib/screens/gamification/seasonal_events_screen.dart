@@ -193,7 +193,7 @@ class _EventCard extends StatelessWidget {
                       begin: Alignment.topRight,
                       end: Alignment.bottomLeft,
                       colors: [
-                        PanAfricanColors.success.withOpacity(0.1),
+                        PanAfricanColors.success.withValues(alpha: 0.1),
                         Colors.transparent,
                       ],
                     ),
@@ -212,7 +212,7 @@ class _EventCard extends StatelessWidget {
                         width: 48.w,
                         height: 48.w,
                         decoration: BoxDecoration(
-                          color: PanAfricanColors.secondary.withOpacity(0.15),
+                          color: PanAfricanColors.secondary.withValues(alpha: 0.15),
                           borderRadius: PanAfricanRadius.mdBR,
                         ),
                         child: Center(
@@ -273,7 +273,7 @@ class _EventCard extends StatelessWidget {
                           vertical: PanAfricanSpacing.xxxs,
                         ),
                         decoration: BoxDecoration(
-                          color: PanAfricanColors.tertiary.withOpacity(0.15),
+                          color: PanAfricanColors.tertiary.withValues(alpha: 0.15),
                           borderRadius: PanAfricanRadius.roundBR,
                         ),
                         child: Row(
@@ -407,7 +407,7 @@ class _EventDetailScreen extends StatelessWidget {
                       vertical: PanAfricanSpacing.xs,
                     ),
                     decoration: BoxDecoration(
-                      color: colorScheme.onPrimary.withOpacity(0.2),
+                      color: colorScheme.onPrimary.withValues(alpha: 0.2),
                       borderRadius: PanAfricanRadius.roundBR,
                     ),
                     child: Row(
@@ -502,7 +502,7 @@ class _EventDetailScreen extends StatelessWidget {
                                 width: 40.w,
                                 height: 40.w,
                                 decoration: BoxDecoration(
-                                  color: PanAfricanColors.secondary.withOpacity(0.15),
+                                  color: PanAfricanColors.secondary.withValues(alpha: 0.15),
                                   shape: BoxShape.circle,
                                 ),
                                 child: Center(

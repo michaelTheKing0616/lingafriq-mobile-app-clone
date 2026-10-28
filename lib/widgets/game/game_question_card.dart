@@ -47,7 +47,7 @@ class GameQuestionCard extends StatelessWidget {
         color: cs.surfaceContainerLow,
         borderRadius: PanAfricanRadius.xlBR,
         border: Border.all(
-          color: cs.outlineVariant.withOpacity(0.5),
+          color: cs.outlineVariant.withValues(alpha: 0.5),
           width: 1,
         ),
         boxShadow: PanAfricanShadows.sm,
@@ -85,7 +85,7 @@ class GameQuestionCard extends StatelessWidget {
                 vertical: PanAfricanSpacing.xxs,
               ),
               decoration: BoxDecoration(
-                color: cs.surfaceContainerHighest.withOpacity(0.5),
+                color: cs.surfaceContainerHighest.withValues(alpha: 0.5),
                 borderRadius: PanAfricanRadius.roundBR,
               ),
               child: Row(

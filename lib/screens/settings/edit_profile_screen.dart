@@ -218,7 +218,7 @@ class EditProfileScreen extends HookConsumerWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    PanAfricanColors.primary.withOpacity(0.05),
+                    PanAfricanColors.primary.withValues(alpha: 0.05),
                     PanAfricanColors.surfaceLight,
                   ],
                 ),
@@ -421,7 +421,7 @@ class _ProfileTextField extends StatelessWidget {
           margin: EdgeInsets.all(PanAfricanSpacing.sm),
           padding: EdgeInsets.all(PanAfricanSpacing.sm),
           decoration: BoxDecoration(
-            color: PanAfricanColors.primary.withOpacity(0.1),
+            color: PanAfricanColors.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(PanAfricanRadius.sm),
           ),
           child: Icon(
@@ -450,20 +450,20 @@ class _ProfileTextField extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: PanAfricanColors.primary,
             width: 2,
           ),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: PanAfricanColors.error,
           ),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: PanAfricanColors.error,
             width: 2,
           ),
@@ -501,8 +501,8 @@ class _ImagePickerOption extends StatelessWidget {
           padding: EdgeInsets.all(PanAfricanSpacing.sm),
           decoration: BoxDecoration(
             color: isDestructive
-                ? PanAfricanColors.error.withOpacity(0.1)
-                : PanAfricanColors.primary.withOpacity(0.1),
+                ? PanAfricanColors.error.withValues(alpha: 0.1)
+                : PanAfricanColors.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(PanAfricanRadius.md),
           ),
           child: Icon(

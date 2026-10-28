@@ -228,8 +228,8 @@ class PersonaQuestProgress {
     return PersonaQuestProgress(
       questId: questId,
       currentChapterIndex: 1,
-      completedChapterIndices: {},
-      earnedVocabularyIds: {},
+      completedChapterIndices: const {},
+      earnedVocabularyIds: const {},
     );
   }
 
@@ -259,7 +259,7 @@ class PersonaQuestProgress {
     return PersonaQuestProgress(
       questId: questId,
       currentChapterIndex: 1,
-      completedChapterIndices: {},
+      completedChapterIndices: const {},
       earnedVocabularyIds: earnedVocabularyIds,
     );
   }

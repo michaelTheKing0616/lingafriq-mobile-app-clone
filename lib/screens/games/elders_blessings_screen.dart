@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
-import '../../providers/game_provider.dart';
 import '../../providers/game_content_provider.dart';
-import '../../models/game/game_content_models.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
@@ -89,8 +86,8 @@ class _EldersBlessingsGameState
 
     final responses = [
       _EtiquetteResponse(label: 'Formal Yoruba', text: scenario.correctResponse, color: const Color(0xFF9E3D00), isCorrect: true),
-      _EtiquetteResponse(label: 'Royal Igbo', text: 'Nod quietly', color: const Color(0xFF526124), isCorrect: false),
-      _EtiquetteResponse(label: 'Casual Pidgin', text: 'Just wave and move on', color: const Color(0xFF7B5733), isCorrect: false),
+      const _EtiquetteResponse(label: 'Royal Igbo', text: 'Nod quietly', color: Color(0xFF526124), isCorrect: false),
+      const _EtiquetteResponse(label: 'Casual Pidgin', text: 'Just wave and move on', color: Color(0xFF7B5733), isCorrect: false),
     ]..shuffle(rng);
 
     setState(() {
@@ -246,7 +243,7 @@ class _EldersBlessingsGameState
             Positioned(
               right: 24.w, top: 24.h,
               child: Icon(Icons.auto_awesome_rounded, size: 40.sp,
-                  color: Colors.white.withOpacity(0.3)),
+                  color: Colors.white.withValues(alpha: 0.3)),
             ),
             Center(
               child: Padding(
@@ -256,7 +253,7 @@ class _EldersBlessingsGameState
                   children: [
                     CircleAvatar(
                       radius: 44.r,
-                      backgroundColor: Colors.white.withOpacity(0.25),
+                      backgroundColor: Colors.white.withValues(alpha: 0.25),
                       child: Icon(Icons.elderly_rounded, size: 44.sp,
                           color: Colors.white),
                     ),
@@ -269,7 +266,7 @@ class _EldersBlessingsGameState
                     Container(
                       padding: EdgeInsets.all(16.r),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.white.withValues(alpha: 0.2),
                         borderRadius: ModernGriotRadius.borderXl,
                       ),
                       child: Text(scenario.question,
@@ -303,11 +300,11 @@ class _EldersBlessingsGameState
 
     Color bg;
     if (showCorrect) {
-      bg = ModernGriotColors.secondary.withOpacity(0.12);
+      bg = ModernGriotColors.secondary.withValues(alpha: 0.12);
     } else if (showWrong) {
-      bg = ModernGriotColors.error.withOpacity(0.12);
+      bg = ModernGriotColors.error.withValues(alpha: 0.12);
     } else {
-      bg = resp.color.withOpacity(isSelected ? 0.12 : 0.05);
+      bg = resp.color.withValues(alpha: isSelected ? 0.12 : 0.05);
     }
 
     return GestureDetector(
@@ -320,8 +317,8 @@ class _EldersBlessingsGameState
           borderRadius: ModernGriotRadius.borderXl,
           border: Border.all(
             color: isSelected
-                ? resp.color.withOpacity(0.5)
-                : resp.color.withOpacity(0.2),
+                ? resp.color.withValues(alpha: 0.5)
+                : resp.color.withValues(alpha: 0.2),
             width: isSelected ? 2 : 1,
           ),
           boxShadow: isSelected ? ModernGriotShadows.md : ModernGriotShadows.sm,
@@ -331,7 +328,7 @@ class _EldersBlessingsGameState
             Container(
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
               decoration: BoxDecoration(
-                color: resp.color.withOpacity(0.15),
+                color: resp.color.withValues(alpha: 0.15),
                 borderRadius: ModernGriotRadius.borderPill,
               ),
               child: Text(resp.label, style: ModernGriotTypography.labelMedium(

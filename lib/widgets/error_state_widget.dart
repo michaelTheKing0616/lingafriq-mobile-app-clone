@@ -33,7 +33,7 @@ class AppErrorState extends StatelessWidget {
               width: 72.w,
               height: 72.w,
               decoration: BoxDecoration(
-                color: PanAfricanColors.error.withOpacity(0.08),
+                color: PanAfricanColors.error.withValues(alpha: 0.08),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -65,7 +65,7 @@ class AppErrorState extends StatelessWidget {
                 style: OutlinedButton.styleFrom(
                   foregroundColor: PanAfricanColors.primary,
                   side: BorderSide(
-                      color: PanAfricanColors.primary.withOpacity(0.3)),
+                      color: PanAfricanColors.primary.withValues(alpha: 0.3)),
                   padding: EdgeInsets.symmetric(
                     horizontal: PanAfricanSpacing.lg,
                     vertical: PanAfricanSpacing.sm,

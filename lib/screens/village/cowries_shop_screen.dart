@@ -140,7 +140,12 @@ class _CowriesShopScreenState extends ConsumerState<CowriesShopScreen> {
                     ),
                   ],
                   SizedBox(height: PanAfricanSpacing.md),
-                  ...catalog.map((item) {
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: catalog.length,
+                    itemBuilder: (context, index) {
+                    final item = catalog[index];
                     final owned = notifier.ownsShopItem(item);
                     final insufficient = balance < item.cost;
                     final disabled = owned || insufficient || _pendingItemId == item.id;
@@ -184,7 +189,7 @@ class _CowriesShopScreenState extends ConsumerState<CowriesShopScreen> {
                               ],
                             ),
                             trailing: owned
-                                ? Icon(Icons.check_circle, color: PanAfricanColors.primary)
+                                ? const Icon(Icons.check_circle, color: PanAfricanColors.primary)
                                 : FilledButton(
                                     onPressed: disabled
                                         ? null
@@ -207,7 +212,8 @@ class _CowriesShopScreenState extends ConsumerState<CowriesShopScreen> {
                         ),
                       ),
                     );
-                  }),
+                  },
+                  ),
                 ],
               ),
       ),

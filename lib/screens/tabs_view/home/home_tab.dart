@@ -158,7 +158,7 @@ class HomeTab extends HookConsumerWidget {
                                 'Search languages',
                                 style: PanAfricanTypography.bodyLarge(context),
                               ),
-                              ExcludeSemantics(
+                              const ExcludeSemantics(
                                 child: Icon(
                                   Icons.chevron_right_rounded,
                                   color: PanAfricanColors.textSecondary,
@@ -237,7 +237,7 @@ class HomeTab extends HookConsumerWidget {
                       Text(
                         gamification.levelTitle,
                         style: PanAfricanTypography.bodyLarge(context).copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.85),
+                          color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.85),
                         ),
                       ),
                     ],
@@ -254,7 +254,7 @@ class HomeTab extends HookConsumerWidget {
             Semantics(
               label: 'Level ${gamification.level}. XP ${gamification.xp}. ${_getXPToNextLevel(gamification)} XP to next level. ${gamification.dailyStreak} day streak. ${gamification.unlockedBadges.length} badges. ${gamification.languagesLearned} languages.',
               child: PanAfricanCard(
-                backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.08),
+                backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.08),
                 hasGlow: true,
                 glowColor: PanAfricanColors.primaryLight,
                 padding: EdgeInsets.all(PanAfricanSpacing.md),
@@ -271,7 +271,7 @@ class HomeTab extends HookConsumerWidget {
                             CircularProgressIndicator(
                               value: levelProgress,
                               strokeWidth: PanAfricanSpacing.xxs,
-                              backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                              backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                               valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onPrimary),
                             ),
                             Column(
@@ -286,7 +286,7 @@ class HomeTab extends HookConsumerWidget {
                                 Text(
                                   'Level',
                                   style: PanAfricanTypography.labelSmall(context).copyWith(
-                                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.75),
+                                    color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.75),
                                   ),
                                 ),
                               ],
@@ -309,7 +309,7 @@ class HomeTab extends HookConsumerWidget {
                             Text(
                               '${_getXPToNextLevel(gamification)} XP to next level',
                               style: PanAfricanTypography.bodySmall(context).copyWith(
-                                color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.75),
+                                color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.75),
                               ),
                             ),
                             SizedBox(height: PanAfricanSpacing.sm),
@@ -530,7 +530,7 @@ class _HeroPill extends StatelessWidget {
         vertical: PanAfricanSpacing.xxs,
       ),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.12),
+        color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(PanAfricanRadius.pill),
       ),
       child: Row(
@@ -540,7 +540,7 @@ class _HeroPill extends StatelessWidget {
           Text(
             label,
             style: PanAfricanTypography.labelSmall(context).copyWith(
-              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.85),
+              color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.85),
             ),
           ),
         ],
@@ -578,7 +578,7 @@ class _QuickActionCard extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(PanAfricanSpacing.sm),
               decoration: BoxDecoration(
-                color: color.withOpacity(0.15),
+                color: color.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(PanAfricanRadius.md),
               ),
               child: Icon(icon, color: color, size: PanAfricanSpacing.md, semanticLabel: title),
@@ -634,7 +634,7 @@ class _HighlightCard extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(PanAfricanSpacing.sm),
               decoration: BoxDecoration(
-                color: color.withOpacity(0.12),
+                color: color.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(PanAfricanRadius.md),
               ),
               child: Icon(icon, color: color, size: PanAfricanSpacing.md, semanticLabel: label),
@@ -703,8 +703,8 @@ class LanguageItem extends ConsumerWidget {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Theme.of(context).colorScheme.scrim.withOpacity(0.15),
-                      Theme.of(context).colorScheme.scrim.withOpacity(0.55),
+                      Theme.of(context).colorScheme.scrim.withValues(alpha: 0.15),
+                      Theme.of(context).colorScheme.scrim.withValues(alpha: 0.55),
                     ],
                   ),
                 ),

@@ -114,7 +114,7 @@ class _GameTimerRingState extends State<GameTimerRing>
           fraction: fraction,
           trackColor: cs.surfaceContainerHighest,
           ringGradientColors: ringColor != null
-              ? [ringColor, ringColor.withOpacity(0.7)]
+              ? [ringColor, ringColor.withValues(alpha: 0.7)]
               : [PanAfricanColors.primary, PanAfricanColors.tertiary],
           strokeWidth: 5.w,
         ),

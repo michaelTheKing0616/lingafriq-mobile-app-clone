@@ -75,7 +75,7 @@ class LensResultsLexiconLink extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Icon(Icons.menu_book_outlined, size: 22),
+                  const Icon(Icons.menu_book_outlined, size: 22),
                 ],
               ),
             ),

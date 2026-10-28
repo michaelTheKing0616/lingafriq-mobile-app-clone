@@ -30,7 +30,7 @@ class CreateLessonScreen extends HookConsumerWidget {
         backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
         leading: IconButton(
-          icon: Icon(PanAfricanIcons.back),
+          icon: const Icon(PanAfricanIcons.back),
           onPressed: () {
             HapticFeedback.lightImpact();
             Navigator.of(context).pop();
@@ -44,7 +44,7 @@ class CreateLessonScreen extends HookConsumerWidget {
           children: [
             // Language Selection
             DropdownButtonFormField<String>(
-              value: selectedLanguage.value,
+              initialValue: selectedLanguage.value,
               decoration: InputDecoration(
                 labelText: 'Language',
                 labelStyle: PanAfricanTypography.bodyMedium(context),

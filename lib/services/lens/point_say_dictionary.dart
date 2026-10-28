@@ -380,7 +380,7 @@ class _PointSayDictionarySheetState extends State<PointSayDictionarySheet> {
           label: lensPointSayPlayExample,
           child: FilledButton.tonal(
             onPressed: _play,
-            child: Text(lensPointSayPlayExample),
+            child: const Text(lensPointSayPlayExample),
           ),
         ),
         if (_playStatus != null) ...[
@@ -393,7 +393,7 @@ class _PointSayDictionarySheetState extends State<PointSayDictionarySheet> {
           label: lensPointSaySaveWord,
           child: FilledButton(
             onPressed: _busy ? null : _save,
-            child: Text(lensPointSaySaveWord),
+            child: const Text(lensPointSaySaveWord),
           ),
         ),
       ],
@@ -433,7 +433,7 @@ class _PointSayDictionarySheetState extends State<PointSayDictionarySheet> {
           label: lensPointSaySuggestLabel,
           child: FilledButton(
             onPressed: _busy ? null : _submitSuggestion,
-            child: Text(lensPointSaySuggestLabel),
+            child: const Text(lensPointSaySuggestLabel),
           ),
         ),
       ],

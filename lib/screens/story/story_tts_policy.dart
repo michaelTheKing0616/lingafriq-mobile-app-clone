@@ -58,7 +58,7 @@ StoryTtsRoute resolveStoryTtsRoute(String languageCode) {
       return const StoryTtsRoute(
         languageCode: 'zu',
         primary: 'azure',
-        fallbacks: const [],
+        fallbacks: [],
         blocked: false,
       );
     case 'xh':
@@ -66,7 +66,7 @@ StoryTtsRoute resolveStoryTtsRoute(String languageCode) {
       return const StoryTtsRoute(
         languageCode: 'xh',
         primary: 'none',
-        fallbacks: const [],
+        fallbacks: [],
         blocked: true,
         blockReason: 'voice_coming',
       );

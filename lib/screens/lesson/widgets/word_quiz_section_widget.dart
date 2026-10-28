@@ -100,7 +100,7 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
   Future<void> _checkAnswers() async {
     if (_answers.values.any((a) => a == null)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Please fill in all blanks'),
           backgroundColor: PanAfricanColors.error,
         ),
@@ -187,9 +187,9 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
                   margin: EdgeInsets.symmetric(horizontal: 4.w),
                   decoration: BoxDecoration(
                     color: isCorrect
-                        ? PanAfricanColors.success.withOpacity(0.15)
+                        ? PanAfricanColors.success.withValues(alpha: 0.15)
                         : isIncorrect
-                            ? PanAfricanColors.error.withOpacity(0.15)
+                            ? PanAfricanColors.error.withValues(alpha: 0.15)
                             : PanAfricanColors.cardDark,
                     border: Border.all(
                       color: isCorrect
@@ -271,7 +271,7 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
             color: Theme.of(context).colorScheme.surface,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withValues(alpha: 0.1),
                 blurRadius: 8,
                 offset: const Offset(0, -2),
               ),
@@ -298,7 +298,7 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
                       onTap: () => _selectChoice(choice),
                       child: PanAfricanCard(
                         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                        backgroundColor: PanAfricanColors.primary.withOpacity(0.1),
+                        backgroundColor: PanAfricanColors.primary.withValues(alpha: 0.1),
                         child: Text(
                           choice,
                           style: PanAfricanTypography.bodyMedium(context).copyWith(

@@ -3,7 +3,6 @@ library;
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 import 'package:lingafriq/services/lens/object_set_mapper.dart';
 import 'package:lingafriq/services/lens/on_device_object_classifier.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
@@ -306,7 +305,7 @@ Future<({bool upload, bool finetune})?> showPointSayOptInDialog(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(lensPointSayAskOptInBody),
+                    const Text(lensPointSayAskOptInBody),
                     SizedBox(height: PanAfricanSpacing.md),
                     CheckboxListTile(
                       contentPadding: EdgeInsets.zero,

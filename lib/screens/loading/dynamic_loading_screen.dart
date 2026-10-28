@@ -293,19 +293,19 @@ class _DynamicLoadingScreenState
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  PanAfricanColors.secondary.withOpacity(0.8),
-                  PanAfricanColors.tertiary.withOpacity(0.6),
-                  PanAfricanColors.primary.withOpacity(0.4),
+                  PanAfricanColors.secondary.withValues(alpha: 0.8),
+                  PanAfricanColors.tertiary.withValues(alpha: 0.6),
+                  PanAfricanColors.primary.withValues(alpha: 0.4),
                 ],
               ),
               boxShadow: [
                 BoxShadow(
-                  color: PanAfricanColors.secondary.withOpacity(0.4),
+                  color: PanAfricanColors.secondary.withValues(alpha: 0.4),
                   blurRadius: 30,
                   spreadRadius: 5,
                 ),
                 BoxShadow(
-                  color: PanAfricanColors.primary.withOpacity(0.2),
+                  color: PanAfricanColors.primary.withValues(alpha: 0.2),
                   blurRadius: 50,
                   spreadRadius: 10,
                 ),
@@ -328,9 +328,9 @@ class _DynamicLoadingScreenState
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            const Color(0xFFD4A574).withOpacity(0.3),
-                            const Color(0xFF8B6F47).withOpacity(0.3),
-                            const Color(0xFFD4A574).withOpacity(0.3),
+                            const Color(0xFFD4A574).withValues(alpha: 0.3),
+                            const Color(0xFF8B6F47).withValues(alpha: 0.3),
+                            const Color(0xFFD4A574).withValues(alpha: 0.3),
                           ],
                         ),
                       ),
@@ -366,8 +366,8 @@ class _DynamicLoadingScreenState
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            PanAfricanColors.primary.withOpacity(0.3),
-            PanAfricanColors.secondary.withOpacity(0.2),
+            PanAfricanColors.primary.withValues(alpha: 0.3),
+            PanAfricanColors.secondary.withValues(alpha: 0.2),
           ],
         ),
       ),
@@ -411,7 +411,7 @@ class _DynamicLoadingScreenState
           content.greetingTranslation,
           style: TextStyle(
             fontSize: 14.sp,
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
             fontStyle: FontStyle.italic,
           ),
         ),
@@ -436,13 +436,13 @@ class _DynamicLoadingScreenState
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
-              Theme.of(context).colorScheme.onSurface.withOpacity(0.06),
+              Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.12),
+              Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.06),
             ],
           ),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: PanAfricanColors.secondary.withOpacity(0.3),
+            color: PanAfricanColors.secondary.withValues(alpha: 0.3),
             width: 1,
           ),
         ),
@@ -454,7 +454,7 @@ class _DynamicLoadingScreenState
                 Container(
                   padding: EdgeInsets.all(6.sp),
                   decoration: BoxDecoration(
-                    color: PanAfricanColors.secondary.withOpacity(0.2),
+                    color: PanAfricanColors.secondary.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -481,7 +481,7 @@ class _DynamicLoadingScreenState
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14.sp,
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.9),
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.9),
                 height: 1.6,
                 fontWeight: FontWeight.w400,
               ),
@@ -499,7 +499,7 @@ class _DynamicLoadingScreenState
           widget.message ?? 'Getting things ready...',
           style: TextStyle(
             fontSize: 13.sp,
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
             letterSpacing: 0.5,
           ),
         ),
@@ -508,7 +508,7 @@ class _DynamicLoadingScreenState
           width: 200.sp,
           height: 4.sp,
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Stack(
@@ -517,7 +517,7 @@ class _DynamicLoadingScreenState
                 widthFactor: _progress,
                 child: Container(
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       colors: [
                         PanAfricanColors.secondary,
                         PanAfricanColors.tertiary,
@@ -527,7 +527,7 @@ class _DynamicLoadingScreenState
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
-                        color: PanAfricanColors.secondary.withOpacity(0.5),
+                        color: PanAfricanColors.secondary.withValues(alpha: 0.5),
                         blurRadius: 8,
                         spreadRadius: 1,
                       ),
@@ -543,7 +543,7 @@ class _DynamicLoadingScreenState
           '${(_progress * 100).toInt()}%',
           style: TextStyle(
             fontSize: 11.sp,
-            color: PanAfricanColors.secondary.withOpacity(0.8),
+            color: PanAfricanColors.secondary.withValues(alpha: 0.8),
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -561,7 +561,7 @@ class _StripePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = stripeColor.withOpacity(0.1)
+      ..color = stripeColor.withValues(alpha: 0.1)
       ..strokeWidth = 2;
 
     const spacing = 20.0;

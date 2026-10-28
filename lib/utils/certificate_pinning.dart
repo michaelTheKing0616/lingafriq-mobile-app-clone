@@ -127,7 +127,7 @@ void setupCertificatePinning(Dio dio, {CertificatePinningConfig? config}) {
   
   if (pinnerConfig.enabled) {
     // Configure HttpClient with certificate validation callback
-    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) {
+    (dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate = (client) {
       client.badCertificateCallback = (cert, host, port) {
         // Validate certificate using our pinner
         final isValid = pinner.validateCertificate(cert, host: host);

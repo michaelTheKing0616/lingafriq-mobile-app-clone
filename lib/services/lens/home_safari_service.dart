@@ -180,7 +180,7 @@ class HomeSafariService {
         rewardGranted = true;
         reward = HomeSafariRewardGrant(
           idempotencyKey:
-              '${userId}:${snapshot.weekKey}:home_safari_complete',
+              '$userId:${snapshot.weekKey}:home_safari_complete',
           cowries: homeSafariCompletionCowries,
         );
       }

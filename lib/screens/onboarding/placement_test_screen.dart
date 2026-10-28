@@ -173,7 +173,7 @@ class PlacementTestScreen extends HookConsumerWidget {
       final questionsLength = (test.value?['questions'] as List?)?.length ?? 0;
       if (answers.value.length < questionsLength) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please answer all questions')),
+          const SnackBar(content: Text('Please answer all questions')),
         );
         return;
       }
@@ -263,7 +263,7 @@ class PlacementTestScreen extends HookConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircularProgressIndicator(),
+              const CircularProgressIndicator(),
               SizedBox(height: PanAfricanSpacing.lg),
               Text(
                 'Generating your placement test...',
@@ -282,7 +282,7 @@ class PlacementTestScreen extends HookConsumerWidget {
     if (test.value == null) {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Placement Test'),
+          title: const Text('Placement Test'),
           backgroundColor: Colors.transparent,
           elevation: 0,
         ),
@@ -290,7 +290,7 @@ class PlacementTestScreen extends HookConsumerWidget {
           decoration: BoxDecoration(
             gradient: isDark
                 ? PanAfricanGradients.darkSurface
-                : LinearGradient(
+                : const LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
@@ -331,7 +331,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                         foregroundColor: Theme.of(context).colorScheme.onPrimary,
                         minimumSize: Size(double.infinity, 50.h),
                       ),
-                      child: Text('Continue Without Test'),
+                      child: const Text('Continue Without Test'),
                     ),
                     SizedBox(height: PanAfricanSpacing.md),
                     OutlinedButton(
@@ -342,7 +342,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                       style: OutlinedButton.styleFrom(
                         minimumSize: Size(double.infinity, 50.h),
                       ),
-                      child: Text('Try Again'),
+                      child: const Text('Try Again'),
                     ),
                   ],
                 ),
@@ -362,7 +362,7 @@ class PlacementTestScreen extends HookConsumerWidget {
       message: 'Loading test...',
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Placement Test'),
+          title: const Text('Placement Test'),
           backgroundColor: Colors.transparent,
           elevation: 0,
         ),
@@ -370,7 +370,7 @@ class PlacementTestScreen extends HookConsumerWidget {
           decoration: BoxDecoration(
             gradient: isDark
                 ? PanAfricanGradients.darkSurface
-                : LinearGradient(
+                : const LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
@@ -394,7 +394,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                   child: LinearProgressIndicator(
                   value: (currentQuestionIndex.value + 1) / questions.length,
                   backgroundColor: PanAfricanColors.neutralLight,
-                  valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
+                  valueColor: const AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
                 ),
               ),
               ),
@@ -495,7 +495,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                             currentQuestionIndex.value--;
                             HapticFeedback.lightImpact();
                           },
-                          child: Text('Previous'),
+                          child: const Text('Previous'),
                         ),
                       ),
                     if (currentQuestionIndex.value > 0)
@@ -517,7 +517,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                             ? SizedBox(
                                 width: 20.w,
                                 height: 20.h,
-                                child: CircularProgressIndicator(strokeWidth: 2),
+                                child: const CircularProgressIndicator(strokeWidth: 2),
                               )
                             : Text(
                                 currentQuestionIndex.value < questions.length - 1
@@ -544,7 +544,7 @@ class PlacementTestScreen extends HookConsumerWidget {
   ) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: PanAfricanGradients.celebration,
         ),
         child: SafeArea(
@@ -616,7 +616,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                     foregroundColor: PanAfricanColors.primary,
                     minimumSize: Size(double.infinity, 50.h),
                   ),
-                  child: Text('Continue'),
+                  child: const Text('Continue'),
                 ),
               ],
             ),

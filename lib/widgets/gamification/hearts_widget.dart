@@ -110,8 +110,8 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
               decoration: BoxDecoration(
                 color: isLow 
-                    ? PanAfricanColors.tertiary.withOpacity(0.15)
-                    : (isDark ? Theme.of(context).colorScheme.surface.withOpacity(0.1) : PanAfricanColors.surface),
+                    ? PanAfricanColors.tertiary.withValues(alpha: 0.15)
+                    : (isDark ? Theme.of(context).colorScheme.surface.withValues(alpha: 0.1) : PanAfricanColors.surface),
                 borderRadius: PanAfricanRadius.roundBR,
                 border: Border.all(
                   color: isLow ? PanAfricanColors.tertiary : Colors.transparent,
@@ -123,7 +123,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
                 children: [
                   Icon(
                     Icons.favorite_rounded,
-                    color: isLow ? PanAfricanColors.tertiary : PanAfricanColors.tertiary.withOpacity(0.8),
+                    color: isLow ? PanAfricanColors.tertiary : PanAfricanColors.tertiary.withValues(alpha: 0.8),
                     size: 18.sp,
                   ),
                   SizedBox(width: 4.w),
@@ -144,7 +144,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
                         value: state.regenerationProgress,
                         strokeWidth: 2,
                         color: PanAfricanColors.tertiary,
-                        backgroundColor: PanAfricanColors.tertiary.withOpacity(0.2),
+                        backgroundColor: PanAfricanColors.tertiary.withValues(alpha: 0.2),
                       ),
                     ),
                   ],
@@ -184,7 +184,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
                       isFilled ? Icons.favorite_rounded : Icons.favorite_border_rounded,
                       color: isFilled 
                           ? PanAfricanColors.tertiary 
-                          : PanAfricanColors.tertiary.withOpacity(0.3),
+                          : PanAfricanColors.tertiary.withValues(alpha: 0.3),
                       size: 36.sp,
                     ),
                     if (isRegenerating)
@@ -211,7 +211,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
                   ? 'Next heart in ${state.timeUntilNextHeartFormatted}'
                   : 'Full hearts!',
               style: PanAfricanTypography.bodySmall(context).copyWith(
-                color: isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7) : PanAfricanColors.textSecondary,
+                color: isDark ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7) : PanAfricanColors.textSecondary,
               ),
             ),
           if (state.currentHearts == 0)
@@ -260,7 +260,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
               Container(
                 padding: EdgeInsets.all(PanAfricanSpacing.sm),
                 decoration: BoxDecoration(
-                  color: PanAfricanColors.primary.withOpacity(0.1),
+                  color: PanAfricanColors.primary.withValues(alpha: 0.1),
                   borderRadius: PanAfricanRadius.mdBR,
                 ),
                 child: Row(
@@ -271,7 +271,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
                       child: Text(
                         'Hearts regenerate every 30 minutes. Use them wisely!',
                         style: PanAfricanTypography.bodySmall(context).copyWith(
-                          color: isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7) : PanAfricanColors.textSecondary,
+                          color: isDark ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7) : PanAfricanColors.textSecondary,
                         ),
                       ),
                     ),
@@ -285,8 +285,8 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
                   width: double.infinity,
                   child: ElevatedButton.icon(
                     onPressed: () => _refillHearts(context),
-                    icon: Icon(Icons.monetization_on_rounded),
-                    label: Text('Refill (${HeartsConfig.cowriesCostPerRefill} Cowries)'),
+                    icon: const Icon(Icons.monetization_on_rounded),
+                    label: const Text('Refill (${HeartsConfig.cowriesCostPerRefill} Cowries)'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: PanAfricanColors.primary,
                       foregroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -299,7 +299,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
               // Close button
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text('Close'),
+                child: const Text('Close'),
               ),
             ],
           ),
@@ -312,7 +312,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
     final success = await ref.read(heartsProvider.notifier).refillHearts();
     if (!success && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Not enough cowries!'),
           backgroundColor: PanAfricanColors.tertiary,
         ),

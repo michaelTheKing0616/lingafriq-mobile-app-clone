@@ -109,7 +109,7 @@ class ForgotPasswordScreen extends HookConsumerWidget {
                         prefixIcon: Semantics(
                           label: 'Email icon',
                           excludeSemantics: true,
-                          child: Icon(Icons.email_outlined, color: PanAfricanColors.primary),
+                          child: const Icon(Icons.email_outlined, color: PanAfricanColors.primary),
                         ),
                       filled: true,
                       fillColor: isDark
@@ -127,14 +127,14 @@ class ForgotPasswordScreen extends HookConsumerWidget {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: PanAfricanRadius.lgBR,
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           color: PanAfricanColors.primary,
                           width: 2,
                         ),
                       ),
                       errorBorder: OutlineInputBorder(
                         borderRadius: PanAfricanRadius.lgBR,
-                        borderSide: BorderSide(color: PanAfricanColors.error, width: 2),
+                        borderSide: const BorderSide(color: PanAfricanColors.error, width: 2),
                       ),
                       contentPadding: EdgeInsets.symmetric(
                         horizontal: PanAfricanSpacing.md,

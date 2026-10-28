@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/learning/reminders/reminder_policy.dart';
 import 'package:lingafriq/providers/notification_provider.dart';
@@ -52,7 +51,7 @@ class ReminderSettingsScreen extends HookConsumerWidget {
             _SectionHeader(title: 'Your window', context: context),
             ListTile(
               contentPadding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.sm),
-              leading: Icon(Icons.schedule_rounded, color: PanAfricanColors.primary),
+              leading: const Icon(Icons.schedule_rounded, color: PanAfricanColors.primary),
               title: Text('Reminder time', style: PanAfricanTypography.bodyLarge(context)),
               subtitle: Text(timeOfDay.value.format(context), style: PanAfricanTypography.bodySmall(context)),
               trailing: const Icon(Icons.chevron_right_rounded),
@@ -66,7 +65,7 @@ class ReminderSettingsScreen extends HookConsumerWidget {
             ),
             ListTile(
               contentPadding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.sm),
-              leading: Icon(Icons.public_rounded, color: PanAfricanColors.primary),
+              leading: const Icon(Icons.public_rounded, color: PanAfricanColors.primary),
               title: Text('Timezone', style: PanAfricanTypography.bodyLarge(context)),
               subtitle: Text(state.timezone, style: PanAfricanTypography.bodySmall(context)),
               trailing: TextButton(

@@ -1,6 +1,5 @@
 // P11-018 — Bilingual demand dialogue, comprehension checkpoint, council builders.
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -291,7 +290,7 @@ class _YaaQuestChapter3SceneState extends State<YaaQuestChapter3Scene> {
             SizedBox(height: 16.h),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
-              title: Text(QuestChapter3Copy.subtitlesToggleLabel),
+              title: const Text(QuestChapter3Copy.subtitlesToggleLabel),
               subtitle: Text(
                 _subtitlesOn
                     ? QuestChapter3Copy.subtitlesOnHint
@@ -301,7 +300,7 @@ class _YaaQuestChapter3SceneState extends State<YaaQuestChapter3Scene> {
               onChanged: (v) => setState(() => _subtitlesOn = v),
             ),
             SizedBox(height: 12.h),
-            _DialogueBubble(
+            const _DialogueBubble(
               speaker: 'Governor’s messenger',
               englishLine: QuestChapter3Copy.governorDemand,
               showSubtitle: true,
@@ -463,7 +462,7 @@ class _YaaQuestChapter3SceneState extends State<YaaQuestChapter3Scene> {
               style: theme.textTheme.bodySmall,
             ),
             SizedBox(height: 8.h),
-            _DialogueBubble(
+            const _DialogueBubble(
               speaker: 'Yaa Asantewaa',
               englishLine: QuestChapter3Copy.councilPersonaReply,
               showSubtitle: true,
@@ -483,9 +482,9 @@ class YaaQuestDialogueSubtitlesFixture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: const [
+      children: [
         _DialogueBubble(
           speaker: 'Governor’s messenger',
           englishLine: QuestChapter3Copy.governorDemand,

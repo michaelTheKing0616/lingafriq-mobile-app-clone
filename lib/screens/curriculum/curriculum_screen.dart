@@ -278,7 +278,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
         leading: Container(
           padding: EdgeInsets.all(12.sp),
           decoration: BoxDecoration(
-            color: PanAfricanColors.primary.withOpacity(0.2),
+            color: PanAfricanColors.primary.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(
@@ -311,7 +311,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
                   value: level.calculatedProgress,
                   minHeight: 8,
                   backgroundColor: isDark ? const Color(0xFF2A4A35) : Colors.grey[200],
-                  valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
+                  valueColor: const AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
                 ),
               ),
             ),
@@ -388,7 +388,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
                 value: unit.calculatedProgress,
                 minHeight: 6,
                 backgroundColor: isDark ? const Color(0xFF3A5A45) : Colors.grey[300],
-                valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
+                valueColor: const AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
               ),
             ),
           ),
@@ -418,7 +418,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
           height: 40.sp,
           decoration: BoxDecoration(
             color: lesson.isCompleted
-                ? PanAfricanColors.primary.withOpacity(0.2)
+                ? PanAfricanColors.primary.withValues(alpha: 0.2)
                 : (isDark ? const Color(0xFF3A5A45) : Colors.grey[200]),
             shape: BoxShape.circle,
           ),
@@ -453,10 +453,10 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
               margin: EdgeInsets.only(left: 8.sp),
               padding: EdgeInsets.symmetric(horizontal: 6.sp, vertical: 2.sp),
               decoration: BoxDecoration(
-                color: PanAfricanColors.secondary.withOpacity(0.2),
+                color: PanAfricanColors.secondary.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
-                  color: PanAfricanColors.secondary.withOpacity(0.5),
+                  color: PanAfricanColors.secondary.withValues(alpha: 0.5),
                   width: 1,
                 ),
               ),
@@ -563,8 +563,8 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
     if (result == null) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Lesson not found'),
+          const SnackBar(
+            content: Text('Lesson not found'),
             backgroundColor: Colors.red,
           ),
         );

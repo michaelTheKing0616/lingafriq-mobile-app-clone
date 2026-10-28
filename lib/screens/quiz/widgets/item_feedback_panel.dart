@@ -33,7 +33,7 @@ class ItemFeedbackPanel extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
+              const Text(
                 FeedbackCopy.correctForm,
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
@@ -43,7 +43,7 @@ class ItemFeedbackPanel extends StatelessWidget {
               SizedBox(height: PanAfricanSpacing.xxs),
               Text(
                 feedback.correctForm,
-                style: TextStyle(color: PanAfricanColors.textPrimary),
+                style: const TextStyle(color: PanAfricanColors.textPrimary),
               ),
               if (_hasAudio) ...[
                 SizedBox(height: PanAfricanSpacing.sm),
@@ -54,7 +54,7 @@ class ItemFeedbackPanel extends StatelessWidget {
               ],
               if (feedback.phase == 'wrong' && feedback.rationale != null) ...[
                 SizedBox(height: PanAfricanSpacing.sm),
-                Text(
+                const Text(
                   FeedbackCopy.why,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
@@ -64,7 +64,7 @@ class ItemFeedbackPanel extends StatelessWidget {
                 SizedBox(height: PanAfricanSpacing.xxs),
                 Text(
                   feedback.rationale!,
-                  style: TextStyle(color: PanAfricanColors.textSecondary),
+                  style: const TextStyle(color: PanAfricanColors.textSecondary),
                 ),
               ],
             ],

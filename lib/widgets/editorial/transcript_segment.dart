@@ -46,7 +46,7 @@ class TranscriptSegment extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
         decoration: BoxDecoration(
           color: isActive
-              ? colors.primaryContainer.withOpacity(0.25)
+              ? colors.primaryContainer.withValues(alpha: 0.25)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(10.r),
           border: Border(
@@ -137,7 +137,7 @@ class TranscriptSegment extends StatelessWidget {
           text: '${entry.value}$trailing',
           style: isHighlighted
               ? TextStyle(
-                  backgroundColor: colors.primaryContainer.withOpacity(0.5),
+                  backgroundColor: colors.primaryContainer.withValues(alpha: 0.5),
                   color: colors.primary,
                   fontWeight: FontWeight.w700,
                 )
@@ -157,7 +157,7 @@ class TranscriptSegment extends StatelessWidget {
           fontWeight: FontWeight.w400,
           fontStyle: FontStyle.italic,
           height: 1.45,
-          color: colors.onSurface.withOpacity(0.6),
+          color: colors.onSurface.withValues(alpha: 0.6),
         ),
       ),
     );
@@ -182,7 +182,7 @@ class TranscriptSegment extends StatelessWidget {
               borderRadius: BorderRadius.circular(2.r),
               child: LinearProgressIndicator(
                 value: confidence!,
-                backgroundColor: colors.onSurface.withOpacity(0.08),
+                backgroundColor: colors.onSurface.withValues(alpha: 0.08),
                 valueColor: AlwaysStoppedAnimation(barColor),
               ),
             ),
@@ -193,7 +193,7 @@ class TranscriptSegment extends StatelessWidget {
             style: TextStyle(
               fontSize: 10.sp,
               fontWeight: FontWeight.w600,
-              color: colors.onSurface.withOpacity(0.45),
+              color: colors.onSurface.withValues(alpha: 0.45),
             ),
           ),
         ],

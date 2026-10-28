@@ -76,7 +76,7 @@ class ShareProgressScreen extends HookConsumerWidget {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -109,11 +109,11 @@ class ShareProgressScreen extends HookConsumerWidget {
                         button: true,
                         child: OutlinedButton.icon(
                         onPressed: saveToGallery,
-                        icon: Icon(Icons.download_rounded, semanticLabel: 'Save'),
-                        label: Text('Save'),
+                        icon: const Icon(Icons.download_rounded, semanticLabel: 'Save'),
+                        label: const Text('Save'),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: PolieColors.textPrimary,
-                          side: BorderSide(color: PolieColors.textPrimary),
+                          side: const BorderSide(color: PolieColors.textPrimary),
                         ),
                       ),
                       ),
@@ -146,7 +146,7 @@ class ShareProgressScreen extends HookConsumerWidget {
       child: Row(
         children: [
           IconButton(
-            icon: Icon(Icons.arrow_back, color: PolieColors.textPrimary),
+            icon: const Icon(Icons.arrow_back, color: PolieColors.textPrimary),
             onPressed: () {
               HapticFeedback.lightImpact();
               Navigator.of(context).pop();
@@ -185,7 +185,7 @@ class ShareProgressScreen extends HookConsumerWidget {
       height: 600.h,
       padding: EdgeInsets.all(PolieSpacing.xl),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
@@ -196,9 +196,9 @@ class ShareProgressScreen extends HookConsumerWidget {
         borderRadius: BorderRadius.circular(PolieRadius.xl),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withValues(alpha: 0.3),
             blurRadius: 20,
-            offset: Offset(0, 10),
+            offset: const Offset(0, 10),
           ),
         ],
       ),
@@ -224,7 +224,7 @@ class ShareProgressScreen extends HookConsumerWidget {
           Text(
             'I\'ve been learning every day!',
             style: PolieTypography.body(context).copyWith(
-              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+              color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9),
               fontSize: 18.sp,
             ),
             textAlign: TextAlign.center,
@@ -233,7 +233,7 @@ class ShareProgressScreen extends HookConsumerWidget {
           Container(
             padding: EdgeInsets.all(PolieSpacing.md),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(PolieRadius.md),
             ),
             child: Text(
@@ -255,7 +255,7 @@ class ShareProgressScreen extends HookConsumerWidget {
       height: 600.h,
       padding: EdgeInsets.all(PolieSpacing.xl),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
@@ -266,9 +266,9 @@ class ShareProgressScreen extends HookConsumerWidget {
         borderRadius: BorderRadius.circular(PolieRadius.xl),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withValues(alpha: 0.3),
             blurRadius: 20,
-            offset: Offset(0, 10),
+            offset: const Offset(0, 10),
           ),
         ],
       ),
@@ -292,7 +292,7 @@ class ShareProgressScreen extends HookConsumerWidget {
           Container(
             padding: EdgeInsets.all(PolieSpacing.md),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+              color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(PolieRadius.md),
             ),
             child: Text(
@@ -320,7 +320,7 @@ class ShareProgressScreen extends HookConsumerWidget {
             Text(
               label,
               style: PolieTypography.body(context).copyWith(
-                color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.8),
+                color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.8),
               ),
             ),
             Text(
@@ -342,7 +342,7 @@ class ShareProgressScreen extends HookConsumerWidget {
       height: 600.h,
       padding: EdgeInsets.all(PolieSpacing.xl),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
@@ -353,9 +353,9 @@ class ShareProgressScreen extends HookConsumerWidget {
         borderRadius: BorderRadius.circular(PolieRadius.xl),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withValues(alpha: 0.3),
             blurRadius: 20,
-            offset: Offset(0, 10),
+            offset: const Offset(0, 10),
           ),
         ],
       ),
@@ -390,7 +390,7 @@ class ShareProgressScreen extends HookConsumerWidget {
           Text(
             'Learned 5 languages!',
             style: PolieTypography.body(context).copyWith(
-              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+              color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9),
               fontSize: 18.sp,
             ),
             textAlign: TextAlign.center,
@@ -399,7 +399,7 @@ class ShareProgressScreen extends HookConsumerWidget {
           Container(
             padding: EdgeInsets.all(PolieSpacing.md),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+              color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(PolieRadius.md),
             ),
             child: Text(

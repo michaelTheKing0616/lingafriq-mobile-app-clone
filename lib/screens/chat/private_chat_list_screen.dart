@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -320,7 +319,12 @@ class _PrivateChatListScreenState extends ConsumerState<PrivateChatListScreen>
             )
           else ...[
             _buildSectionHeader('Messages', Icons.forum_outlined, cs),
-            ...list.map((c) => _buildConversationTile(c, cs)),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: list.length,
+              itemBuilder: (context, index) => _buildConversationTile(list[index], cs),
+            ),
           ],
           SizedBox(height: 80.h),
         ],
@@ -606,11 +610,17 @@ class _PrivateChatListScreenState extends ConsumerState<PrivateChatListScreen>
               style: ModernGriotTypography.bodySmall(color: cs.onSurfaceVariant),
             )
           else
-            ...st.mine.map(
-              (s) => ListTile(
-                title: Text(s.text.isNotEmpty ? s.text : s.mediaType),
-                subtitle: Text(s.createdAt?.toLocal().toString() ?? ''),
-              ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: st.mine.length,
+              itemBuilder: (context, index) {
+                final s = st.mine[index];
+                return ListTile(
+                  title: Text(s.text.isNotEmpty ? s.text : s.mediaType),
+                  subtitle: Text(s.createdAt?.toLocal().toString() ?? ''),
+                );
+              },
             ),
         ],
       ),

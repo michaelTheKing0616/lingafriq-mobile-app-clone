@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
-import '../../providers/game_provider.dart';
 import '../../providers/game_content_provider.dart';
-import '../../models/game/game_content_models.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
@@ -194,7 +191,7 @@ class _EmojiTranslatorGameState
       decoration: BoxDecoration(
         color: cs.surfaceContainerLow,
         borderRadius: ModernGriotRadius.borderXl,
-        border: Border.all(color: ModernGriotColors.primaryContainer.withOpacity(0.4), width: 2),
+        border: Border.all(color: ModernGriotColors.primaryContainer.withValues(alpha: 0.4), width: 2),
         boxShadow: ModernGriotShadows.md,
       ),
       child: Column(
@@ -218,7 +215,7 @@ class _EmojiTranslatorGameState
             decoration: BoxDecoration(
               color: cs.surfaceContainerLow,
               borderRadius: ModernGriotRadius.borderXl,
-              border: Border.all(color: cs.outlineVariant.withOpacity(0.15)),
+              border: Border.all(color: cs.outlineVariant.withValues(alpha: 0.15)),
             ),
             child: TextField(
               controller: _answerController,
@@ -229,7 +226,7 @@ class _EmojiTranslatorGameState
               decoration: InputDecoration(
                 hintText: 'Type the meaning...',
                 hintStyle: ModernGriotTypography.bodyLarge(
-                    context: context, color: ModernGriotColors.onSurfaceVariant.withOpacity(0.4)),
+                    context: context, color: ModernGriotColors.onSurfaceVariant.withValues(alpha: 0.4)),
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
               ),
@@ -258,14 +255,14 @@ class _EmojiTranslatorGameState
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
       decoration: BoxDecoration(
-        color: ModernGriotColors.secondary.withOpacity(0.08),
+        color: ModernGriotColors.secondary.withValues(alpha: 0.08),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(ModernGriotRadius.xl.r),
           topRight: Radius.circular(ModernGriotRadius.md.r),
           bottomLeft: Radius.circular(ModernGriotRadius.md.r),
           bottomRight: Radius.circular(ModernGriotRadius.xl.r),
         ),
-        border: Border.all(color: ModernGriotColors.secondary.withOpacity(0.2)),
+        border: Border.all(color: ModernGriotColors.secondary.withValues(alpha: 0.2)),
       ),
       child: Row(
         children: [
@@ -331,13 +328,13 @@ class _EmojiTranslatorGameState
                 padding: EdgeInsets.all(10.r),
                 decoration: BoxDecoration(
                   color: past.wasCorrect
-                      ? ModernGriotColors.secondary.withOpacity(0.08)
-                      : ModernGriotColors.error.withOpacity(0.08),
+                      ? ModernGriotColors.secondary.withValues(alpha: 0.08)
+                      : ModernGriotColors.error.withValues(alpha: 0.08),
                   borderRadius: ModernGriotRadius.borderXl,
                   border: Border.all(
                     color: past.wasCorrect
-                        ? ModernGriotColors.secondary.withOpacity(0.2)
-                        : ModernGriotColors.error.withOpacity(0.2),
+                        ? ModernGriotColors.secondary.withValues(alpha: 0.2)
+                        : ModernGriotColors.error.withValues(alpha: 0.2),
                   ),
                 ),
                 child: Column(

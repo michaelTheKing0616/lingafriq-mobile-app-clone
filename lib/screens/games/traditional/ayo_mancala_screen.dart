@@ -15,13 +15,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:lingafriq/games/traditional/ayo_engine.dart';
-import 'package:lingafriq/models/game/game_content_models.dart';
 import 'package:lingafriq/models/game/game_session_model.dart';
-import 'package:lingafriq/providers/game_content_provider.dart';
 import 'package:lingafriq/screens/games/base_game_screen.dart';
 import 'package:lingafriq/screens/games/game_scenario_loader.dart';
 import 'package:lingafriq/services/audio/african_tts_service.dart';
@@ -214,7 +211,7 @@ class _AyoMancalaGameState extends BaseGameScreenState<AyoMancalaGame> {
       isDismissible: false,
       enableDrag: false,
       builder: (ctx) => Padding(
-        padding: EdgeInsets.fromLTRB(20, 18, 20, 28).copyWith(
+        padding: const EdgeInsets.fromLTRB(20, 18, 20, 28).copyWith(
           bottom: 28 + MediaQuery.of(ctx).viewInsets.bottom,
         ),
         child: Column(
@@ -401,7 +398,7 @@ class AyoBoardView extends StatelessWidget {
         final pitSize = (c.maxWidth - 32) / 6;
         return Container(
           decoration: BoxDecoration(
-            color: PanAfricanColors.kenteGold.withOpacity(0.18),
+            color: PanAfricanColors.kenteGold.withValues(alpha: 0.18),
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
               color: PanAfricanColors.kenteGold,
@@ -486,8 +483,8 @@ class _PitTile extends StatelessWidget {
           height: pitSize.clamp(56, 92).toDouble(),
           decoration: BoxDecoration(
             color: interactive
-                ? PanAfricanColors.kenteRed.withOpacity(0.18)
-                : Colors.white.withOpacity(0.78),
+                ? PanAfricanColors.kenteRed.withValues(alpha: 0.18)
+                : Colors.white.withValues(alpha: 0.78),
             border: Border.all(
               color: interactive
                   ? PanAfricanColors.kenteRed
@@ -532,7 +529,7 @@ class _StoreTile extends StatelessWidget {
       width: 88,
       height: 70,
       decoration: BoxDecoration(
-        color: PanAfricanColors.primary.withOpacity(0.18),
+        color: PanAfricanColors.primary.withValues(alpha: 0.18),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: PanAfricanColors.primary,

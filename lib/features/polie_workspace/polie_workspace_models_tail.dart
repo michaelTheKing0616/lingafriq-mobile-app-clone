@@ -1,16 +1,7 @@
-import 'dart:convert';
 
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:lingafriq/data/polie_translate_language_options.dart';
 import 'package:lingafriq/models/correction_result.dart';
-import 'package:lingafriq/models/translation_history_model.dart';
-import 'package:lingafriq/models/tutor_progress_model.dart';
 import 'package:lingafriq/models/vocabulary_progress_model.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_models_core.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_parsing.dart';
-import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
-import 'package:lingafriq/services/vocabulary/vocabulary_service.dart';
 
 class ConversationPayload {
   final String messageTarget;

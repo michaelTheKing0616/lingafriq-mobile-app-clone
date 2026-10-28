@@ -137,7 +137,7 @@ class _GamifiedReviewScreenState extends ConsumerState<GamifiedReviewScreen> {
           borderRadius: BorderRadius.circular(20.r),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withValues(alpha: 0.3),
               blurRadius: 20,
               spreadRadius: 5,
             ),
@@ -163,7 +163,7 @@ class _GamifiedReviewScreenState extends ConsumerState<GamifiedReviewScreen> {
                   'Your journey with LingAfriq has been remarkable!',
                   style: TextStyle(
                     fontSize: 16.sp,
-                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                    color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -212,7 +212,7 @@ class _GamifiedReviewScreenState extends ConsumerState<GamifiedReviewScreen> {
                     'What do you love most?',
                     style: TextStyle(
                       fontSize: 16.sp,
-                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                    color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9),
                   ),
                   ),
                   SizedBox(height: 12.h),
@@ -232,8 +232,8 @@ class _GamifiedReviewScreenState extends ConsumerState<GamifiedReviewScreen> {
                           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? Theme.of(context).colorScheme.onPrimary.withOpacity(0.3)
-                                : Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
+                                ? Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.3)
+                                : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(20.r),
                             border: Border.all(
                               color: isSelected ? Theme.of(context).colorScheme.onPrimary : Colors.transparent,
@@ -270,7 +270,7 @@ class _GamifiedReviewScreenState extends ConsumerState<GamifiedReviewScreen> {
                   Container(
                     padding: EdgeInsets.all(16.w),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                      color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Row(
@@ -296,7 +296,7 @@ class _GamifiedReviewScreenState extends ConsumerState<GamifiedReviewScreen> {
                               '50 Cowries + 5 Ancestral Beads',
                               style: TextStyle(
                                 fontSize: 12.sp,
-                                color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                                color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9),
                               ),
                             ),
                           ],
@@ -317,13 +317,13 @@ class _GamifiedReviewScreenState extends ConsumerState<GamifiedReviewScreen> {
                           ? null
                           : () => _handleDecline(reason: 'not_now'),
                       style: TextButton.styleFrom(
-                        foregroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.8),
+                        foregroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.8),
                         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                       ),
                       child: Text(
                         'Maybe Later',
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.8),
+                          color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.8),
                           fontSize: 16.sp,
                         ),
                       ),
@@ -344,7 +344,7 @@ class _GamifiedReviewScreenState extends ConsumerState<GamifiedReviewScreen> {
                             ? SizedBox(
                                 width: 20.w,
                                 height: 20.w,
-                                child: CircularProgressIndicator(strokeWidth: 2),
+                                child: const CircularProgressIndicator(strokeWidth: 2),
                               )
                             : Text(
                                 'Share My Experience',

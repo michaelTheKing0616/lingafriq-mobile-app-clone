@@ -134,7 +134,7 @@ class LessonFlowScreen extends HookConsumerWidget {
           if (didPop) return;
           ref.read(navigationProvider).pop();
         },
-        child: LingafriqScaffold(
+        child: const LingafriqScaffold(
           body: Center(
             child: CircularProgressIndicator(color: PanAfricanColors.primary),
           ),

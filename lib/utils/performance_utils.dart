@@ -208,7 +208,7 @@ class LazyImage extends StatelessWidget {
           width: width,
           height: height,
           color: Colors.grey[300],
-          child: Icon(Icons.image_not_supported),
+          child: const Icon(Icons.image_not_supported),
         );
     }
 

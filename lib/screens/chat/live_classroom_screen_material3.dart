@@ -141,7 +141,7 @@ class _RoomSelectionScreen extends HookConsumerWidget {
                 Text(
                   'Create or join a virtual classroom with video, audio, and whiteboard',
                   style: PanAfricanTypography.bodyLarge(context).copyWith(
-                    color: colorScheme.onPrimary.withOpacity(0.7),
+                    color: colorScheme.onPrimary.withValues(alpha: 0.7),
                   ),
                   textAlign: TextAlign.center,
                 )
@@ -158,7 +158,7 @@ class _RoomSelectionScreen extends HookConsumerWidget {
                     decoration: InputDecoration(
                       labelText: 'Room Name',
                       hintText: 'Enter classroom name',
-                      prefixIcon: Icon(Icons.school, color: PanAfricanColors.primary),
+                      prefixIcon: const Icon(Icons.school, color: PanAfricanColors.primary),
                       filled: true,
                       fillColor: colorScheme.surface,
                       border: OutlineInputBorder(
@@ -174,11 +174,11 @@ class _RoomSelectionScreen extends HookConsumerWidget {
                 Semantics(
                   label: 'Language of instruction. Select language for the classroom.',
                   child: DropdownButtonFormField<String?>(
-                  value: selectedLanguage.value,
+                  initialValue: selectedLanguage.value,
                   style: PanAfricanTypography.bodyLarge(context),
                   decoration: InputDecoration(
                     labelText: 'Language (optional)',
-                    prefixIcon: Icon(Icons.language, color: PanAfricanColors.primary),
+                    prefixIcon: const Icon(Icons.language, color: PanAfricanColors.primary),
                     filled: true,
                     fillColor: colorScheme.surface,
                     border: OutlineInputBorder(
@@ -384,7 +384,7 @@ class _ClassroomView extends HookConsumerWidget {
             await room.connect(
               url,
               token,
-              roomOptions: RoomOptions(
+              roomOptions: const RoomOptions(
                 // Audio and video options are set via LocalTrackPublication in newer API
                 // defaultAudioOptions and defaultVideoOptions removed in livekit_client 1.5.6+
               ),
@@ -517,7 +517,7 @@ class _ClassroomView extends HookConsumerWidget {
             label: 'View participants, ${participants.value.length} in room',
             button: true,
             child: IconButton(
-              icon: Icon(Icons.people_outline, semanticLabel: 'Participants'),
+              icon: const Icon(Icons.people_outline, semanticLabel: 'Participants'),
               onPressed: () {
                 _showParticipantsDialog(context, participants.value, isDark);
               },
@@ -533,7 +533,7 @@ class _ClassroomView extends HookConsumerWidget {
               : PanAfricanGradients.forest,
         ),
         child: isLoading.value
-            ? Center(
+            ? const Center(
                 child: CircularProgressIndicator(
                   color: PanAfricanColors.primary,
                 ),
@@ -774,7 +774,7 @@ class _ClassroomView extends HookConsumerWidget {
                 ),
                 trailing: participant['id'] == 'local'
                     ? Chip(
-                        label: Text('You'),
+                        label: const Text('You'),
                         backgroundColor: PanAfricanColors.primary,
                         labelStyle: TextStyle(color: dialogColorScheme.onPrimary),
                       )
@@ -789,7 +789,7 @@ class _ClassroomView extends HookConsumerWidget {
             button: true,
             child: TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('Close'),
+              child: const Text('Close'),
             ),
           ),
         ],
@@ -826,13 +826,13 @@ class _VideoGrid extends StatelessWidget {
             Icon(
               Icons.videocam_off,
               size: 64.sp,
-              color: colorScheme.onPrimary.withOpacity(0.7),
+              color: colorScheme.onPrimary.withValues(alpha: 0.7),
             ),
             SizedBox(height: PanAfricanSpacing.md),
             Text(
               'Waiting for participants...',
               style: PanAfricanTypography.bodyLarge(context).copyWith(
-                color: colorScheme.onPrimary.withOpacity(0.7),
+                color: colorScheme.onPrimary.withValues(alpha: 0.7),
               ),
             ),
           ],

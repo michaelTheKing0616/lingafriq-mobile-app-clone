@@ -21,7 +21,6 @@ import '../../widgets/loading_builder.dart';
 import '../../widgets/top_gradient_box_builder.dart';
 import '../models/section_lesson_model.dart';
 import 'package:lingafriq/navigation/learning_experience_navigation.dart';
-import 'package:lingafriq/utils/curriculum_languages.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 
@@ -63,7 +62,7 @@ class LessonSectionsListScreen extends ConsumerWidget {
                               width: 48,
                               height: 48,
                               decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                                color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Icon(

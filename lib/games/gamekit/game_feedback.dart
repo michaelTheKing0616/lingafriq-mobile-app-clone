@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 import 'package:just_audio/just_audio.dart';
 
 import '../../learning/learner_model/error_taxonomy.dart';
@@ -94,7 +93,7 @@ class GameKitVerdictSlot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (phase == GameKitFeedbackPhase.idle) {
-      return SizedBox(height: GameKitFeedbackBudget.verdictSlotHeight);
+      return const SizedBox(height: GameKitFeedbackBudget.verdictSlotHeight);
     }
 
     final theme = Theme.of(context);
@@ -200,7 +199,7 @@ class _GameKitStreakCelebrationState extends State<GameKitStreakCelebration> {
   void initState() {
     super.initState();
     _timer = Timer(
-      Duration(milliseconds: GameKitFeedbackBudget.celebrationMaxMs),
+      const Duration(milliseconds: GameKitFeedbackBudget.celebrationMaxMs),
       _finish,
     );
   }
@@ -575,7 +574,7 @@ class _GameKitWhyWrongPanelState extends State<GameKitWhyWrongPanel> {
     if (_audioPhase == GameKitWhyWrongAudioPhase.loading) {
       return Row(
         children: [
-          SizedBox(
+          const SizedBox(
             width: 20,
             height: 20,
             child: CircularProgressIndicator(strokeWidth: 2),

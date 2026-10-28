@@ -89,8 +89,8 @@ class PanAfricanBottomSheet extends StatelessWidget {
               height: 4.h,
               decoration: BoxDecoration(
                 color: isDark
-                    ? PanAfricanColors.neutralLight.withOpacity(0.3)
-                    : PanAfricanColors.neutralMedium.withOpacity(0.3),
+                    ? PanAfricanColors.neutralLight.withValues(alpha: 0.3)
+                    : PanAfricanColors.neutralMedium.withValues(alpha: 0.3),
                 borderRadius: PanAfricanRadius.roundBR,
               ),
             ),
@@ -150,7 +150,7 @@ class PanAfricanBottomSheet extends StatelessWidget {
                     style: PanAfricanTypography.bodySmall(
                       context,
                       color: hasGradientHeader
-                          ? Theme.of(context).colorScheme.onPrimary.withOpacity(0.8)
+                          ? Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.8)
                           : (isDark ? PanAfricanColors.textSecondaryDark : PanAfricanColors.textSecondaryLight),
                     ),
                   ),

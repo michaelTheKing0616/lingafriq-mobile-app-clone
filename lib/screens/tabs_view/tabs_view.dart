@@ -78,7 +78,7 @@ class _BottomNavigationBar extends HookConsumerWidget {
         gapLocation: GapLocation.none,
         backgroundColor: context.primaryColor,
         activeColor: context.isDarkMode ? Theme.of(context).colorScheme.onSurface : PanAfricanColors.tertiary,
-        inactiveColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.54),
+        inactiveColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.54),
         splashColor: context.isDarkMode ? PanAfricanColors.primary : PanAfricanColors.tertiary,
         splashRadius: 30.sp,
         icons: const [

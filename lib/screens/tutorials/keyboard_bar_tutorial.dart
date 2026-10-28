@@ -72,7 +72,7 @@ KeyboardBarTutorialPrompt keyboardBarPromptForLanguage(String languageId) {
         successBody: 'ɛ looks right — the bar stays with your keyboard.',
       );
     default:
-      return KeyboardBarTutorialPrompt(
+      return const KeyboardBarTutorialPrompt(
         introTitle: 'Diacritic keyboard',
         introBody:
             'This language does not have a diacritic layout yet. Try Yoruba, Igbo, Hausa, or Twi from settings.',

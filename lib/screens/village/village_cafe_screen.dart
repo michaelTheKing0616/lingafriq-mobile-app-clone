@@ -1,5 +1,3 @@
-import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -138,7 +136,7 @@ class _VillageCafeScreenState extends ConsumerState<VillageCafeScreen> {
                   style: ModernGriotTypography.titleSmall(
                       color: ModernGriotColors.primaryContainer)),
               const Spacer(),
-              GriotBadgePill(
+              const GriotBadgePill(
                 label: 'NEW',
                 color: ModernGriotColors.secondaryContainer,
                 textColor: ModernGriotColors.onSecondaryContainer,
@@ -346,7 +344,7 @@ class _VillageCafeScreenState extends ConsumerState<VillageCafeScreen> {
                     color: msg.isElder
                         ? ModernGriotColors.secondaryContainer.withAlpha(60)
                         : ModernGriotColors.surfaceContainerLow,
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(ModernGriotRadius.xl),
                       bottomLeft: Radius.circular(ModernGriotRadius.xl),
                       bottomRight: Radius.circular(ModernGriotRadius.xl),
@@ -406,7 +404,7 @@ class _VillageCafeScreenState extends ConsumerState<VillageCafeScreen> {
                 Container(
                   padding:
                       EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: ModernGriotColors.surfaceContainerLow,
                     borderRadius: BorderRadius.only(
                       topRight: Radius.circular(ModernGriotRadius.xl),
@@ -420,7 +418,7 @@ class _VillageCafeScreenState extends ConsumerState<VillageCafeScreen> {
                           size: 28.sp,
                           color: ModernGriotColors.primaryContainer),
                       SizedBox(width: 10.w),
-                      Expanded(
+                      const Expanded(
                         child: GriotWaveformVisualizer(
                           amplitudes: _waveAmplitudes,
                           height: 32,

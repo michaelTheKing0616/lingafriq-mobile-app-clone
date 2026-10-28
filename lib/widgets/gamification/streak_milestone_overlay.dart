@@ -298,7 +298,7 @@ class _StreakMilestoneAnimationState extends State<_StreakMilestoneAnimation>
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: particle.color.withOpacity(0.5),
+                  color: particle.color.withValues(alpha: 0.5),
                   blurRadius: 4,
                 ),
               ],
@@ -320,7 +320,7 @@ class _StreakMilestoneAnimationState extends State<_StreakMilestoneAnimation>
         borderRadius: PanAfricanRadius.xlBR,
         boxShadow: [
           BoxShadow(
-            color: PanAfricanColors.primaryLight.withOpacity(0.5),
+            color: PanAfricanColors.primaryLight.withValues(alpha: 0.5),
             blurRadius: 24,
             spreadRadius: 6,
           ),
@@ -347,11 +347,11 @@ class _StreakMilestoneAnimationState extends State<_StreakMilestoneAnimation>
                 fontSize: 42.sp,
                 fontWeight: FontWeight.w900,
                 color: Theme.of(context).colorScheme.onPrimary,
-                shadows: [
+                shadows: const [
                   Shadow(
                     color: Colors.black26,
                     blurRadius: 6,
-                    offset: const Offset(0, 3),
+                    offset: Offset(0, 3),
                   ),
                 ],
               ),
@@ -363,7 +363,7 @@ class _StreakMilestoneAnimationState extends State<_StreakMilestoneAnimation>
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
               color:
-                  Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                  Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9),
             ),
           ),
           SizedBox(height: PanAfricanSpacing.sm),
@@ -374,7 +374,7 @@ class _StreakMilestoneAnimationState extends State<_StreakMilestoneAnimation>
             ),
             decoration: BoxDecoration(
               color:
-                  Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                  Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
               borderRadius: PanAfricanRadius.roundBR,
             ),
             child: Text(
@@ -393,7 +393,7 @@ class _StreakMilestoneAnimationState extends State<_StreakMilestoneAnimation>
               fontSize: 12.sp,
               fontWeight: FontWeight.w500,
               color:
-                  Theme.of(context).colorScheme.onPrimary.withOpacity(0.8),
+                  Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.8),
               fontStyle: FontStyle.italic,
             ),
           ),

@@ -130,9 +130,9 @@ class _ConversationTaskItemState extends State<ConversationTaskItem> {
                     ),
                   ),
                   if (result.status == 'unsure')
-                    Text(
+                    const Text(
                       ConversationCopy.unsure,
-                      style: const TextStyle(color: PanAfricanColors.warning),
+                      style: TextStyle(color: PanAfricanColors.warning),
                     ),
                   for (final id in result.evidenceTurnIds)
                     Text(

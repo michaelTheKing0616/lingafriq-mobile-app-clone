@@ -351,7 +351,7 @@ class PanAfricanShadows {
   
   static List<BoxShadow> get sm => [
     BoxShadow(
-      color: PanAfricanColors.neutralDarkest.withOpacity(0.04),
+      color: PanAfricanColors.neutralDarkest.withValues(alpha: 0.04),
       blurRadius: 4,
       offset: const Offset(0, 2),
     ),
@@ -359,7 +359,7 @@ class PanAfricanShadows {
   
   static List<BoxShadow> get md => [
     BoxShadow(
-      color: PanAfricanColors.neutralDarkest.withOpacity(0.06),
+      color: PanAfricanColors.neutralDarkest.withValues(alpha: 0.06),
       blurRadius: 8,
       offset: const Offset(0, 2),
     ),
@@ -367,7 +367,7 @@ class PanAfricanShadows {
   
   static List<BoxShadow> get lg => [
     BoxShadow(
-      color: PanAfricanColors.neutralDarkest.withOpacity(0.08),
+      color: PanAfricanColors.neutralDarkest.withValues(alpha: 0.08),
       blurRadius: 16,
       offset: const Offset(0, 4),
     ),
@@ -375,7 +375,7 @@ class PanAfricanShadows {
   
   static List<BoxShadow> get xl => [
     BoxShadow(
-      color: PanAfricanColors.neutralDarkest.withOpacity(0.12),
+      color: PanAfricanColors.neutralDarkest.withValues(alpha: 0.12),
       blurRadius: 24,
       offset: const Offset(0, 12),
     ),

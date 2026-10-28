@@ -142,7 +142,7 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
                 child: Semantics(
                   label: 'Select language',
                   child: DropdownButtonFormField<String>(
-                    value: selectedLanguage.value,
+                    initialValue: selectedLanguage.value,
                     decoration: InputDecoration(
                       labelText: 'Language',
                       border: OutlineInputBorder(
@@ -387,8 +387,8 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
                               .animate(delay: (index * 50).ms)
                               .fadeIn(duration: 300.ms)
                               .scale(
-                                begin: Offset(0.9, 0.9),
-                                end: Offset(1, 1),
+                                begin: const Offset(0.9, 0.9),
+                                end: const Offset(1, 1),
                               );
                         },
                       ),
@@ -477,7 +477,7 @@ class _GameCard extends StatelessWidget {
                 vertical: PanAfricanSpacing.xxs,
               ),
               decoration: BoxDecoration(
-                color: PanAfricanColors.primaryContainer.withOpacity(0.5),
+                color: PanAfricanColors.primaryContainer.withValues(alpha: 0.5),
                 borderRadius: PanAfricanRadius.roundBR,
               ),
               child: Text(

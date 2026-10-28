@@ -327,7 +327,7 @@ class _YaaQuestChapter1SceneState extends State<YaaQuestChapter1Scene> {
               if (_speakPhase == SpeakingTryPhase.unsure)
                 Padding(
                   padding: EdgeInsets.only(top: 8.h),
-                  child: Text(QuestChapter1Copy.toneLensUnsure),
+                  child: const Text(QuestChapter1Copy.toneLensUnsure),
                 ),
               SizedBox(height: 12.h),
               _GreetingPracticeStub(
@@ -360,7 +360,7 @@ class _YaaQuestChapter1SceneState extends State<YaaQuestChapter1Scene> {
             SizedBox(height: 12.h),
             FilledButton(
               onPressed: _pendingRespect == null ? null : _confirmRespect,
-              child: Text(QuestChapter1Copy.confirmRespect),
+              child: const Text(QuestChapter1Copy.confirmRespect),
             ),
             if (_confirmedRespect != null)
               Padding(

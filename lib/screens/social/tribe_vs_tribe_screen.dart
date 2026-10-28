@@ -256,7 +256,7 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
                             Container(
                               padding: EdgeInsets.all(PanAfricanSpacing.sm),
                               decoration: BoxDecoration(
-                                color: colorScheme.onPrimary.withOpacity(0.2),
+                                color: colorScheme.onPrimary.withValues(alpha: 0.2),
                                 borderRadius: PanAfricanRadius.mdBR,
                               ),
                               child: Icon(Icons.emoji_events, color: colorScheme.onPrimary, size: 24.sp),
@@ -277,7 +277,7 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
                         Text(
                           displayEvent['description'] ?? '',
                           style: PanAfricanTypography.bodyMedium(context).copyWith(
-                            color: colorScheme.onPrimary.withOpacity(0.9),
+                            color: colorScheme.onPrimary.withValues(alpha: 0.9),
                           ),
                         ),
                         SizedBox(height: PanAfricanSpacing.md),
@@ -288,8 +288,8 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
                           ),
                           decoration: BoxDecoration(
                             color: displayEvent['isActive'] == true
-                                ? PanAfricanColors.success.withOpacity(0.2)
-                                : colorScheme.onPrimary.withOpacity(0.2),
+                                ? PanAfricanColors.success.withValues(alpha: 0.2)
+                                : colorScheme.onPrimary.withValues(alpha: 0.2),
                             borderRadius: PanAfricanRadius.roundBR,
                           ),
                           child: Row(
@@ -551,7 +551,7 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
       margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
       decoration: BoxDecoration(
         color: isUserTribe
-            ? PanAfricanColors.primary.withOpacity(0.1)
+            ? PanAfricanColors.primary.withValues(alpha: 0.1)
             : (isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight),
         borderRadius: PanAfricanRadius.lgBR,
         boxShadow: isUserTribe ? PanAfricanShadows.md : PanAfricanShadows.sm,
@@ -572,7 +572,7 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
             color: _getRankColor(index),
             boxShadow: [
               BoxShadow(
-                color: _getRankColor(index).withOpacity(0.3),
+                color: _getRankColor(index).withValues(alpha: 0.3),
                 blurRadius: 8,
                 spreadRadius: 1,
               ),
@@ -609,7 +609,7 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
             vertical: PanAfricanSpacing.xs,
           ),
           decoration: BoxDecoration(
-            color: PanAfricanColors.gold.withOpacity(0.15),
+            color: PanAfricanColors.gold.withValues(alpha: 0.15),
             borderRadius: PanAfricanRadius.roundBR,
           ),
           child: Row(

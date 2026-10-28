@@ -176,8 +176,8 @@ Keep lists practical. Use culturally appropriate examples.
               colors: isDark
                   ? [PolieColors.primary, PolieColors.primaryDark, PolieColors.obsidian]
                   : [
-                      PolieColors.primary.withOpacity(0.92),
-                      PolieColors.primaryDark.withOpacity(0.88),
+                      PolieColors.primary.withValues(alpha: 0.92),
+                      PolieColors.primaryDark.withValues(alpha: 0.88),
                       PolieColors.surfaceContainerLight,
                     ],
             ),
@@ -204,7 +204,7 @@ Keep lists practical. Use culturally appropriate examples.
                         PolieGlassCard(
                           padding: EdgeInsets.all(PolieSpacing.md),
                           child: DropdownButtonFormField<AppLanguage>(
-                            value: selectedLanguage.value,
+                            initialValue: selectedLanguage.value,
                             dropdownColor: PolieColors.surfaceContainer,
                             decoration: InputDecoration(
                               labelText: 'Language',
@@ -253,7 +253,7 @@ Keep lists practical. Use culturally appropriate examples.
                                       Container(
                                         padding: EdgeInsets.all(PolieSpacing.sm),
                                         decoration: BoxDecoration(
-                                          color: (t['icon'] != null) ? PolieColors.royalAmethyst.withOpacity(0.25) : null,
+                                          color: (t['icon'] != null) ? PolieColors.royalAmethyst.withValues(alpha: 0.25) : null,
                                           borderRadius: BorderRadius.circular(PolieRadius.md),
                                         ),
                                         child: Icon(t['icon'] as IconData, color: PolieColors.royalAmethyst, size: 24.sp),
@@ -269,7 +269,7 @@ Keep lists practical. Use culturally appropriate examples.
                                         ],
                                       ),
                                     ),
-                                      if (selected) Icon(Icons.check_circle_rounded, color: PolieColors.electricTeal, semanticLabel: 'Selected'),
+                                      if (selected) const Icon(Icons.check_circle_rounded, color: PolieColors.electricTeal, semanticLabel: 'Selected'),
                                     ],
                                   ),
                                 ),
@@ -508,7 +508,7 @@ class _RadarChartPainter extends CustomPainter {
 
     // Grid and axes
     final gridPaint = Paint()
-      ..color = (isDark ? PolieColors.textSecondary : PolieColors.textSecondaryLight).withOpacity(0.3)
+      ..color = (isDark ? PolieColors.textSecondary : PolieColors.textSecondaryLight).withValues(alpha: 0.3)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
     for (var r = 0.25; r <= 1.0; r += 0.25) {
@@ -548,7 +548,7 @@ class _RadarChartPainter extends CustomPainter {
     canvas.drawPath(
       dataPath,
       Paint()
-        ..color = PolieColors.royalAmethyst.withOpacity(0.35)
+        ..color = PolieColors.royalAmethyst.withValues(alpha: 0.35)
         ..style = PaintingStyle.fill,
     );
     canvas.drawPath(

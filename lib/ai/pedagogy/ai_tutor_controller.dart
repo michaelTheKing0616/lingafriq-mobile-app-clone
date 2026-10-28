@@ -455,7 +455,7 @@ class AiTutorController {
     TutorTurn turn,
   ) {
     if (classification.isCorrect) {
-      return TutorFeedback(
+      return const TutorFeedback(
         wasCorrect: true,
         partialCredit: 1.0,
         nextAction: NextAction.nextItemSameDifficulty,

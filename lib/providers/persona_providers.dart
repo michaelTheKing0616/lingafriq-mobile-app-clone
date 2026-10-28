@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/providers/dio_provider.dart';
-import 'package:lingafriq/services/ai_gateway_client.dart';
 
 import 'package:lingafriq/ai/persona_cognition/epistemic_classifier.dart';
 import 'package:lingafriq/ai/persona_cognition/persona_cognition_engine.dart';

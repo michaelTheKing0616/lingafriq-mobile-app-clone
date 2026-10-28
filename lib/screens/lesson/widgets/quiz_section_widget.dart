@@ -106,7 +106,7 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
   Future<void> _checkAnswer(int questionId, String answer) async {
     if (_selectedAnswers[questionId] == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Please select an answer'),
           backgroundColor: PanAfricanColors.error,
         ),
@@ -306,14 +306,14 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
                   placeholder: (context, url) => Container(
                     height: 200.h,
                     color: PanAfricanColors.cardDark,
-                    child: Center(
+                    child: const Center(
                       child: CircularProgressIndicator(color: PanAfricanColors.primary),
                     ),
                   ),
                   errorWidget: (context, url, error) => Container(
                     height: 200.h,
                     color: PanAfricanColors.cardDark,
-                    child: Icon(Icons.error_outline, color: PanAfricanColors.error),
+                    child: const Icon(Icons.error_outline, color: PanAfricanColors.error),
                   ),
                   fit: BoxFit.cover,
                 ),
@@ -409,11 +409,11 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
                                 _selectAnswer(questionId, option.text);
                               },
                         backgroundColor: showCorrect
-                          ? PanAfricanColors.success.withOpacity(0.15)
+                          ? PanAfricanColors.success.withValues(alpha: 0.15)
                           : showIncorrect
-                              ? PanAfricanColors.error.withOpacity(0.15)
+                              ? PanAfricanColors.error.withValues(alpha: 0.15)
                               : isSelected
-                                  ? PanAfricanColors.primary.withOpacity(0.15)
+                                  ? PanAfricanColors.primary.withValues(alpha: 0.15)
                                   : null,
                       padding: EdgeInsets.all(16.w),
                       child: Row(
@@ -489,10 +489,10 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
             SizedBox(height: 16.h),
             PanAfricanCard(
               padding: EdgeInsets.all(16.w),
-              backgroundColor: PanAfricanColors.secondary.withOpacity(0.1),
+              backgroundColor: PanAfricanColors.secondary.withValues(alpha: 0.1),
               child: Row(
                 children: [
-                  Icon(Icons.lightbulb_outline, color: PanAfricanColors.secondary),
+                  const Icon(Icons.lightbulb_outline, color: PanAfricanColors.secondary),
                   SizedBox(width: 12.w),
                   Expanded(
                     child: Text(
@@ -515,13 +515,13 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
             SizedBox(height: 16.h),
             PanAfricanCard(
               padding: EdgeInsets.all(16.w),
-              backgroundColor: PanAfricanColors.tertiary.withOpacity(0.1),
+              backgroundColor: PanAfricanColors.tertiary.withValues(alpha: 0.1),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.auto_awesome, color: PanAfricanColors.tertiary),
+                      const Icon(Icons.auto_awesome, color: PanAfricanColors.tertiary),
                       SizedBox(width: 12.w),
                       Text(
                         'Fun Fact',

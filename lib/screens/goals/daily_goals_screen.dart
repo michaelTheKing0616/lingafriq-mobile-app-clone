@@ -107,7 +107,7 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
             Container(
               padding: EdgeInsets.all(PanAfricanSpacing.md),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
               child: Text(
@@ -134,7 +134,7 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
                         : 'Start your learning journey today!',
                     style: PanAfricanTypography.bodyMedium(
                       context,
-                      color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                      color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9),
                     ),
                   ),
                 ],
@@ -213,7 +213,7 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
                   padding: EdgeInsets.all(PanAfricanSpacing.sm),
                   decoration: BoxDecoration(
                     color: isCompleted 
-                        ? PanAfricanColors.primary.withOpacity(0.2)
+                        ? PanAfricanColors.primary.withValues(alpha: 0.2)
                         : (isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight),
                     borderRadius: PanAfricanRadius.mdBR,
                   ),
@@ -385,7 +385,7 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
                   ),
                   const SizedBox(height: 16),
                   ...languages.results.take(5).map((language) => ListTile(
-                    leading: Icon(Icons.book, color: PanAfricanColors.primary),
+                    leading: const Icon(Icons.book, color: PanAfricanColors.primary),
                     title: Text(
                       language.name,
                       style: TextStyle(color: context.adaptive),
@@ -451,7 +451,7 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
                   ),
                   const SizedBox(height: 16),
                   ...languages.results.take(5).map((language) => ListTile(
-                    leading: Icon(Icons.language, color: PanAfricanColors.primary),
+                    leading: const Icon(Icons.language, color: PanAfricanColors.primary),
                     title: Text(
                       language.name,
                       style: TextStyle(color: context.adaptive),

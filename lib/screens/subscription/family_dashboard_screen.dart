@@ -77,7 +77,7 @@ class _FamilyDashboardScreenState
             label: 'Go back',
             button: true,
             child: IconButton(
-              icon: Icon(PanAfricanIcons.back, semanticLabel: 'Back'),
+              icon: const Icon(PanAfricanIcons.back, semanticLabel: 'Back'),
               onPressed: () {
                 HapticFeedback.lightImpact();
                 Navigator.of(context).pop();
@@ -119,7 +119,7 @@ class _FamilyDashboardScreenState
             label: 'Go back',
             button: true,
             child: IconButton(
-              icon: Icon(PanAfricanIcons.back, semanticLabel: 'Back'),
+              icon: const Icon(PanAfricanIcons.back, semanticLabel: 'Back'),
               onPressed: () {
                 HapticFeedback.lightImpact();
                 Navigator.of(context).pop();
@@ -128,7 +128,7 @@ class _FamilyDashboardScreenState
           ),
         ),
         body: _isLoading
-          ? Center(child: CircularProgressIndicator(color: PanAfricanColors.primary))
+          ? const Center(child: CircularProgressIndicator(color: PanAfricanColors.primary))
           : _error != null
               ? Center(
                   child: Text(
@@ -253,7 +253,7 @@ class _FamilyDashboardScreenState
             ),
             Text(
               label,
-              style: PanAfricanTypography.labelSmall(context, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7)),
+              style: PanAfricanTypography.labelSmall(context, color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.7)),
             ),
           ],
         ),
@@ -422,7 +422,7 @@ class _FamilyDashboardScreenState
         children: [
           Row(
             children: [
-              Icon(Icons.smart_toy_rounded, color: PanAfricanColors.primary),
+              const Icon(Icons.smart_toy_rounded, color: PanAfricanColors.primary),
               SizedBox(width: PanAfricanSpacing.sm),
               Text(
                 'Polie: Family Insights',
@@ -442,7 +442,7 @@ class _FamilyDashboardScreenState
               width: double.infinity,
               padding: EdgeInsets.all(PanAfricanSpacing.sm),
               decoration: BoxDecoration(
-                color: isDark ? PanAfricanColors.primaryDark.withOpacity(0.3) : PanAfricanColors.primaryContainer,
+                color: isDark ? PanAfricanColors.primaryDark.withValues(alpha: 0.3) : PanAfricanColors.primaryContainer,
                 borderRadius: PanAfricanRadius.lgBR,
               ),
               child: Text(

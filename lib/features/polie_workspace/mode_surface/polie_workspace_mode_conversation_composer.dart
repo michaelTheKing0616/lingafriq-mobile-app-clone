@@ -1,19 +1,6 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_tx_helpers.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:lingafriq/data/polie_translate_language_options.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_models.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_parsing.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_providers.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_language_sheet.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_ui_helpers.dart';
-import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
-import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_layout.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_args.dart';
@@ -47,7 +34,7 @@ Widget buildPolieConversationComposer(PolieModeSurfaceArgs a, PolieModeSurfaceLa
                                   s[0].toUpperCase() + s.substring(1),
                                 ),
                                 selected: a.conversationResponseStyle.value == s,
-                                selectedColor: a.theme.accent.withOpacity(0.2),
+                                selectedColor: a.theme.accent.withValues(alpha: 0.2),
                                 onSelected: a.isBusy
                                     ? null
                                     : (_) => a.conversationResponseStyle.value = s,
@@ -64,7 +51,7 @@ Widget buildPolieConversationComposer(PolieModeSurfaceArgs a, PolieModeSurfaceLa
                         onChanged: a.isBusy
                             ? null
                             : (v) => a.conversationIncludeEnglishTranslations.value = v,
-                        activeColor: a.theme.accent,
+                        activeThumbColor: a.theme.accent,
                       ),
                       Expanded(
                         child: Text(

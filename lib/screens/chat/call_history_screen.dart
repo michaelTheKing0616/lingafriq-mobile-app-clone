@@ -181,38 +181,44 @@ class _CallHistoryScreenState extends ConsumerState<CallHistoryScreen> {
                   ),
                   SizedBox(height: PanAfricanSpacing.lg),
                 ],
-                ..._rows.map((row) {
-                  final peer = _peerName(row);
-                  final dur = row['duration_seconds'] ?? row['durationSeconds'];
-                  final durStr = dur is num && dur > 0 ? '${dur.toInt()}s' : '';
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 10.h),
-                    child: GriotCard(
-                      surfaceLevel: 0,
-                      child: ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        leading: Icon(_iconFor(row), color: cs.primary),
-                        title: Text(
-                          _label(row),
-                          style: ModernGriotTypography.titleSmall(
-                            context: context,
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: _rows.length,
+                  itemBuilder: (context, index) {
+                    final row = _rows[index];
+                    final peer = _peerName(row);
+                    final dur = row['duration_seconds'] ?? row['durationSeconds'];
+                    final durStr = dur is num && dur > 0 ? '${dur.toInt()}s' : '';
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 10.h),
+                      child: GriotCard(
+                        surfaceLevel: 0,
+                        child: ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          leading: Icon(_iconFor(row), color: cs.primary),
+                          title: Text(
+                            _label(row),
+                            style: ModernGriotTypography.titleSmall(
+                              context: context,
+                            ),
                           ),
-                        ),
-                        subtitle: Text(
-                          [
-                            if (peer != null) peer,
-                            _when(row),
-                            if (durStr.isNotEmpty) durStr,
-                          ].where((s) => s.isNotEmpty).join(' · '),
-                          style: ModernGriotTypography.bodySmall(
-                            context: context,
-                            color: cs.onSurfaceVariant,
+                          subtitle: Text(
+                            [
+                              if (peer != null) peer,
+                              _when(row),
+                              if (durStr.isNotEmpty) durStr,
+                            ].where((s) => s.isNotEmpty).join(' · '),
+                            style: ModernGriotTypography.bodySmall(
+                              context: context,
+                              color: cs.onSurfaceVariant,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                }),
+                    );
+                  },
+                ),
                 SizedBox(height: PanAfricanSpacing.md),
                 FilledButton.icon(
                   onPressed: () {
@@ -220,7 +226,7 @@ class _CallHistoryScreenState extends ConsumerState<CallHistoryScreen> {
                     Navigator.push(
                       context,
                       SmoothPageRoute.platform(
-                        child: LiveClassroomScreenMaterial3(),
+                        child: const LiveClassroomScreenMaterial3(),
                       ),
                     );
                   },

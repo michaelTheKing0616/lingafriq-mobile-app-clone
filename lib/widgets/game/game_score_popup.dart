@@ -124,10 +124,10 @@ class _GameScorePopupState extends State<GameScorePopup>
           vertical: PanAfricanSpacing.xs,
         ),
         decoration: BoxDecoration(
-          color: effectiveColor.withOpacity(0.15),
+          color: effectiveColor.withValues(alpha: 0.15),
           borderRadius: PanAfricanRadius.roundBR,
           border: Border.all(
-            color: effectiveColor.withOpacity(0.3),
+            color: effectiveColor.withValues(alpha: 0.3),
             width: 1,
           ),
         ),

@@ -15,7 +15,6 @@ import 'package:lingafriq/screens/ai_chat/polie_mode_selection_screen.dart';
 import 'package:lingafriq/screens/chat/lingchat_ai_conversation_screen.dart';
 import 'package:lingafriq/screens/lessons/lessons_map_entry_screen.dart';
 import 'package:lingafriq/navigation/learning_experience_navigation.dart';
-import 'package:lingafriq/screens/curriculum/authentic_curriculum_entry_screen.dart';
 import 'package:lingafriq/screens/tabs_view/home/language_detail_screen.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen_enhanced.dart';
 import 'package:lingafriq/screens/games/games_screen_material3.dart';
@@ -46,7 +45,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
 
     useEffect(() {
       // Update greeting based on time of day
-      final timer = Stream.periodic(Duration(hours: 1), (_) {
+      final timer = Stream.periodic(const Duration(hours: 1), (_) {
         greeting.value = _getGreeting();
       });
       return timer.listen((_) {}).cancel;
@@ -246,7 +245,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                 image: true,
                 child: CircleAvatar(
                   radius: 24.r,
-                  backgroundColor: onSurface.withOpacity(0.1),
+                  backgroundColor: onSurface.withValues(alpha: 0.1),
                   child: Icon(Icons.person, color: onSurface, size: 24.sp),
                 ),
               ),
@@ -336,7 +335,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
         SizedBox(height: PanAfricanSpacing.md),
         GridView.count(
           shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           crossAxisCount: 2,
           crossAxisSpacing: PanAfricanSpacing.md,
           mainAxisSpacing: PanAfricanSpacing.md,
@@ -357,7 +356,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                 )
                 .animate(delay: 100.ms)
                 .fadeIn(duration: 300.ms)
-                .scale(begin: Offset(0.9, 0.9)),
+                .scale(begin: const Offset(0.9, 0.9)),
             _QuickActionCard(
                   title: 'AI Chat',
                   icon: Icons.chat_bubble,
@@ -373,7 +372,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                 )
                 .animate(delay: 200.ms)
                 .fadeIn(duration: 300.ms)
-                .scale(begin: Offset(0.9, 0.9)),
+                .scale(begin: const Offset(0.9, 0.9)),
             _QuickActionCard(
                   title: 'Magazine',
                   icon: Icons.article,
@@ -381,7 +380,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                     Navigator.push(
                       context,
                       SmoothPageRoute.platform(
-                        child: CultureMagazineScreenEnhanced(),
+                        child: const CultureMagazineScreenEnhanced(),
                       ),
                     );
                   },
@@ -389,7 +388,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                 )
                 .animate(delay: 300.ms)
                 .fadeIn(duration: 300.ms)
-                .scale(begin: Offset(0.9, 0.9)),
+                .scale(begin: const Offset(0.9, 0.9)),
             _QuickActionCard(
                   title: 'Games',
                   icon: Icons.sports_esports,
@@ -405,7 +404,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                 )
                 .animate(delay: 400.ms)
                 .fadeIn(duration: 300.ms)
-                .scale(begin: Offset(0.9, 0.9)),
+                .scale(begin: const Offset(0.9, 0.9)),
             _QuickActionCard(
                   title: 'Authentic Path',
                   icon: Icons.auto_awesome_rounded,
@@ -415,7 +414,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                 )
                 .animate(delay: 500.ms)
                 .fadeIn(duration: 300.ms)
-                .scale(begin: Offset(0.9, 0.9)),
+                .scale(begin: const Offset(0.9, 0.9)),
             _QuickActionCard(
                   title: 'Content review',
                   icon: Icons.verified_user_outlined,
@@ -426,7 +425,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                 )
                 .animate(delay: 600.ms)
                 .fadeIn(duration: 300.ms)
-                .scale(begin: Offset(0.9, 0.9)),
+                .scale(begin: const Offset(0.9, 0.9)),
           ],
         ),
       ],
@@ -573,7 +572,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                                         backgroundColor:
                                             PanAfricanColors.neutralLight,
                                         valueColor:
-                                            AlwaysStoppedAnimation<Color>(
+                                            const AlwaysStoppedAnimation<Color>(
                                               PanAfricanColors.primary,
                                             ),
                                         minHeight: 6.h,
@@ -711,14 +710,14 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                               fit: BoxFit.cover,
                               placeholder: (_, __) => Container(
                                 color: PanAfricanColors.neutralLight,
-                                child: Icon(
+                                child: const Icon(
                                   Icons.language,
                                   color: PanAfricanColors.neutralMedium,
                                 ),
                               ),
                               errorWidget: (_, __, ___) => Container(
                                 color: PanAfricanColors.neutralLight,
-                                child: Icon(
+                                child: const Icon(
                                   Icons.language,
                                   color: PanAfricanColors.neutralMedium,
                                 ),
@@ -731,7 +730,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                                   value: progress,
                                   backgroundColor:
                                       PanAfricanColors.neutralLight,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                  valueColor: const AlwaysStoppedAnimation<Color>(
                                     PanAfricanColors.primary,
                                   ),
                                   minHeight: 6,
@@ -1090,37 +1089,37 @@ class _GoalMeta {
   static _GoalMeta fromType(String type) {
     switch (type) {
       case 'lessons':
-        return _GoalMeta(
+        return const _GoalMeta(
           label: 'Lessons',
           icon: Icons.menu_book_rounded,
           color: PanAfricanColors.primary,
         );
       case 'quizzes':
-        return _GoalMeta(
+        return const _GoalMeta(
           label: 'Quizzes',
           icon: Icons.quiz_rounded,
           color: PanAfricanColors.secondary,
         );
       case 'games':
-        return _GoalMeta(
+        return const _GoalMeta(
           label: 'Games',
           icon: Icons.sports_esports_rounded,
           color: PanAfricanColors.tertiary,
         );
       case 'chat_minutes':
-        return _GoalMeta(
+        return const _GoalMeta(
           label: 'Chat',
           icon: Icons.chat_bubble_rounded,
           color: PanAfricanColors.kenteBlue,
         );
       case 'words_learned':
-        return _GoalMeta(
+        return const _GoalMeta(
           label: 'Words',
           icon: Icons.translate_rounded,
           color: PanAfricanColors.kitengeTeal,
         );
       default:
-        return _GoalMeta(
+        return const _GoalMeta(
           label: 'Goal',
           icon: Icons.check_circle_rounded,
           color: PanAfricanColors.primary,

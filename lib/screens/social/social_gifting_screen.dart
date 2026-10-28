@@ -62,7 +62,7 @@ class SocialGiftingScreen extends HookConsumerWidget {
                     Container(
                       padding: EdgeInsets.all(PanAfricanSpacing.sm),
                       decoration: BoxDecoration(
-                        color: PanAfricanColors.primary.withOpacity(0.1),
+                        color: PanAfricanColors.primary.withValues(alpha: 0.1),
                         borderRadius: PanAfricanRadius.mdBR,
                       ),
                       child: Icon(Icons.card_giftcard, color: PanAfricanColors.primary, size: 24.sp),
@@ -126,7 +126,7 @@ class SocialGiftingScreen extends HookConsumerWidget {
                     vertical: PanAfricanSpacing.xs,
                   ),
                   decoration: BoxDecoration(
-                    color: colorScheme.onPrimary.withOpacity(0.2),
+                    color: colorScheme.onPrimary.withValues(alpha: 0.2),
                     borderRadius: PanAfricanRadius.roundBR,
                   ),
                   child: Text(
@@ -167,7 +167,7 @@ class SocialGiftingScreen extends HookConsumerWidget {
                   decoration: InputDecoration(
                     labelText: 'Friend\'s Username or Email',
                     hintText: 'Enter username or email',
-                    prefixIcon: Icon(Icons.person, color: PanAfricanColors.primary),
+                    prefixIcon: const Icon(Icons.person, color: PanAfricanColors.primary),
                     border: OutlineInputBorder(
                       borderRadius: PanAfricanRadius.mdBR,
                     ),
@@ -177,10 +177,10 @@ class SocialGiftingScreen extends HookConsumerWidget {
                 ),
                 SizedBox(height: PanAfricanSpacing.md),
                 DropdownButtonFormField<String>(
-                  value: selectedGiftType.value,
+                  initialValue: selectedGiftType.value,
                   decoration: InputDecoration(
                     labelText: 'Gift Type',
-                    prefixIcon: Icon(Icons.school, color: PanAfricanColors.primary),
+                    prefixIcon: const Icon(Icons.school, color: PanAfricanColors.primary),
                     border: OutlineInputBorder(
                       borderRadius: PanAfricanRadius.mdBR,
                     ),
@@ -249,15 +249,15 @@ class SocialGiftingScreen extends HookConsumerWidget {
                   ),
                 ),
                 SizedBox(height: PanAfricanSpacing.sm),
-                _BenefitItem(
+                const _BenefitItem(
                   icon: Icons.star,
                   text: 'You earn 25 XP per gift sent',
                 ),
-                _BenefitItem(
+                const _BenefitItem(
                   icon: Icons.favorite,
                   text: 'Your friend gets a free premium lesson',
                 ),
-                _BenefitItem(
+                const _BenefitItem(
                   icon: Icons.people,
                   text: 'Both of you appear in each other\'s Ancestral Tree',
                 ),
@@ -359,7 +359,7 @@ class _BenefitItem extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(PanAfricanSpacing.xs),
             decoration: BoxDecoration(
-              color: PanAfricanColors.primary.withOpacity(0.1),
+              color: PanAfricanColors.primary.withValues(alpha: 0.1),
               borderRadius: PanAfricanRadius.smBR,
             ),
             child: Icon(icon, size: 18.sp, color: PanAfricanColors.primary),

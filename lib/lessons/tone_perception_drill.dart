@@ -173,7 +173,7 @@ void assertCatalogSourced(TonePerceptionCatalog catalog) {
 TonePerceptionCatalog parseTonePerceptionCatalog(Map<String, dynamic> root) {
   final langs = root['languages'];
   if (langs is! Map<String, dynamic>) {
-    throw FormatException('languages must be a map');
+    throw const FormatException('languages must be a map');
   }
   final packs = <String, TonePerceptionLanguagePack>{};
   for (final entry in langs.entries) {
@@ -304,7 +304,7 @@ class _TonePerceptionDrillScreenState extends State<TonePerceptionDrillScreen> {
                   height: 48,
                   child: FilledButton(
                     onPressed: _advanceToListen,
-                    child: Text(TonePerceptionCopyKeys.listen),
+                    child: const Text(TonePerceptionCopyKeys.listen),
                   ),
                 ),
               ],
@@ -323,7 +323,7 @@ class _TonePerceptionDrillScreenState extends State<TonePerceptionDrillScreen> {
                   height: 48,
                   child: FilledButton(
                     onPressed: _advanceToChoose,
-                    child: Text(TonePerceptionCopyKeys.pick),
+                    child: const Text(TonePerceptionCopyKeys.pick),
                   ),
                 ),
               ],

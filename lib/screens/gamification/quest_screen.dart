@@ -170,7 +170,7 @@ class _ChapterCard extends StatelessWidget {
                       height: 48.w,
                       decoration: BoxDecoration(
                         color: chapter.isCompleted
-                            ? PanAfricanColors.success.withOpacity(0.15)
+                            ? PanAfricanColors.success.withValues(alpha: 0.15)
                             : PanAfricanColors.primaryContainer,
                         borderRadius: PanAfricanRadius.mdBR,
                       ),
@@ -201,7 +201,7 @@ class _ChapterCard extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.all(PanAfricanSpacing.xxs),
                         decoration: BoxDecoration(
-                          color: PanAfricanColors.success.withOpacity(0.15),
+                          color: PanAfricanColors.success.withValues(alpha: 0.15),
                           shape: BoxShape.circle,
                         ),
                         child: Icon(

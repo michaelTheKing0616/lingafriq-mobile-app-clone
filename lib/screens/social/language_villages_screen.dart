@@ -1,5 +1,3 @@
-import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -165,7 +163,7 @@ class LanguageVillagesScreen extends HookConsumerWidget {
                       Text(villageTitle,
                           style: ModernGriotTypography.labelMedium()),
                       SizedBox(width: 4.w),
-                      Text('•',
+                      const Text('•',
                           style: TextStyle(
                               color: ModernGriotColors.onSurfaceVariant)),
                       SizedBox(width: 4.w),

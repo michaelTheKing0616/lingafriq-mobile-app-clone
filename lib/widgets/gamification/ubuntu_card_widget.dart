@@ -28,8 +28,8 @@ class UbuntuCardWidget extends ConsumerWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            PanAfricanColors.primary.withOpacity(0.25),
-            PanAfricanColors.secondary.withOpacity(0.15),
+            PanAfricanColors.primary.withValues(alpha: 0.25),
+            PanAfricanColors.secondary.withValues(alpha: 0.15),
           ],
         ),
         boxShadow: PanAfricanShadows.sm,
@@ -42,7 +42,7 @@ class UbuntuCardWidget extends ConsumerWidget {
                 Container(
                   padding: EdgeInsets.all(PanAfricanSpacing.xs),
                   decoration: BoxDecoration(
-                    color: PanAfricanColors.primary.withOpacity(0.15),
+                    color: PanAfricanColors.primary.withValues(alpha: 0.15),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -80,7 +80,7 @@ class UbuntuCardWidget extends ConsumerWidget {
                   ? 'If you ever miss a day, your hard‑earned streak will be turned into lessons and XP for other learners instead of disappearing.'
                   : 'Turn this on to let your streak protect others: when you miss a day, your progress becomes a gift of lessons for the community.',
               style: PanAfricanTypography.bodySmall(context).copyWith(
-                color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9),
               ),
             ),
             SizedBox(height: PanAfricanSpacing.xxxs),
@@ -136,7 +136,7 @@ class _StatPill extends StatelessWidget {
         ),
         margin: EdgeInsets.only(top: PanAfricanSpacing.xs),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.scrim.withOpacity(0.1),
+          color: Theme.of(context).colorScheme.scrim.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(PanAfricanRadius.round),
         ),
         child: Row(
@@ -154,7 +154,7 @@ class _StatPill extends StatelessWidget {
                   Text(
                     label,
                     style: PanAfricanTypography.labelSmall(context).copyWith(
-                      color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
+                      color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.7),
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),

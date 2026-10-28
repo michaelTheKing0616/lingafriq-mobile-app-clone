@@ -262,7 +262,7 @@ class _RoomDetailScreenState extends ConsumerState<RoomDetailScreen> {
                       const Spacer(),
                       Chip(
                         label: Text(_room!.language),
-                        backgroundColor: PanAfricanColors.primary.withOpacity(0.1),
+                        backgroundColor: PanAfricanColors.primary.withValues(alpha: 0.1),
                       ),
                     ],
                   ),
@@ -325,7 +325,7 @@ class _RoomDetailScreenState extends ConsumerState<RoomDetailScreen> {
                     Container(
                       padding: EdgeInsets.all(4.w),
                       decoration: BoxDecoration(
-                        color: Colors.blue.withOpacity(0.1),
+                        color: Colors.blue.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                       ),
                       child: Row(
@@ -357,7 +357,7 @@ class _RoomDetailScreenState extends ConsumerState<RoomDetailScreen> {
                   // Room type
                   Chip(
                     label: Text(_getRoomTypeLabel(_room!.type)),
-                    backgroundColor: PanAfricanColors.kenteRed.withOpacity(0.1),
+                    backgroundColor: PanAfricanColors.kenteRed.withValues(alpha: 0.1),
                   ),
                   SizedBox(height: 4.h),
 

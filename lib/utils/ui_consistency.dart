@@ -59,7 +59,7 @@ class LingAfriqScaffold extends StatelessWidget {
       content = Container(
         decoration: BoxDecoration(
           gradient: useDarkBackground
-              ? LinearGradient(
+              ? const LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
@@ -350,7 +350,7 @@ class LingAfriqGlassCard extends StatelessWidget {
             ? PolieElevation.level2(context, glowColor: glowColor)
             : PolieElevation.level1(context),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.1),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.1),
           width: 1,
         ),
       ),
@@ -424,7 +424,7 @@ class LingAfriqPrimaryButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: bgColor,
           foregroundColor: fgColor,
-          disabledBackgroundColor: bgColor.withOpacity(0.5),
+          disabledBackgroundColor: bgColor.withValues(alpha: 0.5),
           elevation: 0,
           padding: padding ?? EdgeInsets.symmetric(
             horizontal: PanAfricanSpacing.lg,
@@ -740,20 +740,20 @@ class LingAfriqTextField extends StatelessWidget {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: PanAfricanRadius.mdBR,
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: PanAfricanColors.primary,
                 width: 2,
               ),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: PanAfricanRadius.mdBR,
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: PanAfricanColors.error,
               ),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: PanAfricanRadius.mdBR,
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: PanAfricanColors.error,
                 width: 2,
               ),
@@ -762,7 +762,7 @@ class LingAfriqTextField extends StatelessWidget {
               borderRadius: PanAfricanRadius.mdBR,
               borderSide: BorderSide(
                 color: (isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight)
-                    .withOpacity(0.5),
+                    .withValues(alpha: 0.5),
               ),
             ),
           ),

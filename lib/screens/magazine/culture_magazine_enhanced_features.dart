@@ -316,7 +316,7 @@ class _MagazineArticleStructuredSections extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    String.fromCharCode(0x2022) + ' ',
+                    '${String.fromCharCode(0x2022)} ',
                     style: PanAfricanTypography.bodyLarge(context),
                   ),
                   Expanded(
@@ -457,7 +457,7 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
             },
           ),
           IconButton(
-            icon: Icon(Icons.share),
+            icon: const Icon(Icons.share),
             onPressed: () {
               MagazineEnhancedFeatures.shareArticle(
                 article['_id'] ?? '',
@@ -471,7 +471,7 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : LinearGradient(
+              : const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -517,7 +517,7 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
                             if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text('Translation failed. Check your connection.'),
+                                  content: const Text('Translation failed. Check your connection.'),
                                   action: SnackBarAction(
                                     label: 'Retry',
                                     onPressed: () {
@@ -541,7 +541,7 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
                               height: 20,
                               child: CircularProgressIndicator(strokeWidth: 2, color: Theme.of(context).colorScheme.onPrimary),
                             )
-                          : Icon(Icons.translate),
+                          : const Icon(Icons.translate),
                       label: Text(showTranslationState.value ? 'Show Original' : 'Translate to $userLanguage'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PanAfricanColors.primary,
@@ -553,8 +553,8 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
                   Expanded(
                     child: ElevatedButton.icon(
                       onPressed: () => showVocabulary.value = !showVocabulary.value,
-                      icon: Icon(Icons.book),
-                      label: Text('Vocabulary'),
+                      icon: const Icon(Icons.book),
+                      label: const Text('Vocabulary'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PanAfricanColors.secondary,
                         foregroundColor: Theme.of(context).colorScheme.onSurface,
@@ -605,12 +605,12 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
                   subtitle: Text(v['meaning'] ?? ''),
                   trailing: v['example'] != null
                       ? IconButton(
-                          icon: Icon(Icons.info_outline),
+                          icon: const Icon(Icons.info_outline),
                           onPressed: () {
                             showDialog(
                               context: context,
                               builder: (context) => AlertDialog(
-                                title: Text('Example'),
+                                title: const Text('Example'),
                                 content: Text(v['example']),
                               ),
                             );
@@ -632,24 +632,24 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
     bool isDark,
   ) {
     return Card(
-      color: PanAfricanColors.primaryContainer.withOpacity(0.3),
+      color: PanAfricanColors.primaryContainer.withValues(alpha: 0.3),
       child: ListTile(
-        leading: Icon(Icons.public, color: PanAfricanColors.primary),
-        title: Text('Cultural Context'),
+        leading: const Icon(Icons.public, color: PanAfricanColors.primary),
+        title: const Text('Cultural Context'),
         subtitle: Text(contextData['explanation'] ?? ''),
         trailing: Icon(Icons.arrow_forward_ios, size: 16.sp),
         onTap: () {
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              title: Text('Cultural Context'),
+              title: const Text('Cultural Context'),
               content: SingleChildScrollView(
                 child: Text(contextData['explanation'] ?? ''),
               ),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text('Close'),
+                  child: const Text('Close'),
                 ),
               ],
             ),
@@ -679,7 +679,7 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
             LinearProgressIndicator(
               value: progress,
               backgroundColor: PanAfricanColors.neutralLight,
-              valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
+              valueColor: const AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
             ),
             SizedBox(height: PanAfricanSpacing.xs),
             Text(
@@ -710,7 +710,7 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
             margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
             color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
             child: ListTile(
-              leading: Icon(Icons.article),
+              leading: const Icon(Icons.article),
               title: Text(article['title'] ?? ''),
               subtitle: Text(article['excerpt'] ?? ''),
               trailing: Icon(Icons.arrow_forward_ios, size: 16.sp),
@@ -853,7 +853,7 @@ class _ArticleInlineAudioState extends State<_ArticleInlineAudio> {
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         children: [
-          Icon(Icons.audiotrack_rounded, color: PanAfricanColors.primary),
+          const Icon(Icons.audiotrack_rounded, color: PanAfricanColors.primary),
           SizedBox(width: PanAfricanSpacing.sm),
           Expanded(
             child: Text(

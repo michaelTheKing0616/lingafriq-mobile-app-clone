@@ -150,7 +150,7 @@ class _ScheduledSessionsScreenState extends ConsumerState<ScheduledSessionsScree
                 children: [
                   Chip(
                     label: Text(room.language),
-                    backgroundColor: PanAfricanColors.primary.withOpacity(0.1),
+                    backgroundColor: PanAfricanColors.primary.withValues(alpha: 0.1),
                   ),
                   SizedBox(width: 2.w),
                   Chip(

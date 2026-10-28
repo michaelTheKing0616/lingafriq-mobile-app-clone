@@ -103,7 +103,7 @@ class OnboardingAnswers {
       }
       final map = Map<String, dynamic>.from(decoded);
       if (_isLegacyProviderJson(map)) {
-        return OnboardingLoad.legacy();
+        return const OnboardingLoad.legacy();
       }
       return _fromTypedMap(map, migrated: false);
     } on OnboardingDecodeException {

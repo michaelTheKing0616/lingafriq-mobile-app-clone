@@ -109,7 +109,7 @@ class _TutorialSpeakingTryStepState extends State<TutorialSpeakingTryStep> {
       return;
     }
 
-    SpeakingTryScorePost post = (p, data) => dio.post(p, data: data);
+    Future<Response<dynamic>> post(String p, FormData data) => dio.post(p, data: data);
     final result = await _client.scoreAttempt(
       post: post,
       audioPath: audioPath,
@@ -131,7 +131,7 @@ class _TutorialSpeakingTryStepState extends State<TutorialSpeakingTryStep> {
   }
 
   void _skip() {
-    final skipped = SpeakingTryResult(
+    final skipped = const SpeakingTryResult(
       completion: SpeakingTryCompletion.skipped,
     );
     _client.recordSkip(stepId: widget.stepId);
@@ -165,7 +165,7 @@ class _TutorialSpeakingTryStepState extends State<TutorialSpeakingTryStep> {
         ),
         SizedBox(height: 16.h),
         if (_phase == SpeakingTryPhase.skipped)
-          Text(
+          const Text(
             kTutorialTrySkipLabel,
             style: TextStyle(color: PanAfricanColors.neutralMedium),
           )
@@ -181,7 +181,7 @@ class _TutorialSpeakingTryStepState extends State<TutorialSpeakingTryStep> {
           if (_phase == SpeakingTryPhase.unsure)
             Padding(
               padding: EdgeInsets.only(top: 8.h),
-              child: Text(
+              child: const Text(
                 kTutorialTryUnsureCopy,
                 style: TextStyle(color: PanAfricanColors.neutralMedium),
               ),
@@ -214,7 +214,7 @@ class _TutorialSpeakingTryStepState extends State<TutorialSpeakingTryStep> {
         SizedBox(height: 12.h),
         TextButton(
           onPressed: _phase == SpeakingTryPhase.skipped ? null : _skip,
-          child: Text(kTutorialTrySkipLabel),
+          child: const Text(kTutorialTrySkipLabel),
         ),
         if (reducedMotion && _phase == SpeakingTryPhase.recording)
           const SizedBox.shrink(),

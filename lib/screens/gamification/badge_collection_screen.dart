@@ -56,7 +56,7 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
               vertical: PanAfricanSpacing.xs,
             ),
             decoration: BoxDecoration(
-              color: PanAfricanColors.secondary.withOpacity(0.2),
+              color: PanAfricanColors.secondary.withValues(alpha: 0.2),
               borderRadius: PanAfricanRadius.roundBR,
             ),
             child: Text(
@@ -125,7 +125,7 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
           // Badge grid
           Expanded(
             child: filteredBadges.isEmpty
-                ? AppEmptyState(
+                ? const AppEmptyState(
                     icon: Icons.emoji_events_rounded,
                     title: 'No badges yet',
                     subtitle: 'Complete lessons and challenges to earn badges',
@@ -231,7 +231,7 @@ class _BadgeCard extends StatelessWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        PanAfricanColors.secondary.withOpacity(0.1),
+                        PanAfricanColors.secondary.withValues(alpha: 0.1),
                         Colors.transparent,
                       ],
                     ),
@@ -249,7 +249,7 @@ class _BadgeCard extends StatelessWidget {
                     height: 64.w,
                     decoration: BoxDecoration(
                       color: isUnlocked
-                          ? rarityColor.withOpacity(0.15)
+                          ? rarityColor.withValues(alpha: 0.15)
                           : (isDark ? PanAfricanColors.surfaceContainerHighDark : PanAfricanColors.surfaceContainerHighLight),
                       shape: BoxShape.circle,
                       boxShadow: isUnlocked ? PanAfricanShadows.glow(rarityColor) : null,
@@ -281,7 +281,7 @@ class _BadgeCard extends StatelessWidget {
                       vertical: PanAfricanSpacing.xxxs,
                     ),
                     decoration: BoxDecoration(
-                      color: rarityColor.withOpacity(0.2),
+                      color: rarityColor.withValues(alpha: 0.2),
                       borderRadius: PanAfricanRadius.roundBR,
                     ),
                     child: Text(
@@ -296,7 +296,7 @@ class _BadgeCard extends StatelessWidget {
               Positioned.fill(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: (isDark ? Theme.of(context).colorScheme.scrim : colorScheme.surface).withOpacity(0.6),
+                    color: (isDark ? Theme.of(context).colorScheme.scrim : colorScheme.surface).withValues(alpha: 0.6),
                     borderRadius: PanAfricanRadius.lgBR,
                   ),
                   child: Center(

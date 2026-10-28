@@ -90,7 +90,7 @@ const ToneScorerPayload _unscoredTone = ToneScorerPayload(
   available: false,
   accuracy: null,
   confidence: null,
-  errors: const [],
+  errors: [],
   summaryFeedback: null,
 );
 
@@ -394,7 +394,7 @@ class _ToneProductionDrillScreenState extends State<ToneProductionDrillScreen> {
                       await widget.onRecord?.call();
                       await _submitTake();
                     },
-                    child: Text(ToneProductionCopyKeys.record),
+                    child: const Text(ToneProductionCopyKeys.record),
                   ),
                 ),
               ],
@@ -429,7 +429,7 @@ class _ToneProductionDrillScreenState extends State<ToneProductionDrillScreen> {
                         _grade = null;
                       });
                     },
-                    child: Text(ToneProductionCopyKeys.retry),
+                    child: const Text(ToneProductionCopyKeys.retry),
                   ),
                 ),
               ],

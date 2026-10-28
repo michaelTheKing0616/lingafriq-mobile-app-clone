@@ -221,7 +221,7 @@ class _ScriptSprintScreenState extends State<ScriptSprintScreen>
       case ScriptSprintPhase.loading:
         return const Center(child: CircularProgressIndicator());
       case ScriptSprintPhase.error:
-        return _StateMessage(
+        return const _StateMessage(
           message: ScriptSprintScreen.errorCopy,
           icon: Icons.flight_rounded,
         );

@@ -13,7 +13,6 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:lingafriq/games/traditional/ludo_engine.dart';
-import 'package:lingafriq/models/game/game_content_models.dart';
 import 'package:lingafriq/models/game/game_session_model.dart';
 import 'package:lingafriq/screens/games/base_game_screen.dart';
 import 'package:lingafriq/screens/games/game_scenario_loader.dart';
@@ -38,7 +37,7 @@ class LanguageLudoGame extends BaseGameScreen {
 class _LanguageLudoGameState extends BaseGameScreenState<LanguageLudoGame> {
   static const LudoColor _player = LudoColor.red;
 
-  LudoBoard _board = LudoBoard.initial();
+  final LudoBoard _board = LudoBoard.initial();
   late Map<LudoColor, LudoAi> _bots;
   List<GameWord> _vocab = const [];
   final Map<int, GameWord> _wordPerSquare = {};
@@ -235,7 +234,7 @@ class _LanguageLudoGameState extends BaseGameScreenState<LanguageLudoGame> {
       isDismissible: false,
       enableDrag: false,
       builder: (ctx) => Padding(
-        padding: EdgeInsets.fromLTRB(20, 18, 20, 28).copyWith(
+        padding: const EdgeInsets.fromLTRB(20, 18, 20, 28).copyWith(
           bottom: 28 + MediaQuery.of(ctx).viewInsets.bottom,
         ),
         child: Column(
@@ -335,7 +334,7 @@ class _LanguageLudoGameState extends BaseGameScreenState<LanguageLudoGame> {
     // [LudoBoardSurface] widget when tablet form factors land.
     return Container(
       decoration: BoxDecoration(
-        color: PanAfricanColors.kenteGold.withOpacity(0.10),
+        color: PanAfricanColors.kenteGold.withValues(alpha: 0.10),
         border: Border.all(color: PanAfricanColors.kenteGold, width: 1.0),
         borderRadius: BorderRadius.circular(18),
       ),
@@ -365,8 +364,8 @@ class _LanguageLudoGameState extends BaseGameScreenState<LanguageLudoGame> {
       margin: const EdgeInsets.symmetric(horizontal: 2),
       decoration: BoxDecoration(
         color: isSafe
-            ? PanAfricanColors.primary.withOpacity(0.12)
-            : Colors.white.withOpacity(0.86),
+            ? PanAfricanColors.primary.withValues(alpha: 0.12)
+            : Colors.white.withValues(alpha: 0.86),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
           color: isSafe ? PanAfricanColors.primary : PanAfricanColors.kenteGold,
@@ -529,8 +528,8 @@ class _TokenChip extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         decoration: BoxDecoration(
           color: legal
-              ? PanAfricanColors.kenteRed.withOpacity(0.18)
-              : Colors.white.withOpacity(0.8),
+              ? PanAfricanColors.kenteRed.withValues(alpha: 0.18)
+              : Colors.white.withValues(alpha: 0.8),
           border: Border.all(
             color: legal ? PanAfricanColors.kenteRed : PanAfricanColors.kenteGold,
             width: legal ? 1.6 : 1.0,

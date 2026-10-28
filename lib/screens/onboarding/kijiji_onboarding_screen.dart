@@ -157,7 +157,7 @@ class KijijiOnboardingScreen extends HookConsumerWidget {
                         decoration: BoxDecoration(
                           color: isActive
                               ? Theme.of(context).colorScheme.onPrimary
-                              : Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
+                              : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.3),
                           borderRadius: BorderRadius.circular(4),
                         ),
                       );
@@ -182,7 +182,7 @@ class KijijiOnboardingScreen extends HookConsumerWidget {
                   child: Text(
                     'Skip',
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                      color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9),
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
@@ -217,7 +217,7 @@ class _WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: AfricanTheme.africanSavanna,
       ),
       child: ResponsiveSafeArea(
@@ -246,7 +246,7 @@ class _WelcomeScreen extends StatelessWidget {
                             color: Theme.of(context).colorScheme.onPrimary,
                           )
                               .animate(onPlay: (controller) => controller.repeat())
-                              .shimmer(duration: 2000.ms, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3)),
+                              .shimmer(duration: 2000.ms, color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.3)),
                         ],
                       ),
                     )
@@ -267,7 +267,7 @@ class _WelcomeScreen extends StatelessWidget {
                           letterSpacing: -0.5,
                           shadows: [
                             Shadow(
-                              color: Colors.black.withOpacity(0.3),
+                              color: Colors.black.withValues(alpha: 0.3),
                               blurRadius: 8,
                               offset: const Offset(0, 2),
                             ),
@@ -283,7 +283,7 @@ class _WelcomeScreen extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
-                          color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                          color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9),
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -344,7 +344,7 @@ class _ElderScreen extends HookConsumerWidget {
     final reasons = ['heritage', 'travel', 'school', 'business', 'curiosity'];
     
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: AfricanTheme.africanSavanna,
       ),
       child: ResponsiveSafeArea(
@@ -359,7 +359,7 @@ class _ElderScreen extends HookConsumerWidget {
                 height: 200,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                  color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                 ),
                 child: Icon(
                   Icons.face_rounded,
@@ -392,7 +392,7 @@ class _ElderScreen extends HookConsumerWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 18,
-                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                    color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9),
                   ),
                 ),
               ),
@@ -414,7 +414,7 @@ class _ElderScreen extends HookConsumerWidget {
                         decoration: BoxDecoration(
                           color: isSelected
                               ? Theme.of(context).colorScheme.surface
-                              : Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                              : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                           border: Border.all(
                             color: Theme.of(context).colorScheme.onPrimary,
@@ -480,7 +480,7 @@ class _ElderScreen extends HookConsumerWidget {
                         }
                         onboardingNotifier.updateLearningReasons(selectedReasons.value);
                       },
-                      backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                      backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                       selectedColor: Theme.of(context).colorScheme.surface,
                       checkmarkColor: AfricanTheme.primaryGreen,
                     ),
@@ -501,7 +501,7 @@ class _ElderScreen extends HookConsumerWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                     ),
-                    disabledBackgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.3),
+                    disabledBackgroundColor: Theme.of(context).colorScheme.surface.withValues(alpha: 0.3),
                   ),
                   child: const Text(
                     'Next',
@@ -561,7 +561,7 @@ class _WeaverScreen extends HookConsumerWidget {
     final levels = ['beginner', 'intermediate', 'advanced'];
     
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: AfricanTheme.africanSavanna,
       ),
       child: ResponsiveSafeArea(
@@ -575,7 +575,7 @@ class _WeaverScreen extends HookConsumerWidget {
                 height: 200,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                  color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                 ),
                 child: Icon(
                   Icons.art_track_rounded,
@@ -628,7 +628,7 @@ class _WeaverScreen extends HookConsumerWidget {
                         await DynamicLocalizationService.setLanguage(languageCode);
                       }
                     },
-                    backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                     selectedColor: Theme.of(context).colorScheme.surface,
                     checkmarkColor: AfricanTheme.primaryGreen,
                   );
@@ -661,7 +661,7 @@ class _WeaverScreen extends HookConsumerWidget {
                       decoration: BoxDecoration(
                         color: isSelected
                             ? Theme.of(context).colorScheme.surface
-                            : Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                            : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                       ),
                       child: Text(
@@ -743,7 +743,7 @@ class _RhythmMasterScreen extends HookConsumerWidget {
     VoidCallback onNext,
   ) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: AfricanTheme.africanSavanna,
       ),
       child: ResponsiveSafeArea(
@@ -757,7 +757,7 @@ class _RhythmMasterScreen extends HookConsumerWidget {
                 height: 200,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                  color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                 ),
                 child: Icon(icon, size: 100, color: Theme.of(context).colorScheme.onPrimary),
               ),
@@ -789,7 +789,7 @@ class _RhythmMasterScreen extends HookConsumerWidget {
                       selected.value = sel ? option : null;
                       if (sel) onSelect(option);
                     },
-                    backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                     selectedColor: Theme.of(context).colorScheme.surface,
                     checkmarkColor: AfricanTheme.primaryGreen,
                   );
@@ -837,7 +837,7 @@ class _TimekeeperScreen extends HookConsumerWidget {
     final timeOfDay = useState<String?>(null);
     
     return Container(
-      decoration: BoxDecoration(gradient: AfricanTheme.africanSavanna),
+      decoration: const BoxDecoration(gradient: AfricanTheme.africanSavanna),
       child: ResponsiveSafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -875,7 +875,7 @@ class _TimekeeperScreen extends HookConsumerWidget {
                       timeOfDay.value = sel ? time : null;
                       if (sel) onboardingNotifier.updateSchedule(duration.value, time);
                     },
-                    backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                     selectedColor: Theme.of(context).colorScheme.surface,
                   );
                 }).toList(),
@@ -922,7 +922,7 @@ class _PathChooserScreen extends HookConsumerWidget {
     ];
     
     return Container(
-      decoration: BoxDecoration(gradient: AfricanTheme.africanSavanna),
+      decoration: const BoxDecoration(gradient: AfricanTheme.africanSavanna),
       child: ResponsiveSafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -955,7 +955,7 @@ class _PathChooserScreen extends HookConsumerWidget {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        color: isSelected ? Theme.of(context).colorScheme.surface : Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                        color: isSelected ? Theme.of(context).colorScheme.surface : Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Column(
@@ -1015,7 +1015,7 @@ class _GriotScreen extends HookConsumerWidget {
     final selectedGamification = useState<String?>(null);
     
     return Container(
-      decoration: BoxDecoration(gradient: AfricanTheme.africanSavanna),
+      decoration: const BoxDecoration(gradient: AfricanTheme.africanSavanna),
       child: ResponsiveSafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -1045,7 +1045,7 @@ class _GriotScreen extends HookConsumerWidget {
                         onboardingNotifier.updatePersonality(tone, selectedGamification.value!);
                       }
                     },
-                    backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                     selectedColor: Theme.of(context).colorScheme.surface,
                   );
                 }).toList(),
@@ -1066,7 +1066,7 @@ class _GriotScreen extends HookConsumerWidget {
                         onboardingNotifier.updatePersonality(selectedTone.value!, level);
                       }
                     },
-                    backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                     selectedColor: Theme.of(context).colorScheme.surface,
                   );
                 }).toList(),
@@ -1111,7 +1111,7 @@ class _HealerScreen extends HookConsumerWidget {
     });
     
     return Container(
-      decoration: BoxDecoration(gradient: AfricanTheme.africanSavanna),
+      decoration: const BoxDecoration(gradient: AfricanTheme.africanSavanna),
       child: ResponsiveSafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -1140,7 +1140,7 @@ class _HealerScreen extends HookConsumerWidget {
                       motionReduction: accessibility.value['motionReduction'],
                     );
                   },
-                  activeColor: Theme.of(context).colorScheme.onPrimary,
+                  activeThumbColor: Theme.of(context).colorScheme.onPrimary,
                 );
               }),
               const SizedBox(height: 48),
@@ -1177,7 +1177,7 @@ class _SocialScreen extends HookConsumerWidget {
     final selectedPreference = useState<String?>(null);
     
     return Container(
-      decoration: BoxDecoration(gradient: AfricanTheme.africanSavanna),
+      decoration: const BoxDecoration(gradient: AfricanTheme.africanSavanna),
       child: ResponsiveSafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -1203,7 +1203,7 @@ class _SocialScreen extends HookConsumerWidget {
                       selectedPreference.value = sel ? pref : null;
                       if (sel) onboardingNotifier.updateSocial(pref);
                     },
-                    backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                     selectedColor: Theme.of(context).colorScheme.surface,
                   );
                 }).toList(),
@@ -1242,7 +1242,7 @@ class _NamingScreen extends HookConsumerWidget {
     final usernameController = useTextEditingController();
     
     return Container(
-      decoration: BoxDecoration(gradient: AfricanTheme.africanSavanna),
+      decoration: const BoxDecoration(gradient: AfricanTheme.africanSavanna),
       child: ResponsiveSafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -1262,9 +1262,9 @@ class _NamingScreen extends HookConsumerWidget {
                 style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 18),
                 decoration: InputDecoration(
                   hintText: 'Enter your username',
-                  hintStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.6)),
+                  hintStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.6)),
                   filled: true,
-                  fillColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                  fillColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
                     borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 2),
@@ -1404,7 +1404,7 @@ class _PlacementTestScreen extends HookConsumerWidget {
     }
     
     return Container(
-      decoration: BoxDecoration(gradient: AfricanTheme.africanSavanna),
+      decoration: const BoxDecoration(gradient: AfricanTheme.africanSavanna),
       child: ResponsiveSafeArea(
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 400),
@@ -1439,7 +1439,7 @@ class _PlacementTestScreen extends HookConsumerWidget {
                 Container(
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.15),
+                    color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.15),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(Icons.quiz_rounded, size: 80.sp, color: Theme.of(context).colorScheme.onPrimary),
@@ -1456,7 +1456,7 @@ class _PlacementTestScreen extends HookConsumerWidget {
                   child: Text(
                     'Answer 3 quick questions to help us personalize your learning journey.',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16.sp, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9)),
+                    style: TextStyle(fontSize: 16.sp, color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9)),
                   ),
                 ).animate().fadeIn(delay: 400.ms),
               ],
@@ -1491,7 +1491,7 @@ class _PlacementTestScreen extends HookConsumerWidget {
                 child: Text(
                   'Skip for now (start as beginner)',
                   style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.8),
+                    color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.8),
                     fontSize: 14.sp,
                   ),
                 ),
@@ -1527,7 +1527,7 @@ class _PlacementTestScreen extends HookConsumerWidget {
                   Text(
                     'Question ${questionIndex + 1} of $totalQuestions',
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.8),
+                      color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.8),
                       fontSize: 14.sp,
                     ),
                   ),
@@ -1537,7 +1537,7 @@ class _PlacementTestScreen extends HookConsumerWidget {
                     child: Text(
                       'Skip test',
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
+                      color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.7),
                       fontSize: 14.sp,
                     ),
                     ),
@@ -1547,7 +1547,7 @@ class _PlacementTestScreen extends HookConsumerWidget {
               SizedBox(height: 8.h),
               LinearProgressIndicator(
                 value: (questionIndex + 1) / totalQuestions,
-                backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                 valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onPrimary),
                 borderRadius: BorderRadius.circular(4),
               ),
@@ -1589,10 +1589,10 @@ class _PlacementTestScreen extends HookConsumerWidget {
                             width: double.infinity,
                             padding: EdgeInsets.all(16.w),
                             decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.15),
+                              color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.15),
                               borderRadius: BorderRadius.circular(12.r),
                               border: Border.all(
-                                color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
+                                color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.3),
                                 width: 1,
                               ),
                             ),

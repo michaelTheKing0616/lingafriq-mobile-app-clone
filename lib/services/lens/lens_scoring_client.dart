@@ -61,14 +61,14 @@ class LensScoringClient {
       final body = raw is Map ? Map<String, dynamic>.from(raw) : <String, dynamic>{};
 
       if (statusCode == 503 || body['code'] == 'scorer_unavailable' || body['retryable'] == true) {
-        return LensScoreOutcome(
+        return const LensScoreOutcome(
           phase: ToneOverlayStatus.error,
           errorMessage: lensSayErrorCopy,
           retryable: true,
         );
       }
       if (statusCode != 200) {
-        return LensScoreOutcome(
+        return const LensScoreOutcome(
           phase: ToneOverlayStatus.error,
           errorMessage: lensSayErrorCopy,
           retryable: false,
@@ -76,7 +76,7 @@ class LensScoringClient {
       }
       return parseScoreBody(body);
     } catch (_) {
-      return LensScoreOutcome(
+      return const LensScoreOutcome(
         phase: ToneOverlayStatus.error,
         errorMessage: lensSayErrorCopy,
         retryable: true,
@@ -106,7 +106,7 @@ LensScoreOutcome parseScoreBody(Map<String, dynamic> body) {
     );
   }
   if (rows.isEmpty) {
-    return LensScoreOutcome(
+    return const LensScoreOutcome(
       phase: ToneOverlayStatus.error,
       errorMessage: lensSayErrorCopy,
     );

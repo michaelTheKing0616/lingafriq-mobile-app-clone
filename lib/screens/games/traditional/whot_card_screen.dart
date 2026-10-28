@@ -19,7 +19,6 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:lingafriq/games/traditional/whot_engine.dart';
-import 'package:lingafriq/models/game/game_content_models.dart';
 import 'package:lingafriq/models/game/game_session_model.dart';
 import 'package:lingafriq/screens/games/base_game_screen.dart';
 import 'package:lingafriq/screens/games/game_scenario_loader.dart';
@@ -214,7 +213,7 @@ class _WhotCardGameState extends BaseGameScreenState<WhotCardGame> {
       enableDrag: false,
       backgroundColor: Theme.of(context).colorScheme.surface,
       builder: (ctx) => Padding(
-        padding: EdgeInsets.fromLTRB(20, 18, 20, 28).copyWith(
+        padding: const EdgeInsets.fromLTRB(20, 18, 20, 28).copyWith(
           bottom: 28 + MediaQuery.of(ctx).viewInsets.bottom,
         ),
         child: Column(
@@ -265,7 +264,7 @@ class _WhotCardGameState extends BaseGameScreenState<WhotCardGame> {
       enableDrag: false,
       backgroundColor: Theme.of(context).colorScheme.surface,
       builder: (ctx) => Padding(
-        padding: EdgeInsets.fromLTRB(20, 18, 20, 28).copyWith(
+        padding: const EdgeInsets.fromLTRB(20, 18, 20, 28).copyWith(
           bottom: 28 + MediaQuery.of(ctx).viewInsets.bottom,
         ),
         child: Column(
@@ -452,7 +451,7 @@ class _TableArea extends StatelessWidget {
                 width: 76,
                 height: 110,
                 decoration: BoxDecoration(
-                  color: PanAfricanColors.primary.withOpacity(0.18),
+                  color: PanAfricanColors.primary.withValues(alpha: 0.18),
                   border: Border.all(
                     color: PanAfricanColors.primary,
                     width: 1.4,
@@ -490,7 +489,7 @@ class _CardWidget extends StatelessWidget {
         width: 76,
         height: 110,
         decoration: BoxDecoration(
-          color: legal ? color.withOpacity(0.30) : color.withOpacity(0.12),
+          color: legal ? color.withValues(alpha: 0.30) : color.withValues(alpha: 0.12),
           border: Border.all(
             color: legal ? PanAfricanColors.kenteRed : color,
             width: legal ? 2.0 : 1.0,

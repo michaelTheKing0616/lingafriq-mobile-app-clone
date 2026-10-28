@@ -297,7 +297,7 @@ class _LanguageCard extends StatelessWidget {
                       width: 60.w,
                       height: 60.w,
                       color: PanAfricanColors.neutralLight,
-                      child: Icon(
+                      child: const Icon(
                         Icons.language,
                         color: PanAfricanColors.neutralMedium,
                       ),
@@ -306,7 +306,7 @@ class _LanguageCard extends StatelessWidget {
                       width: 60.w,
                       height: 60.w,
                       color: PanAfricanColors.neutralLight,
-                      child: Icon(
+                      child: const Icon(
                         Icons.language,
                         color: PanAfricanColors.neutralMedium,
                       ),
@@ -331,7 +331,7 @@ class _LanguageCard extends StatelessWidget {
                         child: LinearProgressIndicator(
                           value: progress,
                           backgroundColor: PanAfricanColors.neutralLight,
-                          valueColor: AlwaysStoppedAnimation<Color>(
+                          valueColor: const AlwaysStoppedAnimation<Color>(
                             PanAfricanColors.primary,
                           ),
                           minHeight: 6.h,
@@ -357,7 +357,7 @@ class _LanguageCard extends StatelessWidget {
               ),
               Semantics(
                 excludeSemantics: true,
-                child: Icon(
+                child: const Icon(
                   Icons.chevron_right_rounded,
                   color: PanAfricanColors.neutralMedium,
                 ),
@@ -425,7 +425,7 @@ class _HeroCard extends StatelessWidget {
                     children: [
                       Semantics(
                         label: 'Daily goals',
-                        child: PanAfricanBadge(
+                        child: const PanAfricanBadge(
                           label: 'Daily goals',
                           color: PanAfricanColors.tertiary,
                           icon: Icons.flag_rounded,

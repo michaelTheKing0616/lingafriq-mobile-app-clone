@@ -168,7 +168,7 @@ class _InteractiveWhiteboardState extends State<InteractiveWhiteboard> {
                 _buildColorButton(PanAfricanColors.kenteBlue, isDark),
                 SizedBox(width: PanAfricanSpacing.xs),
                 _buildColorButton(Colors.green, isDark),
-                Spacer(),
+                const Spacer(),
                 // Stroke width
                 IconButton(
                   icon: Icon(Icons.brush, size: 20.sp),
@@ -191,13 +191,13 @@ class _InteractiveWhiteboardState extends State<InteractiveWhiteboard> {
                 ),
                 // Undo
                 IconButton(
-                  icon: Icon(Icons.undo),
+                  icon: const Icon(Icons.undo),
                   onPressed: _undo,
                   tooltip: 'Undo',
                 ),
                 // Clear
                 IconButton(
-                  icon: Icon(Icons.clear_all, color: PanAfricanColors.error),
+                  icon: const Icon(Icons.clear_all, color: PanAfricanColors.error),
                   onPressed: _clearBoard,
                   tooltip: 'Clear All',
                 ),
@@ -241,7 +241,7 @@ class _InteractiveWhiteboardState extends State<InteractiveWhiteboard> {
           border: Border.all(
             color: isSelected 
                 ? PanAfricanColors.primary 
-                : (isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.24) : Theme.of(context).colorScheme.onSurface.withOpacity(0.12)),
+                : (isDark ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.24) : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.12)),
             width: isSelected ? 3 : 1,
           ),
           boxShadow: isSelected ? PanAfricanShadows.sm : null,
@@ -254,7 +254,7 @@ class _InteractiveWhiteboardState extends State<InteractiveWhiteboard> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Brush Size'),
+        title: const Text('Brush Size'),
         content: StatefulBuilder(
           builder: (context, setState) => Column(
             mainAxisSize: MainAxisSize.min,
@@ -278,7 +278,7 @@ class _InteractiveWhiteboardState extends State<InteractiveWhiteboard> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Done'),
+            child: const Text('Done'),
           ),
         ],
       ),
@@ -303,7 +303,7 @@ class DrawingPoint {
   Map<String, dynamic> toJson() => {
     'x': point.dx,
     'y': point.dy,
-    'color': color.value,
+    'color': color.toARGB32(),
     'width': width,
     'isErase': isErase,
   };

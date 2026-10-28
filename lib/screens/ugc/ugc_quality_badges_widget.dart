@@ -15,7 +15,7 @@ class UGCQualityBadgesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (badges.isEmpty) return SizedBox.shrink();
+    if (badges.isEmpty) return const SizedBox.shrink();
 
     return Wrap(
       spacing: PanAfricanSpacing.xs,

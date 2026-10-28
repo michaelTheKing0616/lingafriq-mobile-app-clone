@@ -320,7 +320,7 @@ class _ProverbUnlockerGameState
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.auto_awesome_rounded,
-                size: 36.sp, color: const Color(0xFFFFD700).withOpacity(0.6)),
+                size: 36.sp, color: const Color(0xFFFFD700).withValues(alpha: 0.6)),
             SizedBox(height: 16.h),
             Text(
               'Ancestral Proverb',
@@ -352,12 +352,12 @@ class _ProverbUnlockerGameState
                               horizontal: 12.w, vertical: 8.h),
                           decoration: BoxDecoration(
                             color: showCorrectSlot
-                                ? ModernGriotColors.secondary.withOpacity(0.3)
+                                ? ModernGriotColors.secondary.withValues(alpha: 0.3)
                                 : showWrongSlot
-                                    ? ModernGriotColors.error.withOpacity(0.3)
+                                    ? ModernGriotColors.error.withValues(alpha: 0.3)
                                     : filled != null
-                                        ? Colors.white.withOpacity(0.25)
-                                        : Colors.white.withOpacity(0.1),
+                                        ? Colors.white.withValues(alpha: 0.25)
+                                        : Colors.white.withValues(alpha: 0.1),
                             borderRadius: ModernGriotRadius.borderSm,
                             border: Border(
                               bottom: BorderSide(
@@ -377,7 +377,7 @@ class _ProverbUnlockerGameState
                               context: context,
                               color: filled != null
                                   ? Colors.white
-                                  : Colors.white.withOpacity(0.4),
+                                  : Colors.white.withValues(alpha: 0.4),
                             ),
                           ),
                         ),
@@ -402,7 +402,7 @@ class _ProverbUnlockerGameState
                 textAlign: TextAlign.center,
                 style: ModernGriotTypography.bodySmall(
                   context: context,
-                  color: Colors.white.withOpacity(0.65),
+                  color: Colors.white.withValues(alpha: 0.65),
                 ).copyWith(fontStyle: FontStyle.italic),
               ),
           ],
@@ -428,11 +428,11 @@ class _ProverbUnlockerGameState
               decoration: BoxDecoration(
                 color: used
                     ? cs.surfaceContainerHigh
-                    : ModernGriotColors.primaryContainer.withOpacity(0.2),
+                    : ModernGriotColors.primaryContainer.withValues(alpha: 0.2),
                 borderRadius: ModernGriotRadius.borderPill,
                 border: Border.all(
                   color: used
-                      ? cs.outlineVariant.withOpacity(0.2)
+                      ? cs.outlineVariant.withValues(alpha: 0.2)
                       : ModernGriotColors.primaryContainer,
                   width: 1.5,
                 ),

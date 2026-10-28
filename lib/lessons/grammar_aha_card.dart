@@ -313,7 +313,7 @@ class _GrammarAhaCardState extends State<GrammarAhaCard> {
                     onPressed: () {
                       setState(() => _phase = GrammarAhaCardPhase.practice);
                     },
-                    child: Text(GrammarAhaCopyKeys.defaultPractice),
+                    child: const Text(GrammarAhaCopyKeys.defaultPractice),
                   ),
                 )
               else

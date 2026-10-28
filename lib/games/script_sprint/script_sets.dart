@@ -1,7 +1,6 @@
 /// Script pools for Fidel Flight — catalog + verified strokes only (P8-927).
 library;
 
-import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:lingafriq/content/label_state.dart';
@@ -130,10 +129,10 @@ Future<ScriptSprintSet> loadScriptSprintSetForLanguage(String languageCode) asyn
   final catalog = loadScriptTracksCatalogFromJson(catalogJson);
   final trackId = catalog.languageToTrack[languageCode.toLowerCase()];
   if (trackId == null) {
-    return ScriptSprintSet(
+    return const ScriptSprintSet(
       scriptId: '',
       title: '',
-      glyphs: const [],
+      glyphs: [],
       strokeCatalog: kDefaultStrokeCatalog,
       recognizerReady: false,
       unavailableReason: 'No script track is linked to this language yet.',

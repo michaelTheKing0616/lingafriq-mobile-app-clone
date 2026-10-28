@@ -2,7 +2,6 @@
 library;
 
 import '../../learning/pronunciation/tone_models.dart';
-import '../../models/game/game_content_models.dart';
 import '../../models/verified_lexeme.dart';
 import '../../services/lexicon_lookup_service.dart';
 import '../../utils/api_service.dart';
@@ -346,16 +345,16 @@ Future<ToneGamePoolBuildResult> buildToneGamePool({
 }) async {
   final lang = languageCode.trim().toLowerCase();
   if (!isToneTrainerAvailable(catalog, lang)) {
-    return ToneGamePoolBuildResult(
-      lexemes: const [],
+    return const ToneGamePoolBuildResult(
+      lexemes: [],
       inventory: null,
-      diagnostics: const ToneGamePoolDiagnostics(
+      diagnostics: ToneGamePoolDiagnostics(
         included: 0,
         excludedUnverified: 0,
         excludedMissingTone: 0,
         excludedNonTonalLanguage: 1,
       ),
-      options: const [],
+      options: [],
     );
   }
 

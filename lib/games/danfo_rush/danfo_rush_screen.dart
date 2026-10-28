@@ -8,7 +8,6 @@ import 'package:just_audio/just_audio.dart';
 
 import '../../utils/pan_african_design_system.dart';
 import 'danfo_rush_game.dart';
-import 'speed_curve.dart';
 
 enum DanfoRushPhase {
   loading,

@@ -90,16 +90,23 @@ class PasskeyPrompt extends StatelessWidget {
             if (credentials.isNotEmpty) ...[
               const SizedBox(height: 24),
               Text('Passkeys on this account', key: const Key('passkey.success'), style: Theme.of(context).textTheme.titleMedium),
-              for (final credential in credentials)
-                ListTile(
-                  title: Text(credential.id),
-                  subtitle: Text(credential.backedUp ? 'Backed up' : 'This device'),
-                  trailing: IconButton(
-                    tooltip: 'Remove passkey',
-                    onPressed: () => onRemove(credential.id),
-                    icon: const Icon(Icons.delete_outline),
-                  ),
-                ),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: credentials.length,
+                itemBuilder: (context, index) {
+                  final credential = credentials[index];
+                  return ListTile(
+                    title: Text(credential.id),
+                    subtitle: Text(credential.backedUp ? 'Backed up' : 'This device'),
+                    trailing: IconButton(
+                      tooltip: 'Remove passkey',
+                      onPressed: () => onRemove(credential.id),
+                      icon: const Icon(Icons.delete_outline),
+                    ),
+                  );
+                },
+              ),
             ],
           ],
         ),

@@ -263,7 +263,7 @@ class _RunningPanel extends StatelessWidget {
             label: 'Non-audio alternative: $nonAudioDescription',
             child: Text(
               nonAudioDescription,
-              style: TextStyle(color: PanAfricanColors.neutralMedium),
+              style: const TextStyle(color: PanAfricanColors.neutralMedium),
             ),
           ),
           SizedBox(height: 24.h),
@@ -355,11 +355,11 @@ class _ResultPanel extends StatelessWidget {
           SizedBox(height: 8.h),
           Text(
             prompt,
-            style: TextStyle(color: PanAfricanColors.neutralMedium),
+            style: const TextStyle(color: PanAfricanColors.neutralMedium),
           ),
           SizedBox(height: 16.h),
           if (showPicker) ...[
-            Text('What did you notice?'),
+            const Text('What did you notice?'),
             SizedBox(height: 8.h),
             ...responseOptions.map(
               (option) => Padding(

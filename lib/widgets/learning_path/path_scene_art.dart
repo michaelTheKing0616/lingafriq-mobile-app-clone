@@ -247,7 +247,7 @@ class PathParchmentBackdrop extends StatelessWidget {
           end: Alignment.bottomRight,
           colors: [
             base,
-            Color.alphaBlend(Colors.brown.withOpacity(0.06), base),
+            Color.alphaBlend(Colors.brown.withValues(alpha: 0.06), base),
           ],
         ),
       ),
@@ -257,7 +257,7 @@ class PathParchmentBackdrop extends StatelessWidget {
           if (child != null) child!,
           if (dimmed)
             ColoredBox(
-              color: Colors.black.withOpacity(0.28),
+              color: Colors.black.withValues(alpha: 0.28),
               child: const SizedBox.expand(),
             ),
         ],
@@ -331,7 +331,7 @@ class _SceneryPlaceholder extends StatelessWidget {
           artboard.replaceAll('_', ' '),
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: Colors.brown.withOpacity(0.45),
+                color: Colors.brown.withValues(alpha: 0.45),
                 fontStyle: FontStyle.italic,
               ),
         ),

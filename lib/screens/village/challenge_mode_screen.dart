@@ -245,7 +245,7 @@ class _PromptCard extends StatelessWidget {
             prompt.gloss,
             style: PanAfricanTypography.bodyLarge(context).copyWith(
               color: isDark
-                  ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7)
+                  ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7)
                   : PanAfricanColors.textSecondary,
             ),
           ),

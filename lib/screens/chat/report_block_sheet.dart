@@ -162,7 +162,7 @@ class _ReportBlockSheetState extends State<ReportBlockSheet> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(ReportCopy.blockConfirm),
+                      const Text(ReportCopy.blockConfirm),
                       const SizedBox(height: 8),
                       FilledButton(
                         onPressed: _submitting ? null : _confirmBlock,
@@ -205,20 +205,25 @@ class BlockedUsersSheet extends StatelessWidget {
       child: Semantics(
         namesRoute: true,
         label: 'Blocked people',
-        child: ListView(
+        child: ListView.builder(
           shrinkWrap: true,
-          children: [
-            const ListTile(title: Text('Blocked people')),
-            if (people.isEmpty) const ListTile(title: Text('No blocked people')),
-            for (final person in people)
-              ListTile(
-                title: Text(person.name),
-                trailing: TextButton(
-                  onPressed: () => onUnblock(person.id),
-                  child: const Text('Unblock'),
-                ),
+          itemCount: 1 + (people.isEmpty ? 1 : people.length),
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return const ListTile(title: Text('Blocked people'));
+            }
+            if (people.isEmpty) {
+              return const ListTile(title: Text('No blocked people'));
+            }
+            final person = people[index - 1];
+            return ListTile(
+              title: Text(person.name),
+              trailing: TextButton(
+                onPressed: () => onUnblock(person.id),
+                child: const Text('Unblock'),
               ),
-          ],
+            );
+          },
         ),
       ),
     );

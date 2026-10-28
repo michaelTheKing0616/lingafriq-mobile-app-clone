@@ -31,7 +31,7 @@ class PathSectionBanner extends StatelessWidget {
         decoration: BoxDecoration(
           color: cs.surfaceContainerLow,
           borderRadius: BorderRadius.circular(16.r),
-          border: Border.all(color: cs.outlineVariant.withOpacity(0.35)),
+          border: Border.all(color: cs.outlineVariant.withValues(alpha: 0.35)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,7 +49,7 @@ class PathSectionBanner extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
                   decoration: BoxDecoration(
-                    color: PanAfricanColors.primary.withOpacity(0.12),
+                    color: PanAfricanColors.primary.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(12.r),
                   ),
                   child: Text(

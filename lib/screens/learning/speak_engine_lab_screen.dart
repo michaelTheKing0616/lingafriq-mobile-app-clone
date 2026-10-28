@@ -152,7 +152,7 @@ class _SpeakEngineLabScreenState extends State<SpeakEngineLabScreen> {
           ),
           const SizedBox(height: 8),
           DropdownButtonFormField<String>(
-            value: _registerContext,
+            initialValue: _registerContext,
             decoration: const InputDecoration(labelText: 'Context', border: OutlineInputBorder()),
             items: const [
               DropdownMenuItem(value: 'peer', child: Text('peer')),

@@ -74,7 +74,7 @@ class ScenarioBeatGraph {
     for (final beat in beats) {
       if (beat.isEntry) entryCount++;
       if (beat.branches.isEmpty) {
-        throw BeatsSchemaException('beat_missing_branch', '${scenarioTemplateId}:${beat.beatId}');
+        throw BeatsSchemaException('beat_missing_branch', '$scenarioTemplateId:${beat.beatId}');
       }
       for (final target in beat.branches.values) {
         if (!ids.contains(target)) {
@@ -146,17 +146,17 @@ ScenarioBeatGraph _lifeGraph(String personaId, String templateId, String hookEn)
         isEntry: true,
         branches: {'continue': 'deeper', 'redirect': 'another_time'},
       ),
-      AuthoredBeat(
+      const AuthoredBeat(
         beatId: 'deeper',
         summaryEn: 'Expand on the chosen moment with sourced detail',
         branches: {'continue': 'reflect', 'redirect': 'opening'},
       ),
-      AuthoredBeat(
+      const AuthoredBeat(
         beatId: 'another_time',
         summaryEn: 'Shift to a different documented episode',
         branches: {'continue': 'reflect', 'redirect': 'opening'},
       ),
-      AuthoredBeat(
+      const AuthoredBeat(
         beatId: 'reflect',
         summaryEn: 'Invite the learner to reflect on the lesson',
         branches: {'continue': 'opening'},
@@ -171,18 +171,18 @@ ScenarioBeatGraph _opinionGraph(String personaId, String templateId) {
     personaId: personaId,
     mode: 'opinion_debate',
     beats: [
-      AuthoredBeat(
+      const AuthoredBeat(
         beatId: 'stance',
         summaryEn: 'State a documented position calmly',
         isEntry: true,
         branches: {'agree': 'build', 'challenge': 'clarify'},
       ),
-      AuthoredBeat(
+      const AuthoredBeat(
         beatId: 'build',
         summaryEn: 'Acknowledge agreement and add historical context',
         branches: {'continue': 'stance'},
       ),
-      AuthoredBeat(
+      const AuthoredBeat(
         beatId: 'clarify',
         summaryEn: 'Respond to disagreement without anger',
         branches: {'continue': 'stance'},
@@ -203,12 +203,12 @@ ScenarioBeatGraph _quizGraph(String personaId, String templateId, String langLab
         isEntry: true,
         branches: {'correct': 'praise', 'hint': 'coach'},
       ),
-      AuthoredBeat(
+      const AuthoredBeat(
         beatId: 'coach',
         summaryEn: 'Give a gentle hint and retry',
         branches: {'correct': 'praise', 'hint': 'teach'},
       ),
-      AuthoredBeat(
+      const AuthoredBeat(
         beatId: 'praise',
         summaryEn: 'Celebrate correct use and offer another phrase',
         branches: {'continue': 'teach'},

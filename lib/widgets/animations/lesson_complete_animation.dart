@@ -148,7 +148,7 @@ class _LessonCompleteAnimationState extends State<LessonCompleteAnimation>
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.black.withOpacity(0.7),
+      color: Colors.black.withValues(alpha: 0.7),
       child: Stack(
         children: [
           // Confetti particles
@@ -180,7 +180,7 @@ class _LessonCompleteAnimationState extends State<LessonCompleteAnimation>
                             gradient: PanAfricanGradients.kenteVibrant,
                             boxShadow: [
                               BoxShadow(
-                                color: PanAfricanColors.secondary.withOpacity(0.5),
+                                color: PanAfricanColors.secondary.withValues(alpha: 0.5),
                                 blurRadius: 30,
                                 spreadRadius: 10,
                               ),
@@ -224,7 +224,7 @@ class _LessonCompleteAnimationState extends State<LessonCompleteAnimation>
                               borderRadius: PanAfricanRadius.xlBR,
                               boxShadow: [
                                 BoxShadow(
-                                  color: PanAfricanColors.secondary.withOpacity(0.4),
+                                  color: PanAfricanColors.secondary.withValues(alpha: 0.4),
                                   blurRadius: 20,
                                   spreadRadius: 5,
                                 ),
@@ -245,11 +245,11 @@ class _LessonCompleteAnimationState extends State<LessonCompleteAnimation>
                                     fontSize: 36.sp,
                                     fontWeight: FontWeight.w900,
                                     color: Colors.white,
-                                    shadows: [
+                                    shadows: const [
                                       Shadow(
                                         color: Colors.black26,
                                         blurRadius: 4,
-                                        offset: const Offset(0, 2),
+                                        offset: Offset(0, 2),
                                       ),
                                     ],
                                   ),
@@ -260,7 +260,7 @@ class _LessonCompleteAnimationState extends State<LessonCompleteAnimation>
                                   style: TextStyle(
                                     fontSize: 24.sp,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.white.withOpacity(0.9),
+                                    color: Colors.white.withValues(alpha: 0.9),
                                   ),
                                 ),
                               ],
@@ -274,11 +274,11 @@ class _LessonCompleteAnimationState extends State<LessonCompleteAnimation>
                                 vertical: PanAfricanSpacing.sm,
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.orange.withOpacity(0.9),
+                                color: Colors.orange.withValues(alpha: 0.9),
                                 borderRadius: PanAfricanRadius.roundBR,
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.orange.withOpacity(0.4),
+                                    color: Colors.orange.withValues(alpha: 0.4),
                                     blurRadius: 10,
                                     spreadRadius: 2,
                                   ),
@@ -310,7 +310,7 @@ class _LessonCompleteAnimationState extends State<LessonCompleteAnimation>
                             Text(
                               widget.message!,
                               style: PanAfricanTypography.bodyMedium(context).copyWith(
-                                color: Colors.white.withOpacity(0.9),
+                                color: Colors.white.withValues(alpha: 0.9),
                                 fontSize: 16.sp,
                               ),
                               textAlign: TextAlign.center,
@@ -407,7 +407,7 @@ class ConfettiPainter extends CustomPainter {
 
       final opacity = (1 - progress).clamp(0.0, 1.0);
       final paint = Paint()
-        ..color = particle.color.withOpacity(opacity)
+        ..color = particle.color.withValues(alpha: opacity)
         ..style = PaintingStyle.fill;
 
       canvas.save();

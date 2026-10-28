@@ -303,7 +303,7 @@ class _LensHoldMic extends StatelessWidget {
         hint: 'Double tap to latch microphone on or off',
         child: SwitchListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text(lensSayHoldLabel, key: const ValueKey('lens.say.hold')),
+          title: const Text(lensSayHoldLabel, key: ValueKey('lens.say.hold')),
           value: latched,
           onChanged: busy ? null : onToggle,
         ),

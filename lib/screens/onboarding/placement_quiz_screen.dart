@@ -33,7 +33,7 @@ class PlacementQuizScreen extends HookConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircularProgressIndicator(
+                  const CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
                   ),
                   SizedBox(height: PanAfricanSpacing.lg),
@@ -84,7 +84,7 @@ class PlacementQuizScreen extends HookConsumerWidget {
                         foregroundColor: Theme.of(context).colorScheme.onPrimary,
                         minimumSize: Size(200.w, 50.h),
                       ),
-                      child: Text('Go Back'),
+                      child: const Text('Go Back'),
                     ),
                   ],
                 ),
@@ -178,7 +178,7 @@ class _PlacementQuizScaffoldState extends State<_PlacementQuizScaffold> {
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : LinearGradient(
+              : const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -228,7 +228,7 @@ class _PlacementQuizScaffoldState extends State<_PlacementQuizScaffold> {
                     value: progress.clamp(0.0, 1.0),
                     minHeight: 8,
                     backgroundColor: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
-                    valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
+                    valueColor: const AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
                   ),
                 ),
                 SizedBox(height: PanAfricanSpacing.lg),
@@ -268,7 +268,7 @@ class _PlacementQuizScaffoldState extends State<_PlacementQuizScaffold> {
                                   ),
                                   decoration: BoxDecoration(
                                     color: isSelected
-                                        ? PanAfricanColors.primary.withOpacity(0.15)
+                                        ? PanAfricanColors.primary.withValues(alpha: 0.15)
                                         : (isDark
                                             ? PanAfricanColors.surfaceContainerDark
                                             : PanAfricanColors.surfaceContainerLight),

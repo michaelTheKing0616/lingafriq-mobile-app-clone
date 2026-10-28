@@ -88,9 +88,9 @@ class LanguageDetailScreen extends ConsumerWidget {
                                       vertical: PanAfricanSpacing.xs,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: Colors.black.withOpacity(0.35),
+                                      color: Colors.black.withValues(alpha: 0.35),
                                       borderRadius: PanAfricanRadius.smBR,
-                                      border: Border.all(color: Colors.white.withOpacity(0.15)),
+                                      border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
                                     ),
                                     child: Text(
                                       'Pick where you want to learn',
@@ -292,7 +292,7 @@ class _AuthenticPathChip extends StatelessWidget {
             vertical: PanAfricanSpacing.xs,
           ),
           decoration: BoxDecoration(
-            gradient: LinearGradient(
+            gradient: const LinearGradient(
               colors: [
                 PanAfricanColors.secondary,
                 PanAfricanColors.tertiary,
@@ -300,7 +300,7 @@ class _AuthenticPathChip extends StatelessWidget {
             ),
             borderRadius: PanAfricanRadius.smBR,
             boxShadow: PanAfricanShadows.sm,
-            border: Border.all(color: Colors.white.withOpacity(0.35), width: 1.2),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.35), width: 1.2),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -370,9 +370,9 @@ class _MapActionChip extends StatelessWidget {
             vertical: PanAfricanSpacing.xs,
           ),
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.42),
+            color: Colors.black.withValues(alpha: 0.42),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withOpacity(0.25)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.25)),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,

@@ -150,9 +150,9 @@ class _SpeakingItemState extends State<SpeakingItem> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
+            const Text(
               SpeakingCopy.speak,
-              style: const TextStyle(
+              style: TextStyle(
                 color: PanAfricanColors.primary,
                 fontWeight: FontWeight.w600,
               ),
@@ -195,15 +195,15 @@ class _SpeakingItemState extends State<SpeakingItem> {
               ),
             ] else if (_phase == 'unsure') ...[
               SizedBox(height: PanAfricanSpacing.md),
-              Text(
+              const Text(
                 SpeakingCopy.unsure,
-                style: const TextStyle(color: PanAfricanColors.warning),
+                style: TextStyle(color: PanAfricanColors.warning),
               ),
             ] else if (_phase == 'unavailable') ...[
               SizedBox(height: PanAfricanSpacing.md),
-              Text(
+              const Text(
                 SpeakingCopy.unavailable,
-                style: const TextStyle(color: PanAfricanColors.error),
+                style: TextStyle(color: PanAfricanColors.error),
               ),
             ],
           ],

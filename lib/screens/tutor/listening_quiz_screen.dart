@@ -71,7 +71,7 @@ class _ListeningQuizScreenState extends ConsumerState<ListeningQuizScreen> {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -93,7 +93,7 @@ class _ListeningQuizScreenState extends ConsumerState<ListeningQuizScreen> {
                 child: Row(
                   children: [
                     IconButton(
-                      icon: Icon(PanAfricanIcons.back, color: PolieColors.textPrimary),
+                      icon: const Icon(PanAfricanIcons.back, color: PolieColors.textPrimary),
                       onPressed: () {
                         HapticFeedback.lightImpact();
                         Navigator.pop(context);
@@ -131,14 +131,14 @@ class _ListeningQuizScreenState extends ConsumerState<ListeningQuizScreen> {
                                 height: 80.w,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  gradient: LinearGradient(
+                                  gradient: const LinearGradient(
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
                                     colors: [PolieColors.electricTeal, PolieColors.electricTealLight],
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: PolieColors.electricTeal.withOpacity(0.4),
+                                      color: PolieColors.electricTeal.withValues(alpha: 0.4),
                                       blurRadius: 20,
                                       spreadRadius: 2,
                                     ),
@@ -226,10 +226,10 @@ class _ListeningQuizScreenState extends ConsumerState<ListeningQuizScreen> {
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: PolieSpacing.md, vertical: PolieSpacing.sm),
                     decoration: BoxDecoration(
-                      color: isSelected ? PolieColors.royalAmethyst.withOpacity(0.25) : PolieColors.surfaceContainer,
+                      color: isSelected ? PolieColors.royalAmethyst.withValues(alpha: 0.25) : PolieColors.surfaceContainer,
                       borderRadius: BorderRadius.circular(PolieRadius.md),
                       border: Border.all(
-                        color: isSelected ? PolieColors.royalAmethyst : Theme.of(context).colorScheme.outline.withOpacity(0.1),
+                        color: isSelected ? PolieColors.royalAmethyst : Theme.of(context).colorScheme.outline.withValues(alpha: 0.1),
                         width: isSelected ? 2 : 1,
                       ),
                     ),
@@ -278,15 +278,15 @@ class _ListeningQuizScreenState extends ConsumerState<ListeningQuizScreen> {
                     labelStyle: PolieTypography.label(context).copyWith(color: PolieColors.textSecondary),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(PolieRadius.md),
-                      borderSide: BorderSide(color: PolieColors.textSecondary.withOpacity(0.3)),
+                      borderSide: BorderSide(color: PolieColors.textSecondary.withValues(alpha: 0.3)),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(PolieRadius.md),
-                      borderSide: BorderSide(color: PolieColors.textSecondary.withOpacity(0.3)),
+                      borderSide: BorderSide(color: PolieColors.textSecondary.withValues(alpha: 0.3)),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(PolieRadius.md),
-                      borderSide: BorderSide(color: PolieColors.royalAmethyst),
+                      borderSide: const BorderSide(color: PolieColors.royalAmethyst),
                     ),
                     filled: true,
                     fillColor: PolieColors.surfaceContainer,

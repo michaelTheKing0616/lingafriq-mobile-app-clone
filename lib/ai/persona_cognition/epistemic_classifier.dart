@@ -107,7 +107,7 @@ class EpistemicClassifier {
   }) async {
     if (intent.domain == UserIntentDomain.offensive) {
       return fromHorizonDecision(
-        KnowledgeHorizonDecision(
+        const KnowledgeHorizonDecision(
           referencesPostDeathEvents: false,
           inCharacterReplyOk: false,
           epistemicStatus: EpistemicStatus.outOfScope,

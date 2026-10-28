@@ -100,7 +100,7 @@ String previewBuiltSentence({
 }
 
 /// Default defend-sovereignty scaffold (English until Twi surfaces are signed off).
-QuestSentenceScaffold kYaaCouncilDefendScaffold = QuestSentenceScaffold(
+QuestSentenceScaffold kYaaCouncilDefendScaffold = const QuestSentenceScaffold(
   scaffoldId: 'defend_stool',
   positionEn: 'Argue that the nation must defend the Golden Stool together.',
   slotOrder: ['we', 'must', 'defend', 'stool', 'together'],

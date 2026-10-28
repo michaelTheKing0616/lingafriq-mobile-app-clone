@@ -137,7 +137,7 @@ class _MagicItemsScreenState extends ConsumerState<MagicItemsScreen> {
                   Container(
                     width: 1,
                     height: 48.h,
-                    color: colorScheme.onPrimary.withOpacity(0.3),
+                    color: colorScheme.onPrimary.withValues(alpha: 0.3),
                   ),
                   _buildCurrencyDisplay(
                     context,
@@ -193,7 +193,7 @@ class _MagicItemsScreenState extends ConsumerState<MagicItemsScreen> {
         ),
         Text(
           label,
-          style: PanAfricanTypography.labelMedium(context, color: colorScheme.onPrimary.withOpacity(0.9)),
+          style: PanAfricanTypography.labelMedium(context, color: colorScheme.onPrimary.withValues(alpha: 0.9)),
         ),
       ],
     );
@@ -254,7 +254,7 @@ class _MagicItemsScreenState extends ConsumerState<MagicItemsScreen> {
               width: 64.w,
               height: 64.w,
               decoration: BoxDecoration(
-                color: PanAfricanColors.secondary.withOpacity(0.15),
+                color: PanAfricanColors.secondary.withValues(alpha: 0.15),
                 shape: BoxShape.circle,
               ),
               child: Center(
@@ -406,7 +406,7 @@ class _MagicItemCard extends StatelessWidget {
               width: 48.w,
               height: 48.w,
               decoration: BoxDecoration(
-                color: PanAfricanColors.secondary.withOpacity(0.15),
+                color: PanAfricanColors.secondary.withValues(alpha: 0.15),
                 borderRadius: PanAfricanRadius.mdBR,
               ),
               child: Center(

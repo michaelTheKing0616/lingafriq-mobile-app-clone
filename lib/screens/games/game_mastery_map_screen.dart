@@ -54,43 +54,50 @@ class _GameMasteryMapScreenState extends ConsumerState<GameMasteryMapScreen> {
               data: (v) => v,
               orElse: () => const <GameMasterySessionRecord>[],
             );
-            return ListView(
+            return ListView.builder(
               padding: EdgeInsets.symmetric(
                 horizontal: PanAfricanSpacing.lg.w,
                 vertical: PanAfricanSpacing.md.h,
               ),
-              children: [
-                Text(
-                  l10n.gamesMasteryMapInstructions,
-                  style: PanAfricanTypography.bodyLarge(context, color: cs.onSurfaceVariant),
-                ),
-                SizedBox(height: PanAfricanSpacing.lg.h),
-                ...rows.map(
-                  (row) => _SkillMapCard(
-                    row: row,
-                    l10n: l10n,
-                    reduceMotion: reduceMotion,
-                    expanded: selected == row.skillId,
-                    onTap: () {
-                      HapticFeedback.selectionClick();
-                      setState(() {
-                        _selectedSkillId = selected == row.skillId ? null : row.skillId;
-                      });
-                    },
-                    onGameTap: (gameId) {
-                      HapticFeedback.lightImpact();
-                      _showGameSessionsSheet(
-                        context,
-                        l10n: l10n,
-                        gameId: gameId,
-                        skillId: row.skillId,
-                        records: records,
-                        learnerId: widget.learnerId,
-                      );
-                    },
-                  ),
-                ),
-              ],
+              itemCount: 1 + rows.length,
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.gamesMasteryMapInstructions,
+                        style: PanAfricanTypography.bodyLarge(context, color: cs.onSurfaceVariant),
+                      ),
+                      SizedBox(height: PanAfricanSpacing.lg.h),
+                    ],
+                  );
+                }
+                final row = rows[index - 1];
+                return _SkillMapCard(
+                  row: row,
+                  l10n: l10n,
+                  reduceMotion: reduceMotion,
+                  expanded: selected == row.skillId,
+                  onTap: () {
+                    HapticFeedback.selectionClick();
+                    setState(() {
+                      _selectedSkillId = selected == row.skillId ? null : row.skillId;
+                    });
+                  },
+                  onGameTap: (gameId) {
+                    HapticFeedback.lightImpact();
+                    _showGameSessionsSheet(
+                      context,
+                      l10n: l10n,
+                      gameId: gameId,
+                      skillId: row.skillId,
+                      records: records,
+                      learnerId: widget.learnerId,
+                    );
+                  },
+                );
+              },
             );
           },
         ),

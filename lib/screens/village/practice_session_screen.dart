@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,7 +7,6 @@ import 'package:lingafriq/navigation/village_navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
-import '../../widgets/game/game_widgets.dart';
 
 class PracticeSessionScreen extends ConsumerStatefulWidget {
   const PracticeSessionScreen({super.key});

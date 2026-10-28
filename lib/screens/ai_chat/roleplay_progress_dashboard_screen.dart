@@ -38,8 +38,8 @@ class RoleplayProgressDashboardScreen extends HookConsumerWidget {
 
     if (isLoading.value || progress.value == null) {
       return Scaffold(
-        appBar: AppBar(title: Text('Roleplay Progress')),
-        body: Center(child: CircularProgressIndicator()),
+        appBar: AppBar(title: const Text('Roleplay Progress')),
+        body: const Center(child: CircularProgressIndicator()),
       );
     }
 
@@ -51,12 +51,12 @@ class RoleplayProgressDashboardScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Roleplay Progress'),
+        title: const Text('Roleplay Progress'),
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
           IconButton(
-            icon: Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh),
             onPressed: () => _loadProgress(progressService, progress, isLoading),
           ),
         ],
@@ -65,7 +65,7 @@ class RoleplayProgressDashboardScreen extends HookConsumerWidget {
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : LinearGradient(
+              : const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -141,8 +141,8 @@ class RoleplayProgressDashboardScreen extends HookConsumerWidget {
                                 ),
                               );
                             },
-                            icon: Icon(Icons.play_arrow),
-                            label: Text('Start Your First Scenario'),
+                            icon: const Icon(Icons.play_arrow),
+                            label: const Text('Start Your First Scenario'),
                           ),
                         ],
                       ),
@@ -246,7 +246,7 @@ class _OverallStatsCard extends StatelessWidget {
               ],
             ),
             SizedBox(height: PanAfricanSpacing.lg),
-            Divider(),
+            const Divider(),
             SizedBox(height: PanAfricanSpacing.lg),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -325,9 +325,11 @@ class _CategoryFilter extends StatelessWidget {
     
     return SizedBox(
       height: 50.h,
-      child: ListView(
+      child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        children: categories.map((cat) {
+        itemCount: categories.length,
+        itemBuilder: (context, index) {
+          final cat = categories[index];
           final isSelected = (cat == 'All' && selectedCategory == null) || cat == selectedCategory;
           return Padding(
             padding: EdgeInsets.only(right: PanAfricanSpacing.sm),
@@ -339,7 +341,7 @@ class _CategoryFilter extends StatelessWidget {
               checkmarkColor: Theme.of(context).colorScheme.onPrimary,
             ),
           );
-        }).toList(),
+        },
       ),
     );
   }
@@ -458,7 +460,7 @@ class _ScenarioProgressCard extends StatelessWidget {
                 children: [
                   Chip(
                     label: Text(scenario.category),
-                    backgroundColor: PanAfricanColors.primary.withOpacity(0.1),
+                    backgroundColor: PanAfricanColors.primary.withValues(alpha: 0.1),
                     labelStyle: PanAfricanTypography.labelSmall(context).copyWith(
                       color: PanAfricanColors.primary,
                     ),
@@ -466,7 +468,7 @@ class _ScenarioProgressCard extends StatelessWidget {
                   SizedBox(width: PanAfricanSpacing.sm),
                   Chip(
                     label: Text(scenario.difficulty),
-                    backgroundColor: PanAfricanColors.secondary.withOpacity(0.1),
+                    backgroundColor: PanAfricanColors.secondary.withValues(alpha: 0.1),
                     labelStyle: PanAfricanTypography.labelSmall(context).copyWith(
                       color: PanAfricanColors.secondary,
                     ),

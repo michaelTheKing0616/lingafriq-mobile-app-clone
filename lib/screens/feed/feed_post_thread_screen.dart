@@ -181,7 +181,13 @@ class _FeedPostThreadScreenState extends ConsumerState<FeedPostThreadScreen> {
                             color: cs.onSurfaceVariant,
                           ),
                         ),
-                      ..._replies.map((r) => _ReplyTile(post: r)),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: _replies.length,
+                        itemBuilder: (context, index) =>
+                            _ReplyTile(post: _replies[index]),
+                      ),
                     ],
                   ),
           ),

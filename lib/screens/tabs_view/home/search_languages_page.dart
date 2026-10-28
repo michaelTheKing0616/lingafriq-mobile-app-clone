@@ -232,7 +232,7 @@ class _SearchLanguageCard extends StatelessWidget {
                       vertical: PanAfricanSpacing.xxs,
                     ),
                     decoration: BoxDecoration(
-                      color: PanAfricanColors.primary.withOpacity(0.1),
+                      color: PanAfricanColors.primary.withValues(alpha: 0.1),
                       borderRadius: PanAfricanRadius.roundBR,
                     ),
                     child: Text(

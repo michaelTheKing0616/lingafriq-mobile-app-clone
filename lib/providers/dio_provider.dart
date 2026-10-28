@@ -51,7 +51,7 @@ final client = Provider<Dio>(
     
     // SECURITY: Configure SSL/TLS based on environment
     if (ApiContract.baseUrl.startsWith('http://')) {
-      (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) {
+      (dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate = (client) {
         client.badCertificateCallback = (X509Certificate cert, String host, int port) {
           logger.debug('Allowing HTTP/self-signed certificate for local backend', context: {
             'host': host,

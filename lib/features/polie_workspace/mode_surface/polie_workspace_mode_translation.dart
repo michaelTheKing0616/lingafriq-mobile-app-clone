@@ -1,21 +1,13 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_tx_helpers.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lingafriq/data/polie_translate_language_options.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_models.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_parsing.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_providers.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_language_sheet.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_ui_helpers.dart';
 import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
-import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
-import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_layout.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_args.dart';
 
 Widget buildPolieTranslationModeSurface(PolieModeSurfaceArgs a) {
@@ -66,7 +58,7 @@ Widget buildPolieTranslationModeSurface(PolieModeSurfaceArgs a) {
                   (tone) => ChoiceChip(
                     label: Text(tone[0].toUpperCase() + tone.substring(1)),
                     selected: a.translationTone.value == tone,
-                    selectedColor: a.theme.accent.withOpacity(0.2),
+                    selectedColor: a.theme.accent.withValues(alpha: 0.2),
                     onSelected: (_) => a.translationTone.value = tone,
                   ),
                 ),
@@ -369,7 +361,7 @@ Widget buildPolieTranslationModeSurface(PolieModeSurfaceArgs a) {
                                   Text(
                                     a.translationOutput!.culturalNote,
                                     style: layout.bodyStyle.copyWith(
-                                      color: a.theme.body.withOpacity(0.9),
+                                      color: a.theme.body.withValues(alpha: 0.9),
                                     ),
                                   ),
                                 ],
@@ -456,7 +448,7 @@ Widget buildPolieTranslationModeSurface(PolieModeSurfaceArgs a) {
                       Text(
                         effectiveAlternatives.first.note,
                         style: layout.bodyStyle.copyWith(
-                          color: a.theme.body.withOpacity(0.8),
+                          color: a.theme.body.withValues(alpha: 0.8),
                           fontSize: 12,
                         ),
                       ),

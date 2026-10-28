@@ -70,7 +70,7 @@ class AfricanObjectSet {
   static void validateContent(AfricanObjectSet set) {
     for (final e in set.entries) {
       if (e.objectSetId.trim().isEmpty) {
-        throw FormatException('object_set_id missing');
+        throw const FormatException('object_set_id missing');
       }
       if (e.livingDictionaryLexemeId.trim().isEmpty) {
         throw FormatException(

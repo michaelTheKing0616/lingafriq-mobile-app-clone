@@ -1,5 +1,3 @@
-import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -124,7 +122,7 @@ class MyTribeScreen extends ConsumerWidget {
             ],
           ),
           SizedBox(height: 10.h),
-          GriotProgressBar(value: 8450 / 12000, showGlowTip: true),
+          const GriotProgressBar(value: 8450 / 12000, showGlowTip: true),
           SizedBox(height: 8.h),
           Text('3,550 XP to next milestone',
               style: ModernGriotTypography.bodySmall()),

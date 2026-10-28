@@ -37,7 +37,7 @@ class GameTutorialHelper {
           backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
           title: Row(
             children: [
-              Icon(Icons.school_rounded, color: PanAfricanColors.primary, size: 28),
+              const Icon(Icons.school_rounded, color: PanAfricanColors.primary, size: 28),
               SizedBox(width: PanAfricanSpacing.sm),
               Expanded(
                 child: Text(

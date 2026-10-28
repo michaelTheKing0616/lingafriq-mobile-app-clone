@@ -74,8 +74,8 @@ class WorldClassLoginScreen extends HookConsumerWidget {
                       PanAfricanColors.secondaryDark,
                     ]
                   : [
-                      PanAfricanColors.primaryLight.withOpacity(0.1),
-                      PanAfricanColors.secondaryLight.withOpacity(0.1),
+                      PanAfricanColors.primaryLight.withValues(alpha: 0.1),
+                      PanAfricanColors.secondaryLight.withValues(alpha: 0.1),
                     ],
             ),
           ),
@@ -96,7 +96,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
                     _buildLogo(context)
                         .animate()
                         .fadeIn(duration: 400.ms)
-                        .scale(begin: Offset(0.8, 0.8), duration: 400.ms),
+                        .scale(begin: const Offset(0.8, 0.8), duration: 400.ms),
 
                     SizedBox(height: PanAfricanSpacing.xxl),
 
@@ -234,7 +234,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
         height: 120.h,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
             colors: [
               PanAfricanColors.primaryLight,
               PanAfricanColors.secondaryLight,
@@ -242,7 +242,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: PanAfricanColors.primaryLight.withOpacity(0.3),
+              color: PanAfricanColors.primaryLight.withValues(alpha: 0.3),
               blurRadius: 20,
               spreadRadius: 5,
             ),
@@ -317,7 +317,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
               prefixIcon: Semantics(
                 label: 'Email icon',
                 excludeSemantics: true,
-                child: Icon(
+                child: const Icon(
                   Icons.email_outlined,
                   color: PanAfricanColors.primary,
                 ),
@@ -354,14 +354,14 @@ class WorldClassLoginScreen extends HookConsumerWidget {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: PanAfricanRadius.lgBR,
-                borderSide: BorderSide(
+                borderSide: const BorderSide(
                   color: PanAfricanColors.primary,
                   width: 2,
                 ),
               ),
               errorBorder: OutlineInputBorder(
                 borderRadius: PanAfricanRadius.lgBR,
-                borderSide: BorderSide(color: PanAfricanColors.error, width: 2),
+                borderSide: const BorderSide(color: PanAfricanColors.error, width: 2),
               ),
               contentPadding: EdgeInsets.symmetric(
                 horizontal: PanAfricanSpacing.md,
@@ -409,7 +409,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
               prefixIcon: Semantics(
                 label: 'Password lock icon',
                 excludeSemantics: true,
-                child: Icon(
+                child: const Icon(
                   Icons.lock_outline,
                   color: PanAfricanColors.primary,
                 ),
@@ -448,14 +448,14 @@ class WorldClassLoginScreen extends HookConsumerWidget {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: PanAfricanRadius.lgBR,
-                borderSide: BorderSide(
+                borderSide: const BorderSide(
                   color: PanAfricanColors.primary,
                   width: 2,
                 ),
               ),
               errorBorder: OutlineInputBorder(
                 borderRadius: PanAfricanRadius.lgBR,
-                borderSide: BorderSide(color: PanAfricanColors.error, width: 2),
+                borderSide: const BorderSide(color: PanAfricanColors.error, width: 2),
               ),
               contentPadding: EdgeInsets.symmetric(
                 horizontal: PanAfricanSpacing.md,
@@ -588,7 +588,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
       future: biometricAuth.getAvailableBiometrics(),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return SizedBox.shrink();
+          return const SizedBox.shrink();
         }
 
         final biometricType = snapshot.data!.first;

@@ -288,7 +288,12 @@ class _BrowseTabState extends ConsumerState<_BrowseTab> {
         ],
         SizedBox(height: PanAfricanSpacing.md),
         if (_loading) const LinearProgressIndicator(minHeight: 3),
-        ..._mentors.map((m) {
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: _mentors.length,
+          itemBuilder: (context, index) {
+          final m = _mentors[index];
           final name = m['displayName']?.toString() ?? 'Mentor';
           final langs =
               (m['languages'] as List?)?.map((e) => e.toString()).join(', ') ??
@@ -317,7 +322,8 @@ class _BrowseTabState extends ConsumerState<_BrowseTab> {
                     },
             ),
           );
-        }),
+        },
+        ),
       ],
     );
   }

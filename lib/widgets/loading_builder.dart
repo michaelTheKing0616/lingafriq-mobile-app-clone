@@ -40,7 +40,7 @@ class LoadingBuilder extends StatelessWidget {
             margin: const EdgeInsets.only(left: 16, right: 16, bottom: 12),
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.26),
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.26),
               borderRadius: BorderRadius.circular(kBorderRadius / 2),
             ),
             child: Column(
@@ -50,7 +50,7 @@ class LoadingBuilder extends StatelessWidget {
                   height: 20,
                   width: 0.5.sw,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.38),
+                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.38),
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ).shimmer(),
@@ -59,7 +59,7 @@ class LoadingBuilder extends StatelessWidget {
                   height: 20,
                   width: 0.75.sw,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.38),
+                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.38),
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ).shimmer(),

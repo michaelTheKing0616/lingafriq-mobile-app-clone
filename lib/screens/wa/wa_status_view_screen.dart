@@ -67,7 +67,7 @@ class _WaStatusViewScreenState extends ConsumerState<WaStatusViewScreen> {
             child: Text(
               'Status not found',
               style: ModernGriotTypography.titleMedium(
-                color: Colors.white.withOpacity(0.9),
+                color: Colors.white.withValues(alpha: 0.9),
               ),
             ),
           ),
@@ -130,7 +130,7 @@ class _WaStatusViewScreenState extends ConsumerState<WaStatusViewScreen> {
                                 status.caption,
                                 textAlign: TextAlign.center,
                                 style: ModernGriotTypography.bodyMedium(
-                                  color: Colors.white.withOpacity(0.92),
+                                  color: Colors.white.withValues(alpha: 0.92),
                                 ),
                               ),
                             ),
@@ -204,7 +204,7 @@ class _WaStatusViewScreenState extends ConsumerState<WaStatusViewScreen> {
         text.isEmpty ? ' ' : text,
         textAlign: TextAlign.center,
         style: ModernGriotTypography.headlineSmall(
-          color: Colors.white.withOpacity(0.95),
+          color: Colors.white.withValues(alpha: 0.95),
         ),
       ),
     );

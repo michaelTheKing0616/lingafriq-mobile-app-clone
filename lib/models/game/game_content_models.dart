@@ -571,7 +571,7 @@ class GameLexiconPoolBuildResult {
 
   bool get isOk =>
       failure.type == GameContentFailureType.none &&
-      items.length >= 1;
+      items.isNotEmpty;
 
   bool get hasVisibleFailure =>
       failure.type != GameContentFailureType.none;

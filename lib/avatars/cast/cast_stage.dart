@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
 import '../a11y/avatar_semantics.dart';
-import '../customisation/slot_binding.dart';
 import 'cast_contract.dart';
 import 'cast_file_cache.dart';
 import 'cast_session.dart';

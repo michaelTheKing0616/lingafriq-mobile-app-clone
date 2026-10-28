@@ -49,7 +49,7 @@ List<Widget> _helpTourTiles(BuildContext context, bool isDark) {
             ? Icons.menu_book_rounded
             : Icons.sports_esports_rounded,
         title: links[i].label,
-        trailing: Icon(
+        trailing: const Icon(
           Icons.chevron_right_rounded,
           color: PanAfricanColors.neutralMedium,
         ),
@@ -102,7 +102,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
           label: 'Back',
           button: true,
           child: IconButton(
-            icon: Icon(Icons.arrow_back_rounded),
+            icon: const Icon(Icons.arrow_back_rounded),
             onPressed: () {
               HapticFeedback.lightImpact();
               Navigator.pop(context);
@@ -233,7 +233,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       icon: Icons.record_voice_over_rounded,
                       title: 'Tutor voice styles',
                       subtitle: 'Synthetic, non-identifying voices (opt-in)',
-                      trailing: Icon(
+                      trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
                       ),
@@ -253,7 +253,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       icon: Icons.language_rounded,
                       title: 'App Language',
                       subtitle: selectedLanguage.value,
-                      trailing: Icon(
+                      trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
                       ),
@@ -385,7 +385,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       icon: Icons.person_rounded,
                       title: 'Edit Profile',
                       subtitle: 'Update your personal information',
-                      trailing: Icon(
+                      trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
                       ),
@@ -405,7 +405,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       icon: Icons.lock_outline_rounded,
                       title: 'Change Password',
                       subtitle: 'Update your account password',
-                      trailing: Icon(
+                      trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
                       ),
@@ -425,7 +425,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       icon: Icons.privacy_tip_rounded,
                       title: 'Privacy Settings',
                       subtitle: 'Manage your privacy preferences',
-                      trailing: Icon(
+                      trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
                       ),
@@ -446,7 +446,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                         icon: Icons.shield_outlined,
                         title: 'Micro-mentor reports',
                         subtitle: 'Review safety reports (staff)',
-                        trailing: Icon(
+                        trailing: const Icon(
                           Icons.chevron_right_rounded,
                           color: PanAfricanColors.neutralMedium,
                         ),
@@ -477,7 +477,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       icon: Icons.school_rounded,
                       title: 'Learning Goals',
                       subtitle: 'Set your daily learning goals',
-                      trailing: Icon(
+                      trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
                       ),
@@ -495,7 +495,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       icon: Icons.timer_rounded,
                       title: 'Study Reminders',
                       subtitle: 'Configure when to be reminded',
-                      trailing: Icon(
+                      trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
                       ),
@@ -523,7 +523,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       icon: Icons.cloud_sync_rounded,
                       title: 'Sync Settings',
                       subtitle: 'Configure what to sync',
-                      trailing: Icon(
+                      trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
                       ),
@@ -538,7 +538,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       icon: Icons.storage_rounded,
                       title: 'Cache Management',
                       subtitle: 'View and manage cached data',
-                      trailing: Icon(
+                      trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
                       ),
@@ -553,7 +553,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       icon: Icons.download_rounded,
                       title: 'Downloads',
                       subtitle: 'Unit size, Wi-Fi, and delete',
-                      trailing: Icon(
+                      trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
                       ),
@@ -589,7 +589,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                     _SettingsTile(
                       icon: Icons.description_rounded,
                       title: 'Terms of Service',
-                      trailing: Icon(
+                      trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
                       ),
@@ -603,7 +603,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                     _SettingsTile(
                       icon: Icons.privacy_tip_outlined,
                       title: 'Privacy Policy',
-                      trailing: Icon(
+                      trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
                       ),
@@ -619,7 +619,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                     _SettingsTile(
                       icon: Icons.help_rounded,
                       title: 'Help & Support',
-                      trailing: Icon(
+                      trailing: const Icon(
                         Icons.chevron_right_rounded,
                         color: PanAfricanColors.neutralMedium,
                       ),
@@ -857,7 +857,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                     style: PanAfricanTypography.bodySmall(context),
                   ),
                   value: entry.value.enabled,
-                  activeColor: PanAfricanColors.primary,
+                  activeThumbColor: PanAfricanColors.primary,
                   onChanged: (value) async {
                     HapticFeedback.selectionClick();
                     await selectiveSync.setPreference(
@@ -1028,7 +1028,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                           style: PanAfricanTypography.bodySmall(context),
                         ),
                         value: dailyEnabled,
-                        activeColor: PanAfricanColors.primary,
+                        activeThumbColor: PanAfricanColors.primary,
                         onChanged: (v) {
                           HapticFeedback.selectionClick();
                           setState(() => dailyEnabled = v);
@@ -1045,7 +1045,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                           style: PanAfricanTypography.bodySmall(context),
                         ),
                         value: streakEnabled,
-                        activeColor: PanAfricanColors.primary,
+                        activeThumbColor: PanAfricanColors.primary,
                         onChanged: (v) {
                           HapticFeedback.selectionClick();
                           setState(() => streakEnabled = v);
@@ -1053,7 +1053,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                         },
                       ),
                       ListTile(
-                        leading: Icon(
+                        leading: const Icon(
                           Icons.schedule_rounded,
                           color: PanAfricanColors.primary,
                         ),
@@ -1065,7 +1065,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                           timeOfDay.format(context),
                           style: PanAfricanTypography.bodySmall(context),
                         ),
-                        trailing: Icon(
+                        trailing: const Icon(
                           Icons.chevron_right_rounded,
                           color: PanAfricanColors.neutralMedium,
                         ),
@@ -1300,7 +1300,7 @@ class _LogoutButton extends StatelessWidget {
       label: 'Log out',
       button: true,
       child: Material(
-        color: PanAfricanColors.error.withOpacity(0.1),
+        color: PanAfricanColors.error.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
         child: InkWell(
           onTap: () {

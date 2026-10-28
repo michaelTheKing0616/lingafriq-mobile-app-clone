@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lingafriq/widgets/learning_path/path_scene_art.dart';
 
 /// Polie moods from polie_path.riv / PolieVM (v3).
 enum PoliePathMood { idle, cheer, pointUp, sleepy }
@@ -80,7 +79,7 @@ class PoliePathStillFrame extends StatelessWidget {
         decoration: BoxDecoration(
           color: cs.surfaceContainerHigh,
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: cs.outlineVariant.withOpacity(0.4)),
+          border: Border.all(color: cs.outlineVariant.withValues(alpha: 0.4)),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

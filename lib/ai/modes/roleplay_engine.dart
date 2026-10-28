@@ -267,7 +267,7 @@ Respond with JSON only:
         scenarioComplete: parsed['scenarioComplete'] as bool? ?? false,
       );
     } catch (e) {
-      return _RoleplayEvaluation(
+      return const _RoleplayEvaluation(
         isAppropriate: true,
         detectedErrors: [],
         branchDirection: 'continue',

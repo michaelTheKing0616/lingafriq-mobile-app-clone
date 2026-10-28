@@ -2,10 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_mlkit_commons/google_mlkit_commons.dart';
 import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/user_provider.dart';
@@ -317,9 +314,9 @@ class _PermissionDeniedState extends StatelessWidget {
           children: [
             const Icon(Icons.videocam_off_outlined, size: 48, color: Colors.white70),
             const SizedBox(height: 16),
-            Text(
+            const Text(
               lensPermissionDeniedMessage,
-              style: const TextStyle(color: Colors.white, fontSize: 16),
+              style: TextStyle(color: Colors.white, fontSize: 16),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),

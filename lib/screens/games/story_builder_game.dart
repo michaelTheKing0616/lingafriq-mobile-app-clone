@@ -6,8 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
-import '../../providers/game_content_provider.dart';
-import '../../models/game/game_content_models.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
 import '../../widgets/game/game_widgets.dart';
@@ -115,7 +113,7 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
               ))
           .toList();
       while (distractors.length < 3) {
-        distractors.add(_StoryChoice(
+        distractors.add(const _StoryChoice(
           letter: '',
           text: 'Skip this beat',
           isCorrect: false,
@@ -272,7 +270,7 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
             ),
             Center(
               child: Icon(Icons.landscape_rounded,
-                  size: 80.sp, color: Colors.white.withOpacity(0.2)),
+                  size: 80.sp, color: Colors.white.withValues(alpha: 0.2)),
             ),
             Positioned(
               bottom: 20.h,
@@ -281,7 +279,7 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.35),
+                  color: Colors.black.withValues(alpha: 0.35),
                   borderRadius: ModernGriotRadius.borderLg,
                 ),
                 child: Text(
@@ -323,7 +321,7 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
           Text(
             _translationSegments.join(' '),
             style: ModernGriotTypography.bodyMedium(context: context).copyWith(
-              color: ModernGriotColors.onSurfaceVariant.withOpacity(0.7),
+              color: ModernGriotColors.onSurfaceVariant.withValues(alpha: 0.7),
               fontStyle: FontStyle.italic,
             ),
           ),
@@ -360,7 +358,7 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
               border: borderColor != null
                   ? Border.all(color: borderColor, width: 2)
                   : Border.all(
-                      color: cs.outlineVariant.withOpacity(0.15), width: 1),
+                      color: cs.outlineVariant.withValues(alpha: 0.15), width: 1),
               boxShadow: ModernGriotShadows.sm,
             ),
             child: Row(
@@ -439,7 +437,7 @@ class _TrianglePatternPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.white.withOpacity(0.06)
+      ..color = Colors.white.withValues(alpha: 0.06)
       ..style = PaintingStyle.fill;
     const step = 40.0;
     for (double y = 0; y < size.height; y += step) {

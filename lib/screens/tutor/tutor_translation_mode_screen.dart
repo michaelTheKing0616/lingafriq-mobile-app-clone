@@ -205,7 +205,7 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
       message: 'Translating...',
         child: Scaffold(
         body: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -245,7 +245,7 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
                       ),
                       IconButton(
                         onPressed: swapLanguages,
-                        icon: Icon(Icons.swap_horiz_rounded, color: PolieColors.royalAmethyst),
+                        icon: const Icon(Icons.swap_horiz_rounded, color: PolieColors.royalAmethyst),
                         tooltip: 'Swap languages',
                       ),
                       Expanded(
@@ -522,7 +522,7 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
           ],
           if (_getPhraseBreakdowns(result).isNotEmpty) ...[
             SizedBox(height: PolieSpacing.lg),
-            Divider(color: PolieColors.textSecondary.withOpacity(0.3)),
+            Divider(color: PolieColors.textSecondary.withValues(alpha: 0.3)),
             SizedBox(height: PolieSpacing.sm),
             Text('Tap a phrase for breakdown', style: PolieTypography.label(context)),
             SizedBox(height: PolieSpacing.xs),
@@ -530,7 +530,7 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
           ],
           if (result['grammarNotes'] != null) ...[
             SizedBox(height: PolieSpacing.lg),
-            Divider(color: PolieColors.textSecondary.withOpacity(0.3)),
+            Divider(color: PolieColors.textSecondary.withValues(alpha: 0.3)),
             SizedBox(height: PolieSpacing.md),
             Text('Grammar notes', style: PolieTypography.label(context)),
             SizedBox(height: PolieSpacing.sm),
@@ -538,7 +538,7 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
           ],
           if (result['examples'] != null && (result['examples'] as List).isNotEmpty) ...[
             SizedBox(height: PolieSpacing.lg),
-            Divider(color: PolieColors.textSecondary.withOpacity(0.3)),
+            Divider(color: PolieColors.textSecondary.withValues(alpha: 0.3)),
             SizedBox(height: PolieSpacing.md),
             Text('Examples', style: PolieTypography.label(context)),
             SizedBox(height: PolieSpacing.sm),
@@ -549,7 +549,7 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
           ],
           if (sourceText.isNotEmpty && translatedText.isNotEmpty) ...[
             SizedBox(height: PolieSpacing.lg),
-            Divider(color: PolieColors.textSecondary.withOpacity(0.3)),
+            Divider(color: PolieColors.textSecondary.withValues(alpha: 0.3)),
             SizedBox(height: PolieSpacing.sm),
             _SaveToVocabularyButton(
               sourceText: sourceText,
@@ -657,7 +657,7 @@ class _TapToHighlightPhraseBreakdownState extends State<_TapToHighlightPhraseBre
               padding: EdgeInsets.symmetric(horizontal: PolieSpacing.sm, vertical: PolieSpacing.xs),
               decoration: BoxDecoration(
                 color: _selectedIndex == i
-                    ? PolieColors.royalAmethyst.withOpacity(0.25)
+                    ? PolieColors.royalAmethyst.withValues(alpha: 0.25)
                     : PolieColors.surfaceContainer,
                 borderRadius: BorderRadius.circular(PolieRadius.sm),
                 border: _selectedIndex == i

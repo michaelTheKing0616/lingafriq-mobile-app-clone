@@ -1,14 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../games/gamekit/all_games_registry.dart';
 import '../../games/gamekit/game_difficulty.dart';
 import '../../games/gamekit/game_feedback.dart';
-import '../../games/gamekit/game_animation_bridge.dart';
 import '../../games/gamekit/game_result.dart';
 import '../../games/gamekit/game_scoring.dart';
 import '../../screens/pronunciation/tone_overlay_view.dart';
@@ -240,7 +238,7 @@ class _EchoKaraokeScreenState extends ConsumerState<EchoKaraokeScreen> {
       return;
     }
 
-    final scorer = LensScoringClient();
+    final scorer = const LensScoringClient();
     final dio = ref.read(client);
     final outcome = await scorer.scoreUtterance(
       post: (p, data) => dio.post(p, data: data),

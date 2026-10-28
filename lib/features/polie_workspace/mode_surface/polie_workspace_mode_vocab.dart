@@ -1,21 +1,7 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_tx_helpers.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lingafriq/data/polie_translate_language_options.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_models.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_parsing.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_providers.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_language_sheet.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_ui_helpers.dart';
-import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
-import 'package:lingafriq/widgets/polie/polie_components.dart';
-import 'package:lingafriq/l10n/generated/app_localizations.dart';
-import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_layout.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_args.dart';
 
 Widget buildPolieVocabModeSurface(PolieModeSurfaceArgs a) {
@@ -33,7 +19,7 @@ return Container(
                 Padding(
                   padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
                   child: layout.card(
-                    color: Colors.white.withOpacity(0.02),
+                    color: Colors.white.withValues(alpha: 0.02),
                     Padding(
                       padding: const EdgeInsets.all(10),
                       child: Column(
@@ -89,7 +75,7 @@ return Container(
                                   selected: a.vocabSetName.value == category,
                                   selectedColor: const Color(
                                     0xFFD4822A,
-                                  ).withOpacity(0.25),
+                                  ).withValues(alpha: 0.25),
                                   onSelected: (_) =>
                                       a.vocabSetName.value = category,
                                 ),
@@ -98,7 +84,7 @@ return Container(
                                   horizontal: 10,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.06),
+                                  color: Colors.white.withValues(alpha: 0.06),
                                   borderRadius: BorderRadius.circular(999),
                                   border: Border.all(color: Colors.white24),
                                 ),
@@ -159,7 +145,7 @@ return Container(
                           borderRadius: BorderRadius.circular(18),
                           boxShadow: [
                             BoxShadow(
-                              color: const Color(0xFFD4822A).withOpacity(0.35),
+                              color: const Color(0xFFD4822A).withValues(alpha: 0.35),
                               blurRadius: 24,
                             ),
                           ],
@@ -238,7 +224,7 @@ return Container(
                                   if (a.vocabReveal.value) ...[
                                     const SizedBox(height: 10),
                                     layout.card(
-                                      color: Colors.white.withOpacity(0.06),
+                                      color: Colors.white.withValues(alpha: 0.06),
                                       Padding(
                                         padding: const EdgeInsets.all(10),
                                         child: Row(
@@ -298,7 +284,7 @@ return Container(
                                     ),
                                     const SizedBox(height: 8),
                                     layout.card(
-                                      color: Colors.white.withOpacity(0.06),
+                                      color: Colors.white.withValues(alpha: 0.06),
                                       Padding(
                                         padding: const EdgeInsets.all(10),
                                         child: Text(
@@ -313,7 +299,7 @@ return Container(
                                         .isNotEmpty) ...[
                                       const SizedBox(height: 8),
                                       layout.card(
-                                        color: Colors.white.withOpacity(0.06),
+                                        color: Colors.white.withValues(alpha: 0.06),
                                         Padding(
                                           padding: const EdgeInsets.all(10),
                                           child: Text(

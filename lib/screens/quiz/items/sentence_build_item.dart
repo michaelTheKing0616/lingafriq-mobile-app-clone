@@ -56,7 +56,7 @@ class _SentenceBuildItemState extends State<SentenceBuildItem> {
         key: ValueKey<String>('phase-$_phase'),
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(ItemBuildCopy.build),
+          const Text(ItemBuildCopy.build),
           Wrap(
             spacing: PanAfricanSpacing.xs,
             children: [

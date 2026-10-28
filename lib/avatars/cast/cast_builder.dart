@@ -56,7 +56,7 @@ class _CastBuilderState extends State<CastBuilder> {
     return Theme(
       data: Theme.of(context).copyWith(
         brightness: Brightness.dark,
-        colorScheme: ColorScheme.dark(
+        colorScheme: const ColorScheme.dark(
           primary: PolieColors.goldEmber,
           surface: PolieColors.surfaceContainer,
           onSurface: PolieColors.textPrimary,
@@ -145,7 +145,7 @@ class _CastBuilderState extends State<CastBuilder> {
                     child: SwitchListTile(
                       value: _session.pose.wheelchair,
                       activeThumbColor: scheme.tertiary,
-                      title: Text(
+                      title: const Text(
                         'Wheelchair',
                         style: TextStyle(color: PolieColors.textPrimary),
                       ),

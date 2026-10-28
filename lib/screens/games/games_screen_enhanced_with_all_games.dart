@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/lingafriq_scaffold.dart';
-import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
@@ -22,7 +21,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/games/tone_forge/tone_forge_screen.dart';
 import 'package:lingafriq/games/word_forge/word_forge_screen.dart';
 import 'package:lingafriq/games/minimal_pair_duel/minimal_pair_duel_screen.dart';
-import 'package:lingafriq/screens/games/game_catalog.dart';
 import 'package:lingafriq/games/gamekit/all_games_registry.dart';
 import 'package:lingafriq/screens/games/games_screen.dart';
 
@@ -144,7 +142,7 @@ class GamesScreenEnhanced extends HookConsumerWidget {
           decoration: BoxDecoration(
             gradient: isDark
                 ? PanAfricanGradients.darkSurface
-                : LinearGradient(
+                : const LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
@@ -159,7 +157,7 @@ class GamesScreenEnhanced extends HookConsumerWidget {
               Container(
                 padding: EdgeInsets.all(PanAfricanSpacing.md),
                 child: DropdownButtonFormField<AppLanguage>(
-                  value: selectedLanguage.value,
+                  initialValue: selectedLanguage.value,
                   decoration: InputDecoration(
                     labelText: 'Language',
                     border: OutlineInputBorder(

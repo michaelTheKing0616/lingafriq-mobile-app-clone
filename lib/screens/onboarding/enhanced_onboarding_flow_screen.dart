@@ -221,7 +221,7 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
                       },
                       icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onPrimary),
                       style: IconButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.15),
+                        backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.15),
                       ),
                     ),
                   )
@@ -246,7 +246,7 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
                     child: Text(
                       'Skip',
                       style: PanAfricanTypography.labelLarge(context)
-                          .copyWith(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7)),
+                          .copyWith(color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.7)),
                     ),
                   ),
                 ),
@@ -271,7 +271,7 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
             SizedBox(height: PanAfricanSpacing.sm),
             LinearProgressIndicator(
               value: progressValue,
-              backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
+              backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.3),
               valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onPrimary),
               minHeight: 4.h,
             ),
@@ -284,7 +284,7 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
   void _goToNext(PageController controller, ValueNotifier<int> currentStep) {
     currentStep.value++;
     controller.nextPage(
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
   }
@@ -373,18 +373,18 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
           final shouldTakeTest = await showDialog<bool>(
             context: context,
             builder: (context) => AlertDialog(
-              title: Text('Take Placement Test?'),
+              title: const Text('Take Placement Test?'),
               content: Text(
                 'Would you like to take a placement test to assess your current level in $learningLanguage? You can skip this and take it later.',
               ),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context, false),
-                  child: Text('Skip'),
+                  child: const Text('Skip'),
                 ),
                 ElevatedButton(
                   onPressed: () => Navigator.pop(context, true),
-                  child: Text('Take Test'),
+                  child: const Text('Take Test'),
                 ),
               ],
             ),
@@ -687,7 +687,7 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
                       button: true,
                       child: OutlinedButton.icon(
                         onPressed: () => showOtherLanguages.value = true,
-                        icon: Icon(Icons.language),
+                        icon: const Icon(Icons.language),
                         label: Text('Show All Languages (${allLanguages.length - _majorLanguages.length} more)'),
                         style: OutlinedButton.styleFrom(
                           minimumSize: Size(double.infinity, 50.h),
@@ -710,7 +710,7 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
                       decoration: InputDecoration(
                         labelText: 'Search languages',
                         hintText: 'Search languages...',
-                        prefixIcon: Icon(Icons.search),
+                        prefixIcon: const Icon(Icons.search),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                         ),
@@ -727,7 +727,7 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
                       final isSelected = selectedLanguage.value == lang['code'];
                       final isMajor = _majorLanguages.any((m) => m['code'] == lang['code']);
                       
-                      if (isMajor) return SizedBox.shrink(); // Skip major languages already shown
+                      if (isMajor) return const SizedBox.shrink(); // Skip major languages already shown
                       
                       return Card(
                         margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
@@ -774,7 +774,7 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
                   ),
                   disabledBackgroundColor: PanAfricanColors.borderLight,
                 ),
-                child: Text('Continue'),
+                child: const Text('Continue'),
               ),
             ),
           ),
@@ -871,7 +871,7 @@ class _Step15ProficiencyLevel extends HookConsumerWidget {
                 level['description'] as String,
                 style: PanAfricanTypography.bodySmall(context).copyWith(
                   color: isSelected 
-                      ? Theme.of(context).colorScheme.onPrimary.withOpacity(0.8)
+                      ? Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.8)
                       : (isDark ? Colors.grey[400] : Colors.grey[600]),
                 ),
               ),
@@ -946,7 +946,7 @@ class _Step15ProficiencyLevel extends HookConsumerWidget {
                 borderRadius: BorderRadius.circular(PanAfricanRadius.md),
               ),
             ),
-            child: Text('Continue'),
+            child: const Text('Continue'),
           ),
         ),
       ],
@@ -1091,7 +1091,7 @@ class _Step2LearningLanguage extends HookConsumerWidget {
                   borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                 ),
               ),
-              child: Text('Continue'),
+              child: const Text('Continue'),
             ),
           ),
         ],
@@ -1218,7 +1218,7 @@ class _Step3AgeCategory extends HookConsumerWidget {
                 borderRadius: BorderRadius.circular(PanAfricanRadius.md),
               ),
             ),
-            child: Text('Continue'),
+            child: const Text('Continue'),
           ),
         ),
       ],
@@ -1338,7 +1338,7 @@ class _Step4LearningReasons extends HookConsumerWidget {
               foregroundColor: Theme.of(context).colorScheme.onSurface,
               minimumSize: Size(double.infinity, 50.h),
             ),
-            child: Text('Continue'),
+            child: const Text('Continue'),
           ),
         ),
       ],
@@ -1430,7 +1430,7 @@ class _Step45DailyTimeGoal extends HookConsumerWidget {
                           duration['description'] as String,
                           style: PanAfricanTypography.bodySmall(context).copyWith(
                             color: isSelected 
-                                ? Theme.of(context).colorScheme.onPrimary.withOpacity(0.8)
+                                ? Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.8)
                                 : (isDark ? Colors.grey[400] : Colors.grey[600]),
                           ),
                           textAlign: TextAlign.center,
@@ -1480,7 +1480,7 @@ class _Step45DailyTimeGoal extends HookConsumerWidget {
                   borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                 ),
               ),
-              child: Text('Continue'),
+              child: const Text('Continue'),
             ),
           ),
         ],
@@ -1602,7 +1602,7 @@ class _Step5PrimaryGoal extends HookConsumerWidget {
               foregroundColor: Theme.of(context).colorScheme.onSurface,
               minimumSize: Size(double.infinity, 50.h),
             ),
-            child: Text('Continue'),
+            child: const Text('Continue'),
           ),
         ),
       ],
@@ -1722,7 +1722,7 @@ class _Step6LearningStyle extends HookConsumerWidget {
               foregroundColor: Theme.of(context).colorScheme.onSurface,
               minimumSize: Size(double.infinity, 50.h),
             ),
-            child: Text('Continue'),
+            child: const Text('Continue'),
           ),
         ),
       ],
@@ -1842,7 +1842,7 @@ class _Step7PacePreference extends HookConsumerWidget {
               foregroundColor: Theme.of(context).colorScheme.onSurface,
               minimumSize: Size(double.infinity, 50.h),
             ),
-            child: Text('Continue'),
+            child: const Text('Continue'),
           ),
         ),
       ],
@@ -1962,7 +1962,7 @@ class _Step8AppTone extends HookConsumerWidget {
               foregroundColor: Theme.of(context).colorScheme.onSurface,
               minimumSize: Size(double.infinity, 50.h),
             ),
-            child: Text('Continue'),
+            child: const Text('Continue'),
           ),
         ),
       ],
@@ -2051,7 +2051,7 @@ class _Step9SchedulePreferences extends HookConsumerWidget {
                   }),
                   SizedBox(height: PanAfricanSpacing.md),
                   SwitchListTile(
-                    title: Text('Enable Reminders'),
+                    title: const Text('Enable Reminders'),
                     value: remindersEnabled.value,
                     onChanged: (value) => remindersEnabled.value = value,
                   ),
@@ -2104,7 +2104,7 @@ class _Step9SchedulePreferences extends HookConsumerWidget {
                 foregroundColor: Theme.of(context).colorScheme.onSurface,
                 minimumSize: Size(double.infinity, 50.h),
               ),
-              child: Text('Continue'),
+              child: const Text('Continue'),
             ),
           ),
         ],
@@ -2300,7 +2300,7 @@ class _Step10ProfileSetup extends HookConsumerWidget {
                                       height: 20.h,
                                       child: Padding(
                                         padding: EdgeInsets.all(12.w),
-                                        child: CircularProgressIndicator(strokeWidth: 2),
+                                        child: const CircularProgressIndicator(strokeWidth: 2),
                                       ),
                                     )
                                   : _getUsernameStatusIcon(status),
@@ -2373,7 +2373,7 @@ class _Step10ProfileSetup extends HookConsumerWidget {
                     minimumSize: Size(double.infinity, 50.h),
                     disabledBackgroundColor: PanAfricanColors.borderLight,
                   ),
-                      child: Text('Complete Onboarding'),
+                      child: const Text('Complete Onboarding'),
                     );
                   },
                 );
@@ -2388,13 +2388,13 @@ class _Step10ProfileSetup extends HookConsumerWidget {
   Widget? _getUsernameStatusIcon(UsernameStatus status) {
     switch (status) {
       case UsernameStatus.available:
-        return Icon(Icons.check_circle, color: PanAfricanColors.success);
+        return const Icon(Icons.check_circle, color: PanAfricanColors.success);
       case UsernameStatus.taken:
-        return Icon(Icons.cancel, color: PanAfricanColors.error);
+        return const Icon(Icons.cancel, color: PanAfricanColors.error);
       case UsernameStatus.invalidFormat:
       case UsernameStatus.tooShort:
       case UsernameStatus.tooLong:
-        return Icon(Icons.error, color: PanAfricanColors.warning);
+        return const Icon(Icons.error, color: PanAfricanColors.warning);
       default:
         return null;
     }
@@ -2490,7 +2490,7 @@ class _OnboardingStepTemplate extends ConsumerWidget {
                         SizedBox(
                           width: 16.w,
                           height: 16.h,
-                          child: CircularProgressIndicator(
+                          child: const CircularProgressIndicator(
                             strokeWidth: 2,
                             valueColor: AlwaysStoppedAnimation<Color>(
                               PanAfricanColors.primary,

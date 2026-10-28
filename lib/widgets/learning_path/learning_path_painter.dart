@@ -20,7 +20,7 @@ class LearningPathPainter extends CustomPainter {
     Color? inactiveColor,
     double? strokeWidth,
   })  : primaryColor = primaryColor ?? PanAfricanColors.primary,
-        inactiveColor = inactiveColor ?? PanAfricanColors.neutralMedium.withOpacity(0.3),
+        inactiveColor = inactiveColor ?? PanAfricanColors.neutralMedium.withValues(alpha: 0.3),
         strokeWidth = strokeWidth ?? 4.w;
 
   @override
@@ -114,7 +114,7 @@ class LearningPathPainter extends CustomPainter {
     
     final currentPos = positions[currentIndex];
     final glowPaint = Paint()
-      ..color = primaryColor.withOpacity(0.2)
+      ..color = primaryColor.withValues(alpha: 0.2)
       ..style = PaintingStyle.fill;
     
     final glowRadius = 24.w;

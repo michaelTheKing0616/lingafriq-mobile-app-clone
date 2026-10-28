@@ -99,9 +99,8 @@ class WordForgeValidation {
   const WordForgeValidation.invalidForm({
     required this.surface,
     required this.glossEn,
-    required String invalidRule,
-  })  : isCorrect = false,
-        invalidRule = invalidRule;
+    required String this.invalidRule,
+  })  : isCorrect = false;
 
   final bool isCorrect;
   final String surface;

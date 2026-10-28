@@ -191,7 +191,7 @@ class ChatRoomLearningService {
     final lower = trimmed.toLowerCase();
     for (final pattern in _blockedPatterns) {
       if (lower.contains(pattern)) {
-        return ModerationResult(
+        return const ModerationResult(
           isApproved: false,
           qualityScore: 0,
           reason: 'Message contains disallowed content.',

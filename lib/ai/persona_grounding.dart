@@ -37,7 +37,7 @@ class CitedCultureCard {
     final title = json['title'] as String? ?? '';
     final rawClaims = json['claims'];
     if (id.isEmpty || rawClaims is! List || rawClaims.isEmpty) {
-      throw FormatException('CitedCultureCard requires id and non-empty claims');
+      throw const FormatException('CitedCultureCard requires id and non-empty claims');
     }
     final claims = <CultureCardClaim>[];
     for (var i = 0; i < rawClaims.length; i++) {

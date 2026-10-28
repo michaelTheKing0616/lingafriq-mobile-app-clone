@@ -66,7 +66,7 @@ class _StreakDisplayWidgetState extends ConsumerState<StreakDisplayWidget>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           colors: [
             Colors.orange,
             Colors.red,
@@ -89,7 +89,7 @@ class _StreakDisplayWidgetState extends ConsumerState<StreakDisplayWidget>
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.orange.withOpacity(0.5 * opacity),
+                          color: Colors.orange.withValues(alpha: 0.5 * opacity),
                           blurRadius: 8 * _pulseAnimation.value,
                           spreadRadius: 2,
                         ),
@@ -161,7 +161,7 @@ class _StreakDisplayWidgetState extends ConsumerState<StreakDisplayWidget>
                             shape: BoxShape.circle,
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.orange.withOpacity(0.5 * opacity),
+                                color: Colors.orange.withValues(alpha: 0.5 * opacity),
                                 blurRadius: 12 * _pulseAnimation.value,
                                 spreadRadius: 3,
                               ),

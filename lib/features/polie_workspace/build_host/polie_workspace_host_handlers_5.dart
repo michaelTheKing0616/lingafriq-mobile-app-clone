@@ -1,50 +1,15 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lingafriq/content/lingafriq_ux_voice.dart';
-import 'package:lingafriq/models/correction_result.dart';
-import 'package:lingafriq/models/translation_history_model.dart';
-import 'package:lingafriq/models/tutor_progress_model.dart';
-import 'package:lingafriq/models/vocabulary_progress_model.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_providers.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_models.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_parsing.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_language_sheet.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_ui_helpers.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_mode_surface.dart';
-import 'package:lingafriq/services/ai_gateway_client.dart';
 import 'package:lingafriq/utils/supported_languages.dart';
 import 'package:lingafriq/content/polie_conversation_prompt_builder.dart';
 import 'package:lingafriq/services/ai/conversation_persistence_service.dart';
-import 'package:lingafriq/services/ai/polie_conversation_stream_service.dart';
-import 'package:lingafriq/services/ai/polie_voice_input_service.dart';
 import 'package:lingafriq/services/content/polie_prompt_service.dart';
-import 'package:lingafriq/services/content/polie_conversation_service.dart';
-import 'package:lingafriq/services/review_progress_service.dart';
-import 'package:lingafriq/services/translation_history_service.dart';
-import 'package:lingafriq/services/tutor_progress_service.dart';
-import 'package:lingafriq/services/vocabulary/vocabulary_service.dart';
-import 'package:lingafriq/services/vocabulary_progress_service.dart';
 import 'package:lingafriq/services/hybrid_polie/translation_service.dart';
-import 'package:lingafriq/services/polie_tutor_saved_cards_service.dart';
 import 'package:lingafriq/services/telemetry_service.dart';
-import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
-import 'package:lingafriq/utils/diacritics_enforcer.dart';
-import 'package:lingafriq/widgets/polie/polie_components.dart';
-import 'package:lingafriq/data/polie_translate_language_options.dart';
-import 'package:lingafriq/l10n/generated/app_localizations.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uuid/uuid.dart' as uuid;
 
-import 'package:lingafriq/features/polie_workspace/polie_workspace_history_helpers.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_screen_widget.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_tx_helpers.dart';
 
 import 'package:lingafriq/features/polie_workspace/build_host/polie_workspace_host_state.dart';
@@ -62,7 +27,7 @@ Future<void> sendPolieWorkspaceConversationJsonFallback(
   required DateTime turnStarted,
 }) async {
 try {
-    bool _userAskedForGreeting(String userText) {
+    bool userAskedForGreeting(String userText) {
       final t = userText.toLowerCase();
       // Keep this broad but safe: only exempt greeting-only responses when the user
       // explicitly asked for greetings/hello/how to greet.
@@ -79,7 +44,7 @@ try {
           t.contains('teach me a greeting');
     }
 
-    bool _looksLikeGreetingOnly(String candidate) {
+    bool looksLikeGreetingOnly(String candidate) {
       final normalized = candidate
           .toLowerCase()
           .trim()
@@ -146,12 +111,12 @@ try {
     //   - It is a bare greeting when the user did not ask for one, OR
     //   - It is severely truncated mid-word (no terminal punctuation AND
     //     ends with a partial token).
-    bool _isMissingOrWeakMessageTarget(Map<String, dynamic> obj) {
+    bool isMissingOrWeakMessageTarget(Map<String, dynamic> obj) {
       final raw = (obj['message_target'] ?? obj['message'] ?? '').toString();
       final cleaned = cleanAiText(raw, fallback: '').trim();
       if (cleaned.isEmpty) return true;
       if (cleaned.startsWith('{') || cleaned.startsWith('[')) return true;
-      if (!_userAskedForGreeting(text) && _looksLikeGreetingOnly(cleaned)) {
+      if (!userAskedForGreeting(text) && looksLikeGreetingOnly(cleaned)) {
         return true;
       }
       // Severe truncation: very short AND no terminal punctuation.
@@ -159,7 +124,7 @@ try {
       return false;
     }
 
-    Future<Map<String, dynamic>?> _askConversationJson({
+    Future<Map<String, dynamic>?> askConversationJson({
       required String prompt,
       int timeoutSeconds = 25,
     }) async {
@@ -235,8 +200,8 @@ try {
     );
 
     // Stricter retry if message_target is missing/too short/low-quality.
-    if (json != null && _isMissingOrWeakMessageTarget(json!)) {
-      final strictJson = await _askConversationJson(
+    if (json != null && isMissingOrWeakMessageTarget(json)) {
+      final strictJson = await askConversationJson(
         prompt: convBuilder.buildConversationJsonPrompt(
           targetLanguage: host.targetLanguage,
           userMessage: text,
@@ -249,14 +214,14 @@ try {
           history: history,
         ),
       );
-      if (strictJson != null && !_isMissingOrWeakMessageTarget(strictJson)) {
+      if (strictJson != null && !isMissingOrWeakMessageTarget(strictJson)) {
         json = strictJson;
       }
     }
 
     // If still weak, do a continuation retry (strict).
-    if (json != null && _isMissingOrWeakMessageTarget(json!)) {
-      final continuation = await _askConversationJson(prompt: '''
+    if (json != null && isMissingOrWeakMessageTarget(json)) {
+      final continuation = await askConversationJson(prompt: '''
 Return STRICT JSON only:
 {
   "message_target":"string (in ${host.targetLanguage}, >= 140 chars, fully complete, no trailing truncation)",
@@ -272,13 +237,13 @@ Target language: ${host.targetLanguage}
 Style: ${host.conversationResponseStyle.value}
 Nonce: ${DateTime.now().microsecondsSinceEpoch}
 ''');
-      if (continuation != null && !_isMissingOrWeakMessageTarget(continuation)) {
+      if (continuation != null && !isMissingOrWeakMessageTarget(continuation)) {
         json = continuation;
       }
     }
 
     // LAST RESORT: normal Groq host.chat completion (not offline translation, not JSON).
-    if (json == null || (json != null && _isMissingOrWeakMessageTarget(json!))) {
+    if (json == null || (isMissingOrWeakMessageTarget(json))) {
       final chatPrompt = '''
 You are Polie: a smart, witty, accurate conversation partner.
 This is OPEN-ENDED CHAT mode. The user can ask about ANY topic.
@@ -393,66 +358,64 @@ User message: "$text"
       return;
     }
 
-    if (json != null) {
-      final rawPayload = ConversationPayload.fromJson(
-        json,
-        host.modeResponse.value,
-      );
-      final payload = enforceConversationDiacritics(
-        rawPayload,
-        host.targetLanguage,
-      );
-      host.conversationMessages.value = [
-        ...host.conversationMessages.value,
-        ConversationTurn.ai(payload),
-      ];
-      final targetLetters = RegExp(r'[^\x00-\x7F]').hasMatch(text);
-      final oldRatio = host.languageRatio.value;
-      host.languageRatio.value =
-          ((oldRatio * (host.conversationMessages.value.length - 1)) +
-              (targetLetters ? 1 : 0)) /
-          host.conversationMessages.value.length;
-      unawaited(
-        host.persistence.appendTurn(
-          conversationId: activeConversationId,
+    final rawPayload = ConversationPayload.fromJson(
+      json,
+      host.modeResponse.value,
+    );
+    final payload = enforceConversationDiacritics(
+      rawPayload,
+      host.targetLanguage,
+    );
+    host.conversationMessages.value = [
+      ...host.conversationMessages.value,
+      ConversationTurn.ai(payload),
+    ];
+    final targetLetters = RegExp(r'[^\x00-\x7F]').hasMatch(text);
+    final oldRatio = host.languageRatio.value;
+    host.languageRatio.value =
+        ((oldRatio * (host.conversationMessages.value.length - 1)) +
+            (targetLetters ? 1 : 0)) /
+        host.conversationMessages.value.length;
+    unawaited(
+      host.persistence.appendTurn(
+        conversationId: activeConversationId,
+        language: host.targetLanguage,
+        persona: 'encouraging_mentor',
+        turn: PersistedTurn(
+          role: 'assistant',
+          text: payload.messageTarget,
           language: host.targetLanguage,
-          persona: 'encouraging_mentor',
-          turn: PersistedTurn(
-            role: 'assistant',
-            text: payload.messageTarget,
-            language: host.targetLanguage,
-            englishTranslation: payload.englishTranslation,
-            correction: PersistedCorrection(
-              tier: payload.correction.tier,
-              hasCorrection: payload.correction.hasCorrection,
-              wasCorrect: payload.correction.wasCorrect,
-              correction: payload.correction.correction,
-              note: payload.correction.note,
-            ),
-            suggestedReplies: payload.suggestedReplies,
-            newVocab: payload.newVocab
-                .map(
-                  (v) => PersistedVocab(
-                    word: v.word,
-                    meaning: v.meaning,
-                  ),
-                )
-                .toList(),
-            createdAt: DateTime.now(),
+          englishTranslation: payload.englishTranslation,
+          correction: PersistedCorrection(
+            tier: payload.correction.tier,
+            hasCorrection: payload.correction.hasCorrection,
+            wasCorrect: payload.correction.wasCorrect,
+            correction: payload.correction.correction,
+            note: payload.correction.note,
           ),
+          suggestedReplies: payload.suggestedReplies,
+          newVocab: payload.newVocab
+              .map(
+                (v) => PersistedVocab(
+                  word: v.word,
+                  meaning: v.meaning,
+                ),
+              )
+              .toList(),
+          createdAt: DateTime.now(),
         ),
-      );
-      unawaited(
-        host.ref.read(telemetryServiceProvider).trackPolieConversationTurn(
-          language: host.targetLanguage,
-          success: true,
-          usedStreaming: false,
-          durationMs:
-              DateTime.now().difference(turnStarted).inMilliseconds,
-          messageLength: payload.messageTarget.length,
-        ),
-      );
-    }
+      ),
+    );
+    unawaited(
+      host.ref.read(telemetryServiceProvider).trackPolieConversationTurn(
+        language: host.targetLanguage,
+        success: true,
+        usedStreaming: false,
+        durationMs:
+            DateTime.now().difference(turnStarted).inMilliseconds,
+        messageLength: payload.messageTarget.length,
+      ),
+    );
   } catch (e) {
     host.modeError.value =
         'Conversation error: ${e.toString().length > 80 ? e.toString().substring(0, 80) : e}';

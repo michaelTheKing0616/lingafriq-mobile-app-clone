@@ -92,7 +92,7 @@ class CommunityCorrectionsScreen extends HookConsumerWidget {
         elevation: 0,
       ),
       body: isLoading.value
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(color: PanAfricanColors.accent),
             )
           : errorMessage.value != null
@@ -172,7 +172,7 @@ class _CorrectionCard extends StatelessWidget {
                     vertical: PanAfricanSpacing.xs,
                   ),
                   decoration: BoxDecoration(
-                    color: PanAfricanColors.primary.withOpacity(0.12),
+                    color: PanAfricanColors.primary.withValues(alpha: 0.12),
                     borderRadius: PanAfricanRadius.roundBR,
                   ),
                   child: Text(
@@ -263,7 +263,7 @@ class _EmptyState extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.groups_outlined,
               size: 72,
               color: PanAfricanColors.textSecondary,
@@ -308,7 +308,7 @@ class _ErrorState extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.error_outline,
               size: 72,
               color: PanAfricanColors.error,

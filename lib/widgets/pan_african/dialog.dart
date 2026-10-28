@@ -58,7 +58,7 @@ class PanAfricanDialog extends StatelessWidget {
     return showDialog<T>(
       context: context,
       barrierDismissible: barrierDismissible,
-      barrierColor: Theme.of(context).colorScheme.scrim.withOpacity(0.5),
+      barrierColor: Theme.of(context).colorScheme.scrim.withValues(alpha: 0.5),
       builder: (context) => PanAfricanDialog(
         title: title,
         message: message,
@@ -164,7 +164,7 @@ class PanAfricanDialog extends StatelessWidget {
         ),
       ).animate()
           .fadeIn(duration: 150.ms)
-          .scale(begin: Offset(0.9, 0.9), end: Offset(1, 1), duration: 200.ms, curve: Curves.easeOutBack),
+          .scale(begin: const Offset(0.9, 0.9), end: const Offset(1, 1), duration: 200.ms, curve: Curves.easeOutBack),
     );
   }
 
@@ -184,7 +184,7 @@ class PanAfricanDialog extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(PanAfricanSpacing.md),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
               child: Icon(icon, color: Theme.of(context).colorScheme.onPrimary, size: 32.sp),
@@ -208,7 +208,7 @@ class PanAfricanDialog extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(PanAfricanSpacing.md),
             decoration: BoxDecoration(
-              color: (iconColor ?? PanAfricanColors.primary).withOpacity(0.1),
+              color: (iconColor ?? PanAfricanColors.primary).withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: Icon(

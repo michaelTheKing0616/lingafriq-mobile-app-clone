@@ -78,7 +78,7 @@ class ModerationToolsScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Moderation Tools'),
+        title: const Text('Moderation Tools'),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -86,7 +86,7 @@ class ModerationToolsScreen extends HookConsumerWidget {
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : LinearGradient(
+              : const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -96,7 +96,7 @@ class ModerationToolsScreen extends HookConsumerWidget {
                 ),
         ),
         child: isLoading.value
-            ? Center(child: CircularProgressIndicator())
+            ? const Center(child: CircularProgressIndicator())
             : flaggedMessages.value.isEmpty
                 ? Center(
                     child: Column(
@@ -203,8 +203,8 @@ class _FlaggedMessageCard extends StatelessWidget {
                   children: [
                     ElevatedButton.icon(
                       onPressed: () => onModerate(message['_id'], 'approve'),
-                      icon: Icon(Icons.check),
-                      label: Text('Approve'),
+                      icon: const Icon(Icons.check),
+                      label: const Text('Approve'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PanAfricanColors.success,
                     foregroundColor: colorScheme.onPrimary,
@@ -212,8 +212,8 @@ class _FlaggedMessageCard extends StatelessWidget {
                     ),
                     ElevatedButton.icon(
                       onPressed: () => onModerate(message['_id'], 'warn'),
-                      icon: Icon(Icons.warning),
-                      label: Text('Warn'),
+                      icon: const Icon(Icons.warning),
+                      label: const Text('Warn'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PanAfricanColors.warning,
                         foregroundColor: Theme.of(context).colorScheme.onSurface,
@@ -221,8 +221,8 @@ class _FlaggedMessageCard extends StatelessWidget {
                     ),
                     ElevatedButton.icon(
                       onPressed: () => onModerate(message['_id'], 'delete'),
-                      icon: Icon(Icons.delete),
-                      label: Text('Delete'),
+                      icon: const Icon(Icons.delete),
+                      label: const Text('Delete'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PanAfricanColors.error,
                     foregroundColor: colorScheme.onPrimary,

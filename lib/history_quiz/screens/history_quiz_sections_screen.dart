@@ -55,7 +55,7 @@ class _HistoryQuizSectionsListScreenState extends State<HistoryQuizSectionsListS
                 // PointsAndProfileImageBuilder(size: Size(0.1.sh, 0.1.sh)),
 
                 // 0.05.sh.heightBox,
-                GreetingsBuilder(
+                const GreetingsBuilder(
                   greetingTitle: '',
                   pageTitle: "History Quiz",
                 )

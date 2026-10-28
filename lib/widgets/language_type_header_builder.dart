@@ -45,7 +45,7 @@ class LangguageTypeHeaderBuilder extends StatelessWidget {
             children: [
               "$count $subtitle • Points to earn: $points"
                   .text
-                  .color(Theme.of(context).colorScheme.onPrimary.withOpacity(0.7))
+                  .color(Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.7))
                   .maxLines(1)
                   .make()
                   .pOnly(top: 4, bottom: 4),

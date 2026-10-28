@@ -30,7 +30,7 @@ class CreateQuizScreen extends HookConsumerWidget {
         backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
         leading: IconButton(
-          icon: Icon(PanAfricanIcons.back),
+          icon: const Icon(PanAfricanIcons.back),
           onPressed: () {
             HapticFeedback.lightImpact();
             Navigator.of(context).pop();
@@ -58,7 +58,7 @@ class CreateQuizScreen extends HookConsumerWidget {
           children: [
             // Language Selection
             DropdownButtonFormField<String>(
-              value: selectedLanguage.value,
+              initialValue: selectedLanguage.value,
               decoration: InputDecoration(
                 labelText: 'Language',
                 labelStyle: PanAfricanTypography.bodyMedium(context),
@@ -135,7 +135,7 @@ class CreateQuizScreen extends HookConsumerWidget {
                   title: Text(question['question'] ?? 'Question ${index + 1}', style: PanAfricanTypography.titleSmall(context)),
                   subtitle: Text('${question['options']?.length ?? 0} options', style: PanAfricanTypography.bodySmall(context)),
                   trailing: IconButton(
-                    icon: Icon(Icons.delete, color: PanAfricanColors.error),
+                    icon: const Icon(Icons.delete, color: PanAfricanColors.error),
                     onPressed: () {
                       HapticFeedback.lightImpact();
                       questions.value = List.from(questions.value)..removeAt(index);
@@ -327,7 +327,7 @@ class _QuestionEditor extends HookConsumerWidget {
                     style: OutlinedButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.sm),
                       shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
-                      side: BorderSide(color: PanAfricanColors.primary),
+                      side: const BorderSide(color: PanAfricanColors.primary),
                     ),
                     child: Text('Cancel', style: PanAfricanTypography.labelLarge(context, color: PanAfricanColors.primary)),
                   ),

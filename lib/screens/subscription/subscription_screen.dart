@@ -26,7 +26,7 @@ class SubscriptionScreen extends ConsumerWidget {
           label: 'Back',
           button: true,
           child: IconButton(
-            icon: Icon(PanAfricanIcons.back, semanticLabel: 'Back'),
+            icon: const Icon(PanAfricanIcons.back, semanticLabel: 'Back'),
             onPressed: () {
               HapticFeedback.lightImpact();
               Navigator.of(context).pop();
@@ -196,11 +196,11 @@ class SubscriptionScreen extends ConsumerWidget {
       child: Container(
         decoration: BoxDecoration(
         color: isRecommended
-            ? PanAfricanColors.primary.withOpacity(0.05)
+            ? PanAfricanColors.primary.withValues(alpha: 0.05)
             : (isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight),
         borderRadius: PanAfricanRadius.lgBR,
         boxShadow: isRecommended ? PanAfricanShadows.md : PanAfricanShadows.sm,
-        border: isRecommended ? Border.all(color: PanAfricanColors.primary.withOpacity(0.3), width: 2) : null,
+        border: isRecommended ? Border.all(color: PanAfricanColors.primary.withValues(alpha: 0.3), width: 2) : null,
         ),
         child: Padding(
           padding: EdgeInsets.all(PanAfricanSpacing.md),

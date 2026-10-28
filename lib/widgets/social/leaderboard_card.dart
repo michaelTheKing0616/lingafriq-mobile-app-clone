@@ -50,19 +50,19 @@ class LeaderboardCard extends StatelessWidget {
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         color: isCurrentUser
-            ? _rankColor.withOpacity(0.1)
+            ? _rankColor.withValues(alpha: 0.1)
             : Colors.transparent,
         borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
         border: Border.all(
           color: isCurrentUser
               ? _rankColor
-              : Colors.grey.withOpacity(0.2),
+              : Colors.grey.withValues(alpha: 0.2),
           width: isCurrentUser ? 2 : 1,
         ),
         boxShadow: isTopThree
             ? [
                 BoxShadow(
-                  color: _rankColor.withOpacity(0.2),
+                  color: _rankColor.withValues(alpha: 0.2),
                   blurRadius: 8,
                   offset: const Offset(0, 4),
                 ),
@@ -83,7 +83,7 @@ class LeaderboardCard extends StatelessWidget {
                       end: Alignment.bottomRight,
                       colors: [
                         _rankColor,
-                        _rankColor.withOpacity(0.7),
+                        _rankColor.withValues(alpha: 0.7),
                       ],
                     )
                   : null,
@@ -91,7 +91,7 @@ class LeaderboardCard extends StatelessWidget {
               boxShadow: isTopThree
                   ? [
                       BoxShadow(
-                        color: _rankColor.withOpacity(0.3),
+                        color: _rankColor.withValues(alpha: 0.3),
                         blurRadius: 8,
                         offset: const Offset(0, 4),
                       ),
@@ -121,7 +121,7 @@ class LeaderboardCard extends StatelessWidget {
           // Avatar
           CircleAvatar(
             radius: 28.r,
-            backgroundColor: _rankColor.withOpacity(0.1),
+            backgroundColor: _rankColor.withValues(alpha: 0.1),
             backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl!) : null,
             child: avatarUrl == null
                 ? Text(
@@ -197,7 +197,7 @@ class LeaderboardCard extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
                         decoration: BoxDecoration(
-                          color: _rankColor.withOpacity(0.1),
+                          color: _rankColor.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                         ),
                         child: Text(

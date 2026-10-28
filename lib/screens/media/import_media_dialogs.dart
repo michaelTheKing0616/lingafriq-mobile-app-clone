@@ -37,7 +37,7 @@ class _EditTranscriptionDialogState extends State<EditTranscriptionDialog> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return AlertDialog(
-      title: Text('Edit Transcription'),
+      title: const Text('Edit Transcription'),
       content: SizedBox(
         width: double.maxFinite,
         child: TextField(
@@ -57,14 +57,14 @@ class _EditTranscriptionDialogState extends State<EditTranscriptionDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
         ),
         ElevatedButton(
           onPressed: () {
             widget.onSave(_controller.text);
             Navigator.pop(context);
           },
-          child: Text('Save'),
+          child: const Text('Save'),
         ),
       ],
     );
@@ -102,9 +102,9 @@ class _CustomizeTranscriptionDialogState extends State<CustomizeTranscriptionDia
     return AlertDialog(
       title: Row(
         children: [
-          Icon(Icons.tune, color: PanAfricanColors.primary),
+          const Icon(Icons.tune, color: PanAfricanColors.primary),
           SizedBox(width: PanAfricanSpacing.sm),
-          Text('Customize Transcription'),
+          const Text('Customize Transcription'),
         ],
       ),
       content: SingleChildScrollView(
@@ -118,8 +118,8 @@ class _CustomizeTranscriptionDialogState extends State<CustomizeTranscriptionDia
             ),
             SizedBox(height: PanAfricanSpacing.sm),
             SwitchListTile(
-              title: Text('Remove Punctuation'),
-              subtitle: Text('Remove all punctuation marks'),
+              title: const Text('Remove Punctuation'),
+              subtitle: const Text('Remove all punctuation marks'),
               value: customizations['removePunctuation'] as bool,
               onChanged: (value) {
                 setState(() {
@@ -128,8 +128,8 @@ class _CustomizeTranscriptionDialogState extends State<CustomizeTranscriptionDia
               },
             ),
             SwitchListTile(
-              title: Text('Add Line Breaks'),
-              subtitle: Text('Add line breaks after sentences'),
+              title: const Text('Add Line Breaks'),
+              subtitle: const Text('Add line breaks after sentences'),
               value: customizations['addLineBreaks'] as bool,
               onChanged: (value) {
                 setState(() {
@@ -138,8 +138,8 @@ class _CustomizeTranscriptionDialogState extends State<CustomizeTranscriptionDia
               },
             ),
             SwitchListTile(
-              title: Text('Format Numbers'),
-              subtitle: Text('Format numbers consistently'),
+              title: const Text('Format Numbers'),
+              subtitle: const Text('Format numbers consistently'),
               value: customizations['formatNumbers'] as bool,
               onChanged: (value) {
                 setState(() {
@@ -148,8 +148,8 @@ class _CustomizeTranscriptionDialogState extends State<CustomizeTranscriptionDia
               },
             ),
             SwitchListTile(
-              title: Text('Capitalize Sentences'),
-              subtitle: Text('Capitalize first letter of sentences'),
+              title: const Text('Capitalize Sentences'),
+              subtitle: const Text('Capitalize first letter of sentences'),
               value: customizations['capitalizeSentences'] as bool,
               onChanged: (value) {
                 setState(() {
@@ -157,15 +157,15 @@ class _CustomizeTranscriptionDialogState extends State<CustomizeTranscriptionDia
                 });
               },
             ),
-            Divider(),
+            const Divider(),
             Text(
               'Text Cleaning',
               style: PanAfricanTypography.titleSmall(context),
             ),
             SizedBox(height: PanAfricanSpacing.sm),
             SwitchListTile(
-              title: Text('Remove Extra Spaces'),
-              subtitle: Text('Remove multiple consecutive spaces'),
+              title: const Text('Remove Extra Spaces'),
+              subtitle: const Text('Remove multiple consecutive spaces'),
               value: customizations['removeExtraSpaces'] as bool,
               onChanged: (value) {
                 setState(() {
@@ -174,8 +174,8 @@ class _CustomizeTranscriptionDialogState extends State<CustomizeTranscriptionDia
               },
             ),
             SwitchListTile(
-              title: Text('Normalize Whitespace'),
-              subtitle: Text('Standardize all whitespace characters'),
+              title: const Text('Normalize Whitespace'),
+              subtitle: const Text('Standardize all whitespace characters'),
               value: customizations['normalizeWhitespace'] as bool,
               onChanged: (value) {
                 setState(() {
@@ -184,8 +184,8 @@ class _CustomizeTranscriptionDialogState extends State<CustomizeTranscriptionDia
               },
             ),
             SwitchListTile(
-              title: Text('Fix Common Errors'),
-              subtitle: Text('Auto-correct common transcription errors'),
+              title: const Text('Fix Common Errors'),
+              subtitle: const Text('Auto-correct common transcription errors'),
               value: customizations['fixCommonErrors'] as bool,
               onChanged: (value) {
                 setState(() {
@@ -199,15 +199,15 @@ class _CustomizeTranscriptionDialogState extends State<CustomizeTranscriptionDia
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
         ),
         ElevatedButton.icon(
           onPressed: () {
             widget.onCustomize(customizations);
             Navigator.pop(context);
           },
-          icon: Icon(Icons.check),
-          label: Text('Apply'),
+          icon: const Icon(Icons.check),
+          label: const Text('Apply'),
           style: ElevatedButton.styleFrom(
             backgroundColor: PanAfricanColors.primary,
             foregroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -309,7 +309,7 @@ class _EditLessonDialogState extends State<EditLessonDialog> {
                       decoration: InputDecoration(
                         labelText: 'Lesson Title',
                         hintText: 'Enter lesson title',
-                        prefixIcon: Icon(Icons.title),
+                        prefixIcon: const Icon(Icons.title),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                         ),
@@ -327,7 +327,7 @@ class _EditLessonDialogState extends State<EditLessonDialog> {
                       decoration: InputDecoration(
                         labelText: 'Description',
                         hintText: 'Enter lesson description',
-                        prefixIcon: Icon(Icons.description),
+                        prefixIcon: const Icon(Icons.description),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                         ),
@@ -349,7 +349,7 @@ class _EditLessonDialogState extends State<EditLessonDialog> {
                         ElevatedButton.icon(
                           onPressed: () => _addSection(context),
                           icon: Icon(Icons.add, size: 18.sp),
-                          label: Text('Add Section'),
+                          label: const Text('Add Section'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: PanAfricanColors.primary,
                             foregroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -428,7 +428,7 @@ class _EditLessonDialogState extends State<EditLessonDialog> {
               padding: EdgeInsets.all(PanAfricanSpacing.lg),
               decoration: BoxDecoration(
                 color: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
-                border: Border(
+                border: const Border(
                   top: BorderSide(color: PanAfricanColors.neutralLight),
                 ),
               ),
@@ -437,7 +437,7 @@ class _EditLessonDialogState extends State<EditLessonDialog> {
                 children: [
                   TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: Text('Cancel'),
+                    child: const Text('Cancel'),
                   ),
                   SizedBox(width: PanAfricanSpacing.sm),
                   ElevatedButton.icon(
@@ -452,8 +452,8 @@ class _EditLessonDialogState extends State<EditLessonDialog> {
                       });
                       Navigator.pop(context);
                     },
-                    icon: Icon(Icons.save),
-                    label: Text('Save Lesson'),
+                    icon: const Icon(Icons.save),
+                    label: const Text('Save Lesson'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: PanAfricanColors.primary,
                       foregroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -503,19 +503,19 @@ class _EditLessonDialogState extends State<EditLessonDialog> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Edit Section'),
+        title: const Text('Edit Section'),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: titleController,
-                decoration: InputDecoration(labelText: 'Section Title'),
+                decoration: const InputDecoration(labelText: 'Section Title'),
               ),
               SizedBox(height: PanAfricanSpacing.sm),
               TextField(
                 controller: typeController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Section Type',
                   hintText: 'e.g., vocabulary, grammar, practice',
                 ),
@@ -524,13 +524,13 @@ class _EditLessonDialogState extends State<EditLessonDialog> {
               TextField(
                 controller: contentController,
                 maxLines: 8,
-                decoration: InputDecoration(labelText: 'Section Content'),
+                decoration: const InputDecoration(labelText: 'Section Content'),
               ),
             ],
           ),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: Text('Cancel')),
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
           ElevatedButton(
             onPressed: () {
               setState(() {
@@ -543,7 +543,7 @@ class _EditLessonDialogState extends State<EditLessonDialog> {
               });
               Navigator.pop(context);
             },
-            child: Text('Save'),
+            child: const Text('Save'),
           ),
         ],
       ),
@@ -558,19 +558,19 @@ class _EditLessonDialogState extends State<EditLessonDialog> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Add New Section'),
+        title: const Text('Add New Section'),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: titleController,
-                decoration: InputDecoration(labelText: 'Section Title'),
+                decoration: const InputDecoration(labelText: 'Section Title'),
               ),
               SizedBox(height: PanAfricanSpacing.sm),
               TextField(
                 controller: typeController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Section Type',
                   hintText: 'e.g., vocabulary, grammar, practice',
                 ),
@@ -579,13 +579,13 @@ class _EditLessonDialogState extends State<EditLessonDialog> {
               TextField(
                 controller: contentController,
                 maxLines: 8,
-                decoration: InputDecoration(labelText: 'Section Content'),
+                decoration: const InputDecoration(labelText: 'Section Content'),
               ),
             ],
           ),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: Text('Cancel')),
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
           ElevatedButton(
             onPressed: () {
               setState(() {
@@ -597,7 +597,7 @@ class _EditLessonDialogState extends State<EditLessonDialog> {
               });
               Navigator.pop(context);
             },
-            child: Text('Add'),
+            child: const Text('Add'),
           ),
         ],
       ),

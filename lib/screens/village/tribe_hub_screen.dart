@@ -1,5 +1,3 @@
-import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -65,7 +63,7 @@ class TribeHubScreen extends ConsumerWidget {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.fromLTRB(20.w, 20.h, 20.w, 24.h),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: ModernGriotGradients.signatureGradient,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(ModernGriotRadius.xxl),

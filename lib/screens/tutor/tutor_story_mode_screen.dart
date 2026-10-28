@@ -193,7 +193,7 @@ Quality requirements:
     Future<void> generateStory() async {
       if (themeController.text.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please enter a story theme')),
+          const SnackBar(content: Text('Please enter a story theme')),
         );
         return;
       }
@@ -224,7 +224,7 @@ Quality requirements:
       message: 'Generating story...',
       child: Scaffold(
         body: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -270,7 +270,7 @@ Quality requirements:
                               await prefs.setStringList(_kSavedStoriesKey, saved);
                               savedToLibrary.value = true;
                               HapticFeedback.mediumImpact();
-                              if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Saved to library')));
+                              if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Saved to library')));
                             } catch (_) {}
                           },
                           alternateEnding.value,
@@ -337,7 +337,7 @@ Quality requirements:
             label: 'Go back',
             button: true,
             child: IconButton(
-              icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
+              icon: const Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
               onPressed: () => Navigator.pop(context),
             ),
           ),
@@ -405,7 +405,7 @@ Quality requirements:
               padding: EdgeInsets.all(PolieSpacing.md),
               child: TextField(
                 controller: themeController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Story Theme',
                   hintText: 'e.g., traditional festival, village life, folktale',
                   border: InputBorder.none,
@@ -422,9 +422,9 @@ Quality requirements:
                 child: PolieGlassCard(
                   padding: EdgeInsets.symmetric(horizontal: PolieSpacing.md, vertical: PolieSpacing.xs),
                   child: DropdownButtonFormField<AppLanguage>(
-                    value: selectedLanguage.value,
+                    initialValue: selectedLanguage.value,
                     dropdownColor: PolieColors.surfaceContainer,
-                    decoration: InputDecoration(labelText: 'Language', border: InputBorder.none),
+                    decoration: const InputDecoration(labelText: 'Language', border: InputBorder.none),
                     style: PolieTypography.body(context),
                     items: availableLanguages.map((lang) => DropdownMenuItem<AppLanguage>(
                       value: lang,
@@ -441,9 +441,9 @@ Quality requirements:
                 child: PolieGlassCard(
                   padding: EdgeInsets.symmetric(horizontal: PolieSpacing.md, vertical: PolieSpacing.xs),
                   child: DropdownButtonFormField<String>(
-                    value: userLevel,
+                    initialValue: userLevel,
                     dropdownColor: PolieColors.surfaceContainer,
-                    decoration: InputDecoration(labelText: 'Level', border: InputBorder.none),
+                    decoration: const InputDecoration(labelText: 'Level', border: InputBorder.none),
                     style: PolieTypography.body(context),
                     items: ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
                         .map((level) => DropdownMenuItem(value: level, child: Text(level)))
@@ -676,8 +676,8 @@ class _CulturalStoryBanner extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    PolieColors.goldEmber.withOpacity(0.15),
-                    PolieColors.royalAmethyst.withOpacity(0.1),
+                    PolieColors.goldEmber.withValues(alpha: 0.15),
+                    PolieColors.royalAmethyst.withValues(alpha: 0.1),
                     PolieColors.primaryDark,
                   ],
                 ),
@@ -821,7 +821,7 @@ class _VocabularyDrawer extends StatelessWidget {
       decoration: BoxDecoration(
         color: PolieColors.surfaceContainer,
         borderRadius: BorderRadius.vertical(top: Radius.circular(PolieRadius.lg)),
-        border: Border.all(color: PolieColors.textSecondary.withOpacity(0.2)),
+        border: Border.all(color: PolieColors.textSecondary.withValues(alpha: 0.2)),
       ),
       child: Column(
         children: [
@@ -830,7 +830,7 @@ class _VocabularyDrawer extends StatelessWidget {
             height: 4.h,
             margin: EdgeInsets.symmetric(vertical: PolieSpacing.sm),
             decoration: BoxDecoration(
-              color: PolieColors.textSecondary.withOpacity(0.5),
+              color: PolieColors.textSecondary.withValues(alpha: 0.5),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -844,7 +844,7 @@ class _VocabularyDrawer extends StatelessWidget {
                   margin: EdgeInsets.only(bottom: PolieSpacing.sm),
                   padding: EdgeInsets.symmetric(vertical: PolieSpacing.xs),
                   decoration: BoxDecoration(
-                    color: PolieColors.royalAmethyst.withOpacity(0.15),
+                    color: PolieColors.royalAmethyst.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(PolieRadius.md),
                   ),
                   child: ListTile(
@@ -858,7 +858,7 @@ class _VocabularyDrawer extends StatelessWidget {
                     ),
                     trailing: vocab['example'] != null
                         ? IconButton(
-                            icon: Icon(Icons.info_outline_rounded, color: PolieColors.electricTeal),
+                            icon: const Icon(Icons.info_outline_rounded, color: PolieColors.electricTeal),
                             onPressed: () {
                               showDialog(
                                 context: context,
@@ -960,8 +960,8 @@ class _ComprehensionQuizState extends State<_ComprehensionQuiz> {
               decoration: BoxDecoration(
                 color: isSelected
                     ? (isCorrect
-                        ? PolieColors.success.withOpacity(0.2)
-                        : PolieColors.error.withOpacity(0.2))
+                        ? PolieColors.success.withValues(alpha: 0.2)
+                        : PolieColors.error.withValues(alpha: 0.2))
                     : PolieColors.surfaceContainer,
                 borderRadius: BorderRadius.circular(PolieRadius.md),
               ),
@@ -990,7 +990,7 @@ class _ComprehensionQuizState extends State<_ComprehensionQuiz> {
                     } else {
                       widget.onIndexChanged(null);
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Quiz completed!')),
+                        const SnackBar(content: Text('Quiz completed!')),
                       );
                     }
                   });

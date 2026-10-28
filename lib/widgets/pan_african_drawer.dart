@@ -284,7 +284,7 @@ class PanAfricanDrawer extends ConsumerWidget {
               const Spacer(),
               // Settings quick access
               IconButton(
-                icon: Icon(Icons.settings_outlined, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7)),
+                icon: Icon(Icons.settings_outlined, color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.7)),
                 onPressed: () => _navigateTo(context, ref, 'settings'),
               ),
             ],
@@ -327,9 +327,9 @@ class PanAfricanDrawer extends ConsumerWidget {
               vertical: PanAfricanSpacing.xxs,
             ),
             decoration: BoxDecoration(
-              color: PanAfricanColors.secondary.withOpacity(0.2),
+              color: PanAfricanColors.secondary.withValues(alpha: 0.2),
               borderRadius: PanAfricanRadius.roundBR,
-              border: Border.all(color: PanAfricanColors.secondary.withOpacity(0.5)),
+              border: Border.all(color: PanAfricanColors.secondary.withValues(alpha: 0.5)),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -399,11 +399,11 @@ class PanAfricanDrawer extends ConsumerWidget {
           children: [
             Text(
               '${(progress * 100).toInt()}% to Level ${currentLevel + 1}',
-              style: PanAfricanTypography.labelSmall(context, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7)),
+              style: PanAfricanTypography.labelSmall(context, color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.7)),
             ),
             Text(
               '$xpInCurrentLevel / $xpNeeded XP',
-              style: PanAfricanTypography.labelSmall(context, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7)),
+              style: PanAfricanTypography.labelSmall(context, color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.7)),
             ),
           ],
         ),
@@ -413,8 +413,8 @@ class PanAfricanDrawer extends ConsumerWidget {
           child: LinearProgressIndicator(
             value: progress,
             minHeight: 6.h,
-            backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
-            valueColor: AlwaysStoppedAnimation(PanAfricanColors.secondary),
+            backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
+            valueColor: const AlwaysStoppedAnimation(PanAfricanColors.secondary),
           ),
         ),
       ],
@@ -437,7 +437,7 @@ class PanAfricanDrawer extends ConsumerWidget {
         ),
         Text(
           label,
-          style: PanAfricanTypography.labelSmall(context, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.6)),
+          style: PanAfricanTypography.labelSmall(context, color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.6)),
         ),
       ],
     );
@@ -480,7 +480,7 @@ class PanAfricanDrawer extends ConsumerWidget {
         width: 40.w,
         height: 40.w,
         decoration: BoxDecoration(
-          color: iconColor.withOpacity(0.1),
+          color: iconColor.withValues(alpha: 0.1),
           borderRadius: PanAfricanRadius.smBR,
         ),
         child: Icon(item.icon, color: iconColor, size: 22.sp),
@@ -522,7 +522,7 @@ class PanAfricanDrawer extends ConsumerWidget {
           label: const Text('Log Out'),
           style: OutlinedButton.styleFrom(
             foregroundColor: PanAfricanColors.error,
-            side: BorderSide(color: PanAfricanColors.error.withOpacity(0.5)),
+            side: BorderSide(color: PanAfricanColors.error.withValues(alpha: 0.5)),
             padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
             shape: RoundedRectangleBorder(
               borderRadius: PanAfricanRadius.mdBR,

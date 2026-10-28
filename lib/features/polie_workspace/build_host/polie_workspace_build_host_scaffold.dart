@@ -5,7 +5,6 @@ import 'package:lingafriq/features/polie_workspace/build_host/polie_workspace_ho
 import 'package:lingafriq/features/polie_workspace/polie_workspace_mode_surface.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_screen_widget.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_ui_helpers.dart';
 import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
 import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:shared_preferences/shared_preferences.dart';

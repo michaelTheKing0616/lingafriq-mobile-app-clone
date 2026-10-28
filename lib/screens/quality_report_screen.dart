@@ -212,7 +212,7 @@ class _QualityReportScreenState extends State<QualityReportScreen> {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(QualityReportCopy.title),
+        title: const Text(QualityReportCopy.title),
       ),
       body: switch (_state) {
         QualityReportUiState.loading => const Center(child: CircularProgressIndicator()),
@@ -232,20 +232,43 @@ class _QualityReportScreenState extends State<QualityReportScreen> {
               ),
             ),
           ),
-        QualityReportUiState.data => ListView(
-            padding: const EdgeInsets.all(16),
-            children: [
-              for (final lang in _report!.languages) ...[
-                Text(
-                  lang.language.toUpperCase(),
-                  style: theme.textTheme.titleMedium,
-                ),
-                const SizedBox(height: 8),
-                for (final label in lang.labels)
-                  _LabelRateCard(label: label),
-                const SizedBox(height: 16),
-              ],
-            ],
+        QualityReportUiState.data => Builder(
+            builder: (context) {
+              final languages = _report!.languages;
+              var itemCount = 0;
+              for (final lang in languages) {
+                itemCount += 2 + lang.labels.length;
+              }
+              return ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: itemCount,
+                itemBuilder: (context, index) {
+                  var cursor = index;
+                  for (final lang in languages) {
+                    if (cursor == 0) {
+                      return Text(
+                        lang.language.toUpperCase(),
+                        style: theme.textTheme.titleMedium,
+                      );
+                    }
+                    cursor -= 1;
+                    if (cursor == 0) {
+                      return const SizedBox(height: 8);
+                    }
+                    cursor -= 1;
+                    if (cursor < lang.labels.length) {
+                      return _LabelRateCard(label: lang.labels[cursor]);
+                    }
+                    cursor -= lang.labels.length;
+                    if (cursor == 0) {
+                      return const SizedBox(height: 16);
+                    }
+                    cursor -= 1;
+                  }
+                  return const SizedBox.shrink();
+                },
+              );
+            },
           ),
       },
     );

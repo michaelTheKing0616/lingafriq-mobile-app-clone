@@ -51,7 +51,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context)!;
 
-    List<Map<String, dynamic>> _parseArticleDocs(dynamic raw) {
+    List<Map<String, dynamic>> parseArticleDocs(dynamic raw) {
       dynamic listCandidate = raw is Map
           ? (raw['data'] ?? raw['results'] ?? raw['articles'])
           : raw;
@@ -65,7 +65,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
       return List<Map<String, dynamic>>.from(listCandidate.whereType<Map>());
     }
 
-    bool _parseHasNextPage(dynamic raw, int fetchedCount) {
+    bool parseHasNextPage(dynamic raw, int fetchedCount) {
       if (raw is! Map) {
         return fetchedCount >= _pageSize;
       }
@@ -82,7 +82,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
       return fetchedCount >= _pageSize;
     }
 
-    int? _parseTotalDocs(dynamic raw) {
+    int? parseTotalDocs(dynamic raw) {
       if (raw is! Map) return null;
       final data = raw['data'];
       if (data is! Map) return null;
@@ -123,7 +123,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
 
         if (response.statusCode == 200) {
           final raw = response.data;
-          var batch = _parseArticleDocs(raw);
+          var batch = parseArticleDocs(raw);
           if (filterLang != null && filterLang.isNotEmpty) {
             final key = CurriculumService.normalizeLanguageKey(filterLang);
             batch = batch.where((article) {
@@ -134,8 +134,8 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
                   (key == 'nigerian_pidgin' && lang == 'pidgin');
             }).toList();
           }
-          final nextHasMore = _parseHasNextPage(raw, batch.length);
-          final total = _parseTotalDocs(raw);
+          final nextHasMore = parseHasNextPage(raw, batch.length);
+          final total = parseTotalDocs(raw);
 
           if (reset) {
             articles.value = batch;
@@ -321,7 +321,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
             : PanAfricanColors.textPrimaryLight,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(PanAfricanIcons.back),
+          icon: const Icon(PanAfricanIcons.back),
           onPressed: () {
             HapticFeedback.lightImpact();
             Navigator.of(context).pop();
@@ -350,7 +350,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
               child: SizedBox(
                 width: 24.w,
                 height: 24.w,
-                child: CircularProgressIndicator(
+                child: const CircularProgressIndicator(
                   strokeWidth: 2,
                   color: PanAfricanColors.primary,
                 ),
@@ -377,7 +377,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : LinearGradient(
+              : const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -403,7 +403,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          CircularProgressIndicator(
+                          const CircularProgressIndicator(
                             color: PanAfricanColors.primary,
                           ),
                           SizedBox(height: PanAfricanSpacing.md),
@@ -413,7 +413,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
                                 .copyWith(
                                   color: Theme.of(
                                     context,
-                                  ).colorScheme.onSurface.withOpacity(0.45),
+                                  ).colorScheme.onSurface.withValues(alpha: 0.45),
                                 ),
                           ),
                         ],
@@ -448,17 +448,17 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
                                         ? Theme.of(context)
                                               .colorScheme
                                               .onSurface
-                                              .withOpacity(0.54)
+                                              .withValues(alpha: 0.54)
                                         : Theme.of(context)
                                               .colorScheme
                                               .onSurface
-                                              .withOpacity(0.45),
+                                              .withValues(alpha: 0.45),
                                   ),
                             ),
                             SizedBox(height: PanAfricanSpacing.lg),
                             TextButton.icon(
                               onPressed: () => loadArticles(reset: true),
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.refresh_rounded,
                                 size: 20,
                                 color: PanAfricanColors.primary,
@@ -532,8 +532,8 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
                             .animate(delay: (index * 50).ms)
                             .fadeIn(duration: 300.ms)
                             .scale(
-                              begin: Offset(0.9, 0.9),
-                              end: Offset(1, 1),
+                              begin: const Offset(0.9, 0.9),
+                              end: const Offset(1, 1),
                             );
                             },
                           ),
@@ -543,7 +543,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
                             padding: EdgeInsets.only(
                               bottom: PanAfricanSpacing.md,
                             ),
-                            child: CircularProgressIndicator(
+                            child: const CircularProgressIndicator(
                               color: PanAfricanColors.primary,
                             ),
                           )
@@ -715,7 +715,7 @@ class _ArticleCard extends StatelessWidget {
                               onFavorite();
                             },
                             padding: EdgeInsets.zero,
-                            constraints: BoxConstraints(),
+                            constraints: const BoxConstraints(),
                           ),
                           IconButton(
                             icon: Icon(
@@ -728,7 +728,7 @@ class _ArticleCard extends StatelessWidget {
                               onShare();
                             },
                             padding: EdgeInsets.zero,
-                            constraints: BoxConstraints(),
+                            constraints: const BoxConstraints(),
                           ),
                         ],
                       ),
@@ -758,7 +758,7 @@ class _ArticleCard extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Row(
                       children: [
                         Chip(
@@ -770,7 +770,7 @@ class _ArticleCard extends StatelessWidget {
                           materialTapTargetSize:
                               MaterialTapTargetSize.shrinkWrap,
                         ),
-                        Spacer(),
+                        const Spacer(),
                         if (showTranslation)
                           Icon(
                             Icons.translate,
@@ -800,7 +800,7 @@ class _ArticleImageFallback extends StatelessWidget {
       child: Icon(
         Icons.article,
         size: 48.sp,
-        color: colors.onPrimary.withOpacity(0.7),
+        color: colors.onPrimary.withValues(alpha: 0.7),
       ),
     );
   }

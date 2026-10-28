@@ -3,7 +3,7 @@
 /// ```dart
 /// import 'package:lingafriq/widgets/griot/griot_widgets.dart';
 /// ```
-library griot_widgets;
+library;
 
 export 'griot_app_bar.dart';
 export 'griot_avatar.dart';

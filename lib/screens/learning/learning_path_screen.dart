@@ -196,8 +196,8 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
           ),
         );
       },
-      loading: () => GriotScaffold(
-        body: const Center(child: CircularProgressIndicator()),
+      loading: () => const GriotScaffold(
+        body: Center(child: CircularProgressIndicator()),
       ),
       error: (e, _) => GriotScaffold(
         body: Center(

@@ -25,7 +25,7 @@ class SecureStorageService {
 
   /// Store session token with expiry timestamp
   Future<void> storeSessionToken(String token) async {
-    final expiry = DateTime.now().add(Duration(seconds: sessionTokenTTL));
+    final expiry = DateTime.now().add(const Duration(seconds: sessionTokenTTL));
     await Future.wait([
       _storage.write(key: _sessionTokenKey, value: token),
       _storage.write(key: _sessionExpiryKey, value: expiry.millisecondsSinceEpoch.toString()),
@@ -34,7 +34,7 @@ class SecureStorageService {
 
   /// Store refresh token with expiry timestamp
   Future<void> storeRefreshToken(String token) async {
-    final expiry = DateTime.now().add(Duration(seconds: refreshTokenTTL));
+    final expiry = DateTime.now().add(const Duration(seconds: refreshTokenTTL));
     await Future.wait([
       _storage.write(key: _refreshTokenKey, value: token),
       _storage.write(key: _refreshExpiryKey, value: expiry.millisecondsSinceEpoch.toString()),

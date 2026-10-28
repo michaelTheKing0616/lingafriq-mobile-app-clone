@@ -231,7 +231,7 @@ void assertCatalogBuilt(SoundDrillCatalog catalog) {
 SoundDrillCatalog parseSoundDrillCatalog(Map<String, dynamic> root) {
   final langs = root['languages'];
   if (langs is! Map<String, dynamic>) {
-    throw FormatException('languages must be a map');
+    throw const FormatException('languages must be a map');
   }
   final packs = <String, SoundLanguagePack>{};
   for (final entry in langs.entries) {
@@ -361,7 +361,7 @@ class _SoundDrillScreenState extends State<SoundDrillScreen> {
                   height: 48,
                   child: FilledButton(
                     onPressed: _advanceToChoose,
-                    child: Text(SoundDrillCopyKeys.listen),
+                    child: const Text(SoundDrillCopyKeys.listen),
                   ),
                 ),
               ],

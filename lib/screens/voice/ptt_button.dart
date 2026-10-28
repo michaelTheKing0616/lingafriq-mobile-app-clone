@@ -43,7 +43,7 @@ class _PushToTalkButtonState extends State<PushToTalkButton> {
         hint: 'Double tap to latch microphone on or off',
         child: SwitchListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-          title: Text(kVoicePttHoldLabel),
+          title: const Text(kVoicePttHoldLabel),
           subtitle: Text(_toggleLatched ? 'Microphone latched on' : 'Tap to latch'),
           value: _toggleLatched,
           onChanged: (latched) async {

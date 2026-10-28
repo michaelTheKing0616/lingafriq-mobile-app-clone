@@ -1,21 +1,9 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_tx_helpers.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:lingafriq/data/polie_translate_language_options.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_models.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_parsing.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_providers.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_language_sheet.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_ui_helpers.dart';
-import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
-import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
-import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_layout.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_surface_args.dart';
 import 'package:lingafriq/features/polie_workspace/mode_surface/polie_workspace_mode_conversation_composer.dart';
 
@@ -99,7 +87,7 @@ Widget buildPolieConversationModeSurface(PolieModeSurfaceArgs a) {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(14),
                           border: Border.all(
-                            color: a.theme.border.withOpacity(0.45),
+                            color: a.theme.border.withValues(alpha: 0.45),
                           ),
                         ),
                         child: Row(
@@ -154,7 +142,7 @@ Widget buildPolieConversationModeSurface(PolieModeSurfaceArgs a) {
                           color: const Color(0xFFFFF4EC),
                           borderRadius: BorderRadius.circular(14),
                           border: Border.all(
-                            color: const Color(0xFFD4822A).withOpacity(0.5),
+                            color: const Color(0xFFD4822A).withValues(alpha: 0.5),
                           ),
                         ),
                         child: Column(
@@ -213,7 +201,7 @@ Widget buildPolieConversationModeSurface(PolieModeSurfaceArgs a) {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
-                          color: a.theme.border.withOpacity(0.6),
+                          color: a.theme.border.withValues(alpha: 0.6),
                         ),
                       ),
                       child: Column(
@@ -279,7 +267,7 @@ Widget buildPolieConversationModeSurface(PolieModeSurfaceArgs a) {
                                 color: const Color(0xFFF5F0E8),
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
-                                  color: a.theme.border.withOpacity(0.55),
+                                  color: a.theme.border.withValues(alpha: 0.55),
                                 ),
                               ),
                               child: Text(
@@ -357,7 +345,7 @@ Widget buildPolieConversationModeSurface(PolieModeSurfaceArgs a) {
                                           backgroundColor: Colors.white,
                                           side: BorderSide(
                                             color: const Color(0xFFD4822A)
-                                                .withOpacity(0.5),
+                                                .withValues(alpha: 0.5),
                                           ),
                                           visualDensity: VisualDensity.compact,
                                           onPressed: a.isBusy

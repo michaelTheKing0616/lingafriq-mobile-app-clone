@@ -35,7 +35,7 @@ class CEFRProgressCard extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       colors: [PanAfricanColors.primary, PanAfricanColors.secondary],
                     ),
                     borderRadius: BorderRadius.circular(20),
@@ -66,7 +66,7 @@ class CEFRProgressCard extends StatelessWidget {
                 value: cefr.score / 100,
                 minHeight: 12,
                 backgroundColor: isDark ? Colors.grey[700] : Colors.grey[200],
-                valueColor: AlwaysStoppedAnimation<Color>(
+                valueColor: const AlwaysStoppedAnimation<Color>(
                   PanAfricanColors.primary,
                 ),
               ),
@@ -103,7 +103,7 @@ class CEFRProgressCard extends StatelessWidget {
                 ? PanAfricanColors.primary
                 : (isReached
                     ? PanAfricanColors.secondary
-                    : Colors.grey.withOpacity(0.3)),
+                    : Colors.grey.withValues(alpha: 0.3)),
             border: Border.all(
               color: isCurrent
                   ? PanAfricanColors.primary

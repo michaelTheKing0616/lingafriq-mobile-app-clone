@@ -69,7 +69,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> {
       context: context,
       builder: (ctx) {
         return AlertDialog(
-          title: Text(kSearchSuggestActionLabel),
+          title: const Text(kSearchSuggestActionLabel),
           content: TextField(
             controller: glossController,
             decoration: const InputDecoration(
@@ -156,7 +156,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> {
           ),
           if (result != null && (result.usedOfflinePack || result.offlineOnly))
             MaterialBanner(
-              content: Text(kSearchOfflineBanner),
+              content: const Text(kSearchOfflineBanner),
               leading: const Icon(Icons.cloud_off_outlined),
               actions: [
                 TextButton(
@@ -193,7 +193,7 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> {
                 child: FilledButton.icon(
                   onPressed: () => _openSuggestSheet(result.query),
                   icon: const Icon(Icons.add_comment_outlined),
-                  label: Text(kSearchSuggestActionLabel),
+                  label: const Text(kSearchSuggestActionLabel),
                 ),
               ),
             ],
@@ -209,49 +209,65 @@ class _GlobalSearchScreenState extends State<GlobalSearchScreen> {
         .where((h) => h.kind == GlobalSearchResultKind.lesson)
         .toList();
 
-    return ListView(
+    final lexiconHeader = lexicon.isNotEmpty ? 1 : 0;
+    final lessonHeader = lessons.isNotEmpty ? 1 : 0;
+    final itemCount = lexiconHeader + lexicon.length + lessonHeader + lessons.length;
+
+    return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      children: [
-        if (lexicon.isNotEmpty) ...[
-          Semantics(
-            header: true,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 8, bottom: 4),
-              child: Text(
-                kSearchWordsSectionTitle,
-                style: Theme.of(context).textTheme.titleMedium,
+      itemCount: itemCount,
+      itemBuilder: (context, index) {
+        var cursor = index;
+        if (lexicon.isNotEmpty) {
+          if (cursor == 0) {
+            return Semantics(
+              header: true,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8, bottom: 4),
+                child: Text(
+                  kSearchWordsSectionTitle,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
               ),
-            ),
-          ),
-          ...lexicon.map((hit) => _LexiconResultTile(
-                hit: hit,
-                onTap: () {
-                  final lexeme = hit.lexeme;
-                  if (lexeme != null) _openLexicon(lexeme);
-                },
-              )),
-        ],
-        if (lessons.isNotEmpty) ...[
-          Semantics(
-            header: true,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 16, bottom: 4),
-              child: Text(
-                'Lessons',
-                style: Theme.of(context).textTheme.titleMedium,
+            );
+          }
+          cursor -= 1;
+          if (cursor < lexicon.length) {
+            final hit = lexicon[cursor];
+            return _LexiconResultTile(
+              hit: hit,
+              onTap: () {
+                final lexeme = hit.lexeme;
+                if (lexeme != null) _openLexicon(lexeme);
+              },
+            );
+          }
+          cursor -= lexicon.length;
+        }
+        if (lessons.isNotEmpty) {
+          if (cursor == 0) {
+            return Semantics(
+              header: true,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 16, bottom: 4),
+                child: Text(
+                  'Lessons',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
               ),
-            ),
-          ),
-          ...lessons.map(
-            (hit) => ListTile(
-              minVerticalPadding: 12,
-              title: Text(hit.title),
-              subtitle: hit.subtitle != null ? Text(hit.subtitle!) : null,
-              leading: const Icon(Icons.menu_book_outlined),
-            ),
-          ),
-        ],
-      ],
+            );
+          }
+          cursor -= 1;
+          final hit = lessons[cursor];
+          return ListTile(
+            minVerticalPadding: 12,
+            title: Text(hit.title),
+            subtitle: hit.subtitle != null ? Text(hit.subtitle!) : null,
+            leading: const Icon(Icons.menu_book_outlined),
+          );
+        }
+        return const SizedBox.shrink();
+      },
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 import 'package:lingafriq/games/festival/festival_theme_service.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 
@@ -94,7 +93,7 @@ class _VillageFestivalHubBannerState extends State<VillageFestivalHubBanner> {
               SizedBox(height: spacing),
               TextButton(
                 onPressed: _load,
-                child: Text(VillageFestivalCopy.retry),
+                child: const Text(VillageFestivalCopy.retry),
               ),
             ],
           ),

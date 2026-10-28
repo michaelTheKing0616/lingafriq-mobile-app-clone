@@ -74,7 +74,7 @@ class _FlashcardReviewScreenState extends ConsumerState<FlashcardReviewScreen> {
         title: Text('Review Due Words', style: PanAfricanTypography.titleLarge(context)),
         backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         leading: IconButton(
-          icon: Icon(PanAfricanIcons.back),
+          icon: const Icon(PanAfricanIcons.back),
           onPressed: () {
             HapticFeedback.lightImpact();
             Navigator.of(context).pop();
@@ -109,7 +109,7 @@ class _FlashcardReviewScreenState extends ConsumerState<FlashcardReviewScreen> {
                     value: progress,
                     minHeight: 8,
                     backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
-                    valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
+                    valueColor: const AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
                   ),
                 ),
               ],
@@ -229,9 +229,9 @@ class _FlashcardReviewScreenState extends ConsumerState<FlashcardReviewScreen> {
               color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black.withValues(alpha: 0.1),
                   blurRadius: 10,
-                  offset: Offset(0, -5),
+                  offset: const Offset(0, -5),
                 ),
               ],
             ),
@@ -336,7 +336,7 @@ class _FlashcardReviewScreenState extends ConsumerState<FlashcardReviewScreen> {
         }
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: color.withOpacity(0.2),
+        backgroundColor: color.withValues(alpha: 0.2),
         foregroundColor: color,
         padding: EdgeInsets.symmetric(
           horizontal: PanAfricanSpacing.md,

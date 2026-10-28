@@ -27,7 +27,7 @@ class AdaptiveProgressIndicator extends StatelessWidget {
         Text(
           message ?? 'Please Wait',
           style: TextStyle(
-            color: Theme.of(context).dividerColor.withOpacity(0.60),
+            color: Theme.of(context).dividerColor.withValues(alpha: 0.60),
             fontSize: 16.sp,
           ),
         ),

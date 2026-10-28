@@ -55,7 +55,7 @@ class GrammarLessonScreen extends HookConsumerWidget {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -68,7 +68,7 @@ class GrammarLessonScreen extends HookConsumerWidget {
         ),
         child: SafeArea(
           child: isLoading.value
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(color: PolieColors.goldEmber),
                 )
               : grammarData.value == null
@@ -115,7 +115,7 @@ class GrammarLessonScreen extends HookConsumerWidget {
           label: 'Go back',
           button: true,
           child: IconButton(
-            icon: Icon(Icons.arrow_back, color: PolieColors.textPrimary, semanticLabel: 'Back'),
+            icon: const Icon(Icons.arrow_back, color: PolieColors.textPrimary, semanticLabel: 'Back'),
             onPressed: () {
               HapticFeedback.lightImpact();
               Navigator.of(context).pop();
@@ -159,7 +159,7 @@ class GrammarLessonScreen extends HookConsumerWidget {
         children: [
           Row(
             children: [
-              Icon(Icons.menu_book_rounded, color: PolieColors.goldEmber, size: 24, semanticLabel: 'Explanation'),
+              const Icon(Icons.menu_book_rounded, color: PolieColors.goldEmber, size: 24, semanticLabel: 'Explanation'),
               SizedBox(width: PolieSpacing.sm),
               Text(
                 'Explanation',
@@ -182,7 +182,7 @@ class GrammarLessonScreen extends HookConsumerWidget {
 
   Widget _buildExamplesSection(BuildContext context, Map<String, dynamic> data, bool isDark) {
     final examples = data['examples'] as List? ?? [];
-    if (examples.isEmpty) return SizedBox.shrink();
+    if (examples.isEmpty) return const SizedBox.shrink();
 
     return PolieGlassCard(
       padding: EdgeInsets.all(PolieSpacing.lg),
@@ -191,7 +191,7 @@ class GrammarLessonScreen extends HookConsumerWidget {
         children: [
           Row(
             children: [
-              Icon(Icons.lightbulb_outline, color: PolieColors.electricTeal, size: 24, semanticLabel: 'Examples'),
+              const Icon(Icons.lightbulb_outline, color: PolieColors.electricTeal, size: 24, semanticLabel: 'Examples'),
               SizedBox(width: PolieSpacing.sm),
               Text(
                 'Examples',
@@ -220,10 +220,10 @@ class GrammarLessonScreen extends HookConsumerWidget {
       margin: EdgeInsets.only(bottom: PolieSpacing.md),
       padding: EdgeInsets.all(PolieSpacing.md),
       decoration: BoxDecoration(
-        color: PolieColors.royalAmethyst.withOpacity(0.1),
+        color: PolieColors.royalAmethyst.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(PolieRadius.md),
         border: Border.all(
-          color: PolieColors.royalAmethyst.withOpacity(0.3),
+          color: PolieColors.royalAmethyst.withValues(alpha: 0.3),
         ),
       ),
       child: Column(
@@ -262,7 +262,7 @@ class GrammarLessonScreen extends HookConsumerWidget {
 
   Widget _buildRulesSection(BuildContext context, Map<String, dynamic> data, bool isDark) {
     final rules = data['rules'] as List? ?? [];
-    if (rules.isEmpty) return SizedBox.shrink();
+    if (rules.isEmpty) return const SizedBox.shrink();
 
     return PolieGlassCard(
       padding: EdgeInsets.all(PolieSpacing.lg),
@@ -271,7 +271,7 @@ class GrammarLessonScreen extends HookConsumerWidget {
         children: [
           Row(
             children: [
-              Icon(Icons.rule_rounded, color: PolieColors.royalAmethyst, size: 24),
+              const Icon(Icons.rule_rounded, color: PolieColors.royalAmethyst, size: 24),
               SizedBox(width: PolieSpacing.sm),
               Text(
                 'Rules',
@@ -297,10 +297,10 @@ class GrammarLessonScreen extends HookConsumerWidget {
       margin: EdgeInsets.only(bottom: PolieSpacing.sm),
       padding: EdgeInsets.all(PolieSpacing.md),
       decoration: BoxDecoration(
-        color: PolieColors.electricTeal.withOpacity(0.1),
+        color: PolieColors.electricTeal.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(PolieRadius.md),
         border: Border.all(
-          color: PolieColors.electricTeal.withOpacity(0.3),
+          color: PolieColors.electricTeal.withValues(alpha: 0.3),
         ),
       ),
       child: Row(
@@ -309,7 +309,7 @@ class GrammarLessonScreen extends HookConsumerWidget {
           Container(
             width: 32.w,
             height: 32.w,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: PolieColors.electricTeal,
               shape: BoxShape.circle,
             ),
@@ -338,7 +338,7 @@ class GrammarLessonScreen extends HookConsumerWidget {
 
   Widget _buildCommonMistakesSection(BuildContext context, Map<String, dynamic> data, bool isDark) {
     final mistakes = data['commonMistakes'] as List? ?? [];
-    if (mistakes.isEmpty) return SizedBox.shrink();
+    if (mistakes.isEmpty) return const SizedBox.shrink();
 
     return PolieGlassCard(
       padding: EdgeInsets.all(PolieSpacing.lg),
@@ -347,7 +347,7 @@ class GrammarLessonScreen extends HookConsumerWidget {
         children: [
           Row(
             children: [
-              Icon(Icons.warning_amber_rounded, color: PolieColors.error, size: 24),
+              const Icon(Icons.warning_amber_rounded, color: PolieColors.error, size: 24),
               SizedBox(width: PolieSpacing.sm),
               Text(
                 'Common Mistakes',
@@ -364,7 +364,7 @@ class GrammarLessonScreen extends HookConsumerWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.close_rounded, color: PolieColors.error, size: 20),
+                  const Icon(Icons.close_rounded, color: PolieColors.error, size: 20),
                   SizedBox(width: PolieSpacing.sm),
                   Expanded(
                     child: Text(

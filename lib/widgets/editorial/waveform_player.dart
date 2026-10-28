@@ -35,7 +35,7 @@ class WaveformPlayer extends StatelessWidget {
           amplitudes: amplitudes,
           progress: progress.clamp(0.0, 1.0),
           playedColor: colors.primary,
-          unplayedColor: colors.onSurface.withOpacity(0.15),
+          unplayedColor: colors.onSurface.withValues(alpha: 0.15),
         ),
       ),
     );

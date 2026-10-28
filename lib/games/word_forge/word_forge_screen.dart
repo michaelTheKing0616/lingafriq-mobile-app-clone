@@ -216,7 +216,7 @@ class _WordForgeScreenState extends State<WordForgeScreen> {
       case WordForgePhase.loading:
         return const Center(child: CircularProgressIndicator());
       case WordForgePhase.error:
-        return _StateMessage(
+        return const _StateMessage(
           message: WordForgeScreen.errorCopy,
           icon: Icons.translate_rounded,
         );

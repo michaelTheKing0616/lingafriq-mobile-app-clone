@@ -51,8 +51,8 @@ class ProfileTab extends HookConsumerWidget {
             Column(
               children: [
                 // Currency Display
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   child: CurrencyDisplayWidget(compact: false),
                 ),
                 if (user?.rank != null)

@@ -31,15 +31,15 @@ class StreakIndicatorWidget extends ConsumerWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            PanAfricanColors.tertiary.withOpacity(0.3),
-            PanAfricanColors.secondary.withOpacity(0.3),
+            PanAfricanColors.tertiary.withValues(alpha: 0.3),
+            PanAfricanColors.secondary.withValues(alpha: 0.3),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
         border: Border.all(
-          color: PanAfricanColors.tertiary.withOpacity(0.5),
+          color: PanAfricanColors.tertiary.withValues(alpha: 0.5),
           width: 1,
         ),
       ),
@@ -94,7 +94,7 @@ class StreakIndicatorWidget extends ConsumerWidget {
         vertical: PanAfricanSpacing.xxs,
       ),
       decoration: BoxDecoration(
-        color: PanAfricanColors.tertiary.withOpacity(0.2),
+        color: PanAfricanColors.tertiary.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(PanAfricanRadius.round),
       ),
       child: Row(
@@ -175,8 +175,8 @@ class StreakMilestoneWidget extends ConsumerWidget {
             child: LinearProgressIndicator(
               value: progress.clamp(0.0, 1.0),
               minHeight: 8.h,
-              backgroundColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
-              valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.tertiary),
+              backgroundColor: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
+              valueColor: const AlwaysStoppedAnimation<Color>(PanAfricanColors.tertiary),
             ),
           ),
           SizedBox(height: PanAfricanSpacing.xxxs),

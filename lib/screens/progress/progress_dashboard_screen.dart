@@ -204,8 +204,8 @@ class ProgressDashboardScreen extends ConsumerWidget {
       'Words Learned Over Time',
       LineChart(
         LineChartData(
-          gridData: FlGridData(show: false),
-          titlesData: FlTitlesData(show: false),
+          gridData: const FlGridData(show: false),
+          titlesData: const FlTitlesData(show: false),
           borderData: FlBorderData(show: false),
           lineBarsData: [
             LineChartBarData(
@@ -213,10 +213,10 @@ class ProgressDashboardScreen extends ConsumerWidget {
               isCurved: true,
               color: PanAfricanColors.primary,
               barWidth: 3,
-              dotData: FlDotData(show: false),
+              dotData: const FlDotData(show: false),
               belowBarData: BarAreaData(
                 show: true,
-                color: PanAfricanColors.primary.withOpacity(0.1),
+                color: PanAfricanColors.primary.withValues(alpha: 0.1),
               ),
             ),
           ],
@@ -278,8 +278,8 @@ class ProgressDashboardScreen extends ConsumerWidget {
       'Time Spent Learning (Minutes)',
       LineChart(
         LineChartData(
-          gridData: FlGridData(show: false),
-          titlesData: FlTitlesData(show: false),
+          gridData: const FlGridData(show: false),
+          titlesData: const FlTitlesData(show: false),
           borderData: FlBorderData(show: false),
           lineBarsData: [
             LineChartBarData(
@@ -287,10 +287,10 @@ class ProgressDashboardScreen extends ConsumerWidget {
               isCurved: true,
               color: PanAfricanColors.tertiary,
               barWidth: 3,
-              dotData: FlDotData(show: false),
+              dotData: const FlDotData(show: false),
               belowBarData: BarAreaData(
                 show: true,
-                color: PanAfricanColors.tertiary.withOpacity(0.1),
+                color: PanAfricanColors.tertiary.withValues(alpha: 0.1),
               ),
             ),
           ],

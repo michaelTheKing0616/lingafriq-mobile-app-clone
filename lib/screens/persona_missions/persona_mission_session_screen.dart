@@ -223,10 +223,10 @@ class _PersonaMissionSessionScreenState
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Row(
                     children: [
-                      Expanded(
+                      const Expanded(
                         child: Text(
                           _personaErrorRetryCopy,
-                          key: const Key(_personaErrorRetryKey),
+                          key: Key(_personaErrorRetryKey),
                         ),
                       ),
                       TextButton(

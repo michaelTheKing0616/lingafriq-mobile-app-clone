@@ -48,7 +48,7 @@ class _ToneIdItemState extends State<ToneIdItem> {
         key: ValueKey<String>('phase-$_phase'),
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(ItemCopy.tone),
+          const Text(ItemCopy.tone),
           Text(widget.prompt),
           if (_grade != null)
             Text(

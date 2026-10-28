@@ -1,5 +1,3 @@
-import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -118,11 +116,11 @@ class _ProgressHeroCard extends StatelessWidget {
               ),
               Row(
                 children: [
-                  _BadgeIcon(Icons.auto_awesome_rounded),
+                  const _BadgeIcon(Icons.auto_awesome_rounded),
                   SizedBox(width: 6.w),
-                  _BadgeIcon(Icons.local_fire_department_rounded),
+                  const _BadgeIcon(Icons.local_fire_department_rounded),
                   SizedBox(width: 6.w),
-                  _BadgeIcon(Icons.star_rounded),
+                  const _BadgeIcon(Icons.star_rounded),
                 ],
               ),
             ],
@@ -335,7 +333,7 @@ class _ContinueLearningCard extends StatelessWidget {
                 Text('Lesson 3 of 8 · Yoruba Basics',
                     style: ModernGriotTypography.bodySmall()),
                 SizedBox(height: 8.h),
-                GriotProgressBar(value: 0.375, height: 6),
+                const GriotProgressBar(value: 0.375, height: 6),
               ],
             ),
           ),
@@ -399,7 +397,7 @@ class _VillageStatusCard extends StatelessWidget {
           Text('Active Learners',
               style: ModernGriotTypography.bodySmall()),
           SizedBox(height: 8.h),
-          GriotBadgePill(
+          const GriotBadgePill(
             label: 'Yoruba Village',
             icon: Icons.public_rounded,
             color: ModernGriotColors.secondaryContainer,

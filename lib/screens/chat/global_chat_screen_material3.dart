@@ -229,7 +229,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
         if (!sent && context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(
+              content: const Text(
                 'Message could not be sent. Check your connection.',
               ),
               action: SnackBarAction(
@@ -308,7 +308,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                   width: 44,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: PanAfricanColors.neutralMedium.withOpacity(0.45),
+                    color: PanAfricanColors.neutralMedium.withValues(alpha: 0.45),
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
@@ -430,7 +430,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('LingAfriq Live'),
+            const Text('LingAfriq Live'),
             Text(
               '#${selectedChannel.value}',
               style: PanAfricanTypography.bodySmall(context),
@@ -444,7 +444,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
             label: 'Find user',
             button: true,
             child: IconButton(
-              icon: Icon(Icons.person_search, semanticLabel: 'Find user'),
+              icon: const Icon(Icons.person_search, semanticLabel: 'Find user'),
               onPressed: () {
                 HapticFeedback.selectionClick();
                 Navigator.push(
@@ -467,7 +467,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
             label: 'Show channels',
             button: true,
             child: IconButton(
-              icon: Icon(Icons.tag, semanticLabel: 'Channels'),
+              icon: const Icon(Icons.tag, semanticLabel: 'Channels'),
               onPressed: () {
                 HapticFeedback.selectionClick();
                 showChannelPicker();
@@ -479,7 +479,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
             label: 'More options',
             button: true,
             child: PopupMenuButton<String>(
-              icon: Icon(Icons.more_vert, semanticLabel: 'More'),
+              icon: const Icon(Icons.more_vert, semanticLabel: 'More'),
               tooltip: 'More',
               onSelected: (value) {
                 HapticFeedback.selectionClick();
@@ -554,7 +554,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                                     : PanAfricanColors.neutralMedium,
                               ),
                               trailing: isSelected
-                                  ? Icon(
+                                  ? const Icon(
                                       Icons.check_circle,
                                       color: PanAfricanColors.primary,
                                     )
@@ -577,7 +577,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
               child: Column(
                 children: [
                   Material(
-                    color: PanAfricanColors.primary.withOpacity(0.1),
+                    color: PanAfricanColors.primary.withValues(alpha: 0.1),
                     child: ListTile(
                       leading: const Icon(
                         Icons.smart_toy_outlined,
@@ -913,9 +913,9 @@ class _GlobalMessageBubble extends StatelessWidget {
     final messageText =
         message['message'] ?? message['body'] ?? message['text'] ?? '';
     final bubbleColor = isToxic
-        ? PanAfricanColors.error.withOpacity(0.08)
+        ? PanAfricanColors.error.withValues(alpha: 0.08)
         : isFromCurrentUser
-        ? PanAfricanColors.primary.withOpacity(isDark ? 0.45 : 0.18)
+        ? PanAfricanColors.primary.withValues(alpha: isDark ? 0.45 : 0.18)
         : (isDark
               ? PanAfricanColors.surfaceContainerDark
               : PanAfricanColors.surfaceContainerLight);
@@ -991,7 +991,7 @@ class _GlobalMessageBubble extends StatelessWidget {
                               SizedBox(width: PanAfricanSpacing.xs),
                               Semantics(
                                 label: 'Flagged as toxic content',
-                                child: PanAfricanBadge(
+                                child: const PanAfricanBadge(
                                   label: 'Flagged',
                                   color: PanAfricanColors.error,
                                   icon: Icons.report_problem_rounded,

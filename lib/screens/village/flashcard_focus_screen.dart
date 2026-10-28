@@ -1,12 +1,10 @@
 import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/modern_griot_design_system.dart';
 import '../../widgets/griot/griot_widgets.dart';
-import '../../widgets/game/game_widgets.dart';
 
 /// Group-study roster for Village flashcards (P10-911).
 enum FlashcardStudyMode { solo, matchedPeers, practiceBot }
@@ -30,9 +28,8 @@ class FlashcardCoLearner {
 class FlashcardGroupStudyRoster {
   const FlashcardGroupStudyRoster.solo() : mode = FlashcardStudyMode.solo, peers = const [];
 
-  FlashcardGroupStudyRoster.matched(List<FlashcardCoLearner> peers)
-      : mode = FlashcardStudyMode.matchedPeers,
-        peers = peers;
+  FlashcardGroupStudyRoster.matched(this.peers)
+      : mode = FlashcardStudyMode.matchedPeers;
 
   const FlashcardGroupStudyRoster.practiceBot()
       : mode = FlashcardStudyMode.practiceBot,
@@ -185,7 +182,7 @@ class _FlashcardFocusScreenState extends ConsumerState<FlashcardFocusScreen>
             top: 40.h,
             child: Transform.rotate(
               angle: pi / 12,
-              child: GriotBadgePill(
+              child: const GriotBadgePill(
                 label: 'LEVEL UP!',
                 icon: Icons.trending_up_rounded,
                 color: ModernGriotColors.secondaryContainer,

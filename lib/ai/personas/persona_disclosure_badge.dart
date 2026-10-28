@@ -186,7 +186,7 @@ class PersonaSessionOpeningDisclosure extends StatelessWidget {
         ),
         if (showSynthLabel) ...[
           SizedBox(height: PanAfricanSpacing.xs),
-          PersonaSynthVoiceLabel(),
+          const PersonaSynthVoiceLabel(),
         ],
       ],
     );

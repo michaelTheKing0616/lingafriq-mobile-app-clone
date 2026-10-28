@@ -66,8 +66,8 @@ class ModernCard extends StatelessWidget {
             onTap!();
           },
           borderRadius: defaultBorderRadius,
-          splashColor: PanAfricanColors.primary.withOpacity(0.08),
-          highlightColor: PanAfricanColors.primary.withOpacity(0.04),
+          splashColor: PanAfricanColors.primary.withValues(alpha: 0.08),
+          highlightColor: PanAfricanColors.primary.withValues(alpha: 0.04),
           child: cardContent,
         ),
       );
@@ -149,8 +149,8 @@ class LanguageCard extends StatelessWidget {
                 end: Alignment.bottomCenter,
                 colors: [
                   Colors.transparent,
-                  Theme.of(context).colorScheme.scrim.withOpacity(0.6),
-                  Theme.of(context).colorScheme.scrim.withOpacity(0.85),
+                  Theme.of(context).colorScheme.scrim.withValues(alpha: 0.6),
+                  Theme.of(context).colorScheme.scrim.withValues(alpha: 0.85),
                 ],
                 stops: const [0.0, 0.5, 1.0],
               ),
@@ -176,7 +176,7 @@ class LanguageCard extends StatelessWidget {
                           style: PanAfricanTypography.titleLarge(context, color: Theme.of(context).colorScheme.onPrimary).copyWith(
                             shadows: [
                               Shadow(
-                                color: Colors.black.withOpacity(0.5),
+                                color: Colors.black.withValues(alpha: 0.5),
                                 blurRadius: 4,
                               ),
                             ],
@@ -217,7 +217,7 @@ class LanguageCard extends StatelessWidget {
                         SizedBox(width: PanAfricanSpacing.xxs),
                         Text(
                           '$completed/$totalCount lessons',
-                          style: PanAfricanTypography.bodySmall(context, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9)),
+                          style: PanAfricanTypography.bodySmall(context, color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9)),
                         ),
                         const Spacer(),
                         if (totalScore > 0)
@@ -245,8 +245,8 @@ class LanguageCard extends StatelessWidget {
                       borderRadius: PanAfricanRadius.roundBR,
                       child: LinearProgressIndicator(
                         value: progress,
-                        backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
-                        valueColor: AlwaysStoppedAnimation<Color>(
+                        backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
+                        valueColor: const AlwaysStoppedAnimation<Color>(
                           PanAfricanColors.secondary,
                         ),
                         minHeight: 6,
@@ -255,7 +255,7 @@ class LanguageCard extends StatelessWidget {
                   ] else
                     Text(
                       'Start learning',
-                      style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.8)).copyWith(
+                      style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.8)).copyWith(
                         fontStyle: FontStyle.italic,
                       ),
                     ),
@@ -278,7 +278,7 @@ class LanguageCard extends StatelessWidget {
       child: Center(
         child: Icon(
           Icons.language_rounded,
-          color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.4),
+          color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.4),
           size: 48.sp,
         ),
       ),
@@ -290,8 +290,8 @@ class LanguageCard extends StatelessWidget {
     final base = isDark ? PanAfricanColors.neutralDark : PanAfricanColors.neutralLight;
     final highlight = isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight;
     return Shimmer.fromColors(
-      baseColor: base.withOpacity(0.55),
-      highlightColor: highlight.withOpacity(0.55),
+      baseColor: base.withValues(alpha: 0.55),
+      highlightColor: highlight.withValues(alpha: 0.55),
       child: _buildPlaceholder(context),
     );
   }

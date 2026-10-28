@@ -36,7 +36,7 @@ class VocabularyDashboardScreen extends HookConsumerWidget {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -128,7 +128,7 @@ class VocabularyDashboardScreen extends HookConsumerWidget {
             child: SizedBox(
               width: 48.w,
               height: 48.w,
-              child: CircularProgressIndicator(
+              child: const CircularProgressIndicator(
                 strokeWidth: 3,
                 valueColor: AlwaysStoppedAnimation<Color>(PolieColors.goldEmber),
               ),
@@ -321,7 +321,7 @@ class _OverallStatsCard extends StatelessWidget {
           SizedBox(height: PolieSpacing.lg),
           Container(
             height: 1,
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
           ),
           SizedBox(height: PolieSpacing.lg),
           Text(
@@ -344,7 +344,7 @@ class _OverallStatsCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(PolieRadius.pill),
             child: LinearProgressIndicator(
               value: masteryRate / 100.0,
-              backgroundColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+              backgroundColor: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
               valueColor: AlwaysStoppedAnimation<Color>(masteryColor),
               minHeight: 8.h,
             ),
@@ -375,7 +375,7 @@ class _StatItem extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(PolieSpacing.sm),
           decoration: BoxDecoration(
-            color: color.withOpacity(0.2),
+            color: color.withValues(alpha: 0.2),
             shape: BoxShape.circle,
           ),
           child: Icon(icon, color: color, size: 28.sp),
@@ -435,13 +435,13 @@ class _FlashcardButton extends StatelessWidget {
               width: 56.w,
               height: 56.w,
               decoration: BoxDecoration(
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   colors: [PolieColors.goldEmber, PolieColors.goldEmberLight],
                 ),
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: PolieColors.goldEmber.withOpacity(0.4),
+                    color: PolieColors.goldEmber.withValues(alpha: 0.4),
                     blurRadius: 16,
                     spreadRadius: 0,
                   ),
@@ -503,7 +503,7 @@ class _DueWordsCard extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(PolieSpacing.md),
               decoration: BoxDecoration(
-                color: PolieColors.error.withOpacity(0.2),
+                color: PolieColors.error.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -534,7 +534,7 @@ class _DueWordsCard extends StatelessWidget {
                 ],
               ),
             ),
-            Icon(
+            const Icon(
               Icons.arrow_forward_rounded,
               color: PolieColors.error,
             ),
@@ -560,28 +560,35 @@ class _CategoryFilter extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 48.h,
-      child: ListView(
+      child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        children: [
-          _FilterChip(
-            label: 'All',
-            isSelected: selectedCategory == null,
-            onTap: () => onCategorySelected(null),
-          ),
-          SizedBox(width: PolieSpacing.sm),
-          ...categories.map((cat) {
-            return Padding(
-              padding: EdgeInsets.only(right: PolieSpacing.sm),
-              child: _FilterChip(
-                label: cat,
-                isSelected: cat == selectedCategory,
-                onTap: () => onCategorySelected(
-                  cat == selectedCategory ? null : cat,
+        itemCount: 1 + categories.length,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _FilterChip(
+                  label: 'All',
+                  isSelected: selectedCategory == null,
+                  onTap: () => onCategorySelected(null),
                 ),
-              ),
+                SizedBox(width: PolieSpacing.sm),
+              ],
             );
-          }),
-        ],
+          }
+          final cat = categories[index - 1];
+          return Padding(
+            padding: EdgeInsets.only(right: PolieSpacing.sm),
+            child: _FilterChip(
+              label: cat,
+              isSelected: cat == selectedCategory,
+              onTap: () => onCategorySelected(
+                cat == selectedCategory ? null : cat,
+              ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -609,13 +616,13 @@ class _FilterChip extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: isSelected
-              ? PolieColors.royalAmethyst.withOpacity(0.3)
+              ? PolieColors.royalAmethyst.withValues(alpha: 0.3)
               : PolieColors.surfaceContainerLight,
           borderRadius: BorderRadius.circular(PolieRadius.pill),
           border: Border.all(
             color: isSelected
                 ? PolieColors.royalAmethyst
-                : Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+                : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -651,7 +658,7 @@ class _WordCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(PolieRadius.md),
           color: Theme.of(context).colorScheme.surfaceContainerHighest,
           border: Border.all(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -661,7 +668,7 @@ class _WordCard extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(PolieSpacing.xs),
                 decoration: BoxDecoration(
-                  color: PolieColors.goldEmber.withOpacity(0.2),
+                  color: PolieColors.goldEmber.withValues(alpha: 0.2),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -693,7 +700,7 @@ class _WordCard extends StatelessWidget {
                           vertical: 2,
                         ),
                         decoration: BoxDecoration(
-                          color: PolieColors.royalAmethyst.withOpacity(0.2),
+                          color: PolieColors.royalAmethyst.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(PolieRadius.sm),
                         ),
                         child: Text(
@@ -721,7 +728,7 @@ class _WordCard extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(PolieSpacing.xs),
                 decoration: BoxDecoration(
-                  color: PolieColors.error.withOpacity(0.2),
+                  color: PolieColors.error.withValues(alpha: 0.2),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -755,13 +762,13 @@ class _PolieGlassCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(PolieRadius.lg),
         color: Theme.of(context).colorScheme.surfaceContainerHighest,
         border: Border.all(
-          color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
+          color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.1),
           width: 1,
         ),
         boxShadow: glowColor != null
             ? [
                 BoxShadow(
-                  color: glowColor!.withOpacity(0.2),
+                  color: glowColor!.withValues(alpha: 0.2),
                   blurRadius: 16,
                   spreadRadius: 0,
                 ),
@@ -796,7 +803,7 @@ class _GlassIconButton extends StatelessWidget {
           color: PolieColors.surfaceContainerLight,
           shape: BoxShape.circle,
           border: Border.all(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
             width: 1,
           ),
         ),

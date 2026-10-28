@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:lingafriq/l10n/generated/app_localizations.dart';
 
 import 'app_theme.dart';
@@ -49,8 +48,6 @@ import 'screens/village/session_summary_screen.dart';
 import 'screens/village/flashcard_focus_screen.dart';
 import 'screens/village/matching_pairs_screen.dart';
 import 'screens/village/tonal_lesson_screen.dart';
-import 'screens/village/tribe_hub_screen.dart';
-import 'screens/village/tribe_discovery_screen.dart';
 import 'screens/village/my_tribe_screen.dart';
 import 'screens/village/tribal_duel_screen.dart';
 import 'screens/village/inter_tribe_leaderboard_screen.dart';
@@ -289,7 +286,7 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
           email: settings.arguments is String ? settings.arguments as String : null,
         ),
     'passkey-manage': (_) => const PasskeyAccountScreen(mode: PasskeyMode.manage),
-    'sign-in-options': (_) => SignInOptionsScreen(
+    'sign-in-options': (_) => const SignInOptionsScreen(
           googleIdToken: DeviceIdentity.googleIdToken,
           appleIdToken: DeviceIdentity.appleIdToken,
         ),

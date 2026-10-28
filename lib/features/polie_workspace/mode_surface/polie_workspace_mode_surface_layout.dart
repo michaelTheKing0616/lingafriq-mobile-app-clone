@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_models.dart';
 import 'package:lingafriq/features/polie_workspace/polie_workspace_providers.dart';
-import 'package:lingafriq/features/polie_workspace/polie_workspace_ui_helpers.dart';
 import 'package:lingafriq/screens/ai_chat/polie_workspace_shared.dart';
 
 class PolieModeSurfaceLayout {
@@ -29,7 +27,7 @@ class PolieModeSurfaceLayout {
     return Container(
       margin: const EdgeInsets.fromLTRB(12, 8, 12, 0),
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(color: Colors.red.withOpacity(0.12), borderRadius: BorderRadius.circular(12)),
+      decoration: BoxDecoration(color: Colors.red.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(12)),
       child: Row(children: [
         Icon(Icons.error_outline_rounded, color: Colors.red.shade300, size: 18),
         const SizedBox(width: 8),
@@ -59,9 +57,9 @@ class PolieModeSurfaceLayout {
       margin: const EdgeInsets.fromLTRB(12, 4, 12, 8),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: theme.accent.withOpacity(0.1),
+        color: theme.accent.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: theme.accent.withOpacity(0.25)),
+        border: Border.all(color: theme.accent.withValues(alpha: 0.25)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,7 +79,7 @@ class PolieModeSurfaceLayout {
           ),
           GestureDetector(
             onTap: () => onDismissIntro(mode.name),
-            child: Icon(Icons.close_rounded, size: 18, color: theme.body.withOpacity(0.6)),
+            child: Icon(Icons.close_rounded, size: 18, color: theme.body.withValues(alpha: 0.6)),
           ),
         ],
       ),

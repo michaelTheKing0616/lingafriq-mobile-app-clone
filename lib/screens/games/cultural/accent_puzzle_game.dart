@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
-import '../../../models/game/game_content_models.dart';
 import '../../../services/polie_content_generator.dart';
 import '../game_scenario_loader.dart';
 import '../../../widgets/error_boundary.dart';
@@ -228,7 +227,7 @@ class _AccentPuzzleGameState extends BaseGameScreenState<AccentPuzzleGame>
   Widget buildGameContent(BuildContext context) {
     try {
       if (isLoading) {
-        return DynamicLoadingScreen();
+        return const DynamicLoadingScreen();
       }
 
       if (error != null) {
@@ -306,12 +305,12 @@ class _AccentPuzzleGameState extends BaseGameScreenState<AccentPuzzleGame>
               Color? backgroundColor;
               if (_showResult) {
                 if (isCorrect) {
-                  backgroundColor = Colors.green.withOpacity(0.3);
+                  backgroundColor = Colors.green.withValues(alpha: 0.3);
                 } else if (isSelected && !isCorrect) {
-                  backgroundColor = Colors.red.withOpacity(0.3);
+                  backgroundColor = Colors.red.withValues(alpha: 0.3);
                 }
               } else if (isSelected) {
-                backgroundColor = Colors.blue.withOpacity(0.3);
+                backgroundColor = Colors.blue.withValues(alpha: 0.3);
               }
 
               return Padding(
@@ -319,7 +318,7 @@ class _AccentPuzzleGameState extends BaseGameScreenState<AccentPuzzleGame>
                 child: Card(
                   color: backgroundColor,
                   child: ListTile(
-                    leading: Icon(Icons.location_on, color: Colors.blue),
+                    leading: const Icon(Icons.location_on, color: Colors.blue),
                     title: Text(region),
                     trailing: _showResult && isCorrect
                         ? const Icon(Icons.check_circle, color: Colors.green)
@@ -334,7 +333,7 @@ class _AccentPuzzleGameState extends BaseGameScreenState<AccentPuzzleGame>
             if (_showResult) ...[
               SizedBox(height: 2.h),
               Card(
-                color: _isCorrect ? Colors.green.withOpacity(0.2) : Colors.red.withOpacity(0.2),
+                color: _isCorrect ? Colors.green.withValues(alpha: 0.2) : Colors.red.withValues(alpha: 0.2),
                 child: Padding(
                   padding: EdgeInsets.all(4.w),
                   child: Column(

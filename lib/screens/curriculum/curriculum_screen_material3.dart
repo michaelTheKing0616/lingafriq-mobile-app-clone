@@ -12,7 +12,6 @@ import 'package:lingafriq/widgets/error_state_widget.dart';
 import 'package:lingafriq/widgets/skeleton_loader.dart';
 import 'package:lingafriq/providers/curriculum_provider.dart';
 import 'package:lingafriq/models/curriculum_model.dart';
-import 'package:lingafriq/screens/curriculum/lesson_detail_screen.dart';
 import 'package:lingafriq/screens/lesson/authentic_lesson_flow_screen.dart';
 import 'package:lingafriq/screens/curriculum/level_certificate_screen.dart';
 import 'package:lingafriq/screens/persona_missions/persona_missions_hub_screen.dart';
@@ -189,7 +188,7 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : LinearGradient(
+              : const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -215,7 +214,7 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
                     child: Semantics(
                       label: 'Select language',
                       child: DropdownButtonFormField<String>(
-                        value: selectedLanguage.value,
+                        initialValue: selectedLanguage.value,
                         decoration: InputDecoration(
                           labelText: 'Language',
                           border: OutlineInputBorder(
@@ -258,7 +257,7 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
                     child: Semantics(
                       label: 'Select level',
                       child: DropdownButtonFormField<String>(
-                        value: effectiveLevel,
+                        initialValue: effectiveLevel,
                         decoration: InputDecoration(
                           labelText: 'Level',
                           border: OutlineInputBorder(
@@ -278,11 +277,11 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
                               children: [
                                 Text(level),
                                 if (!hasContent) ...[
-                                  SizedBox(width: 6),
+                                  const SizedBox(width: 6),
                                   Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
                                     decoration: BoxDecoration(
-                                      color: PanAfricanColors.warning.withOpacity(0.15),
+                                      color: PanAfricanColors.warning.withValues(alpha: 0.15),
                                       borderRadius: BorderRadius.circular(4),
                                     ),
                                     child: Text(
@@ -461,7 +460,7 @@ class _UnitCard extends StatelessWidget {
                   width: 36.sp,
                   height: 36.sp,
                   decoration: BoxDecoration(
-                    color: PanAfricanColors.primary.withOpacity(0.15),
+                    color: PanAfricanColors.primary.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                   ),
                   alignment: Alignment.center,
@@ -479,7 +478,7 @@ class _UnitCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(unit.title, style: PanAfricanTypography.titleMedium(context)),
-                      SizedBox(height: 2),
+                      const SizedBox(height: 2),
                       Text(
                         '$completedCount / ${unit.lessons.length} lessons',
                         style: PanAfricanTypography.bodySmall(context).copyWith(
@@ -497,7 +496,7 @@ class _UnitCard extends StatelessWidget {
                 child: LinearProgressIndicator(
                   value: progress,
                 backgroundColor: isDark ? Colors.grey[800] : Colors.grey[300],
-                  valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
+                  valueColor: const AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
                 minHeight: 6.h,
               ),
             ),

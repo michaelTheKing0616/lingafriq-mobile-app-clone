@@ -48,7 +48,7 @@ class CreateLessonScreenEnhanced extends HookConsumerWidget {
     Future<void> validateContent() async {
       if (contentController.text.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please enter lesson content')),
+          const SnackBar(content: Text('Please enter lesson content')),
         );
         return;
       }
@@ -77,7 +77,7 @@ class CreateLessonScreenEnhanced extends HookConsumerWidget {
     Future<void> submitLesson() async {
       if (titleController.text.isEmpty || contentController.text.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please fill in all required fields')),
+          const SnackBar(content: Text('Please fill in all required fields')),
         );
         return;
       }
@@ -117,18 +117,18 @@ class CreateLessonScreenEnhanced extends HookConsumerWidget {
       message: 'Creating lesson...',
       child: Scaffold(
       appBar: AppBar(
-        title: Text('Create Lesson'),
+        title: const Text('Create Lesson'),
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
           if (validationResult.value != null)
             IconButton(
-              icon: Icon(Icons.info_outline),
+              icon: const Icon(Icons.info_outline),
               onPressed: () {
                 Navigator.push(
                   context,
                   SmoothPageRoute(
-                    child: UGCValidationFeedbackScreen(
+                    child: const UGCValidationFeedbackScreen(
                       contentId: 'draft',
                       contentType: 'lesson',
                     ),
@@ -143,7 +143,7 @@ class CreateLessonScreenEnhanced extends HookConsumerWidget {
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : LinearGradient(
+              : const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -161,7 +161,7 @@ class CreateLessonScreenEnhanced extends HookConsumerWidget {
                 // Quality Badges Preview
                 if (qualityBadges.value.isNotEmpty)
                   Card(
-                    color: PanAfricanColors.primaryContainer.withOpacity(0.3),
+                    color: PanAfricanColors.primaryContainer.withValues(alpha: 0.3),
                     child: Padding(
                       padding: EdgeInsets.all(PanAfricanSpacing.md),
                       child: Column(
@@ -184,7 +184,7 @@ class CreateLessonScreenEnhanced extends HookConsumerWidget {
 
                 // Language Selection
                 DropdownButtonFormField<String>(
-                  value: selectedLanguage.value,
+                  initialValue: selectedLanguage.value,
                   decoration: InputDecoration(
                     labelText: 'Language',
                     border: OutlineInputBorder(
@@ -263,8 +263,8 @@ class CreateLessonScreenEnhanced extends HookConsumerWidget {
                 // Validate Button
                 ElevatedButton.icon(
                   onPressed: validateContent,
-                  icon: Icon(Icons.check_circle),
-                  label: Text('Validate Content'),
+                  icon: const Icon(Icons.check_circle),
+                  label: const Text('Validate Content'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: PanAfricanColors.secondary,
                     foregroundColor: Theme.of(context).colorScheme.onSecondary,
@@ -297,14 +297,14 @@ class CreateLessonScreenEnhanced extends HookConsumerWidget {
                               Navigator.push(
                                 context,
                                 SmoothPageRoute(
-                                  child: UGCValidationFeedbackScreen(
+                                  child: const UGCValidationFeedbackScreen(
                                     contentId: 'draft',
                                     contentType: 'lesson',
                                   ),
                                 ),
                               );
                             },
-                            child: Text('View Full Details'),
+                            child: const Text('View Full Details'),
                           ),
                         ],
                       ),
@@ -327,7 +327,7 @@ class CreateLessonScreenEnhanced extends HookConsumerWidget {
                       ? SizedBox(
                           width: 20.w,
                           height: 20.h,
-                          child: CircularProgressIndicator(strokeWidth: 2),
+                          child: const CircularProgressIndicator(strokeWidth: 2),
                         )
                       : Text(
                           'Create Lesson',

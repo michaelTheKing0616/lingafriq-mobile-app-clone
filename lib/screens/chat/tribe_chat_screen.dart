@@ -238,7 +238,7 @@ class TribeChatScreen extends HookConsumerWidget {
               label: showMembers.value ? 'Hide tribe members' : 'Show tribe members',
               button: true,
               child: IconButton(
-                icon: Icon(Icons.people),
+                icon: const Icon(Icons.people),
                 onPressed: () {
                   HapticFeedback.selectionClick();
                   showMembers.value = !showMembers.value;
@@ -262,7 +262,7 @@ class TribeChatScreen extends HookConsumerWidget {
               decoration: BoxDecoration(
                 gradient: isDark
                     ? PanAfricanGradients.darkSurface
-                    : LinearGradient(
+                    : const LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [

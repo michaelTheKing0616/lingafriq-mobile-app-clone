@@ -34,7 +34,7 @@ class SocialHubScreen extends HookConsumerWidget {
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : LinearGradient(
+              : const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
@@ -87,7 +87,7 @@ class SocialHubScreen extends HookConsumerWidget {
             label: 'Back',
             button: true,
             child: IconButton(
-              icon: Icon(Icons.arrow_back, color: PanAfricanColors.textPrimary),
+              icon: const Icon(Icons.arrow_back, color: PanAfricanColors.textPrimary),
               onPressed: () {
                 HapticFeedback.lightImpact();
                 Navigator.of(context).pop();
@@ -129,7 +129,7 @@ class SocialHubScreen extends HookConsumerWidget {
                     icon: const Icon(Icons.rule_folder_outlined),
                     label: const Text('Community Corrections'),
                     style: OutlinedButton.styleFrom(
-                      side: BorderSide(color: PanAfricanColors.accent),
+                      side: const BorderSide(color: PanAfricanColors.accent),
                     ),
                   ),
                 ),
@@ -138,7 +138,7 @@ class SocialHubScreen extends HookConsumerWidget {
           ),
           IconButton(
             tooltip: 'Social features guide',
-            icon: Icon(Icons.help_outline_rounded, color: PanAfricanColors.textPrimary),
+            icon: const Icon(Icons.help_outline_rounded, color: PanAfricanColors.textPrimary),
             onPressed: () {
               HapticFeedback.lightImpact();
               Navigator.pushNamed(
@@ -276,7 +276,7 @@ class _FeedTab extends HookConsumerWidget {
           children: [
             CircleAvatar(
               radius: 24.r,
-              backgroundColor: iconColor.withOpacity(0.2),
+              backgroundColor: iconColor.withValues(alpha: 0.2),
               child: Icon(icon, color: iconColor, size: 24.sp),
             ),
             SizedBox(width: PanAfricanSpacing.md),
@@ -383,9 +383,9 @@ class _FriendsTab extends HookConsumerWidget {
             onChanged: (value) => searchQuery.value = value,
             decoration: InputDecoration(
               hintText: 'Search friends...',
-              prefixIcon: Icon(Icons.search, color: PanAfricanColors.textSecondary),
+              prefixIcon: const Icon(Icons.search, color: PanAfricanColors.textSecondary),
               filled: true,
-              fillColor: PanAfricanColors.surfaceContainerLight.withOpacity(0.5),
+              fillColor: PanAfricanColors.surfaceContainerLight.withValues(alpha: 0.5),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                 borderSide: BorderSide.none,
@@ -401,7 +401,7 @@ class _FriendsTab extends HookConsumerWidget {
         ),
         Expanded(
           child: isLoading.value
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(color: PanAfricanColors.accent),
                 )
               : filteredFriends.isEmpty
@@ -477,7 +477,7 @@ class _FriendsTab extends HookConsumerWidget {
                 children: [
                   CircleAvatar(
                     radius: 28.r,
-                    backgroundColor: PanAfricanColors.ankaraPurple.withOpacity(0.2),
+                    backgroundColor: PanAfricanColors.ankaraPurple.withValues(alpha: 0.2),
                     backgroundImage: avatar != null ? NetworkImage(avatar) : null,
                     child: avatar == null
                         ? Text(
@@ -552,7 +552,7 @@ class _FriendsTab extends HookConsumerWidget {
                   ],
                 ),
               ),
-              Icon(
+              const Icon(
                 Icons.chevron_right,
                 color: PanAfricanColors.textSecondary,
               ),
@@ -598,7 +598,7 @@ class _ChallengesTab extends HookConsumerWidget {
     }, []);
 
     return isLoading.value
-        ? Center(
+        ? const Center(
             child: CircularProgressIndicator(color: PanAfricanColors.accent),
           )
         : SingleChildScrollView(
@@ -618,8 +618,8 @@ class _ChallengesTab extends HookConsumerWidget {
                         ),
                       );
                     },
-                    icon: Icon(Icons.add),
-                    label: Text('Challenge a Friend'),
+                    icon: const Icon(Icons.add),
+                    label: const Text('Challenge a Friend'),
                     style: FilledButton.styleFrom(
                       backgroundColor: PanAfricanColors.accent,
                       padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
@@ -714,7 +714,7 @@ class _ChallengesTab extends HookConsumerWidget {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.sm, vertical: 4),
                     decoration: BoxDecoration(
-                      color: won ? PanAfricanColors.success.withOpacity(0.2) : PanAfricanColors.error.withOpacity(0.2),
+                      color: won ? PanAfricanColors.success.withValues(alpha: 0.2) : PanAfricanColors.error.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(PanAfricanRadius.sm),
                     ),
                     child: Text(
@@ -745,8 +745,8 @@ class _ChallengesTab extends HookConsumerWidget {
               SizedBox(height: PanAfricanSpacing.xs),
               LinearProgressIndicator(
                 value: progress / (progress + friendProgress).clamp(0.0, 1.0),
-                backgroundColor: PanAfricanColors.textSecondary.withOpacity(0.2),
-                valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.accent),
+                backgroundColor: PanAfricanColors.textSecondary.withValues(alpha: 0.2),
+                valueColor: const AlwaysStoppedAnimation<Color>(PanAfricanColors.accent),
                 minHeight: 6.h,
               ),
               SizedBox(height: PanAfricanSpacing.xs),
@@ -821,7 +821,7 @@ class _TribesTab extends HookConsumerWidget {
     }, []);
 
     return isLoading.value
-        ? Center(
+        ? const Center(
             child: CircularProgressIndicator(color: PanAfricanColors.accent),
           )
         : tribeData.value == null
@@ -866,7 +866,7 @@ class _TribesTab extends HookConsumerWidget {
                           vertical: PanAfricanSpacing.md,
                         ),
                       ),
-                      child: Text('Find a Tribe'),
+                      child: const Text('Find a Tribe'),
                     ),
                   ],
                 ),
@@ -946,11 +946,11 @@ class _TribesTab extends HookConsumerWidget {
                             ),
                           );
                         },
-                        icon: Icon(Icons.chat),
-                        label: Text('Tribe Chat'),
+                        icon: const Icon(Icons.chat),
+                        label: const Text('Tribe Chat'),
                         style: OutlinedButton.styleFrom(
                           padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
-                          side: BorderSide(color: PanAfricanColors.accent),
+                          side: const BorderSide(color: PanAfricanColors.accent),
                         ),
                       ),
                     ),

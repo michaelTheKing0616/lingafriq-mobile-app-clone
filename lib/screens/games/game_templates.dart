@@ -2,28 +2,17 @@
 // Each game follows the BaseGameScreen pattern.
 
 import 'dart:async';
-import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:record/record.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
 import '../../models/game/game_session_model.dart';
 import '../../models/game/phrase_card_model.dart';
 import '../../providers/game_provider.dart';
-import '../../providers/dio_provider.dart';
-import '../../providers/api_provider.dart';
-import '../../services/polie_content_generator.dart';
-import '../../services/voice/pronunciation_analysis_service.dart';
-import '../../models/lesson_item_model.dart';
 import '../../services/games/game_image_service.dart';
-import '../../utils/pan_african_design_system.dart';
 import '../../utils/media_url_resolver.dart';
 import 'base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter/services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 const bool _allowSyntheticGameContent = bool.fromEnvironment(
@@ -439,7 +428,7 @@ class _ListenSketchGameState extends BaseGameScreenState<ListenSketchGame> {
                                         gloss: option.gloss,
                                         seed: option.cardId.hashCode,
                                       ),
-                                    SizedBox(height: 8),
+                                    const SizedBox(height: 8),
                                     Text(
                                       option.gloss,
                                       textAlign: TextAlign.center,

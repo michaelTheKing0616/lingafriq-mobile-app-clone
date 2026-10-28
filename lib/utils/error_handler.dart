@@ -242,7 +242,7 @@ class ErrorHandler {
         content: Row(
           children: [
             Icon(Icons.error_outline, color: Theme.of(context).colorScheme.onError),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             Expanded(
               child: Text(
                 message,
@@ -253,7 +253,7 @@ class ErrorHandler {
         ),
         backgroundColor: Colors.red,
         behavior: SnackBarBehavior.floating,
-        duration: Duration(seconds: 4),
+        duration: const Duration(seconds: 4),
         action: SnackBarAction(
           label: 'Dismiss',
           textColor: Theme.of(context).colorScheme.onError,
@@ -274,7 +274,7 @@ class ErrorHandler {
         content: Row(
           children: [
             Icon(Icons.check_circle_outline, color: Theme.of(context).colorScheme.onPrimary),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             Expanded(
               child: Text(
                 message,
@@ -285,7 +285,7 @@ class ErrorHandler {
         ),
         backgroundColor: Colors.green,
         behavior: SnackBarBehavior.floating,
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
       ),
     );
   }
@@ -299,7 +299,7 @@ class ErrorHandler {
         content: Row(
           children: [
             Icon(Icons.info_outline, color: Theme.of(context).colorScheme.onPrimary),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             Expanded(
               child: Text(
                 message,
@@ -310,7 +310,7 @@ class ErrorHandler {
         ),
         backgroundColor: Colors.blue,
         behavior: SnackBarBehavior.floating,
-        duration: Duration(seconds: 3),
+        duration: const Duration(seconds: 3),
       ),
     );
   }
@@ -332,12 +332,12 @@ class ErrorHandler {
       final result = await showDialog<bool>(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Error'),
+          title: const Text('Error'),
           content: Text(message),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () => Navigator.of(context).pop(true),
@@ -552,7 +552,7 @@ class _DefaultErrorWidget extends StatelessWidget {
                   'The app encountered an unexpected error. Please try again.',
                   style: TextStyle(
                     fontSize: 14,
-                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.54),
+                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.54),
                   ),
                   textAlign: TextAlign.center,
                 ),

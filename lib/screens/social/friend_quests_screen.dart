@@ -73,7 +73,7 @@ class FriendQuestsScreen extends HookConsumerWidget {
           _buildTabBar(context, selectedTab, loadQuests),
           Expanded(
             child: isLoading.value
-                ? Center(child: CircularProgressIndicator(color: PanAfricanColors.primary))
+                ? const Center(child: CircularProgressIndicator(color: PanAfricanColors.primary))
                 : quests.value.isEmpty
                     ? _buildEmptyState(context, isDark)
                     : RefreshIndicator(
@@ -281,7 +281,7 @@ class FriendQuestsScreen extends HookConsumerWidget {
                     Container(
                       padding: EdgeInsets.all(PanAfricanSpacing.sm),
                       decoration: BoxDecoration(
-                        color: PanAfricanColors.primary.withOpacity(0.1),
+                        color: PanAfricanColors.primary.withValues(alpha: 0.1),
                         borderRadius: PanAfricanRadius.mdBR,
                       ),
                       child: Icon(
@@ -423,7 +423,7 @@ class FriendQuestsScreen extends HookConsumerWidget {
                   Container(
                     padding: EdgeInsets.all(PanAfricanSpacing.sm),
                     decoration: BoxDecoration(
-                      color: PanAfricanColors.success.withOpacity(0.1),
+                      color: PanAfricanColors.success.withValues(alpha: 0.1),
                       borderRadius: PanAfricanRadius.mdBR,
                     ),
                     child: Row(

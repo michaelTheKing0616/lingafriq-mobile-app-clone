@@ -22,7 +22,7 @@ class SearchLanguagesPage extends HookConsumerWidget {
     }).toList();
 
     return Scaffold(
-      appBar: PanAfricanAppBar(
+      appBar: const PanAfricanAppBar(
         title: 'Search Languages',
       ),
       body: Column(
@@ -33,7 +33,7 @@ class SearchLanguagesPage extends HookConsumerWidget {
               controller: searchController,
               decoration: InputDecoration(
                 hintText: 'Search languages...',
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                 ),

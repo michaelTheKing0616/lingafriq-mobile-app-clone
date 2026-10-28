@@ -159,7 +159,7 @@ class PanAfricanSegmentedControl<T> extends StatelessWidget {
             child: GestureDetector(
               onTap: () => onChanged(entry.key),
               child: AnimatedContainer(
-                duration: Duration(milliseconds: 200),
+                duration: const Duration(milliseconds: 200),
                 padding: EdgeInsets.symmetric(
                   vertical: PanAfricanSpacing.sm,
                   horizontal: PanAfricanSpacing.md,

@@ -293,7 +293,7 @@ class _LiveClassroomScreenState extends ConsumerState<LiveClassroomScreen>
             children: _listeners.map((name) {
               return Column(
                 children: [
-                  GriotAvatar(size: 36),
+                  const GriotAvatar(size: 36),
                   SizedBox(height: 3.h),
                   Text(
                     name.split(' ').first,

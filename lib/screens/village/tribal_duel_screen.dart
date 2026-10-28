@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -132,7 +131,7 @@ class _TribalDuelScreenState extends ConsumerState<TribalDuelScreen>
               ],
             ),
           ),
-          GriotBadgePill(label: 'Q3', bounce: true),
+          const GriotBadgePill(label: 'Q3', bounce: true),
         ],
       ),
     );

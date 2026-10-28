@@ -72,11 +72,11 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
                             : gamificationState.isLoading
                             ? Row(
                                 children: [
-                                  Expanded(child: SkeletonStatCard()),
+                                  const Expanded(child: SkeletonStatCard()),
                                   SizedBox(width: PanAfricanSpacing.sm),
-                                  Expanded(child: SkeletonStatCard()),
+                                  const Expanded(child: SkeletonStatCard()),
                                   SizedBox(width: PanAfricanSpacing.sm),
-                                  Expanded(child: SkeletonStatCard()),
+                                  const Expanded(child: SkeletonStatCard()),
                                 ],
                               )
                             : _buildStats(
@@ -130,7 +130,7 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
               Navigator.push(
                 context,
                 SmoothPageRoute(
-                  child: SettingsScreenMaterial3(),
+                  child: const SettingsScreenMaterial3(),
                 ),
               );
             },
@@ -246,7 +246,7 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
               Navigator.push(
                 context,
                 SmoothPageRoute(
-                  child: ProfileEditScreen(),
+                  child: const ProfileEditScreen(),
                 ),
               );
             },
@@ -319,7 +319,7 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
           Navigator.push(
             context,
             SmoothPageRoute(
-              child: BadgeCollectionScreen(),
+              child: const BadgeCollectionScreen(),
             ),
           );
         },
@@ -332,7 +332,7 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
           Navigator.push(
             context,
             SmoothPageRoute(
-              child: LeaderboardScreen(),
+              child: const LeaderboardScreen(),
             ),
           );
         },
@@ -367,7 +367,7 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
           Navigator.push(
             context,
             SmoothPageRoute(
-              child: SettingsScreenMaterial3(),
+              child: const SettingsScreenMaterial3(),
             ),
           );
         },
@@ -403,7 +403,7 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
                     Container(
                       padding: EdgeInsets.all(PanAfricanSpacing.sm),
                       decoration: BoxDecoration(
-                        color: item.color.withOpacity(0.1),
+                        color: item.color.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                       ),
                       child: Icon(
@@ -448,7 +448,7 @@ class _HeaderIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final onSurface = Theme.of(context).colorScheme.onSurface;
     return Material(
-      color: onSurface.withOpacity(0.1),
+      color: onSurface.withValues(alpha: 0.1),
       shape: const CircleBorder(),
       child: InkWell(
         onTap: onTap,

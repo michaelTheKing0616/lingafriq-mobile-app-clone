@@ -34,7 +34,7 @@ class StreakIndicator extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.orange.withOpacity(0.5),
+            color: Colors.orange.withValues(alpha: 0.5),
             blurRadius: 8,
             spreadRadius: 2,
           ),
@@ -70,7 +70,7 @@ class StreakIndicator extends StatelessWidget {
         .animate(onPlay: (controller) => controller.repeat())
         .shimmer(
           duration: 1000.ms,
-          color: Colors.yellow.withOpacity(0.8),
+          color: Colors.yellow.withValues(alpha: 0.8),
         );
   }
 }

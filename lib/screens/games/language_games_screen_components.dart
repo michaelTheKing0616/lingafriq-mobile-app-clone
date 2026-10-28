@@ -169,7 +169,7 @@ class _GameCard extends StatelessWidget {
                 gradient: gradient,
                 borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                 boxShadow: PanAfricanShadows.sm,
-                border: Border.all(color: borderColor.withOpacity(0.2)),
+                border: Border.all(color: borderColor.withValues(alpha: 0.2)),
               ),
               child: Icon(icon, color: colorScheme.onPrimary, size: 28.sp),
             ),

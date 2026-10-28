@@ -67,7 +67,7 @@ class _AnimatedIconButtonState extends State<AnimatedIconButton>
             shape: BoxShape.circle,
             color: _isPressed
                 ? (widget.color ?? Theme.of(context).primaryColor)
-                    .withOpacity(0.2)
+                    .withValues(alpha: 0.2)
                 : Colors.transparent,
           ),
           child: Icon(

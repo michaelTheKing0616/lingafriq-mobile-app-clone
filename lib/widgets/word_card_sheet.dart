@@ -245,9 +245,9 @@ class _WordCardSheetState extends State<WordCardSheet> {
   @override
   Widget build(BuildContext context) {
     final bottom = MediaQuery.paddingOf(context).bottom;
-    final lemmaStyle = TextStyle(
+    final lemmaStyle = const TextStyle(
       fontFamily: 'Noto Sans',
-      fontFamilyFallback: const [
+      fontFamilyFallback: [
         'NotoSans',
         'Roboto',
         'Arial Unicode MS',
@@ -264,7 +264,7 @@ class _WordCardSheetState extends State<WordCardSheet> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             if (widget.model.showsAiDraftBadge)
-              _AiDraftBadge(label: kWordCardAiDraftCopy),
+              const _AiDraftBadge(label: kWordCardAiDraftCopy),
             if (widget.model.gloss != null) ...[
               Text(
                 widget.model.gloss!,

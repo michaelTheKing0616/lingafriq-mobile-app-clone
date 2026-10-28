@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/pan_african_design_system.dart';
@@ -200,7 +199,7 @@ class _CircleGoalScreenState extends State<CircleGoalScreen> {
         SizedBox(height: PanAfricanSpacing.md),
         Text(
           'Practice mode never counts toward this goal.',
-          style: PanAfricanTypography.bodySmall(context)?.copyWith(
+          style: PanAfricanTypography.bodySmall(context).copyWith(
             color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ),

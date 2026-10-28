@@ -88,7 +88,7 @@ class _StepRow extends StatelessWidget {
                 margin: EdgeInsets.symmetric(vertical: 4.h),
                 color: step.status == ProcessingStepStatus.completed
                     ? const Color(0xFF4CAF50)
-                    : colors.onSurface.withOpacity(0.1),
+                    : colors.onSurface.withValues(alpha: 0.1),
               ),
             ),
         ],
@@ -142,7 +142,7 @@ class _StepRow extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
-              color: colors.onSurface.withOpacity(0.2),
+              color: colors.onSurface.withValues(alpha: 0.2),
               width: 2.w,
             ),
           ),
@@ -176,9 +176,9 @@ class _StepRow extends StatelessWidget {
                   : FontWeight.w500,
               color: step.status == ProcessingStepStatus.failed
                   ? colors.error
-                  : colors.onSurface.withOpacity(textOpacity),
+                  : colors.onSurface.withValues(alpha: textOpacity),
               decoration: decoration,
-              decorationColor: colors.onSurface.withOpacity(0.3),
+              decorationColor: colors.onSurface.withValues(alpha: 0.3),
             ),
           ),
           if (step.status == ProcessingStepStatus.active &&
@@ -191,7 +191,7 @@ class _StepRow extends StatelessWidget {
                   height: 4.h,
                   child: LinearProgressIndicator(
                     value: step.progress,
-                    backgroundColor: colors.onSurface.withOpacity(0.08),
+                    backgroundColor: colors.onSurface.withValues(alpha: 0.08),
                     valueColor: AlwaysStoppedAnimation(colors.primary),
                   ),
                 ),

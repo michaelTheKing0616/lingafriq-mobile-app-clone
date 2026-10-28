@@ -133,11 +133,11 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Column(
+        title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('Create Room'),
+            Text('Create Room'),
             Text('LingAfriq', style: TextStyle(fontSize: 12, color: PanAfricanColors.textSecondary)),
           ],
         ),
@@ -205,7 +205,7 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
 
                 // Language selection — all supported African languages
                 DropdownButtonFormField<String>(
-                  value: _selectedLanguage,
+                  initialValue: _selectedLanguage,
                   decoration: InputDecoration(
                     labelText: 'Language *',
                     border: OutlineInputBorder(
@@ -234,7 +234,7 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
 
                 // Room type
                 DropdownButtonFormField<RoomType>(
-                  value: _selectedType,
+                  initialValue: _selectedType,
                   decoration: InputDecoration(
                     labelText: 'Room Type',
                     border: OutlineInputBorder(

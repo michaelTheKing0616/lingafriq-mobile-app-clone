@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:lingafriq/utils/pan_african_design_system.dart'
-    show PanAfricanSpacing;
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // THE MODERN GRIOT — LingAfriq Canonical Design System

@@ -37,7 +37,7 @@ class ErrorRecoveryService {
         if (attempt > 0) {
           final isConnected = await _checkConnectivity();
           if (!isConnected) {
-            throw SocketException('No internet connection');
+            throw const SocketException('No internet connection');
           }
         }
 
@@ -248,7 +248,7 @@ class ErrorRecoveryService {
     if (error is SocketException) {
       return RetryStrategy(
         maxRetries: 5,
-        baseDelay: Duration(seconds: 1),
+        baseDelay: const Duration(seconds: 1),
         shouldRetry: true,
       );
     }
@@ -256,7 +256,7 @@ class ErrorRecoveryService {
     if (error is TimeoutException) {
       return RetryStrategy(
         maxRetries: 3,
-        baseDelay: Duration(seconds: 2),
+        baseDelay: const Duration(seconds: 2),
         shouldRetry: true,
       );
     }
@@ -266,7 +266,7 @@ class ErrorRecoveryService {
       // Rate limit: longer delay
       return RetryStrategy(
         maxRetries: 3,
-        baseDelay: Duration(seconds: 5),
+        baseDelay: const Duration(seconds: 5),
         shouldRetry: true,
       );
     }
@@ -274,7 +274,7 @@ class ErrorRecoveryService {
     // Default strategy
     return RetryStrategy(
       maxRetries: 3,
-      baseDelay: Duration(seconds: 2),
+      baseDelay: const Duration(seconds: 2),
       shouldRetry: _defaultShouldRetry(error),
     );
   }

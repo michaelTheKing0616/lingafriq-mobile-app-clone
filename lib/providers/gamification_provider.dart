@@ -63,8 +63,8 @@ class CircleQuestSnapshot {
       members: membersRaw
           .map((e) => CircleQuestMemberLabel(
                 slot: (e as Map)['slot']?.toString() ?? 'Learner',
-                isViewer: (e as Map)['isViewer'] == true,
-                userId: (e as Map)['userId']?.toString(),
+                isViewer: (e)['isViewer'] == true,
+                userId: (e)['userId']?.toString(),
               ))
           .toList(),
     );
@@ -148,7 +148,7 @@ class HeritageTreeSnapshot {
       members: membersRaw
           .map((e) => CircleQuestMemberLabel(
                 slot: (e as Map)['slot']?.toString() ?? 'Learner',
-                isViewer: (e as Map)['isViewer'] == true,
+                isViewer: (e)['isViewer'] == true,
               ))
           .toList(),
     );

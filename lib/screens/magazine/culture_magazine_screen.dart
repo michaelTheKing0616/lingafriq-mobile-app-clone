@@ -328,7 +328,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen> {
                             Navigator.of(context).pop();
                           },
                           style: IconButton.styleFrom(
-                            backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                            backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                             shape: const CircleBorder(),
                           ),
                         ),
@@ -339,7 +339,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen> {
                             Scaffold.of(context).openDrawer();
                           },
                           style: IconButton.styleFrom(
-                            backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                            backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                             shape: const CircleBorder(),
                           ),
                         ),
@@ -359,7 +359,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen> {
                     SizedBox(height: PanAfricanSpacing.xxs),
                     Text(
                       'Explore African culture & heritage',
-                      style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9)),
+                      style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9)),
                     ),
                   ],
                 ),

@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -202,6 +201,22 @@ class _PreservationFundScreenState extends ConsumerState<PreservationFundScreen>
     }
   }
 
+  List<Widget> _amountChoiceChips(bool donating) {
+    return _amounts.map((amount) {
+      final selected = _selectedAmount == amount;
+      return Semantics(
+        label: '$amount Cowries',
+        selected: selected,
+        button: true,
+        child: ChoiceChip(
+          label: Text('$amount Cowries'),
+          selected: selected,
+          onSelected: donating ? null : (_) => setState(() => _selectedAmount = amount),
+        ),
+      );
+    }).toList();
+  }
+
   Widget _impactSection(BuildContext context) {
     if (!_impactRecorded) {
       return Semantics(
@@ -334,21 +349,7 @@ class _PreservationFundScreenState extends ConsumerState<PreservationFundScreen>
                   Wrap(
                     spacing: PanAfricanSpacing.sm,
                     runSpacing: PanAfricanSpacing.sm,
-                    children: _amounts.map((amount) {
-                      final selected = _selectedAmount == amount;
-                      return Semantics(
-                        label: '$amount Cowries',
-                        selected: selected,
-                        button: true,
-                        child: ChoiceChip(
-                          label: Text('$amount Cowries'),
-                          selected: selected,
-                          onSelected: donating
-                              ? null
-                              : (_) => setState(() => _selectedAmount = amount),
-                        ),
-                      );
-                    }).toList(),
+                    children: _amountChoiceChips(donating),
                   ),
                   SizedBox(height: PanAfricanSpacing.lg),
                   Semantics(

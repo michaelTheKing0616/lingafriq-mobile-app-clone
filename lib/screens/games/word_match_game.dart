@@ -176,7 +176,7 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
       appBar: AppBar(
         title: Text('Word Match - ${widget.language.name}'),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
                 PanAfricanColors.primary,
@@ -226,7 +226,7 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
         color: context.adaptive12,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -296,9 +296,9 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: card.isMatched
-                      ? PanAfricanColors.success.withOpacity(0.2)
+                      ? PanAfricanColors.success.withValues(alpha: 0.2)
                       : isSelected
-                          ? PanAfricanColors.primary.withOpacity(0.2)
+                          ? PanAfricanColors.primary.withValues(alpha: 0.2)
                           : null,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
@@ -353,7 +353,7 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
           children: [
             Container(
               padding: const EdgeInsets.all(32),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
                     PanAfricanColors.primary,
@@ -390,7 +390,7 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: PanAfricanColors.primary.withOpacity(0.1),
+                color: PanAfricanColors.primary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(

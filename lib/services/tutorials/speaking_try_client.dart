@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 import '../lens/lens_scoring_client.dart';
@@ -75,7 +74,7 @@ SpeakingTryResult speakingTryResultFromLens(LensScoreOutcome lens) {
         syllables: lens.syllables,
       );
     case ToneOverlayStatus.loading:
-      return SpeakingTryResult(
+      return const SpeakingTryResult(
         completion: SpeakingTryCompletion.error,
         errorMessage: kTutorialTryErrorCopy,
       );

@@ -354,7 +354,7 @@ class _ToneDrillScreenState extends State<ToneDrillScreen> {
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Row(
                   children: [
-                    Icon(Icons.error, color: Colors.red, size: 16),
+                    const Icon(Icons.error, color: Colors.red, size: 16),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(

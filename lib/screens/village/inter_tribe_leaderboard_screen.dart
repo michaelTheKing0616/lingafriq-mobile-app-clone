@@ -1,7 +1,4 @@
-import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/modern_griot_design_system.dart';
@@ -181,7 +178,7 @@ class _InterTribeLeaderboardScreenState
               end: Alignment.bottomCenter,
               colors: [medal.withAlpha(180), medal.withAlpha(50)],
             ),
-            borderRadius: BorderRadius.vertical(
+            borderRadius: const BorderRadius.vertical(
               top: Radius.circular(ModernGriotRadius.lg),
             ),
           ),
@@ -300,7 +297,7 @@ class _InterTribeLeaderboardScreenState
             Container(
               width: 36.r,
               height: 36.r,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: ModernGriotColors.surfaceContainerHighest,
                 shape: BoxShape.circle,
               ),
