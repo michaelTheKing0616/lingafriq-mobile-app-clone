@@ -107,7 +107,7 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
     if (_selectedAnswers[questionId] == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please select an answer'),
+          content: Text("Pick an answer first, then we'll check it together."),
           backgroundColor: PanAfricanColors.error,
         ),
       );
@@ -119,7 +119,8 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
     });
 
     final isCorrect = widget.isAnswerCorrect?.call(questionId, answer) ?? false;
-    if (!isCorrect) {
+    final reducedMotion = mounted ? MediaQuery.disableAnimationsOf(context) : false;
+    if (!isCorrect && !reducedMotion) {
       _shakeController.forward(from: 0);
       await Future.delayed(const Duration(milliseconds: 500));
       if (!mounted) return;
@@ -130,7 +131,13 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
     final feedback = LingAfriqUxVoice.quizFeedback(isCorrect: isCorrect);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(feedback),
+        content: Text(
+          feedback,
+          // Both the success-green and secondary-gold backgrounds are too
+          // bright for default/white SnackBar text (~2.1:1 and ~1.4:1).
+          // neutralDarkest clears AA on both (~9.6:1 and much higher).
+          style: const TextStyle(color: PanAfricanColors.neutralDarkest),
+        ),
         backgroundColor: isCorrect ? PanAfricanColors.success : PanAfricanColors.secondary,
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 3),
@@ -144,20 +151,35 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
   Future<void> _goToNextPage(int questionCount) async {
     if (_currentQuestionIndex >= questionCount - 1) return;
     await _pageController.nextPage(
-      duration: const Duration(milliseconds: 300),
+      duration: _pageTransitionDuration(),
       curve: Curves.easeInOut,
     );
+  }
+
+  /// Instant (zero-duration) transitions when the learner has reduced motion
+  /// enabled at the OS level; otherwise our standard 300ms glide.
+  Duration _pageTransitionDuration() {
+    if (!mounted) return const Duration(milliseconds: 300);
+    return MediaQuery.disableAnimationsOf(context)
+        ? Duration.zero
+        : const Duration(milliseconds: 300);
+  }
+
+  /// Mirrors forward/back iconography for RTL locales (Arabic, Darija) so
+  /// "next" visually points the way text actually flows.
+  IconData _directionalIcon(BuildContext context, {required IconData ltr, required IconData rtl}) {
+    return Directionality.of(context) == TextDirection.rtl ? rtl : ltr;
   }
 
   @override
   Widget build(BuildContext context) {
     final questions = _bankQuestions;
     if (questions.isEmpty) {
-      return Center(
-        child: Text(
-          'No questions available',
-          style: PanAfricanTypography.bodyLarge(context),
-        ),
+      return const PanAfricanEmptyState(
+        icon: Icons.quiz_outlined,
+        title: "This part isn't ready yet",
+        description:
+            "We're still preparing these questions. Please check back in a moment.",
       );
     }
 
@@ -227,12 +249,16 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
                       child: PanAfricanButton(
                         onPressed: () async {
                           await _pageController.previousPage(
-                            duration: const Duration(milliseconds: 300),
+                            duration: _pageTransitionDuration(),
                             curve: Curves.easeInOut,
                           );
                         },
                         label: 'Previous',
-                        icon: Icons.arrow_back_rounded,
+                        icon: _directionalIcon(
+                          context,
+                          ltr: Icons.arrow_back_rounded,
+                          rtl: Icons.arrow_forward_rounded,
+                        ),
                         backgroundColor: PanAfricanColors.cardDark,
                         foregroundColor: Theme.of(context).colorScheme.onSurface,
                       ),
@@ -268,7 +294,11 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
                               : 'Next')
                           : 'Check',
                       icon: isChecked && _currentQuestionIndex < questions.length - 1
-                          ? Icons.arrow_forward_rounded
+                          ? _directionalIcon(
+                              context,
+                              ltr: Icons.arrow_forward_rounded,
+                              rtl: Icons.arrow_back_rounded,
+                            )
                           : Icons.check_rounded,
                       backgroundColor: PanAfricanColors.primary,
                       foregroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -390,8 +420,9 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
               child: AnimatedBuilder(
                 animation: _shakeController,
                 builder: (context, child) {
+                  final reducedMotion = MediaQuery.disableAnimationsOf(context);
                   return Transform.translate(
-                    offset: showIncorrect
+                    offset: showIncorrect && !reducedMotion
                         ? Offset(
                             10 * _shakeController.value * (1 - _shakeController.value) * 2,
                             0,
@@ -424,8 +455,13 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
                             height: 32.w,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
+                              // White-on-fill lettering needs a solid enough
+                              // background to clear WCAG AA; the flat
+                              // "success" green is too light for that, so the
+                              // correct state reuses our (darker) brand
+                              // primary green instead.
                               color: showCorrect
-                                  ? PanAfricanColors.success
+                                  ? Theme.of(context).colorScheme.primary
                                   : showIncorrect
                                       ? PanAfricanColors.error
                                       : isSelected
@@ -450,10 +486,13 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
                             child: Text(
                               option.text,
                               style: PanAfricanTypography.bodyLarge(context).copyWith(
+                                // AA-safe text colors: the flat success/error
+                                // tokens are too light for WCAG body text, so
+                                // we use their high-contrast theme analogues.
                                 color: showCorrect
-                                    ? PanAfricanColors.success
+                                    ? Theme.of(context).colorScheme.primary
                                     : showIncorrect
-                                        ? PanAfricanColors.error
+                                        ? Theme.of(context).colorScheme.onErrorContainer
                                         : null,
                                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
                               ),
@@ -487,23 +526,29 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
           // Hint (if available and not checked)
           if (question.hint != null && question.hint!.isNotEmpty && !isChecked) ...[
             SizedBox(height: 16.h),
-            PanAfricanCard(
-              padding: EdgeInsets.all(16.w),
-              backgroundColor: PanAfricanColors.secondary.withValues(alpha: 0.1),
-              child: Row(
-                children: [
-                  const Icon(Icons.lightbulb_outline, color: PanAfricanColors.secondary),
-                  SizedBox(width: 12.w),
-                  Expanded(
-                    child: Text(
-                      question.hint!,
-                      style: PanAfricanTypography.bodyMedium(context).copyWith(
-                        color: PanAfricanColors.secondary,
-                        fontStyle: FontStyle.italic,
+            Semantics(
+              label: 'Hint: ${question.hint!}',
+              child: PanAfricanCard(
+                padding: EdgeInsets.all(16.w),
+                backgroundColor: PanAfricanColors.secondary.withValues(alpha: 0.1),
+                child: Row(
+                  children: [
+                    const Icon(Icons.lightbulb_outline, color: PanAfricanColors.secondary),
+                    SizedBox(width: 12.w),
+                    Expanded(
+                      child: Text(
+                        question.hint!,
+                        style: PanAfricanTypography.bodyMedium(context).copyWith(
+                          // "secondary" (gold) is too light to read as body
+                          // text on a near-white card — this on-container
+                          // token keeps the warm gold feel at AA contrast.
+                          color: PanAfricanColors.onSecondaryContainer,
+                          fontStyle: FontStyle.italic,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
@@ -513,31 +558,37 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
               question.funFact!.isNotEmpty &&
               isChecked) ...[
             SizedBox(height: 16.h),
-            PanAfricanCard(
-              padding: EdgeInsets.all(16.w),
-              backgroundColor: PanAfricanColors.tertiary.withValues(alpha: 0.1),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.auto_awesome, color: PanAfricanColors.tertiary),
-                      SizedBox(width: 12.w),
-                      Text(
-                        'Fun Fact',
-                        style: PanAfricanTypography.labelLarge(context).copyWith(
-                          color: PanAfricanColors.tertiary,
-                          fontWeight: FontWeight.bold,
+            Semantics(
+              label: 'Fun fact: ${question.funFact!}',
+              child: PanAfricanCard(
+                padding: EdgeInsets.all(16.w),
+                backgroundColor: PanAfricanColors.tertiary.withValues(alpha: 0.1),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.auto_awesome, color: PanAfricanColors.tertiary),
+                        SizedBox(width: 12.w),
+                        Text(
+                          'Fun Fact',
+                          style: PanAfricanTypography.labelLarge(context).copyWith(
+                            // "tertiary" (sunset orange) fails AA on a light
+                            // card; the on-container token keeps the warm
+                            // tone readable.
+                            color: PanAfricanColors.onTertiaryContainer,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 8.h),
-                  Text(
-                    question.funFact!,
-                    style: PanAfricanTypography.bodyMedium(context),
-                  ),
-                ],
+                      ],
+                    ),
+                    SizedBox(height: 8.h),
+                    Text(
+                      question.funFact!,
+                      style: PanAfricanTypography.bodyMedium(context),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

@@ -37,6 +37,13 @@ class LessonCompleteWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Celebration confetti + elastic pops are pure flourish — skip them for
+    // learners who've asked their OS to reduce motion, and go straight to
+    // the full, readable summary instead of gating it behind a tap.
+    if (MediaQuery.disableAnimationsOf(context)) {
+      return _buildReducedMotionComplete(context);
+    }
+
     return LessonCompleteAnimation(
       xpGained: totalXP,
       comboBonus: comboBonus > 0 ? comboBonus : null,
@@ -53,39 +60,131 @@ class LessonCompleteWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildStatsSheet(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(24.w),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Handle
-          Center(
-            child: Container(
-              width: 40.w,
-              height: 4.h,
-              decoration: BoxDecoration(
-                color: PanAfricanColors.borderLight,
-                borderRadius: BorderRadius.circular(2.r),
+  /// Static (non-animated) completion view shown when reduced motion is on.
+  Widget _buildReducedMotionComplete(BuildContext context) {
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: EdgeInsets.all(PanAfricanSpacing.lg),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Center(
+              child: ClipOval(
+                child: Container(
+                  width: 88.w,
+                  height: 88.w,
+                  color: PanAfricanColors.primary,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      // Same brand motif already used behind PanAfricanHeader
+                      // (see _AfricanPatternPainter in pan_african_app_bar.dart)
+                      // -- a small, reused touch of LingAfriq's visual
+                      // identity rather than a generic checkmark-in-a-circle.
+                      Positioned.fill(
+                        child: CustomPaint(
+                          painter: _CelebrationMotifPainter(
+                            color: Colors.white.withValues(alpha: 0.1),
+                          ),
+                        ),
+                      ),
+                      Icon(
+                        Icons.check_circle_rounded,
+                        size: 56.sp,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 24.h),
-
-          // Title
-          Text(
-            'Lesson Complete!',
-            style: PanAfricanTypography.headlineSmall(context).copyWith(
-              fontWeight: FontWeight.bold,
+            SizedBox(height: PanAfricanSpacing.md),
+            Text(
+              'Lesson Complete!',
+              textAlign: TextAlign.center,
+              style: PanAfricanTypography.headlineSmall(context).copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          SizedBox(height: 24.h),
+            SizedBox(height: PanAfricanSpacing.xs),
+            Text(
+              LingAfriqUxVoice.lessonCompleteMessage(accuracy),
+              textAlign: TextAlign.center,
+              style: PanAfricanTypography.bodyMedium(context),
+            ),
+            SizedBox(height: PanAfricanSpacing.lg),
+            _buildStatsAndActions(context),
+          ],
+        ),
+      ),
+    );
+  }
 
+  Widget _buildStatsSheet(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
+      child: Container(
+        color: Theme.of(context).colorScheme.surface,
+        child: Stack(
+          children: [
+            // Same reused brand motif as the checkmark badge above and
+            // PanAfricanHeader elsewhere -- a small, consistent touch of
+            // LingAfriq's visual identity on the completion sheet, kept
+            // faint enough not to compete with the stat cards on top.
+            Positioned.fill(
+              child: CustomPaint(
+                painter: _CelebrationMotifPainter(
+                  color: PanAfricanColors.primary.withValues(alpha: 0.035),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(24.w),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Handle
+                  Center(
+                    child: Container(
+                      width: 40.w,
+                      height: 4.h,
+                      decoration: BoxDecoration(
+                        color: PanAfricanColors.borderLight,
+                        borderRadius: BorderRadius.circular(2.r),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 24.h),
+
+                  // Title
+                  Text(
+                    'Lesson Complete!',
+                    style: PanAfricanTypography.headlineSmall(context).copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 24.h),
+
+                  _buildStatsAndActions(context),
+
+                  SizedBox(height: MediaQuery.of(context).padding.bottom),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Stat cards, combo-bonus banner and Share/Continue actions — shared by
+  /// both the animated bottom sheet and the reduced-motion static view.
+  Widget _buildStatsAndActions(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
           // Stats grid
           Semantics(
             label: 'Lesson complete. XP earned: $totalXP. Accuracy: ${accuracy.toStringAsFixed(0)} percent. Time: ${_formatTime(timeTaken)}.',
@@ -107,7 +206,9 @@ class LessonCompleteWidget extends StatelessWidget {
                   icon: Icons.percent_rounded,
                   label: 'Accuracy',
                   value: '${accuracy.toStringAsFixed(0)}%',
-                  color: PanAfricanColors.success,
+                  // Brand primary green reads as "success" and clears AA;
+                  // the flat "success" token is too light on a light card.
+                  color: PanAfricanColors.primary,
                 ),
               ),
             ],
@@ -123,7 +224,9 @@ class LessonCompleteWidget extends StatelessWidget {
                   icon: Icons.timer_rounded,
                   label: 'Time',
                   value: _formatTime(timeTaken),
-                  color: PanAfricanColors.secondary,
+                  // Flat gold "secondary" fails AA on a light card; its
+                  // on-container token keeps the warm gold family readable.
+                  color: PanAfricanColors.onSecondaryContainer,
                 ),
               ),
               SizedBox(width: 12.w),
@@ -133,7 +236,10 @@ class LessonCompleteWidget extends StatelessWidget {
                   icon: Icons.local_fire_department,
                   label: 'Best Combo',
                   value: '$bestCombo',
-                  color: Colors.orange,
+                  // tertiaryDark only clears the 3:1 "large text" floor
+                  // (~3.96:1) here; onTertiaryContainer clears normal-text
+                  // AA (~12.6:1) while staying in the warm orange family.
+                  color: PanAfricanColors.onTertiaryContainer,
                 ),
               ),
             ],
@@ -152,7 +258,11 @@ class LessonCompleteWidget extends StatelessWidget {
                     child: Text(
                       'Combo Bonus: +$comboBonus XP',
                       style: PanAfricanTypography.bodyMedium(context).copyWith(
-                        color: Colors.orange,
+                        // tertiaryDark only clears the 3:1 "large text"
+                        // floor (~3.96:1) here, which is too risky for
+                        // 14sp body text. onTertiaryContainer clears
+                        // normal-text AA (~12.6:1) in the same warm family.
+                        color: PanAfricanColors.onTertiaryContainer,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -192,7 +302,10 @@ class LessonCompleteWidget extends StatelessWidget {
                   child: PanAfricanButton(
                     onPressed: onContinue,
                     label: 'Continue',
-                    icon: Icons.arrow_forward_rounded,
+                    // Mirror the arrow for RTL locales (Arabic, Darija).
+                    icon: Directionality.of(context) == TextDirection.rtl
+                        ? Icons.arrow_back_rounded
+                        : Icons.arrow_forward_rounded,
                     backgroundColor: PanAfricanColors.primary,
                     foregroundColor: Theme.of(context).colorScheme.onPrimary,
                   ),
@@ -200,11 +313,8 @@ class LessonCompleteWidget extends StatelessWidget {
               ),
             ],
           ),
-
-          SizedBox(height: MediaQuery.of(context).padding.bottom),
         ],
-      ),
-    );
+      );
   }
 
   Widget _buildStatCard(
@@ -237,4 +347,41 @@ class LessonCompleteWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Subtle diamond-lattice texture reused from the motif already used behind
+/// `PanAfricanHeader` (see `_AfricanPatternPainter` in
+/// `pan_african_app_bar.dart`) -- ties the lesson-complete celebration back
+/// to LingAfriq's existing visual identity instead of a generic template
+/// celebration. The algorithm is copied verbatim (rather than imported,
+/// since the original is private to that file) so the motif stays visually
+/// identical everywhere it already appears in the app.
+class _CelebrationMotifPainter extends CustomPainter {
+  final Color color;
+
+  _CelebrationMotifPainter({required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.5;
+
+    const spacing = 40.0;
+    for (double x = -spacing; x < size.width + spacing; x += spacing) {
+      for (double y = -spacing; y < size.height + spacing; y += spacing) {
+        final path = Path()
+          ..moveTo(x, y + spacing / 2)
+          ..lineTo(x + spacing / 2, y)
+          ..lineTo(x + spacing, y + spacing / 2)
+          ..lineTo(x + spacing / 2, y + spacing)
+          ..close();
+        canvas.drawPath(path, paint);
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

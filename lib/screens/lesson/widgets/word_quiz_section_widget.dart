@@ -101,7 +101,7 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
     if (_answers.values.any((a) => a == null)) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please fill in all blanks'),
+          content: Text('A few blanks are still empty — fill them in and try again.'),
           backgroundColor: PanAfricanColors.error,
         ),
       );
@@ -129,7 +129,8 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
       }
     }
 
-    if (!allCorrect) {
+    final reducedMotion = mounted ? MediaQuery.disableAnimationsOf(context) : false;
+    if (!allCorrect && !reducedMotion) {
       _shakeController.forward(from: 0);
       await Future.delayed(const Duration(milliseconds: 500));
       _shakeController.reset();
@@ -142,11 +143,11 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
   Widget build(BuildContext context) {
     final questions = widget.content.wordQuestions ?? [];
     if (questions.isEmpty) {
-      return Center(
-        child: Text(
-          'No word quiz questions available',
-          style: PanAfricanTypography.bodyLarge(context),
-        ),
+      return const PanAfricanEmptyState(
+        icon: Icons.edit_note_rounded,
+        title: "Nothing to fill in yet",
+        description:
+            "We're still preparing this fill-in-the-blank practice. Please check back in a moment.",
       );
     }
 
@@ -169,55 +170,69 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
       }
 
       // Add blank
+      final blankIndex = i;
       sentenceParts.add(
-        GestureDetector(
-          onTap: userAnswer != null ? () => _removeAnswer(i) : null,
-          child: AnimatedBuilder(
-            animation: _shakeController,
-            builder: (context, child) {
-              return Transform.translate(
-                offset: isIncorrect
-                    ? Offset(
-                        10 * _shakeController.value * (1 - _shakeController.value) * 2,
-                        0,
-                      )
-                    : Offset.zero,
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-                  margin: EdgeInsets.symmetric(horizontal: 4.w),
-                  decoration: BoxDecoration(
-                    color: isCorrect
-                        ? PanAfricanColors.success.withValues(alpha: 0.15)
-                        : isIncorrect
-                            ? PanAfricanColors.error.withValues(alpha: 0.15)
-                            : PanAfricanColors.cardDark,
-                    border: Border.all(
-                      color: isCorrect
-                          ? PanAfricanColors.success
-                          : isIncorrect
-                              ? PanAfricanColors.error
-                              : PanAfricanColors.borderLight,
-                      width: 2,
+        Semantics(
+          label: userAnswer != null
+              ? 'Blank ${blankIndex + 1}, filled with $userAnswer. Tap to clear.'
+              : 'Empty blank ${blankIndex + 1}. Tap a word below to fill it in.',
+          button: userAnswer != null,
+          child: GestureDetector(
+            onTap: userAnswer != null ? () => _removeAnswer(blankIndex) : null,
+            child: AnimatedBuilder(
+              animation: _shakeController,
+              builder: (context, child) {
+                final reducedMotion = MediaQuery.disableAnimationsOf(context);
+                return Transform.translate(
+                  offset: isIncorrect && !reducedMotion
+                      ? Offset(
+                          10 * _shakeController.value * (1 - _shakeController.value) * 2,
+                          0,
+                        )
+                      : Offset.zero,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minWidth: 80.w,
+                      minHeight: AdaptiveLayout.minTouchTarget.h,
                     ),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  constraints: BoxConstraints(minWidth: 80.w),
-                  child: Center(
-                    child: Text(
-                      userAnswer ?? '____',
-                      style: PanAfricanTypography.bodyLarge(context).copyWith(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                      margin: EdgeInsets.symmetric(horizontal: 4.w),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
                         color: isCorrect
-                            ? PanAfricanColors.success
+                            ? PanAfricanColors.success.withValues(alpha: 0.15)
                             : isIncorrect
-                                ? PanAfricanColors.error
-                                : null,
-                        fontWeight: FontWeight.bold,
+                                ? PanAfricanColors.error.withValues(alpha: 0.15)
+                                : PanAfricanColors.cardDark,
+                        border: Border.all(
+                          color: isCorrect
+                              ? PanAfricanColors.success
+                              : isIncorrect
+                                  ? PanAfricanColors.error
+                                  : PanAfricanColors.borderLight,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: Text(
+                        userAnswer ?? '____',
+                        style: PanAfricanTypography.bodyLarge(context).copyWith(
+                          // AA-safe text colors (the flat success/error fills
+                          // are too light to read reliably as body text).
+                          color: isCorrect
+                              ? Theme.of(context).colorScheme.primary
+                              : isIncorrect
+                                  ? Theme.of(context).colorScheme.onErrorContainer
+                                  : null,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
       );
@@ -269,9 +284,16 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
           padding: EdgeInsets.all(16.w),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
+            // This bar is pinned to the bottom, so its shadow must fall
+            // upward onto the content above -- none of the PanAfricanShadows
+            // presets support a negative offset. We keep that directional
+            // requirement but adopt the same brand shadow color
+            // (neutralDarkest) and the nearest defined opacity step (lg's
+            // 0.08) that every other PanAfricanShadows variant uses, instead
+            // of an unbranded raw Colors.black.
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
+                color: PanAfricanColors.neutralDarkest.withValues(alpha: 0.08),
                 blurRadius: 8,
                 offset: const Offset(0, -2),
               ),
@@ -296,14 +318,21 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
                     button: true,
                     child: GestureDetector(
                       onTap: () => _selectChoice(choice),
-                      child: PanAfricanCard(
-                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                        backgroundColor: PanAfricanColors.primary.withValues(alpha: 0.1),
-                        child: Text(
-                          choice,
-                          style: PanAfricanTypography.bodyMedium(context).copyWith(
-                            color: PanAfricanColors.primary,
-                            fontWeight: FontWeight.w600,
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: AdaptiveLayout.minTouchTarget.h,
+                        ),
+                        child: PanAfricanCard(
+                          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                          backgroundColor: PanAfricanColors.primary.withValues(alpha: 0.1),
+                          child: Center(
+                            child: Text(
+                              choice,
+                              style: PanAfricanTypography.bodyMedium(context).copyWith(
+                                color: PanAfricanColors.primary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -328,11 +357,11 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
                 onPressed: _isChecked ? null : _checkAnswers,
                 label: _isChecked ? 'All Correct!' : 'Check',
                 icon: _isChecked ? Icons.check_circle_rounded : Icons.check_rounded,
-              backgroundColor: _isChecked
-                  ? PanAfricanColors.success
-                  : PanAfricanColors.primary,
-              foregroundColor: Theme.of(context).colorScheme.onPrimary,
-            ),
+                // Brand primary (not flat "success") so the white label text
+                // clears WCAG AA against the fill.
+                backgroundColor: PanAfricanColors.primary,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+              ),
             ),
           ),
         ),

@@ -9,6 +9,7 @@ import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/content/lingafriq_ux_voice.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/lingafriq_scaffold.dart';
+import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/points_and_profile_image_builder.dart';
 import 'package:lingafriq/widgets/portrait_video_player.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
@@ -43,6 +44,9 @@ class LessonFlowScreen extends HookConsumerWidget {
     final lessonFlow = ref.watch(lessonFlowProvider(lessonId).notifier);
     final lessonState = ref.watch(lessonFlowProvider(lessonId));
     final comboTracker = lessonFlow.comboTracker;
+    final reducedMotion = MediaQuery.disableAnimationsOf(context);
+    final pageTransitionDuration =
+        reducedMotion ? Duration.zero : const Duration(milliseconds: 300);
 
     void exitLesson() {
       final sections = ref.read(lessonFlowProvider(lessonId)).sections;
@@ -84,7 +88,7 @@ class LessonFlowScreen extends HookConsumerWidget {
         if (currentPage != lessonState.currentSectionIndex) {
           pageController.animateToPage(
             lessonState.currentSectionIndex,
-            duration: const Duration(milliseconds: 300),
+            duration: pageTransitionDuration,
             curve: Curves.easeInOut,
           );
         }
@@ -127,6 +131,36 @@ class LessonFlowScreen extends HookConsumerWidget {
     }
 
     final currentSection = lessonState.currentSection;
+
+    // Lesson failed to load entirely (no cached/offline copy either) — give
+    // the learner a warm, actionable way forward instead of a silent gap.
+    if (lessonState.sections.isEmpty &&
+        lessonState.error != null &&
+        !lessonState.isLoading) {
+      void retryLoad() {
+        ref.read(lessonFlowProvider(lessonId).notifier).initialize(sectionLessons);
+      }
+
+      return PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (bool didPop, Object? result) {
+          if (didPop) return;
+          ref.read(navigationProvider).pop();
+        },
+        child: LingafriqScaffold(
+          body: Semantics(
+            liveRegion: true,
+            label: "Lesson couldn't load. ${LingAfriqUxVoice.connectionError}",
+            child: PanAfricanErrorState(
+              title: "Let's try that again",
+              description: LingAfriqUxVoice.connectionError,
+              onRetry: retryLoad,
+            ),
+          ),
+        ),
+      );
+    }
+
     if (currentSection == null || lessonState.sections.isEmpty) {
       return PopScope(
         canPop: false,
@@ -134,9 +168,13 @@ class LessonFlowScreen extends HookConsumerWidget {
           if (didPop) return;
           ref.read(navigationProvider).pop();
         },
-        child: const LingafriqScaffold(
-          body: Center(
-            child: CircularProgressIndicator(color: PanAfricanColors.primary),
+        child: LingafriqScaffold(
+          body: Semantics(
+            liveRegion: true,
+            label: 'Preparing your lesson',
+            child: PanAfricanLoadingState(
+              message: LingAfriqUxVoice.loadingHints.first,
+            ),
           ),
         ),
       );
@@ -176,12 +214,14 @@ class LessonFlowScreen extends HookConsumerWidget {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(
-                                    left: 16.w,
+                                  padding: EdgeInsetsDirectional.only(
+                                    start: 16.w,
                                     bottom: 8.h,
                                   ),
                                   child: Text(
                                     lessonTitle,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                     style:
                                         PanAfricanTypography.titleLarge(
                                           context,
@@ -236,6 +276,7 @@ class LessonFlowScreen extends HookConsumerWidget {
                             lessonFlow,
                             lessonState,
                             pageController,
+                            pageTransitionDuration,
                           ),
                         );
                       },
@@ -253,6 +294,29 @@ class LessonFlowScreen extends HookConsumerWidget {
     );
   }
 
+  /// Shows a warm, AA-safe retry affordance when a section fails to save its
+  /// completion (e.g. a transient network error) instead of silently
+  /// advancing the learner or leaving them stuck with no feedback at all.
+  void _showRetrySnackBar(BuildContext context, VoidCallback onRetry) {
+    final colorScheme = Theme.of(context).colorScheme;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          LingAfriqUxVoice.connectionError,
+          style: TextStyle(color: colorScheme.onErrorContainer),
+        ),
+        backgroundColor: colorScheme.errorContainer,
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 6),
+        action: SnackBarAction(
+          label: 'Retry',
+          textColor: colorScheme.onErrorContainer,
+          onPressed: onRetry,
+        ),
+      ),
+    );
+  }
+
   Widget _buildSectionContent(
     BuildContext context,
     WidgetRef ref,
@@ -260,6 +324,7 @@ class LessonFlowScreen extends HookConsumerWidget {
     LessonFlowNotifier lessonFlow,
     LessonFlowState lessonState,
     PageController pageController,
+    Duration pageTransitionDuration,
   ) {
     switch (section.type) {
       case LessonSectionType.tutorial:
@@ -268,21 +333,31 @@ class LessonFlowScreen extends HookConsumerWidget {
           vocabAudioLanguage: audioLanguage,
           vocabAudioText: section.title,
           onContinue: () async {
-            final success = await lessonFlow.completeSection(section.sectionId);
-            if (success && lessonState.hasMoreSections) {
-              final nextIndex = lessonState.currentSectionIndex + 1;
-              lessonFlow.nextSection();
-              if (pageController.hasClients) {
-                pageController.animateToPage(
-                  nextIndex,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                );
+            Future<void> completeAndAdvance() async {
+              final success = await lessonFlow.completeSection(section.sectionId);
+              if (!context.mounted) return;
+              if (!success) {
+                _showRetrySnackBar(context, completeAndAdvance);
+                return;
               }
-            } else if (success) {
-              // All sections complete - show completion screen
-              ref.read(lessonFlowProvider(lessonId).notifier).nextSection();
+              final st = ref.read(lessonFlowProvider(lessonId));
+              if (st.hasMoreSections) {
+                final nextIndex = st.currentSectionIndex + 1;
+                lessonFlow.nextSection();
+                if (pageController.hasClients) {
+                  pageController.animateToPage(
+                    nextIndex,
+                    duration: pageTransitionDuration,
+                    curve: Curves.easeInOut,
+                  );
+                }
+              } else {
+                // All sections complete - show completion screen
+                ref.read(lessonFlowProvider(lessonId).notifier).nextSection();
+              }
             }
+
+            await completeAndAdvance();
           },
         );
 
@@ -299,8 +374,12 @@ class LessonFlowScreen extends HookConsumerWidget {
           },
           onFinish: () {
             Future<void> completeAndAdvance() async {
-              await lessonFlow.completeSection(section.sectionId);
+              final success = await lessonFlow.completeSection(section.sectionId);
               if (!context.mounted) return;
+              if (!success) {
+                _showRetrySnackBar(context, completeAndAdvance);
+                return;
+              }
               final st = ref.read(lessonFlowProvider(lessonId));
               if (st.hasMoreSections) {
                 await Future.delayed(const Duration(milliseconds: 500));
@@ -310,7 +389,7 @@ class LessonFlowScreen extends HookConsumerWidget {
                 if (pageController.hasClients) {
                   pageController.animateToPage(
                     nextIndex,
-                    duration: const Duration(milliseconds: 300),
+                    duration: pageTransitionDuration,
                     curve: Curves.easeInOut,
                   );
                 }
@@ -359,27 +438,36 @@ class LessonFlowScreen extends HookConsumerWidget {
             final allCorrect = await lessonFlow.checkWordQuizCompletion(
               section.sectionId,
             );
-            if (allCorrect) {
-              await lessonFlow.completeSection(section.sectionId);
+            if (!allCorrect) return;
 
-              if (lessonState.hasMoreSections) {
+            Future<void> completeAndAdvance() async {
+              final success = await lessonFlow.completeSection(section.sectionId);
+              if (!context.mounted) return;
+              if (!success) {
+                _showRetrySnackBar(context, completeAndAdvance);
+                return;
+              }
+
+              final st = ref.read(lessonFlowProvider(lessonId));
+              if (st.hasMoreSections) {
                 await Future.delayed(const Duration(milliseconds: 1500));
-                if (context.mounted) {
-                  final nextIndex = lessonState.currentSectionIndex + 1;
-                  lessonFlow.nextSection();
-                  if (pageController.hasClients) {
-                    pageController.animateToPage(
-                      nextIndex,
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    );
-                  }
+                if (!context.mounted) return;
+                final nextIndex = st.currentSectionIndex + 1;
+                lessonFlow.nextSection();
+                if (pageController.hasClients) {
+                  pageController.animateToPage(
+                    nextIndex,
+                    duration: pageTransitionDuration,
+                    curve: Curves.easeInOut,
+                  );
                 }
               } else {
                 // All sections complete - show completion screen
                 ref.read(lessonFlowProvider(lessonId).notifier).nextSection();
               }
             }
+
+            await completeAndAdvance();
           },
         );
     }

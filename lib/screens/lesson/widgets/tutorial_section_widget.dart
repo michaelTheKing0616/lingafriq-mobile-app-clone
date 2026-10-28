@@ -110,7 +110,6 @@ class _TutorialSectionWidgetState extends ConsumerState<TutorialSectionWidget> {
                           widget.content.text!,
                           style: PanAfricanTypography.bodyLarge(context).copyWith(
                             height: 1.6,
-                            fontSize: 16.sp,
                           ),
                         ),
                         if (widget.vocabAudioLanguage != null &&
@@ -144,7 +143,11 @@ class _TutorialSectionWidgetState extends ConsumerState<TutorialSectionWidget> {
                 width: double.infinity,
                 onPressed: widget.onContinue,
                 label: 'Continue',
-                icon: Icons.arrow_forward_rounded,
+                // Mirror the arrow for RTL locales (Arabic, Darija) so
+                // "forward" visually matches the reading direction.
+                icon: Directionality.of(context) == TextDirection.rtl
+                    ? Icons.arrow_back_rounded
+                    : Icons.arrow_forward_rounded,
                 backgroundColor: PanAfricanColors.primary,
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
               ),
