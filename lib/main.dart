@@ -39,7 +39,64 @@ import 'utils/performance_utils.dart';
 import 'utils/structured_logger.dart';
 import 'utils/polie_design_tokens.dart';
 
+/// P12-012: process start → first rasterized frame → first [MyApp] frame (meaningful).
+final ColdStartTelemetry coldStartTelemetry = ColdStartTelemetry();
+
+class ColdStartTelemetry {
+  final Stopwatch process = Stopwatch();
+  int? firstFrameMs;
+  int? firstMeaningfulFrameMs;
+  StartupTrace? startupTrace;
+
+  void emitTraceLine() {
+    final trace = startupTrace;
+    if (trace == null) return;
+    // Logcat / CI harness parses `LingAfriqColdStart:` lines (AC2).
+    debugPrint(
+      'LingAfriqColdStart: trace=${trace.events.join(",")}',
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'first_frame_ms': firstFrameMs,
+        'first_meaningful_frame_ms': firstMeaningfulFrameMs,
+        'startup_trace': startupTrace?.events ?? const <String>[],
+      };
+}
+
+/// Marks the first laid-out frame of the root app widget (meaningful UI shell).
+class _ColdStartMeaningfulMarker extends StatefulWidget {
+  const _ColdStartMeaningfulMarker({required this.child});
+
+  final Widget child;
+
+  @override
+  State<_ColdStartMeaningfulMarker> createState() => _ColdStartMeaningfulMarkerState();
+}
+
+class _ColdStartMeaningfulMarkerState extends State<_ColdStartMeaningfulMarker> {
+  var _marked = false;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!_marked) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        _marked = true;
+        coldStartTelemetry.firstMeaningfulFrameMs =
+            coldStartTelemetry.process.elapsedMilliseconds;
+        debugPrint(
+          'LingAfriqColdStart: first_meaningful_frame_ms=${coldStartTelemetry.firstMeaningfulFrameMs}',
+        );
+        coldStartTelemetry.emitTraceLine();
+      });
+    }
+    return widget.child;
+  }
+}
+
 void main() async {
+  coldStartTelemetry.process.start();
   final coldStart = Stopwatch()..start();
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -62,8 +119,11 @@ void main() async {
 
     final recovery = <SchemaMigrationFailure>[];
     SharedPreferences? prefs;
+    final trace = StartupTrace();
+    coldStartTelemetry.startupTrace = trace;
     await runStartup(
       sentry: _startCrashReporter,
+      trace: trace,
       parallel: {
         'database': () => _openDatabase(recovery),
         'preferences': () async {
@@ -120,8 +180,15 @@ void main() async {
       overrides: [
         sharedPreferencesProvider.overrideWithValue(SharedPreferencesProvider(stored)),
       ],
-      child: const MyApp(),
+      child: const _ColdStartMeaningfulMarker(child: MyApp()),
     ));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      coldStartTelemetry.firstFrameMs =
+          coldStartTelemetry.process.elapsedMilliseconds;
+      debugPrint(
+        'LingAfriqColdStart: first_frame_ms=${coldStartTelemetry.firstFrameMs}',
+      );
+    });
   }, (error, stack) {
     logger.error('Unhandled error', error: error, stackTrace: stack);
   });
