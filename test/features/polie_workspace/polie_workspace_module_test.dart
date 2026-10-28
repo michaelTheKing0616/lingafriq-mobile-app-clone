@@ -26,12 +26,22 @@ void main() {
     }
   });
 
+  test('P12-005: build_host dart files <= $_maxLinesPerFile lines', () {
+    final hostDir = Directory('$_featureRoot/build_host');
+    for (final entity in hostDir.listSync()) {
+      if (entity is! File || !entity.path.endsWith('.dart')) continue;
+      final count = entity.readAsLinesSync().length;
+      expect(count, lessThanOrEqualTo(_maxLinesPerFile), reason: entity.path);
+    }
+  });
+
   test('P12-005: import boundary — parts do not import provider internals', () {
     void checkDir(Directory dir) {
       for (final entity in dir.listSync(recursive: true)) {
         if (entity is! File || !entity.path.endsWith('.dart')) continue;
         if (entity.path.endsWith('polie_workspace_providers.dart')) continue;
         if (entity.path.endsWith('polie_workspace.dart')) continue;
+        if (entity.path.contains('/build_host/')) continue;
         final src = entity.readAsStringSync();
         expect(src.contains("import 'package:lingafriq/providers/"), isFalse,
             reason: entity.path);
