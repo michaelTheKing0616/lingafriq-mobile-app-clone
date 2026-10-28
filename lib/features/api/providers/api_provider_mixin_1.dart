@@ -6,6 +6,7 @@ import 'package:lingafriq/models/profile_model.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
 import 'package:lingafriq/providers/dialog_provider.dart';
 import 'package:lingafriq/providers/dio_provider.dart';
+import 'package:lingafriq/providers/onboarding_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/services/auth_token_service.dart';
@@ -132,6 +133,10 @@ mixin ApiProviderMixin1 on Notifier<BaseProviderState>, BaseProviderMixin {
 
   Future<void> register(FormData registerData) async {
     try {
+      final agePayload = ref.read(onboardingProvider.notifier).registrationAgePayload();
+      for (final entry in agePayload.entries) {
+        registerData.fields.add(MapEntry(entry.key, entry.value.toString()));
+      }
       final res = await ref.read(client).post(
             Api.register,
             data: registerData,

@@ -28,6 +28,20 @@ import 'package:lingafriq/models/onboarding_answers.dart';
 import 'placement_test_screen.dart';
 import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
 import 'package:lingafriq/services/connectivity_service.dart';
+import 'package:lingafriq/providers/onboarding_provider.dart';
+
+/// Mirrors server `agePolicy` default thresholds (P1-020).
+String? computeRegistrationAgeBand(int birthYear, {String? countryCode}) {
+  final nowYear = DateTime.now().year;
+  if (birthYear < 1900 || birthYear > nowYear) return null;
+  final age = nowYear - birthYear - 1;
+  if (age < 0) return null;
+  final childUnder = countryCode?.toUpperCase() == 'DE' ? 16 : 13;
+  const adultAt = 18;
+  if (age < childUnder) return 'child';
+  if (age < adultAt) return 'teen';
+  return 'adult';
+}
 
 /// Returns [Duration.zero] when the platform/OS has requested reduced
 /// motion (MediaQuery.disableAnimations), so every entrance animation in
@@ -1069,8 +1083,35 @@ class _ElderQuestionStep extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedAge = useState<String?>(null);
+    final birthYearController = useTextEditingController();
     final selectedReasons = useState<Set<String>>({});
+    final computedBand = useState<String?>(null);
+    final birthYearError = useState<String?>(null);
+
+    void recomputeBand() {
+      final parsed = int.tryParse(birthYearController.text.trim());
+      if (parsed == null || birthYearController.text.trim().length != 4) {
+        computedBand.value = null;
+        birthYearError.value = 'Enter your birth year (four digits).';
+        return;
+      }
+      final band = computeRegistrationAgeBand(parsed);
+      if (band == null) {
+        computedBand.value = null;
+        birthYearError.value = 'That birth year does not look right.';
+        return;
+      }
+      birthYearError.value = null;
+      computedBand.value = band;
+    }
+
+    useEffect(() {
+      void listener() => recomputeBand();
+      birthYearController.addListener(listener);
+      return () => birthYearController.removeListener(listener);
+    }, [birthYearController]);
+
+    final isChildBlocked = computedBand.value == 'child';
 
     return _CharacterStepTemplate(
       gradient: PanAfricanGradients.earth,
@@ -1078,7 +1119,7 @@ class _ElderQuestionStep extends HookConsumerWidget {
       characterIcon: Icons.elderly_rounded,
       characterName: 'Pa LingAfriq',
       dialogue: 'Every learner has a story.\nShare yours with me.',
-      question: 'Who are you, and why do you seek knowledge?',
+      question: 'When were you born, and why do you seek knowledge?',
       avatarStep: OnboardingStep.welcome,
       // The guardian note below only appears once a child age band is
       // selected, growing this step's content on the fly; the reasons grid
@@ -1095,7 +1136,7 @@ class _ElderQuestionStep extends HookConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Your Season of Life',
+                  'Your birth year',
                   style: TextStyle(
                     color: PanAfricanColors.textPrimary.withValues(alpha: 0.9),
                     fontSize: 14.sp,
@@ -1103,62 +1144,48 @@ class _ElderQuestionStep extends HookConsumerWidget {
                   ),
                 ),
                 SizedBox(height: PanAfricanSpacing.sm.h),
-                Wrap(
-                  spacing: PanAfricanSpacing.sm.w,
-                  children: _ageCategories.map((age) {
-                    final isSelected = selectedAge.value == age;
-                    return ChoiceChip(
-                      label: Text(age.toUpperCase()),
-                      selected: isSelected,
-                      onSelected: (sel) {
-                        HapticFeedback.selectionClick();
-                        selectedAge.value = sel ? age : null;
-                      },
-                      backgroundColor: PanAfricanColors.textPrimary.withValues(
-                        alpha: 0.25,
+                Semantics(
+                  label: 'Birth year',
+                  child: TextField(
+                    controller: birthYearController,
+                    keyboardType: TextInputType.number,
+                    maxLength: 4,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    decoration: InputDecoration(
+                      counterText: '',
+                      hintText: 'e.g. 2008',
+                      errorText: birthYearError.value,
+                      filled: true,
+                      fillColor: PanAfricanColors.textPrimary.withValues(alpha: 0.08),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
-                      selectedColor: PanAfricanColors.secondary,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: PanAfricanSpacing.sm.w,
-                        vertical: PanAfricanSpacing.xs.h,
-                      ),
-                      // `PanAfricanColors.secondary` (gold) is ~1.5:1
-                      // against this light step's background - below WCAG
-                      // 1.4.11's 3:1 non-text minimum for a selection
-                      // border; the brand's dark green stays ~5.5:1 here
-                      // instead - same fix as the selection cards below.
-                      side: BorderSide(
-                        color: isSelected
-                            ? PanAfricanColors.primary
-                            : PanAfricanColors.textPrimary.withValues(
-                                alpha: 0.4,
-                              ),
-                        width: 1.2,
-                      ),
-                      labelStyle: TextStyle(
-                        color: isSelected
-                            ? Theme.of(context).colorScheme.onSurface
-                            : PanAfricanColors.textPrimary,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13.sp,
-                      ),
-                    );
-                  }).toList(),
+                    ),
+                  ),
                 ),
-                // Child mode: a warm, honest note that a grown-up will be
-                // part of the setup, rather than silently treating a child
-                // the same as an adult learner.
-                if (selectedAge.value == 'child') ...[
+                if (isChildBlocked) ...[
                   SizedBox(height: PanAfricanSpacing.xs.h),
                   Semantics(
                     liveRegion: true,
                     child: Text(
-                      "Lovely! We'll keep things simple and fun, and a "
-                      'guardian can help set up the rest with you.',
+                      'We need a guardian to verify consent before creating an account. '
+                      'Ask a grown-up to help you finish sign-up.',
                       style: TextStyle(
                         color: PanAfricanColors.secondary,
                         fontSize: 12.sp,
                         fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ),
+                ] else if (computedBand.value == 'teen') ...[
+                  SizedBox(height: PanAfricanSpacing.xs.h),
+                  Semantics(
+                    liveRegion: true,
+                    child: Text(
+                      'Your profile stays private, and adults cannot DM you until you connect in a circle.',
+                      style: TextStyle(
+                        color: PanAfricanColors.textPrimary.withValues(alpha: 0.75),
+                        fontSize: 12.sp,
                       ),
                     ),
                   ),
@@ -1219,11 +1246,18 @@ class _ElderQuestionStep extends HookConsumerWidget {
           SizedBox(height: PanAfricanSpacing.md.h),
           _ContinueButton(
             enabled:
-                selectedAge.value != null && selectedReasons.value.isNotEmpty,
+                computedBand.value != null &&
+                !isChildBlocked &&
+                selectedReasons.value.isNotEmpty,
             onPressed: () async {
+              final year = int.parse(birthYearController.text.trim());
+              final band = computedBand.value!;
               try {
+                await ref
+                    .read(onboardingProvider.notifier)
+                    .persistRegistrationBirthYear(year, band);
                 final prefs = await SharedPreferences.getInstance();
-                await prefs.setString('age_category', selectedAge.value!);
+                await prefs.setString('age_category', band);
                 await prefs.setStringList(
                   'learning_reasons',
                   selectedReasons.value.toList(),
@@ -1232,7 +1266,9 @@ class _ElderQuestionStep extends HookConsumerWidget {
                 logger.error('Error saving age/reasons', error: e);
               }
               onNext({
-                'age_category': selectedAge.value,
+                'birth_year': year,
+                'age_band': band,
+                'age_category': band,
                 'learning_reasons': selectedReasons.value.toList(),
               });
             },

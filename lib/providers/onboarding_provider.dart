@@ -511,6 +511,24 @@ class OnboardingNotifier extends Notifier<OnboardingData> {
     }
     state = loaded.answers.toOnboardingData();
   }
+
+  /// P1-020 — birth year only; band is computed server-side at register.
+  Future<void> persistRegistrationBirthYear(int birthYear, String ageBand) async {
+    await _prefs.prefs.setInt('registration_birth_year', birthYear);
+    await _prefs.prefs.setString('registration_age_band', ageBand);
+    updateAgeCategory(ageBand);
+  }
+
+  int? get registrationBirthYear => _prefs.prefs.getInt('registration_birth_year');
+
+  String? get registrationAgeBand => _prefs.prefs.getString('registration_age_band');
+
+  Map<String, dynamic> registrationAgePayload() {
+    final year = registrationBirthYear;
+    final band = registrationAgeBand;
+    if (year == null || band == null) return {};
+    return {'birth_year': year, 'age_band': band};
+  }
 }
 
 final onboardingProvider = NotifierProvider<OnboardingNotifier, OnboardingData>(() {
