@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/providers/gamification_services_provider.dart';
 import 'package:lingafriq/services/offline/persisted_outbox_service.dart';
+import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:livekit_client/livekit_client.dart';
 
 class ClassroomSessionScreen extends ConsumerStatefulWidget {
   final String tribeId;
@@ -27,6 +30,174 @@ class _ClassroomSessionScreenState extends ConsumerState<ClassroomSessionScreen>
   String? _error;
   List<Map<String, dynamic>> _sessions = const [];
   int _pendingOutbox = 0;
+
+  /// P9-954 live session UI phases.
+  ClassSessionLivePhase _livePhase = ClassSessionLivePhase.idle;
+  Room? _liveRoom;
+  Map<String, dynamic>? _liveState;
+  bool _recordingActive = false;
+  String? _consentStatus;
+  String? _mediaState;
+  bool _isTeacher = false;
+
+  @override
+  void dispose() {
+    _disconnectLive();
+    super.dispose();
+  }
+
+  Future<void> _disconnectLive() async {
+    final room = _liveRoom;
+    _liveRoom = null;
+    if (room != null) {
+      await room.disconnect();
+    }
+  }
+
+  String _livePath(String sessionId, String suffix) =>
+      '/api/v2/classroom/${widget.tribeId}/sessions/$sessionId/$suffix';
+
+  Future<void> _enterLiveLobby(Map<String, dynamic> session) async {
+    final sessionId = session['sessionId']?.toString() ?? '';
+    if (sessionId.isEmpty) return;
+    setState(() {
+      _livePhase = ClassSessionLivePhase.lobby;
+      _liveState = null;
+    });
+    try {
+      final stateRes = await ApiService.get(_livePath(sessionId, 'live/state'));
+      final data = stateRes.data as Map<String, dynamic>?;
+      if (data?['success'] != true) throw Exception('live_state_failed');
+      if (!mounted) return;
+      setState(() {
+        _liveState = Map<String, dynamic>.from(data!);
+        _recordingActive = data['recordingActive'] == true;
+        final me = data['me'];
+        if (me is Map) {
+          _consentStatus = me['consentStatus']?.toString();
+          _mediaState = me['mediaState']?.toString();
+        }
+      });
+      await _promptRecordingConsentIfNeeded(sessionId);
+    } catch (e) {
+      if (mounted) ErrorHandler.showError(context, e);
+      setState(() => _livePhase = ClassSessionLivePhase.idle);
+    }
+  }
+
+  Future<void> _promptRecordingConsentIfNeeded(String sessionId) async {
+    if (_consentStatus == 'granted' || _consentStatus == 'declined') return;
+    if (!mounted) return;
+    final granted = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        title: const Text(sessionConsentAskCopy),
+        content: Text(
+          'If the teacher records this class, your voice and video may be stored until the retention date. You can decline and still join without being recorded.',
+          style: PanAfricanTypography.bodyMedium(ctx),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: const Text('Decline'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: const Text('Agree'),
+          ),
+        ],
+      ),
+    );
+    if (granted == null) return;
+    try {
+      final res = await ApiService.post(
+        _livePath(sessionId, 'recording/consent'),
+        data: {'granted': granted == true},
+      );
+      final data = res.data as Map<String, dynamic>?;
+      if (!mounted) return;
+      setState(() {
+        _consentStatus = data?['consentStatus']?.toString();
+        _mediaState = data?['mediaState']?.toString();
+        if (_consentStatus == 'declined') {
+          _livePhase = ClassSessionLivePhase.declined;
+        }
+      });
+    } catch (e) {
+      if (mounted) ErrorHandler.showError(context, e);
+    }
+  }
+
+  Future<void> _joinLive(Map<String, dynamic> session) async {
+    final sessionId = session['sessionId']?.toString() ?? '';
+    if (sessionId.isEmpty) return;
+    try {
+      final tokenRes = await ApiService.post(_livePath(sessionId, 'live/token'));
+      final payload = tokenRes.data as Map<String, dynamic>?;
+      if (payload?['success'] != true) throw Exception('live_token_failed');
+      final token = payload!['token']?.toString() ?? '';
+      final url = payload['url']?.toString() ?? AppConfig.liveKitUrl;
+      _isTeacher = payload['canPublish'] == true;
+
+      final room = Room();
+      await room.connect(url, token);
+      final local = room.localParticipant;
+      if (local != null) {
+        final recordMe = shouldPersistClassAv(_mediaState);
+        await local.setCameraEnabled(recordMe && _isTeacher);
+        await local.setMicrophoneEnabled(recordMe);
+      }
+
+      if (!mounted) return;
+      setState(() {
+        _liveRoom = room;
+        _livePhase = _recordingActive
+            ? ClassSessionLivePhase.recording
+            : ClassSessionLivePhase.live;
+      });
+    } catch (e) {
+      if (mounted) ErrorHandler.showError(context, e);
+    }
+  }
+
+  Future<void> _teacherStartRecording(String sessionId) async {
+    try {
+      final res = await ApiService.post(_livePath(sessionId, 'recording/start'));
+      final data = res.data as Map<String, dynamic>?;
+      if (data?['success'] == true) {
+        if (!mounted) return;
+        setState(() {
+          _recordingActive = true;
+          _livePhase = ClassSessionLivePhase.recording;
+        });
+        return;
+      }
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Waiting for everyone to consent before recording starts.',
+              style: PanAfricanTypography.bodyMedium(context),
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) ErrorHandler.showError(context, e);
+    }
+  }
+
+  Future<void> _leaveLive() async {
+    await _disconnectLive();
+    if (!mounted) return;
+    setState(() {
+      _livePhase = ClassSessionLivePhase.ended;
+      _recordingActive = false;
+    });
+    await Future<void>.delayed(const Duration(milliseconds: 400));
+    if (mounted) setState(() => _livePhase = ClassSessionLivePhase.idle);
+  }
 
   @override
   void initState() {
@@ -175,6 +346,23 @@ class _ClassroomSessionScreenState extends ConsumerState<ClassroomSessionScreen>
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final active = _activeSession;
 
+    if (_livePhase != ClassSessionLivePhase.idle && active != null) {
+      return _LiveSessionScaffold(
+        phase: _livePhase,
+        recordingActive: _recordingActive,
+        isTeacher: _isTeacher,
+        sessionId: active['sessionId']?.toString() ?? '',
+        tribeName: widget.tribeName,
+        onJoin: () => _joinLive(active),
+        onLeave: _leaveLive,
+        onStartRecording: _isTeacher
+            ? () => _teacherStartRecording(active['sessionId']?.toString() ?? '')
+            : null,
+        declined: _livePhase == ClassSessionLivePhase.declined,
+        retentionDeleteAt: _liveState?['retentionDeleteAt']?.toString(),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -284,6 +472,7 @@ class _ClassroomSessionScreenState extends ConsumerState<ClassroomSessionScreen>
                           isDark: isDark,
                           session: active,
                           onCheckIn: () => _checkIn(active),
+                          onJoinLive: () => _enterLiveLobby(active),
                         ),
                       SizedBox(height: PanAfricanSpacing.md),
                       Text('Recent sessions',
@@ -310,11 +499,13 @@ class _ActiveSessionCard extends StatelessWidget {
     required this.isDark,
     required this.session,
     required this.onCheckIn,
+    required this.onJoinLive,
   });
 
   final bool isDark;
   final Map<String, dynamic> session;
   final VoidCallback onCheckIn;
+  final VoidCallback onJoinLive;
 
   @override
   Widget build(BuildContext context) {
@@ -349,17 +540,25 @@ class _ActiveSessionCard extends StatelessWidget {
             ),
           ],
           SizedBox(height: PanAfricanSpacing.md),
-          Align(
-            alignment: Alignment.centerRight,
-            child: FilledButton.icon(
-              onPressed: meCheckedIn ? null : onCheckIn,
-              icon: Icon(
-                meCheckedIn
-                    ? Icons.check_circle_rounded
-                    : Icons.how_to_reg_rounded,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              OutlinedButton.icon(
+                onPressed: onJoinLive,
+                icon: const Icon(Icons.groups_rounded),
+                label: const Text('Join live class'),
               ),
-              label: Text(meCheckedIn ? 'Checked in' : 'Check in'),
-            ),
+              SizedBox(width: PanAfricanSpacing.sm),
+              FilledButton.icon(
+                onPressed: meCheckedIn ? null : onCheckIn,
+                icon: Icon(
+                  meCheckedIn
+                      ? Icons.check_circle_rounded
+                      : Icons.how_to_reg_rounded,
+                ),
+                label: Text(meCheckedIn ? 'Checked in' : 'Check in'),
+              ),
+            ],
           ),
         ],
       ),
@@ -407,6 +606,173 @@ class _SessionRow extends StatelessWidget {
               child: Text(label, style: PanAfricanTypography.bodyMedium(context))),
           Text(status, style: PanAfricanTypography.labelSmall(context)),
         ],
+      ),
+    );
+  }
+}
+
+enum ClassSessionLivePhase { idle, lobby, live, recording, declined, ended }
+
+const String sessionRecordingIndicatorCopy = 'Recording — class session in progress';
+const String sessionConsentAskCopy = 'Record this live class?';
+
+bool shouldPersistClassAv(String? mediaState) {
+  return mediaState == 'recorded';
+}
+
+String classSessionPhaseLabel(ClassSessionLivePhase phase) {
+  switch (phase) {
+    case ClassSessionLivePhase.lobby:
+      return 'Lobby';
+    case ClassSessionLivePhase.live:
+      return 'Live';
+    case ClassSessionLivePhase.recording:
+      return 'Recording';
+    case ClassSessionLivePhase.declined:
+      return 'Unrecorded';
+    case ClassSessionLivePhase.ended:
+      return 'Ended';
+    case ClassSessionLivePhase.idle:
+      return 'Idle';
+  }
+}
+
+class _LiveSessionScaffold extends StatelessWidget {
+  const _LiveSessionScaffold({
+    required this.phase,
+    required this.recordingActive,
+    required this.isTeacher,
+    required this.sessionId,
+    required this.tribeName,
+    required this.onJoin,
+    required this.onLeave,
+    required this.onStartRecording,
+    required this.declined,
+    this.retentionDeleteAt,
+  });
+
+  final ClassSessionLivePhase phase;
+  final bool recordingActive;
+  final bool isTeacher;
+  final String sessionId;
+  final String tribeName;
+  final VoidCallback onJoin;
+  final VoidCallback onLeave;
+  final VoidCallback? onStartRecording;
+  final bool declined;
+  final String? retentionDeleteAt;
+
+  @override
+  Widget build(BuildContext context) {
+    final showRecordingBanner =
+        recordingActive || phase == ClassSessionLivePhase.recording;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          tribeName,
+          style: PanAfricanTypography.titleLarge(context),
+        ),
+        actions: [
+          Semantics(
+            label: 'Leave live class session',
+            button: true,
+            child: IconButton(
+              tooltip: 'Leave session',
+              icon: const Icon(Icons.call_end_rounded),
+              onPressed: onLeave,
+            ),
+          ),
+        ],
+      ),
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (showRecordingBanner)
+              Semantics(
+                label: sessionRecordingIndicatorCopy,
+                liveRegion: true,
+                child: Container(
+                  color: PanAfricanColors.error.withValues(alpha: 0.92),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PanAfricanSpacing.md,
+                    vertical: PanAfricanSpacing.sm,
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.fiber_manual_record_rounded,
+                          color: Colors.white, size: 18),
+                      SizedBox(width: PanAfricanSpacing.sm),
+                      Expanded(
+                        child: Text(
+                          sessionRecordingIndicatorCopy,
+                          style: PanAfricanTypography.labelLarge(
+                            context,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      classSessionPhaseLabel(phase),
+                      style: PanAfricanTypography.headlineSmall(context),
+                    ),
+                    SizedBox(height: PanAfricanSpacing.sm),
+                    Text(
+                      declined
+                          ? 'You joined without being recorded. Your mic and camera stay off for this recording.'
+                          : phase == ClassSessionLivePhase.lobby
+                              ? 'Review consent, then connect to the live room.'
+                              : 'Stay connected with your class. Teachers can start recording once everyone consents.',
+                      style: PanAfricanTypography.bodyLarge(context),
+                    ),
+                    if (retentionDeleteAt != null && showRecordingBanner)
+                      Padding(
+                        padding: EdgeInsets.only(top: PanAfricanSpacing.xs),
+                        child: Text(
+                          'Stored until $retentionDeleteAt',
+                          style: PanAfricanTypography.bodySmall(context),
+                        ),
+                      ),
+                    const Spacer(),
+                    if (phase == ClassSessionLivePhase.lobby)
+                      SizedBox(
+                        width: double.infinity,
+                        height: 48,
+                        child: FilledButton(
+                          onPressed: onJoin,
+                          child: const Text('Connect to live room'),
+                        ),
+                      ),
+                    if (isTeacher && onStartRecording != null && !declined)
+                      Padding(
+                        padding: EdgeInsets.only(top: PanAfricanSpacing.sm),
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 48,
+                          child: OutlinedButton.icon(
+                            onPressed: onStartRecording,
+                            icon: const Icon(Icons.radio_button_checked),
+                            label: const Text('Start recording'),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
