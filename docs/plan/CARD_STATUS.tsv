@@ -1049,7 +1049,7 @@ P9-927	Done	Integrate known-CSAM hash matching on unencrypted uploads (csamHash.
 P9-928	Draft	Blocked-External EXT-25: law-enforcement escalation (hotline accounts)	P9/P9-928.yaml
 P9-929	Done	newAccountLimits.ts, first_dm_prompt_sheet.dart, NEW_ACCOUNT_LIMIT + first-DM intro/accept	P9/P9-929.yaml
 P9-930	Done	Block/mute/report in two taps; userSafety.service + safety_actions_sheet	P9/P9-930.yaml
-P9-931	Draft	Build moderator console with queues, evidence and SLAs	P9/P9-931.yaml
+P9-931	Done	Moderator console severity queues, SLAs, evidence audit (sla.service.ts, moderation.routes.ts, queue.tsx)	P9/P9-931.yaml
 P9-932	Draft	Offer appeals and publish periodic transparency reports	P9/P9-932.yaml
 P9-933	Draft	Publish plain-language community guidelines in supported UI languages	P9/P9-933.yaml
 P9-934	Draft	Verify safety lead, incident response and moderator training exist	P9/P9-934.yaml
