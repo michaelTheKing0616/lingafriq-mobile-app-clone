@@ -1065,7 +1065,7 @@ P9-943	Done	Circles engine: caps, tribe migration, guardian/teacher adult join, 
 P9-944	Done	Chat engine: voice notes, reactions/reply sync, read-receipt policy, minor moderation banner, WA menu (private_chat_screen.dart, wa_private_chat_service.dart, voice_note_recorder.dart)	P9/P9-944.yaml
 P9-945	Done	Chat learning service + Tone Lens sheet + language status chips (chat_room_learning_service.dart)	P9/P9-945.yaml
 P9-946	Done	Opt-in voice-note transcription with gloss (voiceNoteTranscribe.service.ts, voice_note_transcript.dart)	P9/P9-946.yaml
-P9-947	Draft	Build Practice Rooms with host, topic, level and AI facilitator	P9/P9-947.yaml
+P9-947	Done	Practice Rooms host/topic/level, turn order, AI facilitator (practiceRoom.service.ts)	P9/P9-947.yaml
 P9-948	Draft	Build Clips capture and post flow for 15 to 60 second video or audio	P9/P9-948.yaml
 P9-949	Draft	'Provide clip templates: phrase of the day, proverbs, tongue twisters'	P9/P9-949.yaml
 P9-950	Draft	Add duets and stitch-style native corrections to clips	P9/P9-950.yaml

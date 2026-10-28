@@ -23,8 +23,12 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
+  final _topicController = TextEditingController();
   String? _selectedLanguage;
+  String? _selectedLevel;
   RoomType _selectedType = RoomType.practice;
+  bool _dropInNow = true;
+  bool _aiFacilitatorEnabled = false;
   int _maxParticipants = 50;
   bool _isPrivate = false;
   DateTime? _scheduledStartTime;
@@ -36,6 +40,7 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
   void dispose() {
     _nameController.dispose();
     _descriptionController.dispose();
+    _topicController.dispose();
     _tagController.dispose();
     super.dispose();
   }
@@ -54,6 +59,21 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
       return;
     }
 
+    if (_selectedType == RoomType.practice) {
+      if (_topicController.text.trim().isEmpty) {
+        showLingAfriqError(context, 'Add a topic so learners know what you\'ll practice');
+        return;
+      }
+      if (_selectedLevel == null) {
+        showLingAfriqError(context, 'Pick a CEFR level for this room');
+        return;
+      }
+      if (!_dropInNow && _scheduledStartTime == null) {
+        showLingAfriqError(context, 'Schedule a start time or choose drop-in now');
+        return;
+      }
+    }
+
     final room = await ref.read(socialAudioProvider.notifier).createRoom(
           name: _nameController.text.trim(),
           description: _descriptionController.text.trim(),
@@ -62,8 +82,12 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
           maxParticipants: _maxParticipants,
           isPrivate: _isPrivate,
           tags: _tags,
-          scheduledStartTime: _scheduledStartTime,
+          scheduledStartTime: _dropInNow ? null : _scheduledStartTime,
           durationMinutes: _durationMinutes,
+          practiceTopic: _selectedType == RoomType.practice ? _topicController.text.trim() : null,
+          cefrLevel: _selectedLevel,
+          dropIn: _dropInNow,
+          aiFacilitatorEnabled: _aiFacilitatorEnabled,
         );
 
     if (!mounted) return;
@@ -133,12 +157,12 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Column(
+        title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Create Room'),
-            Text('LingAfriq', style: TextStyle(fontSize: 12, color: PanAfricanColors.textSecondary)),
+            Text('Create practice room', style: Theme.of(context).textTheme.titleLarge),
+            Text('Host a Clubhouse-style session', style: TextStyle(fontSize: 12, color: PanAfricanColors.textSecondary)),
           ],
         ),
       ),
@@ -252,6 +276,55 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
                   },
                 ),
                 SizedBox(height: 4.h),
+
+                if (_selectedType == RoomType.practice) ...[
+                  Semantics(
+                    label: 'Practice topic',
+                    child: TextFormField(
+                      controller: _topicController,
+                      decoration: InputDecoration(
+                        labelText: 'Topic',
+                        hintText: 'e.g., Market bargaining, Family greetings',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  DropdownButtonFormField<String>(
+                    initialValue: _selectedLevel,
+                    decoration: InputDecoration(
+                      labelText: 'Level (CEFR)',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                      ),
+                    ),
+                    items: const ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
+                        .map((l) => DropdownMenuItem(value: l, child: Text(l)))
+                        .toList(),
+                    onChanged: (v) => setState(() => _selectedLevel = v),
+                  ),
+                  SizedBox(height: 2.h),
+                  SwitchListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: const Text('Drop-in now'),
+                    subtitle: const Text('Open the room immediately without a schedule'),
+                    value: _dropInNow,
+                    onChanged: (v) => setState(() {
+                      _dropInNow = v;
+                      if (v) _scheduledStartTime = null;
+                    }),
+                  ),
+                  SwitchListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: const Text('AI facilitator'),
+                    subtitle: const Text('Labelled AI prompts the host can mute anytime'),
+                    value: _aiFacilitatorEnabled,
+                    onChanged: (v) => setState(() => _aiFacilitatorEnabled = v),
+                  ),
+                  SizedBox(height: 2.h),
+                ],
 
                 // Max participants
                 Row(
