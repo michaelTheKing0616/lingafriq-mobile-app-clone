@@ -94,7 +94,7 @@ abstract final class PathLayout {
     return dx >= 0;
   }
 
-  /// Row height for list extent math (node + gap + Start pill slack).
+  /// Row height for list extent math (node + gap + BEGIN pill slack).
   static double get nodeRowExtent => nodeSize + nodeGap + 20;
 
   static PathPlaceTheme placeThemeForUnit(int unitOrdinal) {

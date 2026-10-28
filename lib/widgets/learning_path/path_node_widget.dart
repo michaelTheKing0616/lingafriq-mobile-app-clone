@@ -143,17 +143,18 @@ class _PathNodeWidgetState extends ConsumerState<PathNodeWidget>
       enabled: tappable,
       excludeSemantics: true,
       child: GestureDetector(
+        // Press scale is cosmetic; the action must fire exactly once via onTap.
+        // (Prior bug: reduced-motion set both onTap and onTapUp → double sheets.)
         onTapDown: tappable && !widget.reducedMotion
             ? (_) => _pressController.forward()
             : null,
-        onTapUp: tappable
-            ? (_) {
-                _pressController.reverse();
-                _handleTap();
-              }
+        onTapUp: tappable && !widget.reducedMotion
+            ? (_) => _pressController.reverse()
             : null,
-        onTapCancel: () => _pressController.reverse(),
-        onTap: tappable && widget.reducedMotion ? _handleTap : null,
+        onTapCancel: tappable && !widget.reducedMotion
+            ? () => _pressController.reverse()
+            : null,
+        onTap: tappable ? _handleTap : null,
         child: AnimatedBuilder(
           animation: Listenable.merge([
             _pressScale,

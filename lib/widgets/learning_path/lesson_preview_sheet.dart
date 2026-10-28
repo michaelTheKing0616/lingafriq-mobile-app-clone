@@ -63,7 +63,8 @@ class LessonPreviewSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final primaryLabel = isReview ? 'Review' : 'Start';
+    // Gold clay BEGIN — never Duo "Start" DNA (path originality gate).
+    final primaryLabel = isReview ? 'Review' : 'Begin';
     final progressLabel = (lessonNumber != null &&
             totalLessons != null &&
             totalLessons! > 0)

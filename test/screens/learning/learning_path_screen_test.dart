@@ -8,6 +8,7 @@ import 'package:lingafriq/lessons/models/lesson_response.dart';
 import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/providers/learning_path_provider.dart';
 import 'package:lingafriq/screens/learning/learning_path_screen.dart';
+import 'package:lingafriq/widgets/learning_path/lesson_preview_sheet.dart';
 import 'package:lingafriq/widgets/learning_path/path_checkpoint_card.dart';
 import 'package:lingafriq/widgets/learning_path/path_sticky_header.dart';
 
@@ -308,6 +309,32 @@ void main() {
       expect(find.text('START'), findsNothing);
       expect(find.byIcon(Icons.favorite), findsNothing);
       expect(find.byIcon(Icons.favorite_border), findsNothing);
+    });
+
+    testWidgets('preview sheet primary CTA is Begin, never Start',
+        (tester) async {
+      setPhoneSurface(tester);
+      final lessons = [
+        lesson(id: 1, name: 'Greetings', count: 5, completed: 0),
+      ];
+      await tester.pumpWidget(harness(lessons: lessons, reducedMotion: true));
+      await settle(tester);
+
+      await tester.tap(find.text('BEGIN'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
+
+      expect(find.byType(LessonPreviewSheet), findsOneWidget);
+      expect(find.descendant(
+        of: find.byType(LessonPreviewSheet),
+        matching: find.widgetWithText(FilledButton, 'Begin'),
+      ), findsOneWidget);
+      expect(find.descendant(
+        of: find.byType(LessonPreviewSheet),
+        matching: find.text('Start'),
+      ), findsNothing);
+      expect(find.text('START'), findsNothing);
+      expect(find.textContaining('Lesson 1 of'), findsOneWidget);
     });
 
     testWidgets('cowries chip is present and hearts are absent',
