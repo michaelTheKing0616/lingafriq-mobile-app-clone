@@ -1039,7 +1039,7 @@ P9-917	Done	Minor privacy defaults: privacyDefaults.service.ts, minorPolicy.ts, 
 P9-918	Done	Child capability policy: capabilities.service.ts, capability_gate.dart, DM/snap/ads/purchase gates	P9/P9-918.yaml
 P9-919	Done	Apply stricter AI conversation policy and no memory for children (minorPolicy.ts, memory.ts, gateway stack)	P9/P9-919.yaml
 P9-920	Done	Minor moderated messaging policy + guardian E2EE explainer (messagingPolicy.service.ts, messaging_explainer_screen.dart)	P9/P9-920.yaml
-P9-921	Draft	Build moderation pipeline orchestrator for all social surfaces	P9/P9-921.yaml
+P9-921	Done	Moderation pipeline orchestrator (pipeline.ts, verdict.ts, moderationCase.model.ts)	P9/P9-921.yaml
 P9-922	Draft	Integrate hosted moderation API for text toxicity	P9/P9-922.yaml
 P9-923	Draft	Evaluate toxicity detection on African languages and code-switching	P9/P9-923.yaml
 P9-924	Draft	Match word-boundary-aware moderator lexicons per language	P9/P9-924.yaml
