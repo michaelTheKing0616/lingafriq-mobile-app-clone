@@ -1,0 +1,7 @@
+# Store rollout promotion thresholds (D17). Tope may tune values here.
+stages_percent: [1, 10, 50, 100]
+soak_hours_per_stage: 24
+metrics:
+  min_crash_free_users: 0.995
+  max_anr_rate: 0.0047
+  max_age_hours: 24

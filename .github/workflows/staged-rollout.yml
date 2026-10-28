@@ -1,0 +1,75 @@
+name: Staged store rollout
+
+# EP-§13.9-15: promotion is gated here; build-and-release does not auto-commit versions.
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Release candidate tag (e.g. v1.2.3+100)
+        required: true
+      metrics_json:
+        description: Path in repo or artifact to store metrics JSON
+        required: false
+        default: release/fixtures/healthy_metrics.json
+      dry_run:
+        description: If true, evaluate and simulate promote without writing state
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  promote:
+    name: Rollout gate and promote
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Install PyYAML
+        run: python3 -m pip install --quiet pyyaml
+
+      - name: Unit tests (rollout gate)
+        run: python3 test/release/rollout_gate_test.py
+
+      - name: Evaluate or promote
+        env:
+          METRICS: ${{ inputs.metrics_json }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          RELEASE: ${{ inputs.release_tag }}
+        run: |
+          set -euo pipefail
+          if [ ! -f "$METRICS" ]; then
+            echo "::error::Metrics file missing at $METRICS"
+            exit 1
+          fi
+          STATE=/tmp/rollout_state.json
+          if [ "$DRY_RUN" = "true" ]; then
+            cp release/fixtures/rollout_state_soak_complete.json "$STATE"
+          else
+            python3 scripts/release/rollout_gate.py start \
+              --release "$RELEASE" \
+              --state "$STATE"
+          fi
+          if [ "$DRY_RUN" = "true" ]; then
+            python3 scripts/release/rollout_gate.py promote \
+              --dry-run \
+              --state "$STATE" \
+              --metrics "$METRICS"
+          else
+            python3 scripts/release/rollout_gate.py promote \
+              --state "$STATE" \
+              --metrics "$METRICS" || {
+                echo "::error::Rollout halted — see stderr for failed metric"
+                exit 1
+              }
+          fi
+
+      - name: Upload rollout state
+        if: inputs.dry_run != true
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: rollout-state-${{ inputs.release_tag }}
+          path: /tmp/rollout_state.json
+          retention-days: 90

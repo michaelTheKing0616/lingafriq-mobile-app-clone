@@ -1,5 +1,7 @@
 name: Build and Release iOS & Android
 
+# Store rollout 1%→100% runs in staged-rollout.yml (P12-016). This workflow never commits version bumps.
+
 on:
   push:
     branches: [ main ]
