@@ -1,0 +1,16 @@
+{
+  "charter": "v2",
+  "card": "P12-018",
+  "verify_collections": [
+    "user",
+    "reward_ledger",
+    "verified_lexicon_entries"
+  ],
+  "quarterly_interval_days": 90,
+  "atlas_env": {
+    "source_uri": "ATLAS_SOURCE_URI",
+    "restored_uri": "ATLAS_RESTORED_URI",
+    "restore_confirmed": "ATLAS_RESTORE_CONFIRMED",
+    "pit_timestamp": "ATLAS_PIT_TIMESTAMP"
+  }
+}
