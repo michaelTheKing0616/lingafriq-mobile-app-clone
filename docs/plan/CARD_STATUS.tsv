@@ -1044,7 +1044,7 @@ P9-922	Done	Hosted moderation adapter: category map, LANGUAGE_UNSUPPORTED, circu
 P9-923	Done	Multilingual moderation eval harness (evalSets.ts, eval_harness.py, severe recall gate)	P9/P9-923.yaml
 P9-924	Done	Match word-boundary-aware moderator lexicons per language (lexicon.engine.ts)	P9/P9-924.yaml
 P9-925	Done	Grooming heuristics: rule ledger, high-priority cases, evidence audit, precision stats (grooming.heuristics.ts)	P9/P9-925.yaml
-P9-926	Draft	Classify images and video and compute perceptual hashes	P9/P9-926.yaml
+P9-926	Done	Classify images/video, perceptual hash + visibility gate (imageClassifier.ts, perceptualHash.ts)	P9/P9-926.yaml
 P9-927	Draft	Integrate known-CSAM hash matching on unencrypted uploads	P9/P9-927.yaml
 P9-928	Draft	Escalate to law enforcement and hotlines through the safety lead	P9/P9-928.yaml
 P9-929	Draft	Rate-limit new accounts and add friction to first DMs	P9/P9-929.yaml
