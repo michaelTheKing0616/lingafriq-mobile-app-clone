@@ -14,6 +14,7 @@ import '../../providers/onboarding_provider.dart';
 import '../../services/chat/chat_room_learning_service.dart';
 import '../../services/chat/mls_session_service.dart';
 import '../../services/chat/wa_private_chat_service.dart';
+import '../../services/socket/socket_event_schemas.dart';
 import '../../utils/api.dart';
 import '../../utils/api_service.dart';
 import '../../widgets/chat/language_status_chip.dart';
@@ -174,6 +175,7 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
   @override
   void initState() {
     super.initState();
+    WaPrivateChatService.ensureDmRealtimeInfrastructure();
     _typingController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1200),
@@ -483,6 +485,11 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
     _typingPollTimer = null;
   }
 
+  void _emitSocketPayload(String event, Map<String, dynamic> body) {
+    final wrapped = wrapOutboundSocketPayload(body);
+    _socket?.emit(event, wrapped);
+  }
+
   Future<void> _ensureSocket() async {
     if (_socketReady || _socketConnecting) return;
     final roomId = _dmRoomId;
@@ -522,8 +529,11 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
       // Always re-join on reconnect (Socket.IO can reconnect silently).
       final currentRoom = _dmRoomId;
       if (currentRoom != null) {
-        socket.emit('join_room', {'room': currentRoom});
+        _emitSocketPayload('join_room', {'room': currentRoom});
       }
+      unawaited(
+        WaPrivateChatService.flushTextOutbox(isOnline: () => _socketReady),
+      );
       // On connect, do a quick sync so UI feels immediate.
       unawaited(_syncPeerTyping());
     });
@@ -542,8 +552,8 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
 
     socket.on('chat:typing_indicator', (dynamic payload) {
       if (!mounted) return;
-      if (payload is! Map) return;
-      final p = Map<String, dynamic>.from(payload);
+      final p = validateInboundSocketEvent('chat:typing_indicator', payload);
+      if (p == null) return;
       final pRoom = p['roomId']?.toString();
       if (pRoom == null || pRoom != roomId) return;
       final from = p['userId']?.toString();
@@ -556,8 +566,9 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
     });
 
     socket.on('wa:new_message', (dynamic payload) {
-      if (!mounted || payload is! Map) return;
-      final p = Map<String, dynamic>.from(payload);
+      if (!mounted) return;
+      final p = validateInboundSocketEvent('wa:new_message', payload);
+      if (p == null) return;
       if (p['roomId']?.toString() != roomId) return;
       final me = ref.read(userProvider);
       setState(() {
@@ -568,8 +579,9 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
     });
 
     socket.on('wa:reaction_changed', (dynamic payload) {
-      if (!mounted || payload is! Map) return;
-      final p = Map<String, dynamic>.from(payload);
+      if (!mounted) return;
+      final p = validateInboundSocketEvent('wa:reaction_changed', payload);
+      if (p == null) return;
       if (p['roomId']?.toString() != roomId) return;
       final messageId = p['messageId']?.toString();
       final emoji = p['emoji']?.toString();
@@ -586,8 +598,9 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
     });
 
     socket.on('wa:messages_read', (dynamic payload) {
-      if (!mounted || payload is! Map || !_showReadReceipts) return;
-      final p = Map<String, dynamic>.from(payload);
+      if (!mounted || !_showReadReceipts) return;
+      final p = validateInboundSocketEvent('wa:messages_read', payload);
+      if (p == null) return;
       if (p['roomId']?.toString() != roomId) return;
       setState(() {
         for (var i = 0; i < _messages.length; i++) {
@@ -618,17 +631,17 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
     if (text.trim().isEmpty) {
       _typingIdleTimer?.cancel();
       unawaited(WaPrivateChatService.setTyping(roomId: room, isTyping: false));
-      _socket?.emit('chat:typing', {'roomId': room, 'isTyping': false});
+      _socket?.emit('chat:typing', wrapOutboundSocketPayload({'roomId': room, 'isTyping': false}));
       return;
     }
     _typingDebounce = Timer(const Duration(milliseconds: 350), () {
       unawaited(WaPrivateChatService.setTyping(roomId: room, isTyping: true));
-      _socket?.emit('chat:typing', {'roomId': room, 'isTyping': true});
+      _socket?.emit('chat:typing', wrapOutboundSocketPayload({'roomId': room, 'isTyping': true}));
     });
     _typingIdleTimer?.cancel();
     _typingIdleTimer = Timer(const Duration(seconds: 4), () {
       unawaited(WaPrivateChatService.setTyping(roomId: room, isTyping: false));
-      _socket?.emit('chat:typing', {'roomId': room, 'isTyping': false});
+      _socket?.emit('chat:typing', wrapOutboundSocketPayload({'roomId': room, 'isTyping': false}));
     });
   }
 
@@ -641,7 +654,7 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
       unawaited(
         WaPrivateChatService.setTyping(roomId: _dmRoomId!, isTyping: false),
       );
-      _socket?.emit('chat:typing', {'roomId': _dmRoomId!, 'isTyping': false});
+      _emitSocketPayload('chat:typing', {'roomId': _dmRoomId!, 'isTyping': false});
       _socket?.emit('leave_room', {'room': _dmRoomId!});
     }
     if (_typingListenerAttached) {
@@ -977,7 +990,7 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen>
     final room = _dmRoomId;
     if (room != null) {
       unawaited(WaPrivateChatService.setTyping(roomId: room, isTyping: false));
-      _socket?.emit('chat:typing', {'roomId': room, 'isTyping': false});
+      _socket?.emit('chat:typing', wrapOutboundSocketPayload({'roomId': room, 'isTyping': false}));
     }
     _messageController.clear();
     try {

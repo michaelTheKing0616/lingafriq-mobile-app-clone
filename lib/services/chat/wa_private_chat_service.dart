@@ -1,5 +1,10 @@
+import 'package:dio/dio.dart';
+import 'package:lingafriq/services/chat/outbox_message_queue.dart';
+import 'package:lingafriq/services/push/data_push_handler.dart';
 import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/utils/api_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 /// Read receipts only for mutual 1:1 contacts (P9-944 AC3).
 class WaReadReceiptPolicy {
@@ -60,6 +65,78 @@ class WaPrivateConversationRow {
 /// Loads inbox + sends messages via Node WA + legacy chat thread API.
 class WaPrivateChatService {
   WaPrivateChatService._();
+
+  static const _uuid = Uuid();
+
+  static bool _realtimeHooksInstalled = false;
+
+  /// Wires P9-909 data-push foreground sync and prepares the DM outbox (idempotent).
+  static void ensureDmRealtimeInfrastructure({
+    ChatPushLocalNotifier? chatPushLocalNotifier,
+  }) {
+    ensureFirebaseForegroundDataPushBridge(
+      localNotifier: chatPushLocalNotifier,
+    );
+    _realtimeHooksInstalled = true;
+  }
+
+  static bool get realtimeHooksInstalled => _realtimeHooksInstalled;
+
+  static Future<ChatOutboxMessageQueue> _outboxQueue() async {
+    final prefs = await SharedPreferences.getInstance();
+    return ChatOutboxMessageQueue(prefs: prefs);
+  }
+
+  static bool _isOfflineTransportError(Object e) {
+    if (e is DioException) {
+      return e.type == DioExceptionType.connectionError ||
+          e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.sendTimeout ||
+          e.type == DioExceptionType.receiveTimeout;
+    }
+    return false;
+  }
+
+  static Future<Map<String, dynamic>?> _postWaTextPayload({
+    required String recipientId,
+    required String message,
+    required String clientMessageId,
+    bool firstDmIntro = false,
+    String? replyToId,
+  }) async {
+    final res = await ApiService.post(
+      Api.waMessages,
+      data: {
+        'recipientId': recipientId,
+        'message': message,
+        'message_type': 'text',
+        if (firstDmIntro) 'first_dm_intro': true,
+        'client_message_id': clientMessageId,
+        if (replyToId != null && replyToId.isNotEmpty) 'reply_to_id': replyToId,
+      },
+    );
+    final raw = res.data;
+    if (raw is Map && raw['data'] is Map) {
+      return Map<String, dynamic>.from(raw['data'] as Map);
+    }
+    if (raw is Map) return Map<String, dynamic>.from(raw);
+    return null;
+  }
+
+  /// Drains queued WA text sends after connectivity returns (P9-909 AC1).
+  static Future<void> flushTextOutbox({
+    required bool Function() isOnline,
+  }) async {
+    final queue = await _outboxQueue();
+    await queue.flush(
+      isOnline: isOnline,
+      send: (entry) => _postWaTextPayload(
+        recipientId: entry.recipientId,
+        message: entry.message,
+        clientMessageId: entry.clientMessageId,
+      ),
+    );
+  }
 
   static List<Map<String, dynamic>> _listFromResponse(dynamic raw) {
     if (raw is List) {
@@ -217,24 +294,31 @@ class WaPrivateChatService {
     bool firstDmIntro = false,
     String? replyToId,
   }) async {
-    final res = await ApiService.post(
-      Api.waMessages,
-      data: {
-        'recipientId': recipientId,
+    final cid = clientMessageId?.trim().isNotEmpty == true
+        ? clientMessageId!.trim()
+        : _uuid.v4();
+    try {
+      return await _postWaTextPayload(
+        recipientId: recipientId,
+        message: message,
+        clientMessageId: cid,
+        firstDmIntro: firstDmIntro,
+        replyToId: replyToId,
+      );
+    } catch (e) {
+      if (!_isOfflineTransportError(e)) rethrow;
+      final queue = await _outboxQueue();
+      await queue.enqueue(
+        recipientId: recipientId,
+        message: message,
+        clientMessageId: cid,
+      );
+      return {
+        'client_message_id': cid,
+        'queued_offline': true,
         'message': message,
-        'message_type': 'text',
-        if (firstDmIntro) 'first_dm_intro': true,
-        if (clientMessageId != null && clientMessageId.isNotEmpty)
-          'client_message_id': clientMessageId,
-        if (replyToId != null && replyToId.isNotEmpty) 'reply_to_id': replyToId,
-      },
-    );
-    final raw = res.data;
-    if (raw is Map && raw['data'] is Map) {
-      return Map<String, dynamic>.from(raw['data'] as Map);
+      };
     }
-    if (raw is Map) return Map<String, dynamic>.from(raw);
-    return null;
   }
 
   static Future<String?> uploadChatMediaFile(

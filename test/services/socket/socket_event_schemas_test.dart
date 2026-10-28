@@ -39,6 +39,25 @@ void main() {
     expect(parsed!['message'], 'Ẹ kú àárọ̀');
   });
 
+  test('accepts valid wa:new_message', () {
+    final parsed = validateInboundSocketEvent('wa:new_message', {
+      'schemaVersion': 1,
+      'roomId': 'private_1_2',
+      'message': 'hello',
+    });
+    expect(parsed, isNotNull);
+    expect(parsed!['roomId'], 'private_1_2');
+  });
+
+  test('rejects wa:new_message without roomId', () {
+    final parsed = validateInboundSocketEvent('wa:new_message', {
+      'schemaVersion': 1,
+      'message': 'hello',
+    });
+    expect(parsed, isNull);
+    expect(lastSocketEventDiagnostic?.detail, 'wa_room_id');
+  });
+
   test('wrapOutbound adds schemaVersion', () {
     final wrapped = wrapOutboundSocketPayload({'room': 'general'});
     expect(wrapped['schemaVersion'], socketEventSchemaVersion);

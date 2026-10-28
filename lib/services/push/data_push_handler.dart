@@ -1,7 +1,32 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:lingafriq/services/chat/wa_private_chat_service.dart';
+
+bool _foregroundDataPushBridgeInstalled = false;
+StreamSubscription<RemoteMessage>? _foregroundDataPushSubscription;
+
+/// Registers a foreground listener so data-only chat wakes run authenticated sync (P9-909).
+void ensureFirebaseForegroundDataPushBridge({
+  ChatPushLocalNotifier? localNotifier,
+}) {
+  if (_foregroundDataPushBridgeInstalled) return;
+  _foregroundDataPushBridgeInstalled = true;
+  final handler = DataPushHandler(localNotifier: localNotifier);
+  _foregroundDataPushSubscription = FirebaseMessaging.onMessage.listen(
+    (message) async {
+      await handler.handleRemoteMessageWithLocalNotification(message);
+    },
+  );
+}
+
+/// Test hook to reset bridge registration.
+Future<void> resetFirebaseForegroundDataPushBridgeForTest() async {
+  await _foregroundDataPushSubscription?.cancel();
+  _foregroundDataPushSubscription = null;
+  _foregroundDataPushBridgeInstalled = false;
+}
 
 /// Local notification copy built only from authenticated sync (never from FCM data).
 class ChatPushLocalNotification {

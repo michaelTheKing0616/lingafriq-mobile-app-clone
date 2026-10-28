@@ -167,6 +167,68 @@ Map<String, dynamic>? validateInboundSocketEvent(String eventName, dynamic raw) 
         return null;
       }
       return record;
+    case 'wa:new_message':
+      final roomId = _requireString(record, 'roomId', maxLen: 200);
+      if (roomId == null) {
+        recordSocketEventDiagnostic(SocketEventDiagnostic(
+          eventName: eventName,
+          code: socketErrorEventInvalid,
+          detail: 'wa_room_id',
+          at: DateTime.now().toUtc(),
+        ));
+        return null;
+      }
+      return record;
+    case 'wa:reaction_changed':
+      final roomId = _requireString(record, 'roomId', maxLen: 200);
+      final messageId = record['messageId']?.toString();
+      final emoji = _requireString(record, 'emoji', maxLen: 32);
+      if (roomId == null || messageId == null || messageId.isEmpty || emoji == null) {
+        recordSocketEventDiagnostic(SocketEventDiagnostic(
+          eventName: eventName,
+          code: socketErrorEventInvalid,
+          detail: 'wa_reaction_fields',
+          at: DateTime.now().toUtc(),
+        ));
+        return null;
+      }
+      return record;
+    case 'wa:messages_read':
+      final roomId = _requireString(record, 'roomId', maxLen: 200);
+      if (roomId == null) {
+        recordSocketEventDiagnostic(SocketEventDiagnostic(
+          eventName: eventName,
+          code: socketErrorEventInvalid,
+          detail: 'wa_read_room',
+          at: DateTime.now().toUtc(),
+        ));
+        return null;
+      }
+      return record;
+    case 'chat:typing_indicator':
+      final roomId = _requireString(record, 'roomId', maxLen: 200);
+      if (roomId == null) {
+        recordSocketEventDiagnostic(SocketEventDiagnostic(
+          eventName: eventName,
+          code: socketErrorEventInvalid,
+          detail: 'typing_room',
+          at: DateTime.now().toUtc(),
+        ));
+        return null;
+      }
+      return record;
+    case 'join_room':
+      final room = _requireString(record, 'room', maxLen: 200);
+      if (room == null) {
+        recordSocketEventDiagnostic(SocketEventDiagnostic(
+          eventName: eventName,
+          code: socketErrorEventInvalid,
+          detail: 'join_room',
+          at: DateTime.now().toUtc(),
+        ));
+        return null;
+      }
+      return record;
     default:
       return record;
   }
