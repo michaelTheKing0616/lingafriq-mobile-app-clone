@@ -1052,7 +1052,7 @@ P9-930	Done	Block/mute/report in two taps; userSafety.service + safety_actions_s
 P9-931	Done	Moderator console severity queues, SLAs, evidence audit (sla.service.ts, moderation.routes.ts, queue.tsx)	P9/P9-931.yaml
 P9-932	Done	Learner appeals API + transparency job + appeal_screen (appeals.service.ts, transparencyReport.job.ts)	P9/P9-932.yaml
 P9-933	Done	Publish plain-language community guidelines in supported UI languages	P9/P9-933.yaml
-P9-934	Draft	Verify safety lead, incident response and moderator training exist	P9/P9-934.yaml
+P9-934	Done	Verify safety lead, incident response and moderator training exist (INCIDENT_RESPONSE.md, MODERATOR_TRAINING.md, safety_ops_check.py)	P9/P9-934.yaml
 P9-935	Draft	Remediate pen-test findings on sockets, auth and minors' surfaces	P9/P9-935.yaml
 P9-936	Draft	Verify G9 guardian and moderation gate for under-18 social	P9/P9-936.yaml
 P9-937	Draft	Decide MLS versus Signal protocol for private messaging	P9/P9-937.yaml
